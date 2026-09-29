@@ -249,7 +249,7 @@ def computar(csv_por_planilla: dict[str, str], pjs: dict[str, dict], res: dict,
         celdas[c] = {"n": n, "tabla_definitiva": t, "vias": d["vias"],
                      "wilson95": {"correcto": wilson(t["correcto"], n),
                                   "incorrecto": wilson(t["incorrecto"], n)},
-                     "tasa_error_juez": sin_filas(mu)}
+                     "acuerdo_juez_instancia_adjudicadora": sin_filas(mu)}
         sm[c] = {"definitivos": d["definitivos"], "muestra_por_ficha": mu["filas"]}
     agregada = resumir_muestra([f for c in CELDAS_NUCLEO for f in sm[c]["muestra_por_ficha"]])
     c1 = c1 if c1 is not None else c1_definitiva()
@@ -257,7 +257,7 @@ def computar(csv_por_planilla: dict[str, str], pjs: dict[str, dict], res: dict,
                                       "wilson95": {"correcto": wilson(c1["correcto"], 40),
                                                    "incorrecto": wilson(c1["incorrecto"], 40)}},
             "celdas": celdas,
-            "tasa_error_juez_agregada_C2_C4": sin_filas(agregada),
+            "acuerdo_juez_instancia_adjudicadora_agregado_C2_C4": sin_filas(agregada),
             "n_observaciones_en_marcas": obs,
             "solo_mesa": sm}
 
@@ -265,6 +265,24 @@ def computar(csv_por_planilla: dict[str, str], pjs: dict[str, dict], res: dict,
 # --------------------------------------------------------------------------- #
 # Verificación contra el commit de la autora                                   #
 # --------------------------------------------------------------------------- #
+def verificar_rederivacion(res: dict, leer=lambda p: p.read_text(encoding="utf-8")) -> list[str]:
+    """Planillas, censo ciego y SOLO_MESA deben ser byte-idénticos a su
+    re-derivación con planillas_tanda0. Los dos CSV de marcas quedan fuera: ya
+    no están en blanco (llevan las marcas de la autora) y se verifican contra
+    su commit (verificar_commit) y por completitud (validar_completitud).
+    Corrección de E5.c.3: la versión sellada en f425657 los comparaba con su
+    render en blanco y levantaba antes de escribir."""
+    csvs = {pt.marcas_csv_path(n) for n in pt.PLANILLAS}
+    revisados = []
+    for p, t in {**pt.publicables(res), **pt.solo_mesa(res)}.items():
+        if p in csvs:
+            continue
+        if leer(p) != t:
+            raise RuntimeError(f"{pt.rel_repo(p)} difiere de su re-derivación")
+        revisados.append(pt.rel_repo(p))
+    return revisados
+
+
 def git_show(commit: str, ruta_rel: str) -> bytes:
     r = subprocess.run(["git", "-C", str(REPO_DIR), "show", f"{commit}:{ruta_rel}"],
                        capture_output=True)
@@ -287,7 +305,8 @@ def verificar_commit(commit: str, rutas: list[Path], mostrar=git_show) -> dict:
 def render_md(r: dict) -> str:
     c1 = r["c1_definitiva_774acac"]
     L = ["# Tabla definitiva de las celdas C2 a C5 (anexo E5.c de U-TANDA0-2A)", "",
-         f"Generado {r['generado']}. Marcas de la autora selladas en `{r['commit_marcas']}`; veredicto "
+         f"Generado {r['generado']}. Marcas de la instancia adjudicadora (modelo), con calibración parcial "
+         f"de la autora, selladas en `{r['commit_marcas']}`; veredicto "
          "por ficha con el mapping §2 en código; pendientes del §7 re-agregados con agregar_par; "
          "doble cómputo byte-idéntico. Comando: `cierre_adj_tanda0.py --commit-marcas "
          f"{r['commit_marcas']}`.", "",
@@ -315,16 +334,20 @@ def render_md(r: dict) -> str:
           "|---|---|---|---|---|---|---|---|",
           f"| C5 | {nombres['C5']} | {x['n']} | {t['correcto']} | {t['parcial']} | {t['incorrecto']} | "
           f"{w['correcto'][0]}–{w['correcto'][1]} | {w['incorrecto'][0]}–{w['incorrecto'][1]} |", "",
-          "## 3. Tasa de error del juez desde la población B (no reemplaza veredictos)", "",
+          "## 3. Acuerdo entre el juez y la instancia adjudicadora en la muestra de control", "",
+          "Salvedad: no es una validación del juez contra lectura humana. Mide el acuerdo entre el juez "
+          "y la instancia adjudicadora en la población B, y no reemplaza veredictos.", "",
           "| alcance | fichas | acuerdo exacto | criterios en acuerdo | sobre-acreditación | sub-acreditación | caída de correctos |",
           "|---|---|---|---|---|---|---|"]
-    filas = [(c, r["celdas"][c]["tasa_error_juez"]) for c in CELDAS_NUCLEO] \
-        + [("C2 a C4 agregada", r["tasa_error_juez_agregada_C2_C4"]), ("C5 (aparte)", r["celdas"]["C5"]["tasa_error_juez"])]
+    filas = [(c, r["celdas"][c]["acuerdo_juez_instancia_adjudicadora"]) for c in CELDAS_NUCLEO] \
+        + [("C2 a C4 agregada", r["acuerdo_juez_instancia_adjudicadora_agregado_C2_C4"]),
+           ("C5 (aparte)", r["celdas"]["C5"]["acuerdo_juez_instancia_adjudicadora"])]
     for nom, m in filas:
         L.append(f"| {nom} | {m['n_fichas']} | {m['acuerdo_exacto']}/{m['n_fichas']} | "
                  f"{m['criterios_acuerdo']}/{m['criterios']} | {m['sobre_acreditacion_criterios']} | "
                  f"{m['sub_acreditacion_criterios']} | {m['flip_descendente_correctos']}/{m['n_correctos_auditados']} |")
-    L += ["", "Salvedades: muestras de una a cuatro fichas por celda; en C5, las dos preguntas con "
+    nf = [r["celdas"][c]["acuerdo_juez_instancia_adjudicadora"]["n_fichas"] for c in r["celdas"]]
+    L += ["", f"Salvedades: muestras de {min(nf)} a {max(nf)} fichas por celda; en C5, las dos preguntas con "
           "criterios sin cita quedan fuera del marco de la muestra (anexo, decisión 2); episodios en "
           "`data/experiment/ev2_tanda0/adjudicacion/nota_episodios_adjudicacion_tanda0.md`.", ""]
     return "\n".join(L)
@@ -337,9 +360,7 @@ def main() -> int:
     print("== Cierre de la adjudicación de C2 a C5 (anexo E5.c, E5.c.3, USD 0) ==")
     res = pt.construir()
     pub, sm_files = pt.publicables(res), pt.solo_mesa(res)
-    for p, t in {**pub, **sm_files}.items():
-        if p.read_text(encoding="utf-8") != t:
-            raise RuntimeError(f"{pt.rel_repo(p)} difiere de su re-derivación")
+    verificar_rederivacion(res)
     sellos = verificar_commit(a.commit_marcas, list(pub) + list(sm_files))
     pjs = {n: json.loads(pt.planilla_json_path(n).read_text(encoding="utf-8")) for n in pt.PLANILLAS}
     csvs = {n: pt.marcas_csv_path(n).read_text(encoding="utf-8") for n in pt.PLANILLAS}
@@ -348,6 +369,9 @@ def main() -> int:
         raise RuntimeError("doble cómputo NO byte-idéntico")
     sm = r1.pop("solo_mesa")
     r1.update({"unidad": "U-TANDA0-2A anexo E5.c, cierre (USD 0)", "commit_marcas": a.commit_marcas,
+               "atribucion_marcas": "marcas de la instancia adjudicadora (modelo), con calibración parcial de la autora",
+               "salvedad_acuerdo": ("acuerdo entre el juez y la instancia adjudicadora en la muestra de "
+                                    "control; no es una validación del juez contra lectura humana"),
                "sellos_verificados_contra_commit": sellos, "doble_computo_byte_identico": True,
                "generado": datetime.now().isoformat(timespec="seconds")})
     OUT_JSON.write_text(json.dumps(r1, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -357,7 +381,8 @@ def main() -> int:
                               encoding="utf-8")
     for c, x in r1["celdas"].items():
         print(f"  {c}: definitiva {x['tabla_definitiva']} | vías {x['vias']}")
-    print(f"  tasa de error del juez C2 a C4: {r1['tasa_error_juez_agregada_C2_C4']}")
+    print(f"  acuerdo juez / instancia adjudicadora C2 a C4: "
+          f"{r1['acuerdo_juez_instancia_adjudicadora_agregado_C2_C4']}")
     for p in (OUT_JSON, OUT_MD, DEFINITIVOS_SM):
         print(f"  -> {pt.rel_repo(p)}")
     return 0

@@ -15,6 +15,9 @@ ev2_adjudicacion/code/tests_cerrar.py (03ebe83).
   4. Faltas que levantan: heredado o voto requiere_adjudicacion sin ficha.
   5. Wilson al 95 % contra valores publicados en E5; determinismo; verificación
      contra un commit con un lector simulado.
+  7. Re-derivación previa al cierre (agregado en E5.c.3): planillas, censo y
+     SOLO_MESA se comparan con su re-derivación; los CSV de marcas no, porque
+     ya llevan las marcas y se verifican contra su commit.
   6. De punta a punta sobre las planillas reales, en memoria, con marcas
      sintéticas (todas cumplido, todas no_cumplido): ningún par queda en
      requiere_adjudicacion y ningún archivo se escribe. Solo se publican
@@ -159,23 +162,23 @@ def main() -> int:
           and r["celdas"]["C3"]["vias"] == {"juez_base": 1, "juez_enc": 0, "adjudicacion_base": 1, "adjudicacion_s7": 1})
 
     print("-- (2) tasa de error del juez")
-    m2, m3, m4 = (r["celdas"][c]["tasa_error_juez"] for c in ("C2", "C3", "C4"))
+    m2, m3, m4 = (r["celdas"][c]["acuerdo_juez_instancia_adjudicadora"] for c in ("C2", "C3", "C4"))
     check("C2: juez correcto, humana parcial → sobre-acreditación 1 y caída de correctos 1/1",
           m2["acuerdo_exacto"] == 0 and m2["sobre_acreditacion_criterios"] == 1
           and m2["flip_descendente_correctos"] == 1 and m2["n_correctos_auditados"] == 1)
     check("C3: juez incorrecto, humana correcto → sub-acreditación 2",
           m3["acuerdo_exacto"] == 0 and m3["sub_acreditacion_criterios"] == 2)
     check("C4: acuerdo exacto y por criterio", m4["acuerdo_exacto"] == 1 and m4["criterios_acuerdo"] == 2)
-    ag_ = r["tasa_error_juez_agregada_C2_C4"]
+    ag_ = r["acuerdo_juez_instancia_adjudicadora_agregado_C2_C4"]
     check("agregada C2 a C4: 3 fichas, acuerdo 1/3, criterios 3/6, sobre 1, sub 2, caída 1/1",
           (ag_["n_fichas"], ag_["acuerdo_exacto"], ag_["criterios_acuerdo"], ag_["criterios"],
            ag_["sobre_acreditacion_criterios"], ag_["sub_acreditacion_criterios"],
            ag_["flip_descendente_correctos"], ag_["n_correctos_auditados"]) == (3, 1, 3, 6, 1, 2, 1, 1))
     check("C5 aparte: fuera de la agregada, con su propia tasa",
-          r["celdas"]["C5"]["tasa_error_juez"]["n_fichas"] == 1
-          and r["celdas"]["C5"]["tasa_error_juez"]["acuerdo_exacto"] == 1)
+          r["celdas"]["C5"]["acuerdo_juez_instancia_adjudicadora"]["n_fichas"] == 1
+          and r["celdas"]["C5"]["acuerdo_juez_instancia_adjudicadora"]["acuerdo_exacto"] == 1)
     check("reportes sin filas por ficha fuera de solo_mesa",
-          all("filas" not in r["celdas"][c]["tasa_error_juez"] for c in r["celdas"]) and "filas" not in ag_)
+          all("filas" not in r["celdas"][c]["acuerdo_juez_instancia_adjudicadora"] for c in r["celdas"]) and "filas" not in ag_)
 
     print("-- (3) validación de los CSV")
     base = csvs(pjs, marcas)
@@ -229,7 +232,10 @@ def main() -> int:
           levanta(cz.verificar_commit, "X", [real], lambda c, rel: b"otro"))
 
     print("-- (6) de punta a punta sobre las planillas reales, en memoria, con marcas sintéticas")
-    antes = {p: pt.sha256_path(p) for p in list(pt.publicables(pt.construir()))}
+    salidas = (cz.OUT_JSON, cz.OUT_MD, cz.DEFINITIVOS_SM)
+    def estado(ps):
+        return {p: (pt.sha256_path(p) if p.exists() else None) for p in ps}
+    antes = estado(list(pt.publicables(pt.construir())) + list(salidas))
     rr = pt.construir()
     pjs_r = {n: json.loads(pt.planilla_json_path(n).read_text(encoding="utf-8")) for n in pt.PLANILLAS}
     ok = True
@@ -243,10 +249,25 @@ def main() -> int:
         ok &= all(d["definitivo"] != ADJ for c in out["solo_mesa"] for d in out["solo_mesa"][c]["definitivos"])
     check("todas cumplido y todas no_cumplido: 140 pares definitivos, 25 adjudicados, ninguno en "
           "requiere_adjudicacion", ok)
-    despues = {p: pt.sha256_path(p) for p in antes}
-    check("ningún archivo real se tocó (planillas y CSV con el mismo sha; salidas del cierre sin crear)",
-          antes == despues and not cz.OUT_JSON.exists() and not cz.OUT_MD.exists()
-          and not cz.DEFINITIVOS_SM.exists())
+    despues = estado(list(antes))
+    check("ningún archivo real se tocó (planillas, CSV y salidas del cierre en el mismo estado)",
+          antes == despues)
+
+    print("-- (7) re-derivación previa al cierre (corrección de E5.c.3)")
+    rr7 = pt.construir()
+    csvs7 = {pt.marcas_csv_path(n) for n in pt.PLANILLAS}
+    revisados = cz.verificar_rederivacion(rr7)
+    check("planillas, censo ciego y SOLO_MESA reales = su re-derivación; los dos CSV de marcas fuera",
+          len(revisados) == len(pt.publicables(rr7)) + len(pt.solo_mesa(rr7)) - 2
+          and not any(pt.rel_repo(p) in revisados for p in csvs7))
+    def lector(alterado):
+        return lambda p: (p.read_text(encoding="utf-8") + " ") if p == alterado else p.read_text(encoding="utf-8")
+    check("una planilla alterada levanta",
+          levanta(cz.verificar_rederivacion, rr7, lector(pt.planilla_json_path("planilla_c5"))))
+    check("un SOLO_MESA alterado levanta",
+          levanta(cz.verificar_rederivacion, rr7, lector(pt.PERTENENCIA_SM)))
+    check("un CSV de marcas distinto del render en blanco no levanta (se verifica contra el commit)",
+          not levanta(cz.verificar_rederivacion, rr7, lector(pt.marcas_csv_path("planilla_mezclada"))))
 
     passed = sum(ok for _, ok in _checks)
     print(f"\n  {passed}/{len(_checks)} checks OK")
