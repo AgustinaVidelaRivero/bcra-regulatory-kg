@@ -141,5 +141,6 @@ juez_out/*/desanonimizacion_SOLO_MESA/ y adjudicacion_SOLO_MESA/ por programa;
 sus salidas visibles mostraron solo totales, booleanos y conteos por celda ya
 publicados, y ninguna asoció una ficha con su celda, su origen o su veredicto.
 
-Ancla: declaración de la autora del 29/09/2026 (corrección del cierre de
-E5.c.3); sin artefacto en el repo: NO VERIFICADA.
+Ancla: declaración de la mesa revisora (la instancia del plan), transmitida por
+la autora el 29/09/2026 (corrección del cierre de E5.c.3); sin artefacto en el
+repo: NO VERIFICADA.

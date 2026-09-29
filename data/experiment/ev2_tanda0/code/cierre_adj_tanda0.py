@@ -1,7 +1,7 @@
 """
 cierre_adj_tanda0.py — U-TANDA0-2A, anexo E5.c (docs/mandatos/UTANDA0_2A_E5c_adjudicacion.md,
 0488a9b): cierre de la adjudicación ciega de C2 a C5. Escrito en E5.c.1; corre
-en E5.c.3 sobre las marcas de la autora selladas por commit. USD 0, sin API.
+en E5.c.3 sobre las marcas de la instancia adjudicadora selladas por commit. USD 0, sin API.
 
 Molde: ev2_r1/code/cierre_r1.py (774acac): cargar marcas, humanos_por_ficha,
 resolver_definitivos (:110-159) y evaluar_muestra (:194-224); validación de
@@ -268,7 +268,7 @@ def computar(csv_por_planilla: dict[str, str], pjs: dict[str, dict], res: dict,
 def verificar_rederivacion(res: dict, leer=lambda p: p.read_text(encoding="utf-8")) -> list[str]:
     """Planillas, censo ciego y SOLO_MESA deben ser byte-idénticos a su
     re-derivación con planillas_tanda0. Los dos CSV de marcas quedan fuera: ya
-    no están en blanco (llevan las marcas de la autora) y se verifican contra
+    no están en blanco (llevan las marcas de la instancia adjudicadora) y se verifican contra
     su commit (verificar_commit) y por completitud (validar_completitud).
     Corrección de E5.c.3: la versión sellada en f425657 los comparaba con su
     render en blanco y levantaba antes de escribir."""
