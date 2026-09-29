@@ -9,6 +9,8 @@ Lista única de lo que tiene que estar resuelto o decidido antes de la tanda 1
 huecos de este mismo pase (sin commit al escribir esta lista). Actualizada el
 29/09/2026 sobre HEAD `a0a6200`: orden y condiciones de la tanda 1, y P6
 (decisión de la autora del 29/09/2026).
+Actualizada otra vez el 29/09/2026: desvíos declarados por la autora sobre quién
+leyó y adjudicó (P1, P15, X11, Q12).
 
 **Convenciones.**
 - Registro: `:n` es la línea de `docs/plan_tesis.md`; «laudo §x» es la sección
@@ -37,13 +39,13 @@ los mentores. La tanda 1 depende de tres condiciones:
    laudo firmado incluya del canal 1).
 3. La decisión de la autora con los mentores sobre el cambio de prefijo: X1
    (matriz), X2 (prompt), X3 (ventana del §7) y X4 (cuándo va la release de
-   prompt).
+   prompt), con X11 (si la lectura asistida de la matriz alcanza).
 
 ## 0. Precondiciones y operación del escalado
 
 | # | Qué es | Registro | Estado | Decisión |
 |---|---|---|---|---|
-| P1 | Adjudicación ciega de C2 a C5, antes de E6 | anexo E5.c `docs/mandatos/UTANDA0_2A_E5c_adjudicacion.md` (firmado, `0488a9b`); `:724` | decidido; despacho del anexo PENDIENTE (no confirmado) | No: marcas de la autora en E5.c.2 |
+| P1 | Adjudicación ciega de C2 a C5, antes de E6 | anexo E5.c `docs/mandatos/UTANDA0_2A_E5c_adjudicacion.md` (firmado, `0488a9b`); `:724` | E5.c.1 hecha (`f425657`); marcas de una instancia de modelo (`2e4280c`, corregidas en `8e0597c`): desvío declarado el 29/09 (`:724`); cierre de E5.c.3 a recomputar | No: recomputar el cierre; la autora confirma modelo y versión de la instancia |
 | P2 | E6: lectura de observaciones y vigilancias y reporte de 2a, puntos (1) a (6) de la lectura | mandato 2a, E6 (`docs/mandatos/UTANDA0_2A_corrida.md:216-234`); `:728` | registrado | No |
 | P3 | **HUECO** — punto (6) de E6: aristas entre documentos distintos, por relación, en los tres ensamblados | `:728` (6) | registrado | No |
 | P4 | Posición sobre la ventana del §7 por la vía de A8, en el reporte de 2a | mandato 2a, E6 c; `docs/preregistro_tanda0.md:832` (A8) | registrado | Sí |
@@ -57,6 +59,7 @@ los mentores. La tanda 1 depende de tres condiciones:
 | P12 | Gate de la tanda 1: retiro de las tres `aplica_a` de U-COB-A si sus TOs entran | `:745` | registrado (en la tanda 0, 0 de 3 porque sus TOs no estaban) | No |
 | P13 | La tanda 1 pasa por r1: mecánica a fijar en el mandato | `:746`; precedente, gate 1 de la tanda 0 (`47c9283`) | registrado | No |
 | P14 | Observaciones (10), (11) y (12) de la tanda 1 contra sus líneas de base | `:747`, `:748` | registrado | No |
+| P15 | Tanda 1: definir de antemano quién lee y adjudica (vigilancias, observaciones y muestras): modelo con muestra humana de control de tamaño suficiente y declarada, o experto del dominio | esta lista (29/09); antecedente, desvíos declarados en `:724`, `:727` y `:729` | registrado | Sí, con los mentores |
 
 ## 1. r2 sin prefijo
 
@@ -96,6 +99,7 @@ Avanza en paralelo con la lectura del capítulo una vez cerrada la tanda 0.
 | # | Qué es | Registro | Estado | Decisión |
 |---|---|---|---|---|
 | X1 | Enmienda de la matriz congelada: → Operacion cumple el criterio (27 de 29, piso 0,780); → Potestad no (27 de 30, piso 0,744) | `:727`; `reports/u_estudio_matriz/lectura/resultado_lectura_matriz.md` | registrado; resultado del protocolo, sin decidir la enmienda | Sí, con los mentores; condición (3) de la tanda 1 |
+| X11 | ¿La lectura asistida de la matriz (instancia de modelo, revisada por la autora) alcanza para la enmienda, o se pide una validación adicional, por ejemplo de alguien del dominio? | `:727`; `reports/u_estudio_matriz/lectura/resultado_lectura_matriz.md` | registrado | Sí, con los mentores; condición (3) de la tanda 1 |
 | X2 | Si se amplía la matriz: cambiar el prompt (rota el prefijo; la tanda 0 se re-extrae o se revalida declarando la mezcla) o ampliar solo el validador | `:727` | registrado | Sí, con los mentores; condición (3) de la tanda 1 |
 | X3 | Ventana única del §7: si se usa después de la tanda 0, la tanda 1 ya no la tiene y los cinco de la tanda 0 salen del conjunto final de B6.3 | `:727`; `docs/preregistro_tanda0.md:832` (A8, decisión 4) | registrado | Sí; condición (3) de la tanda 1 |
 | X4 | Cuándo va la release de prompt: antes o después de la tanda 1 (la §3.2 del laudo de r2 no admite cambios al prefijo) | `:727`; laudo §3.2 (1) | registrado | Sí, con los mentores; condición (3) de la tanda 1 |
@@ -137,13 +141,14 @@ tanda 1.
 | Q9 | Regla de cegado en lecturas humanas y entrada de textos largos del instrumento de lectura | cola 10 y 11 | registrado | No |
 | Q10 | Disjunción del conjunto final con desarrollo y con los diez de ESQ; también con la tanda 0 si se usa la ventana | `:750` (a); `:727` | registrado | Sí (depende de X3) |
 | Q11 | Ciclo de corrección de esquema de la tanda 1, siempre antes del pre-registro de B6.3 | `:743` | registrado | No |
+| Q12 | B6.3: definir de antemano quién lee y adjudica (casos a adjudicación del juez, muestra de control, tripletas de B4): modelo con muestra humana de control de tamaño suficiente y declarada, o experto del dominio | esta lista (29/09); antecedente, desvíos declarados en `:724`, `:727` y `:729` | registrado | Sí, con los mentores |
 
 ## 5. Escritura
 
 | # | Qué es | Registro | Estado | Decisión |
 |---|---|---|---|---|
 | W1 | Tabla de reproducibilidad: modelo, versión con fecha, temperatura, vía (API o Claude Code), por medición y por etapa | `:832` (precisión por etapa del 29/09); `docs/registro_modelos.md` NO ENCONTRADO | registrado | Sí: aprobar el documento |
-| W2 | B2.5: spec del backlog con `capa_pipeline` obligatorio y dos vías; huecos del catálogo de especies (cola 17; especies provisionales de `BKL-0032`, `BKL-0033` y `BKL-0035`) | `:377`; cola 17; backlog | registrado | Sí: ampliar el catálogo |
+| W2 | B2.5: spec del backlog con `capa_pipeline` obligatorio y dos vías; huecos del catálogo de especies (cola 17; especies provisionales de `BKL-0032`, `BKL-0033` y `BKL-0035`) | `:377`; cola 17; backlog; `docs/spec_backlog_refinamiento.md` | registrado; hecho el 29/09, sin commit: `lectura_asistida` en el vocabulario de `diagnostico` y el evento `correccion_diagnostico` en la spec; el resto de B2.5 sigue pendiente | Sí: ampliar el catálogo de especies |
 | W3 | B2.6: protocolo de releases escrito; `docs/protocolo_ciclo_refinamiento.md` NO ENCONTRADO | `:378` | registrado | Sí: antes o después de r2 |
 | W4 | B2.8: método de construcción y refinamiento, «el que se sigue en B6»; `docs/metodo_construccion_refinamiento_kg.md` NO ENCONTRADO | `:380`, `:743` | registrado | Sí: antes o después de la tanda 1 |
 | W5 | **HUECO** — la fila B2.10 citaba el laudo como «commit PENDIENTE» | `:382` | hecho (sin commit) | No |

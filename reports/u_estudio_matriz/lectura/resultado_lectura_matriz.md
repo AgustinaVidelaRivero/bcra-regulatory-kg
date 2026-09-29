@@ -6,6 +6,15 @@ corrección posterior a la tanda 0: la matriz congelada frente al uso del
 extractor», fila B6.0 fase 2a de `docs/plan_tesis.md`). Escrito el 29/09/2026.
 Este documento **no decide la enmienda**: informa el resultado del criterio.
 
+## Lectura asistida: desvío declarado (29/09/2026)
+
+Declaración de la autora del 29/09/2026: la lectura de las 105 relaciones la
+hizo una instancia de modelo y la autora la revisó. El protocolo de lectura y el
+umbral los fijó la autora antes de abrir la muestra, y eso no cambia. Los
+veredictos y las notas por fila de `bb90861` son de la instancia, revisados por
+la autora. Modelo y versión de la instancia: a confirmar por la autora. Todo lo
+que sigue se lee como resultado de una lectura asistida.
+
 ## Fuentes y verificación de las copias leídas
 
 | Archivo | Commit | sha256 | Filas |
@@ -52,13 +61,13 @@ Referencia del umbral (mínimo k con piso de Wilson ≥ 0,75): n 30 → 28 (piso
 
 **No decidible (excluida y reportada):**
 
-| Id | Par | Chunk | Nota de la autora (textual) |
+| Id | Par | Chunk | Nota de la lectura (textual) |
 |---|---|---|---|
 | C10 | → Operacion | `ext::3.17.3.1` | El destino es un concepto que se resta del tope de certificaciones, y su etiqueta («Registro de beneficios cedidos...») apunta al registro del primer parrafo, que es incondicional, mientras su descripcion apunta al monto neteado del 3.17.3.1, que si queda dentro del supuesto «en el caso de que el cliente sea un beneficiario directo»: el material no determina cual de las dos relaciones se afirma. |
 
 **Incorrectas de los dos pares del criterio:**
 
-| Id | Par | Chunk | Nota de la autora (textual) |
+| Id | Par | Chunk | Nota de la lectura (textual) |
 |---|---|---|---|
 | M02 | → Operacion | `cap::8.4.1.13` | El punto define un concepto deducible («Diferencias por insuficiencia en el calculo de las previsiones») y el «con efecto al cierre del mes siguiente» fija cuando rige esa DEDUCCION, no condiciona el calculo de previsiones, que se rige por otras normas; ninguno de los dos nodos captura el concepto deducible y el origen ya esta contenido en la descripcion del destino. |
 | C09 | → Operacion | `ext::3.15.2.2` | El punto enuncia el 3.15.2.2 como condicion del ACCESO de la entidad al mercado de cambios, no de la emision de la garantia: origen y destino son la misma oracion partida en dos (el origen es un fragmento del destino) y lo efectivamente condicionado no aparece como nodo. |
@@ -91,11 +100,11 @@ porcentaje).
 Total de la lectura: 105 filas, 92 correctas, 12 incorrectas, 1 no decidible.
 
 **Observación de la mesa, informativa:** cinco de las doce incorrectas son
-aristas entre dos nodos con la misma descripción, que la nota de la autora
+aristas entre dos nodos con la misma descripción, que la nota de la lectura
 describe como una arista del punto «consigo misma»: C22 y M56–M59. No es parte
 del criterio.
-Una sexta fila también tiene origen y destino con la misma descripción y está
-leída como **correcta**: M50 (Excepcion `exceptua_obligacion` → Operacion,
+Una sexta fila también tiene origen y destino con la misma descripción y la
+lectura asistida la marca como **correcta**: M50 (Excepcion `exceptua_obligacion` → Operacion,
 `ext::8.5.17.25`, con etiquetas distintas). Una regla que retirara estas aristas
 sin revisión habría retirado una correcta en esta muestra (agregado el
 29/09/2026).
@@ -131,6 +140,10 @@ incorrectas `E1-prompt` de la observación (12) (`BKL-0032`, `BKL-0033`,
 `BKL-0035`, `BKL-0036`) y la §3.2 del laudo de r2, que prohíbe cambiar el
 prefijo de E1 para preservar la caché. La incorrecta de capa `catálogo`
 (`BKL-0034`) cae en el mismo prefijo.
+
+**Pendiente para la reunión con los mentores:** si esta evidencia, que es una
+lectura asistida revisada por la autora, alcanza para la enmienda de la matriz,
+o si piden una validación adicional, por ejemplo de alguien del dominio.
 
 ## Reproducción
 

@@ -39,7 +39,7 @@ Cada entrada es un objeto JSON (una línea del jsonl). Esquema:
 {
   "id": "BKL-0001",
   "fuente": "vara | escalon1_fallas | triage_extraccion | verificador | app_feedback | auditoria_ensamblado",
-  "diagnostico": "adjudicado_humano | verificador_validado | verificador_exploratorio | sin_diagnostico",
+  "diagnostico": "adjudicado_humano | verificador_validado | verificador_exploratorio | sin_diagnostico | lectura_asistida",
   "especie": "amputacion | provenance_desplazada | fabricacion | quimera | descenso_sujeto | ausencia | alcanzabilidad | estrechamiento_sujeto | sujeto_termino_ajeno | clase_forzada | contenido_sin_subespecie | duplicacion | hub_contaminado | cascara",
   "grafo": "grafo_v2",
   "nodos_objetivo": ["Restriccion_..."],
@@ -78,6 +78,10 @@ Descripción por campo:
     calibración.
   - `sin_diagnostico`: síntoma registrado sin causa atribuida (p. ej. un 👎 de la app
     que aún no pasó por el circuito de intake).
+
+  **Valor agregado por la enmienda 2026-09-29:** `lectura_asistida` — lectura hecha
+  por una instancia de modelo y revisada por la autora; se declara el modelo y la
+  versión. No tiene lugar asignado en la jerarquía de arriba.
 
   **Regla de frontera del verificador:** el verificador es `validado` solo sobre el
   esquema en que fue calibrado — hoy, run_3 (calibración de la Fase 2.5 y varas de los
@@ -298,6 +302,11 @@ calibración del detector, no defectos del grafo.
   anexo de contexto por grafo; una entrada `resuelta_por_<grafo>` sigue en su
   estado formal hasta que su verificación declarada se corra y la lleve a
   `verificado` (o la adjudicadora la cierre).
+- **Evento `correccion_diagnostico` (enmienda 2026-09-29):** evento de solo agregado
+  que corrige el `diagnostico` de una entrada; lleva `diagnostico_anterior`,
+  `diagnostico`, `nota` y `evidencia`: `{"evento": "correccion_diagnostico", "id":
+  "BKL-NNNN", "diagnostico_anterior": "...", "diagnostico": "...", "nota": "...",
+  "evidencia": [...], "ts": "..."}`.
 - **Política de aplicación (laudada, 2026-07-31):** las correcciones se aplican
   **in-place sobre el grafo vigente** (hoy
   `data/experiment/grafo_v2/reensamblado_v3/kg.json`), **un commit por

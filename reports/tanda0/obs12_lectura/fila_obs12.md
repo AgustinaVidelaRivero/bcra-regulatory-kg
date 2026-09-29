@@ -12,7 +12,8 @@ y la de no decidibles. Escrita el 29/09/2026 desde los artefactos sellados.
   tanda 0 sola: `data/experiment/reextraccion_v2/corpus_tanda0/ens_cinco/r1/kg.json`
   (sha256 `4097d4fd…`). Universo n = 3.345 (3.983 aristas − 521 `referencia`
   − 117 de esqueleto), k = 30, semilla 20260927.
-- Veredictos de la autora: `reports/tanda0/obs12_lectura/veredictos_obs12.csv`
+- Veredictos de la lectura asistida (instancia de modelo, revisada por la autora; ver
+  «Desvío declarado»): `reports/tanda0/obs12_lectura/veredictos_obs12.csv`
   (sha256 `c11ebeab…`), sellados en `f51bb1f`, antes de este reporte.
 - El sha anotado en `sha256_muestra_anotada.txt` es `247beeac…`, igual al de
   `git show e6a3169:reports/tanda0/obs12_sorteo/muestra_obs12.md | shasum -a 256`
@@ -25,15 +26,32 @@ y la de no decidibles. Escrita el 29/09/2026 desde los artefactos sellados.
 
 | Observación | Predicción | Observado | Veredicto |
 |---|---|---|---|
-| (12) Aristas de extracción correctas contra el texto (A4.4), ensamblado de la tanda 0 sola | SIN LÍNEA DE BASE | **25 correctas de 30**; no decidibles: 0 (se cuentan aparte y no salen del denominador); intervalo de Wilson al 95 % sobre 25 / 30: **0,664–0,927**; 5 incorrectas: 4 `E1-prompt` y 1 `catálogo` | Sin veredicto: sin umbral ni banda (decisión 6) |
+| (12) Aristas de extracción correctas contra el texto (A4.4), ensamblado de la tanda 0 sola | SIN LÍNEA DE BASE | **Lectura asistida** (instancia de modelo, revisada por la autora; desvío de la enmienda §2.1): **25 correctas de 30**; no decidibles: 0 (se cuentan aparte y no salen del denominador); intervalo de Wilson al 95 % sobre 25 / 30: **0,664–0,927**; 5 incorrectas: 4 `E1-prompt` y 1 `catálogo` | Sin veredicto: sin umbral ni banda (decisión 6) |
 
 Desglose por relación, informativo (fracciones crudas sobre n chico): `establecida_en`
 18 de 21, `aplica_a` 5 de 7, `regula` 2 de 2. La muestra no contiene ninguna
 arista `condicion_de`.
 
+## Desvío declarado (29/09/2026)
+
+Declaración de la autora del 29/09/2026: la lectura de las 30 aristas la hizo
+una instancia de modelo y la autora la revisó. La enmienda `8e13be3`, §2.1,
+fijaba otra cosa: «**Quién lee y qué anota.** La autora, arista por arista, en
+el orden del sorteo» (`docs/enmienda_preregistro_tanda0_2026-09-27_observacion12.md:91`).
+Es un desvío de la enmienda. El resultado (25 de 30) se mantiene, rotulado como
+lectura asistida. Los veredictos, la `capa_pipeline` y las notas por arista son
+de la instancia, revisados por la autora. Modelo y versión de la instancia: a
+confirmar por la autora.
+
+Consecuencias que quedan sin corregir en esta pasada: las entradas `BKL-0032` a
+`BKL-0036` llevan esas notas como `causa` y nacieron con `diagnostico:
+adjudicado_humano`, y la fila de catálogo del §4 del laudo de r2 cita la «nota
+de la autora». El backlog es de solo agregado: su corrección sería un evento
+nuevo, a decisión de la autora.
+
 ## Incorrectas
 
-| Orden | Índice del sorteo | Origen | Relación | Destino | Chunk | capa_pipeline | Nota de la autora (textual) | Backlog |
+| Orden | Índice del sorteo | Origen | Relación | Destino | Chunk | capa_pipeline | Nota de la lectura (textual) | Backlog |
 |---|---|---|---|---|---|---|---|---|
 | 6 | 437 | `Excepcion_la_obligacion_no_aplicara_cuando_se_trate_de_modificaciones_en_el_numero_de_docu_bf163e` (Excepcion, «Constancias obligatorias — modificación número documento») | `establecida_en` | `TextoOrdenado_docvig_pdf` (TextoOrdenado) | `docvig::3.3::cierre` | `E1-prompt` | Inversion de polaridad: el texto dice que la entrega de las constancias NO es obligatoria EXCEPTO cuando se trate de modificaciones en el numero de documento, y la excepcion extraida afirma lo contrario, que la obligacion no aplica en ese caso. | `BKL-0032` |
 | 16 | 1438 | `Obligacion_la_informacion_referida_a_estos_documentos_sera_dada_de_baja_cuando_la_entidad_f_85d60d` (Obligacion, «Dar de baja información de documentos según presentación al cobro») | `aplica_a` | `Sujeto_banco` (Sujeto) | `ctacte::7.3.1.5` | `E1-prompt` | El punto obliga al banco a INFORMAR al BCRA; la baja de la informacion en la Central esta en voz pasiva («sera dada de baja cuando la entidad financiera interviniente haya informado») y no es acto del banco, por lo que la obligacion extraida no le aplica; duda con catalogo y se imputa la etapa mas temprana. | `BKL-0033` |
