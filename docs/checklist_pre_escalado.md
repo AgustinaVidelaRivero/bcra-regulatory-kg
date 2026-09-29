@@ -62,7 +62,7 @@ los mentores. La tanda 1 depende de tres condiciones:
 | P13 | La tanda 1 pasa por r1: mecánica a fijar en el mandato | `:746`; precedente, gate 1 de la tanda 0 (`47c9283`) | registrado | No |
 | P14 | Observaciones (10), (11) y (12) de la tanda 1 contra sus líneas de base | `:747`, `:748` | registrado | No |
 | P15 | Tanda 1: definir de antemano quién lee y adjudica (vigilancias, observaciones y muestras): modelo con muestra humana de control de tamaño suficiente y declarada, o experto del dominio | esta lista (29/09); antecedente, desvíos declarados en `:724`, `:727` y `:729` | registrado | Sí, con los mentores |
-| P16 | Cierre formal de 2b: segunda emisión del paso 8 (reporte de 2b), según la enmienda `a551c57` §2.2 | `:729` | registrado | No: la mesa puede prepararla; commit de la autora |
+| P16 | Cierre formal de 2b: segunda emisión del paso 8 (reporte de 2b), según la enmienda `a551c57` §2.2 | `:729`; `reports/tanda0/reporte_fase2b.md` | hecho el 29/09, sin commit: reporte de 2b preparado; 2b cierra con el commit de la autora | No: commit de la autora |
 
 ## 1. r2 sin prefijo
 
