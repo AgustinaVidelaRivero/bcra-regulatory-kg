@@ -1,0 +1,1522 @@
+{
+  "meta": {
+    "unidad": "ev2_corrida",
+    "label": "ev2_c3_dev_mem",
+    "grafo": "tanda0_ens_desarrollo",
+    "kg_path": "data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo/r1/kg.json",
+    "kg_sha256": "eab2fdd01dec4dad026d596a793919e666920fab127d7efb14b5b00857ae64ef",
+    "eje": "fidelidad",
+    "caso_id": "EV2F-021",
+    "sample_id": null,
+    "variante": null,
+    "estrato": null,
+    "pos_orden_global": 24,
+    "pos_orden_efectivo": 24,
+    "semilla_orden": "orden-ev2-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "timestamp_inicio": "2026-09-28T16:24:47",
+    "timestamp_fin": "2026-09-28T16:25:08",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "88026b6bffe6bf41",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 8
+    },
+    "fidelidad_sin_evaluar": true,
+    "tanda0": {
+      "unidad": "U-TANDA0-2A E5",
+      "celda": "C3",
+      "backend": "memoria",
+      "semilla_orden_real": "orden-ev2-r1",
+      "regla_orden": "comun_r1.casos_fidelidad_r1 (orden sellado de C1)",
+      "model_segun_api": [
+        "claude-haiku-4-5-20251001"
+      ],
+      "nota": "meta.semilla_orden y meta.unidad son campos heredados del runner base (runner_ev2); el orden real es semilla_orden_real/regla_orden",
+      "etapa": "base"
+    }
+  },
+  "pregunta": "Una entidad financiera planea un aumento de capital. ¿En qué forma deben efectuarse los aportes, qué excepciones se admiten y cómo se computan hasta su aprobación?",
+  "trace": {
+    "qid": "EV2F-021",
+    "question": "Una entidad financiera planea un aumento de capital. ¿En qué forma deben efectuarse los aportes, qué excepciones se admiten y cómo se computan hasta su aprobación?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "aumento de capital aportes",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"aumento de capital aportes\", \"total_con_match\": 4122, \"resultados\": [{\"id\": \"Operacion_aportes_de_capital_en_efectivo_c56c6c\", \"type\": \"Operacion\", \"label\": \"Aportes de capital en efectivo\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"los aportes deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos…\"}, {\"id\": \"Restriccion_el_monto_acumulado_de_las_repatriaciones_de_capital_del_no_residente_no_podra_ex_65b4ef\", \"type\": \"Restriccion\", \"label\": \"Límite repatriación capital — suma aportes 14.2.2\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"El monto acumulado de las repatriaciones de capital del no residente no podrá exceder la suma de los aportes contemplados en los incisos i) y ii) del punto 14.2…\"}, {\"id\": \"Obligacion_para_adoptar_la_decision_de_aportes_de_capital_la_asamblea_tuvo_a_su_disposicion_898ff9\", \"type\": \"Obligacion\", \"label\": \"Tener informe auditor externo especial para aportes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Para adoptar la decisión de aportes de capital, la Asamblea tuvo a su disposición el informe especial del auditor externo que se es… [+2340 chars]",
+        "output_chars": 3540
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "aportes capital excepciones",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"aportes capital excepciones\", \"total_con_match\": 406, \"resultados\": [{\"id\": \"Operacion_aportes_de_capital_en_efectivo_c56c6c\", \"type\": \"Operacion\", \"label\": \"Aportes de capital en efectivo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"los aportes deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos…\"}, {\"id\": \"Obligacion_los_aportes_se_deberan_registrar_a_su_valor_contable_capital_intereses_ajustes_d_c721ef\", \"type\": \"Obligacion\", \"label\": \"Registro valor contable conforme normas BCRA\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los aportes se deberán registrar a su valor contable –capital, intereses, ajustes, diferencias de cotización por moneda extranjera y, de corresponder, descuento…\"}, {\"id\": \"Operacion_autorizacion_aportes_capital_instrumentos_deuda_b38a10\", \"type\": \"Operacion\", \"label\": \"Autorización aportes capital instrumentos deuda\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Solicitud de autorización de aportes de capital con los instrumentos a que se refieren los puntos 8.6.1. a 8.6.3.\"}, {\"id\": \"Restriccion_el_monto_acumulado_de_las_repatriaciones… [+2396 chars]",
+        "output_chars": 3596
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_aportes_de_capital_en_efectivo_c56c6c"
+        },
+        "output_truncado": "{\"id\": \"Operacion_aportes_de_capital_en_efectivo_c56c6c\", \"type\": \"Operacion\", \"label\": \"Aportes de capital en efectivo\", \"properties\": {\"tipo\": \"aporte de capital\", \"descripcion\": \"los aportes deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos a planes de regularización y saneamiento\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.6\"}]}",
+        "output_chars": 479
+      },
+      {
+        "n": 4,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Definicion_aportes_de_capital_en_instrumentos_de_regulacion_monetaria_897f6e"
+        },
+        "output_truncado": "{\"id\": \"Definicion_aportes_de_capital_en_instrumentos_de_regulacion_monetaria_897f6e\", \"type\": \"Definicion\", \"label\": \"Aportes de capital en instrumentos de regulación monetaria\", \"properties\": {\"termino\": \"aportes de capital en instrumentos de regulación monetaria del BCRA\", \"descripcion\": \"Aportes de capital que pueden efectuarse, excepcionalmente con autorización previa de la SEFyC, en instrumentos de regulación monetaria del BCRA\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.6.2\"}]}",
+        "output_chars": 535
+      },
+      {
+        "n": 5,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "aportes capital computo integración aprobación",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"aportes capital computo integración aprobación\", \"total_con_match\": 457, \"resultados\": [{\"id\": \"Operacion_computo_diario_de_integracion_de_capital_7ab6a2\", \"type\": \"Operacion\", \"label\": \"Cómputo diario de integración de capital\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"A los fines del cumplimiento de lo establecido en el punto 1.1., la integración se determinará en forma diaria considerando: la RPC del último día del mes anter…\"}, {\"id\": \"Operacion_aportes_de_capital_en_efectivo_c56c6c\", \"type\": \"Operacion\", \"label\": \"Aportes de capital en efectivo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"los aportes deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos…\"}, {\"id\": \"Obligacion_integrar_el_capital_minimo_exigido_dentro_de_los_60_dias_corridos_de_su_otorgami_0fbd9b\", \"type\": \"Obligacion\", \"label\": \"Integración capital mínimo exigido\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"integrar el capital mínimo exigido dentro de los 60 días corridos de su otorgamiento\"}, {\"id\": \"Operacion_integracion_de_exigencia_basica_capital_e446e9\", \"type\": \"Operacion\", \"label… [+2375 chars]",
+        "output_chars": 3575
+      },
+      {
+        "n": 6,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_d8c339"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_d8c339\", \"type\": \"Obligacion\", \"label\": \"Deducción de RPC hasta aprobación de aportes\", \"properties\": {\"tipo\": \"otra\", \"descripcion\": \"Hasta tanto se le haya notificado la aprobación de los aportes y en la medida en que éstos hayan sido contabilizados, se deducirán del respectivo componente de la RPC de la entidad financiera\", \"plazo\": \"hasta notificación de aprobación\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.6\"}]}",
+        "output_chars": 567
+      },
+      {
+        "n": 7,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_aportes_de_capital_en_efectivo_c56c6c",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Operacion_aportes_de_capital_en_efectivo_c56c6c\", \"label\": \"Aportes de capital en efectivo\", \"n_salientes_total\": 1, \"n_entrantes_total\": 1, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.6\"}]}], \"salientes_truncado\": false}",
+        "output_chars": 416
+      },
+      {
+        "n": 8,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "aportes capital bienes inmuebles valores",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"aportes capital bienes inmuebles valores\", \"total_con_match\": 659, \"resultados\": [{\"id\": \"Operacion_aportes_de_capital_en_efectivo_c56c6c\", \"type\": \"Operacion\", \"label\": \"Aportes de capital en efectivo\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"los aportes deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos…\"}, {\"id\": \"Operacion_pago_importacion_bienes_capital_927a13\", \"type\": \"Operacion\", \"label\": \"Pago importación bienes capital\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Pago de importación de bienes de capital que se concreta en forma simultánea con la liquidación de fondos originados en un endeudamiento financiero o un aporte …\"}, {\"id\": \"Condicion_plazo_270_dias_bienes_de_capital_0d576e\", \"type\": \"Condicion\", \"label\": \"Plazo 270 días — bienes de capital\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"En el caso de pagos anticipados de bienes de capital, el plazo para demostrar el registro de ingreso aduanero será de 270 (doscientos setenta) días corridos a p…\"}, {\"id\": \"Restriccion_la_suma_de_los_pagos_anticipados_cursados_en_el_marco_de_este_punto_no_… [+2309 chars]",
+        "output_chars": 3509
+      },
+      {
+        "n": 9,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "aportes capital autorización SEFyC instrumentos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"aportes capital autorización SEFyC instrumentos\", \"total_con_match\": 537, \"resultados\": [{\"id\": \"Operacion_autorizacion_aportes_capital_instrumentos_deuda_b38a10\", \"type\": \"Operacion\", \"label\": \"Autorización aportes capital instrumentos deuda\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Solicitud de autorización de aportes de capital con los instrumentos a que se refieren los puntos 8.6.1. a 8.6.3.\"}, {\"id\": \"Obligacion_la_solicitud_de_autorizacion_de_aportes_de_capital_con_los_instrumentos_a_que_se_99999d\", \"type\": \"Obligacion\", \"label\": \"Acompañar copia acta Asamblea solicitud aportes capital\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"La solicitud de autorización de aportes de capital con los instrumentos a que se refieren los puntos 8.6.1. a 8.6.3. deberá acompañarse de copia del acta de Asa…\"}, {\"id\": \"Obligacion_cualquier_restitucion_de_capital_requerira_la_autorizacion_previa_de_la_sefyc_582660\", \"type\": \"Obligacion\", \"label\": \"Autorización previa SEFyC — restitución capital\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Cualquier restitución de capital requerirá la autorización previa de la SEFyC\"}, {\"id\": \"Potestad_autorizacion_previa_sefyc_para… [+2300 chars]",
+        "output_chars": 3500
+      },
+      {
+        "n": 10,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Excepcion_excepcionalmente_mediando_autorizacion_previa_de_la_sefyc_podran_admitirse_aport_f6d915"
+        },
+        "output_truncado": "{\"id\": \"Excepcion_excepcionalmente_mediando_autorizacion_previa_de_la_sefyc_podran_admitirse_aport_f6d915\", \"type\": \"Excepcion\", \"label\": \"Excepción — aportes en especie con autorización SEFyC\", \"properties\": {\"descripcion\": \"Excepcionalmente, mediando autorización previa de la SEFyC, podrán admitirse aportes en especie\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.6\"}]}",
+        "output_chars": 417
+      },
+      {
+        "n": 11,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_autorizacion_aportes_capital_instrumentos_deuda_b38a10"
+        },
+        "output_truncado": "{\"id\": \"Operacion_autorizacion_aportes_capital_instrumentos_deuda_b38a10\", \"type\": \"Operacion\", \"label\": \"Autorización aportes capital instrumentos deuda\", \"properties\": {\"tipo\": \"Autorización de aportes de capital\", \"descripcion\": \"Solicitud de autorización de aportes de capital con los instrumentos a que se refieren los puntos 8.6.1. a 8.6.3.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.7\"}]}",
+        "output_chars": 442
+      },
+      {
+        "n": 12,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Excepcion_excepcionalmente_mediando_autorizacion_previa_de_la_sefyc_podran_admitirse_aport_f6d915",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Excepcion_excepcionalmente_mediando_autorizacion_previa_de_la_sefyc_podran_admitirse_aport_f6d915\", \"label\": \"Excepción — aportes en especie con autorización SEFyC\", \"n_salientes_total\": 3, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"aplica_a\", \"vecino_id\": \"Sujeto_rol_alcance_capmin\", \"vecino_label\": \"Entidades alcanzadas (Capitales Mínimos)\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.6\"}]}, {\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.6\"}]}, {\"relation\": \"exceptua\", \"vecino_id\": \"Restriccion_los_aportes_no_podran_ser_efectuados_en_especie_deben_ser_efectuados_en_efectivo_f83fae\", \"vecino_label\": \"Prohibición de aportes en especie (regla general)\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.6\"}]}], \"salientes_truncado\": false}",
+        "output_chars": 1014
+      },
+      {
+        "n": 13,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Restriccion_los_aportes_no_podran_ser_efectuados_en_especie_deben_ser_efectuados_en_efectivo_f83fae"
+        },
+        "output_truncado": "{\"id\": \"Restriccion_los_aportes_no_podran_ser_efectuados_en_especie_deben_ser_efectuados_en_efectivo_f83fae\", \"type\": \"Restriccion\", \"label\": \"Prohibición de aportes en especie (regla general)\", \"properties\": {\"tipo\": \"prohibicion\", \"descripcion\": \"los aportes no podrán ser efectuados en especie; deben ser efectuados en efectivo a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos a planes de regularización y saneamiento\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.6\"}]}",
+        "output_chars": 582
+      },
+      {
+        "n": 14,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_d8c339",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_d8c339\", \"label\": \"Deducción de RPC hasta aprobación de aportes\", \"n_salientes_total\": 2, \"n_entrantes_total\": 4, \"salientes\": [{\"relation\": \"aplica_a\", \"vecino_id\": \"Sujeto_rol_alcance_capmin\", \"vecino_label\": \"Entidades alcanzadas (Capitales Mínimos)\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.6\"}]}, {\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 8.6\"}]}], \"salientes_truncado\": false}",
+        "output_chars": 702
+      },
+      {
+        "n": 15,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "aportes contabilizados RPC deducción componente",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"aportes contabilizados RPC deducción componente\", \"total_con_match\": 129, \"resultados\": [{\"id\": \"Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_d8c339\", \"type\": \"Obligacion\", \"label\": \"Deducción de RPC hasta aprobación de aportes\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Hasta tanto se le haya notificado la aprobación de los aportes y en la medida en que éstos hayan sido contabilizados, se deducirán del respectivo componente de …\"}, {\"id\": \"Obligacion_cuando_los_aportes_contabilizados_provengan_de_la_capitalizacion_de_deuda_subord_b69352\", \"type\": \"Obligacion\", \"label\": \"Mantener tratamiento deuda subordinada\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cuando los aportes contabilizados provengan de la capitalización de deuda subordinada o de instrumentos representativos de deuda que puedan ser considerados –to…\"}, {\"id\": \"Operacion_deduccion_de_importes_de_activos_de_rpc_5f0068\", \"type\": \"Operacion\", \"label\": \"Deducción de importes de activos de RPC\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Deducción de importes de activos u otros conceptos de la responsabilidad patrimonial computable (RPC) ante requer… [+2239 chars]",
+        "output_chars": 3439
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1483,
+        "output_tokens": 170,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.57
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 250,
+        "cache_read": 0,
+        "cache_write": 4204,
+        "latency_s": 2.716
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 225,
+        "cache_read": 4204,
+        "cache_write": 1910,
+        "latency_s": 2.507
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 175,
+        "cache_read": 6114,
+        "cache_write": 656,
+        "latency_s": 1.89
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 287,
+        "cache_read": 6770,
+        "cache_write": 2684,
+        "latency_s": 2.591
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 232,
+        "cache_read": 9454,
+        "cache_write": 1084,
+        "latency_s": 2.413
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 125,
+        "cache_read": 10538,
+        "cache_write": 770,
+        "latency_s": 1.677
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 3,
+        "output_tokens": 445,
+        "cache_read": 11308,
+        "cache_write": 1374,
+        "latency_s": 5.295
+      }
+    ],
+    "final_json": {
+      "respuesta": "Según la regulación del BCRA sobre capitales mínimos, los aportes de capital deben efectuarse de la siguiente forma:\n\n**Forma de efectuar los aportes:**\nLos aportes deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos a planes de regularización y saneamiento.\n\n**Excepciones admitidas:**\n1. Aportes en especie: Excepcionalmente, mediando autorización previa de la SEFyC, podrán admitirse aportes en especie.\n2. Aportes en instrumentos de regulación monetaria: Pueden efectuarse, excepcionalmente con autorización previa de la SEFyC, en instrumentos de regulación monetaria del BCRA.\n\n**Cómputo hasta su aprobación:**\nHasta tanto se le haya notificado la aprobación de los aportes y en la medida en que éstos hayan sido contabilizados, se deducirán del respectivo componente de la RPC (Responsabilidad Patrimonial Computable) de la entidad financiera. Esto significa que los aportes se computan deduciendo su importe de la RPC hasta que se notifique formalmente su aprobación.",
+      "citas": [
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 8.6"
+        },
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 8.6.2"
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "```json\n{\n  \"respuesta\": \"Según la regulación del BCRA sobre capitales mínimos, los aportes de capital deben efectuarse de la siguiente forma:\\n\\n**Forma de efectuar los aportes:**\\nLos aportes deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos a planes de regularización y saneamiento.\\n\\n**Excepciones admitidas:**\\n1. Aportes en especie: Excepcionalmente, mediando autorización previa de la SEFyC, podrán admitirse aportes en especie.\\n2. Aportes en instrumentos de regulación monetaria: Pueden efectuarse, excepcionalmente con autorización previa de la SEFyC, en instrumentos de regulación monetaria del BCRA.\\n\\n**Cómputo hasta su aprobación:**\\nHasta tanto se le haya notificado la aprobación de los aportes y en la medida en que éstos hayan sido contabilizados, se deducirán del respectivo componente de la RPC (Responsabilidad Patrimonial Computable) de la entidad financiera. Esto significa que los aportes se computan deduciendo su importe de la RPC hasta que se notifique formalmente su aprobación.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 8.6\"\n    },\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 8.6.2\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 15,
+    "hit_tool_limit": true,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 8.6"
+      },
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 8.6.2"
+      },
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 8.7"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 1528,
+    "tokens_out": 1909,
+    "cache_read": 48388,
+    "cache_write": 12682,
+    "cost_usd": 0.031764,
+    "latency_s": 20.708,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "aumento de capital aportes",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "aumento de capital aportes",
+        "total_con_match": 4122,
+        "resultados": [
+          {
+            "id": "Operacion_aportes_de_capital_en_efectivo_c56c6c",
+            "type": "Operacion",
+            "label": "Aportes de capital en efectivo",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "los aportes deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos…"
+          },
+          {
+            "id": "Restriccion_el_monto_acumulado_de_las_repatriaciones_de_capital_del_no_residente_no_podra_ex_65b4ef",
+            "type": "Restriccion",
+            "label": "Límite repatriación capital — suma aportes 14.2.2",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El monto acumulado de las repatriaciones de capital del no residente no podrá exceder la suma de los aportes contemplados en los incisos i) y ii) del punto 14.2…"
+          },
+          {
+            "id": "Obligacion_para_adoptar_la_decision_de_aportes_de_capital_la_asamblea_tuvo_a_su_disposicion_898ff9",
+            "type": "Obligacion",
+            "label": "Tener informe auditor externo especial para aportes",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Para adoptar la decisión de aportes de capital, la Asamblea tuvo a su disposición el informe especial del auditor externo que se establece para los casos en que…"
+          },
+          {
+            "id": "Restriccion_el_monto_acumulado_de_las_repatriaciones_de_capital_del_no_residente_no_debe_ser_625a05",
+            "type": "Restriccion",
+            "label": "Límite repatriación — no exceda aportes computables",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "El monto acumulado de las repatriaciones de capital del no residente no debe ser mayor que la suma de sus aportes de inversión directa en el VPU que pueden comp…"
+          },
+          {
+            "id": "Obligacion_la_solicitud_de_autorizacion_de_aportes_de_capital_con_los_instrumentos_a_que_se_99999d",
+            "type": "Obligacion",
+            "label": "Acompañar copia acta Asamblea solicitud aportes capital",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La solicitud de autorización de aportes de capital con los instrumentos a que se refieren los puntos 8.6.1. a 8.6.3. deberá acompañarse de copia del acta de Asa…"
+          },
+          {
+            "id": "Definicion_aportes_de_capital_en_instrumentos_de_regulacion_monetaria_897f6e",
+            "type": "Definicion",
+            "label": "Aportes de capital en instrumentos de regulación monetaria",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Aportes de capital que pueden efectuarse, excepcionalmente con autorización previa de la SEFyC, en instrumentos de regulación monetaria del BCRA"
+          },
+          {
+            "id": "Operacion_reposicion_de_capital_bc6dc6",
+            "type": "Operacion",
+            "label": "Reposición de capital",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "reposición del capital en caso de defecto de integración diaria"
+          },
+          {
+            "id": "Operacion_restitucion_de_capital_48a922",
+            "type": "Operacion",
+            "label": "Restitución de capital",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Acto de restitución de capital por parte de la entidad financiera"
+          },
+          {
+            "id": "Definicion_capital_adicional_de_nivel_1_58a6d3",
+            "type": "Definicion",
+            "label": "Capital Adicional de Nivel 1",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Concepto contable compuesto por instrumentos emitidos por la entidad que cumplen requisitos del punto 8.3.2, no incluidos en Capital Ordinario de Nivel 1, prima…"
+          },
+          {
+            "id": "Definicion_capital_ordinario_de_nivel_1_76b77b",
+            "type": "Definicion",
+            "label": "Capital Ordinario de Nivel 1",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Concepto contable compuesto por Patrimonio Neto contable, resultados de balances trimestrales y anuales, resultados del ejercicio en curso, resultados positivos…"
+          }
+        ]
+      },
+      "output_chars": 3540
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "aportes capital excepciones",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "aportes capital excepciones",
+        "total_con_match": 406,
+        "resultados": [
+          {
+            "id": "Operacion_aportes_de_capital_en_efectivo_c56c6c",
+            "type": "Operacion",
+            "label": "Aportes de capital en efectivo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "los aportes deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos…"
+          },
+          {
+            "id": "Obligacion_los_aportes_se_deberan_registrar_a_su_valor_contable_capital_intereses_ajustes_d_c721ef",
+            "type": "Obligacion",
+            "label": "Registro valor contable conforme normas BCRA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los aportes se deberán registrar a su valor contable –capital, intereses, ajustes, diferencias de cotización por moneda extranjera y, de corresponder, descuento…"
+          },
+          {
+            "id": "Operacion_autorizacion_aportes_capital_instrumentos_deuda_b38a10",
+            "type": "Operacion",
+            "label": "Autorización aportes capital instrumentos deuda",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Solicitud de autorización de aportes de capital con los instrumentos a que se refieren los puntos 8.6.1. a 8.6.3."
+          },
+          {
+            "id": "Restriccion_el_monto_acumulado_de_las_repatriaciones_de_capital_del_no_residente_no_podra_ex_65b4ef",
+            "type": "Restriccion",
+            "label": "Límite repatriación capital — suma aportes 14.2.2",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El monto acumulado de las repatriaciones de capital del no residente no podrá exceder la suma de los aportes contemplados en los incisos i) y ii) del punto 14.2…"
+          },
+          {
+            "id": "Obligacion_para_adoptar_la_decision_de_aportes_de_capital_la_asamblea_tuvo_a_su_disposicion_898ff9",
+            "type": "Obligacion",
+            "label": "Tener informe auditor externo especial para aportes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Para adoptar la decisión de aportes de capital, la Asamblea tuvo a su disposición el informe especial del auditor externo que se establece para los casos en que…"
+          },
+          {
+            "id": "Restriccion_el_monto_acumulado_de_las_repatriaciones_de_capital_del_no_residente_no_debe_ser_625a05",
+            "type": "Restriccion",
+            "label": "Límite repatriación — no exceda aportes computables",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El monto acumulado de las repatriaciones de capital del no residente no debe ser mayor que la suma de sus aportes de inversión directa en el VPU que pueden comp…"
+          },
+          {
+            "id": "Obligacion_la_solicitud_de_autorizacion_de_aportes_de_capital_con_los_instrumentos_a_que_se_99999d",
+            "type": "Obligacion",
+            "label": "Acompañar copia acta Asamblea solicitud aportes capital",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La solicitud de autorización de aportes de capital con los instrumentos a que se refieren los puntos 8.6.1. a 8.6.3. deberá acompañarse de copia del acta de Asa…"
+          },
+          {
+            "id": "Definicion_aportes_de_capital_en_instrumentos_de_regulacion_monetaria_897f6e",
+            "type": "Definicion",
+            "label": "Aportes de capital en instrumentos de regulación monetaria",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Aportes de capital que pueden efectuarse, excepcionalmente con autorización previa de la SEFyC, en instrumentos de regulación monetaria del BCRA"
+          },
+          {
+            "id": "Operacion_reposicion_de_capital_bc6dc6",
+            "type": "Operacion",
+            "label": "Reposición de capital",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "reposición del capital en caso de defecto de integración diaria"
+          },
+          {
+            "id": "Operacion_restitucion_de_capital_48a922",
+            "type": "Operacion",
+            "label": "Restitución de capital",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Acto de restitución de capital por parte de la entidad financiera"
+          }
+        ]
+      },
+      "output_chars": 3596
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_aportes_de_capital_en_efectivo_c56c6c"
+      },
+      "output": {
+        "id": "Operacion_aportes_de_capital_en_efectivo_c56c6c",
+        "type": "Operacion",
+        "label": "Aportes de capital en efectivo",
+        "properties": {
+          "tipo": "aporte de capital",
+          "descripcion": "los aportes deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos a planes de regularización y saneamiento"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 8.6"
+          }
+        ]
+      },
+      "output_chars": 479
+    },
+    {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Definicion_aportes_de_capital_en_instrumentos_de_regulacion_monetaria_897f6e"
+      },
+      "output": {
+        "id": "Definicion_aportes_de_capital_en_instrumentos_de_regulacion_monetaria_897f6e",
+        "type": "Definicion",
+        "label": "Aportes de capital en instrumentos de regulación monetaria",
+        "properties": {
+          "termino": "aportes de capital en instrumentos de regulación monetaria del BCRA",
+          "descripcion": "Aportes de capital que pueden efectuarse, excepcionalmente con autorización previa de la SEFyC, en instrumentos de regulación monetaria del BCRA"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 8.6.2"
+          }
+        ]
+      },
+      "output_chars": 535
+    },
+    {
+      "n": 5,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "aportes capital computo integración aprobación",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "aportes capital computo integración aprobación",
+        "total_con_match": 457,
+        "resultados": [
+          {
+            "id": "Operacion_computo_diario_de_integracion_de_capital_7ab6a2",
+            "type": "Operacion",
+            "label": "Cómputo diario de integración de capital",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "A los fines del cumplimiento de lo establecido en el punto 1.1., la integración se determinará en forma diaria considerando: la RPC del último día del mes anter…"
+          },
+          {
+            "id": "Operacion_aportes_de_capital_en_efectivo_c56c6c",
+            "type": "Operacion",
+            "label": "Aportes de capital en efectivo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "los aportes deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos…"
+          },
+          {
+            "id": "Obligacion_integrar_el_capital_minimo_exigido_dentro_de_los_60_dias_corridos_de_su_otorgami_0fbd9b",
+            "type": "Obligacion",
+            "label": "Integración capital mínimo exigido",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "integrar el capital mínimo exigido dentro de los 60 días corridos de su otorgamiento"
+          },
+          {
+            "id": "Operacion_integracion_de_exigencia_basica_capital_e446e9",
+            "type": "Operacion",
+            "label": "Integración de exigencia básica capital",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Integración de la exigencia básica de capital conforme a categoría y según Plan de negocios, proyecciones e informe de autoevaluación del capital."
+          },
+          {
+            "id": "Operacion_determinacion_diaria_integracion_capital_74f137",
+            "type": "Operacion",
+            "label": "Determinación diaria integración capital",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La integración se determinará en forma diaria considerando el cumplimiento de lo establecido en el punto 1.1."
+          },
+          {
+            "id": "Restriccion_los_endeudamientos_financieros_y_o_los_aportes_de_inversion_extranjera_directa_n_05c365",
+            "type": "Restriccion",
+            "label": "No cómputo — otros mecanismos cambiarios",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los endeudamientos financieros y/o los aportes de inversión extranjera directa no podrán ser computados a los efectos de otros mecanismos considerados en la nor…"
+          },
+          {
+            "id": "Obligacion_la_exigencia_de_capital_minimo_que_las_entidades_financieras_deberan_tener_integ_91a72a",
+            "type": "Obligacion",
+            "label": "Integración de capital mínimo equivalente",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La exigencia de capital mínimo que las entidades financieras deberán tener integrada será equivalente al mayor valor que resulte de la comparación entre la exig…"
+          },
+          {
+            "id": "Condicion_no_integracion_capital_minimo_dentro_60_dias_e60a96",
+            "type": "Condicion",
+            "label": "No integración capital mínimo dentro 60 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "si no se integra el capital mínimo exigido dentro de los 60 días corridos de su otorgamiento"
+          },
+          {
+            "id": "Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_d8c339",
+            "type": "Obligacion",
+            "label": "Deducción de RPC hasta aprobación de aportes",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Hasta tanto se le haya notificado la aprobación de los aportes y en la medida en que éstos hayan sido contabilizados, se deducirán del respectivo componente de …"
+          },
+          {
+            "id": "Obligacion_las_entidades_deberan_cumplir_con_lo_establecido_en_el_punto_1_1_para_la_integra_3fd3d5",
+            "type": "Obligacion",
+            "label": "Cumplimiento punto 1.1 — integración capital",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las entidades deberán cumplir con lo establecido en el punto 1.1. para la integración de capital"
+          }
+        ]
+      },
+      "output_chars": 3575
+    },
+    {
+      "n": 6,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_d8c339"
+      },
+      "output": {
+        "id": "Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_d8c339",
+        "type": "Obligacion",
+        "label": "Deducción de RPC hasta aprobación de aportes",
+        "properties": {
+          "tipo": "otra",
+          "descripcion": "Hasta tanto se le haya notificado la aprobación de los aportes y en la medida en que éstos hayan sido contabilizados, se deducirán del respectivo componente de la RPC de la entidad financiera",
+          "plazo": "hasta notificación de aprobación"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 8.6"
+          }
+        ]
+      },
+      "output_chars": 567
+    },
+    {
+      "n": 7,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_aportes_de_capital_en_efectivo_c56c6c",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Operacion_aportes_de_capital_en_efectivo_c56c6c",
+        "label": "Aportes de capital en efectivo",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 1,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_capitales_minimos_actual_pdf",
+            "vecino_label": "Capitales Mínimos",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 8.6"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false
+      },
+      "output_chars": 416
+    },
+    {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "aportes capital bienes inmuebles valores",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "aportes capital bienes inmuebles valores",
+        "total_con_match": 659,
+        "resultados": [
+          {
+            "id": "Operacion_aportes_de_capital_en_efectivo_c56c6c",
+            "type": "Operacion",
+            "label": "Aportes de capital en efectivo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "los aportes deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos…"
+          },
+          {
+            "id": "Operacion_pago_importacion_bienes_capital_927a13",
+            "type": "Operacion",
+            "label": "Pago importación bienes capital",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Pago de importación de bienes de capital que se concreta en forma simultánea con la liquidación de fondos originados en un endeudamiento financiero o un aporte …"
+          },
+          {
+            "id": "Condicion_plazo_270_dias_bienes_de_capital_0d576e",
+            "type": "Condicion",
+            "label": "Plazo 270 días — bienes de capital",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "En el caso de pagos anticipados de bienes de capital, el plazo para demostrar el registro de ingreso aduanero será de 270 (doscientos setenta) días corridos a p…"
+          },
+          {
+            "id": "Restriccion_la_suma_de_los_pagos_anticipados_cursados_en_el_marco_de_este_punto_no_supera_el_306e82",
+            "type": "Restriccion",
+            "label": "Límite anticipados 30% FOB bienes capital",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La suma de los pagos anticipados cursados en el marco de este punto no supera el 30% (treinta por ciento) del valor FOB de los bienes de capital a importar"
+          },
+          {
+            "id": "Operacion_pagos_de_importaciones_de_bienes_de_capital_991919",
+            "type": "Operacion",
+            "label": "Pagos de importaciones de bienes de capital",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Pagos de importaciones de bienes de capital con registro de ingreso aduanero pendiente"
+          },
+          {
+            "id": "Obligacion_los_aportes_se_deberan_registrar_a_su_valor_contable_capital_intereses_ajustes_d_c721ef",
+            "type": "Obligacion",
+            "label": "Registro valor contable conforme normas BCRA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los aportes se deberán registrar a su valor contable –capital, intereses, ajustes, diferencias de cotización por moneda extranjera y, de corresponder, descuento…"
+          },
+          {
+            "id": "Operacion_computo_de_exigencia_capital_titulos_valores_29ac8e",
+            "type": "Operacion",
+            "label": "Cómputo de exigencia capital títulos valores",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cómputo de la exigencia de capital por títulos valores respecto de los instrumentos imputados a la cartera de negociación"
+          },
+          {
+            "id": "Restriccion_las_posiciones_arancelarias_de_los_bienes_de_capital_a_importar_no_correspondan__c8a16f",
+            "type": "Restriccion",
+            "label": "Exclusión posiciones arancelarias punto 12.1",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las posiciones arancelarias de los bienes de capital a importar no correspondan a aquellas comprendidas en el punto 12.1"
+          },
+          {
+            "id": "Condicion_aplicacion_directa_importacion_bienes_capital_563e01",
+            "type": "Condicion",
+            "label": "Aplicación directa importación bienes capital",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "fondos aplicados en forma directa a la importación de bienes de capital"
+          },
+          {
+            "id": "Operacion_pago_de_capital_e_intereses_de_titulos_valores_887b14",
+            "type": "Operacion",
+            "label": "Pago de capital e intereses de títulos valores",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Pago de capital e intereses de emisiones de títulos valores con acceso al mercado de cambios en función de lo dispuesto en los puntos 3.6.1.3. a 3.6.1.5."
+          }
+        ]
+      },
+      "output_chars": 3509
+    },
+    {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "aportes capital autorización SEFyC instrumentos",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "aportes capital autorización SEFyC instrumentos",
+        "total_con_match": 537,
+        "resultados": [
+          {
+            "id": "Operacion_autorizacion_aportes_capital_instrumentos_deuda_b38a10",
+            "type": "Operacion",
+            "label": "Autorización aportes capital instrumentos deuda",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Solicitud de autorización de aportes de capital con los instrumentos a que se refieren los puntos 8.6.1. a 8.6.3."
+          },
+          {
+            "id": "Obligacion_la_solicitud_de_autorizacion_de_aportes_de_capital_con_los_instrumentos_a_que_se_99999d",
+            "type": "Obligacion",
+            "label": "Acompañar copia acta Asamblea solicitud aportes capital",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "La solicitud de autorización de aportes de capital con los instrumentos a que se refieren los puntos 8.6.1. a 8.6.3. deberá acompañarse de copia del acta de Asa…"
+          },
+          {
+            "id": "Obligacion_cualquier_restitucion_de_capital_requerira_la_autorizacion_previa_de_la_sefyc_582660",
+            "type": "Obligacion",
+            "label": "Autorización previa SEFyC — restitución capital",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Cualquier restitución de capital requerirá la autorización previa de la SEFyC"
+          },
+          {
+            "id": "Potestad_autorizacion_previa_sefyc_para_aportes_en_especie_905e95",
+            "type": "Potestad",
+            "label": "Autorización previa SEFyC para aportes en especie",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "la SEFyC podrá autorizar previamente la admisión de aportes en especie"
+          },
+          {
+            "id": "Excepcion_excepcionalmente_mediando_autorizacion_previa_de_la_sefyc_podran_admitirse_aport_f6d915",
+            "type": "Excepcion",
+            "label": "Excepción — aportes en especie con autorización SEFyC",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Excepcionalmente, mediando autorización previa de la SEFyC, podrán admitirse aportes en especie"
+          },
+          {
+            "id": "Definicion_aportes_de_capital_en_instrumentos_de_regulacion_monetaria_897f6e",
+            "type": "Definicion",
+            "label": "Aportes de capital en instrumentos de regulación monetaria",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Aportes de capital que pueden efectuarse, excepcionalmente con autorización previa de la SEFyC, en instrumentos de regulación monetaria del BCRA"
+          },
+          {
+            "id": "Condicion_autorizacion_previa_de_sefyc_39c4c8",
+            "type": "Condicion",
+            "label": "Autorización previa de SEFyC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "cuente con autorización de la SEFyC en forma previa al ejercicio de la opción de compra"
+          },
+          {
+            "id": "Operacion_aportes_de_capital_en_efectivo_c56c6c",
+            "type": "Operacion",
+            "label": "Aportes de capital en efectivo",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "los aportes deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos…"
+          },
+          {
+            "id": "Restriccion_las_perdidas_deben_divulgarse_antes_y_despues_de_exclusiones_no_relevantes_para__906e0e",
+            "type": "Restriccion",
+            "label": "Exclusiones con autorización SEFYC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las pérdidas deben divulgarse antes y después de exclusiones no relevantes para su perfil de riesgo –estas últimas, previa autorización de la SEFYC–"
+          },
+          {
+            "id": "Restriccion_no_se_admitiran_los_aportes_de_esta_clase_de_instrumentos_cuando_no_se_verifique_3626ee",
+            "type": "Restriccion",
+            "label": "Prohibición aportes sin condiciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No se admitirán los aportes de esta clase de instrumentos cuando no se verifique el cumplimiento de las condiciones mencionadas precedentemente."
+          }
+        ]
+      },
+      "output_chars": 3500
+    },
+    {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Excepcion_excepcionalmente_mediando_autorizacion_previa_de_la_sefyc_podran_admitirse_aport_f6d915"
+      },
+      "output": {
+        "id": "Excepcion_excepcionalmente_mediando_autorizacion_previa_de_la_sefyc_podran_admitirse_aport_f6d915",
+        "type": "Excepcion",
+        "label": "Excepción — aportes en especie con autorización SEFyC",
+        "properties": {
+          "descripcion": "Excepcionalmente, mediando autorización previa de la SEFyC, podrán admitirse aportes en especie"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 8.6"
+          }
+        ]
+      },
+      "output_chars": 417
+    },
+    {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_autorizacion_aportes_capital_instrumentos_deuda_b38a10"
+      },
+      "output": {
+        "id": "Operacion_autorizacion_aportes_capital_instrumentos_deuda_b38a10",
+        "type": "Operacion",
+        "label": "Autorización aportes capital instrumentos deuda",
+        "properties": {
+          "tipo": "Autorización de aportes de capital",
+          "descripcion": "Solicitud de autorización de aportes de capital con los instrumentos a que se refieren los puntos 8.6.1. a 8.6.3."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 8.7"
+          }
+        ]
+      },
+      "output_chars": 442
+    },
+    {
+      "n": 12,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Excepcion_excepcionalmente_mediando_autorizacion_previa_de_la_sefyc_podran_admitirse_aport_f6d915",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Excepcion_excepcionalmente_mediando_autorizacion_previa_de_la_sefyc_podran_admitirse_aport_f6d915",
+        "label": "Excepción — aportes en especie con autorización SEFyC",
+        "n_salientes_total": 3,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "aplica_a",
+            "vecino_id": "Sujeto_rol_alcance_capmin",
+            "vecino_label": "Entidades alcanzadas (Capitales Mínimos)",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 8.6"
+              }
+            ]
+          },
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_capitales_minimos_actual_pdf",
+            "vecino_label": "Capitales Mínimos",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 8.6"
+              }
+            ]
+          },
+          {
+            "relation": "exceptua",
+            "vecino_id": "Restriccion_los_aportes_no_podran_ser_efectuados_en_especie_deben_ser_efectuados_en_efectivo_f83fae",
+            "vecino_label": "Prohibición de aportes en especie (regla general)",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 8.6"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false
+      },
+      "output_chars": 1014
+    },
+    {
+      "n": 13,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Restriccion_los_aportes_no_podran_ser_efectuados_en_especie_deben_ser_efectuados_en_efectivo_f83fae"
+      },
+      "output": {
+        "id": "Restriccion_los_aportes_no_podran_ser_efectuados_en_especie_deben_ser_efectuados_en_efectivo_f83fae",
+        "type": "Restriccion",
+        "label": "Prohibición de aportes en especie (regla general)",
+        "properties": {
+          "tipo": "prohibicion",
+          "descripcion": "los aportes no podrán ser efectuados en especie; deben ser efectuados en efectivo a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos a planes de regularización y saneamiento"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 8.6"
+          }
+        ]
+      },
+      "output_chars": 582
+    },
+    {
+      "n": 14,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_d8c339",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_d8c339",
+        "label": "Deducción de RPC hasta aprobación de aportes",
+        "n_salientes_total": 2,
+        "n_entrantes_total": 4,
+        "salientes": [
+          {
+            "relation": "aplica_a",
+            "vecino_id": "Sujeto_rol_alcance_capmin",
+            "vecino_label": "Entidades alcanzadas (Capitales Mínimos)",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 8.6"
+              }
+            ]
+          },
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_capitales_minimos_actual_pdf",
+            "vecino_label": "Capitales Mínimos",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 8.6"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false
+      },
+      "output_chars": 702
+    },
+    {
+      "n": 15,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "aportes contabilizados RPC deducción componente",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "aportes contabilizados RPC deducción componente",
+        "total_con_match": 129,
+        "resultados": [
+          {
+            "id": "Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_d8c339",
+            "type": "Obligacion",
+            "label": "Deducción de RPC hasta aprobación de aportes",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Hasta tanto se le haya notificado la aprobación de los aportes y en la medida en que éstos hayan sido contabilizados, se deducirán del respectivo componente de …"
+          },
+          {
+            "id": "Obligacion_cuando_los_aportes_contabilizados_provengan_de_la_capitalizacion_de_deuda_subord_b69352",
+            "type": "Obligacion",
+            "label": "Mantener tratamiento deuda subordinada",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando los aportes contabilizados provengan de la capitalización de deuda subordinada o de instrumentos representativos de deuda que puedan ser considerados –to…"
+          },
+          {
+            "id": "Operacion_deduccion_de_importes_de_activos_de_rpc_5f0068",
+            "type": "Operacion",
+            "label": "Deducción de importes de activos de RPC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Deducción de importes de activos u otros conceptos de la responsabilidad patrimonial computable (RPC) ante requerimiento de la SEFyC, cuando los registros conta…"
+          },
+          {
+            "id": "Obligacion_la_afectacion_de_la_rpc_por_aplicacion_de_lo_senalado_determinara_la_obligacion__4a226b",
+            "type": "Obligacion",
+            "label": "Verificación de encuadramiento normativo post-deducción",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "La afectación de la RPC por aplicación de lo señalado determinará la obligación de verificar el encuadramiento de las distintas normas que utilicen como base la…"
+          },
+          {
+            "id": "Definicion_rpc_importe_8_de_apr_d32321",
+            "type": "Definicion",
+            "label": "RPC: importe 8% de APR",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Importe resultante de multiplicar 8% por los APR (activos ponderados por riesgo)"
+          },
+          {
+            "id": "Definicion_fc_componente_financiero_c0b0c7",
+            "type": "Definicion",
+            "label": "FC — componente financiero",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Componente financiero, promediado sobre 3 períodos de 12 meses consecutivos reexpresados por inflación."
+          },
+          {
+            "id": "Definicion_fc_componente_financiero_c0b0c7__cap",
+            "type": "Definicion",
+            "label": "FC — Componente financiero",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Componente financiero. Se determinará por la siguiente expresión: VA (resultado neto de cartera de negociación) + VA (resultado neto de cartera de inversión)"
+          },
+          {
+            "id": "Definicion_rpc_sobre_base_consolidada_cf4890",
+            "type": "Definicion",
+            "label": "RPC sobre base consolidada",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Razón de Patrimonio Constitutivo determinada sobre la base consolidada, considerando el importe registrado en la partida específica en el rubro Previsiones del …"
+          },
+          {
+            "id": "Definicion_sc_componente_de_servicios_69ff56",
+            "type": "Definicion",
+            "label": "SC — componente de servicios",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Componente de servicios, promediado sobre 3 períodos de 12 meses consecutivos reexpresados por inflación."
+          },
+          {
+            "id": "Definicion_sc_componente_de_servicios_69ff56__cap",
+            "type": "Definicion",
+            "label": "SC — Componente de servicios",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Componente de servicios. Se determinará por la siguiente expresión: Máx. [otros ingresos por operaciones; otros egresos por operaciones] + Máx. [ingresos por ho…"
+          }
+        ]
+      },
+      "output_chars": 3439
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPH7jJnY1TLrQsaJjtB",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre aumentos de capital en entidades financieras y los requisitos para los aportes.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01VHRE8XUveLcTXFeBBxX748",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "aumento de capital aportes",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01D9T9jgMBFubB2MwR3XSUeJ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "aportes capital excepciones",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1483,
+          "output_tokens": 170,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPHEWazkmQdWCX1tK8B",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Encontré nodos relevantes. Voy a ver los detalles de los nodos clave sobre aportes de capital en efectivo y las excepciones.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01AD3oFYH4qoCrNnHuaYjz7g",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_aportes_de_capital_en_efectivo_c56c6c"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01AJ7h64wxmYodQ5PfghPTvb",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Definicion_aportes_de_capital_en_instrumentos_de_regulacion_monetaria_897f6e"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01CR9ZiUeJ2GCq65bb69GkQV",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "aportes capital computo integración aprobación",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 4204
+          },
+          "cache_creation_input_tokens": 4204,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 250,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPHSAaV4mvRZCf9fAtB",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Encontré un nodo muy relevante sobre cómputo de aportes hasta aprobación. Voy a ver ese nodo en detalle y también explorar las relaciones.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01TqffUQrhnVLUB9fWdCN6CC",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_d8c339"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01JgaUw8nLAsjdsTQd5xaeh1",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_aportes_de_capital_en_efectivo_c56c6c",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1910
+          },
+          "cache_creation_input_tokens": 1910,
+          "cache_read_input_tokens": 4204,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 225,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPHcwxrYgZfbyCoyGpa",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Ahora voy a buscar más información sobre otras formas de aportes y excepciones específicas.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01MRkLokg5iTmnkPQLgn3wcY",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "aportes capital bienes inmuebles valores",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01DZSd21MPFNydFS99B33juj",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "aportes capital autorización SEFyC instrumentos",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 656
+          },
+          "cache_creation_input_tokens": 656,
+          "cache_read_input_tokens": 6114,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 175,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPHm6byKjWTpCQwiNq4",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Encontré la excepción sobre aportes en especie. Voy a ver ese nodo en detalle.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Co5eiWwWMUrxLfsifa6dHe",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Excepcion_excepcionalmente_mediando_autorizacion_previa_de_la_sefyc_podran_admitirse_aport_f6d915"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_011c11FJ6GtjKgAqaSJCKgeX",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_autorizacion_aportes_capital_instrumentos_deuda_b38a10"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_016hFLb7GBFnqvYUyoLqkVpy",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Excepcion_excepcionalmente_mediando_autorizacion_previa_de_la_sefyc_podran_admitirse_aport_f6d915",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2684
+          },
+          "cache_creation_input_tokens": 2684,
+          "cache_read_input_tokens": 6770,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 287,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPHx7ddB3jnToM4cQTV",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora voy a ver la restricción general sobre aportes en especie para tener el panorama completo.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01BQUj7ZHcZrNp3pkAWXCPDT",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Restriccion_los_aportes_no_podran_ser_efectuados_en_especie_deben_ser_efectuados_en_efectivo_f83fae"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01RCyGc3g3YX9FLGWo312QbU",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_d8c339",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1084
+          },
+          "cache_creation_input_tokens": 1084,
+          "cache_read_input_tokens": 9454,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 232,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPJ8Qm5f2Qk9p9BFEPt",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Tengo información muy completa. Déjame buscar si hay más detalles sobre cómo se computan los aportes antes de la aprobación.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01T5vCZAn2Z4UZmeY7dpdVcx",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "aportes contabilizados RPC deducción componente",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 770
+          },
+          "cache_creation_input_tokens": 770,
+          "cache_read_input_tokens": 10538,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 125,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPJFdqFxxkBGR22j8Au",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "```json\n{\n  \"respuesta\": \"Según la regulación del BCRA sobre capitales mínimos, los aportes de capital deben efectuarse de la siguiente forma:\\n\\n**Forma de efectuar los aportes:**\\nLos aportes deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento, inclusive los referidos a planes de regularización y saneamiento.\\n\\n**Excepciones admitidas:**\\n1. Aportes en especie: Excepcionalmente, mediando autorización previa de la SEFyC, podrán admitirse aportes en especie.\\n2. Aportes en instrumentos de regulación monetaria: Pueden efectuarse, excepcionalmente con autorización previa de la SEFyC, en instrumentos de regulación monetaria del BCRA.\\n\\n**Cómputo hasta su aprobación:**\\nHasta tanto se le haya notificado la aprobación de los aportes y en la medida en que éstos hayan sido contabilizados, se deducirán del respectivo componente de la RPC (Responsabilidad Patrimonial Computable) de la entidad financiera. Esto significa que los aportes se computan deduciendo su importe de la RPC hasta que se notifique formalmente su aprobación.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 8.6\"\n    },\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 8.6.2\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1374
+          },
+          "cache_creation_input_tokens": 1374,
+          "cache_read_input_tokens": 11308,
+          "inference_geo": "not_available",
+          "input_tokens": 3,
+          "output_tokens": 445,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    }
+  ]
+}

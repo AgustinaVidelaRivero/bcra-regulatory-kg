@@ -1,0 +1,1495 @@
+{
+  "meta": {
+    "unidad": "ev2_corrida",
+    "label": "ev2_c3_dev_mem",
+    "grafo": "tanda0_ens_desarrollo",
+    "kg_path": "data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo/r1/kg.json",
+    "kg_sha256": "eab2fdd01dec4dad026d596a793919e666920fab127d7efb14b5b00857ae64ef",
+    "eje": "fidelidad",
+    "caso_id": "EV2F-010",
+    "sample_id": null,
+    "variante": null,
+    "estrato": null,
+    "pos_orden_global": 1,
+    "pos_orden_efectivo": 1,
+    "semilla_orden": "orden-ev2-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "timestamp_inicio": "2026-09-28T16:17:15",
+    "timestamp_fin": "2026-09-28T16:17:35",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "88026b6bffe6bf41",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 8
+    },
+    "fidelidad_sin_evaluar": true,
+    "tanda0": {
+      "unidad": "U-TANDA0-2A E5",
+      "celda": "C3",
+      "backend": "memoria",
+      "semilla_orden_real": "orden-ev2-r1",
+      "regla_orden": "comun_r1.casos_fidelidad_r1 (orden sellado de C1)",
+      "model_segun_api": [
+        "claude-haiku-4-5-20251001"
+      ],
+      "nota": "meta.semilla_orden y meta.unidad son campos heredados del runner base (runner_ev2); el orden real es semilla_orden_real/regla_orden",
+      "etapa": "base"
+    }
+  },
+  "pregunta": "Para imputar una donación recibida desde el exterior necesito entender la categoría cambiaria de transferencias corrientes: ¿cómo se define y qué operaciones incluye?",
+  "trace": {
+    "qid": "EV2F-010",
+    "question": "Para imputar una donación recibida desde el exterior necesito entender la categoría cambiaria de transferencias corrientes: ¿cómo se define y qué operaciones incluye?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "transferencias corrientes categoría cambiaria",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"transferencias corrientes categoría cambiaria\", \"total_con_match\": 60, \"resultados\": [{\"id\": \"Definicion_transferencias_corrientes_efectos_y_alcance_d54074\", \"type\": \"Definicion\", \"label\": \"Transferencias corrientes — efectos y alcance\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las transferencias corrientes afectan el nivel de ingreso disponible e influyen en el consumo de bienes y servicios, reduciéndolos en el caso del donante y aume…\"}, {\"id\": \"Sujeto_entidad_cambiaria\", \"type\": \"Sujeto\", \"label\": \"Entidades cambiarias\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"nivel: clase; cola_humana: true; cola_chunks: ['ext::7.11.1.2']; estado_e3: cola_humana; alias: ['Operador de cambio', 'Operadores de cambio', 'Entidades cambia…\"}, {\"id\": \"Restriccion_cuentas_corrientes_y_especiales_en_el_bcra_y_ordenes_de_pago_a_cargo_del_bcra_ti_3a9428\", \"type\": \"Restriccion\", \"label\": \"Ponderador 0% — cuentas en BCRA\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Cuentas corrientes y especiales en el BCRA y órdenes de pago a cargo del BCRA tienen ponderador de riesgo de 0%\"}, {\"id\": \"Definicion_deudor_en_observacion_categoria_2_0a16b3\", \"type\": \"Definicion\", \"label\": \"De… [+2234 chars]",
+        "output_chars": 3434
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "donación exterior transferencia",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"donación exterior transferencia\", \"total_con_match\": 258, \"resultados\": [{\"id\": \"Operacion_arbitraje_sin_transferencia_al_exterior_9a73b4\", \"type\": \"Operacion\", \"label\": \"Arbitraje sin transferencia al exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Operaciones de arbitraje que no impliquen transferencias al exterior, realizadas sobre fondos debitados de una cuenta en moneda extranjera del cliente en una en…\"}, {\"id\": \"Operacion_transferencia_fondos_desde_hacia_exterior_30e134\", \"type\": \"Operacion\", \"label\": \"Transferencia fondos desde/hacia exterior\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Transferencia de fondos desde y hacia el exterior, con inclusión de información mínima del ordenante.\"}, {\"id\": \"Operacion_transferencia_al_exterior_de_agentes_locales_724e05\", \"type\": \"Operacion\", \"label\": \"Transferencia al exterior de agentes locales\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"transferencias al exterior de agentes locales por sus recaudaciones en el país de fondos correspondientes a servicios prestados por no residentes a residentes\"}, {\"id\": \"Operacion_transferencia_titulos_valores_a_depositarios_exterior_9a393f\", \"type\": \"Operacion\", \"… [+2429 chars]",
+        "output_chars": 3629
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Definicion_transferencias_corrientes_efectos_y_alcance_d54074"
+        },
+        "output_truncado": "{\"id\": \"Definicion_transferencias_corrientes_efectos_y_alcance_d54074\", \"type\": \"Definicion\", \"label\": \"Transferencias corrientes — efectos y alcance\", \"properties\": {\"termino\": \"Transferencias corrientes\", \"descripcion\": \"Las transferencias corrientes afectan el nivel de ingreso disponible e influyen en el consumo de bienes y servicios, reduciéndolos en el caso del donante y aumentándolos en el caso del receptor. Incluye entre otras las transferencias personales, donaciones, jubilaciones y pensiones.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.10\"}]}",
+        "output_chars": 602
+      },
+      {
+        "n": 4,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "transferencias corrientes definición",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"transferencias corrientes definición\", \"total_con_match\": 566, \"resultados\": [{\"id\": \"Definicion_transferencias_corrientes_efectos_y_alcance_d54074\", \"type\": \"Definicion\", \"label\": \"Transferencias corrientes — efectos y alcance\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Las transferencias corrientes afectan el nivel de ingreso disponible e influyen en el consumo de bienes y servicios, reduciéndolos en el caso del donante y aume…\"}, {\"id\": \"Definicion_transferencias_personales_definicion_92c617\", \"type\": \"Definicion\", \"label\": \"Transferencias personales — definición\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las transferencias personales corresponden a transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas.\"}, {\"id\": \"Definicion_canjes_0525b9\", \"type\": \"Definicion\", \"label\": \"Canjes\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operaciones en las cuales se intercambia con una misma contraparte dos instrumentos operados en el mercado de cambios expresados en la misma moneda extranjera\"}, {\"id\": \"Definicion_clientes_3a7bd8\", \"type\": \"Definicion\", \"label\": \"Clientes\", \"tokens_matcheados\": 1, \"resu… [+1757 chars]",
+        "output_chars": 2957
+      },
+      {
+        "n": 5,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Definicion_transferencias_corrientes_efectos_y_alcance_d54074",
+          "direccion": "ambas"
+        },
+        "output_truncado": "{\"id\": \"Definicion_transferencias_corrientes_efectos_y_alcance_d54074\", \"label\": \"Transferencias corrientes — efectos y alcance\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.10\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}",
+        "output_chars": 491
+      },
+      {
+        "n": 6,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "donaciones definición",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"donaciones definición\", \"total_con_match\": 540, \"resultados\": [{\"id\": \"Definicion_canjes_0525b9\", \"type\": \"Definicion\", \"label\": \"Canjes\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operaciones en las cuales se intercambia con una misma contraparte dos instrumentos operados en el mercado de cambios expresados en la misma moneda extranjera\"}, {\"id\": \"Definicion_clientes_3a7bd8\", \"type\": \"Definicion\", \"label\": \"Clientes\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Personas humanas o jurídicas y los patrimonios y otras universalidades a quienes se da acceso al mercado de cambios\"}, {\"id\": \"Definicion_arbitrajes_e77ee7\", \"type\": \"Definicion\", \"label\": \"Arbitrajes\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Operaciones en las cuales se intercambia con una misma contraparte instrumentos operados en el mercado de cambios que están expresados en distinta moneda extran…\"}, {\"id\": \"Definicion_riesgo_vega_c3c13b\", \"type\": \"Definicion\", \"label\": \"Riesgo vega\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Mide la sensibilidad del precio de la opción a los cambios en la volatilidad del precio del subyacente.\"}, {\"id\": \"Definicion_riesgo_gamma_e4203d\", \"type\": \"De… [+1523 chars]",
+        "output_chars": 2723
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "donación",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"donación\", \"total_con_match\": 3, \"resultados\": [{\"id\": \"Excepcion_regimen_de_donacion_de_organos_y_sangre_humana_resolucion_384_97_de_la_administr_398f3c\", \"type\": \"Excepcion\", \"label\": \"Donación órganos sangre humana — seguimiento\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Régimen de donación de órganos y sangre humana (Resolución 384/97 de la Administración Nacional de Aduanas): operación exceptuada del seguimiento de divisas por…\"}, {\"id\": \"Obligacion_se_debera_verificar_los_requisitos_previstos_en_cada_caso_reemplazando_la_consta_4bbe8f\", \"type\": \"Obligacion\", \"label\": \"Verificación de requisitos con constancia de donación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Se deberá verificar los requisitos previstos en cada caso reemplazando la constancia de ingreso aduanero de los bienes por la constancia de aceptación de la don…\"}, {\"id\": \"Operacion_adquisicion_de_bienes_medico_sanitarios_para_donacion_610685\", \"type\": \"Operacion\", \"label\": \"Adquisición de bienes médico-sanitarios para donación\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Comprador al exterior adquiere bienes relacionados con atención médica y/o sanitaria de la población y los dona a… [+52 chars]",
+        "output_chars": 1252
+      },
+      {
+        "n": 8,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "categoría cambiaria transferencias",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"categoría cambiaria transferencias\", \"total_con_match\": 55, \"resultados\": [{\"id\": \"Sujeto_entidad_cambiaria\", \"type\": \"Sujeto\", \"label\": \"Entidades cambiarias\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"nivel: clase; cola_humana: true; cola_chunks: ['ext::7.11.1.2']; estado_e3: cola_humana; alias: ['Operador de cambio', 'Operadores de cambio', 'Entidades cambia…\"}, {\"id\": \"Definicion_deudor_en_observacion_categoria_2_0a16b3\", \"type\": \"Definicion\", \"label\": \"Deudor en observación — categoría 2\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Deudor recategorizado en la categoría 2; se le considera en tal condición según lo establecido en el punto 6.5.2.1\"}, {\"id\": \"Condicion_inclusion_en_categoria_deudor_moroso_b8da72\", \"type\": \"Condicion\", \"label\": \"Inclusión en categoría deudor moroso\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"para que una operación pueda incluirse en la categoría de deudor moroso sin que el exportador haya iniciado acciones legales, se debe verificar que el exportado…\"}, {\"id\": \"Obligacion_el_deudor_que_encontrandose_clasificado_en_esta_categoria_haya_refinanciado_su_d_7c0d85\", \"type\": \"Obligacion\", \"label\": \"Permanecer en categoría po… [+2240 chars]",
+        "output_chars": 3440
+      },
+      {
+        "n": 9,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "operación transferencias corrientes",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"operación transferencias corrientes\", \"total_con_match\": 1690, \"resultados\": [{\"id\": \"Operacion_cuentas_corrientes_y_especiales_en_bcra_6c80a4\", \"type\": \"Operacion\", \"label\": \"Cuentas corrientes y especiales en BCRA\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Cuentas corrientes y especiales en el BCRA y órdenes de pago a cargo del BCRA\"}, {\"id\": \"Definicion_transferencias_corrientes_efectos_y_alcance_d54074\", \"type\": \"Definicion\", \"label\": \"Transferencias corrientes — efectos y alcance\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las transferencias corrientes afectan el nivel de ingreso disponible e influyen en el consumo de bienes y servicios, reduciéndolos en el caso del donante y aume…\"}, {\"id\": \"Operacion_mantener_transferencias_pendientes_de_liquidacion_eed0ce\", \"type\": \"Operacion\", \"label\": \"Mantener transferencias pendientes de liquidación\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Mantener pendientes de liquidación en el mercado de cambios y/o de acreditación en cuentas locales en moneda extranjera las transferencias de fondos que no cont…\"}, {\"id\": \"Operacion_transferencias_a_cuentas_bancarias_en_el_exterior_293d36\", \"type\": \"Operacion\", \"la… [+2019 chars]",
+        "output_chars": 3219
+      },
+      {
+        "n": 10,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "transferencias personales donaciones jubilaciones pensiones",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"transferencias personales donaciones jubilaciones pensiones\", \"total_con_match\": 38, \"resultados\": [{\"id\": \"Definicion_transferencias_personales_definicion_92c617\", \"type\": \"Definicion\", \"label\": \"Transferencias personales — definición\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Las transferencias personales corresponden a transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas.\"}, {\"id\": \"Operacion_cobros_y_pagos_de_jubilaciones_y_pensiones_a29bca\", \"type\": \"Operacion\", \"label\": \"Cobros y pagos de jubilaciones y pensiones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Transferencias efectuadas por organismos oficiales o privados de fondos de jubilaciones y pensiones o fondos compensadores de previsión, a personas humanas resi…\"}, {\"id\": \"Operacion_anticipo_por_pago_de_jubilaciones_y_pensiones_76070c\", \"type\": \"Operacion\", \"label\": \"Anticipo por pago de jubilaciones y pensiones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Anticipos por pago de jubilaciones y pensiones\"}, {\"id\": \"Excepcion_anticipos_por_pago_de_jubilaciones_y_pensiones_estan_excluidos_de_las_financiaci_6406c0\", \"type\": \"Excepcion\", … [+2191 chars]",
+        "output_chars": 3391
+      },
+      {
+        "n": 11,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Definicion_transferencias_personales_definicion_92c617"
+        },
+        "output_truncado": "{\"id\": \"Definicion_transferencias_personales_definicion_92c617\", \"type\": \"Definicion\", \"label\": \"Transferencias personales — definición\", \"properties\": {\"termino\": \"Transferencias personales\", \"descripcion\": \"Las transferencias personales corresponden a transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas.\"}, \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.10\"}]}",
+        "output_chars": 463
+      },
+      {
+        "n": 12,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Definicion_transferencias_personales_definicion_92c617",
+          "direccion": "ambas"
+        },
+        "output_truncado": "{\"id\": \"Definicion_transferencias_personales_definicion_92c617\", \"label\": \"Transferencias personales — definición\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_exterior_cambios_actual_pdf\", \"vecino_label\": \"Exterior y cambios\", \"provenances\": [{\"source_doc\": \"TO_exterior_cambios_actual.pdf\", \"location\": \"Punto 6.10\"}]}], \"salientes_truncado\": false, \"entrantes\": [], \"entrantes_truncado\": false}",
+        "output_chars": 477
+      },
+      {
+        "n": 13,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "punto 6.10 exterior cambios",
+          "limite": 5
+        },
+        "output_truncado": "{\"consulta\": \"punto 6.10 exterior cambios\", \"total_con_match\": 780, \"resultados\": [{\"id\": \"Condicion_operacion_no_comprendida_en_punto_10_6_6_5278fb\", \"type\": \"Condicion\", \"label\": \"Operación no comprendida en punto 10.6.6\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Se trate de operaciones no comprendidas en el punto 10.6.6.\"}, {\"id\": \"Obligacion_los_ajustes_al_valor_corriente_de_las_posiciones_menos_liquidas_del_punto_6_10_2_35326d\", \"type\": \"Obligacion\", \"label\": \"Deducción de ajustes del capital ordinario nivel 1\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Los ajustes al valor corriente de las posiciones menos líquidas del punto 6.10.2.2 se deben deducir del capital ordinario de nivel 1, incluso si exceden a los a…\"}, {\"id\": \"Obligacion_para_la_regularizacion_del_incumplimiento_en_la_forma_prevista_en_el_punto_6_7_2_841d99\", \"type\": \"Obligacion\", \"label\": \"Regularizar incumplimiento — 10 días hábiles desde firmeza\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"para la regularización del incumplimiento, en la forma prevista en el punto 6.7.2.1., la entidad observará el plazo de 10 días hábiles, contado desde la fecha e…\"}, {\"id\": \"Excepcion_excepto_cuando_la_entida… [+773 chars]",
+        "output_chars": 1973
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1477,
+        "output_tokens": 166,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.543
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 4012,
+        "output_tokens": 186,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 2.354
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 205,
+        "cache_read": 0,
+        "cache_write": 5401,
+        "latency_s": 2.62
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 188,
+        "cache_read": 5401,
+        "cache_write": 1368,
+        "latency_s": 1.941
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 186,
+        "cache_read": 6769,
+        "cache_write": 1850,
+        "latency_s": 2.233
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 188,
+        "cache_read": 8619,
+        "cache_write": 2427,
+        "latency_s": 2.306
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 282,
+        "cache_read": 11046,
+        "cache_write": 548,
+        "latency_s": 3.016
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 5,
+        "output_tokens": 285,
+        "cache_read": 11594,
+        "cache_write": 1034,
+        "latency_s": 3.396
+      }
+    ],
+    "final_json": {
+      "respuesta": "Las transferencias corrientes se definen como operaciones que afectan el nivel de ingreso disponible e influyen en el consumo de bienes y servicios, reduciéndolos en el caso del donante y aumentándolos en el caso del receptor. Esta categoría cambiaria incluye: (1) transferencias personales, que corresponden a transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas; (2) donaciones; (3) jubilaciones y pensiones. En consecuencia, una donación recibida desde el exterior se clasifica dentro de la categoría de transferencias corrientes, específicamente como una transferencia personal, ya que se trata de una transferencia entre personas humanas sin importar la relación entre ellas.",
+      "citas": [
+        {
+          "source_doc": "TO_exterior_cambios_actual.pdf",
+          "location": "Punto 6.10"
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "Tengo toda la información necesaria. Voy a proporcionar la respuesta basada en lo que encontré en el Knowledge Graph.\n\n```json\n{\n  \"respuesta\": \"Las transferencias corrientes se definen como operaciones que afectan el nivel de ingreso disponible e influyen en el consumo de bienes y servicios, reduciéndolos en el caso del donante y aumentándolos en el caso del receptor. Esta categoría cambiaria incluye: (1) transferencias personales, que corresponden a transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas; (2) donaciones; (3) jubilaciones y pensiones. En consecuencia, una donación recibida desde el exterior se clasifica dentro de la categoría de transferencias corrientes, específicamente como una transferencia personal, ya que se trata de una transferencia entre personas humanas sin importar la relación entre ellas.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 6.10\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 13,
+    "hit_tool_limit": false,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_exterior_cambios_actual.pdf",
+        "location": "Punto 6.10"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 5529,
+    "tokens_out": 1686,
+    "cache_read": 43429,
+    "cache_write": 12628,
+    "cost_usd": 0.034087,
+    "latency_s": 19.471,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "transferencias corrientes categoría cambiaria",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "transferencias corrientes categoría cambiaria",
+        "total_con_match": 60,
+        "resultados": [
+          {
+            "id": "Definicion_transferencias_corrientes_efectos_y_alcance_d54074",
+            "type": "Definicion",
+            "label": "Transferencias corrientes — efectos y alcance",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las transferencias corrientes afectan el nivel de ingreso disponible e influyen en el consumo de bienes y servicios, reduciéndolos en el caso del donante y aume…"
+          },
+          {
+            "id": "Sujeto_entidad_cambiaria",
+            "type": "Sujeto",
+            "label": "Entidades cambiarias",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "nivel: clase; cola_humana: true; cola_chunks: ['ext::7.11.1.2']; estado_e3: cola_humana; alias: ['Operador de cambio', 'Operadores de cambio', 'Entidades cambia…"
+          },
+          {
+            "id": "Restriccion_cuentas_corrientes_y_especiales_en_el_bcra_y_ordenes_de_pago_a_cargo_del_bcra_ti_3a9428",
+            "type": "Restriccion",
+            "label": "Ponderador 0% — cuentas en BCRA",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cuentas corrientes y especiales en el BCRA y órdenes de pago a cargo del BCRA tienen ponderador de riesgo de 0%"
+          },
+          {
+            "id": "Definicion_deudor_en_observacion_categoria_2_0a16b3",
+            "type": "Definicion",
+            "label": "Deudor en observación — categoría 2",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Deudor recategorizado en la categoría 2; se le considera en tal condición según lo establecido en el punto 6.5.2.1"
+          },
+          {
+            "id": "Condicion_inclusion_en_categoria_deudor_moroso_b8da72",
+            "type": "Condicion",
+            "label": "Inclusión en categoría deudor moroso",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "para que una operación pueda incluirse en la categoría de deudor moroso sin que el exportador haya iniciado acciones legales, se debe verificar que el exportado…"
+          },
+          {
+            "id": "Obligacion_el_deudor_que_encontrandose_clasificado_en_esta_categoria_haya_refinanciado_su_d_7c0d85",
+            "type": "Obligacion",
+            "label": "Permanecer en categoría por 180 días",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El deudor que, encontrándose clasificado en esta categoría, haya refinanciado su deuda –aun cuando haya cancelado el porcentaje establecido– y recibido crédito …"
+          },
+          {
+            "id": "Definicion_transferencias_personales_definicion_92c617",
+            "type": "Definicion",
+            "label": "Transferencias personales — definición",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las transferencias personales corresponden a transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas."
+          },
+          {
+            "id": "Condicion_observancia_otras_condiciones_categoria_200232",
+            "type": "Condicion",
+            "label": "Observancia otras condiciones categoría",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "siempre que además se observen las otras condiciones previstas en la presente categoría"
+          },
+          {
+            "id": "Obligacion_el_plazo_tambien_sera_aplicable_para_las_operaciones_que_correspondan_a_las_tran_37633e",
+            "type": "Obligacion",
+            "label": "Aplicabilidad de plazo a transferencias",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "el plazo también será aplicable para las operaciones que correspondan a las transferencias al exterior de agentes locales por sus recaudaciones en el país de fo…"
+          },
+          {
+            "id": "Operacion_cuentas_corrientes_y_especiales_en_bcra_6c80a4",
+            "type": "Operacion",
+            "label": "Cuentas corrientes y especiales en BCRA",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Cuentas corrientes y especiales en el BCRA y órdenes de pago a cargo del BCRA"
+          }
+        ]
+      },
+      "output_chars": 3434
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "donación exterior transferencia",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "donación exterior transferencia",
+        "total_con_match": 258,
+        "resultados": [
+          {
+            "id": "Operacion_arbitraje_sin_transferencia_al_exterior_9a73b4",
+            "type": "Operacion",
+            "label": "Arbitraje sin transferencia al exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Operaciones de arbitraje que no impliquen transferencias al exterior, realizadas sobre fondos debitados de una cuenta en moneda extranjera del cliente en una en…"
+          },
+          {
+            "id": "Operacion_transferencia_fondos_desde_hacia_exterior_30e134",
+            "type": "Operacion",
+            "label": "Transferencia fondos desde/hacia exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Transferencia de fondos desde y hacia el exterior, con inclusión de información mínima del ordenante."
+          },
+          {
+            "id": "Operacion_transferencia_al_exterior_de_agentes_locales_724e05",
+            "type": "Operacion",
+            "label": "Transferencia al exterior de agentes locales",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "transferencias al exterior de agentes locales por sus recaudaciones en el país de fondos correspondientes a servicios prestados por no residentes a residentes"
+          },
+          {
+            "id": "Operacion_transferencia_titulos_valores_a_depositarios_exterior_9a393f",
+            "type": "Operacion",
+            "label": "Transferencia títulos valores a depositarios exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Transferencia de títulos valores a depositarios en el exterior"
+          },
+          {
+            "id": "Operacion_transferencia_bonos_bopreal_a_depositarios_en_exterior_90eb82",
+            "type": "Operacion",
+            "label": "Transferencia bonos BOPREAL a depositarios en exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Transferencia de bonos BOPREAL adquiridos en suscripción primaria a depositarios en el exterior"
+          },
+          {
+            "id": "Operacion_transferencia_de_divisas_al_exterior_de_personas_humanas_77eeda",
+            "type": "Operacion",
+            "label": "Transferencia de divisas al exterior de personas humanas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Transferencia de divisas al exterior de las personas humanas desde sus cuentas locales en moneda extranjera a cuentas bancarias propias en el exterior."
+          },
+          {
+            "id": "Operacion_transferencia_a_traves_de_entidad_financiera_del_exterior_a60dc8",
+            "type": "Operacion",
+            "label": "Transferencia a través de entidad financiera del exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "transferencia de divisas canalizada a través de una entidad financiera del exterior cuya casa matriz o controlante se encuentre radicada en país miembro del Com…"
+          },
+          {
+            "id": "Operacion_transferencia_de_divisas_al_exterior_centrales_de_deposito_24ec96",
+            "type": "Operacion",
+            "label": "Transferencia de divisas al exterior — centrales de depósito",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Transferencia de divisas al exterior por parte de centrales locales de depósito colectivo de valores por los fondos percibidos en moneda extranjera por los serv…"
+          },
+          {
+            "id": "Restriccion_se_compromete_a_no_realizar_transferencias_de_titulos_valores_a_entidades_deposi_6904b5",
+            "type": "Restriccion",
+            "label": "Prohibición de transferencia de títulos al exterior — 90 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se compromete a no realizar transferencias de títulos valores a entidades depositarias del exterior desde el momento en que requiere el acceso al mercado de cam…"
+          },
+          {
+            "id": "Operacion_transferencia_al_exterior_capital_titulos_deuda_post_08_11_24_e49743",
+            "type": "Operacion",
+            "label": "Transferencia al exterior — capital títulos deuda post-08/11/24",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Pago de capital de títulos de deuda emitidos a partir del 08/11/24 que se concreta con una transferencia al exterior"
+          }
+        ]
+      },
+      "output_chars": 3629
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Definicion_transferencias_corrientes_efectos_y_alcance_d54074"
+      },
+      "output": {
+        "id": "Definicion_transferencias_corrientes_efectos_y_alcance_d54074",
+        "type": "Definicion",
+        "label": "Transferencias corrientes — efectos y alcance",
+        "properties": {
+          "termino": "Transferencias corrientes",
+          "descripcion": "Las transferencias corrientes afectan el nivel de ingreso disponible e influyen en el consumo de bienes y servicios, reduciéndolos en el caso del donante y aumentándolos en el caso del receptor. Incluye entre otras las transferencias personales, donaciones, jubilaciones y pensiones."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 6.10"
+          }
+        ]
+      },
+      "output_chars": 602
+    },
+    {
+      "n": 4,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "transferencias corrientes definición",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "transferencias corrientes definición",
+        "total_con_match": 566,
+        "resultados": [
+          {
+            "id": "Definicion_transferencias_corrientes_efectos_y_alcance_d54074",
+            "type": "Definicion",
+            "label": "Transferencias corrientes — efectos y alcance",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Las transferencias corrientes afectan el nivel de ingreso disponible e influyen en el consumo de bienes y servicios, reduciéndolos en el caso del donante y aume…"
+          },
+          {
+            "id": "Definicion_transferencias_personales_definicion_92c617",
+            "type": "Definicion",
+            "label": "Transferencias personales — definición",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las transferencias personales corresponden a transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas."
+          },
+          {
+            "id": "Definicion_canjes_0525b9",
+            "type": "Definicion",
+            "label": "Canjes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones en las cuales se intercambia con una misma contraparte dos instrumentos operados en el mercado de cambios expresados en la misma moneda extranjera"
+          },
+          {
+            "id": "Definicion_clientes_3a7bd8",
+            "type": "Definicion",
+            "label": "Clientes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Personas humanas o jurídicas y los patrimonios y otras universalidades a quienes se da acceso al mercado de cambios"
+          },
+          {
+            "id": "Definicion_arbitrajes_e77ee7",
+            "type": "Definicion",
+            "label": "Arbitrajes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones en las cuales se intercambia con una misma contraparte instrumentos operados en el mercado de cambios que están expresados en distinta moneda extran…"
+          },
+          {
+            "id": "Definicion_riesgo_vega_c3c13b",
+            "type": "Definicion",
+            "label": "Riesgo vega",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Mide la sensibilidad del precio de la opción a los cambios en la volatilidad del precio del subyacente."
+          },
+          {
+            "id": "Definicion_riesgo_gamma_e4203d",
+            "type": "Definicion",
+            "label": "Riesgo gamma",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Mide la tasa de cambio del coeficiente delta ante variaciones en el precio del subyacente."
+          },
+          {
+            "id": "Definicion_irrecuperable_f02635",
+            "type": "Definicion",
+            "label": "Irrecuperable",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Nivel de clasificación de deudores de la cartera comercial para clientes que no hayan sido evaluados con la periodicidad correspondiente, salvo deudores en conc…"
+          },
+          {
+            "id": "Definicion_oro_amonedado_c61271",
+            "type": "Definicion",
+            "label": "Oro amonedado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Abarca las monedas de oro con valor monetario, incluyendo aquellas emitidas por la República Argentina."
+          },
+          {
+            "id": "Definicion_programa_abcp_ce2cd3",
+            "type": "Definicion",
+            "label": "Programa ABCP",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "es un programa por el que se emite principalmente títulos valores con un vencimiento original de hasta un año, que están respaldados por activos u otro tipo de …"
+          }
+        ]
+      },
+      "output_chars": 2957
+    },
+    {
+      "n": 5,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Definicion_transferencias_corrientes_efectos_y_alcance_d54074",
+        "direccion": "ambas"
+      },
+      "output": {
+        "id": "Definicion_transferencias_corrientes_efectos_y_alcance_d54074",
+        "label": "Transferencias corrientes — efectos y alcance",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "vecino_label": "Exterior y cambios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 6.10"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [],
+        "entrantes_truncado": false
+      },
+      "output_chars": 491
+    },
+    {
+      "n": 6,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "donaciones definición",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "donaciones definición",
+        "total_con_match": 540,
+        "resultados": [
+          {
+            "id": "Definicion_canjes_0525b9",
+            "type": "Definicion",
+            "label": "Canjes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones en las cuales se intercambia con una misma contraparte dos instrumentos operados en el mercado de cambios expresados en la misma moneda extranjera"
+          },
+          {
+            "id": "Definicion_clientes_3a7bd8",
+            "type": "Definicion",
+            "label": "Clientes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Personas humanas o jurídicas y los patrimonios y otras universalidades a quienes se da acceso al mercado de cambios"
+          },
+          {
+            "id": "Definicion_arbitrajes_e77ee7",
+            "type": "Definicion",
+            "label": "Arbitrajes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operaciones en las cuales se intercambia con una misma contraparte instrumentos operados en el mercado de cambios que están expresados en distinta moneda extran…"
+          },
+          {
+            "id": "Definicion_riesgo_vega_c3c13b",
+            "type": "Definicion",
+            "label": "Riesgo vega",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Mide la sensibilidad del precio de la opción a los cambios en la volatilidad del precio del subyacente."
+          },
+          {
+            "id": "Definicion_riesgo_gamma_e4203d",
+            "type": "Definicion",
+            "label": "Riesgo gamma",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Mide la tasa de cambio del coeficiente delta ante variaciones en el precio del subyacente."
+          },
+          {
+            "id": "Definicion_irrecuperable_f02635",
+            "type": "Definicion",
+            "label": "Irrecuperable",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Nivel de clasificación de deudores de la cartera comercial para clientes que no hayan sido evaluados con la periodicidad correspondiente, salvo deudores en conc…"
+          },
+          {
+            "id": "Definicion_oro_amonedado_c61271",
+            "type": "Definicion",
+            "label": "Oro amonedado",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Abarca las monedas de oro con valor monetario, incluyendo aquellas emitidas por la República Argentina."
+          },
+          {
+            "id": "Definicion_programa_abcp_ce2cd3",
+            "type": "Definicion",
+            "label": "Programa ABCP",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "es un programa por el que se emite principalmente títulos valores con un vencimiento original de hasta un año, que están respaldados por activos u otro tipo de …"
+          },
+          {
+            "id": "Definicion_ecai_nacionales_7829e2",
+            "type": "Definicion",
+            "label": "ECAI nacionales",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Entidades que se encuentren registradas como agentes de calificación de riesgos ante la Comisión Nacional de Valores (CNV)."
+          },
+          {
+            "id": "Definicion_umbral_positivo_478489",
+            "type": "Definicion",
+            "label": "Umbral positivo",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "umbral positivo antes de que la contraparte deba aportar garantías a la entidad"
+          }
+        ]
+      },
+      "output_chars": 2723
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "donación",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "donación",
+        "total_con_match": 3,
+        "resultados": [
+          {
+            "id": "Excepcion_regimen_de_donacion_de_organos_y_sangre_humana_resolucion_384_97_de_la_administr_398f3c",
+            "type": "Excepcion",
+            "label": "Donación órganos sangre humana — seguimiento",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Régimen de donación de órganos y sangre humana (Resolución 384/97 de la Administración Nacional de Aduanas): operación exceptuada del seguimiento de divisas por…"
+          },
+          {
+            "id": "Obligacion_se_debera_verificar_los_requisitos_previstos_en_cada_caso_reemplazando_la_consta_4bbe8f",
+            "type": "Obligacion",
+            "label": "Verificación de requisitos con constancia de donación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Se deberá verificar los requisitos previstos en cada caso reemplazando la constancia de ingreso aduanero de los bienes por la constancia de aceptación de la don…"
+          },
+          {
+            "id": "Operacion_adquisicion_de_bienes_medico_sanitarios_para_donacion_610685",
+            "type": "Operacion",
+            "label": "Adquisición de bienes médico-sanitarios para donación",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Comprador al exterior adquiere bienes relacionados con atención médica y/o sanitaria de la población y los dona al Ministerio de Salud de la Nación con anterior…"
+          }
+        ]
+      },
+      "output_chars": 1252
+    },
+    {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "categoría cambiaria transferencias",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "categoría cambiaria transferencias",
+        "total_con_match": 55,
+        "resultados": [
+          {
+            "id": "Sujeto_entidad_cambiaria",
+            "type": "Sujeto",
+            "label": "Entidades cambiarias",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "nivel: clase; cola_humana: true; cola_chunks: ['ext::7.11.1.2']; estado_e3: cola_humana; alias: ['Operador de cambio', 'Operadores de cambio', 'Entidades cambia…"
+          },
+          {
+            "id": "Definicion_deudor_en_observacion_categoria_2_0a16b3",
+            "type": "Definicion",
+            "label": "Deudor en observación — categoría 2",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Deudor recategorizado en la categoría 2; se le considera en tal condición según lo establecido en el punto 6.5.2.1"
+          },
+          {
+            "id": "Condicion_inclusion_en_categoria_deudor_moroso_b8da72",
+            "type": "Condicion",
+            "label": "Inclusión en categoría deudor moroso",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "para que una operación pueda incluirse en la categoría de deudor moroso sin que el exportador haya iniciado acciones legales, se debe verificar que el exportado…"
+          },
+          {
+            "id": "Obligacion_el_deudor_que_encontrandose_clasificado_en_esta_categoria_haya_refinanciado_su_d_7c0d85",
+            "type": "Obligacion",
+            "label": "Permanecer en categoría por 180 días",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "El deudor que, encontrándose clasificado en esta categoría, haya refinanciado su deuda –aun cuando haya cancelado el porcentaje establecido– y recibido crédito …"
+          },
+          {
+            "id": "Definicion_transferencias_personales_definicion_92c617",
+            "type": "Definicion",
+            "label": "Transferencias personales — definición",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Las transferencias personales corresponden a transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas."
+          },
+          {
+            "id": "Condicion_observancia_otras_condiciones_categoria_200232",
+            "type": "Condicion",
+            "label": "Observancia otras condiciones categoría",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "siempre que además se observen las otras condiciones previstas en la presente categoría"
+          },
+          {
+            "id": "Obligacion_el_plazo_tambien_sera_aplicable_para_las_operaciones_que_correspondan_a_las_tran_37633e",
+            "type": "Obligacion",
+            "label": "Aplicabilidad de plazo a transferencias",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "el plazo también será aplicable para las operaciones que correspondan a las transferencias al exterior de agentes locales por sus recaudaciones en el país de fo…"
+          },
+          {
+            "id": "Obligacion_a_los_efectos_previstos_en_los_dos_ultimos_parrafos_anteriores_y_aun_cuando_se_h_be1205",
+            "type": "Obligacion",
+            "label": "Permanencia mínima 180 días en categoría",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "A los efectos previstos en los dos últimos párrafos anteriores y aun cuando se hayan cancelado los mencionados porcentajes de deuda, los deudores que hayan reci…"
+          },
+          {
+            "id": "Operacion_clasificacion_en_categoria_irrecuperable_201e68",
+            "type": "Operacion",
+            "label": "Clasificación en categoría Irrecuperable",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Inclusión del cliente en la categoría de deuda irrecuperable."
+          },
+          {
+            "id": "Definicion_coeficientes_marginales_categoria_1_fe85f2",
+            "type": "Definicion",
+            "label": "Coeficientes marginales (α) — categoría 1",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Para las entidades incluidas en la categoría 1 (BI igual o inferior al equivalente en pesos de €1.000 millones), el coeficiente marginal es del 12%"
+          }
+        ]
+      },
+      "output_chars": 3440
+    },
+    {
+      "n": 9,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "operación transferencias corrientes",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "operación transferencias corrientes",
+        "total_con_match": 1690,
+        "resultados": [
+          {
+            "id": "Operacion_cuentas_corrientes_y_especiales_en_bcra_6c80a4",
+            "type": "Operacion",
+            "label": "Cuentas corrientes y especiales en BCRA",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuentas corrientes y especiales en el BCRA y órdenes de pago a cargo del BCRA"
+          },
+          {
+            "id": "Definicion_transferencias_corrientes_efectos_y_alcance_d54074",
+            "type": "Definicion",
+            "label": "Transferencias corrientes — efectos y alcance",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las transferencias corrientes afectan el nivel de ingreso disponible e influyen en el consumo de bienes y servicios, reduciéndolos en el caso del donante y aume…"
+          },
+          {
+            "id": "Operacion_mantener_transferencias_pendientes_de_liquidacion_eed0ce",
+            "type": "Operacion",
+            "label": "Mantener transferencias pendientes de liquidación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Mantener pendientes de liquidación en el mercado de cambios y/o de acreditación en cuentas locales en moneda extranjera las transferencias de fondos que no cont…"
+          },
+          {
+            "id": "Operacion_transferencias_a_cuentas_bancarias_en_el_exterior_293d36",
+            "type": "Operacion",
+            "label": "Transferencias a cuentas bancarias en el exterior",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Transferencias a cuentas bancarias en el exterior de personas humanas por los fondos que percibieron en el país asociados a los beneficios otorgados por el Esta…"
+          },
+          {
+            "id": "Operacion_ajuste_de_valores_corrientes_posiciones_menos_liquidas_ea4042",
+            "type": "Operacion",
+            "label": "Ajuste de valores corrientes posiciones menos líquidas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Ajuste a los valores corrientes de las posiciones menos líquidas a los efectos del capital regulatorio, que puede ser incluso mayor que el ajuste requerido por …"
+          },
+          {
+            "id": "Operacion_deteccion_de_transferencias_con_informacion_incompleta_c647cd",
+            "type": "Operacion",
+            "label": "Detección de transferencias con información incompleta",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Detectar aquellas transferencias recibidas del exterior y sus respectivos mensajes con información incompleta del ordenante y/o del beneficiario"
+          },
+          {
+            "id": "Operacion_ingreso_y_remision_de_transferencias_de_ayuda_familiar_bdf384",
+            "type": "Operacion",
+            "label": "Ingreso y remisión de transferencias de ayuda familiar",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Ingreso y remisión de transferencias en concepto de ayuda familiar"
+          },
+          {
+            "id": "Operacion_derivado_otc_261a55",
+            "type": "Operacion",
+            "label": "Derivado OTC",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Derivado OTC"
+          },
+          {
+            "id": "Operacion_retitulizacion_8cc287",
+            "type": "Operacion",
+            "label": "Retitulización",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Operación de titulización sobre posiciones de titulización existentes, excluida del tratamiento de transparencia."
+          },
+          {
+            "id": "Operacion_calculo_ead_sft_24acd4",
+            "type": "Operacion",
+            "label": "Cálculo EAD SFT",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Para SFT, calcular la EAD como el máximo entre: valor de la exposición antes de mitigar riesgo más variación de margen transferida, menos margen inicial, menos …"
+          }
+        ]
+      },
+      "output_chars": 3219
+    },
+    {
+      "n": 10,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "transferencias personales donaciones jubilaciones pensiones",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "transferencias personales donaciones jubilaciones pensiones",
+        "total_con_match": 38,
+        "resultados": [
+          {
+            "id": "Definicion_transferencias_personales_definicion_92c617",
+            "type": "Definicion",
+            "label": "Transferencias personales — definición",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las transferencias personales corresponden a transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas."
+          },
+          {
+            "id": "Operacion_cobros_y_pagos_de_jubilaciones_y_pensiones_a29bca",
+            "type": "Operacion",
+            "label": "Cobros y pagos de jubilaciones y pensiones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Transferencias efectuadas por organismos oficiales o privados de fondos de jubilaciones y pensiones o fondos compensadores de previsión, a personas humanas resi…"
+          },
+          {
+            "id": "Operacion_anticipo_por_pago_de_jubilaciones_y_pensiones_76070c",
+            "type": "Operacion",
+            "label": "Anticipo por pago de jubilaciones y pensiones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Anticipos por pago de jubilaciones y pensiones"
+          },
+          {
+            "id": "Excepcion_anticipos_por_pago_de_jubilaciones_y_pensiones_estan_excluidos_de_las_financiaci_6406c0",
+            "type": "Excepcion",
+            "label": "Exclusión — anticipos por jubilaciones y pensiones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Anticipos por pago de jubilaciones y pensiones están excluidos de las financiaciones comprendidas"
+          },
+          {
+            "id": "Restriccion_el_monto_de_la_transferencia_no_excedera_el_monto_percibido_por_jubilaciones_y_o_6b32a6",
+            "type": "Restriccion",
+            "label": "Monto máximo — jubilaciones/pensiones últimos 30 días",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El monto de la transferencia no excederá el monto percibido por jubilaciones y/o pensiones en los últimos 30 días corridos"
+          },
+          {
+            "id": "Operacion_transferencia_al_exterior_por_beneficiarios_de_jubilaciones_pensiones_d6f24d",
+            "type": "Operacion",
+            "label": "Transferencia al exterior por beneficiarios de jubilaciones/pensiones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Transferencias al exterior a nombre de personas humanas beneficiarias de jubilaciones y/o pensiones abonadas por ANSES u otros organismos previsionales y/o rent…"
+          },
+          {
+            "id": "Operacion_prestamos_personales_6fdfb3",
+            "type": "Operacion",
+            "label": "Préstamos personales",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Préstamo personal como instrumento para exposiciones minoristas normativas."
+          },
+          {
+            "id": "Operacion_exportacion_de_efectos_personales_52dacb",
+            "type": "Operacion",
+            "label": "Exportación de efectos personales",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Exportación de efectos personales que hacen a la profesión u oficio de personas humanas que fijan su residencia en el exterior"
+          },
+          {
+            "id": "Operacion_prestamos_personales_preacordados_9973c8",
+            "type": "Operacion",
+            "label": "Préstamos personales preacordados",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Préstamos personales preacordados aún no formalizados ni desembolsados al cliente."
+          },
+          {
+            "id": "Obligacion_el_plazo_tambien_sera_aplicable_para_las_operaciones_que_correspondan_a_las_tran_37633e",
+            "type": "Obligacion",
+            "label": "Aplicabilidad de plazo a transferencias",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "el plazo también será aplicable para las operaciones que correspondan a las transferencias al exterior de agentes locales por sus recaudaciones en el país de fo…"
+          }
+        ]
+      },
+      "output_chars": 3391
+    },
+    {
+      "n": 11,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Definicion_transferencias_personales_definicion_92c617"
+      },
+      "output": {
+        "id": "Definicion_transferencias_personales_definicion_92c617",
+        "type": "Definicion",
+        "label": "Transferencias personales — definición",
+        "properties": {
+          "termino": "Transferencias personales",
+          "descripcion": "Las transferencias personales corresponden a transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_exterior_cambios_actual.pdf",
+            "location": "Punto 6.10"
+          }
+        ]
+      },
+      "output_chars": 463
+    },
+    {
+      "n": 12,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Definicion_transferencias_personales_definicion_92c617",
+        "direccion": "ambas"
+      },
+      "output": {
+        "id": "Definicion_transferencias_personales_definicion_92c617",
+        "label": "Transferencias personales — definición",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_exterior_cambios_actual_pdf",
+            "vecino_label": "Exterior y cambios",
+            "provenances": [
+              {
+                "source_doc": "TO_exterior_cambios_actual.pdf",
+                "location": "Punto 6.10"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false,
+        "entrantes": [],
+        "entrantes_truncado": false
+      },
+      "output_chars": 477
+    },
+    {
+      "n": 13,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "punto 6.10 exterior cambios",
+        "limite": 5
+      },
+      "output": {
+        "consulta": "punto 6.10 exterior cambios",
+        "total_con_match": 780,
+        "resultados": [
+          {
+            "id": "Condicion_operacion_no_comprendida_en_punto_10_6_6_5278fb",
+            "type": "Condicion",
+            "label": "Operación no comprendida en punto 10.6.6",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se trate de operaciones no comprendidas en el punto 10.6.6."
+          },
+          {
+            "id": "Obligacion_los_ajustes_al_valor_corriente_de_las_posiciones_menos_liquidas_del_punto_6_10_2_35326d",
+            "type": "Obligacion",
+            "label": "Deducción de ajustes del capital ordinario nivel 1",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los ajustes al valor corriente de las posiciones menos líquidas del punto 6.10.2.2 se deben deducir del capital ordinario de nivel 1, incluso si exceden a los a…"
+          },
+          {
+            "id": "Obligacion_para_la_regularizacion_del_incumplimiento_en_la_forma_prevista_en_el_punto_6_7_2_841d99",
+            "type": "Obligacion",
+            "label": "Regularizar incumplimiento — 10 días hábiles desde firmeza",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "para la regularización del incumplimiento, en la forma prevista en el punto 6.7.2.1., la entidad observará el plazo de 10 días hábiles, contado desde la fecha e…"
+          },
+          {
+            "id": "Excepcion_excepto_cuando_la_entidad_constate_que_el_pago_encuadra_en_alguna_de_las_situaci_b8b97e",
+            "type": "Excepcion",
+            "label": "Excepción — pago encuadra en situaciones punto 10.10.2 o 10.6.6",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "excepto cuando la entidad constate que el pago encuadra en alguna de las situaciones previstas en el punto 10.10.2. o en el punto 10.6.6"
+          },
+          {
+            "id": "Restriccion_pagos_de_capital_e_intereses_de_endeudamientos_financieros_con_el_exterior_cuyo__8a5a0b",
+            "type": "Restriccion",
+            "label": "Sin conformidad previa punto 3.5.6 — pago contraparte vinculada",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Pagos de capital e intereses de endeudamientos financieros con el exterior cuyo acreedor sea una contraparte vinculada al deudor sin la conformidad previa reque…"
+          }
+        ]
+      },
+      "output_chars": 1973
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWNhpdyRh8tc6YF8QLQB",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre la categoría cambiaria de transferencias corrientes en el Knowledge Graph.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01EQ9UmeczFxznp1rvEXpcUU",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "transferencias corrientes categoría cambiaria",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01WoQCQGKwGmPTy51a6qeCwv",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "donación exterior transferencia",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1477,
+          "output_tokens": 166,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWNhwNHabHxJcbmJf38R",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente, encontré un nodo sobre \"Transferencias corrientes — efectos y alcance\". Voy a verlo en detalle y también buscar más específicamente sobre la definición de transferencias corrientes.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_015nxvLZVHy3uqaZszhs5Zzi",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Definicion_transferencias_corrientes_efectos_y_alcance_d54074"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01DFUuwR8L36uaG6AhUZ4JNR",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "transferencias corrientes definición",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 4012,
+          "output_tokens": 186,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWNi7JqEPvN6MzM2Pp3i",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Tengo la definición de transferencias corrientes. Ahora voy a explorar las relaciones de este nodo para ver qué operaciones específicas incluye, y también buscaré información sobre donaciones.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01H1zVYoP9KstxfapKHx11hp",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Definicion_transferencias_corrientes_efectos_y_alcance_d54074",
+              "direccion": "ambas"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01G1naGcELC1p44oj5QvjPT5",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "donaciones definición",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 5401
+          },
+          "cache_creation_input_tokens": 5401,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 205,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWNiJWmjNJyc1bPafndc",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "La búsqueda de \"donaciones definición\" no devolvió resultados específicos. Voy a buscar más directamente por \"donación\" y también explorar la categoría cambiaria de transferencias corrientes.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_013p43sJPWGXDWMnR51sm8Gw",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "donación",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01Xu7xtzG4Z6qprPzYNk41bJ",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "categoría cambiaria transferencias",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1368
+          },
+          "cache_creation_input_tokens": 1368,
+          "cache_read_input_tokens": 5401,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 188,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWNiSs5C5Vts7cpCjaQF",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar más específicamente sobre operaciones de transferencias corrientes y también ver si hay información sobre cómo se clasifican las donaciones en el régimen cambiario.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_013Kq8hCS2XtFFtDvrqZZ7My",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "operación transferencias corrientes",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_013psGGujScYFY3s2o4LmNv6",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "transferencias personales donaciones jubilaciones pensiones",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1850
+          },
+          "cache_creation_input_tokens": 1850,
+          "cache_read_input_tokens": 6769,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 186,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWNicKM6ovgRETMjuRGq",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Encontré información sobre transferencias personales. Voy a ver ese nodo en detalle y también explorar sus relaciones para entender mejor cómo se clasifican las donaciones.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01FWu2zMgdWC91BbgjLuUtes",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Definicion_transferencias_personales_definicion_92c617"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_012tRK6HrSTmZ9DSD6YgJCN9",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Definicion_transferencias_personales_definicion_92c617",
+              "direccion": "ambas"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2427
+          },
+          "cache_creation_input_tokens": 2427,
+          "cache_read_input_tokens": 8619,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 188,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWNinKMwEgSqYLrQ8o8Z",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Tengo información clara sobre transferencias corrientes y transferencias personales. Ambas están en el Punto 6.10 del documento \"Exterior y cambios\". Ahora tengo suficiente información para responder la pregunta del usuario. Déjame compilar la respuesta basada en lo que encontré:\n\n1. **Definición de transferencias corrientes**: Afectan el nivel de ingreso disponible e influyen en el consumo de bienes y servicios. Incluyen transferencias personales, donaciones, jubilaciones y pensiones.\n\n2. **Operaciones incluidas**: Las transferencias personales son transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas.\n\n3. **Donaciones**: Están explícitamente mencionadas como parte de las transferencias corrientes.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_019WwkAcKjWPc8RegTy48iCT",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "punto 6.10 exterior cambios",
+              "limite": 5
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 548
+          },
+          "cache_creation_input_tokens": 548,
+          "cache_read_input_tokens": 11046,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 282,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWNj1ReBmw6MXbKkcWsU",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Tengo toda la información necesaria. Voy a proporcionar la respuesta basada en lo que encontré en el Knowledge Graph.\n\n```json\n{\n  \"respuesta\": \"Las transferencias corrientes se definen como operaciones que afectan el nivel de ingreso disponible e influyen en el consumo de bienes y servicios, reduciéndolos en el caso del donante y aumentándolos en el caso del receptor. Esta categoría cambiaria incluye: (1) transferencias personales, que corresponden a transferencias entre personas humanas, residentes y no residentes, independientemente de la relación entre ellas; (2) donaciones; (3) jubilaciones y pensiones. En consecuencia, una donación recibida desde el exterior se clasifica dentro de la categoría de transferencias corrientes, específicamente como una transferencia personal, ya que se trata de una transferencia entre personas humanas sin importar la relación entre ellas.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_exterior_cambios_actual.pdf\",\n      \"location\": \"Punto 6.10\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1034
+          },
+          "cache_creation_input_tokens": 1034,
+          "cache_read_input_tokens": 11594,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 285,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    }
+  ]
+}

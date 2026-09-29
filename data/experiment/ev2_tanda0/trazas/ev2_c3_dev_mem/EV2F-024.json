@@ -1,0 +1,1465 @@
+{
+  "meta": {
+    "unidad": "ev2_corrida",
+    "label": "ev2_c3_dev_mem",
+    "grafo": "tanda0_ens_desarrollo",
+    "kg_path": "data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo/r1/kg.json",
+    "kg_sha256": "eab2fdd01dec4dad026d596a793919e666920fab127d7efb14b5b00857ae64ef",
+    "eje": "fidelidad",
+    "caso_id": "EV2F-024",
+    "sample_id": null,
+    "variante": null,
+    "estrato": null,
+    "pos_orden_global": 30,
+    "pos_orden_efectivo": 30,
+    "semilla_orden": "orden-ev2-v1",
+    "n_rep": 1,
+    "model": "claude-haiku-4-5-20251001",
+    "temperature": 0,
+    "max_tool_calls": 15,
+    "thinking_enabled": false,
+    "timestamp_inicio": "2026-09-28T16:27:02",
+    "timestamp_fin": "2026-09-28T16:27:21",
+    "code_version": "aa15d9c9b5b7",
+    "graph_fingerprint": "88026b6bffe6bf41",
+    "cache_turnos": {
+      "hits": 0,
+      "total": 9
+    },
+    "fidelidad_sin_evaluar": true,
+    "tanda0": {
+      "unidad": "U-TANDA0-2A E5",
+      "celda": "C3",
+      "backend": "memoria",
+      "semilla_orden_real": "orden-ev2-r1",
+      "regla_orden": "comun_r1.casos_fidelidad_r1 (orden sellado de C1)",
+      "model_segun_api": [
+        "claude-haiku-4-5-20251001"
+      ],
+      "nota": "meta.semilla_orden y meta.unidad son campos heredados del runner base (runner_ev2); el orden real es semilla_orden_real/regla_orden",
+      "etapa": "base"
+    }
+  },
+  "pregunta": "¿Cómo deben clasificar los bancos sus exposiciones a instrumentos y con qué criterios se determina si un instrumento se trata como una acción?",
+  "trace": {
+    "qid": "EV2F-024",
+    "question": "¿Cómo deben clasificar los bancos sus exposiciones a instrumentos y con qué criterios se determina si un instrumento se trata como una acción?",
+    "steps": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "clasificación exposiciones instrumentos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"clasificación exposiciones instrumentos\", \"total_con_match\": 344, \"resultados\": [{\"id\": \"Operacion_clasificacion_de_exposiciones_a_instrumentos_b2dd92\", \"type\": \"Operacion\", \"label\": \"Clasificación de exposiciones a instrumentos\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Clasificación de exposiciones a instrumentos de capital (deuda subordinada, acciones, demás instrumentos de capital) por entidades financieras del grupo 1.\"}, {\"id\": \"Operacion_exposiciones_a_instrumentos_014c82\", \"type\": \"Operacion\", \"label\": \"Exposiciones a instrumentos\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Financiaciones en forma de instrumentos con disposiciones específicas según punto 2.11.\"}, {\"id\": \"Restriccion_ponderador_de_riesgo_del_50_para_exposiciones_con_calificacion_crediticia_de_a_h_9b9e37\", \"type\": \"Restriccion\", \"label\": \"Ponderador 50% — clasificación A+ a A-\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"ponderador de riesgo del 50% para exposiciones con calificación crediticia de A+ hasta A-\"}, {\"id\": \"Excepcion_no_se_incluyen_las_exposiciones_a_instrumentos_previstas_en_el_punto_2_11_92d09d\", \"type\": \"Excepcion\", \"label\": \"Exclusión — exposiciones a instrumen… [+2249 chars]",
+        "output_chars": 3449
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "criterios acción instrumento",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"criterios acción instrumento\", \"total_con_match\": 41, \"resultados\": [{\"id\": \"Definicion_exposicion_a_instrumento_como_accion_e0bf1e\", \"type\": \"Definicion\", \"label\": \"Exposición a instrumento como acción\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Los instrumentos que incorporan una obligación para el emisor y tengan alguna de las características enumeradas (diferimiento indefinido del pago, opción de can…\"}, {\"id\": \"Obligacion_el_instrumento_que_origina_la_participacion_minoritaria_debe_observar_todos_los__b4fca8\", \"type\": \"Obligacion\", \"label\": \"Clasificar instrumento como acción ordinaria\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"El instrumento que origina la participación minoritaria debe observar todos los requisitos para su clasificación como acción ordinaria a efectos de la RPC\"}, {\"id\": \"Condicion_instrumento_observa_requisitos_accion_ordinaria_rpc_d07e83\", \"type\": \"Condicion\", \"label\": \"Instrumento observa requisitos acción ordinaria RPC\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Siempre que el instrumento que origina la participación minoritaria observe todos los requisitos para su clasificación como acción ordinaria a efectos de la RPC\"}… [+1927 chars]",
+        "output_chars": 3127
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_clasificacion_de_exposiciones_a_instrumentos_b2dd92"
+        },
+        "output_truncado": "{\"id\": \"Operacion_clasificacion_de_exposiciones_a_instrumentos_b2dd92\", \"type\": \"Operacion\", \"label\": \"Clasificación de exposiciones a instrumentos\", \"properties\": {\"tipo\": \"clasificacion\", \"descripcion\": \"Clasificación de exposiciones a instrumentos de capital (deuda subordinada, acciones, demás instrumentos de capital) por entidades financieras del grupo 1.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.11.1\"}]}",
+        "output_chars": 460
+      },
+      {
+        "n": 4,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Definicion_exposicion_a_instrumento_como_accion_e0bf1e"
+        },
+        "output_truncado": "{\"id\": \"Definicion_exposicion_a_instrumento_como_accion_e0bf1e\", \"type\": \"Definicion\", \"label\": \"Exposición a instrumento como acción\", \"properties\": {\"termino\": \"exposición a instrumento tratada como acción\", \"descripcion\": \"Los instrumentos que incorporan una obligación para el emisor y tengan alguna de las características enumeradas (diferimiento indefinido del pago, opción de cancelación mediante acciones, opción del tenedor de pago en acciones) deben ser considerados como exposiciones a acciones a efectos de la clasificación de riesgo de crédito.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.11.3.4\"}]}",
+        "output_chars": 658
+      },
+      {
+        "n": 5,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_clasificacion_de_exposiciones_a_instrumentos_b2dd92",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Operacion_clasificacion_de_exposiciones_a_instrumentos_b2dd92\", \"label\": \"Clasificación de exposiciones a instrumentos\", \"n_salientes_total\": 0, \"n_entrantes_total\": 4, \"salientes\": [], \"salientes_truncado\": false}",
+        "output_chars": 222
+      },
+      {
+        "n": 6,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Definicion_exposicion_a_instrumento_como_accion_e0bf1e",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Definicion_exposicion_a_instrumento_como_accion_e0bf1e\", \"label\": \"Exposición a instrumento como acción\", \"n_salientes_total\": 1, \"n_entrantes_total\": 0, \"salientes\": [{\"relation\": \"establecida_en\", \"vecino_id\": \"TextoOrdenado_to_capitales_minimos_actual_pdf\", \"vecino_label\": \"Capitales Mínimos\", \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.11.3.4\"}]}], \"salientes_truncado\": false}",
+        "output_chars": 434
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "deuda subordinada acciones instrumentos capital clasificación",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"deuda subordinada acciones instrumentos capital clasificación\", \"total_con_match\": 728, \"resultados\": [{\"id\": \"Restriccion_ponderador_de_riesgo_del_150_para_deuda_subordinada_e_instrumentos_de_capital_qu_5f2b2d\", \"type\": \"Restriccion\", \"label\": \"Ponderador 150% — deuda subordinada\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Ponderador de riesgo del 150% para deuda subordinada e instrumentos de capital que no reúnen las características para ser considerados como acciones\"}, {\"id\": \"Operacion_deuda_subordinada_e_instrumentos_de_capital_3caf39\", \"type\": \"Operacion\", \"label\": \"Deuda subordinada e instrumentos de capital\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"Deuda subordinada e instrumentos de capital que no reúnen las características para ser considerados como acciones\"}, {\"id\": \"Restriccion_el_requisito_de_capitales_minimos_que_se_determine_para_los_instrumentos_origina_f7da29\", \"type\": \"Restriccion\", \"label\": \"Requisito mínimo de capital en canje deuda-acciones\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"El requisito de capitales mínimos que se determine para los instrumentos originados en canje de deuda por acciones en reestructuración de deudas… [+2528 chars]",
+        "output_chars": 3728
+      },
+      {
+        "n": 8,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "diferimiento indefinido pago opción cancelación acciones",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"diferimiento indefinido pago opción cancelación acciones\", \"total_con_match\": 538, \"resultados\": [{\"id\": \"Operacion_instrumento_con_opcion_del_tenedor_de_pago_en_acciones_e2f378\", \"type\": \"Operacion\", \"label\": \"Instrumento con opción del tenedor de pago en acciones\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Instrumento que incorpora una obligación para el emisor y el tenedor cuenta con la opción de exigir el pago de la obligación con acciones.\"}, {\"id\": \"Operacion_instrumento_con_opcion_de_cancelacion_mediante_acciones_0e2f02\", \"type\": \"Operacion\", \"label\": \"Instrumento con opción de cancelación mediante acciones\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"Instrumento que incorpora una obligación para el emisor y el contrato establece u otorga al emisor la opción de cancelar la obligación mediante la emisión de un…\"}, {\"id\": \"Condicion_pago_por_cancelacion_de_deudas_garantizadas_c0ce29\", \"type\": \"Condicion\", \"label\": \"Pago por cancelación de deudas garantizadas\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"el pago corresponda a la cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacional… [+2275 chars]",
+        "output_chars": 3475
+      },
+      {
+        "n": 9,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_instrumento_con_opcion_del_tenedor_de_pago_en_acciones_e2f378"
+        },
+        "output_truncado": "{\"id\": \"Operacion_instrumento_con_opcion_del_tenedor_de_pago_en_acciones_e2f378\", \"type\": \"Operacion\", \"label\": \"Instrumento con opción del tenedor de pago en acciones\", \"properties\": {\"tipo\": \"emisión de instrumento con opción de tenedor\", \"descripcion\": \"Instrumento que incorpora una obligación para el emisor y el tenedor cuenta con la opción de exigir el pago de la obligación con acciones.\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.11.3.4\"}]}",
+        "output_chars": 496
+      },
+      {
+        "n": 10,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_instrumento_con_opcion_de_cancelacion_mediante_acciones_0e2f02"
+        },
+        "output_truncado": "{\"id\": \"Operacion_instrumento_con_opcion_de_cancelacion_mediante_acciones_0e2f02\", \"type\": \"Operacion\", \"label\": \"Instrumento con opción de cancelación mediante acciones\", \"properties\": {\"tipo\": \"emisión de instrumento con opción de cancelación\", \"descripcion\": \"Instrumento que incorpora una obligación para el emisor y el contrato establece u otorga al emisor la opción de cancelar la obligación mediante la emisión de una cantidad fija de sus acciones y/o una cantidad variable de sus acciones (manteniendo los demás factores constantes, cualquier cambio del valor de la obligación es atribuible y proporcional al cambio del valor de mercado de un número fijo de acciones del emisor multiplicado por un factor predeterminado).\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.11.3.4\"}]}",
+        "output_chars": 830
+      },
+      {
+        "n": 11,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "diferimiento indefinido pago instrumento",
+          "limite": 5
+        },
+        "output_truncado": "{\"consulta\": \"diferimiento indefinido pago instrumento\", \"total_con_match\": 334, \"resultados\": [{\"id\": \"Operacion_instrumento_con_opcion_del_tenedor_de_pago_en_acciones_e2f378\", \"type\": \"Operacion\", \"label\": \"Instrumento con opción del tenedor de pago en acciones\", \"tokens_matcheados\": 2, \"resumen_propiedades\": \"Instrumento que incorpora una obligación para el emisor y el tenedor cuenta con la opción de exigir el pago de la obligación con acciones.\"}, {\"id\": \"Operacion_rescate_de_instrumento_897ea5\", \"type\": \"Operacion\", \"label\": \"Rescate de instrumento\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"rescate de instrumentos incluidos en el PNc transcurridos un mínimo de cinco años desde su emisión\"}, {\"id\": \"Operacion_pago_de_servicio_de_viajes_aaf499\", \"type\": \"Operacion\", \"label\": \"Pago de servicio de viajes\", \"tokens_matcheados\": 1, \"resumen_propiedades\": \"Pago que corresponde a una operación de servicio de viajes, código de concepto S06, excluidas las operaciones asociadas a retiros y/o consumos con tarjetas de r…\"}, {\"id\": \"Obligacion_adicionalmente_al_momento_de_la_inclusion_del_activo_en_la_cartera_de_subyacente_410493\", \"type\": \"Obligacion\", \"label\": \"Registro de al menos… [+480 chars]",
+        "output_chars": 1680
+      },
+      {
+        "n": 12,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "diferimiento indefinido",
+          "limite": 5
+        },
+        "output_truncado": "{\"consulta\": \"diferimiento indefinido\", \"total_con_match\": 0, \"resultados\": []}",
+        "output_chars": 79
+      },
+      {
+        "n": 13,
+        "tool": "buscar_nodos",
+        "input": {
+          "consulta": "punto 2.11.3 acciones deuda subordinada demás instrumentos",
+          "limite": 10
+        },
+        "output_truncado": "{\"consulta\": \"punto 2.11.3 acciones deuda subordinada demás instrumentos\", \"total_con_match\": 687, \"resultados\": [{\"id\": \"Excepcion_no_se_incluyen_las_exposiciones_a_instrumentos_previstas_en_el_punto_2_11_92d09d\", \"type\": \"Excepcion\", \"label\": \"Exclusión — exposiciones a instrumentos\", \"tokens_matcheados\": 4, \"resumen_propiedades\": \"No se incluyen las exposiciones a instrumentos previstas en el punto 2.11\"}, {\"id\": \"Comunicacion_icmecma_3_2_1\", \"type\": \"Comunicacion\", \"label\": \"COM ICMECMA punto 3.2.1\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"codigo: ICMECMA-3.2.1; tipo: referencia; numero: 0\"}, {\"id\": \"Condicion_encuadramiento_en_punto_14_2_3_ec3708\", \"type\": \"Condicion\", \"label\": \"Encuadramiento en punto 14.2.3\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"La repatriación debe estar encuadrada en el punto 14.2.3\"}, {\"id\": \"Excepcion_se_trate_de_un_endeudamiento_financiero_comprendido_en_este_punto_3_5_que_encuad_5123f9\", \"type\": \"Excepcion\", \"label\": \"Excepción mecanismo punto 7.11\", \"tokens_matcheados\": 3, \"resumen_propiedades\": \"se trate de un endeudamiento financiero comprendido en este punto 3.5. que encuadra en el mecanismo del punto 7.11. y la fecha de acceso s… [+1893 chars]",
+        "output_chars": 3093
+      },
+      {
+        "n": 14,
+        "tool": "ver_nodo",
+        "input": {
+          "id": "Operacion_deuda_subordinada_e_instrumentos_de_capital_3caf39"
+        },
+        "output_truncado": "{\"id\": \"Operacion_deuda_subordinada_e_instrumentos_de_capital_3caf39\", \"type\": \"Operacion\", \"label\": \"Deuda subordinada e instrumentos de capital\", \"properties\": {\"tipo\": \"Exposición a instrumentos\", \"descripcion\": \"Deuda subordinada e instrumentos de capital que no reúnen las características para ser considerados como acciones\"}, \"provenances\": [{\"source_doc\": \"TO_capitales_minimos_actual.pdf\", \"location\": \"Punto 2.12.10.1\"}]}",
+        "output_chars": 431
+      },
+      {
+        "n": 15,
+        "tool": "ver_vecinos",
+        "input": {
+          "id": "Operacion_deuda_subordinada_e_instrumentos_de_capital_3caf39",
+          "direccion": "salientes"
+        },
+        "output_truncado": "{\"id\": \"Operacion_deuda_subordinada_e_instrumentos_de_capital_3caf39\", \"label\": \"Deuda subordinada e instrumentos de capital\", \"n_salientes_total\": 0, \"n_entrantes_total\": 1, \"salientes\": [], \"salientes_truncado\": false}",
+        "output_chars": 220
+      }
+    ],
+    "api_calls": [
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 1473,
+        "output_tokens": 174,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 1.666
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 3938,
+        "output_tokens": 180,
+        "cache_read": 0,
+        "cache_write": 0,
+        "latency_s": 2.206
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 204,
+        "cache_read": 0,
+        "cache_write": 4511,
+        "latency_s": 1.771
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 176,
+        "cache_read": 4511,
+        "cache_write": 510,
+        "latency_s": 1.815
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 239,
+        "cache_read": 5021,
+        "cache_write": 2635,
+        "latency_s": 2.69
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 7,
+        "output_tokens": 95,
+        "cache_read": 7656,
+        "cache_write": 1307,
+        "latency_s": 1.279
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 119,
+        "cache_read": 8963,
+        "cache_write": 134,
+        "latency_s": 1.696
+      },
+      {
+        "stop_reason": "tool_use",
+        "input_tokens": 5,
+        "output_tokens": 183,
+        "cache_read": 9097,
+        "cache_write": 1308,
+        "latency_s": 1.92
+      },
+      {
+        "stop_reason": "end_turn",
+        "input_tokens": 3,
+        "output_tokens": 304,
+        "cache_read": 10405,
+        "cache_write": 510,
+        "latency_s": 3.834
+      }
+    ],
+    "final_json": {
+      "respuesta": "Los bancos deben clasificar sus exposiciones a instrumentos en las siguientes categorías: (1) deuda subordinada, (2) acciones, y (3) demás instrumentos de capital. Un instrumento se trata como una acción cuando incorpora una obligación para el emisor y tiene alguna de las siguientes características: diferimiento indefinido del pago, opción de cancelación mediante acciones (ya sea cantidad fija o variable de acciones), u opción del tenedor de pago en acciones (donde el tenedor cuenta con la opción de exigir el pago de la obligación con acciones). Los instrumentos que no reúnen estas características para ser considerados como acciones se clasifican como deuda subordinada e instrumentos de capital, con un ponderador de riesgo del 150%.",
+      "citas": [
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 2.11.1"
+        },
+        {
+          "source_doc": "TO_capitales_minimos_actual.pdf",
+          "location": "Punto 2.11.3.4"
+        }
+      ],
+      "respondible": true
+    },
+    "final_raw": "```json\n{\n  \"respuesta\": \"Los bancos deben clasificar sus exposiciones a instrumentos en las siguientes categorías: (1) deuda subordinada, (2) acciones, y (3) demás instrumentos de capital. Un instrumento se trata como una acción cuando incorpora una obligación para el emisor y tiene alguna de las siguientes características: diferimiento indefinido del pago, opción de cancelación mediante acciones (ya sea cantidad fija o variable de acciones), u opción del tenedor de pago en acciones (donde el tenedor cuenta con la opción de exigir el pago de la obligación con acciones). Los instrumentos que no reúnen estas características para ser considerados como acciones se clasifican como deuda subordinada e instrumentos de capital, con un ponderador de riesgo del 150%.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2.11.1\"\n    },\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2.11.3.4\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+    "final_stop_reason": "end_turn",
+    "truncated_max_tokens": false,
+    "parse_ok": true,
+    "parse_error": null,
+    "tool_calls_used": 15,
+    "hit_tool_limit": true,
+    "seen_provenances": [
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 2.11.1"
+      },
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 2.11.3.4"
+      },
+      {
+        "source_doc": "TO_capitales_minimos_actual.pdf",
+        "location": "Punto 2.12.10.1"
+      }
+    ],
+    "citations_unseen_raw": [],
+    "citations_unseen_normalized": [],
+    "tokens_in": 5452,
+    "tokens_out": 1674,
+    "cache_read": 45653,
+    "cache_write": 10915,
+    "cost_usd": 0.032031,
+    "latency_s": 18.936,
+    "error": null
+  },
+  "steps_full": [
+    {
+      "n": 1,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "clasificación exposiciones instrumentos",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "clasificación exposiciones instrumentos",
+        "total_con_match": 344,
+        "resultados": [
+          {
+            "id": "Operacion_clasificacion_de_exposiciones_a_instrumentos_b2dd92",
+            "type": "Operacion",
+            "label": "Clasificación de exposiciones a instrumentos",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Clasificación de exposiciones a instrumentos de capital (deuda subordinada, acciones, demás instrumentos de capital) por entidades financieras del grupo 1."
+          },
+          {
+            "id": "Operacion_exposiciones_a_instrumentos_014c82",
+            "type": "Operacion",
+            "label": "Exposiciones a instrumentos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Financiaciones en forma de instrumentos con disposiciones específicas según punto 2.11."
+          },
+          {
+            "id": "Restriccion_ponderador_de_riesgo_del_50_para_exposiciones_con_calificacion_crediticia_de_a_h_9b9e37",
+            "type": "Restriccion",
+            "label": "Ponderador 50% — clasificación A+ a A-",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "ponderador de riesgo del 50% para exposiciones con calificación crediticia de A+ hasta A-"
+          },
+          {
+            "id": "Excepcion_no_se_incluyen_las_exposiciones_a_instrumentos_previstas_en_el_punto_2_11_92d09d",
+            "type": "Excepcion",
+            "label": "Exclusión — exposiciones a instrumentos",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "No se incluyen las exposiciones a instrumentos previstas en el punto 2.11"
+          },
+          {
+            "id": "Restriccion_ponderador_de_riesgo_del_150_para_exposiciones_con_calificacion_crediticia_de_bb_02bcd5",
+            "type": "Restriccion",
+            "label": "Ponderador 150% — clasificación BB+ a B-",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "ponderador de riesgo del 150% para exposiciones con calificación crediticia de BB+ hasta B-"
+          },
+          {
+            "id": "Restriccion_ponderador_de_riesgo_del_20_para_exposiciones_con_calificacion_crediticia_de_aaa_122a47",
+            "type": "Restriccion",
+            "label": "Ponderador 20% — clasificación AAA a AA-",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "ponderador de riesgo del 20% para exposiciones con calificación crediticia de AAA hasta AA-"
+          },
+          {
+            "id": "Restriccion_ponderador_de_riesgo_del_100_para_exposiciones_con_calificacion_crediticia_de_bb_c802a4",
+            "type": "Restriccion",
+            "label": "Ponderador 100% — clasificación BBB+ a BBB-",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "ponderador de riesgo del 100% para exposiciones con calificación crediticia de BBB+ hasta BBB-"
+          },
+          {
+            "id": "Obligacion_los_instrumentos_cuyo_rendimiento_se_determine_en_funcion_del_coeficiente_de_est_4e0809",
+            "type": "Obligacion",
+            "label": "Clasificación a tasa fija — instrumentos CER",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los instrumentos cuyo rendimiento se determine en función del Coeficiente de Estabilización de Referencia (CER) deberán ser considerados a tasa fija."
+          },
+          {
+            "id": "Restriccion_los_instrumentos_no_contienen_clausulas_que_obliguen_a_la_entidad_originante_a_a_cb7af3",
+            "type": "Restriccion",
+            "label": "Prohibición — obligación alterar exposiciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los instrumentos no contienen cláusulas que obliguen a la entidad originante a alterar las exposiciones subyacentes para mejorar la calidad crediticia promedio …"
+          },
+          {
+            "id": "Restriccion_ponderador_de_riesgo_del_200_para_exposiciones_con_calificacion_crediticia_infer_152009",
+            "type": "Restriccion",
+            "label": "Ponderador 200% — clasificación inferior a B-",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "ponderador de riesgo del 200% para exposiciones con calificación crediticia inferior a B-"
+          }
+        ]
+      },
+      "output_chars": 3449
+    },
+    {
+      "n": 2,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "criterios acción instrumento",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "criterios acción instrumento",
+        "total_con_match": 41,
+        "resultados": [
+          {
+            "id": "Definicion_exposicion_a_instrumento_como_accion_e0bf1e",
+            "type": "Definicion",
+            "label": "Exposición a instrumento como acción",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Los instrumentos que incorporan una obligación para el emisor y tengan alguna de las características enumeradas (diferimiento indefinido del pago, opción de can…"
+          },
+          {
+            "id": "Obligacion_el_instrumento_que_origina_la_participacion_minoritaria_debe_observar_todos_los__b4fca8",
+            "type": "Obligacion",
+            "label": "Clasificar instrumento como acción ordinaria",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "El instrumento que origina la participación minoritaria debe observar todos los requisitos para su clasificación como acción ordinaria a efectos de la RPC"
+          },
+          {
+            "id": "Condicion_instrumento_observa_requisitos_accion_ordinaria_rpc_d07e83",
+            "type": "Condicion",
+            "label": "Instrumento observa requisitos acción ordinaria RPC",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Siempre que el instrumento que origina la participación minoritaria observe todos los requisitos para su clasificación como acción ordinaria a efectos de la RPC"
+          },
+          {
+            "id": "Operacion_rescate_de_instrumento_897ea5",
+            "type": "Operacion",
+            "label": "Rescate de instrumento",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "rescate de instrumentos incluidos en el PNc transcurridos un mínimo de cinco años desde su emisión"
+          },
+          {
+            "id": "Definicion_accion_estructura_con1_ca5583",
+            "type": "Definicion",
+            "label": "Acción: estructura COn1",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Instrumentos que tengan la misma estructura que los admitidos como capital ordinario de nivel uno (COn1) de las entidades financieras"
+          },
+          {
+            "id": "Condicion_criterios_de_inclusion_en_pnc_49d563",
+            "type": "Condicion",
+            "label": "Criterios de inclusión en PNc",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Que cumplan los criterios para su inclusión en el PNc"
+          },
+          {
+            "id": "Condicion_no_amortizacion_del_instrumento_6ef61f",
+            "type": "Condicion",
+            "label": "No amortización del instrumento",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Los resultados de la inversión se pueden realizar solo a través de la venta del instrumento o de los derechos sobre la inversión o mediante la liquidación del e…"
+          },
+          {
+            "id": "Condicion_observancia_criterios_punto_8_3_5_5e23f9",
+            "type": "Condicion",
+            "label": "Observancia criterios punto 8.3.5",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Observando los criterios establecidos en el punto 8.3.5"
+          },
+          {
+            "id": "Condicion_cumplimiento_criterios_punto_8_3_5_90f91c",
+            "type": "Condicion",
+            "label": "Cumplimiento criterios punto 8.3.5",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "que cumplan los criterios establecidos en el punto 8.3.5"
+          },
+          {
+            "id": "Operacion_neteamiento_derivado_accion_identico_22c970",
+            "type": "Operacion",
+            "label": "Neteamiento derivado-acción idéntico",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Posición compensada con una acción o índice bursátil idéntico podrá ser neteada en su totalidad, dando lugar a una única posición neta, vendida o comprada"
+          }
+        ]
+      },
+      "output_chars": 3127
+    },
+    {
+      "n": 3,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_clasificacion_de_exposiciones_a_instrumentos_b2dd92"
+      },
+      "output": {
+        "id": "Operacion_clasificacion_de_exposiciones_a_instrumentos_b2dd92",
+        "type": "Operacion",
+        "label": "Clasificación de exposiciones a instrumentos",
+        "properties": {
+          "tipo": "clasificacion",
+          "descripcion": "Clasificación de exposiciones a instrumentos de capital (deuda subordinada, acciones, demás instrumentos de capital) por entidades financieras del grupo 1."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 2.11.1"
+          }
+        ]
+      },
+      "output_chars": 460
+    },
+    {
+      "n": 4,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Definicion_exposicion_a_instrumento_como_accion_e0bf1e"
+      },
+      "output": {
+        "id": "Definicion_exposicion_a_instrumento_como_accion_e0bf1e",
+        "type": "Definicion",
+        "label": "Exposición a instrumento como acción",
+        "properties": {
+          "termino": "exposición a instrumento tratada como acción",
+          "descripcion": "Los instrumentos que incorporan una obligación para el emisor y tengan alguna de las características enumeradas (diferimiento indefinido del pago, opción de cancelación mediante acciones, opción del tenedor de pago en acciones) deben ser considerados como exposiciones a acciones a efectos de la clasificación de riesgo de crédito."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 2.11.3.4"
+          }
+        ]
+      },
+      "output_chars": 658
+    },
+    {
+      "n": 5,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_clasificacion_de_exposiciones_a_instrumentos_b2dd92",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Operacion_clasificacion_de_exposiciones_a_instrumentos_b2dd92",
+        "label": "Clasificación de exposiciones a instrumentos",
+        "n_salientes_total": 0,
+        "n_entrantes_total": 4,
+        "salientes": [],
+        "salientes_truncado": false
+      },
+      "output_chars": 222
+    },
+    {
+      "n": 6,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Definicion_exposicion_a_instrumento_como_accion_e0bf1e",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Definicion_exposicion_a_instrumento_como_accion_e0bf1e",
+        "label": "Exposición a instrumento como acción",
+        "n_salientes_total": 1,
+        "n_entrantes_total": 0,
+        "salientes": [
+          {
+            "relation": "establecida_en",
+            "vecino_id": "TextoOrdenado_to_capitales_minimos_actual_pdf",
+            "vecino_label": "Capitales Mínimos",
+            "provenances": [
+              {
+                "source_doc": "TO_capitales_minimos_actual.pdf",
+                "location": "Punto 2.11.3.4"
+              }
+            ]
+          }
+        ],
+        "salientes_truncado": false
+      },
+      "output_chars": 434
+    },
+    {
+      "n": 7,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "deuda subordinada acciones instrumentos capital clasificación",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "deuda subordinada acciones instrumentos capital clasificación",
+        "total_con_match": 728,
+        "resultados": [
+          {
+            "id": "Restriccion_ponderador_de_riesgo_del_150_para_deuda_subordinada_e_instrumentos_de_capital_qu_5f2b2d",
+            "type": "Restriccion",
+            "label": "Ponderador 150% — deuda subordinada",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Ponderador de riesgo del 150% para deuda subordinada e instrumentos de capital que no reúnen las características para ser considerados como acciones"
+          },
+          {
+            "id": "Operacion_deuda_subordinada_e_instrumentos_de_capital_3caf39",
+            "type": "Operacion",
+            "label": "Deuda subordinada e instrumentos de capital",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "Deuda subordinada e instrumentos de capital que no reúnen las características para ser considerados como acciones"
+          },
+          {
+            "id": "Restriccion_el_requisito_de_capitales_minimos_que_se_determine_para_los_instrumentos_origina_f7da29",
+            "type": "Restriccion",
+            "label": "Requisito mínimo de capital en canje deuda-acciones",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "El requisito de capitales mínimos que se determine para los instrumentos originados en canje de deuda por acciones en reestructuración de deudas no puede ser me…"
+          },
+          {
+            "id": "Operacion_autorizacion_aportes_capital_instrumentos_deuda_b38a10",
+            "type": "Operacion",
+            "label": "Autorización aportes capital instrumentos deuda",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Solicitud de autorización de aportes de capital con los instrumentos a que se refieren los puntos 8.6.1. a 8.6.3."
+          },
+          {
+            "id": "Operacion_exposiciones_a_instrumentos_deuda_subordinada_719f82",
+            "type": "Operacion",
+            "label": "Exposiciones a instrumentos — deuda subordinada",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Tenencia de exposiciones a instrumentos de deuda subordinada por parte de entidades financieras del Grupo 2"
+          },
+          {
+            "id": "Obligacion_las_inversiones_en_instrumentos_de_capital_que_no_cumplan_con_los_criterios_para_6d016b",
+            "type": "Obligacion",
+            "label": "Clasificación de inversiones en capital como CO ordinarias",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Las inversiones en instrumentos de capital que no cumplan con los criterios para ser clasificados como CO, CA o PN de la entidad financiera serán considerados c…"
+          },
+          {
+            "id": "Obligacion_los_instrumentos_incluidos_en_el_ca_deberan_estar_subordinados_a_depositantes_ac_72e986",
+            "type": "Obligacion",
+            "label": "Subordinación a depositantes, acreedores quirografarios y deuda subordinada",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Los instrumentos incluidos en el CA deberán estar subordinados a depositantes, acreedores quirografarios y a deuda subordinada de la entidad financiera."
+          },
+          {
+            "id": "Restriccion_exposiciones_a_deuda_subordinada_ponderador_de_riesgo_del_150_3fbc00",
+            "type": "Restriccion",
+            "label": "Ponderador 150% — Deuda subordinada",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Exposiciones a deuda subordinada: ponderador de riesgo del 150%"
+          },
+          {
+            "id": "Restriccion_las_entidades_deben_mantener_exigencia_de_capital_por_el_riesgo_de_mantener_posi_59c8ba",
+            "type": "Restriccion",
+            "label": "Exigencia capital por riesgo acciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Las entidades deben mantener exigencia de capital por el riesgo de mantener posiciones en acciones en la cartera de negociación."
+          },
+          {
+            "id": "Obligacion_cuando_los_aportes_contabilizados_provengan_de_la_capitalizacion_de_deuda_subord_b69352",
+            "type": "Obligacion",
+            "label": "Mantener tratamiento deuda subordinada",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Cuando los aportes contabilizados provengan de la capitalización de deuda subordinada o de instrumentos representativos de deuda que puedan ser considerados –to…"
+          }
+        ]
+      },
+      "output_chars": 3728
+    },
+    {
+      "n": 8,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "diferimiento indefinido pago opción cancelación acciones",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "diferimiento indefinido pago opción cancelación acciones",
+        "total_con_match": 538,
+        "resultados": [
+          {
+            "id": "Operacion_instrumento_con_opcion_del_tenedor_de_pago_en_acciones_e2f378",
+            "type": "Operacion",
+            "label": "Instrumento con opción del tenedor de pago en acciones",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Instrumento que incorpora una obligación para el emisor y el tenedor cuenta con la opción de exigir el pago de la obligación con acciones."
+          },
+          {
+            "id": "Operacion_instrumento_con_opcion_de_cancelacion_mediante_acciones_0e2f02",
+            "type": "Operacion",
+            "label": "Instrumento con opción de cancelación mediante acciones",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Instrumento que incorpora una obligación para el emisor y el contrato establece u otorga al emisor la opción de cancelar la obligación mediante la emisión de un…"
+          },
+          {
+            "id": "Condicion_pago_por_cancelacion_de_deudas_garantizadas_c0ce29",
+            "type": "Condicion",
+            "label": "Pago por cancelación de deudas garantizadas",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "el pago corresponda a la cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacionales y/o agenci…"
+          },
+          {
+            "id": "Operacion_pago_de_bienes_importados_alquiler_con_opcion_b803d5",
+            "type": "Operacion",
+            "label": "Pago de bienes importados — alquiler con opción",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Pagos al exterior por bienes importados en el marco de contratos de alquiler de bienes con opciones de reemplazo, compra y/o devolución"
+          },
+          {
+            "id": "Condicion_convenios_de_pago_de_concordatos_umbral_de_cancelacion_d76b64",
+            "type": "Condicion",
+            "label": "Convenios de pago de concordatos — Umbral de cancelación",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Se considerará si el deudor mantiene convenios de pago resultantes de concordatos judiciales o extrajudiciales homologados (incluyendo acuerdos preventivos extr…"
+          },
+          {
+            "id": "Condicion_pago_cancelacion_deuda_operacion_financiada_antes_13_12_23_045ec9",
+            "type": "Condicion",
+            "label": "Pago cancelación deuda operación financiada antes 13/12/23",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "el pago corresponda a la cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por entidades financieras locales o del e…"
+          },
+          {
+            "id": "Condicion_pago_es_cancelacion_de_deuda_financiada_por_organismos_internacionales_0b4360",
+            "type": "Condicion",
+            "label": "Pago es cancelación de deuda financiada por organismos internacionales",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "el pago corresponda a la cancelación de deudas por operaciones financiadas o garantizadas con anterioridad al 13/12/23 por organismos internacionales y/o agenci…"
+          },
+          {
+            "id": "Condicion_opciones_sobre_acciones_30e016",
+            "type": "Condicion",
+            "label": "Opciones sobre acciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "En el caso de las opciones sobre acciones, cada mercado nacional se considerará como un subyacente separado"
+          },
+          {
+            "id": "Operacion_exposiciones_a_acciones_4baa91",
+            "type": "Operacion",
+            "label": "Exposiciones a acciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Acciones (definidas conforme al punto 2.11.3.)"
+          },
+          {
+            "id": "Operacion_opciones_sobre_acciones_30e016",
+            "type": "Operacion",
+            "label": "Opciones sobre acciones",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Opciones sobre acciones donde cada mercado nacional se considera como un subyacente separado"
+          }
+        ]
+      },
+      "output_chars": 3475
+    },
+    {
+      "n": 9,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_instrumento_con_opcion_del_tenedor_de_pago_en_acciones_e2f378"
+      },
+      "output": {
+        "id": "Operacion_instrumento_con_opcion_del_tenedor_de_pago_en_acciones_e2f378",
+        "type": "Operacion",
+        "label": "Instrumento con opción del tenedor de pago en acciones",
+        "properties": {
+          "tipo": "emisión de instrumento con opción de tenedor",
+          "descripcion": "Instrumento que incorpora una obligación para el emisor y el tenedor cuenta con la opción de exigir el pago de la obligación con acciones."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 2.11.3.4"
+          }
+        ]
+      },
+      "output_chars": 496
+    },
+    {
+      "n": 10,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_instrumento_con_opcion_de_cancelacion_mediante_acciones_0e2f02"
+      },
+      "output": {
+        "id": "Operacion_instrumento_con_opcion_de_cancelacion_mediante_acciones_0e2f02",
+        "type": "Operacion",
+        "label": "Instrumento con opción de cancelación mediante acciones",
+        "properties": {
+          "tipo": "emisión de instrumento con opción de cancelación",
+          "descripcion": "Instrumento que incorpora una obligación para el emisor y el contrato establece u otorga al emisor la opción de cancelar la obligación mediante la emisión de una cantidad fija de sus acciones y/o una cantidad variable de sus acciones (manteniendo los demás factores constantes, cualquier cambio del valor de la obligación es atribuible y proporcional al cambio del valor de mercado de un número fijo de acciones del emisor multiplicado por un factor predeterminado)."
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 2.11.3.4"
+          }
+        ]
+      },
+      "output_chars": 830
+    },
+    {
+      "n": 11,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "diferimiento indefinido pago instrumento",
+        "limite": 5
+      },
+      "output": {
+        "consulta": "diferimiento indefinido pago instrumento",
+        "total_con_match": 334,
+        "resultados": [
+          {
+            "id": "Operacion_instrumento_con_opcion_del_tenedor_de_pago_en_acciones_e2f378",
+            "type": "Operacion",
+            "label": "Instrumento con opción del tenedor de pago en acciones",
+            "tokens_matcheados": 2,
+            "resumen_propiedades": "Instrumento que incorpora una obligación para el emisor y el tenedor cuenta con la opción de exigir el pago de la obligación con acciones."
+          },
+          {
+            "id": "Operacion_rescate_de_instrumento_897ea5",
+            "type": "Operacion",
+            "label": "Rescate de instrumento",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "rescate de instrumentos incluidos en el PNc transcurridos un mínimo de cinco años desde su emisión"
+          },
+          {
+            "id": "Operacion_pago_de_servicio_de_viajes_aaf499",
+            "type": "Operacion",
+            "label": "Pago de servicio de viajes",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Pago que corresponde a una operación de servicio de viajes, código de concepto S06, excluidas las operaciones asociadas a retiros y/o consumos con tarjetas de r…"
+          },
+          {
+            "id": "Obligacion_adicionalmente_al_momento_de_la_inclusion_del_activo_en_la_cartera_de_subyacente_410493",
+            "type": "Obligacion",
+            "label": "Registro de al menos un pago",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Adicionalmente, al momento de la inclusión del activo en la cartera de subyacentes, deberá haberse registrado al menos un pago, excepto en el caso de las estruc…"
+          },
+          {
+            "id": "Condicion_pago_posterior_del_importador_79ac31",
+            "type": "Condicion",
+            "label": "Pago posterior del importador",
+            "tokens_matcheados": 1,
+            "resumen_propiedades": "Una vez superados los inconvenientes existentes, si el importador efectuara el pago."
+          }
+        ]
+      },
+      "output_chars": 1680
+    },
+    {
+      "n": 12,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "diferimiento indefinido",
+        "limite": 5
+      },
+      "output": {
+        "consulta": "diferimiento indefinido",
+        "total_con_match": 0,
+        "resultados": []
+      },
+      "output_chars": 79
+    },
+    {
+      "n": 13,
+      "tool": "buscar_nodos",
+      "input": {
+        "consulta": "punto 2.11.3 acciones deuda subordinada demás instrumentos",
+        "limite": 10
+      },
+      "output": {
+        "consulta": "punto 2.11.3 acciones deuda subordinada demás instrumentos",
+        "total_con_match": 687,
+        "resultados": [
+          {
+            "id": "Excepcion_no_se_incluyen_las_exposiciones_a_instrumentos_previstas_en_el_punto_2_11_92d09d",
+            "type": "Excepcion",
+            "label": "Exclusión — exposiciones a instrumentos",
+            "tokens_matcheados": 4,
+            "resumen_propiedades": "No se incluyen las exposiciones a instrumentos previstas en el punto 2.11"
+          },
+          {
+            "id": "Comunicacion_icmecma_3_2_1",
+            "type": "Comunicacion",
+            "label": "COM ICMECMA punto 3.2.1",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "codigo: ICMECMA-3.2.1; tipo: referencia; numero: 0"
+          },
+          {
+            "id": "Condicion_encuadramiento_en_punto_14_2_3_ec3708",
+            "type": "Condicion",
+            "label": "Encuadramiento en punto 14.2.3",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La repatriación debe estar encuadrada en el punto 14.2.3"
+          },
+          {
+            "id": "Excepcion_se_trate_de_un_endeudamiento_financiero_comprendido_en_este_punto_3_5_que_encuad_5123f9",
+            "type": "Excepcion",
+            "label": "Excepción mecanismo punto 7.11",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "se trate de un endeudamiento financiero comprendido en este punto 3.5. que encuadra en el mecanismo del punto 7.11. y la fecha de acceso sea consistente con las…"
+          },
+          {
+            "id": "Obligacion_la_facultad_de_revocacion_segun_lo_establecido_en_el_apartado_v_del_punto_2_3_1__bcb9b9",
+            "type": "Obligacion",
+            "label": "Incluir facultad de revocación",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "La facultad de revocación según lo establecido en el apartado v) del punto 2.3.1.1."
+          },
+          {
+            "id": "Excepcion_no_resulta_de_aplicacion_el_requisito_de_declaracion_jurada_para_operaciones_de__0dd713",
+            "type": "Excepcion",
+            "label": "Excepción operaciones punto 3.14.2",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "No resulta de aplicación el requisito de declaración jurada para operaciones de clientes realizadas en el marco del punto 3.14.2."
+          },
+          {
+            "id": "Excepcion_se_excluyen_las_exposiciones_previstas_en_el_punto_2_11_0db7e7",
+            "type": "Excepcion",
+            "label": "Exclusión — exposiciones punto 2.11",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Se excluyen las exposiciones previstas en el punto 2.11"
+          },
+          {
+            "id": "Restriccion_ponderador_de_riesgo_del_150_para_deuda_subordinada_e_instrumentos_de_capital_qu_5f2b2d",
+            "type": "Restriccion",
+            "label": "Ponderador 150% — deuda subordinada",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Ponderador de riesgo del 150% para deuda subordinada e instrumentos de capital que no reúnen las características para ser considerados como acciones"
+          },
+          {
+            "id": "Condicion_cumplimiento_requisitos_punto_8_3_2_cfa269",
+            "type": "Condicion",
+            "label": "Cumplimiento requisitos punto 8.3.2.",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Que cumplan los requisitos previstos en el punto 8.3.2."
+          },
+          {
+            "id": "Excepcion_salvo_que_la_operacion_quedase_comprendida_en_la_situacion_prevista_en_el_punto__4eb9c3",
+            "type": "Excepcion",
+            "label": "Excepción situación punto 10.10.2.11",
+            "tokens_matcheados": 3,
+            "resumen_propiedades": "Salvo que la operación quedase comprendida en la situación prevista en el punto 10.10.2.11"
+          }
+        ]
+      },
+      "output_chars": 3093
+    },
+    {
+      "n": 14,
+      "tool": "ver_nodo",
+      "input": {
+        "id": "Operacion_deuda_subordinada_e_instrumentos_de_capital_3caf39"
+      },
+      "output": {
+        "id": "Operacion_deuda_subordinada_e_instrumentos_de_capital_3caf39",
+        "type": "Operacion",
+        "label": "Deuda subordinada e instrumentos de capital",
+        "properties": {
+          "tipo": "Exposición a instrumentos",
+          "descripcion": "Deuda subordinada e instrumentos de capital que no reúnen las características para ser considerados como acciones"
+        },
+        "provenances": [
+          {
+            "source_doc": "TO_capitales_minimos_actual.pdf",
+            "location": "Punto 2.12.10.1"
+          }
+        ]
+      },
+      "output_chars": 431
+    },
+    {
+      "n": 15,
+      "tool": "ver_vecinos",
+      "input": {
+        "id": "Operacion_deuda_subordinada_e_instrumentos_de_capital_3caf39",
+        "direccion": "salientes"
+      },
+      "output": {
+        "id": "Operacion_deuda_subordinada_e_instrumentos_de_capital_3caf39",
+        "label": "Deuda subordinada e instrumentos de capital",
+        "n_salientes_total": 0,
+        "n_entrantes_total": 1,
+        "salientes": [],
+        "salientes_truncado": false
+      },
+      "output_chars": 220
+    }
+  ],
+  "raw_turns_agent": [
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPT5HjUpptb7ChRdquG",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre la clasificación de exposiciones a instrumentos y los criterios para determinar si algo se trata como una acción.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01LnpcLaMfE5PwTrnJyEWgku",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "clasificación exposiciones instrumentos",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01VgZzxzqEbo9HVPUoRoFNtV",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "criterios acción instrumento",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 1473,
+          "output_tokens": 174,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPTCVpPH18mWY5ErUoX",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Encontré nodos relevantes. Voy a ver el nodo sobre \"Clasificación de exposiciones a instrumentos\" y el de \"Exposición a instrumento como acción\".",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01UUx2PMoopTGmU56JNNWmTr",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_clasificacion_de_exposiciones_a_instrumentos_b2dd92"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01UX7nT8dpb13TuVMKNvU7N2",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Definicion_exposicion_a_instrumento_como_accion_e0bf1e"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 3938,
+          "output_tokens": 180,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPTMnv4jfyjoVAkk1Cj",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Perfecto. Ahora voy a explorar las relaciones de estos nodos para obtener más detalles sobre los criterios específicos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Y6zPY2PMxEA2DBPbDynHny",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_clasificacion_de_exposiciones_a_instrumentos_b2dd92",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_0111Jd6gU1aVMybckD9Ateeb",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Definicion_exposicion_a_instrumento_como_accion_e0bf1e",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 4511
+          },
+          "cache_creation_input_tokens": 4511,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 204,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPTVXzruNsDF7E8p3Gh",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar más información sobre los criterios específicos y las categorías de clasificación de instrumentos.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Ng6wUmmLmTbwVA9xAp6yg4",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "deuda subordinada acciones instrumentos capital clasificación",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_0112W9pWr43HRx59idff3Mu1",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "diferimiento indefinido pago opción cancelación acciones",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 510
+          },
+          "cache_creation_input_tokens": 510,
+          "cache_read_input_tokens": 4511,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 176,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPTdHqcsxYSmrUkNPJb",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Excelente. Voy a ver los nodos sobre los instrumentos con opciones para obtener más detalles.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01C2MdXSL4vAV6jJavn8nRwn",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_instrumento_con_opcion_del_tenedor_de_pago_en_acciones_e2f378"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_016wjdjd3wUXTgWHPcUw5ne3",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_instrumento_con_opcion_de_cancelacion_mediante_acciones_0e2f02"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01AE7riVcy8KecYVFz9pmn8T",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "diferimiento indefinido pago instrumento",
+              "limite": 5
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 2635
+          },
+          "cache_creation_input_tokens": 2635,
+          "cache_read_input_tokens": 5021,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 239,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPTptLL4xK78nptzLXH",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar específicamente sobre el diferimiento indefinido del pago.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Uhd9cNWsubJLfJwu6cSqEf",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "diferimiento indefinido",
+              "limite": 5
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1307
+          },
+          "cache_creation_input_tokens": 1307,
+          "cache_read_input_tokens": 7656,
+          "inference_geo": "not_available",
+          "input_tokens": 7,
+          "output_tokens": 95,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPTvtVMowed9j5SULEm",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a buscar información sobre las categorías de clasificación de instrumentos (acciones, deuda subordinada, etc.).",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01Le9W6Uo2MzGnUsHkmMLQJs",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "consulta": "punto 2.11.3 acciones deuda subordinada demás instrumentos",
+              "limite": 10
+            },
+            "name": "buscar_nodos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 134
+          },
+          "cache_creation_input_tokens": 134,
+          "cache_read_input_tokens": 8963,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 119,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPU3fnmqQGGAAfeDjNG",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "Voy a ver el nodo sobre deuda subordinada e instrumentos de capital para obtener más información sobre las categorías.",
+            "type": "text"
+          },
+          {
+            "id": "toolu_01JtC6KU49GAwXPvTfzVc6j9",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_deuda_subordinada_e_instrumentos_de_capital_3caf39"
+            },
+            "name": "ver_nodo",
+            "type": "tool_use"
+          },
+          {
+            "id": "toolu_01KsH8m4XFt75eHmqQVW9i5U",
+            "caller": {
+              "type": "direct"
+            },
+            "input": {
+              "id": "Operacion_deuda_subordinada_e_instrumentos_de_capital_3caf39",
+              "direccion": "salientes"
+            },
+            "name": "ver_vecinos",
+            "type": "tool_use"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "tool_use",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 1308
+          },
+          "cache_creation_input_tokens": 1308,
+          "cache_read_input_tokens": 9097,
+          "inference_geo": "not_available",
+          "input_tokens": 5,
+          "output_tokens": 183,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "hit": false,
+      "raw": {
+        "id": "msg_011CfWPUByc1vUDm1V9GSAKH",
+        "container": null,
+        "content": [
+          {
+            "citations": null,
+            "text": "```json\n{\n  \"respuesta\": \"Los bancos deben clasificar sus exposiciones a instrumentos en las siguientes categorías: (1) deuda subordinada, (2) acciones, y (3) demás instrumentos de capital. Un instrumento se trata como una acción cuando incorpora una obligación para el emisor y tiene alguna de las siguientes características: diferimiento indefinido del pago, opción de cancelación mediante acciones (ya sea cantidad fija o variable de acciones), u opción del tenedor de pago en acciones (donde el tenedor cuenta con la opción de exigir el pago de la obligación con acciones). Los instrumentos que no reúnen estas características para ser considerados como acciones se clasifican como deuda subordinada e instrumentos de capital, con un ponderador de riesgo del 150%.\",\n  \"citas\": [\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2.11.1\"\n    },\n    {\n      \"source_doc\": \"TO_capitales_minimos_actual.pdf\",\n      \"location\": \"Punto 2.11.3.4\"\n    }\n  ],\n  \"respondible\": true\n}\n```",
+            "type": "text"
+          }
+        ],
+        "model": "claude-haiku-4-5-20251001",
+        "role": "assistant",
+        "stop_details": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": null,
+        "type": "message",
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 510
+          },
+          "cache_creation_input_tokens": 510,
+          "cache_read_input_tokens": 10405,
+          "inference_geo": "not_available",
+          "input_tokens": 3,
+          "output_tokens": 304,
+          "server_tool_use": null,
+          "service_tier": "standard"
+        },
+        "diagnostics": null
+      }
+    }
+  ]
+}
