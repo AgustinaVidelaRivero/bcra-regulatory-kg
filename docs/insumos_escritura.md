@@ -138,21 +138,38 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      del plan, antes de L-ESQ-R2.
   4. El costo del llenado por un modelo es una estimación no verificada.
 
-## 4. Listas cerradas y lo no mapeable (U-LISTAS-NOMAP) — pendiente
+## 4. Listas cerradas y lo no mapeable (U-LISTAS-NOMAP) — disponible
 
-- **Ruta y commit:** `reports/u_listas_nomap/` (mandato
-  `docs/mandatos/ULISTAS_NOMAP_diseno.md`, firmado en `30f106c`). Commit pendiente.
-- **Qué contendrá:**
-  - el inventario de las listas cerradas sobre el crudo de E1;
-  - los sujetos posiblemente forzados;
-  - la tasa de `sujeto_propuesto` literal en el chunk;
-  - la re-resolución contrafáctica;
-  - las omisiones;
-  - el diseño del proceso para lo no mapeable.
+- **Ruta y commit:**
+  - `reports/u_listas_nomap/`: `n1_inventario.json` y `.md` y `muestra_forzados_30.csv`
+    (N1, commit `9c5331c`, generados por `u_listas_n1.py`); `diseno_listas_nomap.md`
+    (N2, commit `acc310e`);
+  - mandato `docs/mandatos/ULISTAS_NOMAP_diseno.md`, firmado en `30f106c`;
+  - comandos: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B reports/u_listas_nomap/u_listas_n1.py --out-dir reports/u_listas_nomap`,
+    y el comando de cifras derivadas al pie del diseño. Doble corrida byte a byte
+    idéntica; re-corridas de la mesa también idénticas.
+- **Qué contiene:**
+  - el inventario de las listas cerradas en el crudo de E1 (r1 y tanda 0), con su
+    paso por el validador y su llegada al grafo;
+  - los sujetos: propuestos, posibles forzados, literalidad de la mención y la
+    re-resolución contrafáctica;
+  - las omisiones y la diferencia entre los dos catálogos;
+  - el diseño: política por campo, mención del sujeto con verificación en dos niveles,
+    resolución en código, registro de no mapeados y omisiones con categoría.
+
+  La orientación de la autora para L-ESQ-R2 sobre las siete decisiones del diseño está
+  registrada en el plan (fila B2.11, unidad 5).
 - **Alimenta:**
-  - capítulo 3: las listas cerradas y el catálogo de sujetos;
-  - capítulo 4: la validación en código y la resolución de sujetos.
-- **Salvedades conocidas:**
-  - la re-resolución con los seis ids que faltan en el JSON es contrafáctica, no un
-    resultado;
-  - la muestra de posibles forzados no se lee en la unidad.
+  - capítulo 3: cómo trata el esquema lo que no encaja en sus listas;
+  - capítulo 4: la resolución de sujetos en código, el registro de no mapeados y las
+    omisiones.
+- **Salvedades:**
+  1. La proyección de menciones que fallarían la verificación (del orden de 1.171 sobre
+     4.099 en el crudo de diez) sale de los sujetos propuestos y no es representativa
+     de las menciones del catálogo. La tasa real la mide U-PROMPT-R2 o U-REEXT-T0.
+  2. Es un diseño: nada está implementado.
+  3. Las cifras se leen por nivel (crudo del primer intento, entrada de E2 y grafo); por
+     ejemplo, «otra» en Obligacion.tipo es 1.398 de 2.365 en el crudo de diez y 1.411 de
+     2.367 en el grafo.
+  4. La muestra de 30 posibles forzados está sellada y sin leer; quién la lee lo decide
+     la autora.
