@@ -1,4 +1,4 @@
-BORRADOR — PENDIENTE DE FIRMA DE LA AUTORA
+FIRMADO por la autora — 2026-09-30
 
 MANDATO — U-INSUMOS-CAP: INSUMOS DEL REPO PARA LOS CAPÍTULOS 3 Y 4.
 Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.

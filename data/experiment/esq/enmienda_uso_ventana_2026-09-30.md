@@ -1,6 +1,6 @@
 # Enmienda al laudo de esquema congelado — uso de la ventana única del §7 en el ciclo posterior a la tanda 0
 
-**BORRADOR — PENDIENTE DE FIRMA DE LA AUTORA** · Fecha: 2026-09-30.
+**FIRMADA por la autora** · Fecha: 2026-09-30.
 
 Enmienda con fecha al laudo `data/experiment/esq/laudo_esquema_congelado.md`
 (FIRMADO 03/09/2026, sellado en `2593d4d`), §7, y a su enmienda del 25/09/2026
@@ -118,4 +118,4 @@ La enmienda del 25/09 fija cuatro precisiones que esta enmienda toca:
 
 ## Firma
 
-PENDIENTE de la autora.
+FIRMADA por la autora el 30/09/2026.

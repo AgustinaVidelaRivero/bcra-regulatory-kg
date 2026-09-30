@@ -1,6 +1,6 @@
 # Enmienda al pre-registro de la tanda 0 — A8: se usa la ventana única del §7
 
-**BORRADOR — PENDIENTE DE FIRMA DE LA AUTORA** · Fecha: 2026-09-30.
+**FIRMADA por la autora** · Fecha: 2026-09-30.
 
 Enmienda con fecha a `docs/preregistro_tanda0.md` (FIRMADO por la autora el
 25/09/2026, sellado en `c80b03f`, sha256 `4b45145d7d7f8f50…`). Verifiqué el sha el
@@ -49,4 +49,4 @@ documentos de la tanda 0 pasan a haber informado el esquema. La rama «si se usa
 
 ## Firma
 
-PENDIENTE de la autora.
+FIRMADA por la autora el 30/09/2026.
