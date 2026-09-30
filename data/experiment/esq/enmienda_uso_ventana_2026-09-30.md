@@ -60,8 +60,8 @@ La enmienda del 25/09 fija cuatro precisiones que esta enmienda toca:
    antes de B6.3.
 4. **Desvío declarado.** Varias de estas correcciones no son una falla de esquema
    que produzca falsedad en campo estructurado, en el sentido de la precisión 1.
-   Por ejemplo, la validación en código o la mención del sujeto. Entran porque la
-   autora lo decide así para este único ciclo, y queda declarado acá.
+   Por ejemplo, la mención del sujeto. Entran porque la autora lo decide así para
+   este único ciclo, y queda declarado acá.
 5. **Contenido.** El contenido del cambio de esquema lo lauda L-ESQ-R2 (plan,
    B2.11, unidad 5), enmienda fechada al laudo `2593d4d`, después de U-UMBRAL y
    U-LISTAS-NOMAP. Esta enmienda solo declara el uso de la ventana, su alcance y
@@ -69,6 +69,11 @@ La enmienda del 25/09 fija cuatro precisiones que esta enmienda toca:
 6. **Re-extracción.** La de los diez TOs de la tanda 0 con el prefijo nuevo, sobre
    el corpus congelado (U-REEXT-T0, plan, B2.11, unidad 11), antes de sellar el
    pre-registro de B6.3 (precisión 2).
+7. **Lo que no necesita la ventana.** Las correcciones de pipeline que se hacen en
+   código sobre la salida ya guardada, sin cambiar el prefijo ni el formato de
+   salida de E1 (validador, ensamblado, resolución de remisiones, E4, controles de
+   forma), no son cambios de esquema y no consumen la ventana. Siguen el ciclo de
+   releases del pipeline (fila B2.10 y sus sucesoras), cada una con su laudo.
 
 ## 3. Consecuencias
 
@@ -81,9 +86,26 @@ La enmienda del 25/09 fija cuatro precisiones que esta enmienda toca:
    exclusión se registra en `documentos_excluidos_esq.json`, o en el artefacto que
    B6.3 cite al construir su conjunto, con la fecha de esta enmienda una vez
    firmada (plan, fila B6.3).
-3. **Vigilancias (1) a (9).** Se miden en la tanda 1 como estaba previsto. Con la
-   ventana usada, su lectura ya no abre un ciclo: toda corrección que pidan es
-   release posterior.
+3. **Después de este ciclo.** Si la tanda 1 u otra etapa revela una falla cuya
+   corrección exige cambiar el esquema, el prefijo o el formato de salida de E1,
+   esa corrección es release posterior declarada y no entra al grafo que evalúa
+   B6.3. Las que se resuelven en código sobre lo ya extraído siguen el ciclo de
+   releases del pipeline y se declaran antes de sellar el pre-registro de B6.3. Las
+   vigilancias (1) a (9) se miden en la tanda 1 como estaba previsto, bajo esta
+   misma regla.
+4. **Vigilancia (9): el remedio del laudo de cierre de B5.4, re-expresado.** El
+   laudo de cierre de B5.4 fija que, si la tasa de la tanda 1 es mala, el destino
+   del id `Sujeto_entidad_originante_de_transferencia` es el «retiro a r2 con caso
+   de promoción» (`docs/laudo_B5.4_cierre_catalogo.md:164`). Como r2 ahora va antes
+   de la tanda 1, el remedio se re-expresa así:
+   - si L-ESQ-R2 adopta el catálogo en código, con el `sujeto_id` del modelo como
+     sugerencia y la resolución en código, el retiro de un id que pida la tanda 1
+     se hace en la resolución en código, no cambia el prefijo y sigue el ciclo de
+     releases del pipeline, antes de sellar el pre-registro de B6.3;
+   - si L-ESQ-R2 no adopta ese diseño, el retiro cambia el prefijo y es release
+     posterior declarada, que no entra al grafo que evalúa B6.3. En ese caso queda
+     declarado el cambio de efecto del remedio de B5.4: el retiro ya no ocurre antes
+     de la evaluación final.
 
 ## 4. Qué no cambia
 

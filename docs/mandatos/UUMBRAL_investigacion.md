@@ -12,9 +12,14 @@ Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
 
 CONTEXTO. Plan, fila B2.11, unidad 3 (docs/plan_tesis.md:391); checklist X14.
 - La autora decide cómo se modelan los umbrales (porcentajes, plazos, montos,
-  «veces»). Es una decisión de esquema.
-- Tres opciones: (A) propiedad del nodo; (B) atributo de la relación; (C) paso
-  posterior, en código, sobre el nodo ya extraído.
+  «veces»). Son dos decisiones separadas, que el reporte presenta por separado
+  (principio 11 del plan, :298: el esquema se decide por el contenido y el uso de
+  los documentos, y el pipeline se adapta al esquema):
+  - **de esquema**, dónde vive el umbral: propiedad del nodo o atributo de la
+    relación;
+  - **de pipeline**, cómo se llena: lo emite el extractor en E1, lo calcula un
+    paso posterior en código, o lo llena un modelo sobre el subconjunto de nodos
+    con cuantía.
 - La unidad mide y presenta evidencia; no decide. La decisión va a L-ESQ-R2
   (plan, B2.11, unidad 5).
 - Rige el principio 12 del plan (:299): adaptar en código antes que reprocesar.
@@ -67,8 +72,11 @@ DECISIONES YA TOMADAS. No se re-deciden.
    juicio sobre texto y no se puede evitar, se rotula «clasificación asistida» y
    queda para revisión de la autora.
 5. No se modifica ningún archivo del pipeline, del grafo, de la suite ni de la
-   evaluación. El prototipo del paso (C) es un script de la unidad, en su
-   directorio.
+   evaluación. El prototipo del llenado por paso posterior en código es un script
+   de la unidad, en su directorio.
+6. El llenado por un modelo no se corre en esta unidad (USD 0): se dimensiona el
+   subconjunto de nodos con cuantía y su costo queda como ESTIMACIÓN NO
+   VERIFICADA, con la tarifa y el comando de donde sale.
 
 U1 — Mediciones sobre los grafos y E0. USD 0.
 a. Script nuevo reports/u_umbral/u_umbral_u1.py, de solo lectura.
@@ -95,14 +103,14 @@ d. **Medición 3, cuantías sin campo.**
    - Descripciones con dos o más cuantías.
    - Cuantías que empiezan después del carácter 160 de la descripción, que el
      resumen de `buscar_nodos` no muestra.
-e. **Medición 6, prototipo del paso (C).**
+e. **Medición 6, prototipo del llenado por paso posterior en código.**
    - Extracción por regex de valores estructurados (tipo de cuantía, valor,
      unidad) desde la descripción.
    - Acuerdo contra `umbral` y `plazo` donde existen: coincide, difiere o el
      prototipo no extrae. La regla de coincidencia se declara antes.
    - Contá los casos que la regex no cubre: números en letras, varios valores,
      umbrales relacionales.
-f. **Aristas `limita`, insumo de la opción (B).**
+f. **Aristas `limita`, insumo de la representación como atributo de la relación.**
    - Cuántas hay y desde qué tipo de Restriccion salen; cuántas salen de una
      Restriccion con `umbral`.
    - Restricciones con `umbral` y sin `limita`.
@@ -112,7 +120,7 @@ g. Salidas: reports/u_umbral/u1_mediciones.json y u1_mediciones.md, con doble
    corrida byte a byte idéntica.
 FRENO U1: tabla por medición, con conteos y su comando; sha256 de lo escrito.
 
-U2 — Muestra, trazas y evidencia por opción. USD 0.
+U2 — Muestra, trazas y evidencia por eje. USD 0.
 a. Script nuevo reports/u_umbral/u_umbral_u2.py, de solo lectura.
 b. **Medición 4, muestra de `limita`.**
    - Sorteo de 30 aristas `limita` de KG-Tanda0-Desarrollo-r1: semilla 20260930,
@@ -141,19 +149,27 @@ c. **Medición 5, trazas.**
      - si les hizo `ver_nodo`.
    - Es un diagnóstico de dónde se pierde el valor (grafo, búsqueda, navegación o
      generación), no un resultado.
-d. **Reporte** reports/u_umbral/reporte_u_umbral.md. Para cada opción, (A), (B) y
-   (C):
-   - qué dice la evidencia de U1 y U2 a favor y en contra, con conteos y
-     comandos;
+d. **Reporte** reports/u_umbral/reporte_u_umbral.md. Presenta dos decisiones
+   separadas y ordena la evidencia de U1 y U2 según esos dos ejes:
+   - **decisión de esquema**, dónde vive el umbral: propiedad del nodo o atributo
+     de la relación;
+   - **decisión de pipeline**, cómo se llena: lo emite el extractor en E1, lo
+     calcula un paso posterior en código, o lo llena un modelo sobre el
+     subconjunto de nodos con cuantía (con el dimensionamiento de la decisión
+     6).
+   Para cada alternativa de cada eje:
+   - qué dice la evidencia a favor y en contra, con conteos y comandos;
    - qué cambia en el pipeline: prompt de E1, tool schema, E2, herramientas del
      agente (algunas selladas), suite y shapes;
    - si obliga a re-extraer (principio 12);
    - cómo queda el caso `cap::1.2`.
-   Al final, una PROPUESTA rotulada como tal, con su alternativa.
+   La propuesta final es un par (representación, método de llenado), rotulado
+   como PROPUESTA, con su alternativa, que es otro par.
 e. Salidas: u2_muestra_trazas.json y u2_muestra_trazas.md, muestra_limita_30.csv
    y reporte_u_umbral.md; doble corrida byte a byte idéntica de todo lo que genera
    un script.
-FRENO U2, final: la tabla de opciones con la evidencia; sha256 de lo escrito.
+FRENO U2, final: las dos tablas, de esquema y de pipeline, con la evidencia, y el
+par propuesto con su alternativa; sha256 de lo escrito.
 Commit de la autora.
 
 REQUISITOS TRANSVERSALES (CLAUDE.md §4 a–j), en todas las etapas.
@@ -192,7 +208,8 @@ CRITERIO DE ACEPTACIÓN por etapa:
 - la medición 3 reproduce las cifras del tablero ([c14]);
 - el patrón de la medición 2 dispara en `cap::1.2`;
 - el grep de convenciones, pegado aunque dé vacío.
-Criterio final: las seis mediciones con conteo y comando; la tabla de opciones con
-evidencia; la propuesta rotulada.
+Criterio final: las seis mediciones con conteo y comando; la evidencia ordenada en
+los dos ejes, esquema y pipeline; la propuesta como par (representación, método
+de llenado), rotulada, con su alternativa.
 
 FRENO al final de cada etapa.

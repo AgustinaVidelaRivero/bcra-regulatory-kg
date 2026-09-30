@@ -94,6 +94,10 @@ c. **Sujetos.**
    - Posibles forzados, con la regla declarada antes: label o alias del bloque v3,
      normalizado, presente en el texto propio o heredado del chunk. Por id de
      catálogo, los más frecuentes.
+   - En cuántos `sujeto_propuesto` el texto propuesto aparece literal, normalizado
+     con la regla declarada antes, en el texto propio o heredado del chunk, y en
+     cuántos no, por TO y por grafo. Es la evidencia de viabilidad de la
+     verificación por subcadena del punto b de N2.
    - Muestra sellada de 30 posibles forzados en
      reports/u_listas_nomap/muestra_forzados_30.csv: semilla 20260930 y
      procedimiento declarado antes; columnas vacías para la lectura.
@@ -123,7 +127,8 @@ a. **Política por campo** ante un valor fuera de lista: rechazar el elemento,
 b. **Mención textual del sujeto**:
    - campo nuevo del tool schema (nombre y obligatoriedad);
    - verificación en el validador: subcadena normalizada del chunk, y qué pasa si
-     falla;
+     falla, con la tasa medida en N1, punto c, sobre los `sujeto_propuesto`
+     actuales;
    - relación con `sujeto_id` como sugerencia del modelo.
 c. **Resolución en código (E4 generalizado)**: orden de las reglas, papel de la
    sugerencia del modelo y del padre, y registro del método y de los desacuerdos

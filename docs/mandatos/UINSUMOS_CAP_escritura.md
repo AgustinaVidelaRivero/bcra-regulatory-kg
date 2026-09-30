@@ -25,6 +25,14 @@ Leé completos, antes de escribir una línea:
   - conteos_b584.json;
   - los archivos chunks_<to>.json y estructura_<to>.json de cada <to>/;
 - data/experiment/escalado_prep/inventario_resumen.json;
+- los roles de página de E0, con el rol `tabla_norma_origen`: `<to>.roles_pagina`
+  en conteos_b584.json (152 TOs) y en
+  data/experiment/reextraccion_v2/e0_chunking/salida_tanda0/conteos.json (los
+  diez TOs de la tanda 0);
+- los grafos KG-Tanda0-Desarrollo-r1
+  (data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo/r1/kg.json,
+  eab2fdd0…) y KG-Reextraído-r1
+  (data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json, 0226e947…);
 - data/experiment/job_actualizacion/sonda_procedencia.json;
 - el ejemplo del préstamo:
   - docs/tesis/figuras/ejemplo_prestamo_datos.json;
@@ -60,9 +68,21 @@ b. Para el corpus de 152 TOs y, aparte, para el conjunto de desarrollo (5 TOs) y
      profundidad del padre;
    - tablas lógicas, y chunks marcados como tabla o fórmula;
    - largos de unidad: mediana, percentiles y máximo;
-   - remisiones «punto X.Y» por TO, con una regex declarada antes;
+   - remisiones por TO, separadas en internas (al mismo TO) y hacia otros TOs, con
+     la regex y la regla de separación declaradas antes;
    - última Comunicación incorporada y fecha del texto ordenado, por TO
      (sonda_procedencia.json), con su cobertura.
+   Además, para los tres conjuntos, cada una con su regla declarada antes de
+   aplicarla:
+   - páginas por TO: mínimo, mediana y máximo;
+   - profundidad máxima de la numeración, y proporción de puntos terminales y de
+     puntos contenedores;
+   - frecuencia de los marcadores deónticos «deberán», «no podrán», «salvo» y
+     «excepto», con la regex declarada;
+   - cuántos TOs tienen tablas, cuántos fórmulas y cuántos anexos;
+   - presencia de la tabla de origen de las disposiciones, por TO.
+   Y, aparte, nodos por tipo y aristas por predicado en KG-Tanda0-Desarrollo-r1 y
+   en KG-Reextraído-r1, con el sha256 de cada grafo.
 c. Cada cifra lleva el comando o la clave del JSON que la reproduce, y su
    denominador explícito.
 d. Salidas: reports/u_insumos_cap/estadisticas_corpus.json y
@@ -119,6 +139,7 @@ CRITERIO DE ACEPTACIÓN por etapa:
 - git status --short con solo reports/u_insumos_cap/ como nuevo;
 - doble corrida byte a byte idéntica;
 - las cifras 152 / 6.757 / 9.324 / 559 reproducidas desde los JSON;
+- cada estadística con su regla declarada antes de aplicarla;
 - el grep de convenciones, pegado aunque dé vacío.
 Criterio final: cada estadística con comando y denominador; cada componente del
 recorrido con su artefacto o NO ENCONTRADO.
