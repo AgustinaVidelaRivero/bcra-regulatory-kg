@@ -167,7 +167,10 @@ sangría de la fila del 3.7.
   (15,49 cm impresa a 12,75 cm de ancho).
 - Tamaños: texto corrido 17 px → 7,14 pt; rótulos y leyenda 15 px → 6,30 pt,
   impresos a 12,75 cm.
-- Verificación geométrica (script fuera del repositorio, en el paquete de
-  revisión de U-FIG-EJEMPLO-AJUSTE, con métricas reales de Helvetica): 72
-  textos, 4 nodos, 10 trazos con flecha; ningún texto se superpone con otro ni
-  pisa un nodo, ningún trazo atraviesa un nodo.
+- Verificación geométrica con `docs/tesis/figuras/verificar_geometria_svg.py` (sha256
+  `fd8d062df7b7529131f466df628298e02dd079517aa66624caeea6a8b722df19`; métricas reales de
+  Helvetica) sobre el SVG intermedio: 72 textos, 4 nodos, 10 trazos con flecha;
+  ningún texto se superpone con otro ni pisa un nodo, ningún trazo atraviesa un
+  nodo. Comandos (el SVG se guarda fuera del repositorio):
+  `PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/generar_figura_fragmentos_vs_grafo.py --svg "$TMPDIR/figura_fragmentos_vs_grafo.svg"`
+  y `PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/verificar_geometria_svg.py "$TMPDIR/figura_fragmentos_vs_grafo.svg"`.

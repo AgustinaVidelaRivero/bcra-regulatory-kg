@@ -85,9 +85,11 @@ las leyendas de las Figuras 1.1 y 1.2 (ajuste U-FIG-EJEMPLO-AJUSTE; antes decía
 Generación determinística verificada: mismo SVG y mismo PNG con
 `PYTHONHASHSEED` 0, 1, 2 y 3. Tamaños: rótulos 19 → 9,54 pt; subtextos, nodos y
 leyenda 18 → 9,04 pt, a 12,75 cm de ancho. Verificación geométrica adicional
-(script fuera del repositorio, en el paquete de revisión de
-U-FIG-EJEMPLO-AJUSTE): 42 textos, 3 nodos, 11 trazos con flecha; ningún texto se
-superpone con otro ni pisa un nodo, ningún trazo atraviesa un nodo.
+con `docs/tesis/figuras/verificar_geometria_svg.py` (sha256
+`fd8d062df7b7529131f466df628298e02dd079517aa66624caeea6a8b722df19`): 42 textos, 3 nodos,
+11 trazos con flecha; ningún texto se superpone con otro ni pisa un nodo, ningún
+trazo atraviesa un nodo. Comando:
+`PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/verificar_geometria_svg.py docs/tesis/figuras/figura_proceso_extraccion.svg`.
 
 ## 5. Búsquedas del ejemplo (contexto, no dibujadas en esta figura)
 

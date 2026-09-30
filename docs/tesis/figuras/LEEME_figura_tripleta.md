@@ -1,6 +1,6 @@
 # figura_tripleta — registro de generación (Figura 2.1)
 
-Figura «anatomía de una tripleta» para el marco teórico (§2.1.1), con el
+Figura «anatomía de una tripleta» para el marco teórico (§2.2.1), con el
 ejemplo del préstamo: la Restriccion del monto del punto 5.1.1.1 del Texto
 Ordenado de Clasificación de deudores —`limita`→ la Operacion del mismo punto.
 Dos nodos con su etiqueta del grafo, completa, y «punto 5.1.1.1»; la arista con
@@ -71,10 +71,11 @@ Las mediciones del ejemplo que el JSON resume están versionadas en
 - Tipos en las llamadas escritos como en el código, sin tildes.
 - El índice de la arista se lee del JSON y se coteja con `kg.json`.
 - Tamaños: nodos y rótulo 17 → 8,53 pt; llamadas 15 → 7,53 pt, a 12,75 cm.
-- Verificación geométrica adicional (script fuera del repositorio, en el
-  paquete de revisión de U-FIG-EJEMPLO-AJUSTE): 11 textos, 2 nodos, 1 trazo con
-  flecha; ningún texto se superpone con otro ni pisa un nodo, ningún trazo
-  atraviesa un nodo.
+- Verificación geométrica adicional con `docs/tesis/figuras/verificar_geometria_svg.py`
+  (sha256 `fd8d062df7b7529131f466df628298e02dd079517aa66624caeea6a8b722df19`): 11 textos, 2
+  nodos, 1 trazo con flecha; ningún texto se superpone con otro ni pisa un nodo,
+  ningún trazo atraviesa un nodo. Comando:
+  `PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/verificar_geometria_svg.py docs/tesis/figuras/figura_tripleta.svg`.
 
 ## 4. Salidas
 

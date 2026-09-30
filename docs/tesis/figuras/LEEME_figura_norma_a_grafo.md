@@ -152,10 +152,11 @@ Los nombres de relación se escriben como en el grafo (`referencia`, `limita`,
   de Helvetica Bold al envolver y al ubicar el rectángulo del resaltado.
 - Tamaños: a 15 cm de ancho, texto de los recuadros 17 px → 8,41 pt; etiqueta
   de nodo 15 px → 7,42 pt; rótulo de arista y leyenda 13 px → 6,43 pt.
-- Verificación geométrica (script fuera del repositorio, en el paquete de
-  revisión de U-FIG-EJEMPLO-AJUSTE, con métricas reales de Helvetica): 38
-  textos, 5 nodos, 6 trazos con flecha; ningún texto se superpone con otro ni
-  pisa un nodo, ningún trazo atraviesa un nodo.
+- Verificación geométrica con `docs/tesis/figuras/verificar_geometria_svg.py` (sha256
+  `fd8d062df7b7529131f466df628298e02dd079517aa66624caeea6a8b722df19`; métricas reales de
+  Helvetica): 38 textos, 5 nodos, 6 trazos con flecha; ningún texto se
+  superpone con otro ni pisa un nodo, ningún trazo atraviesa un nodo. Comando:
+  `PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/verificar_geometria_svg.py docs/tesis/figuras/figura_norma_a_grafo.svg`.
 
 ## 7. Búsquedas del ejemplo (contexto, no dibujadas en esta figura)
 
