@@ -27,6 +27,8 @@ U-LISTAS-NOMAP y U-INSUMOS-CAP (X12 a X14 y W12). R29 corrige la etiqueta: el de
 `cap::1.2` es el de `BKL-0006`.
 Actualizada otra vez el 30/09/2026: R33 (colisiones de ids de chunk, `BKL-0037`); X3, X12,
 X13, X14, X16 y W12 pasan a firmado (`30f106c`).
+Actualizada otra vez el 30/09/2026: R30 con las cifras de `salida_dirigida/` y W2 con
+`deteccion_determinista`.
 
 **Convenciones.**
 - Registro: `:n` es la línea de `docs/plan_tesis.md`; «laudo §x» es la sección
@@ -128,7 +130,7 @@ Avanza en paralelo con la lectura del capítulo una vez cerrada la tanda 0.
 | R27 | Unidad previa a la firma de r2: diagnóstico de los seis ítems de la suite que pasan de resuelto a persiste (E4-a7, E4-a8, T2, T4, T5, T7) y cruce de cada ausencia de C1 a C4 con los candidatos del §4 y con los rechazos de la matriz | `docs/mandatos/UPRE_R2_diagnostico.md`; `:386`; firmado en `6daf63f` | hecho: D1 y D2 commiteados en `159c1e2`; cerrada por decisión de la autora del 30/09 (categoría P y desvío de reglas aceptados; `:390`); resultados en R19, R29, R32, N9, W14 y X1 | No |
 | R28 | Tablero de correcciones: la columna «después de r2» completa, con cada meta cumplida o su residuo declarado. **Condición (4) de la tanda 1** | `docs/tablero_correcciones.md`; laudo §3.1, punto 8 | registrado; metas abiertas en siete filas | Sí: las metas marcadas DECISIÓN ABIERTA |
 | R29 | `BKL-0006`: afirmación falsa por tabla no detectada en `cap::1.2` (asentada primero como `BKL-0023`, que es el rastro de esa inversión en el nodo de compañías financieras y no reaparece en la generación 3). En r1, desarrollo y diez, bancos 2.500 y restantes entidades 5.000; el PDF dice bancos 5.000 y restantes 2.500 (`data/backlog/propuestas/C2_montos_12.md:31-32`). E0 no marca el chunk como tabla, y la suite da `no_aplicable` en desarrollo (en r1, `BKL-0006` persiste) | `:396`; tablero, fila propia; evento `nota` en `BKL-0006` (`data/backlog/backlog.jsonl:87`, 30/09) | decidido (30/09); etiqueta corregida el 30/09 | No |
-| R30 | Persistencia del crudo del reintento de E3: `finales.jsonl` no lo guarda (en desarrollo, 167 de 1.757 finales aceptados tras reintento) | `:396`; tablero | decidido (30/09) | No |
+| R30 | Persistencia del crudo del reintento de E3: `finales.jsonl` no lo guarda (en desarrollo, 168 de 1.760 finales aceptados tras reintento, sobre `corpus_tanda0/salida_dirigida/`; antes decía 167 de 1.757, leído en `salida/`) | `:396`; tablero | decidido (30/09) | No |
 | R31 | Medición r2a: re-ensamblado solo en código sobre la salida guardada de la tanda 0, antes de re-extraer | `:397`; tablero, columna r2a | decidido (30/09) | No |
 | R32 | T2, regresión real: la fusión por descripción de E2 juntó reglas distintas con igual redacción (`ext::7.5.3` y `ext::7.8.5.1`). Candidato del §4 del laudo, junto con H2 (R13) y `BKL-0031` (R4): la fusión no junta nodos de puntos distintos por igualdad de descripción | laudo §4 (fila del 30/09); `reports/u_pre_r2/d1_suite.md:62-79`; `:396` | registrado | Sí: al firmar |
 | R33 | `BKL-0037`: colisiones de ids de chunk en E0. En la partición del corpus escalado hay 69 ids repetidos en 4 TOs (adfsp 9, ceninf 4, cirmo3 52, ri_niif 4); el runner indexa por `chunk_id` con last-wins y pierde sin aviso una extracción de cada par. Remedio en U-R2-CODIGO: ids únicos en E0 y un runner que se detiene ante repetidos. Ningún TO con ids repetidos entra a una tanda sin la corrección | `:396`; `:764`; tablero, fila propia; `reports/u_insumos_cap/estadisticas_corpus.md` §6 (`ded3494`) | decidido (30/09) | No |
@@ -197,7 +199,7 @@ tanda 1.
 | # | Qué es | Registro | Estado | Decisión |
 |---|---|---|---|---|
 | W1 | Tabla de reproducibilidad: modelo, versión con fecha, temperatura, vía (API o Claude Code), por medición y por etapa | `:853` (precisión por etapa del 29/09); `docs/registro_modelos.md` NO ENCONTRADO | registrado | Sí: aprobar el documento |
-| W2 | B2.5: spec del backlog con `capa_pipeline` obligatorio y dos vías; huecos del catálogo de especies (cola 17; especies provisionales de `BKL-0032`, `BKL-0033` y `BKL-0035`) | `:381`; cola 17; backlog; `docs/spec_backlog_refinamiento.md` | registrado; hecho el 29/09, sin commit: `lectura_asistida` en el vocabulario de `diagnostico` y el evento `correccion_diagnostico` en la spec; el resto de B2.5 sigue pendiente | Sí: ampliar el catálogo de especies |
+| W2 | B2.5: spec del backlog con `capa_pipeline` obligatorio y dos vías; huecos del catálogo de especies (cola 17; especies provisionales de `BKL-0032`, `BKL-0033` y `BKL-0035`) | `:381`; cola 17; backlog; `docs/spec_backlog_refinamiento.md` | registrado; en la spec: `lectura_asistida` y el evento `correccion_diagnostico` (enmienda 2026-09-29) y `deteccion_determinista` (enmienda 2026-09-30, `31e0d38`) en el vocabulario de `diagnostico`; el resto de B2.5 sigue pendiente | Sí: ampliar el catálogo de especies |
 | W3 | B2.6: protocolo de releases escrito; `docs/protocolo_ciclo_refinamiento.md` NO ENCONTRADO | `:382` | registrado | Sí: antes o después de r2 |
 | W4 | B2.8: método de construcción y refinamiento, «el que se sigue en B6»; `docs/metodo_construccion_refinamiento_kg.md` NO ENCONTRADO | `:384`, `:764` | registrado | Sí: antes o después de la tanda 1 |
 | W5 | **HUECO** — la fila B2.10 citaba el laudo como «commit PENDIENTE» | `:386` | hecho (sin commit) | No |
