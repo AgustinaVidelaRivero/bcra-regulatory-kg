@@ -65,21 +65,44 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
   5. Las 9.324 unidades incluyen 69 chunks con id repetido en 4 TOs. Son colisiones de
      numeración (`BKL-0037`) y no cambian las cifras publicadas.
 
-## 2. Recorrido del ejemplo del préstamo por componente — pendiente
+## 2. Recorrido del ejemplo del préstamo por componente — disponible
 
-- **Ruta y commit:** `reports/u_insumos_cap/recorrido_prestamo.md` (U-INSUMOS-CAP,
-  etapa I2; mandato `docs/mandatos/UINSUMOS_CAP_escritura.md`, firmado en `30f106c`).
-  Commit pendiente.
-- **Qué contendrá:** el paso del ejemplo `cla::5.1.1.1` → `cla::3.7` por cada
-  componente, de E0 al agente, con su artefacto o NO ENCONTRADO, y las dependencias con
-  las figuras.
-- **Alimenta:** capítulo 4, el pipeline componente por componente, y las figuras del
-  ejemplo (`docs/tesis/figuras/LEEME_figura_*.md`).
-- **Salvedades conocidas:**
-  - los datos son de KG-Reextraído-r1 (`0226e947…`); después de la re-extracción de la
-    tanda 0 (U-REEXT-T0) siguen siendo datos de r1, salvo que se regeneren;
-  - el juez, la atribución A0.2 y los indicadores de cita del préstamo son NO
-    ENCONTRADO, por mandato.
+- **Ruta y commit:**
+  - `reports/u_insumos_cap/recorrido_prestamo.md`, generado por
+    `reports/u_insumos_cap/u_insumos_i2.py`;
+  - commit `f32f20c` (U-INSUMOS-CAP, etapa I2; mandato
+    `docs/mandatos/UINSUMOS_CAP_escritura.md`, firmado en `30f106c`);
+  - comando: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B reports/u_insumos_cap/u_insumos_i2.py`;
+  - doble corrida byte a byte idéntica, y una re-corrida independiente de la mesa
+    también idéntica. El script se detiene si falla cualquier afirmación que el `.md`
+    escribe como texto fijo.
+- **Qué contiene:** el paso del ejemplo `cla::5.1.1.1` → `cla::3.7` por trece
+  componentes: E0, E1, E3, extracción final, E2, E4, esqueleto, referencias y
+  procedencia de r1, grafo final, agente, juez, atribución A0.2 e indicadores de cita.
+  Para cada uno, el artefacto con ruta y línea o id, o NO ENCONTRADO, y una línea con
+  lo que el ejemplo muestra. Incluye las dependencias con las cuatro figuras del
+  ejemplo.
+- **Alimenta:**
+  - capítulo 4: el pipeline, componente por componente, y las figuras del ejemplo
+    (`docs/tesis/figuras/LEEME_figura_*.md`);
+  - **uso posible en el capítulo 4:** el mismo punto extraído por dos generaciones
+    del pipeline, como ilustración de la construcción por etapas (ver la salvedad 2).
+- **Salvedades:**
+  1. Los datos son de KG-Reextraído-r1 (`0226e947…`), construido con el esquema v2.
+  2. En KG-Tanda0-Desarrollo-r1 el ejemplo tiene otra estructura: 2 Condicion, 1
+     Definicion y 1 Operacion, sin `limita` ni remisión al 3.7 (recomputado por la mesa
+     el 30/09). En r1 son 2 Restriccion y 1 Operacion, con 2 `limita` y la remisión.
+  3. La remisión de r1 al 3.7 sale de la paráfrasis del nodo (descripción y
+     `umbral`), no del texto de E0.
+  4. E4, juez, atribución A0.2 e indicadores de cita son NO ENCONTRADO:
+     - E4 no toca el ejemplo;
+     - la corrida del agente sobre el ejemplo fue sin juez;
+     - A0.2 exige el veredicto de cada traza;
+     - los indicadores de cita se calculan solo sobre las trazas de EV2.
+  5. Los sha de los LEEME de figuras que cita el recorrido son los del árbol de
+     trabajo al correr I2, y coinciden con los commiteados en `e6e6021`.
+  6. Después de la re-extracción de la tanda 0 (U-REEXT-T0), estos datos siguen
+     siendo de r1, salvo que se regeneren (tablero, fila del test del ejemplo).
 
 ## 3. Umbrales (U-UMBRAL) — pendiente
 

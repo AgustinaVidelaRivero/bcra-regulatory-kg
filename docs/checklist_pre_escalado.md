@@ -29,6 +29,7 @@ Actualizada otra vez el 30/09/2026: R33 (colisiones de ids de chunk, `BKL-0037`)
 X13, X14, X16 y W12 pasan a firmado (`30f106c`).
 Actualizada otra vez el 30/09/2026: R30 con las cifras de `salida_dirigida/` y W2 con
 `deteccion_determinista`.
+Actualizada otra vez el 30/09/2026: W12 pasa a hecho (U-INSUMOS-CAP cerrada, `f32f20c`).
 
 **Convenciones.**
 - Registro: `:n` es la línea de `docs/plan_tesis.md`; «laudo §x» es la sección
@@ -209,7 +210,7 @@ tanda 1.
 | W9 | Estructura de los capítulos 3 y 4: el 3, del documento a su análisis y al esquema; el 4, el pipeline componente por componente y la construcción por etapas, con la tanda 0 como primera etapa | `:855` (C1.11) | decidido (30/09) | No |
 | W10 | La tesis se cita desde Overleaf, por sección y frase; `docs/tesis/main.tex` del repo está desactualizado. Pendiente de escritura: sincronizar el repo con Overleaf cuando la mesa de escritura cierre una versión | `:855-856` | registrado (pendiente de escritura) | No |
 | W11 | Fe de erratas en la fila U-JOB-ACT: lo que cambió en los cinco documentos que no anuncian su cambio son listas de Comunicaciones, no la tabla de origen | `:1162` | hecho (sin commit) | No |
-| W12 | U-INSUMOS-CAP: estadísticas descriptivas del corpus desde el segmentador y recorrido del préstamo por componente, para la mesa de escritura | `:402` | en curso: mandato firmado en `30f106c` y despachado; I1 commiteada en `ded3494`; índice de insumos en `docs/insumos_escritura.md` | No |
+| W12 | U-INSUMOS-CAP: estadísticas descriptivas del corpus desde el segmentador y recorrido del préstamo por componente, para la mesa de escritura | `:402` | hecho: mandato firmado en `30f106c`; I1 en `ded3494` e I2 en `f32f20c`; unidad cerrada; insumos indexados en `docs/insumos_escritura.md` | No |
 | W13 | Corregir en la tesis el párrafo de la sección 3.4 según el cual las listas de valores de propiedad no las verifica ningún control, con lo que implemente U-PYD | `:395`; `:855` | registrado | No |
 | W14 | Sensibilidad declarada de la atribución A0.2: con la regla exacta, 23 de las 31 ausencias de C1 a C4 son contenido presente bajo puntos descendientes del ancla; la tesis lo declara junto a las clases | `:314`; `reports/u_pre_r2/d2_ausencias.md:46-58` | decidido (30/09) | No |
 
