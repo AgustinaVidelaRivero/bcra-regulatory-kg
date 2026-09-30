@@ -17,7 +17,8 @@ de requisitos de mantenimiento, que no son síntomas de la tanda 0. Actualizado 
 el 30/09 con los resultados de U-PRE-R2-DIAG (`159c1e2`): la fila de clases de falla
 A0.2 lleva la lectura de D2 y se suma la fila de pérdidas por tablas. La fila de
 `cap::1.2` corrige su etiqueta: el defecto es el de `BKL-0006` (`BKL-0023`, su rastro en
-el nodo de compañías financieras, no reaparece).
+el nodo de compañías financieras, no reaparece). Se suma la fila de colisiones de ids de
+chunk en E0 (`BKL-0037`).
 
 **Grafos y celdas.**
 
@@ -61,6 +62,7 @@ el nodo de compañías financieras, no reaparece).
 | **Cuantías sin campo estructurado** | Nodos Restriccion, Condicion, Obligacion y Excepcion con cuantía en la descripción (regex estricta: porcentaje, «veces», plazo o monto) y sin `umbral` ni `plazo` [c14] | 218 sin campo de 639 con cuantía (Restriccion 63, Obligacion 106, Excepcion 49; r1 no tiene Condicion) | desarrollo 287 de 606 (Restriccion 34, Condicion 134, Obligacion 76, Excepcion 43); cinco 36 de 77; diez 323 de 683 | DECISIÓN ABIERTA de la autora (U-UMBRAL y L-ESQ-R2) | U-UMBRAL y L-ESQ-R2; según la opción elegida, U-PYD o U-PROMPT-R2 (plan, B2.11, unidades 3, 5, 7 y 10) | Conteo, USD 0 | | | |
 | **Omisiones sin registro fuera de los chunks marcados** | Unidades con `omisiones_no_prosa` no vacío en la salida final de E1 a E3; la regla 9 del prefijo (contenido meta-normativo) omite sin dejar registro [c15] | 81 de 1.763 | desarrollo 77 de 1.763; cinco 7 de 671; diez 84 de 2.434 | DECISIÓN ABIERTA de la autora (L-ESQ-R2: omisiones con categoría y tramo literal en todo chunk) | U-LISTAS-NOMAP, L-ESQ-R2 y U-PROMPT-R2 (plan, B2.11, unidades 4, 5 y 10) | r2b (requiere el prompt) | | | |
 | **Crudo del reintento de E3 sin persistir** | Unidades aceptadas tras reintento en E3, cuyo crudo del reintento no está en `finales.jsonl` [c16] | 330 de 1.763 finales | desarrollo 167 de 1.757; cinco 52 de 670; diez 219 de 2.427 | Cero unidades sin el crudo del reintento persistido, en las corridas de r2 | U-R2-CODIGO (plan, B2.11, unidad 8) | Conteo sobre las salidas de U-REEXT-T0, USD 0 | | | |
+| **Colisiones de ids de chunk en E0 (`BKL-0037`)** | Ids de chunk repetidos dentro de un mismo TO, en la E0 de cada conjunto [c18] | 0 en la E0 de r1 (1.763 chunks) | 0 en la E0 de la tanda 0 (2.434 chunks). En la partición del corpus escalado, que alimenta las tandas siguientes: 69 ids repetidos en 4 TOs (adfsp 9, ceninf 4, cirmo3 52, ri_niif 4) | 0 ids repetidos en la E0 de toda tanda, y el runner se detiene ante un id repetido | U-R2-CODIGO: ids únicos en E0 y runner que se detiene (plan, B2.11, unidad 8; decisión de la autora del 30/09). Ningún TO con ids repetidos entra a una tanda sin la corrección (fila B6.1) | Conteo sobre `chunks_<to>.json` y selftest del runner, USD 0 | | | |
 
 ## Requisitos de mantenimiento (30/09/2026)
 
@@ -148,6 +150,11 @@ Todos con `PYTHONDONTWRITEBYTECODE=1`, desde la raíz del repo.
   `E-tabla`, o `G` con `E-tabla-no-marcada` en `categorias_secundarias`; por `celda`,
   `id_pregunta` y `ancla`. Recomputado por la mesa el 30/09/2026: 4 E-tabla y 4 G, 8 en
   total (2 preguntas en 4 celdas).
+- **[c18]** Ids repetidos por TO: `collections.Counter` de los `id` de `chunks_<to>.json`,
+  sumando las apariciones de más. E0 de r1 en `e0_chunking/salida_enm01/`, de la tanda 0 en
+  `e0_chunking/salida_tanda0/` y del corpus escalado en `segmentacion_84/b584_particion/<to>/`.
+  Recomputado por la mesa el 30/09/2026; coincide con `reports/u_insumos_cap/estadisticas_corpus.md`
+  §6 (`ded3494`).
 - [c10] a [c16] los recomputó la mesa el 30/09/2026 con un script de una sola pasada,
   con doble corrida byte a byte idéntica; se reescribe tal cual al llenar las
   columnas nuevas.

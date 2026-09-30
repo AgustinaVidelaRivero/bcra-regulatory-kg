@@ -39,7 +39,7 @@ Cada entrada es un objeto JSON (una línea del jsonl). Esquema:
 {
   "id": "BKL-0001",
   "fuente": "vara | escalon1_fallas | triage_extraccion | verificador | app_feedback | auditoria_ensamblado",
-  "diagnostico": "adjudicado_humano | verificador_validado | verificador_exploratorio | sin_diagnostico | lectura_asistida",
+  "diagnostico": "adjudicado_humano | verificador_validado | verificador_exploratorio | sin_diagnostico | lectura_asistida | deteccion_determinista",
   "especie": "amputacion | provenance_desplazada | fabricacion | quimera | descenso_sujeto | ausencia | alcanzabilidad | estrechamiento_sujeto | sujeto_termino_ajeno | clase_forzada | contenido_sin_subespecie | duplicacion | hub_contaminado | cascara",
   "grafo": "grafo_v2",
   "nodos_objetivo": ["Restriccion_..."],
@@ -82,6 +82,10 @@ Descripción por campo:
   **Valor agregado por la enmienda 2026-09-29:** `lectura_asistida` — lectura hecha
   por una instancia de modelo y revisada por la autora; se declara el modelo y la
   versión. No tiene lugar asignado en la jerarquía de arriba.
+
+  **Valor agregado por la enmienda 2026-09-30:** `deteccion_determinista` — detección
+  por un script determinístico, recomputada de forma independiente; se cita el
+  comando. No tiene lugar asignado en la jerarquía de arriba.
 
   **Regla de frontera del verificador:** el verificador es `validado` solo sobre el
   esquema en que fue calibrado — hoy, run_3 (calibración de la Fase 2.5 y varas de los

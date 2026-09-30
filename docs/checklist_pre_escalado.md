@@ -25,6 +25,8 @@ Actualizada otra vez el 30/09/2026: resultados de U-PRE-R2-DIAG (`159c1e2`; R19,
 R13, R27, R29 y X1; nuevos R32, N9 y W14) y mandatos en borrador de U-UMBRAL,
 U-LISTAS-NOMAP y U-INSUMOS-CAP (X12 a X14 y W12). R29 corrige la etiqueta: el defecto de
 `cap::1.2` es el de `BKL-0006`.
+Actualizada otra vez el 30/09/2026: R33 (colisiones de ids de chunk, `BKL-0037`); X3, X12,
+X13, X14, X16 y W12 pasan a firmado (`30f106c`).
 
 **Convenciones.**
 - Registro: `:n` es la línea de `docs/plan_tesis.md`; «laudo §x» es la sección
@@ -129,6 +131,7 @@ Avanza en paralelo con la lectura del capítulo una vez cerrada la tanda 0.
 | R30 | Persistencia del crudo del reintento de E3: `finales.jsonl` no lo guarda (en desarrollo, 167 de 1.757 finales aceptados tras reintento) | `:396`; tablero | decidido (30/09) | No |
 | R31 | Medición r2a: re-ensamblado solo en código sobre la salida guardada de la tanda 0, antes de re-extraer | `:397`; tablero, columna r2a | decidido (30/09) | No |
 | R32 | T2, regresión real: la fusión por descripción de E2 juntó reglas distintas con igual redacción (`ext::7.5.3` y `ext::7.8.5.1`). Candidato del §4 del laudo, junto con H2 (R13) y `BKL-0031` (R4): la fusión no junta nodos de puntos distintos por igualdad de descripción | laudo §4 (fila del 30/09); `reports/u_pre_r2/d1_suite.md:62-79`; `:396` | registrado | Sí: al firmar |
+| R33 | `BKL-0037`: colisiones de ids de chunk en E0. En la partición del corpus escalado hay 69 ids repetidos en 4 TOs (adfsp 9, ceninf 4, cirmo3 52, ri_niif 4); el runner indexa por `chunk_id` con last-wins y pierde sin aviso una extracción de cada par. Remedio en U-R2-CODIGO: ids únicos en E0 y un runner que se detiene ante repetidos. Ningún TO con ids repetidos entra a una tanda sin la corrección | `:396`; `:764`; tablero, fila propia; `reports/u_insumos_cap/estadisticas_corpus.md` §6 (`ded3494`) | decidido (30/09) | No |
 
 ## 2. Cambio de prefijo con enmienda
 
@@ -140,7 +143,7 @@ Desde el 30/09/2026 el cambio de prefijo está decidido: se hace en el ciclo B2.
 | X1 | Enmienda de la matriz congelada: → Operacion cumple el criterio (27 de 29, piso 0,780); → Potestad no (27 de 30, piso 0,744) | `:748`; `reports/u_estudio_matriz/lectura/resultado_lectura_matriz.md` | registrado; resultado del protocolo, sin decidir la enmienda; desde el 30/09 se decide en L-ESQ-R2 (`:393`). D2: la matriz no es causa principal de ninguna ausencia (3 como secundaria); su valor es de completitud del grafo (lectura de la autora del 30/09; `:748`) | Sí, en L-ESQ-R2; condición (3) de la tanda 1 |
 | X11 | ¿La lectura asistida de la matriz (instancia de modelo, revisada por la autora) alcanza para la enmienda, o se pide una validación adicional, por ejemplo de alguien del dominio? | `:748`; `reports/u_estudio_matriz/lectura/resultado_lectura_matriz.md` | registrado; desde el 30/09 se decide en L-ESQ-R2 (`:393`) | Sí, en L-ESQ-R2; condición (3) de la tanda 1 |
 | X2 | Si se amplía la matriz: cambiar el prompt (rota el prefijo; la tanda 0 se re-extrae o se revalida declarando la mezcla) o ampliar solo el validador | `:748` | decidido (30/09): se cambia el prompt (U-PROMPT-R2, `:398`) y la tanda 0 se re-extrae (U-REEXT-T0, `:399`) | No |
-| X3 | Ventana única del §7: si se usa después de la tanda 0, la tanda 1 ya no la tiene y los cinco de la tanda 0 salen del conjunto final de B6.3 | `:748`; `docs/preregistro_tanda0.md:832` (A8, decisión 4) | decidido (30/09): este ciclo usa la ventana; la tanda 1 corre sin ventana y los cinco de la tanda 0 salen del conjunto de B6.3 (a). Enmiendas en borrador (X16) | No |
+| X3 | Ventana única del §7: si se usa después de la tanda 0, la tanda 1 ya no la tiene y los cinco de la tanda 0 salen del conjunto final de B6.3 | `:748`; `docs/preregistro_tanda0.md:832` (A8, decisión 4) | decidido (30/09): este ciclo usa la ventana; la tanda 1 corre sin ventana y los cinco de la tanda 0 salen del conjunto de B6.3 (a). Enmiendas firmadas en `30f106c` (X16) | No |
 | X4 | Cuándo va la release de prompt: antes o después de la tanda 1 (la §3.2 del laudo de r2 no admite cambios al prefijo) | `:748`; laudo §3.2 (1) | decidido (30/09): antes de la tanda 1, en el ciclo B2.11 | No |
 | X5 | `BKL-0032`, `BKL-0033`, `BKL-0035`, `BKL-0036`: incorrectas `E1-prompt` de la observación (12) | backlog; `:750` | decidido (30/09): entran a U-PROMPT-R2 (`:398`) | No |
 | X6 | `BKL-0034`: el catálogo v3 no tiene sujeto de nivel órgano | backlog; laudo §4 (fila del 29/09) | decidido (30/09): entra al ciclo; el remedio se lauda en L-ESQ-R2 (`:393`) y lo aplica U-CAT-UNICO (`:394`) | Sí: el remedio, en L-ESQ-R2 |
@@ -148,11 +151,11 @@ Desde el 30/09/2026 el cambio de prefijo está decidido: se hace en el ciclo B2.
 | X8 | Remedio de raíz de la cláusula de mutuales: regla de calificadores en E1 | laudo §1.5 (a) | decidido (30/09): entra a U-PROMPT-R2 (`:398`) | No |
 | X9 | B2.4: laudo de los 15 `triaged`; nueve de asignación de sujeto piden una corrección sistemática vía prompt o validador de E1 | `:380` | la corrección sistemática entra al ciclo (U-LISTAS-NOMAP, `:392`, y U-PROMPT-R2, `:398`); el laudo de los 15 de B2.4 sigue pendiente | Sí: el laudo de B2.4 |
 | X10 | R6b: residuo del esquema | laudo §1.6 (solo por la vía de A8) | registrado; con la ventana usada, se decide en L-ESQ-R2 (`:393`) | Sí, en L-ESQ-R2 |
-| X12 | Validación en código con Pydantic de todas las listas cerradas (tipos de nodo, predicados, catálogo de sujetos y valores de propiedades), con una política por campo ante un valor fuera de lista | `:395` (U-PYD); `:393` (L-ESQ-R2) | decidido (30/09); la política por campo, sin decidir; insumo de `docs/mandatos/ULISTAS_NOMAP_diseno.md` (borrador) | Sí: la política, en L-ESQ-R2 |
-| X13 | Lo no mapeable: reproceso por programa, con la mención textual del sujeto extraída; omisiones con categoría y tramo literal | `:392` (U-LISTAS-NOMAP) | decidido (30/09) que se define el proceso; el diseño, sin hacer; mandato en borrador `docs/mandatos/ULISTAS_NOMAP_diseno.md` | Sí: el diseño, en L-ESQ-R2 |
-| X14 | Umbrales: propiedad del nodo, atributo de la relación o paso posterior sobre el nodo (decisión de esquema) | `:391` (U-UMBRAL) | registrado; la autora investiga y elige; mandato en borrador `docs/mandatos/UUMBRAL_investigacion.md` | Sí |
+| X12 | Validación en código con Pydantic de todas las listas cerradas (tipos de nodo, predicados, catálogo de sujetos y valores de propiedades), con una política por campo ante un valor fuera de lista | `:395` (U-PYD); `:393` (L-ESQ-R2) | decidido (30/09); la política por campo, sin decidir; insumo de `docs/mandatos/ULISTAS_NOMAP_diseno.md` (firmado en `30f106c` y despachado) | Sí: la política, en L-ESQ-R2 |
+| X13 | Lo no mapeable: reproceso por programa, con la mención textual del sujeto extraída; omisiones con categoría y tramo literal | `:392` (U-LISTAS-NOMAP) | decidido (30/09) que se define el proceso; el diseño, sin hacer; mandato `docs/mandatos/ULISTAS_NOMAP_diseno.md` firmado en `30f106c` y despachado | Sí: el diseño, en L-ESQ-R2 |
+| X14 | Umbrales: propiedad del nodo, atributo de la relación o paso posterior sobre el nodo (decisión de esquema) | `:391` (U-UMBRAL) | registrado; la autora investiga y elige; mandato `docs/mandatos/UUMBRAL_investigacion.md` firmado en `30f106c` y despachado | Sí |
 | X15 | Catálogo de sujetos en una sola fuente: hoy 102 ids en el bloque del prompt y 101 en `esquema_v3_clases.json` (6 solo en el bloque, 5 solo en el JSON); absorbe R8 | `:394` (U-CAT-UNICO); `:746` (hallazgo E1) | decidido (30/09) | No |
-| X16 | Firma de las dos enmiendas de uso de la ventana (`data/experiment/esq/enmienda_uso_ventana_2026-09-30.md` y `docs/enmienda_preregistro_tanda0_2026-09-30_ventana.md`) | `:388` | registrado (BORRADOR) | Sí: firma |
+| X16 | Firma de las dos enmiendas de uso de la ventana (`data/experiment/esq/enmienda_uso_ventana_2026-09-30.md` y `docs/enmienda_preregistro_tanda0_2026-09-30_ventana.md`) | `:388` | hecho: firmadas en `30f106c` | No |
 
 ## 3. Búsqueda y navegación (A1.8)
 
@@ -204,7 +207,7 @@ tanda 1.
 | W9 | Estructura de los capítulos 3 y 4: el 3, del documento a su análisis y al esquema; el 4, el pipeline componente por componente y la construcción por etapas, con la tanda 0 como primera etapa | `:855` (C1.11) | decidido (30/09) | No |
 | W10 | La tesis se cita desde Overleaf, por sección y frase; `docs/tesis/main.tex` del repo está desactualizado. Pendiente de escritura: sincronizar el repo con Overleaf cuando la mesa de escritura cierre una versión | `:855-856` | registrado (pendiente de escritura) | No |
 | W11 | Fe de erratas en la fila U-JOB-ACT: lo que cambió en los cinco documentos que no anuncian su cambio son listas de Comunicaciones, no la tabla de origen | `:1162` | hecho (sin commit) | No |
-| W12 | U-INSUMOS-CAP: estadísticas descriptivas del corpus desde el segmentador y recorrido del préstamo por componente, para la mesa de escritura | `:402` | registrado; mandato en borrador `docs/mandatos/UINSUMOS_CAP_escritura.md` | No |
+| W12 | U-INSUMOS-CAP: estadísticas descriptivas del corpus desde el segmentador y recorrido del préstamo por componente, para la mesa de escritura | `:402` | en curso: mandato firmado en `30f106c` y despachado; I1 commiteada en `ded3494`; índice de insumos en `docs/insumos_escritura.md` | No |
 | W13 | Corregir en la tesis el párrafo de la sección 3.4 según el cual las listas de valores de propiedad no las verifica ningún control, con lo que implemente U-PYD | `:395`; `:855` | registrado | No |
 | W14 | Sensibilidad declarada de la atribución A0.2: con la regla exacta, 23 de las 31 ausencias de C1 a C4 son contenido presente bajo puntos descendientes del ancla; la tesis lo declara junto a las clases | `:314`; `reports/u_pre_r2/d2_ausencias.md:46-58` | decidido (30/09) | No |
 
