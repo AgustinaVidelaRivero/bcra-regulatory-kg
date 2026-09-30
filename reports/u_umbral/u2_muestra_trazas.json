@@ -1,0 +1,931 @@
+{
+ "unidad": "U-UMBRAL",
+ "etapa": "U2",
+ "comando": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B reports/u_umbral/u_umbral_u2.py",
+ "declaraciones": {
+  "D-SORTEO": "Medición 4. Población: aristas con relation = \"limita\" de KG-Tanda0-Desarrollo-r1, en el orden de `edges` del kg.json, ordenadas con sort estable por la clave (source, target). Se comprueba que no hay pares (source, target) repetidos. Sorteo: random.Random(20260930).sample(range(N), 30) sobre los índices de esa lista ordenada, sin reemplazo (Python del .venv del repo, 3.10). Las filas de la planilla van en el orden del sorteo, con su índice en la lista ordenada. Texto de E0: el `texto` propio y la `herencia` de cada chunk_id de las procedencias de la arista, en orden de aparición.",
+  "D-C14": "Regex de cuantía: la de U1 (comando [c14] del tablero tal como está escrito), sin cambios, importada de u_umbral_u1.VARIANTES[\"c14\"].",
+  "D-C14PAR": "Variante con nombre propio «c14_par», declarada antes de aplicarla (precisión 1 de la autora): idéntica a c14 salvo en el plazo, que admite entre el número y la unidad un número entre paréntesis, en cifras o en letras de la lista LETRAS de U1 («2 (dos) años», «diez (10) años»). Sin paréntesis, exige el mismo espacio que c14. c14_eur de U1 se reporta solo como variante informativa.",
+  "D-CRIT": "Medición 5. Un criterio de preguntas_ev2_fidelidad.json tiene cuantía según una regex si la regex encuentra algo en su `criterio` o en su `cita_textual`. El diagnóstico se corre sobre los criterios con cuantía según c14 o según c14_par; cada fila dice con cuál de las dos (o las dos).",
+  "D-VALOR": "Valor de un criterio: los triples del prototipo P6 de U1 (extraer_p6) sobre `criterio` y sobre `cita_textual` (unión), más los «literales»: los tramos que encuentra c14_par en esos dos textos y que tienen al menos un dígito, normalizados con D-N1. Un criterio con cuantía sin triples ni literales queda como «valor no extraíble» y no se diagnostica.",
+  "D-CONTIENE": "Un texto contiene el valor si sus triples P6 comparten al menos uno con los del criterio, o si algún literal del criterio es subcadena del texto normalizado con D-N1. Un nodo contiene el valor si lo contiene su `descripcion`, su `umbral` o su `plazo`. Se excluyen TextoOrdenado, Sujeto y Comunicacion.",
+  "D-ANCLA": "Un nodo está en el ancla de la pregunta («to:punto») si alguna de sus procedencias tiene ese `to` y un `punto` igual al del ancla o que empieza con el del ancla seguido de «.» (puntos descendientes).",
+  "D-RECIBIDO": "En una traza base (C3, `ev2_c3_dev_mem`; C4, `ev2_c4_dev_neo4j`), un nodo fue recibido si su id aparece en algún resultado de `buscar_nodos`, como vecino en algún resultado de `ver_vecinos` (salientes o entrantes) o como id de una salida de `ver_nodo` sin error (`steps_full`).",
+  "D-VISIBLE": "El valor fue visible para el agente desde un nodo del ancla si ese nodo aparece en un resultado de `buscar_nodos` cuyo `label` o `resumen_propiedades` contiene el valor (D-CONTIENE), o como vecino en `ver_vecinos` con `vecino_label` que lo contiene, o si el agente le hizo `ver_nodo` (la salida trae las properties completas).",
+  "D-RESPUESTA": "El valor está en la respuesta si `trace.final_json.respuesta` (o `trace.final_raw` si no hay final_json) lo contiene según D-CONTIENE. Es un control léxico: no dice si la respuesta cumple el criterio.",
+  "D-CLASE": "Cadena, en orden: «grafo» si ningún nodo del ancla contiene el valor; «búsqueda» si hay nodos del ancla con el valor y el agente no recibió ninguno; «navegación» si recibió alguno pero el valor no le fue visible; «visible» en otro caso. Cruce con D-RESPUESTA: visible y en la respuesta → «llega»; visible y no en la respuesta → «generación»; grafo, búsqueda o navegación con el valor en la respuesta → «en la respuesta por otra vía»; sin el valor en la respuesta → la clase de la cadena. Es un diagnóstico por reglas sobre material de desarrollo, no un resultado sobre EV2.",
+  "D-TABLA-1.2": "Demostración puntual (precisión 2.ii), no un verificador general: para cada Restriccion con umbral anclada en cap::1.2, la clase del sujeto se toma de su descripción («restantes entidades» → columna «Restantes entidades», si no «bancos» → columna «Bancos»), y el monto esperado es el de esa columna en la tabla de e0_tablas asignada a cap::1.2 (cap::tabla000: fila de encabezados y última fila de cifras). Se compara con el monto del umbral (primer número con puntos o dígitos del campo).",
+  "D-ESTIM": "Dimensionamiento del llenado por un modelo (decisión 6): ESTIMACIÓN NO VERIFICADA. Subconjuntos: nodos de los cuatro tipos con cuantía según c14, y de ellos los sin campo. Una llamada por chunk distinto del subconjunto. Tokens de entrada variables = (caracteres del texto propio y heredado de cada chunk + caracteres de las descripciones del subconjunto) / 3,471 (ratio de prosa de INFORME_E1_FASEA.md:141). Supuestos NO VERIFICADOS: prompt fijo de 1.500 tokens (escritura de caché en la primera llamada, lectura en las demás) y 60 tokens de salida por nodo. Tarifas USD/MTok: entrada 1,00; salida 5,00; escritura de caché 1,25; lectura 0,10 (runner_faseB_e1.py:41). Referencia aparte: USD 0,0166 por unidad de E1+E3 (docs/laudo_release_r2_pipeline.md:46) por el número de chunks.",
+  "D-REL-DIM": "Dimensionamiento de los umbrales relacionales (precisión 2.iv): nodos de los cuatro tipos con cuantía según c14 en los que dispara D-REL o A-REL de U1 (u_umbral_u1.RE_REL) o la regla de «equivalente»; se cuentan por forma (base con «de/del/sobre», «veces» + artículo, «equivalente» antes de un monto), por tipo, con y sin campo.",
+  "D-COB": "Cobertura de aristas de los demás portadores de valor (eje de esquema), por grafo: Obligacion con `plazo` y sin arista saliente `regula` ni `condiciona` (las Obligacion→Operacion del prefijo); Obligacion con cuantía según c14, sin campo, y sin esas aristas; Excepcion con cuantía según c14 y sin `exceptua` ni `exceptua_obligacion` saliente. Declarada antes de computarla, después de la corrida de prueba del resto de U2."
+ },
+ "agregados_tras_corrida_de_prueba": {
+  "A-P6PAR": "En la corrida de prueba, EV2F-015#3 («180 días corridos», ancla ext:3.13.1) salió «grafo», pero el ancla tiene el nodo Condicion_plazo_minimo_180_dias… con «180 (ciento ochenta) días corridos»: P6 no reconoce un número en letras de varias palabras entre paréntesis. En U2, y solo para el valor de la medición 5, se suman a los triples P6 dos formas de plazo: cifra seguida de paréntesis sin dígitos (hasta 40 caracteres) y unidad («180 (ciento ochenta) días»), y cifra entre paréntesis seguida de unidad («ciento ochenta (180) días»). El prototipo P6 de U1 no se cambia."
+ },
+ "entradas": {
+  "grafos": [
+   {
+    "clave": "desarrollo",
+    "nombre": "KG-Tanda0-Desarrollo-r1",
+    "ruta": "data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo/r1/kg.json",
+    "sha256": "eab2fdd01dec4dad026d596a793919e666920fab127d7efb14b5b00857ae64ef"
+   },
+   {
+    "clave": "r1",
+    "nombre": "KG-Reextraído-r1",
+    "ruta": "data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json",
+    "sha256": "0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a"
+   },
+   {
+    "clave": "diez",
+    "nombre": "KG-Tanda0-Diez-r1",
+    "ruta": "data/experiment/reextraccion_v2/corpus_tanda0/ens_diez/r1/kg.json",
+    "sha256": "dd42d6d9c0c8379da90ec4ed4e4659157a960a0d1ceaf8af5a008bdd9cad9010"
+   }
+  ],
+  "preguntas_sha256": "1d58733699c325c90510e1ead5f18eac6c3cd970ee3b0ab7ff141da539162b40",
+  "trazas_sha256": {
+   "C3": "00b236886ecab744b7caccb310aa1078233d4d08a82ff3c5b12cb45b732281b3",
+   "C4": "5f890dd38c01888ab30bf12866627debac131d9d69fc9b35c6a93d6ef50133c3"
+  }
+ },
+ "medicion_4": {
+  "poblacion": 284,
+  "pares_repetidos": 0,
+  "semilla": 20260930,
+  "n": 30,
+  "indices_sorteados": [
+   236,
+   207,
+   113,
+   157,
+   256,
+   214,
+   11,
+   25,
+   141,
+   239,
+   220,
+   13,
+   20,
+   254,
+   43,
+   90,
+   272,
+   178,
+   39,
+   192,
+   164,
+   33,
+   206,
+   23,
+   124,
+   3,
+   258,
+   142,
+   227,
+   262
+  ],
+  "columnas": [
+   "n_sorteo",
+   "indice_en_lista_ordenada",
+   "restriccion_id",
+   "restriccion_label",
+   "restriccion_tipo",
+   "restriccion_descripcion",
+   "restriccion_umbral",
+   "operacion_id",
+   "operacion_label",
+   "operacion_descripcion",
+   "chunk_ids",
+   "texto_e0_propio",
+   "texto_e0_heredado",
+   "el destino es el objeto del tope (sí / no / no decidible)"
+  ],
+  "python": "3.10.13",
+  "sha256_csv": "8e9818173100ac880c7bdc34121a4f4e66916e42b16636421f5e4e993512b2a9"
+ },
+ "medicion_5": {
+  "preguntas": 40,
+  "criterios": 164,
+  "criterios_con_cuantia": {
+   "c14": 8,
+   "c14_par": 8,
+   "solo_c14_par": 0,
+   "c14_eur_informativo": 8,
+   "solo_c14_eur_informativo": 0,
+   "preguntas_con_algun_criterio_c14": 7
+  },
+  "clases_c14": {
+   "C3": {
+    "búsqueda": 4,
+    "generación": 1,
+    "llega": 3
+   },
+   "C4": {
+    "búsqueda": 4,
+    "llega": 3,
+    "navegación": 1
+   }
+  },
+  "clases_solo_c14_par": {
+   "C3": {},
+   "C4": {}
+  },
+  "filas": [
+   {
+    "qid": "EV2F-004",
+    "criterio_idx": 3,
+    "to": "ext",
+    "ancla": "ext:2.6",
+    "criterio": "Debe indicar el tope del 30 % del incremento de los cobros de exportaciones respecto de igual trimestre de 2021.",
+    "cita_textual": "no supera al equivalente en dólares estadounidenses al 30% (treinta por ciento) del incremento de los cobros de exportaciones de bienes y servicios",
+    "regex": {
+     "c14": true,
+     "c14_par": true,
+     "c14_eur": true
+    },
+    "triples": [
+     [
+      "porcentaje",
+      "30",
+      "%"
+     ]
+    ],
+    "literales": [
+     "30 %",
+     "30%"
+    ],
+    "nodos_ancla_con_valor": [
+     "Restriccion_el_monto_de_las_certificaciones_obtenidas_para_el_periodo_trimestral_de_referenc_a7270e"
+    ],
+    "n_nodos_fuera_del_ancla_con_valor": 13,
+    "nodos_ancla_con_valor_por_tipo": {
+     "Restriccion": 1
+    },
+    "celdas": {
+     "C3": {
+      "recibidos_buscar_nodos": [],
+      "recibidos_ver_vecinos": [],
+      "ver_nodo": [],
+      "valor_visible_desde": [],
+      "valor_en_respuesta": false,
+      "cadena": "búsqueda",
+      "hit_tool_limit": true
+     },
+     "C4": {
+      "recibidos_buscar_nodos": [
+       "Restriccion_el_monto_de_las_certificaciones_obtenidas_para_el_periodo_trimestral_de_referenc_a7270e"
+      ],
+      "recibidos_ver_vecinos": [],
+      "ver_nodo": [
+       "Restriccion_el_monto_de_las_certificaciones_obtenidas_para_el_periodo_trimestral_de_referenc_a7270e"
+      ],
+      "valor_visible_desde": [
+       "Restriccion_el_monto_de_las_certificaciones_obtenidas_para_el_periodo_trimestral_de_referenc_a7270e"
+      ],
+      "valor_en_respuesta": true,
+      "cadena": "visible",
+      "hit_tool_limit": true
+     }
+    },
+    "clase": {
+     "C3": "búsqueda",
+     "C4": "llega"
+    }
+   },
+   {
+    "qid": "EV2F-011",
+    "criterio_idx": 1,
+    "to": "ext",
+    "ancla": "ext:5.8",
+    "criterio": "Debe mencionar el acuerdo que prevea que los fondos se destinen dentro de los 2 días hábiles al pago de los beneficiarios finales.",
+    "cita_textual": "los fondos ingresados sean destinados dentro de los 2 (dos) días hábiles al pago en el país de quienes resulten beneficiarios finales",
+    "regex": {
+     "c14": true,
+     "c14_par": true,
+     "c14_eur": true
+    },
+    "triples": [
+     [
+      "plazo",
+      "2",
+      "día"
+     ]
+    ],
+    "literales": [
+     "2 días",
+     "2 (dos) días"
+    ],
+    "nodos_ancla_con_valor": [
+     "Condicion_acuerdo_habilitacion_agente_de_pago_con_destino_fondos_f39e3a",
+     "Operacion_actuacion_como_agente_de_pago_en_la_republica_argentina_85ef04",
+     "Operacion_ingreso_de_fondos_divisas_destino_beneficiarios_finales_b414f5"
+    ],
+    "n_nodos_fuera_del_ancla_con_valor": 3,
+    "nodos_ancla_con_valor_por_tipo": {
+     "Condicion": 1,
+     "Operacion": 2
+    },
+    "celdas": {
+     "C3": {
+      "recibidos_buscar_nodos": [],
+      "recibidos_ver_vecinos": [],
+      "ver_nodo": [],
+      "valor_visible_desde": [],
+      "valor_en_respuesta": false,
+      "cadena": "búsqueda",
+      "hit_tool_limit": true
+     },
+     "C4": {
+      "recibidos_buscar_nodos": [],
+      "recibidos_ver_vecinos": [],
+      "ver_nodo": [],
+      "valor_visible_desde": [],
+      "valor_en_respuesta": false,
+      "cadena": "búsqueda",
+      "hit_tool_limit": true
+     }
+    },
+    "clase": {
+     "C3": "búsqueda",
+     "C4": "búsqueda"
+    }
+   },
+   {
+    "qid": "EV2F-014",
+    "criterio_idx": 3,
+    "to": "ext",
+    "ancla": "ext:13.5",
+    "criterio": "Debe mencionar la regla de plazo: el plazo del servicio más otros 15 días corridos desde la fecha estimada de prestación o devengamiento.",
+    "cita_textual": "más otros 15 (quince) días corridos a la fecha estimada de prestación o devengamiento del servicio",
+    "regex": {
+     "c14": true,
+     "c14_par": true,
+     "c14_eur": true
+    },
+    "triples": [
+     [
+      "plazo",
+      "15",
+      "día"
+     ]
+    ],
+    "literales": [
+     "15 días",
+     "15 (quince) días"
+    ],
+    "nodos_ancla_con_valor": [
+     "Condicion_condicion_especial_para_fletes_de_importacion_de_bienes_855561",
+     "Obligacion_la_documentacion_debe_demostrar_que_el_pago_garantizado_debia_ser_concretado_por_487fa9"
+    ],
+    "n_nodos_fuera_del_ancla_con_valor": 18,
+    "nodos_ancla_con_valor_por_tipo": {
+     "Condicion": 1,
+     "Obligacion": 1
+    },
+    "celdas": {
+     "C3": {
+      "recibidos_buscar_nodos": [],
+      "recibidos_ver_vecinos": [
+       "Obligacion_la_documentacion_debe_demostrar_que_el_pago_garantizado_debia_ser_concretado_por_487fa9"
+      ],
+      "ver_nodo": [
+       "Obligacion_la_documentacion_debe_demostrar_que_el_pago_garantizado_debia_ser_concretado_por_487fa9"
+      ],
+      "valor_visible_desde": [
+       "Obligacion_la_documentacion_debe_demostrar_que_el_pago_garantizado_debia_ser_concretado_por_487fa9"
+      ],
+      "valor_en_respuesta": true,
+      "cadena": "visible",
+      "hit_tool_limit": true
+     },
+     "C4": {
+      "recibidos_buscar_nodos": [],
+      "recibidos_ver_vecinos": [
+       "Obligacion_la_documentacion_debe_demostrar_que_el_pago_garantizado_debia_ser_concretado_por_487fa9"
+      ],
+      "ver_nodo": [
+       "Obligacion_la_documentacion_debe_demostrar_que_el_pago_garantizado_debia_ser_concretado_por_487fa9"
+      ],
+      "valor_visible_desde": [
+       "Obligacion_la_documentacion_debe_demostrar_que_el_pago_garantizado_debia_ser_concretado_por_487fa9"
+      ],
+      "valor_en_respuesta": true,
+      "cadena": "visible",
+      "hit_tool_limit": false
+     }
+    },
+    "clase": {
+     "C3": "llega",
+     "C4": "llega"
+    }
+   },
+   {
+    "qid": "EV2F-015",
+    "criterio_idx": 3,
+    "to": "ext",
+    "ancla": "ext:3.13.1",
+    "criterio": "Debe mencionar la excepción para repatriaciones de aportes liquidados desde el 02/10/20, con el plazo mínimo de 180 días corridos para aportes liquidados a partir del 21/04/25.",
+    "cita_textual": "la repatriación tenga lugar como mínimo 180 (ciento ochenta) días corridos después de la liquidación de los fondos del aporte si el aporte fue ingresado y liquidado a partir del 21/04/25",
+    "regex": {
+     "c14": true,
+     "c14_par": true,
+     "c14_eur": true
+    },
+    "triples": [
+     [
+      "plazo",
+      "180",
+      "día"
+     ]
+    ],
+    "literales": [
+     "180 días"
+    ],
+    "nodos_ancla_con_valor": [
+     "Condicion_plazo_minimo_180_dias_aporte_desde_21_04_25_5b49be"
+    ],
+    "n_nodos_fuera_del_ancla_con_valor": 29,
+    "nodos_ancla_con_valor_por_tipo": {
+     "Condicion": 1
+    },
+    "celdas": {
+     "C3": {
+      "recibidos_buscar_nodos": [],
+      "recibidos_ver_vecinos": [],
+      "ver_nodo": [],
+      "valor_visible_desde": [],
+      "valor_en_respuesta": false,
+      "cadena": "búsqueda",
+      "hit_tool_limit": true
+     },
+     "C4": {
+      "recibidos_buscar_nodos": [],
+      "recibidos_ver_vecinos": [],
+      "ver_nodo": [],
+      "valor_visible_desde": [],
+      "valor_en_respuesta": false,
+      "cadena": "búsqueda",
+      "hit_tool_limit": true
+     }
+    },
+    "clase": {
+     "C3": "búsqueda",
+     "C4": "búsqueda"
+    }
+   },
+   {
+    "qid": "EV2F-022",
+    "criterio_idx": 0,
+    "to": "cap",
+    "ancla": "cap:6.11",
+    "criterio": "Debe indicar el umbral de activos: posiciones que en conjunto superen el 25 % de la RPC del último día del segundo mes anterior (además de quienes operan opciones).",
+    "cita_textual": "superen el 25 % de la RPC registrada al último día del segundo mes anterior",
+    "regex": {
+     "c14": true,
+     "c14_par": true,
+     "c14_eur": true
+    },
+    "triples": [
+     [
+      "porcentaje",
+      "25",
+      "%"
+     ]
+    ],
+    "literales": [
+     "25 %"
+    ],
+    "nodos_ancla_con_valor": [
+     "Condicion_operacion_con_opciones_o_tenencia_activos_superior_25_rpc_fd04c5",
+     "Obligacion_las_entidades_financieras_que_operen_comprando_y_o_vendiendo_cualquiera_sea_su_i_e3389e",
+     "Operacion_tenencia_de_activos_posiciones_compradas_y_vendidas_a974ed"
+    ],
+    "n_nodos_fuera_del_ancla_con_valor": 13,
+    "nodos_ancla_con_valor_por_tipo": {
+     "Condicion": 1,
+     "Obligacion": 1,
+     "Operacion": 1
+    },
+    "celdas": {
+     "C3": {
+      "recibidos_buscar_nodos": [
+       "Obligacion_las_entidades_financieras_que_operen_comprando_y_o_vendiendo_cualquiera_sea_su_i_e3389e"
+      ],
+      "recibidos_ver_vecinos": [
+       "Condicion_operacion_con_opciones_o_tenencia_activos_superior_25_rpc_fd04c5",
+       "Operacion_tenencia_de_activos_posiciones_compradas_y_vendidas_a974ed"
+      ],
+      "ver_nodo": [
+       "Obligacion_las_entidades_financieras_que_operen_comprando_y_o_vendiendo_cualquiera_sea_su_i_e3389e"
+      ],
+      "valor_visible_desde": [
+       "Condicion_operacion_con_opciones_o_tenencia_activos_superior_25_rpc_fd04c5",
+       "Obligacion_las_entidades_financieras_que_operen_comprando_y_o_vendiendo_cualquiera_sea_su_i_e3389e"
+      ],
+      "valor_en_respuesta": true,
+      "cadena": "visible",
+      "hit_tool_limit": false
+     },
+     "C4": {
+      "recibidos_buscar_nodos": [],
+      "recibidos_ver_vecinos": [
+       "Operacion_tenencia_de_activos_posiciones_compradas_y_vendidas_a974ed"
+      ],
+      "ver_nodo": [],
+      "valor_visible_desde": [],
+      "valor_en_respuesta": false,
+      "cadena": "navegación",
+      "hit_tool_limit": false
+     }
+    },
+    "clase": {
+     "C3": "llega",
+     "C4": "navegación"
+    }
+   },
+   {
+    "qid": "EV2F-022",
+    "criterio_idx": 2,
+    "to": "cap",
+    "ancla": "cap:6.11",
+    "criterio": "Debe mencionar la responsabilidad de regularizar los defectos de integración diaria que superen el 3 % de la exigencia.",
+    "cita_textual": "regularizar los defectos de integración diaria que superen el 3 % de la exigencia",
+    "regex": {
+     "c14": true,
+     "c14_par": true,
+     "c14_eur": true
+    },
+    "triples": [
+     [
+      "porcentaje",
+      "3",
+      "%"
+     ]
+    ],
+    "literales": [
+     "3 %"
+    ],
+    "nodos_ancla_con_valor": [
+     "Obligacion_las_acciones_conducentes_a_regularizar_los_defectos_de_integracion_diaria_que_su_682b1a"
+    ],
+    "n_nodos_fuera_del_ancla_con_valor": 7,
+    "nodos_ancla_con_valor_por_tipo": {
+     "Obligacion": 1
+    },
+    "celdas": {
+     "C3": {
+      "recibidos_buscar_nodos": [],
+      "recibidos_ver_vecinos": [],
+      "ver_nodo": [],
+      "valor_visible_desde": [],
+      "valor_en_respuesta": false,
+      "cadena": "búsqueda",
+      "hit_tool_limit": false
+     },
+     "C4": {
+      "recibidos_buscar_nodos": [],
+      "recibidos_ver_vecinos": [],
+      "ver_nodo": [],
+      "valor_visible_desde": [],
+      "valor_en_respuesta": false,
+      "cadena": "búsqueda",
+      "hit_tool_limit": false
+     }
+    },
+    "clase": {
+     "C3": "búsqueda",
+     "C4": "búsqueda"
+    }
+   },
+   {
+    "qid": "EV2F-023",
+    "criterio_idx": 3,
+    "to": "cap",
+    "ancla": "cap:8.3.2",
+    "criterio": "Debe mencionar que el rescate es posible recién a los cinco años de la emisión y con condiciones (autorización previa de la SEFyC entre ellas).",
+    "cita_textual": "La entidad financiera podrá rescatarlos –transcurridos un mínimo de cinco años desde su emisión–",
+    "regex": {
+     "c14": true,
+     "c14_par": true,
+     "c14_eur": true
+    },
+    "triples": [
+     [
+      "plazo",
+      "5",
+      "año"
+     ]
+    ],
+    "literales": [],
+    "nodos_ancla_con_valor": [
+     "Operacion_rescate_de_instrumentos_del_ca_450b3b",
+     "Potestad_rescate_de_instrumentos_ca_cinco_anos_minimo_ce5aea"
+    ],
+    "n_nodos_fuera_del_ancla_con_valor": 9,
+    "nodos_ancla_con_valor_por_tipo": {
+     "Operacion": 1,
+     "Potestad": 1
+    },
+    "celdas": {
+     "C3": {
+      "recibidos_buscar_nodos": [
+       "Operacion_rescate_de_instrumentos_del_ca_450b3b"
+      ],
+      "recibidos_ver_vecinos": [],
+      "ver_nodo": [],
+      "valor_visible_desde": [
+       "Operacion_rescate_de_instrumentos_del_ca_450b3b"
+      ],
+      "valor_en_respuesta": false,
+      "cadena": "visible",
+      "hit_tool_limit": true
+     },
+     "C4": {
+      "recibidos_buscar_nodos": [],
+      "recibidos_ver_vecinos": [],
+      "ver_nodo": [],
+      "valor_visible_desde": [],
+      "valor_en_respuesta": false,
+      "cadena": "búsqueda",
+      "hit_tool_limit": true
+     }
+    },
+    "clase": {
+     "C3": "generación",
+     "C4": "búsqueda"
+    }
+   },
+   {
+    "qid": "EV2F-039",
+    "criterio_idx": 3,
+    "to": "pro",
+    "ancla": "pro:2.5",
+    "criterio": "Debe indicar el plazo de 30 días corridos para informar las reducciones aplicadas.",
+    "cita_textual": "deberán ser informadas al BCRA dentro de los treinta (30) días corridos siguientes de su aplicación",
+    "regex": {
+     "c14": true,
+     "c14_par": true,
+     "c14_eur": true
+    },
+    "triples": [
+     [
+      "plazo",
+      "30",
+      "día"
+     ]
+    ],
+    "literales": [
+     "30 días",
+     "treinta (30) días"
+    ],
+    "nodos_ancla_con_valor": [
+     "Obligacion_las_reducciones_en_las_comisiones_y_o_cargos_deberan_ser_informadas_al_bcra_dent_274dcb"
+    ],
+    "n_nodos_fuera_del_ancla_con_valor": 15,
+    "nodos_ancla_con_valor_por_tipo": {
+     "Obligacion": 1
+    },
+    "celdas": {
+     "C3": {
+      "recibidos_buscar_nodos": [
+       "Obligacion_las_reducciones_en_las_comisiones_y_o_cargos_deberan_ser_informadas_al_bcra_dent_274dcb"
+      ],
+      "recibidos_ver_vecinos": [],
+      "ver_nodo": [
+       "Obligacion_las_reducciones_en_las_comisiones_y_o_cargos_deberan_ser_informadas_al_bcra_dent_274dcb"
+      ],
+      "valor_visible_desde": [
+       "Obligacion_las_reducciones_en_las_comisiones_y_o_cargos_deberan_ser_informadas_al_bcra_dent_274dcb"
+      ],
+      "valor_en_respuesta": true,
+      "cadena": "visible",
+      "hit_tool_limit": false
+     },
+     "C4": {
+      "recibidos_buscar_nodos": [
+       "Obligacion_las_reducciones_en_las_comisiones_y_o_cargos_deberan_ser_informadas_al_bcra_dent_274dcb"
+      ],
+      "recibidos_ver_vecinos": [],
+      "ver_nodo": [
+       "Obligacion_las_reducciones_en_las_comisiones_y_o_cargos_deberan_ser_informadas_al_bcra_dent_274dcb"
+      ],
+      "valor_visible_desde": [
+       "Obligacion_las_reducciones_en_las_comisiones_y_o_cargos_deberan_ser_informadas_al_bcra_dent_274dcb"
+      ],
+      "valor_en_respuesta": true,
+      "cadena": "visible",
+      "hit_tool_limit": false
+     }
+    },
+    "clase": {
+     "C3": "llega",
+     "C4": "llega"
+    }
+   }
+  ]
+ },
+ "medicion_5_sin_A_P6PAR": {
+  "criterios_con_cuantia": {
+   "c14": 8,
+   "c14_par": 8,
+   "solo_c14_par": 0,
+   "c14_eur_informativo": 8,
+   "solo_c14_eur_informativo": 0,
+   "preguntas_con_algun_criterio_c14": 7
+  },
+  "clases_c14": {
+   "C3": {
+    "búsqueda": 3,
+    "generación": 1,
+    "grafo": 1,
+    "llega": 3
+   },
+   "C4": {
+    "búsqueda": 3,
+    "grafo": 1,
+    "llega": 3,
+    "navegación": 1
+   }
+  },
+  "clases_solo_c14_par": {
+   "C3": {},
+   "C4": {}
+  },
+  "clase_por_criterio": {
+   "EV2F-004#3": {
+    "C3": "búsqueda",
+    "C4": "llega"
+   },
+   "EV2F-011#1": {
+    "C3": "búsqueda",
+    "C4": "búsqueda"
+   },
+   "EV2F-014#3": {
+    "C3": "llega",
+    "C4": "llega"
+   },
+   "EV2F-015#3": {
+    "C3": "grafo",
+    "C4": "grafo"
+   },
+   "EV2F-022#0": {
+    "C3": "llega",
+    "C4": "navegación"
+   },
+   "EV2F-022#2": {
+    "C3": "búsqueda",
+    "C4": "búsqueda"
+   },
+   "EV2F-023#3": {
+    "C3": "generación",
+    "C4": "búsqueda"
+   },
+   "EV2F-039#3": {
+    "C3": "llega",
+    "C4": "llega"
+   }
+  }
+ },
+ "cap_1_2_contra_tabla": {
+  "tabla": "cap::tabla000",
+  "encabezados": [
+   "bancos",
+   "restantes entidades (salvo cajas de crédito cooperativas)"
+  ],
+  "cifras": [
+   "5.000",
+   "2.500"
+  ],
+  "columnas": {
+   "bancos": "5.000",
+   "restantes": "2.500"
+  },
+  "restricciones": [
+   {
+    "id": "Restriccion_las_restantes_entidades_salvo_bancos_y_cajas_de_credito_cooperativas_deberan_man_3b1ce0",
+    "clase_por_descripcion": "restantes",
+    "umbral": "5.000 millones de pesos",
+    "monto_umbral": "5.000",
+    "monto_tabla": "2.500",
+    "coincide_con_tabla": false
+   },
+   {
+    "id": "Restriccion_los_bancos_salvo_cajas_de_credito_cooperativas_deberan_mantener_un_capital_minim_74fc06",
+    "clase_por_descripcion": "bancos",
+    "umbral": "2.500 millones de pesos",
+    "monto_umbral": "2.500",
+    "monto_tabla": "5.000",
+    "coincide_con_tabla": false
+   }
+  ]
+ },
+ "dim_relacionales": {
+  "desarrollo": {
+   "por_tipo": {
+    "Restriccion": {
+     "con_cuantia": 258,
+     "forma_base_de_del_sobre": 43,
+     "forma_equivalente_monto": 12,
+     "forma_veces_articulo": 2,
+     "relacional": 57,
+     "relacional_con_campo": 51,
+     "relacional_sin_campo": 6
+    },
+    "Condicion": {
+     "con_cuantia": 134,
+     "forma_base_de_del_sobre": 20,
+     "forma_equivalente_monto": 8,
+     "forma_veces_articulo": 3,
+     "relacional": 31,
+     "relacional_sin_campo": 31
+    },
+    "Obligacion": {
+     "con_cuantia": 170,
+     "forma_base_de_del_sobre": 27,
+     "forma_equivalente_monto": 3,
+     "forma_veces_articulo": 1,
+     "relacional": 31,
+     "relacional_con_campo": 9,
+     "relacional_sin_campo": 22
+    },
+    "Excepcion": {
+     "con_cuantia": 43,
+     "forma_base_de_del_sobre": 3,
+     "forma_equivalente_monto": 0,
+     "forma_veces_articulo": 1,
+     "relacional": 3,
+     "relacional_sin_campo": 3
+    }
+   },
+   "total": {
+    "con_cuantia": 605,
+    "forma_base_de_del_sobre": 93,
+    "forma_equivalente_monto": 23,
+    "forma_veces_articulo": 7,
+    "relacional": 122,
+    "relacional_con_campo": 60,
+    "relacional_sin_campo": 62
+   }
+  },
+  "r1": {
+   "por_tipo": {
+    "Restriccion": {
+     "con_cuantia": 361,
+     "forma_base_de_del_sobre": 59,
+     "forma_equivalente_monto": 19,
+     "forma_veces_articulo": 8,
+     "relacional": 86,
+     "relacional_con_campo": 75,
+     "relacional_sin_campo": 11
+    },
+    "Obligacion": {
+     "con_cuantia": 228,
+     "forma_base_de_del_sobre": 40,
+     "forma_equivalente_monto": 2,
+     "forma_veces_articulo": 4,
+     "relacional": 44,
+     "relacional_con_campo": 16,
+     "relacional_sin_campo": 28
+    },
+    "Excepcion": {
+     "con_cuantia": 49,
+     "forma_base_de_del_sobre": 4,
+     "forma_equivalente_monto": 1,
+     "forma_veces_articulo": 0,
+     "relacional": 5,
+     "relacional_sin_campo": 5
+    }
+   },
+   "total": {
+    "con_cuantia": 638,
+    "forma_base_de_del_sobre": 103,
+    "forma_equivalente_monto": 22,
+    "forma_veces_articulo": 12,
+    "relacional": 135,
+    "relacional_con_campo": 91,
+    "relacional_sin_campo": 44
+   }
+  },
+  "diez": {
+   "por_tipo": {
+    "Restriccion": {
+     "con_cuantia": 280,
+     "forma_base_de_del_sobre": 47,
+     "forma_equivalente_monto": 12,
+     "forma_veces_articulo": 3,
+     "relacional": 62,
+     "relacional_con_campo": 56,
+     "relacional_sin_campo": 6
+    },
+    "Condicion": {
+     "con_cuantia": 156,
+     "forma_base_de_del_sobre": 21,
+     "forma_equivalente_monto": 8,
+     "forma_veces_articulo": 3,
+     "relacional": 32,
+     "relacional_sin_campo": 32
+    },
+    "Obligacion": {
+     "con_cuantia": 202,
+     "forma_base_de_del_sobre": 27,
+     "forma_equivalente_monto": 3,
+     "forma_veces_articulo": 1,
+     "relacional": 31,
+     "relacional_con_campo": 9,
+     "relacional_sin_campo": 22
+    },
+    "Excepcion": {
+     "con_cuantia": 44,
+     "forma_base_de_del_sobre": 3,
+     "forma_equivalente_monto": 0,
+     "forma_veces_articulo": 1,
+     "relacional": 3,
+     "relacional_sin_campo": 3
+    }
+   },
+   "total": {
+    "con_cuantia": 682,
+    "forma_base_de_del_sobre": 98,
+    "forma_equivalente_monto": 23,
+    "forma_veces_articulo": 8,
+    "relacional": 128,
+    "relacional_con_campo": 65,
+    "relacional_sin_campo": 63
+   }
+  }
+ },
+ "cobertura_otros_portadores": {
+  "desarrollo": {
+   "excepcion_con_cuantia": 43,
+   "excepcion_con_cuantia_sin_exceptua": 21,
+   "obligacion_con_cuantia_sin_campo": 76,
+   "obligacion_con_cuantia_sin_campo_sin_regula_ni_condiciona": 51,
+   "obligacion_con_plazo": 248,
+   "obligacion_con_plazo_sin_regula_ni_condiciona": 170
+  },
+  "r1": {
+   "excepcion_con_cuantia": 49,
+   "excepcion_con_cuantia_sin_exceptua": 10,
+   "obligacion_con_cuantia_sin_campo": 106,
+   "obligacion_con_cuantia_sin_campo_sin_regula_ni_condiciona": 38,
+   "obligacion_con_plazo": 288,
+   "obligacion_con_plazo_sin_regula_ni_condiciona": 135
+  },
+  "diez": {
+   "excepcion_con_cuantia": 44,
+   "excepcion_con_cuantia_sin_exceptua": 22,
+   "obligacion_con_cuantia_sin_campo": 87,
+   "obligacion_con_cuantia_sin_campo_sin_regula_ni_condiciona": 56,
+   "obligacion_con_plazo": 348,
+   "obligacion_con_plazo_sin_regula_ni_condiciona": 251
+  }
+ },
+ "dim_modelo": {
+  "desarrollo": {
+   "con_cuantia": {
+    "nodos": 605,
+    "chunks_llamadas": 310,
+    "chars_chunks": 656149,
+    "chars_descripciones": 133476,
+    "tokens_entrada_variables": 227492,
+    "tokens_salida": 36300,
+    "costo_usd_estimado_NO_VERIFICADO": 0.4572,
+    "referencia_e1e3_usd": 5.146
+   },
+   "con_cuantia_sin_campo": {
+    "nodos": 287,
+    "chunks_llamadas": 169,
+    "chars_chunks": 391500,
+    "chars_descripciones": 71148,
+    "tokens_entrada_variables": 133290,
+    "tokens_salida": 17220,
+    "costo_usd_estimado_NO_VERIFICADO": 0.2465,
+    "referencia_e1e3_usd": 2.8054
+   }
+  },
+  "diez": {
+   "con_cuantia": {
+    "nodos": 682,
+    "chunks_llamadas": 364,
+    "chars_chunks": 705446,
+    "chars_descripciones": 147579,
+    "tokens_entrada_variables": 245758,
+    "tokens_salida": 40920,
+    "costo_usd_estimado_NO_VERIFICADO": 0.5067,
+    "referencia_e1e3_usd": 6.0424
+   },
+   "con_cuantia_sin_campo": {
+    "nodos": 323,
+    "chunks_llamadas": 195,
+    "chars_chunks": 417495,
+    "chars_descripciones": 77900,
+    "tokens_entrada_variables": 142724,
+    "tokens_salida": 19380,
+    "costo_usd_estimado_NO_VERIFICADO": 0.2706,
+    "referencia_e1e3_usd": 3.237
+   }
+  }
+ }
+}
