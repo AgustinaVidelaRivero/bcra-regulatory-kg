@@ -15,6 +15,12 @@ Actualizada el 29/09/2026 con el cierre de la fase 2a (P1 a P5, P10, P16, N3, N8
 R27).
 Actualizada el 29/09/2026: fase 2b cerrada (P16) y tablero de correcciones como
 condición (4) de la tanda 1 (R28).
+Actualizada el 30/09/2026 con las decisiones de la autora del 30/09: el cambio de
+prefijo queda decidido y se hace en el ciclo B2.11 (`:388-403`), con la ventana única
+del §7 (X2 a X5 y X8 decididos; X6, X7 y X9 entran al ciclo con el remedio por
+decidir; X1, X10 y X11 se deciden en L-ESQ-R2); ítems nuevos
+P17 a P19, R29 a R31, X12 a X16 y W9 a W13; P4, Q10, Q11, R1, R5, R8, R20, R21 y R27
+actualizados. Las anclas `:n` se remapearon a la v16 del plan.
 
 **Convenciones.**
 - Registro: `:n` es la línea de `docs/plan_tesis.md`; «laudo §x» es la sección
@@ -32,42 +38,54 @@ condición (4) de la tanda 1 (R28).
 
 ## Orden y condiciones de la tanda 1
 
-Decisión de la autora del 29/09/2026, asentada en las filas B6.1 (`:743`) y
-B2.10 (`:382`). Cerrada la tanda 0 (adjudicación ciega de C2 a C5 con el
+Decisión de la autora del 29/09/2026, asentada en las filas B6.1 (`:763`) y
+B2.10 (`:386`). Cerrada la tanda 0 (adjudicación ciega de C2 a C5 con el
 anexo E5.c, P1, y E6, P2), las unidades de r2 sin cambio de prefijo (canal 1)
 y A1.8 (canal 3) pueden avanzar en paralelo con la lectura del capítulo por
 los mentores. La tanda 1 depende de tres condiciones:
 
 1. La validación escrita del capítulo, registrada (P6).
 2. B2.10 cerrada: r2 versionada con su gate en verde (R26, con lo que el
-   laudo firmado incluya del canal 1).
+   laudo firmado incluya del canal 1). **[30/09/2026]** Se lee: B2.10 y B2.11
+   cerradas hasta U-REEXT-T0 (`:399`), con el gate de r2 en verde sobre los
+   grafos re-extraídos.
 3. La decisión de la autora con los mentores sobre el cambio de prefijo: X1
    (matriz), X2 (prompt), X3 (ventana del §7) y X4 (cuándo va la release de
-   prompt), con X11 (si la lectura asistida de la matriz alcanza).
+   prompt), con X11 (si la lectura asistida de la matriz alcanza). **[30/09/2026]**
+   Decidida: el prefijo cambia en el ciclo B2.11 y la ventana del §7 se usa ahí
+   (X2 a X4). Queda L-ESQ-R2 firmado (`:393`), que resuelve X1, X10 y X11.
 4. El tablero de correcciones (`docs/tablero_correcciones.md`) con la columna
    «después de r2» completa y cada meta cumplida o con su residuo declarado (R28;
-   laudo de r2, §3.1, punto 8). Agregada el 29/09/2026.
+   laudo de r2, §3.1, punto 8). Agregada el 29/09/2026. **[30/09/2026]** Con dos
+   columnas: r2a (solo código, antes de re-extraer) y r2b (prompt y re-extracción).
+
+**Desde el 30/09/2026 la tanda 1 corre sin ventana de corrección** (X3, P19): una
+falla de esquema que revele va a release posterior declarada. Orden de trabajo hasta
+la tanda 1: fila B2.11 del plan (`:388-403`).
 
 ## 0. Precondiciones y operación del escalado
 
 | # | Qué es | Registro | Estado | Decisión |
 |---|---|---|---|---|
-| P1 | Adjudicación ciega de C2 a C5, antes de E6 | anexo E5.c `docs/mandatos/UTANDA0_2A_E5c_adjudicacion.md` (firmado, `0488a9b`); `:724` | hecho: cierre recomputado en `ecd102c` sobre las marcas de `8e0597c` (instancia adjudicadora, desvío declarado); definitivas sin cambio | No; la autora confirma modelo y versión de la instancia |
-| P2 | E6: lectura de observaciones y vigilancias y reporte de 2a, puntos (1) a (6) de la lectura | mandato 2a, E6 (`docs/mandatos/UTANDA0_2A_corrida.md:216-234`); `:728` | hecho: `2399eb7`, `reports/tanda0/reporte_fase2a.md`; el cruce de ausencias del punto (3) pasa a R27 | No |
-| P3 | **HUECO** — punto (6) de E6: aristas entre documentos distintos, por relación, en los tres ensamblados | `:728` (6) | hecho: reporte de 2a, §4, punto 6 | No |
-| P4 | Posición sobre la ventana del §7 por la vía de A8, en el reporte de 2a | mandato 2a, E6 c; `docs/preregistro_tanda0.md:832` (A8); `:724` | decidido (29/09): se acepta la posición propuesta; la ventana queda intacta para la tanda 1, salvo que la use la decisión sobre la matriz (X1 a X4, X11) | No |
-| P5 | Mentor informado con el reporte de 2a (`reports/tanda0/reporte_fase2a.md`) | `:724` | registrado | No: acción de la autora |
-| P6 | Gate del capítulo: validación escrita de los mentores sobre el capítulo 3; rige para la tanda 1 y el escalado. **Condición (1) de la tanda 1** | `:137-142`, `:1071` (actualización del 29/09 en los dos) | registrado; PENDIENTE: los mentores leen el capítulo (declaración de la autora del 29/09); la tanda 0 corrió por la decisión del 25/09 (entrada de estado del 11/09) | No: registrar la validación cuando llegue |
-| P7 | Decisiones abiertas del gate del capítulo: (1) los ocho límites de la Tabla 4 con destino; (2) principio de gobierno de la enmienda; ítem (a), adenda al laudo congelado por sus nueve filas | `:143-152` | registrado; sin cierre encontrado | Sí |
-| P8 | U-COB-A: laudo sobre las 77 unidades del bloque A y `cifras_vigentes.md` (ítem (b), «reemplaza 11» contra «las diez») | `:152-155`, `:708` | registrado | Sí |
-| P9 | B5.7: costos con tarifas reales, manifiesto del corpus escalado con `perfil_e1: "v3_b54"`, re-presupuesto de los no-RI antes de la tanda 2 | `:711` | registrado | Sí: presupuesto |
-| P10 | Mandato de B6.1: tasas y muestreo de las vigilancias (1) a (9), sellados antes de correr; incluye (1) y (3) y la lectura de (2) y (7), no medidas en la tanda 0 (decisión del 29/09) | `:743` | registrado | Sí |
-| P11 | Gate de la tanda 1: esqueleto v3 inyectado y S15 en PASS | `:744` | registrado (en la tanda 0, S15 PASS en `cf6ca42`) | No |
-| P12 | Gate de la tanda 1: retiro de las tres `aplica_a` de U-COB-A si sus TOs entran | `:745` | registrado (en la tanda 0, 0 de 3 porque sus TOs no estaban) | No |
-| P13 | La tanda 1 pasa por r1: mecánica a fijar en el mandato | `:746`; precedente, gate 1 de la tanda 0 (`47c9283`) | registrado | No |
-| P14 | Observaciones (10), (11) y (12) de la tanda 1 contra sus líneas de base | `:747`, `:748` | registrado | No |
-| P15 | Tanda 1: definir de antemano quién lee y adjudica (vigilancias, observaciones y muestras): modelo con muestra humana de control de tamaño suficiente y declarada, o experto del dominio | esta lista (29/09); antecedente, desvíos declarados en `:724`, `:727` y `:729` | registrado | Sí, con los mentores |
-| P16 | Cierre formal de 2b: segunda emisión del paso 8 (reporte de 2b), según la enmienda `a551c57` §2.2 | `:729`; `reports/tanda0/reporte_fase2b.md` | hecho: `05465e9`; fase 2b cerrada | No |
+| P1 | Adjudicación ciega de C2 a C5, antes de E6 | anexo E5.c `docs/mandatos/UTANDA0_2A_E5c_adjudicacion.md` (firmado, `0488a9b`); `:744` | hecho: cierre recomputado en `ecd102c` sobre las marcas de `8e0597c` (instancia adjudicadora, desvío declarado); definitivas sin cambio | No; la autora confirma modelo y versión de la instancia |
+| P2 | E6: lectura de observaciones y vigilancias y reporte de 2a, puntos (1) a (6) de la lectura | mandato 2a, E6 (`docs/mandatos/UTANDA0_2A_corrida.md:216-234`); `:748` | hecho: `2399eb7`, `reports/tanda0/reporte_fase2a.md`; el cruce de ausencias del punto (3) pasa a R27 | No |
+| P3 | **HUECO** — punto (6) de E6: aristas entre documentos distintos, por relación, en los tres ensamblados | `:748` (6) | hecho: reporte de 2a, §4, punto 6 | No |
+| P4 | Posición sobre la ventana del §7 por la vía de A8, en el reporte de 2a | mandato 2a, E6 c; `docs/preregistro_tanda0.md:832` (A8); `:744` | decidido (29/09): se acepta la posición propuesta; la ventana queda intacta para la tanda 1, salvo que la use la decisión sobre la matriz (X1 a X4, X11). **Superado el 30/09:** la ventana se usa en el ciclo B2.11 (X3) | No |
+| P5 | Mentor informado con el reporte de 2a (`reports/tanda0/reporte_fase2a.md`) | `:744` | registrado | No: acción de la autora |
+| P6 | Gate del capítulo: validación escrita de los mentores sobre el capítulo 3; rige para la tanda 1 y el escalado. **Condición (1) de la tanda 1** | `:139-144`, `:1093` (actualización del 29/09 en los dos) | registrado; PENDIENTE: los mentores leen el capítulo (declaración de la autora del 29/09); la tanda 0 corrió por la decisión del 25/09 (entrada de estado del 11/09) | No: registrar la validación cuando llegue |
+| P7 | Decisiones abiertas del gate del capítulo: (1) los ocho límites de la Tabla 4 con destino; (2) principio de gobierno de la enmienda; ítem (a), adenda al laudo congelado por sus nueve filas | `:145-154` | registrado; sin cierre encontrado | Sí |
+| P8 | U-COB-A: laudo sobre las 77 unidades del bloque A y `cifras_vigentes.md` (ítem (b), «reemplaza 11» contra «las diez») | `:154-157`, `:728` | registrado | Sí |
+| P9 | B5.7: costos con tarifas reales, manifiesto del corpus escalado con `perfil_e1: "v3_b54"`, re-presupuesto de los no-RI antes de la tanda 2 | `:731` | registrado | Sí: presupuesto |
+| P10 | Mandato de B6.1: tasas y muestreo de las vigilancias (1) a (9), sellados antes de correr; incluye (1) y (3) y la lectura de (2) y (7), no medidas en la tanda 0 (decisión del 29/09) | `:763` | registrado | Sí |
+| P11 | Gate de la tanda 1: esqueleto v3 inyectado y S15 en PASS | `:764` | registrado (en la tanda 0, S15 PASS en `cf6ca42`) | No |
+| P12 | Gate de la tanda 1: retiro de las tres `aplica_a` de U-COB-A si sus TOs entran | `:765` | registrado (en la tanda 0, 0 de 3 porque sus TOs no estaban) | No |
+| P13 | La tanda 1 pasa por r1: mecánica a fijar en el mandato | `:766`; precedente, gate 1 de la tanda 0 (`47c9283`) | registrado | No |
+| P14 | Observaciones (10), (11) y (12) de la tanda 1 contra sus líneas de base | `:767`, `:768` | registrado | No |
+| P15 | Tanda 1: definir de antemano quién lee y adjudica (vigilancias, observaciones y muestras): modelo con muestra humana de control de tamaño suficiente y declarada, o experto del dominio | esta lista (29/09); antecedente, desvíos declarados en `:744`, `:747` y `:749` | registrado | Sí, con los mentores |
+| P16 | Cierre formal de 2b: segunda emisión del paso 8 (reporte de 2b), según la enmienda `a551c57` §2.2 | `:749`; `reports/tanda0/reporte_fase2b.md` | hecho: `05465e9`; fase 2b cerrada | No |
+| P17 | U-MANT: tabla de qué obliga a reprocesar todo y qué no, procedimiento de empalme de un subgrafo re-extraído y control de los supuestos del sitio del BCRA con aviso ante cambios; revoca la exclusión de avisos del mandato de U-JOB-ACT | `:400`; `:1136` | decidido (30/09) | No |
+| P18 | U-SUBGRAFO: actualización solo del subgrafo afectado en los tres TOs de desarrollo que cambiaron en el sitio; cubre la exigencia 6 | `:401` | registrado; costo NO VERIFICADO | Sí: tope |
+| P19 | El pre-registro de la tanda 1 declara que corre sin ventana de corrección | `:763` | decidido (30/09) | No |
 
 ## 1. r2 sin prefijo
 
@@ -75,105 +93,121 @@ Avanza en paralelo con la lectura del capítulo una vez cerrada la tanda 0.
 
 | # | Qué es | Registro | Estado | Decisión |
 |---|---|---|---|---|
-| R1 | Firma del laudo de release r2 | laudo, «Firma»; `:382` paso (1) | registrado (BORRADOR) | Sí |
-| R2 | `BKL-0030`: reintento por corte y partición; (a) sola o (a) con partición | laudo §1.1 y §4 (fila de `cap::4.2.1.2`); `BKL-0030`; `:383` (1) | registrado | Sí |
+| R1 | Firma del laudo de release r2 | laudo, «Firma»; `:386` paso (1) | registrado (BORRADOR); desde el 30/09 r2 incluye el cambio de prompt y el laudo se reescribe antes de la firma (notas del 30/09 en «Qué no es», §1.6, §3.2 y §4) | Sí |
+| R2 | `BKL-0030`: reintento por corte y partición; (a) sola o (a) con partición | laudo §1.1 y §4 (fila de `cap::4.2.1.2`); `BKL-0030`; `:387` (1) | registrado | Sí |
 | R3 | Doble conteo del checkpoint de cierre del runner | laudo §1.6 (recomendación: entra con R2) | registrado | Sí (laudo §5, 1) |
-| R4 | `BKL-0031`: detector de duplicados y fusión solo de forma; umbral del paso 3 | laudo §1.2 y §5 (3); `BKL-0031`; `:383` (2) | registrado | Sí |
-| R5 | RX-10 / `BKL-0006`: cablear el parser de tablas a E0; censo en USD 0 antes de costear | laudo §1.3 y §5 (5) | registrado | Sí: tope |
+| R4 | `BKL-0031`: detector de duplicados y fusión solo de forma; umbral del paso 3 | laudo §1.2 y §5 (3); `BKL-0031`; `:387` (2) | registrado | Sí |
+| R5 | RX-10 / `BKL-0006`: cablear el parser de tablas a E0; censo en USD 0 antes de costear | laudo §1.3 y §5 (5) | registrado; entra a U-R2-CODIGO (`:396`) con la detección de tablas en E0 y `BKL-0023` (R29) | Sí: tope |
 | R6 | `cuarentena` booleana contra `"true"` en T7; su entrada de backlog se escribe al firmar | laudo §1.4 | registrado; sin entrada de backlog | Sí (laudo §5, 6) |
 | R7 | Test de la cláusula de mutuales (RT-C6), opción (c) | laudo §1.5 y §5 (2) | registrado | Sí |
-| R8 | Completar `esquema_v3_clases.json` con los seis ids del perfil | laudo §1.6 (recomendación: entra); `:725` | registrado | Sí (laudo §5, 1) |
+| R8 | Completar `esquema_v3_clases.json` con los seis ids del perfil | laudo §1.6 (recomendación: entra); `:745` | absorbido por X15 (U-CAT-UNICO, `:394`) el 30/09 | No |
 | R9 | Pendientes de U-B1a: rangos, 196 conflictos de properties, 5 cross-TO, 41 `padre_sugerido`, política de cola | laudo §1.6; cola 8 | registrado | Sí |
 | R10 | Guarda de modalidad (deber emitido como Condicion) | laudo §1.6; cola 12 | registrado; no entra salvo que la vigilancia (1) lo pida | Sí, tras E6 |
 | R11 | H1 y H4: remisiones desde Condicion, Potestad y Definicion, y lectura de `termino` | laudo §4 | registrado | Sí |
-| R12 | Remisiones falsas por paráfrasis: detectar sobre el texto de E0, no sobre la descripción | laudo §4; `:383` (3) | registrado; corrección previa a la tanda 1 | Sí |
+| R12 | Remisiones falsas por paráfrasis: detectar sobre el texto de E0, no sobre la descripción | laudo §4; `:387` (3) | registrado; corrección previa a la tanda 1 | Sí |
 | R13 | H2: fusión por label de Condicion, Definicion y Potestad (cambia ids y la fixture) | laudo §4 | registrado | Sí |
 | R14 | Nodos aislados: derivar `establecida_en` de la procedencia en el ensamblado | laudo §4 | registrado | Sí |
 | R15 | Procedencia de las remisiones: resolver desde cada procedencia; vista del agente | laudo §4 (dos filas) | registrado; alcance a definir | Sí |
 | R16 | Test de la suite: el ejemplo `cla::5.1.1.1` | laudo §4 (entra con el gate) | registrado | No: la autora sella la entrada de la fixture |
 | R17 | Control de aristas entre nodos con la misma descripción (M50, idéntica y correcta) | laudo §4 (fila del 29/09) | registrado; alcance a medir | Sí |
-| R18 | B2.9: detector de huérfanos de label | `:381`; no figura en el laudo de r2 | registrado | Sí: si entra |
+| R18 | B2.9: detector de huérfanos de label | `:385`; no figura en el laudo de r2 | registrado | Sí: si entra |
 | R19 | Entrada de r2 en la fixture, sellada antes del gate, con su política de cuarentena | laudo §3.1 (2) y §5 (6) | registrado | Sí |
-| R20 | Corpus sobre el que se materializa r2: los cinco de desarrollo o los diez | laudo §5 (4) | registrado | Sí |
-| R21 | Tope de gasto de la release | laudo §5 (5) | registrado | Sí |
+| R20 | Corpus sobre el que se materializa r2: los cinco de desarrollo o los diez | laudo §5 (4) | decidido (30/09): los diez de la tanda 0, re-extraídos (U-REEXT-T0, `:399`) | No |
+| R21 | Tope de gasto de la release | laudo §5 (5) | registrado; desde el 30/09 incluye la prueba pareada de U-PROMPT-R2 y la re-extracción de la tanda 0 (`:398`, `:399`) | Sí |
 | R22 | Copia de resguardo de las dbs de caché, fuera del repo, antes de la corrida de r2 | laudo §2 y §3.2 (6) | registrado | No |
 | R23 | Proyección de misses antes de pagar; un miss de más es FRENO | laudo §3.2 (5) | registrado | No |
 | R24 | **HUECO** — muestra de precisión de aristas sobre r2 con el método de (12), como evidencia que no usa EV2 | laudo §5 (7) | registrado | Sí |
-| R25 | Tests de la observación (12): se revisan después de r2, direccionados por (chunk_id, relación, tipo de destino) | `:729` | decidido (28/09) | No |
-| R26 | Gate de release y versionado de KG-Reextraído-r2. **Condición (2) de la tanda 1** | laudo §3.1; `:382` pasos (3) y (4) | registrado | No |
-| R27 | Unidad previa a la firma de r2: diagnóstico de los seis ítems de la suite que pasan de resuelto a persiste (E4-a7, E4-a8, T2, T4, T5, T7) y cruce de cada ausencia de C1 a C4 con los candidatos del §4 y con los rechazos de la matriz | `docs/mandatos/UPRE_R2_diagnostico.md`; `:382` | registrado (BORRADOR) | Sí: firma y despacho |
+| R25 | Tests de la observación (12): se revisan después de r2, direccionados por (chunk_id, relación, tipo de destino) | `:749` | decidido (28/09) | No |
+| R26 | Gate de release y versionado de KG-Reextraído-r2. **Condición (2) de la tanda 1** | laudo §3.1; `:386` pasos (3) y (4) | registrado | No |
+| R27 | Unidad previa a la firma de r2: diagnóstico de los seis ítems de la suite que pasan de resuelto a persiste (E4-a7, E4-a8, T2, T4, T5, T7) y cruce de cada ausencia de C1 a C4 con los candidatos del §4 y con los rechazos de la matriz | `docs/mandatos/UPRE_R2_diagnostico.md`; `:386`; firmado en `6daf63f` | hecho: D1 y D2 commiteados en `159c1e2`; la revisión de D2 por la mesa es la unidad 2 de B2.11 (`:390`) | No |
 | R28 | Tablero de correcciones: la columna «después de r2» completa, con cada meta cumplida o su residuo declarado. **Condición (4) de la tanda 1** | `docs/tablero_correcciones.md`; laudo §3.1, punto 8 | registrado; metas abiertas en siete filas | Sí: las metas marcadas DECISIÓN ABIERTA |
+| R29 | `BKL-0023`: afirmación falsa por tabla no detectada en `cap::1.2`. En r1, desarrollo y diez, bancos 2.500 y restantes entidades 5.000; el PDF dice bancos 5.000 y restantes 2.500 (`data/backlog/propuestas/C2_montos_12.md:31-32`). E0 no marca el chunk como tabla, y la suite da `no_aplicable` en desarrollo (en r1, `BKL-0006` persiste) | `:396`; tablero, fila propia | decidido (30/09) | No |
+| R30 | Persistencia del crudo del reintento de E3: `finales.jsonl` no lo guarda (en desarrollo, 167 de 1.757 finales aceptados tras reintento) | `:396`; tablero | decidido (30/09) | No |
+| R31 | Medición r2a: re-ensamblado solo en código sobre la salida guardada de la tanda 0, antes de re-extraer | `:397`; tablero, columna r2a | decidido (30/09) | No |
 
 ## 2. Cambio de prefijo con enmienda
 
+Desde el 30/09/2026 el cambio de prefijo está decidido: se hace en el ciclo B2.11
+(`:388-403`), con la ventana única del §7 (X3).
+
 | # | Qué es | Registro | Estado | Decisión |
 |---|---|---|---|---|
-| X1 | Enmienda de la matriz congelada: → Operacion cumple el criterio (27 de 29, piso 0,780); → Potestad no (27 de 30, piso 0,744) | `:727`; `reports/u_estudio_matriz/lectura/resultado_lectura_matriz.md` | registrado; resultado del protocolo, sin decidir la enmienda | Sí, con los mentores; condición (3) de la tanda 1 |
-| X11 | ¿La lectura asistida de la matriz (instancia de modelo, revisada por la autora) alcanza para la enmienda, o se pide una validación adicional, por ejemplo de alguien del dominio? | `:727`; `reports/u_estudio_matriz/lectura/resultado_lectura_matriz.md` | registrado | Sí, con los mentores; condición (3) de la tanda 1 |
-| X2 | Si se amplía la matriz: cambiar el prompt (rota el prefijo; la tanda 0 se re-extrae o se revalida declarando la mezcla) o ampliar solo el validador | `:727` | registrado | Sí, con los mentores; condición (3) de la tanda 1 |
-| X3 | Ventana única del §7: si se usa después de la tanda 0, la tanda 1 ya no la tiene y los cinco de la tanda 0 salen del conjunto final de B6.3 | `:727`; `docs/preregistro_tanda0.md:832` (A8, decisión 4) | registrado | Sí; condición (3) de la tanda 1 |
-| X4 | Cuándo va la release de prompt: antes o después de la tanda 1 (la §3.2 del laudo de r2 no admite cambios al prefijo) | `:727`; laudo §3.2 (1) | registrado | Sí, con los mentores; condición (3) de la tanda 1 |
-| X5 | `BKL-0032`, `BKL-0033`, `BKL-0035`, `BKL-0036`: incorrectas `E1-prompt` de la observación (12) | backlog; `:729` | registrado | Sí (con X4) |
-| X6 | `BKL-0034`: el catálogo v3 no tiene sujeto de nivel órgano | backlog; laudo §4 (fila del 29/09) | registrado | Sí (con X4) |
-| X7 | `BKL-0028` y `BKL-0029`: cambios del catálogo v3 del prefijo | backlog; laudo §1.6 (no entran a r2) | registrado | Sí (con X4) |
-| X8 | Remedio de raíz de la cláusula de mutuales: regla de calificadores en E1 | laudo §1.5 (a) | registrado; fuera de r2 | Sí (con X4) |
-| X9 | B2.4: laudo de los 15 `triaged`; nueve de asignación de sujeto piden una corrección sistemática vía prompt o validador de E1 | `:376` | registrado | Sí |
-| X10 | R6b: residuo del esquema | laudo §1.6 (solo por la vía de A8) | registrado | Sí |
+| X1 | Enmienda de la matriz congelada: → Operacion cumple el criterio (27 de 29, piso 0,780); → Potestad no (27 de 30, piso 0,744) | `:747`; `reports/u_estudio_matriz/lectura/resultado_lectura_matriz.md` | registrado; resultado del protocolo, sin decidir la enmienda; desde el 30/09 se decide en L-ESQ-R2 (`:393`) | Sí, en L-ESQ-R2; condición (3) de la tanda 1 |
+| X11 | ¿La lectura asistida de la matriz (instancia de modelo, revisada por la autora) alcanza para la enmienda, o se pide una validación adicional, por ejemplo de alguien del dominio? | `:747`; `reports/u_estudio_matriz/lectura/resultado_lectura_matriz.md` | registrado; desde el 30/09 se decide en L-ESQ-R2 (`:393`) | Sí, en L-ESQ-R2; condición (3) de la tanda 1 |
+| X2 | Si se amplía la matriz: cambiar el prompt (rota el prefijo; la tanda 0 se re-extrae o se revalida declarando la mezcla) o ampliar solo el validador | `:747` | decidido (30/09): se cambia el prompt (U-PROMPT-R2, `:398`) y la tanda 0 se re-extrae (U-REEXT-T0, `:399`) | No |
+| X3 | Ventana única del §7: si se usa después de la tanda 0, la tanda 1 ya no la tiene y los cinco de la tanda 0 salen del conjunto final de B6.3 | `:747`; `docs/preregistro_tanda0.md:832` (A8, decisión 4) | decidido (30/09): este ciclo usa la ventana; la tanda 1 corre sin ventana y los cinco de la tanda 0 salen del conjunto de B6.3 (a). Enmiendas en borrador (X16) | No |
+| X4 | Cuándo va la release de prompt: antes o después de la tanda 1 (la §3.2 del laudo de r2 no admite cambios al prefijo) | `:747`; laudo §3.2 (1) | decidido (30/09): antes de la tanda 1, en el ciclo B2.11 | No |
+| X5 | `BKL-0032`, `BKL-0033`, `BKL-0035`, `BKL-0036`: incorrectas `E1-prompt` de la observación (12) | backlog; `:749` | decidido (30/09): entran a U-PROMPT-R2 (`:398`) | No |
+| X6 | `BKL-0034`: el catálogo v3 no tiene sujeto de nivel órgano | backlog; laudo §4 (fila del 29/09) | decidido (30/09): entra al ciclo; el remedio se lauda en L-ESQ-R2 (`:393`) y lo aplica U-CAT-UNICO (`:394`) | Sí: el remedio, en L-ESQ-R2 |
+| X7 | `BKL-0028` y `BKL-0029`: cambios del catálogo v3 del prefijo | backlog; laudo §1.6 (no entran a r2) | decidido (30/09): entran al ciclo; se laudan en L-ESQ-R2 (`:393`) y los aplica U-CAT-UNICO (`:394`) | Sí: cuáles, en L-ESQ-R2 |
+| X8 | Remedio de raíz de la cláusula de mutuales: regla de calificadores en E1 | laudo §1.5 (a) | decidido (30/09): entra a U-PROMPT-R2 (`:398`) | No |
+| X9 | B2.4: laudo de los 15 `triaged`; nueve de asignación de sujeto piden una corrección sistemática vía prompt o validador de E1 | `:380` | la corrección sistemática entra al ciclo (U-LISTAS-NOMAP, `:392`, y U-PROMPT-R2, `:398`); el laudo de los 15 de B2.4 sigue pendiente | Sí: el laudo de B2.4 |
+| X10 | R6b: residuo del esquema | laudo §1.6 (solo por la vía de A8) | registrado; con la ventana usada, se decide en L-ESQ-R2 (`:393`) | Sí, en L-ESQ-R2 |
+| X12 | Validación en código con Pydantic de todas las listas cerradas (tipos de nodo, predicados, catálogo de sujetos y valores de propiedades), con una política por campo ante un valor fuera de lista | `:395` (U-PYD); `:393` (L-ESQ-R2) | decidido (30/09); la política por campo, sin decidir | Sí: la política, en L-ESQ-R2 |
+| X13 | Lo no mapeable: reproceso por programa, con la mención textual del sujeto extraída; omisiones con categoría y tramo literal | `:392` (U-LISTAS-NOMAP) | decidido (30/09) que se define el proceso; el diseño, sin hacer | Sí: el diseño, en L-ESQ-R2 |
+| X14 | Umbrales: propiedad del nodo, atributo de la relación o paso posterior sobre el nodo (decisión de esquema) | `:391` (U-UMBRAL) | registrado; la autora investiga y elige | Sí |
+| X15 | Catálogo de sujetos en una sola fuente: hoy 102 ids en el bloque del prompt y 101 en `esquema_v3_clases.json` (6 solo en el bloque, 5 solo en el JSON); absorbe R8 | `:394` (U-CAT-UNICO); `:745` (hallazgo E1) | decidido (30/09) | No |
+| X16 | Firma de las dos enmiendas de uso de la ventana (`data/experiment/esq/enmienda_uso_ventana_2026-09-30.md` y `docs/enmienda_preregistro_tanda0_2026-09-30_ventana.md`) | `:388` | registrado (BORRADOR) | Sí: firma |
 
 ## 3. Búsqueda y navegación (A1.8)
 
 A1.8 avanza en paralelo con r2 y con la lectura del capítulo una vez cerrada
-la tanda 0, y va antes de A2.1 y B6.3 (`:323`, `:743`); no es condición de la
+la tanda 0, y va antes de A2.1 y B6.3 (`:327`, `:763`); no es condición de la
 tanda 1.
 
 | # | Qué es | Registro | Estado | Decisión |
 |---|---|---|---|---|
-| N1 | Diagnóstico sin API en cuatro capas (entrada, alcance, navegación, respuesta) sobre preguntas de desarrollo y trazas de C1 a C5 | `:323` | registrado | No |
-| N2 | **HUECO** — tope de 15 herramientas: 23 de 40, 27 de 40, 17 de 40 y 11 de 20 respuestas base de C2 a C5; 28 de 40 en C1 | `:323` | registrado | No |
-| N3 | Patrón de navegación en las trazas de la tanda 0 y atribución de la respuesta invertida | `:728` (4) y (5); `:323` | decidido (29/09): el patrón de vecinos salientes es sistemático y pasa a A1.8 como candidato; la respuesta invertida no aplica a EV2 ni a C5 | No (entra en N5) |
-| N4 | H3: el índice full-text no incluye `termino` | `:323` | registrado | Sí (entra entre las mejoras) |
-| N5 | Qué mejoras entran: búsqueda, herramientas, instrucciones, tope de llamadas | `:323` | registrado | Sí |
-| N6 | Criterio de aceptación de A1.8 | `:323` | registrado | Sí |
-| N7 | Configuración del agente congelada y declarada antes del pre-registro de B6.3 | `:323`, `:750` | registrado | No |
-| N8 | Instrucciones de respuesta del agente: la generación es la clase modal de falla | `:323` | decidido (29/09): A1.8 las suma | Sí: qué instrucciones (N5) |
+| N1 | Diagnóstico sin API en cuatro capas (entrada, alcance, navegación, respuesta) sobre preguntas de desarrollo y trazas de C1 a C5 | `:327` | registrado | No |
+| N2 | **HUECO** — tope de 15 herramientas: 23 de 40, 27 de 40, 17 de 40 y 11 de 20 respuestas base de C2 a C5; 28 de 40 en C1 | `:327` | registrado | No |
+| N3 | Patrón de navegación en las trazas de la tanda 0 y atribución de la respuesta invertida | `:748` (4) y (5); `:327` | decidido (29/09): el patrón de vecinos salientes es sistemático y pasa a A1.8 como candidato; la respuesta invertida no aplica a EV2 ni a C5 | No (entra en N5) |
+| N4 | H3: el índice full-text no incluye `termino` | `:327` | registrado | Sí (entra entre las mejoras) |
+| N5 | Qué mejoras entran: búsqueda, herramientas, instrucciones, tope de llamadas | `:327` | registrado | Sí |
+| N6 | Criterio de aceptación de A1.8 | `:327` | registrado | Sí |
+| N7 | Configuración del agente congelada y declarada antes del pre-registro de B6.3 | `:327`, `:770` | registrado | No |
+| N8 | Instrucciones de respuesta del agente: la generación es la clase modal de falla | `:327` | decidido (29/09): A1.8 las suma | Sí: qué instrucciones (N5) |
 
 ## 4. Pre-registro de A2.1 y B6.3
 
 | # | Qué es | Registro | Estado | Decisión |
 |---|---|---|---|---|
-| Q1 | A2.1: prerrequisito H-B2 (`num_turns` contra `--max-turns`; criterio de corte R5) | `:331` | registrado | No |
-| Q2 | Mismo analizador y modo en las dos búsquedas léxicas, o la diferencia declarada | `:323`, `:331`, `:750` | registrado | Sí: declarar |
-| Q3 | Vocabulario de las preguntas de B6.3 | `:323`, `:750` | registrado | Sí |
-| Q4 | Cuotas de preguntas de varios puntos y de abstención en el conjunto final | `:753` | registrado | Sí, con los mentores |
-| Q5 | **HUECO** — tamaño del conjunto final por potencia y análisis pareado; con 40 preguntas, los intervalos de C1 a C4 se solapan | `:750` | registrado | Sí: cálculo |
-| Q6 | Costo del agente medido en A2.2 antes de sellar B6.3 | `:750` (fórmula del brazo) | registrado | No |
-| Q7 | Inconsistencia B4.2 contra B6.3 (d): instrumento de tripletas «ya validado» con su adjudicación abierta | `:424` | registrado; sin resolver | Sí |
+| Q1 | A2.1: prerrequisito H-B2 (`num_turns` contra `--max-turns`; criterio de corte R5) | `:335` | registrado | No |
+| Q2 | Mismo analizador y modo en las dos búsquedas léxicas, o la diferencia declarada | `:327`, `:335`, `:770` | registrado | Sí: declarar |
+| Q3 | Vocabulario de las preguntas de B6.3 | `:327`, `:770` | registrado | Sí |
+| Q4 | Cuotas de preguntas de varios puntos y de abstención en el conjunto final | `:773` | registrado | Sí, con los mentores |
+| Q5 | **HUECO** — tamaño del conjunto final por potencia y análisis pareado; con 40 preguntas, los intervalos de C1 a C4 se solapan | `:770` | registrado | Sí: cálculo |
+| Q6 | Costo del agente medido en A2.2 antes de sellar B6.3 | `:770` (fórmula del brazo) | registrado | No |
+| Q7 | Inconsistencia B4.2 contra B6.3 (d): instrumento de tripletas «ya validado» con su adjudicación abierta | `:444` | registrado; sin resolver | Sí |
 | Q8 | Unidad de calibración del juez antes de B6.3 | cola 13 | registrado | No |
 | Q9 | Regla de cegado en lecturas humanas y entrada de textos largos del instrumento de lectura | cola 10 y 11 | registrado | No |
-| Q10 | Disjunción del conjunto final con desarrollo y con los diez de ESQ; también con la tanda 0 si se usa la ventana | `:750` (a); `:727` | registrado | Sí (depende de X3) |
-| Q11 | Ciclo de corrección de esquema de la tanda 1, siempre antes del pre-registro de B6.3 | `:743` | registrado | No |
-| Q12 | B6.3: definir de antemano quién lee y adjudica (casos a adjudicación del juez, muestra de control, tripletas de B4): modelo con muestra humana de control de tamaño suficiente y declarada, o experto del dominio | esta lista (29/09); antecedente, desvíos declarados en `:724`, `:727` y `:729` | registrado | Sí, con los mentores |
+| Q10 | Disjunción del conjunto final con desarrollo y con los diez de ESQ; también con la tanda 0 si se usa la ventana | `:770` (a); `:747` | decidido (30/09): los cinco de la tanda 0 salen del conjunto de B6.3 (a) (X3); el pre-registro de B6.3 lo declara (`:770`) | No |
+| Q11 | Ciclo de corrección de esquema de la tanda 1, siempre antes del pre-registro de B6.3 | `:763` | decidido (30/09): no hay ciclo de corrección de esquema en la tanda 1; la ventana se usó en B2.11 | No |
+| Q12 | B6.3: definir de antemano quién lee y adjudica (casos a adjudicación del juez, muestra de control, tripletas de B4): modelo con muestra humana de control de tamaño suficiente y declarada, o experto del dominio | esta lista (29/09); antecedente, desvíos declarados en `:744`, `:747` y `:749` | registrado | Sí, con los mentores |
 
 ## 5. Escritura
 
 | # | Qué es | Registro | Estado | Decisión |
 |---|---|---|---|---|
-| W1 | Tabla de reproducibilidad: modelo, versión con fecha, temperatura, vía (API o Claude Code), por medición y por etapa | `:832` (precisión por etapa del 29/09); `docs/registro_modelos.md` NO ENCONTRADO | registrado | Sí: aprobar el documento |
-| W2 | B2.5: spec del backlog con `capa_pipeline` obligatorio y dos vías; huecos del catálogo de especies (cola 17; especies provisionales de `BKL-0032`, `BKL-0033` y `BKL-0035`) | `:377`; cola 17; backlog; `docs/spec_backlog_refinamiento.md` | registrado; hecho el 29/09, sin commit: `lectura_asistida` en el vocabulario de `diagnostico` y el evento `correccion_diagnostico` en la spec; el resto de B2.5 sigue pendiente | Sí: ampliar el catálogo de especies |
-| W3 | B2.6: protocolo de releases escrito; `docs/protocolo_ciclo_refinamiento.md` NO ENCONTRADO | `:378` | registrado | Sí: antes o después de r2 |
-| W4 | B2.8: método de construcción y refinamiento, «el que se sigue en B6»; `docs/metodo_construccion_refinamiento_kg.md` NO ENCONTRADO | `:380`, `:743` | registrado | Sí: antes o después de la tanda 1 |
-| W5 | **HUECO** — la fila B2.10 citaba el laudo como «commit PENDIENTE» | `:382` | hecho (sin commit) | No |
+| W1 | Tabla de reproducibilidad: modelo, versión con fecha, temperatura, vía (API o Claude Code), por medición y por etapa | `:852` (precisión por etapa del 29/09); `docs/registro_modelos.md` NO ENCONTRADO | registrado | Sí: aprobar el documento |
+| W2 | B2.5: spec del backlog con `capa_pipeline` obligatorio y dos vías; huecos del catálogo de especies (cola 17; especies provisionales de `BKL-0032`, `BKL-0033` y `BKL-0035`) | `:381`; cola 17; backlog; `docs/spec_backlog_refinamiento.md` | registrado; hecho el 29/09, sin commit: `lectura_asistida` en el vocabulario de `diagnostico` y el evento `correccion_diagnostico` en la spec; el resto de B2.5 sigue pendiente | Sí: ampliar el catálogo de especies |
+| W3 | B2.6: protocolo de releases escrito; `docs/protocolo_ciclo_refinamiento.md` NO ENCONTRADO | `:382` | registrado | Sí: antes o después de r2 |
+| W4 | B2.8: método de construcción y refinamiento, «el que se sigue en B6»; `docs/metodo_construccion_refinamiento_kg.md` NO ENCONTRADO | `:384`, `:763` | registrado | Sí: antes o después de la tanda 1 |
+| W5 | **HUECO** — la fila B2.10 citaba el laudo como «commit PENDIENTE» | `:386` | hecho (sin commit) | No |
 | W6 | Pase de higiene: cola 14 (antes del cierre de la tanda 1), 15 y 16; cola 18 (antes de B6.1) | cola 14, 15, 16 y 18 | registrado | No |
 | W7 | **HUECO** — rutas absolutas en los resúmenes del runner de EV2 sobre Neo4j | cola 19 | registrado | No |
 | W8 | Línea sobre M50 en el resultado de la lectura de la matriz | `resultado_lectura_matriz.md` | hecho (sin commit) | No |
+| W9 | Estructura de los capítulos 3 y 4: el 3, del documento a su análisis y al esquema; el 4, el pipeline componente por componente y la construcción por etapas, con la tanda 0 como primera etapa | `:854` (C1.11) | decidido (30/09) | No |
+| W10 | La tesis se cita desde Overleaf, por sección y frase; `docs/tesis/main.tex` del repo está desactualizado. Pendiente de escritura: sincronizar el repo con Overleaf cuando la mesa de escritura cierre una versión | `:854-855` | registrado (pendiente de escritura) | No |
+| W11 | Fe de erratas en la fila U-JOB-ACT: lo que cambió en los cinco documentos que no anuncian su cambio son listas de Comunicaciones, no la tabla de origen | `:1161` | hecho (sin commit) | No |
+| W12 | U-INSUMOS-CAP: estadísticas descriptivas del corpus desde el segmentador y recorrido del préstamo por componente, para la mesa de escritura | `:402` | registrado | No |
+| W13 | Corregir en la tesis el párrafo de la sección 3.4 según el cual las listas de valores de propiedad no las verifica ningún control, con lo que implemente U-PYD | `:395`; `:854` | registrado | No |
 
 ## Revisado y fuera de esta lista
 
 No figuran como condición de la tanda 1 ni del escalado en lo registrado:
 A0.3, A1.5, A1.7, A2.2 a A2.5 (A2.2 aporta el costo de Q6), B2.3, B2.7 (con
 la restricción H5 sobre el verificador), B3.1 a B3.4 (las intrínsecas son
-informativas en el gate hasta B3.1, `:378`), B4.1 a B4.4 (salvo Q7), B6.2,
-B6.4, C1 y C2, ESQ-RI-2 a ESQ-RI-4 y U-COB-B.
+informativas en el gate hasta B3.1, `:382`), B4.1 a B4.4 (salvo Q7), B6.2,
+B6.4, C1 y C2 (salvo C1.11, en W9, W10 y W13), ESQ-RI-2 a ESQ-RI-4 y U-COB-B.
 
 ## Conteos
 
