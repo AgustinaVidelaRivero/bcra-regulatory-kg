@@ -23,7 +23,7 @@ crudo del reintento leen `salida_dirigida/`, la salida de la que salen los ensam
 nota de Obligacion.tipo de desarrollo; la prosa de [c14], que no declaraba la cifra entre
 paréntesis; y la detección de tablas en la fila de pérdidas por tablas. La fila del test
 del ejemplo `cla::5.1.1.1` suma la meta explícita de U-REEXT-T0. La fila de `cap::1.2` suma
-la verificación contra `e0_tablas` de U-UMBRAL U2.
+la verificación contra `e0_tablas` de U-UMBRAL U2. Se suma la fila de relaciones de la matriz ampliada sin verificar por E3 (decisión de la autora del 30/09; borrador de L-ESQ-R2, §6).
 
 **Grafos y celdas.**
 
@@ -68,6 +68,7 @@ la verificación contra `e0_tablas` de U-UMBRAL U2.
 | **Omisiones sin registro fuera de los chunks marcados** | Unidades con `omisiones_no_prosa` no vacío en la salida final de E1 a E3; la regla 9 del prefijo (contenido meta-normativo) omite sin dejar registro [c15] | 81 de 1.763 | desarrollo 78 de 1.763; cinco 7 de 671; diez 85 de 2.434, sobre `salida_dirigida/` (la versión anterior de esta fila leía `salida/` y daba 77 y 84) | DECISIÓN ABIERTA de la autora (L-ESQ-R2: omisiones con categoría y tramo literal en todo chunk) | U-LISTAS-NOMAP, L-ESQ-R2 y U-PROMPT-R2 (plan, B2.11, unidades 4, 5 y 10) | r2b (requiere el prompt) | | | |
 | **Crudo del reintento de E3 sin persistir** | Unidades aceptadas tras reintento en E3, cuyo crudo del reintento no está en `finales.jsonl` [c16] | 330 de 1.763 finales | desarrollo 168 de 1.760; cinco 52 de 670; diez 220 de 2.430, sobre `salida_dirigida/` (la versión anterior de esta fila leía `salida/` y daba 167 de 1.757 y 219 de 2.427) | Cero unidades sin el crudo del reintento persistido, en las corridas de r2 | U-R2-CODIGO (plan, B2.11, unidad 8) | Conteo sobre las salidas de U-REEXT-T0, USD 0 | | | |
 | **Colisiones de ids de chunk en E0 (`BKL-0037`)** | Ids de chunk repetidos dentro de un mismo TO, en la E0 de cada conjunto [c18] | 0 en la E0 de r1 (1.763 chunks) | 0 en la E0 de la tanda 0 (2.434 chunks). En la partición del corpus escalado, que alimenta las tandas siguientes: 69 ids repetidos en 4 TOs (adfsp 9, ceninf 4, cirmo3 52, ri_niif 4) | 0 ids repetidos en la E0 de toda tanda, y el runner se detiene ante un id repetido | U-R2-CODIGO: ids únicos en E0 y runner que se detiene (plan, B2.11, unidad 8; decisión de la autora del 30/09). Ningún TO con ids repetidos entra a una tanda sin la corrección (fila B6.1) | Conteo sobre `chunks_<to>.json` y selftest del runner, USD 0 | | | |
+| **Relaciones de la matriz ampliada sin verificar por E3** (`condicion_de` → Operacion y → Potestad) | Relaciones que la matriz congelada rechazaba por firma inválida y que el perfil nuevo del validador acepta, re-aplicado sobre el crudo guardado; por par, con la marca de no verificadas por E3 [c19] | No medido: U-ESTUDIO-MATRIZ midió solo la tanda 0 | 0 en los grafos: la matriz congelada las rechaza. Cota superior de las recuperables en desarrollo: → Operacion 388 y → Potestad 239 aristas (627 juntas); en la población final de los diez TOs, 434 y 263 relaciones | En r2a, todas marcadas y contadas aparte del resto; en el grafo de la release, 0 sin verificar por E3; la lectura de confirmación de los dos pares, hecha antes de la tanda 1 | L-ESQ-R2, §6 (decisión de la autora del 30/09): matriz ampliada en el perfil nuevo del validador (U-PYD, plan, B2.11, unidad 7), con la marca en r2a; E3 en r2b (U-REEXT-T0, unidad 11); lectura de confirmación posterior a la unidad 11. Si → Potestad no se confirma, se retira en el validador, en código | Conteo sobre los grafos de r2a y de r2b, USD 0; la verificación de E3 entra en el costo de U-REEXT-T0 | | | |
 
 ## Requisitos de mantenimiento (30/09/2026)
 
@@ -178,6 +179,12 @@ Todos con `PYTHONDONTWRITEBYTECODE=1`, desde la raíz del repo.
   `e0_chunking/salida_tanda0/` y del corpus escalado en `segmentacion_84/b584_particion/<to>/`.
   Recomputado por la mesa el 30/09/2026; coincide con `reports/u_insumos_cap/estadisticas_corpus.md`
   §6 (`ded3494`).
+- **[c19]** Relaciones `condicion_de` hacia Operacion o Potestad con la marca de no verificadas
+  por E3 que fije U-PYD, en el grafo de r2a y en el de r2b, por par. La cota superior de la
+  tanda 0 sale de `reports/u_estudio_matriz/uestmat_reporte_U-ESTUDIO-MATRIZ.md` (`7e72051`),
+  tabla del punto 1, filas P01 y P02: columna «aristas nuevas en r1» para desarrollo (388 y
+  239; fila G-condicion_de-ejemplo, 627) y columna «B rel. nuevas» para los diez TOs (434 y
+  263). Supone que lo que pasa a válido entra sin re-verificar en E3.
 - [c10] a [c16] los recomputó la mesa el 30/09/2026 con un script de una sola pasada,
   con doble corrida byte a byte idéntica; se reescribe tal cual al llenar las
   columnas nuevas.

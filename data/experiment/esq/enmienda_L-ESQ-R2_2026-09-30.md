@@ -17,9 +17,8 @@ tanda 0 (plan, fila B2.11, `docs/plan_tesis.md:394` en `9e411a0`).
 4. qué va a código sobre la salida guardada (**r2a**) y qué exige el prompt nuevo con re-extracción (**r2b**);
 5. qué cambia en la suite de regresión y en las shapes.
 
-Rótulos: **NO MEDIDO** (dato que ninguna unidad midió, con la unidad que lo mediría); **celda PENDIENTE** (dato
-que produce una unidad en curso). Toda cifra lleva su artefacto; las de los artefactos se reproducen con el
-comando que cada uno declara.
+Rótulos: **NO MEDIDO** (dato que ninguna unidad midió, con la unidad que lo mediría). Toda cifra lleva su
+artefacto; las de los artefactos se reproducen con el comando que cada uno declara.
 
 **Criterio general de las decisiones de la autora del 30/09.** El esquema se decide por lo que dicen los
 documentos (principio 11). El prompt queda completo, para no tener que volver a cambiarlo. Todo lo que se puede
@@ -170,22 +169,43 @@ años» que la regex del mandato no veía. En la tesis se citan los del tablero.
   - Verificado contra `e0_tablas`, detecta la inversión de `cap::1.2`. Verificado solo contra la descripción,
     la copia [U1: `medicion_6`; U2: `cap_1_2_contra_tabla`].
 
-**Precisión de `limita`: celda PENDIENTE.** La mide U-LECTURA-LIMITA (plan, B2.11, unidad 4b; mandato
-`docs/mandatos/ULECTURA_LIMITA_lectura_asistida.md`, firmado en `67a9e6b`). Es la lectura asistida de la
-muestra sellada de 30 aristas de desarrollo (`reports/u_umbral/muestra_limita_30.csv`, sha256 `8e981817…`):
-si el destino es el objeto del tope.
+**Precisión de `limita`** (U-LECTURA-LIMITA; plan, B2.11, unidad 4b, cerrada; mandato
+`docs/mandatos/ULECTURA_LIMITA_lectura_asistida.md`, firmado en `67a9e6b`; lectura en `bf4709d`).
+- Es la lectura asistida de la muestra sellada de 30 aristas de desarrollo
+  (`reports/u_umbral/muestra_limita_30.csv`, sha256 `8e981817…`, igual al inicio y al cierre): si el destino es
+  el objeto del tope.
+- Leyó una instancia de modelo y revisó la autora. Modelo y versión de la instancia: PENDIENTE de confirmación
+  de la autora; la declaración de la propia instancia es NO VERIFICADA.
+- Resultado en `reports/u_umbral/lectura_limita/resultado_lectura_limita.md`. Comando:
+  `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B reports/u_umbral/lectura_limita/conteo_lectura.py`.
 
 | medida | valor |
 |---|---|
-| «sí» / «no» / «no decidible» sobre 30 | PENDIENTE |
-| Wilson al 95 % de «sí», sobre 30 y sobre los decididos | PENDIENTE |
-| revisión de la autora | PENDIENTE |
+| «sí» / «no» / «no decidible» sobre 30 | 21 / 7 / 2 |
+| Wilson al 95 % de «sí» | sobre los 30: 21 de 30, 0,521–0,833; sobre los 28 decididos: 21 de 28, 0,566–0,873 |
+| revisión de la autora (30/09) | sin cambios. Aceptó los seis casos límite (filas 8, 9, 14, 17, 20 y 21) contra el texto de E0 y la precisión de «tope» declarada para esta lectura |
 
-Para qué sirve el dato:
-- dice si `limita` es fiable como el vínculo Restricción → Operación que usa el agente en el ejemplo del
-  préstamo;
-- dice si U-PROMPT-R2 necesita una instrucción sobre el destino de `limita`;
-- es insumo del trabajo futuro (f).
+Es una fracción sobre n = 30, de una sola muestra de un solo grafo, y no había un criterio fijado de antemano:
+el dato es descriptivo.
+
+**Qué muestra la lectura.**
+- **Dónde falla el destino.** Cuando está mal, apunta a algo vecino del objeto acotado:
+  - la base de la proporción (fila 13);
+  - la finalidad del tope (9);
+  - la consecuencia (20 y 25);
+  - el supuesto que lo habilita (14);
+  - otra modalidad de la operación (17);
+  - otro objeto (7).
+
+  Las 2 «no decidible» son una lista de códigos linealizada (`ric::5.2.5`, filas 27 y 30).
+- **Ponderadores.** 10 de las 30 aristas son ponderadores de riesgo (filas 1, 3, 6, 7, 10, 11, 12, 18, 22 y
+  29), modelados como Restriccion «limite_cuantitativo» con `limita`. Un ponderador no acota: el valor
+  multiplica la exposición.
+- **Fila 21 (observación de la autora).** El 30 % es una condición del ponderador 0 más que un tope. Con
+  `condicion_de` → Operacion se representaría como Condicion. Va con el hallazgo de los ponderadores.
+- **Fila 26.** La descripción de la Restriccion invierte el sentido del texto: el texto exceptúa el 20 % de la
+  obligación de ingreso, y la descripción dice que el 20 % es la obligación. El destino es correcto, así que la
+  fila cuenta «sí».
 
 Un dato de contexto de U1: en desarrollo, las 284 `limita` salen de Restricciones «limite_cuantitativo» 201,
 «limite_cualitativo» 76, «limite_temporal» 3 y «prohibicion» 4 (`u1_mediciones.json`,
@@ -198,6 +218,9 @@ Un dato de contexto de U1: en desarrollo, las 284 `limita` salen de Restriccione
 - El validador de E1 controla la firma dominio → rango, pero no la coherencia entre Restriccion.tipo y el
   predicado. Cuál de los dos está mal en cada caso no está adjudicado.
 - Registradas como candidato de backlog: `BKL-0038` (`data/backlog/backlog.jsonl:89`), con release candidata r2.
+- **Decisión de la autora (30/09):** U-PYD suma un control en código de la coherencia entre el tipo de la
+  Restricción y su predicado (prohibicion → `prohibe`; limite_* → `limita`), como marca (plan, B2.11, unidad
+  7).
 
 ### 1.2 Opciones
 
@@ -230,22 +253,35 @@ Propuesta y alternativa (§4 del reporte):
   el mecanismo de remisiones. Si no resuelve, se marca, igual que un sujeto no mapeable.
 - **(d) Plazos de relleno.** El campo queda vacío y la verificación lo marca. Con el par A, un valor sin tramo
   literal no pasa.
-- **(e)** La muestra de `limita` se lee antes de este laudo (unidad 4b; celda PENDIENTE de §1.1).
+- **(e)** La muestra de `limita` se lee antes de este laudo (unidad 4b, cerrada; resultado en §1.1).
 - **(f)** Vincular cada valor de un nodo con varios umbrales a su sujeto u operación queda como trabajo futuro
   (C1.7). Es la limitación de hechos con valor n-arios que el laudo ya difirió a ESQ-RI-3 / C1.7 (§2).
 
 **Decisión de la autora (30/09)**, dentro de la orientación:
-1. **Obligacion.plazo.** El plazo pasa a la lista como un elemento con unidad temporal y comparación máximo. La
-   frecuencia va a un campo propio, con lista cerrada (diaria, semanal, mensual, trimestral, semestral y anual)
-   y marca de fuera de lista. Así se resuelve la clave `plazo_o_frecuencia`, que no es unívoca (U-LISTAS-NOMAP,
-   P-a8).
+1. **Obligacion.plazo.** El plazo pasa a la lista como un elemento con unidad temporal. La frecuencia va a un
+   campo propio, con lista cerrada (diaria, semanal, mensual, trimestral, semestral y anual) y marca de fuera de
+   lista. Así se resuelve la clave `plazo_o_frecuencia`, que no es unívoca (U-LISTAS-NOMAP, P-a8).
 2. **Valores cerrados de `comparacion`:** máximo inclusivo, máximo estricto, mínimo inclusivo, mínimo estricto,
-   igual y `no_determinada`. La distinción entre «superior a» e «igual o superior a» cambia la respuesta
-   correcta.
-3. **Valores cerrados de `unidad`:** porcentaje, moneda con su código, días (corridos o hábiles), meses, años y
+   igual, coeficiente y `no_determinada`. La distinción entre «superior a» e «igual o superior a» cambia la
+   respuesta correcta.
+   - «Coeficiente» es para los ponderadores de riesgo: el valor multiplica, no acota (§1.1).
+3. **Cómo se fija `comparacion`** (corrección de la autora del 30/09; antes decía «comparación máximo» para el
+   plazo). La comparación sale del tramo, por reglas en código:
+   - «dentro de» o «hasta» → máximo inclusivo;
+   - «mínimo», «al menos» o «no menos de» → mínimo inclusivo;
+   - sin marcador en el texto, máximo inclusivo, con la marca `comparacion_asumida`.
+
+   La regla vale para todos los elementos de la lista, no solo para el plazo. Motivo de la corrección: en
+   desarrollo hay plazos de Obligacion enunciados como mínimos. Una regex de la mesa encontró al menos 3, por
+   ejemplo «mínimo 180 días» y «al menos un año».
+4. **Valores cerrados de `unidad`:** porcentaje, moneda con su código, días (corridos o hábiles), meses, años y
    «veces», más UVA, con marca de fuera de lista.
-4. **Potestad.** Queda fuera de la lista según (a). Su clave `umbral`, emitida alguna vez (U-LISTAS-NOMAP,
+5. **Potestad.** Queda fuera de la lista según (a). Su clave `umbral`, emitida alguna vez (U-LISTAS-NOMAP,
    tabla a.2), va a `properties_no_definidas` (§2).
+6. **Ponderadores: límite declarado del esquema.** Siguen como Restriccion con `limita`, y su valor lleva la
+   comparación «coeficiente». Quedan como límite declarado del esquema (lectura A del §0.4) dos cosas:
+   - si los ponderadores deben ser otro tipo de nodo;
+   - si sus condiciones de elegibilidad deben ser una Condicion (fila 21 de la lectura de §1.1).
 
 ### 1.4 r2a y r2b
 
@@ -253,6 +289,8 @@ Propuesta y alternativa (§4 del reporte):
   - Un paso nuevo lee la descripción guardada (y el campo actual donde existe) y arma la lista.
   - Verifica cada tramo como subcadena del texto de E0 y, en los chunks con tabla, contra `e0_tablas`.
   - Marca lo que no verifica; los campos de relleno quedan vacíos y marcados.
+  - Fija `comparacion` por las reglas del punto 3 de §1.3. Sin marcador, pone máximo inclusivo con la marca
+    `comparacion_asumida`.
   - Lleva al campo de frecuencia lo que hoy está en la clave de plazo o frecuencia y no es un plazo, con marca
     de fuera de lista si no está en la lista cerrada.
   - Depende de la detección de tablas de U-R2-CODIGO: los 4 chunks de ponderadores de `cap` que nadie detecta,
@@ -267,14 +305,24 @@ Propuesta y alternativa (§4 del reporte):
   - Como el tool schema solo admite valores string en `properties`, hace falta un campo nuevo en el ítem de
     entidad o un valor de tipo lista: es cambio de tool schema, con la forma a fijar en U-PYD y U-PROMPT-R2.
   - La regla contra copiar celdas de tabla se extiende a los chunks que detecte el parser (RX-10).
+  - **Instrucción nueva para U-PROMPT-R2 (decisión de la autora del 30/09):** «el destino de `limita` es el
+    acto o la magnitud que el tope acota; no su base, su finalidad, su consecuencia ni el supuesto que lo
+    habilita». Responde a los errores de destino que encontró la lectura de §1.1.
   - El código de r2a se re-aplica sin cambios sobre los tramos de E1.
+- **Límite declarado de la verificación (fila 26 de §1.1).** La verificación por tramo literal comprueba que el
+  valor esté en el texto de E0, no que la descripción conserve su sentido. En la fila 26 el «20 %» está en el
+  texto, pero la descripción invierte lo que el texto dice de él (exceptuado frente a obligado), y la
+  verificación no lo detecta. Una inversión de sentido con el valor literal queda fuera de lo que verifica el
+  código.
 
 ### 1.5 Suite y shapes
 
 - **Suite:** los matchers de `BKL-0006` y `BKL-0023` leen `umbral` como string
   (`scripts/regression_kg.py:572`, `:615`); pasan a leer el valor normalizado de la lista. Test nuevo: toda
   lista cumple la forma de (a), todo elemento tiene el tramo verificado o una marca, y `comparacion`, `unidad`
-  y la frecuencia están en su lista cerrada o llevan la marca de fuera de lista.
+  y la frecuencia están en su lista cerrada o llevan la marca de fuera de lista. Los selftests de las reglas de
+  `comparacion` usan los marcadores del punto 3 de §1.3 y el caso sin marcador, que lleva
+  `comparacion_asumida`; los elementos con esa marca se cuentan aparte.
 - **Shapes:** S18 está reservada con un enunciado que no se implementó: «si una Restricción tiene `limita`,
   tiene `umbral`» (`scripts/shapes_validator.py:160-163`). Así enunciada, marcaría por construcción toda
   Restricción «limite_cualitativo», que usa `limita` sin monto según la tabla de predicados del prefijo. Se
@@ -856,9 +904,9 @@ Con la decisión (ii):
 | # | decisión | estado | r2a (código) | r2b (prompt) | suite / shapes |
 |---|---|---|---|---|---|
 | 0.4 | principio 11 frente al §1 | decisión (30/09): lectura (A) | — | — | — |
-| 1 | umbrales como lista (tramo, valor, unidad, comparación, base) en 4 tipos | orientación (a)–(f); decisión (30/09): plazo en la lista, frecuencia en campo propio, listas de `comparacion` y `unidad` (con UVA) | par B con verificación; frecuencia separada | par A, tool schema | matchers `BKL-0006`/`0023`; S18 reescrita; control cuantía ⇒ elemento; enums con marca |
-| 1′ | precisión de `limita` | **celda PENDIENTE** (U-LECTURA-LIMITA) | — | posible instrucción | — |
-| 1″ | 4 `limita` desde «prohibicion» | nota; candidato `BKL-0038` | control de coherencia tipo–predicado | — | control nuevo |
+| 1 | umbrales como lista (tramo, valor, unidad, comparación, base) en 4 tipos | orientación (a)–(f); decisión (30/09): plazo en la lista, frecuencia en campo propio, listas de `comparacion` (con coeficiente) y `unidad` (con UVA), comparación por reglas desde el tramo con `comparacion_asumida`; ponderadores como límite declarado; inversión de sentido como límite de la verificación | par B con verificación; frecuencia separada; reglas de comparación | par A, tool schema | matchers `BKL-0006`/`0023`; S18 reescrita; control cuantía ⇒ elemento; enums con marca; selftests de las reglas |
+| 1′ | precisión de `limita` | medida (U-LECTURA-LIMITA, `bf4709d`): 21 «sí», 7 «no» y 2 «no decidible» de 30; revisión de la autora sin cambios | — | instrucción sobre el destino de `limita` | — |
+| 1″ | 4 `limita` desde «prohibicion» | nota; candidato `BKL-0038`; decisión (30/09): control en U-PYD, como marca | control de coherencia tipo–predicado | — | control nuevo |
 | 2 | política por campo | orientación (1) | toda | solo valores nuevos | LN-1, LN-2; S24–S26 |
 | 2′ | valores de las listas y alias | orientación (2); decisión (30/09): Obligacion.tipo (i), Restriccion.tipo (iii), Comunicacion.tipo con «externa», alias aceptados | derivaciones y alias | «externa» | S20, S24, S25 |
 | 3 | mención y resolución de sujetos | orientación (3)–(5); decisión (30/09): R3 con lista inicial, calificador guardado, lecturas asistidas | R1, R2, R4; calificador | campo y reglas | LN-3, LN-4; S27 |
@@ -888,11 +936,11 @@ Con la decisión (ii):
 
 ## 12. Dependencias
 
-- **Antes de firmar:** el cierre de U-LECTURA-LIMITA (celda de §1.1).
+- **Antes de firmar:** ninguna unidad pendiente. U-LECTURA-LIMITA cerró (unidad 4b, `bf4709d`) y su resultado está en §1.1.
 - **Después de la firma:**
   - U-CAT-UNICO aplica §7;
-  - U-PYD aplica §2, la verificación de §3 y §5 y las mediciones pendientes (ventana de tokens, largo mínimo
-    del tramo, formas de `comparacion` y `unidad`);
+  - U-PYD aplica §2, la verificación de §3 y §5, el control de coherencia de `BKL-0038` (§1.1) y las
+    mediciones pendientes (ventana de tokens, largo mínimo del tramo, formas de `comparacion` y `unidad`);
   - U-R2-CODIGO aplica §1 (r2a), la resolución de §3 y el registro de §4;
   - la medición r2a separa lo que corrige el código;
   - U-PROMPT-R2 lleva lo marcado r2b;

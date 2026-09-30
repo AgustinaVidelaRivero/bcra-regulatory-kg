@@ -113,7 +113,12 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
   - mandato `docs/mandatos/UUMBRAL_investigacion.md`, firmado en `30f106c`;
   - comandos: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B reports/u_umbral/u_umbral_u1.py`
     y `… reports/u_umbral/u_umbral_u2.py`. Dobles corridas byte a byte idénticas, y
-    re-corridas independientes de la mesa también idénticas.
+    re-corridas independientes de la mesa también idénticas;
+  - lectura de la muestra de 30 aristas `limita`: `reports/u_umbral/lectura_limita/`
+    (U-LECTURA-LIMITA, commit `bf4709d`; mandato
+    `docs/mandatos/ULECTURA_LIMITA_lectura_asistida.md`, firmado en `67a9e6b`). Comando:
+    `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B reports/u_umbral/lectura_limita/conteo_lectura.py`.
+    Doble corrida byte a byte idéntica, y re-corrida de la mesa también idéntica.
 - **Qué contiene:**
   - seis mediciones sobre umbrales en los tres grafos (desarrollo, r1 y diez):
     literalidad de `umbral` y `plazo`, tablas que E0 no marca, cuantías sin campo, un
@@ -121,6 +126,10 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
   - la evidencia ordenada en dos ejes, dónde vive el umbral y cómo se llena, con la
     propuesta como par (representación, método de llenado) y su alternativa
     (`reporte_u_umbral.md`);
+  - la precisión de `limita` en KG-Tanda0-Desarrollo-r1: 21 «sí», 7 «no» y 2 «no
+    decidible» de 30, con los errores de destino y sus tipos (base, finalidad,
+    consecuencia, supuesto) y los ponderadores de riesgo modelados como Restriccion
+    (`resultado_lectura_limita.md`);
   - la orientación de la autora para L-ESQ-R2 está registrada en el plan (fila B2.11,
     unidad 5).
 - **Alimenta:**
@@ -134,8 +143,12 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      683. La diferencia es un nodo, «diez (10) años».
   2. EV2 se usa como diagnóstico, sobre 8 criterios con cuantía, no como resultado
      (principio 7 del plan).
-  3. La muestra de 30 aristas `limita` está sellada y sin leer; se lee en la unidad 4b
-     del plan, antes de L-ESQ-R2.
+  3. La muestra de 30 aristas `limita` se leyó en la unidad 4b del plan
+     (U-LECTURA-LIMITA, `bf4709d`). Es una lectura asistida: leyó una instancia de modelo y
+     revisó la autora, sin cambios. Es un desvío declarado respecto de la lectura humana, y
+     el modelo y la versión de la instancia están PENDIENTES de confirmación. Es una fracción
+     sobre n = 30, de un solo grafo y sin criterio fijado de antemano, así que se cita como
+     dato descriptivo y como fracción cruda.
   4. El costo del llenado por un modelo es una estimación no verificada.
 
 ## 4. Listas cerradas y lo no mapeable (U-LISTAS-NOMAP) — disponible
