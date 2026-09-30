@@ -11,14 +11,19 @@ tanda 0 (plan, fila B2.11, `docs/plan_tesis.md:394` en `9e411a0`).
 **Cómo leerlo.** Hay una sección por decisión. Cada una tiene cinco partes:
 1. qué dicen los documentos del BCRA y qué midió el pipeline, con la unidad y el commit que lo respaldan;
 2. las opciones;
-3. la orientación de la autora ya registrada en el plan (fila B2.11, unidad 5), o **PENDIENTE DE DECISIÓN DE
-   LA AUTORA** donde no la hay. Una orientación no es la decisión: la decisión formal es la firma de este laudo;
+3. la orientación de la autora ya registrada en el plan (fila B2.11, unidad 5) y, donde no la había, la
+   **Decisión de la autora (30/09)**. Ni una ni otra reemplazan la firma: la decisión formal es la firma de
+   este laudo;
 4. qué va a código sobre la salida guardada (**r2a**) y qué exige el prompt nuevo con re-extracción (**r2b**);
 5. qué cambia en la suite de regresión y en las shapes.
 
 Rótulos: **NO MEDIDO** (dato que ninguna unidad midió, con la unidad que lo mediría); **celda PENDIENTE** (dato
 que produce una unidad en curso). Toda cifra lleva su artefacto; las de los artefactos se reproducen con el
 comando que cada uno declara.
+
+**Criterio general de las decisiones de la autora del 30/09.** El esquema se decide por lo que dicen los
+documentos (principio 11). El prompt queda completo, para no tener que volver a cambiarlo. Todo lo que se puede
+decidir en código se decide en código, sobre la salida guardada (principio 12).
 
 ---
 
@@ -105,7 +110,10 @@ Los dos se pueden leer juntos de dos maneras:
   pipeline, sin emitirse hasta verificarse;
 - **(B)** el principio 11 reemplaza la cláusula de retiro del §1 para las decisiones de este ciclo.
 
-**PENDIENTE DE DECISIÓN DE LA AUTORA.** La lectura elegida rige las secciones 2 (Obligacion.tipo) y 8 (R6b).
+**Decisión de la autora (30/09): lectura (A).** El principio 11 decide qué representa el esquema; el §1 decide
+qué se emite en una release sellada. Una categoría que el extractor no llena con fiabilidad queda en el diseño
+como límite declarado del pipeline, sin emitirse hasta verificarse. Esta lectura rige las secciones 2
+(Obligacion.tipo) y 8 (R6b).
 
 ### 0.5 Grafos y grupos de las cifras
 
@@ -181,8 +189,15 @@ Para qué sirve el dato:
 
 Un dato de contexto de U1: en desarrollo, las 284 `limita` salen de Restricciones «limite_cuantitativo» 201,
 «limite_cualitativo» 76, «limite_temporal» 3 y «prohibicion» 4 (`u1_mediciones.json`,
-`limita.desarrollo.limita_por_Restriccion_tipo`). Las 4 contradicen la tabla de predicados del prefijo, que
-manda `prohibe` desde una prohibición.
+`limita.desarrollo.limita_por_Restriccion_tipo`).
+
+**Nota: 4 `limita` desde Restricciones «prohibicion».** Contradicen la tabla de predicados del prefijo, que manda
+`prohibe` desde una prohibición (`PREFIJO_SISTEMA_V3`, líneas 59-60 y 288-290 del texto).
+- Recómputo de la mesa: son las mismas 4 en KG-Tanda0-Diez-r1. En KG-Reextraído-r1 hay 3 del mismo patrón, en
+  otros nodos.
+- El validador de E1 controla la firma dominio → rango, pero no la coherencia entre Restriccion.tipo y el
+  predicado. Cuál de los dos está mal en cada caso no está adjudicado.
+- Registradas como candidato de backlog: `BKL-0038` (`data/backlog/backlog.jsonl:89`), con release candidata r2.
 
 ### 1.2 Opciones
 
@@ -219,20 +234,16 @@ Propuesta y alternativa (§4 del reporte):
 - **(f)** Vincular cada valor de un nodo con varios umbrales a su sujeto u operación queda como trabajo futuro
   (C1.7). Es la limitación de hechos con valor n-arios que el laudo ya difirió a ESQ-RI-3 / C1.7 (§2).
 
-**PENDIENTE DE DECISIÓN DE LA AUTORA**, dentro de la orientación:
-1. **Obligacion.plazo frente a la lista.** Dos opciones:
-   - el plazo pasa a ser un elemento de la lista, con unidad temporal;
-   - el plazo sigue como campo aparte con la misma estructura, porque «frecuencia» («mensual») no es un umbral.
-
-   La clave `plazo_o_frecuencia` no es unívoca (U-LISTAS-NOMAP, P-a8).
-2. **Valores cerrados de `comparacion`.** Dos opciones:
-   - {máximo, mínimo} más un indicador de inclusión;
-   - {máximo inclusivo, máximo estricto, mínimo inclusivo, mínimo estricto, igual}.
-
-   La distinción entre «superior a» e «igual o superior a» cambia la respuesta correcta. La frecuencia de cada
-   forma en los tramos es NO MEDIDA; la mide U-PYD sobre los tramos de r2a.
-3. **Valores cerrados de `unidad`:** porcentaje, moneda con su código, días (corridos o hábiles), meses, años,
-   «veces». Lista a fijar con la misma medición.
+**Decisión de la autora (30/09)**, dentro de la orientación:
+1. **Obligacion.plazo.** El plazo pasa a la lista como un elemento con unidad temporal y comparación máximo. La
+   frecuencia va a un campo propio, con lista cerrada (diaria, semanal, mensual, trimestral, semestral y anual)
+   y marca de fuera de lista. Así se resuelve la clave `plazo_o_frecuencia`, que no es unívoca (U-LISTAS-NOMAP,
+   P-a8).
+2. **Valores cerrados de `comparacion`:** máximo inclusivo, máximo estricto, mínimo inclusivo, mínimo estricto,
+   igual y `no_determinada`. La distinción entre «superior a» e «igual o superior a» cambia la respuesta
+   correcta.
+3. **Valores cerrados de `unidad`:** porcentaje, moneda con su código, días (corridos o hábiles), meses, años y
+   «veces», más UVA, con marca de fuera de lista.
 4. **Potestad.** Queda fuera de la lista según (a). Su clave `umbral`, emitida alguna vez (U-LISTAS-NOMAP,
    tabla a.2), va a `properties_no_definidas` (§2).
 
@@ -242,6 +253,8 @@ Propuesta y alternativa (§4 del reporte):
   - Un paso nuevo lee la descripción guardada (y el campo actual donde existe) y arma la lista.
   - Verifica cada tramo como subcadena del texto de E0 y, en los chunks con tabla, contra `e0_tablas`.
   - Marca lo que no verifica; los campos de relleno quedan vacíos y marcados.
+  - Lleva al campo de frecuencia lo que hoy está en la clave de plazo o frecuencia y no es un plazo, con marca
+    de fuera de lista si no está en la lista cerrada.
   - Depende de la detección de tablas de U-R2-CODIGO: los 4 chunks de ponderadores de `cap` que nadie detecta,
     y los 12 en que `e0_tablas` detecta tabla sin marca de E0 (plan, B2.11, unidad 8).
   - Formato: el grafo guarda la lista como valor de propiedad del nodo, no de la salida de E1, así que no
@@ -249,7 +262,8 @@ Propuesta y alternativa (§4 del reporte):
     `props_json` (`data/experiment/neo4j/cargar_kg.py:105-115`). Cómo lo muestra `ver_nodo` es NO VERIFICADO;
     lo verifica U-R2-CODIGO.
 - **r2b (prompt nuevo).**
-  - E1 emite, por entidad de los cuatro tipos, la lista de tramos literales.
+  - E1 emite, por entidad de los cuatro tipos, la lista de tramos literales, y en Obligacion el tramo de la
+    frecuencia.
   - Como el tool schema solo admite valores string en `properties`, hace falta un campo nuevo en el ítem de
     entidad o un valor de tipo lista: es cambio de tool schema, con la forma a fijar en U-PYD y U-PROMPT-R2.
   - La regla contra copiar celdas de tabla se extiende a los chunks que detecte el parser (RX-10).
@@ -259,7 +273,8 @@ Propuesta y alternativa (§4 del reporte):
 
 - **Suite:** los matchers de `BKL-0006` y `BKL-0023` leen `umbral` como string
   (`scripts/regression_kg.py:572`, `:615`); pasan a leer el valor normalizado de la lista. Test nuevo: toda
-  lista cumple la forma de (a), y todo elemento tiene el tramo verificado o una marca.
+  lista cumple la forma de (a), todo elemento tiene el tramo verificado o una marca, y `comparacion`, `unidad`
+  y la frecuencia están en su lista cerrada o llevan la marca de fuera de lista.
 - **Shapes:** S18 está reservada con un enunciado que no se implementó: «si una Restricción tiene `limita`,
   tiene `umbral`» (`scripts/shapes_validator.py:160-163`). Así enunciada, marcaría por construcción toda
   Restricción «limite_cualitativo», que usa `limita` sin monto según la tabla de predicados del prefijo. Se
@@ -344,16 +359,22 @@ Sobre los valores de las listas:
 - **(2)** Revisar en este laudo las listas de Restriccion.tipo, Comunicacion.tipo y Obligacion.tipo con los
   valores observados, por el principio 11. Ver en el corpus si «limite_temporal» es una categoría real.
 
-**PENDIENTE DE DECISIÓN DE LA AUTORA:**
-- los valores concretos de las tres listas (opciones de §2.2), sujetos a la lectura del §0.4;
-- las tablas de alias:
-  - de forma, para tipos y predicados;
-  - semánticos, para predicados: el único candidato observado es `exceptua_restriccion` → `exceptua`, en el
-    crudo de r1;
-  - de renombre de claves: el diseño no encontró ningún renombre unívoco.
-- la medición que falta antes de fijar los valores: el contenido del residuo «otra» y la frecuencia de
-  Restricciones con umbral temporal. Las dos son USD 0 sobre el crudo guardado; la unidad que las corre, a
-  decidir.
+**Decisión de la autora (30/09):**
+- **Obligacion.tipo:** opción (i), los seis valores, con el original guardado. `requisito_de_estructura` queda
+  en el diseño como límite declarado del pipeline, sin emitirse (lectura A del §0.4). La reclasificación desde
+  la descripción queda posible en código.
+- **Restriccion.tipo:** opción (iii), sin valor nuevo. Lo temporal se deriva en código de la unidad del umbral
+  (§1). Los valores fuera de lista siguen el modo de P-a6.
+- **Comunicacion.tipo:**
+  - se deriva en código del `codigo` cuando tiene forma de Comunicación;
+  - se agrega el valor «externa» para leyes, decretos y resoluciones, con el nombre original guardado;
+  - el tipo de entidad para normas externas queda como trabajo futuro.
+- **Alias:**
+  - se aceptan los de forma para tipos y predicados;
+  - se acepta el alias semántico `exceptua_restriccion` → `exceptua`, el único observado, en el crudo de r1;
+  - no hay renombres de claves.
+- Con estas decisiones, la medición previa del residuo «otra» y de los umbrales temporales deja de ser
+  condición para fijar los valores.
 
 ### 2.4 r2a y r2b
 
@@ -361,7 +382,11 @@ Sobre los valores de las listas:
   guardado. El grafo de la tanda 0 no cambia de valores: 0 fuera de lista en el grafo en Obligacion.tipo. Sí
   cambia la visibilidad: marcas, contadores, originales y `properties_no_definidas`. Prerrequisito: el crudo
   del reintento de E3 persistido (U-R2-CODIGO). En la tanda 0 se lee de `e1_reintentos.db`.
-- **r2b:** solo un valor nuevo de enum exige prompt nuevo (diseño, tabla f).
+  - Comunicacion.tipo se deriva del `codigo`, y los valores que nombran una ley, un decreto o una resolución
+    pasan a «externa», con el original guardado.
+  - Los valores «limite_temporal» quedan con su marca, y lo temporal se lee de la unidad del umbral.
+- **r2b:** solo un valor nuevo de enum exige prompt nuevo (diseño, tabla f). El único valor nuevo es «externa»
+  en Comunicacion.tipo; entra al prompt y al tool schema de U-PROMPT-R2.
 
 ### 2.5 Suite y shapes
 
@@ -371,12 +396,14 @@ Sobre los valores de las listas:
   - selftests de U-PYD con los valores reales de N1.
 - **Shapes** (perfil nuevo; `shapes_validator` sigue solo con stdlib, como control independiente de
   Pydantic):
-  - S24: enum de Restriccion.tipo;
-  - S25: enum de Comunicacion.tipo;
+  - S24: enum de Restriccion.tipo, sin valores nuevos;
+  - S25: enum de Comunicacion.tipo, con «externa»;
   - S26: claves cerradas por tipo;
   - S20, el enum de Obligacion.tipo, ya existe.
 
-  S24 y S25 son bloqueantes salvo la marca `fuera_de_lista`. Leen la lista que fije este laudo.
+  S24 y S25 son bloqueantes salvo la marca `fuera_de_lista`.
+- **Suite, además:** los alias aceptados (de forma y `exceptua_restriccion` → `exceptua`) entran a los selftests
+  de U-PYD con los valores reales de N1.
 
 ---
 
@@ -442,23 +469,20 @@ remedio de la vigilancia (9) de B5.4 en dos ramas. Con (3) y (5) rige la primera
 
 Se confirma con la firma.
 
-**PENDIENTE DE DECISIÓN DE LA AUTORA:**
-- **Lista de expresiones colectivas de R3.** Hoy no se puede medir: el campo no existe. Opciones:
-  - una lista inicial cerrada, tomada de la redacción del propio prompt (`prompt_e1.py:110`) y ampliada después
-    en código con las menciones de r2b;
-  - R3 recién después de r2b.
-- **Menciones que califican una clase existente** («Entidades del Grupo A»). Opciones:
-  - resolver a la clase y guardar el calificador;
-  - mantenerlas en cuarentena.
-
-  Es decisión de esquema (diseño, sección c).
-- **Lectura de la muestra sellada de 30 posibles forzados** (`muestra_forzados_30.csv`): quién la lee
-  (checklist P15 y Q12).
+**Decisión de la autora (30/09):**
+- **Lista de expresiones colectivas de R3:** una lista inicial cerrada, tomada de la redacción del propio prompt
+  (`prompt_e1.py:110`), que se amplía en código con las menciones de r2b.
+- **Menciones que califican una clase existente** («Entidades del Grupo A»): se resuelven a la clase y se guarda
+  el calificador. Los calificadores frecuentes quedan en el registro de no mapeados (§4) como candidatos a id.
+- **Lecturas** (checklist P15 y Q12): lectura asistida con revisión de la autora, declarada, sobre datos de
+  r2b. La muestra sellada de 30 posibles forzados (`muestra_forzados_30.csv`) se puede leer, opcionalmente,
+  como línea de base.
 
 ### 3.4 r2a y r2b
 
 - **r2a:**
-  - la resolución por relación con R1, R2 y R4 sobre `sujeto_propuesto` y `sujeto_id` guardados;
+  - la resolución por relación con R1, R2 y R4 sobre `sujeto_propuesto` y `sujeto_id` guardados, con la
+    resolución a la clase y el calificador guardado donde el propuesto califica una clase existente;
   - la verificación en dos niveles sobre las 63 relaciones con propuesto de diez;
   - R3 y los desacuerdos necesitan la mención.
 - **r2b:**
@@ -515,7 +539,8 @@ Se confirma con la firma.
 - El diseño del registro (P-d1 a P-d4) no está entre las siete decisiones abiertas del diseño; su adopción
   formal es la firma de este laudo.
 
-**PENDIENTE DE DECISIÓN DE LA AUTORA:** quién llena `categoria_no_mapeo` por lectura, y sobre qué muestra.
+**Decisión de la autora (30/09):** `categoria_no_mapeo` se llena por lectura asistida con revisión de la
+autora, declarada, sobre datos de r2b (la misma regla de lecturas de §3.3).
 
 ### 4.4 r2a y r2b
 
@@ -573,19 +598,24 @@ Se confirma con la firma.
 - Efecto sobre el laudo: el residuo que la regla 9 declaró (R4) se vuelve medible por TO. Su línea de base
   empieza en r2b.
 
-**PENDIENTE DE DECISIÓN DE LA AUTORA:** quién lee la muestra de control de `meta_normativo` (P-e4.3), para
-vigilar el contenido habilitante que la regla 9 no debe excluir; checklist P15 y Q12.
+**Decisión de la autora (30/09):**
+- **Quinta categoría.** Por la decisión del §8 se agrega `relacion_sin_predicado`, para toda relación que el
+  texto expresa y el esquema no puede representar. La orientación (6) pasa a cinco categorías: `meta_normativo`,
+  `tabla`, `formula`, `fuera_de_tipos` y `relacion_sin_predicado`.
+- **Muestra de control de `meta_normativo`** (P-e4.3), para vigilar el contenido habilitante que la regla 9 no
+  debe excluir: lectura asistida con revisión de la autora, declarada, sobre datos de r2b (checklist P15 y Q12).
 
 ### 5.4 r2a y r2b
 
 - **r2a:** cada string de `omisiones_no_prosa` se lee como omisión sin categoría y sin tramo, y P-e3 se aplica
   sobre el crudo.
-- **r2b:** el campo `omisiones` y las instrucciones de las reglas 4 y 9 y de la sección de contenido no-prosa.
+- **r2b:** el campo `omisiones` con las cinco categorías, y las instrucciones de las reglas 4 y 9, de la
+  sección de contenido no-prosa y de las relaciones sin predicado.
 
 ### 5.5 Suite y shapes
 
-- **Suite:** LN-7, toda omisión con categoría del enum y tramo verificado o marcado; 0 chunks marcados con
-  extracción y sin omisión.
+- **Suite:** LN-7, toda omisión con categoría del enum de cinco valores y tramo verificado o marcado; 0 chunks
+  marcados con extracción y sin omisión.
 - **Shapes:** el diseño no propone ninguna.
 
 ---
@@ -631,20 +661,29 @@ vigilar el contenido habilitante que la regla 9 no debe excluir; checklist P15 y
 Ya decidido (checklist X2, 30/09): si se amplía, cambia el prompt (U-PROMPT-R2) y la tanda 0 se re-extrae
 (U-REEXT-T0).
 
-### 6.3 Orientación de la autora
+### 6.3 Decisión de la autora (30/09)
 
-No hay orientación registrada.
-- **X1: PENDIENTE DE DECISIÓN DE LA AUTORA** (opciones de §6.2).
-- **X11: PENDIENTE DE DECISIÓN DE LA AUTORA**: si la lectura asistida alcanza o se pide una validación
-  adicional, por ejemplo de alguien del dominio. Puede consultarlo con los mentores del proyecto.
+No había orientación registrada.
+- **X1: opción (ii).** Se amplían `condicion_de` → Operacion y `condicion_de` → Potestad.
+  - **Desvío declarado:** → Potestad quedó a una correcta del criterio fijado antes de leer (27 de 30, piso de
+    Wilson 0,744 frente a 0,75). Se amplía igual por el principio 11: los documentos expresan condiciones sobre
+    potestades (27 de 30 correctas en la lectura, frente a 27 de 29 de → Operacion).
+  - La diferencia entre los dos pares está dentro del error de una muestra de 30: los intervalos de Wilson
+    (0,780–0,981 y 0,744–0,965) se superponen casi por completo (resultado de la lectura, tabla del criterio).
+- **Confirmación.** En r2b, E3 verifica cada relación nueva. Sobre el grafo re-extraído se lee una muestra de
+  los dos pares, con lectura asistida y revisión de la autora. Es un paso posterior a U-REEXT-T0 y anterior a
+  la tanda 1 (plan, B2.11, unidad 11). Si → Potestad no se confirma, se retira en el validador, en código, sin
+  re-extraer.
+- **X11:** la lectura asistida alcanza para esta decisión, y queda declarado. La validación de dominio se
+  reserva para la evaluación final.
 
 ### 6.4 r2a y r2b
 
 - **r2a:** el perfil nuevo del validador, con la matriz ampliada, se re-aplica sobre el crudo guardado y
-  recupera las relaciones rechazadas (hasta 388 en desarrollo para → Operacion). Esas relaciones no pasaron por
-  E3. **PENDIENTE DE DECISIÓN DE LA AUTORA:**
-  - que entren a r2a con una marca de no verificadas por E3;
-  - o que queden fuera de r2a hasta r2b.
+  recupera las relaciones rechazadas: hasta 388 en desarrollo para → Operacion y 239 para → Potestad (627
+  juntas). Esas relaciones no pasaron por E3. **Decisión de la autora (30/09):** entran a r2a marcadas como no
+  verificadas por E3 y se cuentan aparte en el tablero. El grafo de la release lleva solo las verificadas en
+  r2b.
 - **r2b:** cambian la tabla de firmas del prompt y la instrucción de Condicion, que hoy manda conectarla «a la
   Excepcion, Obligacion o Restriccion del mismo chunk» (`prompt_congelado.py`, prefijo `e69feaaa…`; resultado
   de la lectura, sección «Pendiente de la decisión»). E3 verifica lo nuevo.
@@ -654,8 +693,9 @@ No hay orientación registrada.
 - **Shapes:** S3 (matriz de firmas) lee en el perfil nuevo la matriz que fije este laudo
   (`scripts/shapes_validator.py:102`, `:648`).
 - **Suite:**
-  - una entrada que fije la firma decidida;
-  - con la opción (i), otra que mantenga inválido `condicion_de` → Potestad;
+  - una entrada que fije las dos firmas nuevas;
+  - un conteo aparte de las relaciones marcadas como no verificadas por E3 (r2a), que debe ser 0 en el grafo de
+    la release;
   - el control de aristas entre nodos de igual descripción entra primero como censo informativo, sin regla de
     retiro: en la muestra, esa regla habría retirado M50, que es correcta.
 
@@ -724,14 +764,20 @@ No hay orientación registrada.
   nuevo junto a clase, instancia y rol.
 - **Marcas de revisión de B5.4:** revisar ahora con el uso medido en la tanda 0, o dejarlas para la tanda 1.
 
-### 7.3 Orientación de la autora
+### 7.3 Decisión de la autora (30/09)
 
-No hay orientación registrada sobre el contenido del catálogo.
-- **Diferencia 6/5: PENDIENTE DE DECISIÓN DE LA AUTORA** (confirmación). La mesa no ve una decisión de esquema
-  nueva: el contenido ya lo decidió el laudo firmado de B5.4.
-- **`BKL-0028`, `BKL-0029` y `BKL-0034`: PENDIENTE DE DECISIÓN DE LA AUTORA.** Entran al ciclo (checklist X6 y
-  X7; laudo de r2, §1.6). Los aplica U-CAT-UNICO.
-- **Marcas de revisión de B5.4: PENDIENTE DE DECISIÓN DE LA AUTORA.**
+No había orientación registrada sobre el contenido del catálogo. Los remedios entran al ciclo (checklist X6 y
+X7; laudo de r2, §1.6) y los aplica U-CAT-UNICO.
+- **Diferencia 6/5:** opción (i), se aplica el laudo de B5.4. El JSON incorpora los seis y registra los cinco
+  como lápidas no vigentes.
+- **`BKL-0028`:** opción (i). Tres ids del exterior, quitando los alias de las entradas domésticas.
+- **`BKL-0029`:** opción (i). Se abre el id para «titulares de cuenta corriente en el BCRA» y se re-adjudica el
+  miembro del rol de convca.
+- **`BKL-0034`:** opción (ii). Ids para Directorio, Alta Gerencia y Comité de auditoría, como clases bajo una
+  clase nueva «órgano de gobierno», dentro del árbol actual y sin nivel nuevo. Los nombres de los ids los fija
+  U-CAT-UNICO.
+- **Marcas de revisión de B5.4** (`ministerio_de_economia`, `sociedad_de_proposito_especial`): se revisan con
+  los datos de la tanda 1 (mención y registro de no mapeados), en código.
 
 ### 7.4 r2a y r2b
 
@@ -741,8 +787,9 @@ No hay orientación registrada sobre el contenido del catálogo.
 
   Con `BKL-0028`, quitar alias cambia R1 solo para los propuestos guardados. Las relaciones en que el modelo
   eligió el id doméstico no cambian sin la mención.
-- **r2b:** el bloque del prompt regenerado desde el JSON, con los ids nuevos, entra al prefijo nuevo de
-  U-PROMPT-R2.
+- **r2b:** el bloque del prompt regenerado desde el JSON entra al prefijo nuevo de U-PROMPT-R2. Lleva los ids
+  nuevos: tres del exterior, el de titulares de cuenta corriente, la clase «órgano de gobierno» y sus tres
+  clases.
 
 ### 7.5 Suite y shapes
 
@@ -769,8 +816,8 @@ No hay orientación registrada sobre el contenido del catálogo.
   usada, se decide aquí.
 - No hay evidencia nueva desde ESQ-3a: ninguna unidad midió la demanda de `instrumenta` en la tanda 0
   (NO MEDIDO).
-- Las cuatro categorías de omisión de §5 no registran una relación sin predicado, así que la evidencia no se
-  acumularía sola.
+- Las cuatro categorías de omisión de la orientación (6) no registran una relación sin predicado, así que con
+  ellas la evidencia no se acumularía sola.
 
 ### 8.2 Opciones
 
@@ -780,9 +827,14 @@ No hay orientación registrada sobre el contenido del catálogo.
 - **(iii)** Entra en r2b, con delimitación y verificación en la prueba pareada de U-PROMPT-R2. Choca con la
   cláusula «nada entra al congelado con delimitaciones sin verificar» del §1, según la lectura del §0.4.
 
-### 8.3 Orientación de la autora
+### 8.3 Decisión de la autora (30/09)
 
-No hay orientación registrada. **PENDIENTE DE DECISIÓN DE LA AUTORA.**
+No había orientación registrada. **Opción (ii), generalizada.**
+- R6b sigue fuera, como residuo declarado.
+- Se agrega la categoría de omisión `relacion_sin_predicado`, para toda relación que el texto expresa y el
+  esquema no puede representar, no solo `instrumenta`.
+- Extiende la orientación (6) a cinco categorías (§5.3). Así la evidencia de un predicado faltante se acumula
+  por forma y queda disponible para una release posterior (lectura A del §0.4).
 
 Relacionado, sin pedido de decisión: R6a (`exceptua_operacion`, Excepcion → Operacion) también fue a r2, con 0
 emisiones en 43 unidades (laudo, §2). El par `exceptua` → Operacion de la matriz (§6) cubre ese caso sin
@@ -790,9 +842,12 @@ predicado nuevo, con 5 de 5 correctas en la lectura asistida, sin ampliarse con 
 
 ### 8.4 r2a, r2b, suite y shapes
 
-- Con (i): nada.
-- Con (ii): una categoría más en el enum de omisiones (r2b) y en LN-7.
-- Con (iii): un predicado nuevo en el prompt, el tool schema, la matriz, S3 y la suite (r2b).
+Con la decisión (ii):
+- **r2a:** nada; el crudo guardado no tiene la categoría.
+- **r2b:** la categoría `relacion_sin_predicado` en el enum de omisiones del tool schema y su instrucción en el
+  prompt.
+- **Suite:** LN-7 con el enum de cinco valores.
+- Ningún predicado nuevo: la matriz y S3 no cambian por R6b.
 
 ---
 
@@ -800,25 +855,27 @@ predicado nuevo, con 5 de 5 correctas en la lectura asistida, sin ampliarse con 
 
 | # | decisión | estado | r2a (código) | r2b (prompt) | suite / shapes |
 |---|---|---|---|---|---|
-| 1 | umbrales como lista (tramo, valor, unidad, comparación, base) en 4 tipos | orientación (a)–(f); pendientes: plazo, `comparacion`, `unidad` | par B con verificación | par A, tool schema | matchers `BKL-0006`/`0023`; S18 reescrita; control cuantía ⇒ elemento |
+| 0.4 | principio 11 frente al §1 | decisión (30/09): lectura (A) | — | — | — |
+| 1 | umbrales como lista (tramo, valor, unidad, comparación, base) en 4 tipos | orientación (a)–(f); decisión (30/09): plazo en la lista, frecuencia en campo propio, listas de `comparacion` y `unidad` (con UVA) | par B con verificación; frecuencia separada | par A, tool schema | matchers `BKL-0006`/`0023`; S18 reescrita; control cuantía ⇒ elemento; enums con marca |
 | 1′ | precisión de `limita` | **celda PENDIENTE** (U-LECTURA-LIMITA) | — | posible instrucción | — |
+| 1″ | 4 `limita` desde «prohibicion» | nota; candidato `BKL-0038` | control de coherencia tipo–predicado | — | control nuevo |
 | 2 | política por campo | orientación (1) | toda | solo valores nuevos | LN-1, LN-2; S24–S26 |
-| 2′ | valores de Restriccion.tipo, Comunicacion.tipo y Obligacion.tipo | orientación (2); valores PENDIENTE | — | sí | S20, S24, S25 |
-| 3 | mención y resolución de sujetos | orientación (3)–(5); pendientes: R3, calificadores | R1, R2, R4 | campo y reglas | LN-3, LN-4; S27 |
-| 4 | registro de no mapeados | orientación (7); pendiente: lectura | sí | mención completa | LN-5, LN-6; S28 |
-| 5 | omisiones con categoría y tramo | orientación (6) | lectura de lo guardado | campo y reglas 4 y 9 | LN-7 |
-| 6 | matriz (X1, X11) | PENDIENTE | re-validación; marca E3 PENDIENTE | tabla de firmas | S3; entradas nuevas |
-| 7 | catálogo: 6/5, `BKL-0028`, `0029`, `0034` | PENDIENTE (6/5: confirmación) | JSON único | bloque regenerado | LN-8, T7, E4-a7; S19, S29 |
-| 8 | R6b (X10) | PENDIENTE | — | solo con (iii) | solo con (ii) o (iii) |
-| 0.4 | principio 11 frente al §1 | PENDIENTE | — | — | — |
+| 2′ | valores de las listas y alias | orientación (2); decisión (30/09): Obligacion.tipo (i), Restriccion.tipo (iii), Comunicacion.tipo con «externa», alias aceptados | derivaciones y alias | «externa» | S20, S24, S25 |
+| 3 | mención y resolución de sujetos | orientación (3)–(5); decisión (30/09): R3 con lista inicial, calificador guardado, lecturas asistidas | R1, R2, R4; calificador | campo y reglas | LN-3, LN-4; S27 |
+| 4 | registro de no mapeados | orientación (7); decisión (30/09): lectura asistida sobre r2b | sí | mención completa | LN-5, LN-6; S28 |
+| 5 | omisiones con categoría y tramo | orientación (6); decisión (30/09): cinco categorías, lectura asistida de `meta_normativo` | lectura de lo guardado | campo y reglas 4 y 9; relaciones sin predicado | LN-7 (cinco valores) |
+| 6 | matriz (X1, X11) | decisión (30/09): (ii), las dos ampliaciones, con desvío declarado; X11 alcanza la lectura asistida | re-validación, marcadas sin E3 y contadas aparte | tabla de firmas; E3; lectura de confirmación | S3; firmas nuevas; conteo de no verificadas |
+| 7 | catálogo: 6/5, `BKL-0028`, `0029`, `0034` | decisión (30/09): (i), (i), (i) y (ii) con «órgano de gobierno»; marcas de B5.4 con la tanda 1 | JSON único | bloque regenerado | LN-8, T7, E4-a7; S19, S29; entradas por id nuevo |
+| 8 | R6b (X10) | decisión (30/09): (ii) generalizada, `relacion_sin_predicado` | — | categoría de omisión | LN-7 |
 
 ## 10. Qué no cambia
 
 - El texto del laudo congelado y sus dos enmiendas firmadas.
 - Los grafos de la tanda 0 (KG-Tanda0-Desarrollo-r1, KG-Tanda0-Diez-r1 y el ensamblado de los cinco): quedan
   sellados. El ciclo produce una versión posterior.
-- Los nueve tipos de entidad: este borrador no propone ninguno nuevo, salvo la opción (iii) de Comunicacion.tipo
-  en §2.2.
+- Los nueve tipos de entidad: no se agrega ninguno. El tipo para normas externas queda como trabajo futuro
+  (§2.3), y los órganos de gobierno son clases del catálogo de sujetos, no un tipo nuevo (§7.3).
+- Los trece predicados: no se agrega ninguno (R6b sigue fuera, §8.3). Cambia la matriz de firmas (§6.3).
 - El prompt de E3 (laudo de r2, §3.2).
 - El esquema congelado, que sigue vigente hasta la firma de esta enmienda.
 
@@ -839,7 +896,10 @@ predicado nuevo, con 5 de 5 correctas en la lectura asistida, sin ampliarse con 
   - U-R2-CODIGO aplica §1 (r2a), la resolución de §3 y el registro de §4;
   - la medición r2a separa lo que corrige el código;
   - U-PROMPT-R2 lleva lo marcado r2b;
-  - U-REEXT-T0 re-extrae y abre la medición de la tasa real de menciones y de la meta de §4.
+  - U-REEXT-T0 re-extrae y abre la medición de la tasa real de menciones y de la meta de §4;
+  - después de U-REEXT-T0 y antes de la tanda 1, la lectura de confirmación de las dos firmas nuevas de
+    `condicion_de` (§6.3; plan, B2.11, unidad 11);
+  - las lecturas asistidas de §3.3, §4.3 y §5.3, sobre datos de r2b.
 
 ## Firma
 
