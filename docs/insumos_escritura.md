@@ -104,20 +104,39 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
   6. Después de la re-extracción de la tanda 0 (U-REEXT-T0), estos datos siguen
      siendo de r1, salvo que se regeneren (tablero, fila del test del ejemplo).
 
-## 3. Umbrales (U-UMBRAL) — pendiente
+## 3. Umbrales (U-UMBRAL) — disponible
 
-- **Ruta y commit:** `reports/u_umbral/` (mandato `docs/mandatos/UUMBRAL_investigacion.md`,
-  firmado en `30f106c`). Commit pendiente.
-- **Qué contendrá:** seis mediciones sobre umbrales, y la evidencia ordenada en dos
-  ejes: dónde vive el umbral y cómo se llena. La propuesta es un par (representación,
-  método de llenado), con su alternativa.
+- **Ruta y commit:**
+  - `reports/u_umbral/`: `u1_mediciones.json` y `.md` (U1, commit `e81ed69`);
+    `u2_muestra_trazas.json` y `.md`, `muestra_limita_30.csv` y `reporte_u_umbral.md`
+    (U2, commit `e4d053b`);
+  - mandato `docs/mandatos/UUMBRAL_investigacion.md`, firmado en `30f106c`;
+  - comandos: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B reports/u_umbral/u_umbral_u1.py`
+    y `… reports/u_umbral/u_umbral_u2.py`. Dobles corridas byte a byte idénticas, y
+    re-corridas independientes de la mesa también idénticas.
+- **Qué contiene:**
+  - seis mediciones sobre umbrales en los tres grafos (desarrollo, r1 y diez):
+    literalidad de `umbral` y `plazo`, tablas que E0 no marca, cuantías sin campo, un
+    prototipo de llenado en código, aristas `limita` y trazas;
+  - la evidencia ordenada en dos ejes, dónde vive el umbral y cómo se llena, con la
+    propuesta como par (representación, método de llenado) y su alternativa
+    (`reporte_u_umbral.md`);
+  - la orientación de la autora para L-ESQ-R2 está registrada en el plan (fila B2.11,
+    unidad 5).
 - **Alimenta:**
-  - capítulo 3: la decisión de esquema sobre umbrales, una vez laudada en L-ESQ-R2;
-  - capítulo 4: el método de llenado.
-- **Salvedades conocidas:**
-  - EV2 y sus trazas se usan como diagnóstico, no como resultado (principio 7 del
-    plan);
-  - la muestra de 30 aristas `limita` se prepara, pero no se lee en la unidad.
+  - capítulo 3: dónde vive el umbral, justificado por los documentos (umbrales
+    frecuentes, a menudo relativos a otro valor y a veces varios en un mismo punto);
+  - capítulo 4: cómo se llena (E1 copia el tramo literal; la normalización y la
+    verificación contra E0 y el parser de tablas son código).
+- **Salvedades:**
+  1. Los denominadores de U-UMBRAL salen del [c14] del mandato (605 en desarrollo, 638
+     en r1, 682 en diez). En la tesis se citan los del tablero corregido: 606, 639 y
+     683. La diferencia es un nodo, «diez (10) años».
+  2. EV2 se usa como diagnóstico, sobre 8 criterios con cuantía, no como resultado
+     (principio 7 del plan).
+  3. La muestra de 30 aristas `limita` está sellada y sin leer; se lee en la unidad 4b
+     del plan, antes de L-ESQ-R2.
+  4. El costo del llenado por un modelo es una estimación no verificada.
 
 ## 4. Listas cerradas y lo no mapeable (U-LISTAS-NOMAP) — pendiente
 
