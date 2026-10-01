@@ -145,8 +145,9 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      (principio 7 del plan).
   3. La muestra de 30 aristas `limita` se leyó en la unidad 4b del plan
      (U-LECTURA-LIMITA, `bf4709d`). Es una lectura asistida: leyó una instancia de modelo y
-     revisó la autora, sin cambios. Es un desvío declarado respecto de la lectura humana, y
-     el modelo y la versión de la instancia están PENDIENTES de confirmación. Es una fracción
+     revisó la autora, sin cambios. Es un desvío declarado respecto de la lectura humana. La
+     instancia es `claude-opus-5-5` (Claude Opus 5.5), confirmado por la autora el 30/09 con el
+     registro de la sesión de Claude Code `deda25f2-7092-4eb5-acd8-56ae8d1fba91.jsonl`. Es una fracción
      sobre n = 30, de un solo grafo y sin criterio fijado de antemano, así que se cita como
      dato descriptivo y como fracción cruda.
   4. El costo del llenado por un modelo es una estimación no verificada.

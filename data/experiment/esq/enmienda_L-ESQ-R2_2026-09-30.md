@@ -1,6 +1,6 @@
 # Enmienda al laudo de esquema congelado — L-ESQ-R2: el esquema de la release r2
 
-**BORRADOR — PENDIENTE DE FIRMA** de la autora · Redactado: 2026-09-30 · Sin commit.
+**BORRADOR — PENDIENTE DE FIRMA** de la autora · Redactado: 2026-09-30 · Última revisión: 2026-10-01.
 
 Enmienda con fecha al laudo `data/experiment/esq/laudo_esquema_congelado.md` (FIRMADO 03/09/2026, sellado
 en `2593d4d`). El laudo no se edita: esta enmienda vive al lado y se lee junto con él y con sus dos enmiendas
@@ -174,8 +174,10 @@ años» que la regex del mandato no veía. En la tesis se citan los del tablero.
 - Es la lectura asistida de la muestra sellada de 30 aristas de desarrollo
   (`reports/u_umbral/muestra_limita_30.csv`, sha256 `8e981817…`, igual al inicio y al cierre): si el destino es
   el objeto del tope.
-- Leyó una instancia de modelo y revisó la autora. Modelo y versión de la instancia: PENDIENTE de confirmación
-  de la autora; la declaración de la propia instancia es NO VERIFICADA.
+- Leyó una instancia de modelo y revisó la autora. Modelo y versión de la instancia: `claude-opus-5-5`
+  (Claude Opus 5.5), confirmado por la autora el 30/09 con el registro de la sesión de Claude Code
+  `deda25f2-7092-4eb5-acd8-56ae8d1fba91.jsonl`: 117 entradas de respuesta (53 mensajes distintos), todas con
+  ese modelo. Es la única sesión del proyecto que escribió `conteo_lectura.py`.
 - Resultado en `reports/u_umbral/lectura_limita/resultado_lectura_limita.md`. Comando:
   `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B reports/u_umbral/lectura_limita/conteo_lectura.py`.
 
@@ -265,15 +267,68 @@ Propuesta y alternativa (§4 del reporte):
    igual, coeficiente y `no_determinada`. La distinción entre «superior a» e «igual o superior a» cambia la
    respuesta correcta.
    - «Coeficiente» es para los ponderadores de riesgo: el valor multiplica, no acota (§1.1).
-3. **Cómo se fija `comparacion`** (corrección de la autora del 30/09; antes decía «comparación máximo» para el
-   plazo). La comparación sale del tramo, por reglas en código:
-   - «dentro de» o «hasta» → máximo inclusivo;
-   - «mínimo», «al menos» o «no menos de» → mínimo inclusivo;
-   - sin marcador en el texto, máximo inclusivo, con la marca `comparacion_asumida`.
+3. **Cómo se fija `comparacion`.** La comparación sale del tramo por reglas en código, definidas por su sentido.
+   Valen para todos los elementos de la lista.
+   - **Coeficiente:** cuando aparece «pondera», «ponderador», «ponderación», «coeficiente» o «factor».
+   - **Raíces (formas simples).**
+     - Mínimo estricto: las formas de raíz «super-» y «exced-» (supere, superen, superar, superior, exceda,
+       excedan, exceder), más «más de» y «mayor» o «mayores a».
+     - Máximo estricto: «inferior» o «inferiores a», «menos de», «menor» o «menores a».
+   - **Negación general.** «No» o «sin» delante del verbo o del comparativo, con hasta tres palabras en el
+     medio, invierte el sentido. Ejemplos: «no podrá superar», «no deberá superar», «no podrán ser superiores
+     a», «sin exceder», «no excedan, al momento de los acuerdos, del».
+     - La negación de un mínimo estricto es máximo inclusivo.
+     - La negación de un máximo estricto («no inferior a», «no menos de») es mínimo inclusivo.
+   - **Compuestas.**
+     - «igual o superior» o «igual o mayor» → mínimo inclusivo;
+     - «igual o inferior», «igual o menor», «como máximo», «hasta» y «dentro de» → máximo inclusivo;
+     - «al menos», «como mínimo» y «un mínimo de» → mínimo inclusivo.
+   - **Adyacencia.** Los marcadores de comparación se buscan en el tramo, junto a la cuantía, no en cualquier
+     parte de la descripción. El marcador de coeficiente es la excepción: puede venir de la descripción o del
+     título del punto.
+     - «Mínimo» o «máximo», en cualquier género y número (mínima, mínimos, máximas…), cuentan como marcador
+       cuando van seguidos inmediatamente de la cuantía, con o sin «de» en el medio: mínimo inclusivo o máximo
+       inclusivo. Ejemplos: «plazo mínimo de 10 días hábiles», «vida promedio mínima 2 años», «un mínimo de».
+       Tienen el nivel de precedencia de las compuestas.
+     - Como adjetivo de un sustantivo sin la cuantía a continuación («capital mínimo»), no cuentan.
+   - **Precedencia:** primero coeficiente, después la negación, después las compuestas y por último las
+     simples.
+   - **Sin marcador:** en un plazo, máximo inclusivo con la marca `comparacion_asumida`; en cualquier otra
+     cuantía, `no_determinada`.
 
-   La regla vale para todos los elementos de la lista, no solo para el plazo. Motivo de la corrección: en
-   desarrollo hay plazos de Obligacion enunciados como mínimos. Una regex de la mesa encontró al menos 3, por
-   ejemplo «mínimo 180 días» y «al menos un año».
+   El laudo fija el sentido de cada forma. La implementación exacta y su calibración son de U-PYD: frecuencia de
+   cada forma en los tramos de r2a, falsos positivos de «factor» y regla de «igual», que no tiene regla
+   inicial. Los casos de control son prueba obligatoria.
+
+   Casos de control (§1.5):
+   - **Ejemplo del préstamo** (`cla::5.1.1.1`, texto de E0): «superen el equivalente a dos veces el importe de
+     referencia establecido en el punto 3.7.» → mínimo estricto, valor 2, unidad «veces», base «importe de
+     referencia establecido en el punto 3.7».
+   - **Fila 9 de la lectura de `limita`** (`cap::2.8.3.2`): «no deberá superar el 0,2%» → máximo inclusivo.
+   - **Fila 21** (`cap::2.12.2.3`): «no excedan, al momento de los acuerdos, del 30%» → máximo inclusivo, sin
+     disparar coeficiente.
+   - **Fila 15** (`cap::4.3.3.1`): «con un plazo mínimo de 10 días hábiles» → mínimo inclusivo.
+
+   Historia de la regla, con cinco correcciones de la autora (30/09 y 01/10):
+   - **Primera versión:** «comparación máximo» para el plazo. Se corrigió porque en desarrollo hay plazos de
+     Obligacion enunciados como mínimos: una regex de la mesa encontró al menos 3, por ejemplo «mínimo 180 días»
+     y «al menos un año».
+   - **Segunda versión** (commiteada en `697bdf6`): sin marcador, máximo inclusivo con `comparacion_asumida` para
+     toda cuantía, y ninguna regla para «coeficiente». Se corrigió porque un ponderador sin marcador recibía un
+     máximo asumido, que es falso.
+   - **Tercera versión** (30/09, no commiteada): «coeficiente» por marcadores; «dentro de» o «hasta» → máximo
+     inclusivo; «mínimo», «al menos» o «no menos de» → mínimo inclusivo; sin marcador, el plazo con
+     `comparacion_asumida` y el resto `no_determinada`. Se corrigió el 01/10 porque no cubría las formas
+     habituales de los topes ni la negación, y el ejemplo del préstamo («superen el equivalente a dos veces…»)
+     quedaba `no_determinada`.
+   - **Cuarta versión** (01/10, no commiteada): listas de frases exactas por grupo (por ejemplo, «no supere», «no
+     podrá superar», «no deberá exceder» y «no excedan» para máximo inclusivo, y «supere», «superen» y «exceda»
+     para mínimo estricto), con la misma precedencia. Se corrigió el 01/10 porque la lista de frases exactas no
+     reconocía variantes: aplicada literalmente, falló la fila 9 («no deberá superar» no estaba en la lista y
+     «superar» no coincide con «supere»).
+   - **Quinta versión** (01/10, no commiteada): las reglas por sentido, con la adyacencia, pero «mínimo» o «máximo»
+     como adjetivo de un sustantivo nunca contaba. Se corrigió el 01/10 porque la fila 15 («con un plazo mínimo de
+     10 días hábiles») quedaba sin marcador y, por ser un plazo, con máximo asumido, que es falso.
 4. **Valores cerrados de `unidad`:** porcentaje, moneda con su código, días (corridos o hábiles), meses, años y
    «veces», más UVA, con marca de fuera de lista.
 5. **Potestad.** Queda fuera de la lista según (a). Su clave `umbral`, emitida alguna vez (U-LISTAS-NOMAP,
@@ -289,8 +344,11 @@ Propuesta y alternativa (§4 del reporte):
   - Un paso nuevo lee la descripción guardada (y el campo actual donde existe) y arma la lista.
   - Verifica cada tramo como subcadena del texto de E0 y, en los chunks con tabla, contra `e0_tablas`.
   - Marca lo que no verifica; los campos de relleno quedan vacíos y marcados.
-  - Fija `comparacion` por las reglas del punto 3 de §1.3. Sin marcador, pone máximo inclusivo con la marca
-    `comparacion_asumida`.
+  - Fija `comparacion` por las reglas del punto 3 de §1.3, en su orden de precedencia. Busca los marcadores en
+    el tramo, junto a la cuantía; el de coeficiente, también en la descripción y en el título del punto.
+    «Mínimo» o «máximo», en cualquier género y número, seguidos inmediatamente de la cuantía (con o sin «de»),
+    cuentan como mínimo o máximo inclusivo. Sin marcador, un plazo recibe máximo inclusivo con la marca `comparacion_asumida`, y cualquier otra cuantía
+    `no_determinada`.
   - Lleva al campo de frecuencia lo que hoy está en la clave de plazo o frecuencia y no es un plazo, con marca
     de fuera de lista si no está en la lista cerrada.
   - Depende de la detección de tablas de U-R2-CODIGO: los 4 chunks de ponderadores de `cap` que nadie detecta,
@@ -305,9 +363,11 @@ Propuesta y alternativa (§4 del reporte):
   - Como el tool schema solo admite valores string en `properties`, hace falta un campo nuevo en el ítem de
     entidad o un valor de tipo lista: es cambio de tool schema, con la forma a fijar en U-PYD y U-PROMPT-R2.
   - La regla contra copiar celdas de tabla se extiende a los chunks que detecte el parser (RX-10).
-  - **Instrucción nueva para U-PROMPT-R2 (decisión de la autora del 30/09):** «el destino de `limita` es el
-    acto o la magnitud que el tope acota; no su base, su finalidad, su consecuencia ni el supuesto que lo
-    habilita». Responde a los errores de destino que encontró la lectura de §1.1.
+  - **Instrucción nueva para U-PROMPT-R2** (decisión de la autora del 30/09, ajustada el 01/10 para los
+    ponderadores): «el destino de `limita` es el acto o la magnitud que el tope acota o, si es un ponderador, la
+    exposición que pondera; no su base, su finalidad, su consecuencia ni el supuesto que lo habilita». Responde a
+    los errores de destino que encontró la lectura de §1.1. La versión del 30/09 no nombraba los ponderadores,
+    que son 10 de las 30 aristas de la muestra.
   - El código de r2a se re-aplica sin cambios sobre los tramos de E1.
 - **Límite declarado de la verificación (fila 26 de §1.1).** La verificación por tramo literal comprueba que el
   valor esté en el texto de E0, no que la descripción conserve su sentido. En la fila 26 el «20 %» está en el
@@ -320,9 +380,21 @@ Propuesta y alternativa (§4 del reporte):
 - **Suite:** los matchers de `BKL-0006` y `BKL-0023` leen `umbral` como string
   (`scripts/regression_kg.py:572`, `:615`); pasan a leer el valor normalizado de la lista. Test nuevo: toda
   lista cumple la forma de (a), todo elemento tiene el tramo verificado o una marca, y `comparacion`, `unidad`
-  y la frecuencia están en su lista cerrada o llevan la marca de fuera de lista. Los selftests de las reglas de
-  `comparacion` usan los marcadores del punto 3 de §1.3 y el caso sin marcador, que lleva
-  `comparacion_asumida`; los elementos con esa marca se cuentan aparte.
+  y la frecuencia están en su lista cerrada o llevan la marca de fuera de lista.
+- **Selftests de las reglas de `comparacion`:**
+  - cada sentido del punto 3 de §1.3: raíces de mínimo y máximo estricto, negación general (con cero a tres
+    palabras en el medio), compuestas y coeficiente;
+  - la adyacencia: un marcador fuera del tramo no cuenta; «mínimo» o «máximo» seguidos de la cuantía, con o sin
+    «de» y en cualquier género y número, cuentan; «capital mínimo», sin cuantía a continuación, no cuenta;
+  - la precedencia: una forma con negación que contiene una simple, como «no inferior a» frente a «inferior a»;
+  - los dos casos sin marcador: un plazo, con `comparacion_asumida`, y otra cuantía, con `no_determinada`;
+  - los cuatro casos de control, como prueba obligatoria:
+    - el ejemplo del préstamo → mínimo estricto, con su base;
+    - la fila 9 de la lectura de `limita` → máximo inclusivo;
+    - la fila 21 → máximo inclusivo, sin disparar coeficiente;
+    - la fila 15 («con un plazo mínimo de 10 días hábiles») → mínimo inclusivo.
+
+  Los elementos con `comparacion_asumida` y con `no_determinada` se cuentan aparte.
 - **Shapes:** S18 está reservada con un enunciado que no se implementó: «si una Restricción tiene `limita`,
   tiene `umbral`» (`scripts/shapes_validator.py:160-163`). Así enunciada, marcaría por construcción toda
   Restricción «limite_cualitativo», que usa `limita` sin monto según la tabla de predicados del prefijo. Se
@@ -904,8 +976,8 @@ Con la decisión (ii):
 | # | decisión | estado | r2a (código) | r2b (prompt) | suite / shapes |
 |---|---|---|---|---|---|
 | 0.4 | principio 11 frente al §1 | decisión (30/09): lectura (A) | — | — | — |
-| 1 | umbrales como lista (tramo, valor, unidad, comparación, base) en 4 tipos | orientación (a)–(f); decisión (30/09): plazo en la lista, frecuencia en campo propio, listas de `comparacion` (con coeficiente) y `unidad` (con UVA), comparación por reglas desde el tramo con `comparacion_asumida`; ponderadores como límite declarado; inversión de sentido como límite de la verificación | par B con verificación; frecuencia separada; reglas de comparación | par A, tool schema | matchers `BKL-0006`/`0023`; S18 reescrita; control cuantía ⇒ elemento; enums con marca; selftests de las reglas |
-| 1′ | precisión de `limita` | medida (U-LECTURA-LIMITA, `bf4709d`): 21 «sí», 7 «no» y 2 «no decidible» de 30; revisión de la autora sin cambios | — | instrucción sobre el destino de `limita` | — |
+| 1 | umbrales como lista (tramo, valor, unidad, comparación, base) en 4 tipos | orientación (a)–(f); decisión (30/09): plazo en la lista, frecuencia en campo propio, listas de `comparacion` (con coeficiente) y `unidad` (con UVA), comparación por reglas definidas por su sentido desde el tramo (coeficiente, raíces, negación general, compuestas, adyacencia con «mínimo»/«máximo» + cuantía, y precedencia; sin marcador, el plazo con `comparacion_asumida` y el resto `no_determinada`), implementadas y calibradas en U-PYD; ponderadores como límite declarado; inversión de sentido como límite de la verificación | par B con verificación; frecuencia separada; reglas de comparación | par A, tool schema | matchers `BKL-0006`/`0023`; S18 reescrita; control cuantía ⇒ elemento; enums con marca; selftests de las reglas, con cuatro casos de control obligatorios (préstamo, filas 9, 21 y 15) |
+| 1′ | precisión de `limita` | medida (U-LECTURA-LIMITA, `bf4709d`): 21 «sí», 7 «no» y 2 «no decidible» de 30; revisión de la autora sin cambios | — | instrucción sobre el destino de `limita`, con los ponderadores | — |
 | 1″ | 4 `limita` desde «prohibicion» | nota; candidato `BKL-0038`; decisión (30/09): control en U-PYD, como marca | control de coherencia tipo–predicado | — | control nuevo |
 | 2 | política por campo | orientación (1) | toda | solo valores nuevos | LN-1, LN-2; S24–S26 |
 | 2′ | valores de las listas y alias | orientación (2); decisión (30/09): Obligacion.tipo (i), Restriccion.tipo (iii), Comunicacion.tipo con «externa», alias aceptados | derivaciones y alias | «externa» | S20, S24, S25 |
@@ -940,7 +1012,7 @@ Con la decisión (ii):
 - **Después de la firma:**
   - U-CAT-UNICO aplica §7;
   - U-PYD aplica §2, la verificación de §3 y §5, el control de coherencia de `BKL-0038` (§1.1) y las
-    mediciones pendientes (ventana de tokens, largo mínimo del tramo, formas de `comparacion` y `unidad`);
+    mediciones pendientes (ventana de tokens, largo mínimo del tramo, y frecuencia de cada forma de `comparacion` y `unidad` en los tramos de r2a); además, la implementación exacta de las reglas de §1.3 y su calibración, con los falsos positivos de «factor» y la regla de «igual», y con los cuatro casos de control como prueba obligatoria;
   - U-R2-CODIGO aplica §1 (r2a), la resolución de §3 y el registro de §4;
   - la medición r2a separa lo que corrige el código;
   - U-PROMPT-R2 lleva lo marcado r2b;
