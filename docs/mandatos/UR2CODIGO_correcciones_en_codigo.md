@@ -1,4 +1,4 @@
-BORRADOR — PENDIENTE DE FIRMA de la autora
+FIRMADO por la autora — 2026-10-01
 
 MANDATO — U-R2-CODIGO: CORRECCIONES EN CÓDIGO DE LA RELEASE r2.
 Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
@@ -253,9 +253,18 @@ b. **`BKL-0030`** (laudo de r2, §1.1):
      (`cliente_e1.py:60` y `:154`);
    - que la unidad se parta cuando no alcanza.
 
-   Se prueba sin API: se arma el request y se comprueba localmente contra la guarda del SDK. Casos
-   del laudo: `cap::3.1.14.1`, `cap::4.2.1.2` y `cap::4.3.3.1`. Sobre el camino sin corte, los
-   selftests del manifiesto quedan byte a byte idénticos.
+   **El cambio entra solo con el perfil r2.** `max_tokens` forma parte del request y, por lo
+   tanto, de la clave de caché (`data/experiment/evaluacion/llm_cache.py:111-126`,
+   `canonical_request` y `compute_key`). Cambiarlo en los perfiles existentes cambiaría las claves y
+   obligaría a pagar de nuevo lo ya extraído.
+
+   Se prueba sin API:
+   - se arma el request y se comprueba localmente contra la guarda del SDK, con los casos del laudo
+     `cap::3.1.14.1`, `cap::4.2.1.2` y `cap::4.3.3.1`;
+   - sobre el camino sin corte, los selftests del manifiesto quedan byte a byte idénticos;
+   - **control nuevo:** con los perfiles `produccion_dev` y `v3_b54`, la clave de caché de una
+     muestra fija de requests de E1 y de E3 es idéntica a la de hoy. La muestra se declara antes,
+     con su semilla, e incluye primeros intentos y reintentos.
 c. **`cuarentena`** (decisión 7): sobre KG-Refinado, T7 deja de marcar los 11 casos que eran solo de
    formato; sobre r1, su veredicto no cambia.
 d. **Mutuales** (decisión 6): RT-C6 pasa de informativo a test. Da «persiste» en r1 y en la prueba
@@ -274,6 +283,12 @@ a. **Suite** (scripts/regression_kg.py):
    - la corrección del test de `BKL-0028`: que compare contra los tres ids del exterior esperados y
      no cuente `Sujeto_banco_central_del_exterior` (regression_kg.py:788);
    - los matchers de `BKL-0006` y `BKL-0023`, que lean la lista de umbrales (L-ESQ-R2 §1.5);
+   - el censo de aristas entre dos nodos con la misma descripción, informativo y sin regla de
+     retiro (L-ESQ-R2 §6.5; laudo de r2, §4, :337). En la muestra de la lectura de la matriz, una
+     regla de retiro habría retirado M50, que es correcta. El censo corre sobre KG-Reextraído-r1,
+     los ensamblados de la tanda 0 y la prueba de r2. Como control, aplicado a las 105 relaciones de
+     esa lectura (reports/u_estudio_matriz/lectura/), marca las seis de igual descripción (C22, M50 y
+     M56 a M59), con M50 como caso a revisar;
    - el test del ejemplo `cla::5.1.1.1` (laudo de r2, §4, :334; tablero, fila del test del
      ejemplo). Comprueba dos cosas:
      - (i) la Operacion del punto recibe los dos vínculos normativos de los nodos de su punto:
