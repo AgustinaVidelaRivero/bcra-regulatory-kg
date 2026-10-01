@@ -1024,3 +1024,22 @@ Con la decisión (ii):
 ## Firma
 
 FIRMADA por la autora el 01/10/2026. Rige desde esta firma.
+
+## Notas posteriores a la firma
+
+El texto firmado no se edita; estas notas se leen junto con él.
+
+- **01/10/2026 — §7.3, nombre de la clase que agrupa los órganos (decisión de la autora).**
+  - La clase que agrupa Directorio, Alta Gerencia y Comité de auditoría se llama «Instancias de
+    gobierno societario» (`Sujeto_instancia_de_gobierno_societario`), no «órgano de gobierno».
+  - Motivo, por el principio 11: en el corpus, «órgano de gobierno» es la asamblea de accionistas o
+    socios. `lavdin::1.3.1.2` distingue los órganos de gobierno (accionistas, socios), de
+    administración (directores, consejeros) y de fiscalización (síndicos); `lingeef::1.2::intro`
+    habla de la «Asamblea de Accionistas u órgano de gobierno». «Órgano(s) de gobierno» aparece 23
+    veces en 11 TOs.
+  - Con el nombre firmado, la resolución en código habría asignado esas menciones a la clase nueva.
+  - El nombre nuevo se ancla en `lingob::1.2::intro`: «El código de gobierno societario se refiere
+    a la manera en la que el Directorio y la Alta Gerencia de la entidad financiera dirigen sus
+    actividades».
+  - Aplicado en el catálogo r2 (U-CAT-UNICO C2, `bd2122d`).
+  - La asamblea queda sin id en el catálogo, como candidata del registro de no mapeados (§4).
