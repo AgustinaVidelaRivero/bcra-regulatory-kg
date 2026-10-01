@@ -1,6 +1,6 @@
 # Enmienda al laudo de esquema congelado — L-ESQ-R2: el esquema de la release r2
 
-**BORRADOR — PENDIENTE DE FIRMA** de la autora · Redactado: 2026-09-30 · Última revisión: 2026-10-01.
+**FIRMADA por la autora** el 01/10/2026 · Redactada: 2026-09-30.
 
 Enmienda con fecha al laudo `data/experiment/esq/laudo_esquema_congelado.md` (FIRMADO 03/09/2026, sellado
 en `2593d4d`). El laudo no se edita: esta enmienda vive al lado y se lee junto con él y con sus dos enmiendas
@@ -1023,4 +1023,4 @@ Con la decisión (ii):
 
 ## Firma
 
-PENDIENTE — sin firma de la autora. Este documento es un borrador y no rige hasta su firma.
+FIRMADA por la autora el 01/10/2026. Rige desde esta firma.
