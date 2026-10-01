@@ -1,4 +1,4 @@
-BORRADOR — PENDIENTE DE FIRMA de la autora
+FIRMADO por la autora — 2026-10-01
 
 MANDATO — U-PYD: MODELOS PYDANTIC, POLÍTICA POR CAMPO Y VALIDADOR DEL PERFIL r2.
 Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
@@ -69,7 +69,7 @@ DECISIONES YA TOMADAS. No se re-deciden.
    como prueba obligatoria.
 7. `shapes_validator.py` sigue solo con stdlib, como control independiente. El catálogo r2 de
    U-CAT-UNICO se lee, no se edita.
-8. **A confirmar en la firma:** las shapes del perfil nuevo (S3 con la matriz ampliada, S18
+8. **Confirmado por la autora en la firma (01/10):** las shapes del perfil nuevo (S3 con la matriz ampliada, S18
    reescrita, S24 a S29) las escribe U-R2-CODIGO junto con la suite, y no esta unidad, para que
    el control independiente no lo escriba la misma unidad que el validador.
 
