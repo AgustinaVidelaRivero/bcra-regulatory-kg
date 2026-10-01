@@ -1,4 +1,4 @@
-BORRADOR — PENDIENTE DE FIRMA de la autora
+FIRMADO por la autora — 2026-10-01
 
 MANDATO — U-CAT-UNICO: CATÁLOGO DE SUJETOS EN UNA SOLA FUENTE.
 Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
