@@ -14,6 +14,9 @@ Grupos:
   G6  control de BKL-0038 y marca de no verificada por E3;
   G7  mención en dos niveles y omisiones (P-b3, P-b4, P-e2);
   G8  modelos: invariantes de marcas y claves cerradas;
+  G10 calibración P3 (decisiones de la autora sobre P2): raíces, formas nuevas,
+      «al», «factor» solo desde tramo o título, «igual», h = 2, largo 11, lista
+      JSON en omisiones, y los casos pedidos (los cuatro de control están en G5);
   G9  tool schema generado: regeneración idéntica, un elemento válido pasa y uno
       con un valor fuera de lista queda marcado, no descartado.
 
@@ -168,9 +171,12 @@ def g2_politica():
              pol.d["campos"]["padre_sugerido"]["si_sin_mencion"].startswith("descartar_padre"))
     chequear(g, "otras_propiedades declarado en la política de claves",
              "otras_propiedades" in pol.d["campos"]["claves"])
-    chequear(g, "parámetros de ventana y largo mínimo declarados provisionales",
-             all("provisional" in pol.d["parametros"][k]["estado"]
-                 for k in ("mencion_holgura_tokens", "omision_largo_minimo_tokens")))
+    chequear(g, "holgura de la mención = 2 (decisión) y largo mínimo de omisión = 11 (provisional)",
+             pol.holgura == 2 and "decisión" in pol.d["parametros"]["mencion_holgura_tokens"]["estado"]
+             and pol.largo_min_omision == 11
+             and "provisional" in pol.d["parametros"]["omision_largo_minimo_tokens"]["estado"])
+    chequear(g, "límite declarado de la mención (presencia, no pertenencia; 6 de 63) en la política",
+             "6 de las 63" in pol.d["campos"]["sujeto_mencion"]["limite_declarado"])
     try:
         import tempfile  # noqa: PLC0415
         d = json.loads(V.POLITICA.read_text(encoding="utf-8"))
@@ -441,8 +447,11 @@ def g4_reglas():
              c.comparacion == "no_determinada", f"{c.comparacion} {c.regla}")
     c = una("el 5%", None, "Ponderadores de riesgo.")
     chequear(g, "coeficiente desde el título del punto", c.comparacion == "coeficiente" and c.fuente_marcador == "titulo")
+    c = una("el 5%", "Se aplicará un ponderador del 5%.")
+    chequear(g, "coeficiente («ponderador») desde la descripción",
+             c.comparacion == "coeficiente" and c.fuente_marcador == "descripcion")
     c = una("el 5%", "Se aplicará un factor de conversión del 5%.")
-    chequear(g, "coeficiente desde la descripción", c.comparacion == "coeficiente" and c.fuente_marcador == "descripcion")
+    chequear(g, "«factor» desde la descripción no cuenta (calibración P3)", c.comparacion == "no_determinada")
     cs = RC.analizar("el menor entre 1 año y el plazo residual, con un plazo mínimo de 10 días hábiles")
     chequear(g, "dos cuantías en un tramo: cada una con su ventana; «el menor entre 1 año» sin marcador, "
                 "plazo con máximo inclusivo y comparacion_asumida",
@@ -476,8 +485,9 @@ def g4_reglas():
     chequear(g, "unidad fuera de lista (horas): marcada, sin descartar",
              len(cs) == 1 and cs[0].unidad == "horas" and cs[0].fuera_de_lista == ["unidad"]
              and M.ElementoUmbral.model_validate(RC.elemento_umbral(cs[0], "dentro de las 48 horas")) is not None)
-    chequear(g, "«igual» no tiene regla inicial (ninguna forma la asigna)",
-             all(una(t).comparacion != "igual" for t in ("igual al 5%", "equivalente al 5%", "será del 5%")))
+    chequear(g, "«igual al» y «equivalente al» pegados dan igual; «será del» no",
+             una("igual al 5%").comparacion == "igual" and una("equivalente al 5%").comparacion == "igual"
+             and una("será del 5%").comparacion == "no_determinada")
 
 
 def g5_control(ch):
@@ -575,7 +585,7 @@ def g7_mencion_omision(ch):
     ob = ent("e1", "Obligacion", "Incluir", pt, {"descripcion": "x", "tipo": "otra"})
     casos = [("del cliente", "Sujeto_cliente", "exacta"),
              ("cliente periódicos", "Sujeto_cliente", "tokens"),
-             ("evolución del cliente", None, "tokens"),
+             ("evolución del cliente", None, "no"),
              ("empresas no financieras emisoras", None, "no"),
              (None, "Sujeto_cliente", "ausente")]
     for mencion, sid, nivel in casos:
@@ -606,24 +616,109 @@ def g7_mencion_omision(ch):
     chequear(g, "R-NORM: une el corte por guion «pro-\\nductiva»",
              V.verificar_tramo("actividad productiva", c["texto"], 0)[0] == "exacta")
     oms = [{"categoria": "tabla", "tramo": "importe de referencia establecido en el punto 3.7", "nota": "n"},
-           {"categoria": "formula", "tramo": "importe establecido punto", "nota": "n"},
+           {"categoria": "formula", "tramo": "importe referencia", "nota": "n"},
            {"categoria": "meta_normativo", "tramo": "texto que no está en el punto", "nota": "n"},
            {"categoria": "otra_cosa", "tramo": "cartera comercial", "nota": "n"},
-           {"categoria": "meta_normativo", "tramo": "cartera", "nota": "n"}]
+           {"categoria": "meta_normativo", "tramo": "cartera", "nota": "n"},
+           {"categoria": "tabla", "tramo": "Los créditos de esta clase que superen el equivalente a dos veces el "
+                                           "importe de referencia", "nota": "n"}]
     r = V.validar({"entities": [to], "relations": [], "omisiones": oms}, c, forma="r2")
     O = r["omisiones"]
     chequear(g, "omisión con tramo literal → exacta; tabla en chunk sin marca → señal de tabla no detectada",
              O[0]["tramo_verificado"] == "exacta" and O[0]["senal_tabla_no_detectada"] is True)
     chequear(g, "omisión con tramo por tokens → tramo literal mínimo y el del modelo guardado",
-             O[1]["tramo_verificado"] == "tokens" and O[1]["tramo_modelo"] == "importe establecido punto")
-    chequear(g, "omisión con tramo ajeno al texto → no, conservada", O[2]["tramo_verificado"] == "no" and len(O) == 5)
+             O[1]["tramo_verificado"] == "tokens" and O[1]["tramo_modelo"] == "importe referencia"
+             and O[1]["tramo"] == "importe de\nreferencia")
+    chequear(g, "omisión con tramo ajeno al texto → no, conservada", O[2]["tramo_verificado"] == "no" and len(O) == 6)
     chequear(g, "categoría fuera de lista → registrada con marca", O[3]["fuera_de_lista"] == ["categoria"]
              and O[3]["categoria"] == "otra_cosa")
-    chequear(g, f"tramo de menos de {V.politica_default().largo_min_omision} tokens → tramo_corto",
-             O[4]["tramo_corto"] is True and O[0]["tramo_corto"] is False)
+    chequear(g, f"tramo de menos de {V.politica_default().largo_min_omision} tokens → tramo_corto, sin rechazo "
+                "(1 y 9 tokens marcados; 15 tokens no)",
+             O[4]["tramo_corto"] is True and O[0]["tramo_corto"] is True and O[5]["tramo_corto"] is False
+             and not r["rechazos"])
     chequear(g, "la verificación del tramo de omisión usa solo el texto propio (no el heredado)",
              V.verificar_tramo("Categorías de carteras", c["texto"], 0)[0] == "no"
              and V.verificar_tramo("Categorías de carteras", V.texto_completo(c), 0)[0] == "exacta")
+
+
+def g10_calibracion(ch):
+    g = "G10 calibración P3"
+    casos = [
+        ("por lo menos 180 días", "minimo_inclusivo", "compuesta:por_lo_menos"),
+        ("deberá permanecer en esta categoría por lo menos 180 días", "minimo_inclusivo", "compuesta:por_lo_menos"),
+        ("180 días por lo menos", "minimo_inclusivo", "compuesta:por_lo_menos"),
+        ("30 días o más", "minimo_inclusivo", "compuesta:o_mas"),
+        ("el 5 % o más de", "minimo_inclusivo", "compuesta:o_mas"),
+        ("30 días o menos", "maximo_inclusivo", "compuesta:o_menos"),
+        ("no superaba USD 500.000", "maximo_inclusivo", "negacion:raiz_super"),
+        ("el monto total adeudado no superaba USD 500.000", "maximo_inclusivo", "negacion:raiz_super"),
+        ("no excedía el 3%", "maximo_inclusivo", "negacion:raiz_exced"),
+        ("cuando superaren el 5%", "minimo_estricto", "simple:raiz_super"),
+        ("sea menor o igual al equivalente a USD 500.000", "maximo_inclusivo", "compuesta:menor_o_igual"),
+        ("inferior o igual al 2%", "maximo_inclusivo", "compuesta:menor_o_igual"),
+        ("mayor o igual al 10%", "minimo_inclusivo", "compuesta:mayor_o_igual"),
+        ("superior o igual al 10%", "minimo_inclusivo", "compuesta:mayor_o_igual"),
+        ("no sea menor o igual al 5%", "minimo_estricto", "negacion:menor_o_igual"),
+        ("inferior al 2%", "maximo_estricto", "simple:inferior"),
+        ("mayor al 5%", "minimo_estricto", "simple:mayor"),
+        ("menores al 10%", "maximo_estricto", "simple:menor"),
+        ("la supervisión dispondrá de 30 días", "maximo_inclusivo", "sin_marcador_plazo"),
+        ("la Superintendencia, la superficie, el superávit y el excedente del 5%", "no_determinada", "sin_marcador"),
+        ("Multa equivalente al 4% del valor rechazado", "igual", "igual:equivalente_a"),
+        ("La deducción será equivalente al 100% del valor", "igual", "igual:equivalente_a"),
+        ("Límite máximo equivalente a USD 100", "no_determinada", "sin_marcador"),
+        ("a razón de un máximo mensual equivalente al 10%", "no_determinada", "sin_marcador"),
+        ("A partir del segundo y hasta el trigésimo sexto mes, la exigencia mensual será equivalente al 10% del "
+         "promedio", "igual", "igual:equivalente_a"),
+        ("Multa equivalente al 4% del valor rechazado con mínimo $100 y máximo $50.000", "igual",
+         "igual:equivalente_a"),
+        ("El cliente no supere, en el mes calendario en el conjunto de las entidades y por el conjunto de los "
+         "conceptos señalados, el equivalente a USD 200", "no_determinada", "sin_marcador"),
+        ("el límite del 25%", "no_determinada", "sin_marcador"),
+        ("un tope de $ 1.000", "no_determinada", "sin_marcador"),
+        ("un máximo general del 25%", "no_determinada", "sin_marcador"),
+        ("entre el 10% y el 20%", "no_determinada", "sin_marcador"),
+        ("se empleará un factor de 15%", "coeficiente", "coeficiente"),
+    ]
+    for tramo, comp, regla in casos:
+        c = una(tramo)
+        chequear(g, f"{tramo!r} → {comp} ({regla})", c is not None and c.comparacion == comp and c.regla == regla,
+                 "" if c is None else f"{c.comparacion} {c.regla}")
+    c = una("la supervisión dispondrá de 30 días")
+    chequear(g, "«supervisión … 30 días»: plazo sin marcador, con comparacion_asumida", c.comparacion_asumida is True)
+    # «factor» tomado de la descripción: los dos falsos positivos reales de P2.
+    sha_kg = {"diez": "dd42d6d9c0c8379da90ec4ed4e4659157a960a0d1ceaf8af5a008bdd9cad9010",
+              "r1": "0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a"}
+    rutas = {"diez": "data/experiment/reextraccion_v2/corpus_tanda0/ens_diez/r1/kg.json",
+             "r1": "data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json"}
+    frases = {"diez": ("factor igual a 4", "5%", "minimo_estricto", "simple:raiz_super"),
+              "r1": ("por el factor correspondiente", "cinco días hábiles", "maximo_inclusivo", "sin_marcador_plazo")}
+    for gr, (frase, cuantia, comp, regla) in frases.items():
+        p = REPO / rutas[gr]
+        if M.sha256_archivo(p) != sha_kg[gr]:
+            chequear(g, f"grafo {gr} con el sha256 de N1", False)
+            continue
+        kg = json.loads(p.read_text(encoding="utf-8"))
+        nodos = [n for n in kg["nodes"] if frase in ((n.get("properties") or {}).get("descripcion") or "")]
+        ok = bool(nodos)
+        for n in nodos:
+            d = n["properties"]["descripcion"]
+            cid = next((pv.get("chunk_id") for pv in n.get("provenances") or [] if pv.get("chunk_id")), None)
+            titulo = ch[cid]["titulo"] if cid in ch else None
+            cs = [x for x in RC.analizar(d, d, titulo) if x.texto == cuantia]
+            ok = ok and len(cs) == 1 and cs[0].comparacion == comp and cs[0].regla == regla
+        chequear(g, f"«factor» de la descripción ({gr}, «{frase}»): {cuantia} → {comp}, no coeficiente "
+                    f"({len(nodos)} nodos)", ok)
+    # Omisiones: string con forma de lista JSON (caso real de r1 L0r, cap::7.3::intro).
+    c = ch["cla::5.1.1.1"]
+    to = ent("to", "TextoOrdenado", "Clasificación de deudores", "5.1.1.1")
+    r = V.validar({"entities": [to], "relations": [], "omisiones_no_prosa": '["tabla de tasas", "fórmula del cálculo"]'},
+                  c, forma="v3")
+    chequear(g, "omisiones_no_prosa string con forma de lista JSON → dos omisiones (decodificada)",
+             len(r["omisiones"]) == 2 and r["adaptacion_v3"].get("omisiones_string_lista_json_decodificada") == 1)
+    r = V.validar({"entities": [to], "relations": [], "omisiones_no_prosa": "[tabla: no extraída"}, c, forma="v3")
+    chequear(g, "string que no es una lista JSON válida → lista de uno (P-a10)",
+             len(r["omisiones"]) == 1 and r["adaptacion_v3"].get("omisiones_string_a_lista_de_uno") == 1)
 
 
 def g8_modelos():
@@ -786,6 +881,7 @@ def main() -> int:
     g7_mencion_omision(ch)
     g8_modelos()
     g9_tool_schema(ch)
+    g10_calibracion(ch)
     total = ok = 0
     print(f"política: {V.POLITICA.relative_to(REPO)}  sha256 {V.politica_default().sha256}")
     for grupo, filas in RES.items():

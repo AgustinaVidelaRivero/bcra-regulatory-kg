@@ -40,34 +40,39 @@ Anclas del comando [c14] en el texto firmado: True.
 
 | grafo | nodos con cuantía [c14] | sin campo | tablero (con, sin) | coincide | cuantías detectadas | nodos sin cuantía detectada | comparacion_asumida | no_determinada |
 |---|---|---|---|---|---|---|---|---|
-| r1 | 639 | 218 | [639, 218] | True | 757 | 1 | 173 | 152 |
-| desarrollo | 606 | 287 | [606, 287] | True | 701 | 2 | 146 | 140 |
-| cinco | 77 | 36 | [77, 36] | True | 82 | 5 | 18 | 5 |
-| diez | 683 | 323 | [683, 323] | True | 783 | 7 | 164 | 145 |
+| r1 | 639 | 218 | [639, 218] | True | 757 | 1 | 164 | 135 |
+| desarrollo | 606 | 287 | [606, 287] | True | 701 | 2 | 137 | 123 |
+| cinco | 77 | 36 | [77, 36] | True | 82 | 5 | 18 | 4 |
+| diez | 683 | 323 | [683, 323] | True | 783 | 7 | 155 | 127 |
 
 ### Frecuencia de cada forma — desarrollo
 
 | regla | cuantías |
 |---|---|
-| sin_marcador_plazo | 146 |
-| coeficiente | 141 |
-| sin_marcador | 140 |
+| coeficiente | 140 |
+| sin_marcador_plazo | 137 |
+| sin_marcador | 123 |
 | compuesta:dentro_de | 72 |
-| simple:raiz_super | 40 |
-| negacion:raiz_super | 39 |
-| compuesta:hasta | 25 |
+| negacion:raiz_super | 43 |
+| simple:raiz_super | 41 |
+| compuesta:hasta | 23 |
 | compuesta:adyacencia_minimo | 12 |
 | compuesta:al_menos | 12 |
 | compuesta:como_minimo | 12 |
+| compuesta:por_lo_menos | 10 |
 | compuesta:igual_o_superior | 9 |
 | negacion:inferior | 9 |
 | simple:mayor | 8 |
+| compuesta:o_mas | 7 |
 | negacion:mayor | 6 |
 | negacion:raiz_exced | 6 |
 | simple:inferior | 6 |
 | simple:mas_de | 6 |
 | simple:raiz_exced | 4 |
 | compuesta:adyacencia_maximo | 3 |
+| igual:equivalente_a | 3 |
+| compuesta:menor_o_igual | 2 |
+| compuesta:o_menos | 2 |
 | negacion:mas_de | 2 |
 | compuesta:un_minimo_de | 1 |
 | negacion:menor | 1 |
@@ -75,40 +80,46 @@ Anclas del comando [c14] en el texto firmado: True.
 
 | comparación | cuantías |
 |---|---|
-| maximo_inclusivo | 299 |
-| coeficiente | 141 |
-| no_determinada | 140 |
-| minimo_estricto | 58 |
-| minimo_inclusivo | 56 |
+| maximo_inclusivo | 296 |
+| coeficiente | 140 |
+| no_determinada | 123 |
+| minimo_inclusivo | 73 |
+| minimo_estricto | 59 |
 | maximo_estricto | 7 |
+| igual | 3 |
 
-Candidatas para «igual» entre las cuantías sin marcador: sin_marcador:de_a_secas 51, sin_marcador:equivalente_a 12, sin_marcador:igual_a 2, sin_marcador:sera_de 2, sin_marcador_plazo:de_a_secas 51, sin_marcador_plazo:equivalente_a 1, sin_marcador_plazo:sera_de 6.
+Candidatas para «igual» entre las cuantías sin marcador: sin_marcador:de_a_secas 51, sin_marcador:equivalente_a 4, sin_marcador:sera_de 2, sin_marcador_plazo:de_a_secas 51, sin_marcador_plazo:equivalente_a 1, sin_marcador_plazo:sera_de 6.
 
-Formas no cubiertas entre las cuantías sin marcador: sin_marcador:entre 2, sin_marcador:limite 20, sin_marcador:maximo_no_adyacente 9, sin_marcador:mayor_menor_inferior_sin_a 3, sin_marcador:o_mas_pospuesto 7, sin_marcador:o_menos_pospuesto 2, sin_marcador:por_lo_menos 1, sin_marcador:tope 2, sin_marcador_plazo:entre 9, sin_marcador_plazo:maximo_no_adyacente 2, sin_marcador_plazo:mayor_menor_inferior_sin_a 3, sin_marcador_plazo:minimo_no_adyacente 4, sin_marcador_plazo:por_lo_menos 9.
+Formas no cubiertas entre las cuantías sin marcador: sin_marcador:entre 2, sin_marcador:limite 20, sin_marcador:maximo_no_adyacente 9, sin_marcador:tope 2, sin_marcador_plazo:entre 9, sin_marcador_plazo:maximo_no_adyacente 2, sin_marcador_plazo:mayor_menor_inferior_sin_a 3, sin_marcador_plazo:minimo_no_adyacente 4.
 
 ### Frecuencia de cada forma — diez
 
 | regla | cuantías |
 |---|---|
-| sin_marcador_plazo | 164 |
-| sin_marcador | 145 |
-| coeficiente | 141 |
+| sin_marcador_plazo | 155 |
+| coeficiente | 140 |
+| sin_marcador | 127 |
 | compuesta:dentro_de | 95 |
-| simple:raiz_super | 49 |
-| negacion:raiz_super | 44 |
-| compuesta:hasta | 28 |
+| simple:raiz_super | 50 |
+| negacion:raiz_super | 48 |
+| compuesta:hasta | 26 |
 | compuesta:adyacencia_minimo | 18 |
 | compuesta:al_menos | 13 |
 | compuesta:como_minimo | 12 |
+| compuesta:por_lo_menos | 10 |
 | negacion:raiz_exced | 10 |
 | compuesta:igual_o_superior | 9 |
 | negacion:inferior | 9 |
 | simple:mayor | 8 |
 | compuesta:adyacencia_maximo | 7 |
+| compuesta:o_mas | 7 |
 | simple:mas_de | 7 |
 | negacion:mayor | 6 |
 | simple:inferior | 6 |
+| igual:equivalente_a | 4 |
 | simple:raiz_exced | 4 |
+| compuesta:menor_o_igual | 2 |
+| compuesta:o_menos | 2 |
 | negacion:mas_de | 2 |
 | negacion:menor | 2 |
 | simple:menos_de | 2 |
@@ -117,40 +128,47 @@ Formas no cubiertas entre las cuantías sin marcador: sin_marcador:entre 2, sin_
 
 | comparación | cuantías |
 |---|---|
-| maximo_inclusivo | 357 |
-| no_determinada | 145 |
-| coeficiente | 141 |
-| minimo_estricto | 68 |
-| minimo_inclusivo | 64 |
+| maximo_inclusivo | 354 |
+| coeficiente | 140 |
+| no_determinada | 127 |
+| minimo_inclusivo | 81 |
+| minimo_estricto | 69 |
 | maximo_estricto | 8 |
+| igual | 4 |
 
-Candidatas para «igual» entre las cuantías sin marcador: sin_marcador:de_a_secas 54, sin_marcador:equivalente_a 14, sin_marcador:igual_a 2, sin_marcador:sera_de 2, sin_marcador_plazo:de_a_secas 58, sin_marcador_plazo:equivalente_a 1, sin_marcador_plazo:sera_de 7.
+Candidatas para «igual» entre las cuantías sin marcador: sin_marcador:de_a_secas 54, sin_marcador:equivalente_a 5, sin_marcador:sera_de 2, sin_marcador_plazo:de_a_secas 58, sin_marcador_plazo:equivalente_a 1, sin_marcador_plazo:sera_de 7.
 
-Formas no cubiertas entre las cuantías sin marcador: sin_marcador:entre 2, sin_marcador:limite 21, sin_marcador:maximo_no_adyacente 9, sin_marcador:mayor_menor_inferior_sin_a 3, sin_marcador:o_mas_pospuesto 7, sin_marcador:o_menos_pospuesto 2, sin_marcador:por_lo_menos 1, sin_marcador:tope 2, sin_marcador_plazo:entre 9, sin_marcador_plazo:maximo_no_adyacente 2, sin_marcador_plazo:mayor_menor_inferior_sin_a 6, sin_marcador_plazo:minimo_no_adyacente 5, sin_marcador_plazo:por_lo_menos 9.
+Formas no cubiertas entre las cuantías sin marcador: sin_marcador:entre 2, sin_marcador:limite 21, sin_marcador:maximo_no_adyacente 9, sin_marcador:tope 2, sin_marcador_plazo:entre 9, sin_marcador_plazo:maximo_no_adyacente 2, sin_marcador_plazo:mayor_menor_inferior_sin_a 6, sin_marcador_plazo:minimo_no_adyacente 5.
 
 ### Frecuencia de cada forma — r1
 
 | regla | cuantías |
 |---|---|
-| sin_marcador_plazo | 173 |
-| sin_marcador | 152 |
-| coeficiente | 140 |
+| sin_marcador_plazo | 164 |
+| coeficiente | 138 |
+| sin_marcador | 135 |
 | compuesta:dentro_de | 59 |
-| compuesta:hasta | 46 |
-| negacion:raiz_super | 42 |
-| simple:raiz_super | 42 |
+| compuesta:hasta | 45 |
+| negacion:raiz_super | 44 |
+| simple:raiz_super | 43 |
 | compuesta:al_menos | 16 |
 | compuesta:igual_o_superior | 12 |
 | compuesta:como_minimo | 10 |
+| compuesta:por_lo_menos | 10 |
 | negacion:mayor | 9 |
 | simple:mas_de | 8 |
 | simple:mayor | 8 |
 | compuesta:adyacencia_minimo | 7 |
 | negacion:raiz_exced | 7 |
+| compuesta:o_mas | 6 |
 | simple:raiz_exced | 6 |
 | simple:inferior | 5 |
 | compuesta:adyacencia_maximo | 4 |
+| compuesta:mayor_o_igual | 3 |
+| igual:equivalente_a | 3 |
 | simple:menor | 3 |
+| compuesta:menor_o_igual | 2 |
+| compuesta:o_menos | 2 |
 | negacion:mas_de | 2 |
 | negacion:menor | 2 |
 | compuesta:como_maximo | 1 |
@@ -160,94 +178,65 @@ Formas no cubiertas entre las cuantías sin marcador: sin_marcador:entre 2, sin_
 
 | comparación | cuantías |
 |---|---|
-| maximo_inclusivo | 343 |
-| no_determinada | 152 |
-| coeficiente | 140 |
-| minimo_estricto | 64 |
-| minimo_inclusivo | 49 |
+| maximo_inclusivo | 339 |
+| coeficiente | 138 |
+| no_determinada | 135 |
+| minimo_inclusivo | 68 |
+| minimo_estricto | 65 |
 | maximo_estricto | 9 |
+| igual | 3 |
 
-Candidatas para «igual» entre las cuantías sin marcador: sin_marcador:de_a_secas 50, sin_marcador:equivalente_a 14, sin_marcador:igual_a 5, sin_marcador:sera_de 4, sin_marcador_plazo:de_a_secas 65, sin_marcador_plazo:equivalente_a 2, sin_marcador_plazo:sera_de 5.
+Candidatas para «igual» entre las cuantías sin marcador: sin_marcador:de_a_secas 50, sin_marcador:equivalente_a 6, sin_marcador:sera_de 4, sin_marcador_plazo:de_a_secas 65, sin_marcador_plazo:equivalente_a 2, sin_marcador_plazo:sera_de 5.
 
-Formas no cubiertas entre las cuantías sin marcador: sin_marcador:entre 7, sin_marcador:limite 16, sin_marcador:maximo_no_adyacente 7, sin_marcador:mayor_menor_inferior_sin_a 6, sin_marcador:minimo_no_adyacente 1, sin_marcador:o_mas_pospuesto 5, sin_marcador:o_menos_pospuesto 2, sin_marcador:por_lo_menos 1, sin_marcador:tope 1, sin_marcador_plazo:entre 6, sin_marcador_plazo:maximo_no_adyacente 2, sin_marcador_plazo:mayor_menor_inferior_sin_a 1, sin_marcador_plazo:minimo_no_adyacente 5, sin_marcador_plazo:o_mas_pospuesto 1, sin_marcador_plazo:por_lo_menos 9.
+Formas no cubiertas entre las cuantías sin marcador: sin_marcador:entre 7, sin_marcador:limite 16, sin_marcador:maximo_no_adyacente 7, sin_marcador:mayor_menor_inferior_sin_a 1, sin_marcador:minimo_no_adyacente 1, sin_marcador:tope 1, sin_marcador_plazo:entre 6, sin_marcador_plazo:maximo_no_adyacente 2, sin_marcador_plazo:mayor_menor_inferior_sin_a 1, sin_marcador_plazo:minimo_no_adyacente 5.
 
 ### Fuente del marcador de coeficiente (A-COEF)
 
 | grafo | fuente:palabra |
 |---|---|
-| r1 | descripcion:coefici 11, descripcion:factor 2, descripcion:pondera 26, titulo:factor 2, titulo:pondera 6, tramo:coefici 5, tramo:factor 1, tramo:pondera 87 |
-| desarrollo | descripcion:factor 1, descripcion:pondera 34, titulo:pondera 4, tramo:coefici 2, tramo:factor 4, tramo:pondera 96 |
+| r1 | descripcion:coefici 11, descripcion:pondera 26, titulo:factor 2, titulo:pondera 6, tramo:coefici 5, tramo:factor 1, tramo:pondera 87 |
+| desarrollo | descripcion:pondera 34, titulo:pondera 4, tramo:coefici 2, tramo:factor 4, tramo:pondera 96 |
 | cinco |  |
-| diez | descripcion:factor 1, descripcion:pondera 34, titulo:pondera 4, tramo:coefici 2, tramo:factor 4, tramo:pondera 96 |
+| diez | descripcion:pondera 34, titulo:pondera 4, tramo:coefici 2, tramo:factor 4, tramo:pondera 96 |
 
-### Propuesta para «igual» (A-IGUAL) — diez: 13 cuantías sin marcador con «igual/equivalente a» adyacente, 6 sin motivo de exclusión; 2 con compuesta inversa
+### Propuesta para «igual» (A-IGUAL) — diez: 4 cuantías sin marcador con «igual/equivalente a» adyacente, 2 sin motivo de exclusión; 0 con compuesta inversa
 
 | forma | nodo | regla actual | cuantía | excluida por | ventana |
 |---|---|---|---|---|---|
-| igual | Condicion_deuda_por_importaciones_usd_500_000_o_menor_87bc52 | sin_marcador | USD 500.000 | compuesta_inversa | pago al 24/01/24 sea menor o igual al equivalente a USD 500.000 (dólares estadounidenses quinientos |
-| igual | Condicion_financiaciones_equivalentes_a_5_o_mas_rpc_activo_2 | sin_marcador | 5 % | o_mas_o_menos_pospuesto | Clientes cuyas financiaciones comprendidas en algún momento sean equivalentes al 5 % o más de |
-| igual | Condicion_monto_total_deuda_importaciones_menor_o_igual_usd_ | sin_marcador | USD 500.000 | compuesta_inversa | pendiente de pago sea menor o igual al equivalente a USD 500.000 (dólares estadounidenses quinientos |
 | igual | Excepcion_si_es_necesario_llegar_al_50_de_cobertura_del_prim | sin_marcador | dos veces | — | o del activo del fideicomiso financiero, o del equivalente a dos veces el importe de |
-| igual | Obligacion_a_partir_del_segundo_y_hasta_el_trigesimo_sexto_m | sin_marcador | 10% | — | el trigésimo sexto mes, la exigencia mensual será equivalente al 10% del promedio de |
-| igual | Obligacion_en_el_curso_de_cada_trimestre_calendario_respecto | sin_marcador | 5 % | o_mas_o_menos_pospuesto | considerados cuyas financiaciones comprendidas en algún momento sean equivalentes al 5 % o más de |
-| igual | Obligacion_la_deduccion_sera_equivalente_al_100_del_valor_de | sin_marcador | 100% | — | La deducción será equivalente al 100% del valor de |
-| igual | Obligacion_la_exigencia_mensual_de_capital_minimo_por_riesgo | sin_marcador | 10% | — | 1 y 2 correspondiente al primer mes será equivalente al 10% de la sumatoria |
 | igual | Restriccion_a_razon_de_un_maximo_mensual_equivalente_al_10_d | sin_marcador | 10% | maximo_minimo_tope_limite | a razón de un máximo mensual equivalente al 10% (diez por ciento) |
 | igual | Restriccion_el_cliente_no_supere_en_el_mes_calendario_en_el_ | sin_marcador | USD 200 | — | por el conjunto de los conceptos señalados, el equivalente a USD 200 (dólares estadounidenses doscientos) |
-| igual | Restriccion_el_monto_total_adeudado_a_la_fecha_de_cierre_del | sin_marcador | USD 500.000 | raiz_super_exced | de cierre del mencionado registro no superaba el equivalente a USD 500.000 (dólares estadounidenses quinientos |
 | igual | Restriccion_limite_maximo_equivalente_a_usd_100_dolares_esta | sin_marcador | USD 100 | maximo_minimo_tope_limite | Límite máximo equivalente a USD 100 (dólares estadounidenses cien) |
-| igual | Restriccion_multa_equivalente_al_4_del_valor_rechazado_con_m | sin_marcador | 4% | — | Multa equivalente al 4% del valor rechazado |
-| inversa | Condicion_deuda_por_importaciones_usd_500_000_o_menor_87bc52 | sin_marcador | USD 500.000 | — | pago al 24/01/24 sea menor o igual al equivalente a USD 500.000 (dólares estadounidenses quinientos |
-| inversa | Condicion_monto_total_deuda_importaciones_menor_o_igual_usd_ | sin_marcador | USD 500.000 | — | pendiente de pago sea menor o igual al equivalente a USD 500.000 (dólares estadounidenses quinientos |
 
-Raíces «super-»/«exced-» no reconocidas en cuantías sin marcador (A-RAIZ): sin_marcador:superaba 2.
+Raíces «super-»/«exced-» no reconocidas en cuantías sin marcador (A-RAIZ): —.
 
-### Propuesta para «igual» (A-IGUAL) — r1: 17 cuantías sin marcador con «igual/equivalente a» adyacente, 7 sin motivo de exclusión; 5 con compuesta inversa
+### Propuesta para «igual» (A-IGUAL) — r1: 6 cuantías sin marcador con «igual/equivalente a» adyacente, 4 sin motivo de exclusión; 0 con compuesta inversa
 
 | forma | nodo | regla actual | cuantía | excluida por | ventana |
 |---|---|---|---|---|---|
 | igual | Obligacion_al_cierre_del_primer_semestre_calendario_el_exame | sin_marcador | dos veces | — | o del activo del fideicomiso financiero, o del equivalente a dos veces el importe de |
 | igual | Obligacion_en_el_curso_de_cada_semestre_calendario_respecto_ | sin_marcador | dos veces | — |  –o el equivalente a dos veces el importe de |
-| igual | Obligacion_en_el_curso_de_cada_trimestre_calendario_respecto | sin_marcador | 5 % | o_mas_o_menos_pospuesto | considerados cuyas financiaciones comprendidas en algún momento sean equivalentes al 5 % o más de |
-| igual | Restriccion_a_partir_del_segundo_y_hasta_el_trigesimo_sexto_ | sin_marcador | 10% | — | el trigésimo sexto mes, la exigencia mensual será equivalente al 10% del promedio de |
 | igual | Restriccion_a_razon_de_un_maximo_mensual_equivalente_al_10_d | sin_marcador | 10% | maximo_minimo_tope_limite | a razón de un máximo mensual equivalente al 10% (diez por ciento) |
-| igual | Restriccion_capital_ordinario_de_nivel_1_con1_debe_ser_mayor | sin_marcador | 4,5 % | compuesta_inversa | de Nivel 1 (COn1) debe ser mayor o igual a 4,5 % sobre el total |
 | igual | Restriccion_el_cliente_no_supere_en_el_mes_calendario_en_el_ | sin_marcador | USD 200 | — | por el conjunto de los conceptos señalados, el equivalente a USD 200 (dólares estadounidenses doscientos) |
 | igual | Restriccion_el_monto_maximo_sera_el_que_resulte_menor_entre_ | sin_marcador | 30% | — | el aumento total del punto 3.18.2.1 y el equivalente al 30% (treinta por ciento) |
-| igual | Restriccion_el_monto_total_adeudado_a_la_fecha_de_cierre_del | sin_marcador | USD 500.000 | raiz_super_exced | de cierre del mencionado registro no superaba el equivalente a USD 500.000 (dólares estadounidenses quinientos |
-| igual | Restriccion_el_monto_total_de_sus_deudas_por_importaciones_d | sin_marcador | USD 500.000 | compuesta_inversa | al 24/01/24 deberá ser menor o igual al equivalente a USD 500.000 (dólares estadounidenses quinientos |
-| igual | Restriccion_el_monto_total_de_sus_deudas_por_importaciones_d | sin_marcador | USD 500.000 | compuesta_inversa | pendiente de pago sea menor o igual al equivalente a USD 500.000 |
-| igual | Restriccion_inmuebles_cualquiera_sea_la_fecha_de_su_incorpor | sin_marcador | 100 % | — |  La deducción será equivalente al 100 % del valor de |
 | igual | Restriccion_la_exigencia_mensual_de_capital_minimo_por_riesg | sin_marcador | 10% | maximo_minimo_tope_limite | mínimo por riesgo operacional del primer mes será equivalente al 10% de la sumatoria |
-| igual | Restriccion_la_exposicion_maxima_frente_a_una_misma_contrapa | sin_marcador | 75 veces | — |  el importe equivalente a 75 veces el Salario Mínimo, |
-| igual | Restriccion_las_financiaciones_comprendidas_en_algun_momento | sin_marcador | 5 % | o_mas_o_menos_pospuesto | las financiaciones comprendidas en algún momento sean equivalentes al 5 % o más de |
-| igual | Restriccion_patrimonio_neto_basico_pnb_debe_ser_mayor_o_igua | sin_marcador | 6 % | compuesta_inversa | Patrimonio Neto Básico (PNb) debe ser mayor o igual a 6 % sobre el total |
-| igual | Restriccion_responsabilidad_patrimonial_computable_rpc_debe_ | sin_marcador | 8% | compuesta_inversa | Responsabilidad Patrimonial Computable (RPC) debe ser mayor o igual a 8% sobre el total |
-| inversa | Restriccion_capital_ordinario_de_nivel_1_con1_debe_ser_mayor | sin_marcador | 4,5 % | — | de Nivel 1 (COn1) debe ser mayor o igual a 4,5 % sobre el total |
-| inversa | Restriccion_el_monto_total_de_sus_deudas_por_importaciones_d | sin_marcador | USD 500.000 | — | al 24/01/24 deberá ser menor o igual al equivalente a USD 500.000 (dólares estadounidenses quinientos |
-| inversa | Restriccion_el_monto_total_de_sus_deudas_por_importaciones_d | sin_marcador | USD 500.000 | — | pendiente de pago sea menor o igual al equivalente a USD 500.000 |
-| inversa | Restriccion_patrimonio_neto_basico_pnb_debe_ser_mayor_o_igua | sin_marcador | 6 % | — | Patrimonio Neto Básico (PNb) debe ser mayor o igual a 6 % sobre el total |
-| inversa | Restriccion_responsabilidad_patrimonial_computable_rpc_debe_ | sin_marcador | 8% | — | Responsabilidad Patrimonial Computable (RPC) debe ser mayor o igual a 8% sobre el total |
 
-Raíces «super-»/«exced-» no reconocidas en cuantías sin marcador (A-RAIZ): sin_marcador:superaba 1.
+Raíces «super-»/«exced-» no reconocidas en cuantías sin marcador (A-RAIZ): —.
 
-### «factor» como marcador de coeficiente — diez (5 cuantías)
+### «factor» como marcador de coeficiente — diez (4 cuantías)
 
 | nodo | tipo | fuente del marcador | cuantía | ventana |
 |---|---|---|---|---|
 | Condicion_no_conocer_factor_exposicion_potencial_futura_6946 | Condicion | tramo | 15% | determinar la exposición potencial futura, se empleará un factor de 15%, que es |
-| Restriccion_el_importe_resultante_de_aplicar_lo_dispuesto_en | Restriccion | descripcion | 5% | un acopio de su producción por un valor superior al 5% de su capacidad |
 | Restriccion_las_demas_posiciones_de_titulizacion_registradas | Restriccion | tramo | 100% | de balance recibirán un Factor de Conversión Crediticia (CCF) del 100% |
 | Restriccion_las_facilidades_de_liquidez_por_parte_de_la_enti | Restriccion | tramo | 100% | de titulización recibirán un Factor de Conversión Crediticia (CCF) del 100% |
 | Restriccion_los_anticipos_de_efectivo_por_parte_de_la_entida | Restriccion | tramo | 100% | de titulización recibirán un Factor de Conversión Crediticia (CCF) del 100% |
 
-### «factor» como marcador de coeficiente — r1 (5 cuantías)
+### «factor» como marcador de coeficiente — r1 (3 cuantías)
 
 | nodo | tipo | fuente del marcador | cuantía | ventana |
 |---|---|---|---|---|
 | Excepcion_cuando_no_se_conozca_el_factor_a_aplicar_para_dete | Excepcion | tramo | 15% | determinar la exposición potencial futura, se empleará un factor de 15%, que es |
-| Obligacion_cuando_la_contraprestacion_no_sea_recibida_en_el_ | Obligacion | descripcion | cinco días hábiles | Cuando la contraprestación no sea recibida en el plazo de cinco días hábiles desde la fecha |
-| Obligacion_el_importe_resultante_de_aplicar_lo_dispuesto_en_ | Obligacion | descripcion | 5% | un acopio de su producción por un valor superior al 5% de su capacidad |
 | Obligacion_las_demas_posiciones_de_titulizacion_registradas_ | Obligacion | titulo | 100 % | registradas en partidas fuera de balance recibirán un CCF del 100 % |
 | Obligacion_las_facilidades_de_liquidez_y_de_anticipos_de_efe | Obligacion | titulo | 100 % | que actúa como agente de pago recibirán un CCF del 100 % |
 

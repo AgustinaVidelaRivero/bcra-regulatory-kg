@@ -2,7 +2,7 @@
 
 Comando: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B data/experiment/pyd_r2/code/prueba_crudo_t0.py`
 
-Política: `data/experiment/pyd_r2/politica_campos_r2.json`, sha256 `e0c81cff7710e6b5b1c75640685ff22fea28fe35572f0dcd06db632e21d1d1eb`. Fuentes leídas en `3ffb99d` (firma del mandato) con candado de sha256; crudo con los sellos de N1 (43 archivos).
+Política: `data/experiment/pyd_r2/politica_campos_r2.json`, sha256 `82e8752aea1d6ad869d6023d303c0af45182dd9333753681787d7a581ef6d00b`. Fuentes leídas en `3ffb99d` (firma del mandato) con candado de sha256; crudo con los sellos de N1 (43 archivos).
 
 Capas: L0 = primer intento de E1 (`tool_input_crudo`); L0r = reintentos de E3 (`e1_reintentos.db`, immutable=1).
 
@@ -189,13 +189,13 @@ Cada fila: valor original y tratamiento de la política r2 (normalizado, registr
 
 | grupo | capa | coherencia tipo–predicado | mención | omisiones fuera_de_tipos | omisiones v3 leídas | recuperadas por la matriz (no verificadas E3) | pendientes no mapeados |
 |---|---|---|---|---|---|---|---|
-| r1 | L0 | limita:coherente 955, limita:incoherente 3, prohibe:coherente 180 | ausente 3443, exacta 46, no 5, tokens 5 | 0 | 136 | — | mencion_no_verificada 5 |
-| r1 | L0r | limita:coherente 330, prohibe:coherente 62 | ausente 1166, exacta 18, no 7, tokens 2 | 0 | 37 | — | mencion_no_verificada 7 |
+| r1 | L0 | limita:coherente 955, limita:incoherente 3, prohibe:coherente 180 | ausente 3443, exacta 46, no 6, tokens 4 | 0 | 136 | — | mencion_no_verificada 6 |
+| r1 | L0r | limita:coherente 330, prohibe:coherente 62 | ausente 1166, exacta 18, no 8, tokens 1 | 0 | 37 | — | mencion_no_verificada 8 |
 | desarrollo | L0 | limita:coherente 288, limita:incoherente 1, prohibe:coherente 95 | ausente 2943, exacta 33, no 10, tokens 1 | 0 | 156 | Operacion 383, Potestad 208 | mencion_no_verificada 9 |
 | desarrollo | L0r | limita:coherente 37, limita:incoherente 3, prohibe:coherente 18 | ausente 464, exacta 3 | 0 | 16 | Operacion 72, Potestad 48 | — |
-| cinco | L0 | limita:coherente 55, prohibe:coherente 63 | ausente 1003, exacta 11, no 3, tokens 2 | 2 | 6 | Operacion 41, Potestad 23 | mencion_no_verificada 3 |
+| cinco | L0 | limita:coherente 55, prohibe:coherente 63 | ausente 1003, exacta 11, no 4, tokens 1 | 2 | 6 | Operacion 41, Potestad 23 | mencion_no_verificada 4 |
 | cinco | L0r | limita:coherente 1, prohibe:coherente 15 | ausente 81, exacta 3 | 0 | 3 | Operacion 9, Potestad 3 | — |
-| diez | L0 | limita:coherente 343, limita:incoherente 1, prohibe:coherente 158 | ausente 3946, exacta 44, no 13, tokens 3 | 2 | 162 | Operacion 424, Potestad 231 | mencion_no_verificada 12 |
+| diez | L0 | limita:coherente 343, limita:incoherente 1, prohibe:coherente 158 | ausente 3946, exacta 44, no 14, tokens 2 | 2 | 162 | Operacion 424, Potestad 231 | mencion_no_verificada 13 |
 | diez | L0r | limita:coherente 38, limita:incoherente 3, prohibe:coherente 33 | ausente 545, exacta 6 | 0 | 19 | Operacion 81, Potestad 51 | — |
 
 Relaciones con la marca `incoherente` (BKL-0038), grupos r1 y diez:

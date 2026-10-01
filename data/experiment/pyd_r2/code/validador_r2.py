@@ -15,7 +15,10 @@ Incluye:
     relaciones que solo valen por la ampliación llevan `no_verificada_e3`
     (L-ESQ-R2 §6.4);
   - coherencia entre Restriccion.tipo y el predicado (`BKL-0038`), como marca;
-  - verificación de la mención en dos niveles (P-b3, P-b4), sin rechazar;
+  - verificación de la mención en dos niveles (P-b3, P-b4), sin rechazar.
+    LÍMITE DECLARADO: prueba presencia de la mención en el texto del chunk, no
+    pertenencia al chunk (6 de 63 menciones aparecen literalmente en un chunk
+    ajeno del mismo TO; resultados/mediciones_p2.json, ventana);
   - omisiones: tramo verificado contra el texto propio (P-e2), tipos
     rechazados como `fuera_de_tipos` (P-e3), strings del crudo v3 (P-a10).
 
@@ -285,6 +288,19 @@ def frecuencia_desde_tramo(v: str) -> Optional[str]:
     return hallados.pop() if len(hallados) == 1 else None
 
 
+def lista_json(s: str):
+    """Lista decodificada si el string tiene forma de lista JSON; si no, None
+    (calibración P3, decisión 8: como entities y relations)."""
+    t = s.strip()
+    if not (t.startswith("[") and t.endswith("]")):
+        return None
+    try:
+        v = json.loads(t)
+    except json.JSONDecodeError:
+        return None
+    return v if isinstance(v, list) else None
+
+
 # ------------------------------------------------------------------------- #
 # Adaptador del crudo v3                                                      #
 # ------------------------------------------------------------------------- #
@@ -326,7 +342,11 @@ def desde_v3(tool_input: Any) -> tuple[Any, Counter]:
     om = ti.pop("omisiones_no_prosa", None)
     items = []
     if isinstance(om, str):
-        if om.strip():
+        decodificada = lista_json(om) if om.strip() else None
+        if decodificada is not None:
+            c["omisiones_string_lista_json_decodificada"] += 1
+            items = decodificada
+        elif om.strip():
             c["omisiones_string_a_lista_de_uno"] += 1
             items = [om]
         else:
@@ -855,7 +875,11 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
     # ---------------- Omisiones ----------------
     oms = tool_input.get("omisiones")
     if isinstance(oms, str):
-        if oms.strip():
+        decodificada = lista_json(oms) if oms.strip() else None
+        if decodificada is not None:
+            reg.cuenta("omisiones", "string_lista_json_decodificada")
+            oms = decodificada
+        elif oms.strip():
             reg.cuenta("omisiones", "string_a_lista_de_uno")
             oms = [oms]
         else:

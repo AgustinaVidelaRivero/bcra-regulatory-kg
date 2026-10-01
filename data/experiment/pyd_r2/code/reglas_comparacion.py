@@ -5,30 +5,46 @@ elemento de umbral a partir de su tramo (L-ESQ-R2, versión firmada en 4ef7650,
 
 El laudo fija el SENTIDO de cada forma; este módulo es la implementación.
 Precedencia (§1.3.3): coeficiente → negación → compuestas (con la adyacencia
-de «mínimo»/«máximo») → simples → sin marcador.
+de «mínimo»/«máximo») → simples → igual → sin marcador.
 
   - Coeficiente: «pondera…», «ponderador», «ponderación», «coeficiente»,
     «factor». Es el único marcador que puede venir también de la descripción
-    o del título del punto.
-  - Simples (raíces): mínimo estricto = formas de «super-» y «exced-», «más
-    de», «mayor(es) a»; máximo estricto = «inferior(es) a», «menos de»,
-    «menor(es) a». «Mayor», «menor» e «inferior» cuentan solo seguidos de
-    «a» (decisión de la autora sobre P1; «el menor entre 1 año» no es
-    marcador). DECLARADO: «al» (contracción de «a el») cuenta como «a».
+    o del título del punto; «factor», solo del tramo o del título
+    (calibración P3, decisión 4).
+  - Simples: mínimo estricto = las raíces «super-» y «exced-» (toda forma,
+    salvo «superintend-», «supervis-», «superfic-», «superávit» y
+    «excedente»; «superior(es)» cuenta con o sin «a»), «más de», «mayor(es)
+    a»; máximo estricto = «inferior(es) a», «menos de», «menor(es) a».
+    «Mayor», «menor» e «inferior» cuentan solo seguidos de «a» o de «al»
+    (notas del 01/10 a L-ESQ-R2 §1.3; calibración P3, decisiones 1 y 3).
   - Negación general: «no» o «sin» delante de una simple, con cero a tres
     palabras en el medio, invierte el sentido (¬ mínimo estricto = máximo
     inclusivo; ¬ máximo estricto = mínimo inclusivo). DECLARADO: la misma
-    inversión se aplica a «igual o superior/mayor/inferior/menor», el
-    comparativo compuesto (¬ mínimo inclusivo = máximo estricto y viceversa).
-  - Compuestas: «igual o superior/mayor» y «al menos», «como mínimo», «un
-    mínimo de» → mínimo inclusivo; «igual o inferior/menor», «como máximo»,
-    «hasta», «dentro de» → máximo inclusivo. «Mínimo»/«máximo» en cualquier
-    género y número seguidos inmediatamente de la cuantía, con o sin «de»
-    (o «del»), tienen el mismo nivel. «Como máximo», «como mínimo» y «al
-    menos» valen también pospuestos a la cuantía.
+    inversión se aplica a los comparativos compuestos «igual o superior/
+    mayor/inferior/menor» y «menor/inferior/mayor/superior o igual»
+    (¬ mínimo inclusivo = máximo estricto y viceversa).
+  - Compuestas: «igual o superior/mayor», «mayor/superior o igual», «al
+    menos», «por lo menos», «como mínimo», «un mínimo de» → mínimo
+    inclusivo; «igual o inferior/menor», «menor/inferior o igual», «como
+    máximo», «hasta», «dentro de» → máximo inclusivo. «Mínimo»/«máximo» en
+    cualquier género y número seguidos inmediatamente de la cuantía, con o
+    sin «de» (o «del»), tienen el mismo nivel. «Como máximo», «como mínimo»,
+    «al menos» y «por lo menos» valen también pospuestos a la cuantía; «o
+    más» y «o menos», solo pospuestos y pegados a ella (mínimo / máximo
+    inclusivo). Calibración P3, decisión 2.
+  - Igual (calibración P3, decisión 5): «igual(es) a/al» o «equivalente(s)
+    a/al» pegados a la cuantía, con la precedencia más baja de las formas
+    con marcador (después de las simples), salvo que haya otro comparativo
+    en la cláusula. DECLARADO: «comparativo» es la palabra comparativa
+    (raíces «super-»/«exced-», «mayor», «menor», «superior», «inferior»,
+    «más», «menos»; COMPARATIVO_EN_CLAUSULA); además, como en la propuesta
+    de P2, «máximo», «mínimo», «tope» o «límite» en la ventana anterior
+    excluyen (TOPE_EN_VENTANA). «Hasta» temporal o «capital mínimo» lejos de
+    la cuantía no excluyen.
   - Sin marcador: plazo (unidad temporal) → máximo inclusivo con
     `comparacion_asumida`; cualquier otra cuantía → `no_determinada`.
-  - «igual» no tiene regla (la propone la medición de P2).
+    «Límite», «tope», «entre» y «máximo» no adyacente no son marcadores
+    (calibración P3, decisión 9).
 
 Adyacencia: los marcadores se buscan en una ventana junto a cada cuantía, no
 en todo el texto: hasta VENTANA_ANTES palabras antes y VENTANA_DESPUES después,
@@ -256,11 +272,12 @@ def _palabras(s: str) -> list[re.Match]:
 # ------------------------------------------------------------------------- #
 # Marcadores (sobre texto plegado)                                            #
 # ------------------------------------------------------------------------- #
-_SUPER = r"super(?:a|an|e|en|ar|ara|aran|ase|asen|ado|ados|ada|adas|ior|iores)"
-_EXCED = r"exced(?:a|an|e|en|er|iera|ieran|iese|iesen|era|eran|ido|ida|idos|idas)"
+# Raíces (calibración P3, decisión 1): toda forma, con las exclusiones listadas.
+_SUPER = r"super(?!intend|vis|fic|avit)\w*"
+_EXCED = r"exced(?!ente)\w*"
 SIMPLES = (
-    ("minimo_estricto", "raiz_super", re.compile(r"\b" + _SUPER + r"\b")),
-    ("minimo_estricto", "raiz_exced", re.compile(r"\b" + _EXCED + r"\b")),
+    ("minimo_estricto", "raiz_super", re.compile(r"\b" + _SUPER)),
+    ("minimo_estricto", "raiz_exced", re.compile(r"\b" + _EXCED)),
     ("minimo_estricto", "mas_de", re.compile(r"\bmas\s+de\b")),
     ("minimo_estricto", "mayor", re.compile(r"\bmayor(?:es)?\s+al?\b")),
     ("maximo_estricto", "inferior", re.compile(r"\binferior(?:es)?\s+al?\b")),
@@ -272,25 +289,43 @@ COMPUESTAS = (
      re.compile(r"\biguale?s?\s+o\s+(?:superior(?:es)?|mayor(?:es)?)\b")),
     ("maximo_inclusivo", "igual_o_inferior",
      re.compile(r"\biguale?s?\s+o\s+(?:inferior(?:es)?|menor(?:es)?)\b")),
+    ("maximo_inclusivo", "menor_o_igual",
+     re.compile(r"\b(?:menor|inferior)(?:es)?\s+o\s+iguale?s?\b")),
+    ("minimo_inclusivo", "mayor_o_igual",
+     re.compile(r"\b(?:mayor|superior)(?:es)?\s+o\s+iguale?s?\b")),
     ("maximo_inclusivo", "como_maximo", re.compile(r"\bcomo\s+maximo\b")),
     ("maximo_inclusivo", "hasta", re.compile(r"\bhasta\b")),
     ("maximo_inclusivo", "dentro_de", re.compile(r"\bdentro\s+de\b")),
     ("minimo_inclusivo", "al_menos", re.compile(r"\bal\s+menos\b")),
     ("minimo_inclusivo", "como_minimo", re.compile(r"\bcomo\s+minimo\b")),
     ("minimo_inclusivo", "un_minimo_de", re.compile(r"\bun\s+minimo\s+de\b")),
+    ("minimo_inclusivo", "por_lo_menos", re.compile(r"\bpor\s+lo\s+menos\b")),
 )
-POSPUESTAS = ("como_maximo", "como_minimo", "al_menos")
+POSPUESTAS = ("como_maximo", "como_minimo", "al_menos", "por_lo_menos")
+COMPARATIVOS_COMPUESTOS = ("igual_o_superior", "igual_o_inferior", "menor_o_igual", "mayor_o_igual")
+# «o más» / «o menos»: solo pospuestos y pegados a la cuantía (admite un paréntesis).
+SOLO_POSPUESTAS = re.compile(r"\s*(?:\([^()]{0,60}\)\s*)?o\s+(mas|menos)\b")
 ADYACENCIA = (
     ("minimo_inclusivo", "adyacencia_minimo", re.compile(r"\bminim[oa]s?\s+(?:del?\s+)?$")),
     ("maximo_inclusivo", "adyacencia_maximo", re.compile(r"\bmaxim[oa]s?\s+(?:del?\s+)?$")),
 )
 COEFICIENTE = re.compile(r"\bponder\w*|\bcoeficientes?\b|\bfactor(?:es)?\b")
+# Desde la descripción, «factor» no cuenta (calibración P3, decisión 4).
+COEFICIENTE_DESCRIPCION = re.compile(r"\bponder\w*|\bcoeficientes?\b")
+# «igual» (calibración P3, decisión 5): pegado a la cuantía.
+RE_IGUAL_PEGADO = re.compile(r"\b(iguale?s?|equivalentes?)\s+al?\s+$")
+# Otro comparativo en la cláusula excluye «igual»: la palabra comparativa,
+# con o sin «a» («superior» entra por la raíz «super-»).
+COMPARATIVO_EN_CLAUSULA = re.compile(
+    r"\b" + _SUPER + r"|\b" + _EXCED + r"|\b(?:mayor|menor|inferior)(?:es)?\b|\bmas\b|\bmenos\b")
+# Y, como en la propuesta de P2 (A-IGUAL), estas palabras en la ventana anterior.
+TOPE_EN_VENTANA = re.compile(r"\b(?:maxim[oa]s?|minim[oa]s?|topes?|limites?)\b")
 NEGADORES = ("no", "sin")
 INVERSION = {"minimo_estricto": "maximo_inclusivo", "maximo_estricto": "minimo_inclusivo",
              "minimo_inclusivo": "maximo_estricto", "maximo_inclusivo": "minimo_estricto"}
 
-# «igual» no tiene regla inicial (L-ESQ-R2 §1.3.3). Formas candidatas que mide
-# P2 entre las cuantías sin marcador; no se aplican.
+# Formas candidatas para «igual» que mide mediciones_p2.py entre las cuantías
+# sin marcador; no se aplican (la regla es RE_IGUAL_PEGADO).
 CANDIDATAS_IGUAL = (
     ("igual_a", re.compile(r"\biguale?s?\s+(?:a|al)\b")),
     ("equivalente_a", re.compile(r"\bequivalentes?\s+(?:a|al)\b")),
@@ -334,7 +369,7 @@ def fijar_comparacion(texto: str, c: Cuantia, inicio_clausula: int, fin_clausula
     # 1. Coeficiente: en la ventana, en la descripción o en el título.
     for fuente, s in (("tramo", pleg[antes[0]:despues[1]]), ("descripcion", plegar(descripcion or "")),
                       ("titulo", plegar(titulo or ""))):
-        m = COEFICIENTE.search(s)
+        m = (COEFICIENTE_DESCRIPCION if fuente == "descripcion" else COEFICIENTE).search(s)
         if m:
             original = {"tramo": texto[antes[0]:despues[1]], "descripcion": descripcion or "",
                         "titulo": titulo or ""}[fuente]
@@ -357,7 +392,12 @@ def fijar_comparacion(texto: str, c: Cuantia, inicio_clausula: int, fin_clausula
             # «un mínimo de»), cuenta la compuesta: mismo nivel, forma más específica.
             if not any(x[0] <= a0 < x[1] for x in compuestas):
                 compuestas.append((a0, antes[1], sentido, forma, texto[a0:antes[1]].strip()))
-    dentro_de_igual = [(a, b) for a, b, _, f, _ in compuestas if f.startswith("igual_o_")]
+    m = SOLO_POSPUESTAS.match(pleg, c.fin, min(fin_clausula, inicio_siguiente))
+    if m:
+        sentido, forma = (("minimo_inclusivo", "o_mas") if m.group(1) == "mas"
+                          else ("maximo_inclusivo", "o_menos"))
+        compuestas.append((m.start(1) - 2, m.end(), sentido, forma, texto[m.start(1) - 2:m.end()]))
+    dentro_de_igual = [(a, b) for a, b, _, f, _ in compuestas if f in COMPARATIVOS_COMPUESTOS]
 
     simples = []
     for sentido, forma, pat in SIMPLES:
@@ -371,7 +411,7 @@ def fijar_comparacion(texto: str, c: Cuantia, inicio_clausula: int, fin_clausula
 
     # 2. Negación de una simple o de «igual o …».
     negadas = []
-    for x in simples + [y for y in compuestas if y[3].startswith("igual_o_")]:
+    for x in simples + [y for y in compuestas if y[3] in COMPARATIVOS_COMPUESTOS]:
         neg = _negada(pleg, inicio_clausula, x[0])
         if neg:
             negadas.append((x, neg))
@@ -390,7 +430,17 @@ def fijar_comparacion(texto: str, c: Cuantia, inicio_clausula: int, fin_clausula
         x = min(simples, key=distancia)
         c.comparacion, c.regla, c.marcador, c.fuente_marcador = x[2], f"simple:{x[3]}", x[4], "tramo"
         return
-    # 5. Sin marcador.
+    # 5. Igual: pegado a la cuantía y sin otro comparativo en la cláusula.
+    m = RE_IGUAL_PEGADO.search(pleg[antes[0]:antes[1]])
+    if m:
+        mi = antes[0] + m.start()
+        clausula = (pleg[inicio_clausula:mi] + " " * (c.fin - mi) + pleg[c.fin:fin_clausula])
+        if not COMPARATIVO_EN_CLAUSULA.search(clausula) and not TOPE_EN_VENTANA.search(pleg[antes[0]:mi]):
+            forma = "equivalente_a" if m.group(1).startswith("equivalente") else "igual_a"
+            c.comparacion, c.regla, c.marcador, c.fuente_marcador = (
+                "igual", f"igual:{forma}", texto[mi:antes[1]].strip(), "tramo")
+            return
+    # 6. Sin marcador.
     if c.clase == "plazo":
         c.comparacion, c.regla, c.comparacion_asumida = "maximo_inclusivo", "sin_marcador_plazo", True
     else:
