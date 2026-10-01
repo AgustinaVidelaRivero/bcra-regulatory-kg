@@ -33,6 +33,12 @@ extracto no aparece, se frena. Lo que no tiene ancla queda NO ENCONTRADO
 Ubicación de los ids nuevos: al final de los vigentes, en el orden de las
 operaciones; el bloque los agrupa al final de su encabezado.
 
+Enmienda L-ESQ-R2: se lee la versión FIRMADA, `git show 4ef7650:<ruta>`, con
+candado de sha256 (66c4a1b9…), y no el archivo del árbol, que puede llevar
+notas posteriores a la firma. En `fuentes.enmienda_l_esq_r2` del JSON quedan
+ruta y sha256; el commit queda en ENMIENDA_COMMIT, sin campo nuevo en el JSON,
+para que el catálogo siga byte a byte igual al de bd2122d.
+
 Uso (desde la raíz del repo):
   PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B data/experiment/catalogo_unico/code/derivar_catalogo_r2.py
 """
@@ -47,6 +53,7 @@ import copy  # noqa: E402
 import hashlib  # noqa: E402
 import json  # noqa: E402
 import re  # noqa: E402
+import subprocess  # noqa: E402
 from pathlib import Path  # noqa: E402
 
 AQUI = Path(__file__).resolve().parent
@@ -56,7 +63,9 @@ CAT_V3 = CATALOGO_UNICO / "catalogo_sujetos_v3.json"
 SALIDA = CATALOGO_UNICO / "catalogo_sujetos_r2.json"
 
 CAT_V3_SHA256 = "9a2522e41e1086d26bb73a37070efd9913f98ec36e2f957e198b460d21ca6c58"
-ENMIENDA = REPO / "data" / "experiment" / "esq" / "enmienda_L-ESQ-R2_2026-09-30.md"
+ENMIENDA_RUTA = "data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md"
+ENMIENDA_COMMIT = "4ef7650"  # firma de L-ESQ-R2
+ENMIENDA_SHA256 = "66c4a1b9c5edaee1b7c4adeae9534e4829e68241b690eb1e244b8d9128baca72"
 PARTICION = REPO / "data" / "experiment" / "segmentacion_84" / "b584_particion"
 E0_DEV = REPO / "data" / "experiment" / "reextraccion_v2" / "e0_chunking" / "salida_enm01"
 TOS_DEV = ("pro", "cla", "ric", "cap", "ext")
@@ -86,6 +95,20 @@ def sha256_archivo(p: Path) -> str:
 
 def _rel(p: Path) -> str:
     return str(p.resolve().relative_to(REPO))
+
+
+def sha256_enmienda_firmada() -> str:
+    """sha256 de la enmienda tal como quedó en el commit de la firma
+    (`git show 4ef7650:<ruta>`); frena si no reproduce ENMIENDA_SHA256."""
+    r = subprocess.run(["git", "-C", str(REPO), "show", f"{ENMIENDA_COMMIT}:{ENMIENDA_RUTA}"],
+                       capture_output=True, check=False)
+    if r.returncode != 0:
+        raise FrenoDerivacion(f"no se pudo leer {ENMIENDA_COMMIT}:{ENMIENDA_RUTA} con git show")
+    sha = hashlib.sha256(r.stdout).hexdigest()
+    if sha != ENMIENDA_SHA256:
+        raise FrenoDerivacion(f"candado: la enmienda en {ENMIENDA_COMMIT} da {sha[:12]}… "
+                              f"(esperado {ENMIENDA_SHA256[:12]}…)")
+    return sha
 
 
 # ------------------------------------------------------------------------- #
@@ -360,7 +383,7 @@ def derivar() -> dict:
     fuentes = cat["fuentes"]
     fuentes["catalogo_v3"] = {"ruta": _rel(CAT_V3), "objeto": "catálogo base de la derivación",
                               "sha256": CAT_V3_SHA256}
-    fuentes["enmienda_l_esq_r2"] = {"ruta": _rel(ENMIENDA), "objeto": "§7.3", "sha256": sha256_archivo(ENMIENDA)}
+    fuentes["enmienda_l_esq_r2"] = {"ruta": ENMIENDA_RUTA, "objeto": "§7.3", "sha256": sha256_enmienda_firmada()}
     fuentes["derivacion_r2"] = {"ruta": _rel(Path(__file__)), "objeto":
                                 "decisión de derivación declarada: los ids nuevos llevan disjunta_con [] (ninguna "
                                 "disyunción anclada) y van al final de los vigentes"}
