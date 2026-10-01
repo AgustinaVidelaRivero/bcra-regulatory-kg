@@ -94,6 +94,18 @@ j. ACCIONES DE LA AUTORA: ningún bloque, reporte, laudo, pase ni mensaje
    el 04/09, despachado recién el 05/09, con la afirmación falsa
    arrastrada hasta un laudo firmado — fe de erratas
    docs/fe_erratas_despacho_UB53.md).
+k. FUENTES FIRMADAS: las fuentes de un documento firmado (laudo,
+   enmienda, mandato, pre-registro) se leen en el commit de la firma
+   (`git show <commit>:<ruta>`), con su sha256 verificado, nunca en el
+   archivo actual. Un documento firmado puede recibir después notas
+   fechadas, que cambian el sha del archivo sin cambiar el texto
+   firmado. Y una verificación nunca corre un generador sobre el repo:
+   lo corre sobre una copia en el scratchpad. Precedentes, del
+   01/10/2026: la nota posterior a la firma de L-ESQ-R2 (7ac1b5c) rompió
+   la re-derivación del catálogo r2, que leía el archivo actual (falló
+   K1; corregido en 5084781, plan, principio 9); y, al verificarlo, la
+   mesa revisora corrió el derivador sobre el repo y sobrescribió el
+   JSON, que hubo que restaurar desde una copia.
 
 ## 4bis. Prompt caching en extracción
 

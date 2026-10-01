@@ -1043,3 +1043,14 @@ El texto firmado no se edita; estas notas se leen junto con él.
     actividades».
   - Aplicado en el catálogo r2 (U-CAT-UNICO C2, `bd2122d`).
   - La asamblea queda sin id en el catálogo, como candidata del registro de no mapeados (§4).
+- **01/10/2026 — §1.3, punto 3: «mayor», «menor» e «inferior» (aclaración, decisión de la autora).**
+  - Las formas son «mayor a», «mayores a», «menor a», «menores a», «inferior a» e «inferiores a».
+    «Mayor», «menor» e «inferior» sin «a» no son marcadores.
+  - Esa era la decisión de la autora. La redacción firmada («“mayor” o “mayores a”», «“inferior” o
+    “inferiores a”», «“menor” o “menores a”») la dejaba ambigua: se podía leer que «mayor», «menor»
+    o «inferior» solos ya eran marcadores.
+  - Caso que lo mostró: en `cap::4.3.3.1` (fila 15 de la lectura de `limita`), «el menor entre 1 año
+    y el plazo residual» quedaba como máximo estricto. Con la aclaración, «1 año» queda sin marcador
+    y, por ser un plazo, recibe máximo inclusivo con `comparacion_asumida`. Así se lee el texto: el
+    horizonte es como mucho 1 año.
+  - Lo aplica U-PYD (plan, B2.11, unidad 7) en sus reglas de comparación.
