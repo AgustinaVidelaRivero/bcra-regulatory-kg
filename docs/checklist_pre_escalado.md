@@ -18,7 +18,7 @@ condición (4) de la tanda 1 (R28).
 Actualizada el 30/09/2026 con las decisiones de la autora del 30/09: el cambio de
 prefijo queda decidido y se hace en el ciclo B2.11 (`:388-404`), con la ventana única
 del §7 (X2 a X5 y X8 decididos; X6, X7 y X9 entran al ciclo con el remedio por
-decidir; X1, X10 y X11 se deciden en L-ESQ-R2); ítems nuevos
+decidir; X1, X10 y X11 se deciden en L-ESQ-R2 [01/10/2026: L-ESQ-R2 FIRMADA en `4ef7650`; quedan decididos X1, X6, X7, X10, X11, X12, X13 y X14]); ítems nuevos
 P17 a P19, R29 a R31, X12 a X16 y W9 a W13; P4, Q10, Q11, R1, R5, R8, R20, R21 y R27
 actualizados. Las anclas `:n` se remapearon a la v16 del plan.
 Actualizada otra vez el 30/09/2026: resultados de U-PRE-R2-DIAG (`159c1e2`; R19, R4, R5,
@@ -66,7 +66,7 @@ los mentores. La tanda 1 depende de tres condiciones:
    (matriz), X2 (prompt), X3 (ventana del §7) y X4 (cuándo va la release de
    prompt), con X11 (si la lectura asistida de la matriz alcanza). **[30/09/2026]**
    Decidida: el prefijo cambia en el ciclo B2.11 y la ventana del §7 se usa ahí
-   (X2 a X4). Queda L-ESQ-R2 firmado (`:394`), que resuelve X1, X10 y X11.
+   (X2 a X4). **[01/10/2026]** L-ESQ-R2 FIRMADA en `4ef7650` (`:394`), que resuelve X1, X10 y X11: los cinco ítems de esta condición (X1 a X4 y X11) quedan decididos.
 4. El tablero de correcciones (`docs/tablero_correcciones.md`) con la columna
    «después de r2» completa y cada meta cumplida o con su residuo declarado (R28;
    laudo de r2, §3.1, punto 8). Agregada el 29/09/2026. **[30/09/2026]** Con dos

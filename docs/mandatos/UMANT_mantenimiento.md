@@ -59,10 +59,10 @@ DECISIONES YA TOMADAS. No se re-deciden.
    autora (principio 9).
 4. La re-extracción del subgrafo afectado y su costo son de U-SUBGRAFO. Esta unidad escribe el
    procedimiento de empalme y lo demuestra en seco, sin llamar a la API.
-5. **A confirmar en la firma:** el aviso es una salida del control: código de salida distinto
-   de cero y un archivo `aviso.md` al frente de la corrida, con cada supuesto roto, su valor
-   de línea de base y el valor observado. No hay cron ni demonio; cuándo se dispara el control
-   lo decide la autora. Si la autora quiere disparo periódico, se agrega en la firma.
+5. El aviso es una salida del control: código de salida distinto de cero y un archivo
+   `aviso.md` al frente de la corrida, con cada supuesto roto, su valor de línea de base y el
+   valor observado (confirmado por la autora el 01/10). El disparo periódico no está decidido:
+   M2 lo propone (punto f) y la autora lo decide en el freno de M2.
 
 M1 — Tabla de qué obliga a reprocesar todo y qué no. USD 0, sin red.
 a. Para cada tipo de cambio, en qué paso del pipeline entra y qué obliga a recomputar:
@@ -120,8 +120,19 @@ d. Selftest con alteraciones simuladas sobre copias en el scratchpad: una clave 
    página. Cada alteración tiene que disparar su aviso, y solo el suyo.
 e. Procedimiento de empalme de un subgrafo re-extraído:
    data/experiment/mantenimiento/procedimiento_empalme.md. Cubre:
-   - cómo se identifican las unidades cambiadas: el sha del PDF, el diff por página del job y
-     la tabla de origen de las disposiciones;
+   - cómo se identifican las unidades cambiadas, con tres fuentes:
+     - el sha del PDF y el diff por página del job, que localiza pero no compara el sentido
+       (plan, fila U-JOB-ACT);
+     - la tabla de origen de las disposiciones. La tienen 90 de 152 TOs
+       (reports/u_insumos_cap/estadisticas_corpus.md:222, regla R14, `ded3494`);
+     - las Comunicaciones nuevas que citan el punto que modifican. Por ejemplo, la «A» 8432,
+       cuyo texto dice «Sustituir el punto 1.3.»: ejemplo de la autora, NO VERIFICADO en el
+       repo, porque el texto de las Comunicaciones no está en el corpus. M2 diseña cómo se
+       leería esa cita y lo declara como diseño; obtener los textos de las Comunicaciones
+       exige la red y no es parte de M2;
+   - qué hace el procedimiento con los 62 de 152 TOs sin tabla de origen: con qué fuentes
+     localiza las unidades cambiadas y, si ninguna alcanza, qué re-extrae (por ejemplo, el TO
+     entero), con su costo por clase según la tabla de M1;
    - qué se re-extrae;
    - cómo se sustituyen las salidas de esas unidades;
    - qué se re-ensambla;
@@ -131,12 +142,26 @@ e. Procedimiento de empalme de un subgrafo re-extraído:
    a partir de la salida base y de las tres unidades re-extraídas, y comparar su sha256 con el
    sellado. Si los artefactos guardados no alcanzan para reproducirlo, FRENO con el motivo,
    sin forzar la demostración.
+f. Propuesta de disparo periódico, para que la autora la decida en el freno de M2. Cómo
+   programar que el control corra solo, por ejemplo una vez por mes y solo sobre el índice del
+   sitio. Para cada opción:
+   - la periodicidad, con su justificación desde el diseño del job (§2.a.6);
+   - el número de pedidos por corrida: solo el índice es un pedido; si incluye PDFs, cuántos y
+     con qué pedidos condicionales;
+   - dónde correría: por ejemplo, el programador de tareas de la máquina local o una tarea
+     programada fuera de ella, con lo que cada opción necesita (credenciales, acceso al repo,
+     dónde quedan las corridas);
+   - a dónde llega el aviso y quién lo ve;
+   - qué pasa si una corrida falla o no puede preguntar al sitio.
+
+   La propuesta no se instala en M2: solo se escribe.
 FRENO M2:
 - los supuestos con su línea de base;
 - el resultado del selftest por alteración;
 - el resultado de la demostración del empalme;
 - la propuesta de alcance de M3 (solo el índice, o el índice y los PDFs con pedidos
   condicionales), con el número de pedidos previsto;
+- la propuesta de disparo periódico (punto f);
 - el sha256 de lo escrito.
 
 M3 — Una corrida real del control contra el sitio. USD 0 de API. Solo con el ok escrito de la

@@ -123,7 +123,9 @@ b. Cada id nuevo lleva id, label, alias, definición positiva y padre, cada uno 
      `Sujeto_rol_alcance_convca` pasa a ese id, y su residuo declarado queda sin el campo
      `colectivo_operativo_sin_id`. Anclas: `convca::1.1`, `convca::2.1.3` y `ccbcra::1.1`.
    - `BKL-0034`: la clase «órgano de gobierno» y, bajo ella, Directorio, Alta Gerencia y Comité
-     de auditoría. Ancla: `lingob::2.3.2` y su sección.
+     de auditoría. Ancla: `lingob::2.3.2` y su sección. La clase «órgano de gobierno» lleva su
+     padre en el árbol actual, propuesto por la unidad con su ancla o NO ENCONTRADO, y
+     declarado en el reporte.
 c. Regenerar todos los artefactos en data/experiment/catalogo_unico/generados_r2/ y comprobar:
    - que el bloque r2 difiere del v3 solo en las entradas que toca (b), con el diff declarado;
    - las condiciones de cierre que se verifican sobre el catálogo:
@@ -139,6 +141,7 @@ d. Re-resolución contrafáctica sobre lo guardado, USD 0. Se resuelven en códi
    con r2 y no con v3. Es un dato, no una meta (L-ESQ-R2 §4.3).
 FRENO C2, final:
 - el diff del bloque v3 → r2;
+- el padre propuesto para «órgano de gobierno», con su ancla o NO ENCONTRADO;
 - el sha256 del JSON r2 y de cada generado;
 - las condiciones de cierre, verificadas o pendientes con su motivo;
 - la cifra de la re-resolución, con su comando.
