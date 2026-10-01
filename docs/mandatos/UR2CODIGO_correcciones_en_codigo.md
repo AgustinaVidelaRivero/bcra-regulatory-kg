@@ -17,6 +17,10 @@ CONTEXTO. Plan, fila B2.11, unidad 8 (docs/plan_tesis.md:397), habilitada: U-PYD
   - la conexión del perfil r2;
   - la fusión (T2, con H2 y `BKL-0031`), `BKL-0030`, la `cuarentena` booleana y las mutuales;
   - la suite y las shapes del perfil r2.
+- Por decisión de la autora del 01/10/2026 entran además cuatro candidatos del §4 del laudo de
+  r2, que corrige el ensamblado: H1 y H4 (remisiones desde Condicion, Potestad y Definicion), las
+  remisiones resueltas sobre el texto de E0 y no sobre la paráfrasis, la procedencia de las
+  remisiones y la `establecida_en` derivada de la procedencia.
 - Las decisiones de esquema que aplica esta unidad están en L-ESQ-R2 (FIRMADA en `4ef7650`).
   Por la regla k de CLAUDE.md §4, se lee con `git show 4ef7650:<ruta>`, nunca del archivo
   actual. Lo que aplica: §1.3 y §1.4 (umbrales, par B en r2a), §3 (resolución de sujetos), §4
@@ -37,6 +41,11 @@ Leé completos, antes de escribir una línea:
   - §3.2 (la clave de caché);
   - §4: H2, «los tres tipos nuevos se funden por label», y T2, «la fusión por descripción junta
     reglas distintas con igual redacción», :339;
+  - §4: H1 y H4 (:329, con la simulación de +3.687 aristas), remisiones falsas por paráfrasis
+    (:330), nodos sin ninguna arista (:332), procedencia de las remisiones (:333 y :335) y el test
+    del ejemplo `cla::5.1.1.1` (:334);
+- reports/u_audit_tipos_v3/inventario_U-AUDIT-TIPOS-V3.md (H1, H4 y punto 3) y
+  p2_referencias_sim.json; reports/u_cons_arco_ejemplo/informe_U-CONS-ARCO-EJEMPLO.md, parte A;
 - L-ESQ-R2 en su versión firmada (`git show 4ef7650:data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`),
   las secciones citadas arriba, y las notas posteriores a la firma del archivo actual;
 - reports/u_umbral/u1_mediciones.json (`medicion_2`: los 4 chunks de ponderadores sin detectar y
@@ -55,12 +64,15 @@ Leé completos, antes de escribir una línea:
   - e2_reduce/e2_lib.py (`entity_slug_v3` :122, Sujeto_propuesto :382-407, cuarentena :388);
   - corpus_v2/r1_e4.py, corpus_v2/r1_e5_esqueleto.py, corpus_v2/ensamblar_corpus.py y
     data/experiment/tanda0/code/ensamblar_tanda0.py;
+  - corpus_v2/r1_referencias.py (`TIPOS_ORIGEN` :51, filtro de origen :243);
 - la suite (scripts/regression_kg.py, scripts/regression_kg_esperado.json,
   scripts/selftest_regression_kg.py) y las shapes (scripts/shapes_validator.py,
   scripts/selftest_shapes_congelado.py);
 - el tablero de correcciones, filas «Afirmación falsa por tabla no detectada», «Pérdidas de
   contenido por tablas», «Colisiones de ids de chunk en E0», «Crudo del reintento de E3 sin
-  persistir» y «Relaciones de la matriz ampliada sin verificar por E3».
+  persistir», «Relaciones de la matriz ampliada sin verificar por E3», «Aristas `referencia` por
+  tipo de origen», «Condiciones aisladas», «Remisiones falsas por paráfrasis» y «Test del ejemplo
+  `cla::5.1.1.1`».
 
 DECISIONES YA TOMADAS. No se re-deciden.
 1. El orden de las etapas es R1 → R5 y no se adelanta ninguna. Las cinco cuestan USD 0.
@@ -85,6 +97,15 @@ DECISIONES YA TOMADAS. No se re-deciden.
    correr U-REEXT-T0 (plan, B2.11, unidad 11).
 10. El catálogo r2 se lee con candado de sha256 (`c3ad1581…`), y la política del perfil r2 con el
     sha de `57a8dd2`.
+11. Remisiones y procedencia, por decisión de la autora del 01/10/2026 (candidatos del §4 del laudo
+    de r2):
+    - el resolvedor de remisiones parte también de Condicion, Potestad y Definicion, y lee
+      `termino` (H1 y H4);
+    - las remisiones se detectan sobre el texto de E0 del punto de origen, por `chunk_id`, y no
+      sobre la paráfrasis;
+    - se resuelven desde cada procedencia del origen. La parte de la vista del agente es de A1.8;
+    - el ensamblado deriva `establecida_en` de la procedencia para todo nodo de contenido que no
+      la tenga.
 
 CONTROL QUE RIGE EN TODA ETAPA QUE TOCA CÓDIGO DEL PIPELINE:
 - con los perfiles existentes, el pipeline reproduce byte a byte lo sellado: la E0 de la tanda 0,
@@ -167,28 +188,52 @@ c. **Registro de no mapeados** (L-ESQ-R2 §4; diseño, P-d1 a P-d3):
    - `no_mapeados_sujetos.jsonl` por TO y por ensamblado;
    - E2 crea los `Sujeto_propuesto` desde el registro;
    - re-resolución por programa cuando cambia el sha del catálogo, idempotente.
-d. **Llenado en código de las listas de umbrales,** el par B (L-ESQ-R2 §1.3 y §1.4):
+d. **Remisiones y procedencia** (decisión 11), en `r1_referencias.py` y en la redirección de
+   `ensamblar_tanda0.py`:
+   - `TIPOS_ORIGEN` (`r1_referencias.py:51`) suma Condicion, Potestad y Definicion, y el resolvedor
+     lee `termino` (H1 y H4);
+   - las remisiones se detectan sobre el texto de E0 del punto de origen, no sobre la paráfrasis;
+   - se resuelven desde cada procedencia del origen; los seis puntos de la fila del laudo (:335)
+     pasan a origen o quedan declarados;
+   - **casos de control:**
+     - re-ensamblar el desarrollo reproduce la simulación de U-AUDIT-TIPOS-V3: +3.687 aristas y 0
+       perdidas;
+     - `cla::5.1.1.1` llega a `cla::3.7`;
+     - `cap::8.2.3.3` llega a `cla::6.5.1` y `cla::7.2.1`, sin la remisión interna falsa;
+     - en diez, cuántas remisiones cambian de destino.
+e. **`establecida_en` derivada** (decisión 11): cero nodos de contenido sin `establecida_en`, y el
+   resto de los aislados declarado por causa. En desarrollo hay 35 Condicion aisladas: 33 por
+   rechazos de la matriz congelada y 2 sin relaciones emitidas; con H1, 9 de las 35 reciben una
+   remisión (laudo de r2, §4, :332).
+f. **Llenado en código de las listas de umbrales,** el par B (L-ESQ-R2 §1.3 y §1.4):
    - desde la descripción guardada y los `campos_heredados_v3`, con las reglas de U-PYD;
    - verificación contra el texto de E0 y contra `e0_tablas`, con las tablas de R1;
    - lo que no verifica se marca, sin corregirlo;
+   - la base de un umbral relacional se resuelve a su punto o definición por el mecanismo de
+     remisiones de (d); si no resuelve, se marca (L-ESQ-R2 §1.3, orientación c);
    - el campo de frecuencia;
    - el conteo de rangos con la unidad repetida («entre 30 días y 90 días»), por el límite
      declarado en la fila 7 del plan.
-e. **Relaciones de la matriz ampliada:** entran con la marca de no verificadas por E3, que E2
+g. **Relaciones de la matriz ampliada:** entran con la marca de no verificadas por E3, que E2
    conserva, y se cuentan aparte (L-ESQ-R2 §6.4).
-f. **Cómo muestra el agente la lista de umbrales** (L-ESQ-R2 §1.4, NO VERIFICADO): se lee, sin
+h. **Cómo muestra el agente la lista de umbrales** (L-ESQ-R2 §1.4, NO VERIFICADO): se lee, sin
    editarlo, `ver_nodo` del harness (que está sellado), de `neo4j_index.py` y de `tools_v2.py`, y
    se prueba en memoria con un nodo r2. Si alguna no la muestra, se reporta; no se arregla acá.
-g. **Corrida de prueba sobre un TO,** `cla` (el del ejemplo del préstamo), en el scratchpad. La
+i. **Corrida de prueba sobre un TO,** `cla` (el del ejemplo del préstamo), en el scratchpad. La
    corrida completa es la unidad 9.
    - **Casos de control:**
-     - `cla::5.1.1.1` → elemento de umbral mínimo estricto, valor 2, unidad «veces», base
-       «importe de referencia establecido en el punto 3.7»;
+     - `cla::5.1.1.1` → las dos `condicion_de` Condicion → Operacion, marcadas como no verificadas
+       por E3. El crudo guardado de E1 las trae y la matriz congelada las rechazaba (verificado por
+       la mesa el 01/10/2026 en `corpus_tanda0/salida_dirigida/cla/extracciones_e1_compact.jsonl`);
+     - `cla::5.1.1.1` → la remisión a `cla::3.7`;
+     - `cla::5.1.1.1` → el elemento de umbral mínimo estricto, valor 2, unidad «veces», con la base
+       resuelta a `cla::3.7`;
      - una relación de sujeto con su método de resolución y, si la hay, su fila en el registro.
 FRENO R3:
 - la conexión, con la reproducción de lo sellado;
 - la regla sobre el E4 residual;
 - el registro;
+- las remisiones y la `establecida_en` derivada, con sus casos de control;
 - el resultado de la corrida de prueba con los casos de control;
 - la lectura de cómo se muestra la lista;
 - el sha256 de lo escrito.
@@ -229,8 +274,28 @@ a. **Suite** (scripts/regression_kg.py):
    - la corrección del test de `BKL-0028`: que compare contra los tres ids del exterior esperados y
      no cuente `Sujeto_banco_central_del_exterior` (regression_kg.py:788);
    - los matchers de `BKL-0006` y `BKL-0023`, que lean la lista de umbrales (L-ESQ-R2 §1.5);
-   - **a confirmar en la firma:** el test del ejemplo `cla::5.1.1.1` (tablero, fila del test del
-     ejemplo).
+   - el test del ejemplo `cla::5.1.1.1` (laudo de r2, §4, :334; tablero, fila del test del
+     ejemplo). Comprueba dos cosas:
+     - (i) la Operacion del punto recibe los dos vínculos normativos de los nodos de su punto:
+       `condicion_de` desde las dos Condicion o, en la estructura de r1, `limita` desde las dos
+       Restriccion;
+     - (ii) un nodo del punto remite a `cla::3.7`.
+
+     Sobre el grafo r2 se comprueba además, como informativo, (iii) el elemento de umbral mínimo
+     estricto, valor 2, unidad «veces», con la base resuelta a `cla::3.7`.
+
+     Estados esperados:
+     - **KG-Reextraído-r1:** «resuelto», con dos Restriccion con `limita` y la `referencia` al 3.7
+       (laudo de r2, §4, :334);
+     - **KG-Tanda0-Desarrollo-r1:** «persiste»: las dos Condicion están aisladas y no hay remisión;
+     - **r2a:** «resuelto». (i) viene de la matriz ampliada sobre el crudo guardado, con las dos
+       relaciones marcadas como no verificadas por E3; (ii) viene de las remisiones de R3.d; (iii)
+       del par B con la base resuelta. El reporte declara que (i) todavía no pasó por E3;
+     - **r2b:** «resuelto», con las relaciones verificadas por E3 y sin la marca. Es la meta de
+       U-REEXT-T0 (tablero, fila del test del ejemplo).
+
+     Si en la prueba de r2a no se cumple (ii) o (iii), FRENO con la causa. La entrada de la
+     fixture la sella la autora (decisión 9).
 b. **Shapes** (scripts/shapes_validator.py), un perfil r2 nuevo:
    - S3 con la matriz ampliada;
    - S18 reescrita: Restricción «limite_cuantitativo» ⇒ lista de umbrales no vacía o marca;
