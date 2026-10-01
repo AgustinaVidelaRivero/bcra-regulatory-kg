@@ -357,7 +357,8 @@ def desde_v3(tool_input: Any) -> tuple[Any, Counter]:
 # ------------------------------------------------------------------------- #
 # Validación                                                                  #
 # ------------------------------------------------------------------------- #
-CAMPOS_ITEM_ENTIDAD = ("local_id", "type", "label", "punto", "properties", "umbrales")
+CAMPOS_ITEM_ENTIDAD = ("local_id", "type", "label", "punto", "properties", "umbrales",
+                       "otras_propiedades")
 CAMPOS_ITEM_RELACION = ("source", "target", "predicate", "punto", "sujeto_mencion", "sujeto_id",
                         "sujeto_propuesto_padre_sugerido")
 
@@ -567,6 +568,25 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
                     no_def[k] = v
                     reg.cuenta("claves", "a_properties_no_definidas", f"{tipo}.{k}")
 
+        # otras_propiedades (forma r2b): lo no previsto por la definición del
+        # tipo va a properties_no_definidas, con contador; nunca se rechaza.
+        if "otras_propiedades" in e:
+            otras = e.get("otras_propiedades")
+            if isinstance(otras, dict):
+                for k, v in otras.items():
+                    if k in definidas or k in no_def:
+                        campos_nd[f"otras_propiedades.{k}"] = v
+                        reg.cuenta("claves", "otras_propiedades_clave_repetida_a_campos_no_definidos",
+                                   f"{tipo}.{k}")
+                    else:
+                        no_def[k] = v
+                        reg.cuenta("claves", "otras_propiedades_a_properties_no_definidas", f"{tipo}.{k}")
+                        if not isinstance(v, str):
+                            reg.cuenta("valores", "otras_propiedades_valor_no_string", f"{tipo}.{k}")
+            elif otras is not None:
+                campos_nd["otras_propiedades"] = otras
+                reg.cuenta("claves", "otras_propiedades_no_objeto_a_campos_no_definidos", tipo)
+
         # Campos con lista cerrada.
         if tipo == "Obligacion":
             v = props.get("tipo")
@@ -722,10 +742,12 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
                                                 f"{ref} ({pred}): sin sujeto_id ni mención", r))
                 reg.cuenta("sujeto", "rechazada_sin_sujeto_id_ni_mencion")
                 continue
+            padre_descartado = None
             if padre is not None and mencion is None:
-                res["rechazos"].append(_rechazo("relacion", "padre_sugerido_sin_mencion", ref, r))
-                reg.cuenta("padre_sugerido", "rechazada_sin_mencion", padre)
-                continue
+                # Decisión de la autora sobre P1: la relación se acepta con su
+                # sujeto_id y el padre se descarta, con contador y original.
+                padre_descartado, padre = padre, None
+                reg.cuenta("padre_sugerido", "sin_mencion_descartado", padre_descartado)
             extremo = source if pred == "aplica_a" else target
             campo = "source" if pred == "aplica_a" else "target"
             if extremo is None:
@@ -754,7 +776,7 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
             if sujeto_id is not None and mencion is not None:
                 reg.cuenta("sujeto", "ambos_campos")
             pad_ok = None
-            pad_crudo = None
+            pad_crudo = padre_descartado
             if padre is not None:
                 if padre in M.SUJETOS_R2_SET:
                     pad_ok = padre

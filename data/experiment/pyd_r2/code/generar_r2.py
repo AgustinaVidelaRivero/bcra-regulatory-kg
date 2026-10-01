@@ -12,10 +12,13 @@ mismos bytes.
 
 Uso (desde la raíz del repo):
   PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B data/experiment/pyd_r2/code/generar_r2.py
+Con --salida DIR escribe en otro directorio (verificaciones: sobre una copia,
+nunca sobre el repo; CLAUDE.md §4.k).
 """
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import sys
@@ -52,13 +55,16 @@ def manifiesto(cont: dict[str, bytes]) -> bytes:
 
 
 def main() -> None:
-    GENERADOS.mkdir(parents=True, exist_ok=True)
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--salida", default=str(GENERADOS))
+    destino = Path(ap.parse_args().salida)
+    destino.mkdir(parents=True, exist_ok=True)
     cont = contenidos()
     cont_man = dict(cont)
     cont_man["manifest_generados_r2.json"] = manifiesto(cont)
     for nombre, b in cont_man.items():
-        (GENERADOS / nombre).write_bytes(b)
-        print(f"{hashlib.sha256(b).hexdigest()}  {GENERADOS.relative_to(M.REPO) / nombre}")
+        (destino / nombre).write_bytes(b)
+        print(f"{hashlib.sha256(b).hexdigest()}  generados/{nombre}")
 
 
 if __name__ == "__main__":

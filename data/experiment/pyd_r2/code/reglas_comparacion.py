@@ -11,8 +11,10 @@ de «mínimo»/«máximo») → simples → sin marcador.
     «factor». Es el único marcador que puede venir también de la descripción
     o del título del punto.
   - Simples (raíces): mínimo estricto = formas de «super-» y «exced-», «más
-    de», «mayor(es)»; máximo estricto = «inferior(es)», «menos de»,
-    «menor(es)».
+    de», «mayor(es) a»; máximo estricto = «inferior(es) a», «menos de»,
+    «menor(es) a». «Mayor», «menor» e «inferior» cuentan solo seguidos de
+    «a» (decisión de la autora sobre P1; «el menor entre 1 año» no es
+    marcador). DECLARADO: «al» (contracción de «a el») cuenta como «a».
   - Negación general: «no» o «sin» delante de una simple, con cero a tres
     palabras en el medio, invierte el sentido (¬ mínimo estricto = máximo
     inclusivo; ¬ máximo estricto = mínimo inclusivo). DECLARADO: la misma
@@ -260,10 +262,10 @@ SIMPLES = (
     ("minimo_estricto", "raiz_super", re.compile(r"\b" + _SUPER + r"\b")),
     ("minimo_estricto", "raiz_exced", re.compile(r"\b" + _EXCED + r"\b")),
     ("minimo_estricto", "mas_de", re.compile(r"\bmas\s+de\b")),
-    ("minimo_estricto", "mayor", re.compile(r"\bmayor(?:es)?\b")),
-    ("maximo_estricto", "inferior", re.compile(r"\binferior(?:es)?\b")),
+    ("minimo_estricto", "mayor", re.compile(r"\bmayor(?:es)?\s+al?\b")),
+    ("maximo_estricto", "inferior", re.compile(r"\binferior(?:es)?\s+al?\b")),
     ("maximo_estricto", "menos_de", re.compile(r"\bmenos\s+de\b")),
-    ("maximo_estricto", "menor", re.compile(r"\bmenor(?:es)?\b")),
+    ("maximo_estricto", "menor", re.compile(r"\bmenor(?:es)?\s+al?\b")),
 )
 COMPUESTAS = (
     ("minimo_inclusivo", "igual_o_superior",

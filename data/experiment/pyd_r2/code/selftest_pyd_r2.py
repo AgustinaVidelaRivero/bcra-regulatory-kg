@@ -47,6 +47,7 @@ E0_SHA = {  # reports/u_listas_nomap/n1_inventario.json, entradas.e0_<to>.sha256
     "cap": "1931138dac0a107a69a7ff6312400f00465b991d52135457735beeb3e442c825",
     "cla": "98808886a406d8321c678836a55f92eea983d594d95358dd21ceb537487ac0b1",
     "ext": "cbcd1a86f55ea49110610587873881c68c13a9d7975d3fd5e465f26302be2d12",
+    "ric": "fafebb82e07b34191b60022c1c179ea7d2213fd1f5d5f3a408b518c836c94c0d",
 }
 LECTURA_LIMITA = REPO / "reports" / "u_umbral" / "lectura_limita" / "lectura_limita_30.csv"
 EJEMPLO_PRESTAMO = REPO / "docs" / "tesis" / "figuras" / "ejemplo_prestamo_datos.json"
@@ -163,6 +164,10 @@ def g2_politica():
              modos == {"tipo_entidad": "rechazar", "predicado": "rechazar", "Obligacion.tipo": "normalizar",
                        "Restriccion.tipo": "registrar", "Comunicacion.tipo": "registrar",
                        "Obligacion.frecuencia": "registrar"}, str(modos))
+    chequear(g, "padre sugerido sin mención: se descarta el padre y la relación se acepta",
+             pol.d["campos"]["padre_sugerido"]["si_sin_mencion"].startswith("descartar_padre"))
+    chequear(g, "otras_propiedades declarado en la política de claves",
+             "otras_propiedades" in pol.d["campos"]["claves"])
     chequear(g, "parámetros de ventana y largo mínimo declarados provisionales",
              all("provisional" in pol.d["parametros"][k]["estado"]
                  for k in ("mencion_holgura_tokens", "omision_largo_minimo_tokens")))
@@ -318,6 +323,17 @@ def g3_valores_n1(ch):
              and (x.get("sujeto_mencion_modelo") or x.get("sujeto_mencion", "")).startswith("Organizaciones")
              and x.get("mencion_verificada") in ("exacta", "tokens", "no") and cont(r, "sujeto", "ambos_campos") == 1,
              f"mencion_verificada={x.get('mencion_verificada')}")
+    c11 = ch["ric::11.1.4"]
+    r = V.validar({"entities": [ent("to", "TextoOrdenado", "Régimen informativo contable", "11.1.4"),
+                                ent("e13", "Obligacion", "Deber", "11.1.4", {"descripcion": "x", "tipo": "otra"})],
+                   "relations": [rel("aplica_a", "11.1.4", source="e13", sujeto_id="Sujeto_banco",
+                                     sujeto_propuesto_padre_sugerido="Sujeto_entidad_financiera")]}, c11, forma="v3")
+    x = r["relaciones"][0] if r["relaciones"] else {}
+    chequear(g, "padre sin propuesto (ric::11.1.4, relación 15) → relación aceptada con su sujeto_id, padre "
+                "descartado con contador y original",
+             not r["rechazos"] and x.get("sujeto_id_modelo") == "Sujeto_banco" and x.get("padre_sugerido") is None
+             and x.get("padre_sugerido_crudo") == "Sujeto_entidad_financiera"
+             and cont(r, "padre_sugerido", "sin_mencion_descartado") == 1)
     c9 = ch["ext::9.1.2"]
     r = V.validar({"entities": [ent("to", "TextoOrdenado", "Exterior y cambios", "9.1.2"),
                                 ent("e1", "Operacion", "Op", "9.1.2", {"tipo": "t"})],
@@ -369,6 +385,10 @@ def g4_reglas():
         ("por un importe superior al 3%", "minimo_estricto", "simple:raiz_super"),
         ("en más de 30 días", "minimo_estricto", "simple:mas_de"),
         ("por montos mayores a $ 1.000", "minimo_estricto", "simple:mayor"),
+        ("por un monto mayor al 5%", "minimo_estricto", "simple:mayor"),
+        ("en mayor medida, el 5%", "no_determinada", "sin_marcador"),
+        ("el menor entre 1 año y el plazo residual", "maximo_inclusivo", "sin_marcador_plazo"),
+        ("el límite inferior del 3%", "no_determinada", "sin_marcador"),
         ("a tasas inferiores al 2%", "maximo_estricto", "simple:inferior"),
         ("en menos de 90 días", "maximo_estricto", "simple:menos_de"),
         ("por importes menores a USD 200", "maximo_estricto", "simple:menor"),
@@ -424,8 +444,10 @@ def g4_reglas():
     c = una("el 5%", "Se aplicará un factor de conversión del 5%.")
     chequear(g, "coeficiente desde la descripción", c.comparacion == "coeficiente" and c.fuente_marcador == "descripcion")
     cs = RC.analizar("el menor entre 1 año y el plazo residual, con un plazo mínimo de 10 días hábiles")
-    chequear(g, "dos cuantías en un tramo: cada una con su ventana",
-             len(cs) == 2 and cs[1].comparacion == "minimo_inclusivo" and cs[0].regla == "simple:menor")
+    chequear(g, "dos cuantías en un tramo: cada una con su ventana; «el menor entre 1 año» sin marcador, "
+                "plazo con máximo inclusivo y comparacion_asumida",
+             len(cs) == 2 and cs[1].comparacion == "minimo_inclusivo" and cs[0].regla == "sin_marcador_plazo"
+             and cs[0].comparacion == "maximo_inclusivo" and cs[0].comparacion_asumida is True)
     chequear(g, "precedencia: «no inferior a» (negación) sobre «inferior a» (simple)",
              una("no inferior al 8%").comparacion == "minimo_inclusivo"
              and una("inferior al 8%").comparacion == "maximo_estricto")
@@ -497,6 +519,11 @@ def g5_control(ch):
         x = [y for y in cs if y.valor == valor]
         chequear(g, f"fila {fila} → {comp} (descripción completa, camino de r2a)",
                  len(x) == 1 and x[0].comparacion == comp, "" if not x else f"{x[0].comparacion} {x[0].regla}")
+        if fila == "15":
+            uno = [y for y in cs if y.valor == "1" and y.unidad == "anios"]
+            chequear(g, "fila 15: «el menor entre 1 año» queda sin marcador, plazo con máximo inclusivo y "
+                        "comparacion_asumida",
+                     len(uno) == 1 and uno[0].regla == "sin_marcador_plazo" and uno[0].comparacion_asumida is True)
         if fila == "21":
             chequear(g, "fila 21: no dispara coeficiente (ni tramo, ni descripción, ni título del punto)",
                      all(y.regla != "coeficiente" for y in cs))
@@ -673,6 +700,14 @@ def g9_tool_schema(ch):
              tipos_items == list(M.TIPOS_ENTIDAD)
              and [t for t, x in zip(tipos_items, sch["properties"]["entities"]["items"]["anyOf"])
                   if "umbrales" in x["properties"]] == [t for t in M.TIPOS_ENTIDAD if t in M.TIPOS_CON_UMBRALES])
+    chequear(g, "otras_propiedades en las 9 formas de entidad: objeto de strings, opcional",
+             all(x["properties"].get("otras_propiedades") == {"additionalProperties": {"type": "string"},
+                                                              "description": M._DESC_OTRAS, "type": "object"}
+                 and "otras_propiedades" not in x["required"]
+                 for x in sch["properties"]["entities"]["items"]["anyOf"]))
+    chequear(g, "properties conocidas de cada tipo, cerradas (additionalProperties false)",
+             all(x["properties"]["properties"].get("additionalProperties") is False
+                 for x in sch["properties"]["entities"]["items"]["anyOf"]))
     c = ch["cla::5.1.1.1"]
     pt = "5.1.1.1"
     valido = {
@@ -702,6 +737,23 @@ def g9_tool_schema(ch):
     els = [M.ElementoUmbral.model_validate(RC.elemento_umbral(x, umb[0], "e1")) for x in RC.analizar(umb[0])]
     chequear(g, "el tramo del umbral produce un ElementoUmbral válido (mínimo estricto)",
              len(els) == 1 and els[0].comparacion == "minimo_estricto")
+    otras = json.loads(json.dumps(valido))
+    otras["entities"][1]["otras_propiedades"] = {"destinatario": "BCRA", "tipo": "x"}
+    chequear(g, "otras_propiedades: el elemento pasa el JSON Schema", v.is_valid(otras))
+    r = V.validar(otras, c, forma="r2")
+    e = r["entidades"][1] if len(r["entidades"]) > 1 else {}
+    chequear(g, "otras_propiedades → properties_no_definidas con contador; una clave definida del tipo va a "
+                "campos_no_definidos; nada se rechaza",
+             e.get("properties_no_definidas") == {"destinatario": "BCRA"}
+             and e.get("campos_no_definidos") == {"otras_propiedades.tipo": "x"}
+             and cont_(r, "claves", "otras_propiedades_a_properties_no_definidas") == 1 and not r["rechazos"])
+    clave_extra = json.loads(json.dumps(valido))
+    clave_extra["entities"][1]["properties"]["destinatario"] = "BCRA"
+    chequear(g, "clave no prevista dentro de properties: el JSON Schema la rechaza", not v.is_valid(clave_extra))
+    r = V.validar(clave_extra, c, forma="r2")
+    e = r["entidades"][1] if len(r["entidades"]) > 1 else {}
+    chequear(g, "clave no prevista dentro de properties: el validador la registra, no la descarta",
+             e.get("properties_no_definidas") == {"destinatario": "BCRA"} and not r["rechazos"])
     fuera = json.loads(json.dumps(valido))
     fuera["entities"][1]["properties"]["tipo"] = "limite_temporal"
     chequear(g, "valor fuera de lista (Restriccion.tipo limite_temporal): el JSON Schema lo rechaza",

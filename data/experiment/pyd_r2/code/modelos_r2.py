@@ -582,13 +582,20 @@ _DESC_LOCAL_ID = "Identificador local único dentro del chunk."
 _DESC_LABEL = "Etiqueta corta y canónica, contenido distintivo al principio."
 _DESC_PUNTO = "Unidad estructural que funda la entidad. Uno de los 'Puntos admitidos' del mensaje del chunk."
 _DESC_UMBRALES = "Un elemento por cuantía (monto, porcentaje, plazo, «veces»): el tramo literal."
+_DESC_OTRAS = ("Opcional: propiedades que el texto expresa y la definición del tipo no prevé "
+               "(nombre → valor). Nunca se descartan: se registran aparte.")
 
 
 class _EntidadE1(BaseModel):
+    # Las properties de cada tipo son cerradas; lo no previsto va a
+    # otras_propiedades (decisión de la autora sobre P1: L-ESQ-R2 §2 registra y
+    # nunca rechaza una clave no prevista, y un schema cerrado sin un lugar para
+    # ella hace que el modelo deje de emitirla).
     model_config = ConfigDict(extra="forbid")
     local_id: str = Field(description=_DESC_LOCAL_ID)
     label: str = Field(description=_DESC_LABEL)
     punto: str = Field(description=_DESC_PUNTO)
+    otras_propiedades: dict[str, str] = Field(default=None, description=_DESC_OTRAS)
 
 
 class ComunicacionE1(_EntidadE1):
