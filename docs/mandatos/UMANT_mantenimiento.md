@@ -48,7 +48,12 @@ Leé completos, antes de escribir una línea:
 - el precedente de empalme: la re-extracción dirigida de tres unidades de cap
   (data/experiment/reextraccion_v2/corpus_tanda0/salida_dirigida/reextraccion_dirigida.json)
   y los ensamblados sellados desde salida_dirigida/ (`1b8916c`);
-- los principios 9 (:277) y 12 (:299) del plan.
+- los principios 9 (:277) y 12 (:299) del plan;
+- para la tercera fuente del empalme (M2, punto e):
+  - data/raw/manifiesto.csv, filas `comunicacion_A` (1.666);
+  - los PDFs locales de data/raw/02_comunicaciones_A/;
+  - data/experiment/escalado_prep/inventario_tos.csv;
+  - la partición de data/experiment/segmentacion_84/b584_particion/.
 
 DECISIONES YA TOMADAS. No se re-deciden.
 1. El control de los supuestos del sitio y el aviso ante cambios son requisito (revocación del
@@ -125,11 +130,38 @@ e. Procedimiento de empalme de un subgrafo re-extraído:
        (plan, fila U-JOB-ACT);
      - la tabla de origen de las disposiciones. La tienen 90 de 152 TOs
        (reports/u_insumos_cap/estadisticas_corpus.md:222, regla R14, `ded3494`);
-     - las Comunicaciones nuevas que citan el punto que modifican. Por ejemplo, la «A» 8432,
-       cuyo texto dice «Sustituir el punto 1.3.»: ejemplo de la autora, NO VERIFICADO en el
-       repo, porque el texto de las Comunicaciones no está en el corpus. M2 diseña cómo se
-       leería esa cita y lo declara como diseño; obtener los textos de las Comunicaciones
-       exige la red y no es parte de M2;
+     - las Comunicaciones nuevas que citan el punto que modifican. Ejemplo: la Comunicación
+       «A» 8432 del 30/04/2026, página 1, dice «1. Sustituir el punto 1.3. del texto ordenado
+       sobre Proveedores de Servicios de Pago por el siguiente:». Datos:
+       - el PDF está en data/raw/02_comunicaciones_A/A8432_2026_ano_de_la_grandeza_argent.pdf
+         (sha256 `bb1d079e…`, 6 páginas) y su fila en data/raw/manifiesto.csv:1701;
+       - en la página 4 la misma Comunicación sustituye el punto 2.5;
+       - ese TO es `snp_psp` en la partición (escalado_prep/inventario_tos.csv:71), y su
+         punto 1.3 tiene 5 unidades de E0 (`snp_psp::1.3.1.1` a `snp_psp::1.3.2.2`,
+         segmentacion_84/b584_particion/snp_psp/chunks_snp_psp.json).
+
+       **Medición de la tercera fuente, USD 0 y sin red,** sobre las Comunicaciones «A»
+       guardadas en data/raw: 1.666 PDFs, fila `comunicacion_A` de manifiesto.csv. Los PDFs son
+       locales y no se versionan (.gitignore:33), así que la medición registra el sha256 de
+       cada PDF que lee. Pasos, en este orden:
+       1. **Ventana declarada antes de medir.** Por defecto, las Comunicaciones con
+          `fecha_documento` en los doce meses previos a la última de manifiesto.csv
+          (2026-05-08).
+       2. **Regex declarada antes de aplicarse,** con las fórmulas «Sustituir el punto»,
+          «Sustitúyese», «Incorpórase» y «Déjase sin efecto», y sus formas en plural. Las
+          fórmulas que aparezcan después se reportan aparte y no se suman.
+       3. **Conteo:** cuántas Comunicaciones de la ventana tienen al menos una fórmula, cuántas
+          citas hay y cuántas nombran un punto y un texto ordenado.
+       4. **Mapeo de cada cita:** del nombre del texto ordenado al TO (inventario_tos.csv,
+          `titulo_oficial`), y del punto a sus unidades en la partición
+          (segmentacion_84/b584_particion/<to>/chunks_<to>.json). Cada cita cae en una de
+          tres categorías: mapeada a TO y unidades, mapeada solo a TO, o no mapeable (con el
+          motivo).
+       5. **Caso de control:** la «A» 8432, página 1 → `snp_psp`, punto 1.3, 5 unidades.
+
+       Script data/experiment/mantenimiento/code/medir_citas_comunicaciones.py, con doble
+       corrida byte a byte idéntica. Lo que la medición no pueda decidir se marca NO DECIDIBLE,
+       sin forzar el mapeo;
    - qué hace el procedimiento con los 62 de 152 TOs sin tabla de origen: con qué fuentes
      localiza las unidades cambiadas y, si ninguna alcanza, qué re-extrae (por ejemplo, el TO
      entero), con su costo por clase según la tabla de M1;
@@ -162,6 +194,8 @@ FRENO M2:
 - la propuesta de alcance de M3 (solo el índice, o el índice y los PDFs con pedidos
   condicionales), con el número de pedidos previsto;
 - la propuesta de disparo periódico (punto f);
+- la medición de la tercera fuente (punto e): ventana y regex declaradas, conteos, citas
+  mapeadas por categoría y el caso de control de la «A» 8432;
 - el sha256 de lo escrito.
 
 M3 — Una corrida real del control contra el sitio. USD 0 de API. Solo con el ok escrito de la
@@ -185,7 +219,8 @@ REQUISITOS TRANSVERSALES (CLAUDE.md §4 a–j), en todas las etapas.
   - No se editan el plan, el checklist, el tablero, los laudos, el backlog ni scripts/.
   - No se edita data/experiment/job_actualizacion/: es de una unidad cerrada; se lee y, si
     hace falta, se importa en solo lectura.
-  - No se tocan el inventario sellado, los manifiestos ni los PDFs congelados (decisión 2).
+  - No se tocan el inventario sellado, los manifiestos ni los PDFs congelados (decisión 2), y
+    data/raw se lee en solo lectura.
   - Nada sellado se toca (CLAUDE.md §3). No commitees.
 - Python:
   - PYTHONDONTWRITEBYTECODE=1 y .venv/bin/python -B en todo Python.
@@ -217,7 +252,8 @@ CRITERIO DE ACEPTACIÓN por etapa:
   de la corrida, si la autora decide versionarla);
 - M1: la tabla y el selftest de la clave de caché coinciden fila por fila;
 - M2: con la línea de base el control sale 0 y sin aviso, y cada alteración simulada dispara
-  su aviso y solo el suyo;
+  su aviso y solo el suyo; la medición de la tercera fuente tiene la ventana y la regex
+  declaradas antes, y reproduce el caso de control de la «A» 8432;
 - M3: corrida hecha dentro del alcance aprobado, con los parámetros de cortesía;
 - el grep de convenciones, pegado aunque dé vacío.
 
