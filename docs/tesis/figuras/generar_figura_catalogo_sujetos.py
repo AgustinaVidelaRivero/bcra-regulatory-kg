@@ -21,17 +21,23 @@ Qué muestra la figura (cinco piezas):
   4. Instancias: `Organismos públicos` con BCRA y SEFyC colgando por
      `instancia_de`, más un nodo colapsado con las 5 restantes. Forma propia
      (píldora), distinta de las clases.
-  5. La indirección: el rol de alcance «Sujetos obligados (Protección de
-     usuarios)» dibujado FUERA del árbol, con las aristas `miembro_de` que
-     entran desde las clases que lo componen, y una norma real del TO de
-     Protección apuntándolo con `aplica_a`. El camino
-     norma → rol → clase → subclase se sigue con el dedo.
+  5. La indirección: el rol de alcance «Obligados a clasificar deudores
+     (Clasificación)» dibujado FUERA del árbol, con las aristas `miembro_de`
+     que entran desde las clases dibujadas que lo componen, y la obligación
+     del punto 1.1 del TO de Clasificación de deudores («Clasificación de
+     clientes según calidad de obligados») apuntándolo con `aplica_a`. El
+     camino norma → rol → clase → subclase se sigue con el dedo.
 
-Poda declarada (regla del mandato: podar antes que achicar la tipografía):
-  el rol tiene 7 miembros y se dibujan 5; los 2 restantes (PSPCP y PSI) caen
-  dentro del nodo colapsado «+15 clases» de `Sujetos regulados`. El propio
-  rol lo declara en su caja («7 miembros · 5 dibujados»). De las 7 instancias
-  se dibujan 2 y se declaran 5.
+Versión 4: el camino resaltado pasa del ejemplo de Protección de usuarios al
+de Clasificación de deudores, el ejemplo que recorre la tesis. El árbol, las
+ramas colapsadas y la leyenda no cambian.
+
+Poda declarada (regla: podar antes que achicar la tipografía): el rol tiene
+  6 miembros y se dibujan los 3 que ya son clases dibujadas del árbol; los 3
+  restantes (Sociedades de garantía recíproca, Fondos de garantía de carácter
+  público y PSCPP) caen dentro del nodo colapsado «+15 clases» de `Sujetos
+  regulados`. El propio rol lo declara en su caja («6 miembros · 3
+  dibujados»). De las 7 instancias se dibujan 2 y se declaran 5.
 
 Distinción en blanco y negro (el informe se imprime sin color): las tres
 formas de entrada del catálogo se diferencian por FORMA y TRAZO, no por
@@ -109,12 +115,15 @@ for _i, _n in enumerate(CADENA):
         f"la cadena citada no es la del artefacto en {_n}: padre real "
         f"{ENTRADAS[_n].get('padre')!r}, esperado {_esperado!r}")
 
-ROL = "Sujeto_rol_sujeto_obligado_proteccion"
-assert len(ROLES[ROL]["miembros"]) == 7
+ROL = "Sujeto_rol_obligado_a_clasificar_clasificacion"
+assert len(ROLES[ROL]["miembros"]) == 6
+assert ROLES[ROL]["to"] == "TO_clasificacion_deudores_actual.pdf"
 
-# Norma real del TO de Protección de usuarios que apunta al rol con aplica_a.
-NORMA = ("Obligacion_se_debera_dar_a_estos_usuarios_la_opcion_de_obtener_en_"
-         "sistema_braille_la_docume_c53a37")
+# Norma real del TO de Clasificación de deudores (punto 1.1) que apunta al rol
+# con aplica_a. Su etiqueta y su procedencia se assertan en §3, contra el kg.
+NORMA = ("Obligacion_los_clientes_de_la_entidad_tanto_residentes_en_el_pais_"
+         "de_los_sectores_publico_y_e1946e")
+NORMA_LABEL_ESPERADA = "Clasificación de clientes según calidad de obligados"
 
 CLASES_DIBUJADAS = [
     "Sujeto_sujeto",
@@ -165,7 +174,7 @@ INSTANCIAS_COLAPSADAS = [i for i in INSTANCIAS if i not in INSTANCIAS_DIBUJADAS]
 assert len(INSTANCIAS_DIBUJADAS) + len(INSTANCIAS_COLAPSADAS) == 7
 MIEMBROS_NO_DIBUJADOS = [m for m in ROLES[ROL]["miembros"]
                          if m not in MIEMBROS_DIBUJADOS]
-assert len(MIEMBROS_DIBUJADOS) + len(MIEMBROS_NO_DIBUJADOS) == 7
+assert len(MIEMBROS_DIBUJADOS) + len(MIEMBROS_NO_DIBUJADOS) == len(ROLES[ROL]["miembros"])
 # Los miembros no dibujados tienen que estar DENTRO de algún grupo colapsado:
 # la figura no pierde ninguno, los declara.
 assert all(m in set(_union) for m in MIEMBROS_NO_DIBUJADOS)
@@ -181,6 +190,11 @@ _cnt = collections.Counter(e["relation"] for e in _kg["edges"])
 for _rel, _n in (("subclase_de", 57), ("instancia_de", 7),
                  ("miembro_de", 17), ("parte_de", 1)):
     assert _cnt[_rel] == _n, f"kg vigente: {_rel} = {_cnt[_rel]}, esperado {_n}"
+
+# El rol tiene en el grafo exactamente los miembros que declara el catálogo.
+assert ({s for s, r, t in ARISTAS_KG if r == "miembro_de" and t == ROL}
+        == set(ROLES[ROL]["miembros"])), (
+    "los miembro_de del rol en el kg no coinciden con el catálogo")
 
 # Aristas EXPLÍCITAS (un trazo dibujado = una arista del grafo).
 ARISTAS_EXPLICITAS: list[tuple[str, str, str]] = []
@@ -248,10 +262,15 @@ assert NORMA in NODOS_KG and NODOS_KG[NORMA]["type"] == "Obligacion"
 assert ROL in NODOS_KG and NODOS_KG[ROL]["label"] == ROLES[ROL]["label"]
 
 _pn = NODOS_KG[NORMA]["provenance"]
+NORMA_TIPO = NODOS_KG[NORMA]["type"]
 NORMA_LABEL = NODOS_KG[NORMA]["label"]
 NORMA_PUNTO = _pn["punto"]
 NORMA_PAGS = _pn["paginas"]
 ROL_PUNTO = ROLES[ROL]["provenance"]["location"]
+# La norma es la obligación del punto 1.1 del TO de Clasificación de deudores.
+assert NORMA_LABEL == NORMA_LABEL_ESPERADA, f"etiqueta de la norma: {NORMA_LABEL!r}"
+assert (_pn["to"], _pn["archivo"], NORMA_PUNTO) == (
+    "cla", "TO_clasificacion_deudores_actual.pdf", "1.1"), f"procedencia: {_pn}"
 
 # ========================================================================== #
 # 4. Estilo                                                                  #
@@ -480,8 +499,10 @@ nueva("ROL", "rol", ROLES[ROL]["label"],
       [f"{len(ROLES[ROL]['miembros'])} miembros · "
        f"{len(MIEMBROS_DIBUJADOS)} dibujados"],
       C_ROL, "rol")
+# El tipo va como identificador del esquema, sin tilde («Obligacion»), igual
+# que en F1; la etiqueta de la norma es la del grafo, en castellano.
 nueva("NORMA", "norma", NORMA_LABEL,
-      [f"Obligación · punto {NORMA_PUNTO}"], C_NORMA, "norma")
+      [f"{NORMA_TIPO} · punto {NORMA_PUNTO}"], C_NORMA, "norma")
 
 # ========================================================================== #
 # 6. Geometría                                                               #
@@ -966,7 +987,7 @@ comb("Sujeto_proveedor_no_financiero_de_credito",
 comb("Sujeto_banco", ["Sujeto_banco_comercial"], X_SUB_34, "subclase_de",
      rotular=True)
 
-# miembro_de: los 5 miembros dibujados → tronco → rol
+# miembro_de: los miembros dibujados → tronco → rol
 _c2 = [m for m in MIEMBROS_DIBUJADOS if CAJAS[m].col == 2]
 _c3 = [m for m in MIEMBROS_DIBUJADOS if CAJAS[m].col == 3]
 assert len(_c2) + len(_c3) == len(MIEMBROS_DIBUJADOS)
@@ -1262,9 +1283,11 @@ print(f"  roles       1 dibujado de {len(ROLES)} del catálogo; "
       f"miembros {len(MIEMBROS_DIBUJADOS)} dibujados + "
       f"{len(MIEMBROS_NO_DIBUJADOS)} declarados = "
       f"{len(ROLES[ROL]['miembros'])}")
-print("  miembros NO dibujados (dentro de «+15 clases»):")
+print("  miembros NO dibujados (y el nodo colapsado que los contiene):")
 for m in MIEMBROS_NO_DIBUJADOS:
-    print(f"      {ENTRADAS[m]['label']}")
+    _g = next(p for p in GRUPOS if m in GRUPOS[p])
+    print(f"      {ENTRADAS[m]['label']}  ->  «+{len(GRUPOS[_g])} clases» "
+          f"de {ENTRADAS[_g]['label']}")
 print()
 print("CAMINO RESALTADO (5 nodos, 4 aristas; cadena verificada)")
 for _n in CAMINO_NODOS:

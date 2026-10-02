@@ -7,6 +7,8 @@ dominio ampliado). Mismo script, layout y convenciones que F1
 (`figura_esquema_partida.svg`), para compararlas lado a lado; lo agregado en
 la validación va resaltado.
 
+**Nota (02/10/2026):** desde la versión 2 de F1 los trazados de F1 y F1b ya no son idénticos (las cajas siguen en las mismas posiciones; ver `LEEME_figura_esquema_partida.md`); F1b se regenera con el mismo criterio cuando se escriba la sección del esquema congelado.
+
 GENERADA POR SCRIPT desde los artefactos sellados, nunca dibujada a mano. El
 script IMPORTA `prompt_congelado.py`; esa importación ejecuta los candados de
 la cadena sellada (hash del prefijo v2 `2c1b76d1685d`, anclas únicas de los
