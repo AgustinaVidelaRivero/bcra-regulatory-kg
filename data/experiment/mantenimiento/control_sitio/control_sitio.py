@@ -466,9 +466,29 @@ def escribir_aviso(destino: Path, rotos: list[dict], contexto: dict) -> None:
     destino.write_text("\n".join(lineas), encoding="utf-8")
 
 
+def parametros_distintos(base: dict) -> dict:
+    """Regex y tolerancias del código importado contra las de la línea de
+    base. E0 y el job pueden editarse en otras unidades: si cambian, medir con
+    ellos compararía peras con manzanas."""
+    actuales = {"re_portada_lib_job": L.RE_PORTADA.pattern, "re_pie_lib_job": L.RE_PIE.pattern,
+                "re_pie_e0": [p.pattern for p in E0.RE_PIE], "tol_top_e0": E0.TOL_TOP,
+                "paginas_cabecera": L.PAGS_CABECERA, "paginas_muestra": L.PAGS_MUESTRA}
+    return {k: {"linea_base": base["parametros"].get(k), "codigo": v}
+            for k, v in actuales.items() if base["parametros"].get(k) != v}
+
+
 def controlar(indice: Path, pdfs: Path | None, salida: Path, linea_base: Path,
               remedir_todo: bool = False) -> int:
     base = json.loads(linea_base.read_text(encoding="utf-8"))
+    distintos = parametros_distintos(base)
+    if distintos:
+        salida.mkdir(parents=True, exist_ok=True)
+        (salida / "resultado_control.json").write_text(json.dumps(
+            {"veredicto": "FRENO_PARAMETROS", "parametros_distintos": distintos},
+            ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+        print("FRENO: las regex o tolerancias del código no son las de la línea de base: "
+              + json.dumps(distintos, ensure_ascii=False), file=sys.stderr)
+        return 2
     datos = indice.read_bytes()
     med = medir_indice(datos)
     estado, rotos = comparar_indice(med, base["supuestos"])
@@ -531,6 +551,8 @@ def main() -> int:
         print("FRENO: falta el índice, la línea de base o el directorio de PDFs.", file=sys.stderr)
         return 2
     codigo = controlar(a.indice, a.pdfs, a.salida, a.linea_base, a.remedir_todo)
+    if codigo == 2:
+        return 2
     res = json.loads((a.salida / "resultado_control.json").read_text(encoding="utf-8"))
     print("veredicto:", res["veredicto"], "|", json.dumps(res["estado_por_supuesto"], ensure_ascii=False))
     return codigo

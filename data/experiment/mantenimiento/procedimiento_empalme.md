@@ -129,14 +129,15 @@ de las 101 claves de pro, en E1 y en E3 (selftest de M1, V24).
     pro tienen firmas distintas;
   - de las 42 claves que no están en la caché, las 42 tienen la firma de una
     unidad vieja, y 0 son contenido nuevo.
-- **Qué se hace con eso**, dos opciones, a decidir por la autora:
-  - (a) re-extraer igual las 42, USD 0,70 de referencia;
-  - (b) reutilizar la salida guardada de esas unidades y renumerar en código
-    los `punto` de su provenance (principio 12), USD 0.
-
-  La opción (b) deja en el grafo salidas extraídas con un request que ya no
-  coincide con el texto de E0 de la release. Por eso no la implemento: pide
-  laudo.
+- **Qué se hace con eso** (decisión de la autora del 02/10/2026): **se
+  re-extrae.** Las unidades renumeradas pasan por E1 y E3 como cualquier
+  unidad cuya clave no está en la caché; la firma de contenido sirve para
+  declarar en la release que su contenido no cambió, no para evitar el pago.
+- **Alternativa escrita para U-SUBGRAFO, que pide laudo:** reutilizar la
+  salida guardada de esas unidades y renumerar en código los `punto` de su
+  provenance (principio 12), a USD 0. Deja en el grafo salidas extraídas con
+  un request que ya no coincide con el texto de E0 de la release, por eso no
+  se aplica sin laudo y no la implemento.
 - **Límite:** si la fuente actualiza las remisiones internas («ver punto
   2.4») de otras unidades, esas unidades cambiaron de verdad: su firma no
   coincide y se re-extraen.
@@ -270,6 +271,21 @@ Resultado (`citas_comunicaciones.json`, dos corridas byte a byte idénticas):
     ordenado (`citas_comunicaciones.json`, campo `segmento` de cada cita).
 
   No cambié la regla después de ver estos casos.
+
+  **[Fe de erratas, 02/10/2026.]** La causa que atribuí a las 11 citas de
+  `rdbcra` es errónea. Sus segmentos traen el título completo, segunda parte
+  incluida («… y Tramitación de Sumarios …»). Lo que impidió el mapeo fue un
+  guion de fin de línea dentro del título («Cen- tral» y otros cortes), la
+  misma causa que en `rrci`.
+  - Medido con la segunda medición (sección 8,
+    `citas_comunicaciones_2.json`): con el guion unido, las 11 se mapean por
+    el título completo.
+  - Las 14 no mapeables de esta primera medición quedan así: 12 por guion de
+    fin de línea (11 de `rdbcra` y 1 de `rrci`) y 2 por el Anexo de una
+    Comunicación.
+  - Causa del error: leí los segmentos cortados a 150 caracteres y no
+    verifiqué el resto.
+  - La primera medición no cambia: este párrafo corrige solo la explicación.
 - **Fórmulas de descubrimiento, aparte y sin sumar:** «incorporar» 126,
   «reemplazar» 62, «sustituir» fuera de la fórmula declarada 16, «dejar sin
   efecto» 13, «modificar» 13, «eliminar» 4, «agregar» 2, «suprimir» 2,
@@ -279,3 +295,75 @@ Resultado (`citas_comunicaciones.json`, dos corridas byte a byte idénticas):
   1.3, con 5 unidades: `snp_psp::1.3.1.1`, `1.3.1.2`, `1.3.2::intro`,
   `1.3.2.1` y `1.3.2.2`. La página 4 de la misma Comunicación se mapea al
   punto 2.5, también con 5 unidades.
+
+## 8. Segunda medición de la tercera fuente (M3, USD 0, sin red)
+
+Declaración: `declaracion_citas_comunicaciones_2.json` (sha256 `0d5d5ee6…`).
+- La escribí y le tomé el sha antes de escribir el script, que la lee tal cual
+  y deja su sha en la salida.
+- Misma ventana, mismo segmento, misma lectura del punto, mismas categorías y
+  mismo caso de control que la primera.
+- Cambian dos cosas:
+  - las fórmulas: las cuatro de la primera más los nueve infinitivos que la
+    primera había reportado aparte; un solapamiento cuenta una vez, con la
+    fórmula de la primera;
+  - el nombre del TO: se une el guion de fin de línea, y un título compuesto
+    («… ) y …») se acepta por su primera parte si es inequívoca. Solo
+    `rdbcra` es compuesto, y su primera parte se aceptó sin conflictos.
+- La primera medición no se tocó: `citas_comunicaciones.json` mantiene su
+  sha256 `0c034a43…`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B data/experiment/mantenimiento/code/medir_citas_comunicaciones_2.py --out data/experiment/mantenimiento/citas_comunicaciones_2.json
+```
+
+Resultado (`citas_comunicaciones_2.json`, dos corridas byte a byte idénticas),
+las dos mediciones al lado:
+
+| | Primera | Segunda |
+|---|---:|---:|
+| Comunicaciones con al menos una fórmula (de 195) | 8 | 145 |
+| Citas | 21 | 260 (21 con fórmulas de la primera + 239 con infinitivos) |
+| Citas que nombran punto y TO | 7 | 64 |
+| Mapeadas a TO y unidades | 7 | 60 |
+| Mapeadas solo a TO | 0 | 31 |
+| No mapeables | 14 | 160 |
+| No decidibles | 0 | 9 |
+
+Desgloses de la segunda medición:
+- **Por origen de la fórmula.**
+  - Las 21 citas de las fórmulas de la primera: 19 a TO y unidades y 2 no
+    mapeables. Las 2 son las del Anexo de una Comunicación.
+  - Las 239 de los infinitivos: 41 a TO y unidades, 31 solo a TO, 158 no
+    mapeables y 9 no decidibles.
+- **Por mayúscula inicial del verbo** (desglose declarado, no filtra).
+  - 88 citas con mayúscula: 56 a TO y unidades, 15 solo a TO, 14 no
+    mapeables y 3 no decidibles.
+  - 172 con minúscula: 4 a TO y unidades, 16 solo a TO, 146 no mapeables y 6
+    no decidibles.
+
+  Casi todo lo que se mapea viene de ítems dispositivos («1. Incorporar …»);
+  el verbo en minúscula es en su mayoría prosa sin texto ordenado.
+- **Por grupo.**
+  - Corpus de 152: 47 a TO y unidades y 25 solo a TO.
+  - Desarrollo: 13 a TO y unidades (`ext` 9 y `cap` 4) y 6 solo a TO (`ext` 3
+    y `cap` 3). `cla` y `ric` no aparecen.
+- **Primera parte del título compuesto:** mapea 1 cita (la «A» 8415, página
+  1). Las 11 de `rdbcra` que la primera medición no mapeaba se resuelven por
+  el guion unido (sección 7, fe de erratas).
+
+Motivos de lo que sigue sin mapear en la segunda medición:
+- No mapeables (160):
+  - 98: la oración no nombra un texto ordenado;
+  - 62: nombra un texto ordenado o normas que no están entre los títulos del
+    inventario.
+- No decidibles (9): más de un TO en la misma oración, por ejemplo `efemin`
+  con `finsec`, o `cirmo3` con `docvig`. La lista completa está en la clave
+  `motivos`.
+- Solo a TO (31):
+  - 17: sin numeral de punto;
+  - 10: cita de sección;
+  - 4: ningún numeral tiene unidades en la partición.
+
+**Caso de control:** la «A» 8432, página 1, sigue dando `snp_psp`, punto
+1.3, con 5 unidades.
