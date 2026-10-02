@@ -24,11 +24,16 @@ Salida (por defecto ./salida/):
                          declaradas; en el subset de desarrollo no se emite
                          (0 unidades sobre el umbral) y la salida es
                          byte-idéntica a la histórica
+  tablas_<to>.json       SOLO con --version-e0 e0-r2 (U-R2-CODIGO): tablas
+                         lógicas de e0_tablas y de R-TC2, guarda de recuadro,
+                         líneas de E0 asignadas y chunk dueño de cada una
+  version_e0.json        SOLO con --version-e0 e0-r2
 """
 
 from __future__ import annotations
 
 import argparse
+import collections
 import copy
 import hashlib
 import json
@@ -160,7 +165,8 @@ def _sub_chunks_de(c: dict, part: dict) -> list[dict]:
 
 
 def subdividir_unidades_grandes(chunks: list[dict],
-                                umbral: int = UMBRAL_CHARS_SUBCHUNK) -> tuple[list[dict], dict]:
+                                umbral: int = UMBRAL_CHARS_SUBCHUNK,
+                                no_partir: frozenset = frozenset()) -> tuple[list[dict], dict]:
     """Aplica la partición a los chunks terminales cuyo texto propio EXCEDE el
     umbral (estricto). Los demás pasan tal cual (mismos objetos: con 0
     unidades sobre el umbral la salida serializada es byte-idéntica).
@@ -171,6 +177,14 @@ def subdividir_unidades_grandes(chunks: list[dict],
     for c in chunks:
         if c.get("tipo") == "mini_chunk" or c["chars_propio"] <= umbral:
             out.append(c)
+            continue
+        if c["id"] in no_partir:
+            # e0-r2 (U-R2-CODIGO): partir por ítems podría cortar un bloque de
+            # tabla serializada; la unidad se declara y no se parte
+            out.append(c)
+            no_particionables.append({
+                "id": c["id"], "chars_propio": c["chars_propio"],
+                "motivo": "tabla_serializada"})
             continue
         part = _particionar_texto(c["texto"])
         if part is None:
@@ -196,6 +210,618 @@ def subdividir_unidades_grandes(chunks: list[dict],
     return out, reporte
 
 
+# ------------------------------------------- tablas en E0, versión e0-r2
+# U-R2-CODIGO, etapa R1 (laudo de la release r2, §1.3; L-ESQ-R2 §1.4).
+# Nada de esta sección corre con la versión legada de E0 ("e0-v1", el
+# default): `correr` la invoca solo con `--version-e0 e0-r2`, y e0_tablas se
+# importa dentro de las funciones, así que la salida legada es byte-idéntica
+# a la sellada. La sección vive en este driver y no en e0_lib para conservar
+# la garantía estructural de B5.8.3 (selftest_b583, A3: e0_lib no conoce a
+# e0_tablas).
+#
+# R1.a — DETECCIÓN. Dos fuentes de tablas lógicas, con la misma forma de
+# artefacto que e0_tablas.parsear_to:
+#   (1) e0_tablas.parsear_to (B5.8.3), importado SIN editarse;
+#   (2) R-TC2, detección propia de tablas de dos filas: una tabla de
+#       `find_tables()` (settings por defecto, los de e0_tablas) que R-TC
+#       descarta SOLO por `min_filas`, con exactamente 2 filas, que pasaría
+#       R-TC si tuviera 3 (≥ 2 columnas, fuera de las zonas de banner y de
+#       pie) y cuya segunda fila tiene al menos MIN_CELDAS_NUMERICAS_FILA2
+#       celdas numéricas (e0_tablas._es_numerica). Casos que la motivan: los
+#       cuadros de ponderadores de cap (encabezado de calificaciones + fila de
+#       ponderadores), que R-TC descarta por tener 2 filas y que el patrón de
+#       E0 no marca. La guarda numérica excluye el banner «B.C.R.A.» (2 filas
+#       sin cifras), que de otro modo pasaría. A las tablas de R-TC2 se les
+#       aplican R-ENC, R-COL, R-VERIF y R-NOTA de e0_tablas, sin cambios.
+# Guarda G-RECUADRO: una tabla lógica cuyos caracteres no blancos están, en
+#   una fracción ≥ FRAC_RECUADRO_PROSA, en filas con una sola celda no vacía
+#   es un recuadro de prosa (texto corrido dentro de un marco), no una tabla:
+#   no marca el chunk y no se serializa; queda registrada con su fracción.
+# Asignación: geométrica. Una línea de E0 pertenece a un segmento de tabla si
+#   está en su página y su `top` cae en [y0 − TOL_TOP_TABLA, y1 − TOL_TOP_TABLA]
+#   del bbox; el segmento se asigna al chunk que es dueño de esas líneas.
+#   Un segmento sin líneas de E0 (páginas fuera del cuerpo, banners de página)
+#   queda sin chunk y se registra.
+# Marca: un chunk con al menos una tabla asignada que no es recuadro recibe
+#   `flags.contenido_tabular = True` y las claves de la marca F (abajo); la
+#   evidencia textual de la heurística de E0 no se toca.
+
+VERSION_E0_LEGADA = "e0-v1"
+VERSION_E0_R2 = "e0-r2"
+VERSIONES_E0 = (VERSION_E0_LEGADA, VERSION_E0_R2)
+
+MIN_CELDAS_NUMERICAS_FILA2 = 2
+FRAC_RECUADRO_PROSA = 0.75
+TOL_TOP_TABLA = 2.0
+
+
+def _consolidar_tabla_r2(t: dict, e0t) -> None:
+    """Consolidación de una tabla lógica de R-TC2 con las mismas reglas que
+    e0_tablas.parsear_to aplica a las suyas (R-ENC, R-COL, R-VERIF)."""
+    seg0 = t["segmentos"][0]
+    t["n_cols"] = seg0["n_cols"]
+    t["encabezado"] = e0t.detectar_encabezado(seg0["filas"])
+    causas = []
+    colapsos = []
+    for s in t["segmentos"]:
+        d = e0t.detectar_colapso(s["filas"])
+        if d:
+            d["pagina"] = s["pagina"]
+            colapsos.append(d)
+    if colapsos:
+        causas.append("alineacion_no_confiable")
+    pct_max = max(s["verificacion"]["pct_perdida"] for s in t["segmentos"])
+    if pct_max > e0t.UMBRAL_PERDIDA_NO_CONFIABLE:
+        causas.append("perdida_reconstruccion")
+    t["declaraciones"] = {"colapsos": colapsos, "pct_perdida_max": pct_max}
+    t["estado"] = "declarada" if causas else "parseada"
+    t["causas"] = causas
+
+
+def detectar_tablas_dos_filas(pdf_path: Path, to: str) -> list[dict]:
+    """R-TC2 (ver el comentario de la sección). Devuelve tablas lógicas de un
+    solo segmento, con ids `<to>::tabla2f<NNN>` (espacio propio, distinto del
+    de e0_tablas)."""
+    import e0_tablas as e0t  # noqa: PLC0415 — solo en la versión e0-r2
+    import pdfplumber  # noqa: PLC0415
+
+    tablas: list[dict] = []
+    with pdfplumber.open(str(pdf_path)) as pdf:
+        for pi, page in enumerate(pdf.pages, start=1):
+            alto = float(page.height)
+            palabras = None
+            for ti, tb in enumerate(page.find_tables()):
+                filas = tb.extract()
+                n_filas = len(filas)
+                n_cols = max((len(f) for f in filas), default=0)
+                es_tc, motivo = e0t.clasificar_tabla_contenido(
+                    n_filas, n_cols, tb.bbox, alto)
+                if es_tc or motivo != "min_filas" or n_filas != 2:
+                    continue
+                pasaria, _ = e0t.clasificar_tabla_contenido(
+                    e0t.MIN_FILAS_TC, n_cols, tb.bbox, alto)
+                if not pasaria:
+                    continue
+                if sum(1 for c in filas[1] if e0t._es_numerica(c)) \
+                        < MIN_CELDAS_NUMERICAS_FILA2:
+                    continue
+                if palabras is None:
+                    palabras = page.extract_words()
+                seg = {
+                    "pagina": pi,
+                    "indice_en_pagina": ti,
+                    "bbox": [round(v, 1) for v in tb.bbox],
+                    "frac_inicio": round(tb.bbox[1] / alto, 3),
+                    "frac_fin": round(tb.bbox[3] / alto, 3),
+                    "n_filas": n_filas,
+                    "n_cols": n_cols,
+                    "filas": filas,
+                    "filas_encabezado_repetido": [],
+                    "verificacion": e0t.verificar_reconstruccion(palabras, tb.bbox, filas),
+                    "notas_pie": e0t.notas_al_pie(palabras, tb.bbox, filas),
+                }
+                t = {"id": f"{to}::tabla2f{len(tablas):03d}", "segmentos": [seg]}
+                _consolidar_tabla_r2(t, e0t)
+                tablas.append(t)
+    return tablas
+
+
+def fraccion_recuadro(tabla: dict) -> float:
+    """G-RECUADRO: fracción de caracteres no blancos de la tabla que están en
+    filas con una sola celda no vacía."""
+    total = 0
+    en_una = 0
+    for s in tabla["segmentos"]:
+        for f in s["filas"]:
+            llenas = [c for c in f if (c or "").strip()]
+            n = sum(1 for c in f for ch in (c or "") if not ch.isspace())
+            total += n
+            if len(llenas) == 1:
+                en_una += n
+    return round(en_una / total, 4) if total else 0.0
+
+
+def tablas_de_to_r2(pdf_path: Path, to: str) -> dict:
+    """Tablas lógicas de un TO para la versión e0-r2: las de e0_tablas y las
+    de R-TC2, cada una con su origen y la guarda G-RECUADRO aplicada."""
+    import e0_tablas as e0t  # noqa: PLC0415 — solo en la versión e0-r2
+
+    art = e0t.parsear_to(pdf_path, to)
+    tablas = []
+    for t in art["tablas_logicas"]:
+        t["origen"] = "e0_tablas"
+        tablas.append(t)
+    for t in detectar_tablas_dos_filas(pdf_path, to):
+        t["origen"] = "r_tc2"
+        tablas.append(t)
+    for t in tablas:
+        frac = fraccion_recuadro(t)
+        t["recuadro_prosa"] = {"fraccion": frac,
+                               "es_recuadro": frac >= FRAC_RECUADRO_PROSA}
+    return {"to": to,
+            "conteos_e0_tablas": art["conteos"],
+            "descartadas_por_regla_e0_tablas": art["descartadas_por_regla"],
+            "costuras_candidatas_e0_tablas": art["costuras_candidatas"],
+            "tablas": tablas}
+
+
+def asignar_lineas_a_tablas(res: E0.ResultadoParseo, tablas_to: dict,
+                            roles: list[str]) -> None:
+    """Asignación geométrica (ver el comentario de la sección): agrega a cada
+    segmento la lista `_lineas` (objetos Linea del árbol, en orden
+    documental; la clave con guion bajo no se serializa) y el rol de E0 de
+    su página (`rol_pagina`), que explica los segmentos sin líneas."""
+    por_pagina: dict[int, list[E0.Linea]] = {}
+    for l, _ in E0._recolectar_orden_documental(res):
+        por_pagina.setdefault(l.pagina, []).append(l)
+    for t in tablas_to["tablas"]:
+        for s in t["segmentos"]:
+            y0, y1 = s["bbox"][1], s["bbox"][3]
+            s["_lineas"] = [l for l in por_pagina.get(s["pagina"], [])
+                            if y0 - TOL_TOP_TABLA <= l.top <= y1 - TOL_TOP_TABLA]
+            s["rol_pagina"] = roles[s["pagina"] - 1]
+
+
+def asignar_tablas_a_chunks(chunks: list[dict], lineas_por_chunk: list[list[E0.Linea]],
+                            tablas_to: dict) -> None:
+    """Asigna cada segmento al chunk dueño de sus líneas (`chunks` del segmento
+    y de la tabla) y decide la marca: tabla con chunk que no es recuadro."""
+    dueno: dict[int, int] = {}
+    for i, ls in enumerate(lineas_por_chunk):
+        for l in ls:
+            dueno[id(l)] = i
+    for t in tablas_to["tablas"]:
+        indices_tabla: list[int] = []
+        for s in t["segmentos"]:
+            idx = sorted({dueno[id(l)] for l in s["_lineas"] if id(l) in dueno})
+            s["chunks"] = [chunks[i]["id"] for i in idx]
+            for i in idx:
+                if i not in indices_tabla:
+                    indices_tabla.append(i)
+        t["_indices_chunk"] = indices_tabla
+        t["chunks"] = [chunks[i]["id"] for i in indices_tabla]
+        t["marca"] = bool(indices_tabla) and not t["recuadro_prosa"]["es_recuadro"]
+
+
+# R1.c — SERIALIZACIÓN (formato aprobado en el freno intermedio de R1:
+# data/experiment/r2_codigo/r1_freno_intermedio.md §3, con los agregados E y
+# F de la aprobación). Cada tabla serializada reemplaza, en el texto del
+# chunk y en la herencia que lo contiene, la corrida contigua de líneas de E0
+# de su bbox por un bloque:
+#   [TABLA <id> | página <p> | <e0_tablas o R-TC2> | <columnas o posicional>]
+#   Rótulo: …              (solo modo columnas: fila de encabezado cuya primera
+#                           celda abarca toda la fila)
+#   Columnas: h1 | h2 | …  (solo modo columnas)
+#   Fila k: clave = valor | clave = valor
+#   [FIN TABLA <id>]
+# Modo columnas si la zona de encabezado (filas anteriores a la primera con
+# una celda numérica o de código, de 1 a MAX_FILAS_ENCABEZADO filas) no tiene
+# celdas None fuera de los rótulos ni « = » en un encabezado; la clave es el
+# texto del encabezado de la columna (o `colN` si no tiene). Si no, modo
+# posicional: todas las filas, también las de encabezado, con clave `colN`.
+# Celdas vacías y filas sin contenido propio se omiten; una celda multilínea
+# se escribe con sus fragmentos unidos por un espacio (sin des-silabear).
+# E — celdas combinadas en filas de datos: una celda None de una fila de
+# datos cubierta, según la geometría de celdas de pdfplumber, por una celda
+# que empieza en una fila anterior se escribe con el valor de esa celda y
+# MARCA_COMBINADA con el número de fila del bloque donde empieza. La celda
+# que la cubre se busca por el punto de la esquina de la celda faltante; si no
+# hay exactamente una, la geometría no determina la combinación y la tabla no
+# se serializa. Una combinación horizontal (empieza en la misma fila) se
+# omite. Las filas de subtítulo internas (sin celdas numéricas ni de código,
+# después de la primera fila de datos) no se propagan: se cuentan.
+# No se serializa (la tabla queda marcada y su texto de E0 intacto) si:
+# e0_tablas la declaró; R-VERIF da caracteres perdidos; las líneas de E0
+# tienen caracteres que no están en las celdas; tiene una celda multilínea
+# toda numérica (filas colapsadas); una celda contiene «|»; cae en más de un
+# chunk; sus líneas no son contiguas o no están en un solo nodo de E0; la
+# geometría no determina una combinación; la tabla re-detectada no coincide.
+# En la herencia (decisión D: el bloque de un mini-chunk viaja igual en la
+# herencia de sus descendientes), un segmento absorbido entero por un bloque
+# que empieza en un segmento anterior no genera tramo.
+# Verificaciones por tabla serializada: V1 relectura del bloque contra las
+# celdas, descontando los valores propagados; V2 R-VERIF sin pérdida; V3
+# multiconjunto de las líneas de E0 reemplazadas contenido en el de las
+# celdas y en el del bloque. V4 (chunks sin tabla serializada iguales a la
+# versión legada) lo comprueba el censo de la unidad sobre la salida.
+# F — marca: `contenido_tabular` = hay tabla detectada; cada entrada de
+# `flags.tablas_e0` lleva `serializada` y `bloque` (id del bloque o None);
+# `flags.contenido_tabular_residual` = queda contenido tabular fuera de los
+# bloques (una tabla marcada sin serializar, o la heurística legada de E0,
+# con sus mismos umbrales, sobre las líneas del chunk que no caen en un
+# bloque). Las dos claves nuevas van solo en los chunks con tabla marcada:
+# en los demás, el chunk es idéntico al de la versión legada.
+
+SEP_PAR = " | "
+SEP_CLAVE = " = "
+MARCA_COMBINADA = "⟨combinada con fila {}⟩"
+RE_MARCA_COMBINADA = re.compile(r" ⟨combinada con fila (\d+)⟩$")
+MAX_FILAS_ENCABEZADO = 4
+RE_CODIGO_DATO = re.compile(r"^\d{3}")
+EPS_GEOMETRIA = 0.5
+RE_FILA_BLOQUE = re.compile(r"^Fila (\d+): (.*)$")
+
+
+def _txc(c) -> str:
+    return (c or "").strip()
+
+
+def _celda(c) -> str:
+    return " ".join(f.strip() for f in _txc(c).split("\n") if f.strip())
+
+
+def _chars(textos) -> collections.Counter:
+    return collections.Counter(ch for t in textos for ch in (t or "") if not ch.isspace())
+
+
+def _es_dato(c, e0t) -> bool:
+    t = _txc(c)
+    return bool(t) and (e0t._es_numerica(t) or bool(RE_CODIGO_DATO.match(t)))
+
+
+def _multilinea_numerica(c, e0t) -> bool:
+    fr = [f.strip() for f in _txc(c).split("\n") if f.strip()]
+    return len(fr) >= 2 and all(e0t.RE_NUMERICO.match(f) for f in fr)
+
+
+def _geometria_segmento(page, seg: dict) -> dict | None:
+    """Para cada celda None del segmento, (fila, col) → (tipo, fila_origen):
+    tipo 'vertical' (la cubre una celda que empieza en una fila anterior),
+    'horizontal' (empieza en la misma fila) o 'indeterminada'. None si la
+    tabla re-detectada en la página no reproduce las filas del artefacto."""
+    tablas = page.find_tables()
+    if seg["indice_en_pagina"] >= len(tablas):
+        return None
+    tb = tablas[seg["indice_en_pagina"]]
+    if tb.extract() != seg["filas"]:
+        return None
+    xs = sorted({c[0] for c in tb.cells})
+    filas_geo = [row.cells for row in tb.rows]
+    out: dict = {}
+    for r, cells in enumerate(filas_geo):
+        llenas = [c for c in cells if c is not None]
+        for ci, c in enumerate(cells):
+            if c is not None:
+                continue
+            if not llenas or ci >= len(xs):
+                out[(r, ci)] = ("indeterminada", None)
+                continue
+            px, py = xs[ci] + EPS_GEOMETRIA, llenas[0][1] + EPS_GEOMETRIA
+            cubre = [k for k in tb.cells if k[0] <= px < k[2] and k[1] <= py < k[3]]
+            if len(cubre) != 1:
+                out[(r, ci)] = ("indeterminada", None)
+                continue
+            r0 = next((rr for rr, cc in enumerate(filas_geo) if cubre[0] in cc), None)
+            if r0 is None or r0 > r:
+                out[(r, ci)] = ("indeterminada", None)
+            elif r0 < r:
+                out[(r, ci)] = ("vertical", r0)
+            else:
+                out[(r, ci)] = ("horizontal", r0)
+    return out
+
+
+def geometria_tablas(pdf_path: Path, tablas: list[dict]) -> None:
+    """Agrega `_geometria` a cada segmento de las tablas dadas (solo las que
+    tienen alguna celda None)."""
+    import pdfplumber  # noqa: PLC0415
+
+    por_pagina: dict[int, list[dict]] = {}
+    for t in tablas:
+        for s in t["segmentos"]:
+            if any(c is None for f in s["filas"] for c in f):
+                por_pagina.setdefault(s["pagina"], []).append(s)
+            else:
+                s["_geometria"] = {}
+    if not por_pagina:
+        return
+    with pdfplumber.open(str(pdf_path)) as pdf:
+        for p in sorted(por_pagina):
+            for s in por_pagina[p]:
+                s["_geometria"] = _geometria_segmento(pdf.pages[p - 1], s)
+
+
+def _motivo_previo(t: dict, e0t) -> str | None:
+    """Condiciones de no serialización que no dependen del chunk ni de la
+    geometría."""
+    celdas = [c for s in t["segmentos"] for f in s["filas"] for c in f]
+    lineas = [l.texto for s in t["segmentos"] for l in s["_lineas"]]
+    if t["estado"] != "parseada":
+        return "declarada_por_e0_tablas:" + ",".join(t["causas"])
+    if any(s["verificacion"]["chars_perdidos"] for s in t["segmentos"]):
+        return "r_verif_con_perdida"
+    if sum((_chars(lineas) - _chars(celdas)).values()):
+        return "lineas_e0_no_contenidas_en_celdas"
+    if any(_multilinea_numerica(c, e0t) for c in celdas):
+        return "filas_colapsadas"
+    if any("|" in _txc(c) for c in celdas):
+        return "separador_en_celda"
+    if len(t["chunks"]) != 1:
+        return "mas_de_un_chunk"
+    return None
+
+
+def armar_bloque(t: dict, e0t) -> dict:
+    """Bloque serializado de una tabla (formato del comentario de la sección)
+    o el motivo por el que no se serializa."""
+    filas = []                         # (segmento, fila en el segmento, celdas)
+    for si, s in enumerate(t["segmentos"]):
+        rep = set(s.get("filas_encabezado_repetido") or [])
+        for fi, f in enumerate(s["filas"]):
+            if not (si > 0 and fi in rep):
+                filas.append((si, fi, f))
+    n_cols = max(len(f) for _, _, f in filas)
+    i_dato = next((i for i, (_, _, f) in enumerate(filas)
+                   if any(_es_dato(c, e0t) for c in f)), None)
+    n_zona = i_dato if i_dato is not None and 1 <= i_dato <= MAX_FILAS_ENCABEZADO else 0
+    rotulos, enc_filas = [], []
+    for _, _, f in filas[:n_zona]:
+        if _txc(f[0]) and all(c is None for c in f[1:]):
+            rotulos.append(_celda(f[0]))
+        else:
+            enc_filas.append(f)
+    simple = (bool(enc_filas)
+              and not any(c is None for f in enc_filas for c in f)
+              and not any(SEP_CLAVE in _celda(c) for f in enc_filas for c in f))
+    enc = [""] * n_cols
+    if simple:
+        for f in enc_filas:
+            for k, c in enumerate(f):
+                if _txc(c):
+                    enc[k] = (enc[k] + " " + _celda(c)).strip()
+    modo = "columnas" if simple else "posicional"
+    desde = n_zona if simple else 0
+    visibles = [i for i in range(desde, len(filas)) if any(_txc(c) for c in filas[i][2])]
+    numero = {i: k for k, i in enumerate(visibles, start=1)}
+    subtitulos = [i for i in visibles
+                  if i_dato is not None and i > i_dato
+                  and not any(_es_dato(c, e0t) for c in filas[i][2])]
+    pos_de = {(si, fi): i for i, (si, fi, _) in enumerate(filas)}
+    propagadas = 0
+    sin_propagar: collections.Counter = collections.Counter()
+    pags = ", ".join(str(p) for p in sorted({s["pagina"] for s in t["segmentos"]}))
+    origen = "e0_tablas" if t["origen"] == "e0_tablas" else "R-TC2"
+    lineas = [f"[TABLA {t['id']} | página {pags} | {origen} | {modo}]"]
+    if simple:
+        lineas.extend(f"Rótulo: {r}" for r in rotulos)
+        lineas.append("Columnas: " + SEP_PAR.join(e or f"col{k + 1}" for k, e in enumerate(enc)))
+    es_fila_dato = (lambda i: i_dato is not None and i >= i_dato and i not in subtitulos)
+    for i in visibles:
+        si, fi, f = filas[i]
+        pares = []
+        for k, c in enumerate(f):
+            clave = enc[k] if (simple and enc[k]) else f"col{k + 1}"
+            if _txc(c):
+                pares.append(f"{clave}{SEP_CLAVE}{_celda(c)}")
+                continue
+            if c is not None or not es_fila_dato(i):
+                continue
+            geo = t["segmentos"][si].get("_geometria")
+            if geo is None:
+                return {"serializada": False, "motivo": "geometria_no_disponible"}
+            tipo, r0 = geo.get((fi, k), ("indeterminada", None))
+            if tipo == "indeterminada":
+                return {"serializada": False, "motivo": "geometria_no_determinada"}
+            if tipo == "horizontal":
+                continue
+            io = pos_de.get((si, r0))
+            if io is None:
+                sin_propagar["origen_en_fila_de_encabezado_repetido"] += 1
+                continue
+            if i_dato is None or io < i_dato:
+                sin_propagar["origen_en_encabezado"] += 1
+                continue
+            if io in subtitulos:
+                sin_propagar["origen_en_subtitulo"] += 1
+                continue
+            if io not in numero or not _txc(filas[io][2][k]):
+                sin_propagar["origen_vacio"] += 1
+                continue
+            pares.append(f"{clave}{SEP_CLAVE}{_celda(filas[io][2][k])} "
+                         f"{MARCA_COMBINADA.format(numero[io])}")
+            propagadas += 1
+        lineas.append(f"Fila {numero[i]}: " + SEP_PAR.join(pares))
+    lineas.append(f"[FIN TABLA {t['id']}]")
+    bloque = "\n".join(lineas)
+    v1 = _v1_relectura(bloque, filas, visibles, numero, enc, rotulos, simple, n_zona)
+    return {"serializada": True, "motivo": None, "modo": modo, "bloque": bloque,
+            "filas_bloque": len(visibles), "celdas_propagadas": propagadas,
+            "celdas_combinadas_sin_propagar": sum(sin_propagar.values()),
+            "celdas_combinadas_sin_propagar_por_motivo": dict(sorted(sin_propagar.items())),
+            "filas_subtitulo": len(subtitulos), "v1": v1}
+
+
+def _v1_relectura(bloque: str, filas: list, visibles: list[int], numero: dict,
+                  enc: list[str], rotulos: list[str], simple: bool, n_zona: int) -> dict:
+    """V1: relee el bloque y lo compara con las celdas, descontando los valores
+    propagados: rótulos, encabezados, numeración, claves y valores propios por
+    fila, y multiconjunto de caracteres de las celdas no vacías."""
+    lin = bloque.split("\n")
+    errores = []
+    leidos_rot = [l[len("Rótulo: "):] for l in lin if l.startswith("Rótulo: ")]
+    if leidos_rot != (rotulos if simple else []):
+        errores.append("rotulos")
+    col = [l[len("Columnas: "):] for l in lin if l.startswith("Columnas: ")]
+    if simple and col != [SEP_PAR.join(e or f"col{k + 1}" for k, e in enumerate(enc))]:
+        errores.append("columnas")
+    filas_leidas = [m for m in (RE_FILA_BLOQUE.match(l) for l in lin) if m]
+    if [int(m.group(1)) for m in filas_leidas] != list(range(1, len(visibles) + 1)):
+        errores.append("numeracion")
+    propios_leidos: list[str] = []
+    for m, i in zip(filas_leidas, visibles):
+        pares = [p.split(SEP_CLAVE, 1) for p in m.group(2).split(SEP_PAR)] if m.group(2) else []
+        propios = [(k, v) for k, v in pares if not RE_MARCA_COMBINADA.search(v)]
+        esperados = [((enc[c] if simple and enc[c] else f"col{c + 1}"), _celda(x))
+                     for c, x in enumerate(filas[i][2]) if _txc(x)]
+        if [tuple(p) for p in propios] != esperados:
+            errores.append(f"fila_{numero[i]}")
+        propios_leidos.extend(v for _, v in propios)
+    celdas = [x for _, _, f in filas for x in f if _txc(x)]
+    leido = propios_leidos + (leidos_rot + [e for e in enc if e] if simple else [])
+    if _chars(leido) != _chars(celdas):
+        errores.append("multiconjunto_celdas")
+    return {"ok": not errores, "errores": errores}
+
+
+def preparar_serializacion(res: E0.ResultadoParseo, lineas_por_chunk: list[list[E0.Linea]],
+                           tablas_to: dict, pdf_path: Path) -> tuple[dict, set]:
+    """Decide qué tablas marcadas se serializan, arma sus bloques y devuelve
+    (sustituciones: id de la primera línea → bloque, omitidas: ids de las
+    demás líneas de cada tabla serializada)."""
+    import e0_tablas as e0t  # noqa: PLC0415
+
+    nodo_de: dict[int, object] = {}
+    for l, cont in E0._recolectar_orden_documental(res):
+        nodo_de[id(l)] = cont[1]
+    candidatas = []
+    for t in tablas_to["tablas"]:
+        if not t["marca"]:
+            t["serializacion"] = {"serializada": False,
+                                  "motivo": "recuadro" if t["chunks"] else "sin_chunk"}
+            continue
+        motivo = _motivo_previo(t, e0t)
+        if motivo is None:
+            pos = {id(l): j for j, l in enumerate(lineas_por_chunk[t["_indices_chunk"][0]])}
+            lineas = [l for s in t["segmentos"] for l in s["_lineas"]]
+            idx = sorted(pos[id(l)] for l in lineas if id(l) in pos)
+            if len(idx) != len(lineas):
+                motivo = "lineas_fuera_del_chunk"
+            elif idx != list(range(idx[0], idx[0] + len(idx))):
+                motivo = "lineas_no_contiguas"
+            elif len({id(nodo_de[id(l)]) for l in lineas}) != 1:
+                motivo = "lineas_en_mas_de_un_nodo"
+        t["serializacion"] = {"serializada": False, "motivo": motivo}
+        if motivo is None:
+            candidatas.append(t)
+    geometria_tablas(pdf_path, candidatas)
+    sustituciones: dict[int, str] = {}
+    omitidas: set[int] = set()
+    for t in candidatas:
+        ser = armar_bloque(t, e0t)
+        if ser["serializada"]:
+            lineas = [l for s in t["segmentos"] for l in s["_lineas"]]
+            celdas = [c for s in t["segmentos"] for f in s["filas"] for c in f]
+            repetidas = [c for si, s in enumerate(t["segmentos"]) if si > 0
+                         for fi in (s.get("filas_encabezado_repetido") or [])
+                         for c in s["filas"][fi]]
+            e0 = _chars([l.texto for l in lineas])
+            ser["v2_r_verif_sin_perdida"] = not any(
+                s["verificacion"]["chars_perdidos"] for s in t["segmentos"])
+            ser["v3_e0_en_celdas"] = not sum((e0 - _chars(celdas)).values())
+            ser["v3_e0_en_bloque"] = not sum(
+                (e0 - _chars(repetidas) - _chars([ser["bloque"]])).values())
+            ser["chars_lineas_e0"] = len("\n".join(l.texto for l in lineas))
+            ser["chars_bloque"] = len(ser["bloque"])
+            if not (ser["v1"]["ok"] and ser["v2_r_verif_sin_perdida"]
+                    and ser["v3_e0_en_celdas"] and ser["v3_e0_en_bloque"]):
+                ser = {"serializada": False, "motivo": "verificacion_fallida",
+                       "detalle": {k: ser[k] for k in ("v1", "v2_r_verif_sin_perdida",
+                                                       "v3_e0_en_celdas", "v3_e0_en_bloque")}}
+        t["serializacion"] = ser
+        if ser["serializada"]:
+            orden = {id(l): j for j, l in enumerate(lineas_por_chunk[t["_indices_chunk"][0]])}
+            lineas = sorted((l for s in t["segmentos"] for l in s["_lineas"]),
+                            key=lambda l: orden[id(l)])
+            sustituciones[id(lineas[0])] = ser["bloque"]
+            omitidas.update(id(l) for l in lineas[1:])
+    return sustituciones, omitidas
+
+
+def texto_con_tablas(sustituciones: dict[int, str], omitidas: set):
+    """Constructor de texto para E0.construir_chunks: la primera línea de cada
+    tabla serializada se reemplaza por su bloque y las demás se omiten."""
+    def tx(lineas: list[E0.Linea]) -> str:
+        return "\n".join(sustituciones.get(id(l), l.texto)
+                         for l in lineas if id(l) not in omitidas)
+    return tx
+
+
+def aplicar_marcas_r2(chunks: list[dict], lineas_por_chunk: list[list[E0.Linea]],
+                      tablas_to: dict, sustituciones: dict, omitidas: set) -> None:
+    """Marca F (ver el comentario de la sección) en los chunks con tabla."""
+    por_chunk: dict[int, list[dict]] = {}
+    for t in tablas_to["tablas"]:
+        if t["marca"]:
+            for i in t["_indices_chunk"]:
+                por_chunk.setdefault(i, []).append(t)
+    en_bloque = set(sustituciones) | omitidas
+    for i in sorted(por_chunk):
+        f = chunks[i]["flags"]
+        f["contenido_tabular"] = True
+        f["tablas_e0"] = [
+            {"tabla": t["id"], "origen": t["origen"], "estado": t["estado"],
+             "paginas": sorted({s["pagina"] for s in t["segmentos"]}),
+             "serializada": t["serializacion"]["serializada"],
+             "bloque": t["id"] if t["serializacion"]["serializada"] else None}
+            for t in por_chunk[i]]
+        fuera = [l for l in lineas_por_chunk[i] if id(l) not in en_bloque]
+        f["contenido_tabular_residual"] = (
+            any(not t["serializacion"]["serializada"] for t in por_chunk[i])
+            or E0._flags_tabla_formula(fuera)["contenido_tabular"])
+
+
+def procesar_tablas_r2(res: E0.ResultadoParseo, pdf_path: Path, to: str,
+                       roles: list[str]) -> tuple[list[dict], dict, frozenset]:
+    """Camino e0-r2 completo de un TO: detección, asignación, serialización y
+    marca. Devuelve (chunks, tablas_to, ids de chunks con bloque)."""
+    tablas_to = tablas_de_to_r2(pdf_path, to)
+    asignar_lineas_a_tablas(res, tablas_to, roles)
+    lineas0: list = []
+    chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0)
+    asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
+    sustituciones, omitidas = preparar_serializacion(res, lineas0, tablas_to, pdf_path)
+    lineas: list = []
+    chunks = E0.construir_chunks(res, texto_lineas=texto_con_tablas(sustituciones, omitidas),
+                                 lineas_por_chunk=lineas)
+    if [c["id"] for c in chunks] != [c["id"] for c in chunks0] or \
+            [[id(l) for l in ls] for ls in lineas] != [[id(l) for l in ls] for ls in lineas0]:
+        raise RuntimeError(f"{to}: la serialización cambió la segmentación en chunks")
+    aplicar_marcas_r2(chunks, lineas, tablas_to, sustituciones, omitidas)
+    con_bloque = frozenset(chunks[t["_indices_chunk"][0]]["id"] for t in tablas_to["tablas"]
+                           if t.get("serializacion", {}).get("serializada"))
+    return chunks, tablas_to, con_bloque
+
+
+def serializar_tablas_to(tablas_to: dict) -> dict:
+    """Artefacto `tablas_<to>.json` de la versión e0-r2: tablas, guarda,
+    líneas de E0 asignadas (página, top, texto), chunk dueño y serialización;
+    sin objetos Linea ni geometría interna."""
+    out = {k: v for k, v in tablas_to.items() if k != "tablas"}
+    tablas = []
+    for t in tablas_to["tablas"]:
+        tt = {k: v for k, v in t.items() if k != "segmentos" and not k.startswith("_")}
+        segs = []
+        for s in t["segmentos"]:
+            ss = {k: v for k, v in s.items() if not k.startswith("_")}
+            ss["lineas_e0"] = [{"pagina": l.pagina, "top": l.top, "texto": l.texto}
+                               for l in s.get("_lineas", [])]
+            segs.append(ss)
+        tt["segmentos"] = segs
+        tablas.append(tt)
+    out["tablas"] = tablas
+    return out
+
+
 def inventario_mapa(mapa_path: Path = MAPA) -> dict[str, list[str]]:
     m = json.loads(mapa_path.read_text(encoding="utf-8"))
     out: dict[str, list[str]] = {}
@@ -208,7 +834,16 @@ def inventario_mapa(mapa_path: Path = MAPA) -> dict[str, list[str]]:
     return out
 
 
-def correr(salida: Path, manifiesto=None) -> dict:
+def correr(salida: Path, manifiesto=None,
+           version_e0: str = VERSION_E0_LEGADA) -> dict:
+    """`version_e0` (U-R2-CODIGO): con la legada ("e0-v1", el default) la
+    salida es byte-idéntica a la sellada; con "e0-r2" corre además la
+    detección de tablas de la sección «tablas en E0, versión e0-r2» de
+    e0_lib y escribe `tablas_<to>.json` y `version_e0.json`."""
+    if version_e0 not in VERSIONES_E0:
+        raise ValueError(f"version_e0 desconocida: {version_e0!r} "
+                         f"(conocidas: {VERSIONES_E0})")
+    r2 = version_e0 == VERSION_E0_R2
     salida.mkdir(parents=True, exist_ok=True)
     if manifiesto is None:
         items = sorted(E0.TO_KEYS.items(), key=lambda kv: kv[1])
@@ -256,10 +891,17 @@ def correr(salida: Path, manifiesto=None) -> dict:
             },
         }
         indice = E0.parsear_indice(paginas, roles)
-        chunks = E0.construir_chunks(res)
+        no_partir: frozenset = frozenset()
+        if r2:
+            chunks, tablas_to, no_partir = procesar_tablas_r2(res, pdf, to, roles)
+            (salida / f"tablas_{to}.json").write_text(
+                json.dumps(serializar_tablas_to(tablas_to), ensure_ascii=False,
+                           indent=1), encoding="utf-8")
+        else:
+            chunks = E0.construir_chunks(res)
         # U-B5.3 decisión 6: partición por ítems de unidades sobre el umbral
         # C8 (identidad en el subset de desarrollo: 0 unidades lo superan).
-        chunks, rep_sub = subdividir_unidades_grandes(chunks)
+        chunks, rep_sub = subdividir_unidades_grandes(chunks, no_partir=no_partir)
         if rep_sub["particiones"] or rep_sub["no_particionables"]:
             sub_chunking[to] = rep_sub
         div = E0.divergencias_indice_cuerpo(res, indice)
@@ -340,6 +982,10 @@ def correr(salida: Path, manifiesto=None) -> dict:
         (salida / "sub_chunking.json").write_text(
             json.dumps(sub_chunking, ensure_ascii=False, indent=1),
             encoding="utf-8")
+    if r2:
+        (salida / "version_e0.json").write_text(
+            json.dumps({"version_e0": version_e0}, ensure_ascii=False, indent=1),
+            encoding="utf-8")
     return conteos
 
 
@@ -354,6 +1000,10 @@ if __name__ == "__main__":
     ap.add_argument("--manifiesto", default=None,
                     help="ruta a un manifiesto de corpus (U-B5.1); sin él, "
                          "comportamiento legacy sobre los 5 TOs del subset")
+    ap.add_argument("--version-e0", default=VERSION_E0_LEGADA,
+                    choices=VERSIONES_E0,
+                    help="versión de E0 (U-R2-CODIGO); la legada reproduce "
+                         "la salida sellada byte a byte")
     args = ap.parse_args()
     man = None
     if args.manifiesto:
@@ -361,5 +1011,5 @@ if __name__ == "__main__":
         sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
         import manifiesto_corpus
         man = manifiesto_corpus.cargar(Path(args.manifiesto))
-    conteos = correr(Path(args.salida), manifiesto=man)
+    conteos = correr(Path(args.salida), manifiesto=man, version_e0=args.version_e0)
     print(json.dumps(conteos, ensure_ascii=False, indent=1))

@@ -174,6 +174,7 @@ import hashlib
 import json
 import re
 import unicodedata
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -1521,8 +1522,21 @@ def _materializa_bloque(texto: str) -> bool:
     return bool("".join(texto.split()))
 
 
-def construir_chunks(res: ResultadoParseo) -> list[dict]:
+def construir_chunks(res: ResultadoParseo,
+                     texto_lineas: Callable[[list[Linea]], str] | None = None,
+                     lineas_por_chunk: list[list[Linea]] | None = None) -> list[dict]:
+    """Con los dos argumentos opcionales en None (todos los call sites de la
+    versión legada de E0) el comportamiento es el histórico, byte a byte.
+    Versión e0-r2 (U-R2-CODIGO, R1): `texto_lineas` arma el texto de una
+    lista de líneas (sustituye las líneas de una tabla por su bloque
+    serializado) y `lineas_por_chunk` recibe, en paralelo a la salida, las
+    líneas propias de cada chunk (insumo de la asignación de tablas)."""
     chunks: list[dict] = []
+
+    def _texto(lineas: list[Linea]) -> str:
+        return "\n".join(l.texto for l in lineas)
+
+    tx = texto_lineas or _texto
 
     def _titulo_linea(a: Nodo) -> str:
         if a.sintetica:
@@ -1553,12 +1567,17 @@ def construir_chunks(res: ResultadoParseo) -> list[dict]:
                 rol = {"intro": "intro", "cierre": "cierre",
                        "intersticial": "intersticial"}[item["rol"]]
                 seg = item["seg"]
+                texto_seg = tx(seg)
+                if texto_lineas is not None and not texto_seg:
+                    # e0-r2: segmento absorbido entero por el bloque de una
+                    # tabla serializada que empieza en un segmento anterior
+                    continue
                 tramos.append({
                     "tipo": f"{'chapeau_seccion' if a.tipo == 'seccion' else rol}"
                             if a.tipo == "seccion" and rol == "intro"
                             else rol,
                     "unidad_origen": unidad,
-                    "texto": _texto_segmento(seg),
+                    "texto": texto_seg,
                     "paginas": _paginas_de(seg),
                 })
         return tramos
@@ -1584,7 +1603,10 @@ def construir_chunks(res: ResultadoParseo) -> list[dict]:
         """Emite un mini-chunk desde uno o más segmentos contiguos del mismo
         rol de un nodo NO terminal (enmienda 01 §2.a). `n_tramo` numera los
         tramos múltiples de un mismo rol (solo intersticiales); None = único."""
-        texto = "\n".join(_texto_segmento(s) for s in segs)
+        if texto_lineas is None:
+            texto = "\n".join(_texto_segmento(s) for s in segs)
+        else:
+            texto = texto_lineas([l for s in segs for l in s])
         if not _materializa_bloque(texto):
             return
         unidad = nodo.numero if nodo.tipo == "punto" else f"S{nodo.numero}"
@@ -1593,6 +1615,8 @@ def construir_chunks(res: ResultadoParseo) -> list[dict]:
         herencia = herencia_titulos(nodo)
         texto_herencia = "\n".join(t["texto"] for t in herencia)
         completo = (texto_herencia + "\n" + texto) if texto_herencia else texto
+        if lineas_por_chunk is not None:
+            lineas_por_chunk.append(lineas)
         chunks.append({
             "id": mini_id,
             "to": res.to,
@@ -1625,17 +1649,19 @@ def construir_chunks(res: ResultadoParseo) -> list[dict]:
                     # raíz explícita del modo sin raíz: la línea del label ya
                     # encabeza `lineas` tal como está en el documento — no se
                     # fabrica un encabezado que la duplique
-                    texto_propio = "\n".join(l.texto for l in lineas)
+                    texto_propio = tx(lineas)
                 else:
                     encabezado = _titulo_linea(nodo)
-                    texto_propio = "\n".join([encabezado] + [l.texto for l in lineas])
+                    texto_propio = "\n".join([encabezado] + ([tx(lineas)] if lineas else []))
             else:
                 unidad = nodo.numero
-                texto_propio = "\n".join(l.texto for l in lineas)
+                texto_propio = tx(lineas)
             herencia = herencia_de(nodo)
             texto_herencia = "\n".join(t["texto"] for t in herencia)
             completo = (texto_herencia + "\n" + texto_propio) if texto_herencia else texto_propio
             flags = _flags_tabla_formula(lineas)
+            if lineas_por_chunk is not None:
+                lineas_por_chunk.append(lineas)
             chunks.append({
                 "id": f"{res.to}::{unidad}",
                 "to": res.to,
