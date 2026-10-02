@@ -209,7 +209,12 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
     `control_sitio/corridas/2026-10-02/resumen_corrida.json`, `pedidos.json` y
     `clasificacion_cambios.json`): en los 25 días desde la corrida del 07/09/2026 cambiaron 19
     de los 157 TOs, y 23 difieren del corpus congelado; el sitio responde a los pedidos
-    condicionales: de 157 pedidos de PDF, 138 volvieron con 304 y 19 con 200.
+    condicionales: de 157 pedidos de PDF, 138 volvieron con 304 y 19 con 200;
+  - el ejemplo de la tesis no cambió en el sitio entre mayo y octubre de 2026: el TO de
+    Clasificación de deudores difiere del congelado en las páginas 1, 10, 44, 50 y 57
+    (`clasificacion_cambios.json`, entrada `cladeu`), y `cla::5.1.1.1` y `cla::3.7` están en
+    las páginas 16 y 14, con su herencia en la 16 y la 9
+    (`data/experiment/reextraccion_v2/e0_chunking/salida_tanda0/chunks_cla.json`).
 - **Alimenta:** la sección de mantenimiento de la tesis.
 - **Salvedades:**
   1. Es una demostración en seco sobre una re-extracción ya hecha, con los perfiles
@@ -219,5 +224,6 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
   3. Las dos cifras de cambio son de ventanas distintas y no se combinan: 19 es desde el
      07/09/2026; 23 es contra el corpus congelado, descargado entre el 07 y el 10/05/2026 (los 5 de
      desarrollo) y el 13/08/2026 (los 152; `docs/fe_erratas_fecha_corpus_congelado.md`).
-  4. El control compara y avisa; no actualiza el corpus. Que el corpus congelado se mantenga
-     para la re-extracción y la evaluación es una decisión pendiente de la autora.
+  4. El control compara y avisa; no actualiza el corpus. El corpus congelado se mantiene para
+     la re-extracción y la evaluación (decisión de la autora del 02/10/2026; plan, B2.11,
+     unidad 11).
