@@ -187,3 +187,27 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      2.367 en el grafo.
   4. La muestra de 30 posibles forzados está sellada y sin leer; quién la lee lo decide
      la autora.
+
+## 5. Mantenimiento: empalme de un subgrafo re-extraído (U-MANT) — disponible
+
+- **Ruta y commit:**
+  - `data/experiment/mantenimiento/`: `procedimiento_empalme.md`, `code/empalme_subgrafo.py`,
+    `demo_empalme_dirigida.json` y `demo_empalme_renumeracion.json` (M2, commit `7ed5ced`);
+    `tabla_reprocesamiento.md` (M1, commit `e18d616`);
+  - mandato `docs/mandatos/UMANT_mantenimiento.md`, firmado en `36edf24`;
+  - comando: `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B data/experiment/mantenimiento/code/empalme_subgrafo.py dirigida --trabajo <dir fuera del repo> --out <json>`.
+    Doble corrida byte a byte idéntica; la re-corrida de la mesa del 02/10/2026 también.
+- **Qué contiene:**
+  - el empalme dirigido reconstruye los 6 `kg.json` sellados de la tanda 0 (`kg.json` y
+    `r1/kg.json` de los tres ensamblados) a partir de la salida base y de las tres unidades de
+    cap re-extraídas, sin llamar a la API (`demo_empalme_dirigida.json`, clave
+    `kg_iguales_al_sellado`);
+  - el procedimiento: cómo se identifican las unidades cambiadas, qué se re-extrae, cómo se
+    sustituyen las salidas, qué se re-ensambla y qué se controla después;
+  - la tabla de qué obliga a reprocesar y qué no.
+- **Alimenta:** la sección de mantenimiento de la tesis.
+- **Salvedades:**
+  1. Es una demostración en seco sobre una re-extracción ya hecha, con los perfiles
+     existentes. La actualización real de un TO que cambió en el sitio es de U-SUBGRAFO.
+  2. Las unidades que solo cambian de número se re-extraen; renumerarlas en código es una
+     propuesta que pide laudo (plan, B2.11, unidad 13).
