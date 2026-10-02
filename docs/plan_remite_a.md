@@ -3,8 +3,8 @@
 Redactado el 02/10/2026 sobre HEAD `7741e88`. Unidad de planificación: no cambia código ni esquema. Ítem
 nuevo de la cola de mejoras previas al escalado (checklist, X17 y W15).
 
-**Estado al 02/10/2026.** La autora tomó las decisiones D1 a D5 y firmó las dos enmiendas; sus commits
-están PENDIENTES. Los asientos de la última sección están aplicados, sin commit.
+**Estado al 02/10/2026.** La autora tomó las decisiones D1 a D5 y firmó las dos enmiendas, commiteadas en
+`5f9a731`. Los asientos de la última sección están aplicados en `5855a3e`.
 
 Enmiendas que acompañan este plan, las dos FIRMADAS por la autora el 02/10/2026:
 - `data/experiment/esq/enmienda2_L-ESQ-R2_remite_a_2026-10-02.md` (punto a y agregados 5 a 7);
@@ -93,10 +93,10 @@ la tanda 1 tienen que usar la función común.
 
 ## c. Unidades, en orden
 
-1. **Firma de la enmienda 2 de L-ESQ-R2:** hecha por la autora el 02/10/2026; commit PENDIENTE.
-2. **Firma de la enmienda 1 al mandato de U-R2-CODIGO:** hecha por la autora el 02/10/2026; commit
-   PENDIENTE. Las dos enmiendas tienen que estar commiteadas antes de que la unidad llegue a R3. El
-   complemento de R1 y R2 no dependen de ellas.
+1. **Firma de la enmienda 2 de L-ESQ-R2:** hecha por la autora el 02/10/2026, en `5f9a731`.
+2. **Firma de la enmienda 1 al mandato de U-R2-CODIGO:** hecha por la autora el 02/10/2026, en
+   `5f9a731`. Las dos enmiendas quedaron commiteadas antes de que la unidad llegue a R3. El complemento
+   de R1 y R2 no dependían de ellas.
 3. **U-R2-CODIGO, R3 y R5** (plan, B2.11, unidad 8, `docs/plan_tesis.md:397`): el cambio de b.
 4. **Medición r2a** (unidad 9, `:398`): primera medición de d, sobre la salida guardada de la tanda 0.
 5. **U-PROMPT-R2** (unidad 10, `:399`): control de que `remite_a` no está en el tool schema ni en las listas
@@ -177,7 +177,7 @@ aparte. La diferencia entre 188 y 183 son 5 aristas de clase externa cuyo destin
 ordenado (`cap::1.4`, una, y `cap::S2`, cuatro; índices 2579 y 5115 a 5118 de KG-Reextraído-r1). La cifra
 183 del mandato es correcta; cambia su explicación.
 
-## Asientos aplicados el 02/10/2026 (sin commit)
+## Asientos aplicados el 02/10/2026 (`5855a3e`)
 
 - **Checklist** (`docs/checklist_pre_escalado.md`): ítem X17 en la sección 2 y W15 en la sección 5; el
   criterio 4 dentro de la condición 2 de «Orden y condiciones de la tanda 1».
