@@ -1718,6 +1718,27 @@ def construir_chunks(res: ResultadoParseo,
     return chunks
 
 
+def desambiguar_ids(chunks: list[dict]) -> list[dict]:
+    """Versión e0-r2 (U-R2-CODIGO, R2; BKL-0037): ids de chunk únicos por TO.
+    Regla: en orden documental, el primer chunk con un id lo conserva; cada
+    aparición posterior del mismo id recibe el sufijo `::rep<k>` (k = su
+    número de aparición: 2, 3, …), conserva `unidad` (la procedencia sigue
+    anclada en la unidad documental) y guarda el id de E0 en
+    `id_e0_original`. Modifica los chunks en el lugar y devuelve la lista de
+    renombres {id_e0_original, id}. Sin ids repetidos no toca nada."""
+    vistos: dict[str, int] = {}
+    renombres: list[dict] = []
+    for c in chunks:
+        vistos[c["id"]] = vistos.get(c["id"], 0) + 1
+        k = vistos[c["id"]]
+        if k > 1:
+            original = c["id"]
+            c["id"] = f"{original}::rep{k}"
+            c["id_e0_original"] = original
+            renombres.append({"id_e0_original": original, "id": c["id"]})
+    return renombres
+
+
 # ------------------------------------------------------------------ cobertura
 
 def verificar_cobertura(res: ResultadoParseo) -> dict:

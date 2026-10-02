@@ -235,8 +235,8 @@ def build_reextraccion_kwargs(chunk: dict, faltantes: list[dict], model: str,
     max_tokens_reintento: techo de salida SOLO para el reintento (el request
     base de E1 está sellado con su techo propio y no se toca). Un reintento
     que COMPLETA una extracción incompleta puede necesitar más salida que la
-    primera pasada; max_tokens no integra el prefijo cacheado, así que
-    cambiarlo no invalida el caché.
+    primera pasada. Cambiar max_tokens no invalida la caché de prompts de la API
+    (no integra el prefijo), pero sí la caché local: su clave incluye max_tokens.
 
     perfil (U-CABLE-V3): perfil E1 de la corrida (perfil_e1.PerfilE1). El
     reintento debe construirse con el MISMO prefijo que la fase E1 de su

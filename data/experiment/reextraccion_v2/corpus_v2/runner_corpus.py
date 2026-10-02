@@ -95,6 +95,9 @@ P_E3 = dict(precio_in_por_mtok=2.00, precio_out_por_mtok=10.00,
 
 EVAL_DIR = comun_e3.REPO / "data" / "experiment" / "evaluacion"
 DB_REINTENTOS_E1 = REX / "e3_verificador" / "cache" / "e1_reintentos.db"
+# U-R2-CODIGO, R2.b: archivo compañero de finales.jsonl con el crudo de los
+# reintentos de E3 (lo escribe fase_e3; lo lee r2_codigo/lector_reintentos_e3)
+REINTENTOS_E3 = "reintentos_e3.jsonl"
 
 # --------------------- configuración por manifiesto (U-B5.1) ------------- #
 MANIFIESTO_DEFAULT = REX / "manifiestos" / "desarrollo_5tos.json"
@@ -144,6 +147,29 @@ configurar(manifiesto_corpus.cargar(MANIFIESTO_DEFAULT))
 
 class Freno(RuntimeError):
     pass
+
+
+class IdsRepetidos(RuntimeError):
+    """U-R2-CODIGO, R2 (BKL-0037): la E0 trae dos o más chunks con el mismo id
+    en un TO. Los registros de E1 y E3 se indexan por chunk_id con last-wins
+    (`cargar_jsonl_last_wins`) y la compactación escribe uno por id: con ids
+    repetidos se perdería sin aviso una extracción de cada par. El runner se
+    detiene antes de llamar a la API."""
+
+
+def chunks_sin_ids_repetidos(chunks: list[dict], to: str) -> list[dict]:
+    """Devuelve los chunks tal cual si sus ids son únicos; si no, frena con
+    IdsRepetidos. Con una E0 sin ids repetidos (la de r1 y la de la tanda 0)
+    el comportamiento es el de siempre."""
+    conteo = Counter(c["id"] for c in chunks)
+    repetidos = sorted(k for k, v in conteo.items() if v > 1)
+    if repetidos:
+        raise IdsRepetidos(
+            f"{to}: {len(repetidos)} ids de chunk repetidos en la E0 "
+            f"({sum(conteo[k] - 1 for k in repetidos)} chunks de más; p. ej. "
+            f"{repetidos[:3]}): el runner se detiene en lugar de pisar "
+            f"registros (BKL-0037; e0-r2 los desambigua)")
+    return chunks
 
 
 class PresupuestoCompartido:
@@ -449,7 +475,7 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
     tdir.mkdir(parents=True, exist_ok=True)
     jsonl = tdir / "extracciones_e1.jsonl"
 
-    chunks = comun_e1.cargar_chunks((to,), e0_dir=E0_DIR)
+    chunks = chunks_sin_ids_repetidos(comun_e1.cargar_chunks((to,), e0_dir=E0_DIR), to)
     if limite:
         chunks = chunks[:limite]
     previos = cargar_jsonl_last_wins(jsonl)
@@ -576,7 +602,7 @@ def compactar_e1(to: str, salida: Path) -> Path:
     → compactado determinístico en orden documental, last-wins."""
     tdir = salida / to
     regs = cargar_jsonl_last_wins(tdir / "extracciones_e1.jsonl")
-    chunks = comun_e1.cargar_chunks((to,), e0_dir=E0_DIR)
+    chunks = chunks_sin_ids_repetidos(comun_e1.cargar_chunks((to,), e0_dir=E0_DIR), to)
     out = tdir / "extracciones_e1_compact.jsonl"
     with out.open("w", encoding="utf-8") as f:
         for c in chunks:
@@ -592,7 +618,7 @@ def fase_e3(to: str, cli_e3, cli_e1r, estado: Estado, salida: Path,
     tdir = salida / to
     finales = tdir / "finales.jsonl"
 
-    chunks = comun_e3.cargar_chunks((to,), e0_dir=E0_DIR)
+    chunks = chunks_sin_ids_repetidos(comun_e3.cargar_chunks((to,), e0_dir=E0_DIR), to)
     if limite:
         chunks = chunks[:limite]
     unidades_corpus = {c["unidad"] for c in chunks}
@@ -625,6 +651,16 @@ def fase_e3(to: str, cli_e3, cli_e1r, estado: Estado, salida: Path,
             raise Freno(f"{key}: ciclo de ratchet de {c['id']} falló tras "
                         f"reintentos de API ({err}) — se frena para no dejar "
                         f"huecos silenciosos; relanzar reanuda acá")
+        # U-R2-CODIGO, R2.b: crudo de cada reintento del ratchet en el archivo
+        # compañero de finales.jsonl, ANTES de la línea de finales (una unidad
+        # en finales tiene su crudo persistido; una reanudación puede repetir
+        # registros: se leen last-wins por (chunk_id, intento)). Sin reintentos
+        # el archivo no se crea, así que una corrida sin reintentos deja los
+        # mismos archivos que antes.
+        for reex in exp["reintentos"]:
+            append_jsonl(tdir / REINTENTOS_E3, {
+                "chunk_id": c["id"], "intento": reex["intento"],
+                "tool_input": reex["tool_input"], "error": reex["error"]})
         append_jsonl(finales, {
             "chunk_id": c["id"], "tipo_unidad": c["tipo"],
             "estado": exp["estado"], "n_reintentos": len(exp["reintentos"]),
@@ -669,7 +705,7 @@ def cerrar_e2(to: str, salida: Path, limite: int | None = None) -> dict:
     tdir = salida / to
     regs_e1 = cargar_jsonl_last_wins(tdir / "extracciones_e1_compact.jsonl")
     finales = cargar_jsonl_last_wins(tdir / "finales.jsonl")
-    chunks = comun_e1.cargar_chunks((to,), e0_dir=E0_DIR)
+    chunks = chunks_sin_ids_repetidos(comun_e1.cargar_chunks((to,), e0_dir=E0_DIR), to)
     if limite:
         chunks = chunks[:limite]
 
@@ -839,6 +875,11 @@ def main() -> int:
         print(f"\nFRENO: {e}", flush=True)
         estado.persistir()
         return 3
+    except IdsRepetidos as e:
+        # BKL-0037: error explícito, salida 4, antes de llamar a la API
+        print(f"\nERROR: {e}", flush=True)
+        estado.persistir()
+        return 4
 
     print(f"\ncorrida completa: gasto global=USD {estado.gasto_global():.4f} "
           f"| wall={round((time.time()-t0)/60, 1)} min", flush=True)

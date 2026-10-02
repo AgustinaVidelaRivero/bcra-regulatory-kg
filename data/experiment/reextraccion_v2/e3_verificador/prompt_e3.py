@@ -281,3 +281,20 @@ def build_request_kwargs(chunk: dict, validacion: dict, model: str,
         "tool_choice": {"type": "tool", "name": NOMBRE_TOOL},
         "messages": [{"role": "user", "content": build_user_message(chunk, validacion)}],
     }
+
+
+# Candado del prefijo de E3 (U-R2-CODIGO, R2; agregado autorizado por la
+# autora, plan, fila 8). El prefijo se arma al importar: el texto de sistema
+# incluye los calibradores (calibradores_e3.py), que salen de cuatro archivos
+# de datos (e0_chunking/salida/chunks_{cla,pro,ric}.json y
+# e1_extractor/salida/faseB_pro/extracciones.jsonl). Si alguno cambia, cambia
+# PREFIJO_HASH (:217) y, con él, el namespace de la caché de E3: la
+# importación frena antes de toda llamada. Solo compara: el prefijo no cambia.
+# Va al final del módulo para no mover las líneas que citan otros documentos.
+PREFIJO_HASH_SELLADO = "21a836c7de6d"
+if PREFIJO_HASH != PREFIJO_HASH_SELLADO:
+    raise RuntimeError(
+        f"candado E3: el prefijo armado tiene hash {PREFIJO_HASH} y el sellado es "
+        f"{PREFIJO_HASH_SELLADO} (namespace e3_verificacion|cv=e3-verificador-v1-p"
+        f"{PREFIJO_HASH_SELLADO}|think=0): cambió un archivo de datos de los "
+        f"calibradores o el texto del prompt de E3 — se frena")

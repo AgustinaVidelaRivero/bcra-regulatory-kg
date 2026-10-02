@@ -28,6 +28,8 @@ Salida (por defecto ./salida/):
                          lógicas de e0_tablas y de R-TC2, guarda de recuadro,
                          líneas de E0 asignadas y chunk dueño de cada una
   version_e0.json        SOLO con --version-e0 e0-r2
+  ids_desambiguados.json SOLO con --version-e0 e0-r2 y si algún TO trae ids
+                         de chunk repetidos (BKL-0037): renombres por TO
 """
 
 from __future__ import annotations
@@ -278,6 +280,20 @@ def _consolidar_tabla_r2(t: dict, e0t) -> None:
     t["causas"] = causas
 
 
+def pasa_rtc2(filas: list[list], bbox, alto: float, e0t) -> bool:
+    """Predicado de R-TC2 (ver el comentario de la sección) sobre las filas
+    extraídas de una tabla de `find_tables()`, su bbox y el alto de página."""
+    n_filas = len(filas)
+    n_cols = max((len(f) for f in filas), default=0)
+    es_tc, motivo = e0t.clasificar_tabla_contenido(n_filas, n_cols, bbox, alto)
+    if es_tc or motivo != "min_filas" or n_filas != 2:
+        return False
+    pasaria, _ = e0t.clasificar_tabla_contenido(e0t.MIN_FILAS_TC, n_cols, bbox, alto)
+    if not pasaria:
+        return False
+    return sum(1 for c in filas[1] if e0t._es_numerica(c)) >= MIN_CELDAS_NUMERICAS_FILA2
+
+
 def detectar_tablas_dos_filas(pdf_path: Path, to: str) -> list[dict]:
     """R-TC2 (ver el comentario de la sección). Devuelve tablas lógicas de un
     solo segmento, con ids `<to>::tabla2f<NNN>` (espacio propio, distinto del
@@ -294,16 +310,7 @@ def detectar_tablas_dos_filas(pdf_path: Path, to: str) -> list[dict]:
                 filas = tb.extract()
                 n_filas = len(filas)
                 n_cols = max((len(f) for f in filas), default=0)
-                es_tc, motivo = e0t.clasificar_tabla_contenido(
-                    n_filas, n_cols, tb.bbox, alto)
-                if es_tc or motivo != "min_filas" or n_filas != 2:
-                    continue
-                pasaria, _ = e0t.clasificar_tabla_contenido(
-                    e0t.MIN_FILAS_TC, n_cols, tb.bbox, alto)
-                if not pasaria:
-                    continue
-                if sum(1 for c in filas[1] if e0t._es_numerica(c)) \
-                        < MIN_CELDAS_NUMERICAS_FILA2:
+                if not pasa_rtc2(filas, tb.bbox, alto, e0t):
                     continue
                 if palabras is None:
                     palabras = page.extract_words()
@@ -427,9 +434,17 @@ def asignar_tablas_a_chunks(chunks: list[dict], lineas_por_chunk: list[list[E0.L
 # MARCA_COMBINADA con el número de fila del bloque donde empieza. La celda
 # que la cubre se busca por el punto de la esquina de la celda faltante; si no
 # hay exactamente una, la geometría no determina la combinación y la tabla no
-# se serializa. Una combinación horizontal (empieza en la misma fila) se
-# omite. Las filas de subtítulo internas (sin celdas numéricas ni de código,
-# después de la primera fila de datos) no se propagan: se cuentan.
+# se serializa. Las filas de subtítulo internas (sin celdas numéricas ni de
+# código, después de la primera fila de datos) no se propagan: se cuentan.
+# G — combinaciones horizontales: una celda con valor que, según la
+# geometría, abarca otras columnas de su fila (las celdas None que cubre) se
+# escribe una vez, en su columna, con MARCA_ALCANCE y la clave de la última
+# columna que cubre; rige en toda fila escrita del bloque (filas de datos de
+# los dos modos y filas de encabezado del posicional). Una celda que empieza
+# en una fila y una columna anteriores (bidimensional) es parte del alcance
+# del valor propagado en esa fila y no se vuelve a escribir. Si la geometría
+# no determina el alcance, la tabla no se serializa. V1 descuenta las dos
+# marcas.
 # No se serializa (la tabla queda marcada y su texto de E0 intacto) si:
 # e0_tablas la declaró; R-VERIF da caracteres perdidos; las líneas de E0
 # tienen caracteres que no están en las celdas; tiene una celda multilínea
@@ -450,12 +465,20 @@ def asignar_tablas_a_chunks(chunks: list[dict], lineas_por_chunk: list[list[E0.L
 # bloques (una tabla marcada sin serializar, o la heurística legada de E0,
 # con sus mismos umbrales, sobre las líneas del chunk que no caen en un
 # bloque). Las dos claves nuevas van solo en los chunks con tabla marcada:
-# en los demás, el chunk es idéntico al de la versión legada.
+# en los demás, el chunk es idéntico al de la versión legada, y una clave
+# `contenido_tabular_residual` ausente se lee como igual a
+# `contenido_tabular` (en la tanda 0, 6 chunks marcados solo por la heurística
+# legada, sin tabla detectada). H — cada entrada de `flags.tablas_e0` lleva
+# además el modo, las celdas propagadas (E), las celdas con marca de alcance
+# (G), las combinadas sin propagar y las filas de subtítulo (None si la tabla
+# no se serializó); no cambian el texto.
 
 SEP_PAR = " | "
 SEP_CLAVE = " = "
 MARCA_COMBINADA = "⟨combinada con fila {}⟩"
-RE_MARCA_COMBINADA = re.compile(r" ⟨combinada con fila (\d+)⟩$")
+RE_MARCA_COMBINADA = re.compile(r" ⟨combinada con fila (\d+)⟩")
+MARCA_ALCANCE = "⟨abarca hasta {}⟩"
+RE_MARCA_ALCANCE = re.compile(r" ⟨abarca hasta [^⟩]*⟩$")
 MAX_FILAS_ENCABEZADO = 4
 RE_CODIGO_DATO = re.compile(r"^\d{3}")
 EPS_GEOMETRIA = 0.5
@@ -485,10 +508,15 @@ def _multilinea_numerica(c, e0t) -> bool:
 
 
 def _geometria_segmento(page, seg: dict) -> dict | None:
-    """Para cada celda None del segmento, (fila, col) → (tipo, fila_origen):
-    tipo 'vertical' (la cubre una celda que empieza en una fila anterior),
-    'horizontal' (empieza en la misma fila) o 'indeterminada'. None si la
-    tabla re-detectada en la página no reproduce las filas del artefacto."""
+    """Geometría de celdas del segmento (pdfplumber), en dos tablas:
+    - `faltantes`: para cada celda None, (fila, col) → (tipo, fila_origen,
+      col_origen) de la celda que la cubre: 'vertical' (empieza en una fila
+      anterior, misma columna), 'horizontal' (misma fila, columna anterior),
+      'bidimensional' (fila y columna anteriores) o 'indeterminada';
+    - `ultima_col`: para cada celda con contenido, la última columna que
+      cubre (su borde derecho).
+    None si la tabla re-detectada en la página no reproduce las filas del
+    artefacto."""
     tablas = page.find_tables()
     if seg["indice_en_pagina"] >= len(tablas):
         return None
@@ -497,28 +525,34 @@ def _geometria_segmento(page, seg: dict) -> dict | None:
         return None
     xs = sorted({c[0] for c in tb.cells})
     filas_geo = [row.cells for row in tb.rows]
-    out: dict = {}
+    faltantes: dict = {}
+    ultima_col: dict = {}
     for r, cells in enumerate(filas_geo):
         llenas = [c for c in cells if c is not None]
         for ci, c in enumerate(cells):
             if c is not None:
+                ultima_col[(r, ci)] = max(k for k, x in enumerate(xs)
+                                          if x < c[2] - EPS_GEOMETRIA)
                 continue
             if not llenas or ci >= len(xs):
-                out[(r, ci)] = ("indeterminada", None)
+                faltantes[(r, ci)] = ("indeterminada", None, None)
                 continue
             px, py = xs[ci] + EPS_GEOMETRIA, llenas[0][1] + EPS_GEOMETRIA
             cubre = [k for k in tb.cells if k[0] <= px < k[2] and k[1] <= py < k[3]]
             if len(cubre) != 1:
-                out[(r, ci)] = ("indeterminada", None)
+                faltantes[(r, ci)] = ("indeterminada", None, None)
                 continue
             r0 = next((rr for rr, cc in enumerate(filas_geo) if cubre[0] in cc), None)
-            if r0 is None or r0 > r:
-                out[(r, ci)] = ("indeterminada", None)
-            elif r0 < r:
-                out[(r, ci)] = ("vertical", r0)
+            c0 = xs.index(cubre[0][0]) if cubre[0][0] in xs else None
+            if r0 is None or c0 is None or r0 > r or c0 > ci or (r0, c0) == (r, ci):
+                faltantes[(r, ci)] = ("indeterminada", None, None)
+            elif r0 < r and c0 == ci:
+                faltantes[(r, ci)] = ("vertical", r0, c0)
+            elif r0 == r:
+                faltantes[(r, ci)] = ("horizontal", r0, c0)
             else:
-                out[(r, ci)] = ("horizontal", r0)
-    return out
+                faltantes[(r, ci)] = ("bidimensional", r0, c0)
+    return {"faltantes": faltantes, "ultima_col": ultima_col}
 
 
 def geometria_tablas(pdf_path: Path, tablas: list[dict]) -> None:
@@ -561,9 +595,10 @@ def _motivo_previo(t: dict, e0t) -> str | None:
     return None
 
 
-def armar_bloque(t: dict, e0t) -> dict:
+def armar_bloque(t: dict, e0t, bloque_externo: str | None = None) -> dict:
     """Bloque serializado de una tabla (formato del comentario de la sección)
-    o el motivo por el que no se serializa."""
+    o el motivo por el que no se serializa. Con `bloque_externo` (solo lo usa
+    el selftest de e0-r2), V1 relee ese texto en lugar del bloque armado."""
     filas = []                         # (segmento, fila en el segmento, celdas)
     for si, s in enumerate(t["segmentos"]):
         rep = set(s.get("filas_encabezado_repetido") or [])
@@ -590,6 +625,7 @@ def armar_bloque(t: dict, e0t) -> dict:
                 if _txc(c):
                     enc[k] = (enc[k] + " " + _celda(c)).strip()
     modo = "columnas" if simple else "posicional"
+    clave_de = (lambda k: enc[k] if (simple and enc[k]) else f"col{k + 1}")
     desde = n_zona if simple else 0
     visibles = [i for i in range(desde, len(filas)) if any(_txc(c) for c in filas[i][2])]
     numero = {i: k for k, i in enumerate(visibles, start=1)}
@@ -597,32 +633,68 @@ def armar_bloque(t: dict, e0t) -> dict:
                   if i_dato is not None and i > i_dato
                   and not any(_es_dato(c, e0t) for c in filas[i][2])]
     pos_de = {(si, fi): i for i, (si, fi, _) in enumerate(filas)}
-    propagadas = 0
+    es_fila_dato = (lambda i: i_dato is not None and i >= i_dato and i not in subtitulos)
+    zona = (lambda i: "datos" if i_dato is not None and i >= i_dato else "encabezado")
+    desglose: collections.Counter = collections.Counter()
+    cont: collections.Counter = collections.Counter()
     sin_propagar: collections.Counter = collections.Counter()
+    alcance_de: dict = {}               # (fila, col) de una celda propia → clave final
+
+    def _alcance(si: int, fila_origen: int, k: int, fila: int):
+        """Clave de la última columna que cubre la celda que empieza en
+        (fila_origen, k) del segmento si, vista desde `fila` (la misma fila o
+        una fila donde se propaga); None si no abarca otras columnas; False si
+        la geometría no determina el alcance (las celdas que cubre no son,
+        todas, horizontales en la fila de origen o bidimensionales en una fila
+        posterior, cubiertas por esa misma celda)."""
+        geo = t["segmentos"][si].get("_geometria")
+        if not geo:
+            return None
+        uc = geo["ultima_col"].get((fila_origen, k))
+        if uc is None or uc <= k:
+            return None
+        esperado = (("horizontal", fila_origen, k) if fila == fila_origen
+                    else ("bidimensional", fila_origen, k))
+        if any(geo["faltantes"].get((fila, cc)) != esperado for cc in range(k + 1, uc + 1)):
+            return False
+        return clave_de(uc)
+
     pags = ", ".join(str(p) for p in sorted({s["pagina"] for s in t["segmentos"]}))
     origen = "e0_tablas" if t["origen"] == "e0_tablas" else "R-TC2"
     lineas = [f"[TABLA {t['id']} | página {pags} | {origen} | {modo}]"]
     if simple:
         lineas.extend(f"Rótulo: {r}" for r in rotulos)
-        lineas.append("Columnas: " + SEP_PAR.join(e or f"col{k + 1}" for k, e in enumerate(enc)))
-    es_fila_dato = (lambda i: i_dato is not None and i >= i_dato and i not in subtitulos)
+        lineas.append("Columnas: " + SEP_PAR.join(clave_de(k) for k in range(n_cols)))
     for i in visibles:
         si, fi, f = filas[i]
+        geo = t["segmentos"][si].get("_geometria")
         pares = []
         for k, c in enumerate(f):
-            clave = enc[k] if (simple and enc[k]) else f"col{k + 1}"
+            clave = clave_de(k)
             if _txc(c):
-                pares.append(f"{clave}{SEP_CLAVE}{_celda(c)}")
+                fin = _alcance(si, fi, k, fi)
+                if fin is False:
+                    return {"serializada": False, "motivo": "alcance_no_determinado"}
+                valor = _celda(c)
+                if fin:
+                    valor += " " + MARCA_ALCANCE.format(fin)
+                    alcance_de[(i, k)] = fin
+                    cont["celdas_con_alcance"] += 1
+                    desglose["con_alcance_" + zona(i)] += 1
+                pares.append(f"{clave}{SEP_CLAVE}{valor}")
                 continue
-            if c is not None or not es_fila_dato(i):
+            if c is not None:
                 continue
-            geo = t["segmentos"][si].get("_geometria")
             if geo is None:
                 return {"serializada": False, "motivo": "geometria_no_disponible"}
-            tipo, r0 = geo.get((fi, k), ("indeterminada", None))
+            tipo, r0, c0 = geo["faltantes"].get((fi, k), ("indeterminada", None, None))
             if tipo == "indeterminada":
                 return {"serializada": False, "motivo": "geometria_no_determinada"}
-            if tipo == "horizontal":
+            if tipo in ("horizontal", "bidimensional"):
+                cont["celdas_cubiertas_por_alcance"] += 1
+                desglose[f"cubiertas_{tipo}_{zona(i)}"] += 1
+                continue
+            if not es_fila_dato(i):
                 continue
             io = pos_de.get((si, r0))
             if io is None:
@@ -637,24 +709,36 @@ def armar_bloque(t: dict, e0t) -> dict:
             if io not in numero or not _txc(filas[io][2][k]):
                 sin_propagar["origen_vacio"] += 1
                 continue
-            pares.append(f"{clave}{SEP_CLAVE}{_celda(filas[io][2][k])} "
-                         f"{MARCA_COMBINADA.format(numero[io])}")
-            propagadas += 1
+            fin = _alcance(si, r0, k, fi)
+            if fin is False:
+                return {"serializada": False, "motivo": "alcance_no_determinado"}
+            valor = f"{_celda(filas[io][2][k])} {MARCA_COMBINADA.format(numero[io])}"
+            if fin:
+                valor += " " + MARCA_ALCANCE.format(fin)
+                cont["celdas_propagadas_con_alcance"] += 1
+            pares.append(f"{clave}{SEP_CLAVE}{valor}")
+            cont["celdas_propagadas"] += 1
         lineas.append(f"Fila {numero[i]}: " + SEP_PAR.join(pares))
     lineas.append(f"[FIN TABLA {t['id']}]")
     bloque = "\n".join(lineas)
-    v1 = _v1_relectura(bloque, filas, visibles, numero, enc, rotulos, simple, n_zona)
+    v1 = _v1_relectura(bloque if bloque_externo is None else bloque_externo,
+                       filas, visibles, numero, enc, rotulos, simple, alcance_de)
     return {"serializada": True, "motivo": None, "modo": modo, "bloque": bloque,
-            "filas_bloque": len(visibles), "celdas_propagadas": propagadas,
+            "filas_bloque": len(visibles), "celdas_propagadas": cont["celdas_propagadas"],
+            "celdas_propagadas_con_alcance": cont["celdas_propagadas_con_alcance"],
+            "celdas_con_alcance": cont["celdas_con_alcance"],
+            "celdas_cubiertas_por_alcance": cont["celdas_cubiertas_por_alcance"],
+            "alcance_por_zona": dict(sorted(desglose.items())),
             "celdas_combinadas_sin_propagar": sum(sin_propagar.values()),
             "celdas_combinadas_sin_propagar_por_motivo": dict(sorted(sin_propagar.items())),
             "filas_subtitulo": len(subtitulos), "v1": v1}
 
 
 def _v1_relectura(bloque: str, filas: list, visibles: list[int], numero: dict,
-                  enc: list[str], rotulos: list[str], simple: bool, n_zona: int) -> dict:
+                  enc: list[str], rotulos: list[str], simple: bool, alcance_de: dict) -> dict:
     """V1: relee el bloque y lo compara con las celdas, descontando los valores
-    propagados: rótulos, encabezados, numeración, claves y valores propios por
+    propagados (marca de E) y la marca de alcance (G) de los propios: rótulos,
+    encabezados, numeración, claves, valores propios y su marca de alcance por
     fila, y multiconjunto de caracteres de las celdas no vacías."""
     lin = bloque.split("\n")
     errores = []
@@ -670,12 +754,14 @@ def _v1_relectura(bloque: str, filas: list, visibles: list[int], numero: dict,
     propios_leidos: list[str] = []
     for m, i in zip(filas_leidas, visibles):
         pares = [p.split(SEP_CLAVE, 1) for p in m.group(2).split(SEP_PAR)] if m.group(2) else []
-        propios = [(k, v) for k, v in pares if not RE_MARCA_COMBINADA.search(v)]
-        esperados = [((enc[c] if simple and enc[c] else f"col{c + 1}"), _celda(x))
+        propios = [(k, v) for k, v in pares if "⟨combinada con fila " not in v]
+        esperados = [((enc[c] if simple and enc[c] else f"col{c + 1}"),
+                      _celda(x) + (" " + MARCA_ALCANCE.format(alcance_de[(i, c)])
+                                   if (i, c) in alcance_de else ""))
                      for c, x in enumerate(filas[i][2]) if _txc(x)]
         if [tuple(p) for p in propios] != esperados:
             errores.append(f"fila_{numero[i]}")
-        propios_leidos.extend(v for _, v in propios)
+        propios_leidos.extend(RE_MARCA_ALCANCE.sub("", v) for _, v in propios)
     celdas = [x for _, _, f in filas for x in f if _txc(x)]
     leido = propios_leidos + (leidos_rot + [e for e in enc if e] if simple else [])
     if _chars(leido) != _chars(celdas):
@@ -756,6 +842,21 @@ def texto_con_tablas(sustituciones: dict[int, str], omitidas: set):
     return tx
 
 
+def _entrada_tablas_e0(t: dict) -> dict:
+    """Entrada de `flags.tablas_e0` (marca F y metadatos H): no cambian el
+    texto del chunk."""
+    ser = t["serializacion"]
+    sa = ser["serializada"]
+    return {"tabla": t["id"], "origen": t["origen"], "estado": t["estado"],
+            "paginas": sorted({s["pagina"] for s in t["segmentos"]}),
+            "serializada": sa, "bloque": t["id"] if sa else None,
+            "modo": ser["modo"] if sa else None,
+            "celdas_propagadas": ser["celdas_propagadas"] if sa else None,
+            "celdas_con_alcance": ser["celdas_con_alcance"] if sa else None,
+            "combinadas_sin_propagar": ser["celdas_combinadas_sin_propagar"] if sa else None,
+            "filas_subtitulo": ser["filas_subtitulo"] if sa else None}
+
+
 def aplicar_marcas_r2(chunks: list[dict], lineas_por_chunk: list[list[E0.Linea]],
                       tablas_to: dict, sustituciones: dict, omitidas: set) -> None:
     """Marca F (ver el comentario de la sección) en los chunks con tabla."""
@@ -768,12 +869,7 @@ def aplicar_marcas_r2(chunks: list[dict], lineas_por_chunk: list[list[E0.Linea]]
     for i in sorted(por_chunk):
         f = chunks[i]["flags"]
         f["contenido_tabular"] = True
-        f["tablas_e0"] = [
-            {"tabla": t["id"], "origen": t["origen"], "estado": t["estado"],
-             "paginas": sorted({s["pagina"] for s in t["segmentos"]}),
-             "serializada": t["serializacion"]["serializada"],
-             "bloque": t["id"] if t["serializacion"]["serializada"] else None}
-            for t in por_chunk[i]]
+        f["tablas_e0"] = [_entrada_tablas_e0(t) for t in por_chunk[i]]
         fuera = [l for l in lineas_por_chunk[i] if id(l) not in en_bloque]
         f["contenido_tabular_residual"] = (
             any(not t["serializacion"]["serializada"] for t in por_chunk[i])
@@ -788,11 +884,14 @@ def procesar_tablas_r2(res: E0.ResultadoParseo, pdf_path: Path, to: str,
     asignar_lineas_a_tablas(res, tablas_to, roles)
     lineas0: list = []
     chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0)
+    E0.desambiguar_ids(chunks0)
     asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
     sustituciones, omitidas = preparar_serializacion(res, lineas0, tablas_to, pdf_path)
     lineas: list = []
     chunks = E0.construir_chunks(res, texto_lineas=texto_con_tablas(sustituciones, omitidas),
                                  lineas_por_chunk=lineas)
+    renombres = E0.desambiguar_ids(chunks)
+    tablas_to["ids_desambiguados"] = renombres
     if [c["id"] for c in chunks] != [c["id"] for c in chunks0] or \
             [[id(l) for l in ls] for ls in lineas] != [[id(l) for l in ls] for ls in lineas0]:
         raise RuntimeError(f"{to}: la serialización cambió la segmentación en chunks")
@@ -838,8 +937,8 @@ def correr(salida: Path, manifiesto=None,
            version_e0: str = VERSION_E0_LEGADA) -> dict:
     """`version_e0` (U-R2-CODIGO): con la legada ("e0-v1", el default) la
     salida es byte-idéntica a la sellada; con "e0-r2" corre además la
-    detección de tablas de la sección «tablas en E0, versión e0-r2» de
-    e0_lib y escribe `tablas_<to>.json` y `version_e0.json`."""
+    sección «tablas en E0, versión e0-r2» de este módulo (no de e0_lib:
+    selftest_b583, A3) y escribe `tablas_<to>.json` y `version_e0.json`."""
     if version_e0 not in VERSIONES_E0:
         raise ValueError(f"version_e0 desconocida: {version_e0!r} "
                          f"(conocidas: {VERSIONES_E0})")
@@ -862,6 +961,7 @@ def correr(salida: Path, manifiesto=None,
 
     correcciones: dict = {}
     sub_chunking: dict = {}
+    ids_desambiguados: dict = {}
 
     for archivo, to in items:
         pdf = pdfs[to]
@@ -894,6 +994,10 @@ def correr(salida: Path, manifiesto=None,
         no_partir: frozenset = frozenset()
         if r2:
             chunks, tablas_to, no_partir = procesar_tablas_r2(res, pdf, to, roles)
+            if tablas_to["ids_desambiguados"]:
+                ids_desambiguados[to] = tablas_to.pop("ids_desambiguados")
+            else:
+                tablas_to.pop("ids_desambiguados")
             (salida / f"tablas_{to}.json").write_text(
                 json.dumps(serializar_tablas_to(tablas_to), ensure_ascii=False,
                            indent=1), encoding="utf-8")
@@ -982,6 +1086,9 @@ def correr(salida: Path, manifiesto=None,
         (salida / "sub_chunking.json").write_text(
             json.dumps(sub_chunking, ensure_ascii=False, indent=1),
             encoding="utf-8")
+    if ids_desambiguados:   # solo e0-r2 y solo si hubo ids repetidos (BKL-0037)
+        (salida / "ids_desambiguados.json").write_text(
+            json.dumps(ids_desambiguados, ensure_ascii=False, indent=1), encoding="utf-8")
     if r2:
         (salida / "version_e0.json").write_text(
             json.dumps({"version_e0": version_e0}, ensure_ascii=False, indent=1),

@@ -84,6 +84,9 @@ def main() -> None:
     chars = collections.Counter()
     propagadas, tablas_con_prop, subtitulos, tablas_con_sub = 0, [], 0, []
     sin_propagar = 0
+    sin_propagar_motivo = collections.Counter()
+    alcance = collections.Counter()
+    tablas_alcance = collections.defaultdict(set)
     verif_fallidas = []
     posicional_sin_encabezado = []
     posicional_ok = 0
@@ -110,6 +113,14 @@ def main() -> None:
                 propagadas += ser["celdas_propagadas"]
                 tablas_con_prop.append({"tabla": t["id"], "celdas": ser["celdas_propagadas"]})
             sin_propagar += ser["celdas_combinadas_sin_propagar"]
+            sin_propagar_motivo.update(ser["celdas_combinadas_sin_propagar_por_motivo"])
+            alcance["celdas_con_alcance"] += ser["celdas_con_alcance"]
+            alcance["celdas_propagadas_con_alcance"] += ser["celdas_propagadas_con_alcance"]
+            alcance["celdas_cubiertas_por_alcance"] += ser["celdas_cubiertas_por_alcance"]
+            for k, v in ser["alcance_por_zona"].items():
+                alcance[k] += v
+                if v:
+                    tablas_alcance[k].add(t["id"])
             if ser["filas_subtitulo"]:
                 subtitulos += ser["filas_subtitulo"]
                 tablas_con_sub.append({"tabla": t["id"], "filas": ser["filas_subtitulo"]})
@@ -118,7 +129,8 @@ def main() -> None:
                 verif_fallidas.append(t["id"])
             if ser["modo"] == "posicional":
                 fila1 = next(RE_FILA.match(l) for l in ser["bloque"].split("\n") if RE_FILA.match(l))
-                valores = [p.split(" = ", 1)[1] for p in fila1.group(2).split(" | ")]
+                valores = [re.sub(r"( ⟨[^⟩]*⟩)+$", "", p.split(" = ", 1)[1])
+                           for p in fila1.group(2).split(" | ")]
                 if any(RE_NUMERICO.match(v) or RE_CODIGO.match(v) for v in valores):
                     posicional_sin_encabezado.append({"tabla": t["id"], "chunk": t["chunks"][0],
                                                       "fila_1": fila1.group(2)[:200]})
@@ -126,6 +138,8 @@ def main() -> None:
                     posicional_ok += 1
 
     v4_identicos = v4_sin_bloque_ok = v4_desbloqueo_ok = v4_solo_heredado_ok = 0
+    solo_heuristica = []
+    h_ok = h_fallas = 0
     v4_fallos = []
     residual = {"con_residual": [], "sin_residual": []}
     marcador_en_legada = 0
@@ -140,6 +154,21 @@ def main() -> None:
         for c in r2[to]:
             v = cl[c["id"]]
             f = c["flags"]
+            if "tablas_e0" not in f and f["contenido_tabular"]:
+                solo_heuristica.append(c["id"])
+            for e in f.get("tablas_e0", []):
+                ser_e = ser_por_tabla.get(e["tabla"])
+                esperado = ({"modo": ser_e["modo"], "celdas_propagadas": ser_e["celdas_propagadas"],
+                             "celdas_con_alcance": ser_e["celdas_con_alcance"],
+                             "combinadas_sin_propagar": ser_e["celdas_combinadas_sin_propagar"],
+                             "filas_subtitulo": ser_e["filas_subtitulo"]} if ser_e else
+                            {"modo": None, "celdas_propagadas": None, "celdas_con_alcance": None,
+                             "combinadas_sin_propagar": None, "filas_subtitulo": None})
+                if all(e.get(k) == x for k, x in esperado.items()) \
+                        and e["serializada"] == bool(ser_e) and e["bloque"] == (e["tabla"] if ser_e else None):
+                    h_ok += 1
+                else:
+                    h_fallas += 1
             if "tablas_e0" not in f:
                 if c == v:
                     v4_identicos += 1
@@ -175,6 +204,12 @@ def main() -> None:
         "combinadas_celdas_propagadas": propagadas,
         "combinadas_tablas": tablas_con_prop,
         "combinadas_sin_propagar_por_origen": sin_propagar,
+        "combinadas_sin_propagar_por_motivo": dict(sorted(sin_propagar_motivo.items())),
+        "alcance": dict(sorted(alcance.items())),
+        "alcance_tablas_por_clave": {k: sorted(v) for k, v in sorted(tablas_alcance.items())},
+        "metadatos_h_entradas_correctas": h_ok,
+        "metadatos_h_entradas_con_falla": h_fallas,
+        "chunks_marcados_solo_por_heuristica_legada": solo_heuristica,
         "filas_subtitulo_internas": subtitulos,
         "filas_subtitulo_tablas": tablas_con_sub,
         "posicional_con_encabezado_en_el_bloque": posicional_ok,

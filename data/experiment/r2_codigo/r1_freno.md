@@ -156,11 +156,11 @@ No hay otras marcas en ninguno de los tres grafos.
 
 **Veredictos por valor.**
 
-| grafo | nodos evaluados | verificado | en tabla sin veredicto | fuera de tabla | marca |
-|---|--:|--:|--:|--:|--:|
-| desarrollo | 278 | 217 | 90 | 66 | 2 |
-| diez | 278 | 217 | 90 | 66 | 2 |
-| r1 | 233 | 66 | 36 | 52 | 2 |
+| grafo | nodos evaluados | valores (total) | verificado | en tabla sin veredicto | fuera de tabla | marca |
+|---|--:|--:|--:|--:|--:|--:|
+| desarrollo | 278 | 375 | 217 | 90 | 66 | 2 |
+| diez | 278 | 375 | 217 | 90 | 66 | 2 |
+| r1 | 233 | 156 | 66 | 36 | 52 | 2 |
 
 **Declaración sobre la regla.** La regla tuvo cuatro versiones, corregidas después de ver la salida
 sobre los mismos grafos. Las dos primeras marcaban 67 y 45 nodos, en su mayoría marcas falsas. La
