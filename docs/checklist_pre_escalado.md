@@ -33,7 +33,7 @@ Actualizada otra vez el 30/09/2026: W12 pasa a hecho (U-INSUMOS-CAP cerrada, `f3
 Actualizada otra vez el 30/09/2026: X14 con el resultado de U-UMBRAL (cerrada, `e4d053b`) y la
 orientación de la autora para L-ESQ-R2; anclas `:n` remapeadas por la unidad 4b del plan.
 Actualizada otra vez el 30/09/2026: U-LISTAS-NOMAP cerrada (`acc310e`): X12 y X13 con el resultado
-disponible; X6, X7 y X9 absorbidos en el diseño, con el remedio pendiente del laudo.
+disponible; X6, X7 y X9 absorbidos en el diseño, con el remedio pendiente del laudo. Actualizada el 02/10/2026: ítems nuevos X17 y W15 (remisión entre puntos como `remite_a`) y criterio de la remisión del ejemplo en la condición 2 de la tanda 1.
 
 **Convenciones.**
 - Registro: `:n` es la línea de `docs/plan_tesis.md`; «laudo §x» es la sección
@@ -61,7 +61,7 @@ los mentores. La tanda 1 depende de tres condiciones:
 2. B2.10 cerrada: r2 versionada con su gate en verde (R26, con lo que el
    laudo firmado incluya del canal 1). **[30/09/2026]** Se lee: B2.10 y B2.11
    cerradas hasta U-REEXT-T0 (`:400`), con el gate de r2 en verde sobre los
-   grafos re-extraídos.
+   grafos re-extraídos. **[02/10/2026]** Incluye el criterio de la remisión del ejemplo (X17): en el grafo de la tanda 0 construido con el perfil final (U-REEXT-T0) existe al menos una arista `remite_a` desde un nodo anclado en `cla::5.1.1.1` hacia un nodo anclado en `cla::3.7`; sin eso la tanda 1 no corre (enmienda 2 de L-ESQ-R2, §9).
 3. La decisión de la autora con los mentores sobre el cambio de prefijo: X1
    (matriz), X2 (prompt), X3 (ventana del §7) y X4 (cuándo va la release de
    prompt), con X11 (si la lectura asistida de la matriz alcanza). **[30/09/2026]**
@@ -163,6 +163,7 @@ Desde el 30/09/2026 el cambio de prefijo está decidido: se hace en el ciclo B2.
 | X14 | Umbrales: propiedad del nodo, atributo de la relación o paso posterior sobre el nodo (decisión de esquema) | `:391` (U-UMBRAL) | decidido en L-ESQ-R2 (FIRMADA en `4ef7650`, §1): lista de umbrales (tramo, valor, unidad, comparación y base) en Restriccion, Obligacion, Condicion y Excepcion; par B en r2a y par A en r2b; comparación por reglas en código, con cuatro casos de control obligatorios; precisión de `limita` medida en la unidad 4b (`:393`; U-LECTURA-LIMITA, `bf4709d`) | No |
 | X15 | Catálogo de sujetos en una sola fuente: hoy 102 ids en el bloque del prompt y 101 en `esquema_v3_clases.json` (6 solo en el bloque, 5 solo en el JSON); absorbe R8 | `:395` (U-CAT-UNICO); `:747` (hallazgo E1) | decidido (30/09) | No |
 | X16 | Firma de las dos enmiendas de uso de la ventana (`data/experiment/esq/enmienda_uso_ventana_2026-09-30.md` y `docs/enmienda_preregistro_tanda0_2026-09-30_ventana.md`) | `:388` | hecho: firmadas en `30f106c` | No |
+| X17 | Remisión entre puntos como relación propia `remite_a`, para los siete tipos de contenido como origen y como destino; `referencia` queda solo para TextoOrdenado → Comunicacion. Hasta r1 y la tanda 0 la escribe el ensamblado como `referencia` con `rol_fuente = referencia_cruzada`, sin esquema que la declare, y no parte de Condicion, Definicion ni Potestad | `docs/plan_remite_a.md`; `data/experiment/esq/enmienda2_L-ESQ-R2_remite_a_2026-10-02.md`; `docs/mandatos/UR2CODIGO_enmienda1_remite_a.md`; `:397`, `:399` | decidido (02/10): las dos enmiendas FIRMADAS el 02/10/2026 (commit PENDIENTE); lo aplica U-R2-CODIGO en R3 y R5. Pendiente: la nota fechada de equivalencia en el pre-registro de la tanda que use la observación 12, cuyo universo excluye por nombre `referencia` | No |
 
 ## 3. Búsqueda y navegación (A1.8)
 
@@ -217,6 +218,7 @@ tanda 1.
 | W12 | U-INSUMOS-CAP: estadísticas descriptivas del corpus desde el segmentador y recorrido del préstamo por componente, para la mesa de escritura | `:403` | hecho: mandato firmado en `30f106c`; I1 en `ded3494` e I2 en `f32f20c`; unidad cerrada; insumos indexados en `docs/insumos_escritura.md` | No |
 | W13 | Corregir en la tesis el párrafo de la sección 3.4 según el cual las listas de valores de propiedad no las verifica ningún control, con lo que implemente U-PYD | `:396`; `:856` | registrado; **pasa a la mesa de escritura** (01/10/2026): U-PYD cerrada (`57a8dd2`), con la validación de las listas implementada en `data/experiment/pyd_r2/` | No |
 | W14 | Sensibilidad declarada de la atribución A0.2: con la regla exacta, 23 de las 31 ausencias de C1 a C4 son contenido presente bajo puntos descendientes del ancla; la tesis lo declara junto a las clases | `:314`; `reports/u_pre_r2/d2_ausencias.md:46-58` | decidido (30/09) | No |
+| W15 | Con `remite_a`: las Figuras 1.1, 1.2, 1.3 y 2.1 se regeneran desde el grafo del perfil final, con el rótulo «remite a»; el texto de los capítulos 1 y 2 que describe el ejemplo también se actualiza, porque los extremos cambian de tipo (Restriccion → Obligacion en r1; Condicion → Definicion en la tanda 0) | `docs/plan_remite_a.md`, sección e; `:397` | decidido (02/10); **pasa a la mesa de escritura** cuando exista el grafo del perfil final (U-REEXT-T0, `:400`) | No |
 
 ## Revisado y fuera de esta lista
 
