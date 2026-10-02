@@ -449,6 +449,41 @@ def reintentables_pendientes(regs: dict[str, dict]) -> list[str]:
                   if r.get("error") == ERROR_REINTENTABLE)
 
 
+# U-R2-CODIGO, R4.b (BKL-0030, solo con --perfil-r2): las unidades cuya
+# extracción corta por max_tokens también en el reintento se parten con la
+# mecánica de sub-chunking de E0 (correr_e0.particionar_por_corte) y se
+# registran acá; en las fases siguientes las partes reemplazan a la unidad.
+ARCHIVO_PARTICIONES_CORTE = "particiones_por_corte.json"
+ERROR_PARTICIONADA = "particionada_por_corte"
+
+
+def partes_por_corte(tdir: Path) -> dict[str, dict]:
+    """id de la unidad partida → {partes, informe}, de particiones_por_corte.json
+    (vacío si el archivo no existe: corrida sin particiones)."""
+    p = Path(tdir) / ARCHIVO_PARTICIONES_CORTE
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+
+
+def chunks_con_partes(chunks: list[dict], tdir: Path) -> list[dict]:
+    """La lista de chunks con cada unidad partida por corte reemplazada por sus
+    partes, en el mismo lugar del orden documental. Sin particiones, la misma
+    lista."""
+    partes = partes_por_corte(tdir)
+    if not partes:
+        return chunks
+    out = []
+    for c in chunks:
+        out.extend(partes[c["id"]]["partes"] if c["id"] in partes else [c])
+    return out
+
+
+def guardar_particion(tdir: Path, unidad: dict, partes: list[dict], informe: dict) -> None:
+    todas = partes_por_corte(tdir)
+    todas[unidad["id"]] = {"partes": partes, "informe": informe}
+    (Path(tdir) / ARCHIVO_PARTICIONES_CORTE).write_text(
+        json.dumps(todas, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 def llamar_con_reintentos_api(fn, descripcion: str, max_intentos: int = 3):
     """Reintento ante errores transitorios de API (la corrida es desatendida).
     TopeExcedido NO se reintenta: es freno."""
@@ -477,11 +512,16 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
     jsonl = tdir / "extracciones_e1.jsonl"
 
     chunks = chunks_sin_ids_repetidos(comun_e1.cargar_chunks((to,), e0_dir=E0_DIR), to)
+    if PERFIL_R2:
+        chunks = chunks_con_partes(chunks, tdir)
     if limite:
         chunks = chunks[:limite]
     previos = cargar_jsonl_last_wins(jsonl)
     hechas_ok = {cid for cid, r in previos.items() if r.get("error") is None}
     pendientes = [c for c in chunks if c["id"] not in hechas_ok]
+    # techo del reintento por corte: el del perfil r2 solo con --perfil-r2
+    techo_corte = (cliente_e1.MAX_TOKENS_REINTENTO_CORTE_R2 if PERFIL_R2
+                   else cliente_e1.MAX_TOKENS_REINTENTO_CORTE)
     print(f"[{key}] unidades={len(chunks)} ya_persistidas_ok={len(hechas_ok)} "
           f"pendientes={len(pendientes)}", flush=True)
 
@@ -489,16 +529,21 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
     errores_consecutivos = 0
     procesadas = len(hechas_ok)
     hechas_este_proceso = 0
-    for c in pendientes:
+    cola = list(pendientes)
+    i_cola = 0
+    while i_cola < len(cola):
+        c = cola[i_cola]
+        i_cola += 1
         if estado.gasto_global() + MARGEN_UNIDAD_USD > TOPE_GLOBAL_USD:
             raise Freno(f"tope global antes de {c['id']}: gasto USD "
                         f"{estado.gasto_global():.4f} + margen {MARGEN_UNIDAD_USD}")
         kwargs = PERFIL.build_request_kwargs(c, model=MODEL_E1)
         # U-B5.3 decisión 1: ante corte por max_tokens, UNA re-llamada en el
-        # mismo pase con 32k. El camino sin corte pasa kwargs tal cual.
+        # mismo pase con 32k (16k en el perfil r2, R4.b). El camino sin corte
+        # pasa kwargs tal cual.
         par, err = llamar_con_reintentos_api(
             lambda: cliente_e1.crear_con_reintento_corte(
-                cliente, kwargs, doc=c["archivo"]), c["id"])
+                cliente, kwargs, doc=c["archivo"], max_tokens_reintento=techo_corte), c["id"])
         resp, cortado = par if par is not None else (None, None)
         if resp is not None:
             u = resp.usage
@@ -531,13 +576,24 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
             # completo del intento 1 ya está en la db (write-through); acá
             # queda su proyección jsonl junto al intento efectivo.
             reg["reintento_corte"] = {
-                "max_tokens_reintento": cliente_e1.MAX_TOKENS_REINTENTO_CORTE,
+                "max_tokens_reintento": techo_corte,
                 "intento_1": cliente_e1.resumen_intento(cortado)}
+        partes = None
+        if PERFIL_R2 and err == "max_tokens_hit_tras_reintento" and "sub_chunk" not in c:
+            # R4.b: la unidad se parte (sin cortar bloques de tabla) y las
+            # partes se extraen a continuación, en este mismo pase
+            import correr_e0    # noqa: PLC0415 — e0_chunking, solo con --perfil-r2
+            partes, informe = correr_e0.particionar_por_corte(c)
+            reg["particion_por_corte"] = informe
+            if partes:
+                err = reg["error"] = ERROR_PARTICIONADA
+                guardar_particion(tdir, c, partes, informe)
+                cola[i_cola:i_cola] = partes
         append_jsonl(jsonl, reg)
         procesadas += 1
         hechas_este_proceso += 1
         estado.tick(cliente.gasto_usd, procesadas)
-        errores_consecutivos = 0 if err is None else errores_consecutivos + 1
+        errores_consecutivos = 0 if err in (None, ERROR_PARTICIONADA) else errores_consecutivos + 1
         if errores_consecutivos > 5:
             raise Freno(f"{key}: más de 5 errores de API consecutivos "
                         f"(último: {err}) — problema sistémico, se frena")
@@ -558,6 +614,8 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
     # errores definitivos quedan contabilizados en el resumen (nunca en
     # silencio). Las claves nuevas del resumen solo aparecen si hubo casos:
     # una corrida sin cortes produce un resumen byte-idéntico al histórico.
+    if PERFIL_R2:
+        chunks = chunks_con_partes(chunks, tdir)
     ids_corrida = {c["id"] for c in chunks}
     finales_e1 = {cid: r for cid, r in cargar_jsonl_last_wins(jsonl).items()
                   if cid in ids_corrida}
@@ -586,6 +644,10 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
         resumen["tipo_obligacion_requisito_de_estructura"] = n_ret
     if reintentos_corte:
         resumen["reintentos_corte"] = reintentos_corte
+    particionadas = partes_por_corte(tdir) if PERFIL_R2 else {}
+    if particionadas:
+        resumen["particionadas_por_corte"] = {k: [x["id"] for x in v["partes"]]
+                                              for k, v in sorted(particionadas.items())}
     if definitivos:
         resumen["errores_definitivos"] = definitivos
         print(f"[{key}] {len(definitivos)} errores definitivos "
@@ -604,6 +666,8 @@ def compactar_e1(to: str, salida: Path) -> Path:
     tdir = salida / to
     regs = cargar_jsonl_last_wins(tdir / "extracciones_e1.jsonl")
     chunks = chunks_sin_ids_repetidos(comun_e1.cargar_chunks((to,), e0_dir=E0_DIR), to)
+    if PERFIL_R2:
+        chunks = chunks_con_partes(chunks, tdir)
     out = tdir / "extracciones_e1_compact.jsonl"
     with out.open("w", encoding="utf-8") as f:
         for c in chunks:
@@ -620,6 +684,8 @@ def fase_e3(to: str, cli_e3, cli_e1r, estado: Estado, salida: Path,
     finales = tdir / "finales.jsonl"
 
     chunks = chunks_sin_ids_repetidos(comun_e3.cargar_chunks((to,), e0_dir=E0_DIR), to)
+    if PERFIL_R2:
+        chunks = chunks_con_partes(chunks, tdir)
     if limite:
         chunks = chunks[:limite]
     unidades_corpus = {c["unidad"] for c in chunks}
@@ -898,7 +964,7 @@ def cerrar_e2_r2(to: str, salida: Path, limite: int | None = None) -> dict:
     no_mapeados_sujetos.jsonl, grafo_r2_<to>.json y reporte_e2_r2_<to>.json."""
     import r1_e4 as E4      # noqa: PLC0415
     tdir = salida / to
-    chunks = chunks_sin_ids_repetidos(comun_e1.cargar_chunks((to,), e0_dir=E0_DIR), to)
+    chunks = chunks_con_partes(chunks_sin_ids_repetidos(comun_e1.cargar_chunks((to,), e0_dir=E0_DIR), to), tdir)
     if limite:
         chunks = chunks[:limite]
     validar, pol = validador_perfil_r2()
@@ -911,6 +977,7 @@ def cerrar_e2_r2(to: str, salida: Path, limite: int | None = None) -> dict:
     ens = e2_lib.ensamblar_r2(chunks, regs, cat["labels"], M.SUJETOS_R2_SET, M.firma_r2,
                               M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"])
     grafo = {"nodes": ens["nodes"], "edges": ens["edges"]}
+    r_cola = e2_lib.flaggear_cola_r2(grafo, {r["chunk_id"]: r["estado_e3"] for r in regs if r.get("cola_humana")})
     grafo_json = json.dumps(grafo, ensure_ascii=False, indent=2)
 
     def jl(nombre: str, filas: list[dict]) -> None:
@@ -927,7 +994,7 @@ def cerrar_e2_r2(to: str, salida: Path, limite: int | None = None) -> dict:
                "edges_by_relation": e2_lib._conteo(ens["edges"], "relation"),
                "stats": ens["stats"], "rechazos_e2": ens["rechazos_e2"],
                "conflictos_properties": ens["conflictos_properties"],
-               "resolucion_sujetos": res["resumen"],
+               "resolucion_sujetos": res["resumen"], "cola_flaggeada": r_cola,
                "origen_crudo": dict(Counter(r["origen_crudo"].split(":")[0] for r in regs)),
                "sha256_grafo": hashlib_sha256(grafo_json)}
     (tdir / f"reporte_e2_r2_{to}.json").write_text(json.dumps(reporte, ensure_ascii=False, indent=1),

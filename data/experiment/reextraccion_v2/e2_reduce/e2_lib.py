@@ -800,8 +800,31 @@ EXTRAS_NODO_R2 = ("fuera_de_lista", "originales", "properties_no_definidas",
                   "campos_heredados_v3", "valores_no_tipados")
 MARCAS_ARISTA_R2 = ("sujeto_mencion", "sujeto_mencion_modelo", "mencion_verificada",
                     "sujeto_id_modelo", "metodo_resolucion", "no_verificada_e3",
-                    "coherencia_tipo_predicado")
+                    "coherencia_tipo_predicado", "calificador")
 PREDICADOS_SUJETO_R2 = ("aplica_a", "ejecuta")
+
+
+def flaggear_cola_r2(grafo: dict, estado_por_chunk: dict[str, str]) -> dict:
+    """La cola humana entra al grafo marcada, con la forma de los grafos
+    sellados (r1_cola_flaggeada.flaggear_grafo: properties cola_humana,
+    cola_chunks y estado_e3), en todo nodo o arista con alguna procedencia de
+    un chunk de la cola. En el perfil r2 la procedencia lleva chunk_id, así
+    que la marca sigue al chunk y no a la clave (to, punto, rol)."""
+    n_n = n_e = 0
+    for coleccion in ("nodes", "edges"):
+        for o in grafo[coleccion]:
+            chunks = sorted({p.get("chunk_id") for p in o.get("provenances", [])} & set(estado_por_chunk))
+            if not chunks:
+                continue
+            props = o.setdefault("properties", {})
+            props["cola_humana"] = "true"
+            props["cola_chunks"] = chunks
+            props["estado_e3"] = "; ".join(sorted({estado_por_chunk[c] for c in chunks}))
+            if coleccion == "nodes":
+                n_n += 1
+            else:
+                n_e += 1
+    return {"chunks_de_cola": sorted(estado_por_chunk), "nodos_marcados": n_n, "aristas_marcadas": n_e}
 
 
 def id_sujeto_propuesto(label: str) -> str:
@@ -809,12 +832,43 @@ def id_sujeto_propuesto(label: str) -> str:
     return f"Sujeto_propuesto_{slugify_full(str(label).strip())[:80]}"
 
 
+TIPOS_POR_DESCRIPCION_R2 = ("Restriccion", "Obligacion", "Excepcion")
+TIPOS_POR_LABEL_Y_DESCRIPCION_R2 = ("Condicion", "Definicion", "Potestad")
+
+
+def entity_slug_r2(e: dict[str, Any], prov: dict) -> str:
+    """Clave de fusión del perfil r2 (U-R2-CODIGO, R4.a: T2 y H2). La fusión
+    sigue siendo exacta, pero nunca junta nodos de puntos distintos:
+      - Restriccion, Obligacion y Excepcion: la descripción (como v3) y el punto
+        de la procedencia (TO::punto). T2: dos unidades con la misma oración
+        («Esta opción…» del 125 % en ext::7.5.3 y ext::7.8.5.1) quedan en dos
+        nodos;
+      - Condicion, Definicion y Potestad: label, descripción y punto (H2: no se
+        funden solo por label);
+      - los demás tipos, como `entity_slug_v3` (Operacion por label; Sujeto,
+        TextoOrdenado y Comunicacion por su clave propia).
+    El prefijo legible del id sale de la descripción o del label; el sufijo
+    sha1 cubre la clave entera, con el punto (`_id_estable`)."""
+    t = e["type"]
+    p = e.get("properties") or {}
+    label = e.get("label", "") or ""
+    ancla = slugify_full(f"{prov.get('to') or prov.get('archivo') or ''}::{prov.get('punto') or ''}")
+    if t in TIPOS_POR_DESCRIPCION_R2:
+        return _id_estable(slugify_full(str(p.get("descripcion") or label)) + "__" + ancla)
+    if t in TIPOS_POR_LABEL_Y_DESCRIPCION_R2:
+        return _id_estable(slugify_full(label) + "__" + slugify_full(str(p.get("descripcion") or "")) + "__" + ancla)
+    return entity_slug_v3(e)
+
+
 def ensamblar_r2(chunks: list[dict], registros: list[dict], labels_catalogo: dict,
                  sujetos_set: frozenset, firma, entity_types: tuple, predicates: tuple,
                  registro_no_mapeados: list[dict]) -> dict:
     """E2 del perfil r2. Mismo determinismo que `ensamblar` (orden documental
-    de E0, ids por contenido con `entity_slug_v3`, first-write-wins con
-    conflictos registrados). Diferencias:
+    de E0, ids por contenido, first-write-wins con conflictos registrados).
+    Diferencias:
+      - la clave de fusión es `entity_slug_r2` (R4.a: nunca junta nodos de
+        puntos distintos; Condicion, Definicion y Potestad no se funden solo
+        por label);
       - la procedencia lleva `chunk_id` (enmienda 2 de L-ESQ-R2, §3);
       - el nodo conserva las marcas del validador r2 (fuera_de_lista,
         originales, properties_no_definidas, campos_heredados_v3,
@@ -925,7 +979,7 @@ def ensamblar_r2(chunks: list[dict], registros: list[dict], labels_catalogo: dic
             props = dict(e.get("properties") or {})
             if etype == "TextoOrdenado":
                 props.setdefault("archivo", prov["archivo"])
-            gid = f"{etype}_{entity_slug_v3({'type': etype, 'label': e['label'], 'properties': props})}"
+            gid = f"{etype}_{entity_slug_r2({'type': etype, 'label': e['label'], 'properties': props}, prov)}"
             local_to_global[e["local_id"]] = gid
             if e.get("umbrales_tramos"):
                 lst = tramos_umbral.setdefault(gid, [])

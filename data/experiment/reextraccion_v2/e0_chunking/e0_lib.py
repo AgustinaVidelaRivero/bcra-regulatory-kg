@@ -229,6 +229,11 @@ RE_PIE = [
     re.compile(r"^P[aá]gina\s+\d+$"),
 ]
 RE_NUMERICO = re.compile(r"^-?[\d.,]+%?$")
+# Pie desde la línea «Versión» (solo la versión e0-r2, U-R2-CODIGO; ver
+# separar_encabezado_pie): la línea de versión del pie y todo lo que la sigue
+# en la página son pie, si está entre las últimas VENTANA_PIE_VERSION líneas.
+RE_PIE_VERSION = re.compile(r"^Versi[oó]n\s*:.*Comunicaci[oó]n", re.I)
+VENTANA_PIE_VERSION = 3
 
 MAX_RAIZ = 30        # un primer componente mayor es cita de Comunicación, no punto
 
@@ -504,6 +509,7 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
                            seccion_b582: bool = False,
                            banners_texto: set | None = None,
                            mayusculas_repetidas: set | None = None,
+                           pie_desde_version: bool = False,
                            ) -> tuple[list[Linea], list[Linea], str | None]:
     """Devuelve (contenido, descartadas, seccion_corrida).
 
@@ -531,21 +537,48 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
     chequeos de sección, que tienen precedencia.
 
     `mayusculas_repetidas` (solo la versión e0-r2, U-R2-CODIGO, K; ver
-    `titulos_mayusculas_repetidos`): con el conjunto de textos sin espacios
-    que se repiten en la zona de título de al menos 2 páginas, una línea sin
-    minúsculas se descarta solo si su texto está en ese conjunto. None (todos
-    los demás call sites) deja el descarte histórico."""
+    `titulos_mayusculas_repetidos`): todo lo que en la zona precede a la
+    última línea con «B.C.R.A.» o de sección (incluida) es encabezado; después
+    de esa línea, una línea sin minúsculas se descarta solo si su texto, sin
+    espacios, está en el conjunto de los que se repiten en la zona de título
+    de al menos 2 páginas. None (todos los demás call sites) deja el descarte
+    histórico.
+
+    `pie_desde_version` (solo la versión e0-r2, U-R2-CODIGO, agregado 8): si
+    una de las últimas VENTANA_PIE_VERSION líneas cumple RE_PIE_VERSION
+    («Versión: … Comunicación …»), esa línea y todas las que la siguen en la
+    página son pie, antes del recorte por RE_PIE. Cubre las formas del pie que
+    RE_PIE no reconoce («Versión :», sin «Página») y las líneas que quedan
+    debajo y cortaban el recorte (fechas con puntos o con año de cinco
+    dígitos, «Comunicación “C” …», «Circular CONAU …», «… 1 de 3»). False
+    (todos los demás call sites) deja el recorte histórico."""
     descartadas: list[Linea] = []
     contenido = list(lineas)
     seccion_corrida: str | None = None
 
     # pie (desde el final)
+    if pie_desde_version:
+        for i in range(len(contenido) - 1, max(-1, len(contenido) - 1 - VENTANA_PIE_VERSION), -1):
+            if RE_PIE_VERSION.match(contenido[i].texto.strip()):
+                while len(contenido) > i:
+                    descartadas.append(contenido.pop())
+                break
     while contenido and any(p.match(contenido[-1].texto.strip()) for p in RE_PIE):
         descartadas.append(contenido.pop())
 
     # encabezado (desde el principio, zona de 5 líneas)
     quitadas = 0
     ultima_top_seccion: float | None = None
+    forzadas = 0
+    if mayusculas_repetidas is not None:
+        # e0-r2: la línea «B.C.R.A.» o de sección marca el final del
+        # encabezado corrido; lo anterior de la zona es encabezado aunque no se
+        # repita (título partido distinto en esa página)
+        for i, l in enumerate(contenido[:5]):
+            ti = l.texto.strip()
+            if "B.C.R.A." in ti or (capturar_seccion and (
+                    RE_SECCION.match(ti) or (seccion_b582 and _match_seccion_b582(ti)))):
+                forzadas = i + 1
     while contenido and quitadas < 5:
         t = contenido[0].texto.strip()
         m = RE_SECCION.match(t)
@@ -570,6 +603,9 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
             # sección por variante B5.8.2 — cola envuelta DESACTIVADA
             # (ultima_top_seccion queda en None; ver docstring)
             seccion_corrida = t
+            descartadas.append(contenido.pop(0))
+            quitadas += 1
+        elif quitadas < forzadas:
             descartadas.append(contenido.pop(0))
             quitadas += 1
         elif "B.C.R.A." in t or (_es_titulo_mayusculas(t)
@@ -646,7 +682,8 @@ def _componentes(num: str) -> list[int]:
 def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                    roles: list[str], modo_sin_raiz: bool = False,
                    marcadores_b582: bool = False,
-                   mayusculas_repetidas: set | None = None) -> ResultadoParseo:
+                   mayusculas_repetidas: set | None = None,
+                   pie_desde_version: bool = False) -> ResultadoParseo:
     """Con `modo_sin_raiz=False` (todos los call sites vigentes) el
     comportamiento es el histórico. Con True rige además la gramática de
     raíces sintéticas del modo sin raíz de sección (B5.8.1; ver docstring del
@@ -693,7 +730,7 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
         contenido, descartadas, seccion_corrida = separar_encabezado_pie(
             lineas, labels_preservables=banners if modo_sin_raiz else None,
             seccion_b582=marcadores_b582, banners_texto=banners_texto,
-            mayusculas_repetidas=mayusculas_repetidas)
+            mayusculas_repetidas=mayusculas_repetidas, pie_desde_version=pie_desde_version)
         for d in descartadas:
             acc_descartes.append({"pagina": d.pagina, "texto": d.texto})
 
@@ -1736,13 +1773,11 @@ def titulos_mayusculas_repetidos(paginas: list[list[Linea]], roles: list[str],
     del TO. Con este conjunto, `separar_encabezado_pie` descarta una línea de
     la rama de mayúsculas solo si es un encabezado de página que se repite; la
     que no se repite es contenido (encabezados de tabla, códigos con letras) y
-    queda. Las ramas de sección, «B.C.R.A.», cola de título y pie no cambian,
-    pero el recorrido de la zona se detiene en la primera línea que queda: si
-    esa línea es un encabezado de página que no se repite (título partido
-    distinto en esa página), las siguientes de la zona, «B.C.R.A.» y la de
-    sección incluidas, quedan como contenido (medido fuera de muestra en
-    r2_codigo/rk_fuera_de_muestra.json; en la tanda 0 no ocurre). Con un TO de
-    una sola página de cuerpo ningún texto se repite."""
+    queda. Lo que precede a la última línea «B.C.R.A.» o de sección de la zona
+    es encabezado sin consultar este conjunto (decisión sobre el arrastre
+    medido fuera de muestra, r2_codigo/rk_fuera_de_muestra.json): un título
+    partido distinto en una página ya no deja «B.C.R.A.» ni la sección como
+    contenido. Con un TO de una sola página de cuerpo ningún texto se repite."""
     paginas_de: dict[str, set[int]] = {}
     for pi, (lineas, rol) in enumerate(zip(paginas, roles), start=1):
         if rol != ROL_CUERPO:

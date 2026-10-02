@@ -58,6 +58,14 @@ CACHE_USAGE_LOG = REPO / "logs" / "cache_usage.jsonl"  # gitignoreado (logs/)
 # ratchet E3) — y ninguna tercera. El techo del request base (8.192) y el del
 # ratchet NO cambian: alterarlos cambiaría requests de unidades que no cortan.
 MAX_TOKENS_REINTENTO_CORTE = 32768
+# Techo del reintento por corte del PERFIL r2 (U-R2-CODIGO, R4.b; BKL-0030,
+# laudo de r2 §1.1 (a)): el SDK rechaza antes de enviarlo un request sin
+# streaming ni timeout explícito cuyo max_tokens estima más de 10 minutos
+# (anthropic 0.100.0, _base_client._calculate_nonstreaming_timeout: 3.600 s ×
+# max_tokens / 128.000 > 600 s), y 32.768 da 921,6 s. 16.384 da 460,8 s. Solo
+# el runner con --perfil-r2 lo usa: max_tokens entra en la clave de caché, y
+# los perfiles existentes siguen con MAX_TOKENS_REINTENTO_CORTE.
+MAX_TOKENS_REINTENTO_CORTE_R2 = 16384
 
 
 def namespace_e1(canal_abierto: bool = False, prefijo_hash: str | None = None) -> str:

@@ -433,6 +433,8 @@ def resolver_relaciones_r2(registros: list[dict], idx: dict, rol_por_archivo: di
             resolucion.append(fila)
             r["sujeto_id_resuelto"] = final
             r["metodo_resolucion"] = metodo or "cuarentena"
+            if metodo == "R2_calificador":
+                r["calificador"] = regla["calificador"]
             estado = None
             if final is None:
                 id_crudo = (r.get("originales") or {}).get("sujeto_id")

@@ -21,7 +21,12 @@ Contenido:
   - predicados derivados por código en el ensamblado (`remite_a`, enmienda 2
     de L-ESQ-R2, 5f9a731): firma, lista de `alcance` y controles de la arista.
     No entran al tool schema ni a las listas de E1 (agregado de U-R2-CODIGO,
-    enmienda 1 a su mandato).
+    enmienda 1 a su mandato);
+  - lo que agrega el ensamblado del perfil r2, en el grafo (decisión 3 sobre
+    el FRENO R3 de U-R2-CODIGO): las marcas de cola humana y de colisión
+    cross-TO en el nodo, la resolución de la base y la verificación en tabla
+    en el elemento de umbral, el calificador en la arista de sujeto y las
+    relaciones del esqueleto (Sujeto → Sujeto). Tampoco entran al tool schema.
 
 Los modelos validados no rechazan un valor fuera de lista: exigen que esté en
 la lista o que lleve la marca `fuera_de_lista` (LN-1 de la suite propuesta).
@@ -39,7 +44,7 @@ import json
 from pathlib import Path
 from typing import Annotated, Any, Literal, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, create_model, model_validator
 
 AQUI = Path(__file__).resolve().parent          # pyd_r2/code
 PYD_R2 = AQUI.parent                            # pyd_r2
@@ -172,6 +177,24 @@ def firma_derivada(src: str, pred: str, tgt: str) -> bool:
     return src in d and tgt in r
 
 
+# Relaciones del esqueleto (E5; grafo_v2/code/schema.py, RELACIONES_ESQUELETO) y
+# la arista de cuarentena `padre_sugerido`: entre sujetos (Sujeto → Sujeto).
+# Las agrega el ensamblado; E1 no las emite (decisión 3 sobre el FRENO R3 de
+# U-R2-CODIGO).
+RELACIONES_ESQUELETO = ("subclase_de", "miembro_de", "instancia_de", "parte_de")
+RELACIONES_SUJETO_A_SUJETO = RELACIONES_ESQUELETO + ("padre_sugerido",)
+
+
+def firma_esqueleto(src: str, rel: str, tgt: str) -> bool:
+    return rel in RELACIONES_SUJETO_A_SUJETO and src == TIPO_SUJETO and tgt == TIPO_SUJETO
+
+
+def firma_arista(src: str, rel: str, tgt: str) -> bool:
+    """Firma de una arista del grafo r2: la matriz r2 de E1, la de los
+    predicados derivados o la del esqueleto."""
+    return firma_r2(src, rel, tgt) or firma_derivada(src, rel, tgt) or firma_esqueleto(src, rel, tgt)
+
+
 OBLIGACION_TIPO = ("presentacion_informativa", "calculo", "asignacion", "comunicacion_a_cliente",
                    "reporte_al_supervisor", "otra")
 RESTRICCION_TIPO = ("prohibicion", "limite_cuantitativo", "limite_cualitativo")
@@ -250,6 +273,12 @@ class ElementoUmbral(BaseModel):
     tramo_verificado: Optional[str] = None
     fuera_de_lista: list[str] = Field(default_factory=list)
     originales: dict[str, Any] = Field(default_factory=dict)
+    # Resolución de la base (L-ESQ-R2 §1.3 c) y verificación contra las tablas
+    # de E0 (§1.4), en el elemento (decisión 3 sobre el FRENO R3 de U-R2-CODIGO).
+    base_destino: Optional[Texto] = None
+    base_via: Optional[Literal["remision", "definicion"]] = None
+    base_no_resuelta: bool = False
+    verificado_en_tabla: Optional[bool] = None
 
     @model_validator(mode="after")
     def _listas(self) -> "ElementoUmbral":
@@ -270,6 +299,12 @@ class ElementoUmbral(BaseModel):
             raise ValueError("moneda sin unidad moneda")
         if self.dias_tipo is not None and self.unidad != "dias":
             raise ValueError("dias_tipo sin unidad dias")
+        if (self.base_destino is None) != (self.base_via is None):
+            raise ValueError("base_destino y base_via van juntas")
+        if self.base_destino is not None and self.base is None:
+            raise ValueError("base_destino sin base")
+        if self.base_no_resuelta and (self.base is None or self.base_destino is not None):
+            raise ValueError("base_no_resuelta solo con base y sin destino")
         return self
 
 
@@ -335,6 +370,21 @@ PROPS_POR_TIPO: dict[str, type[_Props]] = {
     "Obligacion": PropsObligacion, "Potestad": PropsPotestad, "Condicion": PropsCondicion,
     "Definicion": PropsDefinicion,
 }
+
+# Marcas de la cadena de ensamblado en las properties del nodo del grafo, con
+# la forma de los grafos sellados: la cola humana (r1_cola_flaggeada.
+# flaggear_grafo: cola_humana, cola_chunks, estado_e3) y la colisión cross-TO
+# (r1_invariantes.merge_grafos_guardado: colision_cross_to). Solo el nodo del
+# grafo las admite (NodoR2); la entidad validada de E1 (EntidadR2), no
+# (decisión 3 sobre el FRENO R3 de U-R2-CODIGO).
+MARCAS_NODO = ("cola_humana", "cola_chunks", "estado_e3", "colision_cross_to")
+PROPS_NODO_POR_TIPO: dict[str, type[_Props]] = {
+    t: create_model(f"{c.__name__}Nodo", __base__=c,
+                    cola_humana=(Optional[Literal["true"]], None),
+                    cola_chunks=(Optional[list[Texto]], None),
+                    estado_e3=(Optional[Texto], None),
+                    colision_cross_to=(Optional[Literal["true"]], None))
+    for t, c in PROPS_POR_TIPO.items()}
 
 
 def _controlar_marcas_entidad(tipo: str, props: _Props, fuera_de_lista: list[str],
@@ -510,8 +560,10 @@ class NodoR2(BaseModel):
     def _definicion(self) -> "NodoR2":
         if self.type == TIPO_SUJETO:
             return self
-        props = PROPS_POR_TIPO[self.type].model_validate(self.properties)
+        props = PROPS_NODO_POR_TIPO[self.type].model_validate(self.properties)
         _controlar_marcas_entidad(self.type, props, self.fuera_de_lista, self.valores_no_tipados)
+        if len({getattr(props, k) is None for k in ("cola_humana", "cola_chunks", "estado_e3")}) > 1:
+            raise ValueError("cola_humana, cola_chunks y estado_e3 van juntas")
         return self
 
 
@@ -523,7 +575,7 @@ class AristaR2(BaseModel):
 
     source: Texto
     target: Texto
-    relation: Literal[PREDICADOS + PREDICADOS_DERIVADOS + ("padre_sugerido",)]  # type: ignore[valid-type]
+    relation: Literal[PREDICADOS + PREDICADOS_DERIVADOS + RELACIONES_SUJETO_A_SUJETO]  # type: ignore[valid-type]
     provenance: Optional[Provenance] = None
     provenances: list[Provenance] = Field(default_factory=list)
     properties: dict[str, Any] = Field(default_factory=dict)
@@ -535,6 +587,7 @@ class AristaR2(BaseModel):
     metodo_resolucion: Optional[str] = None
     no_verificada_e3: bool = False
     coherencia_tipo_predicado: Optional[Literal[COHERENCIA_TIPO_PREDICADO]] = None  # type: ignore[valid-type]
+    calificador: Optional[Texto] = None
 
     @model_validator(mode="after")
     def _invariantes(self) -> "AristaR2":
@@ -542,6 +595,12 @@ class AristaR2(BaseModel):
             raise ValueError("coherencia_tipo_predicado va exactamente en prohibe y limita")
         if self.mencion_verificada is not None and self.relation not in PREDICADOS_SUJETO:
             raise ValueError("mencion_verificada solo en aristas de sujeto")
+        if self.calificador is not None and self.relation not in PREDICADOS_SUJETO:
+            raise ValueError("calificador solo en aristas de sujeto")
+        if self.relation in RELACIONES_SUJETO_A_SUJETO and (self.no_verificada_e3 or any(
+                v is not None for v in (self.sujeto_mencion, self.sujeto_mencion_modelo, self.sujeto_id_modelo,
+                                        self.metodo_resolucion, self.coherencia_tipo_predicado))):
+            raise ValueError(f"{self.relation}: lleva una marca de relación emitida por E1")
         if self.relation in PREDICADOS_DERIVADOS:
             p = self.properties
             if tuple(sorted(p)) != tuple(sorted(PROPIEDADES_REMISION)):

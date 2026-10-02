@@ -106,6 +106,9 @@ CON_CONDICION = ("BKL-0019", "BKL-0028", "BKL-0029", "RT-C5-1", "RT-C5-2", "RT-C
                  "E4-a1", "E4-a2", "E4-a3", "E4-a4", "E4-a5", "E4-a6", "E4-a7", "E4-a8",
                  "E4-b", "E4-c")
 NO_CONVERTIBLES = ("BKL-0026", "BKL-0027", "I1", "I2")
+# Ítems del perfil r2 (U-R2-CODIGO), fuera de los 46 del inventario de la fase 1
+# y de su partición: RT-C6-5, la cláusula de mutuales como test (R4.d).
+ITEMS_R2 = ("RT-C6-5",)
 # Dependen del retriever (tabla_resumen_B21_fase1.md:20).
 RETRIEVER = ("BKL-0017", "BKL-0019", "BKL-0004", "BKL-0003", "BKL-0005",
              "RT-C5-1", "RT-C5-2", "RT-C5-3", "RT-C5-4",
@@ -893,6 +896,22 @@ def t_rt_c6_2(ctx: Contexto) -> dict:
     return _valor_c6(ctx, "RT-C6-2 (= RT-C6-1 en la parte de valor)")
 
 
+def t_rt_c6_5(ctx: Contexto) -> dict:
+    """Cláusula de operaciones de la Excepcion de mutuales (laudo de r2, §1.5,
+    opción (c); U-R2-CODIGO, R4.d): el punto 1.1.2.5 de protección exceptúa a
+    las mutuales o cooperativas «por las financiaciones que otorguen»; sin la
+    cláusula la excepción queda más ancha que la norma (amputación). La
+    cláusula, que RT-C6-1 reporta como informativa, pasa a test: «persiste»
+    documenta que sigue ausente hasta el remedio de raíz (U-PROMPT-R2)."""
+    c6 = obj_c6(ctx.grafo)
+    if not c6:
+        return res("no_aplicable", "sin Excepcion anclada en pro 1.1.2.5 con «mutuales o cooperativas» (N1 de C6)")
+    con = [n for n in c6 if "por las financiaciones que otorguen" in texto(n)]
+    return res("resuelto" if con else "persiste",
+               f"cláusula «por las financiaciones que otorguen» en N1 de C6: {'presente en ' + str(_ids(con, 1)) if con else 'AUSENTE'} "
+               f"(N1: {_ids(c6, 1)})", valores={"clausula_financiaciones": bool(con), "n_N1": len(c6)})
+
+
 def t_rt_c6_3(ctx: Contexto) -> dict:
     """Rol de sujetos obligados de Protección con sus miembro_de entrantes
     = miembros del rol en el catálogo parametrizado (F4 ×n, ids de catálogo)."""
@@ -1310,6 +1329,9 @@ TESTS = [
       "(TO_clasificacion, 7.2 exacto, cualquier tipo, «riesgo medio»); N1 de C5", f"data/backlog/propuestas/E4_enumeracion_65.md:243-247; C5_retest:66 (d); {SA}.py:219-226; {INV}:115, §5.7 :267"),
     T("RT-C6-1", t_rt_c6_1, "F3 (valor en N1)", "N1 de C6", f"data/backlog/propuestas/E3_salvedad_mutuales.md:151-156; C6_retest:62 (d); {INV}:116", "solo valor (decisión 5)"),
     T("RT-C6-2", t_rt_c6_2, "F3 (valor en N1; = RT-C6-1)", "N1 de C6", f"data/backlog/propuestas/E3_salvedad_mutuales.md:157-164; C6_retest:62 (d); {INV}:117", "solo valor (decisión 5)"),
+    T("RT-C6-5", t_rt_c6_5, "F3 (cláusula «por las financiaciones que otorguen» en N1)", "N1 de C6",
+      "docs/laudo_release_r2_pipeline.md §1.5 opción (c); data/backlog/propuestas/E3_salvedad_mutuales.md:151-156; "
+      "mandato U-R2-CODIGO, R4.d", "test de persistencia; el remedio de raíz es de U-PROMPT-R2"),
     T("RT-C6-3", t_rt_c6_3, "F4 ×n (miembro_de entrantes = miembros del rol en el catálogo)", "id de catálogo Sujeto_rol_sujeto_obligado_proteccion",
       f"data/backlog/propuestas/E3_salvedad_mutuales.md:165-174; C6_retest:62 (RT-3); {SA}.py:246-252; {INV}:118", "solo valor/estructura (decisión 5)"),
     T("RT-C6-4", t_rt_c6_4, "F4 (emisoras --miembro_de--> rol) + F4 ausente (N1 ↔ Sujeto)", "ids de catálogo; N1 de C6",
@@ -1359,6 +1381,8 @@ def convertibilidad(id_: str) -> str:
         return "con condición"
     if id_ in NO_CONVERTIBLES:
         return "no convertible"
+    if id_ in ITEMS_R2:
+        return "perfil r2"
     raise KeyError(id_)
 
 
@@ -1367,15 +1391,19 @@ def grupo(id_: str) -> str:
 
 
 def verificar_particion() -> dict:
-    """46 ítems, ids únicos, partición 19 / 23 / 4 y 15 dependientes del retriever, tal como la tabla resumen §1."""
-    ids = [t["id"] for t in TESTS]
+    """46 ítems, ids únicos, partición 19 / 23 / 4 y 15 dependientes del retriever, tal como la tabla resumen §1;
+    los ítems del perfil r2 (ITEMS_R2) se registran aparte."""
+    todos = [t["id"] for t in TESTS]
+    assert len(set(todos)) == len(todos) and set(ITEMS_R2) <= set(todos), todos
+    ids = [i for i in todos if i not in ITEMS_R2]
     assert len(ids) == 46 and len(set(ids)) == 46, len(ids)
     assert set(ids) == set(CONVERTIBLES) | set(CON_CONDICION) | set(NO_CONVERTIBLES)
     assert (len(CONVERTIBLES), len(CON_CONDICION), len(NO_CONVERTIBLES)) == (19, 23, 4)
     assert len(RETRIEVER) == 15 and set(RETRIEVER) <= set(ids)
     c = Counter(grupo(i) for i in ids)
     assert c == {"i-BKL": 12, "i-RT": 12, "ii": 12, "iii": 10}, c
-    return {"items": 46, "convertibles": 19, "con_condicion": 23, "no_convertibles": 4, "retriever": 15, "por_grupo": dict(c)}
+    return {"items": 46, "convertibles": 19, "con_condicion": 23, "no_convertibles": 4, "retriever": 15, "por_grupo": dict(c),
+            "items_r2": list(ITEMS_R2)}
 
 
 # =========================================================================== #

@@ -8,7 +8,10 @@ los PDFs del corpus escalado que no son de la tanda 0, con un tope de páginas
 por TO, y lista por TO las líneas que la regla conserva (las que el descarte
 histórico quitaba) y los TOs con una sola página de cuerpo (en ellos ningún
 texto se repite, así que la regla conserva toda línea en mayúsculas de la
-zona de título). Roles de página del camino vigente de E0. USD 0.
+zona de título). Roles de página del camino vigente de E0. Con la regla vigente
+de e0-r2, lo que precede a la última línea «B.C.R.A.» o de sección de la zona
+es encabezado; el censo informa además las páginas de cuerpo cuya zona no
+tiene ninguna de esas líneas (ahí rige solo la regla de repetición). USD 0.
 
 Por línea: `lectura` (lectura propia de la página, sin revisión de la
 autora; clave (TO, página) en LECTURA, porque en ninguna página las líneas
@@ -216,7 +219,7 @@ def main() -> None:
     ap.add_argument("--max-paginas", type=int, required=True)
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
-    omitidos, por_to, una_pagina = [], {}, []
+    omitidos, por_to, una_pagina, sin_ancla = [], {}, [], {}
     for pdf in sorted(PDFS.glob("*.pdf")):
         to = pdf.stem
         if to in TANDA0_NUEVOS:
@@ -231,6 +234,12 @@ def main() -> None:
         cuerpo = sum(1 for r in roles if r == E0.ROL_CUERPO)
         rep = E0.titulos_mayusculas_repetidos(paginas, roles)
         cons = C.lineas_conservadas_k(paginas, roles, rep)
+        sa = [pi for pi, (ls, rol) in enumerate(zip(paginas, roles), start=1)
+              if rol == E0.ROL_CUERPO and not any(
+                  "B.C.R.A." in l.texto or E0.RE_SECCION.match(l.texto.strip()) for l in ls[:5])]
+        if sa:
+            sin_ancla[to] = {"paginas": sa, "lineas_conservadas_en_esas_paginas":
+                             sum(1 for l in cons if l.pagina in sa)}
         if cuerpo == 1:
             una_pagina.append(to)
         if cons:
@@ -241,7 +250,8 @@ def main() -> None:
     todas = [(to, l) for to, ls in por_to.items() for l in ls]
     clase = Counter(l["lectura"].split(":")[0] for _, l in todas)
     cruce = Counter((l["lectura"].split(":")[0], l["mecanismo"]) for _, l in todas)
-    out = {"unidad": "U-R2-CODIGO", "etapa": "ajuste K, fuera de muestra", "informativo": True,
+    out = {"unidad": "U-R2-CODIGO", "etapa": "ajuste K, fuera de muestra (regla con la línea «B.C.R.A.» o de "
+                                              "sección como fin del encabezado)", "informativo": True,
            "max_paginas": a.max_paginas, "tos_omitidos_por_tamano": omitidos,
            "tos_con_una_pagina_de_cuerpo": una_pagina,
            "lineas_conservadas_total": len(todas),
@@ -252,6 +262,13 @@ def main() -> None:
                f"{to} p{l['pagina']}" for to, l in todas if E0.RE_SECCION.match(l["texto"].strip())),
            "tos_con_encabezado_conservado": sorted({to for to, l in todas
                                                     if l["lectura"].startswith("encabezado")}),
+           "lineas_de_encabezado_que_quedan": [{"to": to, **l} for to, l in todas
+                                               if l["lectura"].startswith("encabezado")],
+           "paginas_de_cuerpo_sin_bcra_ni_seccion_en_la_zona": {
+               "tos": len(sin_ancla), "paginas": sum(len(v["paginas"]) for v in sin_ancla.values()),
+               "lineas_conservadas_en_esas_paginas": sum(v["lineas_conservadas_en_esas_paginas"]
+                                                         for v in sin_ancla.values()),
+               "por_to": sin_ancla},
            "por_to": por_to}
     Path(a.out).write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 

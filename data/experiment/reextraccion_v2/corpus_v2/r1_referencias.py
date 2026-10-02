@@ -382,14 +382,40 @@ RE_NUM_COM = re.compile(r"\d{1,2}\.?\d{3}|\d{1,4}")
 RE_PIE_NO_RECORTADO = re.compile(r"Versi(?:o|ó)n:|Vigencia:|P(?:a|á)gina\s+\d+", re.I)
 
 
-def normalizar_e0(texto: str) -> tuple[str, list[int]]:
+def _lineas_sueltas(texto: str) -> list[tuple[int, int]]:
+    """Regla (a): rangos [inicio, fin) de las líneas de uno o dos caracteres
+    alfanuméricos que quedan entre una línea que termina en «punto(s)» o
+    «apartado(s)» y una que empieza con un número. Es el subíndice que E0
+    extrae como línea suelta (límite de E0, declarado y sin corregir)."""
+    lineas, pos = [], 0
+    for l in texto.split("\n"):
+        lineas.append((pos, l))
+        pos += len(l) + 1
+    out = []
+    for k in range(1, len(lineas) - 1):
+        ini, l = lineas[k]
+        if (RE_LINEA_SUELTA.match(l.strip()) and RE_ANTES_DE_LINEA_SUELTA.search(lineas[k - 1][1])
+                and lineas[k + 1][1].lstrip()[:1].isdigit()):
+            out.append((ini, ini + len(l) + 1))
+    return out
+
+
+def normalizar_e0(texto: str, tolerar_linea_suelta: bool = False) -> tuple[str, list[int]]:
     """Texto de E0 para la detección: el corte de palabra al final de línea
     («nor-\nmas») se une y todo otro salto de línea pasa a espacio. Devuelve
     el texto normalizado y, por cada carácter, su posición en el original,
-    para que la evidencia sea un tramo literal del texto de E0."""
+    para que la evidencia sea un tramo literal del texto de E0. Con
+    `tolerar_linea_suelta` (regla a del perfil r2), las líneas sueltas de
+    `_lineas_sueltas` no pasan al texto normalizado (la evidencia, que se toma
+    del original, las conserva)."""
+    saltar = _lineas_sueltas(texto) if tolerar_linea_suelta else []
     out, mapa = [], []
     i, n = 0, len(texto)
     while i < n:
+        fuera = next((b for a, b in saltar if a <= i < b), None)
+        if fuera is not None:
+            i = fuera
+            continue
         c = texto[i]
         if (c == "-" and i + 1 < n and texto[i + 1] == "\n" and i > 0 and texto[i - 1].isalpha()
                 and i + 2 < n and texto[i + 2].isalpha()):
@@ -401,13 +427,255 @@ def normalizar_e0(texto: str) -> tuple[str, list[int]]:
     return "".join(out), mapa
 
 
+def _dentro_de_palabra(t: str, i: int) -> bool:
+    """Las posiciones i-1 e i son de la misma palabra: dos alfanuméricos, un
+    punto o una coma entre dígitos («3.7.1», «1,5») o un corte de palabra al
+    final de línea («nor-\nmas»)."""
+    if i <= 0 or i >= len(t):
+        return False
+    a, b = t[i - 1], t[i]
+    if a.isalnum() and b.isalnum():
+        return True
+    if b in ".," and a.isdigit() and i + 1 < len(t) and t[i + 1].isdigit():
+        return True
+    if a in ".," and b.isdigit() and i >= 2 and t[i - 2].isdigit():
+        return True
+    if b == "-" and i + 2 < len(t) and t[i + 1] == "\n" and a.isalpha() and t[i + 2].isalpha():
+        return True
+    if t[i - 1:i + 1] == "-\n" and i >= 2 and t[i - 2].isalpha() and i + 1 < len(t) and t[i + 1].isalpha():
+        return True
+    if a == "\n" and i >= 2 and t[i - 2] == "-" and i >= 3 and t[i - 3].isalpha() and b.isalpha():
+        return True
+    return False
+
+
 def evidencia_literal(original: str, norm: str, mapa: list[int], evidencia: str) -> str:
     """Tramo del texto original que corresponde a `evidencia` (una subcadena
-    del texto normalizado)."""
+    del texto normalizado), extendido hacia afuera hasta el límite de palabra
+    en los dos extremos (decisión 4 sobre el FRENO R3): sigue siendo literal
+    del texto de E0 y no empieza ni termina en la mitad de una palabra."""
     i = norm.find(evidencia)
     if i == -1 or not evidencia:
         return evidencia
-    return original[mapa[i]:mapa[i + len(evidencia) - 1] + 1]
+    a, b = mapa[i], mapa[i + len(evidencia) - 1] + 1
+    while _dentro_de_palabra(original, a):
+        a -= 1
+    while _dentro_de_palabra(original, b):
+        b += 1
+    return original[a:b]
+
+
+# ----------------------------------------------------------------------- #
+# Detector del perfil r2 (decisiones de la autora sobre el freno posterior #
+# a R3): reglas (a) a (i), cada una conmutable para medir su efecto. Sin   #
+# reglas, `detectar_menciones_r2` da exactamente `detectar_menciones`.     #
+# ----------------------------------------------------------------------- #
+REGLAS_R2 = frozenset("abcdefghi")
+RE_LINEA_SUELTA = re.compile(r"^[A-Za-z0-9]{1,2}$")
+RE_ANTES_DE_LINEA_SUELTA = re.compile(r"\b(?:puntos?|apartados?)\s*$", re.I)
+# (e) anáfora de la norma: las formas de RE_DICHO («de dicho ordenamiento»…),
+# «de las citadas normas», «de las citadas disposiciones», «de dichas normas»,
+# «del citado ordenamiento», «del citado TO», «dicho TO», «de la citada
+# norma» y variantes («de las normas citadas», «de las mencionadas normas»…).
+RE_ANAFORA_NORMA = re.compile(
+    r"de\s+(?:dicho|ese|este)\s+(?:ordenamiento|texto\s+ordenado)"
+    r"|de\s+(?:las|los)\s+(?:citad|mencionad|referid|precitad|aludid)[ao]s\s+(?:normas|disposiciones|ordenamientos)"
+    r"|de\s+(?:las|los)\s+(?:normas|disposiciones|ordenamientos)\s+(?:citad|mencionad|referid|precitad|aludid)[ao]s"
+    r"|de\s+dich[ao]s\s+(?:normas|disposiciones|ordenamientos)"
+    r"|del\s+citado\s+(?:ordenamiento|texto\s+ordenado|T\.?\s?O\b\.?)"
+    r"|de\s+la\s+citada\s+(?:norma|disposici[oó]n)\b"
+    r"|\bdicho\s+T\.?\s?O\b\.?", re.I)
+# (e) el propio TO: una mención de puntos seguida de una de estas formas es
+# interna aunque después se nombre otra norma.
+RE_PROPIO_TO = re.compile(r"\s*(?:de\s+las\s+presentes\s+(?:normas|disposiciones)|del\s+presente\s+r[eé]gimen)",
+                          re.I)
+# (h) «este punto» sin número: no genera remisión; se cuenta en el registro.
+RE_ESTE_PUNTO = re.compile(r"\b(?:este|el\s+presente|dicho)\s+punto\b(?!\s*\d)", re.I)
+# RE_NORMA con grupos con nombre (sin la regla g).
+RE_NORMA_NOMBRADA = re.compile(
+    r"(?:[Nn]ormas?\s+sobre|\bT\.?O\.?\s+(?:sobre|de)|[Tt]exto\s+[Oo]rdenado\s+(?:sobre|de))\s*"
+    r"(?P<q>[\"“'«])?\s*(?P<z>[^\"”'»\.;\)]{3,90})")
+# Con la regla (g): como RE_NORMA y, además, «texto ordenado de las normas
+# sobre “X”» se lee como una sola cita a X (RE_NORMA toma «las normas sobre
+# “X» como el nombre), y las comillas simples tipográficas (‘X’) cuentan como
+# comillas.
+RE_NORMA_R2 = re.compile(
+    r"(?:[Nn]ormas?\s+sobre|(?:\bT\.?O\.?|[Tt]exto\s+[Oo]rdenado)\s+(?:sobre|de)(?:\s+las\s+[Nn]ormas\s+sobre)?)\s*"
+    r"(?P<q>[\"“'«‘])?\s*(?P<z>[^\"”'»’\.;\)]{3,90})")
+# (g) títulos completos del inventario del ensamblado, normalizados (los
+# fija el ensamblado o el control; `titulos_de_inventario`).
+TITULOS_TOS: dict[str, str] | None = None
+INVENTARIO_TITULOS = C.REPO / "data" / "experiment" / "escalado_prep" / "inventario_tos.csv"
+INVENTARIO_RESUMEN = C.REPO / "data" / "experiment" / "escalado_prep" / "inventario_resumen.json"
+_RE_PUNTOS_CACHE: dict[frozenset, re.Pattern] = {}
+
+
+def titulos_de_inventario(tos: list[str]) -> dict[str, str]:
+    """Título oficial, normalizado, de cada TO: el índice del sitio del BCRA
+    del inventario de la partición (`inventario_tos.csv`, `titulo_oficial`) y,
+    para los cinco TOs de desarrollo que la partición excluye,
+    `inventario_resumen.json` (`subset_excluido`). Frena si falta alguno."""
+    import csv  # noqa: PLC0415
+    tit = {r["id"]: r["titulo_oficial"] for r in csv.DictReader(INVENTARIO_TITULOS.open(encoding="utf-8"))}
+    for x in json.loads(INVENTARIO_RESUMEN.read_text(encoding="utf-8"))["subset_excluido"]:
+        tit[x["id_interno"]] = x["titulo"]
+    faltan = [t for t in tos if t not in tit]
+    if faltan:
+        raise RuntimeError(f"TOs sin título en el inventario: {faltan}")
+    return {t: C.norm(tit[t]) for t in tos}
+
+
+def resolver_norma_r2(z: str, entrecomillada: bool, reglas: frozenset = REGLAS_R2) -> str | None:
+    """Regla (g): la norma citada resuelve a un TO si el título del
+    inventario, normalizado, es prefijo del texto capturado normalizado y
+    termina en límite de palabra; si calzan varios títulos, gana el más largo.
+    El texto capturado es lo que está entre comillas o, sin comillas, todo lo
+    que toma el patrón (`RE_NORMA_R2`), que suele seguir con texto corrido
+    («del TO sobre Gestión Crediticia, deberá observarse…»). Un título que no
+    está al comienzo del texto capturado no cuenta («Incumplimientos de
+    capitales mínimos…» no es «Capitales mínimos…»). `entrecomillada` no
+    cambia el criterio; queda para el registro. Sin la regla,
+    `resolver_norma` (palabras clave contenidas en el nombre)."""
+    if "g" not in reglas:
+        return resolver_norma(z)
+    if TITULOS_TOS is None:
+        raise RuntimeError("regla (g) sin TITULOS_TOS: el ensamblado debe fijar los títulos del inventario")
+    n = C.norm(z)
+    calzan = [(len(t), to) for to, t in TITULOS_TOS.items()
+              if t and n.startswith(t) and (len(n) == len(t) or not n[len(t)].isalnum())]
+    return max(calzan)[1] if calzan else None
+
+
+def _re_puntos_r2(reglas: frozenset) -> re.Pattern:
+    """RE_PUNTOS con (f) «apartado» como forma de cita y (c) un paréntesis
+    entre los elementos de una lista o de un rango."""
+    clave = frozenset(reglas) & frozenset("cf")
+    if clave not in _RE_PUNTOS_CACHE:
+        palabra = r"(?:puntos?|apartados?)" if "f" in clave else r"puntos?"
+        paren = r"(?:\([^()]{0,200}\)\s*)?" if "c" in clave else ""
+        _RE_PUNTOS_CACHE[clave] = re.compile(
+            r"\b" + palabra + r"\s+((?:\d+(?:\.\d+)+\.?)(?:\s*" + paren
+            + r"(?:,|y|al|a|e|ó|o|hasta)\s*\d+(?:\.\d+)+\.?)*)", re.I)
+    return _RE_PUNTOS_CACHE[clave]
+
+
+def _expandir_puntos_r2(expr: str, reglas: frozenset) -> list[str]:
+    if "c" in reglas:
+        expr = re.sub(r"\([^()]*\)", " ", expr)
+    return _expandir_puntos(expr)
+
+
+def detectar_menciones_r2(texto: str, to_origen: str, reglas: frozenset = REGLAS_R2) -> list[dict]:
+    """Detector del perfil r2. Con `reglas` vacío, el mismo resultado que
+    `detectar_menciones`. Reglas: (c) paréntesis en listas y rangos; (d) a una
+    norma solo se le atribuye la mención de puntos más cercana de su ventana,
+    y una mención seguida de otra mención de puntos no queda tomada por la
+    norma que viene después; (e) anáfora de la norma resuelta a la última norma
+    nombrada antes en el mismo texto, o irresoluble con causa «anáfora sin
+    antecedente», y una mención de puntos seguida de «de las presentes
+    normas», «de las presentes disposiciones» o «del presente régimen» es
+    interna; (f) «apartado»; (g) inventario por título; (h) «este punto» sin
+    número, registrado sin remisión. (a), (b) e (i) actúan fuera de este
+    detector (normalización, texto de e0-r2 y texto heredado)."""
+    reglas = frozenset(reglas)
+    re_puntos = _re_puntos_r2(reglas) if reglas & frozenset("cf") else RE_PUNTOS
+    re_anafora = RE_ANAFORA_NORMA if "e" in reglas else RE_DICHO
+    menciones: list[dict] = []
+    consumidos: list[tuple[int, int]] = []
+    normas: list[tuple[int, str | None]] = []
+    # (e): fin de las menciones de puntos que nombran el propio TO
+    fines_propios = ({pm.end() for pm in re_puntos.finditer(texto)
+                      if RE_PROPIO_TO.match(texto, pm.end())} if "e" in reglas else set())
+
+    def puntos_de_ventana(ini: int, fin: int) -> tuple[list, list, list]:
+        ventana = texto[ini:fin]
+        pms = [pm for pm in re_puntos.finditer(ventana) if ini + pm.end() not in fines_propios]
+        if "d" in reglas:
+            pms = pms[-1:]
+        puntos, secciones, spans = [], [], []
+        for pm in pms:
+            puntos += _expandir_puntos_r2(pm.group(1), reglas)
+            spans.append((ini + pm.start(), ini + pm.end()))
+        return puntos, secciones, spans
+
+    for m in (RE_NORMA_R2 if "g" in reglas else RE_NORMA_NOMBRADA).finditer(texto):
+        z = m.group("z").strip()
+        to_dest = resolver_norma_r2(z, m.group("q") is not None, reglas)
+        ini = max(0, m.start() - VENTANA_ANTES)
+        puntos, secciones, spans = puntos_de_ventana(ini, m.start())
+        for sm in RE_SECCION.finditer(texto[ini:m.start()]):
+            secciones += [x for x in sm.groups() if x]
+            spans.append((ini + sm.start(), ini + sm.end()))
+        consumidos += spans
+        ev_ini = min([x[0] for x in spans] + [m.start()])
+        menciones.append({"clase": "externa", "norma_nombrada": z, "to_destino": to_dest,
+                          "puntos": puntos, "secciones": secciones,
+                          "evidencia": texto[ev_ini:m.end()].strip()})
+        normas.append((m.start(), to_dest))
+    for m in re_anafora.finditer(texto):
+        if "e" in reglas:
+            antes = [x for x in normas if x[0] < m.start()]
+            to_dest = antes[-1][1] if antes else None
+            causa = None if to_dest else ("norma fuera del inventario" if antes else "anáfora sin antecedente")
+        else:
+            prev = [x for x in menciones if x["clase"] == "externa" and x["to_destino"]]
+            to_dest = prev[-1]["to_destino"] if prev else None
+            causa = None
+        ini = max(0, m.start() - VENTANA_ANTES)
+        puntos, secciones, spans = puntos_de_ventana(ini, m.start())
+        if "e" in reglas:
+            # (e): la anáfora toma también las secciones de su ventana, como
+            # una norma nombrada («la Sección 4. de dichas normas»)
+            for sm in RE_SECCION.finditer(texto[ini:m.start()]):
+                secciones += [x for x in sm.groups() if x]
+                spans.append((ini + sm.start(), ini + sm.end()))
+        consumidos += spans
+        men = {"clase": "externa_anaforica", "norma_nombrada": "dicho ordenamiento",
+               "to_destino": to_dest, "puntos": puntos, "secciones": secciones,
+               "evidencia": texto[ini:m.end()].strip()[-160:]}
+        if causa:
+            men["causa_irresoluble"] = causa
+        if "e" in reglas:
+            men["forma_anafora"] = " ".join(m.group(0).lower().split())
+        menciones.append(men)
+
+    def consumido(a: int, b: int) -> bool:
+        return any(a >= x and b <= y for x, y in consumidos)
+
+    def norma_despues(fin: int) -> bool:
+        despues = texto[fin:fin + VENTANA_DESPUES]
+        if "d" in reglas:
+            sig = re_puntos.search(despues)
+            if sig:
+                despues = despues[:sig.start()]
+        return bool(RE_NORMA.search(despues) or re_anafora.search(despues))
+
+    for pm in re_puntos.finditer(texto):
+        propio = pm.end() in fines_propios
+        if consumido(pm.start(), pm.end()) or (not propio and norma_despues(pm.end())):
+            continue
+        men = {"clase": "interna", "norma_nombrada": None, "to_destino": to_origen,
+               "puntos": _expandir_puntos_r2(pm.group(1), reglas), "secciones": [],
+               "evidencia": texto[max(0, pm.start() - 60):pm.end() + 20].strip()}
+        if propio:
+            men["marca_propio_to"] = " ".join(RE_PROPIO_TO.match(texto, pm.end()).group(0).lower().split())
+        menciones.append(men)
+    for sm in RE_SECCION.finditer(texto):
+        if consumido(sm.start(), sm.end()):
+            continue
+        despues = texto[sm.end():sm.end() + VENTANA_DESPUES]
+        if RE_NORMA.search(despues) or re_anafora.search(despues):
+            continue
+        menciones.append({"clase": "interna", "norma_nombrada": None, "to_destino": to_origen,
+                          "puntos": [], "secciones": [x for x in sm.groups() if x],
+                          "evidencia": texto[max(0, sm.start() - 60):sm.end() + 20].strip()})
+    if "h" in reglas:
+        for m in RE_ESTE_PUNTO.finditer(texto):
+            menciones.append({"clase": "anafora_sin_numero", "norma_nombrada": None, "to_destino": None,
+                              "puntos": [], "secciones": [],
+                              "evidencia": texto[max(0, m.start() - 60):m.end() + 20].strip(),
+                              "causa_irresoluble": "anáfora sin número"})
+    return menciones
 
 
 def _texto_r2(n: dict, leer_termino: bool = True) -> str:
@@ -473,20 +741,22 @@ def _chunk_de_procedencia(p: dict, emisores: dict | None) -> str | None:
 
 
 def _texto_e0_de(p: dict, chunk: dict) -> str:
-    """Texto de E0 del punto de la procedencia dentro de su chunk: el texto
-    propio (punto propio o bloque) o el tramo heredado de esa unidad."""
-    rol = p.get("rol_documental") or ""
-    if rol.startswith("herencia_"):
-        tipo = rol[len("herencia_"):]
-        return "\n".join(h["texto"] for h in chunk.get("herencia", [])
-                         if h["unidad_origen"] == p.get("punto") and h.get("tipo") == tipo)
-    return chunk.get("texto") or ""
+    """Texto de E0 del punto de la procedencia dentro de su chunk: todos los
+    tramos de esa unidad que el chunk trae en su herencia (el encabezado del
+    punto en sus mini-chunks; el texto entero del punto cuando la procedencia
+    es de herencia) y, si la procedencia es el punto propio o un bloque, el
+    texto propio del chunk. El rol `herencia_<tipo>` nombra solo el primer
+    tramo de la unidad (comun_e1.rol_documental_de_punto): se toman todos."""
+    partes = [h["texto"] for h in chunk.get("herencia", []) if h["unidad_origen"] == p.get("punto")]
+    if not (p.get("rol_documental") or "").startswith("herencia_"):
+        partes.append(chunk.get("texto") or "")
+    return "\n".join(partes)
 
 
-def _contiene_unidad(texto: str, men: dict) -> bool:
+def _contiene_unidad(texto: str, men: dict, reglas: frozenset | None = None) -> bool:
     """D1: el texto guardado del nodo contiene la unidad citada (un punto o
     una sección de la cita, o la norma nombrada si la cita nombra solo la
-    norma)."""
+    norma; con `reglas`, la norma se resuelve con `resolver_norma_r2`)."""
     for d in men["puntos"]:
         if re.search(r"(?<![\d.])" + re.escape(d) + r"(?![\d])", texto):
             return True
@@ -494,8 +764,22 @@ def _contiene_unidad(texto: str, men: dict) -> bool:
         if re.search(r"\bSecci(?:o|ó)n(?:es)?\s+(?:\d+\s*(?:,|y)\s*)*" + re.escape(s_) + r"\b", texto, re.I):
             return True
     if not men["puntos"] and not men["secciones"] and men.get("to_destino"):
+        if reglas is not None:
+            re_n = RE_NORMA_R2 if "g" in reglas else RE_NORMA_NOMBRADA
+            return any(resolver_norma_r2(m.group("z").strip(), m.group("q") is not None, reglas) == men["to_destino"]
+                       for m in re_n.finditer(texto))
         return any(resolver_norma(m.group(1)) == men["to_destino"] for m in RE_NORMA.finditer(texto))
     return False
+
+
+def nombra_unidad(texto: str, punto: str | None = None, seccion: str | None = None) -> bool:
+    """Regla (i): el texto guardado del nodo nombra el punto o la sección,
+    con límite estricto del número: «3.5» no se nombra en «3.5.1.6» (en
+    `_contiene_unidad`, la atribución D1, sí)."""
+    if punto is not None:
+        return bool(re.search(r"(?<![\d.])" + re.escape(punto) + r"(?!\.?\d)", texto))
+    return bool(re.search(r"\bSecci(?:o|ó)n(?:es)?\s+(?:\d+\.?\s*(?:,|y)\s*)*" + re.escape(seccion)
+                          + r"(?!\.?\d)", texto, re.I))
 
 
 def alcance_remision(td: str, to_procedencia: str, a_texto_ordenado: bool) -> str:
@@ -546,7 +830,9 @@ def registro_comunicaciones(chunks_por_to: dict[str, list[dict]]) -> dict:
 def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str = "e0",
                            tipos_origen: tuple = TIPOS_CONTENIDO_R2, leer_termino: bool = True,
                            por_procedencia: bool = True, propios: str = "procedencia",
-                           predicado: str = PREDICADO_R2) -> dict:
+                           predicado: str = PREDICADO_R2, reglas: frozenset = REGLAS_R2,
+                           chunks_e0_r2: dict[str, dict] | None = None,
+                           chunks_partes: dict[str, dict] | None = None) -> dict:
     """Remisiones del perfil r2. Por defecto, la regla firmada: detección sobre
     el texto de E0 del punto de origen (por chunk_id), desde cada procedencia
     de los siete tipos de contenido, con atribución D1, `alcance`, `destino` y
@@ -558,13 +844,28 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
     procedencia primaria; `propios="nodo"` excluye, como la cadena r1, todo
     punto de las procedencias del nodo de origen. Con (parafrasis, False,
     "nodo", sin termino) y los cuatro tipos de la cadena r1, los pares origen →
-    destino son los de las aristas `referencia` de la cadena r1."""
+    destino son los de las aristas `referencia` de la cadena r1.
+
+    `reglas` (subconjunto de REGLAS_R2; todas por defecto) son las reglas del
+    detector decididas tras el freno posterior a R3 (`detectar_menciones_r2`):
+    (a) línea suelta tolerada en `normalizar_e0`; (b) texto de e0-r2 cuando se
+    pasa `chunks_e0_r2` (chunk_id → chunk de `correr_e0.py --version-e0
+    e0-r2`); (i) citas del texto que el chunk hereda de otras unidades, para
+    los nodos cuyo texto guardado nombra la unidad citada, con la procedencia
+    del bloque heredado. Sin reglas, el detector es el de la cadena r1.
+
+    `chunks_partes` (chunk_id → parte): las partes de las unidades que E1 del
+    perfil r2 partió por corte (R4.b), cuyo texto no está en la E0."""
     if fuente not in ("e0", "parafrasis") or propios not in ("procedencia", "nodo"):
         raise ValueError(f"opción desconocida: fuente={fuente!r} propios={propios!r}")
+    reglas = frozenset(reglas)
+    if not reglas <= REGLAS_R2:
+        raise ValueError(f"reglas desconocidas: {sorted(reglas - REGLAS_R2)}")
     nodes_by_id = {n["id"]: n for n in kg["nodes"]}
     unidades = {to: unidades_e0(to) for to in C.TOS_ORDEN}
     chunks_por_to = {to: C.cargar_chunks_enm01(to) for to in C.TOS_ORDEN}
     chunk_por_id = {c["id"]: c for cs in chunks_por_to.values() for c in cs}
+    chunk_por_id.update(chunks_partes or {})
     variantes = {k: v for cs in chunks_por_to.values() for k, v in _variantes(cs).items()}
 
     anclados: dict[tuple[str, str], list[str]] = {}
@@ -591,7 +892,11 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
     conteo = {"procedencias_con_texto": 0, "procedencias_sin_texto_e0": 0,
               "atribucion_d1": {"nodos_que_contienen_la_unidad": 0, "todos_los_nodos_del_punto": 0},
               "aristas_con_varias_procedencias": 0, "citas_a_unidad_con_variantes": 0,
-              "procedencias_sin_texto_e0_detalle": []}
+              "procedencias_sin_texto_e0_detalle": [],
+              "texto_de_e0": {"e0-r2": 0, "e0_legada": 0},
+              "texto_heredado": {"menciones": 0, "con_nodos_que_nombran_la_unidad": 0,
+                                 "sin_nodos_que_nombran_la_unidad": 0},
+              "d1_con_limite_estricto_distinto": {"menciones": 0, "ejemplos": []}}
 
     def agregar(src: str, tgt: str, procedencia: dict, men: dict, destino: str, alcance: str) -> bool:
         k = (src, predicado, tgt)
@@ -618,6 +923,12 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                 "to_destino": men["to_destino"], "puntos": men["puntos"],
                 "secciones": men["secciones"], "evidencia": men["evidencia"],
                 "destinos": [], "irresolubles": [], "aristas_nuevas": 0}
+        for k in ("forma_anafora", "marca_propio_to"):
+            if men.get(k):
+                cita[k] = men[k]
+        if men.get("causa_irresoluble"):
+            cita["irresolubles"].append({"destino": None, "causa": men["causa_irresoluble"]})
+            return cita
         if men["to_destino"] is None:
             cita["irresolubles"].append({"destino": None, "causa": (
                 "norma fuera del inventario" if men["clase"] == "externa"
@@ -696,23 +1007,52 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                     por_proc[k] = (prov_canonica, [])
                 if n["id"] not in por_proc[k][1]:
                     por_proc[k][1].append(n["id"])
+        usar_r2 = "b" in reglas and chunks_e0_r2 is not None
         for k in sorted(por_proc):
             p, nodos = por_proc[k]
             cid = p.get("chunk_id")
             chunk = chunk_por_id.get(cid) if cid else None
+            if chunk is not None and usar_r2:
+                if cid in chunks_e0_r2:
+                    chunk = chunks_e0_r2[cid]
+                    conteo["texto_de_e0"]["e0-r2"] += 1
+                else:
+                    conteo["texto_de_e0"]["e0_legada"] += 1
+            elif chunk is not None:
+                conteo["texto_de_e0"]["e0_legada"] += 1
             if chunk is None:
                 conteo["procedencias_sin_texto_e0"] += 1
                 conteo["procedencias_sin_texto_e0_detalle"].append({kk: p.get(kk) for kk in
                                                                     ("to", "punto", "rol_documental", "chunk_id")})
                 continue
             original = _texto_e0_de(p, chunk)
-            texto, mapa = normalizar_e0(original)
+            texto, mapa = normalizar_e0(original, tolerar_linea_suelta="a" in reglas)
             conteo["procedencias_con_texto"] += 1
             propios_set = ({q["punto"] for i in nodos for q in nodes_by_id[i]["provenances"]}
                            if propios == "nodo" else {p["punto"]})
-            for men in detectar_menciones(texto, p["to"]):
+            reglas_d1 = reglas or None
+            for men in detectar_menciones_r2(texto, p["to"], reglas):
                 men["evidencia"] = evidencia_literal(original, texto, mapa, men["evidencia"])
-                contienen = [i for i in nodos if _contiene_unidad(_texto_r2(nodes_by_id[i], leer_termino), men)]
+                if men["clase"] == "anafora_sin_numero":
+                    cita = resolver(list(nodos), p, propios_set, men)
+                    cita["atribucion"] = "sin_destino"
+                    cita["chunk_id"] = cid
+                    registro.append(cita)
+                    continue
+                contienen = [i for i in nodos
+                             if _contiene_unidad(_texto_r2(nodes_by_id[i], leer_termino), men, reglas_d1)]
+                if reglas and (men["puntos"] or men["secciones"]):
+                    # informativo: la atribución D1 con el límite estricto de
+                    # `nombra_unidad` (la regla firmada usa `_contiene_unidad`)
+                    estrictos = [i for i in nodos if any(
+                        nombra_unidad(_texto_r2(nodes_by_id[i], leer_termino), punto=d) for d in men["puntos"]) or any(
+                        nombra_unidad(_texto_r2(nodes_by_id[i], leer_termino), seccion=s_) for s_ in men["secciones"])]
+                    if estrictos != contienen:
+                        x = conteo["d1_con_limite_estricto_distinto"]
+                        x["menciones"] += 1
+                        if len(x["ejemplos"]) < 10:
+                            x["ejemplos"].append({"chunk_id": cid, "puntos": men["puntos"], "secciones": men["secciones"],
+                                                  "contienen": len(contienen), "estrictos": len(estrictos)})
                 if contienen:
                     conteo["atribucion_d1"]["nodos_que_contienen_la_unidad"] += 1
                 else:
@@ -721,6 +1061,51 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                 cita["atribucion"] = "contiene_la_unidad" if contienen else "todos_los_nodos_del_punto"
                 cita["chunk_id"] = cid
                 registro.append(cita)
+            if "i" not in reglas:
+                continue
+            # (i) citas del texto que el chunk hereda de otras unidades: cada
+            # unidad citada va solo a los nodos cuyo texto guardado la nombra
+            # (`nombra_unidad`), con la procedencia del bloque heredado.
+            heredadas = []
+            for h in chunk.get("herencia", []):
+                if h["unidad_origen"] != p["punto"] and h["unidad_origen"] not in heredadas:
+                    heredadas.append(h["unidad_origen"])
+            for u in heredadas:
+                tipo_h = next(h["tipo"] for h in chunk["herencia"] if h["unidad_origen"] == u)
+                p_h = {"to": p["to"], "punto": u, "rol_documental": f"herencia_{tipo_h}", "chunk_id": cid}
+                original_h = _texto_e0_de(p_h, chunk)
+                texto_h, mapa_h = normalizar_e0(original_h, tolerar_linea_suelta="a" in reglas)
+                for men in detectar_menciones_r2(texto_h, p["to"], reglas):
+                    if men["clase"] == "anafora_sin_numero":
+                        continue
+                    conteo["texto_heredado"]["menciones"] += 1
+                    unidades_men = ([{**men, "puntos": [d], "secciones": []} for d in men["puntos"]]
+                                    + [{**men, "puntos": [], "secciones": [s_]} for s_ in men["secciones"]])
+                    if not unidades_men:
+                        unidades_men = [men]
+                    alguna = False
+                    for mu in unidades_men:
+                        if mu["puntos"]:
+                            nombran = [i for i in nodos if nombra_unidad(_texto_r2(nodes_by_id[i], leer_termino),
+                                                                       punto=mu["puntos"][0])]
+                        elif mu["secciones"]:
+                            nombran = [i for i in nodos if nombra_unidad(_texto_r2(nodes_by_id[i], leer_termino),
+                                                                       seccion=mu["secciones"][0])]
+                        else:
+                            nombran = [i for i in nodos
+                                       if _contiene_unidad(_texto_r2(nodes_by_id[i], leer_termino), mu, reglas_d1)]
+                        if not nombran:
+                            continue
+                        alguna = True
+                        mu["evidencia"] = evidencia_literal(original_h, texto_h, mapa_h, men["evidencia"])
+                        cita = resolver(nombran, p_h, propios_set | {u}, mu)
+                        cita["atribucion"] = "texto_heredado"
+                        cita["chunk_id"] = cid
+                        cita["procedencia_de_los_nodos"] = {kk: p.get(kk) for kk in
+                                                            ("to", "punto", "rol_documental", "chunk_id")}
+                        registro.append(cita)
+                    conteo["texto_heredado"]["con_nodos_que_nombran_la_unidad" if alguna
+                                             else "sin_nodos_que_nombran_la_unidad"] += 1
 
     nuevas = [aristas[k] for k in sorted(aristas)]
     tipo = {n["id"]: n["type"] for n in kg["nodes"]}
@@ -774,6 +1159,13 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
         "procedencias_sin_texto_e0": conteo["procedencias_sin_texto_e0"],
         "aristas_con_varias_procedencias": conteo["aristas_con_varias_procedencias"],
         "citas_a_unidad_con_variantes": conteo["citas_a_unidad_con_variantes"],
+        "reglas": "".join(sorted(reglas)),
+        "texto_de_e0": conteo["texto_de_e0"] if fuente == "e0" else None,
+        "texto_heredado": conteo["texto_heredado"] if fuente == "e0" else None,
+        "d1_con_limite_estricto_distinto_informativo": (conteo["d1_con_limite_estricto_distinto"]
+                                                        if fuente == "e0" and reglas else None),
+        "citas_texto_heredado": len({k for c in registro if c.get("atribucion") == "texto_heredado"
+                                     for k in [(clave_origen(c), c["evidencia"], d["destino"]) for d in c["destinos"]]}),
     }
     return {"resumen": resumen, "registro": registro, "nuevas": nuevas,
             "procedencias_sin_texto_e0": conteo["procedencias_sin_texto_e0_detalle"],

@@ -279,7 +279,7 @@ caso("regresión: código de salida 1 con regresión, 0 sin ella", RK.codigo_sal
 rk_m = {"consultas_coinciden_sellado": 26, "objetivos_coinciden_sellado": 75}
 reg2 = RK.computar_regresion(items, {"items": {"I3": {"estado": "resuelto"}}, "ranks_sellados": {"consultas": 27, "objetivos": 75}}, rk_m)
 caso("regresión: ranks sellados esperados que no coinciden → regresión RANKS_SELLADOS", reg2["n_regresiones"] == 1 and reg2["regresiones"][0]["item"] == "RANKS_SELLADOS")
-caso("partición declarada 46 = 19 / 23 / 4, 15 retriever, grupos 12/12/12/10", RK.verificar_particion() == {"items": 46, "convertibles": 19, "con_condicion": 23, "no_convertibles": 4, "retriever": 15, "por_grupo": {"i-BKL": 12, "i-RT": 12, "ii": 12, "iii": 10}})
+caso("partición declarada 46 = 19 / 23 / 4, 15 retriever, grupos 12/12/12/10", RK.verificar_particion() == {"items": 46, "convertibles": 19, "con_condicion": 23, "no_convertibles": 4, "retriever": 15, "por_grupo": {"i-BKL": 12, "i-RT": 12, "ii": 12, "iii": 10}, "items_r2": ["RT-C6-5"]})
 ids = [t["id"] for t in RK.TESTS]
 caso("los 4 no convertibles tienen estado fijo no_aplicable", all(RK.TESTS[ids.index(i)]["fn"](None)["estado"] == "no_aplicable" for i in ("BKL-0026", "BKL-0027", "I1", "I2")))
 caso("los cinco verificado sin evento de aplicación llevan la nota", all(RK.NOTA_SIN_APLICACION in RK.TESTS[ids.index(i)]["nota"] for i in ("BKL-0007", "BKL-0026", "BKL-0027", "BKL-0028", "BKL-0029")))
@@ -328,6 +328,21 @@ with tempfile.TemporaryDirectory(prefix="selftest_regression_kg_") as tmp:
         caso("end-to-end: --generacion contradice el formato detectado → SystemExit", False)
     except SystemExit:
         caso("end-to-end: --generacion contradice el formato detectado → SystemExit", True)
+
+# --------------------------------------------------------------------------- #
+# RT-C6-5 (U-R2-CODIGO, R4.d): la cláusula de mutuales como test de persistencia
+PRO_PDF = "TO_proteccion_usuarios_servicios_financieros_actual.pdf"
+_n1 = "excepto que se trate de asociaciones mutuales o cooperativas"
+g_c6_sin = RK.Grafo({"nodes": [nodo_gen3("Ex1", "Excepcion", "Mutuales", {"descripcion": _n1}, punto="1.1.2.5",
+                                         archivo=PRO_PDF, to="pro")], "edges": []})
+g_c6_con = RK.Grafo({"nodes": [nodo_gen3("Ex1", "Excepcion", "Mutuales",
+                                         {"descripcion": _n1 + ", por las financiaciones que otorguen"},
+                                         punto="1.1.2.5", archivo=PRO_PDF, to="pro")], "edges": []})
+caso("RT-C6-5: N1 sin la cláusula → persiste", RK.t_rt_c6_5(ctx_sintetico(g_c6_sin))["estado"] == "persiste")
+caso("RT-C6-5: N1 con la cláusula → resuelto", RK.t_rt_c6_5(ctx_sintetico(g_c6_con))["estado"] == "resuelto")
+caso("RT-C6-5: sin N1 → no_aplicable", RK.t_rt_c6_5(ctx_sintetico(RK.Grafo({"nodes": [], "edges": []})))["estado"] == "no_aplicable")
+caso("RT-C6-5 es ítem del perfil r2, fuera de la partición del inventario",
+     RK.convertibilidad("RT-C6-5") == "perfil r2" and "RT-C6-5" not in RK.CON_CONDICION)
 
 # --------------------------------------------------------------------------- #
 for x in OK:

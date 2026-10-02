@@ -84,15 +84,40 @@ FAMILIAS_ITEM = [
 ]
 
 
-def _particionar_texto(texto: str) -> dict | None:
+RE_INICIO_BLOQUE_TABLA = re.compile(r"^\[TABLA ")
+RE_FIN_BLOQUE_TABLA = re.compile(r"^\[FIN TABLA ")
+
+
+def _lineas_en_bloque_tabla(lineas: list[str]) -> set[int]:
+    """Índices de las líneas dentro de un bloque [TABLA … FIN TABLA] de e0-r2,
+    incluidas las dos líneas de marca."""
+    dentro, abierto = set(), False
+    for i, l in enumerate(lineas):
+        if RE_INICIO_BLOQUE_TABLA.match(l):
+            abierto = True
+        if abierto:
+            dentro.add(i)
+        if RE_FIN_BLOQUE_TABLA.match(l):
+            abierto = False
+    return dentro
+
+
+def _particionar_texto(texto: str, respetar_tablas: bool = False) -> dict | None:
     """Partición por ítems del texto propio de una unidad. La línea 0 (label/
     título) nunca es marcador. Devuelve chapeau + grupos (cada uno ≤ objetivo
     salvo bloque único mayor) o None si no hay familia con MIN_ITEMS líneas.
     Invariante: chapeau + grupos reconstruyen el texto línea a línea (cero
-    pérdida, mismo principio que verificar_cobertura)."""
+    pérdida, mismo principio que verificar_cobertura).
+
+    `respetar_tablas` (solo la partición por corte del perfil r2, U-R2-CODIGO
+    R4.b): una línea dentro de un bloque [TABLA … FIN TABLA] nunca es marcador
+    de ítem, así que ningún límite de parte cae dentro de un bloque."""
     lineas = texto.split("\n")
+    en_tabla = _lineas_en_bloque_tabla(lineas) if respetar_tablas else set()
     conteo: dict[str, list[int]] = {f: [] for f, _ in FAMILIAS_ITEM}
     for i, l in enumerate(lineas[1:], start=1):
+        if i in en_tabla:
+            continue
         s = l.strip()
         for fam, pat in FAMILIAS_ITEM:
             if pat.match(s):
@@ -169,6 +194,31 @@ def _sub_chunks_de(c: dict, part: dict) -> list[dict]:
             "sha256_completo": hashlib.sha256(completo.encode("utf-8")).hexdigest(),
         })
     return out
+
+
+def particionar_por_corte(c: dict) -> tuple[list[dict] | None, dict]:
+    """Partición de una unidad cuya extracción cortó por max_tokens también en
+    el reintento (perfil r2, U-R2-CODIGO R4.b; BKL-0030, laudo de r2 §1.1 (b)):
+    la mecánica de sub-chunking de E0 (`_particionar_texto` y `_sub_chunks_de`),
+    disparada por el corte y no por el tamaño, sin cortar ningún bloque
+    [TABLA … FIN TABLA] (agregado 7 de las decisiones sobre el freno R3). Las
+    partes (`<id>::parteK`) conservan la unidad: la procedencia de lo extraído
+    sigue en la unidad documental. Devuelve (partes, informe); partes es None
+    si la unidad no tiene ítems para partir o si alguna parte quedara con un
+    bloque de tabla abierto o cerrado a medias (se declara, nunca en
+    silencio)."""
+    info = {"id": c["id"], "chars_propio": c["chars_propio"],
+            "bloques_tabla": sum(1 for l in c["texto"].split("\n") if RE_INICIO_BLOQUE_TABLA.match(l))}
+    part = _particionar_texto(c["texto"], respetar_tablas=True)
+    if part is None:
+        return None, {**info, "motivo": "sin_items_detectables"}
+    subs = _sub_chunks_de(c, part)
+    for s in subs:
+        ls = s["texto"].split("\n")
+        if sum(1 for l in ls if RE_INICIO_BLOQUE_TABLA.match(l)) != sum(1 for l in ls if RE_FIN_BLOQUE_TABLA.match(l)):
+            return None, {**info, "motivo": "bloque_de_tabla_partido", "parte": s["id"]}
+    return subs, {**info, "familia_items": part["familia"], "n_items": part["n_items"],
+                  "partes": [{"id": s["id"], "chars_propio": s["chars_propio"]} for s in subs]}
 
 
 def subdividir_unidades_grandes(chunks: list[dict],
@@ -1002,8 +1052,10 @@ def correr(salida: Path, manifiesto=None,
             # K (U-R2-CODIGO): en la rama de mayúsculas del encabezado de página
             # se descarta solo lo que se repite en al menos 2 páginas de cuerpo
             repetidos = E0.titulos_mayusculas_repetidos(paginas, roles)
+            # agregado 8 (U-R2-CODIGO): pie desde la línea «Versión»
             res = E0.parsear_cuerpo(to, archivo, paginas, roles,
-                                    mayusculas_repetidas=repetidos)
+                                    mayusculas_repetidas=repetidos,
+                                    pie_desde_version=True)
             conservadas = lineas_conservadas_k(paginas, roles, repetidos)
         else:
             res = E0.parsear_cuerpo(to, archivo, paginas, roles)

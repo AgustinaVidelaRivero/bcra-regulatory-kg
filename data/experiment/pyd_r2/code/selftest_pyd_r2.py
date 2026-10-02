@@ -21,7 +21,10 @@ Grupos:
       con un valor fuera de lista queda marcado, no descartado;
   G11 predicado derivado `remite_a` (enmienda 1 al mandato de U-R2-CODIGO, con la
       enmienda 2 de L-ESQ-R2): fuera de las listas de E1, firma de 56, lista de
-      `alcance` e invariantes de la arista; tool schema y política sin cambio.
+      `alcance` e invariantes de la arista; tool schema y política sin cambio;
+  G12 lo que agrega el ensamblado (decisión 3 sobre el FRENO R3 de U-R2-CODIGO):
+      marcas del nodo, base y tabla del elemento de umbral, calificador y
+      relaciones del esqueleto; la entidad de E1 sigue sin admitir las marcas.
 
 Solo lectura: no escribe archivos. Lee E0 de la tanda 0 (con sha256 de N1),
 la lectura de `limita` y el ejemplo del préstamo. Salida determinística.
@@ -947,6 +950,92 @@ def g11_remite_a():
     chequear(g, "el tool schema no menciona remite_a", "remite_a" not in json.dumps(ts))
 
 
+def g12_ensamblado():
+    g = "G12 ensamblado r2"
+    import hashlib  # noqa: PLC0415
+    sys.path.insert(0, str(REPO / "data" / "experiment" / "grafo_v2" / "code"))
+    import schema  # noqa: PLC0415  (módulo sellado: solo import)
+    chequear(g, "relaciones del esqueleto = schema.RELACIONES_ESQUELETO",
+             M.RELACIONES_ESQUELETO == tuple(schema.RELACIONES_ESQUELETO))
+    chequear(g, "esqueleto y padre_sugerido: firma Sujeto → Sujeto y nada más",
+             all(M.firma_esqueleto("Sujeto", r, "Sujeto") for r in M.RELACIONES_SUJETO_A_SUJETO)
+             and not any(M.firma_esqueleto(a, r, b) for r in M.RELACIONES_SUJETO_A_SUJETO
+                         for a, b in (("Operacion", "Sujeto"), ("Sujeto", "Operacion"))))
+    chequear(g, "firma_arista reúne la matriz r2, remite_a y el esqueleto",
+             M.firma_arista("Condicion", "condicion_de", "Operacion")
+             and M.firma_arista("Condicion", "remite_a", "Definicion")
+             and M.firma_arista("Sujeto", "subclase_de", "Sujeto")
+             and not M.firma_arista("Sujeto", "remite_a", "Sujeto"))
+    for r in M.RELACIONES_SUJETO_A_SUJETO:
+        chequear(g, f"AristaR2 {r} valida", M.AristaR2(source="Sujeto_a", target="Sujeto_b", relation=r,
+                                                         rol_fuente="esqueleto") is not None)
+    try:
+        M.AristaR2(source="Sujeto_a", target="Sujeto_b", relation="subclase_de", metodo_resolucion="R1_label_exacto")
+        chequear(g, "esqueleto con marca de E1 no valida", False)
+    except ValidationError:
+        chequear(g, "esqueleto con marca de E1 no valida", True)
+    chequear(g, "calificador en una arista de sujeto valida",
+             M.AristaR2(source="Obligacion_a", target="Sujeto_entidad_financiera", relation="aplica_a",
+                        mencion_verificada="exacta", sujeto_mencion="entidades del grupo A",
+                        calificador="del grupo a").calificador == "del grupo a")
+    try:
+        M.AristaR2(source="Condicion_a", target="Operacion_b", relation="condicion_de", calificador="x")
+        chequear(g, "calificador fuera de una arista de sujeto no valida", False)
+    except ValidationError:
+        chequear(g, "calificador fuera de una arista de sujeto no valida", True)
+    marcas = {"cola_humana": "true", "cola_chunks": ["cla::3.5.1"], "estado_e3": "cola_humana",
+              "colision_cross_to": "true"}
+    n = M.NodoR2(id="Operacion_x", type="Operacion", label="O", properties={"descripcion": "d", **marcas})
+    chequear(g, "NodoR2 admite las marcas de cola y de colisión, como en los grafos sellados",
+             all(n.properties[k] == v for k, v in marcas.items()))
+    for nombre, props in (("cola_humana sin estado_e3", {"descripcion": "d", "cola_humana": "true",
+                                                         "cola_chunks": ["c"]}),
+                          ("colision_cross_to distinto de «true»", {"descripcion": "d", "colision_cross_to": "si"})):
+        try:
+            M.NodoR2(id="Operacion_x", type="Operacion", label="O", properties=props)
+            chequear(g, f"NodoR2: {nombre} no valida", False)
+        except ValidationError:
+            chequear(g, f"NodoR2: {nombre} no valida", True)
+    prov = M.Provenance(to="cla", archivo="a.pdf", punto="1", rol_documental="punto_propio")
+    try:
+        M.EntidadR2(local_id="e1", type="Operacion", label="O", punto="1", provenance=prov,
+                    properties={"descripcion": "d", "cola_humana": "true"})
+        chequear(g, "EntidadR2 (salida de E1) no admite las marcas del ensamblado", False)
+    except ValidationError:
+        chequear(g, "EntidadR2 (salida de E1) no admite las marcas del ensamblado", True)
+    base = RC.elemento_umbral(RC.analizar("superen dos veces el importe de referencia establecido en el punto 3.7")[0],
+                              "dos veces", "descripcion")
+    e = M.ElementoUmbral.model_validate({**base, "base_destino": "cla::3.7", "base_via": "remision",
+                                         "verificado_en_tabla": False})
+    chequear(g, "ElementoUmbral con la base resuelta y la verificación en tabla",
+             e.base_destino == "cla::3.7" and e.base_via == "remision" and e.verificado_en_tabla is False)
+    chequear(g, "ElementoUmbral con la marca de base no resuelta",
+             M.ElementoUmbral.model_validate({**base, "base_no_resuelta": True}).base_no_resuelta)
+    for nombre, extra in (("base_destino sin base_via", {"base_destino": "cla::3.7"}),
+                          ("base_no_resuelta con destino", {"base_destino": "cla::3.7", "base_via": "remision",
+                                                            "base_no_resuelta": True}),
+                          ("base_via fuera de la lista", {"base_destino": "cla::3.7", "base_via": "otra"})):
+        try:
+            M.ElementoUmbral.model_validate({**base, **extra})
+            chequear(g, f"ElementoUmbral: {nombre} no valida", False)
+        except ValidationError:
+            chequear(g, f"ElementoUmbral: {nombre} no valida", True)
+    sin_base = RC.elemento_umbral(RC.analizar("no podrá superar el 5%")[0], "5%", "descripcion")
+    try:
+        M.ElementoUmbral.model_validate({**sin_base, "base_no_resuelta": True})
+        chequear(g, "ElementoUmbral: base_no_resuelta sin base no valida", False)
+    except ValidationError:
+        chequear(g, "ElementoUmbral: base_no_resuelta sin base no valida", True)
+    cont = G.contenidos()
+    chequear(g, "tool schema y enums de E1 byte a byte los de 57a8dd2",
+             hashlib.sha256(cont["tool_schema_r2.json"]).hexdigest() == TOOL_SCHEMA_SHA_57A8DD2
+             and hashlib.sha256(cont["enums_r2.json"]).hexdigest() == ENUMS_SHA_57A8DD2)
+    js = json.dumps(json.loads(cont["tool_schema_r2.json"]))
+    chequear(g, "el tool schema no menciona las marcas del ensamblado",
+             not any(k in js for k in M.MARCAS_NODO + ("base_destino", "verificado_en_tabla", "calificador",
+                                                       "subclase_de")))
+
+
 def main() -> int:
     ch = cargar_chunks()
     g1_listas()
@@ -960,6 +1049,7 @@ def main() -> int:
     g9_tool_schema(ch)
     g10_calibracion(ch)
     g11_remite_a()
+    g12_ensamblado()
     total = ok = 0
     print(f"política: {V.POLITICA.relative_to(REPO)}  sha256 {V.politica_default().sha256}")
     for grupo, filas in RES.items():
