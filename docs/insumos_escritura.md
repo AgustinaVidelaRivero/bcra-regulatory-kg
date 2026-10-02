@@ -204,10 +204,20 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
     `kg_iguales_al_sellado`);
   - el procedimiento: cómo se identifican las unidades cambiadas, qué se re-extrae, cómo se
     sustituyen las salidas, qué se re-ensambla y qué se controla después;
-  - la tabla de qué obliga a reprocesar y qué no.
+  - la tabla de qué obliga a reprocesar y qué no;
+  - la corrida del control contra el sitio del 02/10/2026 (M3, commit `98400e5`;
+    `control_sitio/corridas/2026-10-02/resumen_corrida.json`, `pedidos.json` y
+    `clasificacion_cambios.json`): en los 25 días desde la corrida del 07/09/2026 cambiaron 19
+    de los 157 TOs, y 23 difieren del corpus congelado; el sitio responde a los pedidos
+    condicionales: de 157 pedidos de PDF, 138 volvieron con 304 y 19 con 200.
 - **Alimenta:** la sección de mantenimiento de la tesis.
 - **Salvedades:**
   1. Es una demostración en seco sobre una re-extracción ya hecha, con los perfiles
      existentes. La actualización real de un TO que cambió en el sitio es de U-SUBGRAFO.
   2. Las unidades que solo cambian de número se re-extraen; renumerarlas en código es una
      propuesta que pide laudo (plan, B2.11, unidad 13).
+  3. Las dos cifras de cambio son de ventanas distintas y no se combinan: 19 es desde el
+     07/09/2026; 23 es contra el corpus congelado, descargado entre el 07 y el 10/05/2026 (los 5 de
+     desarrollo) y el 13/08/2026 (los 152; `docs/fe_erratas_fecha_corpus_congelado.md`).
+  4. El control compara y avisa; no actualiza el corpus. Que el corpus congelado se mantenga
+     para la re-extracción y la evaluación es una decisión pendiente de la autora.
