@@ -106,6 +106,18 @@ k. FUENTES FIRMADAS: las fuentes de un documento firmado (laudo,
    K1; corregido en 5084781, plan, principio 9); y, al verificarlo, la
    mesa revisora corrió el derivador sobre el repo y sobrescribió el
    JSON, que hubo que restaurar desde una copia.
+l. COPIAS PARA VERIFICAR: la copia sobre la que corre una verificación
+   (regla k) se arma copiando los archivos, nunca con enlaces
+   simbólicos que apunten al repo: lo que se escribe a través de un
+   enlace se escribe en el repo. Y la corrida controla que el repo no
+   cambie: toma el sha256 de sus archivos antes y después, y los
+   compara. Precedente, del 02/10/2026: en R4 de U-R2-CODIGO, el
+   espejo de una verificación tenía `data/experiment/r2_codigo` como
+   enlace simbólico al repo; al escribir ahí el código de HEAD se
+   pisaron tres archivos del repo (`r3d_remisiones.py`,
+   `selftest_r3.py` y `rk_fuera_de_muestra.py`), que hubo que
+   restaurar (`data/experiment/r2_codigo/r4_freno.md`, «Error propio,
+   con su causa»; 26d274d).
 
 ## 4bis. Prompt caching en extracción
 
