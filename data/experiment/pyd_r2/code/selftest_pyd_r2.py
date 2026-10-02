@@ -18,7 +18,10 @@ Grupos:
       «al», «factor» solo desde tramo o título, «igual», h = 2, largo 11, lista
       JSON en omisiones, y los casos pedidos (los cuatro de control están en G5);
   G9  tool schema generado: regeneración idéntica, un elemento válido pasa y uno
-      con un valor fuera de lista queda marcado, no descartado.
+      con un valor fuera de lista queda marcado, no descartado;
+  G11 predicado derivado `remite_a` (enmienda 1 al mandato de U-R2-CODIGO, con la
+      enmienda 2 de L-ESQ-R2): fuera de las listas de E1, firma de 56, lista de
+      `alcance` e invariantes de la arista; tool schema y política sin cambio.
 
 Solo lectura: no escribe archivos. Lee E0 de la tanda 0 (con sha256 de N1),
 la lectura de `limita` y el ejemplo del préstamo. Salida determinística.
@@ -55,6 +58,14 @@ E0_SHA = {  # reports/u_listas_nomap/n1_inventario.json, entradas.e0_<to>.sha256
 LECTURA_LIMITA = REPO / "reports" / "u_umbral" / "lectura_limita" / "lectura_limita_30.csv"
 EJEMPLO_PRESTAMO = REPO / "docs" / "tesis" / "figuras" / "ejemplo_prestamo_datos.json"
 POLITICA_SHA_ESPERADO = None  # se informa; el freno la registra
+# Generación sellada de U-PYD (57a8dd2, manifest_generados_r2.json): sha256 de
+# modelos_r2.py con que se generaron tool schema y enums, y de lo generado. El
+# agregado de `remite_a` (U-R2-CODIGO) cambia el sha de modelos_r2.py y no lo
+# generado; generados/ no se regenera (fuera de las escrituras autorizadas).
+MODELOS_SHA_GENERACION = "43ae09fbaa429bea8406e1c5021c408ce495f826511cf6dcf6e9c273db5d639c"
+TOOL_SCHEMA_SHA_57A8DD2 = "307d2b788c5ba855a502522b171c39ba1a6b2d56850e1a4e3c8c8a2bb5068da4"
+ENUMS_SHA_57A8DD2 = "abd197ac8bbb818f680dc80d1b9c9df3e1f1f733fce3fd46b35e7440e7ce4241"
+POLITICA_SHA_DECISION_10 = "82e8752aea1d6ad869d6023d303c0af45182dd9333753681787d7a581ef6d00b"
 
 RES: "OrderedDict[str, list]" = OrderedDict()
 
@@ -777,9 +788,9 @@ def g9_tool_schema(ch):
         p = G.GENERADOS / nombre
         chequear(g, f"{nombre}: regenerado = archivo en generados/", p.exists() and p.read_bytes() == b)
     man = json.loads((G.GENERADOS / "manifest_generados_r2.json").read_text(encoding="utf-8"))
-    chequear(g, "manifest: sha256 de la política y de modelos_r2 vigentes",
+    chequear(g, "manifest: sha256 de la política vigente y de modelos_r2 de la generación (57a8dd2)",
              man["politica"]["sha256"] == M.sha256_archivo(V.POLITICA)
-             and man["modelos"]["sha256"] == M.sha256_archivo(AQUI / "modelos_r2.py"))
+             and man["modelos"]["sha256"] == MODELOS_SHA_GENERACION)
     ts = json.loads(cont["tool_schema_r2.json"])
     sch = ts["input_schema"]
     jsonschema.Draft202012Validator.check_schema(sch)
@@ -870,6 +881,72 @@ def cont_(res, campo, trat):
     return cont(res, campo, trat)
 
 
+def g11_remite_a():
+    g = "G11 remite_a"
+    import hashlib  # noqa: PLC0415
+    chequear(g, "remite_a fuera de los 13 predicados de E1", "remite_a" not in M.PREDICADOS
+             and len(M.PREDICADOS) == 13 and M.PREDICADOS_DERIVADOS == ("remite_a",))
+    chequear(g, "remite_a fuera de la matriz congelada y de la r2",
+             "remite_a" not in M.FIRMAS_CONGELADAS and "remite_a" not in M.FIRMAS_R2)
+    tipos = M.TIPOS_ENTIDAD + (M.TIPO_SUJETO,)
+    firmas = [(s, t) for s in tipos for t in tipos if M.firma_derivada(s, "remite_a", t)]
+    chequear(g, "56 firmas: 7 tipos de contenido → 7 tipos de contenido o TextoOrdenado",
+             len(firmas) == 56 and {s for s, _ in firmas} == set(M.TIPOS_CONTENIDO)
+             and {t for _, t in firmas} == set(M.TIPOS_CONTENIDO) | {"TextoOrdenado"})
+    chequear(g, "Comunicacion y Sujeto fuera de la firma, como origen y como destino",
+             not any(x in ("Comunicacion", M.TIPO_SUJETO) for f in firmas for x in f))
+    prov = M.Provenance(to="cla", archivo="a.pdf", punto="5.1.1.1", rol_documental="punto_propio")
+    try:
+        M.RelacionR2(source="e1", target="e2", predicate="remite_a", punto="5.1.1.1", provenance=prov,
+                     tipo_source="Condicion", tipo_target="Definicion")
+        chequear(g, "RelacionR2 no admite remite_a (E1 no lo emite)", False)
+    except ValidationError:
+        chequear(g, "RelacionR2 no admite remite_a (E1 no lo emite)", True)
+    ok = {"alcance": "interna", "destino": "cla::3.7",
+          "evidencia": "dos veces el importe de referencia establecido en el punto 3.7"}
+    a = M.AristaR2(source="Condicion_x", target="Definicion_y", relation="remite_a", provenance=prov,
+                   provenances=[prov], properties=ok)
+    chequear(g, "AristaR2 remite_a con alcance, destino y evidencia valida", a.properties == ok)
+    chequear(g, "AristaR2 remite_a a un texto ordenado entero valida",
+             M.AristaR2(source="Condicion_x", target="TextoOrdenado_t", relation="remite_a",
+                        properties={"alcance": "to_entero", "destino": "cap::TO",
+                                    "evidencia": "normas sobre Capitales mínimos"}) is not None)
+    malas = {
+        "alcance fuera de la lista": dict(properties={**ok, "alcance": "cruzada"}),
+        "sin evidencia": dict(properties={k: v for k, v in ok.items() if k != "evidencia"}),
+        "evidencia vacía": dict(properties={**ok, "evidencia": " "}),
+        "to_entero con destino de punto": dict(properties={**ok, "alcance": "to_entero"}),
+        "interna con destino de texto ordenado": dict(properties={**ok, "destino": "cla::TO"}),
+        "clase de la cita en properties": dict(properties={**ok, "clase": "interna"}),
+        "via en properties": dict(properties={**ok, "via": "nodos_del_punto"}),
+        "con rol_fuente": dict(properties=ok, rol_fuente="referencia_cruzada"),
+        "con no_verificada_e3": dict(properties=ok, no_verificada_e3=True),
+        "con sujeto_mencion": dict(properties=ok, sujeto_mencion="las entidades"),
+        "con metodo_resolucion": dict(properties=ok, metodo_resolucion="R1_label_exacto"),
+        "con mencion_verificada": dict(properties=ok, mencion_verificada="exacta"),
+    }
+    for nombre, kw in malas.items():
+        try:
+            M.AristaR2(source="Condicion_x", target="Definicion_y", relation="remite_a", **kw)
+            chequear(g, f"AristaR2 remite_a {nombre} no valida", False)
+        except ValidationError:
+            chequear(g, f"AristaR2 remite_a {nombre} no valida", True)
+    try:
+        M.AristaR2(source="TextoOrdenado_t", target="Comunicacion_c", relation="referencia", properties={})
+        chequear(g, "AristaR2 referencia sin properties de remisión sigue valida", True)
+    except ValidationError:
+        chequear(g, "AristaR2 referencia sin properties de remisión sigue valida", False)
+    cont = G.contenidos()
+    chequear(g, "tool schema de E1 byte a byte el de 57a8dd2",
+             hashlib.sha256(cont["tool_schema_r2.json"]).hexdigest() == TOOL_SCHEMA_SHA_57A8DD2)
+    chequear(g, "enums r2 byte a byte los de 57a8dd2 (remite_a no entra a las listas de E1)",
+             hashlib.sha256(cont["enums_r2.json"]).hexdigest() == ENUMS_SHA_57A8DD2)
+    chequear(g, "politica_campos_r2.json con el sha de la decisión 10",
+             M.sha256_archivo(V.POLITICA) == POLITICA_SHA_DECISION_10)
+    ts = json.loads(cont["tool_schema_r2.json"])
+    chequear(g, "el tool schema no menciona remite_a", "remite_a" not in json.dumps(ts))
+
+
 def main() -> int:
     ch = cargar_chunks()
     g1_listas()
@@ -882,6 +959,7 @@ def main() -> int:
     g8_modelos()
     g9_tool_schema(ch)
     g10_calibracion(ch)
+    g11_remite_a()
     total = ok = 0
     print(f"política: {V.POLITICA.relative_to(REPO)}  sha256 {V.politica_default().sha256}")
     for grupo, filas in RES.items():

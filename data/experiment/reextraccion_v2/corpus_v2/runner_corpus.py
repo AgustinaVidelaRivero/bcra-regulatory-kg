@@ -96,7 +96,8 @@ P_E3 = dict(precio_in_por_mtok=2.00, precio_out_por_mtok=10.00,
 EVAL_DIR = comun_e3.REPO / "data" / "experiment" / "evaluacion"
 DB_REINTENTOS_E1 = REX / "e3_verificador" / "cache" / "e1_reintentos.db"
 # U-R2-CODIGO, R2.b: archivo compañero de finales.jsonl con el crudo de los
-# reintentos de E3 (lo escribe fase_e3; lo lee r2_codigo/lector_reintentos_e3)
+# reintentos de E3 (lo escribe fase_e3; lo leen crudos_reintento_e3 y
+# r2_codigo/lector_reintentos_e3)
 REINTENTOS_E3 = "reintentos_e3.jsonl"
 
 # --------------------- configuración por manifiesto (U-B5.1) ------------- #
@@ -743,6 +744,204 @@ def cerrar_e2(to: str, salida: Path, limite: int | None = None) -> dict:
     return res["reporte"]
 
 
+# ----------------------------- perfil r2 --------------------------------- #
+# U-R2-CODIGO, R3.a: con --perfil-r2, además del E2 del perfil de E1 (sin
+# cambios), el runner arma la entrada de E2 del perfil r2: el crudo del intento
+# que E3 aceptó (primer intento o reintento), validado con el validador, la
+# política y el catálogo r2 (pyd_r2), con los sujetos resueltos por relación y
+# el registro de no mapeados (r1_e4), y el E2 del perfil r2 (e2_lib). E1 y E3
+# no cambian: sus prompts sellados leen la validación del perfil de E1. Los
+# archivos del perfil r2 llevan nombre propio; los del perfil de E1 quedan
+# byte a byte iguales.
+PERFIL_R2 = False
+# Forma del crudo de E1 según el perfil que lo produjo (validador_r2.validar):
+# los perfiles existentes emiten la forma v3 (sujeto_propuesto, omisiones_no_prosa).
+FORMA_CRUDO_POR_PERFIL = {"produccion_dev": "v3", "v3_b54": "v3"}
+
+
+def leer_reintentos_companero(tdir: Path) -> dict[tuple[str, int], dict]:
+    """(chunk_id, intento) → registro de reintentos_e3.jsonl (last-wins)."""
+    out: dict[tuple[str, int], dict] = {}
+    p = Path(tdir) / REINTENTOS_E3
+    if p.exists():
+        for linea in p.read_text(encoding="utf-8").splitlines():
+            if linea.strip():
+                r = json.loads(linea)
+                out[(r["chunk_id"], r["intento"])] = r
+    return out
+
+
+def claves_reintentos_cache(tdir: Path, chunks: list[dict], perfil, solo: set | None = None) -> list[dict]:
+    """Corridas anteriores al archivo compañero: por cada unidad con reintento
+    en finales.jsonl, la clave de caché del request del reintento,
+    reconstruido con el código del pipeline (veredicto de la verificación →
+    evaluar_veredicto → build_reextraccion_kwargs con el perfil, el modelo y
+    el techo de la corrida; un reintento por unidad). `solo`: limita a esos
+    chunk_id."""
+    ns = cliente_e1.namespace_e1(prefijo_hash=perfil.prefijo_hash_para_namespace)
+    por_id = {c["id"]: c for c in chunks}
+    unidades = {c["unidad"] for c in chunks}
+    finales = cargar_jsonl_last_wins(Path(tdir) / "finales.jsonl")
+    verif: dict[str, dict] = {}
+    with (Path(tdir) / "veredictos.jsonl").open(encoding="utf-8") as f:
+        for linea in f:
+            if linea.strip():
+                r = json.loads(linea)
+                if r["fase"] == "verificacion":
+                    verif[r["chunk_id"]] = r
+    out = []
+    for cid, fin in finales.items():
+        if not fin.get("n_reintentos") or (solo is not None and cid not in solo):
+            continue
+        ev = ratchet_e3.evaluar_veredicto(verif[cid]["tool_input"], por_id[cid], unidades)
+        kw = ratchet_e3.build_reextraccion_kwargs(
+            por_id[cid], ev["bloqueantes_utilizables"], model=MODEL_E1, intento=1,
+            max_tokens_reintento=MAX_TOKENS_REINTENTO,
+            perfil=None if perfil.nombre == "produccion_dev" else perfil)
+        out.append({"chunk_id": cid, "intento": 1, "namespace": ns,
+                    "clave": cliente_e1.lc.compute_key(ns, cliente_e1.lc.canonical_request(kw))})
+    return out
+
+
+def crudos_reintento_e3(tdir: Path, chunks: list[dict], perfil) -> dict[tuple[str, int], dict]:
+    """(chunk_id, intento) → {tool_input, error, fuente}: del archivo compañero
+    si existe la fila; si no, de e1_reintentos.db por la clave reconstruida,
+    con la db abierta en modo inmutable."""
+    import sqlite3          # noqa: PLC0415
+    import urllib.parse     # noqa: PLC0415
+    out = {k: {"tool_input": r["tool_input"], "error": r["error"], "fuente": "companero"}
+           for k, r in leer_reintentos_companero(tdir).items()}
+    finales = cargar_jsonl_last_wins(Path(tdir) / "finales.jsonl")
+    sin_companero = {cid for cid, f in finales.items()
+                     if f.get("n_reintentos") and (cid, f["n_reintentos"]) not in out}
+    faltan = claves_reintentos_cache(tdir, chunks, perfil, solo=sin_companero) if sin_companero else []
+    if faltan:
+        con = sqlite3.connect(f"file:{urllib.parse.quote(str(DB_REINTENTOS_E1.resolve()))}?mode=ro&immutable=1",
+                              uri=True)
+        try:
+            for r in faltan:
+                fila = con.execute("select raw_json from cache where key = ?", (r["clave"],)).fetchone()
+                if fila is None:
+                    continue
+                msg = json.loads(fila[0])
+                tis = [b.get("input") for b in (msg.get("content") or [])
+                       if isinstance(b, dict) and b.get("type") == "tool_use"]
+                out[(r["chunk_id"], r["intento"])] = {"tool_input": tis[0] if tis else None,
+                                                      "error": None if tis else "no_tool_use",
+                                                      "fuente": "cache"}
+        finally:
+            con.close()
+    return out
+
+
+def entrada_r2(to: str, tdir: Path, chunks: list[dict], perfil, validar) -> list[dict]:
+    """Registros de la entrada de E2 del perfil r2, uno por chunk, en el orden
+    de E0. Crudo del intento que E3 aceptó: el primero si no hubo reintento,
+    el del reintento si lo hubo. Cola humana: el crudo del primer intento,
+    como la cadena r1 (r1_cola_flaggeada), con `cola_humana`. Rechazados en E1
+    (nunca llegaron a E3): quedan rechazados. `validar(tool_input, chunk)` es
+    el validador r2 con su política."""
+    regs_e1 = cargar_jsonl_last_wins(Path(tdir) / "extracciones_e1_compact.jsonl")
+    finales = cargar_jsonl_last_wins(Path(tdir) / "finales.jsonl")
+    crudos_r = crudos_reintento_e3(tdir, chunks, perfil)
+    out = []
+    for c in chunks:
+        cid = c["id"]
+        base = {"chunk_id": cid, "to": to, "archivo": c["archivo"],
+                "e0_sha256_completo": c.get("sha256_completo")}
+        if cid in finales:
+            fin = finales[cid]
+            n = fin.get("n_reintentos") or 0
+            cola = fin.get("validacion_final") is None
+            if n and not cola:
+                cr = crudos_r.get((cid, n))
+                if cr is None or cr["tool_input"] is None:
+                    out.append({**base, "error": "crudo_del_reintento_no_encontrado", "estado_e3": fin["estado"],
+                                "validacion": None, "origen_crudo": f"reintento_{n}"})
+                    continue
+                ti, origen = cr["tool_input"], f"reintento_{n}:{cr['fuente']}"
+            else:
+                ti, origen = (regs_e1.get(cid) or {}).get("tool_input_crudo"), "e1"
+            if ti is None:
+                out.append({**base, "error": "sin_crudo", "estado_e3": fin["estado"], "validacion": None,
+                            "origen_crudo": origen})
+                continue
+            reg = {**base, "error": None, "estado_e3": fin["estado"], "validacion": validar(ti, c),
+                   "origen_crudo": origen}
+            if cola:
+                reg["cola_humana"] = True
+            out.append(reg)
+        elif cid in regs_e1:
+            out.append({**base, "error": regs_e1[cid].get("error") or "rechazado_en_e1", "estado_e3": None,
+                        "validacion": None, "origen_crudo": "e1"})
+    return out
+
+
+def validador_perfil_r2(perfil=None):
+    """(validar, política) del perfil r2, con los candados de la decisión 10
+    del mandato: catálogo r2 por sha256 (modelos_r2) y política con el sha de
+    57a8dd2. `perfil`: el de E1 que produjo el crudo (default, el de la
+    corrida), que fija la forma del crudo."""
+    import r1_e4 as E4      # noqa: PLC0415
+    V = E4.modulo_validador_r2()
+    pol = V.politica_default()
+    if pol.sha256 != E4.POLITICA_R2_SHA256:
+        raise Freno(f"política r2 con sha {pol.sha256[:12]}… (esperado {E4.POLITICA_R2_SHA256[:12]}…)")
+    forma = FORMA_CRUDO_POR_PERFIL[(perfil or PERFIL).nombre]
+    return (lambda ti, c: V.validar(ti, c, pol, forma=forma)), pol
+
+
+def cerrar_e2_r2(to: str, salida: Path, limite: int | None = None) -> dict:
+    """E2 del perfil r2 de un TO (USD 0, sin API): entrada r2, resolución de
+    sujetos por relación, registro de no mapeados del TO y E2 r2. Escribe
+    extracciones_finales_r2_<to>.jsonl, resolucion_sujetos.jsonl,
+    no_mapeados_sujetos.jsonl, grafo_r2_<to>.json y reporte_e2_r2_<to>.json."""
+    import r1_e4 as E4      # noqa: PLC0415
+    tdir = salida / to
+    chunks = chunks_sin_ids_repetidos(comun_e1.cargar_chunks((to,), e0_dir=E0_DIR), to)
+    if limite:
+        chunks = chunks[:limite]
+    validar, pol = validador_perfil_r2()
+    cat = E4.catalogo_r2()
+    regs = entrada_r2(to, tdir, chunks, PERFIL, validar)
+    versiones = {"catalogo_sha256": cat["catalogo_sha256"], "politica_sha256": pol.sha256,
+                 "perfil": "r2", "prefijo_hash": PERFIL.prefijo_hash}
+    res = E4.resolver_relaciones_r2(regs, cat["indice"], cat["rol_por_to"], versiones)
+    M = E4.modulo_modelos_r2()
+    ens = e2_lib.ensamblar_r2(chunks, regs, cat["labels"], M.SUJETOS_R2_SET, M.firma_r2,
+                              M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"])
+    grafo = {"nodes": ens["nodes"], "edges": ens["edges"]}
+    grafo_json = json.dumps(grafo, ensure_ascii=False, indent=2)
+
+    def jl(nombre: str, filas: list[dict]) -> None:
+        with (tdir / nombre).open("w", encoding="utf-8") as f:
+            for r in filas:
+                f.write(json.dumps(r, ensure_ascii=False) + "\n")
+    jl(f"extracciones_finales_r2_{to}.jsonl", regs)
+    jl("resolucion_sujetos.jsonl", res["resolucion"])
+    jl("no_mapeados_sujetos.jsonl", res["registro"])
+    (tdir / f"grafo_r2_{to}.json").write_text(grafo_json, encoding="utf-8")
+    reporte = {"to": to, "perfil": "r2", **versiones,
+               "nodes_total": len(ens["nodes"]), "edges_total": len(ens["edges"]),
+               "nodes_by_type": e2_lib._conteo(ens["nodes"], "type"),
+               "edges_by_relation": e2_lib._conteo(ens["edges"], "relation"),
+               "stats": ens["stats"], "rechazos_e2": ens["rechazos_e2"],
+               "conflictos_properties": ens["conflictos_properties"],
+               "resolucion_sujetos": res["resumen"],
+               "origen_crudo": dict(Counter(r["origen_crudo"].split(":")[0] for r in regs)),
+               "sha256_grafo": hashlib_sha256(grafo_json)}
+    (tdir / f"reporte_e2_r2_{to}.json").write_text(json.dumps(reporte, ensure_ascii=False, indent=1),
+                                                    encoding="utf-8")
+    print(f"[{to}:e2-r2] nodos={reporte['nodes_total']} aristas={reporte['edges_total']} "
+          f"sha256={reporte['sha256_grafo'][:12]}", flush=True)
+    return reporte
+
+
+def hashlib_sha256(s: str) -> str:
+    import hashlib          # noqa: PLC0415
+    return hashlib.sha256(s.encode("utf-8")).hexdigest()
+
+
 # ----------------------------- chequeo de hits --------------------------- #
 def chequear_hits(to: str, chk: dict, estado: Estado, stub: bool) -> None:
     """Chequeo de hits declarado en el manifiesto (limites.chequeos_hits):
@@ -784,7 +983,12 @@ def main() -> int:
     ap.add_argument("--manifiesto", type=Path, default=MANIFIESTO_DEFAULT,
                     help="manifiesto de corpus (U-B5.1); default: el de "
                          "desarrollo (5 TOs)")
+    ap.add_argument("--perfil-r2", action="store_true",
+                    help="U-R2-CODIGO R3.a: también el E2 del perfil r2 (archivos *_r2_*, "
+                         "resolucion_sujetos.jsonl y no_mapeados_sujetos.jsonl por TO)")
     args = ap.parse_args()
+    global PERFIL_R2
+    PERFIL_R2 = args.perfil_r2
 
     if args.manifiesto != MANIFIESTO_DEFAULT:
         configurar(manifiesto_corpus.cargar(args.manifiesto))
@@ -866,6 +1070,8 @@ def main() -> int:
                     c1.close()
             # ------- E2 del TO (offline) + chequeos -------
             cerrar_e2(to, args.salida, args.limite)
+            if PERFIL_R2:
+                cerrar_e2_r2(to, args.salida, args.limite)
             for chk in CHEQUEOS_HITS:
                 if chk["to"] == to:
                     chequear_hits(to, chk, estado, args.stub)

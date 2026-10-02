@@ -38,6 +38,7 @@ cross-TO (salida de r1_invariantes.merge_grafos_guardado).
 
 from __future__ import annotations
 
+import json
 import re
 from copy import deepcopy
 
@@ -289,3 +290,250 @@ def filtrar_conflictos(conflictos_intra: list[dict], conflictos_cross: list[dict
         "variantes_texto_ordenado": variantes,
         "conflictos_reales": reales,
     }
+
+
+# ----------------------------------------------------------------------- #
+# (d) Perfil r2: resolución de sujetos por relación, entre E3 y E2,       #
+#     y registro de no mapeados (L-ESQ-R2 §3.3 y §4; diseño de            #
+#     U-LISTAS-NOMAP, P-c1 a P-c3 y P-d1 a P-d3; U-R2-CODIGO R3.b y c)     #
+# ----------------------------------------------------------------------- #
+PREDICADOS_SUJETO_R2 = ("aplica_a", "ejecuta")
+CRITERIOS_R1 = ("label_exacto", "alias_exacto")
+CRITERIOS_R2 = ("id_slug", "label_singularizado", "alias_en_parentesis")
+# R3, lista inicial cerrada de expresiones colectivas, tomada de la redacción
+# del prompt (prompt_e1.py:110: «las entidades», «los sujetos obligados»);
+# se compara la mención normalizada, sin el artículo inicial.
+EXPRESIONES_COLECTIVAS_R3 = ("entidades", "sujetos obligados")
+ARTICULOS = ("el", "la", "los", "las")
+
+
+def _sin_articulo(s: str) -> str:
+    w = C.norm(s).split()
+    return " ".join(w[1:] if w and w[0] in ARTICULOS else w)
+
+
+RE_ARTICULO_INICIAL = re.compile(r"^\s*(?:el|la|los|las)\s+", re.I)
+
+
+def indice_desde_lista(filas: list[list[str]]) -> dict[tuple[str, str], str]:
+    """El índice de E4 generado del catálogo r2 (indice_e4_r2.json: filas
+    [criterio, clave, id], con __AMBIGUO__ donde dos entradas colisionan), en
+    la forma de `indice_catalogo`."""
+    return {(c, k): i for c, k, i in filas}
+
+
+def _prefijos(idx: dict[tuple[str, str], str]) -> list[tuple[str, str]]:
+    """(clave, id) para el calificador: label exacto, alias exacto y label
+    singularizado, de más largo a más corto."""
+    out = [(k, i) for (c, k), i in idx.items()
+           if c in ("label_exacto", "alias_exacto", "label_singularizado") and k]
+    return sorted(set(out), key=lambda x: (-len(x[0]), x[0], x[1]))
+
+
+def resolver_mencion_r2(mencion: str, padre: str | None, idx: dict, prefijos: list,
+                        rol_del_to: str | None) -> dict:
+    """Reglas sobre la mención (P-c1): R1 label o alias exacto; R2 slug,
+    singular o alias entre paréntesis; calificador (la mención empieza con el
+    label o alias de una clase y sigue con texto: se resuelve a la clase y se
+    guarda el calificador; L-ESQ-R2 §3.3); R3 expresión colectiva → sujeto por
+    defecto del TO. Las reglas leen la mención sin su artículo inicial (la
+    mención se copia con artículos; el catálogo no los lleva). Devuelve la
+    regla que resuelve, el id, los candidatos y el motivo cuando no resuelve."""
+    rid, motivo, cands = resolver_label(RE_ARTICULO_INICIAL.sub("", mencion), padre, idx)
+    out = {"regla": None, "id": None, "criterios": sorted({c for c, _ in cands}),
+           "candidatos": [list(c) for c in cands], "calificador": None, "motivo": None}
+    if motivo == "ambiguo":
+        out["motivo"] = "ambiguo"
+        return out
+    if rid is not None:
+        crits = {c for c, _ in cands}
+        out["regla"] = "R1" if crits & set(CRITERIOS_R1) else "R2"
+        out["id"] = rid
+        return out
+    m_norm = C.norm(mencion)
+    m_sing = _norm_sing(_sin_parentesis(mencion))
+    hallados = []
+    for clave, i in prefijos:
+        if i == "__AMBIGUO__":
+            continue
+        for forma in (m_norm, m_sing, _sin_articulo(mencion)):
+            if forma.startswith(clave + " ") and len(forma) > len(clave) + 1:
+                hallados.append((len(clave), i, forma[len(clave) + 1:]))
+                break
+    if hallados:
+        largo = max(h[0] for h in hallados)
+        ids = sorted({h[1] for h in hallados if h[0] == largo})
+        if len(ids) > 1:
+            out["motivo"] = "ambiguo"
+            out["candidatos"] = [["calificador", i] for i in ids]
+            return out
+        out.update(regla="R2_calificador", id=ids[0],
+                   calificador=next(h[2] for h in hallados if h[0] == largo and h[1] == ids[0]))
+        return out
+    if _sin_articulo(mencion) in EXPRESIONES_COLECTIVAS_R3:
+        if rol_del_to:
+            out.update(regla="R3", id=rol_del_to)
+            return out
+        out["motivo"] = "colectivo_sin_sujeto_por_defecto"
+        return out
+    out["motivo"] = "sin_match"
+    return out
+
+
+def resolver_relaciones_r2(registros: list[dict], idx: dict, rol_por_archivo: dict,
+                           versiones: dict) -> dict:
+    """Resolución por relación de las relaciones de sujeto validadas por el
+    perfil r2. Regla de decisión (L-ESQ-R2 §3.3, punto 5): la regla textual
+    gana solo con R1; con R2, el calificador o R3 gana la sugerencia del
+    modelo si la hay; sin regla, la sugerencia del modelo (R4). Siempre se
+    registran los dos ids. Una mención que no verifica (`no`) no resuelve:
+    queda la sugerencia del modelo o el registro (P-b4).
+
+    Muta cada relación de sujeto agregando `sujeto_id_resuelto` y
+    `metodo_resolucion` (o, sin resolver, la clave de su fila del registro).
+    Devuelve las filas de resolucion_sujetos.jsonl y las del registro de no
+    mapeados (cuarentena, y resueltas a una clase con calificador como
+    candidatas a id)."""
+    prefijos = _prefijos(idx)
+    resolucion, registro = [], []
+    for reg in registros:
+        val = reg.get("validacion") or {}
+        cid, to = reg["chunk_id"], reg["to"]
+        ents = {e["local_id"]: e for e in val.get("entidades", [])}
+        rol = (rol_por_archivo.get(reg["archivo"]) or {}).get("rol_id")
+        for r in val.get("relaciones", []):
+            if r["predicate"] not in PREDICADOS_SUJETO_R2:
+                continue
+            extremo = r["source"] if r["predicate"] == "aplica_a" else r["target"]
+            ent = ents.get(extremo) or {}
+            mencion, nivel = r.get("sujeto_mencion"), r.get("mencion_verificada")
+            modelo = r.get("sujeto_id_modelo")
+            regla = (resolver_mencion_r2(mencion, r.get("padre_sugerido"), idx, prefijos, rol)
+                     if mencion and nivel in ("exacta", "tokens") else
+                     {"regla": None, "id": None, "criterios": [], "candidatos": [], "calificador": None,
+                      "motivo": "mencion_no_verificada" if mencion else "sin_mencion"})
+            final, metodo = None, None
+            if regla["regla"] == "R1":
+                final, metodo = regla["id"], "R1_" + "+".join(c for c in regla["criterios"] if c in CRITERIOS_R1)
+            elif modelo:
+                final, metodo = modelo, "R4_sugerencia_modelo"
+            elif regla["regla"] == "R2":
+                final, metodo = regla["id"], "R2_" + "+".join(regla["criterios"])
+            elif regla["regla"] in ("R2_calificador", "R3"):
+                final, metodo = regla["id"], regla["regla"]
+            desacuerdo = bool(regla["id"] and modelo and regla["id"] != modelo)
+            clave = {"to": to, "chunk_id": cid, "e0_sha256_completo": reg.get("e0_sha256_completo"),
+                     "indice_relacion": r.get("indice_crudo"), "punto": r["punto"], "predicado": r["predicate"]}
+            fila = {**clave, "mencion": mencion, "sujeto_mencion_modelo": r.get("sujeto_mencion_modelo"),
+                    "mencion_verificada": nivel, "sujeto_id_modelo": modelo,
+                    "regla_texto": regla["regla"], "id_regla_texto": regla["id"],
+                    "criterios": regla["criterios"], "calificador": regla["calificador"],
+                    "resuelto_a": final, "metodo_resolucion": metodo or "cuarentena",
+                    "desacuerdo_regla_modelo": desacuerdo, "catalogo_sha256": versiones["catalogo_sha256"]}
+            resolucion.append(fila)
+            r["sujeto_id_resuelto"] = final
+            r["metodo_resolucion"] = metodo or "cuarentena"
+            estado = None
+            if final is None:
+                id_crudo = (r.get("originales") or {}).get("sujeto_id")
+                motivo = ("id_fuera_de_catalogo" if id_crudo else
+                          "mencion_no_verificada" if nivel == "no" else regla["motivo"] or "sin_match")
+                estado = "cuarentena"
+            elif regla["regla"] == "R2_calificador" and final == regla["id"]:
+                motivo, estado = "calificador", "resuelto_a_clase"
+            if estado:
+                registro.append({
+                    **clave, "extremo_local_id": extremo, "extremo_tipo": ent.get("type"),
+                    "extremo_label": ent.get("label"), "mencion": mencion,
+                    "sujeto_mencion_modelo": r.get("sujeto_mencion_modelo"), "mencion_verificada": nivel,
+                    "sujeto_id_modelo": modelo, "sujeto_id_crudo": (r.get("originales") or {}).get("sujeto_id"),
+                    "padre_sugerido_crudo": r.get("padre_sugerido_crudo"),
+                    "padre_sugerido": r.get("padre_sugerido"), "motivo": motivo,
+                    "candidatos": regla["candidatos"], "calificador": regla["calificador"],
+                    "categoria_no_mapeo": None, **versiones, "estado": estado,
+                    "resuelto_a": final, "metodo": metodo,
+                    "catalogo_sha256_resolucion": versiones["catalogo_sha256"] if final else None,
+                    "id_nodo": None})
+                if estado == "cuarentena":
+                    r["registro_no_mapeados"] = {k: clave[k] for k in ("chunk_id", "indice_relacion")}
+    return {"resolucion": resolucion, "registro": registro,
+            "resumen": {"relaciones_de_sujeto": len(resolucion),
+                        "por_metodo": C.conteo([{"m": f["metodo_resolucion"]} for f in resolucion], "m"),
+                        "desacuerdos_regla_modelo": sum(f["desacuerdo_regla_modelo"] for f in resolucion),
+                        "registro_por_estado": C.conteo([{"e": f["estado"]} for f in registro], "e"),
+                        "registro_por_motivo": C.conteo([{"m": f["motivo"]} for f in registro], "m")}}
+
+
+def reresolver_registro(filas: list[dict], idx: dict, rol_por_archivo: dict, archivo_por_to: dict,
+                        catalogo_sha256: str) -> dict:
+    """P-d3: re-resolución por programa de las filas en cuarentena cuando
+    cambia el sha256 del catálogo. Aplica las reglas sobre la mención guardada
+    (sin el modelo: su sugerencia ya se aplicó al resolver); una fila que
+    resuelve pasa a `resuelto` con el sha nuevo. Idempotente: re-aplicada con
+    el mismo índice, no cambia nada."""
+    prefijos = _prefijos(idx)
+    out, cambiadas = [], 0
+    for f in filas:
+        g = dict(f)
+        if f["estado"] == "cuarentena" and f.get("mencion") and f.get("mencion_verificada") in ("exacta", "tokens"):
+            rol = (rol_por_archivo.get(archivo_por_to.get(f["to"])) or {}).get("rol_id")
+            r = resolver_mencion_r2(f["mencion"], f.get("padre_sugerido"), idx, prefijos, rol)
+            if r["id"]:
+                g.update(estado="resuelto", resuelto_a=r["id"],
+                         metodo=r["regla"] if r["regla"] != "R2" else "R2_" + "+".join(r["criterios"]),
+                         calificador=r["calificador"], catalogo_sha256_resolucion=catalogo_sha256)
+                cambiadas += 1
+        out.append(g)
+    return {"filas": out, "resueltas_ahora": cambiadas, "catalogo_sha256": catalogo_sha256}
+
+
+# ----------------------------------------------------------------------- #
+# Insumos del perfil r2, con candado (decisión 10 del mandato de           #
+# U-R2-CODIGO): catálogo r2 por sha256 (c3ad1581…, bd2122d) y política con #
+# el sha de 57a8dd2. Los módulos de pyd_r2 se importan, no se editan.      #
+# ----------------------------------------------------------------------- #
+PYD_R2_CODE = C.REPO / "data" / "experiment" / "pyd_r2" / "code"
+GENERADOS_R2 = C.REPO / "data" / "experiment" / "catalogo_unico" / "generados_r2"
+POLITICA_R2_SHA256 = "82e8752aea1d6ad869d6023d303c0af45182dd9333753681787d7a581ef6d00b"
+ARCHIVOS_CATALOGO_R2 = ("indice_e4_r2.json", "labels_e2_r2.json", "rol_por_to_r2.json",
+                        "entrada_esqueleto_r2.json")
+
+
+def _pyd_r2():
+    import sys as _sys  # noqa: PLC0415
+    if str(PYD_R2_CODE) not in _sys.path:
+        _sys.path.insert(0, str(PYD_R2_CODE))
+
+
+def modulo_modelos_r2():
+    _pyd_r2()
+    import modelos_r2  # noqa: PLC0415
+    return modelos_r2
+
+
+def modulo_validador_r2():
+    _pyd_r2()
+    import validador_r2  # noqa: PLC0415
+    return validador_r2
+
+
+def catalogo_r2() -> dict:
+    """Generados del catálogo r2 (U-CAT-UNICO): cada archivo con el sha256 de
+    manifest_generados_r2.json, y el manifiesto con el sha del catálogo que
+    fija modelos_r2. Frena ante cualquier diferencia."""
+    import hashlib as _h  # noqa: PLC0415
+    M = modulo_modelos_r2()
+    man = json.loads((GENERADOS_R2 / "manifest_generados_r2.json").read_text(encoding="utf-8"))
+    if man["catalogo_sha256"] != M.CATALOGO_R2_SHA256:
+        raise RuntimeError("candado del catálogo r2: el manifiesto de generados no es del catálogo de modelos_r2")
+    datos = {}
+    for nombre in ARCHIVOS_CATALOGO_R2:
+        b = (GENERADOS_R2 / nombre).read_bytes()
+        if _h.sha256(b).hexdigest() != man["archivos"][nombre]:
+            raise RuntimeError(f"candado del catálogo r2: {nombre} no coincide con su manifiesto")
+        datos[nombre] = json.loads(b.decode("utf-8"))
+    return {"catalogo_sha256": M.CATALOGO_R2_SHA256,
+            "indice": indice_desde_lista(datos["indice_e4_r2.json"]),
+            "labels": datos["labels_e2_r2.json"], "rol_por_to": datos["rol_por_to_r2.json"],
+            "entrada_esqueleto": datos["entrada_esqueleto_r2.json"],
+            "entrada_esqueleto_path": GENERADOS_R2 / "entrada_esqueleto_r2.json"}

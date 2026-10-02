@@ -48,7 +48,32 @@ def _desbloquear(texto: str, lineas_de: dict[str, list[str]]) -> str:
     return RE_BLOQUE.sub(lambda m: "\n".join(lineas_de[m.group(1)]), texto)
 
 
-def _igual_desbloqueado(c: dict, v: dict, lineas_de: dict[str, list[str]]) -> bool:
+def _flags_iguales_salvo_evidencia_k(f: dict, fv: dict, cons: set[str]) -> bool:
+    """Flags iguales salvo `evidencia_tabular`, cuya diferencia son líneas
+    conservadas por K (la heurística legada toma las tres primeras líneas
+    tabulares del chunk; con las líneas conservadas, esas pueden cambiar)."""
+    if not cons or {k: x for k, x in f.items() if k != "evidencia_tabular"} != \
+            {k: x for k, x in fv.items() if k != "evidencia_tabular"}:
+        return False
+    nuevas = [e for e in f["evidencia_tabular"] if e not in fv["evidencia_tabular"]]
+    return bool(nuevas) and all(any(c[:90] == e for c in cons) for e in nuevas)
+
+
+def _sin(texto: str, quitar: set[str]) -> str:
+    """El texto sin las líneas conservadas por K (cada una, una vez)."""
+    if not quitar:
+        return texto
+    out, pend = [], list(quitar)
+    for l in texto.split("\n"):
+        if l in pend:
+            pend.remove(l)
+            continue
+        out.append(l)
+    return "\n".join(out)
+
+
+def _igual_desbloqueado(c: dict, v: dict, lineas_de: dict[str, list[str]],
+                        conservadas: set[str] = frozenset()) -> bool:
     """El chunk e0-r2 `c`, con cada bloque reemplazado por las líneas de E0 de
     su tabla, es igual al legado `v`: texto; herencia unida (un tramo absorbido
     entero por un bloque no figura en e0-r2, así que los tramos de `c` son una
@@ -59,9 +84,9 @@ def _igual_desbloqueado(c: dict, v: dict, lineas_de: dict[str, list[str]]) -> bo
     meta = lambda h: (h["tipo"], h["unidad_origen"], h["paginas"])   # noqa: E731
     it = iter([meta(h) for h in v["herencia"]])
     subsecuencia = all(m in it for m in (meta(h) for h in c["herencia"]))
-    return (_desbloquear(c["texto"], lineas_de) == v["texto"]
-            and _desbloquear("\n".join(h["texto"] for h in c["herencia"]), lineas_de)
-            == "\n".join(h["texto"] for h in v["herencia"])
+    return (_sin(_desbloquear(c["texto"], lineas_de), conservadas) == v["texto"]
+            and _sin(_desbloquear("\n".join(h["texto"] for h in c["herencia"]), lineas_de),
+                     conservadas) == "\n".join(h["texto"] for h in v["herencia"])
             and subsecuencia
             and {k: x for k, x in c.items() if k not in derivados}
             == {k: x for k, x in v.items() if k not in derivados})
@@ -76,6 +101,13 @@ def main() -> None:
     leg = _cargar(Path(a.e0_legada), "chunks_*.json")
     r2 = _cargar(Path(a.e0_r2), "chunks_*.json")
     tablas = _cargar(Path(a.e0_r2), "tablas_*.json")
+    p_cons = Path(a.e0_r2) / "encabezados_conservados.json"
+    conservadas_de: dict[str, set[str]] = collections.defaultdict(set)
+    if p_cons.exists():
+        for to, ls in json.loads(p_cons.read_text(encoding="utf-8")).items():
+            for x in ls:
+                conservadas_de[x["chunk"]].add(x["texto"])
+    v4_con_conservadas = []
 
     lineas_de: dict[str, list[str]] = {}
     ser_por_tabla: dict[str, dict] = {}
@@ -169,13 +201,20 @@ def main() -> None:
                     h_ok += 1
                 else:
                     h_fallas += 1
+            cons = conservadas_de.get(c["id"], frozenset())
             if "tablas_e0" not in f:
                 if c == v:
                     v4_identicos += 1
-                elif _igual_desbloqueado(c, v, lineas_de) and c["flags"] == v["flags"]:
-                    v4_solo_heredado_ok += 1
+                elif _igual_desbloqueado(c, v, lineas_de, cons) and (
+                        c["flags"] == v["flags"] or _flags_iguales_salvo_evidencia_k(
+                            c["flags"], v["flags"], cons)):
+                    if cons:
+                        v4_con_conservadas.append(c["id"])
+                    else:
+                        v4_solo_heredado_ok += 1
                 else:
-                    v4_fallos.append({"chunk": c["id"], "falla": "chunk_sin_tabla_distinto"})
+                    v4_fallos.append({"chunk": c["id"], "falla": "chunk_sin_tabla_distinto",
+                                      "flags_iguales": c["flags"] == v["flags"]})
                 continue
             clave = "con_residual" if f["contenido_tabular_residual"] else "sin_residual"
             residual[clave].append(c["id"])
@@ -185,7 +224,11 @@ def main() -> None:
             fl = {k: x for k, x in f.items() if k not in ("contenido_tabular", "tablas_e0",
                                                           "contenido_tabular_residual")}
             fl_v = {k: x for k, x in v["flags"].items() if k != "contenido_tabular"}
-            if _igual_desbloqueado(c, v, lineas_de) and fl == fl_v and f["contenido_tabular"]:
+            if cons and _igual_desbloqueado(c, v, lineas_de, cons) and fl == fl_v \
+                    and f["contenido_tabular"] and not _igual_desbloqueado(c, v, lineas_de):
+                v4_con_conservadas.append(c["id"])
+                v4_desbloqueo_ok += 1
+            elif _igual_desbloqueado(c, v, lineas_de) and fl == fl_v and f["contenido_tabular"]:
                 v4_desbloqueo_ok += 1
             else:
                 v4_fallos.append({"chunk": c["id"], "falla": "desbloqueo"})
@@ -219,6 +262,7 @@ def main() -> None:
         "v4_chunks_con_tabla_sin_bloque_texto_identico": v4_sin_bloque_ok,
         "v4_chunks_con_tabla_desbloqueo_igual_a_legada": v4_desbloqueo_ok,
         "v4_fallos": v4_fallos,
+        "v4_iguales_salvo_lineas_conservadas_k": sorted(v4_con_conservadas),
         "chunks_con_bloque_heredado": heredados,
         "residual": {k: {"n": len(v), "chunks": v} for k, v in residual.items()},
         "marcador_en_textos_legados": marcador_en_legada,

@@ -788,3 +788,219 @@ def _conteo(objs: list[dict], campo: str) -> dict[str, int]:
     for o in objs:
         out[o[campo]] = out.get(o[campo], 0) + 1
     return dict(sorted(out.items(), key=lambda kv: (-kv[1], kv[0])))
+
+
+# =========================================================================
+# Perfil r2 (U-R2-CODIGO, R3): E2 sobre la salida del validador r2, con los
+# sujetos ya resueltos por relación (r1_e4.resolver_relaciones_r2). Nodos y
+# aristas en la forma de pyd_r2/code/modelos_r2.NodoR2 y AristaR2. Los
+# perfiles existentes no pasan por acá.
+# =========================================================================
+EXTRAS_NODO_R2 = ("fuera_de_lista", "originales", "properties_no_definidas",
+                  "campos_heredados_v3", "valores_no_tipados")
+MARCAS_ARISTA_R2 = ("sujeto_mencion", "sujeto_mencion_modelo", "mencion_verificada",
+                    "sujeto_id_modelo", "metodo_resolucion", "no_verificada_e3",
+                    "coherencia_tipo_predicado")
+PREDICADOS_SUJETO_R2 = ("aplica_a", "ejecuta")
+
+
+def id_sujeto_propuesto(label: str) -> str:
+    """Convención v3 de los propuestos (la de `ensamblar`)."""
+    return f"Sujeto_propuesto_{slugify_full(str(label).strip())[:80]}"
+
+
+def ensamblar_r2(chunks: list[dict], registros: list[dict], labels_catalogo: dict,
+                 sujetos_set: frozenset, firma, entity_types: tuple, predicates: tuple,
+                 registro_no_mapeados: list[dict]) -> dict:
+    """E2 del perfil r2. Mismo determinismo que `ensamblar` (orden documental
+    de E0, ids por contenido con `entity_slug_v3`, first-write-wins con
+    conflictos registrados). Diferencias:
+      - la procedencia lleva `chunk_id` (enmienda 2 de L-ESQ-R2, §3);
+      - el nodo conserva las marcas del validador r2 (fuera_de_lista,
+        originales, properties_no_definidas, campos_heredados_v3,
+        valores_no_tipados);
+      - la arista conserva las marcas de la relación (mención y su
+        verificación, sugerencia del modelo, método de resolución,
+        no_verificada_e3 y coherencia_tipo_predicado);
+      - el sujeto de una relación es el resuelto por relación; los
+        `Sujeto_propuesto` se crean desde el registro de no mapeados (P-d1) y
+        su fila recibe el id del nodo."""
+    orden_e0 = {c["id"]: i for i, c in enumerate(chunks)}
+    filas_reg = {(f["chunk_id"], f["indice_relacion"]): f for f in registro_no_mapeados
+                 if f["estado"] == "cuarentena"}
+    aceptados = [r for r in registros if r.get("chunk_id") in orden_e0
+                 and _estado_registro(r)[0] == "aceptado"]
+    aceptados.sort(key=lambda r: orden_e0[r["chunk_id"]])
+
+    nodes_by_id: dict[str, dict] = {}
+    edges: dict[tuple[str, str, str], dict] = {}
+    conflictos: list[dict] = []
+    rechazos_e2: list[dict] = []
+    tramos_umbral: dict[str, list[str]] = {}
+    stats = {"chunks_ensamblados": 0, "entidades_in": 0, "relaciones_in": 0, "merges_exactos": 0,
+             "prov_nodo_acumuladas": 0, "prov_arista_acumuladas": 0, "aristas_repetidas_exactas": 0,
+             "aristas_con_marcas_distintas": 0, "propuestos_desde_registro": 0}
+
+    def add_prov(obj: dict, prov: dict, clave: str) -> None:
+        if prov not in obj["provenances"]:
+            obj["provenances"].append(dict(prov))
+            stats[clave] += 1
+
+    def fusionar(n: dict, e: dict, props: dict, cid: str) -> None:
+        for k, v in props.items():
+            if k in (n.get("valores_no_tipados") or {}):
+                conflictos.append({"id": n["id"], "property": k, "conservado": n["valores_no_tipados"][k],
+                                   "descartado": v, "chunk_id": cid})
+            elif k not in n["properties"]:
+                n["properties"][k] = v
+                if k in (e.get("fuera_de_lista") or []):
+                    n.setdefault("fuera_de_lista", []).append(k)
+            elif n["properties"][k] != v:
+                conflictos.append({"id": n["id"], "property": k, "conservado": n["properties"][k],
+                                   "descartado": v, "chunk_id": cid})
+        for campo in ("originales", "properties_no_definidas", "campos_heredados_v3", "valores_no_tipados"):
+            for k, v in (e.get(campo) or {}).items():
+                if campo == "valores_no_tipados" and k in n["properties"]:
+                    continue
+                destino = n.setdefault(campo, {})
+                if k not in destino:
+                    destino[k] = v
+                elif destino[k] != v:
+                    conflictos.append({"id": n["id"], "property": f"{campo}.{k}", "conservado": destino[k],
+                                       "descartado": v, "chunk_id": cid})
+
+    def nodo_sujeto(sid: str, prov: dict) -> str:
+        if sid not in nodes_by_id:
+            info = labels_catalogo.get(sid, {})
+            if not info:
+                stats["sujetos_sin_label_catalogo"] = stats.get("sujetos_sin_label_catalogo", 0) + 1
+            nodes_by_id[sid] = {"id": sid, "type": "Sujeto", "label": info.get("label", sid),
+                                "properties": {"nivel": info.get("nivel", "")},
+                                "provenance": dict(prov), "provenances": [dict(prov)]}
+        else:
+            add_prov(nodes_by_id[sid], prov, "prov_nodo_acumuladas")
+        return sid
+
+    def nodo_propuesto(fila: dict, prov: dict) -> str:
+        label = fila["mencion"] or fila.get("sujeto_id_crudo") or ""
+        gid = id_sujeto_propuesto(label)
+        if gid not in nodes_by_id:
+            props: dict[str, Any] = {"nivel": "propuesto", "cuarentena": "true"}
+            if fila.get("padre_sugerido"):
+                props["padre_sugerido"] = fila["padre_sugerido"]
+            nodes_by_id[gid] = {"id": gid, "type": "Sujeto", "label": str(label).strip(),
+                                "properties": props, "provenance": dict(prov), "provenances": [dict(prov)]}
+            stats["propuestos_desde_registro"] += 1
+        else:
+            add_prov(nodes_by_id[gid], prov, "prov_nodo_acumuladas")
+        fila["id_nodo"] = gid
+        return gid
+
+    def add_edge(src: str, pred: str, tgt: str, prov: dict, marcas: dict) -> None:
+        k = (src, pred, tgt)
+        if k in edges:
+            if prov in edges[k]["provenances"]:
+                stats["aristas_repetidas_exactas"] += 1
+            else:
+                edges[k]["provenances"].append(dict(prov))
+                stats["prov_arista_acumuladas"] += 1
+            if {m: edges[k].get(m) for m in MARCAS_ARISTA_R2} != {m: marcas.get(m) for m in MARCAS_ARISTA_R2}:
+                stats["aristas_con_marcas_distintas"] += 1
+            return
+        edges[k] = {"source": src, "target": tgt, "relation": pred,
+                    "provenance": dict(prov), "provenances": [dict(prov)], **marcas}
+
+    for reg in aceptados:
+        cid = reg["chunk_id"]
+        val = reg["validacion"]
+        stats["chunks_ensamblados"] += 1
+        local_to_global: dict[str, str] = {}
+        for e in val["entidades"]:
+            stats["entidades_in"] += 1
+            etype = e["type"]
+            prov = {**e["provenance"], "chunk_id": cid}
+            if etype not in entity_types:
+                rechazos_e2.append({"chunk_id": cid, "motivo": "type_invalido", "detalle": str(etype)})
+                continue
+            props = dict(e.get("properties") or {})
+            if etype == "TextoOrdenado":
+                props.setdefault("archivo", prov["archivo"])
+            gid = f"{etype}_{entity_slug_v3({'type': etype, 'label': e['label'], 'properties': props})}"
+            local_to_global[e["local_id"]] = gid
+            if e.get("umbrales_tramos"):
+                lst = tramos_umbral.setdefault(gid, [])
+                lst.extend(t for t in e["umbrales_tramos"] if t not in lst)
+            n = nodes_by_id.get(gid)
+            if n is not None:
+                stats["merges_exactos"] += 1
+                fusionar(n, e, props, cid)
+                add_prov(n, prov, "prov_nodo_acumuladas")
+                continue
+            n = {"id": gid, "type": etype, "label": e["label"], "properties": props,
+                 "provenance": dict(prov), "provenances": [dict(prov)]}
+            for campo in EXTRAS_NODO_R2:
+                if e.get(campo):
+                    n[campo] = json.loads(json.dumps(e[campo]))
+            nodes_by_id[gid] = n
+
+        for r in val["relaciones"]:
+            stats["relaciones_in"] += 1
+            pred = r["predicate"]
+            prov = {**r["provenance"], "chunk_id": cid}
+            if pred not in predicates:
+                rechazos_e2.append({"chunk_id": cid, "motivo": "predicado_invalido", "detalle": str(pred)})
+                continue
+            marcas = {m: r.get(m) for m in MARCAS_ARISTA_R2 if r.get(m) not in (None, False)}
+            if pred in PREDICADOS_SUJETO_R2:
+                extremo = r.get("source") if pred == "aplica_a" else r.get("target")
+                ent_gid = local_to_global.get(extremo)
+                if ent_gid is None or ent_gid not in nodes_by_id:
+                    rechazos_e2.append({"chunk_id": cid, "motivo": "ref_colgante",
+                                        "detalle": f"{pred}: extremo '{extremo}'"})
+                    continue
+                et = nodes_by_id[ent_gid]["type"]
+                if not (firma(et, pred, "Sujeto") if pred == "aplica_a" else firma("Sujeto", pred, et)):
+                    rechazos_e2.append({"chunk_id": cid, "motivo": "firma_invalida", "detalle": f"{et} {pred}"})
+                    continue
+                sid = r.get("sujeto_id_resuelto")
+                if sid:
+                    if sid not in sujetos_set:
+                        rechazos_e2.append({"chunk_id": cid, "motivo": "sujeto_id_fuera_de_catalogo",
+                                            "detalle": str(sid)})
+                        continue
+                    sgid = nodo_sujeto(sid, prov)
+                elif r.get("registro_no_mapeados"):
+                    fila = filas_reg.get((cid, r.get("indice_crudo")))
+                    if fila is None:
+                        rechazos_e2.append({"chunk_id": cid, "motivo": "fila_de_registro_ausente",
+                                            "detalle": str(r.get("indice_crudo"))})
+                        continue
+                    sgid = nodo_propuesto(fila, prov)
+                else:
+                    rechazos_e2.append({"chunk_id": cid, "motivo": "sujeto_sin_resolver", "detalle": pred})
+                    continue
+                if pred == "aplica_a":
+                    add_edge(ent_gid, pred, sgid, prov, marcas)
+                else:
+                    add_edge(sgid, pred, ent_gid, prov, marcas)
+                continue
+            s_gid, t_gid = local_to_global.get(r.get("source")), local_to_global.get(r.get("target"))
+            if s_gid not in nodes_by_id or t_gid not in nodes_by_id:
+                rechazos_e2.append({"chunk_id": cid, "motivo": "ref_colgante",
+                                    "detalle": f"{pred}: source='{r.get('source')}' target='{r.get('target')}'"})
+                continue
+            if not firma(nodes_by_id[s_gid]["type"], pred, nodes_by_id[t_gid]["type"]):
+                rechazos_e2.append({"chunk_id": cid, "motivo": "firma_invalida",
+                                    "detalle": f"{nodes_by_id[s_gid]['type']} --{pred}--> "
+                                               f"{nodes_by_id[t_gid]['type']}"})
+                continue
+            add_edge(s_gid, pred, t_gid, prov, marcas)
+
+    nodes = sorted(nodes_by_id.values(), key=lambda n: n["id"])
+    for n in nodes:
+        if n.get("fuera_de_lista"):
+            n["fuera_de_lista"] = [k for k in n["fuera_de_lista"] if k in n["properties"]]
+    cuarentena = sorted({f["id_nodo"] for f in registro_no_mapeados if f.get("id_nodo")})
+    return {"nodes": nodes, "edges": [edges[k] for k in sorted(edges)], "cuarentena": cuarentena,
+            "conflictos_properties": conflictos, "rechazos_e2": rechazos_e2, "stats": stats,
+            "tramos_umbral": tramos_umbral}

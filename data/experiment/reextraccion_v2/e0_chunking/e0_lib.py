@@ -503,6 +503,7 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
                            labels_preservables: set | None = None,
                            seccion_b582: bool = False,
                            banners_texto: set | None = None,
+                           mayusculas_repetidas: set | None = None,
                            ) -> tuple[list[Linea], list[Linea], str | None]:
     """Devuelve (contenido, descartadas, seccion_corrida).
 
@@ -527,7 +528,13 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
     línea; en reqcac p.3 la prosa inmediata se pegaría al título); con
     banners_texto, una línea de la zona repetida verbatim en
     ≥MIN_PAGS_BANNER páginas se descarta como encabezado — DESPUÉS de los
-    chequeos de sección, que tienen precedencia."""
+    chequeos de sección, que tienen precedencia.
+
+    `mayusculas_repetidas` (solo la versión e0-r2, U-R2-CODIGO, K; ver
+    `titulos_mayusculas_repetidos`): con el conjunto de textos sin espacios
+    que se repiten en la zona de título de al menos 2 páginas, una línea sin
+    minúsculas se descarta solo si su texto está en ese conjunto. None (todos
+    los demás call sites) deja el descarte histórico."""
     descartadas: list[Linea] = []
     contenido = list(lineas)
     seccion_corrida: str | None = None
@@ -566,6 +573,8 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
             descartadas.append(contenido.pop(0))
             quitadas += 1
         elif "B.C.R.A." in t or (_es_titulo_mayusculas(t)
+                                 and (mayusculas_repetidas is None
+                                      or "".join(t.split()) in mayusculas_repetidas)
                                  and not (labels_preservables is not None
                                           and _clave_banner(t) is not None
                                           and _clave_banner(t) not in labels_preservables)):
@@ -636,7 +645,8 @@ def _componentes(num: str) -> list[int]:
 
 def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                    roles: list[str], modo_sin_raiz: bool = False,
-                   marcadores_b582: bool = False) -> ResultadoParseo:
+                   marcadores_b582: bool = False,
+                   mayusculas_repetidas: set | None = None) -> ResultadoParseo:
     """Con `modo_sin_raiz=False` (todos los call sites vigentes) el
     comportamiento es el histórico. Con True rige además la gramática de
     raíces sintéticas del modo sin raíz de sección (B5.8.1; ver docstring del
@@ -682,7 +692,8 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
         n_paginas_cuerpo += 1
         contenido, descartadas, seccion_corrida = separar_encabezado_pie(
             lineas, labels_preservables=banners if modo_sin_raiz else None,
-            seccion_b582=marcadores_b582, banners_texto=banners_texto)
+            seccion_b582=marcadores_b582, banners_texto=banners_texto,
+            mayusculas_repetidas=mayusculas_repetidas)
         for d in descartadas:
             acc_descartes.append({"pagina": d.pagina, "texto": d.texto})
 
@@ -1718,24 +1729,58 @@ def construir_chunks(res: ResultadoParseo,
     return chunks
 
 
+def titulos_mayusculas_repetidos(paginas: list[list[Linea]], roles: list[str],
+                                 zona: int = 5) -> set[str]:
+    """Versión e0-r2 (U-R2-CODIGO, complemento de R1, K): textos, sin espacios,
+    que están en las primeras `zona` líneas de al menos 2 páginas de cuerpo
+    del TO. Con este conjunto, `separar_encabezado_pie` descarta una línea de
+    la rama de mayúsculas solo si es un encabezado de página que se repite; la
+    que no se repite es contenido (encabezados de tabla, códigos con letras) y
+    queda. Las ramas de sección, «B.C.R.A.», cola de título y pie no cambian,
+    pero el recorrido de la zona se detiene en la primera línea que queda: si
+    esa línea es un encabezado de página que no se repite (título partido
+    distinto en esa página), las siguientes de la zona, «B.C.R.A.» y la de
+    sección incluidas, quedan como contenido (medido fuera de muestra en
+    r2_codigo/rk_fuera_de_muestra.json; en la tanda 0 no ocurre). Con un TO de
+    una sola página de cuerpo ningún texto se repite."""
+    paginas_de: dict[str, set[int]] = {}
+    for pi, (lineas, rol) in enumerate(zip(paginas, roles), start=1):
+        if rol != ROL_CUERPO:
+            continue
+        for l in lineas[:zona]:
+            t = "".join(l.texto.split())
+            if t:
+                paginas_de.setdefault(t, set()).add(pi)
+    return {t for t, ps in paginas_de.items() if len(ps) >= 2}
+
+
 def desambiguar_ids(chunks: list[dict]) -> list[dict]:
-    """Versión e0-r2 (U-R2-CODIGO, R2; BKL-0037): ids de chunk únicos por TO.
-    Regla: en orden documental, el primer chunk con un id lo conserva; cada
-    aparición posterior del mismo id recibe el sufijo `::rep<k>` (k = su
-    número de aparición: 2, 3, …), conserva `unidad` (la procedencia sigue
-    anclada en la unidad documental) y guarda el id de E0 en
-    `id_e0_original`. Modifica los chunks en el lugar y devuelve la lista de
-    renombres {id_e0_original, id}. Sin ids repetidos no toca nada."""
-    vistos: dict[str, int] = {}
+    """Versión e0-r2 (U-R2-CODIGO, R2 y complemento L; BKL-0037): ids de chunk
+    únicos por TO. Regla: entre los chunks con el mismo id, conserva el id el
+    de más texto propio (`chars_propio`; empate: el primero en orden
+    documental); los demás reciben, en orden documental, el sufijo `::rep<k>`
+    (k = 2, 3, …), conservan `unidad` (la procedencia sigue anclada en la
+    unidad documental) y guardan el id de E0 en `id_e0_original`. Motivo: en
+    las colisiones medidas, la aparición corta es la línea del índice del TO
+    leída como cuerpo y la larga es el cuerpo. Modifica los chunks en el lugar
+    y devuelve la lista de renombres {id_e0_original, id}. Sin ids repetidos
+    no toca nada."""
+    grupos: dict[str, list[int]] = {}
+    for i, c in enumerate(chunks):
+        grupos.setdefault(c["id"], []).append(i)
     renombres: list[dict] = []
-    for c in chunks:
-        vistos[c["id"]] = vistos.get(c["id"], 0) + 1
-        k = vistos[c["id"]]
-        if k > 1:
-            original = c["id"]
-            c["id"] = f"{original}::rep{k}"
-            c["id_e0_original"] = original
-            renombres.append({"id_e0_original": original, "id": c["id"]})
+    for original, idx in grupos.items():
+        if len(idx) < 2:
+            continue
+        canonico = max(idx, key=lambda i: (chunks[i]["chars_propio"], -i))
+        k = 1
+        for i in idx:
+            if i == canonico:
+                continue
+            k += 1
+            chunks[i]["id"] = f"{original}::rep{k}"
+            chunks[i]["id_e0_original"] = original
+            renombres.append({"id_e0_original": original, "id": chunks[i]["id"]})
     return renombres
 
 

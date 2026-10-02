@@ -63,6 +63,7 @@ import argparse
 import contextlib
 import hashlib
 import json
+import re
 import sys
 from copy import deepcopy
 from pathlib import Path
@@ -559,6 +560,463 @@ def ensamblar_manifiesto(man: MC.Manifiesto, entrada: Path, salida: Path, hasta:
 
 
 # ------------------------------------------------------------------------- #
+# Perfil r2 (U-R2-CODIGO, R3): cadena r2 sobre la salida guardada E1→E3       #
+# ------------------------------------------------------------------------- #
+# Con --perfil-r2, el ensamblado aplica el perfil r2 (validador, política y
+# catálogo r2) a la salida guardada del perfil de E1 del manifiesto: el
+# manifiesto no cambia de perfil (perfil_e1.py y manifiesto_corpus.py no se
+# editan), y la cadena r2 corre aparte de la r1, con salida en <salida>/r2/.
+# Pasos: entrada r2 (crudo del intento aceptado, validador r2) → sujetos por
+# relación y registro de no mapeados → E2 r2 por TO → fusión con la guarda
+# cross-TO → E4 sin la pasada residual de propuestos (medida, no aplicada) →
+# esqueleto del catálogo r2 → remite_a → establecida_en derivada → umbrales
+# (par B) → procedencia rica → orden final. Las marcas de la cadena que el
+# modelo del grafo r2 (pyd_r2/code/modelos_r2.NodoR2) no admite en un nodo
+# (cola humana, colisión cross-TO, variantes del TextoOrdenado) van a
+# marcas_r2.json, y el detalle de los umbrales a umbrales_r2.jsonl.
+TIPOS_CONTENIDO_R2 = REF.TIPOS_CONTENIDO_R2
+
+
+def plan_redirecciones_r2(man: MC.Manifiesto, perfil, entrada: Path, salida_r2: Path, cat: dict, M) -> list[tuple]:
+    plan = [(m, a, v) for m, a, v in plan_redirecciones(man, perfil, entrada, salida_r2)
+            if (m, a) not in ((C, "CATALOGO_PATH"), (assemble, "CATALOGO_PATH"), (INV, "SUJETOS_CATALOGO_SET"))]
+    return plan + [(C, "CATALOGO_PATH", cat["entrada_esqueleto_path"]),
+                   (assemble, "CATALOGO_PATH", cat["entrada_esqueleto_path"]),
+                   (INV, "SUJETOS_CATALOGO_SET", M.SUJETOS_R2_SET)]
+
+
+def derivar_establecida_en(kg: dict, canon: dict[str, str]) -> dict:
+    """Decisión 11 del mandato: todo nodo de contenido sin `establecida_en`
+    la recibe hacia el TextoOrdenado de cada TO de su procedencia, con
+    `rol_fuente = derivada_de_procedencia`."""
+    con = {e["source"] for e in kg["edges"] if e["relation"] == "establecida_en"}
+    triplas = {(e["source"], e["relation"], e["target"]) for e in kg["edges"]}
+    nuevas = []
+    for n in sorted(kg["nodes"], key=lambda x: x["id"]):
+        if n["type"] not in TIPOS_CONTENIDO_R2 or n["id"] in con:
+            continue
+        for to in sorted({p["to"] for p in n["provenances"] if p.get("to") in canon}):
+            k = (n["id"], "establecida_en", canon[to])
+            if k in triplas:
+                continue
+            provs = [dict(p) for p in n["provenances"] if p.get("to") == to]
+            e = {"source": n["id"], "target": canon[to], "relation": "establecida_en",
+                 "provenance": dict(provs[0]), "provenances": provs, "rol_fuente": "derivada_de_procedencia"}
+            kg["edges"].append(e)
+            triplas.add(k)
+            nuevas.append(e)
+    tipo = {n["id"]: n["type"] for n in kg["nodes"]}
+    sin = [n["id"] for n in kg["nodes"] if n["type"] in TIPOS_CONTENIDO_R2
+           and n["id"] not in {e["source"] for e in kg["edges"] if e["relation"] == "establecida_en"}]
+    return {"aristas_derivadas": len(nuevas),
+            "por_tipo": C.conteo([{"t": tipo[e["source"]]} for e in nuevas], "t"),
+            "nodos_de_contenido_sin_establecida_en": len(sin), "ids_sin": sin[:20]}
+
+
+def _texto_e0_nodo(n: dict, chunks: dict[str, dict], V) -> list[tuple[str, str]]:
+    out = []
+    for p in n.get("provenances", []):
+        cid = p.get("chunk_id")
+        if cid and cid in chunks and cid not in [c for c, _ in out]:
+            out.append((cid, V.texto_completo(chunks[cid])))
+    return out
+
+
+def _rangos_unidad_repetida(texto: str, cs: list) -> list[str]:
+    """Rangos «entre X <unidad> y Y <unidad>» con la unidad repetida (límite
+    declarado en la fila 7 del plan: la cota inferior recibe máximo asumido)."""
+    out = []
+    for a, b in zip(cs, cs[1:]):
+        if a.unidad and a.unidad == b.unidad and re.fullmatch(r"\s+y\s+", texto[a.fin:b.inicio]) \
+                and re.search(r"\bentre\s+$", texto[:a.inicio], re.I):
+            out.append(texto[max(0, a.inicio - 7):b.fin])
+    return out
+
+
+def resolver_base(base: str | None, to: str, kg_def: dict[tuple[str, str], str]) -> dict:
+    """L-ESQ-R2 §1.3 (c): la base literal se resuelve a su punto por el
+    mecanismo de remisiones (detectar_menciones sobre la base) o a una
+    Definicion del mismo TO cuyo `termino` normalizado es la base; si no
+    resuelve, se marca."""
+    if not base:
+        return {"base_destino": None, "via": None, "marca": None}
+    for men in REF.detectar_menciones(base, to):
+        td = men["to_destino"]
+        if td is None or td not in C.TOS_ORDEN:
+            continue
+        unidades = REF.unidades_e0(td)
+        for d in men["puntos"] + [f"S{s}" for s in men["secciones"]]:
+            if d in unidades:
+                return {"base_destino": f"{td}::{d}", "via": "remision", "marca": None}
+        if not men["puntos"] and not men["secciones"] and men["clase"] != "interna":
+            return {"base_destino": f"{td}::TO", "via": "remision", "marca": None}
+    nid = kg_def.get((to, C.norm(base)))
+    if nid:
+        return {"base_destino": nid, "via": "definicion", "marca": None}
+    return {"base_destino": None, "via": None, "marca": "base_no_resuelta"}
+
+
+def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[str, list[str]], M, V, RCMP,
+                       pol) -> dict:
+    """Par B en r2a (L-ESQ-R2 §1.3 y §1.4; mandato R3.f): la lista de umbrales
+    de Restriccion, Obligacion, Condicion y Excepcion, armada en código con las
+    reglas de U-PYD (reglas_comparacion.analizar), desde los tramos de E1 si
+    los hay (r2b) o, en r2a, desde la descripción guardada y los
+    campos_heredados_v3 (umbral, plazo). El tramo del elemento es la cuantía
+    tal como está en esa fuente; se verifica contra el texto de E0 de los
+    chunks del nodo y, si el chunk tiene tablas de e0-r2, contra sus celdas.
+    Lo que no verifica queda marcado (`tramo_verificado = no`), sin
+    corregirse. El plazo heredado que no es un plazo va a `frecuencia`."""
+    chunks = {c["id"]: c for to in C.TOS_ORDEN for c in C.cargar_chunks_enm01(to)}
+    kg_def = {}
+    for n in kg["nodes"]:
+        if n["type"] == "Definicion" and isinstance(n["properties"].get("termino"), str):
+            for p in n["provenances"]:
+                kg_def.setdefault((p.get("to"), C.norm(n["properties"]["termino"])), n["id"])
+    filas, rangos = [], []
+    cont = {"nodos": 0, "nodos_con_lista": 0, "elementos": 0, "por_origen": {}, "por_comparacion": {},
+            "comparacion_asumida": 0, "no_determinada": 0, "tramo_verificado": {}, "verificado_en_tabla": {},
+            "base_resuelta": 0, "base_no_resuelta": 0, "frecuencia_desde_plazo": 0,
+            "frecuencia_fuera_de_lista": 0}
+
+    def suma(d, k):
+        cont[d][k] = cont[d].get(k, 0) + 1
+
+    for n in sorted(kg["nodes"], key=lambda x: x["id"]):
+        if n["type"] not in M.TIPOS_CON_UMBRALES:
+            continue
+        cont["nodos"] += 1
+        props = n["properties"]
+        desc = props.get("descripcion")
+        prim = n["provenance"].get("chunk_id")
+        titulo = chunks[prim].get("titulo") if prim in chunks else None
+        to = n["provenance"].get("to")
+        fuentes = []
+        if tramos_e1.get(n["id"]):
+            fuentes = [(t, "e1") for t in tramos_e1[n["id"]]]
+        else:
+            if isinstance(desc, str) and desc:
+                fuentes.append((desc, "descripcion"))
+            for k, v in sorted((n.get("campos_heredados_v3") or {}).items()):
+                if not isinstance(v, str) or not v.strip():
+                    continue
+                if n["type"] == "Obligacion" and k == "plazo" and not any(
+                        c.unidad in M.UNIDADES_TEMPORALES + M.UNIDADES_TEMPORALES_FUERA
+                        for c in RCMP.detectar_cuantias(v)):
+                    if props.get("frecuencia") is None:
+                        f = V.frecuencia_desde_tramo(v)
+                        props["frecuencia"] = f or v
+                        n.setdefault("originales", {}).setdefault("frecuencia", v)
+                        if f is None:
+                            n.setdefault("fuera_de_lista", []).append("frecuencia")
+                            cont["frecuencia_fuera_de_lista"] += 1
+                        cont["frecuencia_desde_plazo"] += 1
+                    continue
+                fuentes.append((v, "campo_v3"))
+        textos = _texto_e0_nodo(n, chunks, V)
+        celdas = "\n".join(t for cid, _ in textos for t in tablas.get(cid, []))
+        elementos, vistos = [], set()
+        for texto, origen in fuentes:
+            cs = RCMP.analizar(texto, desc, titulo)
+            rangos += [{"id": n["id"], "tramo": r} for r in _rangos_unidad_repetida(texto, cs)]
+            for c in cs:
+                clave = (c.valor, c.unidad, c.moneda)
+                if origen == "campo_v3" and clave in vistos:
+                    continue
+                vistos.add(clave)
+                el = RCMP.elemento_umbral(c, c.texto, origen)
+                niveles = [V.verificar_tramo(c.texto, t, pol.holgura)[0] for _, t in textos] or ["no"]
+                el["tramo_verificado"] = ("exacta" if "exacta" in niveles else
+                                          "tokens" if "tokens" in niveles else "no")
+                elementos.append(M.ElementoUmbral.model_validate(el).model_dump(mode="json", exclude_defaults=True))
+                en_tabla = (None if not celdas else
+                            V.verificar_tramo(c.texto, celdas, pol.holgura)[0] in ("exacta", "tokens"))
+                b = resolver_base(c.base, to, kg_def)
+                filas.append({"id": n["id"], "indice": len(elementos) - 1, "tipo": n["type"], "origen": origen,
+                              "tramo": c.texto, "valor": c.valor, "unidad": c.unidad,
+                              "comparacion": c.comparacion, "regla": c.regla, "base": c.base,
+                              "tramo_verificado": el["tramo_verificado"], "verificado_en_tabla": en_tabla,
+                              "chunks": [cid for cid, _ in textos], **b})
+                cont["elementos"] += 1
+                suma("por_origen", origen)
+                suma("por_comparacion", c.comparacion)
+                suma("tramo_verificado", el["tramo_verificado"])
+                suma("verificado_en_tabla", str(en_tabla))
+                cont["comparacion_asumida"] += c.comparacion_asumida
+                cont["no_determinada"] += c.comparacion == "no_determinada"
+                cont["base_resuelta"] += b["base_destino"] is not None
+                cont["base_no_resuelta"] += b["marca"] == "base_no_resuelta"
+        if elementos:
+            props["umbrales"] = elementos
+            cont["nodos_con_lista"] += 1
+    cont["rangos_con_unidad_repetida"] = len(rangos)
+    return {"resumen": cont, "filas": filas, "rangos": rangos}
+
+
+def enriquecer_procedencias_r2(kg: dict) -> dict:
+    """Procedencia rica (los campos de r1_provenance: chunk_id, paginas,
+    ancestros) conservando el `chunk_id` que trae la procedencia del perfil r2
+    (r1_provenance, que no se edita, lo reasignaría por regla)."""
+    chunks = {to: {c["id"]: c for c in C.cargar_chunks_enm01(to)} for to in C.TOS_ORDEN}
+    stats = {"provenances": 0, "extraccion": 0, "esqueleto": 0, "sin_chunk": 0}
+
+    def una(p: dict) -> None:
+        stats["provenances"] += 1
+        rol, to = p.get("rol_documental") or "", p.get("to")
+        if rol == "esqueleto" or to not in C.TOS_ORDEN:
+            p.setdefault("chunk_id", None)
+            p.setdefault("paginas", [])
+            p.setdefault("ancestros", [])
+            stats["esqueleto"] += 1
+            return
+        cid = p.get("chunk_id")
+        ch = chunks[to].get(cid) if cid else None
+        if ch is None:
+            stats["sin_chunk"] += 1
+            p.setdefault("paginas", [])
+            p.setdefault("ancestros", [])
+            return
+        ancestros = []
+        for h in ch.get("herencia", []):
+            if h["unidad_origen"] not in ancestros:
+                ancestros.append(h["unidad_origen"])
+        punto = p["punto"]
+        if rol.startswith("herencia_"):
+            paginas = sorted({pg for h in ch.get("herencia", []) if h["unidad_origen"] == punto
+                              for pg in h.get("paginas", [])})
+            ancestros = ancestros[:ancestros.index(punto)] if punto in ancestros else ancestros
+        else:
+            paginas = list(ch.get("paginas", []))
+            ancestros = [a for a in ancestros if a != punto]
+        p["paginas"] = paginas
+        p["ancestros"] = ancestros
+        stats["extraccion"] += 1
+
+    for obj in kg["nodes"] + kg["edges"]:
+        una(obj["provenance"])
+        for p in obj.get("provenances", []):
+            if p is not obj["provenance"]:
+                una(p)
+    return stats
+
+
+def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Path | None = None) -> dict:
+    """Cadena r2. `w(nombre, obj)` y `wl(nombre, filas)` escriben JSON y JSONL
+    en <salida>/r2/ (None = no escriben)."""
+    import runner_corpus as RC          # noqa: PLC0415 — solo con --perfil-r2
+    w = w or (lambda *a, **k: None)
+    wl = wl or (lambda *a, **k: None)
+    M = E4.modulo_modelos_r2()
+    V = E4.modulo_validador_r2()
+    import reglas_comparacion as RCMP   # noqa: PLC0415 — pyd_r2/code, en el path por modulo_modelos_r2
+    cat = E4.catalogo_r2()
+    validar, pol = RC.validador_perfil_r2(perfil)
+    versiones = {"catalogo_sha256": cat["catalogo_sha256"], "politica_sha256": pol.sha256,
+                 "perfil": "r2", "prefijo_hash": perfil.prefijo_hash}
+    resumen: dict = {"perfil_e1_del_crudo": perfil.nombre, **versiones, "etapas": []}
+    grafos, registro_total, resolucion_total, tramos_e1, marcas = {}, [], [], {}, {"cola_humana": {}}
+    conflictos_intra: list[dict] = []
+    resumen["e2_por_to"] = {}
+    for to in C.TOS_ORDEN:
+        chunks = C.cargar_chunks_enm01(to)
+        regs = RC.entrada_r2(to, C.SALIDA / to, chunks, perfil, validar)
+        res = E4.resolver_relaciones_r2(regs, cat["indice"], cat["rol_por_to"], versiones)
+        ens = e2_lib.ensamblar_r2(chunks, regs, cat["labels"], M.SUJETOS_R2_SET, M.firma_r2,
+                                  M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"])
+        grafos[to] = {"nodes": ens["nodes"], "edges": ens["edges"]}
+        tramos_e1.update(ens["tramos_umbral"])
+        conflictos_intra += [{**c, "to": to} for c in ens["conflictos_properties"]]
+        cola = sorted(r["chunk_id"] for r in regs if r.get("cola_humana"))
+        for cid in cola:
+            marcas["cola_humana"][cid] = next(r["estado_e3"] for r in regs if r["chunk_id"] == cid)
+        wl(f"por_to/{to}/no_mapeados_sujetos.jsonl", res["registro"])
+        wl(f"por_to/{to}/resolucion_sujetos.jsonl", res["resolucion"])
+        registro_total += res["registro"]
+        resolucion_total += res["resolucion"]
+        resumen["e2_por_to"][to] = {
+            "nodes": len(ens["nodes"]), "edges": len(ens["edges"]),
+            "origen_crudo": C.conteo([{"o": r["origen_crudo"]} for r in regs], "o"),
+            "rechazados": sum(1 for r in regs if r.get("validacion") is None),
+            "rechazos_validador": sum(len((r.get("validacion") or {}).get("rechazos", [])) for r in regs),
+            "relaciones_no_verificadas_e3": sum(1 for r in regs for x in (r.get("validacion") or {}).get(
+                "relaciones", []) if x.get("no_verificada_e3")),
+            "cola_humana": cola, "stats": ens["stats"], "rechazos_e2": len(ens["rechazos_e2"]),
+            "conflictos_properties": len(ens["conflictos_properties"]), "resolucion_sujetos": res["resumen"]}
+    resumen["etapas"].append("entrada_r2+sujetos+e2")
+    print("[e2-r2]", json.dumps({to: (v["nodes"], v["edges"]) for to, v in resumen["e2_por_to"].items()}),
+          flush=True)
+
+    m = INV.merge_grafos_guardado(grafos)
+    kg = {"nodes": m["nodes"], "edges": m["edges"]}
+    inv = INV.verificar_invariantes(kg, m["grafos_pre_merge"], merges_nodo=len(m["merges_cross_to"]),
+                                    merges_arista=INV.merges_arista_de(m["grafos_pre_merge"], kg["edges"]))
+    assert inv["ok"], inv["fallos"]
+    marcas["colision_cross_to"] = sorted(n["id"] for n in kg["nodes"]
+                                         if n.get("properties", {}).pop("colision_cross_to", None) == "true")
+    resumen["merge"] = {"merges_cross_to": len(m["merges_cross_to"]),
+                        "adjudicacion_cross_to": len(m["adjudicacion_cross_to"]),
+                        "conflictos_cross_to": len(m["conflictos"])}
+    w("adjudicacion_cross_to.json", m["adjudicacion_cross_to"])
+
+    r_to = E4.canonizar_texto_ordenado(kg)
+    r_conf = E4.filtrar_conflictos(conflictos_intra, m["conflictos"])
+    marcas["texto_ordenado_variantes"] = r_conf["variantes_texto_ordenado"]
+    catalogo = C.cargar_catalogo()
+    residual = E4.resolver_propuestos(deepcopy(kg), catalogo)
+    resumen["e4"] = {"texto_ordenado": {"canonicos": r_to["canonicos"], "eliminados": len(r_to["eliminados"])},
+                     "conflictos_cross_to": {k: v for k, v in r_conf.items()
+                                             if k in ("n_total", "n_variantes_to", "n_reales")},
+                     "pasada_residual_de_propuestos_medida_no_aplicada": {
+                         "propuestos": len(residual["tabla"]), "resolveria": residual["n_resueltos"],
+                         "motivos": residual["motivos"]}}
+    w("e4_texto_ordenado.json", r_to)
+    w("e4_conflictos.json", r_conf)
+    w("e4_pasada_residual_medida.json", residual["tabla"])
+
+    r_esq = inyectar_esqueleto_v3(kg, catalogo)
+    resumen["esqueleto"] = {k: v for k, v in r_esq.items() if k not in ("ids_creados", "paridad_kg_refinado")}
+    inv = INV.verificar_invariantes(kg)
+    assert inv["ok"], inv["fallos"]
+
+    r_ref = REF.detectar_y_resolver(kg, perfil="r2")
+    resumen["remite_a"] = r_ref["resumen"]
+    tipo_de = {n["id"]: n["type"] for n in kg["nodes"]}
+    resumen["referencia_con_origen_distinto_de_texto_ordenado"] = sum(
+        1 for e in kg["edges"] if e["relation"] == "referencia" and tipo_de[e["source"]] != "TextoOrdenado")
+    resumen["comunicaciones"] = {k: v for k, v in r_ref["comunicaciones"].items() if k != "filas"}
+    w("remisiones_registro.json", r_ref["registro"])
+    w("comunicaciones_registro.json", r_ref["comunicaciones"])
+
+    canon = {to: E4.id_texto_ordenado_canonico(C.archivo_de_to(to)) for to in C.TOS_ORDEN}
+    resumen["establecida_en_derivada"] = derivar_establecida_en(kg, canon)
+
+    r_umb = llenar_umbrales_r2(kg, tramos_e1, _celdas_por_chunk(tablas_dir), M, V, RCMP, pol)
+    resumen["umbrales"] = r_umb["resumen"]
+    wl("umbrales_r2.jsonl", r_umb["filas"])
+    w("umbrales_rangos_unidad_repetida.json", r_umb["rangos"])
+
+    resumen["procedencia"] = enriquecer_procedencias_r2(kg)
+    inv = INV.verificar_invariantes(kg)
+    assert inv["ok"], inv["fallos"]
+
+    resumen["registro_no_mapeados"] = {
+        "filas": len(registro_total), "por_estado": C.conteo([{"e": f["estado"]} for f in registro_total], "e"),
+        "por_motivo": C.conteo([{"m": f["motivo"]} for f in registro_total], "m"),
+        "cuarentena_sin_nodo": sum(1 for f in registro_total if f["estado"] == "cuarentena" and not f.get("id_nodo")),
+        "propuestos_en_grafo_sin_fila": sorted(
+            n["id"] for n in kg["nodes"] if n["type"] == "Sujeto" and n["properties"].get("nivel") == "propuesto"
+            and n["id"] not in {f.get("id_nodo") for f in registro_total})}
+    wl("no_mapeados_sujetos.jsonl", registro_total)
+    wl("resolucion_sujetos.jsonl", resolucion_total)
+    resumen["resolucion_sujetos"] = {
+        "relaciones_de_sujeto": len(resolucion_total),
+        "por_metodo": C.conteo([{"m": f["metodo_resolucion"]} for f in resolucion_total], "m"),
+        "desacuerdos_regla_modelo": sum(f["desacuerdo_regla_modelo"] for f in resolucion_total)}
+
+    marcas["cola_humana_ids"] = sorted(
+        o.get("id") or f"{o['source']}|{o['relation']}|{o['target']}"
+        for o in kg["nodes"] + kg["edges"]
+        if any(p.get("chunk_id") in marcas["cola_humana"] for p in o.get("provenances", [])))
+    w("marcas_r2.json", marcas)
+
+    kg["nodes"].sort(key=lambda n: n["id"])
+    kg["edges"].sort(key=lambda e: (e["source"], e["relation"], e["target"]))
+    tipo = {n["id"]: n["type"] for n in kg["nodes"]}
+    con_arista = {e["source"] for e in kg["edges"]} | {e["target"] for e in kg["edges"]}
+    resumen["aislados_por_tipo"] = C.conteo([{"t": n["type"]} for n in kg["nodes"] if n["id"] not in con_arista], "t")
+    resumen["aristas_no_verificadas_e3"] = {
+        "total": sum(1 for e in kg["edges"] if e.get("no_verificada_e3")),
+        "por_firma": C.conteo([{"f": f"{tipo[e['source']]}-{e['relation']}-{tipo[e['target']]}"}
+                               for e in kg["edges"] if e.get("no_verificada_e3")], "f")}
+    resumen["validacion_modelos_r2"] = validar_grafo_r2(kg, M)
+    kg_json = C.dumps_kg(kg)
+    return {"kg": kg, "kg_json": kg_json, "sha256": C.sha256_bytes(kg_json.encode("utf-8")), "resumen": resumen}
+
+
+def _celdas_por_chunk(tablas_dir: Path | None) -> dict[str, list[str]]:
+    """chunk_id → textos de celdas de las tablas de e0-r2 (tablas_<to>.json de
+    `correr_e0.py --version-e0 e0-r2`); vacío sin el directorio."""
+    out: dict[str, list[str]] = {}
+    if tablas_dir is None:
+        return out
+    for to in C.TOS_ORDEN:
+        p = Path(tablas_dir) / f"tablas_{to}.json"
+        if not p.exists():
+            continue
+        for t in json.loads(p.read_text(encoding="utf-8"))["tablas"]:
+            celdas = [str(c) for s in t.get("segmentos", []) for f in s.get("filas", []) for c in f if c]
+            for cid in t.get("chunks", []):
+                out.setdefault(cid, []).extend(celdas)
+    return out
+
+
+def validar_grafo_r2(kg: dict, M) -> dict:
+    """Cada nodo con NodoR2 y cada arista con AristaR2 (pyd_r2); devuelve los
+    conteos y los primeros errores. Las aristas del esqueleto (subclase_de,
+    miembro_de, instancia_de, parte_de) están fuera de AristaR2 (modelo de
+    U-PYD, que no las declara): se cuentan aparte, sin validar."""
+    from pydantic import ValidationError  # noqa: PLC0415
+    errores = []
+    fuera = C.conteo([e for e in kg["edges"] if e["relation"] in RELACIONES_ESQUELETO], "relation")
+    for coleccion, modelo in (("nodes", M.NodoR2), ("edges", M.AristaR2)):
+        for o in kg[coleccion]:
+            if coleccion == "edges" and o["relation"] in RELACIONES_ESQUELETO:
+                continue
+            try:
+                modelo.model_validate(o)
+            except ValidationError as e:
+                errores.append({"objeto": o.get("id") or f"{o['source']}|{o['relation']}|{o['target']}",
+                                "error": str(e).splitlines()[0:3]})
+    return {"nodos": len(kg["nodes"]), "aristas": len(kg["edges"]),
+            "aristas_de_esqueleto_fuera_del_modelo": fuera, "invalidos": len(errores),
+            "primeros": errores[:20]}
+
+
+def ensamblar_manifiesto_r2(man: MC.Manifiesto, entrada: Path, salida: Path,
+                            tablas_dir: Path | None = None) -> dict:
+    perfil = perfil_e1.perfil(man.perfil_e1)
+    entrada, salida = Path(entrada), Path(salida)
+    salida_r2 = salida / "r2"
+    M = E4.modulo_modelos_r2()
+    cat = E4.catalogo_r2()
+    plan = plan_redirecciones_r2(man, perfil, entrada, salida_r2, cat, M)
+
+    def w(nombre: str, obj) -> None:
+        p = salida_r2 / nombre
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(json.dumps(obj, ensure_ascii=False, indent=1), encoding="utf-8")
+
+    def wl(nombre: str, filas: list[dict]) -> None:
+        p = salida_r2 / nombre
+        p.parent.mkdir(parents=True, exist_ok=True)
+        with p.open("w", encoding="utf-8") as f:
+            for r in filas:
+                f.write(json.dumps(r, ensure_ascii=False) + "\n")
+
+    with redirigido(plan):
+        print("=== cadena r2, corrida 1 ===", flush=True)
+        a = correr_cadena_r2(man, perfil, w, wl, tablas_dir)
+        print("=== cadena r2, corrida 2 (sin escribir) ===", flush=True)
+        b = correr_cadena_r2(man, perfil, None, None, tablas_dir)
+    salida_r2.mkdir(parents=True, exist_ok=True)
+    (salida_r2 / "kg.json").write_text(a["kg_json"], encoding="utf-8")
+    reporte = {"grafo": f"{man.nombre}/r2", "perfil": "r2",
+               "manifiesto": {"nombre": man.nombre, "path": _rel(man.path), "perfil_e1": man.perfil_e1,
+                              "orden_corrida": list(man.orden_corrida), "e0_salida": _rel(man.e0_salida)},
+               "entrada": _rel(entrada), "tablas_e0_r2": _rel(tablas_dir) if tablas_dir else None,
+               "sha256_kg": a["sha256"], "sha256_kg_en_disco": C.sha256_path(salida_r2 / "kg.json"),
+               "doble_corrida_byte_identica": a["kg_json"] == b["kg_json"],
+               "nodes_total": len(a["kg"]["nodes"]), "edges_total": len(a["kg"]["edges"]),
+               "nodes_by_type": C.conteo(a["kg"]["nodes"], "type"),
+               "edges_by_relation": C.conteo(a["kg"]["edges"], "relation"),
+               "redirecciones": describir_plan(plan), **a["resumen"]}
+    w("reporte_ensamblado_r2.json", reporte)
+    return {"r2": {k: reporte[k] for k in ("sha256_kg", "sha256_kg_en_disco", "doble_corrida_byte_identica",
+                                            "nodes_total", "edges_total")},
+            "validacion_modelos_r2": reporte["validacion_modelos_r2"]}
+
+
+# ------------------------------------------------------------------------- #
 # Selftest sobre el corpus de desarrollo (verdad conocida)                   #
 # ------------------------------------------------------------------------- #
 def selftest_dev(man: MC.Manifiesto, entrada: Path, salida: Path, resultado: dict) -> dict:
@@ -625,9 +1083,22 @@ def main() -> int:
     ap.add_argument("--selftest-dev", action="store_true",
                     help="tras ensamblar, verificar la verdad conocida del corpus de desarrollo")
     ap.add_argument("--resumen-json", type=Path, default=None, help="escribir el resumen de la corrida acá")
+    ap.add_argument("--perfil-r2", action="store_true",
+                    help="U-R2-CODIGO R3: cadena r2 (validador, política y catálogo r2) sobre la salida "
+                         "guardada, en <salida>/r2/; no corre la cadena r1 ni el E5")
+    ap.add_argument("--tablas-e0-r2", type=Path, default=None,
+                    help="con --perfil-r2: directorio con tablas_<to>.json de correr_e0.py --version-e0 e0-r2 "
+                         "(verificación de umbrales contra las tablas de R1)")
     args = ap.parse_args()
 
     man = MC.cargar(args.manifiesto)
+    if args.perfil_r2:
+        res = ensamblar_manifiesto_r2(man, args.entrada, args.salida, args.tablas_e0_r2)
+        print(json.dumps(res, ensure_ascii=False, indent=1))
+        if args.resumen_json:
+            args.resumen_json.parent.mkdir(parents=True, exist_ok=True)
+            args.resumen_json.write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
+        return 0 if res["r2"]["doble_corrida_byte_identica"] else 1
     res = ensamblar_manifiesto(man, args.entrada, args.salida, hasta=args.hasta,
                                con_cola=not args.sin_cola, motor=args.motor)
     if args.selftest_dev:

@@ -17,7 +17,11 @@ Contenido:
   - elemento validado (salida del validador r2) y nodo y arista del grafo, con
     las marcas: `fuera_de_lista`, `properties_no_definidas`,
     `mencion_verificada`, `comparacion_asumida` (en el elemento de umbral),
-    `no_verificada_e3` y `coherencia_tipo_predicado`.
+    `no_verificada_e3` y `coherencia_tipo_predicado`;
+  - predicados derivados por código en el ensamblado (`remite_a`, enmienda 2
+    de L-ESQ-R2, 5f9a731): firma, lista de `alcance` y controles de la arista.
+    No entran al tool schema ni a las listas de E1 (agregado de U-R2-CODIGO,
+    enmienda 1 a su mandato).
 
 Los modelos validados no rechazan un valor fuera de lista: exigen que esté en
 la lista o que lleve la marca `fuera_de_lista` (LN-1 de la suite propuesta).
@@ -141,6 +145,30 @@ def firma_r2(src: str, pred: str, tgt: str) -> bool:
     if pred not in FIRMAS_R2:
         return False
     d, r = FIRMAS_R2[pred]
+    return src in d and tgt in r
+
+
+# Predicados derivados por código en el ensamblado (enmienda 2 de L-ESQ-R2,
+# FIRMADA en 5f9a731; enmienda 1 al mandato de U-R2-CODIGO). E1 no los emite:
+# PREDICADOS, FIRMAS_CONGELADAS, RelacionR2 y el tool schema no cambian. E3 no
+# los verifica, así que no llevan las marcas de las relaciones de E1.
+PREDICADOS_DERIVADOS = ("remite_a",)
+TIPOS_CONTENIDO = ("Operacion", "Restriccion", "Excepcion", "Obligacion", "Potestad", "Condicion",
+                   "Definicion")
+# §2: siete tipos de contenido como origen; los siete y TextoOrdenado como destino
+# (56 firmas). Comunicacion y Sujeto quedan fuera.
+FIRMAS_DERIVADAS: dict[str, tuple[tuple[str, ...], tuple[str, ...]]] = {
+    "remite_a": (TIPOS_CONTENIDO, TIPOS_CONTENIDO + ("TextoOrdenado",)),
+}
+# §3: alcance de la remisión, propiedad de la arista (lista cerrada).
+ALCANCE_REMISION = ("to_entero", "interna", "externa")
+PROPIEDADES_REMISION = ("alcance", "destino", "evidencia")
+
+
+def firma_derivada(src: str, pred: str, tgt: str) -> bool:
+    if pred not in FIRMAS_DERIVADAS:
+        return False
+    d, r = FIRMAS_DERIVADAS[pred]
     return src in d and tgt in r
 
 
@@ -488,12 +516,14 @@ class NodoR2(BaseModel):
 
 
 class AristaR2(BaseModel):
-    """Arista del grafo r2, con las marcas de la relación de origen."""
+    """Arista del grafo r2, con las marcas de la relación de origen. Una arista
+    de predicado derivado (`remite_a`) lleva `alcance`, `destino` y `evidencia`
+    en `properties` y ninguna marca de relación emitida por E1."""
     model_config = ConfigDict(extra="forbid")
 
     source: Texto
     target: Texto
-    relation: Literal[PREDICADOS + ("padre_sugerido",)]  # type: ignore[valid-type]
+    relation: Literal[PREDICADOS + PREDICADOS_DERIVADOS + ("padre_sugerido",)]  # type: ignore[valid-type]
     provenance: Optional[Provenance] = None
     provenances: list[Provenance] = Field(default_factory=list)
     properties: dict[str, Any] = Field(default_factory=dict)
@@ -512,6 +542,22 @@ class AristaR2(BaseModel):
             raise ValueError("coherencia_tipo_predicado va exactamente en prohibe y limita")
         if self.mencion_verificada is not None and self.relation not in PREDICADOS_SUJETO:
             raise ValueError("mencion_verificada solo en aristas de sujeto")
+        if self.relation in PREDICADOS_DERIVADOS:
+            p = self.properties
+            if tuple(sorted(p)) != tuple(sorted(PROPIEDADES_REMISION)):
+                raise ValueError(f"{self.relation}: properties debe ser exactamente {PROPIEDADES_REMISION}")
+            if p["alcance"] not in ALCANCE_REMISION:
+                raise ValueError(f"{self.relation}: alcance={p['alcance']!r} fuera de {ALCANCE_REMISION}")
+            for k in ("destino", "evidencia"):
+                if not isinstance(p[k], str) or not p[k].strip():
+                    raise ValueError(f"{self.relation}: {k} vacío")
+            if (p["alcance"] == "to_entero") != p["destino"].endswith("::TO"):
+                raise ValueError(f"{self.relation}: alcance to_entero ⇔ destino de texto ordenado entero")
+            if self.no_verificada_e3 or self.rol_fuente is not None or any(
+                    v is not None for v in (self.sujeto_mencion, self.sujeto_mencion_modelo,
+                                            self.sujeto_id_modelo, self.metodo_resolucion,
+                                            self.coherencia_tipo_predicado)):
+                raise ValueError(f"{self.relation}: lleva una marca de relación emitida por E1 o rol_fuente")
         return self
 
 

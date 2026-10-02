@@ -17,6 +17,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import subprocess
+
 import pdfplumber
 
 AQUI = Path(__file__).resolve().parent
@@ -25,10 +27,19 @@ E0DIR = REPO / "data" / "experiment" / "reextraccion_v2" / "e0_chunking"
 sys.path.insert(0, str(E0DIR))
 sys.path.insert(0, str(AQUI))
 import correr_e0 as C  # noqa: E402
+import e0_lib as E0  # noqa: E402
 import e0_tablas as e0t  # noqa: E402
 import verificacion_tablas as VT  # noqa: E402
 
-PDF_CAP = REPO / "data" / "experiment" / "subset" / "TO_capitales_minimos_actual.pdf"
+SUBSET = REPO / "data" / "experiment" / "subset"
+PDF_CAP = SUBSET / "TO_capitales_minimos_actual.pdf"
+PDFS_K = {"cap": PDF_CAP, "ext": SUBSET / "TO_exterior_cambios_actual.pdf",
+          "ric": SUBSET / "TO_regimen_informativo_contable_mensual_actual.pdf",
+          "pro": SUBSET / "TO_proteccion_usuarios_servicios_financieros_actual.pdf"}
+CONSERVADAS_K = {"cap": ["AAA A+ BBB+ BB+"],
+                 "ext": ["0202.30.00.111D, 0202.30.00.115M, 0202.30.00.117R;",
+                         "0202.30.00.118U, 0202.30.00.121G, 0202.30.00.124N,"],
+                 "ric": ["CONSOLIDACIÓN", "COD CASOS"], "pro": []}
 RESULTADOS: list[tuple[str, bool, str]] = []
 
 
@@ -196,6 +207,45 @@ def main() -> int:
     r = VT.verificar_nodo(n_inv, [T2F004])
     check("S10 marca: 30 % pertenece a «A+ hasta A-», el nodo nombra «AAA hasta AA-»", r["marca"],
           str([v["veredicto"] for v in r["valores"]]))
+
+    print("S11. K — encabezados de página en mayúsculas (cap, ext, ric, pro; PDF real)")
+    for to, pdf in PDFS_K.items():
+        paginas = E0.extraer_lineas(pdf)
+        roles = E0.clasificar_paginas(paginas)
+        rep = E0.titulos_mayusculas_repetidos(paginas, roles)
+        cons = [l.texto for l in C.lineas_conservadas_k(paginas, roles, rep)]
+        check(f"S11 {to}: conserva {CONSERVADAS_K[to] or 'ninguna línea'}", cons == CONSERVADAS_K[to],
+              str(cons))
+        if to == "pro":
+            l26 = [l.texto for l in paginas[25][:5]
+                   if "".join(l.texto.split()) == "PROTECCIÓNDELOSUSUARIOSDESERVICIOSFINANCIEROS"]
+            check("S11 pro::3.1.3 (p. 26): el título con «SERVI CIOS» se repite sin espacios y se descarta",
+                  l26 == ["PROTECCIÓN DE LOS USUARIOS DE SERVI CIOS FINANCIEROS"]
+                  and "".join(l26[0].split()) in rep)
+
+    print("S12. M — guarda de salida de e0-r2")
+
+    def _aborta(*a, **k):   # si la guarda no actuara, nada llega a escribirse
+        raise RuntimeError("selftest: la guarda de salida no actuó")
+
+    original = C.E0.extraer_lineas
+    C.E0.extraer_lineas = _aborta
+    try:
+        for nombre in ("salida", "salida_enm01", "salida_tanda0"):
+            try:
+                C.correr(E0DIR / nombre, version_e0=C.VERSION_E0_R2)
+                check(f"S12 e0-r2 se niega a escribir en {nombre}", False)
+            except ValueError as e:
+                check(f"S12 e0-r2 se niega a escribir en {nombre}", "no escribe" in str(e))
+            except RuntimeError as e:
+                check(f"S12 e0-r2 se niega a escribir en {nombre}", False, str(e))
+    finally:
+        C.E0.extraer_lineas = original
+    r = subprocess.run([sys.executable, "-B", str(E0DIR / "correr_e0.py"), "--version-e0", "e0-r2"],
+                       capture_output=True, text=True, env={**__import__("os").environ,
+                                                            "PYTHONDONTWRITEBYTECODE": "1"})
+    check("S12 sin --salida, e0-r2 sale con error de argumentos",
+          r.returncode == 2 and "exige --salida" in r.stderr, r.stderr.strip()[-80:])
 
     ok = sum(1 for _, b, _ in RESULTADOS if b)
     print(f"\nSELFTEST e0-r2: {ok}/{len(RESULTADOS)} PASS")

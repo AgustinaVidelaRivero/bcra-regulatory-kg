@@ -30,6 +30,11 @@ Salida (por defecto ./salida/):
   version_e0.json        SOLO con --version-e0 e0-r2
   ids_desambiguados.json SOLO con --version-e0 e0-r2 y si algún TO trae ids
                          de chunk repetidos (BKL-0037): renombres por TO
+  encabezados_conservados.json SOLO con --version-e0 e0-r2 y si la regla K
+                         conservó alguna línea en mayúsculas del encabezado
+                         de página: página, texto y chunk por TO
+Con --version-e0 e0-r2, --salida es obligatoria y no puede ser salida/,
+salida_enm01/ ni salida_tanda0/ (M).
 """
 
 from __future__ import annotations
@@ -251,6 +256,10 @@ def subdividir_unidades_grandes(chunks: list[dict],
 VERSION_E0_LEGADA = "e0-v1"
 VERSION_E0_R2 = "e0-r2"
 VERSIONES_E0 = (VERSION_E0_LEGADA, VERSION_E0_R2)
+# M (U-R2-CODIGO): salidas selladas de la versión legada en las que e0-r2 no
+# escribe; de salida/ salen además los calibradores del prefijo de E3
+SALIDAS_PROTEGIDAS = tuple(Path(__file__).resolve().parent / d
+                           for d in ("salida", "salida_enm01", "salida_tanda0"))
 
 MIN_CELDAS_NUMERICAS_FILA2 = 2
 FRAC_RECUADRO_PROSA = 0.75
@@ -892,6 +901,8 @@ def procesar_tablas_r2(res: E0.ResultadoParseo, pdf_path: Path, to: str,
                                  lineas_por_chunk=lineas)
     renombres = E0.desambiguar_ids(chunks)
     tablas_to["ids_desambiguados"] = renombres
+    tablas_to["_dueno_linea"] = {id(l): chunks[i]["id"]
+                                 for i, ls in enumerate(lineas) for l in ls}
     if [c["id"] for c in chunks] != [c["id"] for c in chunks0] or \
             [[id(l) for l in ls] for ls in lineas] != [[id(l) for l in ls] for ls in lineas0]:
         raise RuntimeError(f"{to}: la serialización cambió la segmentación en chunks")
@@ -899,6 +910,21 @@ def procesar_tablas_r2(res: E0.ResultadoParseo, pdf_path: Path, to: str,
     con_bloque = frozenset(chunks[t["_indices_chunk"][0]]["id"] for t in tablas_to["tablas"]
                            if t.get("serializacion", {}).get("serializada"))
     return chunks, tablas_to, con_bloque
+
+
+def lineas_conservadas_k(paginas: list, roles: list[str], repetidos: set[str]) -> list:
+    """K (U-R2-CODIGO): líneas que el descarte histórico del encabezado de
+    página quitaba y que la regla de e0-r2 conserva (en mayúsculas, sin
+    repetirse en la zona de título de otra página de cuerpo)."""
+    out = []
+    for lineas, rol in zip(paginas, roles):
+        if rol != E0.ROL_CUERPO:
+            continue
+        _, viejas, _ = E0.separar_encabezado_pie(lineas)
+        _, nuevas, _ = E0.separar_encabezado_pie(lineas, mayusculas_repetidas=repetidos)
+        ids_nuevas = {id(l) for l in nuevas}
+        out.extend(l for l in viejas if id(l) not in ids_nuevas)
+    return out
 
 
 def serializar_tablas_to(tablas_to: dict) -> dict:
@@ -943,6 +969,10 @@ def correr(salida: Path, manifiesto=None,
         raise ValueError(f"version_e0 desconocida: {version_e0!r} "
                          f"(conocidas: {VERSIONES_E0})")
     r2 = version_e0 == VERSION_E0_R2
+    if r2 and Path(salida).resolve() in {d.resolve() for d in SALIDAS_PROTEGIDAS}:
+        raise ValueError(f"e0-r2 no escribe en {salida}: es una salida sellada de la "
+                         f"versión legada (de e0_chunking/salida salen los calibradores "
+                         f"del prefijo de E3)")
     salida.mkdir(parents=True, exist_ok=True)
     if manifiesto is None:
         items = sorted(E0.TO_KEYS.items(), key=lambda kv: kv[1])
@@ -962,12 +992,21 @@ def correr(salida: Path, manifiesto=None,
     correcciones: dict = {}
     sub_chunking: dict = {}
     ids_desambiguados: dict = {}
+    encabezados_conservados: dict = {}
 
     for archivo, to in items:
         pdf = pdfs[to]
         paginas = E0.extraer_lineas(pdf)
         roles = E0.clasificar_paginas(paginas)
-        res = E0.parsear_cuerpo(to, archivo, paginas, roles)
+        if r2:
+            # K (U-R2-CODIGO): en la rama de mayúsculas del encabezado de página
+            # se descarta solo lo que se repite en al menos 2 páginas de cuerpo
+            repetidos = E0.titulos_mayusculas_repetidos(paginas, roles)
+            res = E0.parsear_cuerpo(to, archivo, paginas, roles,
+                                    mayusculas_repetidas=repetidos)
+            conservadas = lineas_conservadas_k(paginas, roles, repetidos)
+        else:
+            res = E0.parsear_cuerpo(to, archivo, paginas, roles)
         # correcciones post-parseo (reglas 1 y 2; ver docstring de e0_lib):
         # el conteo "antes" se toma sobre el árbol recién parseado, idéntico
         # al de la corrida sin reglas
@@ -994,6 +1033,11 @@ def correr(salida: Path, manifiesto=None,
         no_partir: frozenset = frozenset()
         if r2:
             chunks, tablas_to, no_partir = procesar_tablas_r2(res, pdf, to, roles)
+            dueno = tablas_to.pop("_dueno_linea")
+            if conservadas:
+                encabezados_conservados[to] = [
+                    {"pagina": l.pagina, "top": l.top, "texto": l.texto,
+                     "chunk": dueno.get(id(l))} for l in conservadas]
             if tablas_to["ids_desambiguados"]:
                 ids_desambiguados[to] = tablas_to.pop("ids_desambiguados")
             else:
@@ -1086,6 +1130,9 @@ def correr(salida: Path, manifiesto=None,
         (salida / "sub_chunking.json").write_text(
             json.dumps(sub_chunking, ensure_ascii=False, indent=1),
             encoding="utf-8")
+    if encabezados_conservados:   # solo e0-r2 y solo si K conservó alguna línea
+        (salida / "encabezados_conservados.json").write_text(
+            json.dumps(encabezados_conservados, ensure_ascii=False, indent=1), encoding="utf-8")
     if ids_desambiguados:   # solo e0-r2 y solo si hubo ids repetidos (BKL-0037)
         (salida / "ids_desambiguados.json").write_text(
             json.dumps(ids_desambiguados, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -1103,7 +1150,9 @@ def shas_salida(salida: Path) -> dict[str, str]:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--salida", default=str(Path(__file__).parent / "salida"))
+    ap.add_argument("--salida", default=None,
+                    help="directorio de salida; por defecto, salida/ (solo con la "
+                         "versión legada: e0-r2 exige --salida explícita)")
     ap.add_argument("--manifiesto", default=None,
                     help="ruta a un manifiesto de corpus (U-B5.1); sin él, "
                          "comportamiento legacy sobre los 5 TOs del subset")
@@ -1112,6 +1161,10 @@ if __name__ == "__main__":
                     help="versión de E0 (U-R2-CODIGO); la legada reproduce "
                          "la salida sellada byte a byte")
     args = ap.parse_args()
+    if args.salida is None:
+        if args.version_e0 == VERSION_E0_R2:
+            ap.error("--version-e0 e0-r2 exige --salida explícita (M, U-R2-CODIGO)")
+        args.salida = str(Path(__file__).parent / "salida")
     man = None
     if args.manifiesto:
         import sys

@@ -66,27 +66,40 @@ def _chunk(cid: str, unidad: str, texto: str) -> dict:
 
 
 def bloque_a() -> None:
-    print("A. Desambiguación de ids de E0 (BKL-0037)")
-    par = [_chunk("x::6.1", "6.1", "índice"), _chunk("x::6.1", "6.1", "cuerpo")]
+    print("A. Desambiguación de ids de E0 (BKL-0037, regla L)")
+    par = [_chunk("x::6.1", "6.1", "6.1. Solicitud."), _chunk("x::6.1", "6.1", "6.1. Solicitud.\nCuerpo largo.")]
     ren = E0.desambiguar_ids(par)
-    check("A1 par: el primero conserva el id, el segundo recibe ::rep2",
-          [c["id"] for c in par] == ["x::6.1", "x::6.1::rep2"]
-          and par[1]["id_e0_original"] == "x::6.1" and "id_e0_original" not in par[0]
-          and par[1]["unidad"] == "6.1" and ren == [{"id_e0_original": "x::6.1", "id": "x::6.1::rep2"}])
-    terna = [_chunk("x::7.1", "7.1", str(i)) for i in range(3)]
+    check("A1 par: conserva el id el de más texto (el cuerpo); la línea de índice recibe ::rep2",
+          [c["id"] for c in par] == ["x::6.1::rep2", "x::6.1"]
+          and par[0]["id_e0_original"] == "x::6.1" and "id_e0_original" not in par[1]
+          and par[0]["unidad"] == "6.1" and ren == [{"id_e0_original": "x::6.1", "id": "x::6.1::rep2"}])
+    terna = [_chunk("x::7.1", "7.1", "ab"), _chunk("x::7.1", "7.1", "abc"), _chunk("x::7.1", "7.1", "a")]
     E0.desambiguar_ids(terna)
-    check("A2 terna: ::rep2 y ::rep3", [c["id"] for c in terna] == ["x::7.1", "x::7.1::rep2", "x::7.1::rep3"])
+    check("A2 terna: el más largo conserva el id; los demás, ::rep2 y ::rep3 en orden documental",
+          [c["id"] for c in terna] == ["x::7.1::rep2", "x::7.1", "x::7.1::rep3"])
+    empate = [_chunk("x::8.1", "8.1", "igual"), _chunk("x::8.1", "8.1", "otro!")]
+    E0.desambiguar_ids(empate)
+    check("A2b empate de largo: conserva el id el primero", [c["id"] for c in empate] == ["x::8.1", "x::8.1::rep2"])
     unicos = [_chunk("x::1.1", "1.1", "a"), _chunk("x::1.2", "1.2", "b")]
     antes = copy.deepcopy(unicos)
     check("A3 sin ids repetidos no toca nada", E0.desambiguar_ids(unicos) == [] and unicos == antes)
-    por_to = {}
+    por_to, canon_largo, n_grupos = {}, 0, 0
     for to in ("adfsp", "ceninf", "cirmo3", "ri_niif"):
         ch = json.loads((PARTICION / to / f"chunks_{to}.json").read_text(encoding="utf-8"))
         ren = E0.desambiguar_ids(ch)
         por_to[to] = (len(ren), max(Counter(c["id"] for c in ch).values()))
+        grupos: dict = {}
+        for c in ch:
+            grupos.setdefault(c.get("id_e0_original", c["id"]), []).append(c)
+        for k, v in grupos.items():
+            if len(v) > 1:
+                n_grupos += len(v) - 1
+                canon_largo += (len(v) - 1) * (max(v, key=lambda c: c["chars_propio"])["id"] == k)
     check("A4 partición: 69 renombres (adfsp 9, ceninf 4, cirmo3 52, ri_niif 4) y ningún id repetido después",
           {k: v[0] for k, v in por_to.items()} == {"adfsp": 9, "ceninf": 4, "cirmo3": 52, "ri_niif": 4}
           and all(v[1] == 1 for v in por_to.values()), str(por_to))
+    check("A4b partición: en 69 de 69 el id queda en el chunk más largo", canon_largo == n_grupos == 69,
+          f"{canon_largo}/{n_grupos}")
     reps, ren_t0 = 0, 0
     for p in sorted(E0_TANDA0.glob("chunks_*.json")):
         ch = json.loads(p.read_text(encoding="utf-8"))
