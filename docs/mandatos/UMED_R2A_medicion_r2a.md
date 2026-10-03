@@ -1,6 +1,6 @@
 FIRMADO por la autora el 03/10/2026 (redactado el 03/10/2026 sobre HEAD `e1c9456`; las tres decisiones
-abiertas del borrador, resueltas por la autora el 03/10/2026, pasaron a las decisiones 9 a 11; commit de
-la firma PENDIENTE)
+abiertas del borrador, resueltas por la autora el 03/10/2026, pasaron a las decisiones 9 a 11; firma en
+`43dc44f`)
 
 MANDATO — U-MED-R2A: MEDICIÓN r2a, EL GRAFO DE LOS DIEZ TOs CON TODO LO CORREGIDO EN CÓDIGO.
 Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.

@@ -1,4 +1,5 @@
-BORRADOR — PENDIENTE DE FIRMA DE LA AUTORA (redactado el 03/10/2026 sobre HEAD `e1c9456`)
+FIRMADO por la autora el 03/10/2026 (redactado el 03/10/2026 sobre HEAD `e1c9456`; borrador en `e91f864`,
+decisiones 15 a 21 en `a304b89` y `43dc44f`; firma por mensaje de la autora, commit PENDIENTE)
 
 MANDATO — U-PROMPT-R2: EL PREFIJO NUEVO DE E1 PARA LA RELEASE r2 (lo marcado r2b).
 Repo bcra-regulatory-kg. Leé CLAUDE.md y docs/decisiones_caching_extraccion.md antes de empezar:
@@ -252,11 +253,19 @@ a. Muestra de chunks de los diez TOs, sorteada con semilla declarada y estratifi
    produce con e0-r2 en el scratchpad y no se versiona; mide si el prefijo generaliza a TOs que no
    vio, sin tocar el conjunto de evaluación. Las fichas de los casos fijos y del estrato fuera de
    muestra se cuentan aparte de la tasa de los 40.
-b. E1 con el prefijo sellado (desde la caché, USD 0) y con el nuevo (API, dentro del tope) sobre
-   los mismos chunks; validación r2 de las dos salidas; fichas pareadas cegadas (protocolo de
+b. E1 con el prefijo sellado y con el nuevo sobre los mismos chunks. Para los 40 sorteados y los
+   casos fijos, el brazo sellado sale de la caché (USD 0) y el brazo nuevo paga la API dentro del
+   tope. Para los 8 chunks del estrato fuera de muestra (ayccef, expaef, opefci, adrei) no hay salida
+   del prefijo sellado en la caché: el brazo sellado también corre por la API, dentro del tope de
+   USD 2, sobre su E0 legada (`correr_e0.py` sin `--version-e0`, en el scratchpad), y el brazo nuevo
+   sobre su E0 e0-r2. Validación r2 de las dos salidas; fichas pareadas cegadas (protocolo de
    ESQ-3b) con las dimensiones: umbral con tramo literal verificado, mención verificada, omisiones
    con categoría y tramo, valores copiados de la tabla de `cap::1.2`, firma nueva de
    `condicion_de`, destino de `limita`.
+   Declaración: la pareada compara release contra release, el prefijo sellado con la E0 legada
+   frente al prefijo nuevo con e0-r2, no el prefijo solo. Las diferencias no se atribuyen al prompt
+   o a E0 por separado, salvo donde la ficha lo permita (por ejemplo, la tabla de `cap::1.2`, que
+   solo existe serializada en e0-r2). El reporte lo dice así en su primera línea.
 c. Lectura asistida de las fichas, revisada por la autora; conteos con Wilson al 95 %; costo real
    contra el tope.
 FRENO P4, final: la tabla pareada, los contadores del validador en las dos salidas (vocabulario
@@ -302,4 +311,8 @@ cegadas y lectura asistida revisada por la autora. Commit de la autora al cierre
 
 DECISIONES ABIERTAS A LA FIRMA: ninguna. Las cuatro del borrador quedaron decididas el 03/10/2026
 (decisiones 18 a 21); el tope de P4 y la regla de `frecuencia` se revisan en el FRENO P1 con las
-estimaciones de P1.c y P1.d y la medición de la unidad 9. Borrador PENDIENTE DE FIRMA.
+estimaciones de P1.c y P1.d y la medición de la unidad 9.
+
+FIRMA. FIRMADO por la autora el 03/10/2026, con el ajuste de P4.b (el brazo sellado del estrato fuera de
+muestra corre por la API con su E0 legada) y la declaración de que la pareada compara release contra
+release. Sin decisiones abiertas.
