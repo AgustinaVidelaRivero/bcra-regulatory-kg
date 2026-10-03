@@ -6,7 +6,8 @@ e0_tablas), que este selftest comprueba en S1. Usa el PDF real de Capitales
 mínimos para la geometría de celdas (pdfplumber) y, para el verificador de
 umbrales, celdas literales de tablas_<to>.json de la E0 e0-r2 de la tanda 0
 (con su página) y textos de nodos de KG-Tanda0-Desarrollo-r1 y de
-KG-Reextraído-r1.
+KG-Reextraído-r1. S13 y S14 (K-a′ y K-b) usan PDFs de la partición del corpus
+escalado (escalado_prep/pdfs).
 
 Uso:
   PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B data/experiment/r2_codigo/selftest_e0r2.py
@@ -40,6 +41,55 @@ CONSERVADAS_K = {"cap": ["AAA A+ BBB+ BB+"],
                  "ext": ["0202.30.00.111D, 0202.30.00.115M, 0202.30.00.117R;",
                          "0202.30.00.118U, 0202.30.00.121G, 0202.30.00.124N,"],
                  "ric": ["CONSOLIDACIÓN", "COD CASOS"], "pro": []}
+# K-a′ y K-b (complemento final de U-R2-CODIGO), sobre PDFs de la partición
+# (escalado_prep/pdfs): (TO, página, líneas que e0-r2 quita de la zona, líneas
+# que conserva). ri_rcl p. 1 es el caso en que la línea de sección sigue
+# cerrando el encabezado después de un renglón numerado con minúsculas.
+CASOS_K_AB = [
+    ("ri_rml", 28,
+     ["REGIMEN INFORMATIVO CONTABLE MENSUAL",
+      "B.C.R.A. 5.EFECTIVO MINIMO Y APLICACIÓN DE RECURSOS (R.I.-E.M.-A.R.)", "Sección 1. Efectivo mínimo"],
+     ["1.11. Metodología para determinar la retribución de los saldos de las cuentas abiertas en el",
+      "B.C.R.A.", "CUENTAS EN PESOS"]),
+    ("nmaeef", 33,
+     ["NORMAS MÍNIMAS SOBRE AUDITORÍAS EXTERNAS", "B.C.R.A. PARA ENTIDADES FINANCIERAS"],
+     ["ANEXO III",
+      "6. Revisión de la razonable consolidación de los estados financieros de filiales en el exterior al",
+      "cierre del período correspondiente, de acuerdo con las normas del B.C.R.A. y basándose en los"]),
+    ("snp_cheq", 12,
+     ["SISTEMA NACIONAL DE PAGOS", "CHEQUES Y OTROS INSTRUMENTOS COMPENSABLES", "B.C.R.A.",
+      "Sección 3. Instrucciones operativas.", "3.INSTRUCCIONES OPERATIVAS."],
+     ["En la primera parte de este capítulo (punto 3.1) se desarrollan los mecanismos de presentación,"]),
+    ("snp_dd", 28,
+     ["SISTEMA NACIONAL DE PAGOS- DÉBITOS DIRECTOS", "B.C.R.A.", "Sección 6. Transacciones y mensajes.",
+      "6. TRANSACCIONES Y MENSAJES."],
+     ["6.1. Introducción."]),
+    ("ri_rcl", 1,
+     ["REGIMEN INFORMATIVO CONTABLE MENSUAL", "B.C.R.A.", "21. Ratio de Cobertura de Liquidez",
+      "Sección 1. Instrucciones Generales"],
+     ["1.1. Alcance"]),
+]
+# descarte histórico de esas páginas (sin los tres renglones de pie), igual al de HEAD 92b45d6
+HIST_K_AB = {
+    "ri_rml": ["REGIMEN INFORMATIVO CONTABLE MENSUAL",
+               "B.C.R.A. 5.EFECTIVO MINIMO Y APLICACIÓN DE RECURSOS (R.I.-E.M.-A.R.)", "Sección 1. Efectivo mínimo"],
+    "nmaeef": ["NORMAS MÍNIMAS SOBRE AUDITORÍAS EXTERNAS", "B.C.R.A. PARA ENTIDADES FINANCIERAS", "ANEXO III"],
+    "snp_cheq": ["SISTEMA NACIONAL DE PAGOS", "CHEQUES Y OTROS INSTRUMENTOS COMPENSABLES", "B.C.R.A.",
+                 "Sección 3. Instrucciones operativas.", "3.INSTRUCCIONES OPERATIVAS."],
+    "snp_dd": ["SISTEMA NACIONAL DE PAGOS- DÉBITOS DIRECTOS", "B.C.R.A.", "Sección 6. Transacciones y mensajes.",
+               "6. TRANSACCIONES Y MENSAJES."],
+    "ri_rcl": ["REGIMEN INFORMATIVO CONTABLE MENSUAL", "B.C.R.A."],
+}
+# chunks de la escalera de e0-r2: ids presentes, ids ausentes, chunk y frase que debe contener
+ESPERADO_CHUNKS_K = {
+    "ri_rml": (["ri_rml::1.11", "ri_rml::1.10.4"], [], "ri_rml::1.11", "CUENTAS EN PESOS"),
+    "nmaeef": (["nmaeef::S11::chapeau_seccion"], [], "nmaeef::S11::chapeau_seccion",
+               "6. Revisión de la razonable consolidación de los estados financieros"),
+    "snp_cheq": ([f"snp_cheq::{p}" for p in ("3.1.2.3", "3.1.2.4", "3.1.2.5", "3.1.3.1", "3.1.3.2",
+                                             "3.1.4.1", "3.1.4.2")], [], None, None),
+    "snp_dd": (["snp_dd::6.2.6"], ["snp_dd::S6::cierre"], "snp_dd::6.2.6",
+               "Este código se asigna para identificar el tipo de registro"),
+}
 RESULTADOS: list[tuple[str, bool, str]] = []
 
 
@@ -246,6 +296,63 @@ def main() -> int:
                                                             "PYTHONDONTWRITEBYTECODE": "1"})
     check("S12 sin --salida, e0-r2 sale con error de argumentos",
           r.returncode == 2 and "exige --salida" in r.stderr, r.stderr.strip()[-80:])
+
+    print("S13. K-a′ y K-b — encabezado forzado y títulos de sección numerados (partición; PDF real)")
+    pdfs_part = REPO / "data" / "experiment" / "escalado_prep" / "pdfs"
+    paginas_k: dict[str, list] = {}
+    for to, pag, quitar, conservar in CASOS_K_AB:
+        paginas = paginas_k.setdefault(to, E0.extraer_lineas(pdfs_part / f"{to}.pdf"))
+        rep = E0.titulos_mayusculas_repetidos(paginas, E0.clasificar_paginas(paginas))
+        lineas = paginas[pag - 1]
+        cont, desc, _ = E0.separar_encabezado_pie(lineas, mayusculas_repetidas=rep, pie_desde_version=True)
+        t_cont = [l.texto.strip() for l in cont]
+        t_desc = [l.texto.strip() for l in desc]
+        _, hist, _ = E0.separar_encabezado_pie(lineas)
+        check(f"S13 {to} p. {pag}: e0-r2 quita {len(quitar)} y conserva {len(conservar)} líneas de la zona",
+              all(q in t_desc for q in quitar) and all(c in t_cont for c in conservar)
+              and not any(c in t_desc for c in conservar),
+              f"descartadas {[t[:40] for t in t_desc]}")
+        check(f"S13 {to} p. {pag}: el descarte histórico no cambia",
+              [l.texto.strip() for l in hist][-len(HIST_K_AB[to]):] == HIST_K_AB[to]
+              and len(hist) == 3 + len(HIST_K_AB[to]),
+              str([l.texto[:40] for l in hist]))
+
+    def _l(i: int, t: str) -> E0.Linea:
+        return E0.Linea(pagina=1, top=10.0 * i, x0=50.0, texto=t, ngaps=0,
+                        ultimo_numerico=False, primer_codigo=False)
+
+    sint = [_l(0, "TÍTULO DEL TO"), _l(1, "B.C.R.A."), _l(2, "1. DATOS GENERALES"), _l(3, "Texto del punto.")]
+    rep_sint = {"TÍTULODELTO", "B.C.R.A."}
+    c_vig, _, _ = E0.separar_encabezado_pie(sint, mayusculas_repetidas=rep_sint)
+    c_sr, _, _ = E0.separar_encabezado_pie(sint, mayusculas_repetidas=rep_sint, labels_preservables=set())
+    check("S13 K-b (sintético): fuera del modo sin raíz, «1. DATOS GENERALES» se descarta",
+          [l.texto for l in c_vig] == ["Texto del punto."], str([l.texto for l in c_vig]))
+    check("S13 K-b (sintético): en el modo sin raíz decide labels_preservables y la línea queda",
+          [l.texto for l in c_sr] == ["1. DATOS GENERALES", "Texto del punto."], str([l.texto for l in c_sr]))
+    sint2 = [_l(0, "TÍTULO DEL TO"), _l(1, "1.4. Plazo para presentar ante el"), _l(2, "B.C.R.A."),
+             _l(3, "la información.")]
+    c2, _, _ = E0.separar_encabezado_pie(sint2, mayusculas_repetidas=rep_sint)
+    c2h, _, _ = E0.separar_encabezado_pie(sint2)
+    check("S13 K-a′ (sintético): «B.C.R.A.» después de un renglón numerado con minúsculas es texto",
+          [l.texto for l in c2] == ["1.4. Plazo para presentar ante el", "B.C.R.A.", "la información."]
+          and [l.texto for l in c2h] == [l.texto for l in c2], str([l.texto for l in c2]))
+
+    print("S14. K-a′ y K-b — chunks de la escalera de e0-r2 en los cuatro TOs afectados (PDF real)")
+    ids_k: dict[str, dict[str, str]] = {}
+    for to, paginas in paginas_k.items():
+        if to not in ESPERADO_CHUNKS_K:
+            continue
+        res, *_ = C.escalera_e0_r2(to, f"{to}.pdf", paginas, E0.clasificar_paginas(paginas))
+        res.reasignaciones_continuidad = E0.aplicar_continuidad_enumeracion(res)
+        E0.corregir_fronteras_intra_palabra(res)
+        ids_k[to] = {c["id"]: c["texto"] for c in E0.construir_chunks(res)}
+    for to, (presentes, ausentes, chunk_texto, frase) in ESPERADO_CHUNKS_K.items():
+        ids = ids_k[to]
+        check(f"S14 {to}: {len(presentes)} ids presentes, {len(ausentes)} ausentes"
+              + (f", «{frase[:30]}…» en {chunk_texto}" if chunk_texto else ""),
+              all(i in ids for i in presentes) and not any(i in ids for i in ausentes)
+              and (chunk_texto is None or frase in ids.get(chunk_texto, "")),
+              f"faltan {[i for i in presentes if i not in ids]}, sobran {[i for i in ausentes if i in ids]}")
 
     ok = sum(1 for _, b, _ in RESULTADOS if b)
     print(f"\nSELFTEST e0-r2: {ok}/{len(RESULTADOS)} PASS")

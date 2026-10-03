@@ -519,9 +519,29 @@ def t7():
               and internas(det("del punto 5.1. de estas disposiciones", todas)) == ["5.1"]
               and internas(det("del punto 5.1. de este régimen", todas)) == ["5.1"])
         m_c3 = det("según las normas sobre “Gestión crediticia”, y el punto 3.2. de este ordenamiento", todas, "cla")
-        check("T7e (C) «de este ordenamiento» sigue siendo anáfora: con otra norma nombrada antes, resuelve a esa norma",
-              [(m["clase"], m["to_destino"]) for m in m_c3 if m["clase"] != "externa"] == [("externa_anaforica", "gescre")],
+        check("T7e+ (C) «de este ordenamiento» es el propio TO: el 3.2 queda interno aunque antes se nombre otra norma",
+              [(m["clase"], m["to_destino"], m["puntos"]) for m in m_c3 if m["clase"] != "externa"]
+              == [("interna", "cla", ["3.2"])] and not [m for m in m_c3 if m["clase"] == "externa_anaforica"],
               str(m_c3))
+        formas_propias = ["de este ordenamiento", "del presente ordenamiento", "de este texto ordenado",
+                          "del presente texto ordenado", "de este Texto Ordenado", "del presente Texto Ordenado"]
+        check("T7e+ (C) las formas «de este/del presente ordenamiento» y «de este/del presente texto ordenado» son el "
+              "propio TO: interna, con la marca, y ninguna es anáfora",
+              all([(m["clase"], m["puntos"], m.get("marca_propio_to")) for m in det(f"según el punto 1.2. {f}.", todas)]
+                  == [("interna", ["1.2"], f.lower())] for f in formas_propias),
+              str([[(m["clase"], m.get("marca_propio_to")) for m in det(f"según el punto 1.2. {f}.", todas)]
+                   for f in formas_propias]))
+        check("T7e- (C) «de dicho/ese ordenamiento» y «de dicho texto ordenado» siguen siendo anáfora",
+              all([m["clase"] for m in det(f"según el punto 1.2. {f}.", todas)] == ["externa_anaforica"]
+                  for f in ("de dicho ordenamiento", "de ese ordenamiento", "de dicho texto ordenado")))
+        t_niif = ("A fin de estandarizar el formato de los Estados Financieros, deberán observar los modelos incluidos\n"
+                  "en la Sección 4. del presente texto ordenado de:\n- Estado de Situación Financiera;\n"
+                  "- Estado de Resultados;")
+        m_niif = det(t_niif, todas, "ri_niif")
+        check("T7e+ (C) ri_niif::2.1: «del presente texto ordenado de:» no es una norma nombrada; la Sección 4. es "
+              "interna",
+              [(m["clase"], m["to_destino"], m["secciones"]) for m in m_niif] == [("interna", "ri_niif", ["4"])]
+              and [m["clase"] for m in det(t_niif, "", "ri_niif")] == ["externa"], str(m_niif))
         # A: la evidencia dentro de un solo tramo
         tr = ["14.2.1. En el marco de lo dispuesto en los puntos 3.3., 3.5. y 10.3.2., según",
               "En el caso de que las entidades informen el punto 4.1."]

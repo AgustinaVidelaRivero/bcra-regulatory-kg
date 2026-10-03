@@ -477,8 +477,10 @@ RE_ANTES_DE_LINEA_SUELTA = re.compile(r"\b(?:puntos?|apartados?)\s*$", re.I)
 # «de las citadas normas», «de las citadas disposiciones», «de dichas normas»,
 # «del citado ordenamiento», «del citado TO», «dicho TO», «de la citada
 # norma» y variantes («de las normas citadas», «de las mencionadas normas»…).
+# «de este ordenamiento» y «de este texto ordenado» no son anáfora: nombran el
+# propio TO (RE_PROPIO_TO).
 RE_ANAFORA_NORMA = re.compile(
-    r"de\s+(?:dicho|ese|este)\s+(?:ordenamiento|texto\s+ordenado)"
+    r"de\s+(?:dicho|ese)\s+(?:ordenamiento|texto\s+ordenado)"
     r"|de\s+(?:las|los)\s+(?:citad|mencionad|referid|precitad|aludid)[ao]s\s+(?:normas|disposiciones|ordenamientos)"
     r"|de\s+(?:las|los)\s+(?:normas|disposiciones|ordenamientos)\s+(?:citad|mencionad|referid|precitad|aludid)[ao]s"
     r"|de\s+dich[ao]s\s+(?:normas|disposiciones|ordenamientos)"
@@ -488,10 +490,13 @@ RE_ANAFORA_NORMA = re.compile(
 # (e) el propio TO: una mención de puntos o de sección seguida de una de estas
 # formas es interna aunque después se nombre otra norma («de las presentes
 # normas», «de las presentes disposiciones», «del presente régimen», «de estas
-# normas», «de estas disposiciones», «de esta norma», «de este régimen»).
+# normas», «de estas disposiciones», «de esta norma», «de este régimen», «de
+# este ordenamiento», «del presente ordenamiento», «de este texto ordenado»,
+# «del presente texto ordenado»).
 RE_PROPIO_TO = re.compile(
     r"\.?\s*(?:de\s+las\s+presentes\s+(?:normas|disposiciones)|del\s+presente\s+r[eé]gimen"
-    r"|de\s+estas\s+(?:normas|disposiciones)|de\s+esta\s+norma\b|de\s+este\s+r[eé]gimen)", re.I)
+    r"|de\s+estas\s+(?:normas|disposiciones)|de\s+esta\s+norma\b|de\s+este\s+r[eé]gimen"
+    r"|de\s+este\s+(?:ordenamiento|texto\s+ordenado)|del\s+presente\s+(?:ordenamiento|texto\s+ordenado))", re.I)
 # Fin de la comilla de un nombre de norma citado entre comillas (regla g).
 RE_CIERRE_COMILLA = re.compile(r"[\"”»’']")
 LARGO_CAPTURA_G = 400
@@ -504,9 +509,12 @@ RE_NORMA_NOMBRADA = re.compile(
 # Con la regla (g): como RE_NORMA y, además, «texto ordenado de las normas
 # sobre “X”» se lee como una sola cita a X (RE_NORMA toma «las normas sobre
 # “X» como el nombre), y las comillas simples tipográficas (‘X’) cuentan como
-# comillas.
+# comillas. «del presente texto ordenado de: …» y «de este texto ordenado
+# de …» nombran el propio TO (RE_PROPIO_TO), no otra norma (ri_niif::2.1:
+# «la Sección 4. del presente texto ordenado de: - Estado de Situación…»).
 RE_NORMA_R2 = re.compile(
-    r"(?:[Nn]ormas?\s+sobre|(?:\bT\.?O\.?|[Tt]exto\s+[Oo]rdenado)\s+(?:sobre|de)(?:\s+las\s+[Nn]ormas\s+sobre)?)\s*"
+    r"(?:[Nn]ormas?\s+sobre|(?<![Pp]resente\s)(?<!\b[Ee]ste\s)(?:\bT\.?O\.?|[Tt]exto\s+[Oo]rdenado)\s+(?:sobre|de)"
+    r"(?:\s+las\s+[Nn]ormas\s+sobre)?)\s*"
     r"(?P<q>[\"“'«‘])?\s*(?P<z>[^\"”'»’\.;\)]{3,90})")
 # (g) nombres de cada TO del ensamblado, normalizados: el título del inventario
 # y los `nombres_remision` del manifiesto (los fija el ensamblado o el control;
@@ -634,9 +642,9 @@ def detectar_menciones_r2(texto: str, to_origen: str, reglas: frozenset = REGLAS
     y una mención seguida de otra mención de puntos no queda tomada por la
     norma que viene después; (e) anáfora de la norma resuelta a la última norma
     nombrada antes en el mismo texto, o irresoluble con causa «anáfora sin
-    antecedente», y una mención de puntos seguida de «de las presentes
-    normas», «de las presentes disposiciones» o «del presente régimen» es
-    interna; (f) «apartado»; (g) inventario por título; (h) «este punto» sin
+    antecedente», y una mención de puntos o de sección seguida de una forma
+    de RE_PROPIO_TO («de las presentes normas», «del presente régimen», «de
+    este ordenamiento», «del presente texto ordenado»…) es interna; (f) «apartado»; (g) inventario por título; (h) «este punto» sin
     número, registrado sin remisión. (a), (b) e (i) actúan fuera de este
     detector (normalización, texto de e0-r2 y texto heredado).
 

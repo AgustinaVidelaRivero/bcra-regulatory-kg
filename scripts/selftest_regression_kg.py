@@ -16,7 +16,8 @@ Solo stdlib; fixtures sintéticos mínimos escritos acá. Cubre:
     R-T4, R-T5, R-E4a8, BKL-0028 con los tres ids esperados, BKL-0006 y
     BKL-0023 con la lista de umbrales, el test del ejemplo cla::5.1.1.1,
     LN-1 a LN-8 y los censos (con el control sobre las 105 relaciones de la
-    lectura de la matriz).
+    lectura de la matriz); complemento final: BKL-0006 y BKL-0023 del perfil
+    r2 direccionados por punto y monto.
 
 Uso: PYTHONDONTWRITEBYTECODE=1 python3 scripts/selftest_regression_kg.py
 """
@@ -445,6 +446,44 @@ g06i = RK.Grafo({"nodes": [nodo_gen3("Rb", "Restriccion", "Exigencia básica ban
                            nodo_gen3("Rr", "Restriccion", "Exigencia básica restantes entidades",
                                      {"descripcion": "exigencia básica restantes entidades", "umbrales": um("5000000000")})], "edges": []})
 caso("BKL-0006 (lista) contraejemplo: tabla invertida → persiste", RK.t_bkl_0006(ctx_sintetico(g06i, indice=IndiceFalso([])))["estado"] == "persiste")
+
+# Perfil r2: BKL-0006 y BKL-0023 direccionados por punto y monto, sin la frase «exigencia básica»
+def g_r2(bancos, restantes, propia=None, extra=()):
+    ns = [nodo_gen3("Rb", "Restriccion", "Capital mínimo bancos", {"descripcion": "los bancos (salvo cajas de crédito "
+                    "cooperativas) deberán mantener un capital mínimo", "umbrales": um(bancos)}),
+          nodo_gen3("Rr", "Restriccion", "Capital mínimo restantes", {"descripcion": "las restantes entidades (salvo bancos y "
+                    "cajas de crédito cooperativas) deberán mantener un capital mínimo", "umbrales": um(restantes)}),
+          nodo_gen3("Oc", "Obligacion", "Compañías financieras", {"descripcion": "las compañías financieras que realicen, en forma "
+                    "directa, operaciones de comercio exterior deberán observar las exigencias establecidas para los bancos"})]
+    if propia:
+        ns.append(nodo_gen3("Rc", "Restriccion", "Compañías financieras", {"descripcion": "las compañías financieras con "
+                            "comercio exterior deberán mantener un capital mínimo", "umbrales": um(propia)}))
+    return RK.Grafo({"nodes": ns + list(extra), "edges": []})
+
+
+def ctx_r2(g):
+    return ctx_sintetico(g, indice=IndiceFalso([]), perfil="r2")
+
+
+r06 = RK.t_bkl_0006(ctx_r2(g_r2("5000000000", "2500000000")))
+caso("BKL-0006 (r2): sin «exigencia básica», por punto y monto: bancos 5.000 / restantes 2.500 → resuelto",
+     r06["estado"] == "resuelto", r06["detalle"][:120])
+caso("BKL-0006 (r2) contraejemplo: tabla invertida (prueba r2 de desarrollo) → persiste",
+     RK.t_bkl_0006(ctx_r2(g_r2("2500000000", "5000000000")))["estado"] == "persiste")
+caso("BKL-0006 (existente) sobre el mismo grafo: sigue pidiendo «exigencia básica» → no_aplicable",
+     RK.t_bkl_0006(ctx_sintetico(g_r2("5000000000", "2500000000"), indice=IndiceFalso([])))["estado"] == "no_aplicable")
+g_sin_monto = RK.Grafo({"nodes": [nodo_gen3("Rb", "Restriccion", "Exigencia básica bancos",
+                                            {"descripcion": "exigencia básica bancos", "umbrales": um("700000000")})], "edges": []})
+caso("BKL-0006 y BKL-0023 (r2): una Restriccion del 1.2 sin monto de la tabla no se direcciona → no_aplicable",
+     RK.t_bkl_0006(ctx_r2(g_sin_monto))["estado"] == "no_aplicable" and RK.t_bkl_0023(ctx_r2(g_sin_monto))["estado"] == "no_aplicable")
+r23 = RK.t_bkl_0023(ctx_r2(g_r2("5000000000", "2500000000")))
+caso("BKL-0023 (r2): la oración es una Obligacion sin monto; vale el de la Restriccion de bancos: 5.000 → resuelto",
+     r23["estado"] == "resuelto" and r23["valores"]["direccionamiento"].startswith("Restriccion de bancos"), r23["detalle"][:120])
+caso("BKL-0023 (r2) contraejemplo: bancos 2.500 (prueba r2 de desarrollo) → persiste",
+     RK.t_bkl_0023(ctx_r2(g_r2("2500000000", "5000000000")))["estado"] == "persiste")
+r23p = RK.t_bkl_0023(ctx_r2(g_r2("2500000000", "5000000000", propia="5000000000")))
+caso("BKL-0023 (r2): con Restriccion propia de compañías financieras, vale la suya (5.000 → resuelto)",
+     r23p["estado"] == "resuelto" and r23p["valores"]["direccionamiento"] == "Restriccion de las compañías financieras")
 
 # Test del ejemplo cla::5.1.1.1
 def n_cla(nid, tipo, punto="5.1.1.1", props=None):

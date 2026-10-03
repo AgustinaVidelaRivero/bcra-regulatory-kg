@@ -222,6 +222,10 @@ RE_NUM_TOKEN = re.compile(r"^(\d+(?:\.\d+)*)\.$")   # primer token de un header 
 # '8.5.14.1 la norma…' — medidos en ext p.172 y p.117): se admite numeración
 # sin punto final solo con profundidad ≥2 (un entero solo nunca es label)
 RE_NUM_TOKEN_SIN_PUNTO = re.compile(r"^(\d+(?:\.\d+)+)$")
+# título de sección repetido en el cuerpo con numeración de un nivel
+# ('3.INSTRUCCIONES OPERATIVAS.', '6. TRANSACCIONES Y MENSAJES.'): en e0-r2
+# (K-b) se descarta en la zona de encabezado aunque no se repita en otra página
+RE_TITULO_SECCION_NUMERADO_K = re.compile(r"^\d{1,2}\.\s*[^\d\s.]")
 RE_PIE = [
     re.compile(r"^Vigencia:?$"),
     re.compile(r"^Versi[oó]n:.*P[aá]gina\s+\d+"),
@@ -541,8 +545,16 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
     última línea con «B.C.R.A.» o de sección (incluida) es encabezado; después
     de esa línea, una línea sin minúsculas se descarta solo si su texto, sin
     espacios, está en el conjunto de los que se repiten en la zona de título
-    de al menos 2 páginas. None (todos los demás call sites) deja el descarte
-    histórico.
+    de al menos 2 páginas. Dos excepciones (complemento final de la unidad,
+    medidas sobre los 152 TOs de la partición): K-a′, después de un renglón
+    que empieza con numeración de punto y tiene minúsculas, una línea con
+    «B.C.R.A.» ya no cierra el encabezado (es texto de la norma: el título
+    de `ri_rml::1.11` partido en dos renglones, la oración de `nmaeef::S11`
+    que nombra al B.C.R.A.); la línea de sección sí lo cierra. K-b, una línea
+    en mayúsculas con numeración de un nivel (RE_TITULO_SECCION_NUMERADO_K)
+    se descarta como antes de K (`snp_cheq`, `snp_dd`), salvo en el modo sin
+    raíz, que la decide por `labels_preservables`. None (todos los demás call
+    sites) deja el descarte histórico.
 
     `pie_desde_version` (solo la versión e0-r2, U-R2-CODIGO, agregado 8): si
     una de las últimas VENTANA_PIE_VERSION líneas cumple RE_PIE_VERSION
@@ -573,10 +585,16 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
     if mayusculas_repetidas is not None:
         # e0-r2: la línea «B.C.R.A.» o de sección marca el final del
         # encabezado corrido; lo anterior de la zona es encabezado aunque no se
-        # repita (título partido distinto en esa página)
+        # repita (título partido distinto en esa página). K-a′: después de un
+        # renglón numerado con minúsculas, «B.C.R.A.» es texto de la norma
+        prosa_numerada = False
         for i, l in enumerate(contenido[:5]):
             ti = l.texto.strip()
-            if "B.C.R.A." in ti or (capturar_seccion and (
+            tok = ti.split()[0] if ti.split() else ""
+            if (RE_NUM_TOKEN.match(tok) or RE_NUM_TOKEN_SIN_PUNTO.match(tok)) \
+                    and not _es_titulo_mayusculas(ti):
+                prosa_numerada = True
+            if ("B.C.R.A." in ti and not prosa_numerada) or (capturar_seccion and (
                     RE_SECCION.match(ti) or (seccion_b582 and _match_seccion_b582(ti)))):
                 forzadas = i + 1
     while contenido and quitadas < 5:
@@ -610,7 +628,9 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
             quitadas += 1
         elif "B.C.R.A." in t or (_es_titulo_mayusculas(t)
                                  and (mayusculas_repetidas is None
-                                      or "".join(t.split()) in mayusculas_repetidas)
+                                      or "".join(t.split()) in mayusculas_repetidas
+                                      or (labels_preservables is None
+                                          and RE_TITULO_SECCION_NUMERADO_K.match(t)))
                                  and not (labels_preservables is not None
                                           and _clave_banner(t) is not None
                                           and _clave_banner(t) not in labels_preservables)):

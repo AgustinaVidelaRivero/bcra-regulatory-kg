@@ -45,7 +45,9 @@ Perfil r2 (U-R2-CODIGO, R5; enmienda 1 al mandato, R5.b). Con --perfil r2:
     con scripts/remisiones.py, que reconoce las dos formas;
   - T5 por contenido (R-T5), E4-a8 sobre la tabla e4_propuestos.json del
     ensamblado bajo prueba (R-E4a8), BKL-0028 contra los tres ids «del
-    exterior» esperados, BKL-0006 y BKL-0023 con la lista de umbrales;
+    exterior» esperados, BKL-0006 y BKL-0023 con la lista de umbrales y
+    direccionados por punto y monto (cap 1.2, Restriccion, valor normalizado
+    de la lista), sin exigir la frase «exigencia básica»;
   - ítems nuevos fuera de la partición de 46 (ITEMS_R2): el test del ejemplo
     `cla::5.1.1.1` y LN-1 a LN-8 (diseño de U-LISTAS-NOMAP, §g);
   - censos informativos, fuera de los ítems y de la fixture: aristas entre dos
@@ -653,19 +655,44 @@ MONTO_DE_VALOR = {("5000000000", "moneda", "ARS"): "5.000", ("2500000000", "mone
 UMBRAL_C3 = ("5000000000", "moneda", "ARS")
 
 
+def _clave_umbral(u: dict) -> tuple:
+    return (u.get("valor"), u.get("unidad"), u.get("moneda"))
+
+
+def montos_de_lista(lista: list) -> list:
+    """Montos de la tabla del 1.2 («5.000», «2.500») que lleva una lista de umbrales."""
+    return sorted({MONTO_DE_VALOR[_clave_umbral(u)] for u in lista if _clave_umbral(u) in MONTO_DE_VALOR})
+
+
+def clase_1_2(t: str) -> str:
+    """Columna de la tabla del 1.2 a la que se refiere un texto normalizado."""
+    return "restantes" if "restantes entidades" in t else ("bancos" if "bancos" in t else "otro")
+
+
+def tabla_1_2_r2(G: Grafo) -> list:
+    """Perfil r2: direccionamiento de BKL-0006 y BKL-0023 por punto y monto.
+    Las Restricciones ancladas en cap 1.2 cuya lista de umbrales lleva, en
+    valor normalizado, un monto de la tabla del 1.2 (MONTO_DE_VALOR), sin
+    exigir una frase del texto: la extracción r2 no escribe «exigencia
+    básica» en esos nodos y la frase dejaba el ítem en no_aplicable aunque la
+    tabla estuviera invertida."""
+    return [n for n in G.buscar("Restriccion", CAP, "1.2") if montos_de_lista(umbrales_lista(n))]
+
+
 def t_bkl_0006(ctx: Contexto) -> dict:
-    """C2: montos del 1.2 de CapMin (F3 + F4; F5 informativo sin criterio)."""
+    """C2: montos del 1.2 de CapMin (F3 + F4; F5 informativo sin criterio).
+    Perfil r2: los nodos se direccionan por punto y monto (`tabla_1_2_r2`)."""
     G = ctx.grafo
-    tabla = G.buscar(None, CAP, "1.2", contiene=["exigencia basica"])
+    r2 = ctx.perfil == "r2"
+    tabla = tabla_1_2_r2(G) if r2 else G.buscar(None, CAP, "1.2", contiene=["exigencia basica"])
     filas, bancos_ok, restantes_ok, invertido = [], False, False, False
     for n in tabla:
         t = texto(n)
-        clase = "restantes" if "restantes entidades" in t else ("bancos" if "bancos" in t else "otro")
+        clase = clase_1_2(t)
         lista = umbrales_lista(n)
         if lista:
             # perfil r2: el monto sale del valor normalizado de la lista (L-ESQ-R2 §1.5)
-            montos = sorted({MONTO_DE_VALOR[(u.get("valor"), u.get("unidad"), u.get("moneda"))] for u in lista
-                             if (u.get("valor"), u.get("unidad"), u.get("moneda")) in MONTO_DE_VALOR})
+            montos = montos_de_lista(lista)
             umbral = [valor_normalizado(u) for u in lista]
         else:
             montos = sorted(set(RE_MONTO.findall(t)))
@@ -680,6 +707,9 @@ def t_bkl_0006(ctx: Contexto) -> dict:
                 invertido |= ("5.000" in montos)
     sub = OrderedDict()
     if not tabla:
+        if r2:
+            return res("no_aplicable", "sin Restriccion anclada en cap 1.2 con un monto de la tabla del 1.2 en la lista de umbrales",
+                       subchecks=sub)
         return res("no_aplicable", "sin nodos anclados en cap 1.2 con «exigencia básica»: tabla del 1.2 no extraída", subchecks=sub)
     sub["tabla_bancos_5000_restantes_2500"] = bancos_ok and restantes_ok and not invertido
     exc = G.buscar("Excepcion", CAP, "1.2", contiene=["cajas de credito cooperativas"])
@@ -691,8 +721,12 @@ def t_bkl_0006(ctx: Contexto) -> dict:
         tg = None
     # F5 informativo (C2_retest:59: «informativo, sin criterio de corte»); el
     # «bancos 13» exige limite 13 (decisión 4, inventario §5.6).
-    bancos = {n["id"] for n in G.buscar("Restriccion", CAP, "1.2", contiene=["bancos", "exigencia basica"], no_contiene=["restantes entidades"])}
-    restantes = {n["id"] for n in G.buscar("Restriccion", CAP, "1.2", contiene=["restantes entidades", "exigencia basica"])}
+    if r2:
+        bancos = {n["id"] for n in tabla if clase_1_2(texto(n)) == "bancos"}
+        restantes = {n["id"] for n in tabla if clase_1_2(texto(n)) == "restantes"}
+    else:
+        bancos = {n["id"] for n in G.buscar("Restriccion", CAP, "1.2", contiene=["bancos", "exigencia basica"], no_contiene=["restantes entidades"])}
+        restantes = {n["id"] for n in G.buscar("Restriccion", CAP, "1.2", contiene=["restantes entidades", "exigencia basica"])}
     excep = {n["id"] for n in exc}
     f = "data/backlog/retests/C2_retest_2026-07-31.md:61-63"
     consultas = [("exigencia básica bancos", {"C2.bancos": _obj(bancos, 1, cuenta=False), "C2.excepcion": _obj(excep, 3, cuenta=False), "C2.restantes": _obj(restantes, 4, cuenta=False)}, f),
@@ -707,8 +741,28 @@ def t_bkl_0006(ctx: Contexto) -> dict:
 
 def t_bkl_0023(ctx: Contexto) -> dict:
     """C3: umbral de compañías financieras con comercio exterior (F3). Sin
-    nodo o sin umbral → no_aplicable (pieza e: nunca PASS vacuo)."""
+    nodo o sin umbral → no_aplicable (pieza e: nunca PASS vacuo).
+
+    Perfil r2: direccionamiento por punto y monto (`tabla_1_2_r2`). El nodo
+    objetivo es la Restriccion de las compañías financieras, si la tabla la
+    tiene; si no, la de bancos: la oración del 1.2 remite a «las exigencias
+    establecidas para los bancos», y en la extracción r2 es una Obligacion sin
+    monto, así que el umbral de las compañías financieras es el que el grafo
+    da a los bancos. Resuelto si cada nodo objetivo lleva 5.000 millones de
+    pesos (UMBRAL_C3) en su lista."""
     G = ctx.grafo
+    if ctx.perfil == "r2":
+        tabla = tabla_1_2_r2(G)
+        propias = [n for n in tabla if "companias financieras" in texto(n)]
+        via = "Restriccion de las compañías financieras" if propias else "Restriccion de bancos (remisión de la oración de compañías financieras)"
+        objetivo = propias or [n for n in tabla if clase_1_2(texto(n)) == "bancos"]
+        if not objetivo:
+            return res("no_aplicable", "sin Restriccion anclada en cap 1.2 con un monto de la tabla del 1.2 en la lista de "
+                                       "umbrales, ni de compañías financieras ni de bancos")
+        u = [[valor_normalizado(x) for x in umbrales_lista(n)] for n in objetivo]
+        ok = all(any(_clave_umbral(x) == UMBRAL_C3 for x in umbrales_lista(n)) for n in objetivo)
+        return res("resuelto" if ok else "persiste", f"{via}: n={len(objetivo)} {_ids(objetivo, 1)} umbrales={u}",
+                   valores={"umbrales": u, "direccionamiento": via})
     c3 = G.buscar("Restriccion", CAP, "1.2", contiene=[C3_FRASE])
     if not c3:
         return res("no_aplicable", "ninguna Restriccion anclada en cap 1.2 con la oración de compañías financieras")
@@ -716,7 +770,7 @@ def t_bkl_0023(ctx: Contexto) -> dict:
     if any(listas):
         # perfil r2: valor normalizado de la lista de umbrales (L-ESQ-R2 §1.5)
         u = [[valor_normalizado(x) for x in lst] for lst in listas]
-        ok = any((x.get("valor"), x.get("unidad"), x.get("moneda")) == UMBRAL_C3 for lst in listas for x in lst)
+        ok = any(_clave_umbral(x) == UMBRAL_C3 for lst in listas for x in lst)
         return res("resuelto" if ok else "persiste", f"n={len(c3)} umbrales={u}", valores={"umbrales": u})
     u = [prop(n, "umbral") for n in c3]
     if all(x is None for x in u):
