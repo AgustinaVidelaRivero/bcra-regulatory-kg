@@ -417,3 +417,14 @@ El texto firmado no se edita; estas notas se leen junto con él.
   (`tabla_reprocesamiento.md:87`: cambian la línea de marcas del mensaje de E1 y la nota de E3 de esas
   unidades). Por analogía con las correcciones de E0 entre tandas, un alta en la lista no saca a su TO del
   conjunto de evaluación de B6.3 (a).
+- **03/10/2026 — §5, costo de referencia de las tandas a la tarifa del prefijo nuevo (decisión de la
+  autora).** Cifras de E1 y E3 de la estimación central del FRENO P1 de U-PROMPT-R2
+  (`git show fca019d:data/experiment/prompt_r2/p1/salida/censo_p1.json`, `recalculo_tandas_usd`): tanda
+  1, ejemplo del §7 (3.292 unidades), USD 66,43; tanda 2, digeribles restantes (5.669), USD 114,39, y
+  no-RI plenos (2.008), USD 40,52; tanda 3, RI plenos (976), USD 19,69; partición completa (9.324), USD
+  188,14. Son USD 0,0202 por unidad, contra 0,0166 de la tanda 0 (`:179-181`, `:187`). Son estimaciones
+  sobre el crudo de la tanda 0, no mediciones del prefijo nuevo. Esas cifras corresponden a la variante
+  A de `frecuencia`; con la variante B, que es la aprobada, son 66,39 / 114,33 / 40,50 / 19,68 y 188,05.
+  Las filas no se suman: la tanda 1 del ejemplo toma TOs de los grupos de las tandas 2 y 3, y esas filas
+  están antes de descontarlos (`:180-181`); la fila de la partición es el universo de los 152 TOs, que
+  incluye los cinco TOs nuevos de la tanda 0, no la suma de las otras.

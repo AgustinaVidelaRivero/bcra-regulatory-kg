@@ -392,3 +392,23 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   reportada aparte y dentro del tope de USD 2 de la decisión 18. Fuentes: diseño de la unidad
   (`data/experiment/prompt_r2/diseno_prefijo_r2.md`, §4.5 y §10.1, puntos 18 y 20); plan, `:400`;
   `BKL-0035` y `BKL-0039` (`data/backlog/backlog.jsonl`).
+- **03/10/2026 — FRENO P1 aprobado, aclaración sobre los supuestos alternativos y dos ajustes de texto
+  (decisión de la autora).** P1 está commiteada en `fca019d`. Aclaración al tipo (iii) de la nota
+  anterior: los supuestos alternativos se componen en cada ítem solo si el encabezado está en la línea
+  de título; si el encabezado tiene unidad propia, los ítems son Condicion y la norma queda en esa
+  unidad. Es lo que dicen el diseño y el borrador del prefijo (`git show
+  fca019d:data/experiment/prompt_r2/diseno_prefijo_r2.md`, R30); la nota anterior lo escribió sin esa
+  distinción. Decisiones del FRENO P1 (`git show fca019d:data/experiment/prompt_r2/freno_p1.md`): se
+  aprueban el texto del prefijo y el del mensaje, con la variante B de `frecuencia` (el campo recibe
+  solo la periodicidad; el momento sin cuantía queda en la descripción y en el `tramo`). El tope de la
+  pareada queda en USD 2 (decisión 18) y el de U-REEXT-T0 en USD 69, para E1 a E3 de las 2.434
+  unidades. Los puntos 1, 2, 3, 5, 8 y 10 del §10.1 del diseño quedan confirmados como los recomienda el
+  freno: el TextoOrdenado no lleva `tramo`; los patrones de las decisiones 11 y 21 se describen sin
+  citar los casos de prueba; «externa» se deriva de `codigo` en el código; el elemento sin valor del
+  límite relativo va en `validador_r2.py`; queda la aclaración de R15 sobre «sujeto_propuesto»; y la
+  guarda de `ejecuta` se extiende a los cinco TOs de desarrollo. No se agrega la marca
+  `guarda_ampliada`: el reporte de U-REEXT-T0 separa las exenciones por tipo, porque LAUDO B exime solo
+  `enumeracion_incompleta` y todo faltante eximido de otro tipo viene de la ampliación. Dos ajustes de
+  texto entran antes de congelar el prefijo: en R8, la Condicion de un ítem cuya norma está en otra
+  unidad va sin `condicion_de`; en R14, la Comunicacion citada sigue siendo entidad, con su `referencia`
+  desde el TextoOrdenado.
