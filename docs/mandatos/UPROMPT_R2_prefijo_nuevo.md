@@ -364,3 +364,7 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   `data/experiment/reextraccion_v2/e1_extractor/validador_e1.py` y su selftest (`selftest_e1.py`), solo
   para la traducción de la forma de salida «r2» (punto 4 del §10 del diseño), con la condición de que
   los perfiles existentes den el resultado byte a byte igual.
+- **03/10/2026 — fe de erratas de la nota anterior (decisión de la autora).** La nota anterior dice que el
+  reporte de U-DIAG-PROCESO (`reports/u_diag_proceso/reporte_u_diag_proceso.md`) está «sin commit al
+  03/10/2026». Está commiteado en `93ce4b7`, anterior al commit de esa nota (`a807136`): la nota se
+  redactó antes de los dos commits y entró desactualizada en ese punto. El resto de la nota no cambia.
