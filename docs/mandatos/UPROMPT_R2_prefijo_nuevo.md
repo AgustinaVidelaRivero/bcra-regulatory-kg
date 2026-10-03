@@ -344,4 +344,23 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   se aplican. Los casos fijos quedan en cinco: `cap::1.2`, `ric::9.2.1`, `cla::5.1.1.1`, `pro::1.1.2.5`
   y `cap::6.2.2.6`. Si la pareada muestra en `cap::6.2.2.6` la asociación mal hecha (por ejemplo, el
   100 % de «entre zonas 1 y 3» atado a la banda 2-3 por la fila donde quedó), esa tabla sale al
-  tratamiento residual por una lista en código.
+  tratamiento residual por una lista en código. La prueba en seco de P2.d (`:225`) usa `ric::9.2.1`.
+- **03/10/2026 — regla del encabezado de lista (F1) y escrituras (decisión de la autora).** La regla del
+  encabezado entra en P1 así: cada inciso extrae la norma compuesta con su encabezado (sujeto, modalidad
+  y cuantificador), y la unidad del encabezado no emite nodo por el solo anuncio (regla 1 del borrador
+  del prefijo, `data/experiment/prompt_r2/diseno_prefijo_r2.md`, R16, sin commit al 03/10/2026;
+  `BKL-0035`, `data/backlog/backlog.jsonl`). La regla dice qué `tramo` lleva la entidad compuesta. Es la
+  primera mitad de la opción F1-A de U-DIAG-PROCESO (`reports/u_diag_proceso/reporte_u_diag_proceso.md`,
+  sin commit al 03/10/2026); la segunda mitad, que hacía emitir el deber a la unidad del encabezado, no
+  se adopta: contradice la condición de cierre de `BKL-0035`. Declaración de la autora: F1 entra en el
+  ciclo de la ventana aunque la destapó ESQ-2 y no la tanda 0, como el desvío del §2.4 de la enmienda
+  de uso de la ventana (`git show 30f106c:data/experiment/esq/enmienda_uso_ventana_2026-09-30.md`,
+  `:61-64`); sus fichas son de TOs ya excluidos de B6.3 (a) (ayccef, expaef y adrei,
+  `data/experiment/esq/documentos_excluidos_esq.json`), así que no reduce el conjunto de evaluación. En
+  P4, los chunks de esas cinco fichas (`ayccef::4.2.7.2`, `expaef::6.6.2`, `ayccef::3.4.1`,
+  `expaef::1.1.2.5` y `adrei::4.3.1::intro`) entran fuera del sorteo y miden la corrección; la
+  generalización se lee en el sorteo. La quinta es la unidad de un encabezado: con la regla no emite
+  nodo y se mide por sus incisos. Se suman a las escrituras de la unidad
+  `data/experiment/reextraccion_v2/e1_extractor/validador_e1.py` y su selftest (`selftest_e1.py`), solo
+  para la traducción de la forma de salida «r2» (punto 4 del §10 del diseño), con la condición de que
+  los perfiles existentes den el resultado byte a byte igual.

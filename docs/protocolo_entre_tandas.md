@@ -396,3 +396,24 @@ mandato de U-PROMPT-R2, decisiones 15 a 17 (D6 a D8).
 FIRMADO por la autora el 03/10/2026. Rige desde esta firma para la tanda 1 y las siguientes. El texto de
 los §1 a §9 es el del borrador commiteado en `9eabab0`, con las marcas de decisión abierta reemplazadas por
 las decisiones del §10; toda modificación posterior es nota fechada aparte, nunca ajuste silencioso.
+
+## Notas posteriores a la firma
+
+El texto firmado no se edita; estas notas se leen junto con él.
+
+- **03/10/2026 — §6, lista de tablas forzadas a residual (decisión de la autora).** El perfil r2b tiene
+  prevista una lista explícita, en código, de tablas serializadas por E0 que el mensaje de E1 trata como
+  contenido tabular residual (nota fechada del 03/10/2026 al mandato de U-PROMPT-R2, `e7f7a2e`; borrador
+  en `data/experiment/prompt_r2/p1/mensaje_r2_borrador.py`, `TABLAS_RESIDUALES_FORZADAS`, sin commit al
+  03/10/2026). Dar de alta una tabla en esa lista no cambia el prefijo, el esquema ni el formato de
+  salida de E1: no es un cambio de los que difiere la opción (a) (`:213-214`;
+  `enmienda_uso_ventana_2026-09-30.md` §3.3). Tampoco es una corrección en código sobre la salida ya
+  guardada (§2.7 de esa enmienda): cambia el mensaje de E1 y re-extrae solo las unidades que traen la
+  tabla. Cada alta se declara con la tabla, el motivo y la fecha. Durante las tandas 1 a 3 se clasifica
+  con la tabla de reprocesamiento en la clase «E1 y E3 de las afectadas» (§2, eje A, `:82-83`;
+  `tabla_reprocesamiento.md:62-63`): pagan solo las unidades que traen la tabla y, como las de esa clase
+  por E0, se corrige entre tandas (regla de cruce, `:97-98`). La tabla de reprocesamiento no tiene una
+  fila propia para este cambio; su efecto sobre las claves es el de la fila F04
+  (`tabla_reprocesamiento.md:87`: cambian la línea de marcas del mensaje de E1 y la nota de E3 de esas
+  unidades). Por analogía con las correcciones de E0 entre tandas, un alta en la lista no saca a su TO del
+  conjunto de evaluación de B6.3 (a).
