@@ -368,3 +368,27 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   reporte de U-DIAG-PROCESO (`reports/u_diag_proceso/reporte_u_diag_proceso.md`) está «sin commit al
   03/10/2026». Está commiteado en `93ce4b7`, anterior al commit de esa nota (`a807136`): la nota se
   redactó antes de los dos commits y entró desactualizada en ese punto. El resto de la nota no cambia.
+- **03/10/2026 — E3 y la unidad del encabezado de lista, encabezados en línea de título y pata de E3 en
+  P4 (decisión de la autora).** Se suman a las escrituras de la unidad
+  `data/experiment/reextraccion_v2/e3_verificador/prompt_e3.py`, para la NOTA de los encabezados de lista
+  además de la de tablas (el prefijo de E3 y su candado no se tocan), y `e3_verificador/ratchet_e3.py`
+  con su selftest (`selftest_e3.py`), para la guarda ampliada con la salvaguarda. La regla de la guarda
+  la fija la enmienda a LAUDO B (`docs/enmienda_laudo_B_guarda_ratchet_2026-10-03.md`): cubre cualquier
+  faltante cuya cita verificada sea la cláusula ordenadora, solo si la unidad quedó sin Obligacion,
+  Restriccion ni Potestad, y solo con la forma de salida «r2», de modo que los perfiles existentes den
+  el resultado byte a byte igual. Queda autorizado de forma expresa, además del despacho por perfil, el
+  cambio en `corpus_v2/runner_corpus.py:862` que la guarda ampliada requiere (diseño, §4.5).
+  Condición: el reporte de U-REEXT-T0 lista cada unidad eximida. El punto 18 del §10.1 del diseño queda
+  aprobado por tipo. (i) El inciso compone con su encabezado y, si el último encabezado no trae la
+  modalidad o el sujeto, los toma del bloque heredado más cercano que los trae. (ii) El plazo, el
+  ámbito o la condición que vale para cada inciso se compone en el inciso, tanto si el encabezado está
+  en la línea de título como si tiene unidad; lo que es otra norma del encabezado queda en su unidad.
+  (iii) Si los incisos son supuestos alternativos, la norma principal se compone en cada uno con su
+  cuantificador; si son condiciones conjuntas no se compone, los incisos son Condicion y, cuando el
+  encabezado está en la línea de título, la norma principal queda como límite declarado; ante la duda
+  se tratan como conjuntas. La NOTA de E3, la regla 1 y la sección de composición del prefijo se
+  alinean con el tipo (ii). P4 suma una pata de E3, con la NOTA y la guarda, sobre cuatro encabezados de
+  lista (`ctacte::8.3::intro`, `ctacte::8.4::intro`, `ctacte::6.4.7::intro` y `adrei::4.3.1::intro`),
+  reportada aparte y dentro del tope de USD 2 de la decisión 18. Fuentes: diseño de la unidad
+  (`data/experiment/prompt_r2/diseno_prefijo_r2.md`, §4.5 y §10.1, puntos 18 y 20); plan, `:400`;
+  `BKL-0035` y `BKL-0039` (`data/backlog/backlog.jsonl`).
