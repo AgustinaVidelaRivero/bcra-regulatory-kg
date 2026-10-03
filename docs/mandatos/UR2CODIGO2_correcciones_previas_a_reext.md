@@ -1,4 +1,4 @@
-BORRADOR — PENDIENTE DE FIRMA de la autora (redactado el 03/10/2026)
+FIRMADO por la autora el 03/10/2026
 
 MANDATO — U-R2-CODIGO-2: CORRECCIONES DE CÓDIGO PREVIAS A LA RE-EXTRACCIÓN DE LA TANDA 0.
 Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
@@ -11,8 +11,8 @@ Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
 CONTEXTO. La medición de U-MED-R2A cerró con seis hallazgos que se corrigen en código antes de
 re-extraer los diez TOs de la tanda 0 (`git show 4244028:data/experiment/medicion_r2a/m3_freno.md`):
 - M3.b: de las 30 citas a puntos inexistentes de diez, 18 son del detector (la cita es de otra norma y
-  se resolvió como interna del TO de origen) y 2 son de E0 (dos puntos de ric que el PDF trae y E0 no
-  segmentó);
+  se leyó como interna del TO de origen; quedaron irresolubles) y 7 tocan el bloque 4.4 de ric, que E0
+  no segmentó (2 de categoría E0 y 5 no decidibles);
 - M3.c: la pasada residual de E4 tiene 24 propuestos y propone 0 resoluciones;
 - M3.d: dos plazos con cuantía temporal fueron a `frecuencia` («24 hs. hábiles» y «hasta el quinto día
   hábil posterior al vencimiento…»), porque la detección de cuantías no reconoce «hs.» ni el ordinal;
@@ -55,23 +55,30 @@ DECISIONES YA TOMADAS. No se re-deciden.
    copias y reportan la diferencia. Re-sellar es decisión de la autora.
 6. El reintento del punto (b) se prueba con el cliente simulado. Las llamadas reales son de
    U-REEXT-T0, dentro de su tope de USD 69.
+7. Una cita sin norma nombrada a un punto que el TO de origen no tiene (patrón (3) del punto a) queda
+   irresoluble: no se adivina la norma (decisión de la autora del 03/10/2026).
 
 TAREA
 
 C1 — Diagnóstico, censos y diseño. USD 0. No edita el código de la cadena: sus scripts y reportes van
 en data/experiment/r2_codigo2/ (se crea).
-a. Detector de citas externas. Para cada una de las 18 filas «detector» de M3.b, decí qué regla y qué
-   línea de r1_referencias.py la clasifica como interna (`:185`, `:194`). Son de dos clases:
-   - la cita nombra la otra norma en su tramo (13): NIIF 9 (B01, B03, B04, resueltas como `cap::5.5`),
-     «Grandes exposiciones al riesgo de crédito» (B10, B11, B12, B16), la «Reglamentación de la cuenta
-     corriente bancaria», que es otro TO (B07, B08), y el Anexo de la Comunicación A 7914 (B13, B14,
-     B15, B17);
-   - la norma surge del contexto y la cita no la nombra (5): B19, B21, B22, B29 y B30.
-   Proponé la regla para cada clase. Requisito: «el punto X de <otra norma>» y los puntos de otro TO no
-   pueden generar una `remite_a` interna. Para la segunda clase, decí qué contexto habría que mirar y
-   qué riesgo tiene; la autora decide en el FRENO C1 si entra.
-   Censo: sobre los dos grafos r2a, cuántas aristas `remite_a` internas cambian con la regla propuesta
-   (dejan de ser internas, cambian de destino o desaparecen), por causa, con la lista.
+a. Detector de citas externas, por patrón. Las 18 filas «detector» de M3.b quedaron irresolubles: no
+   crearon ninguna `remite_a` falsa, porque el número leído como interno no existía en el TO de origen.
+   Lo que hay que medir y corregir es el mismo error cuando el número sí existe en ese TO. Para cada
+   fila, decí qué regla y qué línea de r1_referencias.py la clasifica como interna (`:185`, `:194`).
+   Los tres patrones:
+   (1) número seguido del nombre de otra norma, con o sin título intermedio: «de la NIIF 9», «de las
+       normas de “X”», «de las normas “X”», «de la “Reglamentación de la cuenta corriente bancaria”»
+       (B01, B03, B04, B07, B08, B10, B11, B12 y B16). Nunca es interna. Si la norma nombrada es un TO
+       del corpus, se resuelve como externa a ese TO.
+   (2) «del Anexo de la Comunicación A NNNN» (B13, B14, B15 y B17): va al registro de citas a
+       Comunicaciones (`comunicaciones_registro.json` del ensamblado).
+   (3) cita sin norma nombrada a un punto que el TO no tiene, por continuación de una cita anterior o
+       dentro de un modelo (B19, B21, B22, B29 y B30): queda irresoluble (decisión 7).
+   Proponé la regla de los patrones (1) y (2).
+   Censo: sobre los dos grafos r2a, las aristas `remite_a` internas que hoy crea el patrón (1) cuando
+   el número existe en el TO de origen. Son relaciones falsas: contalas y listalas, con su chunk, su
+   tramo y la norma nombrada.
 b. Reintento ante una salida de E1 mal formada. Caracterizá las 4 unidades de diez (`cap::5.3.2.3`,
    `ext::6.5.3`, `ric::6.3` y `ctacte::5.6.1`) y las 3 de desarrollo (las tres primeras): qué trae el
    crudo (falta `relations`; `entities` viene como texto), dónde lo rechaza la cadena
@@ -91,20 +98,28 @@ d. Contador de menciones en texto heredado. Definí el contador sin el encabezad
    inflada), y proponé el texto de la fe de erratas. La unidad no edita el plan ni el tablero.
 e. Pasada residual de E4. Qué código y qué salidas la componen en el perfil r2
    (ensamblar_tanda0.py:868-873; e4_pasada_residual_medida.json) y qué lector depende de ellas.
-f. Segmentación de ric 4.4.3 y 4.4.4. Diagnosticá por qué E0 no las segmentó: «4.4.3. Riesgo de
-   cambio» y «4.4.4. Riesgo de posiciones en opciones» son encabezados del PDF (p. 18) y quedaron
-   dentro del texto de `ric::4.3.3` (páginas 15 a 18), en la E0 legada y en e0-r2. Decí qué pasa con
-   4.4, 4.4.1 y 4.4.2, que cinco citas nombran y cuyos encabezados no aparecen en el texto extraído.
+f. Segmentación del bloque 4.4 de ric, entero: 4.4, 4.4.1, 4.4.2, 4.4.3 y 4.4.4. Hay dos causas a
+   diagnosticar:
+   - «4.4.3. Riesgo de cambio» y «4.4.4. Riesgo de posiciones en opciones» son encabezados del PDF (p.
+     18) y quedaron dentro del texto de `ric::4.3.3` (páginas 15 a 18), en la E0 legada y en e0-r2
+     (B26 y B27 de M3.b);
+   - 4.4, 4.4.1 y 4.4.2 ni siquiera aparecen en el texto extraído; las citas que los nombran hablan de
+     un «modelo inserto» y de un «Cuadro inserto» (B18, B23, B24, B25 y B28).
    Proponé la corrección en e0-r2 y decí si va dentro de e0-r2 o pide otra versión de E0, y qué
    implica para la clave de caché. Censo: qué ids cambian en los diez TOs de la tanda 0 y en los 152
    TOs de la partición con la corrección.
+g. Dos lecturas de M3.b a verificar, sin cambiar los veredictos: B02, si el punto 3.6 de cap existe en
+   el PDF; y B20, si el párrafo de `ric::12.1.2` nombra otra norma antes de citar el 5.1.2.1. Reportá
+   lo que encuentres, con la página del PDF y el texto.
 FRENO C1: el reporte, la tabla de las seis correcciones (qué archivo cambia, qué cambia en los grafos
-r2a, qué decide la autora) y los censos. La autora decide qué entra a C2.
+r2a, qué decide la autora), los censos y el resultado de (g). La autora decide qué entra a C2.
 
 C2 — Implementación y controles. USD 0.
 Implementá lo aprobado en el FRENO C1, con sus selftests. Control de cada punto:
-a. ninguna de las 18 filas (o de las que la autora apruebe) queda como cita interna del TO de origen;
-   el caso NIIF 9 no resuelve a `cap::5.5`; el censo de las `remite_a` internas que cambian, por causa;
+a. patrón (1): las nueve filas dejan de clasificarse como internas, el caso NIIF 9 no resuelve a
+   `cap::5.5` y las que nombran un TO del corpus se resuelven como externas a ese TO; patrón (2): las
+   cuatro filas van al registro de citas a Comunicaciones; patrón (3): las cinco siguen irresolubles;
+   y las `remite_a` internas falsas del censo de C1 dejan de crearse, con la lista de las que cambian;
 b. con el cliente simulado, las 4 unidades de diez y las 3 de desarrollo disparan el reintento y, con
    una respuesta bien formada, dejan de quedar sin validación; agotado el tope, quedan en una lista
    declarada; con los perfiles existentes no hay reintento y los requests son byte a byte iguales;
@@ -113,8 +128,9 @@ c. «24 hs. hábiles» y «hasta el quinto día hábil posterior al vencimiento�
 d. el contador nuevo en los dos grafos (hoy 3.801 y 2.993, con 2.540 y 1.859 autocitas de encabezado),
    sin que cambie ninguna arista `remite_a` por este punto;
 e. el perfil r2 ya no corre la pasada residual, y el grafo no cambia por este punto;
-f. `ric::4.4.3` y `ric::4.4.4` aparecen como unidades con su texto, y en el resto de la tanda 0 y de
-   los 152 TOs no cambia ningún id salvo los declarados.
+f. `ric::4.4.3` y `ric::4.4.4` aparecen como unidades con su texto; 4.4, 4.4.1 y 4.4.2 también, si el
+   diagnóstico de C1 muestra que su texto se puede extraer, y si no, quedan declarados con su causa;
+   en el resto de la tanda 0 y de los 152 TOs no cambia ningún id salvo los declarados.
 Controles de siempre, sobre copias (regla l):
 - la E0 legada de los diez TOs de la tanda 0, reproducida (34 de 34 archivos);
 - los tres ensamblados sellados (`eab2fdd0…`, `dd42d6d9…` y `4097d4fd…`), reproducidos con `--entrada`
