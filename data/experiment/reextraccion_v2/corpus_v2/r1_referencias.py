@@ -485,10 +485,16 @@ RE_ANAFORA_NORMA = re.compile(
     r"|del\s+citado\s+(?:ordenamiento|texto\s+ordenado|T\.?\s?O\b\.?)"
     r"|de\s+la\s+citada\s+(?:norma|disposici[oó]n)\b"
     r"|\bdicho\s+T\.?\s?O\b\.?", re.I)
-# (e) el propio TO: una mención de puntos seguida de una de estas formas es
-# interna aunque después se nombre otra norma.
-RE_PROPIO_TO = re.compile(r"\s*(?:de\s+las\s+presentes\s+(?:normas|disposiciones)|del\s+presente\s+r[eé]gimen)",
-                          re.I)
+# (e) el propio TO: una mención de puntos o de sección seguida de una de estas
+# formas es interna aunque después se nombre otra norma («de las presentes
+# normas», «de las presentes disposiciones», «del presente régimen», «de estas
+# normas», «de estas disposiciones», «de esta norma», «de este régimen»).
+RE_PROPIO_TO = re.compile(
+    r"\.?\s*(?:de\s+las\s+presentes\s+(?:normas|disposiciones)|del\s+presente\s+r[eé]gimen"
+    r"|de\s+estas\s+(?:normas|disposiciones)|de\s+esta\s+norma\b|de\s+este\s+r[eé]gimen)", re.I)
+# Fin de la comilla de un nombre de norma citado entre comillas (regla g).
+RE_CIERRE_COMILLA = re.compile(r"[\"”»’']")
+LARGO_CAPTURA_G = 400
 # (h) «este punto» sin número: no genera remisión; se cuenta en el registro.
 RE_ESTE_PUNTO = re.compile(r"\b(?:este|el\s+presente|dicho)\s+punto\b(?!\s*\d)", re.I)
 # RE_NORMA con grupos con nombre (sin la regla g).
@@ -502,19 +508,22 @@ RE_NORMA_NOMBRADA = re.compile(
 RE_NORMA_R2 = re.compile(
     r"(?:[Nn]ormas?\s+sobre|(?:\bT\.?O\.?|[Tt]exto\s+[Oo]rdenado)\s+(?:sobre|de)(?:\s+las\s+[Nn]ormas\s+sobre)?)\s*"
     r"(?P<q>[\"“'«‘])?\s*(?P<z>[^\"”'»’\.;\)]{3,90})")
-# (g) títulos completos del inventario del ensamblado, normalizados (los
-# fija el ensamblado o el control; `titulos_de_inventario`).
-TITULOS_TOS: dict[str, str] | None = None
+# (g) nombres de cada TO del ensamblado, normalizados: el título del inventario
+# y los `nombres_remision` del manifiesto (los fija el ensamblado o el control;
+# `titulos_de_inventario`). Se admite también un solo título por TO (str).
+TITULOS_TOS: dict[str, tuple[str, ...] | str] | None = None
 INVENTARIO_TITULOS = C.REPO / "data" / "experiment" / "escalado_prep" / "inventario_tos.csv"
 INVENTARIO_RESUMEN = C.REPO / "data" / "experiment" / "escalado_prep" / "inventario_resumen.json"
 _RE_PUNTOS_CACHE: dict[frozenset, re.Pattern] = {}
 
 
-def titulos_de_inventario(tos: list[str]) -> dict[str, str]:
-    """Título oficial, normalizado, de cada TO: el índice del sitio del BCRA
-    del inventario de la partición (`inventario_tos.csv`, `titulo_oficial`) y,
-    para los cinco TOs de desarrollo que la partición excluye,
-    `inventario_resumen.json` (`subset_excluido`). Frena si falta alguno."""
+def titulos_de_inventario(tos: list[str], nombres_remision: dict[str, list[str]] | None = None
+                          ) -> dict[str, tuple[str, ...]]:
+    """Nombres normalizados de cada TO: el título oficial del índice del sitio
+    del BCRA del inventario de la partición (`inventario_tos.csv`,
+    `titulo_oficial`; para los cinco TOs de desarrollo que la partición
+    excluye, `inventario_resumen.json`, `subset_excluido`) más, si se pasan,
+    los `nombres_remision` del manifiesto. Frena si falta algún título."""
     import csv  # noqa: PLC0415
     tit = {r["id"]: r["titulo_oficial"] for r in csv.DictReader(INVENTARIO_TITULOS.open(encoding="utf-8"))}
     for x in json.loads(INVENTARIO_RESUMEN.read_text(encoding="utf-8"))["subset_excluido"]:
@@ -522,28 +531,80 @@ def titulos_de_inventario(tos: list[str]) -> dict[str, str]:
     faltan = [t for t in tos if t not in tit]
     if faltan:
         raise RuntimeError(f"TOs sin título en el inventario: {faltan}")
-    return {t: C.norm(tit[t]) for t in tos}
+    out = {}
+    for t in tos:
+        ns = [C.norm(tit[t])] + [C.norm(x) for x in (nombres_remision or {}).get(t, [])]
+        out[t] = tuple(dict.fromkeys(n for n in ns if n))
+    return out
 
 
-def resolver_norma_r2(z: str, entrecomillada: bool, reglas: frozenset = REGLAS_R2) -> str | None:
-    """Regla (g): la norma citada resuelve a un TO si el título del
-    inventario, normalizado, es prefijo del texto capturado normalizado y
-    termina en límite de palabra; si calzan varios títulos, gana el más largo.
-    El texto capturado es lo que está entre comillas o, sin comillas, todo lo
-    que toma el patrón (`RE_NORMA_R2`), que suele seguir con texto corrido
-    («del TO sobre Gestión Crediticia, deberá observarse…»). Un título que no
-    está al comienzo del texto capturado no cuenta («Incumplimientos de
-    capitales mínimos…» no es «Capitales mínimos…»). `entrecomillada` no
-    cambia el criterio; queda para el registro. Sin la regla,
-    `resolver_norma` (palabras clave contenidas en el nombre)."""
+def _nombres(v) -> tuple[str, ...]:
+    return (v,) if isinstance(v, str) else tuple(v)
+
+
+def _limite(texto: str, n: str) -> bool:
+    """`n` es prefijo de `texto` hasta un límite de palabra."""
+    return texto.startswith(n) and (len(texto) == len(n) or not texto[len(n)].isalnum())
+
+
+def resolver_norma_r2_via(z: str, entrecomillada: bool, reglas: frozenset = REGLAS_R2,
+                          continuacion: str | None = None) -> tuple[str | None, str | None]:
+    """Regla (g), en este orden, sobre los nombres de cada TO (título del
+    inventario y `nombres_remision`, `TITULOS_TOS`), todo normalizado:
+      1. «igualdad»: el nombre citado es igual a un nombre de un único TO;
+      2. «prefijo»: un nombre de TO es prefijo del texto capturado, hasta un
+         límite de palabra; si calzan varios, gana el más largo;
+      3. «comienzo»: el nombre citado, de al menos dos palabras, es el
+         comienzo de un nombre de un único TO, hasta un límite de palabra.
+    El nombre citado es lo que está entre comillas o, sin comillas, lo que toma
+    el patrón (`z`). El texto capturado (`continuacion`) sigue hasta la
+    comilla de cierre o, sin comillas, `LARGO_CAPTURA_G` caracteres, sin
+    cortarse en un punto («… técnicas. Criterios aplicables»). Un nombre que no
+    está al comienzo no cuenta («Incumplimientos de capitales mínimos…» no es
+    «Capitales mínimos…»). Devuelve (TO, vía) o (None, None). Sin la regla,
+    `resolver_norma` (palabras clave contenidas en el nombre), vía None."""
     if "g" not in reglas:
-        return resolver_norma(z)
+        return resolver_norma(z), None
     if TITULOS_TOS is None:
         raise RuntimeError("regla (g) sin TITULOS_TOS: el ensamblado debe fijar los títulos del inventario")
+    nombres = {to: _nombres(v) for to, v in TITULOS_TOS.items()}
     n = C.norm(z)
-    calzan = [(len(t), to) for to, t in TITULOS_TOS.items()
-              if t and n.startswith(t) and (len(n) == len(t) or not n[len(t)].isalnum())]
-    return max(calzan)[1] if calzan else None
+    largo = C.norm(continuacion) if continuacion else n
+    iguales = {to for to, ns in nombres.items() if n and n in ns}
+    if len(iguales) == 1:
+        return iguales.pop(), "igualdad"
+    calzan = sorted({(len(t), to) for to, ns in nombres.items() for t in ns if t and _limite(largo, t)}, reverse=True)
+    if calzan and (len(calzan) == 1 or calzan[0][0] > calzan[1][0] or calzan[0][1] == calzan[1][1]):
+        return calzan[0][1], "prefijo"
+    if len(n.split()) >= 2:
+        comienzo = {to for to, ns in nombres.items() for t in ns if _limite(t, n)}
+        if len(comienzo) == 1:
+            return comienzo.pop(), "comienzo"
+    return None, None
+
+
+def resolver_norma_r2(z: str, entrecomillada: bool, reglas: frozenset = REGLAS_R2,
+                      continuacion: str | None = None) -> str | None:
+    """`resolver_norma_r2_via` sin la vía."""
+    return resolver_norma_r2_via(z, entrecomillada, reglas, continuacion)[0]
+
+
+def _norma_de_match(texto: str, m: re.Match, reglas: frozenset) -> tuple[str, str | None, str | None]:
+    """(nombre citado, TO, vía) de una mención de norma de RE_NORMA_R2 o
+    RE_NORMA_NOMBRADA. Con la regla (g), el nombre entre comillas llega hasta
+    la comilla de cierre y el texto capturado sigue más allá del patrón."""
+    z = m.group("z").strip()
+    if "g" not in reglas:
+        return z, resolver_norma(z), None
+    ini = m.start("z")
+    if m.group("q") is not None:
+        cierre = RE_CIERRE_COMILLA.search(texto, ini, ini + LARGO_CAPTURA_G)
+        nombre = texto[ini:cierre.start()].strip() if cierre else z
+        continuacion = nombre
+    else:
+        nombre, continuacion = z, texto[ini:ini + LARGO_CAPTURA_G]
+    to, via = resolver_norma_r2_via(nombre, m.group("q") is not None, reglas, continuacion)
+    return nombre, to, via
 
 
 def _re_puntos_r2(reglas: frozenset) -> re.Pattern:
@@ -565,7 +626,8 @@ def _expandir_puntos_r2(expr: str, reglas: frozenset) -> list[str]:
     return _expandir_puntos(expr)
 
 
-def detectar_menciones_r2(texto: str, to_origen: str, reglas: frozenset = REGLAS_R2) -> list[dict]:
+def detectar_menciones_r2(texto: str, to_origen: str, reglas: frozenset = REGLAS_R2,
+                          normas_previas: list[str | None] | None = None) -> list[dict]:
     """Detector del perfil r2. Con `reglas` vacío, el mismo resultado que
     `detectar_menciones`. Reglas: (c) paréntesis en listas y rangos; (d) a una
     norma solo se le atribuye la mención de puntos más cercana de su ventana,
@@ -576,7 +638,11 @@ def detectar_menciones_r2(texto: str, to_origen: str, reglas: frozenset = REGLAS
     normas», «de las presentes disposiciones» o «del presente régimen» es
     interna; (f) «apartado»; (g) inventario por título; (h) «este punto» sin
     número, registrado sin remisión. (a), (b) e (i) actúan fuera de este
-    detector (normalización, texto de e0-r2 y texto heredado)."""
+    detector (normalización, texto de e0-r2 y texto heredado).
+
+    `normas_previas`: TOs (o None) de las normas nombradas en los tramos
+    anteriores del mismo punto, en orden; con (e), antecedentes de una anáfora
+    que no tiene norma antes dentro del tramo."""
     reglas = frozenset(reglas)
     re_puntos = _re_puntos_r2(reglas) if reglas & frozenset("cf") else RE_PUNTOS
     re_anafora = RE_ANAFORA_NORMA if "e" in reglas else RE_DICHO
@@ -586,6 +652,8 @@ def detectar_menciones_r2(texto: str, to_origen: str, reglas: frozenset = REGLAS
     # (e): fin de las menciones de puntos que nombran el propio TO
     fines_propios = ({pm.end() for pm in re_puntos.finditer(texto)
                       if RE_PROPIO_TO.match(texto, pm.end())} if "e" in reglas else set())
+    fines_secc_propios = ({sm.end() for sm in RE_SECCION.finditer(texto)
+                           if RE_PROPIO_TO.match(texto, sm.end())} if "e" in reglas else set())
 
     def puntos_de_ventana(ini: int, fin: int) -> tuple[list, list, list]:
         ventana = texto[ini:fin]
@@ -599,23 +667,27 @@ def detectar_menciones_r2(texto: str, to_origen: str, reglas: frozenset = REGLAS
         return puntos, secciones, spans
 
     for m in (RE_NORMA_R2 if "g" in reglas else RE_NORMA_NOMBRADA).finditer(texto):
-        z = m.group("z").strip()
-        to_dest = resolver_norma_r2(z, m.group("q") is not None, reglas)
+        z, to_dest, via = _norma_de_match(texto, m, reglas)
         ini = max(0, m.start() - VENTANA_ANTES)
         puntos, secciones, spans = puntos_de_ventana(ini, m.start())
         for sm in RE_SECCION.finditer(texto[ini:m.start()]):
+            if ini + sm.end() in fines_secc_propios:
+                continue
             secciones += [x for x in sm.groups() if x]
             spans.append((ini + sm.start(), ini + sm.end()))
         consumidos += spans
         ev_ini = min([x[0] for x in spans] + [m.start()])
-        menciones.append({"clase": "externa", "norma_nombrada": z, "to_destino": to_dest,
-                          "puntos": puntos, "secciones": secciones,
-                          "evidencia": texto[ev_ini:m.end()].strip()})
+        men = {"clase": "externa", "norma_nombrada": z, "to_destino": to_dest,
+               "puntos": puntos, "secciones": secciones,
+               "evidencia": texto[ev_ini:m.end()].strip()}
+        if via:
+            men["via_norma"] = via
+        menciones.append(men)
         normas.append((m.start(), to_dest))
     for m in re_anafora.finditer(texto):
         if "e" in reglas:
-            antes = [x for x in normas if x[0] < m.start()]
-            to_dest = antes[-1][1] if antes else None
+            antes = [x[1] for x in normas if x[0] < m.start()] or list(normas_previas or [])
+            to_dest = antes[-1] if antes else None
             causa = None if to_dest else ("norma fuera del inventario" if antes else "anáfora sin antecedente")
         else:
             prev = [x for x in menciones if x["clase"] == "externa" and x["to_destino"]]
@@ -627,6 +699,8 @@ def detectar_menciones_r2(texto: str, to_origen: str, reglas: frozenset = REGLAS
             # (e): la anáfora toma también las secciones de su ventana, como
             # una norma nombrada («la Sección 4. de dichas normas»)
             for sm in RE_SECCION.finditer(texto[ini:m.start()]):
+                if ini + sm.end() in fines_secc_propios:
+                    continue
                 secciones += [x for x in sm.groups() if x]
                 spans.append((ini + sm.start(), ini + sm.end()))
         consumidos += spans
@@ -663,12 +737,16 @@ def detectar_menciones_r2(texto: str, to_origen: str, reglas: frozenset = REGLAS
     for sm in RE_SECCION.finditer(texto):
         if consumido(sm.start(), sm.end()):
             continue
+        propio = sm.end() in fines_secc_propios
         despues = texto[sm.end():sm.end() + VENTANA_DESPUES]
-        if RE_NORMA.search(despues) or re_anafora.search(despues):
+        if not propio and (RE_NORMA.search(despues) or re_anafora.search(despues)):
             continue
-        menciones.append({"clase": "interna", "norma_nombrada": None, "to_destino": to_origen,
-                          "puntos": [], "secciones": [x for x in sm.groups() if x],
-                          "evidencia": texto[max(0, sm.start() - 60):sm.end() + 20].strip()})
+        men = {"clase": "interna", "norma_nombrada": None, "to_destino": to_origen,
+               "puntos": [], "secciones": [x for x in sm.groups() if x],
+               "evidencia": texto[max(0, sm.start() - 60):sm.end() + 20].strip()}
+        if propio:
+            men["marca_propio_to"] = " ".join(RE_PROPIO_TO.match(texto, sm.end()).group(0).lower().split())
+        menciones.append(men)
     if "h" in reglas:
         for m in RE_ESTE_PUNTO.finditer(texto):
             menciones.append({"clase": "anafora_sin_numero", "norma_nombrada": None, "to_destino": None,
@@ -753,6 +831,36 @@ def _texto_e0_de(p: dict, chunk: dict) -> str:
     return "\n".join(partes)
 
 
+def _tramos_e0_de(p: dict, chunk: dict) -> list[str]:
+    """Los tramos de `_texto_e0_de`, por separado: cada tramo heredado de la
+    unidad de la procedencia y, si corresponde, el texto propio del chunk."""
+    partes = [h["texto"] for h in chunk.get("herencia", []) if h["unidad_origen"] == p.get("punto")]
+    if not (p.get("rol_documental") or "").startswith("herencia_"):
+        partes.append(chunk.get("texto") or "")
+    return partes
+
+
+def menciones_por_tramo(tramos: list[str], to_origen: str, reglas: frozenset) -> list[dict]:
+    """Menciones de un punto con la evidencia literal. Con las reglas del
+    perfil r2, cada tramo se lee por separado y la evidencia queda dentro de
+    un solo tramo (no cruza la unión entre el texto heredado y el propio, ni
+    entre dos tramos heredados); para la anáfora (e), las normas nombradas en
+    los tramos anteriores del punto siguen siendo antecedentes. Sin reglas, la
+    concatenación de los tramos, como en R3."""
+    if not reglas:
+        tramos = ["\n".join(tramos)]
+    previas: list[str | None] = []
+    out: list[dict] = []
+    for t in tramos:
+        texto, mapa = normalizar_e0(t, tolerar_linea_suelta="a" in reglas)
+        ms = detectar_menciones_r2(texto, to_origen, reglas, normas_previas=previas)
+        for men in ms:
+            men["evidencia"] = evidencia_literal(t, texto, mapa, men["evidencia"])
+        previas = previas + [m["to_destino"] for m in ms if m["clase"] == "externa"]
+        out += ms
+    return out
+
+
 def _contiene_unidad(texto: str, men: dict, reglas: frozenset | None = None) -> bool:
     """D1: el texto guardado del nodo contiene la unidad citada (un punto o
     una sección de la cita, o la norma nombrada si la cita nombra solo la
@@ -766,8 +874,7 @@ def _contiene_unidad(texto: str, men: dict, reglas: frozenset | None = None) -> 
     if not men["puntos"] and not men["secciones"] and men.get("to_destino"):
         if reglas is not None:
             re_n = RE_NORMA_R2 if "g" in reglas else RE_NORMA_NOMBRADA
-            return any(resolver_norma_r2(m.group("z").strip(), m.group("q") is not None, reglas) == men["to_destino"]
-                       for m in re_n.finditer(texto))
+            return any(_norma_de_match(texto, m, reglas)[1] == men["to_destino"] for m in re_n.finditer(texto))
         return any(resolver_norma(m.group(1)) == men["to_destino"] for m in RE_NORMA.finditer(texto))
     return False
 
@@ -923,7 +1030,7 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                 "to_destino": men["to_destino"], "puntos": men["puntos"],
                 "secciones": men["secciones"], "evidencia": men["evidencia"],
                 "destinos": [], "irresolubles": [], "aristas_nuevas": 0}
-        for k in ("forma_anafora", "marca_propio_to"):
+        for k in ("forma_anafora", "marca_propio_to", "via_norma"):
             if men.get(k):
                 cita[k] = men[k]
         if men.get("causa_irresoluble"):
@@ -1025,14 +1132,11 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                 conteo["procedencias_sin_texto_e0_detalle"].append({kk: p.get(kk) for kk in
                                                                     ("to", "punto", "rol_documental", "chunk_id")})
                 continue
-            original = _texto_e0_de(p, chunk)
-            texto, mapa = normalizar_e0(original, tolerar_linea_suelta="a" in reglas)
             conteo["procedencias_con_texto"] += 1
             propios_set = ({q["punto"] for i in nodos for q in nodes_by_id[i]["provenances"]}
                            if propios == "nodo" else {p["punto"]})
             reglas_d1 = reglas or None
-            for men in detectar_menciones_r2(texto, p["to"], reglas):
-                men["evidencia"] = evidencia_literal(original, texto, mapa, men["evidencia"])
+            for men in menciones_por_tramo(_tramos_e0_de(p, chunk), p["to"], reglas):
                 if men["clase"] == "anafora_sin_numero":
                     cita = resolver(list(nodos), p, propios_set, men)
                     cita["atribucion"] = "sin_destino"
@@ -1072,10 +1176,15 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                     heredadas.append(h["unidad_origen"])
             for u in heredadas:
                 tipo_h = next(h["tipo"] for h in chunk["herencia"] if h["unidad_origen"] == u)
-                p_h = {"to": p["to"], "punto": u, "rol_documental": f"herencia_{tipo_h}", "chunk_id": cid}
-                original_h = _texto_e0_de(p_h, chunk)
-                texto_h, mapa_h = normalizar_e0(original_h, tolerar_linea_suelta="a" in reglas)
-                for men in detectar_menciones_r2(texto_h, p["to"], reglas):
+                # procedencia del bloque heredado con la forma de las de E2
+                # (archivo, páginas del bloque y ancestros de la unidad heredada)
+                anc = p.get("ancestros") or []
+                p_h = {"to": p["to"], "archivo": p.get("archivo"), "punto": u, "rol_documental": f"herencia_{tipo_h}",
+                       "chunk_id": cid,
+                       "paginas": sorted({pg for h in chunk["herencia"] if h["unidad_origen"] == u
+                                          for pg in (h.get("paginas") or [])}),
+                       "ancestros": anc[:anc.index(u)] if u in anc else []}
+                for men in menciones_por_tramo(_tramos_e0_de(p_h, chunk), p["to"], reglas):
                     if men["clase"] == "anafora_sin_numero":
                         continue
                     conteo["texto_heredado"]["menciones"] += 1
@@ -1097,7 +1206,6 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                         if not nombran:
                             continue
                         alguna = True
-                        mu["evidencia"] = evidencia_literal(original_h, texto_h, mapa_h, men["evidencia"])
                         cita = resolver(nombran, p_h, propios_set | {u}, mu)
                         cita["atribucion"] = "texto_heredado"
                         cita["chunk_id"] = cid

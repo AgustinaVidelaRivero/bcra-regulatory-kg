@@ -24,6 +24,13 @@ rol_fuente == 'esqueleto', con rol_fuente leído como e.get('rol_fuente') o,
 si no está, provenance.rol_fuente. Las aristas padre_sugerido
 (rol_fuente cuarentena_flaggeada) quedan DENTRO del universo.
 
+Remisión en sus dos formas (U-R2-CODIGO, R5.d; enmienda 2 de L-ESQ-R2): con
+el perfil r2 la remisión entre puntos es la arista `remite_a`, que se resta
+del universo igual que `referencia` (scripts/remisiones.py). Un grafo sin
+`remite_a` (todos los existentes) da la misma salida que antes, byte a byte:
+el campo `remite_a_restadas` y su nota en la regla se escriben solo cuando el
+grafo tiene aristas `remite_a`.
+
 Orden: tripla (source, relation, target) en orden lexicográfico de cadenas,
 orden estable (las triplas duplicadas conservan el orden del kg.json y se
 cuentan en el campo triplas_duplicadas).
@@ -46,6 +53,8 @@ import sys
 
 sys.dont_write_bytecode = True
 
+import remisiones  # noqa: E402  (scripts/remisiones.py, solo stdlib)
+
 AQUI = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(AQUI)
 
@@ -67,6 +76,9 @@ REGLA = {
     "fuente": "docs/enmienda_preregistro_tanda0_2026-09-27_observacion12.md "
               "§2.1 y §2.2",
 }
+NOTA_REMITE_A = ("con el perfil r2 la remision entre puntos es remite_a (enmienda 2 de "
+                 "L-ESQ-R2) y se resta igual que referencia (U-R2-CODIGO, R5.d; "
+                 "scripts/remisiones.py)")
 
 
 # --------------------------------------------------------------------------- #
@@ -106,9 +118,12 @@ def universo(edges):
     ref = 0
     esq = 0
     sol = 0
+    rem = 0
     ext = []
     for e in edges:
         es_ref = e.get("relation") == "referencia"
+        # la otra forma de la remisión (remite_a); la de referencia ya se resta arriba
+        es_rem = not es_ref and remisiones.es_remision(e)
         es_esq = rol_fuente(e) == "esqueleto"
         if es_ref:
             ref += 1
@@ -116,7 +131,9 @@ def universo(edges):
             esq += 1
         if es_ref and es_esq:
             sol += 1
-        if not es_ref and not es_esq:
+        if es_rem and not es_esq:
+            rem += 1
+        if not es_ref and not es_rem and not es_esq:
             ext.append(e)
     conteos = {
         "total_aristas": total,
@@ -125,7 +142,9 @@ def universo(edges):
         "solapamiento_referencia_esqueleto": sol,
         "n": len(ext),
     }
-    assert conteos["n"] == total - ref - esq + sol
+    if rem:
+        conteos["remite_a_restadas"] = rem
+    assert conteos["n"] == total - ref - esq + sol - rem
     return ext, conteos
 
 
@@ -252,6 +271,7 @@ def armar_muestra(kg, kg_ruta, kg_sha, semilla, k, e0_dir, e0_como_se_paso):
         "referencia_restadas": conteos["referencia_restadas"],
         "esqueleto_restadas": conteos["esqueleto_restadas"],
         "solapamiento_referencia_esqueleto": conteos["solapamiento_referencia_esqueleto"],
+        **({"remite_a_restadas": conteos["remite_a_restadas"]} if "remite_a_restadas" in conteos else {}),
         "triplas_duplicadas": n_dup,
         "triplas_duplicadas_detalle": dup_detalle,
         "e0": e0_como_se_paso,
@@ -259,7 +279,7 @@ def armar_muestra(kg, kg_ruta, kg_sha, semilla, k, e0_dir, e0_como_se_paso):
         "textos_no_encontrados": no_encontrados,
         "relaciones_en_muestra": dict(sorted(rel_counter.items(),
                                              key=lambda kv: (-kv[1], kv[0]))),
-        "regla": REGLA,
+        "regla": dict(REGLA, remite_a=NOTA_REMITE_A) if "remite_a_restadas" in conteos else REGLA,
         "indices": indices,
         "aristas": aristas,
     }
@@ -292,6 +312,9 @@ def render_md(s, fecha):
              "(total %d − referencia %d − esqueleto %d + solapamiento %d)"
              % (s["n"], s["total_aristas"], s["referencia_restadas"],
                 s["esqueleto_restadas"], s["solapamiento_referencia_esqueleto"]))
+    if "remite_a_restadas" in s:
+        L.append("- remite_a restadas (remisión del perfil r2, se resta igual que referencia): %d"
+                 % s["remite_a_restadas"])
     L.append("- k: %d" % s["k"])
     L.append("- Triplas duplicadas en el universo: %d" % s["triplas_duplicadas"])
     L.append("- E0: `%s`" % s["e0"])
@@ -417,6 +440,8 @@ def main(argv=None):
     print("total %d  referencia %d  esqueleto %d  solapamiento %d  n %d" % (
         salida["total_aristas"], salida["referencia_restadas"], salida["esqueleto_restadas"],
         salida["solapamiento_referencia_esqueleto"], salida["n"]))
+    if "remite_a_restadas" in salida:
+        print("remite_a restadas: %d" % salida["remite_a_restadas"])
     print("triplas_duplicadas: %d" % salida["triplas_duplicadas"])
     print("indices: %s" % salida["indices"])
     print("relaciones_en_muestra: %s" % salida["relaciones_en_muestra"])

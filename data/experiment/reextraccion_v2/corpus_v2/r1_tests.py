@@ -65,7 +65,10 @@ def correr_tests(kg: dict, muestra30_sellada: list[dict]) -> dict:
             and n["properties"].get("nivel") == "propuesto"]
     malos = []
     for n in prop:
-        if n["properties"].get("cuarentena") != "true":
+        # cuarentena con el criterio de `en_cuarentena` (scripts/shapes_validator.py):
+        # True (generación 2) o la string "true" (generación 3); U-R2-CODIGO, R4.c
+        c = n["properties"].get("cuarentena")
+        if not (c is True or (isinstance(c, str) and c.strip().lower() == "true")):
             malos.append((n["id"], "sin cuarentena=true"))
         if n["id"] in SUJETOS_CATALOGO_SET:
             malos.append((n["id"], "propuesto con id de catálogo"))

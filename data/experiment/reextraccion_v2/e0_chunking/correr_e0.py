@@ -962,6 +962,37 @@ def procesar_tablas_r2(res: E0.ResultadoParseo, pdf_path: Path, to: str,
     return chunks, tablas_to, con_bloque
 
 
+def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str]):
+    """Escalera de E0 de la partición (correr_b584.correr_to), solo para la
+    versión e0-r2 (U-R2-CODIGO, agregado 9). Etapa 1: camino vigente. Si no da
+    chunks, etapa 2: reglas de marcador (B5.8.2). Si tampoco, etapa 3: modo
+    sin raíz (B5.8.1) sobre la clasificación de marcadores. En cada etapa, K
+    (`mayusculas_repetidas` con los roles de esa etapa) y el pie desde la
+    línea «Versión». Devuelve (res, roles, repetidos, modo_lectura,
+    marcadores)."""
+    def parsear(roles: list[str], **kw):
+        rep = E0.titulos_mayusculas_repetidos(paginas, roles)
+        return E0.parsear_cuerpo(to, archivo, paginas, roles, mayusculas_repetidas=rep,
+                                 pie_desde_version=True, **kw), rep
+
+    def con_chunks(res) -> bool:
+        r = copy.deepcopy(res)
+        r.reasignaciones_continuidad = E0.aplicar_continuidad_enumeracion(r)
+        E0.corregir_fronteras_intra_palabra(r)
+        return bool(E0.construir_chunks(r))
+
+    res, rep = parsear(roles_v)
+    if con_chunks(res):
+        return res, roles_v, rep, "vigente", False
+    roles_m = E0.clasificar_paginas(paginas, marcadores_b582=True)
+    res_m, rep_m = parsear(roles_m, marcadores_b582=True)
+    if con_chunks(res_m):
+        return res_m, roles_m, rep_m, "marcadores", True
+    roles_s = E0.roles_para_modo_sin_raiz(paginas, roles_m)
+    res_s, rep_s = parsear(roles_s, modo_sin_raiz=True)
+    return res_s, roles_s, rep_s, "sin_raiz", roles_m != roles_v
+
+
 def lineas_conservadas_k(paginas: list, roles: list[str], repetidos: set[str]) -> list:
     """K (U-R2-CODIGO): líneas que el descarte histórico del encabezado de
     página quitaba y que la regla de e0-r2 conserva (en mayúsculas, sin
@@ -1050,12 +1081,11 @@ def correr(salida: Path, manifiesto=None,
         roles = E0.clasificar_paginas(paginas)
         if r2:
             # K (U-R2-CODIGO): en la rama de mayúsculas del encabezado de página
-            # se descarta solo lo que se repite en al menos 2 páginas de cuerpo
-            repetidos = E0.titulos_mayusculas_repetidos(paginas, roles)
-            # agregado 8 (U-R2-CODIGO): pie desde la línea «Versión»
-            res = E0.parsear_cuerpo(to, archivo, paginas, roles,
-                                    mayusculas_repetidas=repetidos,
-                                    pie_desde_version=True)
+            # se descarta solo lo que se repite en al menos 2 páginas de cuerpo;
+            # agregado 8: pie desde la línea «Versión»; agregado 9: escalera
+            # de la partición (marcadores y sin raíz) cuando el camino vigente
+            # no da chunks
+            res, roles, repetidos, modo_lectura, marcadores_e0 = escalera_e0_r2(to, archivo, paginas, roles)
             conservadas = lineas_conservadas_k(paginas, roles, repetidos)
         else:
             res = E0.parsear_cuerpo(to, archivo, paginas, roles)
@@ -1081,7 +1111,8 @@ def correr(salida: Path, manifiesto=None,
                 "lineas_corridas": regla2["lineas_corridas"],
             },
         }
-        indice = E0.parsear_indice(paginas, roles)
+        indice = (E0.parsear_indice(paginas, roles, marcadores_b582=marcadores_e0) if r2
+                  else E0.parsear_indice(paginas, roles))
         no_partir: frozenset = frozenset()
         if r2:
             chunks, tablas_to, no_partir = procesar_tablas_r2(res, pdf, to, roles)
@@ -1166,6 +1197,9 @@ def correr(salida: Path, manifiesto=None,
             "fronteras_intra_palabra_despues": res.correccion_fronteras["despues"],
             "lineas_corridas_por_frontera": res.correccion_fronteras["n_corridas"],
         }
+        if r2:
+            conteos[to]["modo_lectura"] = modo_lectura
+            conteos[to]["marcadores_b582"] = marcadores_e0
 
     (salida / "divergencias_indice_cuerpo.json").write_text(
         json.dumps(divergencias, ensure_ascii=False, indent=1), encoding="utf-8")

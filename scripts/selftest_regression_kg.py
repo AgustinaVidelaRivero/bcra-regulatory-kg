@@ -11,7 +11,12 @@ Solo stdlib; fixtures sintéticos mínimos escritos acá. Cubre:
   - la exclusión de rol_fuente cuarentena_laudada en T4 (decisión 8);
   - la ambigüedad de E4-a6 con un resolvedor sintético;
   - un caso de regresión contra una fixture sintética que devuelve código de
-    salida distinto de 0 (computar_regresion + main end-to-end con --solo).
+    salida distinto de 0 (computar_regresion + main end-to-end con --solo);
+  - U-R2-CODIGO, R5: scripts/remisiones.py (las dos formas, firma y alcance),
+    R-T4, R-T5, R-E4a8, BKL-0028 con los tres ids esperados, BKL-0006 y
+    BKL-0023 con la lista de umbrales, el test del ejemplo cla::5.1.1.1,
+    LN-1 a LN-8 y los censos (con el control sobre las 105 relaciones de la
+    lectura de la matriz).
 
 Uso: PYTHONDONTWRITEBYTECODE=1 python3 scripts/selftest_regression_kg.py
 """
@@ -219,22 +224,49 @@ g_sobra = RK.Grafo({"nodes": esq_nodos, "edges": esq_aristas + [arista("Sujeto_r
 caso("T4 contraejemplo: tripla de esqueleto de más (no laudada) → falla por conteo", not RK.t4_paridad(g_sobra, ref, REL)["pass"])
 g_sin_nodo = RK.Grafo({"nodes": esq_nodos[1:], "edges": esq_aristas[:2]}, "g", "g" * 64)
 caso("T4 contraejemplo: falta un nodo de esqueleto", RK.t4_paridad(g_sin_nodo, ref, REL)["faltan_nodos"] == ["Sujeto_sujeto"])
-ctx4 = ctx_sintetico(g_r1, esqueleto_ref=ref, relaciones_esqueleto=REL)
-caso("T4 vía Contexto: resuelto", RK.t_t4(ctx4)["estado"] == "resuelto")
-caso("T4: grafo sin ninguna arista de esqueleto → no_aplicable", RK.t_t4(ctx_sintetico(RK.Grafo({"nodes": esq_nodos, "edges": []}, "g", "g" * 64), esqueleto_ref=ref, relaciones_esqueleto=REL))["estado"] == "no_aplicable")
+# R-T4 (U-R2-CODIGO, R5.a): el esqueleto esperado es el de build_skeleton sobre el catálogo
+SK = ({n["id"] for n in esq_nodos[:4]}, {(e["source"], e["relation"], e["target"]) for e in esq_aristas})
+ctx4 = ctx_sintetico(g_r1, esqueleto_catalogo=SK, relaciones_esqueleto=REL)
+caso("T4 (R-T4) vía Contexto: esqueleto igual al del catálogo → resuelto", RK.t_t4(ctx4)["estado"] == "resuelto")
+caso("T4 (R-T4): la laudada se excluye del grafo bajo prueba (KG-Refinado)",
+     RK.t_t4(ctx_sintetico(ref, esqueleto_catalogo=SK, relaciones_esqueleto=REL))["estado"] == "resuelto")
+v = RK.t4_esqueleto_catalogo(g_falta, SK[0], SK[1], REL)
+caso("T4 (R-T4) contraejemplo: falta una tripla del catálogo → falla", not v["pass"] and v["faltan_triplas"] == [["Sujeto_banco", "miembro_de", "Sujeto_rol_x"]])
+v = RK.t4_esqueleto_catalogo(g_sobra, SK[0], SK[1], REL)
+caso("T4 (R-T4) contraejemplo: tripla de esqueleto de más → falla (sobran)", not v["pass"] and v["sobran_triplas"] == [["Sujeto_rol_x", "parte_de", "Sujeto_sujeto"]])
+caso("T4 (R-T4) contraejemplo: falta un nodo del catálogo", RK.t4_esqueleto_catalogo(g_sin_nodo, SK[0], SK[1], REL)["faltan_nodos"] == ["Sujeto_sujeto"])
+caso("T4: grafo sin ninguna arista de esqueleto → no_aplicable", RK.t_t4(ctx_sintetico(RK.Grafo({"nodes": esq_nodos, "edges": []}, "g", "g" * 64), esqueleto_catalogo=SK, relaciones_esqueleto=REL))["estado"] == "no_aplicable")
 
 # --------------------------------------------------------------------------- #
 # 5. T5 por (ancla origen, ancla destino, evidencia) e I3–I5                   #
 # --------------------------------------------------------------------------- #
-muestra = [{"n": 1, "source_ancla": "cap::1.2", "target_ancla": "cla::6.5.2", "evidencia_verbatim": "ver punto 6.5.2"}]
+muestra = [{"n": 1, "source_ancla": "cap::1.2", "target_ancla": "cla::6.5.2", "destino": "cla::6.5.2", "target_type": "Obligacion",
+            "evidencia_verbatim": "ver punto 6.5.2"}]
 src = nodo_gen3("Ex", "Excepcion", "Origen", punto="1.2")
 tgt = nodo_gen3("Ob", "Obligacion", "Destino", punto="6.5.2", archivo=CLA_PDF, to="cla")
-g5 = RK.Grafo({"nodes": [src, tgt], "edges": [arista("Ex", "referencia", "Ob", rol_fuente="referencia_cruzada", props={"evidencia": "ver punto 6.5.2"}, gen=3)]})
-caso("T5 pasa: arista referencia localizada por anclas + evidencia", RK.t_t5(ctx_sintetico(g5, muestra30=muestra))["estado"] == "resuelto")
-g5b = RK.Grafo({"nodes": [src, tgt], "edges": [arista("Ex", "referencia", "Ob", rol_fuente="referencia_cruzada", props={"evidencia": "otra"}, gen=3)]})
-r5 = RK.t_t5(ctx_sintetico(g5b, muestra30=muestra))
-caso("T5 contraejemplo: misma tripla con otra evidencia → persiste", r5["estado"] == "persiste" and r5["valores"]["fallas"][0]["presente"])
-caso("T5: sin aristas referencia con evidencia → no_aplicable", RK.t_t5(ctx_sintetico(G, muestra30=muestra))["estado"] == "no_aplicable")
+tgt_d = nodo_gen3("De", "Definicion", "Destino definición", punto="6.5.2", archivo=CLA_PDF, to="cla")
+
+
+def g_t5(rel="referencia", ev="ver punto 6.5.2", destino="cla::6.5.2", target="Ob", rol="referencia_cruzada"):
+    return RK.Grafo({"nodes": [src, tgt, tgt_d], "edges": [arista("Ex", rel, target, rol_fuente=rol,
+                                                                   props={"evidencia": ev, "destino": destino}, gen=3)]})
+
+
+caso("T5 (R-T5) pasa: referencia por anclas, destino, tipo y número de punto", RK.t_t5(ctx_sintetico(g_t5(), muestra30=muestra))["estado"] == "resuelto")
+r5 = RK.t_t5(ctx_sintetico(g_t5(ev="según el punto 6.5.2. de estas normas"), muestra30=muestra))
+caso("T5 (R-T5) pasa con otra evidencia que nombra el mismo punto (no verbatim)", r5["estado"] == "resuelto" and r5["valores"]["presentes_verbatim"] == 0)
+caso("T5 (R-T5) lee remite_a (perfil r2) con la función de remisiones",
+     RK.t_t5(ctx_sintetico(g_t5(rel="remite_a", rol=None), muestra30=muestra))["estado"] == "resuelto")
+caso("T5 (R-T5) contraejemplo: evidencia sin el número de punto → persiste",
+     RK.t_t5(ctx_sintetico(g_t5(ev="ver el anexo"), muestra30=muestra))["estado"] == "persiste")
+caso("T5 (R-T5) contraejemplo: destino distinto → persiste",
+     RK.t_t5(ctx_sintetico(g_t5(destino="cla::6.5"), muestra30=muestra))["estado"] == "persiste")
+r5 = RK.t_t5(ctx_sintetico(g_t5(target="De"), muestra30=muestra))
+caso("T5 (R-T5) contraejemplo: destino de otro tipo → persiste, presente sin tipo",
+     r5["estado"] == "persiste" and r5["valores"]["fallas"][0]["presente_sin_tipo"] and r5["valores"]["presentes_rt5_sin_tipo"] == 1)
+caso("T5 (R-T5): una referencia sin rol_fuente referencia_cruzada no es remisión",
+     RK.t_t5(ctx_sintetico(g_t5(rol=None), muestra30=muestra))["estado"] == "no_aplicable")
+caso("T5: sin remisiones con evidencia → no_aplicable", RK.t_t5(ctx_sintetico(G, muestra30=muestra))["estado"] == "no_aplicable")
 g_dup = RK.Grafo({"nodes": [n2, dict(n2)], "edges": [arista("Restriccion_x", "referencia", "Restriccion_x")] * 2})
 caso("I3 contraejemplo: ids y triplas duplicados → persiste", RK.t_i3(ctx_sintetico(g_dup))["estado"] == "persiste")
 caso("I3 pasa", RK.t_i3(ctx_sintetico(G))["estado"] == "resuelto")
@@ -279,7 +311,10 @@ caso("regresión: código de salida 1 con regresión, 0 sin ella", RK.codigo_sal
 rk_m = {"consultas_coinciden_sellado": 26, "objetivos_coinciden_sellado": 75}
 reg2 = RK.computar_regresion(items, {"items": {"I3": {"estado": "resuelto"}}, "ranks_sellados": {"consultas": 27, "objetivos": 75}}, rk_m)
 caso("regresión: ranks sellados esperados que no coinciden → regresión RANKS_SELLADOS", reg2["n_regresiones"] == 1 and reg2["regresiones"][0]["item"] == "RANKS_SELLADOS")
-caso("partición declarada 46 = 19 / 23 / 4, 15 retriever, grupos 12/12/12/10", RK.verificar_particion() == {"items": 46, "convertibles": 19, "con_condicion": 23, "no_convertibles": 4, "retriever": 15, "por_grupo": {"i-BKL": 12, "i-RT": 12, "ii": 12, "iii": 10}, "items_r2": ["RT-C6-5"]})
+caso("partición declarada 46 = 19 / 23 / 4, 15 retriever, grupos 12/12/12/10; ítems del perfil r2 aparte",
+     RK.verificar_particion() == {"items": 46, "convertibles": 19, "con_condicion": 23, "no_convertibles": 4, "retriever": 15,
+                                  "por_grupo": {"i-BKL": 12, "i-RT": 12, "ii": 12, "iii": 10},
+                                  "items_r2": ["RT-C6-5", "EJ-cla-5.1.1.1", "LN-1", "LN-2", "LN-3", "LN-4", "LN-5", "LN-6", "LN-7", "LN-8"]})
 ids = [t["id"] for t in RK.TESTS]
 caso("los 4 no convertibles tienen estado fijo no_aplicable", all(RK.TESTS[ids.index(i)]["fn"](None)["estado"] == "no_aplicable" for i in ("BKL-0026", "BKL-0027", "I1", "I2")))
 caso("los cinco verificado sin evento de aplicación llevan la nota", all(RK.NOTA_SIN_APLICACION in RK.TESTS[ids.index(i)]["nota"] for i in ("BKL-0007", "BKL-0026", "BKL-0027", "BKL-0028", "BKL-0029")))
@@ -343,6 +378,193 @@ caso("RT-C6-5: N1 con la cláusula → resuelto", RK.t_rt_c6_5(ctx_sintetico(g_c
 caso("RT-C6-5: sin N1 → no_aplicable", RK.t_rt_c6_5(ctx_sintetico(RK.Grafo({"nodes": [], "edges": []})))["estado"] == "no_aplicable")
 caso("RT-C6-5 es ítem del perfil r2, fuera de la partición del inventario",
      RK.convertibilidad("RT-C6-5") == "perfil r2" and "RT-C6-5" not in RK.CON_CONDICION)
+
+# --------------------------------------------------------------------------- #
+# U-R2-CODIGO, R5: remisiones, R-E4a8, BKL-0028, umbrales, ejemplo, LN, censos #
+# --------------------------------------------------------------------------- #
+import remisiones as REM  # noqa: E402
+
+e_ref = {"relation": "referencia", "rol_fuente": "referencia_cruzada", "properties": {"destino": "cap::1.2", "evidencia": "punto 1.2"}}
+e_rem = {"relation": "remite_a", "properties": {"alcance": "interna", "destino": "cap::1.2", "evidencia": "punto 1.2"}}
+caso("remisiones: reconoce las dos formas", REM.es_remision(e_ref) and REM.es_remision(e_rem)
+     and REM.forma_remision(e_ref) == "referencia" and REM.forma_remision(e_rem) == "remite_a")
+caso("remisiones: referencia TextoOrdenado→Comunicacion (sin rol_fuente) no es remisión",
+     not REM.es_remision({"relation": "referencia", "properties": {}}) and REM.forma_remision({"relation": "aplica_a"}) is None)
+caso("remisiones: firma de remite_a (7 tipos de contenido; destino también TextoOrdenado)",
+     REM.firma_remite_a_ok("Condicion", "Definicion") and REM.firma_remite_a_ok("Potestad", "TextoOrdenado")
+     and not REM.firma_remite_a_ok("Sujeto", "Obligacion") and not REM.firma_remite_a_ok("Obligacion", "Comunicacion")
+     and len(REM.TIPOS_CONTENIDO) * (len(REM.TIPOS_CONTENIDO) + 1) == 56)
+caso("remisiones: alcance esperado (to_entero / interna / externa)",
+     REM.alcance_esperado("cap::TO", "cap", True) == "to_entero" and REM.alcance_esperado("cap::1.2", "cap", False) == "interna"
+     and REM.alcance_esperado("cla::3.7", "cap", False) == "externa" and REM.alcance_esperado(None, "cap", False) is None)
+
+# R-E4a8: la tabla junto al kg.json bajo prueba
+with tempfile.TemporaryDirectory(prefix="selftest_e4a8_") as tmp8:
+    tmp8 = Path(tmp8)
+    g8 = {"nodes": [nodo_gen3("Sujeto_banco", "Sujeto", "Bancos", {"nivel": "clase", "alias_resueltos": ["Banca"]})], "edges": []}
+    (tmp8 / "kg.json").write_text(json.dumps(g8), encoding="utf-8")
+    G8 = RK.Grafo.desde_ruta(tmp8 / "kg.json")
+    caso("E4-a8 (R-E4a8): sin e4_propuestos.json junto al kg.json → no_aplicable", RK.t_e4_a8(ctx_sintetico(G8))["estado"] == "no_aplicable")
+    (tmp8 / "e4_propuestos.json").write_text(json.dumps([{"id_propuesto": "Sujeto_propuesto_banca", "resuelto_a": "Sujeto_banco",
+                                                           "label": "Banca", "estado": "resuelto"}]), encoding="utf-8")
+    caso("E4-a8 (R-E4a8): la tabla del propio ensamblado → resuelto", RK.t_e4_a8(ctx_sintetico(G8))["estado"] == "resuelto")
+    (tmp8 / "e4_propuestos.json").write_text(json.dumps([{"id_propuesto": "Sujeto_propuesto_banca", "resuelto_a": "Sujeto_banco",
+                                                           "label": "Bancario", "estado": "resuelto"}]), encoding="utf-8")
+    caso("E4-a8 (R-E4a8) contraejemplo: alias no registrado en el id resuelto → persiste", RK.t_e4_a8(ctx_sintetico(G8))["estado"] == "persiste")
+
+# BKL-0028: los tres ids «del exterior» esperados, sin contar el del banco central
+CAT28 = {"version": "3.1", "clases": [{"id": i, "label": i, "nivel": "clase", "alias": []} for i in
+                                     ("Sujeto_entidad_financiera", "Sujeto_banco", "Sujeto_entidad_cambiaria",
+                                      "Sujeto_entidad_financiera_del_exterior", "Sujeto_banco_del_exterior",
+                                      "Sujeto_entidad_cambiaria_del_exterior", "Sujeto_banco_central_del_exterior")], "roles": []}
+g28 = RK.Grafo({"nodes": [nodo_gen3("Sujeto_banco_del_exterior", "Sujeto", "Bancos del exterior", {"nivel": "clase"})], "edges": []})
+r28 = RK.t_bkl_0028(RK.Contexto(g28, RK.Catalogo(CAT28, "c", "0" * 64), 3, "flaggeada"))
+caso("BKL-0028: tres ids esperados en el catálogo, sin alias del exterior y presentes → resuelto; no cuenta el banco central",
+     r28["estado"] == "resuelto" and "Sujeto_banco_central_del_exterior" not in r28["valores"]["ids_separados_del_exterior"])
+CAT28b = dict(CAT28, clases=[c for c in CAT28["clases"] if c["id"] != "Sujeto_entidad_cambiaria_del_exterior"])
+r28b = RK.t_bkl_0028(RK.Contexto(g28, RK.Catalogo(CAT28b, "c", "0" * 64), 3, "flaggeada"))
+caso("BKL-0028 contraejemplo: falta uno de los tres (el del banco central no lo reemplaza) → persiste", r28b["estado"] == "persiste")
+
+# BKL-0006 y BKL-0023 con la lista de umbrales (L-ESQ-R2 §1.5)
+def um(valor):
+    return [{"tramo": "x", "valor": valor, "unidad": "moneda", "moneda": "ARS", "comparacion": "minimo_inclusivo", "tramo_verificado": "exacta"}]
+
+
+def g23(valor):
+    return RK.Grafo({"nodes": [nodo_gen3("R", "Restriccion", "c3", {"descripcion": "compañías financieras que realicen, en forma directa, "
+                                                                    "operaciones de comercio exterior", "umbrales": um(valor)})], "edges": []})
+
+
+caso("BKL-0023 (lista): valor normalizado 5000000000 ARS → resuelto", RK.t_bkl_0023(ctx_sintetico(g23("5000000000")))["estado"] == "resuelto")
+caso("BKL-0023 (lista) contraejemplo: 2500000000 → persiste", RK.t_bkl_0023(ctx_sintetico(g23("2500000000")))["estado"] == "persiste")
+g06 = RK.Grafo({"nodes": [nodo_gen3("Rb", "Restriccion", "Exigencia básica bancos", {"descripcion": "exigencia básica bancos", "umbrales": um("5000000000")}),
+                          nodo_gen3("Rr", "Restriccion", "Exigencia básica restantes entidades",
+                                    {"descripcion": "exigencia básica restantes entidades", "umbrales": um("2500000000")})], "edges": []})
+caso("BKL-0006 (lista): bancos 5.000 / restantes 2.500 desde el valor normalizado → resuelto", RK.t_bkl_0006(ctx_sintetico(g06, indice=IndiceFalso([])))["estado"] == "resuelto")
+g06i = RK.Grafo({"nodes": [nodo_gen3("Rb", "Restriccion", "Exigencia básica bancos", {"descripcion": "exigencia básica bancos", "umbrales": um("2500000000")}),
+                           nodo_gen3("Rr", "Restriccion", "Exigencia básica restantes entidades",
+                                     {"descripcion": "exigencia básica restantes entidades", "umbrales": um("5000000000")})], "edges": []})
+caso("BKL-0006 (lista) contraejemplo: tabla invertida → persiste", RK.t_bkl_0006(ctx_sintetico(g06i, indice=IndiceFalso([])))["estado"] == "persiste")
+
+# Test del ejemplo cla::5.1.1.1
+def n_cla(nid, tipo, punto="5.1.1.1", props=None):
+    return nodo_gen3(nid, tipo, nid, props or {}, punto=punto, archivo=CLA_PDF, to="cla")
+
+
+def ar3(s_, r, t, props=None, **extra):
+    e = arista(s_, r, t, props=props, gen=3)
+    e.update(extra)
+    return e
+
+
+elem = [{"tramo": "dos veces", "valor": "2", "unidad": "veces", "comparacion": "minimo_estricto", "base_destino": "cla::3.7"}]
+g_ej = {"nodes": [n_cla("Op", "Operacion"), n_cla("C1", "Condicion", props={"umbrales": elem}), n_cla("C2", "Condicion"),
+                  n_cla("D37", "Definicion", punto="3.7")],
+        "edges": [ar3("C1", "condicion_de", "Op", no_verificada_e3=True), ar3("C2", "condicion_de", "Op", no_verificada_e3=True),
+                  ar3("C1", "remite_a", "D37", props={"alcance": "interna", "destino": "cla::3.7", "evidencia": "punto 3.7"})]}
+r_ej = RK.t_ej_cla_5111(ctx_sintetico(RK.Grafo(g_ej), perfil="r2"))
+caso("EJ-cla-5.1.1.1 (r2a): dos condicion_de + remite_a a cla::3.7 → resuelto; (iii) informativo; no verificadas por E3 declaradas",
+     r_ej["estado"] == "resuelto" and r_ej["valores"]["iii_informativo_umbral_minimo_estricto_2_veces_base_cla_3_7"]
+     and "no_verificada_e3" in r_ej["detalle"])
+g_ej_ref = json.loads(json.dumps(g_ej))
+g_ej_ref["edges"][2] = ar3("C1", "referencia", "D37", props={"destino": "cla::3.7", "evidencia": "punto 3.7"}, rol_fuente="referencia_cruzada")
+caso("EJ-cla-5.1.1.1: en un grafo r2 la referencia no alcanza para (ii) → persiste",
+     RK.t_ej_cla_5111(ctx_sintetico(RK.Grafo(g_ej_ref), perfil="r2"))["estado"] == "persiste")
+caso("EJ-cla-5.1.1.1: en los perfiles existentes, la forma de origen (referencia) → resuelto",
+     RK.t_ej_cla_5111(ctx_sintetico(RK.Grafo(g_ej_ref)))["estado"] == "resuelto")
+g_r1ej = {"nodes": [n_cla("Op", "Operacion"), n_cla("R1", "Restriccion"), n_cla("R2", "Restriccion"), n_cla("O37", "Obligacion", punto="3.7")],
+          "edges": [ar3("R1", "limita", "Op"), ar3("R2", "limita", "Op"),
+                    ar3("R1", "referencia", "O37", props={"destino": "cla::3.7", "evidencia": "punto 3.7"}, rol_fuente="referencia_cruzada")]}
+caso("EJ-cla-5.1.1.1 (estructura de r1): dos limita + referencia → resuelto", RK.t_ej_cla_5111(ctx_sintetico(RK.Grafo(g_r1ej)))["estado"] == "resuelto")
+g_dev = {"nodes": [n_cla("Op", "Operacion"), n_cla("C1", "Condicion"), n_cla("C2", "Condicion")], "edges": []}
+caso("EJ-cla-5.1.1.1 (desarrollo r1): Condicion aisladas y sin remisión → persiste", RK.t_ej_cla_5111(ctx_sintetico(RK.Grafo(g_dev)))["estado"] == "persiste")
+caso("EJ-cla-5.1.1.1: sin nodos del punto → no_aplicable", RK.t_ej_cla_5111(ctx_sintetico(RK.Grafo({"nodes": [], "edges": []})))["estado"] == "no_aplicable")
+
+# LN-1 a LN-8 (enums_r2.json real; marcas de nodo inyectadas)
+MARCAS = ("cola_humana", "cola_chunks", "estado_e3", "colision_cross_to")
+
+
+def ctx_r2(nodes, edges=(), **kw):
+    return ctx_sintetico(RK.Grafo({"nodes": list(nodes), "edges": list(edges)}), perfil="r2", marcas_nodo_r2=MARCAS, **kw)
+
+
+ob = nodo_gen3("Ob", "Obligacion", "Ob", {"descripcion": "d", "tipo": "calculo", "frecuencia": "mensual"})
+caso("LN-*: con --perfil existente → no_aplicable", all(f(ctx_sintetico(RK.Grafo({"nodes": [ob], "edges": []})))["estado"] == "no_aplicable"
+                                                     for f in (RK.t_ln_1, RK.t_ln_2, RK.t_ln_3, RK.t_ln_4, RK.t_ln_5, RK.t_ln_6, RK.t_ln_7, RK.t_ln_8)))
+caso("LN-1 pasa: valores en la lista", RK.t_ln_1(ctx_r2([ob]))["estado"] == "resuelto")
+ob_mal = json.loads(json.dumps(ob)); ob_mal["properties"]["frecuencia"] = "previa"
+caso("LN-1 contraejemplo: frecuencia fuera de lista sin marca → persiste", RK.t_ln_1(ctx_r2([ob_mal]))["estado"] == "persiste")
+ob_mal["fuera_de_lista"] = ["frecuencia"]
+caso("LN-1: fuera de lista con la marca → resuelto (contado)", RK.t_ln_1(ctx_r2([ob_mal]))["valores"]["fuera_de_lista_marcados"] == {"Obligacion.frecuencia": 1})
+ob_u = json.loads(json.dumps(ob)); ob_u["properties"]["umbrales"] = [{"tramo": "x", "valor": "1", "unidad": "lustros", "comparacion": "maximo_inclusivo", "tramo_verificado": "exacta"}]
+caso("LN-1 contraejemplo: unidad del elemento de umbral fuera de lista sin marca → persiste", RK.t_ln_1(ctx_r2([ob_u]))["estado"] == "persiste")
+caso("LN-2 pasa: claves definidas y marcas de nodo", RK.t_ln_2(ctx_r2([dict(ob, properties=dict(ob["properties"], cola_humana="true"))]))["estado"] == "resuelto")
+caso("LN-2 contraejemplo: clave fuera de la definición en properties → persiste",
+     RK.t_ln_2(ctx_r2([dict(ob, properties=dict(ob["properties"], plazo_o_frecuencia="x"))]))["estado"] == "persiste")
+suj = nodo_gen3("Sujeto_banco", "Sujeto", "Bancos", {"nivel": "clase"})
+e_suj = ar3("Ob", "aplica_a", "Sujeto_banco", sujeto_mencion="los bancos", mencion_verificada="exacta", metodo_resolucion="R1_label_exacto")
+caso("LN-3 / LN-4 pasan: mención, verificación y método", RK.t_ln_3(ctx_r2([ob, suj], [e_suj]))["estado"] == "resuelto"
+     and RK.t_ln_4(ctx_r2([ob, suj], [e_suj]))["estado"] == "resuelto")
+e_sin = ar3("Ob", "aplica_a", "Sujeto_banco", mencion_verificada="ausente")
+caso("LN-3 / LN-4 contraejemplos: sin mención (r2a) y sin método → persiste", RK.t_ln_3(ctx_r2([ob, suj], [e_sin]))["estado"] == "persiste"
+     and RK.t_ln_4(ctx_r2([ob, suj], [e_sin]))["estado"] == "persiste")
+caso("LN-3: la arista de esqueleto no cuenta", RK.t_ln_3(ctx_r2([ob, suj], [dict(e_sin, rol_fuente="esqueleto")]))["estado"] == "no_aplicable")
+with tempfile.TemporaryDirectory(prefix="selftest_ln_") as tmpl:
+    tmpl = Path(tmpl)
+    prop_n = nodo_gen3("Sujeto_propuesto_x", "Sujeto", "X", {"nivel": "propuesto", "cuarentena": "true"})
+    (tmpl / RK.REGISTRO_NO_MAPEADOS).write_text(json.dumps({"id_nodo": "Sujeto_propuesto_x", "estado": "cuarentena"}) + "\n", encoding="utf-8")
+    caso("LN-5 pasa: registro y grafo coinciden", RK.t_ln_5(ctx_r2([prop_n], registro_dir=tmpl))["estado"] == "resuelto")
+    caso("LN-5 contraejemplo: fila en cuarentena sin nodo → persiste", RK.t_ln_5(ctx_r2([], registro_dir=tmpl))["estado"] == "persiste")
+    caso("LN-5: sin registro → no_aplicable", RK.t_ln_5(ctx_r2([prop_n], registro_dir=tmpl / "no"))["estado"] == "no_aplicable")
+
+    class E4Stub:
+        def __init__(self, cambia):
+            self.cambia = cambia
+
+        def indice_desde_lista(self, filas):
+            return {}
+
+        def reresolver_registro(self, filas, idx, rol, arch, sha):
+            out = [dict(f, estado="resuelto") if self.cambia else dict(f) for f in filas]
+            return {"filas": out, "resueltas_ahora": len(filas) if self.cambia else 0, "catalogo_sha256": sha}
+    caso("LN-6 pasa: re-resolución idempotente (stub de r1_e4)",
+         RK.t_ln_6(ctx_r2([prop_n], registro_dir=tmpl, e4={"r1_e4": E4Stub(False)}))["estado"] == "resuelto")
+    caso("LN-6 contraejemplo: la re-resolución cambia el registro → persiste",
+         RK.t_ln_6(ctx_r2([prop_n], registro_dir=tmpl, e4={"r1_e4": E4Stub(True)}))["estado"] == "persiste")
+    caso("LN-7: sin registro de omisiones (r2a) → no_aplicable", RK.t_ln_7(ctx_r2([ob], registro_dir=tmpl))["estado"] == "no_aplicable")
+    (tmpl / "omisiones.jsonl").write_text(json.dumps({"categoria": "tabla", "tramo_verificado": "exacta"}) + "\n"
+                                          + json.dumps({"categoria": "otra", "tramo_verificado": "exacta"}) + "\n", encoding="utf-8")
+    caso("LN-7 contraejemplo: omisión con categoría fuera del enum y sin marca → persiste",
+         RK.t_ln_7(ctx_r2([ob], registro_dir=tmpl))["estado"] == "persiste")
+caso("LN-8: el bloque del prompt y el JSON único del repo no difieren", RK.t_ln_8(ctx_r2([ob]))["estado"] == "resuelto")
+b8 = RK.lineas_bloque("Sujeto_x — Equis (alias: X1, X2) [instancia]\nSujeto_rol_y — Ye [rol del TO a.pdf]\n## Raíz")
+caso("LN-8: lectura de las líneas del bloque (alias, instancia, rol)",
+     b8 == {"Sujeto_x": ("Equis", "X1, X2", True, None), "Sujeto_rol_y": ("Ye", "", False, "a.pdf")})
+
+# Censos
+caso("censo igual descripción: misma descripción salvo espacios, mayúsculas y acentos",
+     RK.misma_descripcion("Exportación  a consumo", "exportacion a consumo") and not RK.misma_descripcion("a", "b")
+     and not RK.misma_descripcion(None, None))
+g_ig = RK.Grafo({"nodes": [nodo_gen3("A", "Condicion", "A", {"descripcion": "Igual texto"}), nodo_gen3("B", "Condicion", "B", {"descripcion": "igual  texto"}),
+                           nodo_gen3("C", "Operacion", "C", {"descripcion": "otro"})],
+                 "edges": [ar3("A", "condicion_de", "B"), ar3("A", "condicion_de", "C")]})
+ci = RK.censo_igual_descripcion(g_ig)
+caso("censo igual descripción: cuenta la arista entre dos nodos de igual descripción, sin regla de retiro",
+     ci["aristas"] == 1 and ci["por_firma"] == {"Condicion --condicion_de--> Condicion": 1} and ci["regla_de_retiro"].startswith("ninguna"))
+ct = RK.control_igual_descripcion_lectura()
+caso("censo igual descripción, control: sobre las 105 relaciones de la lectura marca C22, M50 y M56 a M59; M50 es correcta",
+     ct["relaciones"] == 105 and sorted(ct["marcadas"]) == ["C22", "M50", "M56", "M57", "M58", "M59"]
+     and ct["correctas_en_la_lectura_entre_las_marcadas"] == ["M50"], str(ct))
+g_cr = RK.Grafo({"nodes": [n_cla("C1", "Condicion"), n_cla("D37", "Definicion", punto="3.7"),
+                           nodo_gen3("O", "Obligacion", "O", punto="1.1")],
+                 "edges": [ar3("C1", "remite_a", "D37", props={"alcance": "interna", "destino": "cla::3.7", "evidencia": "punto 3.7"}),
+                           ar3("C1", "referencia", "O", props={"destino": "cap::1.1", "evidencia": "punto 1.1 de Capitales"},
+                               rol_fuente="referencia_cruzada", provenance={"to": "cla", "archivo": CLA_PDF, "punto": "5.1.1.1"})]})
+cr = RK.censo_remisiones(g_cr)
+caso("censo de remisiones: las dos formas, por firma y por alcance (regla aplicada a la referencia)",
+     cr["aristas"] == 2 and cr["por_forma"] == {"referencia": 1, "remite_a": 1}
+     and cr["aristas_por_alcance"] == {"externa": 1, "interna": 1} and cr["citas"] == 2
+     and cr["firmas_fuera_de_remite_a"] == 0)
 
 # --------------------------------------------------------------------------- #
 for x in OK:

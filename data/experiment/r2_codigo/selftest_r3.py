@@ -462,20 +462,24 @@ def t7():
         check("T7f- (f) «apartado» sin número de punto e «inciso» no son citas",
               internas(det("según el apartado A del Régimen; el inciso 1.2.3. del contrato", "f")) == [])
         # (g)
-        rg = lambda z, q: REF.resolver_norma_r2(z, q, frozenset("g"))  # noqa: E731
-        check("T7g+ (g) con comillas; sin comillas seguida de coma o de texto corrido; título con coma",
-              (rg("Capitales mínimos de las entidades financieras", True),
-               rg("Gestión Crediticia, deberá observarse lo previsto", False),
-               rg("Política de Crédito en forma individual", False),
-               rg("Clasificación de Deudores– y a las financiaciones", False),
-               rg("Depósitos de Ahorro, Cuenta Sueldo y Especiales", False)) == ("cap", "gescre", "polcre", "cla", "depaho"))
-        check("T7g+ (g) si calzan varios títulos, gana el más largo",
-              (rg("Garantías por intermediación en operaciones entre terceros y otras", False), rg("Garantías", True))
-              == ("garopt", "garant"))
-        check("T7g- (g) «Incumplimientos de capitales mínimos…» no resuelve a cap; un nombre más corto que el título "
-              "tampoco; «Superintendencia» no es norma",
-              (rg("Incumplimientos de capitales mínimos y relaciones técnicas", True), rg("Capitales mínimos", True),
-               rg("Garantíasx", False), rg("Superintendencia de Entidades", False)) == (None, None, None, None))
+        rv = lambda z, q, c=None: REF.resolver_norma_r2_via(z, q, frozenset("g"), c)  # noqa: E731
+        check("T7g+ (g) paso 1, igualdad: con comillas, el nombre igual a un nombre del TO",
+              rv("Capitales mínimos de las entidades financieras", True) == ("cap", "igualdad")
+              and rv("Garantías", True) == ("garant", "igualdad"))
+        check("T7g+ (g) paso 2, prefijo: sin comillas seguida de coma o de texto corrido; título con coma",
+              (rv("Gestión Crediticia, deberá observarse lo previsto", False),
+               rv("Política de Crédito en forma individual", False),
+               rv("Clasificación de Deudores– y a las financiaciones", False),
+               rv("Depósitos de Ahorro, Cuenta Sueldo y Especiales y otros", False))
+              == (("gescre", "prefijo"), ("polcre", "prefijo"), ("cla", "prefijo"), ("depaho", "prefijo")))
+        check("T7g+ (g) paso 2: si calzan varios títulos, gana el más largo",
+              rv("Garantías por intermediación en operaciones entre terceros y otras", False) == ("garopt", "prefijo"))
+        check("T7g+ (g) paso 3, comienzo: nombre de dos palabras o más que empieza un único título",
+              rv("Capitales mínimos", True) == ("cap", "comienzo"))
+        check("T7g- (g) «Incumplimientos de capitales mínimos…» no resuelve a cap; una palabra sola que solo empieza "
+              "un título no basta; «Superintendencia» no es norma",
+              (rv("Incumplimientos de capitales mínimos y relaciones técnicas", True), rv("Gestión", True),
+               rv("Garantíasx", False), rv("Superintendencia de Entidades", False)) == ((None, None),) * 4)
         check("T7g+ «TO sobre <título>» y «texto ordenado sobre <título>» nombran la norma como «normas sobre»",
               [[(m["clase"], m["to_destino"]) for m in det(t, todas)] for t in (
                   "conforme el TO sobre Gestión Crediticia, deberá observarse", "según el texto ordenado sobre Gestión "
@@ -483,6 +487,58 @@ def t7():
         m_g = det("del texto ordenado de las normas sobre “Capitales mínimos de las entidades financieras”", todas)
         check("T7g+ (g) «texto ordenado de las normas sobre “X”» es una cita a X",
               [(m["clase"], m["to_destino"]) for m in m_g] == [("externa", "cap")])
+        REF.TITULOS_TOS = {**TITULOS_T7,
+                           "incuca": ("incumplimientos de capitales minimos y relaciones tecnicas. criterios aplicables",),
+                           "pagjub": ("pago de beneficios de la seg. soc. por cuenta de la adm. nacional de la seguridad "
+                                      "social (anses)",
+                                      "pago de beneficios de la seguridad social por cuenta de la administracion "
+                                      "nacional de la seguridad social (anses)")}
+        m_pj = det("las normas sobre “Pago de beneficios de la seguridad social por cuenta de la Administración Nacional "
+                   "de la Seguridad Social (ANSES)” (punto 2.1.)", todas, "pagjub")
+        check("T7g+ (g) nombres_remision del manifiesto: el nombre completo entre comillas, con paréntesis y de más de "
+              "90 caracteres, resuelve por igualdad (pagjub::2.2)",
+              [(m["to_destino"], m.get("via_norma")) for m in m_pj if m["clase"] == "externa"] == [("pagjub", "igualdad")],
+              str(m_pj))
+        m_ic = det("la Sección 2. del TO sobre Incumplimientos de Capitales Mínimos y Relaciones Técnicas. Criterios "
+                   "Aplicables–, salvo lo previsto", todas, "cap")
+        check("T7g+ (g) la captura no se corta en el punto dentro del título: resuelve al TO de incumplimientos, no a cap",
+              [(m["to_destino"], m.get("via_norma"), m["secciones"]) for m in m_ic if m["clase"] == "externa"]
+              == [("incuca", "prefijo", ["2"])], str(m_ic))
+        REF.TITULOS_TOS = dict(TITULOS_T7)
+        # C: el propio TO
+        t_c = ("correspondiendo la aplicación de lo previsto por el punto 1.4. de estas normas y la Sección 1. de las "
+               "normas sobre “Incumplimientos de capitales mínimos y relaciones técnicas”")
+        m_c = det(t_c, todas, "cap")
+        check("T7e+ (C) «de estas normas» es el propio TO: el 1.4 queda interno (cap::8.5::cierre)",
+              internas(m_c) == ["1.4"] and [(m["clase"], m["puntos"], m["secciones"]) for m in m_c if m["clase"] == "externa"]
+              == [("externa", [], ["1"])], str(m_c))
+        m_c2 = det("según la Sección 5. de esta norma y el punto 2.1. de las normas sobre “Gestión crediticia”", todas, "cap")
+        check("T7e+ (C) «de esta norma» tras una sección: la sección queda interna; también «de estas disposiciones» y "
+              "«de este régimen»",
+              [m["secciones"] for m in m_c2 if m["clase"] == "interna"] == [["5"]]
+              and internas(det("del punto 5.1. de estas disposiciones", todas)) == ["5.1"]
+              and internas(det("del punto 5.1. de este régimen", todas)) == ["5.1"])
+        m_c3 = det("según las normas sobre “Gestión crediticia”, y el punto 3.2. de este ordenamiento", todas, "cla")
+        check("T7e (C) «de este ordenamiento» sigue siendo anáfora: con otra norma nombrada antes, resuelve a esa norma",
+              [(m["clase"], m["to_destino"]) for m in m_c3 if m["clase"] != "externa"] == [("externa_anaforica", "gescre")],
+              str(m_c3))
+        # A: la evidencia dentro de un solo tramo
+        tr = ["14.2.1. En el marco de lo dispuesto en los puntos 3.3., 3.5. y 10.3.2., según",
+              "En el caso de que las entidades informen el punto 4.1."]
+        m_a = REF.menciones_por_tramo(tr, "ext", REF.REGLAS_R2)
+        check("T7A+ la evidencia de cada cita es subcadena de un único tramo (no cruza la unión)",
+              len(m_a) == 2 and all(sum(m["evidencia"] in t for t in tr) == 1 for m in m_a)
+              and not any(m["evidencia"] in "\n".join(tr) and not any(m["evidencia"] in t for t in tr) for m in m_a),
+              str([m["evidencia"] for m in m_a]))
+        m_a2 = REF.menciones_por_tramo(["5.1. Según las normas sobre “Gestión crediticia”.",
+                                        "5.1.2. Conforme al punto 1.3.5. de las citadas normas."], "cla", REF.REGLAS_R2)
+        check("T7A+ (e) la norma nombrada en un tramo anterior del mismo punto es antecedente de la anáfora",
+              [(m["clase"], m["to_destino"]) for m in m_a2] == [("externa", "gescre"), ("externa_anaforica", "gescre")])
+        m_a0 = REF.menciones_por_tramo(tr, "ext", frozenset())
+        check("T7A- sin reglas, la concatenación de los tramos, como en R3 (la evidencia puede cruzar la unión)",
+              [(m["clase"], m["puntos"]) for m in m_a0]
+              == [(m["clase"], m["puntos"]) for m in REF.detectar_menciones(REF.normalizar_e0("\n".join(tr))[0], "ext")]
+              and any("\n" in m["evidencia"] for m in m_a0))
         # (h)
         t_h = "en el marco de los mecanismos previstos en este punto."
         check("T7h+ (h) «este punto» sin número queda registrado como anáfora sin número, sin remisión",

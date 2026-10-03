@@ -585,7 +585,8 @@ def plan_redirecciones_r2(man: MC.Manifiesto, perfil, entrada: Path, salida_r2: 
     return plan + [(C, "CATALOGO_PATH", cat["entrada_esqueleto_path"]),
                    (assemble, "CATALOGO_PATH", cat["entrada_esqueleto_path"]),
                    (INV, "SUJETOS_CATALOGO_SET", M.SUJETOS_R2_SET),
-                   (REF, "TITULOS_TOS", REF.titulos_de_inventario(sorted(t["id"] for t in man.tos)))]
+                   (REF, "TITULOS_TOS", REF.titulos_de_inventario(
+                       sorted(t["id"] for t in man.tos), {t["id"]: t["nombres_remision"] for t in man.tos}))]
 
 
 def derivar_establecida_en(kg: dict, canon: dict[str, str]) -> dict:

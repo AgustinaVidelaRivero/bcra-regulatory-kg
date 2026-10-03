@@ -135,9 +135,30 @@ def resumen(filas: list[dict]) -> dict:
             "por_subtipo": dict(sorted(Counter(f"{f['causa']} / {forma(f)}" for f in filas).items()))}
 
 
-def simular(pdfs: dict[str, Path], cache: dict) -> dict:
-    """Recorte histórico contra la regla de e0-r2, en todas las páginas."""
+FORMAS_PIE = [
+    ("versión", re.compile(r"^Versi[oó]n\s*:", re.I)),
+    ("vigencia", re.compile(r"^Vigencia\s*:?", re.I)),
+    ("fecha", re.compile(r"^\d{1,2}[./]\d{1,2}[./]\d{2,5}(\s+\d+\s+de\s+\d+)?$")),
+    ("circular CONAU", re.compile(r"^(Circular\s+)?CONAU\b", re.I)),
+    ("comunicación C", re.compile(r"^Comunicaci[oó]n\s+[“\"]C[”\"]\s*\d+$", re.I)),
+    ("página", re.compile(r"^P[aá]gina\s*:?\s*\d+", re.I)),
+]
+
+
+def forma_de_pie(t: str) -> str:
+    """Forma de una línea que la regla quita: una de FORMAS_PIE u «otra»."""
+    t = t.strip()
+    return next((nombre for nombre, pat in FORMAS_PIE if pat.search(t)), "otra")
+
+
+def simular(pdfs: dict[str, Path], cache: dict, tanda0: set[str] | None = None) -> dict:
+    """Recorte histórico contra la regla de e0-r2, en todas las páginas. Las
+    líneas que la regla quita y el recorte histórico no se listan una por una
+    (texto exacto y conteo), en la tanda 0 y en el total, con su forma; las de
+    forma «otra», con TO y página."""
     queda_hist, queda_regla, extra = Counter(), Counter(), Counter()
+    exactas = {"tanda0": Counter(), "total": Counter()}
+    otras = []
     ejemplos_queda, paginas_con_extra = [], 0
     for to, pdf in sorted(pdfs.items()):
         if to not in cache:
@@ -157,13 +178,25 @@ def simular(pdfs: dict[str, Path], cache: dict) -> dict:
                 paginas_con_extra += 1
             for l in nuevas:
                 extra[re.sub(r"\d", "9", l.texto.strip())[:80]] += 1
+                exactas["total"][l.texto.strip()] += 1
+                if tanda0 and to in tanda0:
+                    exactas["tanda0"][l.texto.strip()] += 1
+                if forma_de_pie(l.texto) == "otra":
+                    otras.append({"to": to, "pagina": l.pagina, "linea": l.texto,
+                                  "contexto_hasta_la_linea": [x.texto for x in pag if x.top <= l.top][-3:]})
     return {"pdfs": len(pdfs), "lineas_c22_en_contenido": {"recorte_historico": sum(queda_hist.values()),
                                                           "regla_e0_r2": sum(queda_regla.values())},
             "por_to_con_regla": {k: v for k, v in sorted(queda_regla.items()) if v},
             "ejemplos_que_quedan_con_la_regla": ejemplos_queda,
             "paginas_donde_la_regla_quita_mas": paginas_con_extra,
             "lineas_que_la_regla_quita_de_mas": sum(extra.values()),
-            "formas_que_la_regla_quita_de_mas": dict(extra.most_common())}
+            "formas_que_la_regla_quita_de_mas": dict(extra.most_common()),
+            "lineas_distintas_que_la_regla_quita_de_mas": {
+                k: {"lineas_distintas": len(v), "lineas": sum(v.values()),
+                    "por_forma": dict(sorted(Counter(forma_de_pie(t) for t in v.elements()).items())),
+                    "lista": [{"linea": t, "n": n, "forma": forma_de_pie(t)} for t, n in sorted(v.items())]}
+                for k, v in exactas.items()},
+            "lineas_de_forma_otra": otras}
 
 
 def main() -> None:
@@ -207,7 +240,7 @@ def main() -> None:
         if not a.sin_particion:
             pdfs.update({d.name: PDFS_PARTICION / f"{d.name}.pdf" for d in PARTICION.iterdir()
                          if d.is_dir() and (PDFS_PARTICION / f"{d.name}.pdf").exists()})
-        out["simulacion_regla_e0_r2"] = simular(pdfs, cache)
+        out["simulacion_regla_e0_r2"] = simular(pdfs, cache, {t["id"] for t in man["tos"]})
     Path(a.out).write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(json.dumps({k: {kk: vv for kk, vv in v.items() if kk not in ("casos",)} if isinstance(v, dict) else v
                       for k, v in out.items()}, ensure_ascii=False, indent=1))

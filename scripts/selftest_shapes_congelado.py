@@ -10,6 +10,14 @@ sha frena, y tres corridas del CLI para los códigos de salida y el .json.
 El vocabulario congelado se lee del módulo real (prompt_congelado.py) a
 través del propio validador; no se copia nada acá.
 
+Perfil r2 (U-R2-CODIGO, R5.c): un grafo base r2 sintético que PASA las
+bloqueantes del perfil, con catálogo, lista de S15, registro y E0 sintéticos
+en el temporal, y contraejemplos de S1, S3 (referencia nodo->nodo sin
+tolerancia, firma de remite_a), S18, S20, S24, S25, S26, S27 (r2a/r2b), S28,
+S29, S30 y S31 (un único tramo, otra procedencia, sin E0); el candado de
+enums_r2.json; S21 con la función de remisiones en los dos perfiles; y el
+CLI con --perfil r2. El vocabulario r2 se lee de enums_r2.json real.
+
 Uso:
     PYTHONDONTWRITEBYTECODE=1 python3 scripts/selftest_shapes_congelado.py
 
@@ -641,6 +649,301 @@ def _():
     assert p.returncode == 0, (p.returncode, p.stderr[-800:])
     assert os.path.exists(md) and not os.path.exists(js)
     assert "S15" in p.stdout and "VEREDICTO" not in p.stdout
+
+
+# --------------------------------------------------------------------------- #
+# Perfil r2 (U-R2-CODIGO, R5.b; enmienda 1, R5.c)                             #
+# --------------------------------------------------------------------------- #
+VOCAB_R2 = sv.cargar_vocabulario_r2()
+R2_DIR = os.path.join(TMP, "r2")
+os.makedirs(os.path.join(R2_DIR, "e0"))
+RUTA_IDS_R2 = os.path.join(R2_DIR, "ids_s19.json")
+with open(RUTA_IDS_R2, "w", encoding="utf-8") as _f:
+    json.dump(["Sujeto_clase_a", "Sujeto_rol_r"], _f)
+RUTA_REGISTRO_R2 = os.path.join(R2_DIR, sv.REGISTRO_NO_MAPEADOS)
+with open(RUTA_REGISTRO_R2, "w", encoding="utf-8") as _f:
+    _f.write(json.dumps({"id_nodo": "Sujeto_propuesto_p", "estado": "cuarentena"}) + "\n")
+E0_R2 = os.path.join(R2_DIR, "e0")
+with open(os.path.join(E0_R2, "chunks_tst.json"), "w", encoding="utf-8") as _f:
+    json.dump([{"id": "tst::1.1", "texto": "1.1. Según el punto 1.2. de estas normas, se aplica.",
+                "herencia": [{"tipo": "encabezado", "unidad_origen": "S1", "texto": "Sección 1. Ver punto 1.3.",
+                              "paginas": [1]}]}], _f, ensure_ascii=False)
+
+
+def prov_r2(punto="1.1", chunk="tst::1.1"):
+    return dict(prov(punto), chunk_id=chunk)
+
+
+def grafo_base_r2():
+    nodes = [
+        nodo("TextoOrdenado_test", "TextoOrdenado", props={"archivo": TO_ARCHIVO}),
+        nodo("Obligacion_a", "Obligacion", props={"descripcion": "Debe informar", "tipo": "calculo"}, p=prov("1.1")),
+        nodo("Restriccion_r", "Restriccion", p=prov("1.2"),
+             props={"descripcion": "No podrá superar el 10%", "tipo": "limite_cuantitativo",
+                    "umbrales": [{"tramo": "10%", "valor": "10", "unidad": "porcentaje",
+                                  "comparacion": "maximo_inclusivo", "tramo_verificado": "exacta"}]}),
+        nodo("Operacion_x", "Operacion", props={"descripcion": "Pago", "tipo": "pago"}, p=prov("1.3")),
+        nodo("Condicion_c", "Condicion", props={"descripcion": "Si supera"}, p=prov("1.2")),
+        nodo("Comunicacion_c", "Comunicacion", props={"codigo": "A-1", "tipo": "A"}, p=prov("1.5")),
+        nodo("Sujeto_clase_a", "Sujeto", props={"nivel": "clase"}, p=prov_esqueleto()),
+        nodo("Sujeto_rol_r", "Sujeto", props={"nivel": "rol"}, p=prov_esqueleto()),
+        nodo("Sujeto_propuesto_p", "Sujeto",
+             props={"nivel": "propuesto", "cuarentena": "true", "padre_sugerido": "Sujeto_clase_a"}, p=prov("1.4")),
+    ]
+    edges = [
+        arista(x, "TextoOrdenado_test", "establecida_en", p=prov(pt))
+        for x, pt in (("Obligacion_a", "1.1"), ("Restriccion_r", "1.2"), ("Operacion_x", "1.3"), ("Condicion_c", "1.2"))
+    ] + [
+        arista("Obligacion_a", "Sujeto_clase_a", "aplica_a", p=prov("1.1"), sujeto_mencion="sujetos",
+               mencion_verificada="exacta", metodo_resolucion="R1_label_exacto"),
+        arista("Restriccion_r", "Operacion_x", "limita", p=prov("1.2"), coherencia_tipo_predicado="coherente"),
+        arista("Condicion_c", "Operacion_x", "condicion_de", p=prov("1.2")),
+        arista("Sujeto_clase_a", "Sujeto_rol_r", "miembro_de", p=prov_esqueleto(), rol_fuente="esqueleto"),
+        arista("Sujeto_propuesto_p", "Sujeto_clase_a", sv.RELACION_PADRE_SUGERIDO, p=prov("1.4"),
+               rol_fuente="cuarentena_flaggeada", properties={"flag": "padre_sugerido_no_laudado"}),
+        arista("Obligacion_a", "Restriccion_r", "remite_a", p=prov_r2("1.1"),
+               properties={"alcance": "interna", "destino": "tst::1.2", "evidencia": "punto 1.2. de estas normas"}),
+        arista("TextoOrdenado_test", "Comunicacion_c", "referencia", p=prov("1.5")),
+    ]
+    return {"nodes": nodes, "edges": edges}
+
+
+def evaluar_r2(g, fase="r2a", registro=RUTA_REGISTRO_R2, e0=E0_R2):
+    return sv.evaluar_perfil_r2(g, VOCAB_R2, fase, registro, e0, ids_s19_ruta=RUTA_IDS_R2,
+                                excepciones_ruta=RUTA_CATALOGO)
+
+
+def espera_r2_fail(g, rid, contiene=None, **kw):
+    res, ver, meta = evaluar_r2(g, **kw)
+    assert res[rid]["result"] == "FAIL", f"{rid} esperaba FAIL, dio {res[rid]['result']}: {res[rid]['resumen']}"
+    assert ver == "NO PASA" and rid in meta["bloqueantes_en_fail"], (ver, meta["bloqueantes_en_fail"])
+    otros = [r for r in meta["bloqueantes_en_fail"] if r != rid]
+    assert not otros, f"el contraejemplo de {rid} rompió también {otros}: " + str({o: res[o]['resumen'] for o in otros})
+    if contiene:
+        assert any(contiene in d for d in res[rid]["detalle_md"]), res[rid]["detalle_md"][:3]
+    return res
+
+
+@caso("r2 base: todas las bloqueantes PASS, veredicto PASA")
+def _():
+    res, ver, meta = evaluar_r2(grafo_base_r2())
+    assert ver == "PASA", (ver, {r: res[r]["resumen"] for r in meta["bloqueantes_en_fail"] + meta["bloqueantes_no_computables"]})
+    assert meta["bloqueantes"] == list(sv.BLOQUEANTES_R2) and "S27" in meta["informativas"]
+
+
+@caso("r2 candado: enums_r2.json con otro sha -> CandadoShaError")
+def _():
+    try:
+        sv.cargar_vocabulario_r2(sha_esperado="0" * 64)
+    except sv.CandadoShaError:
+        return
+    raise AssertionError("el candado no frenó")
+
+
+@caso("r2 S1: remite_a admitida; relación inventada -> FAIL")
+def _():
+    res, _, _ = evaluar_r2(grafo_base_r2())
+    assert res["S1"]["result"] == "PASS"
+    g = grafo_base_r2()
+    g["edges"].append(arista("Obligacion_a", "Operacion_x", "vinculada_con"))
+    espera_r2_fail(g, "S1")
+
+
+@caso("r2 S3: referencia nodo->nodo con rol_fuente referencia_cruzada es violación (sin tolerancia)")
+def _():
+    g = grafo_base_r2()
+    g["edges"].append(arista("Obligacion_a", "Restriccion_r", "referencia", p=prov("1.1"),
+                             rol_fuente=sv.ROL_FUENTE_REFERENCIA_CRUZADA, properties={"destino": "tst::1.2"}))
+    espera_r2_fail(g, "S3", contiene="referencia solo TextoOrdenado->Comunicacion")
+
+
+@caso("r2 S3: remite_a desde un Sujeto o hacia una Comunicacion -> FAIL; hacia TextoOrdenado -> PASS")
+def _():
+    g = grafo_base_r2()
+    g["edges"].append(arista("Sujeto_clase_a", "Restriccion_r", "remite_a", p=prov_r2("1.1"),
+                             properties={"alcance": "interna", "destino": "tst::1.2", "evidencia": "punto 1.2"}))
+    espera_r2_fail(g, "S3", contiene="firma de remite_a")
+    g = grafo_base_r2()
+    g["edges"].append(arista("Obligacion_a", "Comunicacion_c", "remite_a", p=prov_r2("1.1"),
+                             properties={"alcance": "interna", "destino": "tst::1.5", "evidencia": "punto 1.2"}))
+    espera_r2_fail(g, "S3", contiene="firma de remite_a")
+    g = grafo_base_r2()
+    g["edges"].append(arista("Obligacion_a", "TextoOrdenado_test", "remite_a", p=prov_r2("1.1"),
+                             properties={"alcance": "to_entero", "destino": "tst::TO", "evidencia": "punto 1.2"}))
+    res, ver, meta = evaluar_r2(g)
+    assert ver == "PASA", meta
+
+
+@caso("r2 S3: condicion_de Condicion -> Operacion admitida por la matriz ampliada")
+def _():
+    res, _, _ = evaluar_r2(grafo_base_r2())
+    assert res["S3"]["result"] == "PASS" and res["S3"]["conteos"]["remite_a"] == 1
+
+
+@caso("r2 S18: limite_cuantitativo sin lista -> FAIL; con el umbral guardado (campos_heredados_v3) -> PASS")
+def _():
+    g = grafo_base_r2()
+    del nodo_por_id(g, "Restriccion_r")["properties"]["umbrales"]
+    espera_r2_fail(g, "S18")
+    nodo_por_id(g, "Restriccion_r")["campos_heredados_v3"] = {"umbral": "10%"}
+    res, ver, _ = evaluar_r2(g)
+    assert res["S18"]["result"] == "PASS" and res["S18"]["conteos"]["con_marca"] == 1
+
+
+@caso("r2 S18: limite_cualitativo sin lista no se exige")
+def _():
+    g = grafo_base_r2()
+    n = nodo_por_id(g, "Restriccion_r")
+    n["properties"]["tipo"] = "limite_cualitativo"
+    del n["properties"]["umbrales"]
+    res, ver, _ = evaluar_r2(g)
+    assert res["S18"]["result"] == "PASS" and ver == "PASA"
+
+
+for _rid, _id, _campo, _malo in (("S20", "Obligacion_a", "tipo", "evaluacion"),
+                                  ("S24", "Restriccion_r", "tipo", "limite_temporal"),
+                                  ("S25", "Comunicacion_c", "tipo", "Decreto")):
+    @caso(f"r2 {_rid}: valor fuera de lista sin marca -> FAIL; con fuera_de_lista -> PASS; en la lista con marca -> FAIL")
+    def _(rid=_rid, nid=_id, campo=_campo, malo=_malo):
+        g = grafo_base_r2()
+        nodo_por_id(g, nid)["properties"][campo] = malo
+        espera_r2_fail(g, rid)
+        nodo_por_id(g, nid)["fuera_de_lista"] = [campo]
+        res, ver, _ = evaluar_r2(g)
+        assert res[rid]["result"] == "PASS" and res[rid]["conteos"]["marcados"] == {malo: 1}, res[rid]["resumen"]
+        g = grafo_base_r2()
+        nodo_por_id(g, nid)["fuera_de_lista"] = [campo]
+        espera_r2_fail(g, rid)
+
+
+@caso("r2 S25: Comunicacion.tipo «externa» está en la lista")
+def _():
+    g = grafo_base_r2()
+    nodo_por_id(g, "Comunicacion_c")["properties"]["tipo"] = "externa"
+    res, ver, _ = evaluar_r2(g)
+    assert res["S25"]["result"] == "PASS"
+
+
+@caso("r2 S26: clave fuera de la definición -> FAIL; en properties_no_definidas -> PASS; marcas de nodo admitidas")
+def _():
+    g = grafo_base_r2()
+    nodo_por_id(g, "Obligacion_a")["properties"]["plazo_o_frecuencia"] = "mensual"
+    espera_r2_fail(g, "S26", contiene="plazo_o_frecuencia")
+    g = grafo_base_r2()
+    nodo_por_id(g, "Obligacion_a")["properties_no_definidas"] = {"plazo_o_frecuencia": "mensual"}
+    nodo_por_id(g, "Operacion_x")["properties"].update(cola_humana="true", cola_chunks=["tst::1.3"], estado_e3="x")
+    res, ver, _ = evaluar_r2(g)
+    assert res["S26"]["result"] == "PASS", res["S26"]["resumen"]
+    g = grafo_base_r2()
+    nodo_por_id(g, "Obligacion_a")["properties_no_definidas"] = {"tipo": "calculo"}
+    espera_r2_fail(g, "S26", contiene="figura en properties_no_definidas")
+
+
+@caso("r2 S27: sin mención es informativa en r2a (WARN, PASA) y bloqueante en r2b (FAIL)")
+def _():
+    g = grafo_base_r2()
+    del arista_por(g, "aplica_a")["sujeto_mencion"]
+    res, ver, meta = evaluar_r2(g, fase="r2a")
+    assert res["S27"]["result"] == "WARN" and ver == "PASA" and "S27" in meta["informativas"]
+    espera_r2_fail(g, "S27", fase="r2b")
+
+
+@caso("r2 S28: propuesto sin fila -> FAIL; sin registro -> NO COMPUTABLE y veredicto INCOMPLETO")
+def _():
+    vacio = os.path.join(R2_DIR, "registro_vacio.jsonl")
+    with open(vacio, "w", encoding="utf-8") as f:
+        f.write("")
+    espera_r2_fail(grafo_base_r2(), "S28", registro=vacio)
+    res, ver, meta = evaluar_r2(grafo_base_r2(), registro=os.path.join(R2_DIR, "no_existe.jsonl"))
+    assert res["S28"]["result"] == sv.NO_COMPUTABLE and ver == "INCOMPLETO" and meta["bloqueantes_no_computables"] == ["S28"]
+
+
+@caso("r2 S29: padre_sugerido hacia un id fuera del catálogo único -> FAIL")
+def _():
+    g = grafo_base_r2()
+    arista_por(g, sv.RELACION_PADRE_SUGERIDO)["target"] = "Sujeto_rol_r"
+    res, _, _ = evaluar_r2(g)
+    assert res["S29"]["result"] == "PASS"
+    with open(RUTA_IDS_R2 + ".2", "w", encoding="utf-8") as f:
+        json.dump(["Sujeto_clase_a"], f)
+    res, ver, meta = sv.evaluar_perfil_r2(g, VOCAB_R2, "r2a", RUTA_REGISTRO_R2, E0_R2, ids_s19_ruta=RUTA_IDS_R2 + ".2",
+                                          excepciones_ruta=RUTA_CATALOGO)
+    assert res["S29"]["result"] == "FAIL" and "S29" in meta["bloqueantes_en_fail"]
+
+
+@caso("r2 S30: alcance fuera de lista, incoherente con los extremos o to_entero sin destino ::TO -> FAIL")
+def _():
+    for alc, dest, msg in (("otra", "tst::1.2", "fuera de"), ("externa", "tst::1.2", "los extremos dan 'interna'"),
+                           ("to_entero", "tst::1.2", "to_entero")):
+        g = grafo_base_r2()
+        arista_por(g, "remite_a")["properties"].update(alcance=alc, destino=dest)
+        espera_r2_fail(g, "S30", contiene=msg)
+    g = grafo_base_r2()
+    arista_por(g, "remite_a")["properties"]["destino"] = "otro::1.2"
+    espera_r2_fail(g, "S30", contiene="'externa'")
+
+
+@caso("r2 S31: evidencia en un único tramo -> PASS; en la unión de dos tramos -> FAIL; ausente -> FAIL")
+def _():
+    g = grafo_base_r2()
+    arista_por(g, "remite_a")["properties"]["evidencia"] = "Ver punto 1.3."
+    res, ver, _ = evaluar_r2(g)
+    assert res["S31"]["result"] == "PASS", "evidencia en el tramo heredado"
+    g = grafo_base_r2()
+    arista_por(g, "remite_a")["properties"]["evidencia"] = "se aplica.\nSección 1."
+    espera_r2_fail(g, "S31", contiene="sí de la unión de tramos")
+    g = grafo_base_r2()
+    arista_por(g, "remite_a")["properties"]["evidencia"] = "punto 9.9"
+    espera_r2_fail(g, "S31")
+
+
+@caso("r2 S31: evidencia en otra procedencia de la arista (fusión) -> PASS; sin --e0 -> NO COMPUTABLE")
+def _():
+    with open(os.path.join(E0_R2, "chunks_tst.json"), encoding="utf-8") as f:
+        ch = json.load(f)
+    ch.append({"id": "tst::1.4", "texto": "Conforme al punto 1.2 vigente.", "herencia": []})
+    e0b = os.path.join(R2_DIR, "e0b")
+    os.makedirs(e0b, exist_ok=True)
+    with open(os.path.join(e0b, "chunks_tst.json"), "w", encoding="utf-8") as f:
+        json.dump(ch, f, ensure_ascii=False)
+    g = grafo_base_r2()
+    e = arista_por(g, "remite_a")
+    e["properties"]["evidencia"] = "punto 1.2 vigente"
+    e["provenances"].append(prov_r2("1.4", "tst::1.4"))
+    res, ver, _ = evaluar_r2(g, e0=e0b)
+    assert res["S31"]["result"] == "PASS" and res["S31"]["conteos"]["en_un_tramo_de_otra_procedencia_de_la_arista"] == 1
+    res, ver, meta = evaluar_r2(grafo_base_r2(), e0=None)
+    assert res["S31"]["result"] == sv.NO_COMPUTABLE and ver == "INCOMPLETO"
+
+
+@caso("r2 S21: lee las remisiones con la función (remite_a), desglose por alcance")
+def _():
+    res, _, _ = evaluar_r2(grafo_base_r2())
+    assert res["S21"]["conteos"]["remisiones"] == 1 and res["S21"]["conteos"]["por_alcance"] == {"interna": 1}
+
+
+@caso("congelado S21: con la función, mismas cuentas que antes (referencia con rol_fuente)")
+def _():
+    res, _, _ = evaluar(grafo_base(), RUTA_CATALOGO)
+    assert res["S21"]["conteos"]["referencias_cruzadas"] == 1 and res["S21"]["conteos"]["por_via"] == {"nodos_del_punto": 1}
+
+
+@caso("CLI: --perfil r2 sobre el base r2 -> exit 0, .json PASA; sin --e0 -> exit 3 INCOMPLETO")
+def _():
+    ruta_kg = os.path.join(R2_DIR, "kg.json")
+    with open(ruta_kg, "w", encoding="utf-8") as f:
+        json.dump(grafo_base_r2(), f, ensure_ascii=False)
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    out = os.path.join(R2_DIR, "rep.md")
+    p = subprocess.run([sys.executable, RUTA_VALIDADOR, "--kg", ruta_kg, "--perfil", "r2", "--e0", E0_R2, "--out", out],
+                       capture_output=True, text=True, env=env)
+    # el CLI usa el catálogo único real: el base sintético no está en él (S19/S29/S15 fallan); se mide el camino
+    with open(os.path.splitext(out)[0] + ".json", encoding="utf-8") as f:
+        d = json.load(f)
+    assert d["perfil"] == "r2" and d["fase"] == "r2a" and set(d["shapes"]) == set(sv.BLOQUEANTES_R2) | set(sv.INFORMATIVAS_R2) | {"S27"}
+    assert p.returncode == {"PASA": 0, "NO PASA": 1, "INCOMPLETO": 3}[d["veredicto"]], (p.returncode, d["veredicto"])
+    p2 = subprocess.run([sys.executable, RUTA_VALIDADOR, "--kg", ruta_kg, "--perfil", "r2"], capture_output=True, text=True, env=env)
+    assert "S31" in p2.stdout and sv.NO_COMPUTABLE in p2.stdout
 
 
 # --------------------------------------------------------------------------- #

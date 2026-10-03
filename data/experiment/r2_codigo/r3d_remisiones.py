@@ -86,7 +86,7 @@ def redirigido(nombre: str):
             REF.INVENTARIO_TOS = {t["id"]: tuple(t["nombres_remision"])
                                   for t in sorted(man.tos, key=lambda t: t["id"])}
         C.SALIDA = cfg["entrada"]
-        REF.TITULOS_TOS = REF.titulos_de_inventario(sorted(C.TOS_ORDEN))
+        REF.TITULOS_TOS = REF.titulos_de_inventario(sorted(C.TOS_ORDEN), {k: list(v) for k, v in REF.INVENTARIO_TOS.items()})
         yield
     finally:
         C.TOS_ORDEN, C.E0_ENM01, C.SALIDA, REF.INVENTARIO_TOS, REF.TITULOS_TOS = orig
@@ -177,24 +177,27 @@ def falsas_y_caso(r: dict, nodos: dict) -> dict:
                                                for c in incumpl],
             "ric_9_1_1_a_cap_S2_evidencias": sorted({c["evidencia"] for c in citas("ric", "9.1.1")
                                                      if "cap::S2" in [d["destino"] for d in c["destinos"]]}),
-            "cla_5_1_2_3_destinos": d5123, "cla_5_1_2_3_a_cla_3_7_presente": "cla::3.7" in d5123}
+            "cla_5_1_2_3_destinos": d5123, "cla_5_1_2_3_a_cla_3_7_presente": "cla::3.7" in d5123,
+            "cap_8_5_destinos": destinos_de("cap", "8.5"), "cap_8_5_a_cap_1_4_presente": "cap::1.4" in destinos_de("cap", "8.5")}
 
 
 def en_el_texto(r: dict, chunks: dict) -> dict:
     """Control «remisiones que no están en el texto»: cada cita resuelta tiene
-    su evidencia como tramo literal del texto de E0 de su chunk (texto propio
-    o heredado) y la unidad de destino sale de la evidencia (los números de
+    su evidencia como subcadena de un único tramo del texto de E0 de su chunk
+    (el texto propio o un tramo heredado, cada uno por separado: nunca la
+    concatenación) y la unidad de destino sale de la evidencia (los números de
     sus menciones de puntos, con rangos y paréntesis, o de sus secciones; para
-    el TO entero, el nombre de la norma)."""
+    el TO entero, el nombre de la norma). Lo mismo para la evidencia de cada
+    arista, contra los tramos del chunk de su procedencia."""
+    def tramos(cid):
+        ch = chunks.get(cid) or {}
+        return [h["texto"] for h in ch.get("herencia", [])] + [ch.get("texto") or ""] if ch else []
     malas_ev, malas_unidad, n = [], [], 0
     for c in r["registro"]:
         if not c["destinos"]:
             continue
         n += 1
-        ch = chunks.get(c.get("chunk_id")) or {}
-        partes = [h["texto"] for h in ch.get("herencia", [])] + [ch.get("texto") or ""]
-        propio = REF._texto_e0_de(c["procedencia"], ch) if ch else ""
-        if not (any(c["evidencia"] in t for t in partes) or c["evidencia"] in propio):
+        if not any(c["evidencia"] in t for t in tramos(c.get("chunk_id"))):
             malas_ev.append({"chunk_id": c.get("chunk_id"), "evidencia": c["evidencia"]})
         ev = REF.normalizar_e0(c["evidencia"], tolerar_linea_suelta=True)[0]
         unidades = set()
@@ -207,9 +210,38 @@ def en_el_texto(r: dict, chunks: dict) -> dict:
             if u == "TO" or u in unidades:
                 continue
             malas_unidad.append({"chunk_id": c.get("chunk_id"), "destino": d["destino"], "evidencia": c["evidencia"]})
+    aristas_fuera = [e for e in r["nuevas"]
+                     if not any(e["properties"]["evidencia"] in t for t in tramos(e["provenance"].get("chunk_id")))]
     return {"citas_resueltas_registradas": n, "evidencia_no_literal": len(malas_ev),
             "unidad_fuera_de_la_evidencia": len(malas_unidad),
-            "ejemplos": (malas_ev + malas_unidad)[:20]}
+            "aristas": len(r["nuevas"]), "aristas_con_evidencia_fuera_de_un_tramo": len(aristas_fuera),
+            "ejemplos": (malas_ev + malas_unidad)[:20],
+            "ejemplos_aristas": [{"chunk_id": e["provenance"].get("chunk_id"), "evidencia": e["properties"]["evidencia"]}
+                                 for e in aristas_fuera[:10]]}
+
+
+def irresolubles(r: dict) -> dict:
+    """H: citas irresolubles por causa (unidad de cita del registro) y la
+    lista completa de las de «punto inexistente en E0» y «seccion inexistente
+    en E0» (la unidad citada no existe en la E0 del TO de destino), con su
+    chunk de origen y su tramo. Sin las del texto heredado (i), que repiten
+    las del bloque."""
+    por_causa, filas = Counter(), []
+    vistas = set()
+    for c in r["registro"]:
+        if c.get("atribucion") == "texto_heredado":
+            continue
+        for x in c["irresolubles"]:
+            k = (_origen(c), c["evidencia"], x["destino"], x["causa"])
+            if k in vistas:
+                continue
+            vistas.add(k)
+            por_causa[x["causa"]] += 1
+            if "inexistente" in x["causa"]:
+                filas.append({"chunk_id": _origen(c), "destino": x["destino"], "causa": x["causa"],
+                              "clase": c["clase"], "norma_nombrada": c["norma_nombrada"], "tramo": c["evidencia"]})
+    filas.sort(key=lambda f: (f["chunk_id"], f["destino"] or "", f["tramo"]))
+    return {"por_causa": dict(sorted(por_causa.items())), "inexistentes": filas}
 
 
 def citas_por_regla(base: dict, em: dict, e0r2: dict | None) -> dict:
@@ -407,7 +439,7 @@ def main() -> None:
             "a_citas": citas_nuevas(det[""], det["a"]), "b_citas": citas_nuevas(det["a"], det["ab"]),
             "h_citas": citas_nuevas(det["abcdefg"], det["abcdefgh"]),
             "i_citas": citas_nuevas(det["abcdefgh"], det["abcdefghi"]),
-            "e_formas": formas_e(re0)}
+            "e_formas": formas_e(re0), "h_irresolubles": irresolubles(re0)}
         out["C_ejemplo_cla_5_1_1_1_desarrollo"] = caso_ejemplo(kg, re0)
         out["C_cap_8_2_3_3_desarrollo"] = caso_cap_8233(kg, re0)
         isl = json.loads((REPO / "reports" / "u_audit_tipos_v3" / "p3_filas.json").read_text(encoding="utf-8"))
@@ -441,7 +473,7 @@ def main() -> None:
             "e_citas": citas_nuevas(det["abcd"], det["abcde"]), "f_citas": citas_nuevas(det["abcde"], det["abcdef"]),
             "h_citas": citas_nuevas(det["abcdefg"], det["abcdefgh"]),
             "i_citas": citas_nuevas(det["abcdefgh"], det["abcdefghi"]),
-            "e_formas": formas_e(re0)}
+            "e_formas": formas_e(re0), "h_irresolubles": irresolubles(re0)}
         out["B_regla_de_R3_diez"] = {"contra_sellado": delta(sellados, det[""][0]["pares"])}
         pa, pe = pares_unidad(rpar, tipos), pares_unidad(re0_4, tipos)
         origenes = {s for s, _ in pa} | {s for s, _ in pe}

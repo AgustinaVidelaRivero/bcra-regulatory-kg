@@ -151,8 +151,10 @@ def clave(cid: str, m: dict) -> tuple:
 
 def particion() -> dict:
     tos = tos_particion()
+    man = json.loads(MAN_DIEZ.read_text(encoding="utf-8"))
     inv = REF.titulos_de_inventario(sorted({r["id"] for r in __import__("csv").DictReader(
-        REF.INVENTARIO_TITULOS.open(encoding="utf-8"))} | {"cap", "cla", "ext", "pro", "ric"}))
+        REF.INVENTARIO_TITULOS.open(encoding="utf-8"))} | {"cap", "cla", "ext", "pro", "ric"}),
+        {t["id"]: t["nombres_remision"] for t in man["tos"]})
     REF.TITULOS_TOS = inv
     chunks = [(to, ch) for to in tos for ch in cargar_lista(PARTICION / to / f"chunks_{to}.json")]
     distintos_r1 = []
@@ -181,16 +183,18 @@ def particion() -> dict:
                                                "citas_que_cambian": len(a ^ b)}
         pasos.append(fila)
 
-    # (g) sobre los mismos 157 títulos: subcadena contra la regla
-    sub = Counter()
+    # (g) sobre los mismos 157 títulos (y los nombres_remision de los diez TOs
+    # de la tanda 0): título contenido en el nombre contra la regla, por vía
+    sub, vias = Counter(), Counter()
     ejemplos = []
     for to, ch in chunks:
         texto = REF.normalizar_e0(texto_chunk(ch), tolerar_linea_suelta=True)[0]
         for m in REF.RE_NORMA_R2.finditer(texto):
-            z, q = m.group("z").strip(), m.group("q") is not None
+            q = m.group("q") is not None
+            z, regla, via = REF._norma_de_match(texto, m, REF.REGLAS_R2)
             zn = C.norm(z)
-            contiene = sorted(t for t, tit in inv.items() if tit and tit in zn)
-            regla = REF.resolver_norma_r2(z, q)
+            contiene = sorted(t for t, ns in inv.items() if any(n and n in zn for n in ns))
+            vias[via or "no resuelve"] += 1
             k = ("resuelve" if regla else "no resuelve") + " con (g) / " + (
                 "algún título contenido" if contiene else "ningún título contenido")
             sub[k] += 1
@@ -202,6 +206,7 @@ def particion() -> dict:
             "chunks_distintos_sin_reglas": distintos_r1[:20],
             "pasos": pasos,
             "g_mismos_157_titulos": {"menciones_de_norma": sum(sub.values()), "por_criterio": dict(sorted(sub.items())),
+                                     "por_via": dict(sorted(vias.items())),
                                      "ejemplos_titulo_contenido_que_g_no_toma": ejemplos},
             "no_medidas": {"b": "la partición no tiene salida de e0-r2: su E0 sale de correr_b584.py (camino sin "
                                 "raíz y marcadores), no de correr_e0.py",

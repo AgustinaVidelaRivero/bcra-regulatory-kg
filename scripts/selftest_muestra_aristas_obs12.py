@@ -6,7 +6,9 @@ Solo stdlib. Dos bloques:
 (i)  Grafo sintético mínimo escrito acá mismo (aristas de extracción, de
      referencia, de esqueleto —con rol_fuente arriba y con rol_fuente solo en
      provenance— y padre_sugerido; una tripla duplicada; un chunk_id sin texto
-     en E0; un TO sin archivo chunks_<to>.json; un provenance sin `to`).
+     en E0; un TO sin archivo chunks_<to>.json; un provenance sin `to`; y,
+     aparte, el mismo grafo con dos aristas `remite_a` del perfil r2, que se
+     restan del universo igual que `referencia` —U-R2-CODIGO, R5.d—).
      Verifica el universo, el orden, el conteo de triplas duplicadas, el
      NO ENCONTRADO, los índices del sorteo, los códigos de salida del CLI y la
      byte-identidad de dos corridas. Escribe solo en un directorio temporal
@@ -357,6 +359,46 @@ def bloque_i():
             s = json.load(open(os.path.join(out, "muestra_obs12.json"), encoding="utf-8"))
             assert s["textos_no_encontrados"] == 7 and s["e0_chunks_sha256"] == {}
         c13()
+
+        @caso("i", "sin remite_a: ni remite_a_restadas ni nota en la regla (salida como antes)")
+        def c14():
+            out = os.path.join(tmp, "out_sin_remite")
+            r = correr_cli(["--kg", kg_ruta, "--semilla", "1", "--n", "7", "--e0", e0_dir, "--out", out])
+            assert r.returncode == 0, r.stderr
+            s = json.load(open(os.path.join(out, "muestra_obs12.json"), encoding="utf-8"))
+            assert "remite_a_restadas" not in s and "remite_a" not in s["regla"], sorted(s)
+            assert s["regla"] == mod.REGLA
+        c14()
+
+        @caso("i", "remite_a (perfil r2): se resta del universo igual que referencia y se informa")
+        def c15():
+            kg2 = grafo_sintetico()
+            kg2["edges"].append(_arista("Excepcion_E", "remite_a", "Norma_A", _prov("syn", "1.3", "syn::1.3"),
+                                        {"alcance": "interna", "destino": "syn::1.1",
+                                         "evidencia": "punto 1.1."}))
+            kg2["edges"].append(_arista("Norma_B", "remite_a", "TO_Z", _prov("syn", "1.2", "syn::1.2"),
+                                        {"alcance": "to_entero", "destino": "zzz",
+                                         "evidencia": "TO Z"}))
+            ext, conteos = mod.universo(kg2["edges"])
+            assert conteos["total_aristas"] == 12 and conteos["remite_a_restadas"] == 2, conteos
+            assert conteos["n"] == 7 and "remite_a" not in [e["relation"] for e in ext], conteos
+            ruta2 = os.path.join(tmp, "kg_remite.json")
+            with open(ruta2, "w", encoding="utf-8") as f:
+                json.dump(kg2, f, ensure_ascii=False, indent=1)
+            out = os.path.join(tmp, "out_remite")
+            r = correr_cli(["--kg", ruta2, "--semilla", "1", "--n", "7", "--e0", e0_dir, "--out", out])
+            assert r.returncode == 0, r.stderr
+            s = json.load(open(os.path.join(out, "muestra_obs12.json"), encoding="utf-8"))
+            assert s["remite_a_restadas"] == 2 and s["n"] == 7 and "remite_a" in s["regla"], s["regla"]
+            assert "remite_a restadas" in open(os.path.join(out, "muestra_obs12.md"), encoding="utf-8").read()
+        c15()
+
+        @caso("i", "la referencia con rol_fuente referencia_cruzada se resta una sola vez (como referencia)")
+        def c16():
+            ext, conteos = mod.universo(kg["edges"])
+            assert "remite_a_restadas" not in conteos and conteos["referencia_restadas"] == 1, conteos
+            assert mod.remisiones.es_remision(kg["edges"][2]), kg["edges"][2]
+        c16()
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 

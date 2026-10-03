@@ -59,11 +59,34 @@ de la generación 3:
   numeran desde S19 (ver NUMERACION_PERFIL). S9 (descripción canónica) se
   evalúa en el perfil como informativa, con el mismo cómputo que v0.
 
+PERFIL «r2» (U-R2-CODIGO, R5.b; enmienda 1 a su mandato, R5.c; L-ESQ-R2 y su
+enmienda 2). Con `--perfil r2`:
+
+- El vocabulario se LEE de `data/experiment/pyd_r2/generados/enums_r2.json`
+  (generado por U-PYD desde modelos_r2.py), con candado de sha256; las marcas
+  de nodo (MARCAS_NODO) se leen del fuente de modelos_r2.py con `ast`, sin
+  importarlo (Pydantic). El catálogo de sujetos es el único
+  (`catalogo_unico/generados_r2/ids_s19_r2.json`) y la lista de S15 la de
+  `entrada_esqueleto_r2.json`.
+- La remisión entre puntos es `remite_a` (scripts/remisiones.py, solo stdlib):
+  S3 controla su firma; una `referencia` con origen distinto de TextoOrdenado
+  es violación, con o sin rol_fuente (la tolerancia de rol_fuente queda solo
+  en el perfil congelado); S21 lee las remisiones con la función.
+- Shapes nuevas: S18 reescrita, S24 a S29 (diseño de U-LISTAS-NOMAP, §g) y,
+  después de S29, S30 (alcance de `remite_a`) y S31 (evidencia de `remite_a`
+  dentro de un único tramo del texto de E0 de su chunk; sin `--e0` da «NO
+  COMPUTABLE»). S27 es informativa con `--fase r2a` (default) y bloqueante con
+  `--fase r2b`. S28 lee el registro de no mapeados (`--registro-dir`, default
+  el directorio del kg.json; sin registro, «NO COMPUTABLE»).
+- Veredicto: NO PASA si alguna bloqueante falla; INCOMPLETO si ninguna falla y
+  alguna bloqueante es NO COMPUTABLE; PASA si no. Código de salida 0 / 1 / 3.
+
 Solo stdlib (sin dependencias de terceros). El módulo de vocabulario se
 importa con `sys.dont_write_bytecode = True` para no dejar __pycache__.
 """
 
 import argparse
+import ast
 import datetime
 import hashlib
 import importlib.util
@@ -73,6 +96,11 @@ import re
 import sys
 import unicodedata
 from collections import Counter, defaultdict
+
+sys.dont_write_bytecode = True
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import remisiones  # noqa: E402  scripts/remisiones.py, solo stdlib (enmienda 1, R5.a)
+del sys.path[0]
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_KG = os.path.join(
@@ -125,7 +153,7 @@ SHAPES_NO_IMPLEMENTADAS = ("S13", "S14", "S16", "S17")
 # ---------------------------------------------------------------------------
 # Perfil «congelado» (U-B2.2 fase 2) — constantes
 # ---------------------------------------------------------------------------
-PERFILES = ("congelado",)
+PERFILES = ("congelado", "r2")
 
 # Módulo del que se LEE el vocabulario congelado. No se copia nada de su
 # contenido acá: tipos, predicados, matriz y enum se leen al cargar.
@@ -177,6 +205,40 @@ NUMERACION_PERFIL = {
            "cuarentena.",
     "S23": "aplica_a hacia sujetos en cuarentena (informativa): aristas "
            "aplica_a cuyo destino es Sujeto de nivel propuesto.",
+}
+
+# ---------------------------------------------------------------------------
+# Perfil «r2» (U-R2-CODIGO, R5.b) — constantes
+# ---------------------------------------------------------------------------
+RUTA_ENUMS_R2 = os.path.join(REPO_ROOT, "data", "experiment", "pyd_r2", "generados", "enums_r2.json")
+RUTA_MODELOS_R2 = os.path.join(REPO_ROOT, "data", "experiment", "pyd_r2", "code", "modelos_r2.py")
+RUTA_GENERADOS_R2 = os.path.join(REPO_ROOT, "data", "experiment", "catalogo_unico", "generados_r2")
+RUTA_IDS_S19_R2 = os.path.join(RUTA_GENERADOS_R2, "ids_s19_r2.json")
+RUTA_EXCEPCIONES_S15_R2 = os.path.join(RUTA_GENERADOS_R2, "entrada_esqueleto_r2.json")
+# Candado: sha256 de enums_r2.json en el commit de cierre de U-PYD (57a8dd2) y
+# en HEAD al escribir el perfil (`git show HEAD:data/experiment/pyd_r2/generados/enums_r2.json | shasum -a 256`).
+SHA256_ENUMS_R2_ESPERADO = "abd197ac8bbb818f680dc80d1b9c9df3e1f1f733fce3fd46b35e7440e7ce4241"
+FASES_R2 = ("r2a", "r2b")
+REGISTRO_NO_MAPEADOS = "no_mapeados_sujetos.jsonl"
+NO_COMPUTABLE = "NO COMPUTABLE"
+
+BLOQUEANTES_R2 = ("S1", "S2", "S3", "S4", "S5", "S6", "S15", "S18", "S19", "S20", "S24", "S25", "S26",
+                  "S28", "S29", "S30", "S31")
+INFORMATIVAS_R2 = ("S7", "S8", "S9", "S10", "S11", "S12", "S21", "S22", "S23")
+
+NUMERACION_PERFIL_R2 = {
+    "S18": "Reescrita (L-ESQ-R2 §1.5): Restriccion de tipo limite_cuantitativo => lista de umbrales "
+           "no vacía o marca (el umbral guardado sin lista: campos_heredados_v3.umbral o "
+           "properties_no_definidas.umbral). El enunciado de docs/esquema_v2_diseño.md:325 no rige en el perfil r2.",
+    "S24": "Enum de Restriccion.tipo (bloqueante salvo la marca fuera_de_lista).",
+    "S25": "Enum de Comunicacion.tipo, con «externa» (bloqueante salvo la marca fuera_de_lista).",
+    "S26": "Claves cerradas por tipo (bloqueante).",
+    "S27": "Arista de sujeto con mención y método (informativa en r2a, bloqueante desde r2b).",
+    "S28": "Sujeto propuesto con fila en el registro de no mapeados (bloqueante).",
+    "S29": "Destino de padre_sugerido en el catálogo único (bloqueante: U-CAT-UNICO está cerrada).",
+    "S30": "alcance de remite_a en la lista cerrada y coherente con los extremos (bloqueante).",
+    "S31": "evidencia de remite_a: tramo literal de un único tramo del texto de E0 de su chunk_id "
+           "(bloqueante; sin --e0, NO COMPUTABLE).",
 }
 
 # Shapes de v0 que quedan FUERA del perfil, declaradas para que el hueco se
@@ -832,16 +894,18 @@ def shape_s20_enum(nodes, vocab):
     )
 
 
-def shape_s21_referencias(edges, node_by_id):
+def shape_s21_referencias(edges, node_by_id, perfil="congelado"):
     total_via, incoh_via = Counter(), Counter()
     n_refs = 0
     viol = []
     for i, e in enumerate(edges):
-        if norm(e["relation"]) != "referencia" or e.get("rol_fuente") != ROL_FUENTE_REFERENCIA_CRUZADA:
+        # remisión en cualquiera de sus dos formas (enmienda 1, R5.c); en los
+        # grafos del perfil congelado solo existe la de referencia_cruzada
+        if not remisiones.es_remision(e):
             continue
         n_refs += 1
         props = e.get("properties") or {}
-        via = props.get("via")
+        via = props.get("via") if perfil == "congelado" else props.get("alcance")
         destino = props.get("destino")
         total_via[via] += 1
         punto = destino_sin_prefijo(destino)
@@ -854,6 +918,20 @@ def shape_s21_referencias(edges, node_by_id):
                 f"idx {i}: {e['source']} -> {e['target']} destino={destino!r} via={via!r}: "
                 f"punto {punto!r} ∉ puntos del destino {muestra[:5]}{'...' if len(muestra) > 5 else ''}")
     n_incoh = sum(incoh_via.values())
+    if perfil == "r2":
+        return _res(
+            "S21",
+            "INFORMATIVA — Coherencia de remisiones entre puntos (remite_a o referencia con "
+            "rol_fuente=referencia_cruzada; scripts/remisiones.py): properties.destino sin el prefijo "
+            "<to>:: pertenece al CONJUNTO {p.punto for p in provenances} del nodo destino; desglose por "
+            "properties.alcance (las de alcance to_entero apuntan al TextoOrdenado y se cuentan como incoherentes "
+            "por construcción del enunciado).",
+            "PASS" if not viol else "WARN",
+            f"{n_refs} remisiones ({dict(total_via)}); {n_incoh} incoherentes (por alcance: {dict(incoh_via)}).",
+            viol,
+            conteos={"remisiones": n_refs, "por_alcance": dict(total_via),
+                     "incoherentes": n_incoh, "incoherentes_por_alcance": dict(incoh_via)},
+        )
     return _res(
         "S21",
         "INFORMATIVA — Coherencia de referencias nodo->nodo (rol_fuente=referencia_cruzada): "
@@ -979,6 +1057,462 @@ def sha256_archivo(ruta):
         for bloque in iter(lambda: f.read(1 << 20), b""):
             h.update(bloque)
     return h.hexdigest()
+
+
+# ---------------------------------------------------------------------------
+# Perfil «r2» (U-R2-CODIGO, R5.b; enmienda 1, R5.c)
+# ---------------------------------------------------------------------------
+def _marcas_nodo_r2(ruta=RUTA_MODELOS_R2):
+    """MARCAS_NODO de modelos_r2.py, leída del fuente con ast (sin importar
+    Pydantic): tupla literal asignada al nombre MARCAS_NODO."""
+    with open(ruta, encoding="utf-8") as f:
+        arbol = ast.parse(f.read())
+    for nodo in arbol.body:
+        if isinstance(nodo, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "MARCAS_NODO" for t in nodo.targets):
+            return tuple(ast.literal_eval(nodo.value))
+    raise VocabularioCongeladoError(f"{ruta} no declara MARCAS_NODO como literal")
+
+
+def cargar_vocabulario_r2(ruta=RUTA_ENUMS_R2, sha_esperado=SHA256_ENUMS_R2_ESPERADO):
+    """Lee enums_r2.json con candado de sha256 (FRENA con CandadoShaError si no
+    coincide) y devuelve el vocabulario del perfil r2."""
+    if not os.path.isfile(ruta):
+        raise VocabularioCongeladoError(f"no existe {ruta}")
+    sha = sha256_archivo(ruta)
+    if sha != sha_esperado:
+        raise CandadoShaError(f"candado del sha: {ruta} tiene sha256 {sha}, esperado {sha_esperado} — se frena")
+    with open(ruta, encoding="utf-8") as f:
+        d = json.load(f)
+    if d.get("perfil") != "r2":
+        raise VocabularioCongeladoError(f"{ruta} no es del perfil r2 (perfil={d.get('perfil')!r})")
+    firmas = {p: (set(dr[0]), set(dr[1])) for p, dr in d["firmas_r2"].items()}
+    return {
+        "modulo": ruta, "sha256": sha,
+        "entity_types": tuple(d["tipo_entidad"]), "predicates": tuple(d["predicado"]),
+        "domain_range": firmas, "ampliacion": [tuple(x) for x in d.get("ampliacion_r2") or []],
+        "claves_por_tipo": {t: tuple(v) for t, v in d["claves_por_tipo"].items()},
+        "marcas_nodo": _marcas_nodo_r2(),
+        "predicados_sujeto": tuple(d["predicados_sujeto"]),
+        # listas cerradas de valores: «Tipo.campo», «umbral.campo», «omision.campo» y las marcas
+        # (mencion_verificada, tramo_verificado, coherencia_tipo_predicado)
+        "enums": {k: tuple(v) for k, v in d.items() if isinstance(v, list) and k not in (
+            "tipo_entidad", "predicado", "predicados_sujeto", "ampliacion_r2", "tipos_con_umbrales",
+            "sujeto_id", "sujeto_lapidas")},
+        "catalogo_r2": d.get("catalogo_r2"),
+    }
+
+
+def cargar_ids_s19_r2(ruta=RUTA_IDS_S19_R2):
+    try:
+        with open(ruta, encoding="utf-8") as f:
+            ids = json.load(f)
+    except Exception as e:  # noqa: BLE001
+        return set(), f"no se pudo leer {ruta}: {e}"
+    if not isinstance(ids, list):
+        return set(), f"{ruta} no es una lista de ids"
+    return set(ids), None
+
+
+def shape_s1_r2(edges, vocab):
+    admitidas = (set(vocab["predicates"]) | {remisiones.PREDICADO_REMISION} | set(RELACIONES_ESQUELETO)
+                 | {RELACION_PADRE_SUGERIDO})
+    viol = [f"idx {i}: relation='{e['relation']}'" for i, e in enumerate(edges) if norm(e["relation"]) not in admitidas]
+    return _res(
+        "S1",
+        f"Toda arista usa una relación admitida por el perfil r2: los {len(vocab['predicates'])} predicados de "
+        f"enums_r2.json ∪ remite_a (enmienda 2 de L-ESQ-R2) ∪ las {len(RELACIONES_ESQUELETO)} de esqueleto ∪ "
+        f"{RELACION_PADRE_SUGERIDO}.",
+        "PASS" if not viol else "FAIL",
+        f"{len(edges) - len(viol)}/{len(edges)} aristas con relación admitida ({len(admitidas)} relaciones "
+        f"admitidas); {len(viol)} violaciones.",
+        viol, conteos={"aristas": len(edges), "violaciones": len(viol), "relaciones_admitidas": len(admitidas)})
+
+
+def shape_s3_r2(edges, node_by_id, vocab):
+    dr = vocab["domain_range"]
+    viol = []
+    c = Counter()
+    for i, e in enumerate(edges):
+        rel = norm(e["relation"])
+        if e["source"] not in node_by_id or e["target"] not in node_by_id:
+            continue  # capturado por S2
+        sn, tn = node_by_id[e["source"]], node_by_id[e["target"]]
+        st, dt = sn["type"], tn["type"]
+        if rel == remisiones.PREDICADO_REMISION:
+            c["remite_a"] += 1
+            ok, etiqueta = remisiones.firma_remite_a_ok(st, dt), "firma de remite_a (enmienda 2, §2)"
+        elif rel in dr:
+            c["matriz"] += 1
+            dominios, rangos = dr[rel]
+            ok, etiqueta = st in dominios and dt in rangos, "matriz r2"
+            if rel == "referencia" and not ok:
+                etiqueta = "referencia solo TextoOrdenado->Comunicacion (con o sin rol_fuente)"
+        elif rel in RELACIONES_ESQUELETO:
+            c["esqueleto"] += 1
+            ok, etiqueta = st == "Sujeto" and dt == "Sujeto", "esqueleto solo Sujeto->Sujeto"
+        elif rel == RELACION_PADRE_SUGERIDO:
+            c["padre_sugerido"] += 1
+            ok = (st == "Sujeto" and dt == "Sujeto" and nivel_de(sn) == "propuesto" and nivel_de(tn) in NIVELES_PADRE)
+            etiqueta = "padre_sugerido solo propuesto->clase|rol"
+        else:
+            continue  # capturado por S1
+        if not ok:
+            c["violaciones_" + ("remite_a" if rel == remisiones.PREDICADO_REMISION else rel)] += 1
+            viol.append(f"idx {i}: {rel} {st}[{nivel_de(sn) or '-'}] -> {dt}[{nivel_de(tn) or '-'}] "
+                        f"({e['source']} -> {e['target']}; rol_fuente={e.get('rol_fuente')!r}; {etiqueta})")
+    return _res(
+        "S3",
+        "Toda arista respeta las firmas del perfil r2: matriz ampliada de enums_r2.json (firmas_r2, con "
+        "condicion_de -> Operacion|Potestad) ∪ remite_a con origen en los siete tipos de contenido y destino en "
+        "esos siete o TextoOrdenado ∪ esqueleto solo Sujeto->Sujeto ∪ padre_sugerido solo de Sujeto propuesto a "
+        "Sujeto clase|rol. Una referencia con origen distinto de TextoOrdenado es violación, con o sin rol_fuente.",
+        "PASS" if not viol else "FAIL",
+        f"{len(edges) - len(viol)}/{len(edges)} aristas conformes a firma; {len(viol)} violaciones. Evaluadas: "
+        f"{c['matriz']} por matriz, {c['remite_a']} remite_a, {c['esqueleto']} de esqueleto, "
+        f"{c['padre_sugerido']} padre_sugerido.",
+        viol, conteos=dict(c, aristas=len(edges), violaciones=len(viol)))
+
+
+def _shape_enum(rid, tipo, campo, nodes, vocab, enunciado):
+    lista = vocab["enums"].get(f"{tipo}.{campo}") or ()
+    viol, marcados, sin_valor = [], Counter(), 0
+    evaluados = [n for n in nodes if n["type"] == tipo]
+    for n in evaluados:
+        v = (n.get("properties") or {}).get(campo)
+        fl = n.get("fuera_de_lista") or []
+        if v is None:
+            sin_valor += 1
+            continue
+        if v in lista and campo in fl:
+            viol.append(f"nodo {n['id']}: {campo}={v!r} está en la lista y lleva la marca fuera_de_lista")
+        elif v not in lista and campo not in fl:
+            viol.append(f"nodo {n['id']}: {campo}={v!r} fuera de la lista y sin la marca fuera_de_lista")
+        elif v not in lista:
+            marcados[str(v)] += 1
+    return _res(
+        rid, enunciado + f" Lista: {{{'|'.join(lista)}}}.",
+        "PASS" if not viol else "FAIL",
+        f"{len(evaluados)} nodos {tipo}; {len(viol)} violaciones; fuera de lista con marca: "
+        f"{sum(marcados.values())} {dict(marcados)}; sin valor: {sin_valor}.",
+        viol, conteos={"nodos": len(evaluados), "violaciones": len(viol), "marcados": dict(marcados),
+                       "sin_valor": sin_valor, "lista": list(lista)})
+
+
+def shape_s18_r2(nodes):
+    viol, con_lista, con_marca = [], 0, 0
+    lq = [n for n in nodes if n["type"] == "Restriccion" and (n.get("properties") or {}).get("tipo") == "limite_cuantitativo"]
+    for n in lq:
+        lista = (n.get("properties") or {}).get("umbrales")
+        if isinstance(lista, list) and lista:
+            con_lista += 1
+        elif "umbral" in (n.get("campos_heredados_v3") or {}) or "umbral" in (n.get("properties_no_definidas") or {}):
+            con_marca += 1
+        else:
+            viol.append(f"nodo {n['id']}: limite_cuantitativo sin lista de umbrales ni umbral guardado "
+                        f"(descripcion={((n.get('properties') or {}).get('descripcion') or '')[:90]!r})")
+    return _res(
+        "S18", "ERROR — " + NUMERACION_PERFIL_R2["S18"],
+        "PASS" if not viol else "FAIL",
+        f"{len(lq)} Restricciones limite_cuantitativo: {con_lista} con lista, {con_marca} con el umbral guardado "
+        f"sin lista (marca), {len(viol)} sin ninguna.",
+        viol, conteos={"limite_cuantitativo": len(lq), "con_lista": con_lista, "con_marca": con_marca,
+                       "sin_lista_ni_marca": len(viol)})
+
+
+def shape_s26_claves(nodes, vocab):
+    claves = {t: set(v) | set(vocab["marcas_nodo"]) for t, v in vocab["claves_por_tipo"].items()}
+    viol, n_eval, por_clave = [], 0, Counter()
+    for n in nodes:
+        t = n["type"]
+        if t not in claves:
+            continue
+        n_eval += 1
+        for k in (n.get("properties") or {}):
+            if k not in claves[t]:
+                por_clave[f"{t}.{k}"] += 1
+                viol.append(f"nodo {n['id']}: clave {k!r} fuera de la definición de {t}")
+        for k in (n.get("properties_no_definidas") or {}):
+            if k in claves[t]:
+                por_clave[f"{t}.{k} (definida como no definida)"] += 1
+                viol.append(f"nodo {n['id']}: clave definida {k!r} figura en properties_no_definidas")
+    return _res(
+        "S26", "ERROR — Claves cerradas por tipo: las properties de cada nodo de los nueve tipos están en "
+               "claves_por_tipo de enums_r2.json o en MARCAS_NODO de modelos_r2.py; lo demás vive en "
+               "properties_no_definidas.",
+        "PASS" if not viol else "FAIL",
+        f"{n_eval} nodos evaluados; {len(viol)} violaciones {dict(por_clave)}; marcas de nodo admitidas: "
+        f"{list(vocab['marcas_nodo'])}.",
+        viol, conteos={"nodos": n_eval, "violaciones": len(viol), "por_clave": dict(por_clave)})
+
+
+def shape_s27_mencion(edges, vocab, fase):
+    preds = set(vocab["predicados_sujeto"])
+    lista = vocab["enums"].get("mencion_verificada") or ()
+    es = [e for e in edges if norm(e["relation"]) in preds and e.get("rol_fuente") != ROL_DOCUMENTAL_ESQUELETO]
+    viol = []
+    c = Counter()
+    for i, e in enumerate(edges):
+        if not (norm(e["relation"]) in preds and e.get("rol_fuente") != ROL_DOCUMENTAL_ESQUELETO):
+            continue
+        falta = []
+        if not (e.get("sujeto_mencion") or "").strip():
+            falta.append("mención")
+            c["sin_mencion"] += 1
+        if e.get("mencion_verificada") not in lista:
+            falta.append("mencion_verificada")
+            c["sin_mencion_verificada"] += 1
+        if not e.get("metodo_resolucion"):
+            falta.append("metodo_resolucion")
+            c["sin_metodo"] += 1
+        if falta:
+            viol.append(f"idx {i}: {e['relation']} {e['source']} -> {e['target']}: sin {', '.join(falta)}")
+    bloqueante = fase == "r2b"
+    return _res(
+        "S27", ("ERROR — " if bloqueante else "INFORMATIVA — ") + NUMERACION_PERFIL_R2["S27"]
+        + f" Fase: {fase}.",
+        "PASS" if not viol else ("FAIL" if bloqueante else "WARN"),
+        f"{len(es)} aristas de sujeto fuera del esqueleto; {len(viol)} sin mención, verificación o método "
+        f"({dict(c)}).",
+        viol, conteos=dict(c, aristas_de_sujeto=len(es), con_defecto=len(viol), fase=fase))
+
+
+def shape_s28_registro(nodes, registro_ruta):
+    propuestos = [n["id"] for n in nodes if n["type"] == "Sujeto" and nivel_de(n) == "propuesto"]
+    if not registro_ruta or not os.path.isfile(registro_ruta):
+        return _res("S28", "ERROR — " + NUMERACION_PERFIL_R2["S28"], NO_COMPUTABLE,
+                    f"sin registro ({registro_ruta}): {len(propuestos)} Sujetos propuestos sin cotejar.", [],
+                    conteos={"propuestos": len(propuestos), "registro": registro_ruta})
+    with open(registro_ruta, encoding="utf-8") as f:
+        filas = [json.loads(x) for x in f if x.strip()]
+    con_fila = {r.get("id_nodo") for r in filas}
+    viol = [f"{i}: Sujeto propuesto sin fila en {os.path.basename(registro_ruta)}" for i in propuestos if i not in con_fila]
+    return _res(
+        "S28", "ERROR — " + NUMERACION_PERFIL_R2["S28"],
+        "PASS" if not viol else "FAIL",
+        f"{len(propuestos)} Sujetos propuestos; {len(filas)} filas en el registro; {len(viol)} propuestos sin fila.",
+        viol, conteos={"propuestos": len(propuestos), "filas": len(filas), "sin_fila": len(viol), "registro": registro_ruta})
+
+
+def shape_s29_padre(edges, ids_cat, defecto):
+    viol = [] if not defecto else [f"catálogo único inválido: {defecto}"]
+    n = 0
+    for i, e in enumerate(edges):
+        if norm(e["relation"]) != RELACION_PADRE_SUGERIDO:
+            continue
+        n += 1
+        if e["target"] not in ids_cat:
+            viol.append(f"idx {i}: {e['source']} -> {e['target']}: destino fuera del catálogo único")
+    return _res("S29", "ERROR — " + NUMERACION_PERFIL_R2["S29"], "PASS" if not viol else "FAIL",
+                f"{n} aristas padre_sugerido; {len(viol)} con destino fuera del catálogo único ({len(ids_cat)} ids).",
+                viol, conteos={"padre_sugerido": n, "violaciones": len(viol), "catalogo_ids": len(ids_cat)})
+
+
+def shape_s30_alcance(edges, node_by_id):
+    viol, c = [], Counter()
+    for i, e in enumerate(edges):
+        if norm(e["relation"]) != remisiones.PREDICADO_REMISION:
+            continue
+        p = e.get("properties") or {}
+        alc, dest = p.get("alcance"), p.get("destino")
+        c[str(alc)] += 1
+        tn = node_by_id.get(e["target"]) or {}
+        es_to = tn.get("type") == remisiones.TIPO_TEXTO_ORDENADO
+        esperado = remisiones.alcance_esperado(dest, (e.get("provenance") or {}).get("to"), es_to)
+        problemas = []
+        if alc not in remisiones.ALCANCES:
+            problemas.append(f"alcance={alc!r} fuera de {list(remisiones.ALCANCES)}")
+        elif alc != esperado:
+            problemas.append(f"alcance={alc!r} y los extremos dan {esperado!r}")
+        if (alc == "to_entero") != (isinstance(dest, str) and dest.endswith("::TO")):
+            problemas.append(f"to_entero sin destino <to>::TO (o al revés): destino={dest!r}")
+        if problemas:
+            viol.append(f"idx {i}: {e['source']} -> {e['target']}: {'; '.join(problemas)}")
+    return _res("S30", "ERROR — " + NUMERACION_PERFIL_R2["S30"]
+                + " Coherencia: to_entero si el destino es un TextoOrdenado (destino <to>::TO); si no, interna "
+                  "cuando el TO de la unidad citada es el de la procedencia de la arista y externa cuando es otro "
+                  "(enmienda 2 de L-ESQ-R2, §3).",
+                "PASS" if not viol else "FAIL",
+                f"{sum(c.values())} aristas remite_a ({dict(sorted(c.items()))}); {len(viol)} violaciones.",
+                viol, conteos={"remite_a": sum(c.values()), "por_alcance": dict(sorted(c.items())), "violaciones": len(viol)})
+
+
+def _tramos_de_chunk(ch):
+    return [ch.get("texto") or ""] + [h.get("texto") or "" for h in (ch.get("herencia") or [])]
+
+
+def shape_s31_evidencia(edges, e0_dir):
+    rem = [(i, e) for i, e in enumerate(edges) if norm(e["relation"]) == remisiones.PREDICADO_REMISION]
+    if not e0_dir or not os.path.isdir(e0_dir):
+        return _res("S31", "ERROR — " + NUMERACION_PERFIL_R2["S31"], NO_COMPUTABLE,
+                    f"sin directorio de E0 ({e0_dir}): {len(rem)} aristas remite_a sin cotejar.", [],
+                    conteos={"remite_a": len(rem), "e0": e0_dir})
+    cache = {}
+
+    def chunk(pv):
+        cid = (pv or {}).get("chunk_id")
+        to = (pv or {}).get("to") or (cid.split("::", 1)[0] if isinstance(cid, str) and "::" in cid else None)
+        if not to or not cid:
+            return None
+        if to not in cache:
+            ruta = os.path.join(e0_dir, f"chunks_{to}.json")
+            if os.path.isfile(ruta):
+                with open(ruta, encoding="utf-8") as f:
+                    d = json.load(f)
+                cache[to] = {c.get("id"): c for c in (d["chunks"] if isinstance(d, dict) else d)}
+            else:
+                cache[to] = None
+        return (cache[to] or {}).get(cid)
+
+    viol, c = [], Counter()
+    for i, e in rem:
+        ev = (e.get("properties") or {}).get("evidencia") or ""
+        pvs = [e.get("provenance")] + [p for p in (e.get("provenances") or []) if p != e.get("provenance")]
+        ch0 = chunk(e.get("provenance"))
+        if ch0 is not None and any(ev in t for t in _tramos_de_chunk(ch0)):
+            c["en_un_tramo_del_chunk_de_la_arista"] += 1
+            continue
+        otra = next((p for p in pvs[1:] if (lambda ch: ch is not None and any(ev in t for t in _tramos_de_chunk(ch)))(chunk(p))), None)
+        if otra is not None:
+            c["en_un_tramo_de_otra_procedencia_de_la_arista"] += 1
+            continue
+        if ch0 is None:
+            c["chunk_no_encontrado"] += 1
+            viol.append(f"idx {i}: chunk {((e.get('provenance') or {}).get('chunk_id'))!r} no está en {e0_dir}")
+        else:
+            junto = "\n".join(_tramos_de_chunk(ch0))
+            c["solo_en_la_union_de_tramos" if ev in junto else "fuera_del_texto"] += 1
+            viol.append(f"idx {i}: evidencia {ev[:80]!r} no es subcadena de un único tramo de {ch0.get('id')!r}"
+                        + (" (sí de la unión de tramos)" if ev in junto else ""))
+    return _res("S31", "ERROR — " + NUMERACION_PERFIL_R2["S31"]
+                + " Tramo = el texto propio del chunk o uno de sus tramos heredados, cada uno por separado; nunca la "
+                  "concatenación. Si la evidencia no está en el chunk de provenance, se busca en las otras procedencias "
+                  "de la arista (fusión).",
+                "PASS" if not viol else "FAIL",
+                f"{len(rem)} aristas remite_a: {dict(sorted(c.items()))}; {len(viol)} violaciones.",
+                viol, conteos={"remite_a": len(rem), **dict(sorted(c.items())), "violaciones": len(viol), "e0": e0_dir})
+
+
+def evaluar_perfil_r2(g, vocab, fase, registro_ruta, e0_dir, ids_s19_ruta=RUTA_IDS_S19_R2,
+                      excepciones_ruta=RUTA_EXCEPCIONES_S15_R2):
+    nodes, edges = g["nodes"], g["edges"]
+    node_by_id = {n["id"]: n for n in nodes}
+    out_edges = defaultdict(list)
+    for e in edges:
+        out_edges[e["source"]].append(e)
+    ids_cat, defecto_cat = cargar_ids_s19_r2(ids_s19_ruta)
+    dom_est = tuple(sorted(vocab["domain_range"]["establecida_en"][0]))
+    dom_apl = tuple(sorted(vocab["domain_range"]["aplica_a"][0]))
+    lista = [
+        shape_s1_r2(edges, vocab),
+        shape_s2(edges, node_by_id),
+        shape_s3_r2(edges, node_by_id, vocab),
+        shape_s4_congelado(nodes, edges),
+        shape_s5_congelado(nodes, edges),
+        shape_s6_congelado(nodes, edges),
+        shape_s15(nodes, edges, node_by_id, excepciones_ruta),
+        shape_s18_r2(nodes),
+        shape_s19_catalogo(nodes, ids_cat, defecto_cat),
+        _shape_enum("S20", "Obligacion", "tipo", nodes, vocab,
+                    "ERROR — Enum de Obligacion.tipo del perfil r2: en la lista o con la marca fuera_de_lista."),
+        _shape_enum("S24", "Restriccion", "tipo", nodes, vocab, "ERROR — " + NUMERACION_PERFIL_R2["S24"]),
+        _shape_enum("S25", "Comunicacion", "tipo", nodes, vocab, "ERROR — " + NUMERACION_PERFIL_R2["S25"]),
+        shape_s26_claves(nodes, vocab),
+        shape_s27_mencion(edges, vocab, fase),
+        shape_s28_registro(nodes, registro_ruta),
+        shape_s29_padre(edges, ids_cat, defecto_cat),
+        shape_s30_alcance(edges, node_by_id),
+        shape_s31_evidencia(edges, e0_dir),
+        shape_s7(nodes),
+        shape_s8(nodes),
+        shape_s9(nodes),
+        shape_s10(nodes, out_edges, tipos=dom_est,
+                  enunciado=f"Todo nodo del dominio r2 de establecida_en ({'/'.join(dom_est)}) tiene >=1 arista "
+                            f"saliente establecida_en."),
+        shape_s11(nodes, out_edges, tipos=dom_apl,
+                  enunciado=f"Todo nodo del dominio r2 de aplica_a ({'/'.join(dom_apl)}) tiene >=1 arista saliente aplica_a."),
+        shape_s12(nodes, out_edges),
+        shape_s21_referencias(edges, node_by_id, perfil="r2"),
+        shape_s22_padre_sugerido(edges, node_by_id),
+        shape_s23_aplica_a_cuarentena(edges, node_by_id),
+    ]
+    resultados = {r["rid"]: r for r in lista}
+    bloq = list(BLOQUEANTES_R2) + (["S27"] if fase == "r2b" else [])
+    info = list(INFORMATIVAS_R2) + (["S27"] if fase == "r2a" else [])
+    fail = [rid for rid in bloq if resultados[rid]["result"] == "FAIL"]
+    nc = [rid for rid in bloq if resultados[rid]["result"] == NO_COMPUTABLE]
+    veredicto = "NO PASA" if fail else ("INCOMPLETO" if nc else "PASA")
+    meta = {"bloqueantes": bloq, "informativas": info, "bloqueantes_en_fail": fail,
+            "bloqueantes_no_computables": nc,
+            "catalogo": {"ruta": ids_s19_ruta, "n_ids": len(ids_cat), "defecto": defecto_cat},
+            "excepciones_s15": excepciones_ruta}
+    return resultados, veredicto, meta
+
+
+def correr_perfil_r2(args, g):
+    """Camino del perfil r2: carga el vocabulario (FRENA si el candado no
+    cierra), evalúa, escribe .md + .json si hay --out y devuelve el código de
+    salida (0 PASA, 1 NO PASA, 3 INCOMPLETO, 2 freno del candado)."""
+    try:
+        vocab = cargar_vocabulario_r2()
+    except VocabularioCongeladoError as e:
+        print(f"FRENO — perfil r2: {e}", file=sys.stderr)
+        return 2
+    registro = os.path.join(args.registro_dir or os.path.dirname(os.path.abspath(args.kg)), REGISTRO_NO_MAPEADOS)
+    resultados, veredicto, meta = evaluar_perfil_r2(g, vocab, args.fase, registro, args.e0)
+    fecha = datetime.date.today().isoformat()
+    sha_grafo = sha256_archivo(args.kg)
+    nodes, edges = g["nodes"], g["edges"]
+    bloq, info = meta["bloqueantes"], meta["informativas"]
+    orden = bloq + info
+    cab = [f"- **Grafo:** `{args.kg}`", f"- **sha256 del grafo:** `{sha_grafo}`", f"- **Fecha:** {fecha}",
+           f"- **Nodos:** {len(nodes)}", f"- **Aristas:** {len(edges)}", f"- **Perfil:** r2 (fase {args.fase})",
+           f"- **Vocabulario:** `{vocab['modulo']}` (sha256 `{vocab['sha256']}`); marcas de nodo de "
+           f"`{RUTA_MODELOS_R2}`: {list(vocab['marcas_nodo'])}",
+           f"- **Catálogo único (S19, S29):** `{meta['catalogo']['ruta']}` — {meta['catalogo']['n_ids']} ids"
+           + (f"; DEFECTO: {meta['catalogo']['defecto']}" if meta["catalogo"]["defecto"] else ""),
+           f"- **Lista de S15:** `{meta['excepciones_s15']}`", f"- **Registro (S28):** `{registro}`",
+           f"- **E0 (S31):** `{args.e0}`",
+           f"- **Veredicto global: {veredicto}**"
+           + (f" — bloqueantes en FAIL: {', '.join(meta['bloqueantes_en_fail'])}" if meta["bloqueantes_en_fail"] else "")
+           + (f" — bloqueantes NO COMPUTABLES: {', '.join(meta['bloqueantes_no_computables'])}"
+              if meta["bloqueantes_no_computables"] else "")]
+    lineas = ["# Validador de shapes — perfil r2", ""] + cab + [""]
+    for titulo, rids in (("Bloqueantes", bloq), ("Informativas", info)):
+        lineas += [f"## {titulo}", ""]
+        for rid in rids:
+            r = resultados[rid]
+            lineas += [f"### {rid} — {r['result']}", "", r["enunciado"], "", f"**Resultado:** {r['resumen']}", ""]
+            lineas += (["```"] + r["detalle_md"] + ["```", ""]) if r["detalle_md"] else ["Sin violaciones.", ""]
+    lineas += ["## Tabla resumen", "", "| Severidad | Regla | Resultado | Resumen |", "|---|---|---|---|"]
+    for rid in orden:
+        r = resultados[rid]
+        lineas.append(f"| {'bloqueante' if rid in bloq else 'informativa'} | {rid} | {r['result']} | {r['resumen']} |")
+    lineas += ["", f"**Veredicto global: {veredicto}**", "", "## Numeración de las shapes del perfil r2", ""]
+    lineas += [f"- {rid}: {enun}" for rid, enun in NUMERACION_PERFIL_R2.items()] + [""]
+    salida_json = {
+        "perfil": "r2", "fase": args.fase, "grafo": args.kg, "sha256_grafo": sha_grafo, "fecha": fecha,
+        "nodos": len(nodes), "aristas": len(edges),
+        "vocabulario": {"modulo": vocab["modulo"], "sha256": vocab["sha256"], "marcas_nodo": list(vocab["marcas_nodo"])},
+        "catalogo": meta["catalogo"], "excepciones_s15": meta["excepciones_s15"], "registro": registro, "e0": args.e0,
+        "veredicto": veredicto, "bloqueantes_en_fail": meta["bloqueantes_en_fail"],
+        "bloqueantes_no_computables": meta["bloqueantes_no_computables"],
+        "shapes": {rid: {"severidad": "bloqueante" if rid in bloq else "informativa", "result": resultados[rid]["result"],
+                         "resumen": resultados[rid]["resumen"], "conteos": resultados[rid]["conteos"]} for rid in orden},
+        "numeracion_perfil_r2": NUMERACION_PERFIL_R2,
+    }
+    if args.out:
+        os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
+        with open(args.out, "w", encoding="utf-8") as f:
+            f.write("\n".join(lineas))
+        with open(os.path.splitext(args.out)[0] + ".json", "w", encoding="utf-8") as f:
+            json.dump(salida_json, f, ensure_ascii=False, indent=2)
+            f.write("\n")
+    print(f"Grafo: {args.kg}\nNodos: {len(nodes)} | Aristas: {len(edges)} | Perfil: r2 (fase {args.fase})")
+    for rid in orden:
+        r = resultados[rid]
+        print(f"{'bloqueante' if rid in bloq else 'informativa':12s} {rid:4s} {r['result']:14s} {r['resumen']}")
+    print(f"\nVEREDICTO GLOBAL: {veredicto}")
+    return {"PASA": 0, "NO PASA": 1, "INCOMPLETO": 3}[veredicto]
 
 
 def correr_perfil_congelado(args, g):
@@ -1128,7 +1662,14 @@ def main():
                     help="Perfil de validación. Sin esta opción el comportamiento es el de "
                          "siempre (v0). 'congelado': esquema congelado de la generación 3, "
                          "vocabulario leído de prompt_congelado.py, catálogo de sujetos "
-                         "leído de --excepciones, veredicto PASA/NO PASA y .json de conteos.")
+                         "leído de --excepciones, veredicto PASA/NO PASA y .json de conteos. "
+                         "'r2': perfil r2 (U-R2-CODIGO), vocabulario de pyd_r2/generados/enums_r2.json.")
+    ap.add_argument("--fase", default="r2a", choices=FASES_R2,
+                    help="Solo con --perfil r2: r2a (S27 informativa, default) o r2b (S27 bloqueante).")
+    ap.add_argument("--registro-dir", default=None, dest="registro_dir",
+                    help="Solo con --perfil r2: directorio con no_mapeados_sujetos.jsonl (S28); default el del --kg.")
+    ap.add_argument("--e0", default=None,
+                    help="Solo con --perfil r2: directorio de E0 (chunks_<to>.json) con que se ensambló el grafo (S31).")
     args = ap.parse_args()
 
     with open(args.kg, encoding="utf-8") as f:
@@ -1136,6 +1677,8 @@ def main():
 
     if args.perfil == "congelado":
         sys.exit(correr_perfil_congelado(args, g))
+    if args.perfil == "r2":
+        sys.exit(correr_perfil_r2(args, g))
 
     nodes, edges = g["nodes"], g["edges"]
     node_by_id = {n["id"]: n for n in nodes}
