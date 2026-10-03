@@ -316,3 +316,16 @@ estimaciones de P1.c y P1.d y la medición de la unidad 9.
 FIRMA. FIRMADO por la autora el 03/10/2026, con el ajuste de P4.b (el brazo sellado del estrato fuera de
 muestra corre por la API con su E0 legada) y la declaración de que la pareada compara release contra
 release. Sin decisiones abiertas.
+
+NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen junto con él.
+- **03/10/2026 — firma y dependencia (decisión de la autora).** La firma está commiteada en `b901f6d`; el
+  «commit PENDIENTE» del encabezado queda superado. La dependencia del CONTEXTO («arranca después de que
+  la unidad 9 cierre M1») se precisa así: U-PROMPT-R2 adelanta de P1 lo que no depende de la unidad 9
+  (P1.a sin el mensaje de tablas, P1.b, y la parte de P1.c y P1.d que sale del crudo guardado de la tanda
+  0); completa lo que depende de la E0 e0-r2 versionada (el mensaje de tablas, el censo de E3 con
+  `tablas_e0`) tras el FRENO M1 de U-MED-R2A; y el FRENO P1 se hace tras el FRENO M2 de U-MED-R2A. La
+  decisión 20 (regla de `frecuencia`) se toma en el FRENO P1 con el conteo de M2.c de U-MED-R2A y, si M3
+  cerró, con la lectura de M3.d; si M3 no cerró, la autora la elige antes de que arranque P2, porque P2
+  congela el prefijo. Motivo: la medición de los plazos mandados a `frecuencia` no sale de M1 sino de
+  M2.c y M3.d (`UMED_R2A_medicion_r2a.md:138-139`, `:169`), hallazgo de la instancia de esta unidad al
+  verificar la precondición sobre `b901f6d`.
