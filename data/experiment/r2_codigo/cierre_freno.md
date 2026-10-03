@@ -144,6 +144,8 @@ HEAD: el punto 3 no toca la tanda 0. Las cifras de los asientos coinciden con lo
 Otros JSON de `r2_codigo/` que difieren de la salida de la batería final y no regeneré (no estaba pedido):
 - `reglas_remisiones_censos.json`, `r4_pies_e0.json` y `r3h_lectura_umbrales.json` (de `26d274d`);
 - `r1d_censo_requests.json` (de `91fe4b9`).
+**[03/10/2026]** Los cuatro quedaron regenerados después del cierre (sección «Regeneración de los cuatro JSON
+restantes»).
 
 `r4_detector_casi_duplicados.json` y `r4_claves_cache.json` coinciden con la salida final.
 
@@ -188,6 +190,101 @@ Selftests:
   shapes 79/79, r4 26/26;
 - `selftest_manifiesto` 32/37, con los mismos 5 fallos P5 que en R4 y en R5 (comparado con el log de R5).
 
+## Regeneración de los cuatro JSON restantes (03/10/2026)
+
+Pedido sobre el cierre revisado: regenerar con el código final los cuatro JSON de `r2_codigo/` que diferían de la
+salida final. Corrida `control_json4.sh` (paquete `revision_UR2CODIGO_cierre_json/`), de 08:15 a 08:25:
+- se hizo sobre una copia sin enlaces (17.122 archivos, 0 enlaces), con HEAD `e1c9456` (el cierre, commit de la
+  autora);
+- las entradas son la e0-r2 de la tanda 0 y la prueba r2 de cla, regeneradas e iguales a las de la batería final.
+
+Los cuatro JSON dan doble corrida idéntica y son iguales a la salida de la batería final. La excepción es el campo
+`kg` de `r3h`: registra la ruta del grafo leído, y ahora dice `cierre_json/cla_a/r2/kg.json`. Diferencias contra la
+versión del repo (`diff_json4.py`, hoja por hoja):
+
+**`reglas_remisiones_censos.json`** (de `26d274d`). F (diez TOs) no cambia. En la partición:
+
+Regla (g) en tres pasos (ajuste B de R5), en `P…g_mismos_157_titulos`:
+
+| Criterio | Repo | Final |
+|---|---|---|
+| resuelve, algún título contenido | 1.166 | 1.224 |
+| resuelve, ningún título contenido | (no existía) | 19 |
+| no resuelve, ningún título contenido | 308 | 223 |
+| no resuelve, algún título contenido | 17 | 24 |
+
+- Por vía (clave nueva): igualdad 1.100, prefijo 133, comienzo 10, no resuelve 247.
+- En el paso `acdefg`, contra el paso anterior:
+
+  | | Repo | Final |
+  |---|---|---|
+  | aparecen | 794 | 838 |
+  | desaparecen | 754 | 797 |
+  | citas que cambian | 1.548 | 1.635 |
+
+Propio TO (punto 3 del complemento):
+
+| Cifra | Dónde | Repo | Final |
+|---|---|---|---|
+| menciones de norma | E | 1.464 | 1.463 |
+| menciones de norma | censo de (g) | 1.491 | 1.490 |
+| sin comillas | E | 324 | 323 |
+| anafóricas | pasos `acde` a `acdefgh` | 44 | 42 |
+| internas | paso `acde` | 2.839 | 2.840 |
+| internas | pasos `acdef` a `acdefgh` | 2.846 | 2.847 |
+| citas | paso `acde` | 3.755 | 3.754 |
+| citas | paso `acdef` | 3.768 | 3.767 |
+| externas | pasos `acdefg` y `acdefgh` | 1.491 | 1.490 |
+
+En el paso `acde`, contra el anterior: desaparecen 32 → 33 y citas que cambian 71 → 72.
+
+Los 15 ejemplos de «título contenido que (g) no toma» son otros.
+
+**`r1d_censo_requests.json`** (de `91fe4b9`, R3).
+
+| Cifra | Repo | Final |
+|---|---|---|
+| Unidades que cambian de pedido | 39 | 41 |
+| Costo estimado | USD 0,6474 | USD 0,6806 |
+| Claves r2 en caché | 2.395 | 2.393 |
+| Motivo texto propio | 39 | 41 |
+| Motivo flags | 15 | 16 |
+| ric: unidades que cambian | 21 | 22 |
+| ric: costo | USD 0,3486 | USD 0,3652 |
+| ctacte: unidades que cambian | 0 | 1 |
+| ctacte: costo | USD 0 | USD 0,0166 |
+
+Causa: los tres chunks con pie de la tanda 0 (`docs/tablero_correcciones.md:73`).
+- Entran `ric::11.1.4` y `ctacte::6.1.2.3`, por texto propio.
+- `ric::11.1.1` suma el motivo `flags`.
+- e0-r2 quita sus líneas de pie: «Versión: …», «Vigencia:», la fecha y «Comunicación "C" …». Lo comparé contra
+  `e0_chunking/salida_tanda0/`. La versión del repo es anterior a la regla del pie (R4, agregado 8).
+
+**`r4_pies_e0.json`** (de `26d274d`). Ninguna cifra de la versión del repo cambia. Se agregan las listas de G de R5:
+- en la tanda 0, 7 líneas distintas y 11 ocurrencias;
+- en los 157 PDFs, 476 y 4.388;
+- las 2 líneas de forma «otra», las dos en `manual`.
+
+**`r3h_lectura_umbrales.json`** (de `26d274d`). Ninguna cifra cambia; solo el campo `kg`, que antes decía
+`r4_final/cla_a/r2/kg.json`. El nodo leído es el mismo.
+
+Citas en el plan, el tablero o el checklist (`plan_tesis.md`, `tablero.md`, `tablero_correcciones.md`,
+`checklist_pre_escalado.md`, y además `plan_remite_a.md`; búsqueda de cada valor viejo y nuevo y de los nombres de
+los JSON). Busqué en la versión del 03/10 a las 08:20: otra sesión editó, sin commit, el plan, el tablero de
+correcciones y el checklist durante la corrida.
+- Cifra que cambia y está citada: `tablero_correcciones.md:72` cita el censo de R1.d de R3, «pasa a 39 (USD
+  0,6474)». Con el código final es 41 (USD 0,6806), como ya decía el FRENO R5 (F).
+- Las cifras de `:53` (62 y 339 citas sin comillas, 8 y 41 anáforas) son del conteo [c24] (`:207`), con otro
+  criterio. No son valores de estos JSON.
+- Las demás coincidencias numéricas son números de línea o conteos ajenos.
+- Textos que pasan a estar desactualizados:
+  - `plan_tesis.md:397`, edición sin commit: dice que estos cuatro JSON «no se regeneraron en el cierre» y «son
+    artefactos de R4 y de R3»;
+  - `plan_tesis.md:398` (pérdidas) y `tablero_correcciones.md:51` y `:53` (r3d) dicen que el JSON del repo es el de
+    R4; desde el cierre (`e1c9456`) ya no lo es.
+
+No edito el plan ni el tablero: el mandato no lo autoriza.
+
 ## Errores propios, con su causa
 
 En el FRENO R5 di las citas `remite_a` del reporte del ensamblado (1.382 en desarrollo) sin decir que el censo de la
@@ -196,7 +293,9 @@ quedan las dos con su fuente.
 
 ## Pendiente de la autora
 
-- Commit: PENDIENTE.
+- Commit del cierre: hecho por la autora (`e1c9456`). Commit de la regeneración de los cuatro JSON y de esta
+  sección: PENDIENTE.
 - Decisiones que siguen abiertas de R5: la marca de S18 y los tres pedidos de L-ESQ-R2 fuera de la lista del
   mandato (§1.5, §6.5 y §7.5).
-- Si se regeneran los cuatro JSON de `r2_codigo/` que difieren de la salida final.
+- Textos del plan y del tablero que la regeneración deja desactualizados: `plan_tesis.md:397` y `:398` y
+  `tablero_correcciones.md:51`, `:53` y `:72`.
