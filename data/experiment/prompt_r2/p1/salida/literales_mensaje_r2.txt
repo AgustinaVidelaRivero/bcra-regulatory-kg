@@ -1,0 +1,50 @@
+NOTA: esta unidad es el encabezado de una lista (su texto termina en «:»); los ítems son los puntos que siguen, cada uno con su propia unidad. En esta extracción se componen en cada ítem el sujeto, la modalidad y el cuantificador del encabezado, y también lo que el encabezado fija para cada ítem (un plazo, un ámbito, una condición que vale para todos los ítems). Esta unidad no emite un nodo por el solo anuncio de la lista ni repite lo que se compone en los ítems: que falten aquí no es faltante. Sí es faltante, si no fue extraído, lo que el encabezado enuncia aparte de la lista: una norma propia, una excepción a la lista entera, o la norma principal cuando los ítems son sus supuestos o condiciones.
+Extraé las entidades y relaciones según el schema. Recordá: nodo TextoOrdenado con local_id='to'; todo elemento con `punto` de la lista admitida; toda entidad con su `tramo`; toda relación de sujeto con su `sujeto_mencion`; `omisiones` siempre (vacía si no omitiste nada).
+NOTA: esta unidad tiene 
+ detectados determinísticamente (flag de E0). El extractor tenía instrucción de NO reconstruir ese contenido y declarar las omisiones. Evaluá el tratamiento: contenido tabular/fórmula normativo ni extraído ni declarado es faltante tipo contenido_tabular_no_declarado; declarado, no.
+NOTA: esta unidad tiene tablas serializadas por E0 (bloques [TABLA …] … [FIN TABLA …] del texto fuente, verificados contra el documento): su contenido es texto confiable y su omisión se evalúa como la de cualquier otro contenido.
+contenido_tabular_residual
+sin encabezado de columnas reconocido: las claves son colN y el nombre de cada columna está en las primeras filas del bloque
+combinadas_sin_propagar
+ y el bloque no indica cuáles. Si el texto no lo aclara, no lo asocies a ninguna fila: registrá la omisión `tabla` con su tramo.
+TABLAS SERIALIZADAS POR E0 en el texto (CONFIABLES: leelas y copiá sus valores, ver CONTENIDO NO-PROSA del sistema):
+Tipo de unidad: chunk de punto
+Puntos admitidos para `punto`: 
+combinadas_sin_propagar
+ (⟨combinada con fila n⟩)
+: confiable, sin celdas combinadas
+: no es un dato; califica a las filas que la siguen.
+: no son datos; cada una califica a las filas que la siguen.
+FLAGS E0: este chunk contiene 
+ (detección determinística). Ese contenido está declarado NO-CONFIABLE: aplicá la sección CONTENIDO NO-PROSA del sistema (no reconstruir, no forzar extracción, registrar en `omisiones` con categoría 
+Alcance de este TO: {
+ en `sujeto_id`, según corresponda
+Cuando la norma se dirija genéricamente a 'las entidades' / 'los sujetos obligados' / el colectivo del TO, 
+, con la expresión del texto como `sujeto_mencion`. Es el sujeto de aplica_a cuando la norma se dirige al colectivo; NO es el ejecutor por defecto en ejecuta.
+Tipo de unidad: MINI-CHUNK de bloque estructural (
+Cadena de títulos (ubica el bloque; NO es contenido a extraer):
+ (TU unidad de extracción):
+combinadas_sin_propagar
+Además, E0 detectó en esta unidad 
+ (flag determinístico): el extractor tenía instrucción de NO reconstruir ese contenido y declarar las omisiones; ese contenido normativo ni extraído ni declarado es faltante tipo contenido_tabular_no_declarado; declarado, no.
+celda con un valor propagado desde otra fila
+celdas con un valor propagado desde otra fila
+celda que abarca varias columnas
+celdas que abarcan varias columnas
+: su valor puede valer para varias filas
+: el valor de cada una puede valer para varias filas
+contenido tabular fuera de los bloques confiables
+): su contenido quedó como texto linealizado, no confiable.
+): no copies sus valores; registrá la omisión `tabla` con su tramo.
+Contexto estructural heredado (contexto y anclaje; NO extraigas contenido normativo de estos bloques, salvo un caso: el último bloque abre la lista de la que este punto es un ítem, así que la norma del ítem se compone con ese encabezado — ver COMPOSICIÓN CON EL ENCABEZADO DE UNA LISTA):
+Contexto estructural heredado (SOLO contexto y anclaje: NO extraigas contenido normativo de estos bloques — cada uno tiene su propia unidad de extracción; ver PROVENANCE):
+contenido tabular fuera de los bloques confiables
+celda combinada que E0 no asignó a sus filas
+celdas combinadas que E0 no asignó a sus filas
+E0 detectó tablas que no pudo serializar (
+Tablas serializadas por E0 que se tratan como contenido NO-CONFIABLE (
+celda combinada sin asignar a sus filas
+celdas combinadas sin asignar a sus filas
+: la omisión `tabla` que el extractor declare sobre 
+combinadas_sin_propagar
+E0 dejó sin resolver parte de la estructura de 
