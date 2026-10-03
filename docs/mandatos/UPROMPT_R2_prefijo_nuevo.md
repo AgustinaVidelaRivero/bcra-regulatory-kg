@@ -27,7 +27,10 @@ X5, X8 y X9. La medición r2a (unidad 9) corre antes y entrega la decisión sobr
   JSON único; la regla de calificadores (mutuales, X8); las incorrectas `E1-prompt` de la
   observación (12) (X5: `BKL-0032`, `BKL-0033`, `BKL-0035`, `BKL-0036`); las correcciones
   sistemáticas de asignación de sujeto de B2.4 que el diseño de U-LISTAS-NOMAP resolvió por
-  mención y resolución en código (X9).
+  mención y resolución en código (X9); y, por las decisiones D6 a D8 del protocolo entre tandas
+  (`docs/protocolo_entre_tandas.md`, §8 a §10, FIRMADO por la autora el 03/10/2026 (borrador en `9eabab0`; commit de la firma PENDIENTE)): el tramo literal de evidencia por entidad, `Comunicacion.tipo` y `numero` y el
+  TextoOrdenado derivados en código con `Definicion.termino` literal, y las válvulas nuevas
+  (`otras_propiedades` en relaciones; `source` y `destino` en `relacion_sin_predicado`).
 - Qué no cambia: `remite_a` no entra al tool schema de E1 ni a sus listas, que siguen con trece
   predicados; `referencia` queda como TextoOrdenado → Comunicacion (enmienda 2, §4 y §10). Los
   nueve tipos de entidad. El prompt de E3 en su prefijo (candado `21a836c7de6d`; laudo de r2,
@@ -36,7 +39,8 @@ X5, X8 y X9. La medición r2a (unidad 9) corre antes y entrega la decisión sobr
 - Herencia de U-PYD: el tool schema r2 y los enums ya se generan desde `modelos_r2.py`
   (`pyd_r2/generados/tool_schema_r2.json`, `enums_r2.json`, `manifest_generados_r2.json`): el
   elemento de umbral de E1 (`UmbralE1`), `sujeto_mencion`, las omisiones con categoría, los
-  enums con «externa». Esta unidad los conecta al prefijo; no rediseña el modelo.
+  enums con «externa». Esta unidad los conecta al prefijo; los únicos cambios al modelo son los de
+  las decisiones 15 a 17, con sus generados regenerados.
 
 Leé completos, antes de escribir una línea:
 - la fila de la unidad 10 del plan (:399), con sus cinco notas del 02/10; las filas 7 (:396) y
@@ -127,21 +131,50 @@ DECISIONES YA TOMADAS. No se re-deciden.
     fichas pareadas cegadas y lectura asistida revisada por la autora (protocolo de ESQ-3b, plan
     :650-:677; pareada de B5.4, `d3f2214`). No
     decide nada sola: su resultado es insumo del tope y del gate de U-REEXT-T0.
+15. Tramo literal de evidencia por entidad (decisión D6 de la autora, `docs/protocolo_entre_tandas.md`, §8 a §10, FIRMADO por la autora el 03/10/2026 (borrador en `9eabab0`; commit de la firma PENDIENTE)): cada
+    entidad de los nueve tipos lleva un campo `tramo` con el tramo del texto propio o heredado del
+    chunk que la funda, copiado tal cual; el código lo verifica como subcadena normalizada del
+    texto de E0 (la regla de la mención, P-b3 y P-b4: exacta, por tokens o no verificada, con marca)
+    y lo guarda en el nodo. Hace verificable la descripción y deja la evidencia de una entidad de
+    tipo dudoso. El campo entra a `modelos_r2.py` (`_EntidadE1` y el nodo del grafo) y a los
+    generados; la etapa de diseño estima su costo en tokens de salida (P1.d).
+16. Campos que salen del prompt y se derivan en código (decisión D7): `Comunicacion.tipo` y
+    `numero` se derivan de `codigo` (L-ESQ-R2 §2.4 ya deriva el tipo en r2a) y `materia`,
+    `archivo` y `version` del TextoOrdenado se derivan de E0 y del inventario, como ya hace la
+    canonización de E4 (`r2_codigo/r3_freno.md`, §3): los cinco campos salen del tool schema de E1
+    y el prompt pide solo `codigo`. `Definicion.termino` se pide literal («copiado tal cual») y el
+    código lo verifica como el tramo de la decisión 15.
+17. Válvulas de escape (decisión D8): `otras_propiedades` también en `relations[]`, con la misma
+    descripción que en las entidades; la omisión `relacion_sin_predicado` admite `source` y
+    `destino` opcionales (los `local_id` de la relación que el esquema no representa); la
+    instrucción de las omisiones `fuera_de_tipos` y `relacion_sin_predicado` pide anotar en `nota`
+    el tipo o el predicado que el modelo habría usado. Los tres cambios entran a `modelos_r2.py`,
+    al validador (las `otras_propiedades` de la relación van a la arista como no definidas, como
+    `properties_no_definidas` en el nodo) y a los generados.
 
 P1 — Diseño del prefijo y del mensaje. USD 0.
 a. Documento de diseño en data/experiment/prompt_r2/diseno_prefijo_r2.md: sección por sección,
    el texto sellado al lado del texto nuevo, con la decisión que lo manda; el tool schema r2 que
    se conecta y qué campos cambian respecto del sellado; el mensaje de usuario nuevo (bloque de
    tablas serializadas, residual, flags) y la NOTA nueva de E3; la lista de las decisiones 3 a
-   12 con el párrafo exacto que las implementa.
+   12 y 15 a 17 con el párrafo exacto que las implementa, y los campos del tool schema que entran
+   (tramo de evidencia, `otras_propiedades` en relaciones, `source` y `destino` en la omisión) y
+   que salen (`Comunicacion.tipo` y `numero`, `materia`, `archivo` y `version`).
 b. Las instrucciones para X5 y X9: por cada `BKL` de X5 y cada entrada `triaged` de X9, qué
    oración del prefijo nuevo la ataca, o la declaración de que queda para el validador o para
    otra unidad.
 c. Censo, USD 0: chunks de los diez TOs cuyo mensaje de E3 cambia por la NOTA nueva (los que
    tienen `tablas_e0`), con el costo estimado a la tarifa de referencia; lo que paga E1 (las
    2.434 unidades) a esa misma tarifa. Insumo del tope de U-REEXT-T0.
+d. Costo del tramo de evidencia por entidad (decisión 15), USD 0: sobre el crudo guardado de la
+   tanda 0, el largo en tokens de salida del tramo mínimo que fundaría cada entidad (una
+   aproximación por tipo, con la regla de la mención sobre la descripción guardada), el total por
+   chunk y por corrida, y su costo a la tarifa de salida del modelo; y la verificación en código:
+   la regla (subcadena normalizada del texto propio o heredado del chunk; exacta, por tokens o no
+   verificada), su marca en el nodo, el contador y el selftest que la cubre. Lo mismo, en breve,
+   para `Definicion.termino` literal (decisión 16).
 FRENO P1 (intermedio, antes de escribir código): la autora aprueba el texto del prefijo y del
-mensaje.
+mensaje, con la estimación de P1.d.
 
 P2 — Implementación. USD 0.
 a. Módulo nuevo del prefijo r2 y su perfil en `perfil_e1.py` (`PERFILES_CONOCIDOS` suma el
@@ -164,7 +197,11 @@ P3 — Lectura del crudo nuevo en el pipeline. USD 0.
 a. El validador r2 lee la salida del prefijo nuevo (forma «r2», `validador_r2.validar`): los
    tramos de umbral entran al llenado de la lista (par A) con la misma verificación de r2a; la
    mención entra a la resolución por relación (R1 a R4, con R3 y los desacuerdos); las omisiones
-   con categoría entran al registro; `fuera_de_tipos` y `relacion_sin_predicado` se cuentan.
+   con categoría entran al registro; `fuera_de_tipos` y `relacion_sin_predicado` se cuentan, con
+   sus `source` y `destino` cuando vienen; el tramo de evidencia de cada entidad y el `termino`
+   literal se verifican con su marca (decisiones 15 y 16); `Comunicacion.tipo` y `numero` y el
+   TextoOrdenado se derivan en código (decisión 16); las `otras_propiedades` de la relación van a
+   la arista como no definidas (decisión 17).
 b. Prueba sobre un crudo sintético que cubra cada campo nuevo, y sobre el crudo guardado de la
    tanda 0 leído como «v3» (sin cambios: control de que el camino r2a no se mueve).
 c. Shapes y suite del perfil r2 sobre un grafo sintético con los campos nuevos: S27 en fase
@@ -195,13 +232,16 @@ REQUISITOS TRANSVERSALES (CLAUDE.md §4 a–l), en todas las etapas.
   - data/experiment/reextraccion_v2/e3_verificador/prompt_e3.py, solo la NOTA del mensaje
     (:241); el prefijo (:217) y su candado no se tocan;
   - manifiestos nuevos en data/experiment/reextraccion_v2/manifiestos/ (los existentes no);
-  - data/experiment/pyd_r2/generados/ (regenerados) y pyd_r2/code/validador_r2.py y
-    selftest_pyd_r2.py, solo para leer la forma «r2» completa;
+  - data/experiment/pyd_r2/code/modelos_r2.py y selftest_pyd_r2.py, solo para los campos de las
+    decisiones 15 a 17 (tramo de evidencia por entidad, `otras_propiedades` en relaciones, `source`
+    y `destino` en la omisión, retiro de `Comunicacion.tipo` y `numero` y de `materia`, `archivo` y
+    `version` del tool schema de E1); data/experiment/pyd_r2/generados/ (regenerados) y
+    pyd_r2/code/validador_r2.py, para leer la forma «r2» completa;
   - selftest_manifiesto.py, selftest_cablev3.py y los selftests del perfil nuevo;
   - data/experiment/prompt_r2/ (se crea): diseño, censos, muestra y fichas de la pareada,
     reportes; y tu scratchpad.
   - No se editan: prompt_e1.py (PREFIJO_SISTEMA y la cadena sellada), el perfil `v3_b54`, el
-    prefijo de E3, modelos_r2.py (salvo decisión expresa de la autora), E0, E2, el ensamblado
+    prefijo de E3, modelos_r2.py fuera de los campos de las decisiones 15 a 17, E0, E2, el ensamblado
     fuera del despacho por perfil, la suite, las shapes, el plan, el checklist, el tablero, los
     laudos, el backlog ni nada sellado (CLAUDE.md §3). No commitees.
 - Caching: docs/decisiones_caching_extraccion.md, cinco decisiones vinculantes; la clave de la
@@ -214,7 +254,8 @@ REQUISITOS TRANSVERSALES (CLAUDE.md §4 a–l), en todas las etapas.
 CRITERIO DE ACEPTACIÓN. El prefijo nuevo registrado como perfil con candado y hash; el camino
 sellado byte a byte intacto (prefijo `e69feaaa…`, E3 `21a836c7de6d`, los tres ensamblados, el
 grafo r2a); el tool schema conectado desde los generados de U-PYD, sin `remite_a` y con trece
-predicados; cada decisión 3 a 12 con su párrafo en el prefijo o en el mensaje; la cadena de
+predicados; cada decisión 3 a 12 y 15 a 17 con su párrafo en el prefijo o en el mensaje, y el
+tool schema con los campos que entran y sin los que salen; la cadena de
 lectura probada sobre crudo sintético sin mover r2a; la pareada dentro del tope, con fichas
 cegadas y lectura asistida revisada por la autora. Commit de la autora al cierre de cada etapa.
 
@@ -225,5 +266,5 @@ DECISIONES ABIERTAS PARA LA AUTORA, A LA FIRMA.
    cuantía temporal dejan de ir a `frecuencia`, el prefijo lo refleja en el tramo que pide.
 4. Si la salida de E1 para los límites relativos lleva una marca propia o solo el tramo (nota a
    L-ESQ-R2 §1.5): hoy, solo el tramo, y el código arma el elemento sin valor.
-5. Si `modelos_r2.py` necesita un ajuste para la forma final del campo de umbral o de omisiones;
-   si lo necesita, se autoriza por enmienda a este mandato y se regeneran los generados.
+5. Resuelta el 03/10/2026 por las decisiones D6 a D8 del protocolo entre tandas (decisiones 15 a
+   17): `modelos_r2.py` cambia solo en esos campos y los generados se regeneran.

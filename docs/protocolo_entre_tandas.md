@@ -1,7 +1,7 @@
 # Protocolo entre tandas para el escalado
 
-BORRADOR — PENDIENTE DE FIRMA DE LA AUTORA. Redactado el 03/10/2026 sobre HEAD `e91f864`, sin
-costo de API. Unidad de planificación: no cambia código, esquema ni pre-registros. Toda cifra lleva
+FIRMADO por la autora el 03/10/2026. Redactado el 03/10/2026 sobre HEAD `e91f864` (borrador commiteado en
+`9eabab0`; las decisiones de la autora, D1 a D9 del §10, aplicadas el 03/10/2026) sin costo de API. Unidad de planificación: no cambia código, esquema ni pre-registros. Toda cifra lleva
 su fuente; lo que no está en una fuente dice NO ENCONTRADO.
 
 ## 0. Qué hay hoy y qué falta
@@ -121,9 +121,9 @@ el del ensamblado (la prueba r2 de los diez TOs corre en minutos: batería de ci
   menos sellados. Costo: el mismo USD 0, pero cada tanda mide con un pipeline distinto del que se va a
   evaluar, y una corrección que rompe algo se descubre al final, sin tanda que la pruebe.
 
-Recomendación: (i), con la regla de que el grafo acumulado se re-ensambla con cada release y el grafo
-de cada tanda se sella y no se corrige (principio 9): la corrección produce una versión posterior,
-no edita la sellada. Decisión de la autora (§10, D3).
+Decidido (D3, 03/10/2026): la opción (i). El código se re-aplica al grafo acumulado en cada release y el grafo
+de cada tanda se sella sin corregirlo (principio 9): la corrección produce una versión posterior,
+no edita la sellada.
 
 ## 4. Sellado del grafo de cada tanda y condiciones de la siguiente
 
@@ -181,9 +181,9 @@ unidades, USD 40,35 en E1 y E3 (`tabla_reprocesamiento.md`, §5).
 | 3 | RI plenos | NO ENCONTRADO en el plan: el bloque RI no tiene fila (`:1053`) | 53 RI, 976 unidades, menos los no segmentables y los que entren antes | ≈ 16 |
 | fuera | 14 | 12 no segmentables y 2 parciales, declarados (`:738`) | — | — |
 
-Corrección pendiente de la aritmética del plan: B6.1 (20) y B6.2 (48) suman los 68 digeribles, pero la
-tanda 0 ya tomó 5; quedan 63, así que la tanda 2 tiene 43 digeribles, no 48, o la tanda 1 cambia de
-tamaño (§10, D4). Total: 20 + (43 + no-RI) + RI = 147 − 14 fuera = 133 TOs plenos a extraer en tres
+Corrección de la aritmética del plan, decidida (D4, 03/10/2026): B6.1 (20) y B6.2 (48) sumaban los 68
+digeribles sin descontar los 5 de la tanda 0; quedan 63, así que la tanda 2 tiene 43 digeribles, la tanda
+1 sigue en 20 y los regímenes informativos reciben una fila propia en el plan (tanda 3). Total: 20 + (43 + no-RI) + RI = 147 − 14 fuera = 133 TOs plenos a extraer en tres
 tandas, con un costo de referencia de E1 y E3 de USD 154,8 para toda la partición (9.324 × 0,0166),
 de los que la tanda 0 ya pagó los suyos. El criterio de entrada por documento es el health-check de
 E0 en verde y el modo de lectura declarado (`vigente`, `marcadores` o `sin_raiz`;
@@ -246,9 +246,9 @@ hoy para B6.3 (a): 157 − 20 excluidos = 137 TOs (si se extraen todos).
   grafo con falsedades estructuradas conocidas. Lo que pierde: los TOs que informaron el cambio y el
   tiempo del ciclo.
 
-Recomendación: (a) como regla, con (c) escrito y acotado a su umbral; (b) solo si la tanda 1 se
-compone con los TOs ya excluidos de la evaluación (§7), porque entonces su costo en evaluación es
-cero y queda solo el de re-extracción. Decisión de la autora (§10, D1).
+Decidido (D1, 03/10/2026): la opción (a) como regla, con el procedimiento (c) de hallazgo grave tal como
+queda escrito arriba, acotado a su umbral. La opción (b) no se adopta; queda descrita como alternativa
+evaluada, con su costo.
 
 ## 7. Composición de la tanda 1 para detectar temprano
 
@@ -261,14 +261,15 @@ comillas y anáforas de la norma en el texto de E0 (conteo con las regex de [c24
 conservadas por K (`r2_codigo/rk_fuera_de_muestra.json`, `por_to`) y pies de página
 (`r4_pies_e0.json`, `particion.casos`). Candidatos: los 147 menos los 14 fuera, 133 TOs.
 
-Estratos y cuotas, a confirmar por la autora (§10, D5):
+Estratos y cuotas, fijados por la autora (D5, 03/10/2026):
 1. **TOs ya excluidos de B6.3 (a)** (los diez de ESQ-2, todos digeribles): 4, los más largos. Su
    lectura no le quita nada al conjunto de evaluación: son los únicos TOs donde una ventana
    excepcional del §6 (c) saldría gratis en evaluación.
 2. **Regímenes informativos**: 4, los que más tablas, anáforas y líneas de K suman. Contradice la
-   fila B6.1 («digeribles, normativa general prioritaria»): entran porque e0-r2 ya los segmenta
-   (escalera, 152/152 TOs; `r2_codigo/cierre_freno.md` §1) y porque son el bloque sin fila de tanda
-   (§5). Decisión de la autora (§10, D4 y D5).
+   fila B6.1 («digeribles, normativa general prioritaria»), que se enmienda (D5): entran porque e0-r2
+   ya los segmenta (escalera, 152/152 TOs; `r2_codigo/cierre_freno.md` §1) y porque son el bloque sin
+   fila de tanda (§5). Motivo declarado de la enmienda: con la regla (a) del §6, detectar temprano
+   abarata el procedimiento (c).
 3. **TOs con más tablas**: 4 (prueba del bloque serializado y de la lectura confiable del prompt
    nuevo).
 4. **Los más largos**: 3 (prueba de herencia, sub-chunking y volumen de remisiones).
@@ -309,12 +310,12 @@ Campos del tool schema r2 (`data/experiment/pyd_r2/generados/tool_schema_r2.json
 |---|---|---|
 | `type` (9 tipos) | clasificar la entidad | No: es la decisión central del extractor. La válvula es la omisión `fuera_de_tipos` (§9). |
 | `label` | nombre corto canónico | No; no es verificable. Se acepta como paráfrasis. |
-| `properties.descripcion` | paráfrasis del contenido | No desde el prompt actual: ninguna entidad lleva un tramo literal propio, así que el código no puede verificar la paráfrasis (límite ya declarado en L-ESQ-R2 §1.4, fila 26: la inversión de sentido con el valor literal no se detecta). Un tramo de evidencia por entidad lo haría verificable (§10, D6). |
+| `properties.descripcion` | paráfrasis del contenido | No desde el prompt actual: ninguna entidad lleva un tramo literal propio, así que el código no puede verificar la paráfrasis (límite ya declarado en L-ESQ-R2 §1.4, fila 26: la inversión de sentido con el valor literal no se detecta). Un tramo de evidencia por entidad lo haría verificable (decidido, D6). |
 | `Restriccion.tipo` (3 valores) | clasificar el tope | Parcialmente: `limite_cuantitativo` se infiere de una lista de umbrales con valor; `prohibicion` de marcadores en el tramo. Hoy el código controla la coherencia tipo–predicado como marca (`BKL-0038`), no deriva el tipo. Conviene dejarlo así: derivar cambiaría el esquema. |
 | `Obligacion.tipo` (6 valores) | clasificar la obligación | Solo `periodica` se infiere de la presencia de `frecuencia`; el resto no. |
-| `Comunicacion.tipo` (4) y `numero` | clasificar y numerar | Sí, los dos, desde `codigo` (L-ESQ-R2 §2.4: el tipo ya se deriva en r2a). En el prompt nuevo, `codigo` es el literal y `tipo` y `numero` son redundantes: candidatos a derivarse en código y salir del prompt (§10, D7). |
+| `Comunicacion.tipo` (4) y `numero` | clasificar y numerar | Sí, los dos, desde `codigo` (L-ESQ-R2 §2.4: el tipo ya se deriva en r2a). En el prompt nuevo, `codigo` es el literal y `tipo` y `numero` son redundantes: candidatos a derivarse en código y salir del prompt (decidido, D7). |
 | `Definicion.termino` | el término definido | Debe pedirse literal («copiado tal cual»); hoy la descripción del campo está vacía en el tool schema. Con el término literal el código lo verifica y `remite_a` lo lee (regla H4). |
-| `TextoOrdenado.materia`, `archivo`, `version` | datos del TO | Sí: `archivo` lo conoce E0, `materia` sale del título del inventario y `version` de la portada; hoy E4 ya canoniza el TextoOrdenado desde E0 (`data/experiment/r2_codigo/r3_freno.md`, §3). Candidatos a derivarse en código (§10, D7). |
+| `TextoOrdenado.materia`, `archivo`, `version` | datos del TO | Sí: `archivo` lo conoce E0, `materia` sale del título del inventario y `version` de la portada; hoy E4 ya canoniza el TextoOrdenado desde E0 (`data/experiment/r2_codigo/r3_freno.md`, §3). Candidatos a derivarse en código (decidido, D7). |
 | `predicate` (13) | clasificar la relación | No: lo controla la matriz; la válvula es `relacion_sin_predicado`. |
 | `punto` (entidad y relación) | elegir entre los puntos admitidos | Estructural, no interpretación; el validador lo controla. |
 | `sujeto_id`, `sujeto_propuesto_padre_sugerido` | sugerir el id del catálogo | Ya resuelto en código desde la mención (R1 a R4; `r1_e4.resolver_relaciones_r2`): el prompt lo pide solo como sugerencia. |
@@ -326,8 +327,11 @@ literal se resuelve en código a partir del tramo (`sujeto_id` desde la mención
 tramo, `Comunicacion.tipo` y `numero` desde `codigo`, el TextoOrdenado desde E0), y el prompt pide
 el tramo; así un hallazgo futuro sobre esos campos se corrige en código (clase «solo código», §2)
 sin tocar el prefijo. Los campos de clasificación (`type`, `predicate`, `tipo`) se quedan en el
-modelo, con sus válvulas. El borrador de U-PROMPT-R2 cumple esa regla salvo en los tres candidatos de
-D7 y en el tramo de evidencia por entidad (D6).
+modelo, con sus válvulas. Decidido (D6 y D7, 03/10/2026): el tool schema r2 suma un tramo literal de
+evidencia por entidad; `Comunicacion.tipo` y `numero` se derivan en código desde `codigo` y el
+TextoOrdenado desde E0, y salen del prompt; `Definicion.termino` se pide literal. Lo aplica U-PROMPT-R2
+(decisiones 15 a 17 de su mandato), y la etapa de diseño estima el costo del tramo de evidencia en
+tokens de salida y su verificación en código.
 
 ## 9. Las válvulas de escape
 
@@ -346,31 +350,36 @@ El borrador de U-PROMPT-R2 los conserva (decisiones 4, 5, 12 y el control de LN-
 **Lo que falta** para que un hallazgo del tipo «nos falta representar X» quede entero en el crudo:
 1. **Las relaciones no tienen campo libre**: `otras_propiedades` existe solo en entidades. Un
    atributo de la relación que el texto exprese (condición, alcance, modalidad) no tiene dónde
-   guardarse salvo como omisión. Opción: `otras_propiedades` también en `relations[]` (§10, D8).
+   guardarse salvo como omisión. Decidido (D8): `otras_propiedades` también en `relations[]`.
 2. **`relacion_sin_predicado` pierde la estructura**: la omisión lleva tramo y nota, pero no los
-   `local_id` de origen y destino. Opción: `source` y `destino` opcionales en la omisión (§10, D8).
+   `local_id` de origen y destino. Decidido (D8): `source` y `destino` opcionales en la omisión.
 3. **Ninguna entidad lleva un tramo literal propio** (solo sus cuantías): la descripción no es
-   verificable y una entidad de tipo dudoso no deja su evidencia (§8; D6).
+   verificable y una entidad de tipo dudoso no deja su evidencia. Decidido (D6): tramo literal de
+   evidencia por entidad.
 4. **No hay `tipo_propuesto` ni `predicado_propuesto`**: el canal abierto experimental de
    `prompt_e1.py:200-247` está apagado y fuera del perfil r2; las omisiones `fuera_de_tipos` y
    `relacion_sin_predicado` lo reemplazan con la nota libre. Es suficiente si la nota lleva el tipo o
-   el predicado que el modelo habría usado; conviene decirlo en la instrucción (§10, D8).
-Con 1 y 2, todo hallazgo de representación queda en el crudo con su tramo, su ubicación y su
-estructura, re-leíble en código a USD 0 (principio 12), sin abrir ninguna ventana.
+   el predicado que el modelo habría usado; la instrucción lo pide (D8).
+Con 1, 2 y 3 decididos, todo hallazgo de representación queda en el crudo con su tramo, su ubicación y
+su estructura, re-leíble en código a USD 0 (principio 12), sin abrir ninguna ventana.
 
-## 10. Decisiones abiertas para la autora, con opciones y costo
+## 10. Decisiones de la autora (03/10/2026)
 
-| # | Decisión | Opciones | Costo |
+| # | Decisión | Resuelto | Costo |
 |---|---|---|---|
-| D1 | Regla para cambios de prompt o esquema durante el escalado (§6) | (a) mantener; (b) segunda ventana tras la tanda 1 con enmienda al §7; (c) solo el procedimiento de hallazgo grave | (a) USD 0; (b) ≈ USD 95 de re-extracción más el ciclo, −20 TOs de evaluación (−16 con el ejemplo del §7); (c) USD 0 salvo que se dispare |
-| D2 | Quién adjudica las lecturas asistidas de cada tanda (P15, Q12) | instancia con muestra humana de control declarada; experto del dominio | USD 0 de API; tiempo de la autora o del experto |
-| D3 | Cuándo se re-aplican las correcciones de código (§3) | (i) en cada tanda; (ii) una vez antes de B6.3 | USD 0 en ambas; (i) suma un sellado por tanda |
-| D4 | Aritmética de las tandas y el bloque RI (§5) | tanda 2 con 43 digeribles y la tanda 1 con 20; o tanda 1 más grande; fila nueva para los RI o RI dentro de la tanda 2 | tanda 3 de RI ≈ USD 16 en E1 y E3 |
-| D5 | Estratos y cuotas de la tanda 1 (§7), y si entran RI y «necesita reglas» contra la fila B6.1 | las seis cuotas propuestas (4/4/4/3/3/2); o solo digeribles | ejemplo: 3.292 unidades ≈ USD 54,65 contra ~USD 40 de la fila |
-| D6 | Tramo literal de evidencia por entidad (§8, §9) | agregarlo al tool schema r2 por enmienda a L-ESQ-R2 y a `modelos_r2.py`; o no | más tokens de salida por entidad (sin medir); habilita verificar la descripción en código |
-| D7 | Campos que salen del prompt y se derivan en código (§8) | `Comunicacion.tipo` y `numero` desde `codigo`; el TextoOrdenado desde E0 | USD 0; cambia el tool schema (regeneración en U-PROMPT-R2) |
-| D8 | Válvulas que faltan (§9) | `otras_propiedades` en relaciones; `source` y `destino` en la omisión `relacion_sin_predicado`; instrucción de anotar el tipo o predicado faltante en la nota | USD 0; cambio del tool schema antes de U-PROMPT-R2 |
-| D9 | Formato del nombre y del directorio de los grafos de tanda (§4) | `KG-Tanda<k>-<release>` en `corpus_tanda<k>/` | USD 0 |
+| D1 | Cambios de prompt o esquema durante el escalado (§6) | opción (a), con el procedimiento (c) de hallazgo grave escrito en el §6 | USD 0 salvo que (c) se dispare; la opción (b) queda descrita y no adoptada |
+| D2 | Quién adjudica las lecturas asistidas de cada tanda (P15, Q12) | lectura asistida con revisión de la autora, como hasta ahora | USD 0 de API; tiempo de la autora |
+| D3 | Cuándo se re-aplican las correcciones de código (§3) | opción (i): al grafo acumulado en cada release; el grafo de cada tanda se sella sin corregirlo | USD 0; un sellado por tanda |
+| D4 | Aritmética de las tandas y el bloque RI (§5) | el plan se corrige: 43 digeribles en la tanda 2, descontados los 5 de la tanda 0; fila nueva para la tanda de los regímenes informativos | tanda de RI ≈ USD 16 en E1 y E3 |
+| D5 | Composición de la tanda 1 (§7) | por diversidad, con los seis estratos y cuotas del §7 (4/4/4/3/3/2); se enmienda la fila B6.1 con el motivo: con la regla (a), detectar temprano abarata el procedimiento (c) | ejemplo: 3.292 unidades ≈ USD 54,65 contra ~USD 40 de la fila; tope en el mandato de la tanda |
+| D6 | Tramo literal de evidencia por entidad (§8, §9) | sí: entra al tool schema r2 por U-PROMPT-R2; su costo en tokens de salida y su verificación en código los estima la etapa de diseño de esa unidad | a estimar en U-PROMPT-R2 P1 |
+| D7 | Campos que salen del prompt y se derivan en código (§8) | sí: `Comunicacion.tipo` y `numero` desde `codigo`; el TextoOrdenado desde E0; `Definicion.termino` se pide literal | USD 0; cambio del tool schema en U-PROMPT-R2 |
+| D8 | Válvulas que faltan (§9) | sí: `otras_propiedades` en las relaciones y `source` y `destino` en la omisión `relacion_sin_predicado`; la nota declara el tipo o predicado faltante | USD 0; cambio del tool schema en U-PROMPT-R2 |
+| D9 | Nombre y directorio de los grafos de tanda (§4) | `KG-Tanda<k>-<release>` en `corpus_tanda<k>/` | USD 0 |
+
+Asientos que siguen a estas decisiones: plan, filas B6.1 y B6.2 y fila nueva de la tanda de regímenes
+informativos, y la regla de `:741`; checklist, condición nueva de la tanda 1 (criterio de diversidad);
+mandato de U-PROMPT-R2, decisiones 15 a 17 (D6 a D8).
 
 ## 11. Comandos
 
@@ -381,3 +390,9 @@ estructura, re-leíble en código a USD 0 (principio 12), sin abrir ninguna vent
 - Unidades y costo por grupo: `inventario_unidades.csv` (`veredicto`) cruzado con `conteos_b584.json`
   (`unidades_extraccion`) y la tarifa de `tabla_reprocesamiento.md` §5.
 - Campos del tool schema: recorrido de `tool_schema_r2.json` (`input_schema.properties`, con `$defs`).
+
+## Firma
+
+FIRMADO por la autora el 03/10/2026. Rige desde esta firma para la tanda 1 y las siguientes. El texto de
+los §1 a §9 es el del borrador commiteado en `9eabab0`, con las marcas de decisión abierta reemplazadas por
+las decisiones del §10; toda modificación posterior es nota fechada aparte, nunca ajuste silencioso.
