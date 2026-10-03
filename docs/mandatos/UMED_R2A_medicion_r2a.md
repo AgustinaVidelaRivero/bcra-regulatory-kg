@@ -1,4 +1,6 @@
-BORRADOR — PENDIENTE DE FIRMA DE LA AUTORA (redactado el 03/10/2026 sobre HEAD `e1c9456`)
+FIRMADO por la autora el 03/10/2026 (redactado el 03/10/2026 sobre HEAD `e1c9456`; las tres decisiones
+abiertas del borrador, resueltas por la autora el 03/10/2026, pasaron a las decisiones 9 a 11; commit de
+la firma PENDIENTE)
 
 MANDATO — U-MED-R2A: MEDICIÓN r2a, EL GRAFO DE LOS DIEZ TOs CON TODO LO CORREGIDO EN CÓDIGO.
 Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
@@ -26,6 +28,9 @@ con sus notas posteriores, y su enmienda 2 (`remite_a`, `5f9a731`).
   columna «r2b»).
 - La entrada r2 de la fixture de la suite se sella con este grafo (decisión de la autora del
   02/10/2026; plan :397, cierre de la unidad 8), no con la prueba de desarrollo de U-R2-CODIGO.
+- Rige el protocolo entre tandas (`docs/protocolo_entre_tandas.md`, FIRMADO el 03/10/2026, `a304b89`):
+  esta medición cierra el ciclo B2.11 antes de la tanda 1, y sus lecturas siguen la regla D2 del
+  protocolo (lectura asistida con revisión de la autora).
 
 Leé completos, antes de escribir una línea:
 - la fila de la unidad 9 del plan (:398), con sus agregados (a), (b) y (c) y la fe de erratas
@@ -73,6 +78,14 @@ DECISIONES YA TOMADAS. No se re-deciden.
    medirla en los diez TOs (tablero :74). Esta unidad la mide; la decisión es de la autora.
 8. S18 del perfil r2 da NO PASA en r2a por los límites relativos sin elemento (nota del
    02/10/2026 a L-ESQ-R2 §1.5): es un resultado declarado, no un freno de esta unidad.
+9. El grafo r2a de desarrollo se versiona también, en
+   `data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo_r2a/` (KG-Tanda0-Desarrollo-r2a), con
+   doble corrida idéntica y su sha256 reportado (decisión de la autora del 03/10/2026).
+10. Muestras de M3: 30 nodos de origen en M3.a y 20 relaciones por par en M3.e, sorteadas con la
+    semilla 20261003 (decisión de la autora del 03/10/2026).
+11. Los límites relativos de S18 (25 en desarrollo, 26 en diez) se cuentan y no se leen: no hay
+    lectura asistida de su comparación ni de su base en esta unidad (decisión de la autora del
+    03/10/2026); el tramo que E1 emitirá en r2b es de U-PROMPT-R2.
 
 M1 — El grafo r2a. USD 0.
 a. E0 e0-r2 de los diez TOs, versionada:
@@ -89,8 +102,11 @@ b. Grafo r2a de los diez TOs:
    `resolucion_sujetos.jsonl`) y reporte byte a byte idénticos, con la ruta normalizada donde el
    reporte la registra. Nombre del grafo: KG-Tanda0-Diez-r2a. Reportá su sha256, nodos y
    aristas, y los conteos del reporte (`remite_a`, umbrales, no mapeados, no verificadas por E3).
-   Control: con el mismo comando y la prueba de desarrollo (`tanda0_ens_desarrollo.json`) se
-   reproduce el grafo `93a7af72…` de la batería de cierre; ese grafo no se versiona.
+   Grafo r2a de desarrollo, versionado (decisión 9): el mismo comando con `tanda0_ens_desarrollo.json`
+   y `--salida data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo_r2a/`; doble corrida
+   idéntica; nombre KG-Tanda0-Desarrollo-r2a; reportá su sha256. Control: su `kg.json` reproduce byte a
+   byte el grafo `93a7af72…` de la batería de cierre de U-R2-CODIGO (`cierre_freno.md`), que salió del
+   mismo comando sobre la misma E0 e0-r2.
 c. Validación del grafo: 0 nodos y 0 aristas fuera del modelo r2 (`modelos_r2`, como en el
    reporte del ensamblado); shapes `--perfil r2 --fase r2a --e0 <salida de a>`, con la salida
    versionada junto al grafo; suite `--perfil r2 --generacion 3 --catalogo
@@ -110,8 +126,8 @@ los sellados reproducidos; sha256 de lo escrito.
 M2 — La columna r2a del tablero. USD 0.
 a. Para cada una de las 26 filas de síntomas (:49 a :74), la medición sobre KG-Tanda0-Diez-r2a
    con el comando de la fila ([c1] a [c24]), y la comparación con «Valor en la tanda 0». Si una
-   fila se midió sobre desarrollo o cinco y la comparación lo pide, el mismo código produce el
-   grafo r2a de desarrollo en el scratchpad (no se versiona) y la fila lleva los dos valores.
+   fila se midió sobre desarrollo o cinco y la comparación lo pide, la fila lleva también el valor
+   sobre KG-Tanda0-Desarrollo-r2a (M1.b, versionado), con los dos valores en la celda.
 b. Filas que no se miden en r2a, con la causa declarada y sin inventar un valor: las que exigen
    correr al agente (patrones de navegación, tope de herramientas, clases de falla A0.2; USD > 0
    y EV2, fuera de esta unidad); la muestra de la observación (12), que pide una lectura con
@@ -136,7 +152,7 @@ M3 — Lecturas asistidas pendientes. USD 0. Cinco lecturas, cada una con su cop
 (CSV con las columnas de la muestra más veredicto, justificación y revision_autora vacía), su
 script de conteo de solo lectura (doble corrida idéntica) y su regla fijada antes de leer.
 a. Cambios de destino de las remisiones, de la paráfrasis al texto de E0 (plan :398, agregado
-   a): muestra de 30 nodos de origen sorteados con semilla declarada entre los 732 de diez que
+   a): muestra de 30 nodos de origen sorteados con la semilla 20261003 (decisión 10) entre los 732 de diez que
    cambian de destino (`r3d_remisiones.py`, `C_diez_cambio_de_destino`, recomputado sobre
    KG-Tanda0-Diez-r2a). Regla: para cada nodo, el destino por el texto de E0 es el que el texto
    cita («sí»), el de la paráfrasis era el correcto («no»), o el texto no alcanza («no
@@ -155,7 +171,7 @@ d. Plazos mandados a `frecuencia` (tablero :74): todos los de los diez TOs (en c
    otra cosa («inmediata», «N/A», «previo a…»). Insumo de la decisión 7.
 e. Relaciones de la matriz ampliada marcadas como no verificadas por E3 (L-ESQ-R2 §6.4;
    tablero :71): muestra de 20 por par (`condicion_de` → Operacion y → Potestad), sorteada con
-   semilla declarada, leída con la regla de U-ESTUDIO-MATRIZ (correcta, incorrecta, duda) sobre
+   la semilla 20261003 (decisión 10), leída con la regla de U-ESTUDIO-MATRIZ (correcta, incorrecta, duda) sobre
    el texto de E0. Es una señal temprana y se declara así: no reemplaza la lectura de
    confirmación sobre el grafo de r2b (plan :400), que E3 ya habrá verificado.
    Cada lectura reporta sus conteos con el intervalo de Wilson al 95 % donde la muestra es
@@ -168,6 +184,7 @@ REQUISITOS TRANSVERSALES (CLAUDE.md §4 a–l), en todas las etapas.
 - Escrituras, y solo estas:
   - data/experiment/reextraccion_v2/e0_chunking/salida_tanda0_r2/ (M1.a, se crea);
   - data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2a/ (M1.b y M1.c, se crea);
+  - data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo_r2a/ (M1.b, decisión 9, se crea);
   - scripts/regression_kg_esperado.json, solo la clave `propuesta_r2_sin_sellar` (M1.e);
   - docs/tablero_correcciones.md, solo la columna r2a de las filas :49 a :74 y las entradas
     nuevas de la sección de comandos (M2);
@@ -185,18 +202,12 @@ REQUISITOS TRANSVERSALES (CLAUDE.md §4 a–l), en todas las etapas.
 - Acciones de la autora (sellar la entrada, commitear, firmar) se escriben como PENDIENTES
   hasta su confirmación (regla j).
 
-CRITERIO DE ACEPTACIÓN. KG-Tanda0-Diez-r2a versionado y reproducible (doble corrida), con 0
-nodos ni aristas fuera del modelo r2 y con `remite_a` de `cla::5.1.1.1` a `cla::3.7` (criterio
+CRITERIO DE ACEPTACIÓN. KG-Tanda0-Diez-r2a y KG-Tanda0-Desarrollo-r2a versionados y reproducibles
+(doble corrida), con 0 nodos ni aristas fuera del modelo r2 y con `remite_a` de `cla::5.1.1.1` a `cla::3.7` (criterio
 para escalar, enmienda 2 §9); los sellados reproducidos; la columna r2a del tablero completa
 con cada celda medida o con su causa de no medición; la entrada r2 propuesta con el sha del
 grafo; las cinco lecturas con regla fijada antes, conteos recomputados e intervalo donde
 corresponde. Commit de la autora al cierre de cada etapa.
 
-DECISIONES ABIERTAS PARA LA AUTORA, A LA FIRMA.
-1. Si el grafo r2a de desarrollo se versiona junto al de los diez (hoy: solo el de los diez; el
-   de desarrollo se produce en el scratchpad para comparar filas).
-2. Tamaños de las muestras de M3.a y M3.e (propuestos: 30 nodos de origen y 20 relaciones por
-   par) y la semilla.
-3. Si la medición de los límites relativos de S18 (25 en desarrollo, 26 en diez) suma una lectura
-   asistida de su comparación y su base, como insumo para el tramo que E1 emitirá en r2b
-   (plan, unidad 10).
+FIRMA. FIRMADO por la autora el 03/10/2026, con las decisiones 9 a 11 tomadas en el mismo acto. Sin
+decisiones abiertas.

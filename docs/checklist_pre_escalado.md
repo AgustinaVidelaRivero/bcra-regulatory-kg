@@ -72,7 +72,7 @@ los mentores. La tanda 1 depende de tres condiciones:
    laudo de r2, §3.1, punto 8). Agregada el 29/09/2026. **[30/09/2026]** Con dos
    columnas: r2a (solo código, antes de re-extraer) y r2b (prompt y re-extracción).
 5. **[03/10/2026]** La lista de TOs de la tanda 1 fijada por el criterio de diversidad del
-   protocolo entre tandas, `docs/protocolo_entre_tandas.md`, FIRMADO por la autora el 03/10/2026 (borrador en `9eabab0`; commit de la firma PENDIENTE), §7 (decisión D5): seis estratos con cuotas 4/4/4/3/3/2 (TOs ya excluidos de
+   protocolo entre tandas, `docs/protocolo_entre_tandas.md`, FIRMADO por la autora el 03/10/2026 (borrador en `9eabab0`, firma en `a304b89`), §7 (decisión D5): seis estratos con cuotas 4/4/4/3/3/2 (TOs ya excluidos de
    B6.3 (a), regímenes informativos, más tablas serializadas, más largos, formas de cita nuevas,
    escalera de E0), en orden determinístico con desempate por id, con health-check de E0 en verde
    por TO y la E0 regenerada con el código vigente. Enmienda la composición de la fila B6.1

@@ -6,17 +6,19 @@ las cinco decisiones de caching son vinculantes para todo call site de E1 y E3.
 - Unidad en CUATRO ETAPAS, P1 a P4, en este orden, con FRENO obligatorio al final de cada una:
   reporte corto (no más de 40 líneas), paquete de revisión (CLAUDE.md §4 g) y espera de la
   revisión y del «seguí» escrito de la autora.
-- Costo de API: USD 0 en P1, P2 y P3. P4 es la prueba pareada, con tope fijado por la autora a
-  la firma (referencia: la pareada de B5.4 costó USD 0,2902, `d3f2214`). Fuera de P4, ninguna
-  llamada a la API. Neo4j no se usa.
+- Costo de API: USD 0 en P1, P2 y P3. P4 es la prueba pareada, con tope de USD 2 (decisión 18),
+  revisable en el FRENO P1 con la estimación de P1.c y P1.d (referencia: la pareada de B5.4 costó
+  USD 0,2902, `d3f2214`). Fuera de P4, ninguna llamada a la API. Neo4j no se usa.
 - Esta unidad construye y prueba el prefijo; no re-extrae la tanda 0 (U-REEXT-T0, unidad 11) ni
   llena el tablero (unidad 9).
 
 CONTEXTO. Plan, fila B2.11, unidad 10 (docs/plan_tesis.md:399). Depende de las unidades 5 a 8,
 cerradas: L-ESQ-R2 FIRMADA (`4ef7650`, con sus notas posteriores y su enmienda 2, `5f9a731`),
 U-CAT-UNICO (`bd2122d`), U-PYD (`57a8dd2`) y U-R2-CODIGO (`e1c9456`). Absorbe checklist X2, X4,
-X5, X8 y X9. La medición r2a (unidad 9) corre antes y entrega la decisión sobre la regla de
-`frecuencia` (tablero :74) y los límites relativos de S18.
+X5, X8 y X9. **Arranca después de que la unidad 9 (U-MED-R2A) cierre M1:** P1 lee la salida e0-r2 de
+los diez TOs que esa etapa versiona (`data/experiment/reextraccion_v2/e0_chunking/salida_tanda0_r2/`)
+y su grafo r2a. La regla de `frecuencia` (tablero :74) se decide en el FRENO P1 con la medición de la
+unidad 9 (decisión 20); los límites relativos van como tramo sin valor (decisión 21).
 - Qué cambia con el prefijo nuevo (L-ESQ-R2 §9, columna r2b; plan :399): la lista de umbrales
   como tramos literales (par A) y el tramo de la frecuencia en Obligacion; la mención del sujeto
   y el sujeto del catálogo como sugerencia; las omisiones con cinco categorías y tramo en todo
@@ -28,7 +30,7 @@ X5, X8 y X9. La medición r2a (unidad 9) corre antes y entrega la decisión sobr
   observación (12) (X5: `BKL-0032`, `BKL-0033`, `BKL-0035`, `BKL-0036`); las correcciones
   sistemáticas de asignación de sujeto de B2.4 que el diseño de U-LISTAS-NOMAP resolvió por
   mención y resolución en código (X9); y, por las decisiones D6 a D8 del protocolo entre tandas
-  (`docs/protocolo_entre_tandas.md`, §8 a §10, FIRMADO por la autora el 03/10/2026 (borrador en `9eabab0`; commit de la firma PENDIENTE)): el tramo literal de evidencia por entidad, `Comunicacion.tipo` y `numero` y el
+  (`docs/protocolo_entre_tandas.md`, §8 a §10, FIRMADO por la autora el 03/10/2026 (borrador en `9eabab0`, firma en `a304b89`)): el tramo literal de evidencia por entidad, `Comunicacion.tipo` y `numero` y el
   TextoOrdenado derivados en código con `Definicion.termino` literal, y las válvulas nuevas
   (`otras_propiedades` en relaciones; `source` y `destino` en `relacion_sin_predicado`).
 - Qué no cambia: `remite_a` no entra al tool schema de E1 ni a sus listas, que siguen con trece
@@ -131,7 +133,7 @@ DECISIONES YA TOMADAS. No se re-deciden.
     fichas pareadas cegadas y lectura asistida revisada por la autora (protocolo de ESQ-3b, plan
     :650-:677; pareada de B5.4, `d3f2214`). No
     decide nada sola: su resultado es insumo del tope y del gate de U-REEXT-T0.
-15. Tramo literal de evidencia por entidad (decisión D6 de la autora, `docs/protocolo_entre_tandas.md`, §8 a §10, FIRMADO por la autora el 03/10/2026 (borrador en `9eabab0`; commit de la firma PENDIENTE)): cada
+15. Tramo literal de evidencia por entidad (decisión D6 de la autora, `docs/protocolo_entre_tandas.md`, §8 a §10, FIRMADO por la autora el 03/10/2026 (borrador en `9eabab0`, firma en `a304b89`)): cada
     entidad de los nueve tipos lleva un campo `tramo` con el tramo del texto propio o heredado del
     chunk que la funda, copiado tal cual; el código lo verifica como subcadena normalizada del
     texto de E0 (la regla de la mención, P-b3 y P-b4: exacta, por tokens o no verificada, con marca)
@@ -151,6 +153,18 @@ DECISIONES YA TOMADAS. No se re-deciden.
     el tipo o el predicado que el modelo habría usado. Los tres cambios entran a `modelos_r2.py`,
     al validador (las `otras_propiedades` de la relación van a la arista como no definidas, como
     `properties_no_definidas` en el nodo) y a los generados.
+18. Tope de la prueba pareada: USD 2 (decisión de la autora del 03/10/2026), revisable en el FRENO
+    P1 con la estimación de costo de P1.c y P1.d.
+19. Muestra de la pareada (decisión de la autora del 03/10/2026): 40 chunks sorteados, 8 por
+    estrato, más los casos de control fijos fuera del sorteo (`cap::1.2`, `ric::9.2`,
+    `cla::5.1.1.1` y el chunk de la cláusula de mutuales de RT-C6-5, `pro::1.1.2.5`) y un estrato
+    fuera de muestra con chunks de TOs ya excluidos de B6.3 (a) (el estrato «ESQ ya excluidos» del
+    protocolo entre tandas, §7), cuya E0 se produce con e0-r2 en el scratchpad y no se versiona:
+    mide si el prefijo generaliza sin contaminar el conjunto de evaluación.
+20. La regla de `frecuencia` (tablero :74) se decide en el FRENO P1, con la medición de la unidad 9
+    (decisión de la autora del 03/10/2026); el prefijo refleja lo decidido en el tramo que pide.
+21. Límites relativos: E1 emite solo el tramo, sin marca propia, y el código arma el elemento sin
+    valor (nota del 02/10/2026 a L-ESQ-R2 §1.5; decisión de la autora del 03/10/2026).
 
 P1 — Diseño del prefijo y del mensaje. USD 0.
 a. Documento de diseño en data/experiment/prompt_r2/diseno_prefijo_r2.md: sección por sección,
@@ -159,22 +173,41 @@ a. Documento de diseño en data/experiment/prompt_r2/diseno_prefijo_r2.md: secci
    tablas serializadas, residual, flags) y la NOTA nueva de E3; la lista de las decisiones 3 a
    12 y 15 a 17 con el párrafo exacto que las implementa, y los campos del tool schema que entran
    (tramo de evidencia, `otras_propiedades` en relaciones, `source` y `destino` en la omisión) y
-   que salen (`Comunicacion.tipo` y `numero`, `materia`, `archivo` y `version`).
+   que salen (`Comunicacion.tipo` y `numero`, `materia`, `archivo` y `version`). La regla
+   `regula`/`prohibe`/`limita` del prefijo (`prompt_e1.py:177`) se alinea con el control de
+   coherencia tipo–predicado de `BKL-0038` (plan :396; marca del modelo r2): una Restricción
+   «prohibicion» usa `prohibe` y las de límite usan `limita`, y el documento muestra el texto
+   sellado y el nuevo lado a lado.
 b. Las instrucciones para X5 y X9: por cada `BKL` de X5 y cada entrada `triaged` de X9, qué
    oración del prefijo nuevo la ataca, o la declaración de que queda para el validador o para
    otra unidad.
-c. Censo, USD 0: chunks de los diez TOs cuyo mensaje de E3 cambia por la NOTA nueva (los que
-   tienen `tablas_e0`), con el costo estimado a la tarifa de referencia; lo que paga E1 (las
-   2.434 unidades) a esa misma tarifa. Insumo del tope de U-REEXT-T0.
-d. Costo del tramo de evidencia por entidad (decisión 15), USD 0: sobre el crudo guardado de la
-   tanda 0, el largo en tokens de salida del tramo mínimo que fundaría cada entidad (una
+c. Censo de costo, USD 0, del prefijo nuevo por unidad y en total, sobre el crudo guardado de la
+   tanda 0: los tokens de entrada del prefijo nuevo (system y tool schema, con la fórmula de caching
+   de la decisión 2 de `docs/decisiones_caching_extraccion.md`: escritura de caché en la primera
+   unidad de cada corrida secuencial y lectura en las demás) más el mensaje de cada unidad; los
+   tokens de salida de todos los campos nuevos (tramos de umbral, mención del sujeto, omisiones con
+   tramo, tramo de evidencia por entidad, `otras_propiedades`), estimados por unidad desde el crudo
+   guardado (largo de los tramos que fundarían cada entidad, relación y omisión); los chunks cuyo
+   mensaje de E3 cambia por la NOTA nueva (los que tienen `tablas_e0`), a la tarifa de E3. Con ese
+   costo por unidad se recalculan el tope de U-REEXT-T0 (2.434 unidades) y el costo de referencia de
+   las tandas 1, 2 y 3 del protocolo entre tandas (§5: 3.292 unidades del ejemplo de la tanda 1,
+   5.669 de los digeribles restantes más 2.008 de los no-RI, 976 de los RI), que hoy están a la tarifa
+   de la tanda 0 (USD 0,0166 por unidad). Las cifras van al FRENO P1 y, si la autora las aprueba,
+   al protocolo como nota fechada.
+d. Costo y riesgo del tramo de evidencia por entidad (decisión 15), USD 0: sobre el crudo guardado
+   de la tanda 0, el largo en tokens de salida del tramo mínimo que fundaría cada entidad (una
    aproximación por tipo, con la regla de la mención sobre la descripción guardada), el total por
    chunk y por corrida, y su costo a la tarifa de salida del modelo; y la verificación en código:
    la regla (subcadena normalizada del texto propio o heredado del chunk; exacta, por tokens o no
    verificada), su marca en el nodo, el contador y el selftest que la cubre. Lo mismo, en breve,
-   para `Definicion.termino` literal (decisión 16).
+   para `Definicion.termino` literal (decisión 16). Riesgo de corte (`BKL-0030`): con la salida más
+   larga estimada (todos los campos nuevos), cuántas unidades de la tanda 0 quedarían cerca del
+   techo de `max_tokens` del primer intento del perfil r2 (`runner_corpus.py`, R4.b de U-R2-CODIGO,
+   `26d274d`), con qué margen, y si el reintento a 16.384 las cubre; las que no, listadas, con la
+   propuesta (partir la unidad, R4.b) para el FRENO P1.
 FRENO P1 (intermedio, antes de escribir código): la autora aprueba el texto del prefijo y del
-mensaje, con la estimación de P1.d.
+mensaje, con las estimaciones de P1.c y P1.d, y decide el tope de P4 (decisión 18) y la regla de
+`frecuencia` (decisión 20).
 
 P2 — Implementación. USD 0.
 a. Módulo nuevo del prefijo r2 y su perfil en `perfil_e1.py` (`PERFILES_CONOCIDOS` suma el
@@ -208,10 +241,17 @@ c. Shapes y suite del perfil r2 sobre un grafo sintético con los campos nuevos:
    r2b, LN-3 y LN-7 con los valores nuevos.
 FRENO P3: lo que cambia en la cadena de lectura, con sus selftests; 0 cambios en el grafo r2a.
 
-P4 — Prueba pareada. Tope fijado a la firma.
-a. Muestra de chunks de los diez TOs, sorteada con semilla declarada y estratificada: con tabla
-   serializada, con sujeto propuesto en el crudo guardado, con cuantía, con `omisiones_no_prosa`,
-   y sin ninguna marca. Tamaño y estratos los fija la autora (decisión abierta 2).
+P4 — Prueba pareada. Tope USD 2 (decisión 18), revisado en el FRENO P1.
+a. Muestra de chunks de los diez TOs, sorteada con semilla declarada y estratificada (decisión 19):
+   40 chunks, 8 por estrato, en cinco estratos: con tabla serializada, con sujeto propuesto en el
+   crudo guardado, con cuantía, con `omisiones_no_prosa`, y sin ninguna marca. Fuera del sorteo, los
+   casos de control fijos: `cap::1.2` (la tabla invertida), `ric::9.2` (el cuadro de códigos),
+   `cla::5.1.1.1` (el ejemplo de la tesis) y `pro::1.1.2.5` (la cláusula de mutuales de RT-C6-5).
+   Y un estrato fuera de muestra: 8 chunks sorteados de los TOs ya excluidos de B6.3 (a) del estrato
+   «ESQ ya excluidos» del protocolo (§7: ayccef, expaef, opefci, adrei), dos por TO, cuya E0 se
+   produce con e0-r2 en el scratchpad y no se versiona; mide si el prefijo generaliza a TOs que no
+   vio, sin tocar el conjunto de evaluación. Las fichas de los casos fijos y del estrato fuera de
+   muestra se cuentan aparte de la tasa de los 40.
 b. E1 con el prefijo sellado (desde la caché, USD 0) y con el nuevo (API, dentro del tope) sobre
    los mismos chunks; validación r2 de las dos salidas; fichas pareadas cegadas (protocolo de
    ESQ-3b) con las dimensiones: umbral con tramo literal verificado, mención verificada, omisiones
@@ -254,17 +294,12 @@ REQUISITOS TRANSVERSALES (CLAUDE.md §4 a–l), en todas las etapas.
 CRITERIO DE ACEPTACIÓN. El prefijo nuevo registrado como perfil con candado y hash; el camino
 sellado byte a byte intacto (prefijo `e69feaaa…`, E3 `21a836c7de6d`, los tres ensamblados, el
 grafo r2a); el tool schema conectado desde los generados de U-PYD, sin `remite_a` y con trece
-predicados; cada decisión 3 a 12 y 15 a 17 con su párrafo en el prefijo o en el mensaje, y el
-tool schema con los campos que entran y sin los que salen; la cadena de
+predicados; cada decisión 3 a 12 y 15 a 21 con su párrafo en el prefijo o en el mensaje, y el
+tool schema con los campos que entran y sin los que salen; el costo por unidad del prefijo nuevo
+estimado y el tope de U-REEXT-T0 recalculado; la cadena de
 lectura probada sobre crudo sintético sin mover r2a; la pareada dentro del tope, con fichas
 cegadas y lectura asistida revisada por la autora. Commit de la autora al cierre de cada etapa.
 
-DECISIONES ABIERTAS PARA LA AUTORA, A LA FIRMA.
-1. Tope de la prueba pareada (referencia: USD 0,2902 en B5.4).
-2. Tamaño y estratos de la muestra pareada (propuesta: 40 chunks, 8 por estrato).
-3. La regla de `frecuencia` (tablero :74), con la medición de la unidad 9: si los plazos sin
-   cuantía temporal dejan de ir a `frecuencia`, el prefijo lo refleja en el tramo que pide.
-4. Si la salida de E1 para los límites relativos lleva una marca propia o solo el tramo (nota a
-   L-ESQ-R2 §1.5): hoy, solo el tramo, y el código arma el elemento sin valor.
-5. Resuelta el 03/10/2026 por las decisiones D6 a D8 del protocolo entre tandas (decisiones 15 a
-   17): `modelos_r2.py` cambia solo en esos campos y los generados se regeneran.
+DECISIONES ABIERTAS A LA FIRMA: ninguna. Las cuatro del borrador quedaron decididas el 03/10/2026
+(decisiones 18 a 21); el tope de P4 y la regla de `frecuencia` se revisan en el FRENO P1 con las
+estimaciones de P1.c y P1.d y la medición de la unidad 9. Borrador PENDIENTE DE FIRMA.
