@@ -70,7 +70,7 @@ los mentores. La tanda 1 depende de tres condiciones:
 4. El tablero de correcciones (`docs/tablero_correcciones.md`) con la columna
    «después de r2» completa y cada meta cumplida o con su residuo declarado (R28;
    laudo de r2, §3.1, punto 8). Agregada el 29/09/2026. **[30/09/2026]** Con dos
-   columnas: r2a (solo código, antes de re-extraer) y r2b (prompt y re-extracción).
+   columnas: r2a (solo código, antes de re-extraer) y r2b (prompt y re-extracción). **[03/10/2026, estado]** Columna r2a completa en las 26 filas (U-MED-R2A M2, `c50b094`; `docs/tablero_correcciones.md:49-74`): 18 con valor medido, 6 no medibles con su causa (`:56` a `:60` y `:69`) y 2 que exigen el prompt nuevo y remiten a r2b (`:65`, la mención, y `:68`). La columna r2b sigue vacía en las 26 filas hasta U-REEXT-T0: la condición queda cumplida en su mitad r2a, no entera.
 5. **[03/10/2026]** La lista de TOs de la tanda 1 fijada por el criterio de diversidad del
    protocolo entre tandas, `docs/protocolo_entre_tandas.md`, FIRMADO por la autora el 03/10/2026 (borrador en `9eabab0`, firma en `a304b89`), §7 (decisión D5): seis estratos con cuotas 4/4/4/3/3/2 (TOs ya excluidos de
    B6.3 (a), regímenes informativos, más tablas serializadas, más largos, formas de cita nuevas,
