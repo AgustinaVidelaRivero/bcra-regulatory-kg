@@ -1054,3 +1054,15 @@ El texto firmado no se edita; estas notas se leen junto con él.
     y, por ser un plazo, recibe máximo inclusivo con `comparacion_asumida`. Así se lee el texto: el
     horizonte es como mucho 1 año.
   - Lo aplica U-PYD (plan, B2.11, unidad 7) en sus reglas de comparación.
+- **02/10/2026 — §1.5, la «marca» de S18 (decisión de la autora, tras el FRENO R5 de U-R2-CODIGO, `92b45d6`).**
+  - §1.5 reescribe S18 como «Restricción limite_cuantitativo ⇒ lista no vacía o marca» sin definir la
+    marca. La marca es un elemento de umbral sin `valor`, con su `comparacion` y su `base`, para los
+    límites relativos: los que comparan con otra magnitud y no con un número («no podrá exceder el
+    nivel alcanzado durante el mes…», «no supere el monto del aporte oportunamente ingresado…»).
+    `ElementoUmbral` ya admite `valor` nulo (`data/experiment/pyd_r2/code/modelos_r2.py`).
+  - En la prueba r2a de desarrollo, 25 de las 273 Restricciones `limite_cuantitativo` no tienen
+    lista ni umbral guardado (26 de 301 en diez), y ninguna de las 25 tiene cuantía numérica en su
+    descripción (`data/experiment/r2_codigo/r5_freno.md`, §R5; `scripts/shapes_validator.py --perfil r2`).
+  - S18 sigue bloqueante. En r2a el elemento no se puede armar sin el tramo: el NO PASA de S18 sobre
+    la prueba r2a queda declarado y no frena la medición r2a (plan, B2.11, unidad 9). En r2b, E1
+    emite el tramo del límite relativo y el código arma el elemento (plan, unidad 10).
