@@ -329,3 +329,19 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   congela el prefijo. Motivo: la medición de los plazos mandados a `frecuencia` no sale de M1 sino de
   M2.c y M3.d (`UMED_R2A_medicion_r2a.md:138-139`, `:169`), hallazgo de la instancia de esta unidad al
   verificar la precondición sobre `b901f6d`.
+- **03/10/2026 — casos de control fijos de la pareada (decisión de la autora).** En la decisión 19, y en
+  la lista de P4.a que la ejecuta (`:249`), el caso `ric::9.2` pasa a ser `ric::9.2.1`. `ric:9.2` es una
+  de las nueve anclas de las ausencias de D2 de U-PRE-R2-DIAG (`reports/u_pre_r2/d2_ausencias.md:42`),
+  no un chunk: ninguna de las dos E0 de la tanda 0 tiene un chunk con ese id
+  (`data/experiment/reextraccion_v2/e0_chunking/salida_tanda0/chunks_ric.json` y
+  `salida_tanda0_r2/chunks_ric.json`, `f8dedd4`), y la unidad portadora del cuadro de códigos es
+  `ric::9.2.1` (`d2_ausencias.md:138`), que en e0-r2 trae dos tablas serializadas (`ric::tabla022` y
+  `ric::tabla023`). El id equivocado vino de la redacción del mandato, que tomó el ancla como id de
+  chunk sin controlarla contra la E0. Se suma `cap::6.2.2.6` como caso fijo: su tabla (`cap::tabla037`,
+  posicional; `salida_tanda0_r2/chunks_cap.json`) tiene 20 celdas combinadas que E0 no pudo asignar a
+  sus filas, y el bloque deja el 100 % de la columna «entre zonas 1 y 3» en la fila de la banda 2-3 y
+  el 40 % de «entre zonas adyacentes» en las dos filas de subtítulo «Años*», sin marca de a qué filas
+  se aplican. Los casos fijos quedan en cinco: `cap::1.2`, `ric::9.2.1`, `cla::5.1.1.1`, `pro::1.1.2.5`
+  y `cap::6.2.2.6`. Si la pareada muestra en `cap::6.2.2.6` la asociación mal hecha (por ejemplo, el
+  100 % de «entre zonas 1 y 3» atado a la banda 2-3 por la fila donde quedó), esa tabla sale al
+  tratamiento residual por una lista en código.
