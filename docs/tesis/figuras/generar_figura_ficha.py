@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Figura «una ficha de la medición de cobertura» (capítulo 3, sección 3.8), versión 2.
+"""Figura «una ficha de la medición de cobertura» (capítulo 3, sección 3.8), versión 2.1.
 
 Una ficha real del instrumento con el que se midió la cobertura del esquema de
 partida, con las respuestas de la lectura marcadas sobre el texto:
@@ -13,6 +13,9 @@ partida, con las respuestas de la lectura marcadas sobre el texto:
 - en el texto, dos resaltados: en naranja, el párrafo que la lectura registró
   como deformado, con una flecha naranja hasta la entidad que lo representa
   mal; en gris azulado, el tramo que registró como omitido, sin flecha;
+- en la lista de relaciones, la fila de la relación que la lectura registró
+  como parte de la deformación (la que llega a la entidad deformada), en el
+  naranja de la deformación (versión 2.1);
 - abajo, una leyenda de dos líneas con el significado de cada color.
 
 Nada del contenido se tipea ni se supone (FUENTES, con candado de sha256):
@@ -38,15 +41,19 @@ Nada del contenido se tipea ni se supone (FUENTES, con candado de sha256):
   respuesta;
 - el tramo resaltado como omisión es, carácter por carácter, la cita textual
   registrada en la tercera pregunta, y ningún texto de la extracción lo
-  contiene.
+  contiene;
+- la fila en naranja es la de la única relación que llega a la entidad
+  deformada, y la respuesta registrada de la segunda pregunta la nombra
+  («un <predicado> desde <origen> hacia ella»).
 
 Controles, en cada corrida (el script frena si fallan), con las métricas
 reales de Helvetica:
 - contenido: lo dibujado reconstruye cada texto de su fuente, recortes
   incluidos; lo dibujado sobre cada resaltado reconstruye exactamente su
-  tramo, y nada más va sobre un resaltado; ningún texto lleva números de
-  ficha, identificadores de unidad o del documento, nombres de archivo, rutas
-  ni commits;
+  tramo, y nada más va sobre un resaltado; los textos en naranja son
+  exactamente los de la fila de la relación deformada; ningún texto lleva
+  números de ficha, identificadores de unidad o del documento, nombres de
+  archivo, rutas ni commits;
 - textos: ninguno por debajo de 7 pt impresos a 15 cm, fuera del lienzo, fuera
   de la caja o del resaltado que lo contiene, cortado por el borde de otra
   caja o de otro resaltado, superpuesto a otro texto ni tocado por la flecha o
@@ -202,7 +209,7 @@ BORDE = "#999999"                   # borde de los bloques grises y de las entid
 FONDO_BLOQUE = "#f4f6f8"            # bloque gris de la cadena estructural
 TINTA = proc.TINTA                  # texto de la unidad y de la extracción
 TINTA_SUAVE = "#555555"             # herencia, identificadores, rótulos y lugar
-ACENTO = proc.MODELO["borde"]       # naranja: la flecha y la entidad deformada
+ACENTO = proc.MODELO["borde"]       # naranja: la flecha, la entidad y la fila de la relación deformadas
 COLOR = {clave: par for clave, par, _ in LEYENDA}
 BORDE_LEYENDA = "#e2e2e2"           # recuadro de la leyenda (el de la figura de estrategias)
 esc, f = base.esc, base.f
@@ -477,10 +484,26 @@ def resolver():
                     if cita in " ".join(crudo_om[k:k + m])), key=lambda km: (km[1], km[0]))
     linea_om = list(range(linea_om[0], linea_om[0] + linea_om[1]))
 
-    return {"ficha": ficha, "ch": ch, "ext": ext, "parrafos": parrafos,
+    fila_deformacion = fila_relacion_deformada(ext, q2)
+
+    return {"fila_deformacion": fila_deformacion,
+            "ficha": ficha, "ch": ch, "ext": ext, "parrafos": parrafos,
             "citado": citado[0], "omision": (i_om, a_om, b_om), "cita_omision": cita,
             "lineas_omision": linea_om, "portada": portada[:2], "comienzos": comienzos,
             "interlinea": interlinea, "geo_lineas": geo_lineas, "n_regs": len(regs)}
+
+
+def fila_relacion_deformada(ext, q2):
+    """Índice, en la lista de relaciones de la extracción, de la única relación
+    que llega a la entidad deformada; la respuesta registrada de la segunda
+    pregunta tiene que nombrarla («un <predicado> desde <origen> hacia ella»)."""
+    llegan = [i for i, r in enumerate(ext["relations"]) if r.get("target") == ENTIDAD_DEFORMADA]
+    if len(llegan) != 1:
+        freno(f"{len(llegan)} relaciones llegan a la entidad deformada, no una")
+    r = ext["relations"][llegan[0]]
+    if f"un {r['predicate']} desde {r['source']} hacia ella" not in q2["que_produjo"]:
+        freno("la respuesta registrada no nombra la relación que llega a la entidad deformada")
+    return llegan[0]
 
 
 # --------------------------------------------------------------------------- #
@@ -734,11 +757,12 @@ def columna_derecha(partes, T, res, y):
     ancho_des = X_DER + W_DER - x_des
     for i, r in enumerate(ext["relations"]):
         yb = base_linea(y)
-        texto(partes, X_DER, yb, T[("origen", i)], FS, False, TINTA, ("origen", i))
-        texto(partes, x_rel, yb, T[("relacion", i)], FS, False, TINTA, ("relacion", i))
+        tinta = ACENTO if i == res["fila_deformacion"] else TINTA
+        texto(partes, X_DER, yb, T[("origen", i)], FS, False, tinta, ("origen", i))
+        texto(partes, x_rel, yb, T[("relacion", i)], FS, False, tinta, ("relacion", i))
         lin = envolver(T[("destino", i)], ancho_des)
         for j, s in enumerate(lin):
-            texto(partes, x_des, yb + j * IL, s, FS, False, TINTA, ("destino", i))
+            texto(partes, x_des, yb + j * IL, s, FS, False, tinta, ("destino", i))
         n = len(lin)
         if ("propuesto", i) in T:
             ultimo = MEDIR(lin[-1], FS, False)
@@ -904,6 +928,18 @@ def controlar_contenido(T, res):
     if reconstruir(omitido) != res["cita_omision"]:
         fallas.append(f"lo dibujado sobre el resaltado de la omisión ({reconstruir(omitido)!r}) no es "
                       f"la cita registrada ({res['cita_omision']!r})")
+    # Texto en naranja: exactamente la fila de la relación deformada, que se
+    # recalcula desde la extracción y la respuesta registrada (no desde lo
+    # que usó el dibujo).
+    q2 = res["ficha"]["preguntas"]["q2_deformacion"]
+    fila = fila_relacion_deformada(res["ext"], q2)
+    naranja = {r["pieza"] for r in REGISTRO if r["relleno"] == ACENTO}
+    esperado = {(c, fila) for c in ("origen", "relacion", "destino")}
+    if naranja != esperado:
+        fallas.append(f"textos en naranja {sorted(naranja)} ≠ la fila de la relación deformada "
+                      f"{sorted(esperado)}")
+    if any(r["relleno"] != ACENTO for r in REGISTRO if r["pieza"] in esperado):
+        fallas.append("una parte de la fila de la relación deformada no está en naranja")
     claves_om = sorted(k for k in CAJAS if k.startswith("omision"))
     if sorted({r["fondo"] for r in omitido}) != claves_om:
         fallas.append("un resaltado de la omisión no tiene texto encima, o un texto no tiene su resaltado")
@@ -1102,6 +1138,11 @@ def main():
     fallas_registro = controlar_registro(svg)
 
     omitido = [r for r in REGISTRO if (r["fondo"] or "").startswith("omision")]
+    fd = RES["ext"]["relations"][RES["fila_deformacion"]]
+    print(f"FILA EN NARANJA: relación {RES['fila_deformacion'] + 1} de {len(RES['ext']['relations'])}, "
+          f"{fd['source']} {fd['predicate']} {fd.get('target')} (la que llega a la entidad deformada y "
+          f"nombra la respuesta registrada: «un {fd['predicate']} desde {fd['source']} hacia ella»); "
+          f"{sum(1 for r in REGISTRO if r['relleno'] == ACENTO)} textos en {ACENTO}")
     print(f"CONTENIDO: {len(REGISTRO)} textos, {len(T)} piezas; sobre el resaltado de la omisión, "
           f"{len(omitido)} textos en {len({r['fondo'] for r in omitido})} resaltado(s) que "
           f"reconstruyen {reconstruir(omitido)!r}; fallas: {len(fallas_contenido)}")

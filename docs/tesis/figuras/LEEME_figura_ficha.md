@@ -1,4 +1,4 @@
-# figura_ficha — registro de generación (versión 2)
+# figura_ficha — registro de generación (versión 2.1)
 
 Figura «una ficha de la medición de cobertura» para la sección 3.8 de la tesis:
 una ficha real del instrumento con el que se leyó la cobertura del esquema de
@@ -13,7 +13,8 @@ partida, con las respuestas de la lectura marcadas sobre el texto.
   negrita) y su etiqueta, y las nueve relaciones, cada una con su origen, su
   nombre y su destino, en el orden del registro. Sin la salida del validador.
   La entidad `e5` (Operacion, «Formación de grupo económico») lleva borde
-  naranja.
+  naranja, y la fila «e1 regula e5» de la lista de relaciones va en el mismo
+  naranja (versión 2.1).
 - **Deformación, en naranja**: el tercer párrafo, el que la lectura registró
   como deformado, va sobre fondo naranja claro, y una flecha naranja sale del
   borde del texto a su altura, cruza la calle entre las dos columnas y llega a
@@ -40,7 +41,7 @@ lugar y en el título de la unidad.
   `3b10f8634b8acc4aa92bbbe69aaa4378e44d6daecf825fc39af5517a6f91eb85`, PDF
   `4842441b87eb459f1a29351030c77f78dec83802f0783587d88817acbc5ce5bc`, LEEME
   `5873b1389b789d77783a13bc9a57cb2405aae763d079f706e9de219e2600001c`.
-- **Versión 2** (esta, 02/10/2026). Qué cambió:
+- **Versión 2** (02/10/2026, commit `08f318e`). Qué cambió:
   - sale el bloque «Preguntas y respuestas registradas» completo, con sus
     recortes (la cita de la deformación, «por qué no se representa» y la
     tercera pregunta) y su texto propio (título, números, rótulos de los
@@ -57,6 +58,30 @@ lugar y en el título de la unidad.
     (sección 4); las 11 líneas nuevas son esos cuatro textos, los dos
     resaltados de la omisión y los cinco elementos de la leyenda;
   - el alto baja de 22,56 cm a **13,67 cm**.
+
+  sha256 de la versión 2 (commit `08f318e`): generador
+  `c1c77848b22c28c7bd448f7d6b047926721483d6aa8a10480f7367d80935442d`, SVG
+  `42064b88f733e356e198df3d412bc4fb80226273b25ce315cf495b0f5044b489`, PNG
+  `a41e52399a3f45bdc1f6c68691c8ce5634efd13e65a6f5d695b96f8eed5b333c`, PDF
+  `d8e6d5a153bf5a3d6d13d5279e16f2d5dde833f2668fab3be3c76e182d33fb98`, LEEME
+  `f6e6f8c446591f37f9185c7a245a8108d5197284a5b40a65cbde9e25623fcf25`.
+- **Versión 3** (02/10/2026, descartada para la sección 3.8, nunca
+  commiteada): la columna derecha como grafo, con el estilo de
+  `generar_figura_norma_a_grafo.py`. Se descartó porque la figura tiene que
+  mostrar la ficha tal como se leyó, y porque en esa paleta el color de tipo
+  de la Excepcion (`#e07b39`) es el naranja de la deformación. Su generador
+  (sha256 `12c9353a4bc1884d82891bfa3631bde9f6e0578213e8130ad806b28f67d6dc76`)
+  queda fuera del repo, para el capítulo 4.
+- **Versión 2.1** (esta, 02/10/2026): la versión 2 restaurada byte a byte (los
+  cinco archivos de `08f318e`, cotejados con su sha y regenerados: el
+  generador restaurado reproduce el SVG, el PNG y el PDF de la versión 2), con
+  un solo cambio: la fila «e1 regula e5» de la lista de relaciones va en el
+  naranja de la deformación, `#e07b39`, porque la ficha registra esa arista
+  como parte de la deformación (sección 3). Comparados con la versión 2, el
+  SVG difiere solo en las tres líneas de esa fila (96 a 98), y en ellas solo
+  en el color (`fill="#1f1f1f"` pasa a `fill="#e07b39"`); los píxeles
+  distintos del PNG caen todos en la caja de esa fila (unidades 387,2 a 559,5
+  por 552,6 a 565,2 del lienzo). Alto sin cambio, **13,67 cm**.
 
 ## 1. Cómo regenerar
 
@@ -112,7 +137,7 @@ mismo número en el worksheet.
 | excluidos | `data/experiment/esq/documentos_excluidos_esq.json` | `6b4404367a08eddb8a7714bb69e8ab6ea0a16210da742bb9a8d049936fd44e1b` | commit `a7788c1`; declara el sha del PDF en la línea 10 |
 | pdf | `data/experiment/escalado_prep/pdfs/ayccef.pdf` | `aa5e3e43a920c904d47e81526ea4a61ea6b683418a2d4890b3254a029e6de9c5` | fuera de git (`.gitignore:35`); el mismo sha en `escalado_prep/descarga_log.json:71` y `escalado_prep/manifest_pdfs.sha256:8` (commit `111ed19`); portada «Texto ordenado al 15/05/2025», última comunicación «“A” 8242» |
 
-Los ocho archivos son, al correr, iguales a `HEAD` (`79a493c`). El instrumento
+Los ocho archivos son, al correr (21:51), iguales a `HEAD` (`08f318e`); el commit `92b45d6`, hecho en paralelo a las 21:51 durante esta versión, no toca ninguno ni ningún archivo de la figura. El instrumento
 que generó las fichas es `data/experiment/esq/code/fichas_esq2.py` (commit
 `a7788c1`, sha256
 `d4d0341b827d8475f94e6815cf3a98017c50b1ba71de8cd2b8bec659e3603340`); el
@@ -148,13 +173,23 @@ Qué comprueba el script con las fuentes, en cada corrida:
   respuesta registrada de la segunda pregunta (`:6479`): «qué produjo» empieza
   con `e5,` y contiene `Operacion llamada "Formación de grupo económico"`, el
   tipo y la etiqueta de `e5` en la extracción;
+- **la fila en naranja** (versión 2.1; `fila_relacion_deformada`,
+  `generar_figura_ficha.py:496`) es la de la única relación de la extracción
+  que llega a `e5`, la relación 9, `e1` regula `e5`
+  (`worksheet_fichas_esq2.json:6462-6464`), y la respuesta registrada de la
+  segunda pregunta la nombra: «qué produjo», en
+  `data/experiment/esq/cobertura/fichas/worksheet_fichas_esq2.json:6479`
+  (commit `b2e9e90`), dice «más un regula desde e1 hacia ella» (la frase
+  aparece una sola vez en el worksheet). El script busca en esa respuesta
+  «un <predicado> desde <origen> hacia ella» con los datos de la relación y
+  frena si no está;
 - **el tramo resaltado como omisión** (sección 5) es la cita textual
   registrada en la tercera pregunta, carácter por carácter; está una sola vez
   en un solo párrafo, empieza y termina en límite de palabra, no cae en el
   párrafo deformado, y ningún texto de la extracción la contiene ni dice
   «Superintendente»;
 - ningún campo de las respuestas que usa la figura (`CAMPOS_USADOS`,
-  `generar_figura_ficha.py:146`: la marca de la primera pregunta, la firma, la
+  `generar_figura_ficha.py:153`: la marca de la primera pregunta, la firma, la
   cita y «qué produjo» de la segunda, la familia y la cita de la tercera) mide
   entre 1020 y 1023 bytes, la banda de truncamiento que fija
   `fe_erratas_desvios_lectura_esq2.md:122` (commit `eafdb04`). De la ficha 53
@@ -176,7 +211,7 @@ donde no («Superintendente» y el punto que lo sigue).
 |---|---|---|
 | izquierda | cadena estructural «Sección 7. Información especial.» | `worksheet_fichas_esq2.json:6342` = `chunks_ayccef.json:9197`; PDF p. 31, l. 3 |
 | izquierda | título del punto y los tres párrafos | `worksheet_fichas_esq2.json:6337` = `chunks_ayccef.json:9190`; PDF p. 34, l. 45-51 y p. 35, l. 4-12 |
-| izquierda | lugar «Lugar: Autorización y composición del capital de entidades financieras, punto 7.2» | texto propio (`generar_figura_ficha.py:497`); el nombre, de la portada del PDF (p. 1, l. 1-2); el punto, de la unidad |
+| izquierda | lugar «Lugar: Autorización y composición del capital de entidades financieras, punto 7.2» | texto propio (`generar_figura_ficha.py:520`); el nombre, de la portada del PDF (p. 1, l. 1-2); el punto, de la unidad |
 | derecha | entidad `to`, TextoOrdenado, «Información especial — […]» | `worksheet_fichas_esq2.json:6350-6352`, recortada (sección 6) |
 | derecha | entidad `e1`, Obligacion, «Requerimiento — elaboración estados financieros consolidados» | `:6361-6363` |
 | derecha | entidad `e2`, Obligacion, «Presentación a SEFyC — estados financieros consolidados» | `:6372-6374` |
@@ -187,13 +222,13 @@ donde no («Superintendente» y el punto que lo sigue).
 | derecha | relación 6: `e1` aplica_a Sujeto_entidad_financiera (campo `sujeto_id`) | `:6443-6445` |
 | derecha | relación 7: `e3` exceptua_obligacion `e1` | `:6449-6451` |
 | derecha | relación 8: `e4` aplica_a grupos del exterior (campo `sujeto_propuesto`) | `:6455-6457` |
-| derecha | relación 9: `e1` regula `e5` | `:6462-6464` |
-| abajo | leyenda «Deformación: contenido representado con un tipo que no le corresponde» y «Omisión: contenido que quedó sin extraer» | texto propio (`generar_figura_ficha.py:167-170`), el que fija la decisión 5 del mandato de la versión 2 |
+| derecha | relación 9: `e1` regula `e5`, en naranja (versión 2.1) | `:6462-6464`; el naranja, por `:6479` (sección 3) |
+| abajo | leyenda «Deformación: contenido representado con un tipo que no le corresponde» y «Omisión: contenido que quedó sin extraer» | texto propio (`generar_figura_ficha.py:174-176`), el que fija la decisión 5 del mandato de la versión 2 |
 
 Las rutas que empiezan con `:` son líneas de `worksheet_fichas_esq2.json`.
 
 **Texto propio de la figura**, fijo en el generador
-(`generar_figura_ficha.py:161-170` y `:497`): los títulos «Unidad de
+(`generar_figura_ficha.py:168-176` y `:520`): los títulos «Unidad de
 extracción del punto 7.2» (el número sale de la unidad) y «Extracción cruda»;
 los subtítulos «Entidades: identificador, tipo y etiqueta» y «Relaciones:
 origen, nombre y destino»; el agregado «(sujeto propuesto)» detrás del destino
@@ -219,7 +254,7 @@ tal cual, en los párrafos ya unidos: está una sola vez, en el primer párrafo
 (caracteres 417 a 471; la consola lo cuenta como «párrafo 2» porque el bloque
 1 es la línea del título). Lo dibujado sobre los resaltados de la omisión,
 reconstruido en orden, es `'salvo las excepciones que determine el
-Superintendente'`, igual a la cita (`controlar_contenido`, `:882`); nada más va
+Superintendente'`, igual a la cita (`controlar_contenido`, `:906`); nada más va
 sobre esos resaltados y ningún otro texto los toca. Verificación aparte, sobre
 el SVG releído y con las métricas de Helvetica medidas de nuevo: los dos
 rectángulos `#e1e7ee` contienen los textos «salvo las» y «excepciones que
@@ -236,7 +271,7 @@ Superintendente» al comienzo de la siguiente; el punto final queda afuera.
 |---|---|---|
 | etiqueta de la entidad `to` | « ayccef» (al final) | identificador interno del documento |
 
-El recorte está en `RECORTES` (`generar_figura_ficha.py:154`) como la lista de
+El recorte está en `RECORTES` (`generar_figura_ficha.py:161`) como la lista de
 tramos que se conservan; el script comprueba que cada tramo está en la fuente,
 en orden, y que el comienzo y el final son los declarados. Los otros recortes
 de la versión 1 eran del bloque de preguntas, que salió.
@@ -251,8 +286,11 @@ El script frena (`SystemExit`, antes de escribir nada) si:
   piezas en 86 textos); un texto dibujado no tiene pieza; lo que va sobre el
   resaltado naranja no es exactamente el párrafo deformado; lo que va sobre
   los resaltados de la omisión no es, carácter por carácter, la cita
-  registrada; un resaltado de la omisión no tiene texto encima; o un texto
-  lleva algo de `PROHIBIDOS` (`:171`): «ficha», «ayccef», «::», extensiones de
+  registrada; un resaltado de la omisión no tiene texto encima; los textos en
+  naranja no son exactamente los tres de la fila de la relación deformada, que
+  el control vuelve a calcular desde la extracción y la respuesta registrada
+  (no desde lo que usó el dibujo; `:936`), o una parte de esa fila no está en
+  naranja; o un texto lleva algo de `PROHIBIDOS` (`:178`): «ficha», «ayccef», «::», extensiones de
   archivo, nombres de etapa como «E3», «pre-registro», un hexadecimal de 7 a
   40 caracteres, «chunk», «worksheet», «semilla» o «S7»;
 - **textos**, con las métricas reales de Helvetica: un texto por debajo de 7 pt
@@ -271,7 +309,8 @@ El script frena (`SystemExit`, antes de escribir nada) si:
 
 Corrida registrada: 86 textos, 14 cajas (cadena, texto, resaltado naranja, dos
 resaltados de la omisión, seis entidades, recuadro de la leyenda y dos
-muestras), 1 flecha; 0 fallas en los seis controles. Distancias mínimas: texto
+muestras), 1 flecha; 3 textos en `#e07b39` (la fila de la relación 9); 0
+fallas en los seis controles. Distancias mínimas: texto
 a texto 0,1 unidades («Superintendente» y el punto que lo sigue, partes
 contiguas de la misma palabra sin superponerse), texto a la flecha 8,1, texto
 al borde de su caja 5,0. Márgenes mínimos: izquierdo 2,16 mm, superior
@@ -281,7 +320,8 @@ nodos, 1 trazo con flecha, 0 fallas.
 
 Pruebas negativas, fuera del repo (harness en el scratchpad que importa el
 generador, muta en memoria y llama a la composición y a los controles, sin
-exportar): las trece mutaciones frenan.
+exportar): las dieciséis mutaciones frenan (las trece de la versión 2 y tres
+de la 2.1).
 
 | Mutación | Resultado |
 |---|---|
@@ -298,6 +338,9 @@ exportar): las trece mutaciones frenan.
 | **segundo resaltado de la omisión bajado una línea** | 2 fallas: el tramo fuera de su resaltado y el resaltado sobre otra línea |
 | **un tramo de la omisión dibujado fuera de su resaltado** | 3 fallas de contenido y de superposición |
 | **cita de la omisión que no está en el texto** | frena la resolución («aparece 0 veces») |
+| **la fila de exceptua_obligacion en naranja en lugar de la de regula** (2.1) | 2 fallas: textos en naranja de la fila 7, no de la 9 |
+| la palabra regula de su fila sin naranja (2.1) | 2 fallas de la marca |
+| una celda de otra fila en naranja (2.1) | textos en naranja de más |
 
 ## 8. Composición y medidas
 
@@ -328,7 +371,8 @@ a 300 dpi), dentro de los 14 cm buscados.
 Colores, de la paleta compartida: cadena estructural con fondo `#f4f6f8`, borde
 `#999999` y texto `#555555`; texto que se extrae con fondo blanco, borde
 `#4a5a6a` (1,3) y texto `#1f1f1f`; entidades con borde `#999999` (1,0), la
-deformada con borde `#e07b39` (1,6); flecha `#e07b39` (1,6). Los dos
+deformada con borde `#e07b39` (1,6); flecha `#e07b39` (1,6); la fila de la
+relación deformada con texto `#e07b39` (versión 2.1), el mismo naranja. Los dos
 resaltados usan los dos pares de la leyenda de
 `generar_figura_proceso_extraccion.py:91-92` y `:137-138`: el naranja
 (`#fbe3d3` de fondo, `#e07b39` de borde en la muestra) para la deformación y
@@ -339,23 +383,24 @@ omisión. Recuadro de la leyenda blanco, borde `#e2e2e2`, esquinas de 5.
 
 | Archivo | sha256 |
 |---|---|
-| `generar_figura_ficha.py` | `c1c77848b22c28c7bd448f7d6b047926721483d6aa8a10480f7367d80935442d` |
-| `figura_ficha.svg` | `42064b88f733e356e198df3d412bc4fb80226273b25ce315cf495b0f5044b489` |
-| `figura_ficha.png` (1772 × 1615 px, 300 dpi) | `a41e52399a3f45bdc1f6c68691c8ce5634efd13e65a6f5d695b96f8eed5b333c` |
-| `figura_ficha.pdf` (425,2 × 387,5 pt) | `d8e6d5a153bf5a3d6d13d5279e16f2d5dde833f2668fab3be3c76e182d33fb98` |
+| `generar_figura_ficha.py` | `c47d6f618fdeacc75d9a82b5b6cd38078a831455c86c3f8b7d253f9d72866079` |
+| `figura_ficha.svg` | `1c4a0f49c0dfcfa2fbfca158647c305e1dc11aa4c699175eb17761b91a595bc8` |
+| `figura_ficha.png` (1772 × 1615 px, 300 dpi) | `8287f35e0a6f899a7c1ceb2b1a66da9f07779d3e1f2bf18954cf711a7ff1663e` |
+| `figura_ficha.pdf` (425,2 × 387,5 pt) | `f55254eb0c669c3a241e05335796041a48dc79ba2fa1e20b99258d15a25907d6` |
 
 Stream de contenido de la página del PDF, sha256
-`1ccb19169bae421fd6239a3cd567f03f6d939c653a7cf44069357aa60408aa94`;
+`9a63a65bba616e1b717e44747d9ba83c99ddbdb13d778fb7e592ba2dd9bde0a1`;
 `/CreationDate` 01/01/1970, porque el script fija `SOURCE_DATE_EPOCH=0` al
 llamar a `rsvg-convert`, como las figuras hermanas.
 
 Corridas con `--salida` en el scratchpad, con `PYTHONHASHSEED` 0 y 1
-(02/10/2026, 18:35), y una tercera con `PYTHONHASHSEED` 0 a las 18:38: el SVG,
+(02/10/2026, 21:51), y una tercera con `PYTHONHASHSEED` 0 a las 21:52: el SVG,
 el PNG y el PDF salieron idénticos byte a byte a los de la corrida en
 `docs/tesis/figuras/`, y la consola también (salvo las rutas de salida).
 
 Este LEEME cae bajo `.gitignore:180` (`docs/tesis/figuras/*`) sin excepción que
-lo libere, como los LEEME hermanos: entra a git con `git add -f`. El generador,
+lo libere, como los LEEME hermanos: entra a git con `git add -f` (está en git
+desde `08f318e`). El generador,
 el SVG, el PNG y el PDF entran por las excepciones `.gitignore:208`, `:187`,
 `:186` y `:188`.
 
@@ -381,6 +426,13 @@ el SVG, el PNG y el PDF entran por las excepciones `.gitignore:208`, `:187`,
 - **La etiqueta de la entidad del Texto Ordenado** dice «Información especial»,
   que es el título de la sección 7 (PDF p. 31, l. 3), no el nombre del
   documento. Es lo que produjo el extractor y se dibuja así.
+- **El naranja de la fila de regula** es `#e07b39`, el de la flecha y el
+  borde, como pide la versión 2.1. Como texto chico sobre blanco tiene menos
+  contraste que el resto de la lista; la paleta de las figuras hermanas tiene
+  un tono oscurecido del mismo naranja para texto, `#8a4513`
+  (`generar_figura_norma_a_grafo.py:90`), que la figura no usa.
+- **El epígrafe** de la sección 10 es el de la versión 2; no menciona la fila
+  en naranja.
 - **El gris azulado de la omisión** (`#e1e7ee`) es más claro que el naranja de
   la deformación; en pantalla se distingue del blanco y del gris de la cadena
   estructural (`#f4f6f8`), y la muestra de la leyenda lleva borde. Impreso:
