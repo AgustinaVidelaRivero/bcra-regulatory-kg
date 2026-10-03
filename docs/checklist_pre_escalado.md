@@ -78,7 +78,7 @@ los mentores. La tanda 1 depende de tres condiciones:
    por TO y la E0 regenerada con el código vigente. Enmienda la composición de la fila B6.1
    («digeribles, normativa general prioritaria»); motivo declarado: con la regla (a) del protocolo
    (§6), detectar temprano abarata el procedimiento de hallazgo grave (c). Las demás condiciones
-   por tanda son las del protocolo §4.
+   por tanda son las del protocolo §4. **6. [03/10/2026]** Los dos problemas del proceso que la medición de cobertura de ESQ-2 dejó sin resolver quedan corregidos o declarados como límite con su cifra (U-DIAG-PROCESO, plan B2.11, unidad 9b): la pérdida del contenido del encabezado heredado (F1: 5 de 38 fichas azarosas, `data/experiment/esq/cobertura/tabla_resultados_esq2.md:85`) y el vínculo normativo entre unidades sin cita explícita (1 de 38 azarosas más 3 dirigidas, `:92`). Lo que pase por el prompt entra a U-PROMPT-R2 antes de que P2 congele el prefijo; la declaración de límite lleva la tasa de la muestra azarosa con su intervalo.
 
 **Desde el 30/09/2026 la tanda 1 corre sin ventana de corrección** (X3, P19): una
 falla de esquema que revele va a release posterior declarada. Orden de trabajo hasta
