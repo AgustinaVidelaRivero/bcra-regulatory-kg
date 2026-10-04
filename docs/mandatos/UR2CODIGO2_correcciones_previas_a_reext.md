@@ -176,3 +176,42 @@ CRITERIO DE ACEPTACIÓN por etapa:
 - el grep de convenciones, pegado aunque dé vacío.
 
 FRENO al final de cada etapa.
+
+NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen junto con él.
+- **04/10/2026 — firma, cierre de C1 y decisiones de la autora sobre el FRENO C1.** La firma está
+  commiteada en `95dfd98` y C1 en `92dc684` (`data/experiment/r2_codigo2/freno_c1.md`). La revisión
+  reprodujo byte a byte las 15 salidas de C1 sobre una copia del repo. C1 corrige dos supuestos de este
+  texto, que se leen con él:
+  - punto (a): el patrón (1) no crea ninguna `remite_a` falsa en los grafos r2a. Las falsas son 11 en
+    cada grafo y vienen del patrón (2): la cita de `ext::10.4.4` al «punto 10.3.6. del Anexo de la
+    Comunicación A 7914», resuelta contra `ext::10.3.6`;
+  - punto (f): el texto de 4.4, 4.4.1 y 4.4.2 sí está extraído. El PDF de ric lo imprime en la p. 16 con
+    los números 4.3, 4.3.1 y 4.3.2; es un error de numeración de la norma.
+  Decisiones de la autora para C2, las de su «seguí»:
+  1. (a) La regla que propuso C1. Patrón (1): nunca interna; externa si la norma nombrada es un TO del
+     corpus. Patrón (2), Anexo de una Comunicación: irresoluble con su causa propia, y la cita entra al
+     registro de citas a Comunicaciones. Patrón (3): irresoluble.
+  2. (b) Un reintento por unidad, con el mismo pedido y namespace propio (sufijo `-rforma1`), solo con
+     el perfil r2. Sin reparación determinística. Si se agota, la unidad va a una lista declarada.
+  3. (c) Se suman «hs.», «hábil» en singular y «o más». Los ordinales, solo con marcador de comparación
+     («hasta el», «dentro del», «a más tardar»). C2 lista cada elemento de umbral que cambia por «o más».
+     Control: ningún elemento hoy correcto cambia, incluida la base del 25 % de `cap::6.11`.
+     «o más» pegado a la cuantía ya tiene regla desde la calibración de P3 de U-PYD
+     (`git show 57a8dd2:data/experiment/pyd_r2/code/reglas_comparacion.py`, «solo pospuestos y pegados a
+     la cuantía»); lo nuevo es la forma con «o más» entre el paréntesis y la unidad (`freno_c1.md`, §c).
+  4. (d) El contador nuevo, sin las autocitas de encabezado. Las 7 autorreferencias salen del registro
+     de citas: no son citas.
+  5. (e) La clave de la pasada residual queda en el reporte, marcada como retirada, para que
+     `data/experiment/medicion_r2a/m2_medicion.py:294` siga leyéndola.
+  6. (f) ABL: los tres encabezados de la p. 16 de ric se renumeran por una lista explícita, solo para
+     ese bloque, y la unidad guarda el número tal como está impreso, en sus flags, con la corrección
+     declarada. Control: las citas a 4.4.1 y 4.4.2 resuelven; los otros 9 TOs de la tanda 0 y los 152 de
+     la partición no cambian ningún id.
+  7. La salida nueva de e0-r2 es la que lee U-REEXT-T0. La pareada de U-PROMPT-R2 usa la E0 versionada
+     en `f8dedd4`, y lo declara.
+  Escritura que se suma a las de C2: `data/experiment/r2_codigo/selftest_r3.py`, solo para sumar los
+  casos nuevos.
+  La fe de erratas del punto (d) la asienta la revisión, no la unidad
+  (`data/experiment/r2_codigo/reglas_remisiones_postR3.md`, nota del 04/10/2026).
+  C2 arranca cuando P2 de U-PROMPT-R2 esté commiteada (precondición de este mandato); el «seguí» está
+  PENDIENTE de envío.

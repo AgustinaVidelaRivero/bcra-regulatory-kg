@@ -185,3 +185,19 @@ sección.
   f 13; g 1.548, porque antes de (g) la cadena r1 resuelve con el inventario de cinco TOs; h 79. Con los mismos 157
   títulos, (g) resuelve 1.166 de 1.491 menciones de norma. No mido (b), porque la partición no tiene salida de e0-r2
   (agregado 9), ni (i), porque no hay grafo.
+
+## Nota posterior (04/10/2026) — fe de erratas de la cifra de la regla (i)
+
+Las 2.870 «menciones en texto heredado» de la regla (i) (`:102`; medición de `r3d_remisiones.py` en `26d274d`
+sobre KG-Tanda0-Desarrollo-r1, con el texto de e0-r2) incluyen 1.791 que no son citas: son la línea «Sección N.» del
+encabezado heredado, leída como cita de su propia sección. Sin ellas son 1.079. Ninguna de las 1.791 crea arista,
+así que las +22 citas resueltas y las +122 aristas de la regla (i) no cambian.
+
+- Reproducción: `data/experiment/r2_codigo2/c1d_menciones.py --r1-referencias <r1_referencias.py de 26d274d>`
+  (sha256 del módulo, `886f4382…`); salida en `data/experiment/r2_codigo2/salidas/c1d_menciones_26d274d.json`
+  (`92dc684`). La revisión la reprodujo byte a byte sobre una copia.
+- Con el código de HEAD la misma medición da 2.858 menciones, con las mismas 1.791 autocitas
+  (`salidas/c1d_menciones.json`, `r3d_head.desarrollo`).
+- El contador se corrige en el punto (d) de U-R2-CODIGO-2 (`docs/mandatos/UR2CODIGO2_correcciones_previas_a_reext.md`).
+- Citan la cifra de `:102` sin darla por verificada: `reports/u_diag_proceso/anexo_evidencia_u_diag_proceso.md:113`
+  y `data/experiment/medicion_r2a/m3_freno.md:247`.
