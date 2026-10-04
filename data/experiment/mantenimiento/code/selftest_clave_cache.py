@@ -1,34 +1,55 @@
 """
-selftest_clave_cache.py — U-MANT, etapa M1 (b): qué cambio mueve la clave de
-la caché local de E1 y de E3, verificado sin llamar a la API.
+selftest_clave_cache.py — qué cambio mueve la clave de la caché local de E1 y
+de E3, verificado sin llamar a la API. U-MANT, etapa M1 (b), con el perfil
+sellado de la tanda 0 (`v3_b54`); U-TABLA-REPROC lo extiende al perfil `r2b`.
 
 La clave es sha256(namespace + "\\n" + request canónico)
 (data/experiment/evaluacion/llm_cache.py:110-126). Este selftest arma los
-requests con el código real del pipeline —`build_request_kwargs_v3` del perfil
-`v3_b54` para E1 (data/experiment/b54_catalogo_v3/code/prompt_v3_b54.py:524) y
-`prompt_e3.build_request_kwargs` para E3
-(data/experiment/reextraccion_v2/e3_verificador/prompt_e3.py:266)— y calcula
-la clave con `compute_key`, sin importar ni construir ningún cliente de la API.
+requests con el código real del pipeline —el `build_request_kwargs` de cada
+perfil de E1 (`perfil_e1.perfil`: data/experiment/b54_catalogo_v3/code/
+prompt_v3_b54.py:524 en `v3_b54`, data/experiment/reextraccion_v2/
+e1_extractor/prompt_r2b.py:391 en `r2b`) y `prompt_e3.build_request_kwargs`
+para E3 (data/experiment/reextraccion_v2/e3_verificador/prompt_e3.py:352)— y
+calcula la clave con `compute_key`, sin importar ni construir ningún cliente
+de la API.
 
-Tres bloques:
+Perfil sellado (`v3_b54`), los bloques de M1, sin cambios:
 
   A. Anclaje. Las claves recalculadas para las 2.434 unidades de E0 de la
      tanda 0 se buscan en la caché de E1, y las de la primera verificación de
      E3 en la caché de E3. Las dbs se abren en solo lectura
      (`mode=ro&immutable=1`): no se escribe nada en ellas. Si una db no está en
      disco (no se versionan), el bloque queda NO_VERIFICABLE y el resto corre.
-  B. Variaciones, una entrada por vez, sobre una muestra fija de diez unidades
-     de la tanda 0 (una por TO). Cada variación declara qué unidades deberían
-     cambiar de clave en E1 y en E3; el selftest compara contra lo observado.
-     Las variaciones de los catálogos JSON corren en un proceso hijo que
-     redirige la lectura del JSON a una versión alterada EN MEMORIA (ningún
-     archivo se escribe ni se modifica).
+  B. Variaciones V01 a V24, una entrada por vez, sobre una muestra fija de
+     diez unidades de la tanda 0 (una por TO). Cada variación declara qué
+     unidades deberían cambiar de clave en E1 y en E3; el selftest compara
+     contra lo observado. Las variaciones de los catálogos JSON corren en un
+     proceso hijo que redirige la lectura del JSON a una versión alterada EN
+     MEMORIA (ningún archivo se escribe ni se modifica).
+
+Perfil r2b (U-TABLA-REPROC):
+
+  A'. Anclaje sobre las dbs de U-REEXT-T0 (`--salida-r2b`, por defecto
+      corpus_tanda0/salida_r2b). Si esa salida no existe, el bloque queda
+      NO_VERIFICABLE y rige, declarado, el anclaje del perfil sellado
+      (decisión 3 de la autora al firmar el mandato de U-TABLA-REPROC): se
+      corre de nuevo cuando existan las dbs de U-REEXT-T0.
+  B'. Variaciones R00 a R32 sobre una muestra fija de trece unidades de la E0
+      e0-r2 de la tanda 0 (`salida_tanda0_r2b/`): las diez de M1 más tres con
+      tablas serializadas, una de ellas con la herencia recortada. La clave de
+      E3 del perfil r2b necesita una salida de E1 en la forma r2, que todavía
+      no existe: se arma una salida sintética mínima por unidad y se valida con
+      validador_e1 y el esquema del perfil (`validacion_sintetica_r2`). Las
+      variaciones de archivos de datos corren en un proceso hijo que los sirve
+      alterados EN MEMORIA, como en M1.
   C. Contraste fila por fila con la tabla de
      data/experiment/mantenimiento/tabla_reprocesamiento.md: cada fila declara
-     el comportamiento de la clave de E1 y de E3 y las variaciones que la
-     prueban; una discrepancia es FRENO.
+     el comportamiento de la clave de E1 y de E3 del perfil r2b y las
+     variaciones que la prueban; una discrepancia es FRENO. Las variaciones del
+     perfil sellado no tienen fila: se comparan con lo que esperan, que es lo
+     de M1 (`e18d616`).
 
-Uso (desde la raíz del repo):
+Uso (desde la raíz del repo, o de una copia del repo):
   PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B \\
       data/experiment/mantenimiento/code/selftest_clave_cache.py \\
       --out data/experiment/mantenimiento/selftest_clave_cache.json
@@ -100,6 +121,39 @@ MODULOS_SOLO_CODIGO = ("e2_lib", "validador_e1", "ensamblar_corpus",
                        "r1_e5_esqueleto", "r1_referencias", "r1_provenance",
                        "r1_invariantes", "assemble", "manifiesto_corpus")
 
+# ------------------------------------------------------------------------- #
+# Perfil r2b (U-TABLA-REPROC)                                                #
+# ------------------------------------------------------------------------- #
+PERFIL_R2B = "r2b"         # perfil de U-REEXT-T0 y de las tandas (manifiestos/tanda0_10tos_r2b.json)
+# E0 e0-r2 de la tanda 0 con C2 de U-R2-CODIGO-2 (9f6361e); U-REEXT-T0 pasa el
+# manifiesto r2b a este directorio (borrador de su mandato, T1, punto 1).
+E0_TANDA0_R2B = REX / "e0_chunking" / "salida_tanda0_r2b"
+SALIDA_R2B = REX / "corpus_tanda0" / "salida_r2b"   # salida de U-REEXT-T0
+# La muestra de M1 más tres unidades con tablas serializadas por e0-r2: una
+# confiable, una con estructura sin resolver y la única con la herencia
+# recortada en la tanda 0.
+MUESTRA_R2B = MUESTRA + ("ric::3.1.5", "ric::4.4.1", "ric::11.2.3")
+# Las unidades en posición par de la muestra declaran una omisión
+# `meta_normativo` en su salida sintética (variación R30).
+CON_OMISION_R2B = {cid: i % 2 == 0 for i, cid in enumerate(MUESTRA_R2B)}
+SUJETO_SINTETICO = "Sujeto_entidad_financiera"
+UNIDAD_PARTICION = "cap::4.2.1.2"       # la única de la tanda 0 que se puede partir por ítems (R26)
+UNIDAD_TABLA_FORZADA = "ric::3.1.5"     # su primera tabla serializada pasa a residual (R32)
+UNIDAD_CALIBRADOR = "ric::7.1"          # unidad del calibrador CAL-1 de E3 (R22d)
+REEMPLAZOS_R2B = REX / "e1_extractor" / "prompt_r2b_reemplazos.json"
+TABLAS_FORZADAS_R2B = REX / "e1_extractor" / "tablas_residuales_forzadas_r2b.json"
+GENERADOS_R2 = EXP / "catalogo_unico" / "generados_r2"
+ROL_POR_TO_R2 = GENERADOS_R2 / "rol_por_to_r2.json"
+INDICE_E4_R2 = GENERADOS_R2 / "indice_e4_r2.json"
+CATALOGO_R2 = EXP / "catalogo_unico" / "catalogo_sujetos_r2.json"
+CHUNKS_CALIBRADOR = REX / "e0_chunking" / "salida" / "chunks_ric.json"
+PIES_R2B = E0_TANDA0_R2B / "pies_cap.json"
+ARCHIVO_TO_ROL_VARIADO = "TO_clasificacion_deudores_actual.pdf"
+# Además de los de M1: el validador r2 y su política, las reglas de las
+# cuantías y el runner. validador_e1 toma de validador_r2 las correcciones de
+# tipo y predicado al VALIDAR la salida de E1, no al armar los requests.
+MODULOS_SOLO_CODIGO_R2 = MODULOS_SOLO_CODIGO + ("validador_r2", "reglas_comparacion", "runner_corpus")
+
 
 # ------------------------------------------------------------------------- #
 # Utilidades                                                                 #
@@ -112,12 +166,25 @@ def _rutas_import() -> None:
             sys.path.insert(0, str(p))
 
 
+def _ruta_e0() -> None:
+    p = REX / "e0_chunking"
+    if str(p) not in sys.path:
+        sys.path.insert(0, str(p))
+
+
 def sha256_archivo(p: Path) -> str:
     h = hashlib.sha256()
     with p.open("rb") as f:
         for bloque in iter(lambda: f.read(1 << 20), b""):
             h.update(bloque)
     return h.hexdigest()
+
+
+def _rel(p: Path) -> str:
+    try:
+        return str(Path(p).resolve().relative_to(REPO.resolve()))
+    except ValueError:
+        return str(p)
 
 
 def constantes_runner() -> dict:
@@ -159,25 +226,32 @@ def claves_db(db: Path, namespace: str) -> set[str] | None:
 
 
 class Armado:
-    """Arma requests y claves de E1 y E3 con el código del pipeline."""
+    """Arma requests y claves de E1 y E3 con el código del pipeline. `perfil`:
+    el de E1 (por defecto el sellado de la tanda 0). Con `con_e3=False` no
+    importa los módulos de E3 (`cargar_e3` los importa después): así el proceso
+    hijo distingue un candado del prefijo de E3 de uno del perfil de E1."""
 
-    def __init__(self):
+    def __init__(self, perfil: str = PERFIL, con_e3: bool = True):
         _rutas_import()
         import llm_cache as lc
         import perfil_e1
         import cliente_e1
-        import prompt_e3
-        import cliente_e3
         self.lc = lc
         self.perfil_e1 = perfil_e1
         self.cliente_e1 = cliente_e1
-        self.prompt_e3 = prompt_e3
-        self.cliente_e3 = cliente_e3
-        self.pf = perfil_e1.perfil(PERFIL)
+        if con_e3:
+            self.cargar_e3()
+        self.pf = perfil_e1.perfil(perfil)
         k = constantes_runner()
         self.model_e1, self.model_e3 = k["MODEL_E1"], k["MODEL_E3"]
         self.constantes = k
         self.ns_e1 = cliente_e1.namespace_e1(prefijo_hash=self.pf.prefijo_hash_para_namespace)
+
+    def cargar_e3(self) -> None:
+        import prompt_e3
+        import cliente_e3
+        self.prompt_e3 = prompt_e3
+        self.cliente_e3 = cliente_e3
         self.ns_e3 = cliente_e3.namespace_e3()
 
     def kw_e1(self, chunk: dict, **extra) -> dict:
@@ -198,7 +272,8 @@ class Armado:
     @staticmethod
     def hash_prefijo(kw: dict) -> str:
         """Mismo cálculo que PREFIJO_CANONICO_V3 / PREFIJO_HASH_V3
-        (prompt_v3_b54.py:516-520) y prompt_e3.PREFIJO_HASH (prompt_e3.py:213-217)."""
+        (prompt_v3_b54.py:516-520), PREFIJO_HASH_R2B (prompt_r2b.py:133-135)
+        y prompt_e3.PREFIJO_HASH (prompt_e3.py:213-217)."""
         canon = json.dumps({"system": kw["system"], "tools": kw["tools"]},
                            sort_keys=True, ensure_ascii=False, separators=(",", ":"))
         return hashlib.sha256(canon.encode("utf-8")).hexdigest()[:12]
@@ -212,6 +287,51 @@ def cargar_muestra() -> tuple[dict, dict]:
         chunks[cid] = por_id[cid]
         vals[cid] = cargar_validaciones(to).get(cid)
     return chunks, vals
+
+
+# ------------------------------------------------------------------------- #
+# Perfil r2b: muestra y salida sintética de E1 en la forma r2                #
+# ------------------------------------------------------------------------- #
+
+def cargar_chunks_muestra_r2b() -> dict[str, dict]:
+    chunks, por_to = {}, {}
+    for cid in MUESTRA_R2B:
+        to = cid.split("::", 1)[0]
+        if to not in por_to:
+            por_to[to] = {c["id"]: c for c in cargar_chunks(to, E0_TANDA0_R2B)}
+        chunks[cid] = por_to[to][cid]
+    return chunks
+
+
+def crudo_sintetico_r2(c: dict, con_omision: bool) -> dict:
+    """Salida mínima de E1 en la forma r2 para una unidad: el TextoOrdenado,
+    una Obligacion con su tramo (la primera línea del texto propio, hasta 80
+    caracteres), su `establecida_en` y un `aplica_a` con id del catálogo y
+    mención; con `con_omision`, una omisión `meta_normativo`. Es un insumo del
+    armado del request de E3, no una extracción: solo tiene que pasar
+    validador_e1 y ser función de la unidad."""
+    tramo = (c["texto"].split("\n")[0] or c["texto"])[:80]
+    ents = [{"local_id": "to", "type": "TextoOrdenado", "label": c["to"], "punto": c["unidad"], "tramo": tramo},
+            {"local_id": "o", "type": "Obligacion", "label": "Obligación del selftest", "punto": c["unidad"],
+             "tramo": tramo, "properties": {"descripcion": "Descripción del selftest.", "tipo": "otra"}}]
+    rels = [{"source": "o", "predicate": "establecida_en", "target": "to", "punto": c["unidad"]},
+            {"source": "o", "predicate": "aplica_a", "sujeto_id": SUJETO_SINTETICO,
+             "sujeto_mencion": "las entidades", "punto": c["unidad"]}]
+    oms = [{"categoria": "meta_normativo", "tramo": tramo, "nota": "omisión del selftest"}] if con_omision else []
+    return {"entities": ents, "relations": rels, "omisiones": oms}
+
+
+def validacion_sintetica_r2(ar: Armado, c: dict, con_omision: bool) -> dict | None:
+    """La salida sintética validada con validador_e1 y el esquema del perfil
+    (forma r2: correcciones de validador_r2, traducción a la forma que leen E3
+    y el ratchet, `indice_crudo`). None si la validación rechaza la unidad."""
+    import validador_e1
+    v = validador_e1.validar_salida(crudo_sintetico_r2(c, con_omision), c, esquema=ar.pf.esquema).as_dict()
+    return None if any(r["nivel"] == "chunk" for r in v["rechazos"]) else v
+
+
+def validaciones_muestra_r2b(ar: Armado, chunks: dict[str, dict]) -> dict[str, dict | None]:
+    return {cid: validacion_sintetica_r2(ar, chunks[cid], CON_OMISION_R2B[cid]) for cid in MUESTRA_R2B}
 
 
 # ------------------------------------------------------------------------- #
@@ -280,6 +400,82 @@ def bloque_anclaje(ar: Armado) -> dict:
                      "las corridas previas con el mismo namespace; solo se exige "
                      "que las claves calculadas estén"),
         }
+    return out
+
+
+def _jsonl_last_wins(p: Path) -> dict[str, dict]:
+    out: dict[str, dict] = {}
+    if p.exists():
+        for linea in p.read_text(encoding="utf-8").splitlines():
+            if linea.strip():
+                r = json.loads(linea)
+                out[r["chunk_id"]] = r
+    return out
+
+
+def bloque_anclaje_r2b(ar: Armado, salida_r2b: Path) -> dict:
+    """A1r y A3r. E1: la clave de cada unidad de la E0 r2b (con las partes por
+    corte de la salida, si las hay) más las de los reintentos por corte, en el
+    namespace del perfil, y las de los reintentos por forma, en el suyo. E3: la
+    primera verificación de cada unidad aceptada por E1. Sin la salida de
+    U-REEXT-T0 el bloque queda NO_VERIFICABLE (decisión 3 de la autora): se
+    informa igual cuántas claves tiene hoy el namespace r2b en la db."""
+    import comun_e3
+    ns_forma = ar.cliente_e1.namespace_e1(prefijo_hash=ar.pf.prefijo_hash_para_namespace,
+                                          sufijo=ar.cliente_e1.SUFIJO_REINTENTO_FORMA)
+    out: dict = {"namespace_e1": ar.ns_e1, "namespace_e1_reintento_forma": ns_forma,
+                 "namespace_e3": ar.ns_e3, "prefijo_hash_e1": ar.pf.prefijo_hash,
+                 "prefijo_hash_e3": ar.prompt_e3.PREFIJO_HASH,
+                 "e0": _rel(E0_TANDA0_R2B), "salida_u_reext_t0": _rel(salida_r2b)}
+    db1 = claves_db(DB_E1, ar.ns_e1)
+    db1f = claves_db(DB_E1, ns_forma)
+    out["claves_db_e1_en_namespace_r2b"] = None if db1 is None else len(db1)
+    out["claves_db_e1_en_namespace_reintento_forma"] = None if db1f is None else len(db1f)
+    if not salida_r2b.exists():
+        motivo = ("no existe la salida de U-REEXT-T0: el anclaje del perfil r2b se corre cuando exista; "
+                  "rige el del perfil sellado sobre las dbs de la tanda 0 (decisión 3 de la autora)")
+        out["e1"] = {"estado": "NO_VERIFICABLE", "motivo": motivo}
+        out["e3"] = {"estado": "NO_VERIFICABLE", "motivo": motivo}
+        return out
+    calc, calc_forma, pares = set(), set(), []
+    n_unidades = 0
+    for to in TOS_TANDA0:
+        tdir = salida_r2b / to
+        partes_p = tdir / "particiones_por_corte.json"
+        partes = json.loads(partes_p.read_text(encoding="utf-8")) if partes_p.exists() else {}
+        base = cargar_chunks(to, E0_TANDA0_R2B)
+        con_partes = []
+        for c in base:
+            con_partes.extend(partes[c["id"]]["partes"] if c["id"] in partes else [c])
+        por_id = {c["id"]: c for c in base + con_partes}
+        regs = _jsonl_last_wins(tdir / "extracciones_e1.jsonl")
+        for cid, r in regs.items():
+            c = por_id.get(cid)
+            if c is None:
+                continue
+            n_unidades += 1
+            kw = ar.kw_e1(c)
+            calc.add(ar.clave(ar.ns_e1, kw))
+            techo = (r.get("reintento_corte") or {}).get("max_tokens_reintento")
+            if techo:
+                calc.add(ar.clave(ar.ns_e1, dict(kw, max_tokens=techo)))
+            if "reintento_forma" in r:
+                calc_forma.add(ar.clave(ns_forma, dict(kw, max_tokens=techo) if techo else kw))
+        compact = comun_e3.cargar_extracciones(tdir / "extracciones_e1_compact.jsonl") \
+            if (tdir / "extracciones_e1_compact.jsonl").exists() else {}
+        pares += comun_e3.pares_de(con_partes, compact)
+    out["e1"] = {"estado": "OK" if db1 is not None and calc <= db1 and calc_forma <= (db1f or set())
+                 else "DISCREPANCIA",
+                 "registros_e1": n_unidades, "claves_calculadas": len(calc),
+                 "calculadas_presentes_en_db": len(calc & (db1 or set())),
+                 "claves_reintento_forma_calculadas": len(calc_forma),
+                 "reintento_forma_presentes_en_db": len(calc_forma & (db1f or set()))}
+    db3 = claves_db(DB_E3, ar.ns_e3)
+    calc3 = {ar.k_e3(c, v) for c, v in pares}
+    out["e3"] = {"estado": "OK" if db3 is not None and calc3 <= db3 and len(calc3) == len(pares)
+                 else "DISCREPANCIA",
+                 "pares_aceptados_e1": len(pares), "claves_calculadas": len(calc3),
+                 "calculadas_presentes_en_db": len(calc3 & (db3 or set()))}
     return out
 
 
@@ -382,11 +578,12 @@ VARIACIONES_CHUNK = {
 }
 
 
-def correr_variaciones_chunk(ar: Armado, chunks, vals, base_e1, base_e3) -> list[dict]:
+def correr_variaciones_chunk(ar: Armado, chunks, vals, base_e1, base_e3,
+                             muestra: tuple = MUESTRA, variaciones: dict = VARIACIONES_CHUNK) -> list[dict]:
     res = []
-    for vid, (desc, fn, esp1, esp3) in VARIACIONES_CHUNK.items():
+    for vid, (desc, fn, esp1, esp3) in variaciones.items():
         aplica, cambia1, cambia3 = [], [], []
-        for cid in MUESTRA:
+        for cid in muestra:
             r = fn(chunks[cid], vals[cid])
             if r is None:
                 continue
@@ -584,16 +781,17 @@ def variaciones_request(ar: Armado, chunks, vals, base_e1, base_e3) -> list[dict
     return res
 
 
-def variacion_to_nuevo(ar: Armado) -> dict:
-    """V23: una unidad de un TO que la tanda 0 no tiene, armada con el mismo
-    perfil, no está en la caché (miss); las claves de la muestra no dependen
-    de qué otros TOs existan (cada request es función de una sola unidad)."""
+def variacion_to_nuevo(ar: Armado, vid: str = "V23") -> dict:
+    """V23 (R23 con el perfil r2b): una unidad de un TO que la tanda 0 no
+    tiene, armada con el mismo perfil, no está en la caché (miss); las claves
+    de la muestra no dependen de qué otros TOs existan (cada request es función
+    de una sola unidad)."""
     ch = {c["id"]: c for c in cargar_chunks(TO_NUEVO, PARTICION / TO_NUEVO)}
     c = ch[UNIDAD_TO_NUEVO]
     k = ar.k_e1(c)
     db1 = claves_db(DB_E1, ar.ns_e1)
     presente = None if db1 is None else (k in db1)
-    reg = _registro("V23", f"unidad de un TO nuevo ({UNIDAD_TO_NUEVO}, partición b584)",
+    reg = _registro(vid, f"unidad de un TO nuevo ({UNIDAD_TO_NUEVO}, partición b584)",
                     [UNIDAD_TO_NUEVO],
                     esperado_e1=[UNIDAD_TO_NUEVO],
                     cambia_e1=[UNIDAD_TO_NUEVO] if presente is False else [],
@@ -622,14 +820,16 @@ def _renombrar_texto(t: str, mapa: dict[str, str]) -> str:
     return _renombrar_unidad(m.group(1), mapa) + t[m.end():]
 
 
-def variacion_renumeracion(ar: Armado) -> dict:
-    """V24: se incorpora un punto nuevo antes de `insertar_antes_de` en un TO de
-    la tanda 0; los hermanos siguientes y sus descendientes se renumeran (unidad,
-    numeral del texto, unidad de origen y numeral de la herencia). Se cuentan
-    las claves de E1 y E3 que cambian en todo el TO."""
+def variacion_renumeracion(ar: Armado, vid: str = "V24", e0_dir: Path = E0_TANDA0, vals_de=None) -> dict:
+    """V24 (R24 con el perfil r2b y su E0): se incorpora un punto nuevo antes de
+    `insertar_antes_de` en un TO de la tanda 0; los hermanos siguientes y sus
+    descendientes se renumeran (unidad, numeral del texto, unidad de origen y
+    numeral de la herencia). Se cuentan las claves de E1 y E3 que cambian en
+    todo el TO. `vals_de(chunks)`: validaciones por unidad (por defecto, las de
+    E1 de la tanda 0)."""
     to, antes = RENUMERACION["to"], RENUMERACION["insertar_antes_de"]
-    chunks = cargar_chunks(to)
-    vals = cargar_validaciones(to)
+    chunks = cargar_chunks(to, e0_dir)
+    vals = cargar_validaciones(to) if vals_de is None else vals_de(chunks)
     padre, ultimo = antes.rsplit(".", 1)
     nivel = antes.count(".")
     hermanos = set()
@@ -663,13 +863,360 @@ def variacion_renumeracion(ar: Armado) -> dict:
         if c["id"] in vals and ar.k_e3(c2, vals[c["id"]]) != ar.k_e3(c, vals[c["id"]]):
             cambia3.append(c["id"])
     return _registro(
-        "V24", f"punto nuevo antes de {to}::{antes}: renumeración de los hermanos siguientes "
-               "y de sus descendientes", [c["id"] for c in chunks],
+        vid, f"punto nuevo antes de {to}::{antes}: renumeración de los hermanos siguientes "
+             "y de sus descendientes", [c["id"] for c in chunks],
         esperado_e1=esperado, cambia_e1=cambia1, esperado_e3=esperado3, cambia_e3=cambia3,
         universo_e3=sorted(vals),
         extra={"to": to, "unidades_del_to": len(chunks), "puntos_renumerados": mapa,
                "unidades_afectadas_e1": len(esperado), "unidades_afectadas_e3": len(esperado3),
                "unidad_nueva": "1 (sin clave previa: miss)"})
+
+
+# ------------------------------------------------------------------------- #
+# B'. Variaciones del perfil r2b                                             #
+# ------------------------------------------------------------------------- #
+
+def _var_flags_r2(c, v):
+    """Las marcas de contenido tabular de E0 invertidas: `contenido_tabular` y,
+    si la unidad la trae, `contenido_tabular_residual` (prompt_r2b.residual)."""
+    c = copy.deepcopy(c)
+    f = dict(c.get("flags") or {})
+    f["contenido_tabular"] = not f.get("contenido_tabular")
+    if "contenido_tabular_residual" in f:
+        f["contenido_tabular_residual"] = not f["contenido_tabular_residual"]
+    c["flags"] = f
+    return c, v
+
+
+def _var_tabla_meta(c, v):
+    """Metadatos de la primera tabla serializada de e0-r2: una fila de subtítulo más."""
+    ts = (c.get("flags") or {}).get("tablas_e0") or []
+    i = next((k for k, t in enumerate(ts) if t.get("serializada")), None)
+    if i is None:
+        return None
+    c = copy.deepcopy(c)
+    t = c["flags"]["tablas_e0"][i]
+    t["filas_subtitulo"] = (t.get("filas_subtitulo") or 0) + 1
+    return c, v
+
+
+def _var_recorte(c, v):
+    """El recorte de la herencia de e0-r2 (e0_lib.recortar_herencia) con un tope
+    menor que el de TOPE_HERENCIA_E0_R2: U = 1 y B = 40 caracteres. Los
+    encabezados quedan enteros (es la regla del recorte)."""
+    her = c.get("herencia") or []
+    if not any(h["tipo"] != "encabezado" for h in her):
+        return None
+    _ruta_e0()
+    import e0_lib as E0
+    nueva, decl = E0.recortar_herencia(copy.deepcopy(her), E0.lados_por_pagina(her, c.get("paginas") or []), 1, 40)
+    if not decl:
+        return None
+    c = copy.deepcopy(c)
+    c["herencia"] = nueva
+    c["herencia_recortada"] = list(c.get("herencia_recortada") or []) + decl
+    return c, v
+
+
+VARIACIONES_CHUNK_R2B = {
+    # id: (descripción, transformación, E1 esperado, E3 esperado)
+    "R01": ("texto propio de la unidad", _var_texto, True, True),
+    "R02": ("texto de un bloque heredado de tipo encabezado", _var_herencia(False), True, True),
+    "R03": ("texto de un bloque heredado de prosa (intro, cierre, chapeau, intersticial)",
+            _var_herencia(True), True, False),
+    "R04": ("marcas de contenido tabular de E0 invertidas (contenido_tabular y, si está, "
+            "contenido_tabular_residual), mismo texto", _var_flags_r2, True, True),
+    "R04b": ("metadatos de una tabla serializada por e0-r2: una fila de subtítulo más, mismo texto",
+             _var_tabla_meta, True, True),
+    "R05": ("páginas de la unidad y de su herencia, mismo texto", _var_paginas, False, False),
+    "R06": ("id, sha256 y conteos de caracteres de la unidad", _var_metadatos, False, False),
+    "R07": ("número de la unidad (unidad y numeral del texto)", _var_unidad, True, True),
+    "R18": ("salida validada de E1 alterada como lo haría una política por campo",
+            _var_validacion, False, True),
+    "R27": ("recorte de la herencia de e0-r2 con un tope menor (U = 1, B = 40); encabezados enteros",
+            _var_recorte, True, False),
+}
+
+
+def variaciones_request_r2b(ar: Armado, chunks, vals, base_e1, base_e3) -> list[dict]:
+    """Variaciones del request completo con el perfil r2b: prefijo, tool
+    schema, catálogo en el bloque y en el enum, tabla TO→rol en memoria,
+    modelo y parámetros, techo del reintento por corte, versión de código del
+    namespace, prompt y modelo de E3, solo código, reintento por forma,
+    plantilla del mensaje de E1, NOTA del mensaje de E3 y aviso del reintento
+    del ratchet."""
+    res = []
+    M = MUESTRA_R2B
+    todas = list(M)
+    con_e3 = [c for c in M if vals[c] is not None]
+    R = sys.modules["prompt_r2b"]
+
+    def e1_con(mod_kw, ns_fn=None):
+        cambia, hashes = [], set()
+        for cid in M:
+            kw = copy.deepcopy(ar.kw_e1(chunks[cid]))
+            mod_kw(kw)
+            ns = ns_fn(kw) if ns_fn else ar.ns_e1
+            hashes.add(ns)
+            if ar.clave(ns, kw) != base_e1[cid]:
+                cambia.append(cid)
+        return cambia, sorted(hashes)
+
+    def ns_por_prefijo(kw):
+        return ar.lc.make_namespace(ar.cliente_e1.DOMAIN,
+                                    code_ver=f"{ar.cliente_e1.CODE_VER}-p{ar.hash_prefijo(kw)}",
+                                    thinking=False)
+
+    def solo_e1(vid, desc, cambia, esperado=None, extra=None):
+        return _registro(vid, desc, todas, esperado_e1=todas if esperado is None else esperado,
+                         cambia_e1=cambia, esperado_e3=[], cambia_e3=[], universo_e3=con_e3, extra=extra)
+
+    # R08 prefijo de E1 r2b (texto del sistema), con el namespace recalculado.
+    def m08(kw):
+        kw["system"][0]["text"] = kw["system"][0]["text"] + "\n"
+    c, ns = e1_con(m08, ns_por_prefijo)
+    res.append(solo_e1("R08", "prefijo de E1 r2b: un salto de línea al final del texto de sistema", c,
+                       extra={"namespace_nuevo": ns, "namespace_base": ar.ns_e1}))
+
+    # R09 tool schema de E1 r2b.
+    def m09(kw):
+        kw["tools"][0]["description"] = kw["tools"][0].get("description", "") + " "
+    c, ns = e1_con(m09, ns_por_prefijo)
+    res.append(solo_e1("R09", "tool schema de E1 r2b: un espacio al final de la descripción", c,
+                       extra={"namespace_nuevo": ns}))
+
+    # R10 catálogo en el bloque del prefijo r2b; R10b en el enum `sujeto_id`.
+    def m10(kw):
+        t = kw["system"][0]["text"]
+        i = t.index(R.ANCLA_FIN_BLOQUE)
+        kw["system"][0]["text"] = t[:i] + "\nSujeto_variacion_selftest — Variación" + t[i:]
+    c, ns = e1_con(m10, ns_por_prefijo)
+    res.append(solo_e1("R10", "catálogo en el bloque del prefijo r2b: una línea de sujeto más", c,
+                       extra={"namespace_nuevo": ns}))
+
+    def m10b(kw):
+        props = kw["tools"][0]["input_schema"]["properties"]["relations"]["items"]["properties"]
+        props["sujeto_id"]["enum"] = props["sujeto_id"]["enum"] + ["Sujeto_variacion_selftest"]
+    c, ns = e1_con(m10b, ns_por_prefijo)
+    res.append(solo_e1("R10b", "catálogo en el enum `sujeto_id` del tool schema r2b: un id más", c,
+                       extra={"namespace_nuevo": ns}))
+
+    # R11 tabla TO→rol del perfil (rol_por_to_r2.json ya cargado), en memoria:
+    # sin pasar por su candado, que prueba R21.
+    archivo = ARCHIVO_TO_ROL_VARIADO
+    guardado = copy.deepcopy(R.ROL_POR_TO_R2[archivo])
+    try:
+        R.ROL_POR_TO_R2[archivo]["miembros_labels"] = R.ROL_POR_TO_R2[archivo]["miembros_labels"][:-1]
+        c11 = [cid for cid in M if ar.k_e1(chunks[cid]) != base_e1[cid]]
+        c11_e3 = [cid for cid in con_e3 if ar.k_e3(chunks[cid], vals[cid]) != base_e3[cid]]
+    finally:
+        R.ROL_POR_TO_R2[archivo] = guardado
+    esperadas = [c for c in M if chunks[c]["archivo"] == archivo]
+    res.append(_registro("R11", f"tabla TO→rol del perfil r2b en memoria: un miembro menos en el rol de "
+                                f"{TO_ROL_VARIADO}", todas, esperado_e1=esperadas, cambia_e1=c11,
+                         esperado_e3=[], cambia_e3=c11_e3, universo_e3=con_e3))
+
+    # R12 modelo de E1; R13 max_tokens del primer intento; R14 temperature.
+    for vid, desc, mod in (
+            ("R12", "modelo de E1", lambda kw: kw.__setitem__("model", kw["model"] + "-otro")),
+            ("R13", "max_tokens del primer intento de E1", lambda kw: kw.__setitem__("max_tokens", kw["max_tokens"] * 2)),
+            ("R14", "temperature agregada al request de E1", lambda kw: kw.__setitem__("temperature", 0.0))):
+        c, _ = e1_con(mod)
+        res.append(solo_e1(vid, desc, c))
+
+    # R13b techo del reintento por corte del perfil r2 (cliente_e1.py:68): el
+    # request del reintento cambia de clave con el techo; el del primer intento no.
+    t_r2 = ar.cliente_e1.MAX_TOKENS_REINTENTO_CORTE_R2
+    t_otro = ar.cliente_e1.MAX_TOKENS_REINTENTO_CORTE
+    c13b, base_igual, distinto_del_base = [], True, True
+    for cid in M:
+        kw = ar.kw_e1(chunks[cid])
+        k_r2 = ar.clave(ar.ns_e1, dict(kw, max_tokens=t_r2))
+        if k_r2 != ar.clave(ar.ns_e1, dict(kw, max_tokens=t_otro)):
+            c13b.append(cid)
+        base_igual &= ar.clave(ar.ns_e1, kw) == base_e1[cid]
+        distinto_del_base &= k_r2 != base_e1[cid]
+    reg = solo_e1("R13b", f"techo del reintento por corte del perfil r2: {t_r2} → {t_otro}", c13b,
+                  extra={"lectura": "cambia = la clave del request del reintento",
+                         "clave_del_primer_intento_sin_cambio": base_igual,
+                         "reintento_con_clave_distinta_del_primer_intento": distinto_del_base})
+    reg["ok"] = reg["ok"] and base_igual and distinto_del_base
+    res.append(reg)
+
+    # R15 versión de código del cliente (CODE_VER del namespace), request idéntico.
+    ns15 = ar.lc.make_namespace(ar.cliente_e1.DOMAIN,
+                                code_ver=f"{ar.cliente_e1.CODE_VER}-x-p{ar.pf.prefijo_hash}",
+                                thinking=False)
+    c = [cid for cid in M if ar.clave(ns15, ar.kw_e1(chunks[cid])) != base_e1[cid]]
+    res.append(solo_e1("R15", "CODE_VER del namespace de E1, mismo request", c))
+
+    # R16 prompt de E3 (con namespace recalculado); R17 modelo de E3.
+    def e3_con(mod_kw, ns_fn=None):
+        cambia = []
+        for cid in con_e3:
+            kw = copy.deepcopy(ar.kw_e3(chunks[cid], vals[cid]))
+            mod_kw(kw)
+            ns = ns_fn(kw) if ns_fn else ar.ns_e3
+            if ar.clave(ns, kw) != base_e3[cid]:
+                cambia.append(cid)
+        return cambia
+
+    def ns3(kw):
+        return ar.lc.make_namespace(ar.cliente_e3.DOMAIN,
+                                    code_ver=f"{ar.cliente_e3.CODE_VER}-p{ar.hash_prefijo(kw)}",
+                                    thinking=False)
+
+    def m16(kw):
+        kw["system"][0]["text"] = kw["system"][0]["text"] + "\n"
+    c3 = e3_con(m16, ns3)
+    res.append(_registro("R16", "prompt de E3: un salto de línea al final del texto de sistema",
+                         todas, esperado_e1=[], cambia_e1=[], esperado_e3=con_e3,
+                         cambia_e3=c3, universo_e3=con_e3))
+    c3 = e3_con(lambda kw: kw.__setitem__("model", kw["model"] + "-otro"))
+    res.append(_registro("R17", "modelo de E3", todas, esperado_e1=[], cambia_e1=[],
+                         esperado_e3=con_e3, cambia_e3=c3, universo_e3=con_e3))
+
+    # R19 solo código: perfil sin vocabulario de validación ni labels de E2, y
+    # los módulos posteriores al armado de los requests bloqueados.
+    pf_mod = dataclasses.replace(ar.pf, esquema=None, labels_catalogo={})
+    sabotaje = {}
+    for nombre in MODULOS_SOLO_CODIGO_R2:
+        mod = sys.modules.get(nombre)
+        if mod is not None:
+            sabotaje[nombre] = mod
+        sys.modules[nombre] = None
+    try:
+        c19 = [cid for cid in M
+               if ar.clave(ar.ns_e1, pf_mod.build_request_kwargs(chunks[cid], model=ar.model_e1)) != base_e1[cid]]
+        c19_e3 = [cid for cid in con_e3 if ar.k_e3(chunks[cid], vals[cid]) != base_e3[cid]]
+    finally:
+        for nombre in MODULOS_SOLO_CODIGO_R2:
+            if nombre in sabotaje:
+                sys.modules[nombre] = sabotaje[nombre]
+            else:
+                sys.modules.pop(nombre, None)
+    res.append(_registro("R19", "solo código: perfil sin vocabulario del validador ni labels de E2, y módulos "
+                                "de validación, E2, ensamblado, umbrales, remisiones, E4 y esqueleto bloqueados",
+                         todas, esperado_e1=[], cambia_e1=c19, esperado_e3=[], cambia_e3=c19_e3,
+                         universo_e3=con_e3, extra={"modulos_bloqueados": list(MODULOS_SOLO_CODIGO_R2)}))
+
+    # R25 reintento por salida mal formada (cliente_e1.py:74): el mismo request
+    # en el namespace con sufijo; con sufijo vacío, el namespace de siempre.
+    ns_f = ar.cliente_e1.namespace_e1(prefijo_hash=ar.pf.prefijo_hash_para_namespace,
+                                      sufijo=ar.cliente_e1.SUFIJO_REINTENTO_FORMA)
+    ns_0 = ar.cliente_e1.namespace_e1(prefijo_hash=ar.pf.prefijo_hash_para_namespace, sufijo="")
+    c25 = [cid for cid in M if ar.clave(ns_f, ar.kw_e1(chunks[cid])) != base_e1[cid]]
+    reg = solo_e1("R25", "reintento por salida mal formada: el mismo request en el namespace del reintento", c25,
+                  extra={"namespace_reintento_forma": ns_f,
+                         "namespace_con_sufijo_vacio_igual_al_base": ns_0 == ar.ns_e1,
+                         "lectura": "cambia = la clave del reintento no es la del primer intento"})
+    reg["ok"] = reg["ok"] and ns_0 == ar.ns_e1
+    res.append(reg)
+
+    # R29 plantilla del mensaje de E1, línea condicional: la del ítem de una
+    # lista (regla g de P3b); R29b línea presente en todo mensaje (el cierre).
+    linea = R.LINEA_ITEM
+    try:
+        R.LINEA_ITEM = linea + " "
+        c29 = [cid for cid in M if ar.k_e1(chunks[cid]) != base_e1[cid]]
+        c29_e3 = [cid for cid in con_e3 if ar.k_e3(chunks[cid], vals[cid]) != base_e3[cid]]
+    finally:
+        R.LINEA_ITEM = linea
+    items = [cid for cid in M if R.es_item(chunks[cid])]
+    res.append(_registro("R29", "mensaje de E1 r2b: un espacio al final de la línea del ítem de una lista",
+                         todas, esperado_e1=items, cambia_e1=c29, esperado_e3=[], cambia_e3=c29_e3,
+                         universo_e3=con_e3))
+
+    def m29b(kw):
+        kw["messages"][0]["content"] = kw["messages"][0]["content"] + " "
+    c, ns = e1_con(m29b)
+    res.append(solo_e1("R29b", "mensaje de E1 r2b: un espacio al final de la línea de cierre (todo mensaje)", c,
+                       extra={"namespace": ns, "namespace_sin_cambio": ns == [ar.ns_e1]}))
+
+    # R30 NOTA del mensaje de E3 de las omisiones de esquema (P3b, punto i).
+    nota = ar.prompt_e3.NOTA_E3_OMISIONES
+    try:
+        ar.prompt_e3.NOTA_E3_OMISIONES = nota + " "
+        c30 = [cid for cid in M if ar.k_e1(chunks[cid]) != base_e1[cid]]
+        c30_e3 = [cid for cid in con_e3 if ar.k_e3(chunks[cid], vals[cid]) != base_e3[cid]]
+    finally:
+        ar.prompt_e3.NOTA_E3_OMISIONES = nota
+    con_nota = [cid for cid in con_e3 if CON_OMISION_R2B[cid]]
+    res.append(_registro("R30", "NOTA del mensaje de E3 de las omisiones de esquema: un espacio al final",
+                         todas, esperado_e1=[], cambia_e1=c30, esperado_e3=con_nota, cambia_e3=c30_e3,
+                         universo_e3=con_e3, extra={"namespace_e3": ar.ns_e3}))
+
+    # R31 lazo de E3: el aviso del feedback del reintento (P3b, defensa 1). El
+    # request del reintento del ratchet cambia; el primer intento de E1 y la
+    # primera verificación de E3, no.
+    import ratchet_e3
+    aviso = ratchet_e3.AVISO_NOTA_REINTENTO
+
+    def k_reintento(cid):
+        c = chunks[cid]
+        falt = [{"tipo": "otro", "cita_textual_del_fuente": c["texto"][:40], "ubicacion": c["unidad"],
+                 "severidad": "alta", "nota": "faltante del selftest"}]
+        kw = ratchet_e3.build_reextraccion_kwargs(c, falt, model=ar.model_e1, intento=1,
+                                                  max_tokens_reintento=ar.constantes["MAX_TOKENS_REINTENTO"],
+                                                  perfil=ar.pf)
+        return ar.clave(ar.ns_e1, kw)
+    antes = {cid: k_reintento(cid) for cid in M}
+    try:
+        ratchet_e3.AVISO_NOTA_REINTENTO = aviso + " "
+        c31 = [cid for cid in M if k_reintento(cid) != antes[cid]]
+        base31 = all(ar.k_e1(chunks[cid]) == base_e1[cid] for cid in M)
+        c31_e3 = [cid for cid in con_e3 if ar.k_e3(chunks[cid], vals[cid]) != base_e3[cid]]
+    finally:
+        ratchet_e3.AVISO_NOTA_REINTENTO = aviso
+    reg = _registro("R31", "lazo de E3: un espacio al final del aviso del feedback del reintento",
+                    todas, esperado_e1=todas, cambia_e1=c31, esperado_e3=[], cambia_e3=c31_e3,
+                    universo_e3=con_e3,
+                    extra={"lectura": "cambia = la clave del request de re-extracción del ratchet",
+                           "clave_del_primer_intento_sin_cambio": base31})
+    reg["ok"] = reg["ok"] and base31
+    res.append(reg)
+    return res
+
+
+def variacion_particion_r2b(ar: Armado) -> dict:
+    """R26: la partición por corte (correr_e0.particionar_por_corte, perfil r2)
+    de la unidad grande de la tanda 0 que se puede partir por ítems. Cada parte
+    tiene su propia clave de E1 y de E3, distinta de la de la unidad entera y de
+    las demás partes; la unidad entera conserva la suya."""
+    _ruta_e0()
+    import correr_e0
+    c = {x["id"]: x for x in cargar_chunks(UNIDAD_PARTICION.split("::")[0], E0_TANDA0_R2B)}[UNIDAD_PARTICION]
+    partes, info = correr_e0.particionar_por_corte(c)
+    if not partes:
+        reg = _registro("R26", f"partición por corte de {UNIDAD_PARTICION}", [UNIDAD_PARTICION],
+                        esperado_e1=[], cambia_e1=[], esperado_e3=[], cambia_e3=[], extra={"informe": info})
+        reg["e1"]["token"] = reg["e3"]["token"] = "NO_VERIFICABLE"
+        return reg
+    k_entera = ar.k_e1(c)
+    v_entera = validacion_sintetica_r2(ar, c, False)
+    k3_entera = ar.k_e3(c, v_entera) if v_entera is not None else None
+    k1 = {p["id"]: ar.k_e1(p) for p in partes}
+    vals = {p["id"]: validacion_sintetica_r2(ar, p, False) for p in partes}
+    k3 = {pid: ar.k_e3(p, vals[pid]) for p in partes for pid in [p["id"]] if vals[pid] is not None}
+    ids = [p["id"] for p in partes]
+    cambia1 = [pid for pid in ids if k1[pid] != k_entera and list(k1.values()).count(k1[pid]) == 1]
+    cambia3 = [pid for pid in k3 if k3[pid] != k3_entera and list(k3.values()).count(k3[pid]) == 1]
+    return _registro("R26", f"partición por corte de {UNIDAD_PARTICION} en {len(partes)} partes", ids,
+                     esperado_e1=ids, cambia_e1=cambia1, esperado_e3=sorted(k3), cambia_e3=cambia3,
+                     universo_e3=sorted(k3),
+                     extra={"informe": info, "lectura": "cambia = cada parte tiene clave propia (miss)",
+                            "clave_de_la_unidad_entera_sin_cambio": ar.k_e1(c) == k_entera})
+
+
+def _vals_sinteticas_to(ar: Armado):
+    def f(chunks):
+        out = {}
+        for c in chunks:
+            v = validacion_sintetica_r2(ar, c, False)
+            if v is not None:
+                out[c["id"]] = v
+        return out
+    return f
 
 
 # ------------------------------------------------------------------------- #
@@ -726,17 +1273,79 @@ def _alterar(variante: str) -> dict[str, str]:
                 cambiados += 1
         assert cambiados == 1, cambiados
         return {str(JSON_V2.resolve()): json.dumps(d, ensure_ascii=False, indent=1)}
-    if variante == "V22":          # JSON v2: un alias más en una clase
+    if variante in ("V22", "R22"):  # JSON v2: un alias más en una clase
         d = json.loads(JSON_V2.read_text(encoding="utf-8"))
         cl = next(c for c in d["clases"] if c["id"] == "Sujeto_entidad_financiera")
         cl["alias"] = list(cl.get("alias") or []) + ["variación del selftest"]
         return {str(JSON_V2.resolve()): json.dumps(d, ensure_ascii=False, indent=1)}
-    if variante == "inventario":
+    if variante in ("inventario", "inventario_r2b"):
         return {}
+    if variante == "R20":          # catálogo de resolución que lee el código: una entrada más en el índice de E4
+        d = json.loads(INDICE_E4_R2.read_text(encoding="utf-8"))
+        d.append(["alias_exacto", "variacion del selftest", "Sujeto_entidad_financiera"])
+        return {str(INDICE_E4_R2.resolve()): json.dumps(d, ensure_ascii=False, indent=1)}
+    if variante == "R21":          # rol_por_to_r2.json: un miembro menos en el rol de cla
+        d = json.loads(ROL_POR_TO_R2.read_text(encoding="utf-8"))
+        d[ARCHIVO_TO_ROL_VARIADO]["miembros_labels"] = d[ARCHIVO_TO_ROL_VARIADO]["miembros_labels"][:-1]
+        return {str(ROL_POR_TO_R2.resolve()): json.dumps(d, ensure_ascii=False, indent=1)}
+    if variante == "R22b":         # reemplazos anclados del prefijo r2b: una clave más
+        d = json.loads(REEMPLAZOS_R2B.read_text(encoding="utf-8"))
+        d["variacion_selftest"] = True
+        return {str(REEMPLAZOS_R2B.resolve()): json.dumps(d, ensure_ascii=False, indent=1)}
+    if variante == "R22c":         # catálogo de sujetos r2: un id más
+        d = json.loads(CATALOGO_R2.read_text(encoding="utf-8"))
+        nuevo = copy.deepcopy(d["sujetos"][0])
+        nuevo["id"] = "Sujeto_variacion_selftest"
+        d["sujetos"].append(nuevo)
+        return {str(CATALOGO_R2.resolve()): json.dumps(d, ensure_ascii=False, indent=1)}
+    if variante == "R22d":         # calibrador CAL-1 de E3: un espacio al final del texto de su unidad
+        d = json.loads(CHUNKS_CALIBRADOR.read_text(encoding="utf-8"))
+        n = 0
+        for c in d:
+            if c["id"] == UNIDAD_CALIBRADOR:
+                c["texto"] = c["texto"] + " "
+                n += 1
+        assert n == 1, n
+        return {str(CHUNKS_CALIBRADOR.resolve()): json.dumps(d, ensure_ascii=False, indent=1)}
+    if variante == "R28":          # pies de cap: otra versión vigente
+        d = json.loads(PIES_R2B.read_text(encoding="utf-8"))
+        d["version_vigente"]["valor"] = d["version_vigente"]["valor"] + " (variación del selftest)"
+        return {str(PIES_R2B.resolve()): json.dumps(d, ensure_ascii=False, indent=1)}
+    if variante == "R32":          # lista de tablas forzadas a residual: un alta
+        d = json.loads(TABLAS_FORZADAS_R2B.read_text(encoding="utf-8"))
+        d["tablas"].append({"tabla": tabla_forzada_r2b(), "motivo": "variación del selftest",
+                            "fecha": "variación en memoria"})
+        return {str(TABLAS_FORZADAS_R2B.resolve()): json.dumps(d, ensure_ascii=False, indent=1)}
     raise ValueError(variante)
 
 
+def tabla_forzada_r2b() -> str:
+    """Id de la primera tabla serializada de UNIDAD_TABLA_FORZADA en la E0 r2b."""
+    c = {x["id"]: x for x in cargar_chunks(UNIDAD_TABLA_FORZADA.split("::")[0], E0_TANDA0_R2B)}[UNIDAD_TABLA_FORZADA]
+    return next(t["tabla"] for t in c["flags"]["tablas_e0"] if t.get("serializada"))
+
+
+VARIANTES_HIJO_R2B = ("inventario_r2b", "R20", "R21", "R22", "R22b", "R22c", "R22d", "R28", "R32")
+
+
+def _datos_del_repo(conj: set[str]) -> list[str]:
+    repo = str(REPO.resolve())
+    return sorted(os.path.relpath(p, repo) for p in conj
+                  if p.startswith(repo) and "__pycache__" not in p
+                  and "/.venv/" not in p and not p.endswith(".py"))
+
+
+def _modulos_del_repo() -> set[str]:
+    repo = str(REPO.resolve())
+    return {os.path.relpath(str(Path(m.__file__).resolve()), repo)
+            for m in list(sys.modules.values())
+            if getattr(m, "__file__", None) and str(Path(m.__file__).resolve()).startswith(repo)
+            and ".venv" not in m.__file__}
+
+
 def main_hijo(variante: str) -> int:
+    if variante in VARIANTES_HIJO_R2B:
+        return main_hijo_r2b(variante)
     redir = _alterar(variante)
     leidos: set[str] = set()
     _instalar_redireccion(redir, leidos)
@@ -771,6 +1380,63 @@ def main_hijo(variante: str) -> int:
         if getattr(m, "__file__", None) and str(Path(m.__file__).resolve()).startswith(repo)
         and ".venv" not in m.__file__)
     out["modulos_del_repo_cargados"] = modulos
+    print(json.dumps(out, ensure_ascii=False, sort_keys=True))
+    return 0
+
+
+def main_hijo_r2b(variante: str) -> int:
+    """Proceso hijo del perfil r2b: arma E1 y, aparte, E3, para distinguir un
+    candado del perfil de E1 de uno del prefijo de E3. Registra los archivos
+    de datos leídos en cada fase (muestra, perfil de E1, módulos de E3,
+    validación de la salida sintética y armado de los requests) y los módulos
+    del repo cargados al armar y al validar."""
+    redir = _alterar(variante)
+    leidos: set[str] = set()
+    _instalar_redireccion(redir, leidos)
+    out: dict = {"variante": variante}
+    chunks = cargar_chunks_muestra_r2b()
+    f_muestra = set(leidos)
+    ar = None
+    try:
+        ar = Armado(PERFIL_R2B, con_e3=False)
+        out["estado_e1"] = "armado"
+        out["e1"] = {cid: ar.k_e1(chunks[cid]) for cid in MUESTRA_R2B}
+    except Exception as exc:  # noqa: BLE001 — se reporta: el candado frena
+        out["estado_e1"] = "frena"
+        out["error_e1"] = f"{type(exc).__name__}: {str(exc)[:300]}"
+    f_e1 = set(leidos)
+    mods_e1 = _modulos_del_repo()
+    f_e3mod = f_val = f_req = f_e1
+    mods_val = mods_req = mods_e1
+    if ar is None:
+        out["estado_e3"] = "frena"
+        out["error_e3"] = "sin el perfil de E1 no hay salida validada de E1 en la forma r2"
+    else:
+        try:
+            ar.cargar_e3()
+            f_e3mod = set(leidos)
+            mods_e3mod = _modulos_del_repo()
+            vals = validaciones_muestra_r2b(ar, chunks)
+            f_val = set(leidos)
+            mods_val = _modulos_del_repo()
+            out["e3"] = {cid: ar.k_e3(chunks[cid], vals[cid]) for cid in MUESTRA_R2B if vals[cid] is not None}
+            f_req = set(leidos)
+            mods_req = _modulos_del_repo()
+            out["estado_e3"] = "armado"
+            out["modulos_cargados_al_armar"] = sorted(mods_e3mod | (mods_req - mods_val))
+            out["modulos_cargados_al_validar"] = sorted(mods_val - mods_e3mod)
+        except Exception as exc:  # noqa: BLE001 — se reporta: el candado frena
+            out["estado_e3"] = "frena"
+            out["error_e3"] = f"{type(exc).__name__}: {str(exc)[:300]}"
+    repo = str(REPO.resolve())
+    out["datos_leidos"] = {
+        "al_cargar_la_muestra": _datos_del_repo(f_muestra),
+        "al_construir_el_perfil_de_e1": _datos_del_repo(f_e1 - f_muestra),
+        "al_importar_e3": _datos_del_repo(f_e3mod - f_e1),
+        "al_validar_la_salida_de_e1": _datos_del_repo(f_val - f_e3mod),
+        "al_armar_los_requests_de_e3": _datos_del_repo(f_req - f_val),
+    }
+    out["json_redirigido_leido"] = {os.path.relpath(p, repo): (p in leidos) for p in redir}
     print(json.dumps(out, ensure_ascii=False, sort_keys=True))
     return 0
 
@@ -829,12 +1495,84 @@ def variaciones_json(base_e1, base_e3, vals) -> tuple[list[dict], dict]:
     return res, inventario
 
 
+def _lado(esperado, estado: str | None, base: dict, observado: dict | None, universo: list) -> dict:
+    """Token de un lado (E1 o E3) de una variación del hijo r2b. `esperado`:
+    "frena" o la lista de unidades que deben cambiar de clave."""
+    if estado == "frena":
+        ok = esperado == "frena"
+        return {"esperado": esperado, "observado": "frena", "token": "frena" if ok else "DISCREPANCIA", "ok": ok}
+    if estado != "armado" or observado is None:
+        return {"esperado": esperado, "observado": estado, "token": "DISCREPANCIA", "ok": False}
+    cambia = sorted(c for c in universo if observado.get(c) != base.get(c))
+    if esperado == "frena":
+        return {"esperado": "frena", "observadas_que_cambian": cambia, "token": "DISCREPANCIA", "ok": False}
+    ok = sorted(esperado) == cambia
+    return {"esperadas_que_cambian": sorted(esperado), "observadas_que_cambian": cambia,
+            "universo": sorted(universo), "token": _token(esperado, cambia, ok), "ok": ok}
+
+
+def variaciones_json_r2b(base_e1, base_e3, vals, chunks) -> tuple[list[dict], dict]:
+    """R00 (control del hijo), R20, R21, R22, R22b, R22c, R22d, R28 y R32."""
+    M = list(MUESTRA_R2B)
+    con_e3 = [c for c in M if vals[c] is not None]
+    tabla = tabla_forzada_r2b()
+    con_tabla = [c for c in M if any(t.get("tabla") == tabla and t.get("serializada")
+                                     for t in (chunks[c].get("flags") or {}).get("tablas_e0") or [])]
+    especificaciones = (
+        ("R00", "control: sin alteración, otro proceso arma la misma clave", [], []),
+        ("R20", "catálogo de resolución que lee solo el código (indice_e4_r2.json): una entrada más", [], []),
+        ("R21", "rol_por_to_r2.json: un miembro menos en el rol de cla", "frena", "frena"),
+        ("R22", "JSON v2 (esquema_v2_clases.json): un alias más en Sujeto_entidad_financiera", "frena", "frena"),
+        ("R22b", "reemplazos anclados del prefijo r2b (prompt_r2b_reemplazos.json): una clave más", "frena", "frena"),
+        ("R22c", "catálogo de sujetos r2 (catalogo_sujetos_r2.json): un id más", "frena", "frena"),
+        ("R22d", f"calibrador CAL-1 de E3: un espacio al final del texto de {UNIDAD_CALIBRADOR} "
+                 "(e0_chunking/salida/chunks_ric.json)", [], "frena"),
+        ("R28", "pies de cap (pies_cap.json de la E0 r2b): otra versión vigente", [], []),
+        ("R32", f"lista de tablas forzadas a residual: alta de la tabla {tabla}", con_tabla,
+         [c for c in con_tabla if c in con_e3]),
+    )
+    res, inv = [], None
+    for vid, desc, esp1, esp3 in especificaciones:
+        h = correr_hijo("inventario_r2b" if vid == "R00" else vid)
+        if vid == "R00":
+            inv = h
+        if h.get("estado") == "error_hijo":
+            res.append({"id": vid, "descripcion": desc, "e1": {"token": "DISCREPANCIA", "ok": False},
+                        "e3": {"token": "DISCREPANCIA", "ok": False}, "ok": False, "detalle": h})
+            continue
+        l1 = _lado(esp1, h.get("estado_e1"), base_e1, h.get("e1"), M)
+        l3 = _lado(esp3, h.get("estado_e3"), base_e3, h.get("e3"), con_e3)
+        reg = {"id": vid, "descripcion": desc, "unidades_aplicables": M, "e1": l1, "e3": l3,
+               "ok": l1["ok"] and l3["ok"]}
+        detalle = {k: h[k] for k in ("error_e1", "error_e3") if k in h}
+        if h.get("json_redirigido_leido"):
+            detalle["json_redirigido_leido"] = h["json_redirigido_leido"]
+        if vid == "R32":
+            detalle["tabla"] = tabla
+        if detalle:
+            reg["detalle"] = detalle
+        res.append(reg)
+    inv = inv or {}
+    cargados = {Path(m).stem for m in inv.get("modulos_cargados_al_armar") or []}
+    inventario = {
+        "control_reproduce_claves_del_padre": inv.get("e1") == base_e1 and inv.get("e3") == base_e3,
+        "datos_leidos": inv.get("datos_leidos"),
+        "modulos_cargados_al_armar": inv.get("modulos_cargados_al_armar"),
+        "modulos_cargados_al_validar": inv.get("modulos_cargados_al_validar"),
+        "modulos_solo_codigo_cargados_al_armar": sorted(cargados & set(MODULOS_SOLO_CODIGO_R2)),
+    }
+    return res, inventario
+
+
 # ------------------------------------------------------------------------- #
 # C. Contraste con la tabla                                                  #
 # ------------------------------------------------------------------------- #
 
 COLUMNAS = ("fila", "cambio", "entra", "recomputa", "e1", "e3", "clase",
             "principio", "ancla", "variaciones")
+# Ids que cita la columna de variaciones: las del perfil r2b (R..), y los
+# anclajes del perfil sellado (A1, A3) y del perfil r2b (A1r, A3r).
+RE_IDS_TABLA = re.compile(r"\bR\d{2}[a-z]?\b|\bA[13]r?\b")
 
 
 def leer_tabla(md: Path) -> list[dict]:
@@ -850,7 +1588,11 @@ def leer_tabla(md: Path) -> list[dict]:
     return filas
 
 
-def contraste(md: Path, variaciones: list[dict], anclaje: dict) -> dict:
+def contraste(md: Path, variaciones: list[dict], anclajes: dict[str, dict]) -> dict:
+    """Cada fila con sus variaciones del perfil r2b: el primer token de las
+    celdas «Clave E1» y «Clave E3» tiene que coincidir con el de la variación.
+    `anclajes`: id → bloque con «estado» (A1, A3 del perfil sellado; A1r, A3r
+    del perfil r2b). Toda variación del perfil r2b tiene que tener fila."""
     if not md.exists():
         return {"estado": "PENDIENTE", "motivo": "tabla aún no escrita"}
     por_id = {v["id"]: v for v in variaciones}
@@ -859,14 +1601,14 @@ def contraste(md: Path, variaciones: list[dict], anclaje: dict) -> dict:
         if "error" in f:
             discrepancias.append(f)
             continue
-        ids = re.findall(r"V\d{2}b?|A[13]", f["variaciones"])
+        ids = RE_IDS_TABLA.findall(f["variaciones"])
         if not ids:
             discrepancias.append({"fila": f["fila"], "motivo": "sin variación del selftest"})
         obs = []
         for i in ids:
             usados.add(i)
-            if i in ("A1", "A3"):
-                est = anclaje["e1" if i == "A1" else "e3"]["estado"]
+            if i in anclajes:
+                est = anclajes[i]["estado"]
                 obs.append({"variacion": i, "anclaje": est})
                 if est == "DISCREPANCIA":
                     discrepancias.append({"fila": f["fila"], "variacion": i, "anclaje": est})
@@ -903,14 +1645,23 @@ def _norm(celda: str) -> str:
 # main                                                                       #
 # ------------------------------------------------------------------------- #
 
+def _imprimir(variaciones: list[dict]) -> None:
+    for v in variaciones:
+        print(f"{v['id']:5s} e1={v['e1']['token']:<14s} e3={v['e3']['token']:<14s} "
+              f"{'OK ' if v['ok'] else 'MAL'} {v['descripcion']}")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--hijo", default=None)
     ap.add_argument("--out", default=None)
+    ap.add_argument("--salida-r2b", type=Path, default=SALIDA_R2B,
+                    help="salida de U-REEXT-T0 para el anclaje del perfil r2b (por defecto corpus_tanda0/salida_r2b)")
     a = ap.parse_args()
     if a.hijo:
         return main_hijo(a.hijo)
 
+    # Perfil sellado (v3_b54): los bloques de M1, sin cambios.
     ar = Armado()
     chunks, vals = cargar_muestra()
     base_e1 = {cid: ar.k_e1(chunks[cid]) for cid in MUESTRA}
@@ -927,8 +1678,27 @@ def main() -> int:
     ok_inv = inventario["control_reproduce_claves_del_padre"] \
         and not inventario["modulos_solo_codigo_cargados"]
 
+    # Perfil r2b.
+    ar2 = Armado(PERFIL_R2B)
+    chunks2 = cargar_chunks_muestra_r2b()
+    vals2 = validaciones_muestra_r2b(ar2, chunks2)
+    base2_e1 = {cid: ar2.k_e1(chunks2[cid]) for cid in MUESTRA_R2B}
+    base2_e3 = {cid: ar2.k_e3(chunks2[cid], vals2[cid]) for cid in MUESTRA_R2B if vals2[cid] is not None}
+    anclaje2 = bloque_anclaje_r2b(ar2, a.salida_r2b)
+    var2 = correr_variaciones_chunk(ar2, chunks2, vals2, base2_e1, base2_e3,
+                                    muestra=MUESTRA_R2B, variaciones=VARIACIONES_CHUNK_R2B)
+    var2 += variaciones_request_r2b(ar2, chunks2, vals2, base2_e1, base2_e3)
+    vj2, inventario2 = variaciones_json_r2b(base2_e1, base2_e3, vals2, chunks2)
+    var2 += vj2
+    var2.append(variacion_to_nuevo(ar2, vid="R23"))
+    var2.append(variacion_renumeracion(ar2, vid="R24", e0_dir=E0_TANDA0_R2B, vals_de=_vals_sinteticas_to(ar2)))
+    var2.append(variacion_particion_r2b(ar2))
+    var2.sort(key=lambda v: (int(re.match(r"R(\d+)", v["id"]).group(1)), v["id"]))
+    ok_inv2 = inventario2["control_reproduce_claves_del_padre"] \
+        and not inventario2["modulos_solo_codigo_cargados_al_armar"]
+
     resultado = {
-        "selftest": "U-MANT M1 — clave de caché de E1 y E3",
+        "selftest": "U-MANT M1 y U-TABLA-REPROC — clave de caché de E1 y E3",
         "perfil_e1": PERFIL,
         "insumos": {
             "e0_tanda0": {to: sha256_archivo(E0_TANDA0 / f"chunks_{to}.json")
@@ -944,24 +1714,50 @@ def main() -> int:
         "anclaje": anclaje,
         "inventario_del_armado": inventario,
         "variaciones": variaciones,
+        "perfil_r2b": {
+            "perfil_e1": PERFIL_R2B,
+            "anclaje_declarado": ("el del perfil sellado (v3_b54) sobre las dbs de la tanda 0; el del perfil r2b "
+                                  "queda NO_VERIFICABLE hasta que existan las dbs de U-REEXT-T0 (decisión 3 de la "
+                                  "autora al firmar el mandato de U-TABLA-REPROC)"),
+            "insumos": {"e0_tanda0_r2b": {to: sha256_archivo(E0_TANDA0_R2B / f"chunks_{to}.json")
+                                          for to in TOS_TANDA0}},
+            "muestra": {cid: {"tipo": chunks2[cid]["tipo"],
+                              "herencia": [h["tipo"] for h in chunks2[cid].get("herencia", [])],
+                              "tablas_serializadas": [t["tabla"] for t in (chunks2[cid].get("flags") or {}).get(
+                                  "tablas_e0") or [] if t.get("serializada")],
+                              "herencia_recortada": bool(chunks2[cid].get("herencia_recortada")),
+                              "omision_sintetica": CON_OMISION_R2B[cid],
+                              "con_validacion_sintetica": vals2[cid] is not None,
+                              "clave_e1": base2_e1[cid], "clave_e3": base2_e3.get(cid)}
+                        for cid in MUESTRA_R2B},
+            "anclaje": anclaje2,
+            "inventario_del_armado": inventario2,
+            "variaciones": var2,
+        },
     }
-    resultado["contraste_tabla"] = contraste(TABLA_MD, variaciones, anclaje)
-    fallas = [v["id"] for v in variaciones if not v["ok"]]
-    anclaje_ok = all(anclaje[k]["estado"] in ("OK", "NO_VERIFICABLE") for k in ("e1", "e3"))
+    anclajes = {"A1": anclaje["e1"], "A3": anclaje["e3"], "A1r": anclaje2["e1"], "A3r": anclaje2["e3"]}
+    resultado["contraste_tabla"] = contraste(TABLA_MD, var2, anclajes)
+    fallas = [v["id"] for v in variaciones + var2 if not v["ok"]]
+    anclaje_ok = all(x["estado"] in ("OK", "NO_VERIFICABLE") for x in anclajes.values())
     resultado["veredicto"] = (
-        "OK" if not fallas and anclaje_ok and ok_inv
+        "OK" if not fallas and anclaje_ok and ok_inv and ok_inv2
         and resultado["contraste_tabla"]["estado"] in ("OK", "PENDIENTE") else "FRENO")
     resultado["variaciones_con_discrepancia"] = fallas
 
     texto = json.dumps(resultado, ensure_ascii=False, indent=1, sort_keys=True) + "\n"
     if a.out:
         Path(a.out).write_text(texto, encoding="utf-8")
-    for v in variaciones:
-        print(f"{v['id']:5s} e1={v['e1']['token']:<12s} e3={v['e3']['token']:<12s} "
-              f"{'OK ' if v['ok'] else 'MAL'} {v['descripcion']}")
+    print("perfil sellado (v3_b54):")
+    _imprimir(variaciones)
     print("anclaje e1:", anclaje["e1"].get("estado"), "| e3:", anclaje["e3"].get("estado"))
     print("inventario: hijo reproduce =", inventario["control_reproduce_claves_del_padre"],
           "| módulos solo-código cargados =", inventario["modulos_solo_codigo_cargados"])
+    print("perfil r2b:")
+    _imprimir(var2)
+    print("anclaje r2b e1:", anclaje2["e1"].get("estado"), "| e3:", anclaje2["e3"].get("estado"),
+          "| claves r2b en la db de E1:", anclaje2.get("claves_db_e1_en_namespace_r2b"))
+    print("inventario r2b: hijo reproduce =", inventario2["control_reproduce_claves_del_padre"],
+          "| módulos solo-código cargados al armar =", inventario2["modulos_solo_codigo_cargados_al_armar"])
     print("contraste con la tabla:", resultado["contraste_tabla"]["estado"])
     print("VEREDICTO:", resultado["veredicto"])
     return 0 if resultado["veredicto"] == "OK" else 1
