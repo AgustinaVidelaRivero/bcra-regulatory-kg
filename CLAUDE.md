@@ -118,6 +118,16 @@ l. COPIAS PARA VERIFICAR: la copia sobre la que corre una verificación
    `selftest_r3.py` y `rk_fuera_de_muestra.py`), que hubo que
    restaurar (`data/experiment/r2_codigo/r4_freno.md`, «Error propio,
    con su causa»; 26d274d).
+   Los selftests también corren sobre la copia.
+   `corpus_v2/selftest_corpus.py` borra y regenera
+   `corpus_v2/salida_selftest/`, que tiene archivos rastreados. Y
+   `selftest_manifiesto.py` solo da P5 en verde desde la raíz del repo,
+   porque el reporte sellado de E2 guarda la ruta absoluta de su
+   entrada: sobre una copia el resultado correcto trae esos 5 fallos,
+   y un resultado sin ellos indica que corrió sobre el repo.
+   Precedente, del 03/10/2026: en P2 de U-PROMPT-R2, `selftest_corpus`
+   corrió sobre el repo y reescribió 11 archivos rastreados, que hubo
+   que restaurar (`data/experiment/prompt_r2/freno_p2.md`, §7).
 
 ## 4bis. Prompt caching en extracción
 

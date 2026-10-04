@@ -215,3 +215,16 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   (`data/experiment/r2_codigo/reglas_remisiones_postR3.md`, nota del 04/10/2026).
   C2 arranca cuando P2 de U-PROMPT-R2 esté commiteada (precondición de este mandato); el «seguí» está
   PENDIENTE de envío.
+- **04/10/2026 — salida nueva de e0-r2 de la tanda 0 (decisión de la autora).** Precisa el punto 7 de la
+  nota anterior. La salida nueva de e0-r2 de los diez TOs de la tanda 0 la genera C2, en un directorio
+  nuevo y versionado: `data/experiment/reextraccion_v2/e0_chunking/salida_tanda0_r2b/`. Es una escritura
+  autorizada, que se suma a las de C2. `salida_tanda0_r2/` (`f8dedd4`) no se pisa. U-REEXT-T0 lee la E0
+  de ese directorio; la pareada de U-PROMPT-R2 sigue con la versionada en `f8dedd4`.
+  Control:
+  - doble corrida, en dos directorios, byte a byte idéntica;
+  - contra `salida_tanda0_r2/`, los archivos de los otros 9 TOs son iguales byte a byte;
+  - en ric cambian solo los ids declarados: se agregan `ric::4.4::intro`, `ric::4.4.1`, `ric::4.4.2`,
+    `ric::4.4.3` y `ric::4.4.4`, y cambia el texto de `ric::4.3.3`; ningún otro id de ric cambia;
+  - en los archivos agregados de la salida (`conteos.json` y los demás), cambia solo la entrada de ric.
+  C2 no edita los manifiestos r2b (`20b7f60`), que apuntan a `salida_tanda0_r2`: el manifiesto que lea
+  U-REEXT-T0 se fija en su mandato.

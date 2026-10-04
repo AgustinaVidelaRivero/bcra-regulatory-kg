@@ -412,3 +412,51 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   texto entran antes de congelar el prefijo: en R8, la Condicion de un ítem cuya norma está en otra
   unidad va sin `condicion_de`; en R14, la Comunicacion citada sigue siendo entidad, con su `referencia`
   desde el TextoOrdenado.
+- **04/10/2026 — P2 cerrada, y agregado a P3: todo lo que extrae el modelo pasa por E3 (decisión de
+  la autora).** P2 está commiteada en `20b7f60`. `selftest_manifiesto` da 44/49 sobre una copia: los 5
+  fallos de P5 vienen de la ruta absoluta que guarda el reporte sellado de E2, y pasan solo desde la
+  raíz del repo. Los selftests corren sobre una copia (CLAUDE.md §4, regla l).
+  Hallazgo que motiva el agregado. `validador_r2` valida el crudo del intento que E3 aceptó
+  (`corpus_v2/runner_corpus.py`, `entrada_r2`), no la salida que aceptó `validador_e1` y que E3 vio. Por
+  eso acepta elementos que el primer validador rechazó y que E3 nunca vio:
+  - primer intento de los diez TOs de la tanda 0: 667. Son 655 relaciones de la matriz ampliada, con
+    `no_verificada_e3`, y 12 sin marca: 2 entidades «Restriction» corregidas por alias, sus 6
+    relaciones, 2 predicados corregidos por forma y 2 relaciones de sujeto
+    (`data/experiment/pyd_r2/resultados/prueba_crudo_t0.md`, control C3, `b706d37`; recontado por la
+    revisión sobre el crudo, con los dos validadores);
+  - población final que lee la cadena r2: en los diez TOs, 701, 697 con marca y 4 sin marca; en
+    desarrollo, 630, 627 y 3. Las 8 que faltan de las 12 eran de dos unidades que E3 mandó a reintento;
+  - la marca se calcula hoy por la firma (`pyd_r2/code/modelos_r2.py`, invariante de
+    `no_verificada_e3`), no por lo que pasó por E3. Con el perfil r2b marcaría relaciones que E3 sí vio:
+    su esquema ya admite la matriz ampliada (`e1_extractor/perfil_e1.py`, `firma_valida=M.firma_r2`).
+  Agregado a P3. Rige solo con la forma «r2»; los perfiles existentes y los grafos r2a no cambian.
+  a. Todas las correcciones que hoy aplica `validador_r2` (alias de tipo, forma del predicado y las de
+     las relaciones de sujeto) pasan a aplicarse en `validador_e1`, antes de E3, para que los elementos
+     lleguen corregidos al verificador.
+  b. Con el perfil r2b, el ensamblado toma solo lo que pasó por E3: `validador_r2` deja de leer la
+     salida cruda para decidir qué entra.
+  c. `no_verificada_e3` queda como red de seguridad, calculada por lo que pasó por E3 y no por el tipo
+     de combinación. Un control de suite o de shape exige cero elementos de extracción sin verificar.
+  d. Las relaciones derivadas en código (`remite_a`, `establecida_en`) y los valores de umbral
+     calculados en código no llevan `no_verificada_e3`: su procedencia las declara derivadas, con su
+     control propio. Estado verificado: `remite_a` ya lo cumple en el modelo (propiedades `alcance`,
+     `destino` y `evidencia`, sin marcas de E1); los umbrales llevan origen, regla y tramo verificado;
+     la `establecida_en` derivada lleva `rol_fuente: derivada_de_procedencia` (536 aristas en
+     KG-Tanda0-Diez-r2a), pero el modelo no la declara derivada. P3 lo fija.
+  e. Las unidades que E3 no terminó (ratchet agotado y cola humana). P3 presenta las dos opciones, fuera
+     del grafo hasta resolverse o adentro y marcadas, y la autora decide en el FRENO P3. Hoy entran
+     marcadas: en la tanda 0 son 71 unidades en los diez TOs (291 nodos y 466 aristas con `cola_humana`)
+     y 44 en desarrollo (216 y 343).
+  f. P3 reporta, con la tanda 0 como referencia, cuántos elementos cambian de estado con cada cambio, y
+     si alguno se pierde.
+  g. Los grafos r2a sellados no se tocan.
+  Escrituras que se suman a las de P3: `e1_extractor/validador_e1.py` y `selftest_e1.py` (ya
+  autorizados por la nota del 03/10/2026); `corpus_v2/runner_corpus.py`, solo `entrada_r2` y lo que
+  alimenta, detrás de la forma «r2»; `pyd_r2/code/modelos_r2.py`, solo la invariante de
+  `no_verificada_e3` y la declaración de la `establecida_en` derivada; y sus selftests. El tool schema
+  (`0c391f2b…`) y el prefijo (`14d6b63b508e`) no cambian. P3 no edita la suite ni las shapes: deja el
+  conteo en el reporte del ensamblado, y el control de (c) entra con los pedidos de suite ya asignados
+  antes del gate de r2b (`docs/plan_tesis.md:400`), ampliado de las relaciones a todo elemento de
+  extracción.
+  Orden con U-R2-CODIGO-2: P3 y C2 comparten `runner_corpus.py` y no corren a la vez. La segunda
+  arranca sobre el commit de la primera.
