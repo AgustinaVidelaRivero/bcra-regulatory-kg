@@ -345,3 +345,13 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   humana se cuentan aparte; no llevan la marca, y `pyd_r2/code/modelos_r2.py` no se suma a las escrituras de
   C2.
   Freno de diseño: C2 empieza por un freno de diseño con (h) y (n), sin implementar.
+- **04/10/2026 — la unión de las operaciones por punto va a P3b de U-PROMPT-R2 (decisión de la autora).** Con
+  la fase r2b, la Operacion deja de fundirse por etiqueta entre puntos distintos
+  (`docs/mandatos/UPROMPT_R2_prefijo_nuevo.md`, nota del 04/10/2026). No es un punto de C2. Lo que le toca a
+  C2:
+  - P3b puede necesitar una línea en cada sitio de llamada de `e2_lib.ensamblar_r2`
+    (`tanda0/code/ensamblar_tanda0.py:825` y `corpus_v2/runner_corpus.py:1061`), para pasarle la fase. Son
+    archivos de C2: la implementación que vaya segunda trabaja sobre el commit de la primera;
+  - si P3b va primero, la corrida de control de C2 sobre el crudo de r2a con las reglas de r2b incluye la
+    separación de las operaciones. C2 la lista aparte, atribuida a P3b, y no la cuenta entre sus cambios.
+    Referencia: 37 operaciones pasan a ser 89 en desarrollo y 59 pasan a ser 148 en diez.

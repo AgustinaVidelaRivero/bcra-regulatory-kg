@@ -1,4 +1,4 @@
-BORRADOR — PENDIENTE DE FIRMA
+FIRMADO por la autora el 04/10/2026
 
 MANDATO — U-RERESOL-CAT: SCRIPT QUE RE-RESUELVE LOS SUJETOS EN CUARENTENA Y REHACE EL GRAFO CUANDO CRECE EL CATÁLOGO.
 Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
@@ -9,6 +9,8 @@ Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
 - PRECONDICIÓN: el cierre de C2 de U-R2-CODIGO-2 commiteado por la autora. C2 edita el ensamblado
   (docs/mandatos/UR2CODIGO2_correcciones_previas_a_reext.md) y esta unidad trabaja sobre ese commit. Si no
   está commiteado, frená sin escribir.
+- R1 solo lee: puede correr en paralelo con P4 de U-PROMPT-R2 y con U-REEXT-T0. R2 espera el crudo guardado
+  de U-REEXT-T0, porque su prueba corre sobre él.
 - PLAZO: la unidad tiene que estar cerrada antes del primer crecimiento del catálogo de sujetos durante el
   escalado (docs/enmienda2_protocolo_entre_tandas_2026-10-04_catalogo.md).
 
@@ -44,9 +46,10 @@ CONTEXTO, con sus anclas.
 R1. DIAGNÓSTICO Y DISEÑO (sin implementar).
 1. Inventario: qué archivo lee el catálogo en cada paso (request de E1, validador, E2, E4, esqueleto, shapes
    y suite), con path:línea, y qué candado lo protege.
-2. Cómo crece el catálogo sin cambiar el request de E1. El diseño separa el catálogo que entra al request, que
-   queda congelado con el prefijo, del catálogo con el que resuelve el código, que puede crecer. Dice qué
-   candados cambian, qué lee `SUJETOS_R2_SET` en cada uso (`modelos_r2.py:95-96`, `:537-539`;
+2. Cómo crece el catálogo sin cambiar el request de E1. El diseño separa dos catálogos: el que entra al
+   request de E1, fijo por release, y el catálogo de resolución, que lee el código y puede crecer entre
+   tandas. El resultado tiene que permitir que la tesis afirme que la re-resolución corre sin re-extraer
+   sobre el catálogo de resolución. Dice qué candados cambian, qué lee `SUJETOS_R2_SET` en cada uso (`modelos_r2.py:95-96`, `:537-539`;
    ensamblar_tanda0.py:587 y `:825`) y cómo queda registrada en el grafo la versión del catálogo con la que se
    resolvió cada relación. Si no se puede sin cambiar el request, se dice: el crecimiento sería de la clase
    que reprocesa todo, y la decisión vuelve a la autora.
@@ -59,15 +62,17 @@ R1. DIAGNÓSTICO Y DISEÑO (sin implementar).
    LN-6, las shapes de sujetos y la suite del perfil.
 4. Qué pasa con cada elemento del grafo cuando una fila resuelve: la arista de sujeto, el nodo en cuarentena
    que queda sin aristas, las marcas de la relación y la fila del registro (`catalogo_sha256_resolucion`).
-5. Sobre qué crudo corre la prueba: el de r2a, que ya está guardado, o el de U-REEXT-T0, si para entonces
-   existe.
+5. La prueba de R2 corre sobre el crudo guardado de U-REEXT-T0. R1 mide sobre el crudo de r2a, que es el que
+   existe hoy, y lo declara.
 FRENO R1, con el diseño y la lista de escrituras que pide R2. La autora aprueba las escrituras en el «seguí».
 
 R2. IMPLEMENTACIÓN Y PRUEBA.
 1. El script y su selftest, con las escrituras aprobadas en el «seguí» de R1.
-2. Prueba obligatoria: un catálogo de prueba, en el scratchpad, con un id agregado que resuelve una mención hoy
-   en cuarentena. Candidatas en diez, con la mención verificada como exacta y el motivo `sin_match`:
-   «cuentacorrentista» e «integrantes de la Alta Gerencia», 3 filas cada una. La más frecuente, «cliente que
+2. Prueba obligatoria, sobre el crudo guardado de U-REEXT-T0: un catálogo de resolución de prueba, en el
+   scratchpad, con un id agregado que resuelve una mención en cuarentena. Candidatas: «cuentacorrentista» e
+   «integrantes de la Alta Gerencia». En el registro de r2a de diez tienen 3 filas cada una, con la mención
+   verificada como exacta y el motivo `sin_match`. Si en el registro de U-REEXT-T0 ninguna de las dos está
+   en cuarentena con la mención verificada, se elige otra con el mismo criterio y se declara. La más frecuente, «cliente que
    no es persona humana residente» (7 filas), no sirve: su mención no está verificada y `reresolver_registro`
    no la toca. El id de prueba no entra al catálogo del repo. Se reporta: las filas que resuelven, las que no
    y por qué, y las diferencias del grafo.
@@ -86,13 +91,15 @@ PROHIBIDO: cambiar el catálogo (`catalogo_sujetos_r2.json`) o sus generados; ca
 schema o sus candados; agregar un id al catálogo del repo; tocar los grafos y las salidas selladas; correr el
 ensamblado sobre el repo; commitear.
 
-DECISIONES DE LA AUTORA AL FIRMAR.
-1. El nombre de la unidad y la carpeta de trabajo (propuesta: U-RERESOL-CAT y
-   data/experiment/reresolucion_catalogo/).
-2. Si R1 puede correr en paralelo con P4 de U-PROMPT-R2 y con U-REEXT-T0 (propuesta: sí, R1 solo lee), y si
-   R2 espera al cierre de U-REEXT-T0 cuando sus escrituras toquen el ensamblado.
-3. Sobre qué crudo corre la prueba de R2 (propuesta: el de r2a ahora, y de nuevo sobre el de U-REEXT-T0 cuando
-   exista).
+DECISIONES DE LA AUTORA AL FIRMAR (04/10/2026).
+1. La unidad se llama U-RERESOL-CAT y trabaja en data/experiment/reresolucion_catalogo/.
+2. R1 puede correr en paralelo con P4 de U-PROMPT-R2 y con U-REEXT-T0.
+3. La prueba de R2 corre sobre el crudo de U-REEXT-T0, con «cuentacorrentista» e «integrantes de la Alta
+   Gerencia» como candidatas.
+4. R1 diseña la separación entre el catálogo que entra al request de E1, fijo por release, y el catálogo de
+   resolución que lee el código, que puede crecer entre tandas.
 
 REQUISITOS: los de CLAUDE.md §4 (a a l), con PYTHONDONTWRITEBYTECODE=1 y .venv/bin/python -B; fuentes firmadas
 leídas en el commit de su firma; todo conteo recomputado contra su artefacto; cero nombres de personas.
+
+FIRMA. FIRMADO por la autora el 04/10/2026, con las cuatro decisiones de arriba.

@@ -50,7 +50,13 @@ CONTEXTO, con sus anclas.
     son 291 nodos y 466 aristas con la marca de la cola, y 697 aristas con `no_verificada_e3`. Las claves
     que quedan fuera de `properties` (`properties_no_definidas` del nodo y `no_verificada_e3` de la
     arista) no pasan de la vista que arma el grafo para el agente
-    (data/experiment/tanda0/code/comun_tanda0.py:78-94).
+    (data/experiment/tanda0/code/comun_tanda0.py:78-94);
+  - la unión de las operaciones. Con la fase r2b las operaciones se unen solo dentro de su punto (decisión
+    de la autora del 04/10/2026, docs/plan_tesis.md:399): un mismo acto regulado en varios puntos queda en
+    varios nodos. Hasta r2a se unían por etiqueta: en KG-Tanda0-Desarrollo-r2a, 37 de 1.555 operaciones
+    juntan más de un punto, y en diez, 59 de 2.047; los grafos r1 de las trazas tienen las mismas uniones.
+    De las 37 de desarrollo, 18 juntan el mismo acto, 8 juntan actos distintos y 11 son dudosas
+    (reports/verif_union_ops/, lectura de esa verificación).
 - «Cierre léxico»: NO ENCONTRADO con ese nombre en el plan, el checklist, el tablero ni el protocolo
   (grep del 03/10/2026). N1 lo define con su evidencia o lo descarta.
 - El patrón «jueces unánimes, falla del grafo; jueces dispersos, falla de navegación» no tiene ancla en el
@@ -86,6 +92,10 @@ N1. DIAGNÓSTICO SOBRE LAS TRAZAS QUE YA EXISTEN.
   al mismo punto citado, y cuántas respuestas llegan por ellas al tope de vecinos (`limite` 40) o al de
   llamadas. Las trazas que existen son de grafos r1, donde la remisión es `referencia` (4.836 aristas en
   KG-Tanda0-Diez-r1): se mide sobre ellas y se declara. La medida sobre `remite_a` se repite en la parte 2.
+- Efecto de la separación de las operaciones sobre la navegación (decisión de la autora del 04/10/2026):
+  cuántas respuestas pasaron por una Operacion que junta más de un punto y siguieron sus aristas hacia
+  nodos de otro punto. Son los caminos que la separación corta. Se cuenta por celda, con el veredicto de
+  cada respuesta.
 FRENO N1.
 
 N2. DISEÑO DE LAS HERRAMIENTAS CANDIDATAS (documento; no se implementa en la parte 1).
@@ -95,6 +105,10 @@ sistema por fragmentos o es propia de la navegación por aristas (diferencia dec
 1. Búsqueda híbrida: texto completo y semántica (modelo del bake-off, docs/decision_modelo_embeddings.md),
    sobre la descripción, `termino`, el tramo literal de cada entidad del perfil r2b y el texto de la
    unidad; búsqueda por número de punto. Mismo analizador en los dos brazos, o la diferencia declarada.
+   Para una operación, la búsqueda devuelve todas las operaciones del mismo acto repartidas en varios
+   puntos, con el punto de cada una (decisión de la autora del 04/10/2026). El diseño dice con qué regla
+   las reúne. Caso de prueba: «Clasificación en categoría Irrecuperable», que hoy es un nodo con
+   `cla::6.5.5.3`, `6.5.5.4` y `6.5.5.5` y con r2b son tres: una búsqueda encuentra las tres.
 2. Recorrido por predicado: vecinos filtrados por predicado y dirección (`remite_a` con su `alcance`,
    `condicion_de`, `limita`, `exceptua` y `exceptua_obligacion`). Declarar qué exige exportar `alcance`.
    Al seguir `remite_a`, la salida agrupa los nodos por punto citado (`destino`): una entrada por cita,

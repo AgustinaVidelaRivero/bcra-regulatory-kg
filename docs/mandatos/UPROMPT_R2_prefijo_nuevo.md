@@ -574,3 +574,33 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   va a P3b (nota anterior). Los puntos 1, 3, 4 y 6 van a C2 de U-R2-CODIGO-2, como sus puntos (n), (o), (p) y
   (q) (`docs/mandatos/UR2CODIGO2_correcciones_previas_a_reext.md`, nota del 04/10/2026). El punto 5 queda como
   está: se cuenta según dónde se ancla la entidad.
+- **04/10/2026 — P3b: las operaciones se unen solo dentro de su punto (decisión de la autora, tras la
+  verificación de la sección 4.5 de la tesis; `reports/verif_union_ops/`, commit PENDIENTE).** Con el perfil
+  r2 y la fase r2b, la clave de fusión de la Operacion lleva el punto de la procedencia, como la de los demás
+  nodos de contenido (`e2_reduce/e2_lib.py:839-860`, `entity_slug_r2`). Hoy la Operacion se funde por
+  etiqueta (`:118-121`) y el nodo conserva la etiqueta y las propiedades de la primera unidad (`:993`). La
+  regla nueva elimina las uniones entre puntos distintos; las uniones dentro de un mismo punto no cambian. Es
+  un cambio de código sobre lo guardado, USD 0.
+  Medida de referencia sobre los dos grafos r2a:
+  - en KG-Tanda0-Desarrollo-r2a, 37 de 1.555 operaciones juntan más de un punto (ext 29, cap 5 y cla 3) y
+    pasan a ser 89;
+  - en KG-Tanda0-Diez-r2a, 59 de 2.047 (ext 29, ctacte 16, cap 5, pagjub 5, cla 3 y polcre 1) pasan a ser 148;
+  - en cada grafo, 5 nodos juntan unidades de un mismo punto y quedan como están.
+  La lectura de las 37 de desarrollo es de esa verificación: 18 correctas, 8 incorrectas y 11 dudosas.
+  Va a P3b porque P3b ya edita `e2_lib.py`. Condiciones:
+  - los dos grafos r2a sellados y los tres ensamblados r1 se siguen reproduciendo byte a byte: la regla nueva
+    rige solo con la fase r2b;
+  - `ensamblar_r2` no conoce la fase (`e2_lib.py:863-865`), y la llaman `tanda0/code/ensamblar_tanda0.py:825`
+    y `corpus_v2/runner_corpus.py:1061`. P3b dice, antes de implementar, cómo le llega la fase a E2. Si hace
+    falta tocar esos dos sitios de llamada, es una línea en cada uno, como despacho por perfil, declarada: se
+    levanta para esa línea la restricción de no editar `runner_corpus.py` de la nota de la etapa P3b. Los dos
+    archivos los edita también C2 de U-R2-CODIGO-2: las dos implementaciones no corren a la vez;
+  - se suma a las escrituras de P3b, solo para el caso nuevo: `e2_reduce/selftest_e2.py`. El control de
+    `data/experiment/r2_codigo/selftest_r4.py:239-241` («Operacion y Sujeto siguen como v3») sigue valiendo
+    para la fase r2a y no se edita.
+  Control: la lista de las operaciones que se separan en los dos grafos r2a, con sus puntos; ninguna unión
+  dentro de un mismo punto cambia; y lo que cambia aguas abajo, contado: las aristas que tocan esos nodos (589
+  en desarrollo y 711 en diez; 439 y 481 de ellas son `remite_a`), la adjudicación de colisiones entre TOs y
+  los conflictos de propiedades.
+  La alternativa que propone la verificación (unir por etiqueta plegada dentro del mismo encabezado de E0)
+  queda como mejora a medir después de U-REEXT-T0 (`docs/plan_tesis.md:400`).
