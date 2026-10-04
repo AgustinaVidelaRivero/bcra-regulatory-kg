@@ -422,3 +422,15 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
      borrador de U-REEXT-T0 se reescribió: los tres ensamblados r1, byte a byte; los dos r2a, contra los
      sha256 que deje el cierre de C2.
   El despacho de las correcciones a la instancia de C2 y el commit de C2 son de la autora: PENDIENTES.
+- **04/10/2026 — decisiones de la autora sobre la revisión del FRENO C2; correcciones despachadas.** La nota
+  anterior quedó en `75003eb`. La autora informó que le mandó a la instancia de C2 el mensaje de correcciones
+  tal como estaba.
+  1. «Más del» y «menos del» como «más de» y «menos de»: aceptado. Deja de estar pendiente de confirmación.
+  2. Que la cadena r2a deje de dar los sha256 sellados con el código de C2: aceptado. Los dos grafos sellados
+     siguen en el repo y se reproducen con el código de `f8dedd4`, el commit que los selló; la tesis cita sus
+     cifras con ese commit. Lo reproduje el 04/10/2026 sobre una copia de ese commit armada con `git
+     archive`, sin enlaces: `99fe2bfa…` y `93a7af72…`, byte a byte. La copia necesitó dos entradas que el
+     repo no versiona: los diez PDF, con el sha256 del manifiesto `tanda0_ens_diez.json`, y
+     `data/experiment/reextraccion_v2/e3_verificador/cache/e1_reintentos.db` (sha256 `e71380308cbe…`).
+  3. La línea del mensaje sobre el punto (f), la lista de renumeraciones sin el padre sintético: aceptada.
+  El commit de C2 sigue PENDIENTE: espera el freno corregido.

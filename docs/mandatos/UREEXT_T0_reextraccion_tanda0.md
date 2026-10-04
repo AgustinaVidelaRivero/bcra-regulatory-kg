@@ -46,6 +46,15 @@ T1 — PREPARACIÓN EN SECO Y SUITE (USD 0).
      suma a las escrituras de la unidad solo para ese caso.
    - Los scripts de `data/experiment/medicion_r2a/` que importan `reglas_comparacion` o `r1_referencias`
      dan otras cifras con el código de C2. No se vuelven a correr acá: sus salidas selladas son de r2a.
+   - Rol de alcance: nueve de los diez TOs lo tienen en `rol_por_to_r2.json` (seis con rol propio y tres con
+     clase). Docvig no lo tiene, por el laudo de B5.4 (`docs/laudo_B5.4_fase1_catalogo.md:20-22`): se extrae
+     sin línea de alcance, como en r2a, y se declara. En r2a tuvo 20 relaciones con sujeto, 17 resueltas por
+     la sugerencia del modelo y 3 en cuarentena.
+   - Unidades grandes de `salida_tanda0_r2b/`, para la corrida en seco: `cap::4.2.1.2` (26.726 caracteres
+     propios), `ric::11.2::intro` (15.051), `cap::3.1.14.1` (12.101) y `cap::4.3.3.1` (10.981). Con el
+     prefijo sellado, las tres de cap dieron 11.925, 8.371 y 9.212 tokens de salida: superan los 8.192 del
+     primer intento y entran en el reintento de 16.384. Si alguna corta también en el reintento, solo
+     `cap::4.2.1.2` se puede partir por ítems.
 3. Corrida en seco, sin llamar a la API: el request de cada unidad, su namespace y su clave de caché; las
    unidades por TO; la estimación por TO contra el tope; los namespaces de los reintentos.
 4. Suite y shapes antes del gate:
@@ -76,7 +85,9 @@ T2 — EXTRACCIÓN, E1 A E3 (tope USD 72).
 - Registro del modelo de cada llamada. Costo real contra el estimado, por etapa y por TO.
 - Contadores: vocabulario retirado, que tiene que ser 0; unidades por estado final; unidades sin validación,
   listadas; unidades con cada marca de E3 (`lectura_veredicto_e3`, `reintento_con_menos_elementos` y
-  `copia_nota_e3`); salidas mal formadas y sus reintentos.
+  `copia_nota_e3`); salidas mal formadas y sus reintentos; unidades que cortan en el primer intento, en el
+  reintento y las partidas por corte, con sus tokens de salida; y los tokens de salida por carácter de texto
+  propio en las unidades de 3.000 caracteres o más (con el prefijo sellado, mediana 0,86).
 FRENO T2.
 
 T3 — ENSAMBLADOS, REGISTRO Y GATE DE r2b (USD 0).
@@ -89,7 +100,9 @@ T3 — ENSAMBLADOS, REGISTRO Y GATE DE r2b (USD 0).
    - contadores de E1; intrínsecas de generación 3 e indicadores de cita, informativos;
    - reproducibilidad: los tres ensamblados r1 se reproducen byte a byte. Los dos r2a ya no dan los sha256
      sellados (`99fe2bfa…` y `93a7af72…`): con el código de C2 cambian los umbrales y las `remite_a` que su
-     cierre declara, y el control es contra los sha256 que deje ese cierre. Los selftests siguen en verde;
+     cierre declara, y el control es contra los sha256 que deje ese cierre (decisión de la autora del
+     04/10/2026). Los sellados siguen en el repo y se reproducen con el código de `f8dedd4`, que es el
+     commit con el que la tesis cita sus cifras. Los selftests siguen en verde;
    - nunca EV2;
    - la columna «r2b» del tablero de correcciones, con el comando de cada fila.
 3. Controles propios de esta unidad, cada uno con su comando y su cifra:

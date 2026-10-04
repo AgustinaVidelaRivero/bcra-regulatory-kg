@@ -103,3 +103,61 @@ REQUISITOS: los de CLAUDE.md §4 (a a l), con PYTHONDONTWRITEBYTECODE=1 y .venv/
 leídas en el commit de su firma; todo conteo recomputado contra su artefacto; cero nombres de personas.
 
 FIRMA. FIRMADO por la autora el 04/10/2026, con las cuatro decisiones de arriba.
+
+NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 105 líneas de arriba y no cambia.
+
+- 04/10/2026 — R1 SE AMPLÍA CON EL ALCANCE DE LOS DOCUMENTOS NUEVOS Y CON LA REGLA DE CRECIMIENTO DEL CATÁLOGO
+  (decisión de la autora). La unidad todavía no arrancó: espera el cierre de C2 de U-R2-CODIGO-2.
+  Fe de erratas del CONTEXTO (`:31-34`). `rol_por_to_r2.json` figura ahí solo entre «lo que lee el código».
+  También entra al request de E1: `e1_extractor/prompt_r2b.py:124` lo carga con candado propio (`:58` y `:66`)
+  y con él arma la línea de alcance del mensaje (`linea_alcance`, `:328`, y `:356`). Causa: clasifiqué los
+  generados por el módulo que los lee en el ensamblado y no seguí su uso en el mensaje.
+  Hechos medidos (04/10/2026; comandos en el paquete de la revisión, fuera del repo):
+  - El alcance por documento vive en el archivo del catálogo con candado: es el campo `rol_por_to` de cada
+    sujeto de `catalogo_sujetos_r2.json`. De ahí sale `generados_r2/rol_por_to_r2.json`, con 71 entradas: 35
+    con rol propio y 36 con una clase.
+  - Del universo de 157 documentos, 71 tienen entrada y 86 no: los 84 «necesita reglas» (53 regímenes
+    informativos y 31 de normativa general; protocolo firmado, `a304b89:168`) más docvig y fimipyme, los dos
+    huecos que el laudo de B5.4 dejó sin rol, con re-mirada en la tanda 1
+    (`docs/laudo_B5.4_fase1_catalogo.md:20-22`, `dea56ba`). Entre los 86 están los 12 no segmentables.
+  - De los diez TOs de la tanda 0, nueve tienen alcance: seis con rol propio y tres con clase. Docvig no
+    tiene. El ejemplo de la tanda 1 del protocolo tiene 12 documentos sin alcance, 6 de ellos regímenes
+    informativos.
+  - Sin entrada, el mensaje de E1 no lleva línea de alcance (`prompt_r2b.py:329-330`). En el ensamblado, una
+    expresión colectiva queda sin sujeto por defecto (`corpus_v2/r1_e4.py:377`): gana la sugerencia del modelo
+    si la hay (`:419`) y, si no, la fila va a cuarentena (`:443`).
+  - Qué cambia cuando el alcance crece, simulado en memoria con `generar_desde_catalogo` (la simulación
+    reproduce el bloque con candado, `c40054853bd8…`):
+    - entrada de clase (un documento nuevo apunta a una clase que ya existe): el bloque del prefijo y el enum
+      del tool schema no cambian. Cambian el sha256 del catálogo, el de `rol_por_to_r2.json` y el mensaje de
+      las unidades de ese documento, y de ningún otro;
+    - rol nuevo (un id de nivel rol): entra al bloque del prefijo («## Roles de alcance por TO») y al enum de
+      `sujeto_id`. Cambia el request de todos los documentos.
+  - El peso del alcance en la tanda 0: en KG-Tanda0-Diez-r2a, 4.086 de las 4.147 relaciones con sujeto se
+    resolvieron por la sugerencia del modelo, y los ids más sugeridos son los roles de alcance (1.074 el de
+    ext y 920 el de cap). La regla del sujeto por defecto resolvió 0 filas: el crudo de r2a trae mención en
+    62 de las 4.147. Con el prefijo r2b la mención se emite siempre; cuánto resuelve entonces la regla se
+    mide en U-REEXT-T0.
+  R1 suma a su diseño:
+  a. Cómo se le da rol de alcance y entrada de clase a un documento nuevo sin cambiar el request de los ya
+     extraídos. El laudo de B5.4 fija el método (A2, `laudo_B5.4_fase1_catalogo.md:15-20`): clase existente
+     cuando el pasaje de alcance nombra exactamente una o dos clases del catálogo, y rol nuevo en los demás
+     casos. R1 dice:
+     - qué candados cambian con una entrada de clase, y cómo queda registrado en el grafo con qué versión del
+       alcance se extrajo y se resolvió cada documento;
+     - qué pasa con un documento cuyo alcance no es una clase exacta. Hoy un rol nuevo cambia el prefijo y el
+       tool schema. Opciones a evaluar: el rol vive solo en el catálogo de resolución y el mensaje nombra sus
+       clases miembro; o el documento espera la release que rote el prefijo. Si ninguna sirve, se dice;
+     - a qué lado de la separación del punto 2 de R1 queda `rol_por_to_r2.json`, que hoy está en los dos;
+     - qué pasa con docvig, ya extraído sin alcance: si se le asigna después, sus 31 unidades se re-extraen.
+  b. La regla de crecimiento del catálogo. Las entradas nuevas salen de dos fuentes:
+     - el alcance de los documentos nuevos, antes de su extracción;
+     - la cuarentena, al cierre de cada tanda, con un umbral de frecuencia a fijar y con aprobación de la
+       autora.
+     Entran solo al catálogo de resolución, y después corre el script de re-resolución. R1 propone el umbral
+     con el registro de r2a a la vista, y dice cómo convive la regla con el límite que L-ESQ-R2 §7 declara
+     (`4ef7650:862-864`): un id que no está en el bloque del prompt se aplica en código a las menciones
+     guardadas, y el modelo no lo sugiere.
+  Cuando R1 fije el mecanismo, las dos reglas van a una enmienda firmada del protocolo entre tandas, con el
+  paso de lectura del alcance antes de la primera extracción de cada tanda. Hasta entonces no rigen.
+  Las ESCRITURAS y lo PROHIBIDO del mandato no cambian: R1 diseña y no toca el catálogo.

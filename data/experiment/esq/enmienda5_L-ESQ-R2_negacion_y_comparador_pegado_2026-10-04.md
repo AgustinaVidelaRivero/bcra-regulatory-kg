@@ -94,11 +94,16 @@ nodo por nodo y reproduce los 842 y los 758 elementos sellados):
 3. **Formas que se suman**, con el sentido de las que ya están:
    a. «equivalente o superior» y las formas verbales («igualen o superen», «iguale o exceda») valen como
       «igual o superior»; lo mismo hacia abajo, como «igual o inferior».
-   b. «más del» y «menos del» valen como «más de» y «menos de». Esta forma la sumé al revisar el FRENO C2:
-      entra si la autora la acepta al firmar.
+   b. «más del» y «menos del» valen como «más de» y «menos de». Esta forma la sumé al revisar el FRENO C2, y
+      la autora la aceptó el 04/10/2026.
 4. **Desde cuándo rige.** Desde el commit de C2, para toda fase. Los grafos r2a sellados no se tocan. La
    cadena r2a, corrida con el código de C2, deja de dar los sha256 sellados: cambian solo los elementos de
    umbral que esta enmienda y los puntos (c) e (i) a (k) de C2 declaran, y las `remite_a` de su punto (a).
+   La autora lo aceptó el 04/10/2026. Los dos grafos r2a sellados (`99fe2bfa…` y `93a7af72…`) siguen en el
+   repo y se reproducen con el código de `f8dedd4`, el commit que los selló: la tesis cita sus cifras con ese
+   commit. Reproducción hecha el 04/10/2026 sobre una copia de ese commit, byte a byte en los dos. Además
+   de lo versionado pide dos entradas que el repo no versiona: los diez PDF, con el sha256 del manifiesto, y
+   `e3_verificador/cache/e1_reintentos.db` (sha256 `e71380308cbe…`).
 
 ## 2. Efectos declarados
 
