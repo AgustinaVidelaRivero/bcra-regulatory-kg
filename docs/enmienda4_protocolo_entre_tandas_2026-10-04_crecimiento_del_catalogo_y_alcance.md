@@ -1,4 +1,4 @@
-# Enmienda 4 al protocolo entre tandas — cómo crece el catálogo de sujetos y cuándo se lee el alcance de un documento nuevo
+# Enmienda 4 al protocolo entre tandas — cómo crece el catálogo de sujetos, cuándo se lee el alcance de un documento nuevo y la regla de cruce del tercer escalón
 
 **BORRADOR — PENDIENTE DE FIRMA** · Redactada: 2026-10-04.
 
@@ -26,7 +26,7 @@ prueba (enmienda 2, punto 3).
   - En el registro de KG-Tanda0-Diez-r2a hay 27 filas en cuarentena con la mención verificada, en 18 claves.
     Dos claves llegan a 2 unidades, las dos en cap; ninguna llega a 3 (`salidas/r1_medicion.json`, clave
     `frecuencias`).
-- **Por qué una enmienda.** Agrega dos reglas, una con umbral, a un texto firmado. El mandato de U-RERESOL-CAT
+- **Por qué una enmienda.** Agrega dos reglas, una con umbral, a un texto firmado, y extiende su regla de cruce. El mandato de U-RERESOL-CAT
   ya lo preveía: hasta que esta enmienda se firme, ninguna de las dos rige
   (`docs/mandatos/URERESOL_CAT_reresolucion_catalogo.md`, primera nota del 04/10/2026).
 
@@ -64,18 +64,27 @@ prueba (enmienda 2, punto 3).
    a cuarentena, como fije la enmienda 6 a L-ESQ-R2 cuando se firme.
 5. **Quién decide.** La lectura es asistida y declarada. La aprueba la autora, documento por documento, antes
    de extraer.
-6. **Costo.** La lectura se hace sin API. Si una tanda la hace con la API, su tope es de USD [A FIJAR por la
-   autora] por tanda, y se declara antes de correr.
+6. **Costo.** La lectura se hace siempre sin API.
 
-## 3. Qué falta para que se pueda aplicar
+## 3. La regla de cruce para F08d
+
+La fila F08d de la tabla de reprocesamiento es el tercer escalón del reintento de E1, de clase «E1 y E3 de las
+afectadas» (la suma P3c-2 de U-PROMPT-R2). La regla de cruce del §2 del protocolo (`a304b89:97-100`) cubre esa
+clase cuando el hallazgo es por E0, y la enmienda 3 la extendió a F14. Un cambio del techo del tercer escalón se
+corrige entre tandas igual que los de E0 y los de F14: se vuelven a correr E1 y E3 solo de las unidades
+afectadas, con su costo declarado antes de correr.
+
+## 4. Qué falta para que se pueda aplicar
 
 - **El script de re-resolución,** con su prueba: R2 de U-RERESOL-CAT.
 - **El registro de alcance por tanda.** Las entradas de clase de los documentos nuevos no pueden ir a
   `catalogo_sujetos_r2.json` sin romper sus candados. R1 propone un registro que solo agrega, leído junto con
-  el de la release (`freno_r1.md`, §4). Toca `e1_extractor/prompt_r2b.py` y está sin implementar: lo hace una
-  unidad a definir, antes de la tanda 1.
+  el de la release (`freno_r1.md`, §4). Lo implementa R2 de U-RERESOL-CAT (decisión de la autora del
+  04/10/2026), con `e1_extractor/prompt_r2b.py` autorizado solo para leer ese registro al armar el mensaje,
+  sin cambiar el prefijo.
+- **La fila F08d,** que existe cuando P3c-2 de U-PROMPT-R2 la sume a la tabla.
 
-## 4. Qué no cambia
+## 5. Qué no cambia
 
 - El texto del protocolo, sus notas y sus enmiendas anteriores.
 - El catálogo de sujetos de r2 y sus candados: esta enmienda no agrega ningún id ni ningún alcance.

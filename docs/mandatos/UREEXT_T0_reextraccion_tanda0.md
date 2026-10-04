@@ -112,7 +112,10 @@ T2 — EXTRACCIÓN, E1 A E3 (tope USD 72).
 - Contadores: vocabulario retirado, que tiene que ser 0; unidades por estado final; unidades sin validación,
   listadas; unidades con cada marca de E3 (`lectura_veredicto_e3`, `reintento_con_menos_elementos` y
   `copia_nota_e3`); salidas mal formadas y sus reintentos; unidades que cortan en el primer intento, en el
-  reintento y las partidas por corte, con sus tokens de salida; y los tokens de salida por carácter de texto
+  reintento y las partidas por corte, con sus tokens de salida; las unidades que usan el tercer escalón del
+  reintento (P3c-2 de U-PROMPT-R2), con su marca; las omisiones `meta_normativo` cuyo tramo trae una marca
+  de deber, de facultad, de condición o de excepción (contador de `validador_r2`, decisión de la autora del
+  04/10/2026); y los tokens de salida por carácter de texto
   propio de todas las unidades (decisión de la autora del 04/10/2026): la mediana, el percentil 90 y el
   máximo por tramo de tamaño del texto propio; aparte, las unidades de 3.000 caracteres o más (con el
   prefijo sellado, mediana 0,86 en 40 unidades; en P4, 1,175 en 6) y, una por una, las de 10.000 o más. Con
@@ -192,6 +195,11 @@ T4 — LECTURA DE LA COLA HUMANA Y PREGUNTAS DE CONTROL (USD 0 de API).
    marcados en esta corrida se leen con la regla de data/experiment/prompt_r2/p3b2/regla_lectura_copia_nota.md,
    fijada antes de leer, y se reporta cuántos son copias reales. Referencia: sobre el crudo de r2a, 11 de 45.
    Si la precisión sigue baja, la regla se ajusta en código entre tandas: no en esta unidad.
+4. Unidades con la marca del tercer escalón del reintento (decisión de la autora del 04/10/2026). Se leen
+   todas, no una muestra: la extracción de cada una contra el texto de su unidad, con el mismo criterio de
+   error de la cola humana, y aparte lo que E3 no reclamó. Se reporta cuántas son, cuántas tienen error y
+   cuántos tokens de salida usó cada una. Con ese número la autora decide si hace falta algo para el
+   escalado. No entran a la muestra de la cola humana por llevar la marca.
 FRENO T4.
 
 T5 — REPORTE (USD 0).
@@ -200,7 +208,11 @@ T5 — REPORTE (USD 0).
   Potestad; la medición de la `remite_a` estructural (30 aristas, piso de Wilson 0,75) y del lado del
   destino, después de la unidad que atribuye `remite_a` por tramo; la alternativa de unión de las
   operaciones por encabezado (30 uniones, piso 0,75); la recuperación por tramo de lo que el reintento dejó;
-  la prueba de R2 de U-RERESOL-CAT sobre este crudo.
+  la prueba de R2 de U-RERESOL-CAT sobre este crudo; y la mejora condicionada del sujeto por alcance
+  (decisión de la autora del 04/10/2026): en un documento con alcance, una norma sin mención recibe
+  `aplica_a` hacia el rol de alcance de su documento, como relación derivada y marcada como tal. Entra solo
+  si supera el piso de precisión: 30 relaciones leídas, con el límite inferior de Wilson en 0,75 o más (28
+  correctas de 30). Pide enmienda a L-ESQ-R2 §3.
 - Claves de la caché (decisión de la autora del 04/10/2026, tras el freno de U-TABLA-REPROC):
   - se vuelve a correr data/experiment/mantenimiento/code/selftest_clave_cache.py con
     `--salida-r2b data/experiment/reextraccion_v2/corpus_tanda0/salida_r2b`, sobre una copia: es el anclaje

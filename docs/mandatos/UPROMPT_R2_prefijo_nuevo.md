@@ -818,3 +818,21 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   - **Las normas con sujeto.** En el crudo de P4, las normas (Obligacion, Restriccion y Potestad) con
     `aplica_a` son 129 de 143 con el prefijo sellado y 111 de 157 con el de P3b-2; con el punto e de P3c
     quedarían 96 de 157. El alcance del TO no está en ningún nodo del grafo.
+- **04/10/2026 — decisiones de la autora sobre los dos pendientes de la nota anterior y sobre el «seguí» de
+  P3c-2.** P3c-1 quedó en `438bbd5` y la nota anterior, en `6633dc7`.
+  - **La regla 9** va por enmienda: `data/experiment/esq/enmienda7_L-ESQ-R2_regla9_meta_normativo_2026-10-04.md`,
+    BORRADOR — PENDIENTE DE FIRMA. La autora la firma antes del commit de P3c-2; P3c-2 implementa mientras
+    tanto.
+  - **El punto e queda aprobado como está.** P4b cuenta, por brazo, las normas (Obligacion, Restriccion y
+    Potestad) con relación de sujeto.
+  - **Mejora condicionada, a medir después de U-REEXT-T0** (fuera de esta unidad): en un documento con
+    alcance, una norma sin mención recibe `aplica_a` hacia el rol de alcance de su documento, como relación
+    derivada y marcada como tal. Entra solo si supera el piso de precisión: 30 relaciones leídas, con el
+    límite inferior de Wilson en 0,75 o más. Está registrada en `docs/plan_tesis.md:400` y en el borrador del
+    mandato de U-REEXT-T0.
+  - **P4b,** además: uno de los cuatro casos del grupo a es un régimen de transición con condiciones, elegido
+    por lectura; y su base de caché, como la de P4, no se reutiliza en U-REEXT-T0.
+  - **Autorizaciones confirmadas por la autora:** el gasto de API de P4b (tope USD 1,5) y de la llamada real
+    del tercer escalón (tope USD 0,20), los archivos de código de la nota anterior, y la fila F08d con la
+    variación R13c.
+  El «seguí» de P3c-2 está preparado, con estas decisiones; su despacho está PENDIENTE.
