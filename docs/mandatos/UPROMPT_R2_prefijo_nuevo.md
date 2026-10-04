@@ -773,3 +773,48 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
       `cap::4.2.1.2`.
     - Quedan abiertos para el diseño: el techo; la fila de la tabla de reprocesamiento, que la autorización
       de las cuatro filas no cubre; y una prueba con una llamada real, que tiene costo.
+- **04/10/2026 — FRENO P3c-1 revisado; decisiones de la autora para P3c-2 y P4b.** Las dos notas anteriores
+  quedaron en `bd77541` y en `28ec100`. El freno está en `data/experiment/prompt_r2/freno_p3c1.md` y el
+  diseño, en `p3c/diseno_p3c.md` (sin commit al 04/10/2026). Corrí sus siete scripts dos veces sobre una
+  copia: las 13 salidas son iguales a las de `p3c/salida/`. Las marcas y la tabla de P4, regeneradas con el
+  criterio de `cap::5.4.4` en los dos brazos, son iguales a las de `p4/salida/`: cambian seis marcas del
+  brazo sellado, y `condicion_de` con firma nueva queda sin pares en los tres grupos.
+  Decisiones de la autora:
+  1. **El texto, aprobado:** los 15 reemplazos del prefijo (borrador `322c5a23e9b7`, de 55.105 a 59.909
+     caracteres, con el tool schema sin cambio), la línea de alcance del mensaje de E1 y las dos NOTAS de E3.
+     Para `cap::3.1.14::intro` y `ric::3.1.8` vale la lectura del diseño: sus frases son alcance y van en la
+     descripción de su norma.
+  2. **Contador de omisiones `meta_normativo`** cuyo tramo trae una marca de deber, de facultad, de
+     condición o de excepción: en `validador_r2`, contando sin rechazar, para vigilarlo en U-REEXT-T0.
+  3. **La vigencia (P3C-a2):** de una frase de vigencia, solo la fecha es `meta_normativo`. Un régimen de
+     transición con condiciones es contenido normativo.
+  4. **P4b,** con los grupos del diseño (29 unidades en dos brazos, más E3 en 6) y tope de USD 1,5. Para
+     las listas de lo que queda afuera (b1), la elección busca por lectura otras formas de enunciar la
+     exclusión, no solo la léxica de `cla::5.1.1`. Si no aparece ninguna, b1 se mide solo con el ejemplo y
+     se declara así.
+  5. **Los candados,** como los recomienda el diseño: el de E3, entero al importar `prompt_e3.py` (opción
+     i); las dos fixtures nuevas, `e1_extractor/candado_mensaje_r2b.json` y
+     `e3_verificador/candado_mensaje_e3.json`, con su chunk y su validación sintéticos; y la regeneración
+     de `data/experiment/mantenimiento/selftest_clave_cache.json`.
+  6. **El tercer escalón del reintento de E1:**
+     - techo de 40.960 tokens;
+     - el reintento del ratchet de esas unidades, con el mismo techo;
+     - la fila F08d de la tabla de reprocesamiento y la variación R13c del selftest de claves, autorizadas;
+     - una llamada real de confirmación, con tope de USD 0,20;
+     - la actualización de `reextraccion_v2/selftest_ub53.py`;
+     - las unidades que usen el escalón no van a la muestra de la cola humana, que sería una obligación
+       nueva del protocolo: llevan una marca propia y U-REEXT-T0 las lee todas en T4. Con ese número se
+       decide si hace falta algo para el escalado.
+  7. **Antes de habilitar el tercer escalón,** P3c-2 verifica en la documentación oficial que el contexto
+     del modelo de E3 admite un pedido de unos 50.000 tokens, y lo cita.
+  Costo. La llamada de P3c-2 (tope USD 0,20) y P4b (tope USD 1,5) son las únicas llamadas a la API
+  autorizadas fuera de P4. El texto firmado decía «Fuera de P4, ninguna llamada a la API» (`:12`).
+  De la revisión, PENDIENTE de decisión de la autora:
+  - **La regla 9.** El laudo de esquema congelado la aceptó «sin tocar más la regla» (R4,
+    `data/experiment/esq/laudo_esquema_congelado.md:50-51`, `2593d4d`), y L-ESQ-R2 describe lo
+    meta-normativo como «finalidad, vigencia, interpretación y alcance de una norma» (`4ef7650:687`). Los
+    puntos 1 y 3 sacan el alcance y dejan de la vigencia solo la fecha: cambian una regla de un texto
+    firmado.
+  - **Las normas con sujeto.** En el crudo de P4, las normas (Obligacion, Restriccion y Potestad) con
+    `aplica_a` son 129 de 143 con el prefijo sellado y 111 de 157 con el de P3b-2; con el punto e de P3c
+    quedarían 96 de 157. El alcance del TO no está en ningún nodo del grafo.
