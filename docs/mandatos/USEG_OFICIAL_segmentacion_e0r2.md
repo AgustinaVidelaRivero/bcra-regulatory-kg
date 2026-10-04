@@ -7,7 +7,7 @@ Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
   partición y cifras para la tesis). Reporte corto (no más de 40 líneas) y espera del «seguí» escrito de
   la autora.
 - Costo de API: USD 0. Ninguna llamada a la API; Neo4j no se usa.
-- PRECONDICIÓN: el cierre de U-R2-CODIGO-2 commiteado por la autora. Sus puntos (f), (h) y (l) cambian
+- PRECONDICIÓN: el cierre de U-R2-CODIGO-2 commiteado por la autora. Sus puntos (f), (h), (l) y (n) cambian
   e0-r2 (docs/mandatos/UR2CODIGO2_correcciones_previas_a_reext.md). S0 edita E0 sobre ese commit, y S1
   corre con el código que deje S0 y lo registra. Si el cierre no está commiteado, frená sin escribir.
 
@@ -74,7 +74,7 @@ FRENO S1.
 
 S2. DIFERENCIAS CONTRA LA PARTICIÓN Y CIFRAS.
 1. Diferencias contra `b584_particion/`, atribuidas por clase como en el control de R5: ids desambiguados
-   (L), unidades sin partir por tabla, ids de K, lo que cambien los puntos (f), (h) y (l) de
+   (L), unidades sin partir por tabla, ids de K, lo que cambien los puntos (f), (h), (l) y (n) de
    U-R2-CODIGO-2 y lo que cambie S0; texto distinto por tablas, pies, K y arrastre. Lo que ninguna clase explique se lista como «otra». Criterio
    de aceptación: «otra» en 0, o cada caso leído y explicado.
 2. Diferencias contra la escalera de R5, si la corrida de R5 se puede reproducir con `e1c9456`: solo las

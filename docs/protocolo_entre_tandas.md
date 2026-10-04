@@ -467,3 +467,9 @@ El texto firmado no se edita; estas notas se leen junto con él.
   es el de la fila F13 de la tabla de reprocesamiento
   (`data/experiment/mantenimiento/tabla_reprocesamiento.md:97`): E4, el esqueleto y lo que sigue del
   ensamblado, en código. La unidad que lo construye se registra en el plan (`docs/plan_tesis.md:402`).
+- **04/10/2026 — la nota anterior sobre el crecimiento del catálogo queda reemplazada por una enmienda firmada
+  (decisión de la autora).** La nota del 04/10/2026 sobre el crecimiento del catálogo de sujetos durante el
+  escalado queda sin efecto: agregaba una obligación nueva a un texto firmado, y eso va por enmienda. Rige
+  `docs/enmienda2_protocolo_entre_tandas_2026-10-04_catalogo.md`, FIRMADA por la autora el 04/10/2026. El
+  script lo construye una unidad propia (`docs/mandatos/URERESOL_CAT_reresolucion_catalogo.md`, BORRADOR —
+  PENDIENTE DE FIRMA).

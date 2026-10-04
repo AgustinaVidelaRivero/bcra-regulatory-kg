@@ -57,3 +57,12 @@ tanda», asentada en `4f3bcff`), que queda sin efecto.
 ## Firma
 
 FIRMADA por la autora el 04/10/2026. Rige desde esta firma.
+
+## Notas posteriores a la firma
+
+El texto firmado no se edita (59 líneas, sha256 `b9c2e7fd039f…`, `8d01b04`); estas notas se leen junto con él.
+
+- **04/10/2026 — la regla rige también para la cola de U-REEXT-T0 (decisión de la autora).** La lectura del
+  §1 se hace también sobre la cola humana del grafo de U-REEXT-T0, la tanda 0 re-extraída, con la misma
+  regla y los mismos umbrales. Es la primera medición, antes de la tanda 1. Queda registrado en la fila de
+  esa unidad (`docs/plan_tesis.md:400`).

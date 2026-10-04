@@ -330,3 +330,18 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   elemento hoy correcto cambia. En (o) y (p) esa lista es vacía y la prueba es sintética.
   Escrituras: las ya autorizadas de C2. Ningún punto suma un archivo nuevo de código.
   Orden: no cambia. C2 arranca sobre el commit de P3, y su implementación no corre a la vez que la de P3b.
+- **04/10/2026 — punto (s) y decisiones de la autora sobre (q) y el freno de diseño.** P3 de U-PROMPT-R2 quedó
+  commiteada en `4aa92c7`, y la enmienda 3 a L-ESQ-R2 del punto (m), firmada, en `8d01b04`.
+  s. El conteo de elementos de extracción sin verificar pasa al reporte del ensamblado r2b. Hoy está solo en
+     el reporte del E2 r2 de cada TO (`corpus_v2/runner_corpus.py:1007`, `conteo_paso_por_e3`, escrito en
+     `:1089`): entidades sin `paso_por_e3`, relaciones con `no_verificada_e3`, excluidos por no haber pasado,
+     unidades sin los índices de E3 y, aparte, la cola humana por estado. El reporte del ensamblado cuenta
+     hoy solo las relaciones y las aristas con la marca (`tanda0/code/ensamblar_tanda0.py:841-842` y `:922`).
+     El ensamblado r2b lleva a su reporte el conteo entero, por TO y en total: es el que va a leer el control
+     que exige cero. Control: en el ensamblado sintético de P3, el total del reporte del ensamblado es la
+     suma de los reportes del E2 r2. Solo r2b: el reporte de los grafos r2a sellados no cambia. Entra en la
+     implementación, después del freno de diseño.
+  Punto (q): se queda como está registrado. Las aristas derivadas que tocan un nodo que solo viene de la cola
+  humana se cuentan aparte; no llevan la marca, y `pyd_r2/code/modelos_r2.py` no se suma a las escrituras de
+  C2.
+  Freno de diseño: C2 empieza por un freno de diseño con (h) y (n), sin implementar.
