@@ -604,3 +604,25 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   los conflictos de propiedades.
   La alternativa que propone la verificación (unir por etiqueta plegada dentro del mismo encabezado de E0)
   queda como mejora a medir después de U-REEXT-T0 (`docs/plan_tesis.md:400`).
+- **04/10/2026 — FRENO P3b-1 aprobado, y decisiones para P3b-2 (decisiones de la autora).** El diseño quedó
+  commiteado en `023f9a0` (`data/experiment/prompt_r2/freno_p3b1.md` y `p3b/`). La revisión reprodujo sus 11
+  salidas byte a byte sobre una copia. El «seguí» de P3b-2 lo mandó la autora (declaración de la autora del
+  04/10/2026), con estas decisiones:
+  1. El texto queda aprobado: el prefijo con sus 12 reemplazos, el mensaje de E1, la NOTA de E3 y el aviso
+     del reintento.
+  2. j: opción 1. Los veredictos de E3 que llegan como texto se leen en código, con reparo y con la marca de
+     cómo se leyeron.
+  3. k: k4. El reintento con menos elementos se acepta con la marca `reintento_con_menos_elementos` y se
+     cuenta por tanda. No se lee por muestra: no agrega una obligación al protocolo. La recuperación por
+     tramo de lo que el reintento dejó se mide después de U-REEXT-T0 (`docs/plan_tesis.md:400`).
+  4. Copia de la nota de E3: las dos defensas. El control marca en el nodo, no solo en los registros de la
+     corrida, y P3b lee los 45 casos de la tanda 0.
+  5. l: como se diseñó.
+  6. El mensaje de E1 suma una frase para las unidades con la herencia recortada por C2 de U-R2-CODIGO-2,
+     que explica el marcador «[recorte de E0: …]».
+  7. Las claves nuevas de `properties_no_definidas` (`modalidad`, `consecuencia` y `modalidad_clasificada`)
+     se cuentan aparte de las demás.
+  8. La unión de las operaciones por punto (nota anterior): P3b toca una línea en cada sitio de llamada de
+     `ensamblar_r2` para pasarle la fase, declarada, y suma `e2_reduce/selftest_e2.py` solo para el caso
+     nuevo.
+  Orden: P3b-2 va primero, y la implementación de C2 de U-R2-CODIGO-2 arranca sobre su commit.

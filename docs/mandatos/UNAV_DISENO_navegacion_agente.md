@@ -128,13 +128,18 @@ sistema por fragmentos o es propia de la navegación por aristas (diferencia dec
    Caso de prueba: los nodos de `docvig::2.1.1.1`, `2.1.2.1` y `2.2.1.1` se distinguen por su cadena de
    títulos, en la búsqueda y en la vista.
 Las instrucciones del agente y el tope de llamadas se tratan como parámetros de la configuración.
-Un requisito de las vistas (decisión de la autora del 04/10/2026). No es una herramienta y no cambia la
+Dos requisitos de las vistas (decisiones de la autora del 04/10/2026). No son herramientas y no cambian la
 cantidad de configuraciones de N4:
 - Marcas de verificación. El agente ve la marca de la cola humana en el nodo y en la arista, y
   `no_verificada_e3` en la arista. Exige exportar a Neo4j las propiedades de la arista y las claves que
   quedan fuera de `properties`, y devolverlas en `ver_vecinos`: es el mismo cambio que pide `alcance`.
   El diseño dice cómo se le muestra la marca al agente y qué le indican las instrucciones sobre el
   contenido no verificado.
+- Modalidad clasificada. La vista del nodo muestra `properties_no_definidas.modalidad_clasificada`, con el
+  tramo copiado (`modalidad` o `consecuencia`). Es la clasificación que hace el código desde el marcador
+  que copia E1: `recomendacion`, `consecuencia_de_incumplimiento` o `no_clasificada` (diseño de P3b de
+  U-PROMPT-R2, data/experiment/prompt_r2/p3b/diseno_p3b.md, §7; `023f9a0`). Es una de las claves fuera de
+  `properties` que la vista hoy no lleva.
 
 N3. PREGUNTAS DE DESARROLLO, POR UNA INSTANCIA APARTE.
 - Conjunto separado del de EV2 y del de B6.3. Nunca se usa para evaluar ni se reporta como resultado.

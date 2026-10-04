@@ -355,3 +355,22 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   - si P3b va primero, la corrida de control de C2 sobre el crudo de r2a con las reglas de r2b incluye la
     separación de las operaciones. C2 la lista aparte, atribuida a P3b, y no la cuenta entre sus cambios.
     Referencia: 37 operaciones pasan a ser 89 en desarrollo y 59 pasan a ser 148 en diez.
+- **04/10/2026 — FRENO C2-diseño aprobado, y fe de erratas de las cifras de los pies (decisiones de la
+  autora).** El diseño quedó commiteado en `918b9c5` (`data/experiment/r2_codigo2/freno_c2_diseno.md`). La
+  revisión reprodujo sobre una copia `c2d_pies.json` y las secciones de la tanda 0 y de la partición de
+  `c2d_herencia.json`. Queda aprobado como está:
+  - (h): umbral U = 13.091 caracteres y B = 2.000 por bloque. Los cierres conservan su comienzo. El marcador
+    de una línea lleva el rol del bloque, y la unidad declara el recorte en `herencia_recortada`. La frase
+    del mensaje de E1 que explica el marcador la suma P3b de U-PROMPT-R2.
+  - (n): `pies_<to>.json` por TO, solo en e0-r2. La versión vigente es la del pie con la fecha de vigencia
+    más reciente entre las páginas legibles; en un empate, la de mayor número. El valor tiene la forma
+    «Comunicación A 8378 (vigencia 20/12/2025)». La materia es el título oficial del inventario tal cual, sin
+    el punto final, leído sin normalizar de `escalado_prep/inventario_tos.csv` y de `inventario_resumen.json`.
+  Fe de erratas de la nota de los puntos (m) a (r) (`8d01b04`), punto n, «Medida de la revisión». De las 736
+  páginas de los diez TOs, 617 traen un pie que se lee, 119 no traen pie y ninguna trae un pie ilegible. Las
+  119 son 9 de carátula, 40 de tabla de origen y 70 de historial; las páginas de índice sí tienen pie
+  (`data/experiment/r2_codigo2/salidas/c2d_pies.json`, `totales`). La nota decía 608, 119 y 9, y «carátula,
+  índice y tabla de origen». Causa: la expresión de la revisión no aceptaba la comilla de cierre invertida de
+  7 pies de cla y polcre ni el carácter sin mapear en la versión de hoja de 2 pies de lingob, y las páginas
+  sin pie se rotularon sin leerlas. La coincidencia con la carátula no cambia: 8 de 8.
+  Orden: la implementación de C2 arranca cuando P3b-2 de U-PROMPT-R2 esté commiteada.
