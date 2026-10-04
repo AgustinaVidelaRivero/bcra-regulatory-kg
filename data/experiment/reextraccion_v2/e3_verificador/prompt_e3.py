@@ -239,13 +239,33 @@ def _nota_flags_e0(flags: dict) -> str | None:
     )
 
 
-def notas_r2(chunk: dict) -> list[str]:
+# U-PROMPT-R2, P3b, punto i (hallazgo 3.4): NOTA de las omisiones que el esquema deja afuera a propósito. Texto
+# aprobado en el FRENO P3b-1 (023f9a0). Va cuando la validación declara omisiones de esas categorías; en el mensaje
+# aparecen como «[categoría] tramo — nota» (validador_e1.proyectar_r2).
+NOTA_E3_OMISIONES = (
+    "NOTA: el extractor declaró, en las omisiones, tramos que el esquema deja afuera a propósito: "
+    "[meta_normativo] (contenido sobre el sentido, el alcance, el objetivo o la vigencia de una norma, que no "
+    "prescribe la conducta de nadie), [fuera_de_tipos] (contenido normativo que ningún tipo del esquema representa) "
+    "y [relacion_sin_predicado] (un vínculo que ningún predicado del esquema representa). Un tramo declarado así no "
+    "es un faltante: no lo reclames. Sí es un faltante si lo declarado no es lo que dice su categoría (por ejemplo, "
+    "un deber o una prohibición declarados como meta-normativos).")
+CATEGORIAS_NOTA_OMISIONES = ("meta_normativo", "fuera_de_tipos", "relacion_sin_predicado")
+
+
+def _declara_omisiones_de_esquema(validacion: dict | None) -> bool:
+    cats = {o.split("]", 1)[0].lstrip("[") for o in (validacion or {}).get("omisiones_no_prosa") or []
+            if isinstance(o, str) and o.startswith("[")}
+    return bool(cats & set(CATEGORIAS_NOTA_OMISIONES))
+
+
+def notas_r2(chunk: dict, validacion: dict | None = None) -> list[str]:
     """NOTAS del mensaje en la forma de salida «r2» (perfil r2b de U-PROMPT-R2; mandato, decisión 6, y nota del
     03/10/2026; diseño §4.3 y §4.5). Solo se usan cuando la validación trae la marca forma_salida = "r2":
       - tablas: con alguna tabla serializada confiable (e0-r2), la NOTA de tablas confiables, el aviso de las
         tablas con estructura sin resolver y, si hay residual o fórmulas, la NOTA de los flags; sin tabla
         serializada confiable, la NOTA de siempre;
-      - encabezado de lista: la unidad no emite nodo por el solo anuncio ni lo que se compone en los ítems."""
+      - encabezado de lista: la unidad no emite nodo por el solo anuncio ni lo que se compone en los ítems;
+      - omisiones declaradas de las categorías que el esquema deja afuera (P3b, punto i)."""
     import prompt_r2b as R  # noqa: PLC0415 — solo en la forma r2 (e1_extractor en sys.path vía comun_e3)
     notas: list[str] = []
     f = chunk.get("flags") or {}
@@ -289,6 +309,8 @@ def notas_r2(chunk: dict) -> list[str]:
             "Sí es faltante, si no fue extraído, lo que el encabezado enuncia aparte de la lista: una norma propia, "
             "una excepción a la lista entera, o la norma principal cuando los ítems son sus supuestos o "
             "condiciones.")
+    if _declara_omisiones_de_esquema(validacion):
+        notas.append(NOTA_E3_OMISIONES)
     return notas
 
 
@@ -304,7 +326,7 @@ def build_user_message(chunk: dict, validacion: dict) -> str:
     partes.append("")
 
     flags = chunk.get("flags") or {}
-    notas = (notas_r2(chunk) if (validacion or {}).get("forma_salida") == "r2"
+    notas = (notas_r2(chunk, validacion) if (validacion or {}).get("forma_salida") == "r2"
              else [n for n in (_nota_flags_e0(flags),) if n])
     for nota in notas:
         partes.append(nota)

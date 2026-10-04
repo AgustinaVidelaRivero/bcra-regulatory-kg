@@ -62,11 +62,26 @@ verificador NO cambia, solo esta capa determinística):
   faltante eximido se marca estructural_no_bloqueante, como siempre; el reporte
   de la corrida lista como exenciones de la ampliación las de tipo distinto de
   enumeracion_incompleta.
+
+  U-PROMPT-R2, P3b (decisiones de la autora en el FRENO P3b-1, 023f9a0), solo con la forma de salida «r2»:
+  - j (hallazgo 2.2): un `faltantes` que llega como texto se lee en código, con reparo (el objeto JSON entero,
+    la lista, o el primer valor JSON con el veredicto del resto), y el veredicto lleva la marca de cómo se leyó
+    (`lectura_faltantes`);
+  - k4 (hallazgo 2.14): la unidad aceptada tras un reintento con menos entidades o relaciones que la primera
+    extracción se acepta con la marca `reintento_con_menos_elementos`;
+  - copia de la nota de E3: el feedback del reintento avisa que las notas no son texto de la norma (defensa 1),
+    y después de la re-extracción se marcan, sin rechazar, las entidades cuya descripción o etiqueta lleva texto
+    de una nota ausente de la unidad (defensa 2, `copia_nota_e3`, también en copias_nota_e3.jsonl);
+  - el `todo` de cola_humana.jsonl dice que la unidad entra al grafo marcada (decisión de la autora del
+    04/10/2026).
+  Las marcas van en la validación (`marcas_e3`), que llega a finales.jsonl.
 """
 
 from __future__ import annotations
 
 import json
+import re
+import sys
 from pathlib import Path
 
 import comun_e3
@@ -88,6 +103,77 @@ ESTADOS = ("completo_ok_directo", "aceptado_con_residuales",
            "cola_humana_reextraccion_invalida")
 
 MARCA_REINTENTO = "# REINTENTO DE EXTRACCIÓN — feedback del verificador de completitud (E3)"
+
+# P3b, defensa 1 (texto aprobado en el FRENO P3b-1): solo con la forma r2.
+AVISO_NOTA_REINTENTO = ("Las notas del verificador explican qué falta y por qué; no son texto de la norma: no copies "
+                        "sus palabras en descripciones, etiquetas ni tramos. Todo lo que extraigas sale del texto de "
+                        "la unidad.")
+# P3b, defensa 2: la regla de la medida de P3b-1 (p3b/lazo_e3_p3b.py): tokens de R-NORM, ventana de 5.
+VENTANA_COPIA_NOTA = 5
+_RE_VEREDICTO_EN_TEXTO = re.compile(r'"veredicto"\s*:\s*"([a-z_]+)"')
+
+
+def _forma_r2(validacion: dict | None) -> bool:
+    return isinstance(validacion, dict) and validacion.get("forma_salida") == "r2"
+
+
+def _validador_r2():
+    """R-NORM y el texto de la unidad de validador_r2 (pyd_r2/code), sin duplicarlos; solo con la forma r2."""
+    code = str(Path(__file__).resolve().parents[2] / "pyd_r2" / "code")
+    if code not in sys.path:
+        sys.path.insert(0, code)
+    import validador_r2  # noqa: PLC0415
+    return validador_r2
+
+
+def copias_nota(validacion: dict, faltantes: list[dict], chunk: dict) -> list[dict]:
+    """P3b, defensa 2: entidades de la re-extracción cuya descripción o etiqueta tiene una ventana de
+    VENTANA_COPIA_NOTA tokens de R-NORM que está en la `nota` de un faltante del feedback y no está ni en el texto de
+    la unidad (propio y heredado) ni en las citas de esos faltantes. Marca; no rechaza ni corrige."""
+    V = _validador_r2()
+
+    def ventanas(t) -> set[tuple[str, ...]]:
+        toks = V.norm_tokens(t or "")
+        return {tuple(toks[i:i + VENTANA_COPIA_NOTA]) for i in range(len(toks) - VENTANA_COPIA_NOTA + 1)}
+    notas = [f.get("nota") or "" for f in faltantes]
+    if not notas:
+        return []
+    citas = " \n ".join(f.get("cita_textual_del_fuente") or "" for f in faltantes)
+    de_la_nota = set().union(*(ventanas(n) for n in notas)) - ventanas(V.texto_completo(chunk)) - ventanas(citas)
+    out = []
+    for e in validacion.get("entidades") or []:
+        campos = {}
+        for campo, txt in (("descripcion", (e.get("properties") or {}).get("descripcion")), ("label", e.get("label"))):
+            comunes = ventanas(txt) & de_la_nota if isinstance(txt, str) else set()
+            if comunes:
+                campos[campo] = sorted(" ".join(w) for w in comunes)[:5]
+        if campos:
+            out.append({"indice_crudo": e.get("indice_crudo"), "local_id": e.get("local_id"), "type": e.get("type"),
+                        "campos": campos})
+    return out
+
+
+def leer_faltantes_texto(texto: str, veredicto_arriba) -> tuple[object, object, str]:
+    """P3b, j: (faltantes, veredicto, lectura) de un `faltantes` que llegó como texto, con la regla de la medida de
+    P3b-1 (p3b/lazo_e3_p3b.py). El texto se lee con `json.loads` («json») o, si no, con su primer valor JSON
+    («reparo», `raw_decode`); si nada se lee, «no_se_lee». Un objeto con `faltantes` trae el veredicto entero (vale
+    el suyo, o el de arriba); una lista son los faltantes (vale el veredicto de arriba y, con reparo y sin él, el
+    que sigue en el texto)."""
+    t = texto.lstrip()
+    try:
+        v, lectura, resto = json.loads(texto), "json", ""
+    except json.JSONDecodeError:
+        try:
+            v, fin = json.JSONDecoder().raw_decode(t)
+        except json.JSONDecodeError:
+            return None, veredicto_arriba, "no_se_lee"
+        lectura, resto = "reparo", t[fin:]
+    if isinstance(v, dict) and "faltantes" in v:
+        return v.get("faltantes"), v.get("veredicto") or veredicto_arriba, lectura
+    if isinstance(v, list):
+        m = _RE_VEREDICTO_EN_TEXTO.search(resto)
+        return v, veredicto_arriba or (m.group(1) if m else None), lectura
+    return None, veredicto_arriba, "no_se_lee"
 
 
 # ------------------------------------------------------------------------- #
@@ -167,6 +253,12 @@ def evaluar_veredicto(tool_input, chunk: dict,
 
     veredicto = tool_input.get("veredicto")
     faltantes = tool_input.get("faltantes")
+    if isinstance(faltantes, str) and _forma_r2(validacion):
+        # P3b, j: el veredicto llegó como texto dentro de `faltantes`; se lee en código y se marca cómo.
+        leidos, ver_leido, lectura = leer_faltantes_texto(faltantes, veredicto)
+        ev["lectura_faltantes"] = lectura
+        if leidos is not None:
+            faltantes, veredicto = leidos, ver_leido
     if not isinstance(faltantes, list):
         faltantes = []
         ev["incoherencias"].append("faltantes_no_lista")
@@ -216,7 +308,7 @@ def evaluar_veredicto(tool_input, chunk: dict,
 # Prompt de re-extracción: prompt E1 del chunk + feedback, tras el breakpoint #
 # ------------------------------------------------------------------------- #
 
-def bloque_feedback(faltantes: list[dict], intento: int) -> str:
+def bloque_feedback(faltantes: list[dict], intento: int, forma_r2: bool = False) -> str:
     """Bloque de feedback estructurado que se anexa al MENSAJE DE USUARIO del
     request E1 (después del breakpoint de caché). Solo faltantes con cita
     verificada entran acá."""
@@ -246,6 +338,8 @@ def bloque_feedback(faltantes: list[dict], intento: int) -> str:
         "(p. ej. una Excepcion) o como relación, según corresponda al schema. "
         "No inventes contenido que el fuente no sostiene.",
     ]
+    if forma_r2:
+        partes += ["", AVISO_NOTA_REINTENTO]
     return "\n".join(partes)
 
 
@@ -274,7 +368,8 @@ def build_reextraccion_kwargs(chunk: dict, faltantes: list[dict], model: str,
     kwargs = _build(chunk, model=model)
     if max_tokens_reintento is not None:
         kwargs["max_tokens"] = max_tokens_reintento
-    mensaje = kwargs["messages"][0]["content"] + "\n\n" + bloque_feedback(faltantes, intento)
+    forma_r2 = perfil is not None and getattr(perfil.esquema, "forma_salida", "v3") == "r2"
+    mensaje = kwargs["messages"][0]["content"] + "\n\n" + bloque_feedback(faltantes, intento, forma_r2)
     kwargs["messages"] = [{"role": "user", "content": mensaje}]
     return kwargs
 
@@ -328,6 +423,7 @@ class RegistroE3:
         self.dir.mkdir(parents=True, exist_ok=True)
         self.path_veredictos = self.dir / "veredictos.jsonl"
         self.path_cola = self.dir / "cola_humana.jsonl"
+        self.path_copias_nota = self.dir / "copias_nota_e3.jsonl"   # P3b, solo forma r2 y solo si hay casos
 
     def _append(self, path: Path, reg: dict) -> None:
         with path.open("a", encoding="utf-8") as f:
@@ -336,7 +432,10 @@ class RegistroE3:
     def veredicto(self, reg: dict) -> None:
         self._append(self.path_veredictos, reg)
 
-    def cola_humana(self, chunk_id: str, estado: str, evaluacion: dict) -> None:
+    def copia_nota(self, chunk_id: str, copias: list[dict]) -> None:
+        self._append(self.path_copias_nota, {"chunk_id": chunk_id, "entidades": copias})
+
+    def cola_humana(self, chunk_id: str, estado: str, evaluacion: dict, forma_r2: bool = False) -> None:
         pendientes = [
             {"tipo": f.get("tipo"), "cita": f.get("cita_textual_del_fuente"),
              "ubicacion": f.get("ubicacion"), "severidad": f.get("severidad"),
@@ -352,6 +451,10 @@ class RegistroE3:
                 f"TODO: revisión humana del chunk {chunk_id} — faltantes "
                 f"persistentes tras {TOPE_REINTENTOS} reintento(s) del "
                 f"mini-ratchet E3; el chunk NO ingresa al grafo hasta resolución."
+            ) if not forma_r2 else (
+                f"TODO: revisión humana del chunk {chunk_id} — el mini-ratchet E3 no "
+                f"terminó la unidad ({estado}); entra al grafo con la marca "
+                f"cola_humana y se revisa por la muestra de cada tanda."
             ),
         })
 
@@ -379,7 +482,12 @@ def ciclo_ratchet(chunk: dict, validacion: dict, *, cliente_verificador,
 
     Devuelve el expediente completo (auditable). La extracción que sobrevive
     (original o re-extraída) queda en `validacion_final`; si el estado es de
-    cola humana, `validacion_final` es None: nada ingresa al grafo."""
+    cola humana, `validacion_final` es None: el ratchet no acepta ninguna
+    extracción. Qué entra al grafo lo decide la cadena de ensamblado: en las
+    cadenas r1 y r2 entra el primer intento, marcado `cola_humana`
+    (decisión de la autora del 04/10/2026; runner_corpus.entrada_r2).
+    Con la forma r2, las marcas de P3b van en `marcas_e3` del expediente y de
+    la validación final."""
 
     def _persistir_veredicto(fase: str, intento: int, crudo: dict, ev: dict) -> None:
         if registro is not None:
@@ -394,16 +502,38 @@ def ciclo_ratchet(chunk: dict, validacion: dict, *, cliente_verificador,
                 "n_residuales": len(ev["residuales"]),
                 "incoherencias": ev["incoherencias"],
                 "faltantes": ev["faltantes"],
+                **({"lectura_faltantes": ev["lectura_faltantes"]} if "lectura_faltantes" in ev else {}),
             })
 
-    def _aceptar(estado: str, ev: dict, val: dict) -> dict:
+    def _aceptar(estado: str, ev: dict, val: dict, feedback: list[dict] | None = None) -> dict:
         expediente["estado"] = estado
         expediente["validacion_final"] = val
         expediente["residuales"] = ev["residuales"]
+        if forma_r2:
+            # P3b: las marcas de la unidad (j, k4 y la copia de la nota) viajan en la validación final.
+            marcas: dict = {}
+            lecturas = [{"fase": "verificacion" if i == 0 else "re_verificacion", "intento": i,
+                         "lectura": v["lectura_faltantes"]}
+                        for i, v in enumerate(expediente["veredictos"]) if "lectura_faltantes" in v]
+            if lecturas:
+                marcas["lectura_veredicto_e3"] = lecturas
+            if estado == "aceptado_tras_reintento":
+                n = {k: [len(validacion.get(k) or []), len(val.get(k) or [])] for k in ("entidades", "relaciones")}
+                if any(b < a for a, b in n.values()):
+                    marcas["reintento_con_menos_elementos"] = n
+                copias = copias_nota(val, feedback or [], chunk)
+                if copias:
+                    marcas["copia_nota_e3"] = copias
+                    if registro is not None:
+                        registro.copia_nota(chunk["id"], copias)
+            if marcas:
+                expediente["marcas_e3"] = marcas
+                expediente["validacion_final"] = {**val, "marcas_e3": marcas}
         return expediente
 
     expediente: dict = {"chunk_id": chunk["id"], "veredictos": [],
                         "reintentos": [], "residuales": []}
+    forma_r2 = _forma_r2(validacion)
 
     # --- Verificación inicial -------------------------------------------- #
     crudo1 = cliente_e3.verificar_chunk(cliente_verificador, chunk, validacion, model=model_e3)
@@ -426,13 +556,14 @@ def ciclo_ratchet(chunk: dict, validacion: dict, *, cliente_verificador,
             expediente["estado"] = "cola_humana_veredicto_inutilizable"
             expediente["validacion_final"] = None
             if registro is not None:
-                registro.cola_humana(chunk["id"], expediente["estado"], ev_actual)
+                registro.cola_humana(chunk["id"], expediente["estado"], ev_actual, forma_r2)
             return expediente
 
         # --- Re-extracción con feedback (después del breakpoint) --------- #
         # Solo los bloqueantes con cita verificada entran al feedback.
+        feedback = ev_actual["bloqueantes_utilizables"]
         reex = reextraer_chunk(cliente_extractor, chunk,
-                               ev_actual["bloqueantes_utilizables"],
+                               feedback,
                                model=model_e1, intento=intento,
                                max_tokens_reintento=max_tokens_reintento,
                                perfil=perfil)
@@ -442,7 +573,7 @@ def ciclo_ratchet(chunk: dict, validacion: dict, *, cliente_verificador,
             expediente["estado"] = "cola_humana_reextraccion_invalida"
             expediente["validacion_final"] = None
             if registro is not None:
-                registro.cola_humana(chunk["id"], expediente["estado"], ev_actual)
+                registro.cola_humana(chunk["id"], expediente["estado"], ev_actual, forma_r2)
             return expediente
 
         # --- Re-verificación E3 sobre la nueva extracción ----------------- #
@@ -454,11 +585,11 @@ def ciclo_ratchet(chunk: dict, validacion: dict, *, cliente_verificador,
         expediente["veredictos"].append(ev_actual)
 
         if ev_actual["es_completo_ok"] or ev_actual["aceptable"]:
-            return _aceptar("aceptado_tras_reintento", ev_actual, validacion_actual)
+            return _aceptar("aceptado_tras_reintento", ev_actual, validacion_actual, feedback)
 
     # --- Tope agotado con bloqueantes: cola humana, jamás ingreso silencioso #
     expediente["estado"] = "cola_humana"
     expediente["validacion_final"] = None
     if registro is not None:
-        registro.cola_humana(chunk["id"], "cola_humana", ev_actual)
+        registro.cola_humana(chunk["id"], "cola_humana", ev_actual, forma_r2)
     return expediente

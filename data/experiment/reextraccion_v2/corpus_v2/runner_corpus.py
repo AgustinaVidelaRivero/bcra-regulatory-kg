@@ -942,8 +942,13 @@ def vistos_por_e3(validacion: dict | None) -> dict | None:
     ents, rels = validacion.get("entidades") or [], validacion.get("relaciones") or []
     if any(not isinstance(x.get("indice_crudo"), int) for x in ents + rels):
         return None
-    return {"entidades": sorted(x["indice_crudo"] for x in ents),
-            "relaciones": sorted(x["indice_crudo"] for x in rels)}
+    vistos = {"entidades": sorted(x["indice_crudo"] for x in ents),
+              "relaciones": sorted(x["indice_crudo"] for x in rels)}
+    copias = (validacion.get("marcas_e3") or {}).get("copia_nota_e3")
+    if copias:
+        # U-PROMPT-R2, P3b-2: la marca de la copia de la nota de E3 (ratchet_e3) llega al nodo por validador_r2.
+        vistos["marcas"] = {"copia_nota_e3": copias}
+    return vistos
 
 
 def entrada_r2(to: str, tdir: Path, chunks: list[dict], perfil, validar) -> list[dict]:
@@ -1059,7 +1064,7 @@ def cerrar_e2_r2(to: str, salida: Path, limite: int | None = None) -> dict:
     res = E4.resolver_relaciones_r2(regs, cat["indice"], cat["rol_por_to"], versiones)
     M = E4.modulo_modelos_r2()
     ens = e2_lib.ensamblar_r2(chunks, regs, cat["labels"], M.SUJETOS_R2_SET, M.firma_r2,
-                              M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"])
+                              M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"], fase="r2b" if perfil_forma_r2(PERFIL) else "r2a")
     grafo = {"nodes": ens["nodes"], "edges": ens["edges"]}
     r_cola = e2_lib.flaggear_cola_r2(grafo, {r["chunk_id"]: r["estado_e3"] for r in regs if r.get("cola_humana")})
     grafo_json = json.dumps(grafo, ensure_ascii=False, indent=2)

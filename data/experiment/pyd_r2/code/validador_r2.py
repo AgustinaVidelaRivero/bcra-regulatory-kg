@@ -41,6 +41,17 @@ Forma «r2» (salida del prefijo r2b; U-PROMPT-R2, P3). Solo con esa forma:
   - con `vistos_e3` (los índices del crudo que validador_e1 pasó a E3), entra
     solo lo que pasó por E3 y `no_verificada_e3` se calcula por eso, no por la
     firma (nota del 04/10/2026 al mandato).
+U-PROMPT-R2, P3b (diseño aprobado en el FRENO P3b-1, 023f9a0), solo con la forma r2:
+  - h: en un mini-chunk que empieza a mitad de oración (prompt_r2b.mini_a_mitad), el tramo simple también se
+    verifica contra la última línea de títulos y el texto en orden de lectura, y se cuenta aparte;
+  - l: `Comunicacion.tipo` se deriva del tramo verificado, no del código ni de la etiqueta, que escribe el
+    modelo: una Comunicación nombrada da su letra (también en una enumeración) y el número se controla contra el
+    código; una norma externa da «externa»; sin sustento no se deriva y se cuenta;
+  - la modalidad: `otras_propiedades.modalidad` y `.consecuencia` se clasifican con una lista cerrada
+    (MODALIDAD_FORMAS) en `properties_no_definidas.modalidad_clasificada`;
+  - las marcas del ratchet de E3 que trae `vistos_e3["marcas"]` (runner_corpus.vistos_por_e3 lleva la de la copia
+    de la nota) van a `marcas_e3` de la validación, y la copia de la nota, además, a
+    `properties_no_definidas.copia_nota_e3` de la entidad.
 Con la forma v3 la salida es la de siempre, byte a byte.
 
 No edita nada del pipeline: importa `comun_e1` (puntos admitidos y rol
@@ -245,6 +256,19 @@ def _es_item(chunk: dict) -> bool:
     return prompt_r2b.es_item(chunk)
 
 
+def _mini_a_mitad(chunk: dict) -> bool:
+    # P3b, h: la definición del mensaje de E1 r2b (prompt_r2b.mini_a_mitad), sin duplicarla.
+    if str(_E1) not in sys.path:
+        sys.path.insert(0, str(_E1))
+    import prompt_r2b  # noqa: PLC0415 — solo en la forma r2
+    return prompt_r2b.mini_a_mitad(chunk)
+
+
+def texto_en_orden_de_lectura(chunk: dict) -> str:
+    """P3b, h: la última línea de títulos y el texto del mini-chunk, en el orden en que se leen."""
+    return ((chunk.get("herencia") or [{}])[-1].get("texto") or "") + "\n" + (chunk.get("texto") or "")
+
+
 def verificar_tramo_entidad(tramo: str, chunk: dict, punto: str, holgura: Optional[int],
                             reg: "_Registro") -> tuple[str, str, Optional[str]]:
     """Decisión 15: verifica el tramo de evidencia de una entidad y devuelve (tramo, nivel, tramo_modelo).
@@ -256,8 +280,17 @@ def verificar_tramo_entidad(tramo: str, chunk: dict, punto: str, holgura: Option
     partes = _RE_SEPARADOR_TRAMO.split(tramo)
     if len(partes) == 1:
         nivel, literal = verificar_tramo(tramo, texto_completo(chunk), holgura)
+        lectura = False
+        if nivel != "exacta" and _mini_a_mitad(chunk):
+            # P3b, h: el tramo puede cruzar del título al cuerpo.
+            n_l, lit_l = verificar_tramo(tramo, texto_en_orden_de_lectura(chunk), holgura)
+            if _ORDEN_NIVEL[n_l] > _ORDEN_NIVEL[nivel]:
+                nivel, literal, lectura = n_l, lit_l, True
+                reg.cuenta("tramo_entidad", f"orden_de_lectura:{n_l}")
         guardado, modelo = (literal, tramo) if nivel == "tokens" and literal is not None else (tramo, None)
         reg.cuenta("tramo_entidad", nivel)
+        if lectura:
+            return guardado, nivel, modelo
         if nivel != "no" and verificar_tramo(guardado, chunk.get("texto") or "", holgura)[0] == "no":
             caso = ("entidad_anclada_en_ancestro" if punto != chunk.get("unidad")
                     else "heredado_compuesto" if _es_item(chunk) else "sin_ancla_fuera_de_item")
@@ -396,6 +429,64 @@ def derivar_comunicacion(codigo: Any, label: Any) -> Optional[str]:
 
 def nombra_norma_externa(s: Any, lexico: frozenset) -> bool:
     return isinstance(s, str) and any(t in lexico for t in norm_tokens(s))
+
+
+# P3b, l: la mención de una Comunicación en el tramo, también en una enumeración («A 5867, 5926 y 5970»); la regla
+# medida en p3b/comunicacion_p3b.py.
+_RE_COM_EN_TRAMO = re.compile(r"\bcom(?:unicacion(?:es)?)?\b\.?\s*[\"'“”«»]?\s*([abc])\s*[\"'“”«»]?\s*(?:-|–|\s)\s*"
+                              r"(?:n[°ºo]\.?\s*)?(\d[\d.]*(?:\s*(?:,|y|e)\s*\d[\d.]*)*)")
+
+
+def derivar_comunicacion_tramo(tramo: Any, chunk: dict, holgura: Optional[int],
+                               lexico: frozenset) -> tuple[Optional[str], list[int], str]:
+    """P3b, l: (tipo, números mencionados, motivo) desde el tramo de la entidad, solo si verificó contra el texto de
+    la unidad (cada segmento, si es de dos); con «tokens», sobre el literal del texto. Motivos: «sin_tramo»,
+    «tramo_no_verificado», «comunicacion_en_tramo», «norma_externa_en_tramo» o «tramo_sin_norma»."""
+    t = _str_o_none(tramo)
+    if t is None:
+        return None, [], "sin_tramo"
+    textos = []
+    for parte in _RE_SEPARADOR_TRAMO.split(t):
+        nivel, literal = verificar_tramo(parte, texto_completo(chunk), holgura)
+        if nivel == "no":
+            return None, [], "tramo_no_verificado"
+        textos.append(literal if nivel == "tokens" and literal is not None else parte)
+    texto = "\n".join(textos)
+    m = _RE_COM_EN_TRAMO.search(fold(texto))
+    if m:
+        return m.group(1).upper(), [int(x.replace(".", "")) for x in re.findall(r"\d[\d.]*", m.group(2))
+                                    if x.replace(".", "")], "comunicacion_en_tramo"
+    if nombra_norma_externa(texto, lexico):
+        return "externa", [], "norma_externa_en_tramo"
+    return None, [], "tramo_sin_norma"
+
+
+# P3b, la modalidad copiada (diseño de P3b-1, §7): lista cerrada de formas, por prefijo de token de R-NORM o por
+# par de tokens. Una forma nueva se agrega acá y se vuelve a aplicar sobre lo extraído, sin cambiar el prefijo.
+MODALIDAD_FORMAS = {
+    "recomendacion": {"prefijos": ("recomend", "recomi", "aconsej", "sugier", "suger", "convenien", "deseabl",
+                                   "procur", "propend", "esperabl"),
+                      "pares": (("buena", "practica"), ("buenas", "practicas"), ("se", "espera"))},
+    "consecuencia_de_incumplimiento": {"prefijos": ("sancion", "multa", "cargo", "debit", "penal", "punitori",
+                                                    "incumpl", "inobserv", "infraccion", "suspen", "revoc",
+                                                    "inhabilit", "apercib", "baja"),
+                                       "pares": (("dara", "lugar"), ("daran", "lugar"))},
+}
+CLAVE_MODALIDAD = {"modalidad": "recomendacion", "consecuencia": "consecuencia_de_incumplimiento"}
+
+
+def clasificar_modalidad(clave: str, tramo: Any) -> str:
+    """P3b: la clase del tramo copiado en `otras_propiedades.<clave>` (modalidad → recomendacion; consecuencia →
+    consecuencia_de_incumplimiento) si tiene una forma de su lista; si no, «no_clasificada»."""
+    clase = CLAVE_MODALIDAD[clave]
+    if not isinstance(tramo, str):
+        return "no_clasificada"
+    toks = norm_tokens(tramo)
+    formas = MODALIDAD_FORMAS[clase]
+    if any(t.startswith(formas["prefijos"]) for t in toks) or any(
+            tuple(toks[i:i + 2]) in formas["pares"] for i in range(len(toks) - 1)):
+        return clase
+    return "no_clasificada"
 
 
 _FRECUENCIA_TOKENS = {}
@@ -589,6 +680,9 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
     r2 = forma == "r2"
     vistos_ent = None if vistos_e3 is None else set(vistos_e3["entidades"])
     vistos_rel = None if vistos_e3 is None else set(vistos_e3["relaciones"])
+    # P3b: las marcas del ratchet de E3 (ratchet_e3.ciclo_ratchet, `marcas_e3`), si las hay.
+    marcas_e3 = (vistos_e3 or {}).get("marcas") or {}
+    copia_por_indice = {c.get("indice_crudo"): c.get("campos") for c in marcas_e3.get("copia_nota_e3") or []}
     res: dict[str, Any] = {
         "chunk_id": chunk["id"], "perfil": PERFIL, "forma_entrada": forma,
         "politica_sha256": pol.sha256, "entidades": [], "relaciones": [], "omisiones": [],
@@ -597,6 +691,8 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
     }
     if vistos_e3 is not None:
         res["no_vistos_e3"] = []
+    if marcas_e3:
+        res["marcas_e3"] = copy.deepcopy(marcas_e3)
 
     def fin(n_ent: int, n_rel: int) -> dict:
         cont, vals = reg.exportar()
@@ -762,6 +858,20 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
             elif otras is not None:
                 campos_nd["otras_propiedades"] = otras
                 reg.cuenta("claves", "otras_propiedades_no_objeto_a_campos_no_definidos", tipo)
+        if r2:
+            # P3b: las claves que pone el código no se toman del modelo.
+            for k in ("modalidad_clasificada", "copia_nota_e3"):
+                if k in no_def:
+                    campos_nd[f"properties_no_definidas.{k}"] = no_def.pop(k)
+                    reg.cuenta("claves", "clave_del_codigo_escrita_por_el_modelo_a_campos_no_definidos", k)
+            # P3b, la modalidad copiada: el código la clasifica, junto al tramo.
+            clases = [clasificar_modalidad(k, no_def[k]) for k in ("modalidad", "consecuencia") if k in no_def]
+            if clases:
+                no_def["modalidad_clasificada"] = next((c for c in clases if c != "no_clasificada"), "no_clasificada")
+                reg.cuenta("modalidad_clasificada", no_def["modalidad_clasificada"], tipo)
+                for k in ("modalidad", "consecuencia"):
+                    if isinstance(no_def.get(k), str):
+                        reg.cuenta("modalidad_tramo", verificar_tramo(no_def[k], texto_mencion, pol.holgura)[0], k)
 
         # Campos con lista cerrada.
         if tipo == "Obligacion":
@@ -785,14 +895,22 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
                 reg.cuenta("Restriccion.tipo", "registrado_fuera_de_lista", props_in.get("tipo"))
         if tipo == "Comunicacion":
             v = props.get("tipo")
-            der = derivar_comunicacion(props.get("codigo"), label)
+            if r2:
+                # P3b, l: con la forma r2 el paso «derivar_de_codigo_o_label» de la política lee el tramo
+                # verificado (texto de la unidad); el código y la etiqueta los escribe el modelo.
+                der, nums_tramo, motivo_l = derivar_comunicacion_tramo(e.get("tramo"), chunk, pol.holgura,
+                                                                       pol.lexico_externa)
+                reg.cuenta("Comunicacion.tramo", motivo_l)
+            else:
+                der = derivar_comunicacion(props.get("codigo"), label)
             if v in M.COMUNICACION_TIPO:
                 reg.cuenta("Comunicacion.tipo", "en_lista")
                 if der is not None and v in ("A", "B", "C") and der != v:
                     reg.cuenta("Comunicacion.tipo", "en_lista_discrepa_del_codigo", v)
                     res["advertencias"].append({"tipo": "comunicacion_tipo_discrepa_codigo",
                                                 "local_id": local_id,
-                                                "detalle": f"tipo {v!r}, código o label dan {der!r}"})
+                                                "detalle": f"tipo {v!r}, {'el tramo da' if r2 else 'código o label dan'} "
+                                                           f"{der!r}"})
             else:
                 original = props_in.get("tipo")
                 # Decisión 16: en la forma r2 el tipo no se pide; sin valor del modelo, se deriva sin original.
@@ -800,14 +918,14 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
                 resuelto = None
                 for paso in pol.pasos("Comunicacion.tipo"):
                     if paso == "derivar_de_codigo_o_label" and der is not None:
-                        resuelto, trat_c = der, "derivado_de_codigo_o_label"
+                        resuelto, trat_c = der, "derivado_del_tramo" if r2 else "derivado_de_codigo_o_label"
                         break
                     if paso == "externa_por_lexico":
                         if nombra_norma_externa(original, pol.lexico_externa):
                             resuelto, trat_c = "externa", "externa_por_valor"
                             break
-                        if (nombra_norma_externa(props.get("codigo"), pol.lexico_externa)
-                                or nombra_norma_externa(label, pol.lexico_externa)):
+                        if not r2 and (nombra_norma_externa(props.get("codigo"), pol.lexico_externa)
+                                       or nombra_norma_externa(label, pol.lexico_externa)):
                             resuelto, trat_c = "externa", "externa_por_codigo_o_label"
                             break
                 if not derivado:
@@ -828,6 +946,12 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
                     reg.cuenta("Comunicacion.numero", "derivado_de_codigo_o_label")
                 else:
                     reg.cuenta("Comunicacion.numero", "sin_valor_del_modelo_no_derivado")
+            if r2 and nums_tramo and props.get("tipo") in ("A", "B", "C"):
+                # P3b, l: el número del tramo se controla contra el del código (o el de la etiqueta).
+                num_c = props.get("numero") if isinstance(props.get("numero"), int) else numero_desde_codigo(
+                    props.get("codigo"), label)
+                reg.cuenta("Comunicacion.numero", "sin_numero_para_controlar" if num_c is None
+                           else "tramo_coincide" if num_c in nums_tramo else "tramo_no_coincide")
         if tipo == "Obligacion" and ("frecuencia" in props or "frecuencia" in originales
                                      or "frecuencia" in no_tipados):
             v = props.get("frecuencia")
@@ -875,6 +999,10 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
             res["no_vistos_e3"].append({"elemento": ref, "local_id": local_id, "type": tipo})
             reg.cuenta("paso_por_e3", "entidad_no_vista_excluida")
             continue
+        if i in copia_por_indice and copia_por_indice[i]:
+            # P3b, defensa 2: la marca del ratchet llega a la entidad (y, por e2_lib, al nodo).
+            no_def["copia_nota_e3"] = copia_por_indice[i]
+            reg.cuenta("marcas_e3", "copia_nota_e3", tipo)
         evidencia: dict[str, Any] = {}
         if r2:
             # Decisión 21: el tramo sin cuantía es un límite relativo y el elemento sin valor se arma acá. Los

@@ -17,6 +17,13 @@ CANDADOS (como el perfil v3_b54): el módulo recomputa el sha256 de cada insumo 
 canónico system + tools (método de prompt_e1.py:415-419), y FRENA con RuntimeError si alguno no es el congelado.
 Corre al importar, antes de toda llamada.
 
+P3b (FRENO P3b-1 aprobado, 023f9a0): sobre el prefijo de P2 (14d6b63b508e) se aplica el parche congelado en
+prompt_r2b_parche_p3b.json (puntos a a f: recomendación, consecuencia de un incumplimiento, Excepcion conectada,
+definiciones de regula/condiciona/requiere, lista dentro de la unidad y listas de excepciones), con candado de sha;
+el texto armado tiene candado propio. El mensaje suma la regla g (ítem con párrafos de cierre después del
+encabezado), la h (mini-chunk que empieza a mitad de oración) y el aviso del recorte de herencia de E0 (C2 de
+U-R2-CODIGO-2, punto h).
+
 Lista de tablas forzadas a residual (diseño §4.2, regla 4): tablas_residuales_forzadas_r2b.json, versionado al
 lado de este módulo, con la tabla, el motivo y la fecha de cada alta. Pasar una tabla a residual cambia el
 mensaje de las unidades que la traen, no el prefijo.
@@ -45,6 +52,7 @@ import prompt_v3_b54 as v3          # noqa: E402 — módulo SELLADO, solo impor
 from comun_e1 import es_mini_chunk, puntos_admitidos  # noqa: E402
 
 REEMPLAZOS_JSON = _BASE / "prompt_r2b_reemplazos.json"
+PARCHE_P3B_JSON = _BASE / "prompt_r2b_parche_p3b.json"
 TABLAS_FORZADAS_JSON = _BASE / "tablas_residuales_forzadas_r2b.json"
 BLOQUE_CATALOGO_R2 = _CAT_R2 / "bloque_catalogo_r2.txt"
 ROL_POR_TO_R2_JSON = _CAT_R2 / "rol_por_to_r2.json"
@@ -58,8 +66,13 @@ BLOQUE_CATALOGO_R2_SHA256_ESPERADO = "c40054853bd8682879832d72799664de91025eaea5
 ROL_POR_TO_R2_SHA256_ESPERADO = "07cdb7af51b8ae82b606e972e3ab81be5a52aa4279cfc9132561c8e49ef13bd1"
 LABELS_E2_R2_SHA256_ESPERADO = "064167ab96cec8bf92bb89edd71f7a5193580d2617e714a5faffa536b6293b23"
 TOOL_SCHEMA_R2_SHA256_ESPERADO = "0c391f2b23bb7c94ec2606bd0315f3e4589c16a3571eaaa210a27babaa0f8ba2"
-PREFIJO_SHA256_R2B_ESPERADO = "cdb374508523e7f2308b1e3dd9790cdcfbb4000f2f1616279504af9475c6e227"
-PREFIJO_HASH_R2B_ESPERADO = "14d6b63b508e"
+# Prefijo de P2 (03/10/2026), base del parche de P3b.
+PREFIJO_SHA256_R2B_P2 = "cdb374508523e7f2308b1e3dd9790cdcfbb4000f2f1616279504af9475c6e227"
+PREFIJO_HASH_R2B_P2 = "14d6b63b508e"
+# Re-congelado en P3b-2 (04/10/2026), con el parche aprobado en el FRENO P3b-1.
+PARCHE_P3B_SHA256_ESPERADO = "8679ea124f1f2adf58d3c65c03861751b905224ae1784b83338e425c0aa1752b"
+PREFIJO_SHA256_R2B_ESPERADO = "8d84364fc3b6f6b586ff09e11833a2328408ae6f93b081c8ae64a059ea839c8b"
+PREFIJO_HASH_R2B_ESPERADO = "3817de475c93"
 
 ANCLA_INICIO_BLOQUE = "## Sujetos regulados"
 ANCLA_FIN_BLOQUE = "\n# PROVENANCE OBLIGATORIA POR ELEMENTO"
@@ -76,27 +89,37 @@ def _leer_con_candado(p: Path, esperado: str) -> bytes:
     return b
 
 
-def _armar_prefijo() -> tuple[str, list[dict]]:
+def _aplicar(t: str, reemplazos: list[dict]) -> str:
+    for r in reemplazos:
+        n = t.count(r["viejo"])
+        if n != 1:
+            raise RuntimeError(f"{r['id']}: el ancla aparece {n} veces (esperado 1) — se frena")
+        t = t.replace(r["viejo"], r["nuevo"])
+    return t
+
+
+def _armar_prefijo() -> tuple[str, list[dict], str, list[dict]]:
     if v3.PREFIJO_SHA256_V3 != PREFIJO_SHA256_V3_ESPERADO:
         raise RuntimeError("candado r2b: el prefijo sellado v3_b54 no es el de U-B5.4 — se frena")
     doc = json.loads(_leer_con_candado(REEMPLAZOS_JSON, REEMPLAZOS_SHA256_ESPERADO))
     if doc.get("variante_frecuencia") != "B":
         raise RuntimeError("candado r2b: los reemplazos no son los de la variante B — se frena")
-    t = v3.PREFIJO_SISTEMA_V3
-    for r in doc["reemplazos"]:
-        n = t.count(r["viejo"])
-        if n != 1:
-            raise RuntimeError(f"{r['id']}: el ancla aparece {n} veces (esperado 1) — se frena")
-        t = t.replace(r["viejo"], r["nuevo"])
+    t = _aplicar(v3.PREFIJO_SISTEMA_V3, doc["reemplazos"])
     for a in (ANCLA_INICIO_BLOQUE, ANCLA_FIN_BLOQUE):
         if t.count(a) != 1:
             raise RuntimeError(f"R27: el ancla del bloque de catálogo {a!r} no es única — se frena")
     bloque = _leer_con_candado(BLOQUE_CATALOGO_R2, BLOQUE_CATALOGO_R2_SHA256_ESPERADO).decode("utf-8")
     i, k = t.index(ANCLA_INICIO_BLOQUE), t.index(ANCLA_FIN_BLOQUE)
-    return t[:i] + bloque + t[k:], doc["reemplazos"]
+    t_p2 = t[:i] + bloque + t[k:]
+    if hashlib.sha256(t_p2.encode("utf-8")).hexdigest() != PREFIJO_SHA256_R2B_P2:
+        raise RuntimeError("candado r2b: el prefijo de P2, base del parche de P3b, no es el congelado — se frena")
+    parche = json.loads(_leer_con_candado(PARCHE_P3B_JSON, PARCHE_P3B_SHA256_ESPERADO))
+    if parche.get("base_hash_canonico") != PREFIJO_HASH_R2B_P2:
+        raise RuntimeError("candado r2b: el parche de P3b no declara la base de P2 — se frena")
+    return _aplicar(t_p2, parche["reemplazos"]), doc["reemplazos"], t_p2, parche["reemplazos"]
 
 
-PREFIJO_SISTEMA_R2B, REEMPLAZOS_R2B = _armar_prefijo()
+PREFIJO_SISTEMA_R2B, REEMPLAZOS_R2B, PREFIJO_SISTEMA_R2B_P2, REEMPLAZOS_P3B = _armar_prefijo()
 TOOL_SCHEMA_R2B = json.loads(_leer_con_candado(TOOL_SCHEMA_R2_JSON, TOOL_SCHEMA_R2_SHA256_ESPERADO))
 ROL_POR_TO_R2 = json.loads(_leer_con_candado(ROL_POR_TO_R2_JSON, ROL_POR_TO_R2_SHA256_ESPERADO))
 LABELS_E2_R2 = json.loads(_leer_con_candado(LABELS_E2_R2_JSON, LABELS_E2_R2_SHA256_ESPERADO))
@@ -242,11 +265,58 @@ def bloque_flags(chunk: dict, forzadas: frozenset | None = None) -> list[str]:
     return out
 
 
-def es_item(chunk: dict) -> bool:
-    """Ítem de una lista (definición de U-DIAG-PROCESO): chunk de punto cuyo último bloque heredado termina
-    en «:»."""
+def bloque_lista(chunk: dict) -> int | None:
+    """P3b, punto g (hallazgo 1.2): índice del bloque heredado que abre la lista de la que el chunk de punto es un
+    ítem, o None. Es el último bloque que no es de cierre y termina en «:», y después de él solo hay bloques de
+    cierre (`tipo` «cierre») o ninguno: E0 hereda también los párrafos de cierre del punto contenedor. Un cierre
+    que termina en «:» (el que presenta una fórmula) no abre la lista. Da lo mismo con el recorte de herencia de
+    C2 de U-R2-CODIGO-2: sin cierres, el bloque con «:» es el último."""
+    if es_mini_chunk(chunk):
+        return None
     her = chunk.get("herencia") or []
-    return (not es_mini_chunk(chunk)) and bool(her) and " ".join(her[-1]["texto"].split()).endswith((":", "："))
+    idx = [i for i, h in enumerate(her) if h["tipo"] != "cierre"
+           and " ".join(h["texto"].split()).endswith((":", "："))]
+    if not idx:
+        return None
+    i = idx[-1]
+    return i if all(h["tipo"] == "cierre" for h in her[i + 1:]) else None
+
+
+def es_item(chunk: dict) -> bool:
+    """Ítem de una lista (definición de U-DIAG-PROCESO, con la regla g de P3b): ver bloque_lista."""
+    return bloque_lista(chunk) is not None
+
+
+FIN_DE_ORACION = (".", ":", ";", "：")
+
+
+def mini_a_mitad(chunk: dict) -> bool:
+    """P3b, punto h (hallazgo 2.16): mini-chunk que empieza a mitad de la oración que arranca en su última línea de
+    títulos (E0 tomó como título la primera línea del punto): el último bloque heredado es el `encabezado` de la
+    misma unidad y no termina en «.», «:» ni «;», y el texto del bloque empieza en minúscula."""
+    if not es_mini_chunk(chunk):
+        return False
+    her = chunk.get("herencia") or []
+    if not her:
+        return False
+    h = her[-1]
+    texto = (chunk.get("texto") or "").lstrip()
+    return (h["tipo"] == "encabezado" and h["unidad_origen"] == chunk["unidad"]
+            and not " ".join(h["texto"].split()).endswith(FIN_DE_ORACION) and bool(texto) and texto[0].islower())
+
+
+LINEA_ITEM = ("Contexto estructural heredado (contexto y anclaje; NO extraigas contenido normativo de estos bloques, "
+              "salvo un caso: el bloque [{tipo} | punto {unidad}] termina en «:» y abre la lista de la que este punto "
+              "es un ítem{cierres}, así que la norma del ítem se compone con ese encabezado — ver COMPOSICIÓN CON EL "
+              "ENCABEZADO DE UNA LISTA):")
+CIERRES = "; los bloques que lo siguen son párrafos de cierre del punto que lo contiene, no parte del encabezado"
+LINEA_MINI_MITAD = ("Cadena de títulos (ubica el bloque; NO es contenido a extraer, salvo su última línea: E0 la tomó "
+                    "como título, pero es el comienzo de la oración que sigue en tu bloque. Leela con el bloque, "
+                    "extraé la oración entera, y el `tramo` puede empezar en esa línea):")
+# Agregado 8 del «seguí» de P3b-2: solo en las unidades cuya herencia recorta E0 (C2 de U-R2-CODIGO-2, punto h;
+# el chunk lleva `herencia_recortada` y el bloque, la línea del recorte en el lugar de lo omitido).
+LINEA_RECORTE = ("La línea «[recorte de E0: …]» dentro de un bloque heredado no es texto de la norma: marca la parte "
+                 "de ese bloque que E0 no transcribe por su largo. No la copies ni extraigas nada de ella.")
 
 
 def es_encabezado_de_lista(chunk: dict) -> bool:
@@ -286,16 +356,19 @@ def build_user_message_r2b(chunk: dict) -> str:
     partes.extend(linea_alcance(ROL_POR_TO_R2.get(chunk["archivo"])))
     herencia = chunk.get("herencia", [])
     if herencia:
+        i = bloque_lista(chunk)
         if mini:
-            partes.append("Cadena de títulos (ubica el bloque; NO es contenido a extraer):")
-        elif es_item(chunk):
-            partes.append("Contexto estructural heredado (contexto y anclaje; NO extraigas contenido normativo de "
-                          "estos bloques, salvo un caso: el último bloque abre la lista de la que este punto es un "
-                          "ítem, así que la norma del ítem se compone con ese encabezado — ver COMPOSICIÓN CON EL "
-                          "ENCABEZADO DE UNA LISTA):")
+            partes.append(LINEA_MINI_MITAD if mini_a_mitad(chunk)
+                          else "Cadena de títulos (ubica el bloque; NO es contenido a extraer):")
+        elif i is not None:
+            h = herencia[i]
+            partes.append(LINEA_ITEM.format(tipo=h["tipo"], unidad=h["unidad_origen"],
+                                            cierres=CIERRES if i < len(herencia) - 1 else ""))
         else:
             partes.append("Contexto estructural heredado (SOLO contexto y anclaje: NO extraigas contenido normativo "
                           "de estos bloques — cada uno tiene su propia unidad de extracción; ver PROVENANCE):")
+        if chunk.get("herencia_recortada"):
+            partes.append(LINEA_RECORTE)
         for h in herencia:
             partes.append(f"[{h['tipo']} | punto {h['unidad_origen']}]")
             partes.append(h["texto"])

@@ -500,7 +500,7 @@ def p10_r2b(tmp: Path) -> None:
           f"prefijos distintos: {len(prefijos)}")
     check("P10 namespace E1 r2b derivado del hash congelado",
           cliente_e1.namespace_e1(prefijo_hash=pf.prefijo_hash_para_namespace)
-          == "e1_extraccion|cv=e1-extractor-v1-p14d6b63b508e|think=0")
+          == "e1_extraccion|cv=e1-extractor-v1-p3817de475c93|think=0")  # re-congelado en P3b-2
     check("P10 requests E3 sobre la salida r2 simulada, byte a byte en doble corrida", tot3 == 2434 and ig3 == tot3,
           f"{ig3}/{tot3}")
     check("P10 NOTAS r2 de E3: 212 encabezados de lista y 37 unidades con tabla serializada confiable",

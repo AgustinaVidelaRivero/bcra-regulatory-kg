@@ -836,7 +836,13 @@ TIPOS_POR_DESCRIPCION_R2 = ("Restriccion", "Obligacion", "Excepcion")
 TIPOS_POR_LABEL_Y_DESCRIPCION_R2 = ("Condicion", "Definicion", "Potestad")
 
 
-def entity_slug_r2(e: dict[str, Any], prov: dict) -> str:
+FASES_R2 = ("r2a", "r2b")
+# U-PROMPT-R2, P3b-2: claves de properties_no_definidas que pone la fase r2b (otras_propiedades de P3b y la marca
+# del ratchet de E3), contadas aparte en las estadísticas.
+CLAVES_NO_DEFINIDAS_P3B = ("modalidad", "consecuencia", "modalidad_clasificada", "copia_nota_e3")
+
+
+def entity_slug_r2(e: dict[str, Any], prov: dict, fase: str = "r2a") -> str:
     """Clave de fusión del perfil r2 (U-R2-CODIGO, R4.a: T2 y H2). La fusión
     sigue siendo exacta, pero nunca junta nodos de puntos distintos:
       - Restriccion, Obligacion y Excepcion: la descripción (como v3) y el punto
@@ -846,7 +852,10 @@ def entity_slug_r2(e: dict[str, Any], prov: dict) -> str:
       - Condicion, Definicion y Potestad: label, descripción y punto (H2: no se
         funden solo por label);
       - los demás tipos, como `entity_slug_v3` (Operacion por label; Sujeto,
-        TextoOrdenado y Comunicacion por su clave propia).
+        TextoOrdenado y Comunicacion por su clave propia);
+      - en la fase r2b (U-PROMPT-R2, P3b-2), la Operacion por label y punto: las
+        operaciones se unen solo dentro de su punto (VERIF-UNION-OPERACIONES,
+        1ef0f3f: de las uniones entre puntos distintos, 18 correctas de 37).
     El prefijo legible del id sale de la descripción o del label; el sufijo
     sha1 cubre la clave entera, con el punto (`_id_estable`)."""
     t = e["type"]
@@ -857,12 +866,14 @@ def entity_slug_r2(e: dict[str, Any], prov: dict) -> str:
         return _id_estable(slugify_full(str(p.get("descripcion") or label)) + "__" + ancla)
     if t in TIPOS_POR_LABEL_Y_DESCRIPCION_R2:
         return _id_estable(slugify_full(label) + "__" + slugify_full(str(p.get("descripcion") or "")) + "__" + ancla)
+    if t == "Operacion" and fase == "r2b":
+        return _id_estable(slugify_full(label or str(p.get("tipo") or "")) + "__" + ancla)
     return entity_slug_v3(e)
 
 
 def ensamblar_r2(chunks: list[dict], registros: list[dict], labels_catalogo: dict,
                  sujetos_set: frozenset, firma, entity_types: tuple, predicates: tuple,
-                 registro_no_mapeados: list[dict]) -> dict:
+                 registro_no_mapeados: list[dict], fase: str = "r2a") -> dict:
     """E2 del perfil r2. Mismo determinismo que `ensamblar` (orden documental
     de E0, ids por contenido, first-write-wins con conflictos registrados).
     Diferencias:
@@ -878,7 +889,16 @@ def ensamblar_r2(chunks: list[dict], registros: list[dict], labels_catalogo: dic
         no_verificada_e3 y coherencia_tipo_predicado);
       - el sujeto de una relación es el resuelto por relación; los
         `Sujeto_propuesto` se crean desde el registro de no mapeados (P-d1) y
-        su fila recibe el id del nodo."""
+        su fila recibe el id del nodo.
+    `fase` (U-PROMPT-R2, P3b-2): «r2a» (crudo v3; default, la salida de
+    siempre) o «r2b» (crudo de la forma r2). Solo en r2b: la Operacion se une
+    dentro de su punto (`entity_slug_r2`); las `properties_no_definidas` de la
+    relación pasan a la arista (la primera procedencia gana y una diferencia
+    va a los conflictos, como en los nodos); y `stats["p3b"]` cuenta los nodos
+    con las claves de P3b y las unidades con marcas del ratchet de E3 que
+    llegaron a la validación (`marcas_e3`)."""
+    if fase not in FASES_R2:
+        raise ValueError(f"fase desconocida: {fase!r}")
     orden_e0 = {c["id"]: i for i, c in enumerate(chunks)}
     filas_reg = {(f["chunk_id"], f["indice_relacion"]): f for f in registro_no_mapeados
                  if f["estado"] == "cuarentena"}
@@ -960,6 +980,15 @@ def ensamblar_r2(chunks: list[dict], registros: list[dict], labels_catalogo: dic
                 stats["prov_arista_acumuladas"] += 1
             if {m: edges[k].get(m) for m in MARCAS_ARISTA_R2} != {m: marcas.get(m) for m in MARCAS_ARISTA_R2}:
                 stats["aristas_con_marcas_distintas"] += 1
+            if fase == "r2b":
+                destino = edges[k].get("properties_no_definidas") or {}
+                for kk, v in (marcas.get("properties_no_definidas") or {}).items():
+                    if kk not in destino:
+                        edges[k].setdefault("properties_no_definidas", {})[kk] = v
+                    elif destino[kk] != v:
+                        conflictos.append({"id": f"{src}|{pred}|{tgt}", "property": f"properties_no_definidas.{kk}",
+                                           "conservado": destino[kk], "descartado": v,
+                                           "chunk_id": prov.get("chunk_id")})
             return
         edges[k] = {"source": src, "target": tgt, "relation": pred,
                     "provenance": dict(prov), "provenances": [dict(prov)], **marcas}
@@ -979,7 +1008,7 @@ def ensamblar_r2(chunks: list[dict], registros: list[dict], labels_catalogo: dic
             props = dict(e.get("properties") or {})
             if etype == "TextoOrdenado":
                 props.setdefault("archivo", prov["archivo"])
-            gid = f"{etype}_{entity_slug_r2({'type': etype, 'label': e['label'], 'properties': props}, prov)}"
+            gid = f"{etype}_{entity_slug_r2({'type': etype, 'label': e['label'], 'properties': props}, prov, fase)}"
             local_to_global[e["local_id"]] = gid
             if e.get("umbrales_tramos"):
                 lst = tramos_umbral.setdefault(gid, [])
@@ -1005,6 +1034,8 @@ def ensamblar_r2(chunks: list[dict], registros: list[dict], labels_catalogo: dic
                 rechazos_e2.append({"chunk_id": cid, "motivo": "predicado_invalido", "detalle": str(pred)})
                 continue
             marcas = {m: r.get(m) for m in MARCAS_ARISTA_R2 if r.get(m) not in (None, False)}
+            if fase == "r2b" and r.get("properties_no_definidas"):
+                marcas["properties_no_definidas"] = json.loads(json.dumps(r["properties_no_definidas"]))
             if pred in PREDICADOS_SUJETO_R2:
                 extremo = r.get("source") if pred == "aplica_a" else r.get("target")
                 ent_gid = local_to_global.get(extremo)
@@ -1054,6 +1085,22 @@ def ensamblar_r2(chunks: list[dict], registros: list[dict], labels_catalogo: dic
     for n in nodes:
         if n.get("fuera_de_lista"):
             n["fuera_de_lista"] = [k for k in n["fuera_de_lista"] if k in n["properties"]]
+    if fase == "r2b":
+        # Aparte, para no confundirlas con las claves no definidas de [c32] (docs/tablero_correcciones.md).
+        nd = [n.get("properties_no_definidas") or {} for n in nodes]
+        marcas_unidad: dict[str, int] = {}
+        for r in aceptados:
+            for k in r["validacion"].get("marcas_e3") or {}:
+                marcas_unidad[k] = marcas_unidad.get(k, 0) + 1
+        clases: dict[str, int] = {}
+        for x in nd:
+            if "modalidad_clasificada" in x:
+                clases[x["modalidad_clasificada"]] = clases.get(x["modalidad_clasificada"], 0) + 1
+        stats["p3b"] = {
+            "nodos_con_clave": {k: sum(1 for x in nd if k in x) for k in CLAVES_NO_DEFINIDAS_P3B},
+            "modalidad_clasificada": dict(sorted(clases.items())),
+            "aristas_con_properties_no_definidas": sum(1 for x in edges.values() if x.get("properties_no_definidas")),
+            "unidades_con_marca_e3": dict(sorted(marcas_unidad.items()))}
     cuarentena = sorted({f["id_nodo"] for f in registro_no_mapeados if f.get("id_nodo")})
     return {"nodes": nodes, "edges": [edges[k] for k in sorted(edges)], "cuarentena": cuarentena,
             "conflictos_properties": conflictos, "rechazos_e2": rechazos_e2, "stats": stats,

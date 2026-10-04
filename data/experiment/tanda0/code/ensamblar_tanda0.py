@@ -823,7 +823,7 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
         regs = RC.entrada_r2(to, C.SALIDA / to, chunks, perfil, validar)
         res = E4.resolver_relaciones_r2(regs, cat["indice"], cat["rol_por_to"], versiones)
         ens = e2_lib.ensamblar_r2(chunks, regs, cat["labels"], M.SUJETOS_R2_SET, M.firma_r2,
-                                  M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"])
+                                  M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"], fase="r2b" if RC.perfil_forma_r2(perfil) else "r2a")
         grafos[to] = {"nodes": ens["nodes"], "edges": ens["edges"]}
         cola_estados = {r["chunk_id"]: r["estado_e3"] for r in regs if r.get("cola_humana")}
         r_cola = e2_lib.flaggear_cola_r2(grafos[to], cola_estados)

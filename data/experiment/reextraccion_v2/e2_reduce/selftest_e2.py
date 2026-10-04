@@ -21,6 +21,10 @@ Cubre:
      test conceptual: la ausencia se reporta, no se inventa).
   5. Integración: corrida real sobre pro (fan-in 88 = 87 + 1 rechazado
      contabilizado; conteos de entrada consistentes con resumen_faseB.json).
+  6. Perfil r2, fase r2b (U-PROMPT-R2, P3b-2): la Operacion se une solo
+     dentro de su punto, las properties_no_definidas de la relación pasan a la
+     arista y stats["p3b"] cuenta las claves nuevas y las marcas de E3; con la
+     fase r2a (default), lo de siempre.
 
 Uso: python3 selftest_e2.py
 """
@@ -490,6 +494,55 @@ def test_minichunks_fixture():
           aus[0]["diagnostico"] if aus else "—")
 
 
+def test_fase_r2b():
+    """U-PROMPT-R2, P3b-2: la fase r2b de ensamblar_r2, sobre registros sintéticos."""
+    def prov(punto):
+        return {"to": "x", "archivo": "a.pdf", "punto": punto, "rol_documental": "punto_propio"}
+
+    def op(lid, punto):
+        return {"local_id": lid, "type": "Operacion", "label": "Venta de cambio", "properties": {},
+                "provenance": prov(punto)}
+    ob = {"local_id": "ob1", "type": "Obligacion", "label": "O", "provenance": prov("1"),
+          "properties": {"descripcion": "d1", "tipo": "otra"},
+          "properties_no_definidas": {"modalidad": "se recomienda", "modalidad_clasificada": "recomendacion"}}
+    rel = {"source": "ob1", "target": "op1", "predicate": "regula", "provenance": prov("1"),
+           "properties_no_definidas": {"plazo_relativo": "previo"}}
+    marcas = {"copia_nota_e3": [{"indice_crudo": 1, "campos": {"descripcion": ["a b c d e"]}}]}
+    regs = [{"chunk_id": "x::1", "validacion": {"entidades": [op("op1", "1"), ob], "relaciones": [rel],
+                                                "rechazos": [], "marcas_e3": marcas}},
+            {"chunk_id": "x::2", "validacion": {"entidades": [op("op2", "2"), op("op3", "1")], "relaciones": [],
+                                                "rechazos": []}}]
+    chunks = [{"id": "x::1"}, {"id": "x::2"}]
+
+    def ens(fase=None):
+        kw = {} if fase is None else {"fase": fase}
+        return e2_lib.ensamblar_r2(chunks, copy.deepcopy(regs), {}, frozenset(), lambda s, p, t: True,
+                                   ("Operacion", "Obligacion"), ("regula",), [], **kw)
+    a, a2, b = ens(), ens("r2a"), ens("r2b")
+    ops = lambda e: sorted(sorted(p["chunk_id"] + "@" + p["punto"] for p in n["provenances"])  # noqa: E731
+                           for n in e["nodes"] if n["type"] == "Operacion")
+    check("r2b: fase r2a por defecto, igual byte a byte; sin stats p3b ni la clave en la arista",
+          json.dumps(a, sort_keys=True) == json.dumps(a2, sort_keys=True) and "p3b" not in a["stats"]
+          and "properties_no_definidas" not in a["edges"][0])
+    check("r2a: las tres Operacion con la misma etiqueta se unen aunque sean de puntos distintos",
+          ops(a) == [["x::1@1", "x::2@1", "x::2@2"]])
+    check("r2b: la Operacion se une solo dentro de su punto (la del punto 1 de dos unidades sigue unida)",
+          ops(b) == [["x::1@1", "x::2@1"], ["x::2@2"]])
+    check("r2b: las properties_no_definidas de la relación pasan a la arista",
+          b["edges"][0].get("properties_no_definidas") == {"plazo_relativo": "previo"})
+    check("r2b: stats p3b cuenta las claves nuevas del nodo, la arista y las marcas de E3 de la unidad",
+          b["stats"]["p3b"] == {"nodos_con_clave": {"modalidad": 1, "consecuencia": 0, "modalidad_clasificada": 1,
+                                                    "copia_nota_e3": 0},
+                                "modalidad_clasificada": {"recomendacion": 1},
+                                "aristas_con_properties_no_definidas": 1,
+                                "unidades_con_marca_e3": {"copia_nota_e3": 1}}, str(b["stats"].get("p3b")))
+    try:
+        ens("r2c")
+        check("fase desconocida: error", False)
+    except ValueError:
+        check("fase desconocida: error", True)
+
+
 def main() -> int:
     tmp = BASE / "salida" / "_selftest_tmp"
     tmp.mkdir(parents=True, exist_ok=True)
@@ -505,6 +558,7 @@ def main() -> int:
     test_censo_ric_44()
     test_minichunks_fixture()
     test_integracion_pro()
+    test_fase_r2b()
     for f in tmp.iterdir():
         f.unlink()
     tmp.rmdir()

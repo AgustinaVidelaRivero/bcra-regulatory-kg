@@ -28,7 +28,10 @@ Grupos:
   G13 U-PROMPT-R2, P3: la forma r2 completa (tramo de evidencia simple y de
       dos segmentos, término literal, Comunicacion derivada, límite relativo,
       otras_propiedades de la relación, source y destino) y lo que pasó por E3
-      (vistos_e3, no_verificada_e3 por E3, establecida_en derivada).
+      (vistos_e3, no_verificada_e3 por E3, establecida_en derivada);
+  G14 U-PROMPT-R2, P3b-2: el tramo en orden de lectura del mini-chunk a mitad de
+      oración (h), la Comunicacion desde el tramo verificado (l), la modalidad
+      clasificada y la marca de la copia de la nota de E3 que llega a la entidad.
 
 Solo lectura: no escribe archivos. Lee E0 de la tanda 0 (con sha256 de N1),
 la lectura de `limita` y el ejemplo del préstamo. Salida determinística.
@@ -1144,12 +1147,14 @@ def g13_forma_r2(ch):
             ent("b", "Comunicacion", "Ley de Entidades", pi, {"codigo": "Ley 21.526"}, tramo="x"),
             ent("c", "Comunicacion", "Com. B 1.234", pi, {"codigo": "Comunicación B 1.234"}, tramo="x")])
     p = {e["local_id"]: e for e in r["entidades"]}
-    chequear(g, "Comunicacion: tipo y número derivados del código, sin originales ni marcas",
-             p["a"]["properties"] == {"codigo": "A 7825", "tipo": "A", "numero": 7825}
-             and p["c"]["properties"].get("numero") == 1234 and not p["a"]["originales"] and not p["a"]["fuera_de_lista"]
-             and cont(r, "Comunicacion.numero", "derivado_de_codigo_o_label") == 2)
-    chequear(g, "Comunicacion: una ley es «externa», sin número",
-             p["b"]["properties"] == {"codigo": "Ley 21.526", "tipo": "externa"} and not p["b"]["fuera_de_lista"])
+    # P3b-2, punto l: con la forma r2 el tipo sale del tramo verificado, no del código (los casos con tramo, en G14).
+    chequear(g, "Comunicacion con tramo sin verificar: con la forma r2 no se deriva del código ni del label (P3b, l)",
+             [p[x]["properties"] for x in "abc"] == [{"codigo": "A 7825"}, {"codigo": "Ley 21.526"},
+                                                     {"codigo": "Comunicación B 1.234"}]
+             and cont(r, "Comunicacion.tramo", "tramo_no_verificado") == 3
+             and cont(r, "Comunicacion.tipo", "sin_valor_del_modelo_no_derivado") == 3)
+    chequear(g, "Comunicacion sin derivar: sin originales ni marcas",
+             not any(p[x]["originales"] or p[x]["fuera_de_lista"] for x in "abc"))
     # Decisión 21: límite relativo.
     rel_t = "no podrá exceder el nivel alcanzado durante el mes anterior"
     r = r2([ent("r", "Restriccion", "R", pi, {"descripcion": "d", "tipo": "limite_cuantitativo"}, tramo="x",
@@ -1250,6 +1255,100 @@ def g13_forma_r2(ch):
                                              properties_no_definidas={"k": "v"})))
 
 
+def g14_p3b(ch):
+    """U-PROMPT-R2, P3b-2: h, l, la modalidad y la marca de la copia de la nota de E3."""
+    g = "G14 forma r2 (P3b)"
+    pol = V.politica_default()
+
+    def r2(ents, c, **kw):
+        return V.validar({"entities": list(ents), "relations": [], "omisiones": []}, c, forma="r2", **kw)
+
+    def prov(res, lid):
+        return next((e["provenance"] for e in res["entidades"] if e["local_id"] == lid), {})
+
+    def nd(res, lid):
+        return next((e.get("properties_no_definidas") or {} for e in res["entidades"] if e["local_id"] == lid), {})
+    # h: mini-chunk que empieza a mitad de la oración de su última línea de títulos.
+    mini = ch["cap::2.2.3::intro"]
+    t = "otorgadas por sucursales y subsidiarias locales de entidades"
+    r = r2([ent("o", "Obligacion", "O", "2.2.3", {"descripcion": "d"}, tramo=t)], mini)
+    chequear(g, "h: tramo que cruza del título al cuerpo → exacta en orden de lectura, contado aparte",
+             V.verificar_tramo(t, V.texto_completo(mini), pol.holgura)[0] != "exacta"
+             and prov(r, "o").get("tramo_verificado") == "exacta"
+             and cont(r, "tramo_entidad", "orden_de_lectura:exacta") == 1
+             and not any(k.startswith("solo_heredado") for k in r["contadores"].get("tramo_entidad", {})))
+    no_mitad = json.loads(json.dumps(mini))
+    no_mitad["texto"] = "S" + no_mitad["texto"][1:]
+    r = r2([ent("o", "Obligacion", "O", "2.2.3", {"descripcion": "d"}, tramo=t)], no_mitad)
+    chequear(g, "h: si el texto empieza en mayúscula no es a mitad de oración: sin orden de lectura",
+             prov(r, "o").get("tramo_verificado") != "exacta"
+             and not any(k.startswith("orden_de_lectura") for k in r["contadores"].get("tramo_entidad", {})))
+    # l: Comunicacion desde el tramo verificado.
+    c12 = ch["ric::12.1.1"]
+    sint = json.loads(json.dumps(c12))
+    sint["texto"] += ("\nSegún el art. 39 inc. d) de la Ley 21.526 y las Comunicaciones “A” 5867, 5926 y 5970.")
+    r = r2([ent("a", "Comunicacion", "Com. A 5831", "12.1.1", {"codigo": "A 5831"}, tramo="Comunicación “A” 5831"),
+            ent("e", "Comunicacion", "Com. A 1111", "12.1.1", {"codigo": "A 1111"}, tramo="Comunicación “A” 5831")], c12)
+    p = {e["local_id"]: e["properties"] for e in r["entidades"]}
+    chequear(g, "l: Comunicación nombrada en el tramo → su letra; el número del código, controlado contra el tramo",
+             p["a"] == {"codigo": "A 5831", "tipo": "A", "numero": 5831}
+             and p["e"] == {"codigo": "A 1111", "tipo": "A", "numero": 1111}
+             and cont(r, "Comunicacion.tramo", "comunicacion_en_tramo") == 2
+             and cont(r, "Comunicacion.tipo", "derivado_del_tramo:sin_valor_del_modelo") == 2
+             and cont(r, "Comunicacion.numero", "tramo_coincide") == 1
+             and cont(r, "Comunicacion.numero", "tramo_no_coincide") == 1)
+    r = r2([ent("l", "Comunicacion", "Com. A 39", "12.1.1", {"codigo": "A-39"},
+                tramo="art. 39 inc. d) de la Ley 21.526"),
+            ent("n", "Comunicacion", "Com. A 5926", "12.1.1", {"codigo": "A 5926"},
+                tramo="Comunicaciones “A” 5867, 5926 y 5970")], sint)
+    p = {e["local_id"]: e["properties"] for e in r["entidades"]}
+    chequear(g, "l: una ley escrita como «A-39» es «externa», sin número (caso de ctacte::12.10.2)",
+             p["l"] == {"codigo": "A-39", "tipo": "externa"} and cont(r, "Comunicacion.tramo", "norma_externa_en_tramo") == 1)
+    chequear(g, "l: Comunicaciones en una enumeración → la letra; el número del código está en la enumeración",
+             p["n"] == {"codigo": "A 5926", "tipo": "A", "numero": 5926}
+             and cont(r, "Comunicacion.numero", "tramo_coincide") == 1)
+    r = r2([ent("s", "Comunicacion", "Com. A 5831", "12.1.1", {"codigo": "A 5831"},
+                tramo="las posiciones entre marzo y diciembre")], c12)
+    chequear(g, "l: tramo verificado sin norma → no se deriva, contado",
+             r["entidades"][0]["properties"] == {"codigo": "A 5831"}
+             and cont(r, "Comunicacion.tramo", "tramo_sin_norma") == 1)
+    # La modalidad copiada, clasificada en código.
+    chequear(g, "modalidad: lista cerrada (recomendación, consecuencia, no clasificada)",
+             V.clasificar_modalidad("modalidad", "se recomienda") == "recomendacion"
+             and V.clasificar_modalidad("modalidad", "buenas prácticas") == "recomendacion"
+             and V.clasificar_modalidad("consecuencia", "dará lugar a la aplicación de sanciones")
+             == "consecuencia_de_incumplimiento"
+             and V.clasificar_modalidad("modalidad", "en lo posible") == "no_clasificada"
+             and V.clasificar_modalidad("modalidad", ["x"]) == "no_clasificada")
+    r = r2([ent("a", "Obligacion", "A", "12.1.1", {"descripcion": "d"}, tramo="x",
+                otras_propiedades={"modalidad": "se recomienda"}),
+            ent("b", "Obligacion", "B", "12.1.1", {"descripcion": "d"}, tramo="x",
+                otras_propiedades={"consecuencia": "dará lugar a la aplicación de sanciones"}),
+            ent("c", "Obligacion", "C", "12.1.1", {"descripcion": "d"}, tramo="x",
+                otras_propiedades={"modalidad": "en lo posible", "modalidad_clasificada": "recomendacion"})], c12)
+    chequear(g, "modalidad: properties_no_definidas.modalidad_clasificada junto al tramo copiado",
+             nd(r, "a") == {"modalidad": "se recomienda", "modalidad_clasificada": "recomendacion"}
+             and nd(r, "b") == {"consecuencia": "dará lugar a la aplicación de sanciones",
+                                "modalidad_clasificada": "consecuencia_de_incumplimiento"}
+             and nd(r, "c") == {"modalidad": "en lo posible", "modalidad_clasificada": "no_clasificada"}
+             and cont(r, "modalidad_clasificada", "recomendacion") == 1
+             and cont(r, "modalidad_clasificada", "no_clasificada") == 1)
+    chequear(g, "modalidad: la clave que pone el código, escrita por el modelo, va a campos_no_definidos",
+             r["entidades"][2]["campos_no_definidos"] == {"properties_no_definidas.modalidad_clasificada": "recomendacion"})
+    # La marca de la copia de la nota de E3 (ratchet_e3, por runner_corpus.vistos_por_e3).
+    ents = [ent("to", "TextoOrdenado", "TO", "12.1.1"), ent("o", "Obligacion", "O", "12.1.1", {"descripcion": "d"},
+                                                            tramo="x")]
+    marcas = {"copia_nota_e3": [{"indice_crudo": 1, "local_id": "o", "type": "Obligacion",
+                                 "campos": {"descripcion": ["a b c d e"]}}]}
+    r = r2(ents, c12, vistos_e3={"entidades": [0, 1], "relaciones": [], "marcas": marcas})
+    sin = r2(ents, c12, vistos_e3={"entidades": [0, 1], "relaciones": []})
+    chequear(g, "copia de la nota: la marca llega a la entidad y a marcas_e3 de la validación",
+             nd(r, "o") == {"copia_nota_e3": {"descripcion": ["a b c d e"]}} and nd(r, "to") == {}
+             and r["marcas_e3"] == marcas and cont(r, "marcas_e3", "copia_nota_e3") == 1)
+    chequear(g, "sin marcas: ni la clave en la entidad ni marcas_e3",
+             nd(sin, "o") == {} and "marcas_e3" not in sin)
+
+
 def main() -> int:
     ch = cargar_chunks()
     g1_listas()
@@ -1265,6 +1364,7 @@ def main() -> int:
     g11_remite_a()
     g12_ensamblado()
     g13_forma_r2(ch)
+    g14_p3b(ch)
     total = ok = 0
     print(f"política: {V.POLITICA.relative_to(REPO)}  sha256 {V.politica_default().sha256}")
     for grupo, filas in RES.items():

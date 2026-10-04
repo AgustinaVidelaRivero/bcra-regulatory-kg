@@ -23,6 +23,10 @@ Verifica:
      incoherente y cita fabricada manejados.
   G. Keys de caché local (llm_cache puro, sin DB) y namespace propio.
   H. Estimación reproducible.
+  L. U-PROMPT-R2, P3b-2 (solo con la forma r2): veredicto como texto leído en código con su marca (j), reintento
+     con menos elementos marcado (k4), aviso de la nota en el reintento y marca de la copia de la nota (defensas 1
+     y 2), el `todo` r2 de la cola humana y la NOTA de las omisiones declaradas (i); con los perfiles existentes,
+     todo igual.
 
 Uso:  python3 selftest_e3.py
 """
@@ -574,6 +578,99 @@ def main() -> int:
     check("K: sin tablas serializadas (E0 legada), la NOTA r2 es la de siempre, byte a byte",
           m_v3 == m_r2 and "detectados determinísticamente (flag de E0)" in m_v3)
     check("K: E3 congelado — el prefijo sigue intacto con la NOTA r2 y la ampliación",
+          prompt_e3.PREFIJO_HASH == resumen_sellado["prefijo_hash_e3"])
+
+    # ---------------- L. U-PROMPT-R2, P3b-2 ------------------------------------ #
+    print("\n[L] U-PROMPT-R2, P3b-2: lazo de E3 con la forma r2")
+    f_l = {"tipo": "otro", "severidad": "alta", "ubicacion": "2.7",
+           "cita_textual_del_fuente": ver_otro["faltantes"][0]["cita_textual_del_fuente"],
+           "nota": "falta la obligación de informar al ente rector dentro del plazo previsto"}
+    # j: el veredicto como texto
+    ti_json = {"veredicto": "faltantes_detectados", "faltantes": json.dumps([f_l], ensure_ascii=False)}
+    ti_obj = {"faltantes": json.dumps({"veredicto": "completo_ok", "faltantes": []})}
+    ti_rep = {"faltantes": json.dumps([f_l], ensure_ascii=False) + ', "veredicto": "faltantes_detectados"}'}
+    ti_mal = {"veredicto": "faltantes_detectados", "faltantes": "sin JSON"}
+    ev_json = ratchet_e3.evaluar_veredicto(ti_json, mini27, unidades_pro, val_r2_norma)
+    ev_obj = ratchet_e3.evaluar_veredicto(ti_obj, mini27, unidades_pro, val_r2_norma)
+    ev_rep = ratchet_e3.evaluar_veredicto(ti_rep, mini27, unidades_pro, val_r2_norma)
+    ev_mal = ratchet_e3.evaluar_veredicto(ti_mal, mini27, unidades_pro, val_r2_norma)
+    ev_v3j = ratchet_e3.evaluar_veredicto(ti_json, mini27, unidades_pro, val_v3_vacia)
+    check("L j: lista como texto → leída («json»), un bloqueante con cita verificada",
+          ev_json.get("lectura_faltantes") == "json" and len(ev_json["bloqueantes_utilizables"]) == 1
+          and not ev_json["incoherencias"])
+    check("L j: el veredicto entero como texto → completo_ok leído («json»)",
+          ev_obj.get("lectura_faltantes") == "json" and ev_obj["es_completo_ok"])
+    check("L j: con reparo — primer valor JSON y el veredicto del resto («reparo»)",
+          ev_rep.get("lectura_faltantes") == "reparo" and not ev_rep["incoherencias"]
+          and len(ev_rep["faltantes_bloqueantes"]) == 1)
+    check("L j: texto que no se lee → «no_se_lee», faltantes_no_lista como hoy",
+          ev_mal.get("lectura_faltantes") == "no_se_lee" and "faltantes_no_lista" in ev_mal["incoherencias"])
+    check("L j: sin la forma r2, igual que hoy (sin lectura ni marca)",
+          "lectura_faltantes" not in ev_v3j and "faltantes_no_lista" in ev_v3j["incoherencias"])
+    # defensa 1: el aviso de la nota, solo con la forma r2
+    fb_v3, fb_r2 = ratchet_e3.bloque_feedback([f_l], 1), ratchet_e3.bloque_feedback([f_l], 1, True)
+    check("L defensa 1: el aviso de la nota va solo con la forma r2, al final del bloque",
+          ratchet_e3.AVISO_NOTA_REINTENTO not in fb_v3 and fb_r2 == fb_v3 + "\n\n" + ratchet_e3.AVISO_NOTA_REINTENTO)
+    # ciclo r2 con reintento: lectura (j), copia de la nota (defensa 2) y reintento con menos elementos (k4)
+    perfil_r2 = perfil_e1.perfil("r2b")
+    reex_copia = {"entities": [{"local_id": "to", "type": "TextoOrdenado", "label": "TO", "punto": "2.7"},
+                               {"local_id": "o", "type": "Obligacion", "label": "Informar", "punto": "2.7",
+                                "tramo": "deberán contar con sendos hipervínculos",
+                                "properties": {"descripcion": "falta la obligación de informar al ente rector"}}],
+                  "relations": [], "omisiones": []}
+    out_l = BASE / "salida" / "selftest_out_p3b"
+    if out_l.exists():
+        shutil.rmtree(out_l)
+    reg_l = ratchet_e3.RegistroE3(out_l)
+    st3 = cliente_e3.StubClienteE3([ti_json, {"veredicto": "completo_ok", "faltantes": []}])
+    st1 = cliente_e1.StubClienteE1([reex_copia])
+    exp_l = ratchet_e3.ciclo_ratchet(mini27, val_r2_norma, cliente_verificador=st3, cliente_extractor=st1,
+                                     model_e3="M3", model_e1="M1", registro=reg_l, unidades_corpus=unidades_pro,
+                                     perfil=perfil_r2)
+    m_l = exp_l.get("marcas_e3") or {}
+    check("L: aceptado tras el reintento; el pedido del reintento lleva el aviso de la nota",
+          exp_l["estado"] == "aceptado_tras_reintento"
+          and ratchet_e3.AVISO_NOTA_REINTENTO in st1.requests_recibidos[0]["messages"][0]["content"])
+    check("L j: la marca de cómo se leyó el veredicto, en la validación final y en veredictos.jsonl",
+          m_l.get("lectura_veredicto_e3") == [{"fase": "verificacion", "intento": 0, "lectura": "json"}]
+          and exp_l["validacion_final"]["marcas_e3"] == m_l
+          and json.loads((out_l / "veredictos.jsonl").read_text(encoding="utf-8").splitlines()[0])
+          .get("lectura_faltantes") == "json")
+    copias = m_l.get("copia_nota_e3") or []
+    check("L defensa 2: la descripción que copia la nota queda marcada (no rechazada), con su índice del crudo",
+          len(copias) == 1 and copias[0]["indice_crudo"] == 1 and list(copias[0]["campos"]) == ["descripcion"]
+          and len(exp_l["validacion_final"]["entidades"]) == 2
+          and (out_l / "copias_nota_e3.jsonl").exists())
+    check("L k4: con las mismas entidades y relaciones, sin la marca del reintento",
+          "reintento_con_menos_elementos" not in m_l)
+    st3b = cliente_e3.StubClienteE3([ver_otro, {"veredicto": "completo_ok", "faltantes": []}])
+    st1b = cliente_e1.StubClienteE1([ti_vacio])
+    exp_k4 = ratchet_e3.ciclo_ratchet(mini27, val_r2_norma, cliente_verificador=st3b, cliente_extractor=st1b,
+                                      model_e3="M3", model_e1="M1", unidades_corpus=unidades_pro, perfil=perfil_r2)
+    check("L k4: el reintento con menos entidades se acepta con la marca y los conteos",
+          exp_k4["estado"] == "aceptado_tras_reintento"
+          and exp_k4["marcas_e3"] == {"reintento_con_menos_elementos": {"entidades": [2, 1], "relaciones": [0, 0]}}
+          and exp_k4["validacion_final"]["marcas_e3"] == exp_k4["marcas_e3"])
+    # cola humana: el todo r2; el de los perfiles existentes no cambia
+    st3c = cliente_e3.StubClienteE3([ver_otro, ver_otro])
+    st1c = cliente_e1.StubClienteE1([reex_copia])
+    ratchet_e3.ciclo_ratchet(mini27, val_r2_norma, cliente_verificador=st3c, cliente_extractor=st1c,
+                             model_e3="M3", model_e1="M1", registro=reg_l, unidades_corpus=unidades_pro,
+                             perfil=perfil_r2)
+    todo_r2 = json.loads((out_l / "cola_humana.jsonl").read_text(encoding="utf-8").splitlines()[-1])["todo"]
+    todo_v3 = json.loads((out_dir / "cola_humana.jsonl").read_text(encoding="utf-8").splitlines()[0])["todo"]
+    check("L: el todo de la cola humana con la forma r2 dice que la unidad entra marcada; el de siempre no cambia",
+          "entra al grafo con la marca cola_humana" in todo_r2 and "NO ingresa al grafo" in todo_v3)
+    check("L: con los perfiles existentes, el expediente no lleva marcas_e3",
+          "marcas_e3" not in exp and "marcas_e3" not in exp_ok and "marcas_e3" not in exp_k)
+    # i: la NOTA de las omisiones declaradas, solo con la forma r2 y con esas categorías
+    val_om = dict(val_r2_norma, omisiones_no_prosa=["[meta_normativo] Vigencia: desde el 1.1.20"])
+    m_om, m_om3 = prompt_e3.build_user_message(mini27, val_om), prompt_e3.build_user_message(
+        mini27, {k: v for k, v in val_om.items() if k != "forma_salida"})
+    check("L i: la NOTA de las omisiones declaradas va con la forma r2 y una categoría de la lista",
+          prompt_e3.NOTA_E3_OMISIONES in m_om and prompt_e3.NOTA_E3_OMISIONES not in m_om3
+          and prompt_e3.NOTA_E3_OMISIONES not in prompt_e3.build_user_message(mini27, val_r2_norma))
+    check("L: E3 congelado — el prefijo sigue intacto con P3b",
           prompt_e3.PREFIJO_HASH == resumen_sellado["prefijo_hash_e3"])
 
     # ---------------- H. Estimación reproducible ---------------------------- #
