@@ -26,7 +26,12 @@ Contenido:
     el FRENO R3 de U-R2-CODIGO): las marcas de cola humana y de colisión
     cross-TO en el nodo, la resolución de la base y la verificación en tabla
     en el elemento de umbral, el calificador en la arista de sujeto y las
-    relaciones del esqueleto (Sujeto → Sujeto). Tampoco entran al tool schema.
+    relaciones del esqueleto (Sujeto → Sujeto). Tampoco entran al tool schema;
+  - lectura de la forma r2 (U-PROMPT-R2, P3): el tramo de evidencia y su
+    verificación en la procedencia (decisiones 15 y 16), las otras_propiedades
+    de la relación y source y destino de la omisión (decisión 17), la marca
+    `no_verificada_e3` por lo que pasó por E3 y la `establecida_en` derivada
+    de la procedencia (nota del 04/10/2026 al mandato).
 
 Los modelos validados no rechazan un valor fuera de lista: exigen que esté en
 la lista o que lleve la marca `fuera_de_lista` (LN-1 de la suite propuesta).
@@ -175,6 +180,15 @@ def firma_derivada(src: str, pred: str, tgt: str) -> bool:
         return False
     d, r = FIRMAS_DERIVADAS[pred]
     return src in d and tgt in r
+
+
+# `establecida_en` derivada de la procedencia (decisión 11 del mandato de U-R2-CODIGO;
+# ensamblar_tanda0.derivar_establecida_en): el ensamblado la agrega hacia el TextoOrdenado de cada TO de la
+# procedencia de un nodo de contenido que no la trae de E1. El predicado es también de E1, así que la arista se
+# declara derivada por su `rol_fuente` y no por el predicado: no lleva las marcas de una relación emitida por E1 y
+# E3 no la verifica (U-PROMPT-R2, nota del 04/10/2026 al mandato, punto d).
+ROL_FUENTE_DERIVADA_DE_PROCEDENCIA = "derivada_de_procedencia"
+PREDICADOS_DERIVADOS_DE_PROCEDENCIA = ("establecida_en",)
 
 
 # Relaciones del esqueleto (E5; grafo_v2/code/schema.py, RELACIONES_ESQUELETO) y
@@ -411,6 +425,24 @@ class Provenance(BaseModel):
     punto: Optional[str] = None
     rol_documental: Optional[str] = None
 
+    @model_validator(mode="after")
+    def _evidencia(self) -> "Provenance":
+        # Decisión 15 (protocolo D6): el tramo de evidencia de la entidad, con su verificación, va en la
+        # procedencia: un nodo fundido de varios chunks guarda un tramo por procedencia (diseño de U-PROMPT-R2,
+        # §8.2). Decisión 16: la verificación del término literal de la Definicion, también por procedencia.
+        extra = self.model_extra or {}
+        if "tramo" in extra or "tramo_verificado" in extra:
+            tv = extra.get("tramo_verificado")
+            if tv not in TRAMO_VERIFICADO:
+                raise ValueError(f"tramo_verificado={tv!r} fuera de {TRAMO_VERIFICADO}")
+            if (tv == "ausente") != (extra.get("tramo") is None):
+                raise ValueError("tramo_verificado ausente ⇔ sin tramo")
+        if extra.get("tramo_modelo") is not None and extra.get("tramo_verificado") != "tokens":
+            raise ValueError("tramo_modelo solo con tramo_verificado tokens")
+        if "termino_verificado" in extra and extra["termino_verificado"] not in TRAMO_VERIFICADO:
+            raise ValueError(f"termino_verificado={extra['termino_verificado']!r} fuera de {TRAMO_VERIFICADO}")
+        return self
+
 
 # ------------------------------------------------------------------------- #
 # Elemento validado (salida del validador r2)                                 #
@@ -434,6 +466,9 @@ class EntidadR2(BaseModel):
     campos_heredados_v3: dict[str, Any] = Field(default_factory=dict)
     valores_no_tipados: dict[str, Any] = Field(default_factory=dict)
     campos_no_definidos: dict[str, Any] = Field(default_factory=dict)
+    # Si el elemento pasó por E3 (nota del 04/10/2026 al mandato de U-PROMPT-R2): lo fija el validador r2 con lo
+    # que vio E3 en la forma r2; None en la forma v3, que no lo registra.
+    paso_por_e3: Optional[bool] = None
 
     @model_validator(mode="after")
     def _definicion(self) -> "EntidadR2":
@@ -475,15 +510,25 @@ class RelacionR2(BaseModel):
     indice_crudo: Optional[int] = None
     originales: dict[str, Any] = Field(default_factory=dict)
     campos_no_definidos: dict[str, Any] = Field(default_factory=dict)
+    # Decisión 17 (protocolo D8): las otras_propiedades de la relación, como no definidas.
+    properties_no_definidas: dict[str, Any] = Field(default_factory=dict)
+    # Si la relación pasó por E3 (nota del 04/10/2026 al mandato de U-PROMPT-R2): None en la forma v3.
+    paso_por_e3: Optional[bool] = None
 
     @model_validator(mode="after")
     def _invariantes(self) -> "RelacionR2":
         if not firma_r2(self.tipo_source, self.predicate, self.tipo_target):
             raise ValueError(f"firma fuera de la matriz r2: {self.tipo_source} --{self.predicate}--> "
                              f"{self.tipo_target}")
-        nueva = not firma_congelada(self.tipo_source, self.predicate, self.tipo_target)
-        if nueva != self.no_verificada_e3:
-            raise ValueError("no_verificada_e3 debe marcar exactamente las firmas nuevas de r2")
+        if self.paso_por_e3 is None:
+            # Forma v3 (los grafos r2a sellados): la marca va por la firma, porque E3 vio la validación del
+            # perfil de E1, con la matriz congelada.
+            nueva = not firma_congelada(self.tipo_source, self.predicate, self.tipo_target)
+            if nueva != self.no_verificada_e3:
+                raise ValueError("no_verificada_e3 debe marcar exactamente las firmas nuevas de r2")
+        elif self.no_verificada_e3 == self.paso_por_e3:
+            # Forma r2: la marca va por lo que pasó por E3, no por la firma (nota del 04/10/2026, punto c).
+            raise ValueError("no_verificada_e3 debe marcar exactamente lo que no pasó por E3")
         if self.predicate in PREDICADOS_SUJETO:
             if self.mencion_verificada is None:
                 raise ValueError("relación de sujeto sin mencion_verificada")
@@ -519,9 +564,14 @@ class OmisionR2(BaseModel):
     fuera_de_lista: list[str] = Field(default_factory=list)
     originales: dict[str, Any] = Field(default_factory=dict)
     campos_no_definidos: dict[str, Any] = Field(default_factory=dict)
+    # Decisión 17 (protocolo D8): los local_id de la relación que el esquema no representa.
+    source: Optional[Texto] = None
+    destino: Optional[Texto] = None
 
     @model_validator(mode="after")
     def _invariantes(self) -> "OmisionR2":
+        if (self.source is not None or self.destino is not None) and self.categoria != "relacion_sin_predicado":
+            raise ValueError("source y destino solo en relacion_sin_predicado")
         if self.categoria is None:
             if self.origen != "v3_omisiones_no_prosa" and "categoria" not in self.fuera_de_lista:
                 raise ValueError("omisión sin categoría fuera de la lectura del crudo v3 y sin marca")
@@ -588,9 +638,25 @@ class AristaR2(BaseModel):
     no_verificada_e3: bool = False
     coherencia_tipo_predicado: Optional[Literal[COHERENCIA_TIPO_PREDICADO]] = None  # type: ignore[valid-type]
     calificador: Optional[Texto] = None
+    # Decisión 17 (protocolo D8): las otras_propiedades de la relación de E1, como no definidas.
+    properties_no_definidas: dict[str, Any] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def _invariantes(self) -> "AristaR2":
+        derivada = (self.relation in PREDICADOS_DERIVADOS or self.relation in RELACIONES_SUJETO_A_SUJETO
+                    or self.rol_fuente == ROL_FUENTE_DERIVADA_DE_PROCEDENCIA)
+        if derivada and self.properties_no_definidas:
+            raise ValueError(f"{self.relation}: properties_no_definidas solo en una relación emitida por E1")
+        if self.rol_fuente == ROL_FUENTE_DERIVADA_DE_PROCEDENCIA:
+            if self.relation not in PREDICADOS_DERIVADOS_DE_PROCEDENCIA:
+                raise ValueError(f"{self.relation}: rol_fuente {ROL_FUENTE_DERIVADA_DE_PROCEDENCIA} solo en "
+                                 f"{PREDICADOS_DERIVADOS_DE_PROCEDENCIA}")
+            if self.no_verificada_e3 or self.properties or any(
+                    v is not None for v in (self.sujeto_mencion, self.sujeto_mencion_modelo, self.mencion_verificada,
+                                            self.sujeto_id_modelo, self.metodo_resolucion,
+                                            self.coherencia_tipo_predicado, self.calificador)):
+                raise ValueError(f"{self.relation} derivada de la procedencia: lleva una marca de relación emitida "
+                                 f"por E1")
         if (self.relation in ("prohibe", "limita")) != (self.coherencia_tipo_predicado is not None):
             raise ValueError("coherencia_tipo_predicado va exactamente en prohibe y limita")
         if self.mencion_verificada is not None and self.relation not in PREDICADOS_SUJETO:

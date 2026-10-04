@@ -933,16 +933,34 @@ def crudos_reintento_e3(tdir: Path, chunks: list[dict], perfil) -> dict[tuple[st
     return out
 
 
+def vistos_por_e3(validacion: dict | None) -> dict | None:
+    """U-PROMPT-R2, P3 (nota del 04/10/2026 al mandato, punto b): los índices del crudo que validador_e1 pasó a
+    E3, leídos de la validación guardada del intento (forma r2: cada elemento lleva `indice_crudo`). None si la
+    validación falta, no es de la forma r2 o le falta algún índice."""
+    if not validacion or validacion.get("forma_salida") != "r2":
+        return None
+    ents, rels = validacion.get("entidades") or [], validacion.get("relaciones") or []
+    if any(not isinstance(x.get("indice_crudo"), int) for x in ents + rels):
+        return None
+    return {"entidades": sorted(x["indice_crudo"] for x in ents),
+            "relaciones": sorted(x["indice_crudo"] for x in rels)}
+
+
 def entrada_r2(to: str, tdir: Path, chunks: list[dict], perfil, validar) -> list[dict]:
     """Registros de la entrada de E2 del perfil r2, uno por chunk, en el orden
     de E0. Crudo del intento que E3 aceptó: el primero si no hubo reintento,
     el del reintento si lo hubo. Cola humana: el crudo del primer intento,
     como la cadena r1 (r1_cola_flaggeada), con `cola_humana`. Rechazados en E1
     (nunca llegaron a E3): quedan rechazados. `validar(tool_input, chunk)` es
-    el validador r2 con su política."""
+    el validador r2 con su política.
+    Con un perfil de forma r2 (U-PROMPT-R2, P3), el validador recibe además lo
+    que vio E3 de ese intento (`vistos_e3`, de la validación guardada: la
+    final o, en la cola humana, la del primer intento) y solo eso entra; sin
+    esos índices, la unidad queda sin validación, con su error."""
     regs_e1 = cargar_jsonl_last_wins(Path(tdir) / "extracciones_e1_compact.jsonl")
     finales = cargar_jsonl_last_wins(Path(tdir) / "finales.jsonl")
     crudos_r = crudos_reintento_e3(tdir, chunks, perfil)
+    forma_r2 = perfil_forma_r2(perfil)
     out = []
     for c in chunks:
         cid = c["id"]
@@ -965,7 +983,17 @@ def entrada_r2(to: str, tdir: Path, chunks: list[dict], perfil, validar) -> list
                 out.append({**base, "error": "sin_crudo", "estado_e3": fin["estado"], "validacion": None,
                             "origen_crudo": origen})
                 continue
-            reg = {**base, "error": None, "estado_e3": fin["estado"], "validacion": validar(ti, c),
+            if forma_r2:
+                val_e3 = (regs_e1.get(cid) or {}).get("validacion") if cola else fin.get("validacion_final")
+                vistos = vistos_por_e3(val_e3)
+                if vistos is None:
+                    out.append({**base, "error": "validacion_e3_sin_indices_r2", "estado_e3": fin["estado"],
+                                "validacion": None, "origen_crudo": origen})
+                    continue
+                validacion = validar(ti, c, vistos_e3=vistos)
+            else:
+                validacion = validar(ti, c)
+            reg = {**base, "error": None, "estado_e3": fin["estado"], "validacion": validacion,
                    "origen_crudo": origen}
             if cola:
                 reg["cola_humana"] = True
@@ -974,6 +1002,28 @@ def entrada_r2(to: str, tdir: Path, chunks: list[dict], perfil, validar) -> list
             out.append({**base, "error": regs_e1[cid].get("error") or "rechazado_en_e1", "estado_e3": None,
                         "validacion": None, "origen_crudo": "e1"})
     return out
+
+
+def conteo_paso_por_e3(regs: list[dict]) -> dict:
+    """U-PROMPT-R2, P3 (nota del 04/10/2026, punto c): elementos de extracción que entran sin haber pasado por E3
+    (entidades sin paso_por_e3 y relaciones con no_verificada_e3), los excluidos por no haber pasado y las
+    unidades sin los índices de E3. Con la forma r2 los que entran sin verificar son 0 por construcción; el
+    control de suite que lo exige es de otra unidad.
+    Las unidades que E3 no terminó (ratchet agotado y veredicto inutilizable: la cola humana) entran marcadas
+    (`cola_humana`, decisión de la autora del 04/10/2026): son la excepción explícita a «cero elementos sin
+    verificar» y se cuentan aparte, por estado."""
+    val = [r["validacion"] for r in regs if r.get("validacion") and not r.get("cola_humana")]
+    cola = [r for r in regs if r.get("validacion") and r.get("cola_humana")]
+    no_vistos = Counter("entidad" if x["elemento"].startswith("entities") else "relacion"
+                        for v in val + [r["validacion"] for r in cola] for x in v.get("no_vistos_e3", []))
+    return {"entidades_sin_verificar": sum(1 for v in val for e in v["entidades"] if e.get("paso_por_e3") is not True),
+            "relaciones_sin_verificar": sum(1 for v in val for x in v["relaciones"] if x.get("no_verificada_e3")),
+            "cola_humana": {"unidades": len(cola),
+                            "por_estado": dict(sorted(Counter(r["estado_e3"] for r in cola).items())),
+                            "entidades": sum(len(r["validacion"]["entidades"]) for r in cola),
+                            "relaciones": sum(len(r["validacion"]["relaciones"]) for r in cola)},
+            "excluidos_entidades": no_vistos.get("entidad", 0), "excluidos_relaciones": no_vistos.get("relacion", 0),
+            "unidades_sin_indices_e3": sum(1 for r in regs if r.get("error") == "validacion_e3_sin_indices_r2")}
 
 
 def validador_perfil_r2(perfil=None):
@@ -987,7 +1037,8 @@ def validador_perfil_r2(perfil=None):
     if pol.sha256 != E4.POLITICA_R2_SHA256:
         raise Freno(f"política r2 con sha {pol.sha256[:12]}… (esperado {E4.POLITICA_R2_SHA256[:12]}…)")
     forma = FORMA_CRUDO_POR_PERFIL[(perfil or PERFIL).nombre]
-    return (lambda ti, c: V.validar(ti, c, pol, forma=forma)), pol
+    # vistos_e3 (U-PROMPT-R2, P3): lo pasa entrada_r2 solo con la forma r2.
+    return (lambda ti, c, **kw: V.validar(ti, c, pol, forma=forma, **kw)), pol
 
 
 def cerrar_e2_r2(to: str, salida: Path, limite: int | None = None) -> dict:
@@ -1030,6 +1081,12 @@ def cerrar_e2_r2(to: str, salida: Path, limite: int | None = None) -> dict:
                "resolucion_sujetos": res["resumen"], "cola_flaggeada": r_cola,
                "origen_crudo": dict(Counter(r["origen_crudo"].split(":")[0] for r in regs)),
                "sha256_grafo": hashlib_sha256(grafo_json)}
+    if perfil_forma_r2(PERFIL):
+        # U-PROMPT-R2, P3: el registro de omisiones (L-ESQ-R2 §5.4; lo lee LN-7) y el conteo de elementos de
+        # extracción sin verificar por E3, que con la forma r2 es 0 por construcción (nota del 04/10/2026).
+        jl("omisiones.jsonl", [{"chunk_id": r["chunk_id"], "to": to, **o} for r in regs
+                               for o in (r.get("validacion") or {}).get("omisiones", [])])
+        reporte["paso_por_e3"] = conteo_paso_por_e3(regs)
     (tdir / f"reporte_e2_r2_{to}.json").write_text(json.dumps(reporte, ensure_ascii=False, indent=1),
                                                     encoding="utf-8")
     print(f"[{to}:e2-r2] nodos={reporte['nodes_total']} aristas={reporte['edges_total']} "

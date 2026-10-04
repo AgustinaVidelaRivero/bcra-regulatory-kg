@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import copy
 import json
+import sys
 from collections import Counter
 from dataclasses import dataclass, field
 
@@ -94,6 +95,28 @@ def _str_o_none(v):
 
 SEPARADOR_UMBRALES = " | "
 
+# U-PROMPT-R2, P3 (nota del 04/10/2026 al mandato, punto a): con la forma r2, las correcciones de validador_r2
+# (alias y forma del tipo y del predicado, sujeto_id fuera del catálogo) se aplican acá, antes de E3, con la misma
+# política y el mismo código (pyd_r2/code/validador_r2.py). Candado: el sha de la política de la decisión 10 del
+# mandato de U-R2-CODIGO (corpus_v2/r1_e4.py, POLITICA_R2_SHA256).
+POLITICA_R2_SHA256 = "82e8752aea1d6ad869d6023d303c0af45182dd9333753681787d7a581ef6d00b"
+_CORRECCIONES_R2: tuple | None = None
+
+
+def correcciones_r2():
+    """(validador_r2, política) para las correcciones de la forma r2. Frena si la política no es la del candado."""
+    global _CORRECCIONES_R2
+    if _CORRECCIONES_R2 is None:
+        ruta = comun_e1.REPO / "data" / "experiment" / "pyd_r2" / "code"
+        if str(ruta) not in sys.path:
+            sys.path.insert(0, str(ruta))
+        import validador_r2  # noqa: PLC0415 — solo con la forma r2
+        pol = validador_r2.politica_default()
+        if pol.sha256 != POLITICA_R2_SHA256:
+            raise RuntimeError(f"política r2 con sha {pol.sha256[:12]}… (esperado {POLITICA_R2_SHA256[:12]}…)")
+        _CORRECCIONES_R2 = (validador_r2, pol)
+    return _CORRECCIONES_R2
+
 
 def _omision_r2_como_texto(o: dict) -> str | None:
     """Una omisión de la forma r2 como string de omisiones_no_prosa: «[categoría] tramo — nota», con
@@ -160,6 +183,45 @@ def proyectar_r2(tool_input: dict) -> tuple[dict, dict]:
     return out, dict(sorted(cont.items()))
 
 
+def corregir_r2(tool_input: dict, esquema) -> tuple[dict, list[dict]]:
+    """Nota del 04/10/2026 al mandato de U-PROMPT-R2, punto a: las correcciones de validador_r2, antes de E3 y
+    sobre una COPIA (el crudo no se muta):
+      - tipo de entidad fuera de la lista: forma y alias de la política (validador_r2.resolver_tipo);
+      - predicado fuera de la lista: forma y alias (validador_r2.resolver_predicado);
+      - `sujeto_propuesto`, que no es campo de la forma r2: se descarta (validador_r2 lo deja en los campos no
+        definidos y no lo lee).
+    Lo que no resuelve queda como vino y la validación lo rechaza. La del sujeto_id fuera del catálogo se aplica
+    en validar_salida, que tiene el catálogo. Devuelve (copia, correcciones)."""
+    V, pol = correcciones_r2()
+    out = copy.deepcopy(tool_input)
+    corr: list[dict] = []
+    for nombre in ("entities", "relations"):
+        lista = _coerce_lista(out.get(nombre))
+        if lista is not None and not isinstance(out.get(nombre), list):
+            out[nombre] = lista
+    for i, e in enumerate(out.get("entities") if isinstance(out.get("entities"), list) else []):
+        if isinstance(e, dict) and e.get("type") not in esquema.entity_types:
+            t, trat = V.resolver_tipo(e.get("type"), pol)
+            if t is not None:
+                corr.append({"elemento": f"entities[{i}]", "campo": "type", "original": e.get("type"),
+                             "corregido": t, "tratamiento": trat})
+                e["type"] = t
+    for i, r in enumerate(out.get("relations") if isinstance(out.get("relations"), list) else []):
+        if not isinstance(r, dict):
+            continue
+        if r.get("predicate") not in esquema.predicates:
+            p, trat = V.resolver_predicado(r.get("predicate"), pol)
+            if p is not None:
+                corr.append({"elemento": f"relations[{i}]", "campo": "predicate", "original": r.get("predicate"),
+                             "corregido": p, "tratamiento": trat})
+                r["predicate"] = p
+        if "sujeto_propuesto" in r:
+            corr.append({"elemento": f"relations[{i}]", "campo": "sujeto_propuesto",
+                         "original": r.pop("sujeto_propuesto"), "corregido": None,
+                         "tratamiento": "fuera_de_la_forma_r2_descartado"})
+    return out, corr
+
+
 def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False,
                    esquema=None) -> ResultadoValidacion:
     """Valida el input del tool call de un chunk. Devuelve elementos aceptados
@@ -196,13 +258,15 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False,
     admitidos = set(puntos_admitidos(chunk))
     forma_r2 = esquema is not None and getattr(esquema, "forma_salida", "v3") == "r2"
     proyeccion: dict = {}
+    correcciones: list[dict] = []
 
     def _fin(n_ent: int, n_rel: int) -> ResultadoValidacion:
         res.metricas = _metricas(res, n_ent, n_rel)
         if forma_r2:
-            # U-PROMPT-R2: marca de la forma r2 y contadores de la traducción, solo en ese perfil.
+            # U-PROMPT-R2: marca de la forma r2, contadores de la traducción y correcciones, solo en ese perfil.
             res.forma_salida = "r2"
             res.metricas["proyeccion_r2"] = proyeccion
+            res.metricas["correcciones_r2"] = correcciones
         if _tipo_enum is not None:
             # Contadores SIEMPRE visibles en modo v3 (el "= 0" es el resultado
             # esperado de la vigilancia y debe verse); NUNCA presentes con
@@ -223,6 +287,7 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False,
         res.rechazos.append(_rechazo("chunk", "salida_no_dict", f"tipo {type(tool_input).__name__}"))
         return _fin(0, 0)
     if forma_r2:
+        tool_input, correcciones = corregir_r2(tool_input, esquema)
         tool_input, proyeccion = proyectar_r2(tool_input)
 
     entities = _coerce_lista(tool_input.get("entities"))
@@ -320,6 +385,10 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False,
             # (None cuando la entidad usa el enum). Con el flag apagado la
             # clave NO existe: salida byte-idéntica a producción.
             norm["tipo_propuesto"] = tipo_prop
+        if forma_r2:
+            # U-PROMPT-R2, P3: el índice del crudo, para que el ensamblado r2 tome solo lo que pasó por E3 (nota del
+            # 04/10/2026, punto b). render_extraccion (comun_e3.py) no lo lee: el mensaje de E3 no cambia.
+            norm["indice_crudo"] = i
         by_local[local_id] = norm
         res.entidades.append(norm)
 
@@ -384,9 +453,16 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False,
                     f"{ref} ({pred}): requiere exactamente UNO de sujeto_id/sujeto_propuesto", r))
                 continue
             if sujeto_id is not None and sujeto_id not in _suj_set:
-                res.rechazos.append(_rechazo(
-                    "relacion", "sujeto_id_fuera_de_catalogo", f"{ref}: '{sujeto_id}'", r))
-                continue
+                if not forma_r2:
+                    res.rechazos.append(_rechazo(
+                        "relacion", "sujeto_id_fuera_de_catalogo", f"{ref}: '{sujeto_id}'", r))
+                    continue
+                # Forma r2 (nota del 04/10/2026, punto a): el sujeto_id es una sugerencia; fuera del catálogo, la
+                # relación queda con la mención (o el id, como texto) de propuesto, como en validador_r2, que la
+                # manda al registro de no mapeados.
+                correcciones.append({"elemento": ref, "campo": "sujeto_id", "original": sujeto_id, "corregido": None,
+                                     "tratamiento": "fuera_de_catalogo_a_sujeto_propuesto"})
+                sujeto_prop, sujeto_id = _str_o_none(r.get("sujeto_mencion")) or sujeto_id, None
             if padre_sug is not None and sujeto_prop is None:
                 res.rechazos.append(_rechazo(
                     "relacion", "padre_sugerido_sin_propuesto", ref, r))
@@ -411,7 +487,8 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False,
                     "relacion", "firma_invalida", f"{ref}: {src_t} --{pred}--> {tgt_t}", r))
                 continue
         else:
-            if sujeto_id or sujeto_prop or padre_sug:
+            # Forma r2: la mención del sujeto en un predicado que no es de sujeto se rechaza, como en validador_r2.
+            if sujeto_id or sujeto_prop or padre_sug or (forma_r2 and _str_o_none(r.get("sujeto_mencion"))):
                 res.rechazos.append(_rechazo(
                     "relacion", "sujeto_en_predicado_no_sujeto",
                     f"{ref}: sujeto_* solo vale en {_suj_preds}, no en {pred}", r))
@@ -452,6 +529,8 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False,
             # cuando la relación usa el enum). Con el flag apagado la clave NO
             # existe: salida byte-idéntica a producción.
             rel_out["predicado_propuesto"] = pred_prop
+        if forma_r2:
+            rel_out["indice_crudo"] = i     # U-PROMPT-R2, P3: ver la entidad
         res.relaciones.append(rel_out)
 
     # --- Registro del tratamiento de flags (no rechaza: insumo de E3) ---

@@ -26,6 +26,23 @@ Incluye:
 en la forma r2: `sujeto_propuesto` es la mención y cada string de
 `omisiones_no_prosa` una omisión sin categoría ni tramo (L-ESQ-R2 §3.4, §5.4).
 
+Forma «r2» (salida del prefijo r2b; U-PROMPT-R2, P3). Solo con esa forma:
+  - el tramo de evidencia de cada entidad y el `termino` literal de la
+    Definicion se verifican con la regla de la mención y su marca va a la
+    procedencia (decisiones 15 y 16); el tramo de dos segmentos de la entidad
+    compuesta de un ítem se parte en « […] » y cada segmento se verifica en
+    su texto (diseño, §8.2);
+  - `Comunicacion.tipo` y `numero` se derivan de `codigo` (decisión 16);
+  - el tramo de umbral sin cuantía es un límite relativo: el elemento sin
+    valor, con su comparación y su base (decisión 21, punto 5 del §10.1);
+  - las `otras_propiedades` de la relación van a `properties_no_definidas` y
+    la omisión `relacion_sin_predicado` admite `source` y `destino`
+    (decisión 17);
+  - con `vistos_e3` (los índices del crudo que validador_e1 pasó a E3), entra
+    solo lo que pasó por E3 y `no_verificada_e3` se calcula por eso, no por la
+    firma (nota del 04/10/2026 al mandato).
+Con la forma v3 la salida es la de siempre, byte a byte.
+
 No edita nada del pipeline: importa `comun_e1` (puntos admitidos y rol
 documental) sin cambiarlo. Sin API, sin archivos escritos.
 """
@@ -207,6 +224,115 @@ def texto_completo(chunk: dict) -> str:
     return "\n".join(partes)
 
 
+def texto_heredado(chunk: dict) -> str:
+    """Los bloques heredados unidos: un encabezado puede repartirse entre la línea de título y el párrafo que la
+    continúa (diseño de U-PROMPT-R2, §8.2)."""
+    return "\n".join(h.get("texto") or "" for h in chunk.get("herencia") or [])
+
+
+# Tramo de la entidad compuesta con el encabezado de una lista (R11 y R30 del prefijo r2b): dos segmentos
+# copiados tal cual, unidos por « […] »; se admite también «[...]».
+SEPARADOR_TRAMO_COMPUESTO = " […] "
+_RE_SEPARADOR_TRAMO = re.compile(r"\s*\[\s*(?:…|\.\.\.)\s*\]\s*")
+_ORDEN_NIVEL = {"no": 0, "tokens": 1, "exacta": 2}
+
+
+def _es_item(chunk: dict) -> bool:
+    # La definición de ítem de lista del mensaje de E1 r2b (prompt_r2b.es_item), sin duplicarla.
+    if str(_E1) not in sys.path:
+        sys.path.insert(0, str(_E1))
+    import prompt_r2b  # noqa: PLC0415 — solo en la forma r2
+    return prompt_r2b.es_item(chunk)
+
+
+def verificar_tramo_entidad(tramo: str, chunk: dict, punto: str, holgura: Optional[int],
+                            reg: "_Registro") -> tuple[str, str, Optional[str]]:
+    """Decisión 15: verifica el tramo de evidencia de una entidad y devuelve (tramo, nivel, tramo_modelo).
+    Tramo simple: la regla de la mención contra el texto propio y el heredado; con «tokens», el tramo guardado es
+    el literal mínimo del texto y el del modelo va aparte. Tramo de dos segmentos (un « […] »): en un ítem, el
+    primero contra el texto heredado y el segundo contra el propio; fuera de un ítem, los dos contra el texto
+    completo; el nivel es el menor de los dos y el de cada segmento va al registro. Con dos o más separadores,
+    «no». Un tramo simple que solo verifica en el heredado se cuenta según dónde se ancla la entidad."""
+    partes = _RE_SEPARADOR_TRAMO.split(tramo)
+    if len(partes) == 1:
+        nivel, literal = verificar_tramo(tramo, texto_completo(chunk), holgura)
+        guardado, modelo = (literal, tramo) if nivel == "tokens" and literal is not None else (tramo, None)
+        reg.cuenta("tramo_entidad", nivel)
+        if nivel != "no" and verificar_tramo(guardado, chunk.get("texto") or "", holgura)[0] == "no":
+            caso = ("entidad_anclada_en_ancestro" if punto != chunk.get("unidad")
+                    else "heredado_compuesto" if _es_item(chunk) else "sin_ancla_fuera_de_item")
+            reg.cuenta("tramo_entidad", f"solo_heredado:{caso}")
+        return guardado, nivel, modelo
+    if len(partes) > 2:
+        reg.cuenta("tramo_compuesto", "dos_o_mas_separadores")
+        reg.cuenta("tramo_entidad", "no")
+        return tramo, "no", None
+    encabezado, item = partes
+    if _es_item(chunk):
+        n_enc = verificar_tramo(encabezado, texto_heredado(chunk), holgura)[0]
+        n_item = verificar_tramo(item, chunk.get("texto") or "", holgura)[0]
+        reg.cuenta("tramo_compuesto", f"encabezado.{n_enc}")
+        reg.cuenta("tramo_compuesto", f"item.{n_item}")
+    else:
+        n_enc = verificar_tramo(encabezado, texto_completo(chunk), holgura)[0]
+        n_item = verificar_tramo(item, texto_completo(chunk), holgura)[0]
+        reg.cuenta("tramo_compuesto", "fuera_de_item")
+    nivel = min((n_enc, n_item), key=_ORDEN_NIVEL.__getitem__)
+    reg.cuenta("tramo_entidad", nivel)
+    return tramo, nivel, None
+
+
+def elemento_umbral_relativo(tramo: str, nivel: str) -> Optional[dict]:
+    """Decisión 21 (nota del 02/10/2026 a L-ESQ-R2 §1.5; punto 5 del §10.1 del diseño de U-PROMPT-R2): un tramo
+    de umbral sin cuantía es un límite relativo, y el código arma el elemento sin `valor`, con su `comparacion` y
+    su `base`. La comparación sale del primer marcador del tramo, con las reglas de U-PYD
+    (reglas_comparacion.fijar_comparacion, negación incluida); la base, del texto que sigue al marcador hasta el
+    fin de la cláusula. Sin marcador, `no_determinada` y sin base. Con cuantía devuelve None: ese tramo lo arma el
+    ensamblado (par A)."""
+    import reglas_comparacion as RCMP  # noqa: PLC0415 — pyd_r2/code, solo en la forma r2
+    if RCMP.detectar_cuantias(tramo):
+        return None
+    pleg = RCMP.plegar(tramo)
+    marcas = sorted((m.start(), m.end()) for _, _, pat in RCMP.COMPUESTAS + RCMP.SIMPLES for m in pat.finditer(pleg))
+    comparacion, regla, base = "no_determinada", "sin_marcador", None
+    if marcas:
+        ini_m, fin_m = marcas[0]
+        lims = RCMP.limites_de_clausula(tramo)
+        ini_cl = max([p + 1 for p in lims if p < ini_m], default=0)
+        fin_cl = min([p for p in lims if p >= fin_m], default=len(tramo))
+        c = RCMP.Cuantia(inicio=fin_m, fin=fin_m, texto="", clase="limite_relativo")
+        RCMP.fijar_comparacion(tramo, c, ini_cl, fin_cl, 0, len(tramo))
+        comparacion, regla = c.comparacion, c.regla
+        i = fin_m
+        m = re.compile(r"\s*(?:(?:a|al|de|del)\s+)?").match(pleg, i, fin_cl)
+        i = m.end() if m else i
+        a = RCMP._RE_ARTICULO.match(pleg, i, fin_cl)
+        i = a.end() if a else i
+        fin = fin_cl
+        coma = tramo.find(",", i, fin)
+        if coma != -1:
+            fin = coma
+        b = tramo[i:fin]
+        pal = RCMP._palabras(b)
+        if len(pal) > RCMP.BASE_MAX_PALABRAS:
+            b = b[:pal[RCMP.BASE_MAX_PALABRAS - 1].end()]
+        base = RCMP._RE_COLA.sub("", " ".join(b.split())).strip() or None
+    el = {"tramo": tramo, "comparacion": comparacion, "base": base, "regla_comparacion": f"limite_relativo:{regla}",
+          "origen": "e1", "tramo_verificado": nivel}
+    return M.ElementoUmbral.model_validate(el).model_dump(mode="json", exclude_defaults=True)
+
+
+def numero_desde_codigo(codigo: Any, label: Any) -> Optional[int]:
+    """Decisión 16: el número de una Comunicación A, B o C, desde `codigo` (o el label), con la regla de
+    `derivar_comunicacion`."""
+    for s in (codigo, label):
+        if isinstance(s, str):
+            m = _RE_COM.match(fold(s))
+            if m:
+                return int(m.group(2).replace(".", ""))
+    return None
+
+
 # ------------------------------------------------------------------------- #
 # Pasos de la política                                                        #
 # ------------------------------------------------------------------------- #
@@ -381,6 +507,21 @@ CAMPOS_ITEM_ENTIDAD = ("local_id", "type", "label", "punto", "properties", "umbr
                        "otras_propiedades")
 CAMPOS_ITEM_RELACION = ("source", "target", "predicate", "punto", "sujeto_mencion", "sujeto_id",
                         "sujeto_propuesto_padre_sugerido")
+# Forma r2 (decisiones 15 y 17): el tramo de evidencia de la entidad y las otras_propiedades de la relación.
+CAMPOS_ITEM_ENTIDAD_R2 = CAMPOS_ITEM_ENTIDAD + ("tramo",)
+CAMPOS_ITEM_RELACION_R2 = CAMPOS_ITEM_RELACION + ("otras_propiedades",)
+CAMPOS_ITEM_OMISION = ("categoria", "tramo", "nota")
+CAMPOS_ITEM_OMISION_R2 = CAMPOS_ITEM_OMISION + ("source", "destino")
+
+
+def _dump(modelo, opcionales: tuple[str, ...]) -> dict:
+    """model_dump sin los campos de la forma r2 que quedaron en su valor por defecto: con la forma v3 la salida es
+    la de siempre, byte a byte."""
+    d = modelo.model_dump(mode="json")
+    for k in opcionales:
+        if d.get(k) in (None, {}):
+            d.pop(k, None)
+    return d
 
 
 def _str_o_none(v):
@@ -435,18 +576,27 @@ def _rechazo(nivel: str, motivo: str, detalle: str, elemento=None) -> dict:
 
 
 def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
-            forma: str = "r2") -> dict:
+            forma: str = "r2", vistos_e3: Optional[dict] = None) -> dict:
     """Valida el input del tool call de un chunk con la política r2. `forma`
     es «r2» (salida del prompt nuevo) o «v3» (crudo guardado del perfil v3 o
-    del de desarrollo, leído con `desde_v3`)."""
+    del de desarrollo, leído con `desde_v3`). `vistos_e3` (solo con «r2»):
+    {"entidades": índices, "relaciones": índices} del crudo que validador_e1
+    pasó a E3; lo demás no entra y queda en `no_vistos_e3`."""
     pol = politica or politica_default()
     reg = _Registro()
+    if vistos_e3 is not None and forma != "r2":
+        raise ValueError("vistos_e3 solo con la forma r2")
+    r2 = forma == "r2"
+    vistos_ent = None if vistos_e3 is None else set(vistos_e3["entidades"])
+    vistos_rel = None if vistos_e3 is None else set(vistos_e3["relaciones"])
     res: dict[str, Any] = {
         "chunk_id": chunk["id"], "perfil": PERFIL, "forma_entrada": forma,
         "politica_sha256": pol.sha256, "entidades": [], "relaciones": [], "omisiones": [],
         "rechazos": [], "pendientes_no_mapeados": [], "advertencias": [],
         "adaptacion_v3": {}, "campos_no_definidos_salida": {},
     }
+    if vistos_e3 is not None:
+        res["no_vistos_e3"] = []
 
     def fin(n_ent: int, n_rel: int) -> dict:
         cont, vals = reg.exportar()
@@ -458,6 +608,8 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
                            "omisiones_out": len(res["omisiones"]),
                            "rechazos": len(res["rechazos"]),
                            "rechazos_por_motivo": dict(sorted(por_motivo.items()))}
+        if vistos_e3 is not None:
+            res["metricas"]["no_vistos_e3"] = len(res["no_vistos_e3"])
         return res
 
     if forma == "v3":
@@ -519,7 +671,7 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
             nota = f"label: {label!r}; tipo propuesto: {tipo_crudo!r}"
             om = M.OmisionR2(categoria="fuera_de_tipos", tramo=None, nota=nota,
                              origen="validador_p_e3", tramo_verificado="ausente")
-            res["omisiones"].append(om.model_dump(mode="json"))
+            res["omisiones"].append(_dump(om, ("source", "destino")))
             reg.cuenta("omisiones", "fuera_de_tipos_por_tipo_rechazado")
             continue
         if label is None:
@@ -538,9 +690,13 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
             originales["type"] = tipo_crudo
         campos_nd: dict[str, Any] = {}
         for k in e:
-            if k not in CAMPOS_ITEM_ENTIDAD:
+            if k not in (CAMPOS_ITEM_ENTIDAD_R2 if r2 else CAMPOS_ITEM_ENTIDAD):
                 campos_nd[k] = e[k]
                 reg.cuenta("campos_del_item_entidad", "a_campos_no_definidos", k)
+        if r2 and tipo == "TextoOrdenado" and "tramo" in e:
+            # Punto 1 del §10.1 del diseño: el TextoOrdenado no lleva tramo (se deriva en código).
+            campos_nd["tramo"] = e["tramo"]
+            reg.cuenta("campos_del_item_entidad", "tramo_en_texto_ordenado_a_campos_no_definidos")
 
         props_in = e.get("properties")
         if props_in is None:
@@ -639,6 +795,8 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
                                                 "detalle": f"tipo {v!r}, código o label dan {der!r}"})
             else:
                 original = props_in.get("tipo")
+                # Decisión 16: en la forma r2 el tipo no se pide; sin valor del modelo, se deriva sin original.
+                derivado = r2 and original is None and "tipo" not in no_tipados
                 resuelto = None
                 for paso in pol.pasos("Comunicacion.tipo"):
                     if paso == "derivar_de_codigo_o_label" and der is not None:
@@ -652,13 +810,24 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
                                 or nombra_norma_externa(label, pol.lexico_externa)):
                             resuelto, trat_c = "externa", "externa_por_codigo_o_label"
                             break
-                originales.setdefault("tipo", original)
+                if not derivado:
+                    originales.setdefault("tipo", original)
                 if resuelto is not None:
                     props["tipo"] = resuelto
-                    reg.cuenta("Comunicacion.tipo", trat_c, original)
+                    reg.cuenta("Comunicacion.tipo", f"{trat_c}{':sin_valor_del_modelo' if derivado else ''}",
+                               original)
+                elif derivado:
+                    reg.cuenta("Comunicacion.tipo", "sin_valor_del_modelo_no_derivado")
                 else:
                     fuera.append("tipo")
                     reg.cuenta("Comunicacion.tipo", "registrado_fuera_de_lista", original)
+            if r2 and "numero" not in props and "numero" not in no_tipados and props.get("tipo") in ("A", "B", "C"):
+                num = numero_desde_codigo(props.get("codigo"), label)
+                if num is not None:
+                    props["numero"] = num
+                    reg.cuenta("Comunicacion.numero", "derivado_de_codigo_o_label")
+                else:
+                    reg.cuenta("Comunicacion.numero", "sin_valor_del_modelo_no_derivado")
         if tipo == "Obligacion" and ("frecuencia" in props or "frecuencia" in originales
                                      or "frecuencia" in no_tipados):
             v = props.get("frecuencia")
@@ -701,14 +870,56 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
                 campos_nd["umbrales"] = u
                 reg.cuenta("umbrales", "no_lista_a_campos_no_definidos")
 
+        if vistos_ent is not None and i not in vistos_ent:
+            # Nota del 04/10/2026, punto b: lo que E3 no vio no entra.
+            res["no_vistos_e3"].append({"elemento": ref, "local_id": local_id, "type": tipo})
+            reg.cuenta("paso_por_e3", "entidad_no_vista_excluida")
+            continue
+        evidencia: dict[str, Any] = {}
+        if r2:
+            # Decisión 21: el tramo sin cuantía es un límite relativo y el elemento sin valor se arma acá. Los
+            # tramos con cuantía los arma el ensamblado (par A); el tramo relativo queda también en
+            # umbrales_tramos, para que el ensamblado no caiga a la descripción como fuente.
+            relativos = []
+            for t in tramos:
+                el = elemento_umbral_relativo(t, verificar_tramo(t, texto_mencion, pol.holgura)[0])
+                if el is not None:
+                    relativos.append(el)
+                    reg.cuenta("umbrales", "limite_relativo_sin_valor")
+            if relativos:
+                props["umbrales"] = relativos
+                if len(relativos) < len(tramos):
+                    # Límite declarado: llenar_umbrales_r2 (ensamblar_tanda0.py) reemplaza la lista cuando arma
+                    # elementos con cuantía, y el elemento relativo de esta entidad no llega al nodo.
+                    reg.cuenta("umbrales", "limite_relativo_con_cuantias_en_la_entidad")
+            # Decisiones 15 y 16: el tramo de evidencia y el término literal, verificados, en la procedencia.
+            if tipo != "TextoOrdenado":
+                t = _str_o_none(e.get("tramo"))
+                if t is None:
+                    if e.get("tramo") is not None:
+                        campos_nd["tramo"] = e.get("tramo")
+                    evidencia = {"tramo_verificado": "ausente"}
+                    reg.cuenta("tramo_entidad", "ausente")
+                else:
+                    guardado, nivel, modelo = verificar_tramo_entidad(t, chunk, punto, pol.holgura, reg)
+                    evidencia = {"tramo": guardado, "tramo_verificado": nivel}
+                    if modelo is not None:
+                        evidencia["tramo_modelo"] = modelo
+            if tipo == "Definicion":
+                termino = props.get("termino")
+                nivel_t = "ausente" if termino is None else verificar_tramo(termino, texto_mencion, pol.holgura)[0]
+                evidencia["termino_verificado"] = nivel_t
+                reg.cuenta("termino", nivel_t)
+
         ent = M.EntidadR2(
             local_id=local_id, type=tipo, label=label, punto=punto,
             provenance=M.Provenance(to=chunk["to"], archivo=chunk["archivo"], punto=punto,
-                                    rol_documental=rol_documental_de_punto(chunk, punto)),
+                                    rol_documental=rol_documental_de_punto(chunk, punto), **evidencia),
             properties=props, umbrales_tramos=tramos, fuera_de_lista=fuera, originales=originales,
             properties_no_definidas=no_def, campos_heredados_v3=heredadas,
-            valores_no_tipados=no_tipados, campos_no_definidos=campos_nd)
-        d = ent.model_dump(mode="json")
+            valores_no_tipados=no_tipados, campos_no_definidos=campos_nd,
+            paso_por_e3=None if vistos_ent is None else True)
+        d = _dump(ent, ("paso_por_e3",))
         por_local[local_id] = d
         res["entidades"].append(d)
         if len(label.split()) > 12:
@@ -738,15 +949,29 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
         originales = {} if trat == "en_lista" else {"predicate": pred_crudo}
         campos_nd = {}
         for k in r:
-            if k not in CAMPOS_ITEM_RELACION:
+            if k not in (CAMPOS_ITEM_RELACION_R2 if r2 else CAMPOS_ITEM_RELACION):
                 campos_nd[k] = r[k]
                 reg.cuenta("campos_del_item_relacion", "a_campos_no_definidos", k)
+        props_nd: dict[str, Any] = {}
+        if r2 and "otras_propiedades" in r:
+            # Decisión 17: a la arista como no definidas, como properties_no_definidas en el nodo.
+            otras = r.get("otras_propiedades")
+            if isinstance(otras, dict):
+                props_nd = dict(otras)
+                for k, v in otras.items():
+                    reg.cuenta("claves_relacion", "otras_propiedades_a_properties_no_definidas", f"{pred_crudo}.{k}")
+                    if not isinstance(v, str):
+                        reg.cuenta("valores_relacion", "otras_propiedades_valor_no_string", f"{pred_crudo}.{k}")
+            elif otras is not None:
+                campos_nd["otras_propiedades"] = otras
+                reg.cuenta("claves_relacion", "otras_propiedades_no_objeto_a_campos_no_definidos", pred_crudo)
         source = _str_o_none(r.get("source"))
         target = _str_o_none(r.get("target"))
         sujeto_id = _str_o_none(r.get("sujeto_id"))
         mencion = _str_o_none(r.get("sujeto_mencion"))
         padre = _str_o_none(r.get("sujeto_propuesto_padre_sugerido"))
         extra: dict[str, Any] = {}
+        pendiente = None
 
         if pred in M.PREDICADOS_SUJETO:
             ignorado = "target" if pred == "aplica_a" else "source"
@@ -821,12 +1046,11 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
             elif nivel == "no" and sid_modelo is None:
                 motivo = "mencion_no_verificada"
             if motivo:
-                res["pendientes_no_mapeados"].append({
+                pendiente = {
                     "chunk_id": chunk["id"], "indice_relacion": i, "punto": punto, "predicado": pred,
                     "extremo_local_id": extremo, "extremo_tipo": ent["type"], "mencion": mencion,
                     "mencion_verificada": nivel, "sujeto_id_crudo": sujeto_id,
-                    "padre_sugerido_crudo": padre, "motivo": motivo})
-                reg.cuenta("no_mapeados_pendientes", motivo)
+                    "padre_sugerido_crudo": padre, "motivo": motivo}
         else:
             if sujeto_id or mencion or padre:
                 res["rechazos"].append(_rechazo("relacion", "sujeto_en_predicado_no_sujeto",
@@ -859,18 +1083,30 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
                     res["advertencias"].append({"tipo": "bkl_0038_incoherencia_tipo_predicado",
                                                 "detalle": f"{ref}: Restriccion.tipo {rt!r} con {pred}"})
 
+        if vistos_rel is not None and i not in vistos_rel:
+            # Nota del 04/10/2026, punto b: lo que E3 no vio no entra (ni al registro de no mapeados).
+            res["no_vistos_e3"].append({"elemento": ref, "predicate": pred, "source": source, "target": target})
+            reg.cuenta("paso_por_e3", "relacion_no_vista_excluida")
+            continue
+        if pendiente is not None:
+            res["pendientes_no_mapeados"].append(pendiente)
+            reg.cuenta("no_mapeados_pendientes", pendiente["motivo"])
         nueva = not M.firma_congelada(src_t, pred, tgt_t)
         if nueva:
             reg.cuenta("firma", f"nueva_r2:{src_t}-{pred}-{tgt_t}")
         else:
             reg.cuenta("firma", "congelada")
+        # La marca: en la forma v3, por la firma; con vistos_e3, por lo que pasó por E3 (nota del 04/10/2026,
+        # punto c): todo lo que entra pasó, y la marca queda como red de seguridad del modelo.
+        paso = None if vistos_rel is None else True
         rel = M.RelacionR2(
             source=source, target=target, predicate=pred, punto=punto,
             provenance=M.Provenance(to=chunk["to"], archivo=chunk["archivo"], punto=punto,
                                     rol_documental=rol_documental_de_punto(chunk, punto)),
-            tipo_source=src_t, tipo_target=tgt_t, no_verificada_e3=nueva, indice_crudo=i,
-            originales=originales, campos_no_definidos=campos_nd, **extra)
-        res["relaciones"].append(rel.model_dump(mode="json"))
+            tipo_source=src_t, tipo_target=tgt_t, no_verificada_e3=nueva if paso is None else not paso,
+            indice_crudo=i, originales=originales, campos_no_definidos=campos_nd,
+            properties_no_definidas=props_nd, paso_por_e3=paso, **extra)
+        res["relaciones"].append(_dump(rel, ("properties_no_definidas", "paso_por_e3")))
 
     # ---------------- Omisiones ----------------
     oms = tool_input.get("omisiones")
@@ -902,7 +1138,7 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
                 continue
             om = M.OmisionR2(categoria=None, tramo=None, nota=o["nota"], origen=origen,
                              tramo_verificado="ausente")
-            res["omisiones"].append(om.model_dump(mode="json"))
+            res["omisiones"].append(_dump(om, ("source", "destino")))
             reg.cuenta("omisiones", "v3_sin_categoria_ni_tramo")
             continue
         if isinstance(o, str):
@@ -916,9 +1152,28 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
             continue
         fuera, originales, campos_nd = [], {}, {}
         for k in o:
-            if k not in ("categoria", "tramo", "nota"):
+            if k not in (CAMPOS_ITEM_OMISION_R2 if r2 else CAMPOS_ITEM_OMISION):
                 campos_nd[k] = o[k]
         cat = _str_o_none(o.get("categoria"))
+        extremos: dict[str, Optional[str]] = {}
+        if r2:
+            # Decisión 17: source y destino, los local_id de la relación que el esquema no representa.
+            for campo in ("source", "destino"):
+                x = _str_o_none(o.get(campo))
+                if x is None:
+                    if o.get(campo) is not None:
+                        campos_nd[campo] = o.get(campo)
+                    continue
+                if cat != "relacion_sin_predicado":
+                    campos_nd[campo] = o.get(campo)
+                    reg.cuenta("omisiones", f"{campo}_fuera_de_relacion_sin_predicado")
+                    continue
+                extremos[campo] = x
+                reg.cuenta("omisiones", f"relacion_sin_predicado.{campo}:"
+                                        + ("entidad_aceptada" if x in por_local else "sin_entidad_aceptada"))
+            if cat in ("fuera_de_tipos", "relacion_sin_predicado"):
+                # La instrucción pide en `nota` el tipo o el predicado que se habría usado.
+                reg.cuenta("omisiones", f"{cat}.{'con' if _str_o_none(o.get('nota')) else 'sin'}_nota")
         if cat is None or cat not in M.CATEGORIA_OMISION:
             fuera.append("categoria")
             originales["categoria"] = o.get("categoria")
@@ -947,8 +1202,8 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
         om = M.OmisionR2(categoria=cat, tramo=tramo, nota=nota, origen=origen,
                          tramo_verificado=nivel, tramo_modelo=tramo_modelo, tramo_corto=corto,
                          senal_tabla_no_detectada=senal, fuera_de_lista=fuera, originales=originales,
-                         campos_no_definidos=campos_nd)
-        res["omisiones"].append(om.model_dump(mode="json"))
+                         campos_no_definidos=campos_nd, **extremos)
+        res["omisiones"].append(_dump(om, ("source", "destino")))
 
     if chunk_flaggeado(chunk):
         extrajo = any(x["type"] != "TextoOrdenado" for x in res["entidades"])

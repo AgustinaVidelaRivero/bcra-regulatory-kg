@@ -33,6 +33,10 @@ Verifica:
      properties, mención sin id a sujeto_propuesto, padre con id descartado,
      omisiones a omisiones_no_prosa, tramo de evidencia sin traducir; los
      perfiles existentes sin marca ni contadores nuevos.
+  I. U-PROMPT-R2, P3: las correcciones de validador_r2 antes de E3 (alias y
+     forma del tipo y del predicado, sujeto_id fuera del catálogo, campo
+     suelto), el índice del crudo de cada elemento que pasa a E3 sin cambiar
+     su mensaje, y lo que vio E3 igual a lo que admite validador_r2.
 
 Uso:  python3 selftest_e1.py
 """
@@ -361,6 +365,82 @@ def main() -> int:
     check("r2: entities como string JSON → misma traducción",
           {e["local_id"]: e["properties"] for e in d2["entidades"]} == {e["local_id"]: e["properties"]
                                                                           for e in d["entidades"]})
+
+    # ---------------- I. Correcciones antes de E3 (U-PROMPT-R2, P3) ----------
+    print("\n[I] correcciones de validador_r2 antes de E3 y lo que pasa por E3 (forma r2)")
+    V, pol = validador_e1.correcciones_r2()
+    check("candado: la política de validador_r2 es la de la decisión 10 (r1_e4.POLITICA_R2_SHA256)",
+          pol.sha256 == validador_e1.POLITICA_R2_SHA256)
+    alias_tipo = next(iter(sorted(pol.alias_tipo)))
+    ti_c = {"entities": [{"local_id": "to", "type": "TextoOrdenado", "label": "TO", "punto": pt},
+                         {"local_id": "x", "type": "NoEsUnTipo", "label": "X", "punto": pt},
+                         {"local_id": "r", "type": alias_tipo, "label": "R", "punto": pt, "tramo": "t",
+                          "properties": {"descripcion": "d"}},
+                         {"local_id": "o", "type": "obligacion", "label": "O", "punto": pt, "tramo": "t",
+                          "properties": {"descripcion": "d"}},
+                         {"local_id": "op", "type": "Operacion", "label": "Op", "punto": pt, "tramo": "t"}],
+            "relations": [{"source": "r", "target": "to", "predicate": "establecidaEn", "punto": pt},
+                          {"source": "x", "target": "to", "predicate": "establecida_en", "punto": pt},
+                          {"source": "o", "target": "op", "predicate": "condiciona", "punto": pt},
+                          {"source": "o", "predicate": "aplica_a", "punto": pt, "sujeto_mencion": "los bancos",
+                           "sujeto_id": "Sujeto_inexistente_xyz"},
+                          {"source": "o", "predicate": "aplica_a", "punto": pt, "sujeto_id": "Sujeto_otro_xyz"},
+                          {"source": "o", "predicate": "aplica_a", "punto": pt,
+                           "sujeto_id": "Sujeto_entidad_financiera", "sujeto_propuesto": "suelto"},
+                          {"source": "o", "target": "op", "predicate": "condiciona", "punto": pt,
+                           "sujeto_mencion": "los bancos"}],
+            "omisiones": []}
+    crudo_c = _copy.deepcopy(ti_c)
+    dc = validador_e1.validar_salida(ti_c, ch, esquema=esq_r2).as_dict()
+    check("el crudo no se muta", ti_c == crudo_c)
+    tipos = {e["local_id"]: e["type"] for e in dc["entidades"]}
+    corr = dc["metricas"]["correcciones_r2"]
+    check(f"tipo por alias de la política («{alias_tipo}») y por forma («obligacion») → corregidos, antes de E3",
+          tipos.get("r") == pol.alias_tipo[alias_tipo] and tipos.get("o") == "Obligacion"
+          and {(c["elemento"], c["tratamiento"]) for c in corr if c["campo"] == "type"}
+          == {("entities[2]", "normalizado_alias"), ("entities[3]", "normalizado_forma")})
+    check("tipo que no resuelve: rechazado (type_invalido), y su relación colgante también",
+          "x" not in tipos and dc["metricas"]["rechazos_por_motivo"].get("type_invalido") == 1
+          and dc["metricas"]["rechazos_por_motivo"].get("ref_colgante") == 1)
+    rels = {r["indice_crudo"]: r for r in dc["relaciones"]}
+    check("predicado por forma («establecidaEn») → establecida_en",
+          rels.get(0, {}).get("predicate") == "establecida_en"
+          and any(c["campo"] == "predicate" and c["tratamiento"] == "normalizado_forma" for c in corr))
+    check("sujeto_id fuera del catálogo con mención → propuesto = la mención (como validador_r2, que lo registra)",
+          rels.get(3, {}).get("sujeto_propuesto") == "los bancos" and rels.get(3, {}).get("sujeto_id") is None)
+    check("sujeto_id fuera del catálogo sin mención → propuesto = el id, como texto",
+          rels.get(4, {}).get("sujeto_propuesto") == "Sujeto_otro_xyz")
+    check("sujeto_propuesto suelto (no es campo de la forma r2): se descarta y la relación entra con su id",
+          rels.get(5, {}).get("sujeto_id") == "Sujeto_entidad_financiera" and not rels.get(5, {}).get(
+              "sujeto_propuesto")
+          and any(c["campo"] == "sujeto_propuesto" for c in corr))
+    check("mención en un predicado que no es de sujeto: rechazada, como en validador_r2",
+          6 not in rels and dc["metricas"]["rechazos_por_motivo"].get("sujeto_en_predicado_no_sujeto") == 1)
+    check("índices del crudo en lo que pasa a E3: entidades 0, 2, 3, 4 y relaciones 0, 2, 3, 4, 5",
+          sorted(e["indice_crudo"] for e in dc["entidades"]) == [0, 2, 3, 4] and sorted(rels) == [0, 2, 3, 4, 5])
+    sys.path.insert(0, str(comun_e1.REPO / "data" / "experiment" / "reextraccion_v2" / "e3_verificador"))
+    import comun_e3  # noqa: PLC0415
+    sin_idx = _copy.deepcopy(dc)
+    for x in sin_idx["entidades"] + sin_idx["relaciones"]:
+        x.pop("indice_crudo")
+    check("el índice no cambia lo que ve E3 (render_extraccion igual con y sin él)",
+          comun_e3.render_extraccion(dc) == comun_e3.render_extraccion(sin_idx))
+    vistos = {"entidades": [e["indice_crudo"] for e in dc["entidades"]],
+              "relaciones": [r["indice_crudo"] for r in dc["relaciones"]]}
+    libre = V.validar(_copy.deepcopy(ti_c), ch, pol, forma="r2")
+    check("lo que admite validador_r2 sin filtro es exactamente lo que vio E3 (nada de validador_r2 queda afuera)",
+          sorted(e["local_id"] for e in libre["entidades"]) == sorted(tipos)
+          and sorted(r["indice_crudo"] for r in libre["relaciones"]) == vistos["relaciones"])
+    filtrado = V.validar(_copy.deepcopy(ti_c), ch, pol, forma="r2", vistos_e3=vistos)
+    check("con vistos_e3 no se excluye nada y todo entra con paso_por_e3 y sin no_verificada_e3",
+          filtrado["no_vistos_e3"] == [] and all(e["paso_por_e3"] is True for e in filtrado["entidades"])
+          and all(r["paso_por_e3"] is True and r["no_verificada_e3"] is False for r in filtrado["relaciones"]))
+    for nombre, esq in (("dev (esquema None)", None), ("v3_b54", esq_v3)):
+        d = validador_e1.validar_salida(_copy.deepcopy(ti_c), ch, esquema=esq).as_dict()
+        check(f"{nombre}: sin correcciones ni índices (las correcciones rigen solo con la forma r2)",
+              "correcciones_r2" not in d["metricas"]
+              and not any("indice_crudo" in x for x in d["entidades"] + d["relaciones"])
+              and d["metricas"]["rechazos_por_motivo"].get("type_invalido") == 3)
 
     print(f"\nRESULTADO: {OK} ok, {FAIL} FAIL")
     return 0 if FAIL == 0 else 1

@@ -24,7 +24,11 @@ Grupos:
       `alcance` e invariantes de la arista; tool schema y política sin cambio;
   G12 lo que agrega el ensamblado (decisión 3 sobre el FRENO R3 de U-R2-CODIGO):
       marcas del nodo, base y tabla del elemento de umbral, calificador y
-      relaciones del esqueleto; la entidad de E1 sigue sin admitir las marcas.
+      relaciones del esqueleto; la entidad de E1 sigue sin admitir las marcas;
+  G13 U-PROMPT-R2, P3: la forma r2 completa (tramo de evidencia simple y de
+      dos segmentos, término literal, Comunicacion derivada, límite relativo,
+      otras_propiedades de la relación, source y destino) y lo que pasó por E3
+      (vistos_e3, no_verificada_e3 por E3, establecida_en derivada).
 
 Solo lectura: no escribe archivos. Lee E0 de la tanda 0 (con sha256 de N1),
 la lectura de `limita` y el ejemplo del préstamo. Salida determinística.
@@ -71,8 +75,11 @@ ENUMS_SHA_57A8DD2 = "abd197ac8bbb818f680dc80d1b9c9df3e1f1f733fce3fd46b35e7440e7c
 # Generación vigente (U-PROMPT-R2, P2): modelos_r2.py con las decisiones 15 a 17 del mandato (tramo de
 # evidencia por entidad salvo el TextoOrdenado; TextoOrdenado sin properties y Comunicacion solo con codigo;
 # Definicion.termino literal; otras_propiedades en relaciones; source y destino en la omisión). Los enums no
-# cambian: son los de 57a8dd2.
-MODELOS_SHA_GENERACION = "9a3fe3ec929342d2dc4d00c4235af0dadf7bceb2d867e0b692c0ab111621e964"
+# cambian: son los de 57a8dd2. U-PROMPT-R2, P3: los modelos del elemento validado, del nodo y de la arista (tramo en
+# la procedencia, no_verificada_e3 por lo que pasó por E3, establecida_en derivada) cambian el sha de modelos_r2.py
+# y no lo generado: el manifiesto se regenera con el sha nuevo (decisión 13).
+MODELOS_SHA_GENERACION_P2 = "9a3fe3ec929342d2dc4d00c4235af0dadf7bceb2d867e0b692c0ab111621e964"
+MODELOS_SHA_GENERACION = "e67f15ae13dd5419ea0ce1a08dbef63c86cbdf9c269772a0b02a4e27b4c3a2ca"
 TOOL_SCHEMA_SHA_GENERACION = "0c391f2b23bb7c94ec2606bd0315f3e4589c16a3571eaaa210a27babaa0f8ba2"
 POLITICA_SHA_DECISION_10 = "82e8752aea1d6ad869d6023d303c0af45182dd9333753681787d7a581ef6d00b"
 
@@ -797,7 +804,7 @@ def g9_tool_schema(ch):
         p = G.GENERADOS / nombre
         chequear(g, f"{nombre}: regenerado = archivo en generados/", p.exists() and p.read_bytes() == b)
     man = json.loads((G.GENERADOS / "manifest_generados_r2.json").read_text(encoding="utf-8"))
-    chequear(g, "manifest: sha256 de la política vigente y de modelos_r2 de la generación vigente (U-PROMPT-R2 P2)",
+    chequear(g, "manifest: sha256 de la política vigente y de modelos_r2 de la generación vigente (U-PROMPT-R2 P3)",
              man["politica"]["sha256"] == M.sha256_archivo(V.POLITICA)
              and man["modelos"]["sha256"] == MODELOS_SHA_GENERACION)
     ts = json.loads(cont["tool_schema_r2.json"])
@@ -879,10 +886,11 @@ def g9_tool_schema(ch):
              and {k: x for k, x in (e.get("campos_no_definidos") or {}).items() if k != "tramo"}
              == {"otras_propiedades.tipo": "x"}
              and cont_(r, "claves", "otras_propiedades_a_properties_no_definidas") == 1 and not r["rechazos"])
-    # Hasta P3 de U-PROMPT-R2, validador_r2 no lee el tramo de evidencia (decisión 15): lo conserva como campo no
-    # definido, sin rechazo. P3 lo vuelve un campo conocido, con su verificación, y este control cambia con él.
-    chequear(g, "tramo de evidencia (antes de P3): queda en campos_no_definidos, sin rechazo",
-             (e.get("campos_no_definidos") or {}).get("tramo") == otras["entities"][1]["tramo"] and not r["rechazos"])
+    # Desde P3 de U-PROMPT-R2, validador_r2 lee el tramo de evidencia (decisión 15): campo conocido, verificado,
+    # con su marca en la procedencia (casos en G13).
+    chequear(g, "tramo de evidencia (P3): campo conocido, verificado en la procedencia, sin rechazo",
+             "tramo" not in (e.get("campos_no_definidos") or {})
+             and e.get("provenance", {}).get("tramo_verificado") == "exacta" and not r["rechazos"])
     clave_extra = json.loads(json.dumps(valido))
     clave_extra["entities"][1]["properties"]["destinatario"] = "BCRA"
     chequear(g, "clave no prevista dentro de properties: el JSON Schema la rechaza", not v.is_valid(clave_extra))
@@ -1063,6 +1071,185 @@ def g12_ensamblado():
                                                        "subclase_de")))
 
 
+def g13_forma_r2(ch):
+    """U-PROMPT-R2, P3: la lectura de la forma r2 completa y lo que pasó por E3."""
+    g = "G13 forma r2 (P3)"
+    item, no_item, c5, c37 = ch["ext::4.8.6.1"], ch["ext::1.1"], ch["cla::5.1.1.1"], ch["cla::3.7"]
+    pi = "4.8.6.1"
+
+    def r2(ents, rels=(), oms=(), c=item, **kw):
+        return V.validar({"entities": list(ents), "relations": list(rels), "omisiones": list(oms)}, c, forma="r2", **kw)
+
+    def prov(res, lid):
+        return next((e["provenance"] for e in res["entidades"] if e["local_id"] == lid), {})
+
+    to = ent("to", "TextoOrdenado", "TO", pi)
+    # Decisión 15: tramo simple.
+    casos = [("exacta", "no deberá tenerse en cuenta a los efectos de la confección", "exacta"),
+             ("reordenado (tokens)", "en cuenta no deberá tenerse", "tokens"),
+             ("ausente del texto", "las entidades financieras deberán informar al BCRA", "no")]
+    for nombre, t, esperado in casos:
+        r = r2([to, ent("o", "Obligacion", "O", pi, {"descripcion": "d"}, tramo=t)])
+        p = prov(r, "o")
+        chequear(g, f"tramo {nombre} → {esperado}, en la procedencia", p.get("tramo_verificado") == esperado
+                 and ("tramo_modelo" in p) == (esperado == "tokens") and not r["rechazos"])
+    r = r2([ent("o", "Obligacion", "O", "5.1.1.1", {"descripcion": "d"},
+                tramo="a la evolución de su actividad productiva o comercial")], c=c5)
+    chequear(g, "tramo con corte de palabra por guion en el texto («pro-\\nductiva») → exacta",
+             prov(r, "o").get("tramo_verificado") == "exacta")
+    r = r2([to, ent("o", "Obligacion", "O", pi, {"descripcion": "d"}, tramo="  ")])
+    chequear(g, "tramo vacío → ausente, sin tramo en la procedencia y sin rechazo",
+             prov(r, "o").get("tramo_verificado") == "ausente" and "tramo" not in prov(r, "o") and not r["rechazos"])
+    r = r2([ent("to", "TextoOrdenado", "TO", pi, tramo="x")])
+    chequear(g, "TextoOrdenado: sin tramo en la procedencia; un tramo emitido va a campos_no_definidos",
+             "tramo_verificado" not in prov(r, "to") and r["entidades"][0]["campos_no_definidos"] == {"tramo": "x"})
+    r = r2([ent("p", "Potestad", "P", "4.8.6", {"descripcion": "d"},
+                tramo="complementariamente será aplicable lo siguiente")])
+    chequear(g, "entidad anclada en un ancestro con tramo del heredado → exacta, contada aparte",
+             prov(r, "p").get("tramo_verificado") == "exacta"
+             and cont(r, "tramo_entidad", "solo_heredado:entidad_anclada_en_ancestro") == 1)
+    r = r2([ent("c", "Condicion", "C", pi, {"descripcion": "d"},
+                tramo="En el caso de que un cliente haya concretado una operación de venta")])
+    chequear(g, "Condicion de un ítem con tramo del encabezado → exacta, contada como heredado_compuesto",
+             prov(r, "c").get("tramo_verificado") == "exacta"
+             and cont(r, "tramo_entidad", "solo_heredado:heredado_compuesto") == 1)
+    # Tramo de dos segmentos (R11 y R30; diseño §8.2).
+    enc = ("un cliente haya concretado una operación de venta con obligación de recompra utilizando los bonos "
+           "BOPREAL adquiridos en una suscripción primaria")
+    it = "la venta de los títulos en el origen de la operación no deberá tenerse en cuenta"
+    r = r2([to, ent("o", "Obligacion", "O", pi, {"descripcion": "d"}, tramo=f"{enc} […] {it}")])
+    chequear(g, "compuesto en un ítem: encabezado repartido en dos bloques heredados y el ítem → exacta; el nivel "
+                "de cada segmento al registro",
+             prov(r, "o").get("tramo_verificado") == "exacta" and prov(r, "o").get("tramo") == f"{enc} […] {it}"
+             and cont(r, "tramo_compuesto", "encabezado.exacta") == 1 and cont(r, "tramo_compuesto", "item.exacta") == 1)
+    r = r2([to, ent("o", "Obligacion", "O", pi, {"descripcion": "d"}, tramo=f"{it} [...] {it}")])
+    chequear(g, "compuesto con el primer segmento copiado del texto propio → no (el encabezado no está en el "
+                "heredado); se admite «[...]»",
+             prov(r, "o").get("tramo_verificado") == "no" and cont(r, "tramo_compuesto", "encabezado.no") == 1)
+    r = r2([to, ent("o", "Obligacion", "O", pi, {"descripcion": "d"}, tramo=f"{enc} […] {it} […] {it}")])
+    chequear(g, "dos separadores → no", prov(r, "o").get("tramo_verificado") == "no"
+             and cont(r, "tramo_compuesto", "dos_o_mas_separadores") == 1)
+    r = r2([ent("o", "Obligacion", "O", "1.1", {"descripcion": "d"},
+                tramo="Disposiciones generales […] En todas las operaciones de cambio")], c=no_item)
+    chequear(g, "compuesto fuera de un ítem: cada segmento contra el texto completo, contado aparte",
+             prov(r, "o").get("tramo_verificado") == "exacta" and cont(r, "tramo_compuesto", "fuera_de_item") == 1)
+    # Decisión 16: término literal y Comunicacion derivada.
+    r = r2([ent("d", "Definicion", "Importe de referencia", "3.7",
+                {"termino": "Importe de referencia", "descripcion": "x"}, tramo="Importe de referencia")], c=c37)
+    r_no = r2([ent("d", "Definicion", "D", "3.7", {"termino": "monto de corte", "descripcion": "x"}, tramo="x")],
+              c=c37)
+    chequear(g, "Definicion.termino verificado con su marca: exacta y no",
+             prov(r, "d").get("termino_verificado") == "exacta" and prov(r_no, "d").get("termino_verificado") == "no")
+    r = r2([ent("a", "Comunicacion", "Com. A 7825", pi, {"codigo": "A 7825"}, tramo="x"),
+            ent("b", "Comunicacion", "Ley de Entidades", pi, {"codigo": "Ley 21.526"}, tramo="x"),
+            ent("c", "Comunicacion", "Com. B 1.234", pi, {"codigo": "Comunicación B 1.234"}, tramo="x")])
+    p = {e["local_id"]: e for e in r["entidades"]}
+    chequear(g, "Comunicacion: tipo y número derivados del código, sin originales ni marcas",
+             p["a"]["properties"] == {"codigo": "A 7825", "tipo": "A", "numero": 7825}
+             and p["c"]["properties"].get("numero") == 1234 and not p["a"]["originales"] and not p["a"]["fuera_de_lista"]
+             and cont(r, "Comunicacion.numero", "derivado_de_codigo_o_label") == 2)
+    chequear(g, "Comunicacion: una ley es «externa», sin número",
+             p["b"]["properties"] == {"codigo": "Ley 21.526", "tipo": "externa"} and not p["b"]["fuera_de_lista"])
+    # Decisión 21: límite relativo.
+    rel_t = "no podrá exceder el nivel alcanzado durante el mes anterior"
+    r = r2([ent("r", "Restriccion", "R", pi, {"descripcion": "d", "tipo": "limite_cuantitativo"}, tramo="x",
+                umbrales=[{"tramo": rel_t}])])
+    u = r["entidades"][0]["properties"].get("umbrales") or [{}]
+    chequear(g, "límite relativo: elemento sin valor, máximo inclusivo por la negación, con su base",
+             len(u) == 1 and "valor" not in u[0] and u[0].get("comparacion") == "maximo_inclusivo"
+             and u[0].get("base") == "nivel alcanzado durante el mes anterior"
+             and r["entidades"][0]["umbrales_tramos"] == [rel_t]
+             and M.PropsRestriccion.model_validate(r["entidades"][0]["properties"]) is not None)
+    r = r2([ent("r", "Restriccion", "R", pi, {"descripcion": "d"}, tramo="x",
+                umbrales=[{"tramo": "hasta el 5% de la RPC"}, {"tramo": rel_t}])])
+    chequear(g, "con una cuantía en la misma entidad: el relativo se arma y se cuenta el límite declarado del "
+                "ensamblado", cont(r, "umbrales", "limite_relativo_con_cuantias_en_la_entidad") == 1
+             and len(r["entidades"][0]["properties"]["umbrales"]) == 1)
+    r = r2([ent("r", "Restriccion", "R", pi, {"descripcion": "d"}, tramo="x",
+                umbrales=[{"tramo": "hasta el 5% de la RPC"}])])
+    chequear(g, "solo cuantías: ningún elemento en properties (lo arma el ensamblado, par A)",
+             "umbrales" not in r["entidades"][0]["properties"])
+    # Decisión 17.
+    ents = [to, ent("o", "Obligacion", "O", pi, {"descripcion": "d"}, tramo="x"),
+            ent("op", "Operacion", "Op", pi, tramo="x")]
+    r = r2(ents, [rel("condiciona", pi, source="o", target="op", otras_propiedades={"plazo_relativo": "previo"}),
+                  rel("establecida_en", pi, source="o", target="to", otras_propiedades="x")])
+    rr = {x["predicate"]: x for x in r["relaciones"]}
+    chequear(g, "otras_propiedades de la relación → properties_no_definidas; un valor que no es objeto → "
+                "campos_no_definidos", rr["condiciona"].get("properties_no_definidas") == {"plazo_relativo": "previo"}
+             and rr["establecida_en"]["campos_no_definidos"] == {"otras_propiedades": "x"}
+             and "properties_no_definidas" not in rr["establecida_en"])
+    r = r2(ents, oms=[{"categoria": "relacion_sin_predicado", "tramo": "según el punto 3", "nota": "remite_a",
+                       "source": "o", "destino": "zz"},
+                      {"categoria": "tabla", "tramo": "cuadro", "source": "o"}])
+    o1, o2 = r["omisiones"]
+    chequear(g, "relacion_sin_predicado con source y destino; en otra categoría van a campos_no_definidos",
+             (o1.get("source"), o1.get("destino")) == ("o", "zz") and "source" not in o2
+             and o2["campos_no_definidos"] == {"source": "o"}
+             and cont(r, "omisiones", "relacion_sin_predicado.source:entidad_aceptada") == 1
+             and cont(r, "omisiones", "relacion_sin_predicado.destino:sin_entidad_aceptada") == 1
+             and cont(r, "omisiones", "relacion_sin_predicado.con_nota") == 1)
+    # Lo que pasó por E3 (nota del 04/10/2026).
+    ents = [to, ent("c", "Condicion", "C", pi, {"descripcion": "d"}, tramo="x"),
+            ent("op", "Operacion", "Op", pi, tramo="x"), ent("o", "Obligacion", "O", pi, {"descripcion": "d"}, tramo="x")]
+    rels = [rel("condicion_de", pi, source="c", target="op"), rel("establecida_en", pi, source="o", target="to"),
+            rel("aplica_a", pi, source="o", sujeto_mencion="los marcianos")]
+    libre = r2(ents, rels)
+    chequear(g, "forma r2 sin vistos_e3: la firma nueva lleva la marca (regla de la forma v3)",
+             libre["relaciones"][0]["no_verificada_e3"] is True and "paso_por_e3" not in libre["relaciones"][0])
+    r = r2(ents, rels, vistos_e3={"entidades": [0, 1, 2, 3], "relaciones": [0]})
+    chequear(g, "con vistos_e3: las relaciones que E3 no vio (1 y 2) no entran y quedan en no_vistos_e3",
+             len(r["entidades"]) == 4 and len(r["relaciones"]) == 1
+             and [x["elemento"] for x in r["no_vistos_e3"]] == ["relations[1]", "relations[2]"]
+             and r["metricas"]["no_vistos_e3"] == 2)
+    chequear(g, "con vistos_e3: la condicion_de → Operacion que vio E3 entra sin no_verificada_e3",
+             r["relaciones"][0]["no_verificada_e3"] is False and r["relaciones"][0]["paso_por_e3"] is True
+             and r["entidades"][1]["paso_por_e3"] is True)
+    chequear(g, "la relación de sujeto que E3 no vio no deja fila en el registro de no mapeados",
+             r["pendientes_no_mapeados"] == [] and len(libre["pendientes_no_mapeados"]) == 1)
+    r = r2(ents, rels, vistos_e3={"entidades": [0, 1, 2], "relaciones": [0, 1, 2]})
+    chequear(g, "con vistos_e3: la entidad que E3 no vio no entra, y sus relaciones quedan colgantes",
+             [e["local_id"] for e in r["entidades"]] == ["to", "c", "op"]
+             and [x["elemento"] for x in r["no_vistos_e3"]] == ["entities[3]"]
+             and r["metricas"]["rechazos_por_motivo"] == {"ref_colgante": 2})
+    try:
+        V.validar({"entities": [], "relations": []}, item, forma="v3", vistos_e3={"entidades": [], "relaciones": []})
+        chequear(g, "vistos_e3 con la forma v3: error", False)
+    except ValueError:
+        chequear(g, "vistos_e3 con la forma v3: error", True)
+    # Modelos: invariantes nuevos.
+    base = dict(source="c", target="op", predicate="condicion_de", punto=pi, provenance=M.Provenance(),
+                tipo_source="Condicion", tipo_target="Operacion")
+
+    def invalido(f) -> bool:
+        try:
+            f()
+            return False
+        except ValidationError:
+            return True
+    chequear(g, "RelacionR2: con paso_por_e3, la marca es por E3 (pasó y marcada, o no pasó y sin marca: no valida)",
+             invalido(lambda: M.RelacionR2(**base, no_verificada_e3=True, paso_por_e3=True))
+             and invalido(lambda: M.RelacionR2(**base, no_verificada_e3=False, paso_por_e3=False))
+             and M.RelacionR2(**base, no_verificada_e3=False, paso_por_e3=True) is not None)
+    chequear(g, "OmisionR2: source fuera de relacion_sin_predicado no valida",
+             invalido(lambda: M.OmisionR2(categoria="tabla", origen="e1", tramo_verificado="ausente", source="o")))
+    chequear(g, "Provenance: tramo sin verificación, o tramo_modelo sin «tokens», no valida",
+             invalido(lambda: M.Provenance(tramo="x")) and invalido(
+                 lambda: M.Provenance(tramo="x", tramo_verificado="exacta", tramo_modelo="y"))
+             and M.Provenance(tramo="x", tramo_verificado="tokens", tramo_modelo="y") is not None)
+    der = dict(source="Obligacion_x", target="TextoOrdenado_y", relation="establecida_en",
+               rol_fuente=M.ROL_FUENTE_DERIVADA_DE_PROCEDENCIA)
+    chequear(g, "establecida_en derivada de la procedencia: declarada por rol_fuente; sin marcas de E1",
+             M.AristaR2(**der) is not None and invalido(lambda: M.AristaR2(**der, no_verificada_e3=True))
+             and invalido(lambda: M.AristaR2(**{**der, "relation": "aplica_a"}))
+             and invalido(lambda: M.AristaR2(**der, properties_no_definidas={"a": "b"})))
+    chequear(g, "AristaR2: properties_no_definidas solo en una relación de E1",
+             M.AristaR2(source="a", target="b", relation="condiciona", properties_no_definidas={"k": "v"}) is not None
+             and invalido(lambda: M.AristaR2(source="a", target="b", relation="remite_a",
+                                             properties={"alcance": "interna", "destino": "x::1", "evidencia": "e"},
+                                             properties_no_definidas={"k": "v"})))
+
+
 def main() -> int:
     ch = cargar_chunks()
     g1_listas()
@@ -1077,6 +1264,7 @@ def main() -> int:
     g10_calibracion(ch)
     g11_remite_a()
     g12_ensamblado()
+    g13_forma_r2(ch)
     total = ok = 0
     print(f"política: {V.POLITICA.relative_to(REPO)}  sha256 {V.politica_default().sha256}")
     for grupo, filas in RES.items():
