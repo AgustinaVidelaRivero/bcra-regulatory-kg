@@ -1,4 +1,4 @@
-BORRADOR — PENDIENTE DE FIRMA (versión 2, 04/10/2026: la exclusión no está decidida)
+FIRMADO por la autora el 04/10/2026
 
 MANDATO — U-NOSEG-LIMITE: LOS 14 TOs FUERA DE LAS TANDAS (2 PARCIALES Y 12 NO SEGMENTABLES). PESO, CONTENIDO, ALTERNATIVAS Y RECOMENDACIÓN, PARA LA DECISIÓN DE LA AUTORA.
 Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
@@ -58,7 +58,7 @@ L1. EL PESO COMPLETO, recomputado, con el comando de cada cifra.
 - Las páginas de ficha dentro de TOs que sí entran (ri_laft 27 y ri_transpa 3, docs/plan_tesis.md:728).
 - El volumen en unidades que traería cada alternativa, medido o declarado NO MEDIDO.
 
-L2. LOS 2 PARCIALES CON SU PARTE POR PUNTO ADENTRO.
+L2. LOS 2 PARCIALES CON SU PARTE POR PUNTO ADENTRO, Y ri_spi.
 - Regla, escrita antes de aplicar, que separa las unidades por punto de las que cruzan fichas. Reproducir
   42 y 4, o corregirlo.
 - Qué da e0-r2 sobre los dos TOs (corrida en el scratchpad, con el código del commit): ids, partición por
@@ -70,6 +70,9 @@ L2. LOS 2 PARCIALES CON SU PARTE POR PUNTO ADENTRO.
   si el TO es elegible para B6.3 y sobre qué parte; en qué tanda entra.
 - Por qué el protocolo los dejó enteros afuera: los motivos que estén escritos en las fuentes, con su
   ancla, y NO ENCONTRADO para lo demás.
+- ri_spi (adenda 2, §7: tiene espina y el parser de entonces no la reconocía): qué da la escalera de
+  e0-r2 sobre él. Si segmenta por punto, entra por el camino normal, y en qué tanda; si no, qué
+  necesita, y si eso pide una unidad propia (decisión 2).
 
 L3. LOS 12 NO SEGMENTABLES CON SU TEXTO AL ALCANCE DEL AGENTE (diseño; sin código).
 El texto por página como fuente de la herramienta de texto fuente de U-NAV-DISENO (N2, herramienta 4),
@@ -90,7 +93,7 @@ L4. QUÉ CONTIENEN LAS PÁGINAS EXCLUIDAS.
   adjudicaciones de U-COB-A.
 - Muestra declarada ANTES de leer, con semilla, estratos y tamaños. Estratos: ficha de manual; ficha de
   ri2_pm; cuerpo entre fichas (las 4 unidades que cruzan); planilla de los nueve; optico; plandecuentas;
-  ri_spi. Tamaños propuestos: 20, 10, 10, 10, 3, 3 y 3 páginas.
+  ri_spi. Tamaños: 20, 10, 10, 10, 3, 3 y 3 páginas (decisión 1).
 - Clases, con regla escrita antes de leer: tabla de códigos; formulario o planilla; ficha de cuenta con
   criterio de imputación; prosa normativa; historial o índice; otro. Lectura asistida, con la columna
   `revision_autora` vacía. Conteos crudos por estrato.
@@ -100,27 +103,38 @@ L4. QUÉ CONTIENEN LAS PÁGINAS EXCLUIDAS.
 - Cuántas citas de las normas ya extraídas apuntan a estos 14 documentos: desglose por norma de las 189
   irresolubles por «norma fuera del inventario».
 
-L5. RECOMENDACIÓN FINAL, entre:
-1. exclusión total de los 14, como límite con su cifra;
+L5. RECOMENDACIÓN FINAL: CÓMO Y CUÁNDO SE CUMPLE LA ADENDA 2 EN LA RELEASE r2.
+La adenda 2 al laudo B5.5 está firmada (`1ae387e`). La pregunta no es si se excluye el bloque A, sino
+cómo y cuándo se cumple la adenda en la release r2. La recomendación responde, con costo y calendario:
+a. la parte por punto de los 2 parciales por el camino normal, y en qué tanda;
+b. qué se hace con las 4 unidades que cruzan fichas, y si van con el bloque B;
+c. el ingreso del bloque A con procedencia por página:
+   - lo que exige en la cadena (vía de páginas en E0, re-extracción con el prefijo de la release y E3,
+     ensamblado, `remite_a`, validador, suite, shapes y citas), con los archivos y las líneas leídos y
+     no editados;
+   - si conviene con la tanda de los regímenes informativos (protocolo, tanda 3) en lugar de antes del
+     escalado, como desacople de calendario (adenda 2, §6);
+d. la declaración del bloque B como release posterior, con su cifra en páginas, y si su texto queda al
+   alcance del agente mientras tanto (L3).
+Salidas que entran a la comparación:
+1. exclusión total de los 14. Se compara declarada como lo que es: exigiría una enmienda a la adenda 2,
+   con su motivo;
 2. exclusión con la parte por punto de los 2 parciales adentro;
 3. la 1 o la 2 con el texto al alcance del agente;
-4. agregada por la adenda 2, que está firmada: las unidades de prosa del bloque A adentro, antes del
-   escalado o con la tanda de los regímenes informativos.
-Para cada una: costo; qué cambia de la cadena; si cambia el grafo evaluado; si llega antes de la tanda 1;
-la cifra que declara la tesis; y si es compatible con la adenda 2 (§2 y §4) y con el protocolo (§5), o
-qué documento firmado pide una nota fechada. Qué exigiría el ingreso con procedencia por página (vía de
-páginas en E0, re-extracción con el prefijo de la release y E3, ensamblado, `remite_a`, validador, suite,
-shapes y citas), con los archivos y las líneas leídos y no editados.
+4. las unidades de prosa del bloque A adentro, antes del escalado o con la tanda 3 (decisión 3).
+Para cada salida: costo; qué cambia de la cadena; si cambia el grafo evaluado; si llega antes de la
+tanda 1; la cifra que declara la tesis; y si es compatible con la adenda 2 (§2 y §4) y con el protocolo
+(§5), o qué documento firmado pide una nota fechada o una enmienda.
 
 ESCRITURAS: data/experiment/no_segmentables_limite/ (se crea) y el scratchpad. Toda corrida de e0-r2,
 en el scratchpad.
 PROHIBIDO: editar `cobertura_bloque_a/`, la partición, E0, el ensamblado, el validador o cualquier código
 de la cadena; correr extracción; leer las preguntas de EV2 o material de B6.3; commitear.
 
-DECISIONES DE LA AUTORA AL FIRMAR.
-1. Los tamaños de la muestra de L4 y el tope de preguntas.
-2. Si ri_spi se trata acá o en unidad propia (adenda 2, §7).
-3. Si la salida 4 de L5 entra a la comparación.
+DECISIONES DE LA AUTORA (04/10/2026).
+1. La muestra de L4 va con los tamaños 20, 10, 10, 10, 3, 3 y 3, y con hasta 10 preguntas.
+2. ri_spi se trata en esta unidad, salvo que el diagnóstico muestre que necesita una propia.
+3. La salida 4 de L5 entra a la comparación.
 
 FRENO final: las cifras de L1, las tablas de L2 y L3, la planilla de L4 y la recomendación de L5.
 
