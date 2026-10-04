@@ -184,3 +184,43 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 105 líneas de arriba y n
      tope. Es condición de esa enmienda.
   Cifras para el pre-registro de la tanda 1: 86 documentos sin alcance, de 157, y 31 de normativa general
   entre los 84 «necesita reglas».
+- 04/10/2026 — FRENO R1 REVISADO; DECISIONES DE LA AUTORA PARA R2 (tercera nota; R1 quedó en `c98093a`). La
+  medición de R1 se reproduce: `r1_medicion.py`, corrido dos veces sobre una copia, da el mismo
+  `salidas/r1_medicion.json` (sha256 `6cdf86ee…`). Decisiones:
+  a. W1 va como parámetro opcional del ensamblado, no como sustitución en memoria. El parámetro lleva también
+     el conjunto de ids de resolución: reemplaza a `M.SUJETOS_R2_SET` en el merge entre TOs y en E2
+     (`data/experiment/tanda0/code/ensamblar_tanda0.py:587` y `:956`), además del catálogo (`:935` y `:1155`)
+     y de la entrada del esqueleto (`:585-586`). Sin el conjunto, E2 rechaza la relación al id nuevo
+     (`e2_reduce/e2_lib.py:1053`) y no queda fila en el registro. R2 suma un control: cero relaciones
+     rechazadas sin registro.
+  b. La prueba usa T1, «cuentacorrentista» como id nuevo de prueba, y T2, «integrantes de la Alta Gerencia»
+     como alias agregado a `Sujeto_alta_gerencia`. Ninguno entra al catálogo del repo.
+  c. docvig queda sin alcance en U-REEXT-T0. Su lectura con el método del laudo de B5.4 no encuentra pasaje
+     de alcance: el índice tiene cuatro secciones y ninguna lo es, y el texto nombra tres clases en lugares
+     distintos. El catálogo del request no cambia y el laudo de B5.4 no necesita nota. Un alcance solo de
+     resolución, inferido del título de su punto 3.6 («entidades financieras y cambiarias»), se decide con la
+     medición de R2.
+  d. Umbral de crecimiento: al menos 2 unidades distintas con la mención verificada en cuarentena, en el
+     registro acumulado; después, lectura y aprobación de la autora. R2 lo recalibra con el registro de
+     U-REEXT-T0.
+  e. El control de reproducción de R2 es contra la cadena r2a del código del commit de la corrida (con
+     `9f6361e`, `70d51e42…` y `fa4c1043…`), no contra los sellados, que se citan con `f8dedd4`.
+  f. Los tres huecos del freno entran a R2: el registro acumulativo; un solo nombre de método para
+     `reresolver_registro` y para la cadena; y el camino que vuelve a aplicar la decisión a las relaciones
+     que resolvió el modelo, con la lista de las que cambian de destino y una muestra leída.
+  g. La lista de expresiones colectivas deja afuera «la entidad» (806 apariciones por texto, contra 231 que
+     cubre). R2 mide qué cambia si se la incluye, antes de decidir.
+  h. La regla del colectivo sin alcance cambia L-ESQ-R2 §3.2 y §3.3. Va por la enmienda 6
+     (`data/experiment/esq/enmienda6_L-ESQ-R2_colectivo_sin_alcance_2026-10-04.md`, BORRADOR — PENDIENTE DE
+     FIRMA), que la autora firma antes de que R2 la implemente.
+  i. La enmienda 6 suma un principio: en un documento sin alcance, una relación sin mención tampoco acepta
+     la sugerencia del modelo y va a cuarentena, igual que la expresión colectiva. R2 mide cuántas relaciones
+     irían a cuarentena por cada una de las dos reglas, antes de la firma. El punto e de P3c de U-PROMPT-R2
+     (sin relación de sujeto cuando el texto no nombra al sujeto) cambia esos casos: la medición corre sobre
+     el crudo de U-REEXT-T0, extraído con ese prefijo.
+  j. La versión del catálogo queda registrada como propone el freno, sin tocar `modelos_r2` (G1).
+  Las dos reglas de la primera nota (el crecimiento del catálogo y el paso de lectura del alcance) están en
+  `docs/enmienda4_protocolo_entre_tandas_2026-10-04_crecimiento_del_catalogo_y_alcance.md`, BORRADOR —
+  PENDIENTE DE FIRMA: se firma cuando R2 deje el script funcionando. Hasta entonces no rigen.
+  El «seguí» de R2 está preparado, con R2 en dos pasos (R2-1, hasta la medición; R2-2, las dos reglas, con la
+  enmienda 6 firmada). Su despacho está PENDIENTE: va después de U-REEXT-T0.
