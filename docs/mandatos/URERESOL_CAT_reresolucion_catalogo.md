@@ -161,3 +161,26 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 105 líneas de arriba y n
   Cuando R1 fije el mecanismo, las dos reglas van a una enmienda firmada del protocolo entre tandas, con el
   paso de lectura del alcance antes de la primera extracción de cada tanda. Hasta entonces no rigen.
   Las ESCRITURAS y lo PROHIBIDO del mandato no cambian: R1 diseña y no toca el catálogo.
+- 04/10/2026 — TRES DECISIONES DE LA AUTORA SOBRE EL ALCANCE (segunda nota; la anterior quedó en `bb472b1`).
+  1. El paso de lectura del alcance entre tandas asigna solo clases que ya existen: el método del laudo de
+     B5.4 (`docs/laudo_B5.4_fase1_catalogo.md:15-20`) cuando el pasaje de alcance nombra exactamente una o dos
+     clases del catálogo. Un documento que necesite un rol nuevo, incluidos los regímenes informativos que lo
+     necesiten, entra sin línea de alcance, declarado, y sus menciones colectivas van a cuarentena hasta que
+     su rol se decida en la release que corresponda. El laudo B5.5 no se enmienda: ESQ-RI-3 sigue abierta y
+     atada a la release (plan `:695`). Con eso el paso no cambia el prompt entre tandas: una entrada de clase
+     cambia solo el mensaje del documento nuevo.
+     En el punto (a) de la nota anterior quedan fuera de R1 las dos opciones para un documento cuyo alcance
+     no es una clase exacta: ese documento espera la release.
+  2. R1 diseña además este cambio de código: cuando un documento no tiene alcance, la sugerencia del modelo
+     para una expresión colectiva («las entidades») no gana, y la mención va a cuarentena. Hoy gana
+     (`corpus_v2/r1_e4.py:419`), y sin sugerencia la fila ya va a cuarentena (`:377`, `:443`).
+     R1 dice qué expresiones cuentan como colectivas (la lista de R3, `r1_e4.py:306`, o una ampliada), cómo
+     queda el registro (motivo y sugerencia del modelo guardada) y cuántas filas habría cambiado en docvig,
+     el único documento de la tanda 0 sin alcance.
+     El cambio toca una regla firmada: L-ESQ-R2 §3.2 y §3.3 dicen que con R3 gana la sugerencia del modelo y
+     que R4 es esa sugerencia (`git show 4ef7650:data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`,
+     `:565-582`). Si R1 confirma el diseño, va por enmienda firmada a L-ESQ-R2 antes de implementarse.
+  3. Si la lectura asistida del alcance usa la API, la enmienda del protocolo que cree el paso le fija un
+     tope. Es condición de esa enmienda.
+  Cifras para el pre-registro de la tanda 1: 86 documentos sin alcance, de 157, y 31 de normativa general
+  entre los 84 «necesita reglas».

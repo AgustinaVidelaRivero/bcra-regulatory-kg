@@ -28,8 +28,8 @@ CONTEXTO, con sus anclas.
 
 S0. CORRECCIONES DE E0 QUE CAMBIAN IDS DE LA PARTICIÓN (decisión de la autora del 04/10/2026).
 Salen de la revisión independiente (reports/u_revision_libre/freno_b1.md), de las enmiendas del
-04/10/2026 a las adendas del laudo B5.5 y del FRENO C2 de U-R2-CODIGO-2 (punto 5). No se ven en la tanda 0
-y no entran a C2 de U-R2-CODIGO-2.
+04/10/2026 a las adendas del laudo B5.5, del FRENO C2 de U-R2-CODIGO-2 (punto 5) y del censo de unidades
+grandes (punto 6). No se ven en la tanda 0 y no entran a C2 de U-R2-CODIGO-2.
 1. Sección escrita de otra forma (1.14): opecam («Seccón 3.»), garopt y snp_dd.
 2. Rótulos de punto que no lo son (1.15): rdbcra, ri_niif, ri_tsa y ri_dsf.
 3. Páginas de norma fuera de toda unidad (2.4): ri_cc, ri_tsa, snp_mep, venliq y fimipyme.
@@ -50,11 +50,48 @@ y no entran a C2 de U-R2-CODIGO-2.
    - en total cambian 267 chunks en 14 TOs, contra 93 en 9 TOs con la lista de páginas.
    El diseño decide si la regla general entra, y con qué guarda para snp_cheq y para la tabla de fabcra, o si
    la lista de páginas se amplía a los seis TOs con texto corrido recuperado.
+6. Unidades que no entran en una llamada de E1 (decisión de la autora del 04/10/2026). Censo sobre los 152 TOs
+   con e0-r2 y el código de C2 de U-R2-CODIGO-2 (9.385 unidades; scripts y salidas en el paquete de la
+   revisión del 04/10/2026, fuera del repo: esta etapa lo recomputa y lo versiona).
+   - 57 unidades en 32 TOs miden más de 13.091 caracteres con su herencia: 46 por su texto propio y 11 por
+     texto propio más herencia. Son 22 secciones sin puntos, 12 puntos terminales, 11 partes de puntos
+     terminales que E0 ya partió, 7 cierres, 4 chapeaux de sección y 1 intro; ningún intersticial.
+   - La partición por tamaño de E0 (`correr_e0.py:74-76`: umbral de 26.182 caracteres de texto propio,
+     objetivo de 13.091 por parte) partió 5 unidades en 23 partes. No cubre a las otras: 27 están entre
+     13.091 y 26.182, bajo el umbral; 13 pasan el umbral y quedan declaradas sin partir (11 por tabla
+     serializada y 2 sin ítems); y 5 mini-chunks pasan el umbral y `subdividir_unidades_grandes` los saltea
+     sin declararlos: `manual::S2::cierre` (255.192 caracteres), `nmaeef::S11::chapeau_seccion`,
+     `ri_ccna::S8::cierre`, `manori::S1::cierre` y `manori::S3::cierre`.
+   - En E1, con el perfil r2, una unidad que corta a 8.192 tokens se reintenta a 16.384 y, si vuelve a
+     cortar, se parte por ítems sin cortar tablas (`particionar_por_corte`). Simulado sobre las 46 unidades
+     que no son partes: 30 se pueden partir y 16 no, por falta de ítems. Una parte no se vuelve a partir. En
+     19 de las 30 la parte mayor pasa de 13.091 caracteres, y en 6, de 26.182.
+   - Riesgo, con la salida medida en la tanda 0 con el prefijo sellado (0,86 tokens por carácter de texto
+     propio en la mediana de las unidades de 3.000 caracteres o más, y 1,12 en el percentil 90): el reintento
+     alcanza hasta unos 19.000 caracteres con la mediana y 14.600 con el percentil 90.
+     - Clase A, 8 unidades: no se pueden partir y pasan de 19.000. Terminarían sin extracción, con error
+       declarado: `cateloc::S2`, `snp_mep::S7`, `manori::S2`, `ri_laft::3.7`, `manori::S4`, `ri_niif::3.2`,
+       `seggar::8.2` y `ri_oc::3.51`.
+     - Clase B, 12 unidades: se parten, pero su parte mayor pasa de 19.000 y no se vuelve a partir.
+     - Clase C, 8 unidades: entre 14.600 y 19.000, en el borde.
+     - Clase D, 29 unidades: entran en el reintento.
+     La capacidad se recalcula con los tokens de salida por carácter que mida U-REEXT-T0 con el prefijo r2b.
+   El diseño decide, con su censo de ids por TO:
+   a. Ninguna unidad se saltea sin declararla: los cinco mini-chunks que hoy E0 saltea en silencio pasan a
+      declarados, y la partición por tamaño dice si los alcanza.
+   b. Ninguna unidad de la tanda 0 cambia, `cap::4.2.1.2` incluida (26.726 caracteres en e0-r2, declarada
+      por tabla serializada). Si un arreglo la tocara, se declara y lo decide la autora.
+   c. Para las 8 unidades de la clase A, S0 propone una solución (una regla por párrafo o por página, u
+      otra) o las declara como límite con su cifra.
+   d. Si la partición por tamaño parte respetando los bloques de tabla, como ya hace `particionar_por_corte`,
+      en lugar de declarar la unidad sin partir; qué se hace con una parte que sigue grande; y si el umbral
+      baja del de desarrollo (26.182) para e0-r2, con los ids que mueve.
 Primero el diseño, sin implementar: cada regla con su censo sobre los 152 TOs (qué TOs y qué ids cambian).
 FRENO S0-1. Después del «seguí», la implementación, solo en e0-r2. Controles:
 - la E0 de la tanda 0 que dejó U-R2-CODIGO-2 (`salida_tanda0_r2b/`) no cambia un byte;
-- cada id que cambia en la partición queda atribuido a una de las cinco reglas, por TO; lo que ninguna
+- cada id que cambia en la partición queda atribuido a una de las seis reglas, por TO; lo que ninguna
   explique es «otra» y se lee;
+- toda unidad que pase del umbral de la partición por tamaño queda partida o declarada: ninguna salteada;
 - los TOs que ninguna regla toca dan los mismos ids que antes (guarda 1 de la adenda 2 al laudo B5.5);
 - selftests de E0 sobre una copia, y doble corrida byte a byte igual.
 FRENO S0-2.
