@@ -227,3 +227,27 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
   4. El control compara y avisa; no actualiza el corpus. El corpus congelado se mantiene para
      la re-extracción y la evaluación (decisión de la autora del 02/10/2026; plan, B2.11,
      unidad 11).
+
+## 6. Segmentación oficial con e0-r2 de los 152 TOs (U-SEG-OFICIAL) — pendiente
+
+- **Ruta y commit:** NO EXISTE todavía. Mandato en borrador,
+  `docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md`; plan, B2.11, unidad 15 (`docs/plan_tesis.md:404`).
+  Se genera después del cierre de U-R2-CODIGO-2, que cambia e0-r2.
+- **Qué va a contener:** la E0 de los 152 TOs con su manifiesto (qué TOs se segmentan por punto y
+  cuáles van por la vía de páginas) y las cifras de la segmentación, cada una con su archivo, su
+  clave y su comando.
+- **Alimenta:** la sección 4.1 de la tesis. Hasta que exista, sus cifras no se toman de la
+  segmentación legada (`data/experiment/segmentacion_84/b584_particion/`) ni de la escalera de R5 de
+  U-R2-CODIGO, que corrió en el scratchpad (`data/experiment/r2_codigo/r5_freno.md`, §D).
+- **Disparador de escritura (VSEG41, 03/10/2026).** Cuando la segmentación oficial quede commiteada,
+  se corre una verificación de solo lectura sobre ese artefacto que recomputa las cifras de la sección
+  4.1 marcadas [AL CIERRE: e0-r2] en el .tex. La verificación lista, por cada marca:
+  1. la marca, con su frase;
+  2. la cifra que corresponde;
+  3. el campo del manifiesto o del archivo de donde sale;
+  4. el comando que la reproduce.
+- **Salvedades:**
+  1. Las marcas están en la fuente de Overleaf. Desde el repo no se ven: `grep -rn "AL CIERRE" docs/tesis/`
+     da vacío el 03/10/2026. Su cantidad y su texto quedan NO VERIFICADOS hasta esa verificación.
+  2. No se registra en el tablero de correcciones (`docs/tablero_correcciones.md`), que es por síntoma
+     del grafo.

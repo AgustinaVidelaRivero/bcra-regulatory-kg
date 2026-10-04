@@ -1,0 +1,130 @@
+BORRADOR — PENDIENTE DE FIRMA
+
+MANDATO — U-NAV-DISENO: DISEÑO DE LA NAVEGACIÓN DEL AGENTE (A1.8). SE PREPARA AHORA Y SE MIDE DESPUÉS DE LA TANDA 1.
+Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
+- Unidad en DOS PARTES. Parte 1, ahora, USD 0: N1 (diagnóstico), N2 (diseño de herramientas), N3 (preguntas
+  de desarrollo, por una instancia aparte) y N4 (protocolo de medición). Parte 2, después de la tanda 1, con
+  tope a fijar por la autora: N5 (implementación, USD 0), N6 (ablaciones) y N7 (pre-registro).
+- FRENO obligatorio al final de cada etapa, con reporte corto (no más de 40 líneas) y espera del «seguí»
+  escrito de la autora. La parte 2 no arranca sin un «seguí» propio, posterior al cierre de la tanda 1.
+- Costo de API: USD 0 en la parte 1. Ninguna llamada a la API. Neo4j local, solo consultas de lectura.
+- Durante la tanda 1 el agente queda fijo: la parte 1 no toca el agente, sus herramientas ni los índices
+  (decisión de la autora del 01/10/2026, docs/plan_tesis.md:327).
+
+CONTEXTO, con sus anclas.
+- El agente: `GraphAgent` (data/experiment/evaluacion/harness.py:423, archivo sellado) y `GraphAgentNeo4j`
+  (data/experiment/neo4j/agente_neo4j.py:56), con tres herramientas (`buscar_nodos`, `ver_nodo`,
+  `ver_vecinos`) y `max_tool_calls` 15.
+- Atribución A0.2 de los pares definitivos parciales o incorrectos (reports/tanda0/reporte_fase2a.md, §4
+  punto 3; regla en data/experiment/ev2_reporte/regla_atribucion.md, `40603a9`): ausencia_kg /
+  alcanzabilidad más vista_no_consultada / generacion = 8/8/18 en C1, 6/2/23 en C2, 8/7/15 en C3, 9/3/17 en
+  C4 y 0/4/8 en C5.
+- Necesidades ya registradas en la fila A1.8 (docs/plan_tesis.md:327):
+  - vecinos salientes sobre una Operacion con restricciones entrantes, en las cuatro celdas;
+  - remisiones vistas y no abiertas;
+  - el campo `termino` fuera del índice (data/experiment/neo4j/indices.py:78);
+  - tope de 15 llamadas alcanzado en 23 de 40 respuestas base de C2, 27 de 40 de C3, 17 de 40 de C4 y 11
+    de 20 de C5;
+  - 23 de las 31 ausencias de C1 a C4 son contenido presente bajo puntos descendientes del ancla
+    (categoría P de D2, reports/u_pre_r2/d2_ausencias.md:46-58; checklist N9);
+  - 157 nodos con la cuantía después del carácter 160 de la descripción, que el resumen de `buscar_nodos`
+    no muestra (harness.py:110-124; reports/u_umbral/u1_mediciones.json);
+  - la forma B del vínculo entre unidades (regla en una unidad hermana, sin cita; 1 de 38);
+  - el volumen de `remite_a`: 14.000 aristas en KG-Tanda0-Diez-r2a, y `alcance` no se exporta a Neo4j
+    (enmienda 2 de L-ESQ-R2, §7).
+- «Cierre léxico»: NO ENCONTRADO con ese nombre en el plan, el checklist, el tablero ni el protocolo
+  (grep del 03/10/2026). N1 lo define con su evidencia o lo descarta.
+- El patrón «jueces unánimes, falla del grafo; jueces dispersos, falla de navegación» no tiene ancla en el
+  repo (NO VERIFICADO). N1 lo mide; no se da por cierto.
+
+PARTE 1 — AHORA (USD 0).
+
+N1. DIAGNÓSTICO SOBRE LAS TRAZAS QUE YA EXISTEN.
+- Entrada, solo lectura: trazas de C1 (data/experiment/ev2_r1/trazas/, `774acac`) y de C2 a C5
+  (data/experiment/ev2_tanda0/trazas/, `7f3b207`), con sus re-corridas; salidas del juez y veredictos
+  definitivos; reports/tanda0/atribucion_tanda0.json.
+- Unidad de análisis: cada criterio no cumplido de cada par definitivo parcial o incorrecto. Si la salida
+  del juez no identifica el criterio, se cuenta el par y se declara.
+- Cuatro clases, con regla operativa escrita ANTES de clasificar:
+  1. no encontró el nodo: el nodo que porta el contenido está en el grafo y no apareció en ningún resultado;
+  2. lo encontró y no siguió sus relaciones: el nodo apareció y no se abrió, o se abrió y el contenido del
+     criterio estaba en un vecino no recorrido (entrantes, `remite_a`, `condicion_de`, `exceptua`,
+     `exceptua_obligacion`, hijos del punto);
+  3. el contenido no estaba en el grafo;
+  4. llegó bien y generó mal: los nodos necesarios se abrieron y la respuesta falla.
+  La regla declara cómo se corresponde con las clases de A0.2, que mira el ancla y no el criterio. Las 23
+  ausencias P de D2 no van a la clase 3. Lo que la regla no decide va a lectura asistida, con «no
+  decidible» como resultado válido y contado.
+- Prueba del patrón de los jueces: antes de usarlo, verificar qué varía entre los tres votos de las
+  re-corridas (el agente, el juez o los dos; docs/protocolo_corrida_ev2.md:104-116). Después, la tabla de
+  votos (unánimes / divididos) por clase, en conteos crudos por celda. Sin porcentajes sobre n chico.
+- Cota por herramienta, sin agente: para cada falla de las clases 1 y 2, qué herramienta candidata de N2
+  habría puesto el nodo a la vista (consulta fuera de línea contra el grafo de la celda). Es una cota
+  superior, y se declara así.
+- Conteo de los patrones de la fila A1.8 por clase, y de las respuestas que llegaron al tope de llamadas.
+FRENO N1.
+
+N2. DISEÑO DE LAS HERRAMIENTAS CANDIDATAS (documento; no se implementa en la parte 1).
+Para cada una: firma (entradas, salida y tamaño máximo), necesidad que atiende con su conteo de N1, qué
+exige del grafo o del índice, costo estimado en tokens por llamada, y si la mejora vale igual para el
+sistema por fragmentos o es propia de la navegación por aristas (diferencia declarada entre brazos, A1.8).
+1. Búsqueda híbrida: texto completo y semántica (modelo del bake-off, docs/decision_modelo_embeddings.md),
+   sobre la descripción, `termino`, el tramo literal de cada entidad del perfil r2b y el texto de la
+   unidad; búsqueda por número de punto. Mismo analizador en los dos brazos, o la diferencia declarada.
+2. Recorrido por predicado: vecinos filtrados por predicado y dirección (`remite_a` con su `alcance`,
+   `condicion_de`, `limita`, `exceptua` y `exceptua_obligacion`). Declarar qué exige exportar `alcance`.
+3. Jerarquía: subir al punto padre, bajar a los hijos, ver los hermanos (ausencias P; forma B).
+4. Texto fuente de la unidad, con su página.
+5. Vista de umbrales: las cuantías de un nodo con su tramo literal.
+Las instrucciones del agente y el tope de llamadas se tratan como parámetros de la configuración.
+
+N3. PREGUNTAS DE DESARROLLO, POR UNA INSTANCIA APARTE.
+- Conjunto separado del de EV2 y del de B6.3. Nunca se usa para evaluar ni se reporta como resultado.
+- Lo genera a ciegas una instancia aparte, solo desde los PDF (precedente:
+  data/experiment/exploracion/ev2_fidelidad/registro_generacion_ev2_fidelidad.md). No lee el grafo, las
+  trazas, las preguntas de EV2 ni las de la tanda 0, el diseño de N2 ni material de B6.3.
+- Sobre TOs presentes en el grafo de desarrollo y ya excluidos de B6.3 (a). La lista se verifica contra
+  data/experiment/esq/documentos_excluidos_esq.json y docs/protocolo_entre_tandas.md §6, y se declara.
+- Con gold por criterios y anclas, en el molde de EV2, y registro de generación con sha256 de los PDF.
+- Tamaño propuesto: 30 preguntas, con cupos por necesidad (remisión, condición o excepción, umbral,
+  jerarquía, definición). Se sella con su sha256 antes de que la instancia de esta unidad lo lea.
+- La revisión cruza después sus anclas con las de EV2 y declara las coincidencias.
+
+N4. PROTOCOLO DE MEDICIÓN (documento; corre en la parte 2).
+- Grafo de desarrollo de r2b, fijo. Modelo del agente y juez, los de EV2, sin cambios.
+- Configuraciones: base (las tres herramientas de hoy), todas, y todas menos una por cada herramienta.
+  Con cinco herramientas son 7. La base se repite 3 veces para medir la variación entre corridas.
+- Medidas por configuración: fidelidad por criterio (criterios cumplidos sobre el total), precisión de
+  citas (fundada, existente, al ancla), costo por pregunta, llamadas a herramientas y respuestas que llegan
+  al tope, y las cuatro clases de N1 sobre las fallas.
+- Regla de decisión, escrita antes de medir: una herramienta entra si quitarla baja la fidelidad por
+  criterio más que la variación entre corridas de la base; a igualdad, la configuración más barata.
+- Costo estimado: (7 + 2) × 30 = 270 corridas. Referencia: las cuatro celdas de E5 costaron USD 21,2577
+  por 140 respuestas base con sus re-corridas y el juez (docs/plan_tesis.md:400), unos USD 0,15 por
+  respuesta: alrededor de USD 41. ESTIMACIÓN NO VERIFICADA: las herramientas nuevas cambian los tokens.
+- Pre-registro: la configuración elegida (herramientas, instrucciones, tope, índices y analizador) se
+  sella con su sha256 antes del pre-registro de B6.3 y se declara ahí. Lo que mejora la búsqueda se aplica
+  igual al sistema por fragmentos.
+FRENO N2-N4, con el diseño y el protocolo juntos.
+
+PARTE 2 — DESPUÉS DE LA TANDA 1 (no arranca sin «seguí» y tope).
+N5. Implementación de las herramientas en módulos nuevos, con selftest (USD 0). FRENO.
+N6. Ablaciones según N4, con el tope que fije la autora. FRENO.
+N7. Pre-registro de la configuración elegida. FRENO final.
+
+ESCRITURAS. Parte 1: solo data/experiment/navegacion/ (se crea) y el scratchpad; la instancia de N3, solo
+data/experiment/navegacion/preguntas_dev/. Parte 2: módulos nuevos bajo data/experiment/navegacion/.
+PROHIBIDO: editar el cuarteto sellado de evaluación, las trazas, los eval sets y los grafos; usar EV2 o
+material de B6.3 para medir en la parte 2; usar el conjunto de N3 para evaluar; commitear.
+
+DECISIONES DE LA AUTORA AL FIRMAR.
+1. Tope de N6 (estimación: USD 41, NO VERIFICADA).
+2. Tamaño y TOs del conjunto de N3 (propuesta: 30).
+3. Si las 40 de EV2 y las 20 de la tanda 0 siguen como material de ajuste, como dice la fila A1.8, o
+   quedan solo para el diagnóstico de N1.
+4. Cantidad de configuraciones y repeticiones de la base.
+5. Si N5 puede empezar sobre el grafo de U-REEXT-T0 antes del cierre de la tanda 1.
+6. Si `alcance` se exporta a Neo4j (hoy no: enmienda 2 de L-ESQ-R2, §7).
+
+REQUISITOS: los de CLAUDE.md §4 (a a l), con PYTHONDONTWRITEBYTECODE=1 y .venv/bin/python -B; todo conteo
+con el comando que lo reproduce; copias para verificar armadas copiando archivos; cero nombres de personas.
