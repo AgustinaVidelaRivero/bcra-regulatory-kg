@@ -46,3 +46,25 @@ sin efecto.
 ## Firma
 
 FIRMADA por la autora el 04/10/2026. Rige desde esta firma.
+
+## Notas posteriores a la firma
+
+El texto firmado son las 48 líneas de arriba (sha256 `ba94398f1f5f…`) y no cambia.
+
+- **04/10/2026 — fe de erratas del §0, FIRMADA por la autora el 04/10/2026.** El §0 dice que la tabla de
+  reprocesamiento clasifica el crecimiento del catálogo con la fila F13: lo lee solo el código y se rehace
+  E4, el esqueleto y lo que sigue del ensamblado. Con el código de hoy no es así:
+  - un id nuevo en `data/experiment/catalogo_unico/catalogo_sujetos_r2.json` frena antes de armar ningún
+    pedido, por el candado del catálogo (`data/experiment/pyd_r2/code/modelos_r2.py:61-96`);
+  - re-sellado el catálogo, el id entra al bloque del prompt y al enum de `sujeto_id` del tool schema, y
+    mueve la clave de E1 de todas las unidades. Es la fila F11, de la clase «todo».
+  La clasificación F13 vale cuando U-RERESOL-CAT separe el catálogo del prompt del catálogo de resolución
+  (`docs/mandatos/URERESOL_CAT_reresolucion_catalogo.md`, R1). Hasta entonces, la tabla registra lo de hoy en
+  la fila F13b y deja F13 como pendiente (`data/experiment/mantenimiento/tabla_reprocesamiento.md`, §3; sin
+  commit al 04/10/2026).
+  El punto 3 del §1 (mientras el script no exista y su prueba no pase, el catálogo no crece) evita que esto
+  pase en la práctica: no cambia.
+  Evidencia: U-TABLA-REPROC, variaciones R22c, R10 y R10b de su selftest
+  (`data/experiment/mantenimiento/freno_utabla_reproc.md`). La repetí por mi cuenta sobre una copia: con un id
+  más en el catálogo, la importación de `modelos_r2` frena; con una línea más en el bloque del prefijo o un id
+  más en el enum, cambia la clave de E1 de las 2.439 unidades de `salida_tanda0_r2b/`.

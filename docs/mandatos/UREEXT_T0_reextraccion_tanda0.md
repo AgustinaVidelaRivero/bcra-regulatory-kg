@@ -27,7 +27,9 @@ CONTEXTO, con sus anclas.
   el prefijo nuevo la estimación central es USD 50,74, con la NOTA de E3 como cota alta, y por el factor 1,4
   da 71,04 (data/experiment/prompt_r2/p3b2/salida/costo_p3b2.json). No cubre la salida nueva de los puntos a,
   b y h del parche: la mide P4.
-- Gate: docs/laudo_release_r2_pipeline.md, §3.1 (puntos 1 a 8), y docs/protocolo_entre_tandas.md, §1 y §4.
+- Gate: docs/laudo_release_r2_pipeline.md, §3.1 (puntos 1 a 8), y docs/protocolo_entre_tandas.md, §1 y §4,
+  con su enmienda 3 sobre las clases de reprocesamiento
+  (docs/enmienda3_protocolo_entre_tandas_2026-10-04_clases_de_reprocesamiento.md, FIRMADA el 04/10/2026).
 - Textos firmados que rigen acá: L-ESQ-R2 (`4ef7650`) con sus enmiendas 2 (`5f9a731`), 3 (`8d01b04`) y 4
   (`5c58f38`); la enmienda 5, sobre la negación y el comparador pegado a la cuantía, FIRMADA por la autora
   el 04/10/2026 (data/experiment/esq/enmienda5_L-ESQ-R2_negacion_y_comparador_pegado_2026-10-04.md; commit
@@ -175,13 +177,25 @@ T5 — REPORTE (USD 0).
   destino, después de la unidad que atribuye `remite_a` por tramo; la alternativa de unión de las
   operaciones por encabezado (30 uniones, piso 0,75); la recuperación por tramo de lo que el reintento dejó;
   la prueba de R2 de U-RERESOL-CAT sobre este crudo.
+- Claves de la caché (decisión de la autora del 04/10/2026, tras el freno de U-TABLA-REPROC):
+  - se vuelve a correr data/experiment/mantenimiento/code/selftest_clave_cache.py con
+    `--salida-r2b data/experiment/reextraccion_v2/corpus_tanda0/salida_r2b`, sobre una copia: es el anclaje
+    del perfil r2b (A1r y A3r), que hoy da NO_VERIFICABLE porque no hay claves de r2b en las dbs. Si la E0 de
+    la corrida no es `salida_tanda0_r2b/`, cambia también la constante `E0_TANDA0_R2B` del selftest;
+  - el §5 de data/experiment/mantenimiento/tabla_reprocesamiento.md reemplaza el costo de referencia
+    estimado del perfil r2b (E1 USD 0,010544 y E3 USD 0,010333 por unidad) por la tarifa observada en esta
+    corrida, con su comando;
+  - en las filas F05, F10 y F14 de la tabla, «enmienda en curso» pasa a citar la enmienda 3 del protocolo
+    entre tandas, firmada el 04/10/2026.
 FRENO T5, final.
 
 ESCRITURAS: los tres manifiestos r2b; corpus_tanda0/salida_r2b/, ens_diez_r2b/ y ens_desarrollo_r2b/;
 scripts/regression_kg.py, scripts/shapes_validator.py y sus selftests, solo para el punto 4 de T1;
 scripts/regression_kg_esperado.json, solo con la entrada que selle la autora; data/experiment/neo4j/grafos.py,
 solo las dos entradas nuevas; docs/tablero_correcciones.md, solo la columna «r2b»; una carpeta de la unidad,
-data/experiment/reext_t0/ (se crea), para frenos, scripts y reportes; y el scratchpad.
+data/experiment/reext_t0/ (se crea), para frenos, scripts y reportes; data/experiment/mantenimiento/
+tabla_reprocesamiento.md (solo el §5 y la cita de la enmienda en F05, F10 y F14), selftest_clave_cache.json
+(la salida) y, solo si cambia la E0, la constante del selftest; y el scratchpad.
 PROHIBIDO: editar el prefijo, el tool schema, la cadena de E0 a E5 o los validadores (si un control falla
 por el código, se reporta y no se corrige acá); tocar las salidas y los grafos sellados de r1 y de r2a;
 correr EV2 o cualquier celda con agente; usar las 15 preguntas como evaluación; actualizar el corpus;

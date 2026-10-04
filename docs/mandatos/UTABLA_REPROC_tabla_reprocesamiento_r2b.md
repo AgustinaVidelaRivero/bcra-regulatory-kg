@@ -75,3 +75,24 @@ leídas en el commit de su firma; todo conteo recomputado contra su artefacto; c
 
 FIRMA. FIRMADO por la autora el 04/10/2026, con las tres decisiones de arriba. Se despacha sobre el commit de
 C2 de U-R2-CODIGO-2, junto con U-RERESOL-CAT.
+
+NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 77 líneas de arriba (sha256 `85df5030…`) y no cambia.
+
+- 04/10/2026 — FRENO FINAL REVISADO; ENMIENDA 3 AL PROTOCOLO Y FE DE ERRATAS DE LA ENMIENDA 2, FIRMADAS POR LA
+  AUTORA. El freno (data/experiment/mantenimiento/freno_utabla_reproc.md, sin commit) se reproduce sobre una
+  copia: el selftest, corrido dos veces, da el mismo JSON que el del repo (sha256 `f5cf44bb…`), con el
+  contraste en las 38 filas. La tabla pasa de 21 a 38 filas: 15 iguales, 6 cambiadas y 17 nuevas.
+  Los cuatro hallazgos sobre textos firmados se sostienen. Los repetí con un programa propio sobre las 2.439
+  unidades de `salida_tanda0_r2b/`: páginas y metadatos no mueven ninguna clave (F05); el texto de sistema y
+  el modelo de E3 mueven las 2.439 claves de E3 y ninguna de E1 (F10); un id más en el catálogo frena y,
+  puesto en el bloque o en el enum, mueve las 2.439 claves de E1 (F11, no F13); y la salida validada entra al
+  mensaje de E3 (F14), en 59 de 59 salidas reales de la pareada de P4.
+  Quedan firmadas, con commit PENDIENTE: la enmienda 3 al protocolo entre tandas
+  (docs/enmienda3_protocolo_entre_tandas_2026-10-04_clases_de_reprocesamiento.md) y la fe de erratas al pie de
+  la enmienda 2 (docs/enmienda2_protocolo_entre_tandas_2026-10-04_catalogo.md).
+  Lo que sigue queda en T5 del borrador de U-REEXT-T0: el anclaje del perfil r2b sobre sus dbs, el §5 con la
+  tarifa observada y la cita de la enmienda 3 en las filas F05, F10 y F14 de la tabla, que hoy dicen «enmienda
+  en curso». La fila F13 se completa al cerrar R1 de U-RERESOL-CAT.
+  Dos hallazgos del freno quedan a decisión de la autora, con la propuesta de la revisión: dónde se les pone
+  candado a los tres insumos que no entran al hash del prefijo (F04b, F22 y F22b, F23), y el namespace de E3,
+  que el perfil r2b comparte con la tanda 0.

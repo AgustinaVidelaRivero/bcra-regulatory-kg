@@ -473,3 +473,10 @@ El texto firmado no se edita; estas notas se leen junto con él.
   `docs/enmienda2_protocolo_entre_tandas_2026-10-04_catalogo.md`, FIRMADA por la autora el 04/10/2026. El
   script lo construye una unidad propia (`docs/mandatos/URERESOL_CAT_reresolucion_catalogo.md`, BORRADOR —
   PENDIENTE DE FIRMA).
+- **04/10/2026 — enmienda 3 y fe de erratas de la enmienda 2, FIRMADAS por la autora (decisión de la autora,
+  tras el freno de U-TABLA-REPROC).** La composición real de las claves de la caché contradice el §2 en tres
+  filas. Rige `docs/enmienda3_protocolo_entre_tandas_2026-10-04_clases_de_reprocesamiento.md`: F05 pasa a
+  «solo código sobre lo guardado»; F10 paga E3 de todas las unidades, más los reintentos de E1 donde cambie
+  el feedback; F14, `validador_e1`, pasa a «E1 y E3 de las afectadas»; y `validador_r2` queda en «solo código»,
+  como F14b. La enmienda 2 lleva al pie su fe de erratas: con el código de hoy, un id nuevo en el catálogo es
+  F11 y no F13.
