@@ -21,7 +21,9 @@ estructura no parseable sí (rechazo a nivel chunk).
 
 from __future__ import annotations
 
+import copy
 import json
+from collections import Counter
 from dataclasses import dataclass, field
 
 import comun_e1  # noqa: F401  (sys.path para schema)
@@ -44,6 +46,9 @@ class ResultadoValidacion:
     rechazos: list[dict] = field(default_factory=list)      # motivo registrado
     advertencias: list[dict] = field(default_factory=list)  # registro, no rechazo
     metricas: dict = field(default_factory=dict)
+    # U-PROMPT-R2: "r2" cuando la salida venía en la forma r2 y se tradujo (marca que leen la NOTA de E3 y la
+    # guarda ampliada del ratchet). None en los perfiles existentes: la clave no aparece en as_dict.
+    forma_salida: str | None = None
 
     @property
     def chunk_rechazado(self) -> bool:
@@ -58,6 +63,7 @@ class ResultadoValidacion:
             "rechazos": self.rechazos,
             "advertencias": self.advertencias,
             "metricas": self.metricas,
+            **({"forma_salida": self.forma_salida} if self.forma_salida is not None else {}),
         }
 
 
@@ -84,6 +90,74 @@ def _str_o_none(v):
         v = v.strip()
         return v or None
     return None
+
+
+SEPARADOR_UMBRALES = " | "
+
+
+def _omision_r2_como_texto(o: dict) -> str | None:
+    """Una omisión de la forma r2 como string de omisiones_no_prosa: «[categoría] tramo — nota», con
+    «(source → destino)» en relacion_sin_predicado."""
+    cat, tramo, nota = (_str_o_none(o.get(k)) for k in ("categoria", "tramo", "nota"))
+    if not (cat or tramo or nota):
+        return None
+    txt = f"[{cat or 'sin_categoria'}] {tramo or ''}".rstrip()
+    if nota:
+        txt += f" — {nota}"
+    if cat == "relacion_sin_predicado" and (o.get("source") or o.get("destino")):
+        txt += f" ({o.get('source') or '?'} → {o.get('destino') or '?'})"
+    return txt
+
+
+def proyectar_r2(tool_input: dict) -> tuple[dict, dict]:
+    """Traduce la salida de E1 en la forma «r2» a la forma v3 que leen E3 y el ratchet, sobre una COPIA (el crudo
+    no se muta; validador_r2 lo lee íntegro). Nota del 03/10/2026 al pie del mandato de U-PROMPT-R2 (punto 4 del
+    §10 del diseño):
+      - relación de sujeto con `sujeto_mencion` y sin `sujeto_id` → `sujeto_propuesto` = la mención; con
+        `sujeto_id`, se descarta el padre sugerido (en r2 el padre va solo sin id);
+      - entidad: los tramos de `umbrales` → properties["umbrales"], unidos por « | »; `otras_propiedades` →
+        properties, con el prefijo «otras_propiedades.» si la clave ya está;
+      - `omisiones` → `omisiones_no_prosa`, un string por omisión.
+    El tramo de evidencia no se traduce: es evidencia, no contenido. Devuelve (copia, contadores)."""
+    out = copy.deepcopy(tool_input)
+    cont: Counter = Counter()
+    for nombre in ("entities", "relations"):
+        lista = _coerce_lista(out.get(nombre))
+        if lista is not None and not isinstance(out.get(nombre), list):
+            out[nombre] = lista     # string JSON: la traducción trabaja sobre la lista parseada
+    for e in out.get("entities") if isinstance(out.get("entities"), list) else []:
+        if not isinstance(e, dict):
+            continue
+        props = e.get("properties") if isinstance(e.get("properties"), dict) else {}
+        umb = e.pop("umbrales", None)
+        tramos = [u["tramo"] for u in umb if isinstance(u, dict) and isinstance(u.get("tramo"), str)
+                  and u["tramo"].strip()] if isinstance(umb, list) else []
+        if tramos:
+            props["umbrales"] = SEPARADOR_UMBRALES.join(tramos)
+            cont["umbrales_a_properties"] += 1
+        otras = e.pop("otras_propiedades", None)
+        if isinstance(otras, dict):
+            for k, v in otras.items():
+                props[k if k not in props else f"otras_propiedades.{k}"] = v
+                cont["otras_propiedades_a_properties"] += 1
+        if props or "properties" in e:
+            e["properties"] = props
+    for r in out.get("relations") if isinstance(out.get("relations"), list) else []:
+        if not isinstance(r, dict) or r.get("predicate") not in ("aplica_a", "ejecuta"):
+            continue
+        if _str_o_none(r.get("sujeto_id")) is None:
+            mencion = _str_o_none(r.get("sujeto_mencion"))
+            if mencion is not None and _str_o_none(r.get("sujeto_propuesto")) is None:
+                r["sujeto_propuesto"] = mencion
+                cont["mencion_sin_id_a_sujeto_propuesto"] += 1
+        elif r.pop("sujeto_propuesto_padre_sugerido", None) is not None:
+            cont["padre_sugerido_con_id_descartado"] += 1
+    oms = out.pop("omisiones", None)
+    if isinstance(oms, list):
+        textos = [t for t in (_omision_r2_como_texto(o) for o in oms if isinstance(o, dict)) if t]
+        out["omisiones_no_prosa"] = textos
+        cont["omisiones_a_omisiones_no_prosa"] += len(textos)
+    return out, dict(sorted(cont.items()))
 
 
 def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False,
@@ -120,9 +194,15 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False,
 
     res = ResultadoValidacion(chunk_id=chunk["id"])
     admitidos = set(puntos_admitidos(chunk))
+    forma_r2 = esquema is not None and getattr(esquema, "forma_salida", "v3") == "r2"
+    proyeccion: dict = {}
 
     def _fin(n_ent: int, n_rel: int) -> ResultadoValidacion:
         res.metricas = _metricas(res, n_ent, n_rel)
+        if forma_r2:
+            # U-PROMPT-R2: marca de la forma r2 y contadores de la traducción, solo en ese perfil.
+            res.forma_salida = "r2"
+            res.metricas["proyeccion_r2"] = proyeccion
         if _tipo_enum is not None:
             # Contadores SIEMPRE visibles en modo v3 (el "= 0" es el resultado
             # esperado de la vigilancia y debe verse); NUNCA presentes con
@@ -142,6 +222,8 @@ def validar_salida(tool_input, chunk: dict, canal_abierto: bool = False,
     if not isinstance(tool_input, dict):
         res.rechazos.append(_rechazo("chunk", "salida_no_dict", f"tipo {type(tool_input).__name__}"))
         return _fin(0, 0)
+    if forma_r2:
+        tool_input, proyeccion = proyectar_r2(tool_input)
 
     entities = _coerce_lista(tool_input.get("entities"))
     relations = _coerce_lista(tool_input.get("relations"))

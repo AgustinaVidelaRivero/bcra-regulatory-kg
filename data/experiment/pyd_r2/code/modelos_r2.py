@@ -631,16 +631,10 @@ class _PropsE1(BaseModel):
 
 
 class PropsComunicacionE1(_PropsE1):
-    codigo: str = Field(default=None, description='Código de la Comunicación, ej. "A-7825".')
-    tipo: Literal[COMUNICACION_TIPO] = Field(  # type: ignore[valid-type]
-        default=None, description='"A", "B" o "C"; "externa" para una ley, un decreto o una resolución.')
-    numero: int = Field(default=None, description="Número de la Comunicación.")
-
-
-class PropsTextoOrdenadoE1(_PropsE1):
-    materia: str = Field(default=None)
-    archivo: str = Field(default=None)
-    version: str = Field(default=None)
+    # Decisión 16 (protocolo D7): tipo y numero se derivan en código desde codigo.
+    codigo: str = Field(default=None, description=(
+        'Código de la Comunicación, ej. "A-7825"; para una ley, un decreto o una resolución, su denominación '
+        'tal como la cita el texto.'))
 
 
 class PropsOperacionE1(_PropsE1):
@@ -672,7 +666,7 @@ class PropsCondicionE1(_PropsE1):
 
 
 class PropsDefinicionE1(_PropsE1):
-    termino: str = Field(default=None)
+    termino: str = Field(default=None, description="Término definido, copiado tal cual lo nombra el texto.")
     descripcion: str = Field(default=None)
 
 
@@ -687,6 +681,8 @@ _DESC_LOCAL_ID = "Identificador local único dentro del chunk."
 _DESC_LABEL = "Etiqueta corta y canónica, contenido distintivo al principio."
 _DESC_PUNTO = "Unidad estructural que funda la entidad. Uno de los 'Puntos admitidos' del mensaje del chunk."
 _DESC_UMBRALES = "Un elemento por cuantía (monto, porcentaje, plazo, «veces»): el tramo literal."
+_DESC_TRAMO = ("Tramo del texto que funda la entidad, copiado tal cual: el más corto que la sostenga "
+               "por sí solo.")
 _DESC_OTRAS = ("Opcional: propiedades que el texto expresa y la definición del tipo no prevé "
                "(nombre → valor). Nunca se descartan: se registran aparte.")
 
@@ -703,51 +699,56 @@ class _EntidadE1(BaseModel):
     otras_propiedades: dict[str, str] = Field(default=None, description=_DESC_OTRAS)
 
 
-class ComunicacionE1(_EntidadE1):
+class _EntidadConTramoE1(_EntidadE1):
+    # Decisión 15 (protocolo D6): tramo literal de evidencia por entidad.
+    tramo: str = Field(description=_DESC_TRAMO)
+
+
+class ComunicacionE1(_EntidadConTramoE1):
     type: Literal["Comunicacion"]
     properties: PropsComunicacionE1 = Field(default=None)
 
 
 class TextoOrdenadoE1(_EntidadE1):
+    # Decisión 16 (protocolo D7): materia, archivo y version se derivan en código desde E0.
     type: Literal["TextoOrdenado"]
-    properties: PropsTextoOrdenadoE1 = Field(default=None)
 
 
-class OperacionE1(_EntidadE1):
+class OperacionE1(_EntidadConTramoE1):
     type: Literal["Operacion"]
     properties: PropsOperacionE1 = Field(default=None)
 
 
-class RestriccionE1(_EntidadE1):
+class RestriccionE1(_EntidadConTramoE1):
     type: Literal["Restriccion"]
     properties: PropsRestriccionE1 = Field(default=None)
     umbrales: list[UmbralE1] = Field(default=None, description=_DESC_UMBRALES)
 
 
-class ExcepcionE1(_EntidadE1):
+class ExcepcionE1(_EntidadConTramoE1):
     type: Literal["Excepcion"]
     properties: PropsExcepcionE1 = Field(default=None)
     umbrales: list[UmbralE1] = Field(default=None, description=_DESC_UMBRALES)
 
 
-class ObligacionE1(_EntidadE1):
+class ObligacionE1(_EntidadConTramoE1):
     type: Literal["Obligacion"]
     properties: PropsObligacionE1 = Field(default=None)
     umbrales: list[UmbralE1] = Field(default=None, description=_DESC_UMBRALES)
 
 
-class PotestadE1(_EntidadE1):
+class PotestadE1(_EntidadConTramoE1):
     type: Literal["Potestad"]
     properties: PropsPotestadE1 = Field(default=None)
 
 
-class CondicionE1(_EntidadE1):
+class CondicionE1(_EntidadConTramoE1):
     type: Literal["Condicion"]
     properties: PropsCondicionE1 = Field(default=None)
     umbrales: list[UmbralE1] = Field(default=None, description=_DESC_UMBRALES)
 
 
-class DefinicionE1(_EntidadE1):
+class DefinicionE1(_EntidadConTramoE1):
     type: Literal["Definicion"]
     properties: PropsDefinicionE1 = Field(default=None)
 
@@ -777,13 +778,19 @@ class RelacionE1(BaseModel):
         "SOLO aplica_a/ejecuta: id del catálogo que corresponde a la mención (sugerencia)."))
     sujeto_propuesto_padre_sugerido: SujetoIdR2 = Field(default=None, description=(  # type: ignore[valid-type]
         "Opcional, sin sujeto_id: id del catálogo sugerido como padre del sujeto mencionado."))
+    otras_propiedades: dict[str, str] = Field(default=None, description=_DESC_OTRAS)
 
 
 class OmisionE1(BaseModel):
     model_config = ConfigDict(extra="forbid")
     categoria: Literal[CATEGORIA_OMISION]  # type: ignore[valid-type]
     tramo: str = Field(description="Tramo del texto propio de la unidad que no se extrajo, copiado tal cual.")
-    nota: str = Field(default=None, description="Por qué quedó afuera.")
+    nota: str = Field(default=None, description=(
+        "Por qué quedó afuera; en fuera_de_tipos y relacion_sin_predicado, el tipo o el predicado que se habría usado."))
+    source: str = Field(default=None, description=(
+        "Solo relacion_sin_predicado: local_id de la entidad de origen, si se extrajo."))
+    destino: str = Field(default=None, description=(
+        "Solo relacion_sin_predicado: local_id de la entidad de destino, si se extrajo."))
 
 
 class SalidaE1R2(BaseModel):
@@ -801,8 +808,9 @@ class SalidaE1R2(BaseModel):
 NOMBRE_TOOL_R2 = "extraer_kg_e1"  # el mismo nombre que prompt_e1.NOMBRE_TOOL
 DESCRIPCION_TOOL_R2 = (
     "Extrae entidades y relaciones del chunk según el esquema r2 (9 tipos, 13 predicados, catálogo "
-    "cerrado de sujetos). Todo elemento lleva `punto`. Los umbrales van como tramos literales; la "
-    "mención del sujeto, tal cual aparece; las omisiones, con categoría y tramo.")
+    "cerrado de sujetos). Todo elemento lleva `punto`; toda entidad salvo el TextoOrdenado, el tramo literal que la "
+    "funda. Los umbrales van como tramos literales; la mención del sujeto, tal cual aparece; las omisiones, con "
+    "categoría y tramo.")
 
 
 def _limpiar_schema(nodo: Any, defs: dict) -> Any:

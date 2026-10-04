@@ -157,7 +157,7 @@ Nuevo:
 
 ### R8 · TIPOS · 8 Condicion (destino de condicion_de)
 
-Manda: decisión 7 (L-ESQ-R2 §6.4: la instrucción deja de mandarla solo a Excepcion, Obligacion o Restriccion).
+Manda: decisión 7 (L-ESQ-R2 §6.4: la instrucción deja de mandarla solo a Excepcion, Obligacion o Restriccion); Condicion sin destino en la unidad (decisión de la autora en el FRENO P1, 03/10/2026).
 
 Sellado:
 
@@ -168,7 +168,7 @@ Conectala con `condicion_de` a la Excepcion, Obligacion o Restriccion del mismo 
 Nuevo:
 
 ```text
-Conectala con `condicion_de` a lo que ese supuesto condiciona en el mismo chunk, cuando el texto de la unidad enuncie ese vínculo: una Excepcion, una Obligacion o una Restriccion; una Operacion, cuando el acto solo puede realizarse si el supuesto se verifica; o una Potestad, cuando la facultad solo se habilita si el supuesto se verifica.
+Conectala con `condicion_de` a lo que ese supuesto condiciona en el mismo chunk, cuando el texto de la unidad enuncie ese vínculo: una Excepcion, una Obligacion o una Restriccion; una Operacion, cuando el acto solo puede realizarse si el supuesto se verifica; o una Potestad, cuando la facultad solo se habilita si el supuesto se verifica. Si lo que el supuesto condiciona no está en tu unidad (por ejemplo, la norma de un encabezado con unidad propia, cuando tu unidad es uno de sus ítems), emití la Condicion sin condicion_de: no la conectes con otro elemento del chunk.
 ```
 
 ### R9 · TIPOS · 8 Condicion (properties)
@@ -274,7 +274,7 @@ Nuevo:
 
 ### R14 · PREDICADOS · condicion_de y remisiones
 
-Manda: decisión 7.
+Manda: decisiones 7 y 12; la Comunicacion sigue con su `referencia` (decisión de la autora en el FRENO P1, 03/10/2026).
 
 Sellado:
 
@@ -287,7 +287,7 @@ Nuevo:
 ```text
 | `condicion_de` | Condicion → {Excepcion, Obligacion, Restriccion, Operacion, Potestad} |
 
-La remisión del texto a otro punto o a otra norma la registra el código desde el texto: no es una relación que debas emitir ni una omisión. Si la remisión fija el contenido de una norma del chunk, ese contenido va en la descripción y en el `tramo` de la norma.
+La remisión del texto a otro punto o a otra norma la registra el código desde el texto: no es una relación que debas emitir ni una omisión. Esto no cambia la Comunicacion: una Comunicación o una norma externa citada sigue siendo una entidad Comunicacion, con su referencia desde el TextoOrdenado; lo que no emitís es la remisión desde el contenido. Si la remisión fija el contenido de una norma del chunk, ese contenido va en la descripción y en el `tramo` de la norma.
 ```
 
 ### R15 · SUJETOS
@@ -368,7 +368,7 @@ Nuevo:
 
 Un encabezado que abre una lista termina en «:»: es la línea de título de un punto (bloque heredado `encabezado`, sin unidad propia) o un párrafo introductorio con unidad propia. Enuncia parte de una norma cuyo contenido está repartido en los ítems. Si el contexto heredado termina en un encabezado así y tu unidad es uno de sus ítems, mirá qué son los ítems:
 - CONTENIDOS (lo que hay que hacer, informar, incluir o cumplir; los miembros de una clase que el encabezado nombra): la norma del ítem es la COMPUESTA. Extraela entera en el ítem, con `punto` = el ítem: el sujeto del encabezado, su modalidad (deber, prohibición o facultad), su cuantificador (si los ítems se exigen todos o si basta con cualquiera de ellos) y el contenido del ítem. La descripción dice la norma completa y conserva el cuantificador. Si el encabezado no trae el sujeto o la modalidad, tomalos del bloque heredado más cercano que los trae.
-- SUPUESTOS O CONDICIONES de una norma que el encabezado enuncia: el ítem es una Condicion (ver Condicion) y la norma queda en la unidad del encabezado. Si el encabezado es la línea de título de un punto, no tiene unidad propia; entonces:
+- SUPUESTOS O CONDICIONES de una norma que el encabezado enuncia: el ítem es una Condicion (ver Condicion) y la norma queda en la unidad del encabezado; como esa norma no está en tu unidad, la Condicion va sin `condicion_de` (ver Condicion). Si el encabezado es la línea de título de un punto, no tiene unidad propia; entonces:
   - si los supuestos son alternativos (basta cualquiera: «o», «alguno de», «cualquiera de»), la norma del ítem es la COMPUESTA: la del encabezado con el supuesto del ítem, y conserva el cuantificador;
   - si se exigen juntos («y», «la totalidad», «concurrentemente») o no queda claro, el ítem es solo una Condicion, y la norma del encabezado no se extrae en ningún ítem: repetirla con una sola condición la daría por suficiente.
 

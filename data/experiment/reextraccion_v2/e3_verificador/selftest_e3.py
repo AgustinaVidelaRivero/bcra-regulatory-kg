@@ -519,6 +519,63 @@ def main() -> int:
     check("LAUDOS: prefijo E3 sigue INTACTO tras implementar A y B",
           prompt_e3.PREFIJO_HASH == resumen_sellado["prefijo_hash_e3"])
 
+    # ---------------- K. U-PROMPT-R2: NOTA r2 y enmienda a LAUDO B ------------ #
+    print("\n[K] U-PROMPT-R2: NOTA de la forma r2 y guarda ampliada (enmienda a LAUDO B)")
+    import perfil_e1
+    import validador_e1
+    esq_r2 = perfil_e1.perfil("r2b").esquema
+    ti_vacio = {"entities": [{"local_id": "to", "type": "TextoOrdenado", "label": "TO", "punto": "2.7"}],
+                "relations": [], "omisiones": []}
+    val_r2_vacia = validador_e1.validar_salida(ti_vacio, mini27, esquema=esq_r2).as_dict()
+    ti_con_norma = json.loads(json.dumps(ti_vacio))
+    ti_con_norma["entities"].append({"local_id": "e1", "type": "Obligacion", "label": "Hipervínculos",
+                                     "punto": "2.7", "tramo": "deberán contar con sendos hipervínculos",
+                                     "properties": {"descripcion": "x"}})
+    val_r2_norma = validador_e1.validar_salida(ti_con_norma, mini27, esquema=esq_r2).as_dict()
+    val_v3_vacia = {k: v for k, v in val_r2_vacia.items() if k != "forma_salida"}
+    check("K: la validación r2 lleva la marca forma_salida; sin O/R/P la ampliación rige, con una O/R/P no",
+          val_r2_vacia.get("forma_salida") == "r2" and ratchet_e3.ampliacion_activa(val_r2_vacia)
+          and not ratchet_e3.ampliacion_activa(val_r2_norma) and not ratchet_e3.ampliacion_activa(val_v3_vacia)
+          and not ratchet_e3.ampliacion_activa(None))
+    ev_r2 = ratchet_e3.evaluar_veredicto(ver_otro, mini27, unidades_pro, val_r2_vacia)
+    ev_r2_norma = ratchet_e3.evaluar_veredicto(ver_otro, mini27, unidades_pro, val_r2_norma)
+    ev_v3 = ratchet_e3.evaluar_veredicto(ver_otro, mini27, unidades_pro, val_v3_vacia)
+    check("K: ampliación — un faltante «otro» que cita la cláusula ordenadora se exime con la forma r2 y la "
+          "unidad sin O/R/P",
+          ev_r2["faltantes"][0]["estructural_no_bloqueante"] and ev_r2["aceptable"])
+    check("K: salvaguarda — con una Obligacion en la extracción, el mismo faltante bloquea",
+          not ev_r2_norma["faltantes"][0]["estructural_no_bloqueante"] and ev_r2_norma["faltantes"][0]["bloqueante"])
+    check("K: sin la marca r2 (perfiles existentes), LAUDO B tal cual: el faltante «otro» bloquea",
+          not ev_v3["faltantes"][0]["estructural_no_bloqueante"] and ev_v3["faltantes"][0]["bloqueante"])
+    ev_r2_sin = ratchet_e3.evaluar_veredicto(ver_otro, mini27, None, val_r2_vacia)
+    ev_r2_hijo = ratchet_e3.evaluar_veredicto(ver_otro, chunks_enm["pro::2.7.1"], unidades_pro, val_r2_vacia)
+    check("K: la ampliación conserva las demás condiciones (sin unidades del corpus o en un hijo, bloquea)",
+          ev_r2_sin["faltantes"][0]["bloqueante"] and ev_r2_hijo["faltantes"][0]["bloqueante"])
+    stub_e3_k = cliente_e3.StubClienteE3([ver_otro])
+    stub_e1_k = cliente_e1.StubClienteE1([])
+    exp_k = ratchet_e3.ciclo_ratchet(
+        mini27, val_r2_vacia, cliente_verificador=stub_e3_k, cliente_extractor=stub_e1_k,
+        model_e3="M3", model_e1="M1", unidades_corpus=unidades_pro)
+    check("K: en el ciclo, el encabezado sin norma reclamado por la cláusula se acepta con residual y sin "
+          "reintento (el reintento no crea el nodo)",
+          exp_k["estado"] == "aceptado_con_residuales" and len(stub_e1_k.requests_recibidos) == 0
+          and exp_k["residuales"][0]["tipo"] == "otro" and exp_k["residuales"][0]["estructural_no_bloqueante"])
+    msg_r2 = prompt_e3.build_user_message(mini27, val_r2_vacia)
+    msg_v3 = prompt_e3.build_user_message(mini27, val_v3_vacia)
+    check("K: NOTA del encabezado de lista solo con la forma r2",
+          "es el encabezado de una lista" in msg_r2 and "es el encabezado de una lista" not in msg_v3)
+    # chunk con flags de E0 legada (sin tablas_e0): la NOTA depende solo de los flags
+    flag = dict(chunks_enm["pro::2.7.1"], flags={"contenido_tabular": True, "formula": True})
+    val_flag_v3 = {"chunk_id": flag["id"], "entidades": [], "relaciones": [], "omisiones_no_prosa": [],
+                   "rechazos": [], "advertencias": [], "metricas": {}}
+    val_flag_r2 = dict(val_flag_v3, forma_salida="r2")
+    m_v3 = prompt_e3.build_user_message(flag, val_flag_v3)
+    m_r2 = prompt_e3.build_user_message(flag, val_flag_r2)
+    check("K: sin tablas serializadas (E0 legada), la NOTA r2 es la de siempre, byte a byte",
+          m_v3 == m_r2 and "detectados determinísticamente (flag de E0)" in m_v3)
+    check("K: E3 congelado — el prefijo sigue intacto con la NOTA r2 y la ampliación",
+          prompt_e3.PREFIJO_HASH == resumen_sellado["prefijo_hash_e3"])
+
     # ---------------- H. Estimación reproducible ---------------------------- #
     print("\n[H] estimación reproducible")
     import estimacion_e3

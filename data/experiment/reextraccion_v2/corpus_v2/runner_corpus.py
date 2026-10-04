@@ -757,6 +757,11 @@ def fase_e3(to: str, cli_e3, cli_e1r, estado: Estado, salida: Path,
                "cliente_e1_reintentos": cli_e1r.resumen(),
                "gasto_fase_usd": round(gasto_previo + cli_e3.gasto_usd
                                        + cli_e1r.gasto_usd, 4)}
+    if perfil_forma_r2(PERFIL):
+        # Enmienda a LAUDO B, condición de la autora: cada unidad eximida por la ampliación, para leerla.
+        exen = exenciones_ampliacion(tdir)
+        resumen["exenciones_ampliacion_laudo_b"] = exen
+        resumen["unidades_eximidas_ampliacion"] = sorted({x["chunk_id"] for x in exen})
     (tdir / "resumen_e3.json").write_text(
         json.dumps(resumen, ensure_ascii=False, indent=1), encoding="utf-8")
     estado.cerrar_fase(key, {"gasto_usd": resumen["gasto_fase_usd"],
@@ -822,7 +827,32 @@ def cerrar_e2(to: str, salida: Path, limite: int | None = None) -> dict:
 PERFIL_R2 = False
 # Forma del crudo de E1 según el perfil que lo produjo (validador_r2.validar):
 # los perfiles existentes emiten la forma v3 (sujeto_propuesto, omisiones_no_prosa).
-FORMA_CRUDO_POR_PERFIL = {"produccion_dev": "v3", "v3_b54": "v3"}
+FORMA_CRUDO_POR_PERFIL = {"produccion_dev": "v3", "v3_b54": "v3", "r2b": "r2"}
+
+
+def perfil_forma_r2(perfil) -> bool:
+    """U-PROMPT-R2 (decisión 1 del mandato): el perfil cuya salida tiene la forma «r2» (r2b) activa el camino del
+    perfil r2 que antes pedía --perfil-r2 (techo de corte de r2, partición R4.b y E2 r2). Los perfiles existentes
+    siguen con el camino por defecto, y --perfil-r2 sigue valiendo para ellos."""
+    return perfil.esquema is not None and getattr(perfil.esquema, "forma_salida", "v3") == "r2"
+
+
+def exenciones_ampliacion(tdir: Path) -> list[dict]:
+    """Enmienda a LAUDO B (§2, punto 6): los faltantes eximidos por la ampliación, es decir los
+    estructural_no_bloqueante de tipo distinto de enumeracion_incompleta, con su unidad, su fase, su cita y su
+    tipo, desde veredictos.jsonl (en orden de registro)."""
+    p = Path(tdir) / "veredictos.jsonl"
+    out: list[dict] = []
+    if p.exists():
+        for linea in p.read_text(encoding="utf-8").splitlines():
+            if not linea.strip():
+                continue
+            v = json.loads(linea)
+            for f in v.get("faltantes") or []:
+                if f.get("estructural_no_bloqueante") and f.get("tipo") != "enumeracion_incompleta":
+                    out.append({"chunk_id": v["chunk_id"], "fase": v["fase"], "intento": v["intento"],
+                                "tipo": f.get("tipo"), "cita": f.get("cita_textual_del_fuente")})
+    return out
 
 
 def leer_reintentos_companero(tdir: Path) -> dict[tuple[str, int], dict]:
@@ -855,11 +885,14 @@ def claves_reintentos_cache(tdir: Path, chunks: list[dict], perfil, solo: set | 
                 r = json.loads(linea)
                 if r["fase"] == "verificacion":
                     verif[r["chunk_id"]] = r
+    # validación de la verificación (la de E1 que vio E3): rige la ampliación de LAUDO B en la forma r2
+    regs_e1 = cargar_jsonl_last_wins(Path(tdir) / "extracciones_e1_compact.jsonl")
     out = []
     for cid, fin in finales.items():
         if not fin.get("n_reintentos") or (solo is not None and cid not in solo):
             continue
-        ev = ratchet_e3.evaluar_veredicto(verif[cid]["tool_input"], por_id[cid], unidades)
+        ev = ratchet_e3.evaluar_veredicto(verif[cid]["tool_input"], por_id[cid], unidades,
+                                          (regs_e1.get(cid) or {}).get("validacion"))
         kw = ratchet_e3.build_reextraccion_kwargs(
             por_id[cid], ev["bloqueantes_utilizables"], model=MODEL_E1, intento=1,
             max_tokens_reintento=MAX_TOKENS_REINTENTO,
@@ -1055,10 +1088,10 @@ def main() -> int:
                          "resolucion_sujetos.jsonl y no_mapeados_sujetos.jsonl por TO)")
     args = ap.parse_args()
     global PERFIL_R2
-    PERFIL_R2 = args.perfil_r2
 
     if args.manifiesto != MANIFIESTO_DEFAULT:
         configurar(manifiesto_corpus.cargar(args.manifiesto))
+    PERFIL_R2 = args.perfil_r2 or perfil_forma_r2(PERFIL)
 
     tos = ([t.strip() for t in args.tos.split(",") if t.strip()]
            if args.tos else list(TOS_ORDEN))

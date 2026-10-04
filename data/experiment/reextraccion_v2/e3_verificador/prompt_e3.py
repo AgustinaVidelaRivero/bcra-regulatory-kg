@@ -221,9 +221,82 @@ PREFIJO_HASH = hashlib.sha256(PREFIJO_CANONICO.encode("utf-8")).hexdigest()[:12]
 # MENSAJE DE USUARIO (variable por unidad — después del breakpoint)          #
 # ========================================================================== #
 
+def _nota_flags_e0(flags: dict) -> str | None:
+    """La NOTA de los flags de E0 (tablas y fórmulas), la de siempre."""
+    if not (flags.get("contenido_tabular") or flags.get("formula")):
+        return None
+    tipos_flag = []
+    if flags.get("contenido_tabular"):
+        tipos_flag.append("contenido tabular")
+    if flags.get("formula"):
+        tipos_flag.append("fórmulas")
+    return (
+        f"NOTA: esta unidad tiene {' y '.join(tipos_flag)} detectados "
+        f"determinísticamente (flag de E0). El extractor tenía instrucción de "
+        f"NO reconstruir ese contenido y declarar las omisiones. Evaluá el "
+        f"tratamiento: contenido tabular/fórmula normativo ni extraído ni "
+        f"declarado es faltante tipo contenido_tabular_no_declarado; declarado, no."
+    )
+
+
+def notas_r2(chunk: dict) -> list[str]:
+    """NOTAS del mensaje en la forma de salida «r2» (perfil r2b de U-PROMPT-R2; mandato, decisión 6, y nota del
+    03/10/2026; diseño §4.3 y §4.5). Solo se usan cuando la validación trae la marca forma_salida = "r2":
+      - tablas: con alguna tabla serializada confiable (e0-r2), la NOTA de tablas confiables, el aviso de las
+        tablas con estructura sin resolver y, si hay residual o fórmulas, la NOTA de los flags; sin tabla
+        serializada confiable, la NOTA de siempre;
+      - encabezado de lista: la unidad no emite nodo por el solo anuncio ni lo que se compone en los ítems."""
+    import prompt_r2b as R  # noqa: PLC0415 — solo en la forma r2 (e1_extractor en sys.path vía comun_e3)
+    notas: list[str] = []
+    f = chunk.get("flags") or {}
+    ser, _forz, _noser, res = R.estado_tablas(f)
+    if not ser:
+        n = _nota_flags_e0(f)
+        if n:
+            notas.append(n)
+    else:
+        partes = ["NOTA: esta unidad tiene tablas serializadas por E0 (bloques [TABLA …] … [FIN TABLA …] del texto "
+                  "fuente, verificados contra el documento): su contenido es texto confiable y su omisión se evalúa "
+                  "como la de cualquier otro contenido."]
+        riesgo = [t for t in ser if R.tiene_riesgo(t)]
+        if riesgo:
+            def detalle(t: dict) -> str:
+                d = []
+                if t.get("combinadas_sin_propagar"):
+                    d.append(R._n(t["combinadas_sin_propagar"], "celda combinada sin asignar a sus filas",
+                                  "celdas combinadas sin asignar a sus filas"))
+                if t.get("filas_subtitulo"):
+                    d.append(R._n(t["filas_subtitulo"], "fila de subtítulo", "filas de subtítulo"))
+                return f"{t['bloque']} ({' y '.join(d)})"
+            partes.append("E0 dejó sin resolver parte de la estructura de " + ", ".join(detalle(t) for t in riesgo)
+                          + ": la omisión `tabla` que el extractor declare sobre "
+                          + ("esa tabla" if len(riesgo) == 1 else "esas tablas") + " no es faltante.")
+        tipos = [t for t, s in (("contenido tabular fuera de los bloques confiables", res),
+                                ("fórmulas", f.get("formula"))) if s]
+        if tipos:
+            partes.append(f"Además, E0 detectó en esta unidad {' y '.join(tipos)} (flag determinístico): el "
+                          f"extractor tenía instrucción de NO reconstruir ese contenido y declarar las omisiones; ese "
+                          f"contenido normativo ni extraído ni declarado es faltante tipo "
+                          f"contenido_tabular_no_declarado; declarado, no.")
+        notas.append(" ".join(partes))
+    if R.es_encabezado_de_lista(chunk):
+        notas.append(
+            "NOTA: esta unidad es el encabezado de una lista (su texto termina en «:»); los ítems son los puntos "
+            "que siguen, cada uno con su propia unidad. En esta extracción se componen en cada ítem el sujeto, la "
+            "modalidad y el cuantificador del encabezado, y también lo que el encabezado fija para cada ítem (un "
+            "plazo, un ámbito, una condición que vale para todos los ítems). Esta unidad no emite un nodo por el "
+            "solo anuncio de la lista ni repite lo que se compone en los ítems: que falten aquí no es faltante. "
+            "Sí es faltante, si no fue extraído, lo que el encabezado enuncia aparte de la lista: una norma propia, "
+            "una excepción a la lista entera, o la norma principal cuando los ítems son sus supuestos o "
+            "condiciones.")
+    return notas
+
+
 def build_user_message(chunk: dict, validacion: dict) -> str:
     """Único contenido variable del request: la unidad como DATOS. Función
-    pura de (chunk, validación): mismos datos → mismo mensaje byte a byte."""
+    pura de (chunk, validación): mismos datos → mismo mensaje byte a byte.
+    U-PROMPT-R2: con la marca forma_salida = "r2" en la validación, las NOTAS
+    son las de notas_r2; sin la marca, la NOTA de siempre (byte a byte)."""
     partes: list[str] = []
     partes.append(f"Documento fuente: {chunk['archivo']}")
     partes.append(f"TO: {chunk['to']}")
@@ -231,19 +304,10 @@ def build_user_message(chunk: dict, validacion: dict) -> str:
     partes.append("")
 
     flags = chunk.get("flags") or {}
-    if flags.get("contenido_tabular") or flags.get("formula"):
-        tipos_flag = []
-        if flags.get("contenido_tabular"):
-            tipos_flag.append("contenido tabular")
-        if flags.get("formula"):
-            tipos_flag.append("fórmulas")
-        partes.append(
-            f"NOTA: esta unidad tiene {' y '.join(tipos_flag)} detectados "
-            f"determinísticamente (flag de E0). El extractor tenía instrucción de "
-            f"NO reconstruir ese contenido y declarar las omisiones. Evaluá el "
-            f"tratamiento: contenido tabular/fórmula normativo ni extraído ni "
-            f"declarado es faltante tipo contenido_tabular_no_declarado; declarado, no."
-        )
+    notas = (notas_r2(chunk) if (validacion or {}).get("forma_salida") == "r2"
+             else [n for n in (_nota_flags_e0(flags),) if n])
+    for nota in notas:
+        partes.append(nota)
         partes.append("")
 
     partes.append("TEXTO FUENTE ÍNTEGRO DE LA UNIDAD (contexto heredado + punto propio):")

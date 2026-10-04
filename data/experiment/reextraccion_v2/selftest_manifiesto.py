@@ -30,6 +30,16 @@ Puntos:
       sin KeyError; oráculo declarado sin el TO → ValueError con mensaje.
   P9  gancho: indice_fragmentos se expone verbatim y NINGÚN módulo del
       pipeline lo consume.
+  P10 U-PROMPT-R2, perfil r2b (manifiesto tanda0_10tos_r2b, E0 e0-r2):
+      requests de E1 de las 2.434 unidades y de E3 sobre una salida simulada
+      (validada con la traducción r2), byte a byte en doble corrida sin API;
+      prefijo de E1 idéntico entre unidades y con el sha congelado; prefijo de
+      E3 sin cambio; NOTAS r2 contadas; runner con clientes simulados (pro) en
+      doble corrida con huella idéntica, E2 r2 activado por el perfil y la
+      lista de exenciones de la ampliación en el resumen de E3.
+  P11 U-PROMPT-R2, sellado v3_b54 de la tanda 0: las keys de E1 de las 2.434
+      unidades y las de E3 de los pares de la salida sellada están en las
+      cachés; la validación v3 recomputada del crudo es byte a byte la guardada.
 
 Uso:  .venv/bin/python3 selftest_manifiesto.py [--saltear-e0]
       (--saltear-e0 solo para iteración de desarrollo: omite P2, el punto
@@ -440,6 +450,120 @@ def p9_gancho(tmp: Path) -> None:
 
 # ========================================================================= #
 
+# ========================================================================= #
+# P10/P11 — U-PROMPT-R2: perfil r2b y sellado v3_b54                         #
+# ========================================================================= #
+MANIFIESTO_R2B = MC.MANIFIESTOS_DIR / "tanda0_10tos_r2b.json"
+MANIFIESTO_T0 = MC.MANIFIESTOS_DIR / "tanda0_10tos.json"
+SALIDA_T0 = AQUI / "corpus_tanda0" / "salida"
+
+
+def p10_r2b(tmp: Path) -> None:
+    import perfil_e1          # noqa: PLC0415
+    import validador_e1       # noqa: PLC0415
+    import prompt_r2b         # noqa: PLC0415
+    import runner_corpus as RC  # noqa: PLC0415
+    man = MC.cargar(MANIFIESTO_R2B)
+    pf = perfil_e1.perfil(man.perfil_e1)
+    check("P10 manifiesto r2b: perfil r2b, E0 e0-r2, forma de salida r2",
+          pf.nombre == "r2b" and man.e0_salida.name == "salida_tanda0_r2" and pf.esquema.forma_salida == "r2")
+    tot = ig = 0
+    prefijos = set()
+    tot3 = ig3 = n_enc = n_tab = 0
+    for to in man.orden_corrida:
+        for c in comun_e1.cargar_chunks((to,), e0_dir=man.e0_salida):
+            a = pf.build_request_kwargs(c, model=RC.MODEL_E1)
+            b = pf.build_request_kwargs(json.loads(json.dumps(c)), model=RC.MODEL_E1)
+            tot += 1
+            ig += lc.canonical_request(a) == lc.canonical_request(b)
+            prefijos.add(json.dumps({k: a[k] for k in ("system", "tools", "tool_choice")}, sort_keys=True,
+                                    ensure_ascii=False))
+            ti = {"entities": [{"local_id": "to", "type": "TextoOrdenado", "label": to,
+                                "punto": comun_e1.puntos_admitidos(c)[0]}], "relations": [], "omisiones": []}
+            val = validador_e1.validar_salida(ti, c, esquema=pf.esquema).as_dict()
+            m1 = prompt_e3.build_request_kwargs(c, val, model=RC.MODEL_E3)
+            m2 = prompt_e3.build_request_kwargs(json.loads(json.dumps(c)), json.loads(json.dumps(val)),
+                                                model=RC.MODEL_E3)
+            tot3 += 1
+            ig3 += lc.canonical_request(m1) == lc.canonical_request(m2)
+            msg = m1["messages"][0]["content"]
+            n_enc += "es el encabezado de una lista" in msg
+            n_tab += "tablas serializadas por E0 (bloques [TABLA" in msg
+    check("P10 requests E1 r2b byte a byte en doble corrida (2.434 unidades)", tot == 2434 and ig == tot,
+          f"{ig}/{tot}")
+    unico = json.loads(next(iter(prefijos))) if len(prefijos) == 1 else {}
+    check("P10 prefijo E1 r2b idéntico entre unidades, con el sha congelado y el tool schema de la generación P2",
+          len(prefijos) == 1
+          and hashlib.sha256(unico["system"][0]["text"].encode()).hexdigest() == prompt_r2b.PREFIJO_SHA256_R2B_ESPERADO
+          and unico["system"][-1].get("cache_control") == {"type": "ephemeral"}
+          and unico["tools"][0] == prompt_r2b.TOOL_SCHEMA_R2B,
+          f"prefijos distintos: {len(prefijos)}")
+    check("P10 namespace E1 r2b derivado del hash congelado",
+          cliente_e1.namespace_e1(prefijo_hash=pf.prefijo_hash_para_namespace)
+          == "e1_extraccion|cv=e1-extractor-v1-p14d6b63b508e|think=0")
+    check("P10 requests E3 sobre la salida r2 simulada, byte a byte en doble corrida", tot3 == 2434 and ig3 == tot3,
+          f"{ig3}/{tot3}")
+    check("P10 NOTAS r2 de E3: 212 encabezados de lista y 37 unidades con tabla serializada confiable",
+          n_enc == 212 and n_tab == 37, f"encabezados={n_enc} tablas={n_tab}")
+    check("P10 prefijo de E3 sin cambio (candado 21a836c7de6d)", prompt_e3.PREFIJO_HASH == "21a836c7de6d")
+    huellas = []
+    for i in (1, 2):
+        sal = tmp / f"r2b_stub_{i}"
+        r = subprocess.run([PY, str(AQUI / "corpus_v2" / "runner_corpus.py"), "--stub", "--salida", str(sal),
+                            "--tos", "pro", "--manifiesto", str(MANIFIESTO_R2B)], capture_output=True, text=True)
+        huellas.append((r.returncode, huella_stub(sal), sal))
+    (rc1, h1, s1), (rc2, h2, _s2) = huellas
+    res3 = json.loads((s1 / "pro" / "resumen_e3.json").read_text(encoding="utf-8")) if rc1 == 0 else {}
+    check("P10 runner r2b con clientes simulados (pro): termina bien y la huella es idéntica en doble corrida",
+          rc1 == rc2 == 0 and h1 == h2, f"rc={rc1},{rc2}")
+    check("P10 runner r2b: el perfil activa el E2 r2 y el resumen de E3 lista las exenciones de la ampliación",
+          (s1 / "pro" / "grafo_r2_pro.json").exists() and "exenciones_ampliacion_laudo_b" in res3
+          and res3.get("unidades_eximidas_ampliacion") == [])
+
+
+def p11_sellado_v3(tmp: Path) -> None:
+    import perfil_e1          # noqa: PLC0415
+    import validador_e1       # noqa: PLC0415
+    import runner_corpus as RC  # noqa: PLC0415
+    man = MC.cargar(MANIFIESTO_T0)
+    pf = perfil_e1.perfil(man.perfil_e1)
+    keys1 = _keys_db(DB_E1, tmp)
+    ns1 = cliente_e1.namespace_e1(prefijo_hash=pf.prefijo_hash_para_namespace)
+    tot = hit = 0
+    for to in man.orden_corrida:
+        for c in comun_e1.cargar_chunks((to,), e0_dir=man.e0_salida):
+            tot += 1
+            hit += lc.compute_key(ns1, lc.canonical_request(pf.build_request_kwargs(c, model=RC.MODEL_E1))) in keys1
+    check("P11 v3_b54: keys E1 de las 2.434 unidades de la tanda 0 en la caché (prefijo sellado intacto)",
+          tot == 2434 and hit == tot, f"{hit}/{tot}")
+    keys3 = _keys_db(DB_E3, tmp)
+    ns3 = cliente_e3.namespace_e3()
+    tot3 = hit3 = 0
+    for to in man.orden_corrida:
+        chunks = comun_e3.cargar_chunks((to,), e0_dir=man.e0_salida)
+        regs = comun_e3.cargar_extracciones(SALIDA_T0 / to / "extracciones_e1_compact.jsonl")
+        for c, v in comun_e3.pares_de(chunks, regs):
+            tot3 += 1
+            hit3 += lc.compute_key(ns3, lc.canonical_request(
+                prompt_e3.build_request_kwargs(c, v, model=RC.MODEL_E3))) in keys3
+    check("P11 v3_b54: keys E3 de los pares de la salida sellada de la tanda 0 en la caché (mensaje sin cambio)",
+          tot3 > 0 and hit3 == tot3, f"{hit3}/{tot3}")
+    tot_v = ig_v = 0
+    for to in man.orden_corrida:
+        chunks = {c["id"]: c for c in comun_e1.cargar_chunks((to,), e0_dir=man.e0_salida)}
+        for linea in (SALIDA_T0 / to / "extracciones_e1.jsonl").read_text(encoding="utf-8").splitlines():
+            r = json.loads(linea)
+            if r.get("tool_input_crudo") is None or r.get("validacion") is None:
+                continue
+            tot_v += 1
+            d = validador_e1.validar_salida(r["tool_input_crudo"], chunks[r["chunk_id"]],
+                                            esquema=pf.esquema).as_dict()
+            ig_v += json.dumps(d, ensure_ascii=False, sort_keys=True) == json.dumps(r["validacion"], ensure_ascii=False,
+                                                                                    sort_keys=True)
+    check("P11 v3_b54: validación recomputada del crudo de la tanda 0 == la guardada (validador_e1 sin cambio en v3)",
+          tot_v > 0 and ig_v == tot_v, f"{ig_v}/{tot_v}")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--saltear-e0", action="store_true",
@@ -461,6 +585,8 @@ def main() -> int:
         p7_runner_stub(tmp)
         p8_sin_oraculo(tmp)
         p9_gancho(tmp)
+        p10_r2b(tmp)
+        p11_sellado_v3(tmp)
 
     print(f"\nselftest manifiesto: {_n - _fallos}/{_n}"
           + ("" if not _fallos else f"  ({_fallos} FALLOS)"), flush=True)

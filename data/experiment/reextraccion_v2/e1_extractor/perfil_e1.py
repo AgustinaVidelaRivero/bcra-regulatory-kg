@@ -22,6 +22,15 @@ Perfiles:
     manifiesto, antes de toda llamada. El vocabulario de validación es el
     del esquema congelado COMPLETO (resolución 1 del freno 1: 9 tipos /
     13 predicados / firma_valida de prompt_congelado), no solo el catálogo.
+  - "r2b" (U-PROMPT-R2, P2): el prefijo r2 congelado en el FRENO P1 del
+    03/10/2026 (variante B de la regla de frecuencia), del módulo
+    e1_extractor/prompt_r2b.py, con el tool schema de pyd_r2/generados/ y el
+    catálogo r2 (110 ids). Su salida tiene la forma «r2» (tramo de evidencia,
+    `umbrales`, `sujeto_mencion`, `omisiones` con categoría): el esquema lo
+    declara con `forma_salida = "r2"`, y validador_e1 la traduce sobre una
+    copia a la forma que leen E3 y el ratchet (nota del 03/10/2026 al pie del
+    mandato de U-PROMPT-R2). CANDADO: como el de v3_b54, con los literales
+    del prefijo congelado de este módulo.
 
 NOTA DE INTEGRACIÓN VINCULANTE (mandato U-CABLE-V3, decisión 2): en
 ROL_POR_TO_V3 los 36 mapeos a clase portan un id de CLASE en el campo
@@ -53,7 +62,7 @@ _BASE = Path(__file__).resolve().parent                 # e1_extractor/
 _REPO = _BASE.parents[3]                                # raíz del repo
 _B54_CODE = _REPO / "data" / "experiment" / "b54_catalogo_v3" / "code"
 
-PERFILES_CONOCIDOS = ("produccion_dev", "v3_b54")
+PERFILES_CONOCIDOS = ("produccion_dev", "v3_b54", "r2b")
 PERFIL_DEFAULT = "produccion_dev"
 
 # Candado del sello v3 (commit de cierre de U-B5.4). Literales propios de
@@ -62,6 +71,13 @@ PREFIJO_SHA256_V3_ESPERADO = (
     "35e88c2dd0a2920302c29005b08ab9689405606d4bd5fcf8fb7ce807b1a3c512"
 )
 PREFIJO_HASH_V3_ESPERADO = "54a111e2175f"
+
+# Candado del prefijo r2b (U-PROMPT-R2, P2: congelado tras el FRENO P1 del 03/10/2026).
+PREFIJO_SHA256_R2B_ESPERADO = (
+    "cdb374508523e7f2308b1e3dd9790cdcfbb4000f2f1616279504af9475c6e227"
+)
+PREFIJO_HASH_R2B_ESPERADO = "14d6b63b508e"
+_PYD_R2_CODE = _REPO / "data" / "experiment" / "pyd_r2" / "code"
 
 
 @dataclass(frozen=True)
@@ -81,6 +97,12 @@ class EsquemaValidacion:
     # Valores retirados del vocabulario, contados APARTE al normalizarse
     # (vigilancia (5) del laudo de congelado: emisiones residuales = 0).
     obligacion_tipo_retirados: tuple = ()
+    # Forma de la salida de E1 (U-PROMPT-R2): "v3" (sujeto_propuesto,
+    # omisiones_no_prosa, umbral y plazo en properties) en los perfiles
+    # existentes; "r2" en el perfil r2b, cuya salida validador_e1 traduce a la
+    # forma v3 sobre una copia, sin tocar el crudo. Default "v3": los perfiles
+    # existentes no cambian.
+    forma_salida: str = "v3"
 
 
 @dataclass(frozen=True)
@@ -180,6 +202,44 @@ def _perfil_v3_b54() -> PerfilE1:
     )
 
 
+def _perfil_r2b() -> PerfilE1:
+    if str(_PYD_R2_CODE) not in sys.path:
+        sys.path.insert(0, str(_PYD_R2_CODE))
+    import prompt_r2b as r2b         # noqa: PLC0415 — candados propios al importar
+    import modelos_r2 as M           # noqa: PLC0415
+
+    if (r2b.PREFIJO_SHA256_R2B != PREFIJO_SHA256_R2B_ESPERADO
+            or r2b.PREFIJO_HASH_R2B != PREFIJO_HASH_R2B_ESPERADO):
+        raise RuntimeError(
+            "candado r2b: el prefijo armado no reproduce el congelado de U-PROMPT-R2 "
+            f"(sha {r2b.PREFIJO_SHA256_R2B[:12]}… esperado {PREFIJO_SHA256_R2B_ESPERADO[:12]}…; "
+            f"hash {r2b.PREFIJO_HASH_R2B} esperado {PREFIJO_HASH_R2B_ESPERADO}) — se frena")
+
+    esquema = EsquemaValidacion(
+        entity_types=tuple(M.TIPOS_ENTIDAD),
+        predicates=tuple(M.PREDICADOS),
+        sujeto_predicates=tuple(M.PREDICADOS_SUJETO),
+        sujetos_catalogo_set=frozenset(M.SUJETOS_R2),
+        firma_valida=M.firma_r2,
+        obligacion_tipo_enum=tuple(M.OBLIGACION_TIPO),
+        obligacion_tipo_retirados=("requisito_de_estructura",),
+        forma_salida="r2",
+    )
+    return PerfilE1(
+        nombre="r2b",
+        prefijo_hash=r2b.PREFIJO_HASH_R2B,
+        prefijo_hash_para_namespace=r2b.PREFIJO_HASH_R2B,
+        build_request_kwargs=r2b.build_request_kwargs_r2b,
+        build_user_message=r2b.build_user_message_r2b,
+        rol_por_to=r2b.ROL_POR_TO_R2,
+        esquema=esquema,
+        labels_catalogo=r2b.labels_catalogo_r2(),
+    )
+
+
+_FACTORIES = {"produccion_dev": _perfil_produccion_dev, "v3_b54": _perfil_v3_b54, "r2b": _perfil_r2b}
+
+
 def perfil(nombre: str = PERFIL_DEFAULT) -> PerfilE1:
     """Devuelve el perfil por nombre (memoizado; construcción determinística).
     Nombre fuera del registro → ValueError (el loader de manifiesto lo
@@ -188,6 +248,5 @@ def perfil(nombre: str = PERFIL_DEFAULT) -> PerfilE1:
         raise ValueError(
             f"perfil_e1 desconocido: {nombre!r} (conocidos: {PERFILES_CONOCIDOS})")
     if nombre not in _cache:
-        _cache[nombre] = (_perfil_produccion_dev() if nombre == "produccion_dev"
-                          else _perfil_v3_b54())
+        _cache[nombre] = _FACTORIES[nombre]()
     return _cache[nombre]

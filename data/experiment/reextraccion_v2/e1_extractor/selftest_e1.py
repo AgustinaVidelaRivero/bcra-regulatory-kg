@@ -28,6 +28,11 @@ Verifica:
      rol_documental de elementos de mini = bloque_<rol>. La estimación (F)
      sigue anclada a la salida sellada (sus números 88/1.477 son de la
      calibración sellada).
+  H. U-PROMPT-R2, P2: traducción de la forma r2 en validador_e1 (perfil r2b):
+     crudo intacto, marca forma_salida, umbrales y otras_propiedades a
+     properties, mención sin id a sujeto_propuesto, padre con id descartado,
+     omisiones a omisiones_no_prosa, tramo de evidencia sin traducir; los
+     perfiles existentes sin marca ni contadores nuevos.
 
 Uso:  python3 selftest_e1.py
 """
@@ -289,6 +294,73 @@ def main() -> int:
     check("dos corridas de la estimación → resultado idéntico", canon(r1) == canon(r2))
     check("calibración = 88 chunks de pro", r1["calibracion"]["n_chunks"] == 88)
     check("corpus = 1.477 chunks", r1["corpus"]["n_chunks"] == 1477)
+
+    # ---------------- H. Traducción de la forma r2 (U-PROMPT-R2, P2) -------
+    print("\n[H] traducción de la forma r2 (perfil r2b) y perfiles existentes intactos")
+    import copy as _copy
+    import perfil_e1
+    esq_r2 = perfil_e1.perfil("r2b").esquema
+    esq_v3 = perfil_e1.perfil("v3_b54").esquema
+    ch = next(c for c in chunks if c["tipo"] == "punto_terminal")
+    pt = ch["unidad"]
+    ti_v3 = {"entities": [{"local_id": "to", "type": "TextoOrdenado", "label": "TO", "punto": pt,
+                           "properties": {}},
+                          {"local_id": "e1", "type": "Restriccion", "label": "R", "punto": pt,
+                           "properties": {"descripcion": "d", "tipo": "limite_cuantitativo", "umbral": "5%"}}],
+             "relations": [{"source": "e1", "target": "to", "predicate": "establecida_en", "punto": pt}],
+             "omisiones_no_prosa": ["tabla omitida"]}
+    for nombre, esq in (("dev (esquema None)", None), ("v3_b54", esq_v3)):
+        d = validador_e1.validar_salida(_copy.deepcopy(ti_v3), ch, esquema=esq).as_dict()
+        check(f"{nombre}: sin marca forma_salida ni contadores de traducción",
+              "forma_salida" not in d and "proyeccion_r2" not in d["metricas"])
+    ti_r2 = {"entities": [{"local_id": "to", "type": "TextoOrdenado", "label": "TO", "punto": pt},
+                          {"local_id": "e1", "type": "Restriccion", "label": "R", "punto": pt,
+                           "tramo": "no podrá superar el 5%",
+                           "properties": {"descripcion": "d", "tipo": "limite_cuantitativo"},
+                           "umbrales": [{"tramo": "no podrá superar el 5%"}, {"tramo": "dentro de 10 días"}],
+                           "otras_propiedades": {"destinatario": "BCRA", "tipo": "x"}}],
+             "relations": [{"source": "e1", "target": "to", "predicate": "establecida_en", "punto": pt},
+                           {"source": "e1", "predicate": "aplica_a", "punto": pt,
+                            "sujeto_mencion": "los proveedores no listados"},
+                           {"source": "e1", "predicate": "aplica_a", "punto": pt,
+                            "sujeto_mencion": "las entidades financieras",
+                            "sujeto_id": "Sujeto_entidad_financiera",
+                            "sujeto_propuesto_padre_sugerido": "Sujeto_sujeto_regulado"}],
+             "omisiones": [{"categoria": "tabla", "tramo": "cuadro", "nota": "celdas sin asignar"},
+                           {"categoria": "relacion_sin_predicado", "tramo": "según el punto 3", "nota": "remite",
+                            "source": "e1", "destino": "e2"}]}
+    crudo = _copy.deepcopy(ti_r2)
+    d = validador_e1.validar_salida(ti_r2, ch, esquema=esq_r2).as_dict()
+    check("r2: el crudo no se muta", ti_r2 == crudo)
+    check("r2: marca forma_salida = r2", d.get("forma_salida") == "r2")
+    r_ent = {e["local_id"]: e for e in d["entidades"]}
+    p_e1 = r_ent.get("e1", {}).get("properties", {})
+    check("r2: umbrales → properties[umbrales] unidos por « | »",
+          p_e1.get("umbrales") == "no podrá superar el 5% | dentro de 10 días")
+    check("r2: otras_propiedades → properties, con prefijo si la clave ya está",
+          p_e1.get("destinatario") == "BCRA" and p_e1.get("otras_propiedades.tipo") == "x"
+          and p_e1.get("tipo") == "limite_cuantitativo")
+    check("r2: el tramo de evidencia no se traduce", "tramo" not in p_e1)
+    suj = [r for r in d["relaciones"] if r["predicate"] == "aplica_a"]
+    check("r2: mención sin id → sujeto_propuesto (no se rechaza)",
+          any(r.get("sujeto_propuesto") == "los proveedores no listados" and r.get("sujeto_id") is None for r in suj))
+    check("r2: con id, el padre sugerido se descarta y la relación entra",
+          any(r.get("sujeto_id") == "Sujeto_entidad_financiera" and not r.get("sujeto_propuesto_padre_sugerido")
+              for r in suj) and len(suj) == 2)
+    check("r2: omisiones → omisiones_no_prosa con categoría, nota y extremos",
+          d["omisiones_no_prosa"] == ["[tabla] cuadro — celdas sin asignar",
+                                      "[relacion_sin_predicado] según el punto 3 — remite (e1 → e2)"])
+    check("r2: sin rechazos y con contadores de la traducción",
+          not d["rechazos"] and d["metricas"]["proyeccion_r2"] == {
+              "mencion_sin_id_a_sujeto_propuesto": 1, "omisiones_a_omisiones_no_prosa": 2,
+              "otras_propiedades_a_properties": 2, "padre_sugerido_con_id_descartado": 1,
+              "umbrales_a_properties": 1})
+    ti_str = _copy.deepcopy(crudo)
+    ti_str["entities"] = json.dumps(ti_str["entities"], ensure_ascii=False)
+    d2 = validador_e1.validar_salida(ti_str, ch, esquema=esq_r2).as_dict()
+    check("r2: entities como string JSON → misma traducción",
+          {e["local_id"]: e["properties"] for e in d2["entidades"]} == {e["local_id"]: e["properties"]
+                                                                          for e in d["entidades"]})
 
     print(f"\nRESULTADO: {OK} ok, {FAIL} FAIL")
     return 0 if FAIL == 0 else 1

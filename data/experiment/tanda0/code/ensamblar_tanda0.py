@@ -1118,8 +1118,14 @@ def main() -> int:
     args = ap.parse_args()
 
     man = MC.cargar(args.manifiesto)
-    if args.perfil_r2:
-        res = ensamblar_manifiesto_r2(man, args.entrada, args.salida, args.tablas_e0_r2)
+    # U-PROMPT-R2 (decisión 1 del mandato): un manifiesto con un perfil de forma «r2» (r2b) corre la cadena r2,
+    # como --perfil-r2, con las tablas de su propia E0 (e0-r2) salvo que se indique otra. Los perfiles existentes
+    # siguen con el camino por defecto.
+    esq = perfil_e1.perfil(man.perfil_e1).esquema
+    forma_r2 = esq is not None and getattr(esq, "forma_salida", "v3") == "r2"
+    if args.perfil_r2 or forma_r2:
+        tablas = args.tablas_e0_r2 if args.tablas_e0_r2 is not None else (man.e0_salida if forma_r2 else None)
+        res = ensamblar_manifiesto_r2(man, args.entrada, args.salida, tablas)
         print(json.dumps(res, ensure_ascii=False, indent=1))
         if args.resumen_json:
             args.resumen_json.parent.mkdir(parents=True, exist_ok=True)

@@ -65,9 +65,15 @@ POLITICA_SHA_ESPERADO = None  # se informa; el freno la registra
 # modelos_r2.py con que se generaron tool schema y enums, y de lo generado. El
 # agregado de `remite_a` (U-R2-CODIGO) cambia el sha de modelos_r2.py y no lo
 # generado; generados/ no se regenera (fuera de las escrituras autorizadas).
-MODELOS_SHA_GENERACION = "43ae09fbaa429bea8406e1c5021c408ce495f826511cf6dcf6e9c273db5d639c"
+MODELOS_SHA_GENERACION_57A8DD2 = "43ae09fbaa429bea8406e1c5021c408ce495f826511cf6dcf6e9c273db5d639c"
 TOOL_SCHEMA_SHA_57A8DD2 = "307d2b788c5ba855a502522b171c39ba1a6b2d56850e1a4e3c8c8a2bb5068da4"
 ENUMS_SHA_57A8DD2 = "abd197ac8bbb818f680dc80d1b9c9df3e1f1f733fce3fd46b35e7440e7ce4241"
+# Generación vigente (U-PROMPT-R2, P2): modelos_r2.py con las decisiones 15 a 17 del mandato (tramo de
+# evidencia por entidad salvo el TextoOrdenado; TextoOrdenado sin properties y Comunicacion solo con codigo;
+# Definicion.termino literal; otras_propiedades en relaciones; source y destino en la omisión). Los enums no
+# cambian: son los de 57a8dd2.
+MODELOS_SHA_GENERACION = "9a3fe3ec929342d2dc4d00c4235af0dadf7bceb2d867e0b692c0ab111621e964"
+TOOL_SCHEMA_SHA_GENERACION = "0c391f2b23bb7c94ec2606bd0315f3e4589c16a3571eaaa210a27babaa0f8ba2"
 POLITICA_SHA_DECISION_10 = "82e8752aea1d6ad869d6023d303c0af45182dd9333753681787d7a581ef6d00b"
 
 RES: "OrderedDict[str, list]" = OrderedDict()
@@ -791,7 +797,7 @@ def g9_tool_schema(ch):
         p = G.GENERADOS / nombre
         chequear(g, f"{nombre}: regenerado = archivo en generados/", p.exists() and p.read_bytes() == b)
     man = json.loads((G.GENERADOS / "manifest_generados_r2.json").read_text(encoding="utf-8"))
-    chequear(g, "manifest: sha256 de la política vigente y de modelos_r2 de la generación (57a8dd2)",
+    chequear(g, "manifest: sha256 de la política vigente y de modelos_r2 de la generación vigente (U-PROMPT-R2 P2)",
              man["politica"]["sha256"] == M.sha256_archivo(V.POLITICA)
              and man["modelos"]["sha256"] == MODELOS_SHA_GENERACION)
     ts = json.loads(cont["tool_schema_r2.json"])
@@ -814,17 +820,33 @@ def g9_tool_schema(ch):
                                                               "description": M._DESC_OTRAS, "type": "object"}
                  and "otras_propiedades" not in x["required"]
                  for x in sch["properties"]["entities"]["items"]["anyOf"]))
-    chequear(g, "properties conocidas de cada tipo, cerradas (additionalProperties false)",
+    formas = {x["properties"]["type"]["const"]: x for x in sch["properties"]["entities"]["items"]["anyOf"]}
+    chequear(g, "properties conocidas de cada tipo, cerradas (additionalProperties false), salvo el TextoOrdenado",
              all(x["properties"]["properties"].get("additionalProperties") is False
-                 for x in sch["properties"]["entities"]["items"]["anyOf"]))
+                 for t, x in formas.items() if t != "TextoOrdenado"))
+    chequear(g, "decisión 16: el TextoOrdenado no lleva properties; la Comunicacion solo codigo",
+             "properties" not in formas["TextoOrdenado"]["properties"]
+             and list(formas["Comunicacion"]["properties"]["properties"]["properties"]) == ["codigo"])
+    chequear(g, "decisión 15: tramo obligatorio en los 8 tipos que no son TextoOrdenado, y ausente en él",
+             all("tramo" in x["required"] and x["properties"]["tramo"]["type"] == "string"
+                 for t, x in formas.items() if t != "TextoOrdenado")
+             and "tramo" not in formas["TextoOrdenado"]["properties"])
+    chequear(g, "decisión 16: Definicion.termino copiado tal cual",
+             "tal cual" in formas["Definicion"]["properties"]["properties"]["properties"]["termino"]["description"])
+    rel_props = sch["properties"]["relations"]["items"]["properties"]
+    om_props = sch["properties"]["omisiones"]["items"]["properties"]
+    chequear(g, "decisión 17: otras_propiedades en las relaciones; source y destino opcionales en la omisión",
+             rel_props.get("otras_propiedades", {}).get("type") == "object"
+             and "otras_propiedades" not in sch["properties"]["relations"]["items"].get("required", [])
+             and {"source", "destino"} <= set(om_props)
+             and not {"source", "destino"} & set(sch["properties"]["omisiones"]["items"].get("required", [])))
     c = ch["cla::5.1.1.1"]
     pt = "5.1.1.1"
     valido = {
         "entities": [
-            {"local_id": "to", "type": "TextoOrdenado", "label": "Clasificación de deudores", "punto": pt,
-             "properties": {"materia": "Clasificación de deudores", "archivo": "TO_clasificacion_deudores_actual.pdf",
-                            "version": "actual"}},
+            {"local_id": "to", "type": "TextoOrdenado", "label": "Clasificación de deudores", "punto": pt},
             {"local_id": "e1", "type": "Restriccion", "label": "Consumo sobre dos veces el importe", "punto": pt,
+             "tramo": "superen el equivalente a dos veces el importe de referencia establecido en el punto 3.7.",
              "properties": {"descripcion": "Los créditos de esta clase que superen el equivalente a dos veces el "
                                            "importe de referencia se incluirán en la cartera comercial.",
                             "tipo": "limite_cuantitativo"},
@@ -854,8 +876,13 @@ def g9_tool_schema(ch):
     chequear(g, "otras_propiedades → properties_no_definidas con contador; una clave definida del tipo va a "
                 "campos_no_definidos; nada se rechaza",
              e.get("properties_no_definidas") == {"destinatario": "BCRA"}
-             and e.get("campos_no_definidos") == {"otras_propiedades.tipo": "x"}
+             and {k: x for k, x in (e.get("campos_no_definidos") or {}).items() if k != "tramo"}
+             == {"otras_propiedades.tipo": "x"}
              and cont_(r, "claves", "otras_propiedades_a_properties_no_definidas") == 1 and not r["rechazos"])
+    # Hasta P3 de U-PROMPT-R2, validador_r2 no lee el tramo de evidencia (decisión 15): lo conserva como campo no
+    # definido, sin rechazo. P3 lo vuelve un campo conocido, con su verificación, y este control cambia con él.
+    chequear(g, "tramo de evidencia (antes de P3): queda en campos_no_definidos, sin rechazo",
+             (e.get("campos_no_definidos") or {}).get("tramo") == otras["entities"][1]["tramo"] and not r["rechazos"])
     clave_extra = json.loads(json.dumps(valido))
     clave_extra["entities"][1]["properties"]["destinatario"] = "BCRA"
     chequear(g, "clave no prevista dentro de properties: el JSON Schema la rechaza", not v.is_valid(clave_extra))
@@ -940,8 +967,8 @@ def g11_remite_a():
     except ValidationError:
         chequear(g, "AristaR2 referencia sin properties de remisión sigue valida", False)
     cont = G.contenidos()
-    chequear(g, "tool schema de E1 byte a byte el de 57a8dd2",
-             hashlib.sha256(cont["tool_schema_r2.json"]).hexdigest() == TOOL_SCHEMA_SHA_57A8DD2)
+    chequear(g, "tool schema de E1 byte a byte el de la generación vigente (U-PROMPT-R2 P2)",
+             hashlib.sha256(cont["tool_schema_r2.json"]).hexdigest() == TOOL_SCHEMA_SHA_GENERACION)
     chequear(g, "enums r2 byte a byte los de 57a8dd2 (remite_a no entra a las listas de E1)",
              hashlib.sha256(cont["enums_r2.json"]).hexdigest() == ENUMS_SHA_57A8DD2)
     chequear(g, "politica_campos_r2.json con el sha de la decisión 10",
@@ -1027,8 +1054,8 @@ def g12_ensamblado():
     except ValidationError:
         chequear(g, "ElementoUmbral: base_no_resuelta sin base no valida", True)
     cont = G.contenidos()
-    chequear(g, "tool schema y enums de E1 byte a byte los de 57a8dd2",
-             hashlib.sha256(cont["tool_schema_r2.json"]).hexdigest() == TOOL_SCHEMA_SHA_57A8DD2
+    chequear(g, "tool schema de E1 el de la generación vigente y enums los de 57a8dd2",
+             hashlib.sha256(cont["tool_schema_r2.json"]).hexdigest() == TOOL_SCHEMA_SHA_GENERACION
              and hashlib.sha256(cont["enums_r2.json"]).hexdigest() == ENUMS_SHA_57A8DD2)
     js = json.dumps(json.loads(cont["tool_schema_r2.json"]))
     chequear(g, "el tool schema no menciona las marcas del ensamblado",

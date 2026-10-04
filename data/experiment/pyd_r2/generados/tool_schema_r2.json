@@ -1,6 +1,6 @@
 {
  "name": "extraer_kg_e1",
- "description": "Extrae entidades y relaciones del chunk según el esquema r2 (9 tipos, 13 predicados, catálogo cerrado de sujetos). Todo elemento lleva `punto`. Los umbrales van como tramos literales; la mención del sujeto, tal cual aparece; las omisiones, con categoría y tramo.",
+ "description": "Extrae entidades y relaciones del chunk según el esquema r2 (9 tipos, 13 predicados, catálogo cerrado de sujetos). Todo elemento lleva `punto`; toda entidad salvo el TextoOrdenado, el tramo literal que la funda. Los umbrales van como tramos literales; la mención del sujeto, tal cual aparece; las omisiones, con categoría y tramo.",
  "input_schema": {
   "additionalProperties": false,
   "properties": {
@@ -29,6 +29,10 @@
          "description": "Opcional: propiedades que el texto expresa y la definición del tipo no prevé (nombre → valor). Nunca se descartan: se registran aparte.",
          "type": "object"
         },
+        "tramo": {
+         "description": "Tramo del texto que funda la entidad, copiado tal cual: el más corto que la sostenga por sí solo.",
+         "type": "string"
+        },
         "type": {
          "const": "Comunicacion",
          "type": "string"
@@ -37,22 +41,8 @@
          "additionalProperties": false,
          "properties": {
           "codigo": {
-           "description": "Código de la Comunicación, ej. \"A-7825\".",
+           "description": "Código de la Comunicación, ej. \"A-7825\"; para una ley, un decreto o una resolución, su denominación tal como la cita el texto.",
            "type": "string"
-          },
-          "tipo": {
-           "description": "\"A\", \"B\" o \"C\"; \"externa\" para una ley, un decreto o una resolución.",
-           "enum": [
-            "A",
-            "B",
-            "C",
-            "externa"
-           ],
-           "type": "string"
-          },
-          "numero": {
-           "description": "Número de la Comunicación.",
-           "type": "integer"
           }
          },
          "type": "object"
@@ -62,6 +52,7 @@
         "local_id",
         "label",
         "punto",
+        "tramo",
         "type"
        ],
        "type": "object"
@@ -91,21 +82,6 @@
         "type": {
          "const": "TextoOrdenado",
          "type": "string"
-        },
-        "properties": {
-         "additionalProperties": false,
-         "properties": {
-          "materia": {
-           "type": "string"
-          },
-          "archivo": {
-           "type": "string"
-          },
-          "version": {
-           "type": "string"
-          }
-         },
-         "type": "object"
         }
        },
        "required": [
@@ -137,6 +113,10 @@
          },
          "description": "Opcional: propiedades que el texto expresa y la definición del tipo no prevé (nombre → valor). Nunca se descartan: se registran aparte.",
          "type": "object"
+        },
+        "tramo": {
+         "description": "Tramo del texto que funda la entidad, copiado tal cual: el más corto que la sostenga por sí solo.",
+         "type": "string"
         },
         "type": {
          "const": "Operacion",
@@ -160,6 +140,7 @@
         "local_id",
         "label",
         "punto",
+        "tramo",
         "type"
        ],
        "type": "object"
@@ -185,6 +166,10 @@
          },
          "description": "Opcional: propiedades que el texto expresa y la definición del tipo no prevé (nombre → valor). Nunca se descartan: se registran aparte.",
          "type": "object"
+        },
+        "tramo": {
+         "description": "Tramo del texto que funda la entidad, copiado tal cual: el más corto que la sostenga por sí solo.",
+         "type": "string"
         },
         "type": {
          "const": "Restriccion",
@@ -229,6 +214,7 @@
         "local_id",
         "label",
         "punto",
+        "tramo",
         "type"
        ],
        "type": "object"
@@ -254,6 +240,10 @@
          },
          "description": "Opcional: propiedades que el texto expresa y la definición del tipo no prevé (nombre → valor). Nunca se descartan: se registran aparte.",
          "type": "object"
+        },
+        "tramo": {
+         "description": "Tramo del texto que funda la entidad, copiado tal cual: el más corto que la sostenga por sí solo.",
+         "type": "string"
         },
         "type": {
          "const": "Excepcion",
@@ -290,6 +280,7 @@
         "local_id",
         "label",
         "punto",
+        "tramo",
         "type"
        ],
        "type": "object"
@@ -315,6 +306,10 @@
          },
          "description": "Opcional: propiedades que el texto expresa y la definición del tipo no prevé (nombre → valor). Nunca se descartan: se registran aparte.",
          "type": "object"
+        },
+        "tramo": {
+         "description": "Tramo del texto que funda la entidad, copiado tal cual: el más corto que la sostenga por sí solo.",
+         "type": "string"
         },
         "type": {
          "const": "Obligacion",
@@ -366,6 +361,7 @@
         "local_id",
         "label",
         "punto",
+        "tramo",
         "type"
        ],
        "type": "object"
@@ -391,6 +387,10 @@
          },
          "description": "Opcional: propiedades que el texto expresa y la definición del tipo no prevé (nombre → valor). Nunca se descartan: se registran aparte.",
          "type": "object"
+        },
+        "tramo": {
+         "description": "Tramo del texto que funda la entidad, copiado tal cual: el más corto que la sostenga por sí solo.",
+         "type": "string"
         },
         "type": {
          "const": "Potestad",
@@ -410,6 +410,7 @@
         "local_id",
         "label",
         "punto",
+        "tramo",
         "type"
        ],
        "type": "object"
@@ -435,6 +436,10 @@
          },
          "description": "Opcional: propiedades que el texto expresa y la definición del tipo no prevé (nombre → valor). Nunca se descartan: se registran aparte.",
          "type": "object"
+        },
+        "tramo": {
+         "description": "Tramo del texto que funda la entidad, copiado tal cual: el más corto que la sostenga por sí solo.",
+         "type": "string"
         },
         "type": {
          "const": "Condicion",
@@ -471,6 +476,7 @@
         "local_id",
         "label",
         "punto",
+        "tramo",
         "type"
        ],
        "type": "object"
@@ -497,6 +503,10 @@
          "description": "Opcional: propiedades que el texto expresa y la definición del tipo no prevé (nombre → valor). Nunca se descartan: se registran aparte.",
          "type": "object"
         },
+        "tramo": {
+         "description": "Tramo del texto que funda la entidad, copiado tal cual: el más corto que la sostenga por sí solo.",
+         "type": "string"
+        },
         "type": {
          "const": "Definicion",
          "type": "string"
@@ -505,6 +515,7 @@
          "additionalProperties": false,
          "properties": {
           "termino": {
+           "description": "Término definido, copiado tal cual lo nombra el texto.",
            "type": "string"
           },
           "descripcion": {
@@ -518,6 +529,7 @@
         "local_id",
         "label",
         "punto",
+        "tramo",
         "type"
        ],
        "type": "object"
@@ -795,6 +807,13 @@
         "Sujeto_comite_de_auditoria"
        ],
        "type": "string"
+      },
+      "otras_propiedades": {
+       "additionalProperties": {
+        "type": "string"
+       },
+       "description": "Opcional: propiedades que el texto expresa y la definición del tipo no prevé (nombre → valor). Nunca se descartan: se registran aparte.",
+       "type": "object"
       }
      },
      "required": [
@@ -825,7 +844,15 @@
        "type": "string"
       },
       "nota": {
-       "description": "Por qué quedó afuera.",
+       "description": "Por qué quedó afuera; en fuera_de_tipos y relacion_sin_predicado, el tipo o el predicado que se habría usado.",
+       "type": "string"
+      },
+      "source": {
+       "description": "Solo relacion_sin_predicado: local_id de la entidad de origen, si se extrajo.",
+       "type": "string"
+      },
+      "destino": {
+       "description": "Solo relacion_sin_predicado: local_id de la entidad de destino, si se extrajo.",
        "type": "string"
       }
      },

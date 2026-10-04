@@ -51,6 +51,17 @@ verificador NO cambia, solo esta capa determinística):
   La condición de descendencia exige el set de unidades del corpus
   (`unidades_corpus`); si no se provee, la guardia no se aplica (falla hacia
   bloquear, nunca hacia aceptar de más).
+
+  ENMIENDA A LAUDO B (docs/enmienda_laudo_B_guarda_ratchet_2026-10-03.md,
+  firmada en 0061244; implementada en U-PROMPT-R2, P2): con la forma de salida
+  «r2» (marca forma_salida en la validación verificada, que pone validador_e1
+  en el perfil r2b) y si esa validación quedó sin Obligacion, Restriccion ni
+  Potestad, la guardia cubre cualquier faltante cuya cita verificada sea la
+  cláusula ordenadora, sea cual sea su tipo. Las demás condiciones no cambian.
+  Sin la marca (perfiles existentes) la guardia es la de LAUDO B tal cual. El
+  faltante eximido se marca estructural_no_bloqueante, como siempre; el reporte
+  de la corrida lista como exenciones de la ampliación las de tipo distinto de
+  enumeracion_incompleta.
 """
 
 from __future__ import annotations
@@ -99,8 +110,20 @@ def _origen_tiene_descendientes(chunk: dict, unidades_corpus: set[str]) -> bool:
     return any(x.startswith(pref) for x in unidades_corpus)
 
 
+TIPOS_SALVAGUARDA_AMPLIACION = ("Obligacion", "Restriccion", "Potestad")
+
+
+def ampliacion_activa(validacion: dict | None) -> bool:
+    """Enmienda a LAUDO B: la ampliación rige con la forma de salida «r2» y solo si la extracción verificada
+    quedó sin Obligacion, Restriccion ni Potestad (salvaguarda). Sin validación, o sin la marca, no rige."""
+    if not isinstance(validacion, dict) or validacion.get("forma_salida") != "r2":
+        return False
+    return not any(isinstance(e, dict) and e.get("type") in TIPOS_SALVAGUARDA_AMPLIACION
+                   for e in validacion.get("entidades") or [])
+
+
 def _guardia_estructural(f: dict, chunk: dict,
-                         unidades_corpus: set[str] | None) -> bool:
+                         unidades_corpus: set[str] | None, ampliada: bool = False) -> bool:
     """LAUDO B: ¿este faltante es estructural_no_bloqueante? Exige: mini-chunk
     ordenador (':' final) + descendientes en el corpus + tipo
     enumeracion_incompleta + cita verificada que ES la cláusula ordenadora
@@ -108,7 +131,7 @@ def _guardia_estructural(f: dict, chunk: dict,
     `unidades_corpus` la guardia no aplica (falla hacia bloquear)."""
     if unidades_corpus is None or chunk.get("tipo") != "mini_chunk":
         return False
-    if f.get("tipo") != "enumeracion_incompleta" or not f.get("cita_verificada"):
+    if (not ampliada and f.get("tipo") != "enumeracion_incompleta") or not f.get("cita_verificada"):
         return False
     if not _bloque_abre_enumeracion(chunk):
         return False
@@ -119,11 +142,14 @@ def _guardia_estructural(f: dict, chunk: dict,
 
 
 def evaluar_veredicto(tool_input, chunk: dict,
-                      unidades_corpus: set[str] | None = None) -> dict:
+                      unidades_corpus: set[str] | None = None,
+                      validacion: dict | None = None) -> dict:
     """Evalúa determinísticamente el tool input del verificador: coherencia
     del contrato + verificación de citas contra el fuente + política de
-    severidad (LAUDO A) + guardia estructural (LAUDO B). No juzga contenido
-    (eso es del LLM): juzga formato, anclaje y bloqueo."""
+    severidad (LAUDO A) + guardia estructural (LAUDO B y su enmienda: la
+    ampliación rige según `validacion`, la extracción verificada). No juzga
+    contenido (eso es del LLM): juzga formato, anclaje y bloqueo."""
+    ampliada = ampliacion_activa(validacion)
     ev = {
         "veredicto_crudo": tool_input,
         "es_completo_ok": False,
@@ -164,7 +190,7 @@ def evaluar_veredicto(tool_input, chunk: dict,
         f_ev = dict(f)
         f_ev["cita_verificada"] = cita_en_fuente(cita, chunk)
         f_ev["estructural_no_bloqueante"] = _guardia_estructural(
-            f_ev, chunk, unidades_corpus)
+            f_ev, chunk, unidades_corpus, ampliada)
         # LAUDO A: solo 'alta' bloquea; LAUDO B la exime si es estructural.
         f_ev["bloqueante"] = (f_ev.get("severidad") in SEVERIDAD_BLOQUEANTE
                               and not f_ev["estructural_no_bloqueante"])
@@ -381,7 +407,7 @@ def ciclo_ratchet(chunk: dict, validacion: dict, *, cliente_verificador,
 
     # --- Verificación inicial -------------------------------------------- #
     crudo1 = cliente_e3.verificar_chunk(cliente_verificador, chunk, validacion, model=model_e3)
-    ev1 = evaluar_veredicto(crudo1["tool_input"], chunk, unidades_corpus)
+    ev1 = evaluar_veredicto(crudo1["tool_input"], chunk, unidades_corpus, validacion)
     _persistir_veredicto("verificacion", 0, crudo1, ev1)
     expediente["veredictos"].append(ev1)
 
@@ -423,7 +449,7 @@ def ciclo_ratchet(chunk: dict, validacion: dict, *, cliente_verificador,
         validacion_actual = reex["validacion"]
         crudo_n = cliente_e3.verificar_chunk(cliente_verificador, chunk,
                                              validacion_actual, model=model_e3)
-        ev_actual = evaluar_veredicto(crudo_n["tool_input"], chunk, unidades_corpus)
+        ev_actual = evaluar_veredicto(crudo_n["tool_input"], chunk, unidades_corpus, validacion_actual)
         _persistir_veredicto("re_verificacion", intento, crudo_n, ev_actual)
         expediente["veredictos"].append(ev_actual)
 

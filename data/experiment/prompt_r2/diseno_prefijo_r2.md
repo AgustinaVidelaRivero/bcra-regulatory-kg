@@ -28,8 +28,24 @@ En el §10.1, punto 18, la clasificación de los encabezados en línea de títul
 - el límite de la proxy de vacíos quedó declarado (§4.5);
 - la instrucción de umbrales quedó ajustada con la columna r2a (§4.6);
 - la frecuencia, con M2.c (§9).
-Qué decide la autora en el FRENO: `data/experiment/prompt_r2/freno_p1.md`. Todo el texto del prefijo de este
-documento es BORRADOR: lo aprueba la autora en el FRENO P1 y lo congela P2.
+Qué decide la autora en el FRENO: `data/experiment/prompt_r2/freno_p1.md`.
+
+**Decisiones del FRENO P1** (la autora, 03/10/2026):
+- aprobó el texto del prefijo y del mensaje, con dos ajustes (§2):
+  - R8 suma la Condicion sin `condicion_de` cuando lo que condiciona no está en la unidad, y R30 remite a esa
+    regla;
+  - R14 suma que la Comunicacion sigue siendo una entidad con su `referencia` desde el TextoOrdenado. La fila
+    `referencia` está en el prefijo;
+- frecuencia: variante B. M3.d apunta a lo mismo, según la autora;
+- topes: USD 2 para la pareada y USD 69 para U-REEXT-T0;
+- puntos 1, 2, 3, 5, 8 y 10 del §10.1, confirmados como los recomendé. El elemento sin valor del límite
+  relativo va en `validador_r2.py`;
+- marca `guarda_ampliada`: no se agrega. El reporte de U-REEXT-T0 lista como exenciones de la ampliación los
+  faltantes eximidos de tipo distinto de `enumeracion_incompleta` (§4.5);
+- la enmienda a LAUDO B está firmada y commiteada en `0061244`.
+
+Con los ajustes se re-corrieron la no-filtración y los hashes (§1 y §5). P2 congeló la variante B en
+`e1_extractor/prompt_r2b.py` (`data/experiment/prompt_r2/freno_p2.md`).
 
 **Árbol modificado en paralelo.** Mientras hacía la primera parte aparecieron en el árbol, de otra sesión,
 las salidas de la M1 de U-MED-R2A, sin commit; no las leí ni las toqué hasta que la M1 quedó commiteada
@@ -85,10 +101,10 @@ Un selftest demuestra que, fuera de los tramos reemplazados, el texto es byte a 
 
 | | Sellado `v3_b54` | Borrador A | Borrador B |
 |---|---:|---:|---:|
-| Caracteres del system | 33.370 | 51.189 | 51.249 |
+| Caracteres del system | 33.370 | 51.720 | 51.780 (congelado en P2) |
 | Caracteres del tool schema (JSON) | 9.033 | 20.655 | 20.655 |
-| sha256 del texto | `35e88c2d…` | `9f65faba…` | `a4bf75f4…` |
-| Hash canónico (system + tools) | `54a111e2175f` | `ade47e493b15` | `d7b838f640c1` |
+| sha256 del texto | `35e88c2d…` | `d81fbc97…` | `cdb37450…` |
+| Hash canónico (system + tools) | `54a111e2175f` | `f3d30f34cacd` | `14d6b63b508e` |
 
 Los calcula `p1/hashes_borrador.py` (`p1/salida/hashes_borrador.json`) con el método de la cadena sellada
 (`prompt_e1.py:415-419`, `prompt_v3_b54.py:516-520`); sobre el sellado reproduce `35e88c2d…` y
@@ -97,7 +113,7 @@ congele el texto.
 
 **Caché (decisiones 1 a 4 de `docs/decisiones_caching_extraccion.md`; decisión 2 del mandato).**
 - E1, antes: `e1_extraccion|cv=e1-extractor-v1-p54a111e2175f|think=0`. Después:
-  `e1_extraccion|cv=e1-extractor-v1-p<hash nuevo>|think=0` (con el borrador A, `pade47e493b15`). Es un
+  `e1_extraccion|cv=e1-extractor-v1-p<hash nuevo>|think=0` (con el texto congelado, variante B, `p14d6b63b508e`). Es un
   namespace nuevo: U-REEXT-T0 paga E1 de las 2.434 unidades. El system sigue como bloque único con
   `cache_control` en el último bloque (decisión 1): el borrador no agrega nada variable al prefijo.
 - E3, antes y después: `e3_verificacion|cv=e3-verificador-v1-p21a836c7de6d|think=0` (candado en
@@ -273,7 +289,7 @@ Nuevo:
 
 ### R8 · TIPOS · 8 Condicion (destino de condicion_de)
 
-Manda: decisión 7 (L-ESQ-R2 §6.4: la instrucción deja de mandarla solo a Excepcion, Obligacion o Restriccion).
+Manda: decisión 7 (L-ESQ-R2 §6.4: la instrucción deja de mandarla solo a Excepcion, Obligacion o Restriccion); Condicion sin destino en la unidad (decisión de la autora en el FRENO P1, 03/10/2026).
 
 Sellado:
 
@@ -284,7 +300,7 @@ Conectala con `condicion_de` a la Excepcion, Obligacion o Restriccion del mismo 
 Nuevo:
 
 ```text
-Conectala con `condicion_de` a lo que ese supuesto condiciona en el mismo chunk, cuando el texto de la unidad enuncie ese vínculo: una Excepcion, una Obligacion o una Restriccion; una Operacion, cuando el acto solo puede realizarse si el supuesto se verifica; o una Potestad, cuando la facultad solo se habilita si el supuesto se verifica.
+Conectala con `condicion_de` a lo que ese supuesto condiciona en el mismo chunk, cuando el texto de la unidad enuncie ese vínculo: una Excepcion, una Obligacion o una Restriccion; una Operacion, cuando el acto solo puede realizarse si el supuesto se verifica; o una Potestad, cuando la facultad solo se habilita si el supuesto se verifica. Si lo que el supuesto condiciona no está en tu unidad (por ejemplo, la norma de un encabezado con unidad propia, cuando tu unidad es uno de sus ítems), emití la Condicion sin condicion_de: no la conectes con otro elemento del chunk.
 ```
 
 ### R9 · TIPOS · 8 Condicion (properties)
@@ -390,7 +406,7 @@ Nuevo:
 
 ### R14 · PREDICADOS · condicion_de y remisiones
 
-Manda: decisión 7.
+Manda: decisiones 7 y 12; la Comunicacion sigue con su `referencia` (decisión de la autora en el FRENO P1, 03/10/2026).
 
 Sellado:
 
@@ -403,7 +419,7 @@ Nuevo:
 ```text
 | `condicion_de` | Condicion → {Excepcion, Obligacion, Restriccion, Operacion, Potestad} |
 
-La remisión del texto a otro punto o a otra norma la registra el código desde el texto: no es una relación que debas emitir ni una omisión. Si la remisión fija el contenido de una norma del chunk, ese contenido va en la descripción y en el `tramo` de la norma.
+La remisión del texto a otro punto o a otra norma la registra el código desde el texto: no es una relación que debas emitir ni una omisión. Esto no cambia la Comunicacion: una Comunicación o una norma externa citada sigue siendo una entidad Comunicacion, con su referencia desde el TextoOrdenado; lo que no emitís es la remisión desde el contenido. Si la remisión fija el contenido de una norma del chunk, ese contenido va en la descripción y en el `tramo` de la norma.
 ```
 
 ### R15 · SUJETOS
@@ -484,7 +500,7 @@ Nuevo:
 
 Un encabezado que abre una lista termina en «:»: es la línea de título de un punto (bloque heredado `encabezado`, sin unidad propia) o un párrafo introductorio con unidad propia. Enuncia parte de una norma cuyo contenido está repartido en los ítems. Si el contexto heredado termina en un encabezado así y tu unidad es uno de sus ítems, mirá qué son los ítems:
 - CONTENIDOS (lo que hay que hacer, informar, incluir o cumplir; los miembros de una clase que el encabezado nombra): la norma del ítem es la COMPUESTA. Extraela entera en el ítem, con `punto` = el ítem: el sujeto del encabezado, su modalidad (deber, prohibición o facultad), su cuantificador (si los ítems se exigen todos o si basta con cualquiera de ellos) y el contenido del ítem. La descripción dice la norma completa y conserva el cuantificador. Si el encabezado no trae el sujeto o la modalidad, tomalos del bloque heredado más cercano que los trae.
-- SUPUESTOS O CONDICIONES de una norma que el encabezado enuncia: el ítem es una Condicion (ver Condicion) y la norma queda en la unidad del encabezado. Si el encabezado es la línea de título de un punto, no tiene unidad propia; entonces:
+- SUPUESTOS O CONDICIONES de una norma que el encabezado enuncia: el ítem es una Condicion (ver Condicion) y la norma queda en la unidad del encabezado; como esa norma no está en tu unidad, la Condicion va sin `condicion_de` (ver Condicion). Si el encabezado es la línea de título de un punto, no tiene unidad propia; entonces:
   - si los supuestos son alternativos (basta cualquiera: «o», «alguno de», «cualquiera de»), la norma del ítem es la COMPUESTA: la del encabezado con el supuesto del ítem, y conserva el cuantificador;
   - si se exigen juntos («y», «la totalidad», «concurrentemente») o no queda claro, el ítem es solo una Condicion, y la norma del encabezado no se extrae en ningún ítem: repetirla con una sola condición la daría por suficiente.
 
@@ -1040,7 +1056,8 @@ e0-r2, las dos producidas en el scratchpad (P4.b). Qué se lee: la norma del enc
 inciso, con su cuantificador; el sujeto del encabezado en la relación; el tramo compuesto verificado en sus
 dos segmentos; ninguna operación inventada; y ningún nodo de solo anuncio en `adrei::4.3.1::intro`. La
 generalización se lee en los ítems que caigan en el sorteo de los 40, reportados aparte del resto de la
-muestra.
+muestra. En los dos brazos se cuentan, además, las Condicion de ítems sin `condicion_de` (R8; decisión de la
+autora en el FRENO P1).
 
 #### La unidad del encabezado y E3 (`BKL-0035`)
 
@@ -1130,12 +1147,12 @@ En la tanda 0, 5 de los 6 reintentos crearon nodos:
 - **Salvaguarda** (aprobada). La ampliación aplica solo si la validación verificada no tiene Obligacion,
   Restriccion ni Potestad, es decir, si la unidad quedó como la deja la regla 1.
 - **Registro de cada exención** (condición de la autora: el reporte de U-REEXT-T0 lista cada unidad eximida
-  para leerla).
-  - El faltante que exime la ampliación, y no LAUDO B tal como está, lleva además la marca
-    `guarda_ampliada: true`, solo en la forma «r2».
-  - `runner_corpus.py` (escritura autorizada) la cuenta en el resumen de E3 y lista las unidades eximidas, con
-    la cita y el tipo del faltante. El reporte de U-REEXT-T0 copia esa lista.
-  - Los perfiles existentes no llevan la marca, así que su veredicto queda byte a byte igual.
+  para leerla). Sin marca nueva, por decisión de la autora en el FRENO P1. Las exenciones de la ampliación son
+  los faltantes `estructural_no_bloqueante` de tipo distinto de `enumeracion_incompleta`:
+  - en el perfil r2b, `runner_corpus.py` las lista en `resumen_e3.json` (`exenciones_ampliacion_laudo_b`, con
+    la unidad, la fase, la cita y el tipo, y `unidades_eximidas_ampliacion`);
+  - el reporte de U-REEXT-T0 copia esa lista;
+  - en los perfiles existentes, el resumen no cambia.
 - **Recuento sobre la tanda 0** (`guarda_ampliada_tanda0`; los 212 tienen descendientes):
   - En la verificación hubo 32 encabezados con algún faltante bloqueante.
   - Sin la salvaguarda, la ampliación habría desbloqueado 22 de los 32: 17 que se reintentaron y 5 que fueron
@@ -1339,8 +1356,8 @@ cifras son ESTIMACIONES sobre el crudo de la tanda 0, no mediciones del prefijo 
   en cada uno de los 706, §4.1).
 - Prefijo: recta sobre cuatro prefijos medidos (produccion_dev 9.983; canal abierto 10.801; esq3b_v2
   11.933; v3_b54 15.433 tokens de caché por llamada), tokens ≈ −409,8 + 0,33796 × system + 0,50131 × tool
-  schema (residuos de −71 a +97). El borrador A da 27.245 tokens; una recta de un solo término da 25.836.
-  Tomo 27.245 como central: el tool schema r2 queda fuera del rango de los puntos medidos.
+  schema (residuos de −71 a +97). El texto congelado (variante B) da 27.444 tokens; una recta de un solo
+  término da 26.046. Tomo 27.444 como central: el tool schema r2 queda fuera del rango de los puntos medidos.
 - Control: el costo de E1 recomputado del crudo da USD 18,11 contra 18,07 de las fases cerradas.
 
 **Salida que agregan o quitan los campos nuevos** (tokens en la tanda 0; `delta_tokens_por_campo_total`):
@@ -1366,12 +1383,13 @@ cifras son ESTIMACIONES sobre el crudo de la tanda 0, no mediciones del prefijo 
 | Escenario | E1 | E3 | E1 y E3 | Por unidad |
 |---|---:|---:|---:|---:|
 | Tanda 0 medida (fases cerradas) | 18,07 | 22,28 | 40,35 | 0,0166 |
-| r2b central, variante A | 25,17 | 23,94 | 49,11 | 0,0202 |
-| r2b alto, variante A (omisiones nuevas) | 25,36 | 24,02 | 49,38 | 0,0203 |
-| r2b cota baja del tramo de evidencia | 24,70 | 23,74 | 48,44 | 0,0199 |
-| r2b sin tramo de evidencia (referencia) | 21,85 | 22,57 | 44,42 | 0,0183 |
+| r2b central, variante B (congelada) | 25,20 | 23,93 | 49,13 | 0,0202 |
+| r2b alto, variante B (omisiones nuevas) | 25,39 | 24,01 | 49,40 | 0,0203 |
+| r2b central, variante A (referencia) | 25,22 | 23,94 | 49,16 | 0,0202 |
+| r2b cota baja del tramo de evidencia (A) | 24,75 | 23,74 | 48,49 | 0,0199 |
+| r2b sin tramo de evidencia (A, referencia) | 21,90 | 22,57 | 44,47 | 0,0183 |
 
-Desglose de E1 central: lectura del prefijo USD 6,62 (antes 3,75), escrituras 0,17 (5 escrituras, como
+Desglose de E1 central (B): lectura del prefijo USD 6,67 (antes 3,75), escrituras 0,17 (5 escrituras, como
 en el crudo), mensaje 3,00 (antes 2,76) y salida 15,39 (antes 11,51). E3: verificador 19,95 (todas las claves
 cambian, §1), más 0,88 por lo que renderice de los campos nuevos (supuesto: 70 % de los caracteres
 agregados, con la proyección de §4.4, autorizada), más los reintentos de E1 del ratchet, 2,33 × 1,337. La
@@ -1384,20 +1402,20 @@ la descripción se compone.
 guarda ampliada ahorra ≈ USD 0,020 por cada reintento que evita: del orden de USD 0,8 si los bloqueos son unos
 40. La estimación central no incluye ninguna de las dos, y la cifra que sigue tampoco.
 
-**Tope de U-REEXT-T0 (E1 a E3, 2.434 unidades).** Estimación central USD 49,11; con el factor 1,4 del
-precedente (`runner_corpus.py:17`), 68,76: **USD 69** propuesto. Ya incluye el mensaje de tablas, F1-A con el
+**Tope de U-REEXT-T0 (E1 a E3, 2.434 unidades).** Estimación central USD 49,13 (variante B); con el factor
+1,4 del precedente (`runner_corpus.py:17`), 68,78: **USD 69**, fijado por la autora en el FRENO P1. Ya incluye el mensaje de tablas, F1-A con el
 tratamiento por tipo y la instrucción de umbrales ajustada con la M2 de U-MED-R2A. Las celdas de E5, si se
 re-evalúan, van aparte (`ebd7b1e:docs/plan_tesis.md:400`, USD 21,2577 de referencia).
 
-**Tandas del protocolo, a la tarifa nueva** (central A; entre paréntesis, a USD 0,0166):
+**Tandas del protocolo, a la tarifa nueva** (central B; entre paréntesis, a USD 0,0166):
 
 | Tanda | Unidades | USD |
 |---|---:|---:|
-| 1 (ejemplo del §7) | 3.292 | 66,43 (54,65) |
-| 2, digeribles restantes | 5.669 | 114,39 (94,11) |
-| 2, no-RI plenos | 2.008 | 40,52 (33,33) |
-| 3, RI plenos | 976 | 19,69 (16,20) |
-| Partición completa | 9.324 | 188,14 (154,78) |
+| 1 (ejemplo del §7) | 3.292 | 66,45 (54,65) |
+| 2, digeribles restantes | 5.669 | 114,43 (94,11) |
+| 2, no-RI plenos | 2.008 | 40,53 (33,33) |
+| 3, RI plenos | 976 | 19,70 (16,20) |
+| Partición completa | 9.324 | 188,21 (154,78) |
 
 **Las filas no se suman.** Cada una es un grupo de unidades a la tarifa nueva, no una porción del total:
 - la tanda 1 del ejemplo toma TOs de los grupos de las tandas 2 y 3 (10 digeribles y 10 «necesita
@@ -1548,7 +1566,13 @@ La elección es sobre los momentos:
 
 ## 10. Para el FRENO P1
 
-### 10.1 Abiertos, sin decisión: 1, 2, 3, 5, 6, 8 y 10
+### 10.1 Puntos que estaban abiertos: decididos en el FRENO P1
+
+La autora decidió todos el 03/10/2026:
+- 1, 2, 3, 8 y 10, confirmados como los recomendé;
+- 5, el elemento sin valor del límite relativo, va en `validador_r2.py` (P3);
+- 6, frecuencia: variante B.
+Abajo queda el texto con el que se presentaron.
 
 1. **Tramo del TextoOrdenado.** La decisión 15 dice «cada entidad de los nueve tipos», y la 16 deriva el
    TextoOrdenado en código. El borrador no le pide tramo al TextoOrdenado. A confirmar.
