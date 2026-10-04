@@ -31,7 +31,20 @@ CONTEXTO, con sus anclas.
     no muestra (harness.py:110-124; reports/u_umbral/u1_mediciones.json);
   - la forma B del vínculo entre unidades (regla en una unidad hermana, sin cita; 1 de 38);
   - el volumen de `remite_a`: 14.000 aristas en KG-Tanda0-Diez-r2a, y `alcance` no se exporta a Neo4j
-    (enmienda 2 de L-ESQ-R2, §7).
+    (enmienda 2 de L-ESQ-R2, §7);
+  - el alcance que fija la cadena de títulos cuando los títulos no terminan en «:» (hallazgo 2.7 de
+    U-REVISION-LIBRE, reports/u_revision_libre/freno_a1.md, punto 3; `54f57cd`). Las unidades
+    `docvig::2.1.1.1`, `2.1.2.1` y `2.2.1.1` listan «Pasaporte del país de origen» bajo el mismo título
+    y solo se distinguen por los títulos de sus ancestros (la edad y el tipo de residencia). Sus nodos
+    no los llevan: la procedencia trae los ids de los ancestros, no sus títulos. Puntos terminales con
+    menos de 100 caracteres propios: 228 de 2.052 en la tanda 0 y 1.275 de 7.430 en la partición
+    (cifras de esa unidad, NO VERIFICADAS: no las recomputé);
+  - la marca de la cola humana (`cola_humana`, `cola_chunks` y `estado_e3`) y `no_verificada_e3`. Las
+    unidades de la cola humana entran al grafo marcadas (decisión de la autora del 04/10/2026,
+    docs/plan_tesis.md:363). En los nodos, el cargador exporta la marca y `ver_nodo` la devuelve
+    (data/experiment/neo4j/cargar_kg.py:93-114; neo4j_index.py:206-223). En las aristas no llega: el
+    cargador exporta solo `orden` y `provenances_json` (cargar_kg.py:153-174). En KG-Tanda0-Diez-r2a
+    son 291 nodos y 466 aristas con la marca de la cola, y 697 aristas con `no_verificada_e3`.
 - «Cierre léxico»: NO ENCONTRADO con ese nombre en el plan, el checklist, el tablero ni el protocolo
   (grep del 03/10/2026). N1 lo define con su evidencia o lo descarta.
 - El patrón «jueces unánimes, falla del grafo; jueces dispersos, falla de navegación» no tiene ancla en el
@@ -82,6 +95,17 @@ sistema por fragmentos o es propia de la navegación por aristas (diferencia dec
 4. Texto fuente de la unidad, con su página.
 5. Vista de umbrales: las cuantías de un nodo con su tramo literal.
 Las instrucciones del agente y el tope de llamadas se tratan como parámetros de la configuración.
+Dos requisitos del índice y de las vistas (decisiones de la autora del 04/10/2026). No son herramientas
+nuevas y no cambian la cantidad de configuraciones de N4:
+- Títulos de los ancestros (hallazgo 2.7). La cadena de títulos de los ancestros de cada nodo entra al
+  índice de búsqueda y se muestra en el resumen de la búsqueda y en la vista del nodo. Se toma de la E0,
+  por `punto` y `ancestros` de la procedencia: no cambia el grafo ni el prompt de E1. Caso de prueba:
+  los nodos de `docvig::2.1.1.1`, `2.1.2.1` y `2.2.1.1` se distinguen por su cadena de títulos, en la
+  búsqueda y en la vista.
+- Marcas de verificación. El agente ve la marca de la cola humana en el nodo y en la arista, y
+  `no_verificada_e3` en la arista. Exige exportar las propiedades de la arista a Neo4j y devolverlas
+  en `ver_vecinos`: es el mismo cambio que pide `alcance`. El diseño dice cómo se le muestra la marca
+  al agente y qué le indican las instrucciones sobre el contenido no verificado.
 
 N3. PREGUNTAS DE DESARROLLO, POR UNA INSTANCIA APARTE.
 - Conjunto separado del de EV2 y del de B6.3. Nunca se usa para evaluar ni se reporta como resultado.
@@ -102,6 +126,8 @@ N4. PROTOCOLO DE MEDICIÓN (documento; corre en la parte 2).
 - Medidas por configuración: fidelidad por criterio (criterios cumplidos sobre el total), precisión de
   citas (fundada, existente, al ancla), costo por pregunta, llamadas a herramientas y respuestas que llegan
   al tope, y las cuatro clases de N1 sobre las fallas.
+- Lo verificado y lo no verificado se miden aparte: las mismas medidas, para las respuestas que abren o
+  citan algún nodo o arista con la marca de la cola humana o con `no_verificada_e3`, y para las demás.
 - Regla de decisión, escrita antes de medir: una herramienta entra si quitarla baja la fidelidad por
   criterio más que la variación entre corridas de la base; a igualdad, la configuración más barata.
 - Requisito de la configuración: la que se pre-registre tiene que pasar el caso de prueba obligatorio
@@ -132,7 +158,12 @@ DECISIONES DE LA AUTORA AL FIRMAR.
    quedan solo para el diagnóstico de N1.
 4. Cantidad de configuraciones y repeticiones de la base.
 5. Si N5 puede empezar sobre el grafo de U-REEXT-T0 antes del cierre de la tanda 1.
-6. Si `alcance` se exporta a Neo4j (hoy no: enmienda 2 de L-ESQ-R2, §7).
+6. Si `alcance` se exporta a Neo4j (hoy no: enmienda 2 de L-ESQ-R2, §7). Las marcas de verificación de
+   las aristas se exportan por la decisión del 04/10/2026; queda por decidir si `alcance` va en el mismo
+   cambio.
+7. Si los títulos de los ancestros y las marcas de verificación entran también a la configuración base
+   de N4 (propuesta: no; la base queda como el agente de hoy, para que se compare con las trazas que ya
+   existen).
 
 REQUISITOS: los de CLAUDE.md §4 (a a l), con PYTHONDONTWRITEBYTECODE=1 y .venv/bin/python -B; todo conteo
 con el comando que lo reproduce; copias para verificar armadas copiando archivos; cero nombres de personas.

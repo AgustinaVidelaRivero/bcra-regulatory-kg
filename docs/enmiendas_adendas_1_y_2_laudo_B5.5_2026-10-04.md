@@ -130,3 +130,16 @@ plandecuentas, referencia; y ri_ao, derogado, que sale de la tanda 3. Queda como
 ## Firma
 
 FIRMADAS por la autora el 04/10/2026, las dos enmiendas.
+
+## Notas posteriores a la firma
+
+El texto firmado no se edita (132 líneas, sha256 `eb2ff46704eb…`, `e82e22f`); estas notas se leen junto
+con él.
+
+- **04/10/2026 — la unidad de E0 de ri_spi es la etapa S0 de U-SEG-OFICIAL (decisión de la autora).** La
+  Parte IV lista la E0 de ri_spi entre las unidades «con mandato propio, a redactar». Ese mandato es la
+  etapa S0 del mandato de U-SEG-OFICIAL (`docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md`, S0, punto 4;
+  BORRADOR — PENDIENTE DE FIRMA al 04/10/2026): no se redacta un mandato aparte. La condición de la
+  Parte II, punto 2 («si antes cierra su unidad de E0»), se lee como el cierre de esa etapa (FRENO S0-2).
+  La otra unidad de la Parte IV, el ingreso del bloque A con procedencia por página, sigue con mandato
+  propio, a redactar.

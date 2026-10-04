@@ -521,3 +521,37 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   Fuera de esta etapa: el alcance en títulos que no terminan en «:» (2.7) va por código, no por prompt;
   el plazo asumido máximo (1.8) es regla de L-ESQ-R2 §1.3 (`4ef7650`) y cambiarla pide una enmienda
   firmada; el linaje (2.6) y las cuantías en tipos sin `umbrales` (2.10) se declaran como límite.
+- **04/10/2026 — agregados a P3b y decisión sobre la cola humana (decisión de la autora).** Salen de la
+  verificación de la sección 4.4 de la tesis. Se suman a la etapa P3b; lo demás de esa etapa no cambia.
+  1. Punto j (2.2): veredictos de E3 que llegan como texto dentro de `faltantes`. Recuento sobre
+     `corpus_tanda0/salida/*/finales.jsonl` y `veredictos.jsonl`: de las 71 unidades en cola humana de
+     la tanda 0, 25 son esta falla de formato, 21 de las 36 con el veredicto inutilizable y 4 de las 35
+     que fueron a la cola tras el reintento. En las 21, el texto trae el veredicto entero: 5 dicen
+     `completo_ok` y 16 `faltantes_detectados`. De las 16, 7 traen algún faltante de severidad alta y 9
+     no; de esas 9, 8 se leen como JSON y 1 (`cap::5.3.2.5`) no es JSON válido.
+     El punto j deja de ser «se leen»: el FRENO P3b-1 presenta dos opciones con sus números y la autora
+     decide. Opción 1: leer esa forma en código, sin API. Opción 2: volver a pedir el veredicto a E3,
+     con su costo estimado. Para cada una: cuántas de las 25 salen de la cola y a qué estado van con la
+     política vigente del ratchet, cuántas quedan, y qué pasa con el texto que no es JSON válido. No se
+     implementa antes de la decisión.
+  2. Punto k (2.14): descripción que copia la nota del verificador. Caso: en la re-extracción de
+     `cla::6.3.3`, aceptada tras el reintento, la descripción de una Condicion repite palabras de la
+     nota de E3 que no están en el texto de la unidad. P3b-1 suma:
+     - una medida, sin API: en cuántas de las 220 unidades aceptadas tras el reintento
+       (`corpus_tanda0/salida_dirigida/*/finales.jsonl`; 219 en `salida/`) alguna descripción contiene
+       texto de la nota de E3 que no está en la unidad. La regla de la medida (ventana de palabras y
+       normalización) se declara antes de contar, y los casos se listan;
+     - dos defensas, como propuesta: el mensaje del reintento marca la nota de E3 como contenido que
+       no se copia, y un control en código marca las descripciones con texto de la nota ausente de la
+       unidad. El control marca: no rechaza ni corrige sin decisión de la autora.
+  3. Cola humana. Decisión de la autora del 04/10/2026: las unidades de la cola humana entran al grafo
+     marcadas, y en cada tanda se revisa una muestra, con la tasa de error medida y reportada con la
+     tanda (nota del 04/10/2026 al pie de `docs/protocolo_entre_tandas.md`; `docs/plan_tesis.md:363`).
+     En esta unidad:
+     - P3 ya no presenta las dos opciones del punto e del agregado a P3 del 04/10/2026: quedó decidida
+       la segunda, adentro y marcadas;
+     - el texto de `e3_verificador/ratchet_e3.py` (`:351-355` en HEAD: «el chunk NO ingresa al grafo
+       hasta resolución») se alinea con la decisión en la implementación de P3b. No es un comentario:
+       es el campo `todo` que el ratchet escribe en cada registro de `cola_humana.jsonl`. Por eso el
+       cambio rige solo con la forma «r2», y las salidas selladas se siguen reproduciendo byte a byte.
+       No cambia qué unidades entran al grafo.

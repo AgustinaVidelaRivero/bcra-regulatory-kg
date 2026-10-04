@@ -436,3 +436,19 @@ El texto firmado no se edita; estas notas se leen junto con él.
   plandecuentas, referencia; y ri_ao, derogado, que sale de la tanda 3. Queda como release posterior el
   bloque B: 366 páginas de ri2_pm y la planilla de los nueve. Los candidatos de la tanda 1 (§7) pasan de
   133 a 132 TOs, sin ri_ao.
+- **04/10/2026 — §1, muestra de la cola humana al cierre de cada tanda (decisión de la autora).** Las
+  unidades que E3 no terminó entran al grafo marcadas (`cola_humana` y `estado_e3`;
+  `docs/plan_tesis.md:363`). Al cierre de cada tanda se suma a las lecturas del §1, punto 3:
+  - **Muestra:** 20 unidades de la cola humana de la tanda, sorteadas con semilla declarada antes de
+    leer; si la cola tiene menos de 20, todas.
+  - **Lectura:** asistida, con revisión de la autora (decisión D2, §10), contra el texto de la unidad.
+    Qué cuenta como unidad con error se escribe antes de leer la primera muestra y no se cambia
+    después.
+  - **Reporte:** con la tanda, las unidades con error sobre las leídas y su intervalo de Wilson al
+    95 %.
+  - **Regla fijada de antemano:** si el límite superior de Wilson de la tasa de error supera el 20 %,
+    las unidades de la cola humana de esa tanda se re-procesan o salen del grafo evaluado de esa
+    tanda, y se reporta cuál de las dos y por qué.
+  Aritmética de la regla, para leerla sin sorpresa. Con 20 unidades leídas, el límite superior es
+  16,1 % con 0 errores y 23,6 % con 1: la regla se cumple solo con 0 errores. Con menos de 16 unidades
+  leídas, el límite superior pasa el 20 % aun con 0 errores (0 de 15 da 20,4 %).
