@@ -21,3 +21,10 @@ La política (`politica_campos_r2.json`, versión 3) está sellada por su sha256
 
   L-ESQ-R2 dice lo mismo que el texto del paso: el tipo «se deriva en código del `codigo`» (§2.3 y §2.4;
   `git show 4ef7650:data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`, `:488-489` y `:505`).
+
+- **04/10/2026 — la nota anterior es la referencia de implementación de la enmienda 4 a L-ESQ-R2 (decisión de
+  la autora).** La regla quedó en `data/experiment/esq/enmienda4_L-ESQ-R2_comunicacion_tramo_2026-10-04.md`,
+  FIRMADA por la autora el 04/10/2026: con la forma r2, el tipo de la Comunicación se deriva del tramo
+  verificado; el número se toma del `codigo` y se controla contra los números que nombra el tramo
+  (`code/validador_r2.py`, contadores `tramo_coincide`, `tramo_no_coincide` y `sin_numero_para_controlar`); con
+  los perfiles existentes, la regla de L-ESQ-R2 §2.3 y §2.4 sigue igual.

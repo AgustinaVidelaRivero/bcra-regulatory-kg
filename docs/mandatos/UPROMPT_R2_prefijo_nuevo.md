@@ -655,3 +655,15 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
      «LÍMITE» de la arista, que esperaba que la arista no llevara `properties_no_definidas`. P3b-2 actualiza
      ese caso esperado y su resumen antes de su commit. El otro caso «LÍMITE» de esa cadena, el de las
      omisiones, lo actualiza C2 de U-R2-CODIGO-2 cuando implemente su punto (p).
+- **04/10/2026 — P3b-2 commiteada, y enmienda 4 a L-ESQ-R2 (decisiones de la autora).** P3b-2 quedó en
+  `c8c3970`, y la nota anterior, en `226ef7b`.
+  - El punto l queda respaldado por la enmienda 4 a L-ESQ-R2
+    (`data/experiment/esq/enmienda4_L-ESQ-R2_comunicacion_tramo_2026-10-04.md`, FIRMADA por la autora el
+    04/10/2026; commit de la firma PENDIENTE): con la forma r2, el tipo de la Comunicación se deriva del tramo
+    verificado, y el número se toma del `codigo` y se controla contra el tramo. Precisa la decisión 16 de este
+    mandato para la forma r2.
+  - La marca `copia_nota_e3` no se le muestra al agente: sirve para la evaluación y para las muestras, no
+    para la navegación (borrador de U-NAV-DISENO).
+  - Cadena sintética de P3: el caso de la arista ya está actualizado en el árbol de trabajo (dos archivos de
+    `data/experiment/prompt_r2/p3/`), y la cadena da 27 de 27 sobre una copia. Su commit está PENDIENTE: no
+    entró en `c8c3970`.
