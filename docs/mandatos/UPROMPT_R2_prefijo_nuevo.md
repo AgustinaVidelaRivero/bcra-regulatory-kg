@@ -626,3 +626,32 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
      `ensamblar_r2` para pasarle la fase, declarada, y suma `e2_reduce/selftest_e2.py` solo para el caso
      nuevo.
   Orden: P3b-2 va primero, y la implementación de C2 de U-R2-CODIGO-2 arranca sobre su commit.
+- **04/10/2026 — FRENO P3b-2 revisado, y decisiones de la autora (commit de P3b-2 PENDIENTE).** El freno está
+  en `data/experiment/prompt_r2/freno_p3b2.md`. La revisión reprodujo sobre copias: los dos grafos r2a
+  sellados y los tres ensamblados r1; el prefijo re-congelado (hash `3817de475c93`, 55.105 caracteres, tool
+  schema sin cambio); la unión de las operaciones por punto (37 pasan a ser 89 en desarrollo y 59 a 148 en
+  diez); los selftests (`selftest_prompt_r2b` 34/34, `selftest_e3` 95/95, `selftest_pyd_r2` 343/343 y
+  `selftest_e2` 41/41); la cadena sintética de P3b-2, 20/20; y las salidas de `p3b2/salida/`, byte a byte.
+  Decisiones:
+  1. Tope de U-REEXT-T0: sube de USD 69 a USD 72. La estimación central con el parche es USD 50,74, con la
+     NOTA de E3 como cota alta, y por el factor 1,4 da 71,04 (`p3b2/salida/costo_p3b2.json`). Reemplaza el
+     tope de USD 69 de la nota del 03/10/2026 sobre el FRENO P1. El tope de la pareada sigue en USD 2.
+  2. Marca de la copia de la nota de E3. La lectura de los 45 casos dio 11 copias reales, en 11 unidades, y 34
+     coincidencias legítimas (`p3b2/lectura_copia_nota.md`). `properties_no_definidas.copia_nota_e3` marca
+     una posible copia: no afirma que lo sea. Se vuelve a medir sobre el crudo de U-REEXT-T0, con la regla de
+     `p3b2/regla_lectura_copia_nota.md`; si la precisión sigue baja, la regla se ajusta en código entre
+     tandas. Las 11 copias reales de los grafos r2a quedan declaradas: `cla::6.3.3`, `ctacte::3.2.1.2`,
+     `ctacte::3.2.1.7`, `ctacte::6.4.1.1`, `ctacte::10.2.4.2`, `ext::3.5.4.2`, `ext::3.18.3::intro`,
+     `ext::7.1.1::intro`, `ext::7.11::intro`, `ext::14.2.1.10` y `pagjub::2.8.2::intro`.
+  3. `derivar_comunicacion`: con la forma r2, el paso `derivar_de_codigo_o_label` lee el tramo verificado.
+     La nota a la política está en `data/experiment/pyd_r2/politica_campos_r2_notas.md`.
+  4. `MODALIDAD_FORMAS` (`pyd_r2/code/validador_r2.py`) no está medida. P4 reporta cuántas recomendaciones y
+     consecuencias detecta la clasificación del código, contra una lectura de muestra. La lista se ajusta en
+     código entre tandas si hace falta.
+  5. Las marcas de j y de k4 llegan al reporte por `vistos_por_e3`: va a C2 de U-R2-CODIGO-2, como punto (t).
+  6. h cubre solo el tramo simple: es un límite declarado. U-REEXT-T0 cuenta los mini-chunks a mitad de
+     oración con un tramo de dos segmentos.
+  7. Cadena sintética de P3 (`p3/cadena_sintetica_p3.py`): con el código nuevo da 26 de 27. Falla su caso
+     «LÍMITE» de la arista, que esperaba que la arista no llevara `properties_no_definidas`. P3b-2 actualiza
+     ese caso esperado y su resumen antes de su commit. El otro caso «LÍMITE» de esa cadena, el de las
+     omisiones, lo actualiza C2 de U-R2-CODIGO-2 cuando implemente su punto (p).

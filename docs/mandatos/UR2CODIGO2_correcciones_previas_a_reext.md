@@ -374,3 +374,19 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   7 pies de cla y polcre ni el carácter sin mapear en la versión de hoja de 2 pies de lingob, y las páginas
   sin pie se rotularon sin leerlas. La coincidencia con la carátula no cambia: 8 de 8.
   Orden: la implementación de C2 arranca cuando P3b-2 de U-PROMPT-R2 esté commiteada.
+- **04/10/2026 — punto (t) y casos de la cadena sintética (decisiones de la autora, tras el FRENO P3b-2 de
+  U-PROMPT-R2).**
+  t. Las marcas de E3 de la lectura del veredicto como texto y del reintento con menos elementos llegan al
+     reporte. Hoy quedan en `finales.jsonl` (`validacion_final.marcas_e3`, claves `lectura_veredicto_e3` y
+     `reintento_con_menos_elementos`), y `vistos_por_e3` de `corpus_v2/runner_corpus.py` pasa solo la de la
+     copia de la nota. Son dos líneas en esa función, solo con la forma r2: las dos marcas van también en
+     `vistos["marcas"]`, y de ahí llegan a la validación y al conteo de E2 (`e2_lib`, `stats["p3b"]`). Con
+     los perfiles existentes la salida no cambia. Control: en la cadena sintética de P3b-2, el reporte de E2
+     cuenta las unidades con cada marca.
+  Control del punto (s): pasa a la cadena sintética de P3b-2
+  (`data/experiment/prompt_r2/p3b2/cadena_sintetica_p3b2.py`), que recorre el ratchet, `entrada_r2`, el
+  validador, E2 y el ensamblado r2b.
+  Cadena sintética de P3 (`data/experiment/prompt_r2/p3/cadena_sintetica_p3.py`): su caso «LÍMITE» de las
+  omisiones espera que LN-7 dé no_aplicable sobre el ensamblado. Con el punto (p) pasa a resuelto. C2
+  actualiza ese caso esperado y el resumen de la cadena (`p3/salida/resumen_cadena_sintetica_p3.json`): los
+  dos archivos se suman a sus escrituras, solo para ese caso.
