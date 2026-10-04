@@ -1,6 +1,6 @@
 # Enmiendas a las adendas 1 y 2 del laudo B5.5 — qué regímenes informativos entran al recurso y cuándo
 
-**BORRADOR — PENDIENTE DE FIRMA.** Son dos enmiendas, para firmar juntas.
+**FIRMADAS por la autora el 04/10/2026.** Son dos enmiendas, firmadas juntas.
 
 Las dos adendas no se editan: estas enmiendas viven al lado y se leen junto con ellas. Fuentes, leídas en el
 commit de su firma:
@@ -59,7 +59,12 @@ segmentable, no extraíble. ESQ-RI-3 y ESQ-RI-4 siguen abiertas (`docs/plan_tesi
 4. **Bloque B, release posterior declarada.** Son 366 páginas de ri2_pm: 345 de ficha y 21 de cuerpo entre
    fichas, donde están sus 2 unidades que cruzan fichas. Se suma la planilla de los nueve: 114 unidades en 17
    páginas.
-5. **optico y plandecuentas** siguen declarados referencia, fuera.
+5. **optico y plandecuentas** quedan fuera del recurso como documentos de referencia, sin contenido
+   prescriptivo. Fuentes de esa clasificación:
+   - adenda 2, §1, punto 3 (`1ae387e`): «Solo `plandecuentas` y `optico` son referencia pura», con densidad
+     deóntica 0,000 en las tres variantes del instrumento y la lectura a ciegas; y §2, que los deja sin extraer;
+   - censo de U-COB-A (`data/experiment/cobertura_bloque_a/censo_referencia.md`, `074a712`): en sus 120
+     páginas no hay ninguna de prosa.
 
 ### II.3 Justificación técnica
 
@@ -108,7 +113,7 @@ las 16 páginas leídas.
    (`docs/plan_tesis.md:767`), con la guarda 1 de la adenda 2.
 2. E0 de ri_spi: regla de marcador de letra y número, con la misma guarda.
 
-**Nota fechada al protocolo entre tandas, §5** (texto propuesto; se asienta al firmar):
+**Nota fechada al protocolo entre tandas, §5** (asentada al pie del protocolo el 04/10/2026):
 «La fila "fuera, 14" se precisa por las enmiendas del 04/10/2026 a las adendas 1 y 2 del laudo B5.5. Con la
 tanda 3 entran: las 77 unidades de prosa del bloque A, con procedencia por página; las 25 unidades por punto de
 ri2_pm; y ri_spi, si su unidad de E0 cerró. Quedan fuera del recurso: `manual`, histórico; optico y
@@ -124,4 +129,4 @@ plandecuentas, referencia; y ri_ao, derogado, que sale de la tanda 3. Queda como
 
 ## Firma
 
-PENDIENTE, de las dos enmiendas.
+FIRMADAS por la autora el 04/10/2026, las dos enmiendas.

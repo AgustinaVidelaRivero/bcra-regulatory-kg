@@ -74,6 +74,11 @@ sistema por fragmentos o es propia de la navegación por aristas (diferencia dec
 2. Recorrido por predicado: vecinos filtrados por predicado y dirección (`remite_a` con su `alcance`,
    `condicion_de`, `limita`, `exceptua` y `exceptua_obligacion`). Declarar qué exige exportar `alcance`.
 3. Jerarquía: subir al punto padre, bajar a los hijos, ver los hermanos (ausencias P; forma B).
+   Caso de prueba obligatorio (decisión de la autora del 04/10/2026, tras U-DIAG-VINCULO, `b0ee084`): desde
+   un contenedor que anuncia una lista, el agente llega a los nodos de sus puntos hijos. Son 637
+   contenedores en la partición (reports/u_diag_vinculo/salidas/censo_anuncios.json). El caso fijo es el
+   ejemplo de la tesis: de la Definicion de `cla::5.1.1::intro` a la Excepcion de `cla::5.1.1.1`. La
+   relación no existe como arista: la herramienta la recorre por `punto` y `ancestros` de la procedencia.
 4. Texto fuente de la unidad, con su página.
 5. Vista de umbrales: las cuantías de un nodo con su tramo literal.
 Las instrucciones del agente y el tope de llamadas se tratan como parámetros de la configuración.
@@ -99,6 +104,9 @@ N4. PROTOCOLO DE MEDICIÓN (documento; corre en la parte 2).
   al tope, y las cuatro clases de N1 sobre las fallas.
 - Regla de decisión, escrita antes de medir: una herramienta entra si quitarla baja la fidelidad por
   criterio más que la variación entre corridas de la base; a igualdad, la configuración más barata.
+- Requisito de la configuración: la que se pre-registre tiene que pasar el caso de prueba obligatorio
+  de la jerarquía (N2, herramienta 3). No es un resultado de la ablación: si la regla de decisión deja
+  afuera la herramienta que lo cubre, la configuración no se pre-registra así y vuelve a la autora.
 - Costo estimado: (7 + 2) × 30 = 270 corridas. Referencia: las cuatro celdas de E5 costaron USD 21,2577
   por 140 respuestas base con sus re-corridas y el juez (docs/plan_tesis.md:400), unos USD 0,15 por
   respuesta: alrededor de USD 41. ESTIMACIÓN NO VERIFICADA: las herramientas nuevas cambian los tokens.

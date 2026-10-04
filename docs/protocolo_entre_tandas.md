@@ -428,3 +428,11 @@ El texto firmado no se edita; estas notas se leen junto con él.
   Las filas no se suman: la tanda 1 del ejemplo toma TOs de los grupos de las tandas 2 y 3, y esas filas
   están antes de descontarlos (`:180-181`); la fila de la partición es el universo de los 152 TOs, que
   incluye los cinco TOs nuevos de la tanda 0, no la suma de las otras.
+- **04/10/2026 — §5, fila «fuera, 14» (decisión de la autora).** La fila se precisa por las enmiendas del
+  04/10/2026 a las adendas 1 y 2 del laudo B5.5 (`docs/enmiendas_adendas_1_y_2_laudo_B5.5_2026-10-04.md`,
+  firmadas por la autora el 04/10/2026; commit de la firma PENDIENTE). Con la tanda 3 entran: las 77
+  unidades de prosa del bloque A, con procedencia por página; las 25 unidades por punto de ri2_pm; y
+  ri_spi, si su unidad de E0 cerró. Quedan fuera del recurso: `manual`, histórico; optico y
+  plandecuentas, referencia; y ri_ao, derogado, que sale de la tanda 3. Queda como release posterior el
+  bloque B: 366 páginas de ri2_pm y la planilla de los nueve. Los candidatos de la tanda 1 (§7) pasan de
+  133 a 132 TOs, sin ri_ao.

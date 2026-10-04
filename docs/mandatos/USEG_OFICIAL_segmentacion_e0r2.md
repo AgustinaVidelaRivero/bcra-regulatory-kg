@@ -2,13 +2,14 @@ BORRADOR — PENDIENTE DE FIRMA
 
 MANDATO — U-SEG-OFICIAL: SEGMENTACIÓN OFICIAL CON e0-r2 DE LOS 152 TOs DEL UNIVERSO, VERSIONADA CON SU MANIFIESTO.
 Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
-- Unidad chica, en DOS ETAPAS con FRENO obligatorio al final de cada una: S1 (manifiesto y corrida) y S2
-  (diferencias contra la partición y cifras para la tesis). Reporte corto (no más de 40 líneas) y espera
-  del «seguí» escrito de la autora.
+- Unidad en TRES ETAPAS con FRENO obligatorio al final de cada una: S0 (correcciones de E0 que cambian
+  ids de la partición, y la E0 de ri_spi), S1 (manifiesto y corrida) y S2 (diferencias contra la
+  partición y cifras para la tesis). Reporte corto (no más de 40 líneas) y espera del «seguí» escrito de
+  la autora.
 - Costo de API: USD 0. Ninguna llamada a la API; Neo4j no se usa.
-- PRECONDICIÓN: el cierre de U-R2-CODIGO-2 commiteado por la autora. Sus puntos (f) y (h) cambian e0-r2
-  (docs/mandatos/UR2CODIGO2_correcciones_previas_a_reext.md). La unidad corre con el código de ese commit
-  y lo registra. Si el cierre no está commiteado, frená sin correr.
+- PRECONDICIÓN: el cierre de U-R2-CODIGO-2 commiteado por la autora. Sus puntos (f), (h) y (l) cambian
+  e0-r2 (docs/mandatos/UR2CODIGO2_correcciones_previas_a_reext.md). S0 edita E0 sobre ese commit, y S1
+  corre con el código que deje S0 y lo registra. Si el cierre no está commiteado, frená sin escribir.
 
 CONTEXTO, con sus anclas.
 - La partición vigente (data/experiment/segmentacion_84/b584_particion/) la produjo el código de B5.8.4,
@@ -24,6 +25,23 @@ CONTEXTO, con sus anclas.
   segmenta quedó en 0 chunks; 128 TOs con los mismos ids; 69 ids desambiguados (L), 7 unidades sin partir
   por tabla y 205 ids de K en 19 TOs. Con K-a′+K-b quedaron 93 ids de K en 16 TOs (`e1c9456`). Esa corrida
   no está versionada: la tesis no la cita.
+
+S0. CORRECCIONES DE E0 QUE CAMBIAN IDS DE LA PARTICIÓN (decisión de la autora del 04/10/2026).
+Salen de la revisión independiente (reports/u_revision_libre/freno_b1.md) y de las enmiendas del
+04/10/2026 a las adendas del laudo B5.5. No se ven en la tanda 0 y no entran a C2 de U-R2-CODIGO-2.
+1. Sección escrita de otra forma (1.14): opecam («Seccón 3.»), garopt y snp_dd.
+2. Rótulos de punto que no lo son (1.15): rdbcra, ri_niif, ri_tsa y ri_dsf.
+3. Páginas de norma fuera de toda unidad (2.4): ri_cc, ri_tsa, snp_mep, venliq y fimipyme.
+4. E0 de ri_spi: regla de marcador de letra y número («APARTADO A», «A.1.», «A.1.1.»). Hoy queda en una
+   unidad de 18.565 caracteres. Es la unidad de E0 de ri_spi que piden las enmiendas.
+Primero el diseño, sin implementar: cada regla con su censo sobre los 152 TOs (qué TOs y qué ids cambian).
+FRENO S0-1. Después del «seguí», la implementación, solo en e0-r2. Controles:
+- la E0 de la tanda 0 que dejó U-R2-CODIGO-2 (`salida_tanda0_r2b/`) no cambia un byte;
+- cada id que cambia en la partición queda atribuido a una de las cuatro reglas, por TO; lo que ninguna
+  explique es «otra» y se lee;
+- los TOs que ninguna regla toca dan los mismos ids que antes (guarda 1 de la adenda 2 al laudo B5.5);
+- selftests de E0 sobre una copia, y doble corrida byte a byte igual.
+FRENO S0-2.
 
 S1. MANIFIESTO Y CORRIDA.
 1. Manifiesto de los 152, en el formato de `manifiesto_corpus` (data/experiment/reextraccion_v2/): id,
@@ -56,8 +74,8 @@ FRENO S1.
 
 S2. DIFERENCIAS CONTRA LA PARTICIÓN Y CIFRAS.
 1. Diferencias contra `b584_particion/`, atribuidas por clase como en el control de R5: ids desambiguados
-   (L), unidades sin partir por tabla, ids de K, y lo que cambie el punto (f) de U-R2-CODIGO-2; texto
-   distinto por tablas, pies, K y arrastre. Lo que ninguna clase explique se lista como «otra». Criterio
+   (L), unidades sin partir por tabla, ids de K, lo que cambien los puntos (f), (h) y (l) de
+   U-R2-CODIGO-2 y lo que cambie S0; texto distinto por tablas, pies, K y arrastre. Lo que ninguna clase explique se lista como «otra». Criterio
    de aceptación: «otra» en 0, o cada caso leído y explicado.
 2. Diferencias contra la escalera de R5, si la corrida de R5 se puede reproducir con `e1c9456`: solo las
    que explican K-a′+K-b y el punto (f).
@@ -72,10 +90,13 @@ S2. DIFERENCIAS CONTRA LA PARTICIÓN Y CIFRAS.
    verificación de las marcas [AL CIERRE: e0-r2] de la sección 4.1 (docs/insumos_escritura.md, §6).
 FRENO S2, final.
 
-ESCRITURAS: data/experiment/segmentacion_oficial_e0r2/ y el scratchpad. Si hace falta un script de
-comparación, va en esa carpeta; `r5_escalera_particion.py` se usa sin editar.
-PROHIBIDO: editar e0_chunking/, `b584_particion/`, las salidas selladas de E0 y la E0 de la tanda 0;
-tocar `.gitignore`; commitear. Si un control falla por el código de E0, se reporta y no se corrige acá.
+ESCRITURAS: data/experiment/segmentacion_oficial_e0r2/ y el scratchpad. En S0, además:
+data/experiment/reextraccion_v2/e0_chunking/e0_lib.py y correr_e0.py, solo en la versión e0-r2, y sus
+selftests. Si hace falta un script de comparación, va en la carpeta de la salida;
+`r5_escalera_particion.py` se usa sin editar.
+PROHIBIDO: editar `b584_particion/`, las salidas selladas de E0 y la E0 de la tanda 0; cambiar la versión
+legada de E0; tocar `.gitignore`; commitear. En S1 y S2 el código de E0 no se edita: si un control falla
+por el código, se reporta y no se corrige ahí.
 
 DECISIONES DE LA AUTORA AL FIRMAR.
 1. La carpeta de la salida (propuesta: data/experiment/segmentacion_oficial_e0r2/).

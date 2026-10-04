@@ -252,3 +252,26 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   El umbral de referencia es 13.091 caracteres, el tamaño objetivo de una parte (`correr_e0.py:75`); el
   diseño puede proponer otro, con su medición. Lo que el punto (h) cambie en la tanda 0 se suma a los
   cambios declarados del control de `salida_tanda0_r2b/`.
+- **04/10/2026 — puntos (i) a (l): agregados a C2 que salen de la revisión independiente (decisión de la
+  autora).** Fuente: `reports/u_revision_libre/freno_b1.md`, pieza 2 (commit PENDIENTE).
+  i. Comparación invertida o con el borde equivocado (1.9), en `pyd_r2/code/reglas_comparacion.py`: la
+     negación que queda fuera del alcance de la regla y «igual o superior» leído como estricto.
+     Referencia de la revisión: 12 de 79 umbrales de reglas simples.
+  j. «Ponderador» que pisa al comparador pegado a la cuantía (1.10). Referencia: 28 de 140 `coeficiente`.
+  k. La comparación lee el marcador del segmento del encabezado en un tramo compuesto (`cap::8.5.1` a
+     `8.5.3`, «límites mínimos»): hoy da `no_determinada`. Se prueba con el tramo de dos segmentos del
+     diseño del prefijo, sobre un caso sintético.
+  l. Las colas de título que son texto de la norma (2.3), en `e0_chunking/e0_lib.py`, solo en e0-r2. De
+     73, 6 son norma, todas en ric (pp. 15, 30, 54 y 59). Cambia el texto de `ric::4.3.1.2`,
+     `ric::6.1.2`, `ric::11.2::intro` y `ric::12.4`: se suma a los cambios declarados del control de
+     `salida_tanda0_r2b/`.
+  Control de i, j y k, como en (c): la lista de cada elemento que cambia en los dos grafos r2a, y ningún
+  elemento hoy correcto cambia. Control de l: los renglones recuperados, con su página; y en los otros 9
+  TOs de la tanda 0 y en los 152 de la partición, ningún renglón se pierde ni se gana sin declarar.
+  No entran a C2:
+  - el plazo sin marcador asumido como máximo (1.8): es regla de L-ESQ-R2 §1.3 (`4ef7650`) y cambiarla
+    pide una enmienda firmada;
+  - los cambios de E0 que mueven ids de la partición (1.14, 1.15 y 2.4): van en la etapa previa de
+    U-SEG-OFICIAL.
+  Orden: C2 arranca sobre el commit de P3 de U-PROMPT-R2. Comparte `pyd_r2/code/selftest_pyd_r2.py` con
+  la etapa P3b de esa unidad: las dos implementaciones no corren a la vez.

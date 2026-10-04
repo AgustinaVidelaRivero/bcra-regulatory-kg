@@ -465,3 +465,59 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   reporte el conteo de elementos de extracción sin verificar, y el control de suite o de shape entra con
   los pedidos de suite ya asignados antes del gate de r2b (`docs/plan_tesis.md:400`). La pareada de P4
   usa la E0 versionada en `f8dedd4`; los manifiestos r2b los actualiza U-REEXT-T0 como su primer paso.
+- **04/10/2026 — etapa nueva P3b: parche del prefijo, del mensaje y del lazo de E3, antes de P4 (decisión
+  de la autora).** Sale de la revisión independiente (`reports/u_revision_libre/reporte.md` y
+  `freno_b1.md`; commit PENDIENTE) y de U-DIAG-VINCULO (`b0ee084`). Va después del commit de P3 y antes
+  de P4, y re-congela el prefijo.
+  Criterio general. Para todo hallazgo que dependa de cómo interpreta el modelo una frase, E1 copia
+  literalmente el marcador y la clasificación la hace el código: una forma nueva que aparezca en las
+  tandas se agrega al código y se re-aplica sobre lo extraído, sin cambiar el prefijo. Los patrones se
+  describen con palabras propias, sin ventanas de cinco palabras de los chunks de prueba
+  (`data/experiment/prompt_r2/p1/nofiltracion.py`). Las propuestas que cambian el esquema no se adoptan:
+  el contenido entra por las válvulas existentes o se declara.
+  En el prefijo:
+  a. Recomendación (1.3): se extrae como Obligacion. E1 copia literalmente el marcador de la modalidad en
+     `otras_propiedades`, la descripción dice que es una recomendación y el código clasifica la modalidad.
+  b. Consecuencia de un incumplimiento (1.4): Obligacion o Potestad del sujeto que la aplica, si el texto
+     lo nombra; si no, omisión con su tramo; nunca Restriccion. E1 copia el marcador en
+     `otras_propiedades`.
+  c. Excepcion (2.8): se conecta con la norma que exceptúa cuando esa norma está en su unidad.
+  d. Predicados (3.2): se definen `regula`, `requiere` y `condiciona`, y se resuelve en el texto la
+     contradicción de `regula` desde Restriccion, sin tocar la matriz.
+  e. Lista dentro de una unidad (1.18): la composición vale también ahí.
+  f. Listas de excepciones (U-DIAG-VINCULO): regla en la composición con el encabezado. Cada ítem es una
+     Excepcion compuesta con la norma del encabezado, sin `exceptua` cuando esa norma está en otra unidad.
+  En el mensaje de E1:
+  g. `es_item` (1.2) busca el encabezado terminado en «:» entre los bloques heredados, no solo en el
+     último, de modo que funcione con o sin el recorte de herencia del punto (h) de C2 de U-R2-CODIGO-2.
+  h. Mini-chunks que empiezan a mitad de oración (2.16), con su par en la verificación del tramo: un
+     tramo que va del título al cuerpo tiene que verificar.
+  En E3:
+  i. La NOTA de las categorías nuevas de omisión (3.4; FRENO A1, punto 8).
+  En `ratchet_e3.py`:
+  j. Los veredictos con `faltantes` como texto que se pueden leer, se leen (2.2).
+  k. El reintento que reemplaza sin comparar (2.14): la etapa presenta las opciones con sus números y la
+     autora decide. No se implementa antes.
+  En `validador_r2.py`:
+  l. `derivar_comunicacion` no da por Comunicación una ley escrita como «A-39» (1.12).
+  Para cada punto, el diseño dice si admite la forma «el modelo copia, el código decide» o si necesita
+  que el modelo decida, y por qué.
+  Dos frenos:
+  - FRENO P3b-1, de diseño: el texto del parche lado a lado con el congelado, el control de
+    no-filtración, el diseño de g a l y las opciones de k. Sin congelar ni implementar. La autora aprueba
+    el texto.
+  - FRENO P3b-2: el prefijo re-congelado con su hash y sus candados, el tool schema sin cambio, los
+    selftests sobre una copia, los sellados reproducidos, y la estimación de costo de la pareada y de
+    U-REEXT-T0 con el prefijo nuevo.
+  Rige solo con la forma «r2». No cambia el esquema ni el tool schema. Escrituras: las ya autorizadas de
+  esta unidad (`prompt_r2b.py` y sus reemplazos, `perfil_e1.py`, `prompt_e3.py` solo en la NOTA,
+  `ratchet_e3.py`, `validador_r2.py`, sus selftests y `data/experiment/prompt_r2/`). No edita
+  `runner_corpus.py`. Comparte `pyd_r2/code/selftest_pyd_r2.py` con C2 de U-R2-CODIGO-2: las dos
+  implementaciones no corren a la vez.
+  P4 cambia así: `cla::5.1.1::intro` se suma a los casos fijos y, con `cla::5.1.1.1`, mide la corrección;
+  y se suma un estrato de listas de excepciones que no se leyeron al escribir la regla, elegidas por
+  lectura y no por el tipo léxico del censo de U-DIAG-VINCULO, para medir si generaliza. P4 no se
+  autoriza hasta el FRENO P3b-2.
+  Fuera de esta etapa: el alcance en títulos que no terminan en «:» (2.7) va por código, no por prompt;
+  el plazo asumido máximo (1.8) es regla de L-ESQ-R2 §1.3 (`4ef7650`) y cambiarla pide una enmienda
+  firmada; el linaje (2.6) y las cuantías en tipos sin `umbrales` (2.10) se declaran como límite.
