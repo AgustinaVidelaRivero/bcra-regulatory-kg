@@ -676,3 +676,19 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   Otra herencia de C2, para U-REEXT-T0: `e1_extractor/selftest_prompt_r2b.py` lee `salida_tanda0_r2/` y
   exige que ninguna unidad lleve `herencia_recortada` (`:118` y `:148-149`). Hoy pasa, 34 de 34. Sobre
   `salida_tanda0_r2b/` ese caso cambia, por `ric::11.2.3`: quedó en el borrador del mandato de U-REEXT-T0.
+- **04/10/2026 — «seguí» de P4 preparado, con agregados de la autora (despacho PENDIENTE, sobre el commit de
+  C2 de U-R2-CODIGO-2).** Agregados a P4 por decisión de la autora del 04/10/2026:
+  - `cap::8.5.1`, `cap::8.5.2` y `cap::8.5.3` entran como casos fijos: son ítems que el punto g del parche
+    reconoce (`data/experiment/prompt_r2/freno_p3b1.md:28-29`);
+  - P4 cuenta las Condicion de ítems sin `condicion_de` en el brazo nuevo, y en cuántas la norma está en
+    otra unidad;
+  - en la pata de E3, cada caso que quede con la marca `copia_nota_e3` se relee con la regla de
+    `data/experiment/prompt_r2/p3b2/regla_lectura_copia_nota.md`.
+  Dos cosas las puse yo en el texto del «seguí», y la autora las confirma o las saca al despachar: el tamaño
+  del estrato de listas de excepciones, 8 unidades, y el reporte de los tokens de salida por carácter de
+  texto propio en el brazo nuevo.
+  Lo demás de P4 queda como en el mandato y sus notas: los cinco casos fijos, `cla::5.1.1::intro`, los
+  chunks de las fichas de F1, el estrato fuera de muestra, la pata de E3, la medición de `MODALIDAD_FORMAS`
+  contra una lectura de muestra y el tope de USD 2. La estimación de P3b-2 cuenta 64 llamadas y no incluye
+  `cla::5.1.1::intro`, los tres de `cap::8.5` ni el estrato de listas de excepciones: P4 proyecta el costo
+  antes de correr y frena si pasa el tope.

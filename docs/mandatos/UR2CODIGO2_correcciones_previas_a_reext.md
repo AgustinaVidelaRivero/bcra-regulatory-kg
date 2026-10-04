@@ -434,3 +434,25 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
      `data/experiment/reextraccion_v2/e3_verificador/cache/e1_reintentos.db` (sha256 `e71380308cbe…`).
   3. La línea del mensaje sobre el punto (f), la lista de renumeraciones sin el padre sintético: aceptada.
   El commit de C2 sigue PENDIENTE: espera el freno corregido.
+- **04/10/2026 — FRENO C2 corregido, verificado; enmienda 5 a L-ESQ-R2 FIRMADA por la autora.** La nota
+  anterior quedó en `bb472b1`. El freno actualizado (`data/experiment/r2_codigo2/freno_c2.md`, sin commit)
+  aplica las correcciones pedidas. Lo reproduje sobre una copia nueva:
+  - `c2_cadena.json`, `c2_sinteticos.json`, `c2_e0.json`, `c2_control_repro.json` y los resúmenes de las dos
+    cadenas sintéticas, byte a byte;
+  - cadena de P3, 27 de 27; cadena de P3b-2, 20 de 20, con doble corrida;
+  - `selftest_pyd_r2`, 385 de 385 (G15, 42 casos), y `selftest_r3`, 109 de 109; los demás selftests, como
+    en el freno.
+  Con el código final, la cadena r2a da `70d51e42…` (diez) y `fa4c1043…` (desarrollo): frente a los sellados
+  cambian los umbrales de 50 y de 46 nodos y las `remite_a` del punto (a).
+  Cifras por regla de la enmienda 5, verificadas contra el detalle de C2 y contra una simulación propia que
+  da los mismos nodos: negación e «igual o superior», 13 y 11; comparador pegado, 26 y 26; «o no», 1 y 1;
+  «más del» y «menos del», 4 y 4. Las filas suman 44 y 42 y los elementos distintos son 42 y 40.
+  Las tres fallas previas de los selftests son las mismas con el código de HEAD y con el de C2 (salida
+  idéntica, salvo la ruta de la copia): `selftest_canal_abierto_e1`, 45 bien y 1 falla; `selftest_gate6`,
+  que en una copia aborta porque busca el `.venv` de la copia; y `selftest_muestra_aristas_obs12`, con una
+  aserción sobre los archivos de su salida.
+  La enmienda 5 quedó FIRMADA por la autora el 04/10/2026
+  (`data/experiment/esq/enmienda5_L-ESQ-R2_negacion_y_comparador_pegado_2026-10-04.md`; commit de la firma
+  PENDIENTE), con las cifras finales y las dos precisiones de C2 sobre su §1.
+  Escrituras de C2 para su commit: 13 archivos modificados, 10 nuevos en `data/experiment/r2_codigo2/` y la
+  carpeta `e0_chunking/salida_tanda0_r2b/`, con 57 archivos. El commit de C2 es de la autora: PENDIENTE.

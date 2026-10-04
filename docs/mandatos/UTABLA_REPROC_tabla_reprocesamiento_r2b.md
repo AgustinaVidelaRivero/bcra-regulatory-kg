@@ -1,4 +1,4 @@
-BORRADOR — PENDIENTE DE FIRMA
+FIRMADO por la autora el 04/10/2026
 
 MANDATO — U-TABLA-REPROC: LA TABLA DE QUÉ OBLIGA A REPROCESAR, ACTUALIZADA AL PERFIL r2b.
 Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
@@ -63,11 +63,15 @@ data/experiment/mantenimiento/, y el scratchpad.
 PROHIBIDO: editar el protocolo, sus enmiendas o cualquier texto firmado; editar la cadena (E0 a E5); escribir
 en las cachés; commitear.
 
-DECISIONES DE LA AUTORA AL FIRMAR.
-1. El nombre de la unidad (propuesta: U-TABLA-REPROC).
-2. Si la unidad espera al cierre de R1 de U-RERESOL-CAT para la fila del catálogo, o la deja declarada como
-   pendiente (propuesta: no espera).
-3. Si el anclaje del selftest espera a las dbs de U-REEXT-T0 (propuesta: no; se corre de nuevo cuando existan).
+DECISIONES DE LA AUTORA AL FIRMAR (04/10/2026).
+1. La unidad se llama U-TABLA-REPROC.
+2. No espera al cierre de R1 de U-RERESOL-CAT: la fila del catálogo queda declarada como pendiente, con su
+   ancla.
+3. El anclaje del selftest no espera a las dbs de U-REEXT-T0: corre sobre las de la tanda 0 con el perfil
+   sellado, declarado, y se corre de nuevo cuando existan las de U-REEXT-T0.
 
 REQUISITOS: los de CLAUDE.md §4 (a a l), con PYTHONDONTWRITEBYTECODE=1 y .venv/bin/python -B; fuentes firmadas
 leídas en el commit de su firma; todo conteo recomputado contra su artefacto; cero nombres de personas.
+
+FIRMA. FIRMADO por la autora el 04/10/2026, con las tres decisiones de arriba. Se despacha sobre el commit de
+C2 de U-R2-CODIGO-2, junto con U-RERESOL-CAT.

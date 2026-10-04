@@ -1,6 +1,6 @@
 # Enmienda 5 a L-ESQ-R2 — la negación de un verbo alcanza al comparador, y el comparador pegado a la cuantía gana sobre el coeficiente
 
-**BORRADOR — PENDIENTE DE FIRMA** · Redactada: 2026-10-04.
+**FIRMADA por la autora** el 04/10/2026 · Redactada: 2026-10-04.
 
 Enmienda con fecha a L-ESQ-R2 (`data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`, FIRMADA en `4ef7650`;
 sha256 del texto firmado `66c4a1b9…`). L-ESQ-R2 no se edita: esta enmienda vive al lado y se lee junto con
@@ -8,9 +8,9 @@ ella, con sus notas posteriores a la firma y con las enmiendas 2 (`5f9a731`), 3 
 Por la regla k de CLAUDE.md §4, toda cita de L-ESQ-R2 es del texto firmado
 (`git show 4ef7650:data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`), con su línea.
 
-La firma queda para cuando C2 de U-R2-CODIGO-2 aplique las correcciones pedidas a su freno
-(`data/experiment/r2_codigo2/freno_c2.md`, sin commit al 04/10/2026). Hasta entonces, los puntos 1.d y 3.b
-describen la regla como tiene que quedar, no el código que hay.
+C2 de U-R2-CODIGO-2 aplicó las correcciones pedidas a su freno (`data/experiment/r2_codigo2/freno_c2.md`,
+sin commit al 04/10/2026). Su código coincide con el §1, y las cifras del §2 son las de ese freno,
+verificadas en su revisión.
 
 ---
 
@@ -42,9 +42,10 @@ commit al 04/10/2026). La negación de un verbo alcanza al comparador más allá
 comparador pegado a la cuantía gana sobre el marcador de coeficiente. Las dos cosas cambian el §1.3
 firmado.
 
-**Lo que se midió**, con el código de C2 sobre las fuentes de los dos grafos r2a (FRENO C2, tabla de
-controles; recomputado en la revisión del freno, con una simulación fuera del repo que re-aplica las reglas
-nodo por nodo y reproduce los 842 y los 758 elementos sellados):
+**Lo que se midió**, con el código de C2 sobre las fuentes de los dos grafos r2a (FRENO C2 corregido,
+`data/experiment/r2_codigo2/salidas/c2_cadena.json`, `umbrales`; recomputado en la revisión del freno, con
+una simulación fuera del repo que re-aplica las reglas nodo por nodo, reproduce los 842 y los 758 elementos
+sellados y da los mismos 50 y 46 nodos que cambian):
 
 - Negación (i): cambian 13 elementos en diez y 11 en desarrollo. Los 13 de diez son los 12 de la revisión
   independiente más `ctacte::1.5.2.12` («no podrán registrar una antigüedad superior a…»): 11 por la
@@ -53,12 +54,13 @@ nodo por nodo y reproduce los 842 y los 758 elementos sellados):
   (`salida_tanda0_r2b/`), no solo sobre lo extraído: la negación nueva invierte 12 cuantías. Leídas las 12,
   todas son cotas negadas («sin haber incurrido en atrasos superiores a 31 días», «en ningún caso el
   registro del cheque podrá demorarse más de 15 días corridos»).
-- Comparador pegado (j): 25 elementos en diez y 25 en desarrollo dejan `coeficiente`. De los 28 de la
+- Comparador pegado (j): 26 elementos en diez y 26 en desarrollo dejan `coeficiente`. De los 28 de la
   revisión independiente, el FRENO C2 atribuye 2 a dobles conteos del script de esa revisión (NO VERIFICADO:
-  ese script no está versionado) y 1 sigue en coeficiente: «más del 5%» (`cap::3.1.11.2`), porque «más del»
-  no estaba entre las formas. Leídos los 25 de diez, 24 quedan bien y 1 queda falso, el de «o no».
+  ese script no está versionado). Entre los 26 están «más del 5%» (`cap::3.1.11.2`), que deja `coeficiente`
+  por la forma del punto 3.b, y el «3 %» de `cap::6.2.2.3`, que corrige el punto 1.d. Leídos los 26 de diez,
+  25 quedan bien y el de `cap::6.2.2.3` queda con el límite del §3.
 - «O no»: en `cap::6.2.2.3`, «represente o no un rendimiento menor a 3 % anual» pasaba de `coeficiente` a
-  mínimo inclusivo, porque el «no» de «o no» está a menos de tres palabras de «menor a». En el texto propio
+  mínimo inclusivo con el punto 2 solo, porque el «no» de «o no» está a menos de tres palabras de «menor a». En el texto propio
   de las 2.439 unidades de la E0 de la tanda 0 (`salida_tanda0_r2b/`), «o no» delante de un comparador
   aparece dos veces, las dos en `cap::6.2.2.3`.
 - «Más del» y «menos del»: en el mismo texto, 7 cuantías llevan una de las dos formas pegada y quedaban sin
@@ -76,7 +78,8 @@ nodo por nodo y reproduce los 842 y los 758 elementos sellados):
       - «ningún» y «ninguna», siempre.
       Y solo si entre el negador y el comparador, dentro de la cláusula, no hay una coma, otra forma de
       comparación ni una palabra de corte: «y», «e», «o», «u», «ni», «cuando», «si», «cuyo» y sus formas,
-      «donde», «aunque», «pero», «salvo», «excepto», «mientras» y «siempre».
+      «donde», «aunque», «pero», «salvo», «excepto», «mientras» y «siempre». «Otra forma de comparación» es
+      una simple o una compuesta; no cuentan la adyacencia de «mínimo» y «máximo» ni «o más».
    c. Un «no» que no niega un verbo («sector privado no financiero», «no residentes») no alcanza más allá de
       las tres palabras.
    d. «O no» no es una negación. Un «no» precedido por «o» («sea o no», «haya o no», «represente o no»,
@@ -88,7 +91,9 @@ nodo por nodo y reproduce los 842 y los 758 elementos sellados):
    cuantía; después la negación, después las compuestas y por último las simples».
    - «Pegado» es una forma simple, compuesta o de adyacencia que termina justo antes de la cuantía, con solo
      artículos o «de», «del», «a», «al» o «en» en el medio; o una forma pospuesta que va inmediatamente
-     después de la cuantía.
+     después de la cuantía. «O más» y «o menos» cuentan también con un paréntesis en el medio. Y cuentan los
+     marcadores que la detección de la cuantía exige o incluye: el de un ordinal («hasta el», «dentro del»,
+     «a más tardar») y el «o más» que va entre el paréntesis y la unidad.
    - Con un comparador pegado, la cuantía sigue las demás reglas, en su orden. El marcador de coeficiente
      no se le aplica, venga del tramo, de la descripción o del título.
 3. **Formas que se suman**, con el sentido de las que ya están:
@@ -99,7 +104,8 @@ nodo por nodo y reproduce los 842 y los 758 elementos sellados):
 4. **Desde cuándo rige.** Desde el commit de C2, para toda fase. Los grafos r2a sellados no se tocan. La
    cadena r2a, corrida con el código de C2, deja de dar los sha256 sellados: cambian solo los elementos de
    umbral que esta enmienda y los puntos (c) e (i) a (k) de C2 declaran, y las `remite_a` de su punto (a).
-   La autora lo aceptó el 04/10/2026. Los dos grafos r2a sellados (`99fe2bfa…` y `93a7af72…`) siguen en el
+   Con el código de C2 da `70d51e42…` en diez y `fa4c1043…` en desarrollo: cambian los umbrales de 50 y de
+   46 nodos. La autora lo aceptó el 04/10/2026. Los dos grafos r2a sellados (`99fe2bfa…` y `93a7af72…`) siguen en el
    repo y se reproducen con el código de `f8dedd4`, el commit que los selló: la tesis cita sus cifras con ese
    commit. Reproducción hecha el 04/10/2026 sobre una copia de ese commit, byte a byte en los dos. Además
    de lo versionado pide dos entradas que el repo no versiona: los diez PDF, con el sha256 del manifiesto, y
@@ -112,12 +118,14 @@ Con KG-Tanda0-Diez-r2a y KG-Tanda0-Desarrollo-r2a como referencia:
 | Regla | Diez | Desarrollo | Qué pasa |
 |---|--:|--:|---|
 | 1.a a 1.c y 3.a, negación e «igual o superior» | 13 | 11 | salen de un sentido invertido o de un borde equivocado |
-| 2, comparador pegado | 25 | 25 | dejan `coeficiente` |
-| 1.d, «o no» | 1 | 1 | `cap::6.2.2.3`, «3 %»: de mínimo inclusivo a máximo estricto («menor a 3 %») |
+| 2, comparador pegado | 26 | 26 | dejan `coeficiente` |
+| 1.d, «o no» | 1 | 1 | `cap::6.2.2.3`, «3 %»: queda máximo estricto («menor a 3 %»); sin esta regla quedaba mínimo inclusivo |
 | 3.b, «más del» y «menos del» | 4 | 4 | 3 dejan `no_determinada` y 1 deja `coeficiente` (`cap::3.1.11.2`) |
 
-Las dos primeras filas son del FRENO C2. Las dos últimas son de la simulación de la revisión, con las
-correcciones pedidas: C2 las vuelve a medir al aplicarlas, y esas cifras son las que valen para la firma.
+Son las cifras del FRENO C2 corregido (`c2_cadena.json`, `umbrales.elementos_por_regla`), verificadas en su
+revisión. Las filas suman 44 y 42, y los elementos distintos son 42 y 40, porque dos cuentan en dos filas:
+`cap::6.2.2.3`, en la del comparador pegado y en la de «o no», y `cap::3.1.11.2`, en la del comparador pegado
+y en la de «más del».
 Los 4 de la última fila son `cla::6.3.2` («no menos del 50%», a mínimo inclusivo), `cap::8.4.2.1` («menos
 del 10 %») y `cla::6.5.4.7` («menos del 20 %»), a máximo estricto, y `cap::3.1.11.2` («más del 5%»), a
 mínimo estricto.
@@ -143,8 +151,8 @@ las correcciones pedidas en la revisión de su freno:
 - `pyd_r2/code/reglas_comparacion.py`: `NEGADORES`, `NEGACION_BARRERAS`, `AUXILIARES_NEGADOS`,
   `_niega_un_verbo` y `_negada`, para el punto 1; la función `pegado` de `fijar_comparacion`, para el punto
   2; `_IGUAL_O` y las formas `mas_de` y `menos_de` de `SIMPLES`, para el punto 3;
-- `pyd_r2/code/selftest_pyd_r2.py`, grupo G15: un caso por regla, con `cap::6.2.2.3` como caso de control
-  de «o no»;
+- `pyd_r2/code/selftest_pyd_r2.py`, grupo G15 (42 casos; el selftest da 385 de 385): un caso por regla, con
+  `cap::6.2.2.3` como caso de control de «o no»;
 - control: la lista de cada elemento que cambia en los dos grafos r2a, por regla.
 
 ## 5. Qué no cambia
@@ -158,4 +166,5 @@ las correcciones pedidas en la revisión de su freno:
 
 ## Firma
 
-PENDIENTE. La autora firma cuando C2 aplique las correcciones.
+FIRMADA por la autora el 04/10/2026. Rige desde esta firma. El código que la aplica es el de C2 de
+U-R2-CODIGO-2, cuyo commit está PENDIENTE al firmarse.
