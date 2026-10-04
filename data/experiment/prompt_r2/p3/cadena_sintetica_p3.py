@@ -280,8 +280,10 @@ def main() -> int:
                    == "Operacion"), {})
     check("otras_propiedades de la relación → properties_no_definidas en la relación validada",
           rel_cond.get("properties_no_definidas") == {"alcance": "repago"})
-    check("LÍMITE (E2 no copia properties_no_definidas a la arista: e2_lib.MARCAS_ARISTA_R2, fuera de las "
-          "escrituras): la arista no las tiene", "properties_no_definidas" not in arista)
+    # Era un LÍMITE de P3 (E2 no copiaba properties_no_definidas a la arista); lo levanta P3b-2 (c8c3970): en la
+    # fase r2b, e2_lib.ensamblar_r2 las pasa de la relación a la arista.
+    check("properties_no_definidas de la relación → la arista (fase r2b de e2_lib.ensamblar_r2, P3b-2)",
+          arista.get("properties_no_definidas") == {"alcance": "repago"})
 
     print("[3] shapes (fase r2b) y suite (LN-3, LN-7) sobre el grafo sintético")
     kg = sal / "kg_sintetico_p3.json"
