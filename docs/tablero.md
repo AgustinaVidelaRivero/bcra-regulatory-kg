@@ -300,8 +300,8 @@ registrados en archivos):
 
 ## 3. Backlog de nodos
 
-Fuente: `data/backlog/backlog.jsonl` (71 líneas, 27 ids únicos; sin eventos
-nuevos desde el commit `24432a4`, 2026-08-07). Regla del estado efectivo por
+Fuente: `data/backlog/backlog.jsonl` (92 líneas, 39 ids únicos al 04/10/2026; el
+último commit que tocó el archivo es `0061244`). Regla del estado efectivo por
 id: se recorre el archivo en orden y (i) todo evento con la clave `estado` no
 vacía fija el estado; (ii) la clave `estado_retriage` — propia de los eventos
 `retriage_v3` y DISTINTA de `estado` — fija el estado solo cuando vale
@@ -309,19 +309,19 @@ vacía fija el estado; (ii) la clave `estado_retriage` — propia de los eventos
 (iii) los eventos sin ninguna de las dos claves (p. ej. `nota`) tampoco
 modifican. Comando que implementa la regla tal cual y devuelve la tabla:
 `python3 -c "import json,collections; est={}; [est.__setitem__(o['id'], o['estado'] if o.get('estado') else 'resuelta_por_v3') for o in map(json.loads, open('data/backlog/backlog.jsonl')) if o.get('estado') or o.get('estado_retriage')=='resuelta_por_v3']; print(len(est), dict(collections.Counter(est.values())))"`
-→ `27 {'resuelta_por_v3': 2, 'verificado': 10, 'triaged': 15}` (recontado en
-esta actualización: idéntico al tablero anterior).
+→ `39 {'resuelta_por_v3': 2, 'verificado': 12, 'triaged': 24, 'nuevo': 1}` (recontado
+el 04/10/2026; hasta entonces este tablero decía 27 ids: 2, 10 y 15).
 
 | Estado | Cantidad | Ids |
 |---|---|---|
-| `verificado` | 10 | BKL-0003..0007, 0017, 0019, 0023, 0026, 0027 |
+| `verificado` | 12 | BKL-0003..0007, 0017, 0019, 0023, 0026..0029 |
 | `resuelta_por_v3` (retriage) | 2 | BKL-0001, BKL-0002 |
-| `triaged` vigentes | 15 | BKL-0008..0016, 0018, 0020..0022, 0024, 0025 |
+| `triaged` vigentes | 24 | BKL-0008..0016, 0018, 0020..0022, 0024, 0025, 0030..0037, 0039; y `nuevo`, 1: BKL-0038 |
 
 Sin aplicaciones nuevas en el período: la semana se dedicó a la
 re-extracción y a EV2. La priorización de las 15 `triaged` queda pendiente
 de laudo; su tratamiento previsto pasa del parche manual a la corrección en
-el pipeline (§5).
+el pipeline (§5). **[04/10/2026]** Con 39 entradas, el destino de cada una y el laudo de B2.4, que se firma antes de la tanda 1, están en el plan (`docs/plan_tesis.md:380`). En BKL-0026 y BKL-0027, `verificado` quiere decir defecto confirmado; y BKL-0003, 0004, 0007, 0017, 0019 y 0023, verificados sobre KG-Refinado, persisten en los grafos de la generación 3 según la suite.
 
 **Intake de la app** (`data/backlog/intake/cola_intake.jsonl`; el archivo es
 un log de eventos por caso, se cuenta por caso y no por línea):

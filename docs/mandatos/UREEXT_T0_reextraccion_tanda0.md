@@ -68,10 +68,15 @@ T1 — PREPARACIÓN EN SECO Y SUITE (USD 0).
    e. el control que exige cero elementos de extracción sin verificar, con la especificación del FRENO P3 de
       U-PROMPT-R2 (data/experiment/prompt_r2/freno_p3.md, A3, seis puntos; `4aa92c7`). Lee el conteo del
       reporte del ensamblado r2b (punto s de C2). La cola humana es la excepción explícita y se cuenta aparte.
+   f. un test por punto para `BKL-0001` (`cap::2.8.3.3`) y para `BKL-0002` (`ext::3.5.3`), como T1 lo es de
+      `BKL-0024`: el contenido que tiene que estar sale del expediente del retriage
+      (data/backlog/expediente_retriage_v3.md, E1 y E2). Decisión de la autora del 04/10/2026.
    Los selftests de la suite y de las shapes corren sobre una copia. En las entradas ya selladas de la
    fixture cambian solo T6 y E4-b.
 5. Entrada de la suite para los grafos r2b: el estado esperado, ítem por ítem, propuesto para que la autora
-   lo selle ANTES del gate de T3 (laudo de r2, §3.1, punto 2).
+   lo selle ANTES del gate de T3 (laudo de r2, §3.1, punto 2). `BKL-0004` (la enumeración del 6.5 de
+   Clasificación) persiste en r2a sin corrección dirigida: si persiste en r2b, entra al estado esperado como
+   falla conocida, con su evidencia.
 6. Las 15 preguntas de control: un script versionado que repite el procedimiento de la revisión independiente
    (reports/u_revision_libre/freno_a.md:70-72; `54f57cd`). Primero reproduce su resultado sobre
    KG-Tanda0-Diez-r2a: 8 bien, 2 en parte, 3 con algo falso y 2 sin respuesta. Si no lo reproduce, se declara
@@ -127,6 +132,23 @@ T3 — ENSAMBLADOS, REGISTRO Y GATE DE r2b (USD 0).
       `properties_no_definidas`, contadas aparte de las demás;
    l. los mini-chunks que empiezan a mitad de oración con un tramo de dos segmentos, contados: la
       verificación en orden de lectura cubre solo el tramo simple (límite declarado en el FRENO P3b-2).
+   Controles del backlog (decisión de la autora del 04/10/2026, tras el recuento de las 39 entradas):
+   m. el cierre de `BKL-0032`, `BKL-0033` y `BKL-0036`, cada uno con su condición de cierre leída contra su
+      chunk: `docvig::3.3::cierre` (polaridad de la excepción), `ctacte::7.3.1.5` (ninguna Obligacion de la
+      baja en la Central con `aplica_a` hacia el banco) y `lingob::2.3.2.2` (la Operacion conserva el
+      calificador «en condiciones más favorables…»);
+   n. `BKL-0038`: el conteo de las aristas `limita` y `prohibe` por `coherencia_tipo_predicado` en los dos
+      grafos r2b (en r2a, 4 `limita` incoherentes en cada uno), y la lectura de los 3 chunks de esas 4
+      aristas, `cap::6.2.1.4`, `ext::3.5.6.6` y `cap::4.3.3.1`, que dice en cada una si está mal el tipo o el
+      predicado;
+   o. los ocho patrones de asignación de sujeto, `BKL-0009` a `BKL-0016`, leídos caso por caso sobre el grafo
+      r2b contra sus chunks (data/backlog/expediente_retriage_v3.md, T1 a T8; el remedio de cada uno, en
+      data/experiment/prompt_r2/diseno_prefijo_r2.md, §6.2). Es el insumo del laudo de B2.4;
+   p. `BKL-0028`: la re-adjudicación del miembro del rol de ctacor (nota del 01/10/2026 en el backlog);
+   q. `BKL-0021`: si el registro de no mapeados de r2b trae la mención de la entidad nominada por el
+      importador; si no la trae, se cierra como «no reaparece» en el laudo de B2.4;
+   r. `BKL-0031`: el detector de casi duplicados (data/experiment/r2_codigo/r4_detector_casi_duplicados.py)
+      corrido sobre los dos grafos r2b, como dato para la revisión de fusionados posterior a esta unidad.
 4. Registro de los dos grafos en data/experiment/neo4j/grafos.py y carga en Neo4j local (precedente:
    `cf6ca42`). Se controla que la marca de la cola humana de los nodos llega.
 FRENO T3. La autora sella los grafos.
