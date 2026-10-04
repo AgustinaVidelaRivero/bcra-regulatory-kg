@@ -452,3 +452,18 @@ El texto firmado no se edita; estas notas se leen junto con él.
   Aritmética de la regla, para leerla sin sorpresa. Con 20 unidades leídas, el límite superior es
   16,1 % con 0 errores y 23,6 % con 1: la regla se cumple solo con 0 errores. Con menos de 16 unidades
   leídas, el límite superior pasa el 20 % aun con 0 errores (0 de 15 da 20,4 %).
+- **04/10/2026 — la nota anterior sobre la cola humana queda reemplazada por una enmienda firmada (decisión de
+  la autora).** La nota del 04/10/2026 al §1 queda sin efecto: agregaba una obligación de cada cierre y una
+  regla con umbral a un texto firmado, y eso va por enmienda. Rige
+  `docs/enmienda_protocolo_entre_tandas_2026-10-04_cola_humana.md`, FIRMADA por la autora el 04/10/2026. Cambia
+  la muestra (30 unidades) y los umbrales (25 % sobre el límite superior de Wilson con muestra; 10 % sobre la
+  tasa observada si se lee la cola entera) y fija qué es una unidad con error.
+- **04/10/2026 — crecimiento del catálogo de sujetos durante el escalado (decisión de la autora).** Antes del
+  primer crecimiento del catálogo durante el escalado tiene que existir, con su prueba, el script que toma el
+  catálogo nuevo, re-resuelve el registro de sujetos en cuarentena, rehace el grafo desde el crudo guardado
+  (USD 0) y lo verifica. Hoy no existe: `r1_e4.reresolver_registro` (`corpus_v2/r1_e4.py:469-489`) solo se usa
+  en la suite (LN-6, `scripts/regression_kg.py:1766`) y en un selftest, y
+  `data/experiment/catalogo_unico/code/reresolver_tanda0.py` calcula la re-resolución sin aplicarla. El cambio
+  es el de la fila F13 de la tabla de reprocesamiento
+  (`data/experiment/mantenimiento/tabla_reprocesamiento.md:97`): E4, el esqueleto y lo que sigue del
+  ensamblado, en código. La unidad que lo construye se registra en el plan (`docs/plan_tesis.md:402`).

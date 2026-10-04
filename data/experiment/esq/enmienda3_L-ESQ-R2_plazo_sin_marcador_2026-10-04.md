@@ -1,6 +1,6 @@
 # Enmienda 3 a L-ESQ-R2 — el plazo sin marcador de comparación queda `no_determinada`
 
-**BORRADOR — PENDIENTE DE FIRMA** · Redactada: 2026-10-04.
+**FIRMADA por la autora** el 04/10/2026 · Redactada: 2026-10-04.
 
 Enmienda con fecha a L-ESQ-R2 (`data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`, FIRMADA en `4ef7650`;
 sha256 del texto firmado `66c4a1b9…`). L-ESQ-R2 no se edita: esta enmienda vive al lado y se lee junto con
@@ -35,6 +35,13 @@ plazo sin marcador recibe `maximo_inclusivo`, la regla `sin_marcador_plazo` y la
   quedaron sin clasificar (176 menos 63 y 16). En su lectura de 12 sorteados con semilla 99, 2 son un máximo
   (`freno_a.md:20`). Estas cifras son de esa unidad, NO VERIFICADAS: no las recomputé, y el script de los
   patrones no está versionado.
+- Mi lectura, aproximada y con otra regla: las palabras que anteceden a la cuantía en el texto propio de la
+  unidad (`data/experiment/esq/code/lectura_plazos_sin_marcador_enmienda3.py`). De los 176, 28 tienen un
+  antecedente que no es un máximo («últimos», «transcurrido», «períodos de»), 40 un antecedente compatible
+  con un máximo, 89 quedan sin clasificar y en 19 el tramo no está en el texto propio de la unidad. Entre
+  los 40 hay máximos falsos: «luego del plazo de…» (`ext::14.1.1`, tres elementos) y ventanas hacia atrás
+  («emitidos en los 30 días…», `ctacte::6.2.5`). No reproduce las cifras de la revisión independiente;
+  coincide en el sentido.
 - Dos casos, verificables en el grafo y en la E0. En `ext::14.1.1`, «luego del plazo de 2 (dos) años» queda
   como `maximo_inclusivo`: el texto dice lo que pasa después del plazo, no fija un tope. En `polcre::7.1.2`,
   «durante los últimos 90 días corridos» es una ventana hacia atrás, y también queda como máximo.
@@ -56,7 +63,9 @@ valor y la unidad quedan en el elemento.
    sigan validando.
 4. En el §1.5, el caso «un plazo, con `comparacion_asumida`» (`:390`) pasa a ser «un plazo sin marcador, con
    `no_determinada`». El conteo aparte del `:397` sigue: el de `comparacion_asumida` da 0 desde r2b.
-5. Rige desde r2b. Los grafos r2a sellados no se tocan.
+5. El plazo sin marcador conserva su nombre de regla propio, `sin_marcador_plazo`, para contarlo aparte de las
+   demás cuantías sin marcador, que llevan la regla `sin_marcador`.
+6. Rige desde r2b. Los grafos r2a sellados no se tocan.
 
 ## 2. Efectos declarados
 
@@ -71,11 +80,11 @@ valor y la unidad quedan en el elemento.
 
 ## 3. Implementación
 
-Si esta enmienda se firma, entra como punto (m) de C2 de U-R2-CODIGO-2
+Entra como punto (m) de C2 de U-R2-CODIGO-2
 (`docs/mandatos/UR2CODIGO2_correcciones_previas_a_reext.md`):
 
 - `pyd_r2/code/reglas_comparacion.py:443-447` y su docstring (`:44-45`): el plazo sin marcador recibe
-  `no_determinada`, sin la marca;
+  `no_determinada`, con la regla `sin_marcador_plazo` y sin la marca;
 - `pyd_r2/code/selftest_pyd_r2.py`: los cuatro casos que hoy esperan la marca en un plazo sin marcador
   (`grep -n comparacion_asumida`; en `54f57cd`, `:458`, `:477-479`, `:555-556` y `:708`) pasan a esperar
   `no_determinada`;
@@ -92,9 +101,10 @@ Si esta enmienda se firma, entra como punto (m) de C2 de U-R2-CODIGO-2
 
 ## 5. Decisión de la autora al firmar
 
-1. Si el plazo sin marcador conserva un nombre de regla propio (`sin_marcador_plazo`), para seguir
-   contándolo aparte de las demás cuantías sin marcador (propuesta: sí).
+1. El plazo sin marcador conserva un nombre de regla propio, `sin_marcador_plazo` (§1, punto 5).
+2. Las cifras de la revisión independiente (63, 16 y 97) quedan citadas como de esa unidad, no verificadas,
+   junto con la lectura del §0.
 
 ## Firma
 
-PENDIENTE.
+FIRMADA por la autora el 04/10/2026. Rige desde esta firma.

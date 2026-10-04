@@ -275,3 +275,58 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     U-SEG-OFICIAL.
   Orden: C2 arranca sobre el commit de P3 de U-PROMPT-R2. Comparte `pyd_r2/code/selftest_pyd_r2.py` con
   la etapa P3b de esa unidad: las dos implementaciones no corren a la vez.
+- **04/10/2026 — puntos (m) a (r): agregados a C2 (decisiones de la autora).** Salen de la enmienda 3 a
+  L-ESQ-R2, del FRENO P3 de U-PROMPT-R2 (`data/experiment/prompt_r2/freno_p3.md`, §5; commit de P3 PENDIENTE)
+  y de la verificación de la sección 4.5 de la tesis. Rigen solo con el perfil r2 y la fase r2b: los grafos
+  r2a sellados se siguen reproduciendo byte a byte.
+  m. Plazo sin marcador (enmienda 3 a L-ESQ-R2,
+     `data/experiment/esq/enmienda3_L-ESQ-R2_plazo_sin_marcador_2026-10-04.md`, FIRMADA por la autora el
+     04/10/2026; commit de la firma PENDIENTE). En `pyd_r2/code/reglas_comparacion.py:443-447`, el plazo sin
+     marcador recibe `no_determinada`, conserva la regla `sin_marcador_plazo` y no lleva la marca
+     `comparacion_asumida`; el docstring (`:44-45`) se alinea. En `selftest_pyd_r2.py`, los cuatro casos que
+     hoy esperan la marca pasan a esperar `no_determinada`. Referencia: 176 elementos en diez y 157 en
+     desarrollo.
+  n. Versión y materia del TextoOrdenado (FRENO P3, §5.1). La decisión 16 del mandato de U-PROMPT-R2 dice
+     que se derivan «como ya hace la canonización de E4», pero E4 deriva solo el archivo
+     (`corpus_v2/r1_e4.py:228`).
+     - e0-r2 (`e0_chunking/e0_lib.py`, solo en esa versión): antes de recortar el pie de cada página
+       (`separar_encabezado_pie`, `pie_desde_version`), guarda como metadato de la salida la versión, la
+       Comunicación y la fecha que trae el pie, por página.
+     - El ensamblado r2b (`tanda0/code/ensamblar_tanda0.py`) pone en el TextoOrdenado la versión vigente y la
+       materia. La materia sale del título del inventario, que el ensamblado ya lee
+       (`r1_referencias.titulos_de_inventario`, `ensamblar_tanda0.py:588`).
+     - El diseño se presenta en el freno de diseño con el que empieza C2, junto con (h), sin implementar. Dice
+       cómo se define la versión vigente de un TO a partir de los pies de sus páginas, dónde se guarda el
+       metadato y qué pasa con las páginas sin pie y con los pies que no se leen.
+     - Condiciones: el texto de las unidades y el mensaje de E1 no cambian; los `chunks_<to>.json` de los
+       otros 9 TOs siguen byte a byte iguales a los de `salida_tanda0_r2/` (el metadato va en un archivo
+       propio por TO, o el diseño propone otra forma que conserve ese control).
+     - Medida de la revisión sobre los diez TOs (736 páginas): 608 traen un pie que se lee, 119 no traen pie
+       (carátula, índice y tabla de origen) y en 9 el pie no se lee (cla 5, lingob 2 y polcre 2). La
+       Comunicación del pie más reciente coincide con la «Última comunicación incorporada» de la carátula en
+       los 8 TOs donde la carátula se lee; ric no tiene carátula y la de pagjub trae un carácter sin mapear.
+  o. Límite relativo y cuantía en la misma entidad (FRENO P3, §5.3). `llenar_umbrales_r2` reemplaza la lista
+     (`ensamblar_tanda0.py:750-751`) y el elemento relativo que deja `validador_r2` se pierde. La lista se
+     completa, no se reemplaza. Sobre los dos grafos r2a no cambia ningún elemento, porque el límite relativo
+     existe solo con la forma «r2»: la prueba es un caso sintético con los dos elementos en la misma entidad.
+  p. Omisiones en el ensamblado (FRENO P3, §5.4). El ensamblado r2b escribe `omisiones.jsonl` en su salida,
+     con la categoría, el tramo y la nota de cada omisión, y con `source` y `destino` cuando los trae: es
+     donde lo lee LN-7 (`scripts/regression_kg.py:1777-1785`), que hoy da no_aplicable. La suite no se edita.
+  q. Aristas derivadas que tocan un nodo que solo viene de la cola humana (FRENO P3, §5.6). El ensamblado
+     marca la cola (`ensamblar_tanda0.py:829`) antes de derivar `remite_a` (`:881`) y `establecida_en`
+     (`:892`), y esas aristas quedan sin la marca: 788 en diez y 763 en desarrollo. El ensamblado r2b las
+     cuenta aparte, después de derivar: por predicado, en su reporte, con la lista en un archivo de la salida.
+     La marca en la arista no entra a C2: `AristaR2` admite en `remite_a` solo `alcance`, `destino` y
+     `evidencia`, y en la `establecida_en` derivada ninguna propiedad (`pyd_r2/code/modelos_r2.py`); llevarla
+     pide cambiar ese invariante y es decisión de la autora.
+  r. Base de un umbral con el resolvedor de `remite_a` (L-ESQ-R2 §1.3 (c), `4ef7650:254-255`: la base se
+     resuelve «por el mecanismo de remisiones»). `resolver_base` (`ensamblar_tanda0.py:640-660`) usa hoy
+     `detectar_menciones`, el detector de r1, sin las reglas (a) a (i) de `remite_a`. Pasa a usar el mismo
+     resolvedor que `remite_a` (`r1_referencias.detectar_menciones_r2`). Censo: las bases que cambian en los
+     dos grafos r2a. Hoy, en diez, 15 resuelven por remisión, 4 por definición y 141 no resuelven; en
+     desarrollo, 15, 3 y 136. Caso de control: la base de `cla::5.1.1.1` («importe de referencia establecido
+     en el punto 3.7») sigue resolviendo a `cla::3.7`.
+  Control de (m) a (r), como en (c): la lista de cada elemento que cambia en los dos grafos r2a, y ningún
+  elemento hoy correcto cambia. En (o) y (p) esa lista es vacía y la prueba es sintética.
+  Escrituras: las ya autorizadas de C2. Ningún punto suma un archivo nuevo de código.
+  Orden: no cambia. C2 arranca sobre el commit de P3, y su implementación no corre a la vez que la de P3b.

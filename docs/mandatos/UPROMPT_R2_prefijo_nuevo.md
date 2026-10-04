@@ -555,3 +555,22 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
        es el campo `todo` que el ratchet escribe en cada registro de `cola_humana.jsonl`. Por eso el
        cambio rige solo con la forma «r2», y las salidas selladas se siguen reproduciendo byte a byte.
        No cambia qué unidades entran al grafo.
+- **04/10/2026 — P3b: las `otras_propiedades` de la relación llegan a la arista (decisión de la autora, tras
+  el FRENO P3, §5.2).** E2 copia a la arista solo `MARCAS_ARISTA_R2` (`e2_reduce/e2_lib.py:801-803`), y las
+  `otras_propiedades` de la relación, que el validador deja en `properties_no_definidas`, no llegan. P3b lo
+  corrige. Se suma `e2_reduce/e2_lib.py` a las escrituras de P3b, solo para ese cambio y solo en el camino del
+  perfil r2 (`:793-797`), con una condición: los perfiles existentes dan byte a byte lo mismo, con los cinco
+  ensamblados sellados reproducidos. Levanta, solo para ese cambio, la prohibición de editar E2 del texto
+  firmado (`:292-295`).
+  Verificado sobre una copia: las `otras_propiedades` de una entidad sí llegan al nodo, como
+  `properties_no_definidas`, en el grafo del E2 r2 y en el ensamblado (variante de `cadena_sintetica_p3.py`
+  con una entidad con `otras_propiedades`). Los marcadores de modalidad de los puntos a y b van en la entidad:
+  no dependen de este cambio.
+  A tratar en el diseño (FRENO P3b-1): `properties_no_definidas` es una clave del nodo fuera de `properties`,
+  y la vista que lee el agente lleva solo `properties` (`data/experiment/tanda0/code/comun_tanda0.py:78-94`).
+  El diseño dice dónde queda la modalidad que clasifica el código para que el agente la vea, o declara que
+  su exportación va con U-NAV-DISENO.
+- **04/10/2026 — reparto de lo que P3 dejó para decidir (decisiones de la autora; FRENO P3, §5).** El punto 2
+  va a P3b (nota anterior). Los puntos 1, 3, 4 y 6 van a C2 de U-R2-CODIGO-2, como sus puntos (n), (o), (p) y
+  (q) (`docs/mandatos/UR2CODIGO2_correcciones_previas_a_reext.md`, nota del 04/10/2026). El punto 5 queda como
+  está: se cuenta según dónde se ancla la entidad.

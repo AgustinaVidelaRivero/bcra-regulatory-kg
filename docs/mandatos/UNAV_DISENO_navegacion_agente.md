@@ -31,7 +31,10 @@ CONTEXTO, con sus anclas.
     no muestra (harness.py:110-124; reports/u_umbral/u1_mediciones.json);
   - la forma B del vínculo entre unidades (regla en una unidad hermana, sin cita; 1 de 38);
   - el volumen de `remite_a`: 14.000 aristas en KG-Tanda0-Diez-r2a, y `alcance` no se exporta a Neo4j
-    (enmienda 2 de L-ESQ-R2, §7);
+    (enmienda 2 de L-ESQ-R2, §7). Una cita da una arista por cada nodo de origen y cada nodo de contenido
+    del punto citado (`corpus_v2/r1_referencias.py:1087-1089`; enmienda 2, `5f9a731:127`): en
+    KG-Tanda0-Desarrollo-r2a, 1.382 citas dan 12.833 aristas, y en diez, 1.547 dan 14.000
+    (`reporte_ensamblado_r2.json`, clave `remite_a`);
   - el alcance que fija la cadena de títulos cuando los títulos no terminan en «:» (hallazgo 2.7 de
     U-REVISION-LIBRE, reports/u_revision_libre/freno_a1.md, punto 3; `54f57cd`). Las unidades
     `docvig::2.1.1.1`, `2.1.2.1` y `2.2.1.1` listan «Pasaporte del país de origen» bajo el mismo título
@@ -44,7 +47,10 @@ CONTEXTO, con sus anclas.
     docs/plan_tesis.md:363). En los nodos, el cargador exporta la marca y `ver_nodo` la devuelve
     (data/experiment/neo4j/cargar_kg.py:93-114; neo4j_index.py:206-223). En las aristas no llega: el
     cargador exporta solo `orden` y `provenances_json` (cargar_kg.py:153-174). En KG-Tanda0-Diez-r2a
-    son 291 nodos y 466 aristas con la marca de la cola, y 697 aristas con `no_verificada_e3`.
+    son 291 nodos y 466 aristas con la marca de la cola, y 697 aristas con `no_verificada_e3`. Las claves
+    que quedan fuera de `properties` (`properties_no_definidas` del nodo y `no_verificada_e3` de la
+    arista) no pasan de la vista que arma el grafo para el agente
+    (data/experiment/tanda0/code/comun_tanda0.py:78-94).
 - «Cierre léxico»: NO ENCONTRADO con ese nombre en el plan, el checklist, el tablero ni el protocolo
   (grep del 03/10/2026). N1 lo define con su evidencia o lo descarta.
 - El patrón «jueces unánimes, falla del grafo; jueces dispersos, falla de navegación» no tiene ancla en el
@@ -75,6 +81,11 @@ N1. DIAGNÓSTICO SOBRE LAS TRAZAS QUE YA EXISTEN.
   habría puesto el nodo a la vista (consulta fuera de línea contra el grafo de la celda). Es una cota
   superior, y se declara así.
 - Conteo de los patrones de la fila A1.8 por clase, y de las respuestas que llegaron al tope de llamadas.
+- Efecto de la multiplicación de las aristas de remisión sobre la navegación (decisión de la autora del
+  04/10/2026): cuántas llamadas a `ver_vecinos` devuelven aristas de remisión, cuántas de esas aristas van
+  al mismo punto citado, y cuántas respuestas llegan por ellas al tope de vecinos (`limite` 40) o al de
+  llamadas. Las trazas que existen son de grafos r1, donde la remisión es `referencia` (4.836 aristas en
+  KG-Tanda0-Diez-r1): se mide sobre ellas y se declara. La medida sobre `remite_a` se repite en la parte 2.
 FRENO N1.
 
 N2. DISEÑO DE LAS HERRAMIENTAS CANDIDATAS (documento; no se implementa en la parte 1).
@@ -86,6 +97,8 @@ sistema por fragmentos o es propia de la navegación por aristas (diferencia dec
    unidad; búsqueda por número de punto. Mismo analizador en los dos brazos, o la diferencia declarada.
 2. Recorrido por predicado: vecinos filtrados por predicado y dirección (`remite_a` con su `alcance`,
    `condicion_de`, `limita`, `exceptua` y `exceptua_obligacion`). Declarar qué exige exportar `alcance`.
+   Al seguir `remite_a`, la salida agrupa los nodos por punto citado (`destino`): una entrada por cita,
+   con los nodos de ese punto adentro (decisión de la autora del 04/10/2026). No cambia el grafo.
 3. Jerarquía: subir al punto padre, bajar a los hijos, ver los hermanos (ausencias P; forma B).
    Caso de prueba obligatorio (decisión de la autora del 04/10/2026, tras U-DIAG-VINCULO, `b0ee084`): desde
    un contenedor que anuncia una lista, el agente llega a los nodos de sus puntos hijos. Son 637
@@ -94,18 +107,20 @@ sistema por fragmentos o es propia de la navegación por aristas (diferencia dec
    relación no existe como arista: la herramienta la recorre por `punto` y `ancestros` de la procedencia.
 4. Texto fuente de la unidad, con su página.
 5. Vista de umbrales: las cuantías de un nodo con su tramo literal.
+6. Títulos de los ancestros (hallazgo 2.7; decisión de la autora del 04/10/2026: herramienta candidata,
+   medida por ablación, fuera de la configuración base). La cadena de títulos de los ancestros de cada
+   nodo entra al índice de búsqueda y se muestra en el resumen de la búsqueda y en la vista del nodo. Se
+   toma de la E0, por `punto` y `ancestros` de la procedencia: no cambia el grafo ni el prompt de E1.
+   Caso de prueba: los nodos de `docvig::2.1.1.1`, `2.1.2.1` y `2.2.1.1` se distinguen por su cadena de
+   títulos, en la búsqueda y en la vista.
 Las instrucciones del agente y el tope de llamadas se tratan como parámetros de la configuración.
-Dos requisitos del índice y de las vistas (decisiones de la autora del 04/10/2026). No son herramientas
-nuevas y no cambian la cantidad de configuraciones de N4:
-- Títulos de los ancestros (hallazgo 2.7). La cadena de títulos de los ancestros de cada nodo entra al
-  índice de búsqueda y se muestra en el resumen de la búsqueda y en la vista del nodo. Se toma de la E0,
-  por `punto` y `ancestros` de la procedencia: no cambia el grafo ni el prompt de E1. Caso de prueba:
-  los nodos de `docvig::2.1.1.1`, `2.1.2.1` y `2.2.1.1` se distinguen por su cadena de títulos, en la
-  búsqueda y en la vista.
+Un requisito de las vistas (decisión de la autora del 04/10/2026). No es una herramienta y no cambia la
+cantidad de configuraciones de N4:
 - Marcas de verificación. El agente ve la marca de la cola humana en el nodo y en la arista, y
-  `no_verificada_e3` en la arista. Exige exportar las propiedades de la arista a Neo4j y devolverlas
-  en `ver_vecinos`: es el mismo cambio que pide `alcance`. El diseño dice cómo se le muestra la marca
-  al agente y qué le indican las instrucciones sobre el contenido no verificado.
+  `no_verificada_e3` en la arista. Exige exportar a Neo4j las propiedades de la arista y las claves que
+  quedan fuera de `properties`, y devolverlas en `ver_vecinos`: es el mismo cambio que pide `alcance`.
+  El diseño dice cómo se le muestra la marca al agente y qué le indican las instrucciones sobre el
+  contenido no verificado.
 
 N3. PREGUNTAS DE DESARROLLO, POR UNA INSTANCIA APARTE.
 - Conjunto separado del de EV2 y del de B6.3. Nunca se usa para evaluar ni se reporta como resultado.
@@ -122,7 +137,7 @@ N3. PREGUNTAS DE DESARROLLO, POR UNA INSTANCIA APARTE.
 N4. PROTOCOLO DE MEDICIÓN (documento; corre en la parte 2).
 - Grafo de desarrollo de r2b, fijo. Modelo del agente y juez, los de EV2, sin cambios.
 - Configuraciones: base (las tres herramientas de hoy), todas, y todas menos una por cada herramienta.
-  Con cinco herramientas son 7. La base se repite 3 veces para medir la variación entre corridas.
+  Con seis herramientas son 8. La base se repite 3 veces para medir la variación entre corridas.
 - Medidas por configuración: fidelidad por criterio (criterios cumplidos sobre el total), precisión de
   citas (fundada, existente, al ancla), costo por pregunta, llamadas a herramientas y respuestas que llegan
   al tope, y las cuatro clases de N1 sobre las fallas.
@@ -133,9 +148,9 @@ N4. PROTOCOLO DE MEDICIÓN (documento; corre en la parte 2).
 - Requisito de la configuración: la que se pre-registre tiene que pasar el caso de prueba obligatorio
   de la jerarquía (N2, herramienta 3). No es un resultado de la ablación: si la regla de decisión deja
   afuera la herramienta que lo cubre, la configuración no se pre-registra así y vuelve a la autora.
-- Costo estimado: (7 + 2) × 30 = 270 corridas. Referencia: las cuatro celdas de E5 costaron USD 21,2577
+- Costo estimado: (8 + 2) × 30 = 300 corridas. Referencia: las cuatro celdas de E5 costaron USD 21,2577
   por 140 respuestas base con sus re-corridas y el juez (docs/plan_tesis.md:400), unos USD 0,15 por
-  respuesta: alrededor de USD 41. ESTIMACIÓN NO VERIFICADA: las herramientas nuevas cambian los tokens.
+  respuesta: alrededor de USD 46. ESTIMACIÓN NO VERIFICADA: las herramientas nuevas cambian los tokens.
 - Pre-registro: la configuración elegida (herramientas, instrucciones, tope, índices y analizador) se
   sella con su sha256 antes del pre-registro de B6.3 y se declara ahí. Lo que mejora la búsqueda se aplica
   igual al sistema por fragmentos.
@@ -152,7 +167,7 @@ PROHIBIDO: editar el cuarteto sellado de evaluación, las trazas, los eval sets 
 material de B6.3 para medir en la parte 2; usar el conjunto de N3 para evaluar; commitear.
 
 DECISIONES DE LA AUTORA AL FIRMAR.
-1. Tope de N6 (estimación: USD 41, NO VERIFICADA).
+1. Tope de N6 (estimación: USD 46, NO VERIFICADA).
 2. Tamaño y TOs del conjunto de N3 (propuesta: 30).
 3. Si las 40 de EV2 y las 20 de la tanda 0 siguen como material de ajuste, como dice la fila A1.8, o
    quedan solo para el diagnóstico de N1.
@@ -161,9 +176,9 @@ DECISIONES DE LA AUTORA AL FIRMAR.
 6. Si `alcance` se exporta a Neo4j (hoy no: enmienda 2 de L-ESQ-R2, §7). Las marcas de verificación de
    las aristas se exportan por la decisión del 04/10/2026; queda por decidir si `alcance` va en el mismo
    cambio.
-7. Si los títulos de los ancestros y las marcas de verificación entran también a la configuración base
-   de N4 (propuesta: no; la base queda como el agente de hoy, para que se compare con las trazas que ya
-   existen).
+7. Si las marcas de verificación entran también a la configuración base de N4 (propuesta: no; la base
+   queda como el agente de hoy, para que se compare con las trazas que ya existen). Los títulos de los
+   ancestros no entran a la base: decisión de la autora del 04/10/2026 (N2, herramienta 6).
 
 REQUISITOS: los de CLAUDE.md §4 (a a l), con PYTHONDONTWRITEBYTECODE=1 y .venv/bin/python -B; todo conteo
 con el comando que lo reproduce; copias para verificar armadas copiando archivos; cero nombres de personas.
