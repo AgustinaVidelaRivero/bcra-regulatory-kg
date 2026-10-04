@@ -12,7 +12,8 @@ Reglas, fijadas antes de marcar (las razones caso por caso están en lectura_p4.
     y tramo verificado.
   - D4, la tabla de `cap::1.2`; D5, `condicion_de` con firma nueva (de Condicion a Operacion o Potestad); D6, destino de
     `limita` (L-ESQ-R2 §1.4: el acto o la magnitud que el tope acota o, si es un ponderador, la exposición que
-    pondera). Por lectura (LECTURA); no_aplica en el brazo que no emite la relación.
+    pondera). Por lectura (LECTURA); no_aplica en el brazo que no emite la relación o cuyo validador la rechaza
+    (no llega al grafo; revisión de la autora del 04/10/2026, en los dos brazos).
 
 Uso: .venv/bin/python -B marcas_p4.py --analisis A --apoyo AP --salida DIR
 """
@@ -32,15 +33,17 @@ D1_NO_CUBIERTA_NO_ES_UMBRAL = {"ric::11.1.1": "las dos no cubiertas son rótulos
 # D4 a D6, por lectura: {chunk: {dimensión: (sellado, nuevo)}}.
 LECTURA = {
     "cap::1.2": {"tabla_cap_1_2": ("no_cumple", "cumple"), "destino_limita": ("no_cumple", "no_aplica")},
-    "cap::2.5.7": {"condicion_de_firma_nueva": ("cumple", "no_aplica")},
+    # Revisión de la autora (04/10/2026): el criterio de cap::5.4.4 rige en los dos brazos. Las seis condicion_de
+    # del sellado (Condicion → Operacion o Potestad) las rechaza por la firma su propio validador (v3): no emite.
+    "cap::2.5.7": {"condicion_de_firma_nueva": ("no_aplica", "no_aplica")},
     "cap::6.2.2.6": {"condicion_de_firma_nueva": ("no_aplica", "no_cumple"), "destino_limita": ("cumple", "cumple")},
-    "cla::5.1.1.1": {"condicion_de_firma_nueva": ("cumple", "cumple")},
+    "cla::5.1.1.1": {"condicion_de_firma_nueva": ("no_aplica", "cumple")},
     "cla::6.5.4.8": {"condicion_de_firma_nueva": ("no_aplica", "cumple")},
-    "ctacte::5.1.2.2": {"condicion_de_firma_nueva": ("cumple", "cumple")},
-    "ext::10.2.5": {"condicion_de_firma_nueva": ("cumple", "cumple")},
+    "ctacte::5.1.2.2": {"condicion_de_firma_nueva": ("no_aplica", "cumple")},
+    "ext::10.2.5": {"condicion_de_firma_nueva": ("no_aplica", "cumple")},
     "ext::13.4.8": {"condicion_de_firma_nueva": ("no_aplica", "cumple")},
-    "ext::3.3.3.3": {"condicion_de_firma_nueva": ("cumple", "no_cumple")},
-    "ext::3.5.6.9": {"condicion_de_firma_nueva": ("cumple", "no_aplica")},
+    "ext::3.3.3.3": {"condicion_de_firma_nueva": ("no_aplica", "no_cumple")},
+    "ext::3.5.6.9": {"condicion_de_firma_nueva": ("no_aplica", "no_aplica")},
     "cap::10.1": {"destino_limita": ("cumple", "cumple")},
     "cap::2.12.2.4": {"destino_limita": ("no_cumple", "cumple")},
     "cap::2.12.3.2": {"destino_limita": ("cumple", "cumple")},

@@ -70,19 +70,22 @@ La marca D3 sigue al validador de la release.
 
 ## D5, `condicion_de` con firma nueva (Condicion → Operacion o Potestad)
 
-Leí las relaciones del crudo de cada brazo.
+Leí las relaciones del crudo de cada brazo. Una relación que el validador de su brazo rechaza no llega al grafo y se
+marca «no emite» (revisión de la autora, a y a′). El validador v3 del sellado rechaza por la firma las seis
+`condicion_de` de Condicion a Operacion o Potestad que el sellado emite en estas fichas: en el sellado, D5 es
+estructural, como D1 a D3.
 
 | Ficha | Sellado | Nuevo | Razón |
 |---|---|---|---|
-| `cap::2.5.7` | cumple | no emite | la condición de incumplimiento → la aplicación del tratamiento |
+| `cap::2.5.7` | no emite | no emite | la condición de incumplimiento → la aplicación del tratamiento; el sellado la emite y su validador la rechaza por la firma |
 | `cap::6.2.2.6` | no emite | no cumple | la regla de imputación a bandas no condiciona las compensaciones horizontales |
-| `cla::5.1.1.1` | cumple | cumple | la condición → la inclusión en la cartera comercial: la relación existe y apunta bien. En el nuevo, la condición del monto no se pierde: está en el umbral de e2. Aparte, e2 funde dos condiciones de forma incoherente (revisión de la autora, b) |
+| `cla::5.1.1.1` | no emite | cumple | el sellado emite las dos condiciones y su validador las rechaza por la firma. La condición → la inclusión en la cartera comercial: la relación existe y apunta bien. En el nuevo, la condición del monto no se pierde: está en el umbral de e2. Aparte, e2 funde dos condiciones de forma incoherente (revisión de la autora, b) |
 | `cla::6.5.4.8` | no emite | cumple | el indicador → la clasificación en la categoría |
-| `ctacte::5.1.2.2` | cumple | cumple | operaciones del fideicomiso → el endoso |
-| `ext::10.2.5` | cumple | cumple | grupo económico → las dos potestades |
+| `ctacte::5.1.2.2` | no emite | cumple | operaciones del fideicomiso → el endoso; en el sellado, rechazada por la firma |
+| `ext::10.2.5` | no emite | cumple | grupo económico → las dos potestades; en el sellado, rechazadas por la firma |
 | `ext::13.4.8` | no emite | cumple | las cuatro condiciones → el pago. Aparte, una Obligacion con `condicion_de`, que no es la firma nueva |
-| `ext::3.3.3.3` | cumple | no cumple | el nuevo ata la condición a «emisión de la certificación», no al pago |
-| `ext::3.5.6.9` | cumple | no emite | la certificación → el pago de capital |
+| `ext::3.3.3.3` | no emite | no cumple | en el sellado, rechazada por la firma. El nuevo ata la condición a «emisión de la certificación», no al pago |
+| `ext::3.5.6.9` | no emite | no emite | la certificación → el pago de capital; en el sellado, rechazada por la firma |
 
 ## D6, destino de `limita`
 
@@ -186,7 +189,8 @@ Cuatro encabezados de lista con la extracción del brazo nuevo.
 
 ## Revisión de la autora (04/10/2026)
 
-Las correcciones a, b y c ya están aplicadas en las tablas y secciones de arriba.
+Las correcciones a, a′, b y c ya están aplicadas en las tablas y secciones de arriba. La a′ es un agregado posterior
+de la autora (04/10/2026), que extiende la a a los dos brazos.
 
 **a. `cap::5.4.4`, D6.** El `limita` del nuevo va de Restriccion a Definicion. El validador lo rechaza por la firma y
 no llega al grafo, así que la marca pasa a «no emite» (`marcas_p4.py`, `LECTURA`).
@@ -194,10 +198,27 @@ no llega al grafo, así que la marca pasa a «no emite» (`marcas_p4.py`, `LECTU
   sobre las marcas nuevas).
 - **La tabla no cambia:** D6 sigue en sellado 3/6 y nuevo 5/6. El par cuenta solo las fichas en que los dos brazos
   emiten la relación, y en `cap::5.4.4` el sellado no la emite.
-- `salida/tabla_pareada_p4.json` queda igual byte a byte. `salida/marcas_lectura_p4.json` cambia en esa marca y en
-  su estado.
+- Con solo esta corrección, `salida/tabla_pareada_p4.json` quedaba igual byte a byte. `salida/marcas_lectura_p4.json`
+  cambia en esa marca y en su estado.
 
-**b. `cla::5.1.1.1`, D5.** La marca queda en «cumple»: la relación existe y apunta bien. La fila de la tabla de D5 se
+**a′. El mismo criterio, en los dos brazos (D5).** El validador del sellado rechaza por la firma las seis
+`condicion_de` de Condicion a Operacion o Potestad que el crudo sellado emite: `cap::2.5.7`, `cla::5.1.1.1`,
+`ctacte::5.1.2.2`, `ext::10.2.5`, `ext::3.3.3.3` y `ext::3.5.6.9`. Las seis pasan de «cumple» a «no emite».
+- **Dónde está la lista:** `data/experiment/prompt_r2/p3c/insumos_p4_p3c.py`, clave
+  `relaciones_d5_d6_rechazadas_por_el_validador`.
+- **La tabla pareada recalculada:** D5 queda sin pares firmes en todos los grupos.
+  - En los sorteados, de 1/1 y 1/1 a 0.
+  - En los fijos, de 1/1 y 1/1 a 0.
+  - En las listas, de 2/2 y 1/2 a 0.
+  - Las demás dimensiones no cambian.
+- **El brazo nuevo solo:** cumple en 5 de las 7 fichas en que emite la relación (`cla::5.1.1.1`, `cla::6.5.4.8`,
+  `ctacte::5.1.2.2`, `ext::10.2.5` y `ext::13.4.8`) y no cumple en 2 (`cap::6.2.2.6` y `ext::3.3.3.3`). En los
+  sorteados cumple en las 2 en que la emite.
+- **Fuente:** `salida/marcas_lectura_p4.json`.
+- **D6 no cambia:** el único `limita` rechazado de las fichas de D6 es el de `cap::5.4.4`.
+
+**b. `cla::5.1.1.1`, D5.** La marca del nuevo queda en «cumple»: la relación existe y apunta bien (la del sellado
+pasa a «no emite» por a′). La fila de la tabla de D5 se
 corrigió: la condición del monto no se pierde, está en el umbral de e2.
 - Aparte, e2 funde dos condiciones de forma incoherente:
   - la etiqueta y el umbral son del monto (dos veces el importe de referencia del punto 3.7);
