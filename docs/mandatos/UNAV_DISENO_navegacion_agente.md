@@ -128,7 +128,7 @@ sistema por fragmentos o es propia de la navegación por aristas (diferencia dec
    Caso de prueba: los nodos de `docvig::2.1.1.1`, `2.1.2.1` y `2.2.1.1` se distinguen por su cadena de
    títulos, en la búsqueda y en la vista.
 Las instrucciones del agente y el tope de llamadas se tratan como parámetros de la configuración.
-Tres reglas de las vistas (decisiones de la autora del 04/10/2026). No son herramientas y no cambian la
+Cuatro reglas de las vistas (decisiones de la autora del 04/10/2026). No son herramientas y no cambian la
 cantidad de configuraciones de N4:
 - Marcas de verificación. El agente ve la marca de la cola humana en el nodo y en la arista, y
   `no_verificada_e3` en la arista. Exige exportar a Neo4j las propiedades de la arista y las claves que
@@ -145,6 +145,13 @@ cantidad de configuraciones de N4:
   verificador en la descripción, y acierta en 11 de los 45 casos leídos de la tanda 0
   (data/experiment/prompt_r2/p3b2/lectura_copia_nota.md, `c8c3970`). Sirve para la evaluación y para las
   muestras de cada tanda, no para la navegación.
+- Relación de sujeto derivada del alcance. Si la parte B de la enmienda 6 a L-ESQ-R2 llega a regir
+  (data/experiment/esq/enmienda6_L-ESQ-R2_colectivo_sin_alcance_2026-10-04.md, BORRADOR), el grafo lleva
+  aristas `aplica_a` derivadas: en un documento con alcance, de una norma sin mención hacia el rol de alcance
+  de su documento. El agente tiene que ver su marca en `ver_vecinos`, para saber que ese sujeto viene del
+  alcance del documento y no del texto de la norma. La marca vive en `rol_fuente` de la arista, fuera de
+  `properties`: pide el mismo cambio de exportación que las marcas de verificación. El diseño dice cómo se
+  le muestra al agente y qué le indican las instrucciones sobre un sujeto derivado.
 
 N3. PREGUNTAS DE DESARROLLO, POR UNA INSTANCIA APARTE.
 - Conjunto separado del de EV2 y del de B6.3. Nunca se usa para evaluar ni se reporta como resultado.

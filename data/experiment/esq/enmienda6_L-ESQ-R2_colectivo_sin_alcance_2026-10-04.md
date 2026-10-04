@@ -1,18 +1,21 @@
-# Enmienda 6 a L-ESQ-R2 — en un documento sin alcance, la sugerencia del modelo no gana ni para una expresión colectiva ni para una relación sin mención
+# Enmienda 6 a L-ESQ-R2 — el sujeto que el texto no identifica: sin alcance, cuarentena; con alcance, el rol del documento
 
 **BORRADOR — PENDIENTE DE FIRMA** · Redactada: 2026-10-04.
 
 Enmienda con fecha a L-ESQ-R2 (`data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`, FIRMADA en `4ef7650`;
 sha256 del texto firmado `66c4a1b9…`). L-ESQ-R2 no se edita: esta enmienda vive al lado y se lee junto con
 ella, con sus notas posteriores a la firma y con las enmiendas 2 (`5f9a731`), 3 (`8d01b04`), 4 (`5c58f38`) y
-5 (`3a4b980`). Por la regla k de CLAUDE.md §4, toda cita de L-ESQ-R2 es del texto firmado
-(`git show 4ef7650:data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`), con su línea.
+5 (`3a4b980`). La enmienda 7 está en BORRADOR. Por la regla k de CLAUDE.md §4, toda cita de L-ESQ-R2 es del
+texto firmado (`git show 4ef7650:data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`), con su línea.
 
-No rige hasta la firma. La medición del §2 está PENDIENTE: la hace R2 de U-RERESOL-CAT sobre el crudo de
-U-REEXT-T0, y la autora firma con esa medición a la vista, antes de que R2 implemente las dos reglas.
+No rige hasta la firma. La autora la firma con dos mediciones a la vista, las dos sobre el crudo de
+U-REEXT-T0: la de R2 de U-RERESOL-CAT (§A.2) y la lectura de la parte B (§B.2).
 
-Versiones del borrador: la primera, con la regla del colectivo, quedó en `28ec100`. Esta suma la regla de la
-relación sin mención (decisión de la autora del 04/10/2026).
+Tiene dos partes. La parte A, para los documentos sin alcance, rige desde la firma. La parte B, para los
+documentos con alcance, es condicionada: rige solo si su lectura llega al piso.
+
+Versiones del borrador: la primera, con la regla del colectivo, quedó en `28ec100`; la segunda, con la
+relación sin mención, en `1f8d624`. Esta suma la parte B (decisión de la autora del 04/10/2026).
 
 ---
 
@@ -34,9 +37,9 @@ relación sin mención (decisión de la autora del 04/10/2026).
 - Si la mención verificada es una expresión de la lista y el documento tiene alcance, R3 devuelve su rol. Si
   no lo tiene, devuelve el motivo `colectivo_sin_sujeto_por_defecto` (`:377`).
 - Si la relación no trae mención, no se aplica ninguna regla textual y el motivo es `sin_mencion`.
-- En la decisión, después de R1 gana la sugerencia del modelo si la hay (`:418`). En un documento sin alcance,
-  entonces, «las entidades» y las relaciones sin mención quedan resueltas al id que sugirió el modelo, que no
-  vio ninguna línea de alcance.
+- En la decisión, después de R1 gana la sugerencia del modelo si la hay (`:418`).
+- Toda relación de sujeto del grafo sale de una relación que emitió el modelo. Una norma para la que el
+  modelo no emitió ninguna queda sin `aplica_a`.
 
 **Lo que se encontró.**
 
@@ -53,10 +56,23 @@ relación sin mención (decisión de la autora del 04/10/2026).
   «las empresas no financieras emisoras de tarjetas de crédito y/o compra» (sección 4). En los puntos 3.4 y
   3.5 dice «las entidades», cuatro veces, sin decir cuáles. Queda sin alcance en U-REEXT-T0 (decisión de la
   autora del 04/10/2026).
+- Con la mención obligatoria, menos normas llevan sujeto. En el crudo de la pareada de P4 de U-PROMPT-R2,
+  las normas (Obligacion, Restriccion y Potestad) con `aplica_a` son 129 de 143 con el prefijo sellado y 111
+  de 157 con el de P3b-2. Con el punto e de P3c, que pide no emitir la relación cuando el texto no nombra al
+  sujeto, quedarían 96 de 157 (`data/experiment/prompt_r2/p4/salida/resultados_p4.jsonl`, `2ed47a0`; conteo
+  de la revisión del FRENO P3c-1, `docs/plan_tesis.md:400`). En KG-Tanda0-Diez-r2a son 3.158 de 3.694
+  (`data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2a/r2/kg.json`).
+- El alcance del TO no está en ningún nodo del grafo: el TextoOrdenado no lo lleva como propiedad ni como
+  arista.
 
-**Por qué una enmienda.** Cambia una regla de un texto firmado: el orden del §3.2 y el punto 5 del §3.3.
+**Por qué una enmienda.** Cambia una regla de un texto firmado, el orden del §3.2 y el punto 5 del §3.3, y
+agrega una relación derivada con un umbral de entrada.
 
-## 1. Qué decide
+---
+
+# Parte A — documentos sin alcance
+
+## A.1 Qué decide
 
 El principio: en un documento sin alcance, la sugerencia del modelo no reemplaza a un sujeto que el texto no
 identifica.
@@ -69,13 +85,13 @@ identifica.
 3. **El registro.** En los dos casos, la fila guarda la sugerencia (`sujeto_id_modelo`).
 4. **El orden.** R1 sigue primero: un label o un alias exacto gana también en un documento sin alcance. Las
    dos reglas van después de R1 y antes de R4.
-5. **Cuando el documento recibe alcance,** en el catálogo de resolución o en una release, las filas de la
-   regla 1 se resuelven por R3 con `reresolver_registro`, sin volver a extraer.
+5. **Cuando el documento recibe alcance,** en el catálogo de resolución o en una release:
+   - las filas de la regla 1 se resuelven por R3 con `reresolver_registro`, sin volver a extraer;
+   - las normas de las filas de la regla 2 pasan a la parte B, si rige.
 6. **Restricción para el crecimiento del catálogo.** Ningún label ni alias puede ser igual a una expresión
    colectiva de la lista, porque R1 se evalúa antes y le ganaría a la regla. Hoy no hay ninguno.
-7. **En los documentos con alcance no cambia nada.** R3 y R4 siguen como dice el punto 5 del §3.3.
 
-## 2. La medición (PENDIENTE)
+## A.2 La medición de R2 (PENDIENTE)
 
 **La lista de expresiones colectivas** de la regla 1 deja afuera el singular.
 
@@ -83,14 +99,12 @@ identifica.
   lista cubre 231 de 1.088 apariciones de una forma colectiva. Fuera quedan «la entidad» (806), «el sujeto
   obligado» (33), «cada entidad» (10) y otras cinco formas (8). No cuenta las formas seguidas de
   «financiera(s)» o «cambiaria(s)», que nombran una clase (`r1_medicion.json`, clave `colectivos`).
-- **Una primera mirada con menciones reales** (brazo nuevo de la pareada de P4 de U-PROMPT-R2, 76 fichas, con
-  el prefijo de P3b-2; no es la medición): de 123 menciones de sujeto, 45 son «las entidades», 31 de ellas
-  verificadas, y 14 son «la entidad», las 14 verificadas
-  (`data/experiment/prompt_r2/p4/salida/analisis_p4.json`, `2ed47a0`).
+- **Una primera mirada con menciones reales** (brazo nuevo de la pareada de P4, 76 fichas, con el prefijo de
+  P3b-2; no es la medición): de 123 menciones de sujeto, 45 son «las entidades», 31 de ellas verificadas, y
+  14 son «la entidad», las 14 verificadas (`data/experiment/prompt_r2/p4/salida/analisis_p4.json`, `2ed47a0`).
 
-**Las relaciones sin mención** dependen del prefijo. El ajuste de P3c de U-PROMPT-R2 le pide al modelo que no
-emita la relación cuando ni la unidad ni el texto heredado nombran al sujeto. Con ese prefijo, la regla 2
-actúa solo sobre las relaciones sin mención que el modelo emita igual.
+**Las relaciones sin mención** dependen del prefijo. Con el de P3c, la regla 2 actúa solo sobre las
+relaciones sin mención que el modelo emita igual.
 
 **Medición que falta, sobre el crudo de U-REEXT-T0** (la hace R2 de U-RERESOL-CAT), en los documentos sin
 alcance:
@@ -108,7 +122,7 @@ la lista se amplía. Ampliar la lista de R3 cambia R3 también ahí.
 Con esas cifras la autora decide, al firmar, si la lista de la regla 1 incluye el singular y si es la misma
 que la de R3.
 
-## 3. Efectos declarados
+## A.3 Efectos declarados
 
 - **En la tanda 0,** las dos reglas actúan solo sobre docvig.
   - Sobre el crudo de r2a, la regla 1 cambiaría 0 relaciones y la regla 2, las 17 que resolvió el modelo:
@@ -120,19 +134,19 @@ que la de R3.
 - **Reprocesamiento.** Es un cambio de las reglas de sujetos por relación: fila F15d de la tabla, «solo código
   sobre lo guardado» (`data/experiment/mantenimiento/tabla_reprocesamiento.md:157`). No cambia ningún request.
 
-## 4. Límites declarados y lo que queda abierto
+## A.4 Límites declarados y lo que queda abierto
 
 - **Menciones que no verifican.** Las reglas no las alcanzan: sin verificación no hay regla textual, y gana el
-  modelo. R2 las cuenta aparte, en la tabla del §2.
+  modelo. R2 las cuenta aparte, en la tabla de A.2.
 - **Una relación sin mención en cuarentena no tiene con qué nombrar su nodo.** R2 dice, antes de la firma, cómo
   queda: una fila en el registro sin nodo, o un nodo por documento.
-- **Cuando un documento recibe alcance, sus filas de la regla 2 no tienen mención que re-resolver.** Queda a
-  decisión de la autora, con la medición: se aplica la sugerencia guardada, se re-extrae el documento o siguen
-  en cuarentena.
+- **Si la parte B no rige,** las filas de la regla 2 de un documento que recibe alcance no tienen mención que
+  re-resolver. Queda a decisión de la autora: se aplica la sugerencia guardada, se re-extrae el documento o
+  siguen en cuarentena.
 - **El alcance de docvig** solo de resolución, inferido del título de su punto 3.6, no se decide acá: se
   decide con la medición de R2.
 
-## 5. Implementación, después de la firma
+## A.5 Implementación, después de la firma
 
 - `corpus_v2/r1_e4.py`, `resolver_relaciones_r2` (`:383`): una rama nueva antes de `elif modelo:` (`:418`).
   Si el documento no tiene alcance y el motivo es `colectivo_sin_sujeto_por_defecto` o `sin_mencion`, la
@@ -143,14 +157,79 @@ que la de R3.
 - Control: en los documentos con alcance, `resolucion_sujetos.jsonl` sale byte a byte igual.
 - La implementa R2 de U-RERESOL-CAT, con esta enmienda firmada.
 
-## 6. Qué no cambia
+---
+
+# Parte B — documentos con alcance (condicionada)
+
+## B.1 Qué decide
+
+1. **La relación derivada.** En un documento con alcance, una norma (Obligacion, Restriccion o Potestad) sin
+   relación de sujeto con mención recibe `aplica_a` hacia el rol de alcance de su documento.
+2. **Marcada como derivada.** La crea el código en el ensamblado; no la emite E1. Lleva una marca propia que
+   dice que viene del alcance del documento y no del texto de la norma, y no lleva mención. La marca tiene
+   que llegar al agente (borrador de `docs/mandatos/UNAV_DISENO_navegacion_agente.md`).
+3. **Precedencia.** Si el modelo emite igual una relación sin mención, con su sugerencia, en un documento con
+   alcance gana la derivada. La sugerencia no se aplica y queda guardada en `resolucion_sujetos.jsonl`.
+4. **Lo que no toca.**
+   - Las relaciones con mención verificada: R1, R2 y R3 siguen como hoy.
+   - Las relaciones con una mención que no verifica: sigue R4. Se cuentan aparte.
+   - `ejecuta`: el alcance no es el ejecutor por defecto.
+5. **Si esta parte no rige,** en los documentos con alcance queda la regla de hoy: R4.
+
+## B.2 La condición: una lectura posterior a U-REEXT-T0 (PENDIENTE)
+
+- **Población.** Las relaciones que esta parte crearía sobre KG-Tanda0-Diez-r2b.
+- **Muestra.** 30, sorteadas con una semilla declarada antes de leer.
+- **Qué se lee.** Cada una contra el texto de su unidad y su texto heredado. Es correcta si el rol de alcance
+  del documento es a quien se aplica esa norma.
+- **Piso.** El límite inferior del intervalo de Wilson al 95 %, en 0,75 o más. Con 30 leídas son 28 correctas
+  (0,787); con 27 no llega (0,744).
+- **Quién.** Lectura asistida, declarada, con revisión de la autora.
+
+| Qué se mide | Valor |
+|---|---|
+| Normas sin relación de sujeto con mención, en documentos con alcance | PENDIENTE |
+| De esas, con una relación sin mención que el modelo emitió igual | PENDIENTE |
+| De esas, con una sugerencia distinta del rol de alcance | PENDIENTE |
+| Correctas en la muestra de 30 | PENDIENTE |
+
+Si no llega a 28 de 30, la parte B no rige y la parte A no cambia.
+
+## B.3 Efectos declarados
+
+- **Las normas con sujeto** vuelven a subir. Las cifras de referencia están en el §0; la real sale de la
+  primera fila de la tabla de B.2.
+- **El sujeto derivado es el del documento, no el de la norma.** Una norma dirigida a un tercero que el texto
+  no nombra recibiría el rol equivocado: eso es lo que mide la lectura.
+- **Reprocesamiento.** Solo código sobre lo guardado. No cambia ningún request.
+- **Las shapes y la suite.** La shape que cuenta las normas sin `aplica_a` da otro número. No se editan acá:
+  el estado esperado lo sella la autora.
+
+## B.4 Límites declarados
+
+- **`ri2_ci.pdf`** tiene alcance con dos clases y sin rol: la derivada no tiene un destino único. No está en la
+  tanda 0. Queda fuera de esta parte hasta que se decida.
+- **Excepcion y Operacion** también admiten `aplica_a`, y esta parte no las cubre.
+
+## B.5 Implementación, solo si rige
+
+- En el ensamblado, después de la resolución por relación. La arista lleva su marca en `rol_fuente`, como la
+  `establecida_en` derivada (`data/experiment/pyd_r2/code/modelos_r2.py:190` y `:632`), y su método en
+  `metodo_resolucion`.
+- La vista del agente y la exportación a Neo4j: U-NAV-DISENO.
+- La unidad que la implementa se define con la firma.
+
+---
+
+## Qué no cambia
 
 - El texto de L-ESQ-R2, sus notas y sus enmiendas 2 a 5.
-- R1, R2 y el calificador, en todos los documentos. R3 y R4, en los documentos con alcance.
+- R1, R2 y el calificador, en todos los documentos. R3, en los documentos con alcance.
 - El prefijo de E1, su tool schema, el catálogo de sujetos y sus candados.
 - El paso de lectura del alcance entre tandas, que asigna solo clases que ya existen
-  (`docs/mandatos/URERESOL_CAT_reresolucion_catalogo.md`, segunda nota del 04/10/2026).
+  (`docs/enmienda4_protocolo_entre_tandas_2026-10-04_crecimiento_del_catalogo_y_alcance.md`, BORRADOR).
 
 ## Firma
 
-BORRADOR — PENDIENTE DE FIRMA de la autora.
+BORRADOR — PENDIENTE DE FIRMA de la autora. Se firma con las dos mediciones: la de R2 de U-RERESOL-CAT (A.2)
+y la lectura de la parte B (B.2).
