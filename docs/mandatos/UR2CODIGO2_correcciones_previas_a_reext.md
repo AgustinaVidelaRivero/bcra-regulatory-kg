@@ -390,3 +390,35 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   omisiones espera que LN-7 dé no_aplicable sobre el ensamblado. Con el punto (p) pasa a resuelto. C2
   actualiza ese caso esperado y el resumen de la cadena (`p3/salida/resumen_cadena_sintetica_p3.json`): los
   dos archivos se suman a sus escrituras, solo para ese caso.
+- **04/10/2026 — FRENO C2 revisado; correcciones antes del commit y enmienda 5 a L-ESQ-R2 en borrador
+  (decisiones de la autora).** El freno de la implementación (`data/experiment/r2_codigo2/freno_c2.md`, sin
+  commit) se revisó sobre una copia y se reproduce: la E0 `salida_tanda0_r2b/` (57 de 57, doble corrida),
+  `c2_cadena.json`, `c2_sinteticos.json` y `c2_e0.json` byte a byte (este, con la partición de los 152 TOs
+  corrida de nuevo), `c2_control_repro.json` salvo el control del repo (durante esa corrida escribí estos
+  asientos), la cadena de P3 (27 de 27), la de P3b-2 (18 de 20), `selftest_pyd_r2` (378 de 378) y
+  `selftest_r3` (109 de 109).
+  1. Punto (i), «o no». Un «no» precedido por «o» («sea o no», «haya o no», «represente o no») no niega el
+     verbo y queda fuera de la regla. Caso de control: `cap::6.2.2.3`, donde «represente o no un rendimiento
+     menor a 3 % anual» pasaba de coeficiente a mínimo inclusivo. Con la corrección, el «3 %» queda como
+     máximo estricto, por «menor a».
+  2. «Más del» y «menos del» valen como «más de» y «menos de». Esta corrección no es de la autora: la sumé
+     al revisar el freno, con su encargo de sumar las correcciones necesarias, y ella la confirma o la saca
+     al despachar. En cada grafo r2a cambian 4 elementos (`cla::6.3.2`, `cap::8.4.2.1`, `cla::6.5.4.7` y
+     `cap::3.1.11.2`), medidos con una simulación fuera del repo.
+  3. Cadena sintética de P3b-2 (`data/experiment/prompt_r2/p3b2/cadena_sintetica_p3b2.py`). Sus casos de
+     `:260` y `:289` afirman el comportamiento que cambia el punto (t). C2 actualiza esos dos casos y el
+     resumen (`p3b2/salida/resumen_cadena_sintetica_p3b2.json`): los dos archivos se suman a sus escrituras,
+     solo para eso.
+  4. (i) y (j) cambian el §1.3 firmado de L-ESQ-R2 (la negación de un verbo alcanza más de tres palabras;
+     el comparador pegado a la cuantía gana sobre el coeficiente). Van por la enmienda 5, en BORRADOR —
+     PENDIENTE DE FIRMA: `data/experiment/esq/enmienda5_L-ESQ-R2_negacion_y_comparador_pegado_2026-10-04.md`.
+     La autora la firma cuando C2 aplique las correcciones.
+  5. (l) queda en la lista de páginas de ric (pp. 15, 30, 54 y 59). La medición de la regla general sobre
+     los 152 TOs se registró en S0 del borrador de U-SEG-OFICIAL, punto 5.
+  6. (m): cambian nueve expectativas de `selftest_pyd_r2.py`, no cuatro. Es consecuencia de la enmienda 3 y
+     quedó como nota al pie de esa enmienda.
+  7. Con el código de C2, la cadena r2a deja de dar los sha256 sellados, por los cambios que el freno
+     declara (umbrales de 46 y 42 nodos y las `remite_a` del punto a). El control de reproducibilidad del
+     borrador de U-REEXT-T0 se reescribió: los tres ensamblados r1, byte a byte; los dos r2a, contra los
+     sha256 que deje el cierre de C2.
+  El despacho de las correcciones a la instancia de C2 y el commit de C2 son de la autora: PENDIENTES.

@@ -27,17 +27,33 @@ CONTEXTO, con sus anclas.
   no está versionada: la tesis no la cita.
 
 S0. CORRECCIONES DE E0 QUE CAMBIAN IDS DE LA PARTICIÓN (decisión de la autora del 04/10/2026).
-Salen de la revisión independiente (reports/u_revision_libre/freno_b1.md) y de las enmiendas del
-04/10/2026 a las adendas del laudo B5.5. No se ven en la tanda 0 y no entran a C2 de U-R2-CODIGO-2.
+Salen de la revisión independiente (reports/u_revision_libre/freno_b1.md), de las enmiendas del
+04/10/2026 a las adendas del laudo B5.5 y del FRENO C2 de U-R2-CODIGO-2 (punto 5). No se ven en la tanda 0
+y no entran a C2 de U-R2-CODIGO-2.
 1. Sección escrita de otra forma (1.14): opecam («Seccón 3.»), garopt y snp_dd.
 2. Rótulos de punto que no lo son (1.15): rdbcra, ri_niif, ri_tsa y ri_dsf.
 3. Páginas de norma fuera de toda unidad (2.4): ri_cc, ri_tsa, snp_mep, venliq y fimipyme.
 4. E0 de ri_spi: regla de marcador de letra y número («APARTADO A», «A.1.», «A.1.1.»). Hoy queda en una
    unidad de 18.565 caracteres. Es la unidad de E0 de ri_spi que piden las enmiendas.
+5. Cola de título en toda página (punto l de C2 de U-R2-CODIGO-2; decisión de la autora del 04/10/2026, tras
+   el FRENO C2). En C2 la regla rige solo en cuatro páginas de ric (pp. 15, 30, 54 y 59;
+   `correr_e0.COLA_TITULO_ESTRICTA_E0_R2`), porque aplicada a toda página mueve ids de la partición. La
+   medición de la regla general (`continua_titulo`) sobre los 152 TOs la dejó C2
+   (data/experiment/r2_codigo2/salidas/c2_e0.json, `particion_152_cola_en_toda_pagina`; comando:
+   `data/experiment/r2_codigo2/c2_e0_152.py --salida <dir> --cola-en-toda-pagina`). La revisión del freno
+   la reprodujo sobre una copia, con el archivo regenerado byte a byte:
+   - recupera 34 renglones en 7 TOs: cirmo3 (2), cryl (1), manori (1), ri2_ci (8), snp_cheq (2), snp_mep (2)
+     y fabcra (18). Los 16 de los seis primeros son texto corrido de la norma. Los 18 de fabcra son las
+     celdas de su tabla002, que deja de serializarse y pierde sus 12 renglones de tabla;
+   - mueve ids en un TO: en snp_cheq aparece `snp_cheq::7.1::intersticial::290`, el orden de los ids comunes
+     cambia y cambian 179 chunks, 13 de ellos por el recorte de la herencia (punto h de C2);
+   - en total cambian 267 chunks en 14 TOs, contra 93 en 9 TOs con la lista de páginas.
+   El diseño decide si la regla general entra, y con qué guarda para snp_cheq y para la tabla de fabcra, o si
+   la lista de páginas se amplía a los seis TOs con texto corrido recuperado.
 Primero el diseño, sin implementar: cada regla con su censo sobre los 152 TOs (qué TOs y qué ids cambian).
 FRENO S0-1. Después del «seguí», la implementación, solo en e0-r2. Controles:
 - la E0 de la tanda 0 que dejó U-R2-CODIGO-2 (`salida_tanda0_r2b/`) no cambia un byte;
-- cada id que cambia en la partición queda atribuido a una de las cuatro reglas, por TO; lo que ninguna
+- cada id que cambia en la partición queda atribuido a una de las cinco reglas, por TO; lo que ninguna
   explique es «otra» y se lee;
 - los TOs que ninguna regla toca dan los mismos ids que antes (guarda 1 de la adenda 2 al laudo B5.5);
 - selftests de E0 sobre una copia, y doble corrida byte a byte igual.

@@ -667,3 +667,12 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   - Cadena sintética de P3: el caso de la arista ya está actualizado en el árbol de trabajo (dos archivos de
     `data/experiment/prompt_r2/p3/`), y la cadena da 27 de 27 sobre una copia. Su commit está PENDIENTE: no
     entró en `c8c3970`.
+- **04/10/2026 — la cadena sintética de P3b-2 después del punto (t) de C2 (decisión de la autora, tras el
+  FRENO C2 de U-R2-CODIGO-2).** Con el código de C2, la cadena da 18 de 20: los casos de
+  `data/experiment/prompt_r2/p3b2/cadena_sintetica_p3b2.py:260` y `:289` afirman que `vistos_por_e3` lleva
+  solo la marca de la copia, y el punto (t) suma las otras dos. Esos dos casos y el resumen
+  (`p3b2/salida/resumen_cadena_sintetica_p3b2.json`) los actualiza C2, antes de su commit: los dos archivos
+  se suman a las escrituras de C2, solo para eso. P4 parte de la cadena en 20 de 20.
+  Otra herencia de C2, para U-REEXT-T0: `e1_extractor/selftest_prompt_r2b.py` lee `salida_tanda0_r2/` y
+  exige que ninguna unidad lleve `herencia_recortada` (`:118` y `:148-149`). Hoy pasa, 34 de 34. Sobre
+  `salida_tanda0_r2b/` ese caso cambia, por `ric::11.2.3`: quedó en el borrador del mandato de U-REEXT-T0.

@@ -28,7 +28,9 @@ CONTEXTO, con sus anclas.
   da 71,04 (data/experiment/prompt_r2/p3b2/salida/costo_p3b2.json). No cubre la salida nueva de los puntos a,
   b y h del parche: la mide P4.
 - Gate: docs/laudo_release_r2_pipeline.md, §3.1 (puntos 1 a 8), y docs/protocolo_entre_tandas.md, §1 y §4.
-- Textos firmados que rigen acá: L-ESQ-R2 (`4ef7650`) con sus enmiendas 2 (`5f9a731`) y 3 (`8d01b04`); la
+- Textos firmados que rigen acá: L-ESQ-R2 (`4ef7650`) con sus enmiendas 2 (`5f9a731`), 3 (`8d01b04`) y 4
+  (`5c58f38`); la enmienda 5, sobre la negación y el comparador pegado a la cuantía, cuando esté firmada
+  (hoy, borrador: data/experiment/esq/enmienda5_L-ESQ-R2_negacion_y_comparador_pegado_2026-10-04.md); la
   enmienda al protocolo sobre la cola humana (`8d01b04`) con su nota (`0b98045`).
 
 T1 — PREPARACIÓN EN SECO Y SUITE (USD 0).
@@ -38,6 +40,12 @@ T1 — PREPARACIÓN EN SECO Y SUITE (USD 0).
 2. Control de las entradas: el hash y el sha256 del prefijo y el del tool schema contra los candados de
    P3b-2; el sha256 de cada archivo de `salida_tanda0_r2b/` contra el cierre de C2; el candado del catálogo;
    el commit del código.
+   - `e1_extractor/selftest_prompt_r2b.py` lee `salida_tanda0_r2/` y exige que ninguna unidad lleve
+     `herencia_recortada` (`:118` y `:148-149`). Al pasar a `salida_tanda0_r2b/`, ese caso cambia: la única
+     unidad con el recorte es `ric::11.2.3`, y su mensaje lleva la línea del recorte una vez. El archivo se
+     suma a las escrituras de la unidad solo para ese caso.
+   - Los scripts de `data/experiment/medicion_r2a/` que importan `reglas_comparacion` o `r1_referencias`
+     dan otras cifras con el código de C2. No se vuelven a correr acá: sus salidas selladas son de r2a.
 3. Corrida en seco, sin llamar a la API: el request de cada unidad, su namespace y su clave de caché; las
    unidades por TO; la estimación por TO contra el tope; los namespaces de los reintentos.
 4. Suite y shapes antes del gate:
@@ -79,8 +87,9 @@ T3 — ENSAMBLADOS, REGISTRO Y GATE DE r2b (USD 0).
    - suite: `scripts/regression_kg.py --perfil r2 --esperado scripts/regression_kg_esperado.json`; 0
      regresiones;
    - contadores de E1; intrínsecas de generación 3 e indicadores de cita, informativos;
-   - reproducibilidad: los tres ensamblados r1 y los dos r2a sellados se reproducen byte a byte, y los
-     selftests siguen en verde;
+   - reproducibilidad: los tres ensamblados r1 se reproducen byte a byte. Los dos r2a ya no dan los sha256
+     sellados (`99fe2bfa…` y `93a7af72…`): con el código de C2 cambian los umbrales y las `remite_a` que su
+     cierre declara, y el control es contra los sha256 que deje ese cierre. Los selftests siguen en verde;
    - nunca EV2;
    - la columna «r2b» del tablero de correcciones, con el comando de cada fila.
 3. Controles propios de esta unidad, cada uno con su comando y su cifra:
@@ -159,7 +168,10 @@ PENDIENTE DE COMPLETAR ANTES DE LA FIRMA, con lo que cierren las unidades en cur
 - De C2 de U-R2-CODIGO-2: el sha256 de cada archivo de `salida_tanda0_r2b/` y de los `pies_<to>.json`; los
   cambios declarados de ric; el namespace del reintento por salida mal formada; las claves del reporte del
   ensamblado para las omisiones, las aristas derivadas de la cola y el conteo de lo que pasó por E3; y las
-  marcas de E3 en el reporte (punto t).
+  marcas de E3 en el reporte (punto t). Y los sha256 de los dos grafos de la cadena r2a con el código de su
+  cierre, para el control de reproducibilidad de T3. En su freno del 04/10/2026, antes de las correcciones
+  pedidas, eran `0d62f47e…` (diez) y `ad030056…` (desarrollo).
+- La firma de la enmienda 5 a L-ESQ-R2.
 - De P4 de U-PROMPT-R2: el resultado de la pareada; si el prefijo emite la Excepcion de `cla::5.1.1.1` (si
   no, la condición 10 vuelve a la autora antes de correr); cuántas recomendaciones y consecuencias detecta
   la clasificación de la modalidad, contra una lectura de muestra; y la salida que la estimación no cubre.

@@ -108,3 +108,20 @@ Entra como punto (m) de C2 de U-R2-CODIGO-2
 ## Firma
 
 FIRMADA por la autora el 04/10/2026. Rige desde esta firma.
+
+## Notas posteriores a la firma
+
+El texto firmado termina en la línea anterior a este título y no cambia.
+
+- **04/10/2026 — son nueve las expectativas del selftest que cambian, no cuatro (consecuencia de esta
+  enmienda; FRENO C2 de U-R2-CODIGO-2, `data/experiment/r2_codigo2/freno_c2.md`).** El §3 nombra «los cuatro
+  casos» de `pyd_r2/code/selftest_pyd_r2.py` que esperan la marca en un plazo sin marcador. Las expectativas
+  que codifican la regla anterior son nueve:
+  - las cuatro de la marca `comparacion_asumida`, que nombra el §3;
+  - cinco filas que esperan `maximo_inclusivo` con la regla `sin_marcador_plazo` para un plazo sin marcador
+    («el menor entre 1 año y el plazo residual», «la Superintendencia podrá fijar un plazo de 30 días», «en
+    un plazo de 30 días», «la supervisión dispondrá de 30 días» y «cinco días hábiles» de la fila r1).
+  Las nueve pasan a esperar `no_determinada`, sin la marca. Es la misma regla del §1, punto 1: no hay
+  decisión nueva. Comando, sobre el código de C2 (sin commit al 04/10/2026):
+  `git diff -U0 HEAD -- data/experiment/pyd_r2/code/selftest_pyd_r2.py | grep -E "sin_marcador_plazo|asumida"`.
+  Con ese código, `selftest_pyd_r2` da 378 de 378, corrido sobre una copia en la revisión del freno.
