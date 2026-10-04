@@ -233,3 +233,22 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   `corpus_v2/runner_corpus.py`. Los manifiestos r2b los actualiza U-REEXT-T0 como su primer paso, para
   que lean `salida_tanda0_r2b/`; C2 no los toca. La pareada de U-PROMPT-R2 (P4) sigue con la E0 de
   `f8dedd4`.
+- **04/10/2026 — punto (h): tope de la herencia en e0-r2 (decisión de la autora).** Se suma a C2.
+  Hallazgo de la revisión de U-NOSEG-LIMITE (`7aed71c`): `e0_chunking/e0_lib.py:1618-1650`
+  (`herencia_de`) le da a cada unidad el título y todos los segmentos no terminales de cada ancestro
+  (intro, intersticial y cierre), sin tope. El umbral de tamaño (`correr_e0.py:74`) solo parte el texto
+  propio de las unidades terminales. E1 imprime la herencia entera. En la partición de 152 TOs, 95
+  unidades de 11 TOs heredan más de 13.091 caracteres, con un máximo de 264.912; en la tanda 0 hay una
+  sola, `ric::11.2.3`, con 15.170 (medición sobre `segmentacion_84/b584_particion/` y sobre
+  `salida_tanda0_r2/`).
+  C2 empieza por el diseño del recorte: lo presenta en un FRENO intermedio corto, sin implementarlo, y
+  espera el «seguí». Condiciones del diseño:
+  1. conserva los títulos de todos los ancestros y el final de cada bloque heredado, donde está la
+     cláusula que abre la lista y que la regla de composición del prefijo necesita;
+  2. dice qué hace con los cierres, que a veces valen para todos los ítems («lo dispuesto
+     precedentemente no rige para…»);
+  3. mide cuántas unidades cambian y qué texto se recorta, en la tanda 0 y en los 152 TOs;
+  4. rige solo en e0-r2, y el recorte queda declarado en la unidad.
+  El umbral de referencia es 13.091 caracteres, el tamaño objetivo de una parte (`correr_e0.py:75`); el
+  diseño puede proponer otro, con su medición. Lo que el punto (h) cambie en la tanda 0 se suma a los
+  cambios declarados del control de `salida_tanda0_r2b/`.

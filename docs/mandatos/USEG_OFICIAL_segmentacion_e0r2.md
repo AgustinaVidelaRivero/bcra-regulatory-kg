@@ -6,7 +6,7 @@ Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
   (diferencias contra la partición y cifras para la tesis). Reporte corto (no más de 40 líneas) y espera
   del «seguí» escrito de la autora.
 - Costo de API: USD 0. Ninguna llamada a la API; Neo4j no se usa.
-- PRECONDICIÓN: el cierre de U-R2-CODIGO-2 commiteado por la autora. Su punto (f) cambia e0-r2
+- PRECONDICIÓN: el cierre de U-R2-CODIGO-2 commiteado por la autora. Sus puntos (f) y (h) cambian e0-r2
   (docs/mandatos/UR2CODIGO2_correcciones_previas_a_reext.md). La unidad corre con el código de ese commit
   y lo registra. Si el cierre no está commiteado, frená sin correr.
 
@@ -45,6 +45,13 @@ S1. MANIFIESTO Y CORRIDA.
    Los cinco TOs de la tanda 0 que son de la partición (ctacte, lingob, polcre, pagjub y docvig) dan
    byte a byte la e0-r2 de la tanda 0 que deje U-R2-CODIGO-2; los cinco de desarrollo no son de la
    partición y no entran.
+5. Censo de vigencia. Por cada uno de los 152 TOs, las marcas de su carátula y de su título en el índice
+   («Derogado», «Vigente hasta», «vigente al»), con la página y la línea. El manifiesto declara qué TOs
+   son vigentes. Casos ya conocidos: `manual` («Vigente hasta el 31/12/2017») y ri_ao («RI Derogado por
+   la Com. A 8262»). Una marca nueva es hallazgo y se reporta; la decisión es de la autora.
+6. Herencia por unidad. La herencia máxima por unidad y la lista de las unidades que superen el umbral
+   que fije el punto (h) de U-R2-CODIGO-2 (referencia: 13.091 caracteres), con su TO, su texto propio y
+   el bloque heredado mayor. Sobre la partición de B5.8.4 eran 95 unidades de 11 TOs.
 FRENO S1.
 
 S2. DIFERENCIAS CONTRA LA PARTICIÓN Y CIFRAS.
