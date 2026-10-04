@@ -745,3 +745,31 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   (`docs/checklist_pre_escalado.md:81`); el tope de U-REEXT-T0 sigue en USD 72; y la base de caché de P4 no
   se reutiliza en U-REEXT-T0. Fe de erratas de la nota del 04/10/2026 sobre la enmienda 4 a L-ESQ-R2: el
   arreglo de la cadena sintética de P3 está commiteado en `f3922d8`.
+- **04/10/2026 — agregado a P3c-1 (decisión de la autora, tras la revisión del FRENO P4).** La nota anterior
+  quedó en `bd77541`, y P4, en `2ed47a0`. El diseño de P3c-1 suma cuatro cosas.
+  - **El encabezado puro de lista** no se extrae ni se declara como omisión. Precisa el punto 1: una frase
+    que solo anuncia los ítems puede llevar un verbo de deber («Las entidades financieras deben:»,
+    `adrei::4.3.1::intro`) y no es `meta_normativo`.
+  - **Casos.** `ayccef::2.4.8.1` y `ayccef::4.2.7.2` entran como casos de control. `cap::3.1.14::intro` y
+    `ric::3.1.8` quedan para analizar en el diseño. Los cuatro son omisiones `meta_normativo` con texto
+    propio del brazo nuevo de P4 que no estaban entre las nueve de la revisión de la lectura.
+  - **El criterio de `cap::5.4.4`** (una relación que el validador de su brazo rechaza no llega al grafo) se
+    aplica a las seis `condicion_de` del brazo sellado que su validador rechaza por la firma: `cap::2.5.7`,
+    `cla::5.1.1.1`, `ctacte::5.1.2.2`, `ext::10.2.5`, `ext::3.3.3.3` y `ext::3.5.6.9`
+    (`data/experiment/prompt_r2/p3c/insumos_p4_p3c.py`, sin commit al 04/10/2026).
+  - **Tercer escalón del reintento de E1, con transmisión por partes.** Se diseña en P3c-1 y se implementa en
+    P3c-2. Es para las unidades que cortan también en el reintento de 16.384 tokens y no se pueden partir, y
+    para las partes que cortan. La autora autorizó para esto `e1_extractor/cliente_e1.py` y
+    `corpus_v2/runner_corpus.py`.
+    - No hace falta tocar `data/experiment/evaluacion/llm_cache.py`, que está sellado. Alcanza un adaptador
+      del cliente real (`cliente_e1.py:167`) cuyo `messages.create` use `messages.stream` y devuelva el
+      mensaje final. La caché guarda y reconstruye ese mensaje igual (`llm_cache.py:310-311` y `:205-211`),
+      y la clave cambia solo por `max_tokens`, en ese intento.
+    - El SDK 0.100.0 rechaza un pedido sin transmisión de más de 21.333 tokens de salida cuando no hay
+      `timeout` explícito en la llamada ni en el cliente (`resources/messages/messages.py:984-987` y
+      `_base_client.py:731-740`). El máximo de salida de `claude-haiku-4-5` es de 64.000 tokens
+      (documentación de modelos de la API, consultada el 04/10/2026).
+    - Con la salida que midió P4, en la tanda 0 lo necesitarían `ric::11.2::intro` y la parte mayor de
+      `cap::4.2.1.2`.
+    - Quedan abiertos para el diseño: el techo; la fila de la tabla de reprocesamiento, que la autorización
+      de las cuatro filas no cubre; y una prueba con una llamada real, que tiene costo.
