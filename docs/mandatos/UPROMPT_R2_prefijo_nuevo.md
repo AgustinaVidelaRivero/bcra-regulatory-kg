@@ -460,3 +460,8 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   extracción.
   Orden con U-R2-CODIGO-2: P3 y C2 comparten `runner_corpus.py` y no corren a la vez. La segunda
   arranca sobre el commit de la primera.
+- **04/10/2026 — orden y control de (c) (decisiones de la autora).** P3 va primero; C2 de U-R2-CODIGO-2
+  arranca sobre el commit de P3. El control de (c) queda como lo dice la nota anterior: P3 deja en su
+  reporte el conteo de elementos de extracción sin verificar, y el control de suite o de shape entra con
+  los pedidos de suite ya asignados antes del gate de r2b (`docs/plan_tesis.md:400`). La pareada de P4
+  usa la E0 versionada en `f8dedd4`; los manifiestos r2b los actualiza U-REEXT-T0 como su primer paso.

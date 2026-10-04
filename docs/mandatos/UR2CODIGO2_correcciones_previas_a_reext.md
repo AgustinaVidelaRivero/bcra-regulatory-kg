@@ -228,3 +228,8 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   - en los archivos agregados de la salida (`conteos.json` y los demás), cambia solo la entrada de ric.
   C2 no edita los manifiestos r2b (`20b7f60`), que apuntan a `salida_tanda0_r2`: el manifiesto que lea
   U-REEXT-T0 se fija en su mandato.
+- **04/10/2026 — orden con U-PROMPT-R2 y manifiestos (decisiones de la autora).** C2 arranca sobre el
+  commit de P3 de U-PROMPT-R2. Se suma a las precondiciones de C2, porque las dos etapas editan
+  `corpus_v2/runner_corpus.py`. Los manifiestos r2b los actualiza U-REEXT-T0 como su primer paso, para
+  que lean `salida_tanda0_r2b/`; C2 no los toca. La pareada de U-PROMPT-R2 (P4) sigue con la E0 de
+  `f8dedd4`.
