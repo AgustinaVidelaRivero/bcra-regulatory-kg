@@ -66,16 +66,28 @@ grandes (punto 6). No se ven en la tanda 0 y no entran a C2 de U-R2-CODIGO-2.
      cortar, se parte por ítems sin cortar tablas (`particionar_por_corte`). Simulado sobre las 46 unidades
      que no son partes: 30 se pueden partir y 16 no, por falta de ítems. Una parte no se vuelve a partir. En
      19 de las 30 la parte mayor pasa de 13.091 caracteres, y en 6, de 26.182.
-   - Riesgo, con la salida medida en la tanda 0 con el prefijo sellado (0,86 tokens por carácter de texto
-     propio en la mediana de las unidades de 3.000 caracteres o más, y 1,12 en el percentil 90): el reintento
-     alcanza hasta unos 19.000 caracteres con la mediana y 14.600 con el percentil 90.
-     - Clase A, 8 unidades: no se pueden partir y pasan de 19.000. Terminarían sin extracción, con error
-       declarado: `cateloc::S2`, `snp_mep::S7`, `manori::S2`, `ri_laft::3.7`, `manori::S4`, `ri_niif::3.2`,
-       `seggar::8.2` y `ri_oc::3.51`.
-     - Clase B, 12 unidades: se parten, pero su parte mayor pasa de 19.000 y no se vuelve a partir.
-     - Clase C, 8 unidades: entre 14.600 y 19.000, en el borde.
-     - Clase D, 29 unidades: entran en el reintento.
-     La capacidad se recalcula con los tokens de salida por carácter que mida U-REEXT-T0 con el prefijo r2b.
+   - Riesgo, con la salida que midió P4 de U-PROMPT-R2 con el prefijo de P3b-2 (04/10/2026): 1,175 tokens
+     por carácter de texto propio, mediana de 6 unidades de 3.000 caracteres o más (de 3.109 a 9.825), con
+     0,224 de mínimo y 1,498 de máximo. El reintento de 16.384 tokens alcanza unos 13.944 caracteres con la
+     mediana y 10.937 con el máximo; el primer intento, 6.972 y 5.469. Con el prefijo sellado las cifras
+     eran 0,86 de mediana y 1,12 de percentil 90 (40 unidades de la tanda 0): unos 19.000 y 14.600
+     caracteres.
+     Por texto propio, 66 unidades en 37 TOs pasan de 10.937 caracteres, y 43 en 30 TOs, de 13.944.
+     - Clase A, 14 unidades: no se pueden partir y pasan de 13.944. Terminarían sin extracción, con error
+       declarado. Son las 8 que ya estaban (`cateloc::S2`, `snp_mep::S7`, `manori::S2`, `ri_laft::3.7`,
+       `manori::S4`, `ri_niif::3.2`, `seggar::8.2` y `ri_oc::3.51`) y 6 más: `ri_spi::S0`, `ri_psp::SIII`,
+       `ri_iepsp::S4`, `nmcief::S3::chapeau_seccion`, `ri_tsa::3.2` y `dmrd::S0`.
+     - Clase B, 15 unidades: se parten, pero su parte mayor pasa de 13.944 y no se vuelve a partir.
+     - Clase C, 32 unidades: entre 10.937 y 13.944, en el borde. De ellas, 10 quedan ahí después de
+       partirse y 12 son partes que ya hizo E0.
+     - Clase D, 5 unidades: entran en el reintento después de partirse.
+     Con las cifras del prefijo sellado las clases eran 8, 12, 8 y 29, sobre las 57 unidades de más de
+     13.091 caracteres con su herencia. De esas 57, 3 no pasan de 10.937 caracteres de texto propio y salen
+     del censo; entran 12 que no estaban.
+     Es una cota: la medición de P4 tiene 6 unidades, ninguna de 10.000 caracteres o más, y con el prefijo
+     sellado la razón baja con el tamaño (0,46, 0,69 y 0,84 en las tres de más de 10.000 de la tanda 0).
+     La capacidad se recalcula con los tokens de salida por carácter que mida U-REEXT-T0 sobre todas sus
+     unidades, con el prefijo que deje P3c de U-PROMPT-R2.
    El diseño decide, con su censo de ids por TO:
    a. Ninguna unidad se saltea sin declararla: los cinco mini-chunks que hoy E0 saltea en silencio pasan a
       declarados, y la partición por tamaño dice si los alcanza.

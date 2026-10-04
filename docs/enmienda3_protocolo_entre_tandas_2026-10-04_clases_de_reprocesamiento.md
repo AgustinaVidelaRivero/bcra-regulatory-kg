@@ -62,11 +62,18 @@ y se lee junto con él, con la enmienda sobre la cola humana (`8d01b04`) y con l
   la clase y el principio declarados.
 - La fila F13: la trata la fe de erratas de la enmienda 2, de la misma fecha.
 
-## 3. Qué no decide
+## 3. La regla de cruce para F14
 
 La regla de cruce del §2 (`a304b89:97-100`) dice que un hallazgo de clase «E1 y E3 de las afectadas» se corrige
-entre tandas cuando es por E0. Un cambio de `validador_e1` entra ahora a esa clase y no es por E0. Si se corrige
-entre tandas, pagando E3 de las unidades afectadas, lo decide la autora con el primer caso.
+entre tandas cuando es por E0. Un cambio de `validador_e1` entra ahora a esa clase y no es por E0. Los cambios
+de la clase F14 (`validador_e1`) se corrigen entre tandas igual que los de E0: se vuelven a correr E1 y E3 solo
+de las unidades afectadas, con su costo declarado antes de correr. Como dice el punto 3 del §1, E1 sale de la
+caché.
+
+**Nota del 04/10/2026.** En la versión commiteada en `0cb0c70` (sha256 `5023adc0ae2d…`), este §3 se titulaba
+«Qué no decide» y dejaba la regla a decisión de la autora con el primer caso. La autora la decidió el
+04/10/2026 y firmó la enmienda con este cambio. La fecha de la firma no cambia, y el resto del texto es el de
+`0cb0c70`.
 
 ## Firma
 

@@ -7,12 +7,15 @@ tocar cualquier llamada al modelo: sus cinco decisiones son vinculantes.
 - Unidad en CINCO ETAPAS, T1 a T5, con FRENO obligatorio al final de cada una: reporte corto (no más de 40
   líneas) y espera del «seguí» escrito de la autora.
 - Costo de API: solo en T2, con tope de USD 72 para E1 a E3 de los diez TOs (decisión de la autora del
-  04/10/2026, tras el FRENO P3b-2 de U-PROMPT-R2; antes era USD 69; docs/plan_tesis.md:400). Fuera de T2,
-  USD 0 y ninguna llamada a la API. Si la proyección de T2 pasa el tope, se frena y se reporta: el tope no
-  se sube solo.
-- PRECONDICIONES, todas commiteadas por la autora: P3b-2 de U-PROMPT-R2 (prefijo re-congelado), el cierre de
-  C2 de U-R2-CODIGO-2 (código y `salida_tanda0_r2b/`) y P4 de U-PROMPT-R2 (pareada). Si falta alguna, frená
-  sin escribir.
+  04/10/2026, tras el FRENO P3b-2 de U-PROMPT-R2, y mantenido por la autora tras el FRENO P4; antes era
+  USD 69; docs/plan_tesis.md:400). Fuera de T2, USD 0 y ninguna llamada a la API. Si la proyección de T2
+  pasa el tope, se frena y se reporta: el tope no se sube solo.
+- PRECONDICIONES, todas commiteadas por la autora: de U-PROMPT-R2, P4 (pareada), P3c (el ajuste del prefijo
+  y del mensaje, con el prefijo re-congelado y los candados de F04b, F22, F22b y F23) y su prueba corta
+  P4b; y el cierre de C2 de U-R2-CODIGO-2 (código y `salida_tanda0_r2b/`). Si falta alguna, frená sin
+  escribir.
+- Caché: la base de la prueba pareada de P4 no se reutiliza en esta unidad (decisión de la autora del
+  04/10/2026).
 - Corpus: el congelado. No se actualiza ningún PDF (decisión de la autora del 02/10/2026, plan `:400`).
 
 CONTEXTO, con sus anclas.
@@ -24,9 +27,11 @@ CONTEXTO, con sus anclas.
   tanda0_ens_diez_r2b.json y tanda0_ens_desarrollo_r2b.json (`20b7f60`). Hoy apuntan a
   `e0_chunking/salida_tanda0_r2`, y el primero trae el tope anterior, de USD 69.
 - Referencias de costo: E1 a E3 de los diez TOs con el prefijo sellado costó USD 40,35 (plan `:400`). Con
-  el prefijo nuevo la estimación central es USD 50,74, con la NOTA de E3 como cota alta, y por el factor 1,4
-  da 71,04 (data/experiment/prompt_r2/p3b2/salida/costo_p3b2.json). No cubre la salida nueva de los puntos a,
-  b y h del parche: la mide P4.
+  el prefijo de P3b-2 (`3817de475c93`), la pareada de P4 midió el prefijo, la entrada y la salida. La
+  re-estimación central queda entre USD 45,00, con la salida ponderada por estrato, y 49,41, sin ponderar;
+  por el factor 1,4, entre 63,00 y 69,17 (data/experiment/prompt_r2/p4/salida/costo_real_p4.json; la de
+  P3b-2 era 50,74 y 71,04). Es la estimación del prefijo de P4. El de P3c cambia el texto: la proyección de
+  T1 usa la salida que mida P4b.
 - Gate: docs/laudo_release_r2_pipeline.md, §3.1 (puntos 1 a 8), y docs/protocolo_entre_tandas.md, §1 y §4,
   con su enmienda 3 sobre las clases de reprocesamiento
   (docs/enmienda3_protocolo_entre_tandas_2026-10-04_clases_de_reprocesamiento.md, FIRMADA el 04/10/2026).
@@ -41,8 +46,12 @@ T1 — PREPARACIÓN EN SECO Y SUITE (USD 0).
    los sellos, a los del prefijo re-congelado; y el tope global, a USD 72. Es el primer paso de la unidad
    (decisión de la autora del 04/10/2026).
 2. Control de las entradas: el hash y el sha256 del prefijo y el del tool schema contra los candados de
-   P3b-2; el sha256 de cada archivo de `salida_tanda0_r2b/` contra el cierre de C2; el candado del catálogo;
-   el commit del código.
+   P3c de U-PROMPT-R2, la etapa que re-congela el prefijo; el sha256 de cada archivo de
+   `salida_tanda0_r2b/` contra el cierre de C2; el candado del catálogo; el commit del código.
+   - Candados de los insumos que no entran al hash del prefijo (decisión de la autora del 04/10/2026): la
+     lista de tablas forzadas a residual (F04b), las líneas fijas del mensaje de E1 (F22 y F22b) y las
+     NOTAS de E3 (F23). Los pone P3c de U-PROMPT-R2. T1 solo los verifica: que los módulos cargan con sus
+     sha256 esperados y que en el selftest de claves las variaciones R29, R29b, R30 y R32 dan «frena».
    - `e1_extractor/selftest_prompt_r2b.py` lee `salida_tanda0_r2/` y exige que ninguna unidad lleve
      `herencia_recortada` (`:118` y `:148-149`). Al pasar a `salida_tanda0_r2b/`, ese caso cambia: la única
      unidad con el recorte es `ric::11.2.3`, y su mensaje lleva la línea del recorte una vez. El archivo se
@@ -58,6 +67,15 @@ T1 — PREPARACIÓN EN SECO Y SUITE (USD 0).
      prefijo sellado, las tres de cap dieron 11.925, 8.371 y 9.212 tokens de salida: superan los 8.192 del
      primer intento y entran en el reintento de 16.384. Si alguna corta también en el reintento, solo
      `cap::4.2.1.2` se puede partir por ítems.
+     Con la salida que midió P4 con el prefijo de P3b-2 (1,175 tokens por carácter de texto propio: mediana
+     de 6 unidades de 3.109 a 9.825 caracteres, de 0,224 a 1,498), en el reintento entran unos 13.944
+     caracteres, y 10.937 con el máximo. Por esa cuenta quedan fuera `ric::11.2::intro`, que no se puede
+     partir, y `cap::4.2.1.2`: se parte en dos, de 15.056 y 11.669 caracteres, la parte mayor también pasa
+     de 13.944 y una parte no se vuelve a partir. Las otras dos quedan en el borde. Es una cota: la razón
+     baja con el tamaño (con el prefijo sellado, las tres de cap dieron 0,46, 0,69 y 0,84). Por su salida
+     sellada y el crecimiento medido en P4 (×1,276 en el conjunto y hasta ×1,58 en las unidades de 3.000
+     caracteres o más, sin `ric::9.2.1`), `cap::4.2.1.2` daría entre 15.200 y 18.900 tokens. La corrida en
+     seco lista las cuatro, con el mecanismo que cubre a cada una.
 3. Corrida en seco, sin llamar a la API: el request de cada unidad, su namespace y su clave de caché; las
    unidades por TO; la estimación por TO contra el tope; los namespaces de los reintentos.
 4. Suite y shapes antes del gate:
@@ -95,7 +113,13 @@ T2 — EXTRACCIÓN, E1 A E3 (tope USD 72).
   listadas; unidades con cada marca de E3 (`lectura_veredicto_e3`, `reintento_con_menos_elementos` y
   `copia_nota_e3`); salidas mal formadas y sus reintentos; unidades que cortan en el primer intento, en el
   reintento y las partidas por corte, con sus tokens de salida; y los tokens de salida por carácter de texto
-  propio en las unidades de 3.000 caracteres o más (con el prefijo sellado, mediana 0,86).
+  propio de todas las unidades (decisión de la autora del 04/10/2026): la mediana, el percentil 90 y el
+  máximo por tramo de tamaño del texto propio; aparte, las unidades de 3.000 caracteres o más (con el
+  prefijo sellado, mediana 0,86 en 40 unidades; en P4, 1,175 en 6) y, una por una, las de 10.000 o más. Con
+  esa medición se recalcula la capacidad del reintento (docs/checklist_pre_escalado.md, condición 12).
+- Control de la caché de E3 (decisión de la autora del 04/10/2026). El namespace de E3 del perfil r2b es el
+  de la tanda 0. Se cuentan los aciertos de caché de E3 contra entradas anteriores a la corrida
+  (`created_at` anterior a su inicio). Se espera 0; si hay alguno, se lista con su unidad y su clave.
 FRENO T2.
 
 T3 — ENSAMBLADOS, REGISTRO Y GATE DE r2b (USD 0).
@@ -202,7 +226,7 @@ correr EV2 o cualquier celda con agente; usar las 15 preguntas como evaluación;
 commitear.
 
 DECISIONES DE LA AUTORA AL FIRMAR.
-1. El tope definitivo de T2 (hoy, USD 72), si P4 cambia la estimación.
+1. El tope de T2: queda en USD 72 (decisión de la autora del 04/10/2026, tras el FRENO P4).
 2. Si las celdas con agente de la tanda 0 se vuelven a correr sobre los grafos r2b (referencia: USD 21,2577;
    propuesta: no en esta unidad).
 3. Las carpetas de salida (propuesta: `salida_r2b/`, `ens_diez_r2b/`, `ens_desarrollo_r2b/` y
@@ -211,10 +235,14 @@ DECISIONES DE LA AUTORA AL FIRMAR.
 5. La semilla del sorteo de la cola humana.
 
 PENDIENTE DE COMPLETAR ANTES DE LA FIRMA, con lo que cierren las unidades en curso.
-- De P3b-2 de U-PROMPT-R2: su commit. Lo demás ya está en su freno (data/experiment/prompt_r2/freno_p3b2.md,
-  sin commit al 04/10/2026): el prefijo re-congelado tiene el hash `3817de475c93` y el sha256 `8d84364f…`, el
-  tool schema no cambia (`0c391f2b…`) y el namespace de E1 es `e1_extraccion|cv=e1-extractor-v1-p3817de475c93|think=0`;
-  la fase le llega a E2 por el parámetro `fase` de `ensamblar_r2`.
+- De P3c de U-PROMPT-R2 (diseño P3c-1 en curso al 04/10/2026): el hash y el sha256 del prefijo que
+  re-congele y el namespace de E1. Reemplazan a los de P3b-2 (`c8c3970`: hash `3817de475c93`, sha256
+  `8d84364f…` y namespace `e1_extraccion|cv=e1-extractor-v1-p3817de475c93|think=0`). También: si el tool
+  schema cambia (con P3b-2 no cambió: `0c391f2b…`), los sha256 de los cuatro candados y la lista de tablas
+  forzadas a residual, con `cap::tabla037`. La fase le llega a E2 por el parámetro `fase` de `ensamblar_r2`.
+- De P4b de U-PROMPT-R2: la salida por carácter y el crecimiento de la salida con el prefijo de P3c, para
+  la proyección de T1; y si ese prefijo emite la Excepcion de `cla::5.1.1.1` (condición 10 de la tanda 1,
+  pendiente hasta P4b).
 - De C2 de U-R2-CODIGO-2: el sha256 de cada archivo de `salida_tanda0_r2b/` y de los `pies_<to>.json`; los
   cambios declarados de ric; el namespace del reintento por salida mal formada; las claves del reporte del
   ensamblado para las omisiones, las aristas derivadas de la cola y el conteo de lo que pasó por E3; y las
@@ -222,9 +250,10 @@ PENDIENTE DE COMPLETAR ANTES DE LA FIRMA, con lo que cierren las unidades en cur
   cierre, para el control de reproducibilidad de T3. En su freno corregido del 04/10/2026 son `70d51e42…`
   (diez) y `fa4c1043…` (desarrollo), verificados en su revisión; se confirman con el commit de C2.
 - El commit de la firma de la enmienda 5 a L-ESQ-R2.
-- De P4 de U-PROMPT-R2: el resultado de la pareada; si el prefijo emite la Excepcion de `cla::5.1.1.1` (si
-  no, la condición 10 vuelve a la autora antes de correr); cuántas recomendaciones y consecuencias detecta
-  la clasificación de la modalidad, contra una lectura de muestra; y la salida que la estimación no cubre.
+- De P4 de U-PROMPT-R2 (data/experiment/prompt_r2/freno_p4.md, sin commit al 04/10/2026): hecho. El prefijo
+  de P3b-2 no emite la Excepcion de `cla::5.1.1.1`, y la autora decidió ajustar el prompt antes de esta
+  unidad (P3c y P4b). La clasificación de la modalidad detectó 2 recomendaciones y ninguna consecuencia. El
+  costo real fue USD 1,1086, de un tope de 2.
 - El commit del código con el que corre la unidad.
 
 REQUISITOS: los de CLAUDE.md §4 (a a l), con PYTHONDONTWRITEBYTECODE=1 y .venv/bin/python -B; verificaciones y

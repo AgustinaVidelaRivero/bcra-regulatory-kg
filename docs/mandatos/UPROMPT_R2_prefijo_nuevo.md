@@ -692,3 +692,56 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   contra una lectura de muestra y el tope de USD 2. La estimación de P3b-2 cuenta 64 llamadas y no incluye
   `cla::5.1.1::intro`, los tres de `cap::8.5` ni el estrato de listas de excepciones: P4 proyecta el costo
   antes de correr y frena si pasa el tope.
+- **04/10/2026 — FRENO P4 revisado; etapas nuevas P3c y P4b, antes de U-REEXT-T0 (decisión de la autora).**
+  P4 corrió sobre `9f6361e` y costó USD 1,1086, de un tope de 2 (`data/experiment/prompt_r2/freno_p4.md` y
+  `p4/`, sin commit al 04/10/2026). Corrí sus ocho scripts de USD 0 dos veces sobre una copia: las diez
+  salidas son iguales a las de `p4/salida/`. El prefijo de P3b-2 no emite la Excepcion de `cla::5.1.1.1`.
+  La autora revisó la lectura asistida y la corrigió en cuatro puntos. Los verifiqué contra el crudo
+  (`p4/salida/resultados_p4.jsonl`), y la unidad los asentó en `p4/lectura_p4.md`, sección «Revisión de la
+  autora»:
+  - `cap::5.4.4`: el `limita` del brazo nuevo va de Restriccion a Definicion, el validador lo rechaza por la
+    firma y no llega al grafo. La marca pasa a «no emite». La tabla pareada no cambia: el destino de
+    `limita` sigue en 3 y 5 de 6 fichas, porque el brazo sellado no emitía la relación en esa ficha.
+  - `cla::5.1.1.1`: el brazo nuevo funde dos condiciones en un nodo. La etiqueta y el umbral son del monto;
+    la descripción y el tramo, del repago. El brazo sellado emitía dos Condicion.
+  - `cla::5.1.1::intro`: el brazo nuevo pierde la Definicion de alcance que emitía el sellado y declara la
+    frase como `meta_normativo`. La exclusión de los créditos para consumo o vivienda no queda en ninguna
+    entidad.
+  - De las 24 omisiones `meta_normativo` del brazo nuevo, una por ficha, 9 son contenido normativo: 8 de las
+    16 que copian texto propio, y la conformidad previa del encabezado en `ext::13.4.8`.
+  Decisión de la autora: el prompt se ajusta antes de U-REEXT-T0, en tres pasos de esta unidad, cada uno con
+  su FRENO.
+  - **P3c-1, diseño**, sin implementar: el texto lado a lado y el control de no-filtración, como en P3b-1.
+  - **P3c-2, implementación**, con el prefijo re-congelado.
+  - **P4b, prueba corta**: casos que no se hayan leído al escribir el ajuste, elegidos por lectura y
+    sellados antes de correr, con los dos tipos de lista del punto 2; más `cla::5.1.1::intro` y
+    `cla::5.1.1.1`, que miden la corrección del ejemplo. Con su proyección de costo antes de correr.
+  Los cinco puntos del ajuste:
+  1. `meta_normativo`, más estricta: nunca una frase con un deber, una prohibición, una facultad, una
+     condición, una excepción, un alcance o una modalidad.
+  2. Las listas que exceptúan, en sus dos tipos. Cuando los ítems son las cosas exceptuadas
+     (`cla::5.1.1.1`), cada ítem es una Excepcion, incluida la excepción con contra-excepción. Cuando los
+     ítems son las condiciones de una sola excepción (`ext::13.4`), cada ítem es una Condicion de esa
+     excepción. En los dos tipos, la descripción de la entidad del ítem nombra la norma que se exceptúa. No
+     lleva `exceptua` cuando esa norma está en otra unidad.
+  3. Un nodo por condición, con la etiqueta coherente con su descripción, su tramo y su umbral.
+  4. La norma del encabezado no se repite como entidad propia dentro del ítem: se compone en la descripción
+     de la entidad del ítem (`ext::13.4.4`).
+  5. Sin mención cuando el texto no nombra al sujeto: de las 15 menciones que no verifican en las 76 fichas
+     del brazo nuevo, 14 son «las entidades».
+  Agregados, en la misma etapa:
+  - `cap::tabla037` pasa a la lista de tablas forzadas a residual (`prompt_r2b.TABLAS_RESIDUALES_FORZADAS`),
+    como preveía la nota del 03/10/2026 sobre los casos fijos de la pareada.
+  - El validador verifica el tramo de las omisiones contra el texto propio y el heredado. Hoy lo verifica
+    solo contra el propio (`pyd_r2/code/validador_r2.py:1316`): de las 22 omisiones que no verifican, 7
+    copian texto heredado.
+  - Los candados de los insumos que no entran al hash del prefijo: la lista de tablas forzadas (F04b), las
+    líneas fijas del mensaje de E1 (F22 y F22b) y las NOTAS de E3 (F23). Solo comparan: no entran al pedido
+    ni cambian ninguna clave. Se sellan después del ajuste del texto. Para esto la autora autorizó
+    `e3_verificador/prompt_e3.py` más allá de la NOTA y, en `data/experiment/mantenimiento/`, las cuatro
+    filas de la tabla de reprocesamiento y las variaciones R29, R29b, R30 y R32 del selftest de claves, que
+    pasan de «cambia» a «frena». T1 de U-REEXT-T0 solo los verifica.
+  Fuera de la unidad: la condición 10 de la tanda 1 queda pendiente hasta P4b
+  (`docs/checklist_pre_escalado.md:81`); el tope de U-REEXT-T0 sigue en USD 72; y la base de caché de P4 no
+  se reutiliza en U-REEXT-T0. Fe de erratas de la nota del 04/10/2026 sobre la enmienda 4 a L-ESQ-R2: el
+  arreglo de la cadena sintética de P3 está commiteado en `f3922d8`.

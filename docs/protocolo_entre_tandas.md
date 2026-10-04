@@ -480,3 +480,8 @@ El texto firmado no se edita; estas notas se leen junto con él.
   el feedback; F14, `validador_e1`, pasa a «E1 y E3 de las afectadas»; y `validador_r2` queda en «solo código»,
   como F14b. La enmienda 2 lleva al pie su fe de erratas: con el código de hoy, un id nuevo en el catálogo es
   F11 y no F13.
+- **04/10/2026 — la enmienda 3 decide la regla de cruce para F14 (decisión de la autora).** El §3 de la
+  enmienda 3 dejaba a decisión de la autora si un cambio de `validador_e1` se corrige entre tandas. Lo decidió
+  el 04/10/2026 y firmó la enmienda con ese cambio: los cambios de la clase F14 se corrigen entre tandas igual
+  que los de E0, con E1 y E3 solo de las unidades afectadas y su costo declarado antes de correr. La versión
+  anterior del §3 es la de `0cb0c70`.
