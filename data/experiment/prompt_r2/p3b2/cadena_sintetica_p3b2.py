@@ -257,9 +257,14 @@ def main() -> int:
 
     def nd(n):
         return n.get("properties_no_definidas") or {}
-    check("vistos_por_e3 lleva solo la marca de la copia a la validación r2",
-          regs["cla::5.1.1.2"]["validacion"].get("marcas_e3") == {"copia_nota_e3": copias}
-          and "marcas_e3" not in regs["cla::3.5.1"]["validacion"])
+    # Desde C2 de U-R2-CODIGO-2 (punto t), vistos_por_e3 lleva las tres marcas de E3, no solo la de la copia.
+    check("vistos_por_e3 lleva las tres marcas de E3 a la validación r2 (copia de la nota, lectura del veredicto y "
+          "reintento con menos elementos)",
+          regs["cla::5.1.1.2"]["validacion"].get("marcas_e3") == {
+              "copia_nota_e3": copias,
+              "lectura_veredicto_e3": [{"fase": "verificacion", "intento": 0, "lectura": "json"}]}
+          and regs["cla::3.5.1"]["validacion"].get("marcas_e3") == {
+              "reintento_con_menos_elementos": {"entidades": [3, 2], "relaciones": [1, 1]}})
     pot = [n for n in nodos if n["type"] == "Potestad" and "copia_nota_e3" in nd(n)]
     check("la marca de la copia llega al nodo, en properties_no_definidas",
           len(pot) == 1 and pot[0]["label"].startswith("Agrupar") and nd(pot[0])["copia_nota_e3"] == copias[0]["campos"])
@@ -290,7 +295,9 @@ def main() -> int:
           p3b == {"nodos_con_clave": {"modalidad": 1, "consecuencia": 1, "modalidad_clasificada": 2,
                                       "copia_nota_e3": 1},
                   "modalidad_clasificada": {"consecuencia_de_incumplimiento": 1, "recomendacion": 1},
-                  "aristas_con_properties_no_definidas": 1, "unidades_con_marca_e3": {"copia_nota_e3": 1}}, str(p3b))
+                  "aristas_con_properties_no_definidas": 1,
+                  "unidades_con_marca_e3": {"copia_nota_e3": 1, "lectura_veredicto_e3": 1,
+                                            "reintento_con_menos_elementos": 1}}, str(p3b))
     check("reporte de E2 r2: 0 elementos sin verificar; la cola humana aparte",
           rep["paso_por_e3"]["entidades_sin_verificar"] == 0 and rep["paso_por_e3"]["relaciones_sin_verificar"] == 0
           and rep["paso_por_e3"]["cola_humana"]["unidades"] == 1)

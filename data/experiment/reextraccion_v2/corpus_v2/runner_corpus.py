@@ -455,6 +455,26 @@ def reintentables_pendientes(regs: dict[str, dict]) -> list[str]:
 # registran acá; en las fases siguientes las partes reemplazan a la unidad.
 ARCHIVO_PARTICIONES_CORTE = "particiones_por_corte.json"
 ERROR_PARTICIONADA = "particionada_por_corte"
+# U-R2-CODIGO-2, C2, punto b: con el perfil r2, una salida con tool_use que validador_e1 rechaza entera por su
+# forma recibe UN reintento con el mismo request en su propio namespace (cliente_e1.SUFIJO_REINTENTO_FORMA); si
+# vuelve mal formada, la unidad queda con este error y va a la lista declarada (errores_definitivos y
+# reintentos_forma del resumen de E1). Sin reparación determinística.
+MOTIVOS_FORMA_E1 = ("salida_no_parseable", "salida_no_dict", "entities_o_relations_invalidos")
+ERROR_FORMA_TRAS_REINTENTO = "salida_mal_formada_tras_reintento"
+
+
+def motivo_forma_e1(val: dict | None) -> str | None:
+    """Motivo de forma con que validador_e1 rechazó el chunk entero, o None."""
+    return next((r["motivo"] for r in (val or {}).get("rechazos", [])
+                 if r.get("nivel") == "chunk" and r.get("motivo") in MOTIVOS_FORMA_E1), None)
+
+
+def _usage_e1(resp) -> dict:
+    u = resp.usage
+    return {"input_tokens": getattr(u, "input_tokens", 0) or 0,
+            "output_tokens": getattr(u, "output_tokens", 0) or 0,
+            "cache_write_tokens": getattr(u, "cache_creation_input_tokens", 0) or 0,
+            "cache_read_tokens": getattr(u, "cache_read_input_tokens", 0) or 0}
 
 
 def partes_por_corte(tdir: Path) -> dict[str, dict]:
@@ -546,11 +566,7 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
                 cliente, kwargs, doc=c["archivo"], max_tokens_reintento=techo_corte), c["id"])
         resp, cortado = par if par is not None else (None, None)
         if resp is not None:
-            u = resp.usage
-            usage = {"input_tokens": getattr(u, "input_tokens", 0) or 0,
-                     "output_tokens": getattr(u, "output_tokens", 0) or 0,
-                     "cache_write_tokens": getattr(u, "cache_creation_input_tokens", 0) or 0,
-                     "cache_read_tokens": getattr(u, "cache_read_input_tokens", 0) or 0}
+            usage = _usage_e1(resp)
             stop = getattr(resp, "stop_reason", None)
             tool_input = next((b.input for b in resp.content
                                if getattr(b, "type", None) == "tool_use"), None)
@@ -567,10 +583,32 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
         val = (validador_e1.validar_salida(tool_input, c,
                                            esquema=PERFIL.esquema).as_dict()
                if tool_input is not None else None)
+        reintento_forma = None
+        if PERFIL_R2 and err is None and motivo_forma_e1(val) is not None:
+            # punto b: el request que produjo la salida mal formada (con el techo de corte si lo hubo), tal cual
+            kwargs_forma = dict(kwargs, max_tokens=techo_corte) if cortado is not None else kwargs
+            reintento_forma = {"namespace": cliente_e1.namespace_e1(
+                                   prefijo_hash=PERFIL.prefijo_hash_para_namespace,
+                                   sufijo=cliente_e1.SUFIJO_REINTENTO_FORMA),
+                               "motivo": motivo_forma_e1(val), "intento_1": cliente_e1.resumen_intento(resp)}
+            resp_f, err_f = llamar_con_reintentos_api(
+                lambda: cliente_e1.crear_reintento_forma(cliente, kwargs_forma, doc=c["archivo"]), c["id"])
+            if resp_f is None:
+                err = err_f
+            else:
+                usage, stop = _usage_e1(resp_f), getattr(resp_f, "stop_reason", None)
+                tool_input = next((b.input for b in resp_f.content
+                                   if getattr(b, "type", None) == "tool_use"), None)
+                val = (validador_e1.validar_salida(tool_input, c, esquema=PERFIL.esquema).as_dict()
+                       if tool_input is not None else None)
+                if stop == "max_tokens" or tool_input is None or motivo_forma_e1(val) is not None:
+                    err = ERROR_FORMA_TRAS_REINTENTO
         reg = {
             "chunk_id": c["id"], "unidad": c["unidad"], "tipo_unidad": c["tipo"],
             "titulo": c["titulo"], "stop_reason": stop, "error": err,
             "usage": usage, "tool_input_crudo": tool_input, "validacion": val}
+        if reintento_forma is not None:
+            reg["reintento_forma"] = reintento_forma
         if cortado is not None:
             # decisión 2: AMBOS intentos persistidos íntegros — el crudo
             # completo del intento 1 ya está en la db (write-through); acá
@@ -597,10 +635,11 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
         if errores_consecutivos > 5:
             raise Freno(f"{key}: más de 5 errores de API consecutivos "
                         f"(último: {err}) — problema sistémico, se frena")
-        if procesadas % 25 == 0 or err or cortado is not None:
+        if procesadas % 25 == 0 or err or cortado is not None or reintento_forma is not None:
             print(f"[{key} {procesadas}/{len(chunks)}] {c['id']:<28s} "
                   f"gasto_fase=USD {gasto_previo + cliente.gasto_usd:.4f}"
                   + (" REINTENTO_CORTE" if cortado is not None else "")
+                  + (" REINTENTO_FORMA" if reintento_forma is not None else "")
                   + (f" ERROR {err}" if err else ""), flush=True)
         if checkpoint_cada and procesadas % checkpoint_cada == 0:
             checkpoint(salida, estado, to, "e1", procesadas, len(chunks),
@@ -644,6 +683,11 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
         resumen["tipo_obligacion_requisito_de_estructura"] = n_ret
     if reintentos_corte:
         resumen["reintentos_corte"] = reintentos_corte
+    con_forma = sorted(cid for cid, r in finales_e1.items() if "reintento_forma" in r)
+    if con_forma:
+        resumen["reintentos_forma"] = {
+            "unidades": con_forma,
+            "agotados": sorted(cid for cid in con_forma if finales_e1[cid].get("error") == ERROR_FORMA_TRAS_REINTENTO)}
     particionadas = partes_por_corte(tdir) if PERFIL_R2 else {}
     if particionadas:
         resumen["particionadas_por_corte"] = {k: [x["id"] for x in v["partes"]]
@@ -948,6 +992,12 @@ def vistos_por_e3(validacion: dict | None) -> dict | None:
     if copias:
         # U-PROMPT-R2, P3b-2: la marca de la copia de la nota de E3 (ratchet_e3) llega al nodo por validador_r2.
         vistos["marcas"] = {"copia_nota_e3": copias}
+    # U-R2-CODIGO-2, C2, punto t: las marcas de la lectura del veredicto como texto y del reintento con menos
+    # elementos llegan a la validación y al conteo de E2 (stats["p3b"]).
+    otras = {k: v for k, v in (validacion.get("marcas_e3") or {}).items()
+             if k in ("lectura_veredicto_e3", "reintento_con_menos_elementos") and v}
+    if otras:
+        vistos.setdefault("marcas", {}).update(otras)
     return vistos
 
 

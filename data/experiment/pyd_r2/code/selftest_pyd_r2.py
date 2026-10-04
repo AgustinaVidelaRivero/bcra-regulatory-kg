@@ -31,7 +31,16 @@ Grupos:
       (vistos_e3, no_verificada_e3 por E3, establecida_en derivada);
   G14 U-PROMPT-R2, P3b-2: el tramo en orden de lectura del mini-chunk a mitad de
       oración (h), la Comunicacion desde el tramo verificado (l), la modalidad
-      clasificada y la marca de la copia de la nota de E3 que llega a la entidad.
+      clasificada y la marca de la copia de la nota de E3 que llega a la entidad;
+  G15 U-R2-CODIGO-2, C2: cuantías nuevas (c: «hs.», «hábil» en singular, «o más»
+      entre el paréntesis y la unidad, ordinal con marcador), alcance de la
+      negación, «o no» e «igual o superior» (i), comparador pegado sobre el
+      coeficiente (j), «más del» y «menos del» (enmienda 5 a L-ESQ-R2),
+      marcador del encabezado en un tramo compuesto (k) y plazo sin marcador
+      (m, enmienda 3 a L-ESQ-R2; con «maximo_asumido», la regla anterior de r2a).
+Con la enmienda 3 a L-ESQ-R2 (C2 de U-R2-CODIGO-2, punto m), los casos que
+esperaban un plazo sin marcador con máximo inclusivo y `comparacion_asumida`
+esperan `no_determinada`, con la regla `sin_marcador_plazo` y sin la marca.
 
 Solo lectura: no escribe archivos. Lee E0 de la tanda 0 (con sha256 de N1),
 la lectura de `limita` y el ejemplo del préstamo. Salida determinística.
@@ -423,7 +432,7 @@ def g4_reglas():
         ("por montos mayores a $ 1.000", "minimo_estricto", "simple:mayor"),
         ("por un monto mayor al 5%", "minimo_estricto", "simple:mayor"),
         ("en mayor medida, el 5%", "no_determinada", "sin_marcador"),
-        ("el menor entre 1 año y el plazo residual", "maximo_inclusivo", "sin_marcador_plazo"),
+        ("el menor entre 1 año y el plazo residual", "no_determinada", "sin_marcador_plazo"),
         ("el límite inferior del 3%", "no_determinada", "sin_marcador"),
         ("a tasas inferiores al 2%", "maximo_estricto", "simple:inferior"),
         ("en menos de 90 días", "maximo_estricto", "simple:menos_de"),
@@ -432,7 +441,8 @@ def g4_reglas():
         ("no podrán ser superiores al 3%", "maximo_inclusivo", "negacion:raiz_super"),
         ("sin exceder el 20%", "maximo_inclusivo", "negacion:raiz_exced"),
         ("no podrá ya nunca superar el 1%", "maximo_inclusivo", "negacion:raiz_super"),
-        ("no podrá en ningún caso superar el 1%", "minimo_estricto", "simple:raiz_super"),
+        # U-R2-CODIGO-2, C2, punto i: «ningún» niega (antes, «no» a cuatro palabras quedaba fuera de alcance)
+        ("no podrá en ningún caso superar el 1%", "maximo_inclusivo", "negacion:raiz_super"),
         ("no inferior al 8%", "minimo_inclusivo", "negacion:inferior"),
         ("no menos de 180 días", "minimo_inclusivo", "negacion:menos_de"),
         ("no más de 2 veces", "maximo_inclusivo", "negacion:mas_de"),
@@ -453,11 +463,11 @@ def g4_reglas():
         ("un mínimo de 3 meses", "minimo_inclusivo", "compuesta:un_minimo_de"),
         ("la exigencia de capital mínimo de las entidades será de $ 12.000", "no_determinada", "sin_marcador"),
         ("la Superintendencia de Entidades Financieras fijará el 5%", "no_determinada", "sin_marcador"),
-        ("la Superintendencia podrá fijar un plazo de 30 días", "maximo_inclusivo", "sin_marcador_plazo"),
+        ("la Superintendencia podrá fijar un plazo de 30 días", "no_determinada", "sin_marcador_plazo"),
         ("aplicará un ponderador de riesgo del 2 %", "coeficiente", "coeficiente"),
         ("un ponderador del 100% a las exposiciones que no superen", "coeficiente", "coeficiente"),
         ("no sea igual o superior al 30%", "maximo_estricto", "negacion:igual_o_superior"),
-        ("en un plazo de 30 días", "maximo_inclusivo", "sin_marcador_plazo"),
+        ("en un plazo de 30 días", "no_determinada", "sin_marcador_plazo"),
         ("el 5% del total", "no_determinada", "sin_marcador"),
     ]
     for tramo, comp, regla in casos:
@@ -465,7 +475,8 @@ def g4_reglas():
         chequear(g, f"{tramo!r} → {comp} ({regla})", c is not None and c.comparacion == comp and c.regla == regla,
                  "" if c is None else f"{c.comparacion} {c.regla}")
     c = una("en un plazo de 30 días")
-    chequear(g, "plazo sin marcador lleva comparacion_asumida", c.comparacion_asumida is True)
+    chequear(g, "plazo sin marcador: no_determinada, sin comparacion_asumida (enmienda 3)",
+             c.comparacion == "no_determinada" and c.comparacion_asumida is False)
     c = una("el 5% del total")
     chequear(g, "otra cuantía sin marcador: no_determinada, sin comparacion_asumida", c.comparacion_asumida is False)
     # adyacencia: un marcador fuera del tramo (en la descripción) no cuenta
@@ -484,16 +495,20 @@ def g4_reglas():
     chequear(g, "«factor» desde la descripción no cuenta (calibración P3)", c.comparacion == "no_determinada")
     cs = RC.analizar("el menor entre 1 año y el plazo residual, con un plazo mínimo de 10 días hábiles")
     chequear(g, "dos cuantías en un tramo: cada una con su ventana; «el menor entre 1 año» sin marcador, "
-                "plazo con máximo inclusivo y comparacion_asumida",
+                "plazo no_determinada y sin comparacion_asumida (enmienda 3)",
              len(cs) == 2 and cs[1].comparacion == "minimo_inclusivo" and cs[0].regla == "sin_marcador_plazo"
-             and cs[0].comparacion == "maximo_inclusivo" and cs[0].comparacion_asumida is True)
+             and cs[0].comparacion == "no_determinada" and cs[0].comparacion_asumida is False)
     chequear(g, "precedencia: «no inferior a» (negación) sobre «inferior a» (simple)",
              una("no inferior al 8%").comparacion == "minimo_inclusivo"
              and una("inferior al 8%").comparacion == "maximo_estricto")
     chequear(g, "precedencia: «igual o superior» (compuesta) sobre «superior» (simple)",
              una("igual o superior al 10%").comparacion == "minimo_inclusivo")
-    chequear(g, "precedencia: coeficiente sobre negación",
-             una("el ponderador no podrá superar el 50%").comparacion == "coeficiente")
+    # U-R2-CODIGO-2, C2, punto j: el comparador pegado a la cuantía pisa al coeficiente; sin comparador pegado,
+    # el coeficiente sigue primero
+    chequear(g, "precedencia: comparador pegado a la cuantía sobre coeficiente (punto j); sin él, coeficiente "
+                "sobre negación",
+             una("el ponderador no podrá superar el 50%").comparacion == "maximo_inclusivo"
+             and una("el ponderador del 50% no podrá superarse").comparacion == "coeficiente")
     chequear(g, "precedencia: negación sobre compuesta",
              una("hasta que no superen el 5%").regla == "negacion:raiz_super")
     chequear(g, "«Superintendencia», «superficie» y «supervisión» no son marcadores de la raíz super-",
@@ -561,9 +576,10 @@ def g5_control(ch):
                  len(x) == 1 and x[0].comparacion == comp, "" if not x else f"{x[0].comparacion} {x[0].regla}")
         if fila == "15":
             uno = [y for y in cs if y.valor == "1" and y.unidad == "anios"]
-            chequear(g, "fila 15: «el menor entre 1 año» queda sin marcador, plazo con máximo inclusivo y "
-                        "comparacion_asumida",
-                     len(uno) == 1 and uno[0].regla == "sin_marcador_plazo" and uno[0].comparacion_asumida is True)
+            chequear(g, "fila 15: «el menor entre 1 año» queda sin marcador, plazo no_determinada y sin "
+                        "comparacion_asumida (enmienda 3)",
+                     len(uno) == 1 and uno[0].regla == "sin_marcador_plazo" and uno[0].comparacion == "no_determinada"
+                     and uno[0].comparacion_asumida is False)
         if fila == "21":
             chequear(g, "fila 21: no dispara coeficiente (ni tramo, ni descripción, ni título del punto)",
                      all(y.regla != "coeficiente" for y in cs))
@@ -692,14 +708,12 @@ def g10_calibracion(ch):
         ("inferior al 2%", "maximo_estricto", "simple:inferior"),
         ("mayor al 5%", "minimo_estricto", "simple:mayor"),
         ("menores al 10%", "maximo_estricto", "simple:menor"),
-        ("la supervisión dispondrá de 30 días", "maximo_inclusivo", "sin_marcador_plazo"),
+        ("la supervisión dispondrá de 30 días", "no_determinada", "sin_marcador_plazo"),
         ("la Superintendencia, la superficie, el superávit y el excedente del 5%", "no_determinada", "sin_marcador"),
         ("Multa equivalente al 4% del valor rechazado", "igual", "igual:equivalente_a"),
         ("La deducción será equivalente al 100% del valor", "igual", "igual:equivalente_a"),
         ("Límite máximo equivalente a USD 100", "no_determinada", "sin_marcador"),
         ("a razón de un máximo mensual equivalente al 10%", "no_determinada", "sin_marcador"),
-        ("A partir del segundo y hasta el trigésimo sexto mes, la exigencia mensual será equivalente al 10% del "
-         "promedio", "igual", "igual:equivalente_a"),
         ("Multa equivalente al 4% del valor rechazado con mínimo $100 y máximo $50.000", "igual",
          "igual:equivalente_a"),
         ("El cliente no supere, en el mes calendario en el conjunto de las entidades y por el conjunto de los "
@@ -715,14 +729,24 @@ def g10_calibracion(ch):
         chequear(g, f"{tramo!r} → {comp} ({regla})", c is not None and c.comparacion == comp and c.regla == regla,
                  "" if c is None else f"{c.comparacion} {c.regla}")
     c = una("la supervisión dispondrá de 30 días")
-    chequear(g, "«supervisión … 30 días»: plazo sin marcador, con comparacion_asumida", c.comparacion_asumida is True)
+    chequear(g, "«supervisión … 30 días»: plazo sin marcador, no_determinada y sin comparacion_asumida (enmienda 3)",
+             c.comparacion == "no_determinada" and c.comparacion_asumida is False)
+    # «hasta» temporal no excluye «igual»; desde C2 de U-R2-CODIGO-2 (punto c), el ordinal tras «hasta el» es una
+    # cuantía (36 meses, máximo inclusivo) y el 10% es la segunda
+    t = ("A partir del segundo y hasta el trigésimo sexto mes, la exigencia mensual será equivalente al 10% del "
+         "promedio")
+    c0, c1 = una(t), una(t, i=1)
+    chequear(g, f"{t!r} → 36 meses, maximo_inclusivo (compuesta:hasta); 10% → igual (igual:equivalente_a)",
+             c0 is not None and (c0.valor, c0.unidad, c0.comparacion, c0.regla) == ("36", "meses", "maximo_inclusivo",
+                                                                                 "compuesta:hasta")
+             and c1 is not None and (c1.comparacion, c1.regla) == ("igual", "igual:equivalente_a"))
     # «factor» tomado de la descripción: los dos falsos positivos reales de P2.
     sha_kg = {"diez": "dd42d6d9c0c8379da90ec4ed4e4659157a960a0d1ceaf8af5a008bdd9cad9010",
               "r1": "0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a"}
     rutas = {"diez": "data/experiment/reextraccion_v2/corpus_tanda0/ens_diez/r1/kg.json",
              "r1": "data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json"}
     frases = {"diez": ("factor igual a 4", "5%", "minimo_estricto", "simple:raiz_super"),
-              "r1": ("por el factor correspondiente", "cinco días hábiles", "maximo_inclusivo", "sin_marcador_plazo")}
+              "r1": ("por el factor correspondiente", "cinco días hábiles", "no_determinada", "sin_marcador_plazo")}
     for gr, (frase, cuantia, comp, regla) in frases.items():
         p = REPO / rutas[gr]
         if M.sha256_archivo(p) != sha_kg[gr]:
@@ -1349,6 +1373,133 @@ def g14_p3b(ch):
              nd(sin, "o") == {} and "marcas_e3" not in sin)
 
 
+def g15_c2():
+    """U-R2-CODIGO-2, C2: puntos c, i, j, k y m de reglas_comparacion."""
+    g = "G15 U-R2-CODIGO-2 C2"
+    # c: cuantías nuevas
+    cs = RC.analizar("Informar, dentro de las 24 hs. hábiles siguientes a la recepción")
+    chequear(g, "c «hs.»: «24 hs. hábiles» es una cuantía de 24 horas (fuera de lista), máximo inclusivo por «dentro de»",
+             len(cs) == 1 and (cs[0].texto, cs[0].valor, cs[0].unidad, cs[0].fuera_de_lista, cs[0].comparacion)
+             == ("24 hs.", "24", "horas", ["unidad"], "maximo_inclusivo"))
+    cs = RC.analizar("deberá efectuarse hasta el quinto día hábil posterior al vencimiento de cada período")
+    chequear(g, "c ordinal: «hasta el quinto día hábil» → 5 días hábiles, máximo inclusivo",
+             len(cs) == 1 and (cs[0].valor, cs[0].unidad, cs[0].dias_tipo, cs[0].comparacion, cs[0].regla)
+             == ("5", "dias", "habiles", "maximo_inclusivo", "compuesta:hasta"))
+    casos = [("dentro del tercer mes siguiente", ("3", "meses", "maximo_inclusivo", "compuesta:dentro_de")),
+             ("a más tardar el décimo día hábil", ("10", "dias", "maximo_inclusivo", "compuesta:a_mas_tardar")),
+             ("hasta el trigésimo sexto mes", ("36", "meses", "maximo_inclusivo", "compuesta:hasta"))]
+    for t, esp in casos:
+        c = una(t)
+        chequear(g, f"c ordinal con marcador: {t!r} → {esp}",
+                 c is not None and (c.valor, c.unidad, c.comparacion, c.regla) == esp,
+                 "" if c is None else f"{c.valor} {c.unidad} {c.comparacion} {c.regla}")
+    chequear(g, "c ordinal sin marcador no es cuantía («a partir del octavo mes», «el segundo mes anterior»)",
+             RC.analizar("a partir del octavo mes") == [] and RC.analizar("al último día del segundo mes anterior") == [])
+    cs = RC.analizar("activos que en conjunto superen el 25 % de la RPC registrada al último día del segundo mes "
+                     "anterior")
+    chequear(g, "c: la base del 25 % de cap::6.11 no se corta en el ordinal",
+             len(cs) == 1 and cs[0].base == "RPC registrada al último día del segundo mes anterior", str(cs and cs[0].base))
+    c = una("con un plazo de un día hábil")
+    chequear(g, "c «hábil» en singular fija dias_tipo y entra al tramo",
+             c is not None and (c.texto, c.dias_tipo) == ("un día hábil", "habiles"))
+    c = una("bienes con 180 (ciento ochenta) o más días corridos")
+    chequear(g, "c «o más» entre el paréntesis y la unidad: 180 días corridos, mínimo inclusivo (compuesta:o_mas)",
+             c is not None and (c.valor, c.unidad, c.dias_tipo, c.comparacion, c.regla)
+             == ("180", "dias", "corridos", "minimo_inclusivo", "compuesta:o_mas"))
+    # i: alcance de la negación e «igual o superior»
+    casos = [("El cliente no ha utilizado este mecanismo por un monto superior al equivalente de USD 36.000",
+              "maximo_inclusivo", "negacion:raiz_super"),
+             ("sin haber incurrido en atrasos superiores a 31 días", "maximo_inclusivo", "negacion:raiz_super"),
+             ("las operaciones no podrán tener un plazo de pago que exceda a los 360 días corridos",
+              "maximo_inclusivo", "negacion:raiz_exced"),
+             ("En ningún caso el registro del cheque podrá demorarse más de 15 días corridos", "maximo_inclusivo",
+              "negacion:mas_de"),
+             ("la deuda del sector privado no financiero en la entidad prestamista (por todo concepto) más el importe "
+              "solicitado exceda del 2,5 %", "minimo_estricto", "simple:raiz_exced"),
+             ("no se aplica a la entidad y, en el conjunto, superen el 5%", "minimo_estricto", "simple:raiz_super"),
+             ("cuyo endeudamiento sea equivalente o superior al 1 %", "minimo_inclusivo", "compuesta:igual_o_superior"),
+             ("cuyas financiaciones igualen o superen el 1 %", "minimo_inclusivo", "compuesta:igual_o_superior"),
+             ("que no igualen o superen el 1 %", "maximo_estricto", "negacion:igual_o_superior")]
+    for t, comp, regla in casos:
+        c = una(t)
+        chequear(g, f"i {t!r} → {comp} ({regla})", c is not None and (c.comparacion, c.regla) == (comp, regla),
+                 "" if c is None else f"{c.comparacion} {c.regla}")
+    # i, «o no» (enmienda 5, punto 1.d): no es una negación, a ninguna distancia; caso de control cap::6.2.2.3
+    d6223 = ("El ponderador de riesgo de los instrumentos a tasa variable dependerá de que el cupón de renta del "
+             "período en curso –o, de no estar disponible aún, el último que se hubiera pagado– represente o no un "
+             "rendimiento menor a 3 % anual.")
+    casos = [(d6223, d6223, "maximo_estricto", "simple:menor"),
+             ("se imputarán a escalas de vencimientos divididas en 15 o 13 bandas temporales, según que el cupón del "
+              "instrumento sea, o no, menor a 3 %.", None, "maximo_estricto", "simple:menor"),
+             ("según que el cupón no sea menor a 3 %", None, "minimo_inclusivo", "negacion:menor")]
+    for t, desc, comp, regla in casos:
+        c = [x for x in RC.analizar(t, desc) if x.valor == "3"]
+        chequear(g, f"i «o no» {t[-60:]!r} → {comp} ({regla})",
+                 len(c) == 1 and (c[0].comparacion, c[0].regla) == (comp, regla),
+                 "" if not c else f"{c[0].comparacion} {c[0].regla}")
+    # «más del» y «menos del» (enmienda 5, punto 3.b); «o más del total» sigue por «o más»
+    casos = [("para más del 5% de la posición de titulización", "minimo_estricto", "simple:mas_de"),
+             ("que individualmente representen menos del 10 % del CO", "maximo_estricto", "simple:menos_de"),
+             ("no menos del 50% de los clientes", "minimo_inclusivo", "negacion:menos_de"),
+             ("cuando concentren el 40 % o más del total", "minimo_inclusivo", "compuesta:o_mas")]
+    for t, comp, regla in casos:
+        c = una(t)
+        chequear(g, f"«más del»/«menos del» {t!r} → {comp} ({regla})",
+                 c is not None and (c.comparacion, c.regla) == (comp, regla),
+                 "" if c is None else f"{c.comparacion} {c.regla}")
+    # j: comparador pegado a la cuantía
+    casos = [("Las previsiones no superarán el 1,25% de los activos ponderados por riesgo", "maximo_inclusivo"),
+             ("recibir un ponderador de riesgo igual o inferior a 50% para cada exposición", "maximo_inclusivo"),
+             ("El ponderador resultante estará sujeto a un mínimo de 15% para los tramos", "minimo_inclusivo"),
+             ("se le haya aplicado un aforo de al menos el 20%", "minimo_inclusivo"),
+             ("se aplicará un ponderador de riesgo del 2 % a la exposición", "coeficiente"),
+             ("con previsiones iguales o mayores al 50% del saldo pendiente. Ponderador: 50%", "minimo_inclusivo")]
+    for t, comp in casos:
+        c = una(t)
+        chequear(g, f"j {t!r} → {comp}", c is not None and c.comparacion == comp,
+                 "" if c is None else f"{c.comparacion} {c.regla}")
+    t = "con previsiones iguales o mayores al 50% del saldo pendiente. Ponderador: 50%"
+    cs = RC.analizar(t, t)
+    chequear(g, "j con la descripción como fuente del coeficiente (camino de r2a): la primera cuantía, con comparador "
+                "pegado, mínimo inclusivo; la segunda («Ponderador: 50%»), coeficiente",
+             len(cs) == 2 and cs[0].comparacion == "minimo_inclusivo" and cs[1].comparacion == "coeficiente")
+    c = una("aplicar el 5%", "Las exposiciones se ponderan por riesgo.")
+    chequear(g, "j sin comparador en el tramo, el coeficiente de la descripción sigue", c.comparacion == "coeficiente")
+    # k: tramo compuesto
+    t = "deberán observar los siguientes límites mínimos: […] multiplicar 6% por los activos ponderados por riesgo"
+    cs = RC.analizar(t)
+    chequear(g, "k tramo de dos segmentos: la cuantía del ítem toma «mínimos» del final del encabezado",
+             len(cs) == 1 and (cs[0].comparacion, cs[0].regla, cs[0].fuente_marcador)
+             == ("minimo_inclusivo", "encabezado:compuesta:adyacencia_minimo", "encabezado"),
+             "" if not cs else f"{cs[0].comparacion} {cs[0].regla}")
+    cs = RC.analizar("deberán observar los siguientes límites mínimos: multiplicar 6% por los APR")
+    chequear(g, "k sin el separador « […] », el «:» corta la cláusula y la cuantía queda sin marcador",
+             len(cs) == 1 and cs[0].comparacion == "no_determinada")
+    cs = RC.analizar("los siguientes conceptos: […] que superen el 6% de los APR")
+    chequear(g, "k el marcador propio del ítem manda sobre el encabezado",
+             len(cs) == 1 and cs[0].regla == "simple:raiz_super")
+    cs = RC.analizar("los siguientes límites mínimos: […] el 6% […] y el 8%")
+    chequear(g, "k con dos o más separadores no se lee el encabezado", all(c.comparacion == "no_determinada" for c in cs))
+    # m: plazo sin marcador
+    c = una("en un plazo de 30 días")
+    chequear(g, "m plazo sin marcador: no_determinada, regla sin_marcador_plazo, sin comparacion_asumida",
+             (c.comparacion, c.regla, c.comparacion_asumida) == ("no_determinada", "sin_marcador_plazo", False))
+    c = RC.analizar("en un plazo de 30 días", plazo_sin_marcador="maximo_asumido")[0]
+    chequear(g, "m con «maximo_asumido» (fase r2a), la regla anterior: máximo inclusivo con comparacion_asumida",
+             (c.comparacion, c.regla, c.comparacion_asumida) == ("maximo_inclusivo", "sin_marcador_plazo", True))
+    c = una("el 5% del total")
+    chequear(g, "m otra cuantía sin marcador: no_determinada, regla sin_marcador", (c.comparacion, c.regla)
+             == ("no_determinada", "sin_marcador"))
+    try:
+        RC.analizar("en 30 días", plazo_sin_marcador="otro")
+        chequear(g, "m un valor desconocido de plazo_sin_marcador frena", False)
+    except ValueError:
+        chequear(g, "m un valor desconocido de plazo_sin_marcador frena", True)
+    el = RC.elemento_umbral(una("en un plazo de 30 días"), "30 días")
+    chequear(g, "m el elemento valida con ElementoUmbral (comparacion_asumida en False)",
+             M.ElementoUmbral.model_validate(el) is not None and el["comparacion_asumida"] is False)
+
+
 def main() -> int:
     ch = cargar_chunks()
     g1_listas()
@@ -1365,6 +1516,7 @@ def main() -> int:
     g12_ensamblado()
     g13_forma_r2(ch)
     g14_p3b(ch)
+    g15_c2()
     total = ok = 0
     print(f"política: {V.POLITICA.relative_to(REPO)}  sha256 {V.politica_default().sha256}")
     for grupo, filas in RES.items():

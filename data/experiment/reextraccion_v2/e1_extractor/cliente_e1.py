@@ -66,9 +66,17 @@ MAX_TOKENS_REINTENTO_CORTE = 32768
 # el runner con --perfil-r2 lo usa: max_tokens entra en la clave de caché, y
 # los perfiles existentes siguen con MAX_TOKENS_REINTENTO_CORTE.
 MAX_TOKENS_REINTENTO_CORTE_R2 = 16384
+# Reintento ante una salida de E1 mal formada (U-R2-CODIGO-2, C2, punto b; solo
+# el runner del perfil r2 lo usa): el MISMO request, en un namespace propio
+# (sufijo del code_ver), porque con el mismo namespace la caché devolvería la
+# misma salida; va a la misma db y su log de usage lleva un component propio
+# (decisiones de caching D1 a D4).
+SUFIJO_REINTENTO_FORMA = "-rforma1"
+COMPONENTE_E1 = "reextraccion_v2_e1"
+COMPONENTE_REINTENTO_FORMA = "reextraccion_v2_e1_reintento_forma"
 
 
-def namespace_e1(canal_abierto: bool = False, prefijo_hash: str | None = None) -> str:
+def namespace_e1(canal_abierto: bool = False, prefijo_hash: str | None = None, sufijo: str = "") -> str:
     """Namespace de la caché local: dominio + code-version propio + hash del
     prefijo estable + flag de thinking. El hash del prefijo hace explícito el
     candado que la key del request ya da implícitamente. Con canal_abierto
@@ -79,12 +87,15 @@ def namespace_e1(canal_abierto: bool = False, prefijo_hash: str | None = None) -
     prefijo_hash (U-CABLE-V3): hash del prefijo del PERFIL de la corrida
     (p. ej. el del prefijo v3 sellado). None = el de producción dev, byte a
     byte el namespace histórico. Un hash distinto particiona la caché con el
-    MISMO patrón; las keys viejas de la db no se tocan (never-pay-twice)."""
+    MISMO patrón; las keys viejas de la db no se tocan (never-pay-twice).
+
+    sufijo (U-R2-CODIGO-2): se agrega al code_ver; "" = el namespace de
+    siempre. SUFIJO_REINTENTO_FORMA particiona el reintento por forma."""
     if prefijo_hash is None:
         prefijo_hash = prompt_e1.prefijo_hash(canal_abierto)
     return lc.make_namespace(
         DOMAIN,
-        code_ver=f"{CODE_VER}-p{prefijo_hash}",
+        code_ver=f"{CODE_VER}-p{prefijo_hash}{sufijo}",
         thinking=False,
     )
 
@@ -153,13 +164,18 @@ class ClienteE1Real:
             raise ValueError("precios y tope deben ser positivos (autorización fase B)")
         import anthropic  # import local: la fase A jamás lo ejecuta
         db_path.parent.mkdir(parents=True, exist_ok=True)
+        self._real = anthropic.Anthropic(max_retries=3)
+        self._db_path, self._run_label = db_path, run_label
+        self._canal_abierto, self._prefijo_hash = canal_abierto, prefijo_hash
+        # caché del reintento por forma (U-R2-CODIGO-2): se abre en el primer reintento
+        self.cache_reintento_forma = None
         self.p_in = precio_in_por_mtok
         self.p_out = precio_out_por_mtok
         self.p_cw = precio_cache_write_por_mtok
         self.p_cr = precio_cache_read_por_mtok
         self.tope_usd = tope_usd
         self.cache = lc.CachingClient(
-            anthropic.Anthropic(max_retries=3),
+            self._real,
             domain=DOMAIN,
             db_path=db_path,
             namespace=namespace_e1(canal_abierto, prefijo_hash=prefijo_hash),
@@ -181,12 +197,12 @@ class ClienteE1Real:
             + prompt_e1.MAX_OUTPUT_TOKENS / 1e6 * self.p_out
         )
 
-    def _log_usage(self, usage, doc: str | None) -> None:
+    def _log_usage(self, usage, doc: str | None, componente: str = COMPONENTE_E1) -> None:
         # Decisión 3: una línea JSON por response REAL de la API.
         CACHE_USAGE_LOG.parent.mkdir(parents=True, exist_ok=True)
         line = {
             "timestamp": datetime.now(timezone.utc).isoformat(),
-            "component": "reextraccion_v2_e1",
+            "component": componente,
             "doc": doc,
             "input_tokens": getattr(usage, "input_tokens", None),
             "cache_creation_input_tokens": getattr(usage, "cache_creation_input_tokens", None),
@@ -197,6 +213,21 @@ class ClienteE1Real:
             f.write(json.dumps(line, ensure_ascii=False) + "\n")
 
     def create(self, *, doc: str | None = None, **kwargs):
+        return self._crear_en(self.cache, COMPONENTE_E1, doc, kwargs)
+
+    def crear_reintento_forma(self, *, doc: str | None = None, **kwargs):
+        """U-R2-CODIGO-2, C2, punto b: el mismo request en el namespace del
+        reintento por forma (SUFIJO_REINTENTO_FORMA), con el mismo tope y la
+        misma contabilidad D2."""
+        if self.cache_reintento_forma is None:
+            self.cache_reintento_forma = lc.CachingClient(
+                self._real, domain=DOMAIN, db_path=self._db_path,
+                namespace=namespace_e1(self._canal_abierto, prefijo_hash=self._prefijo_hash,
+                                       sufijo=SUFIJO_REINTENTO_FORMA),
+                thinking_enabled=False, run_label=self._run_label)
+        return self._crear_en(self.cache_reintento_forma, COMPONENTE_REINTENTO_FORMA, doc, kwargs)
+
+    def _crear_en(self, cache, componente: str, doc: str | None, kwargs: dict):
         if self.gasto_usd + self._proyeccion_usd > self.tope_usd:
             raise TopeExcedido(
                 f"gasto acumulado USD {self.gasto_usd:.4f} + proyección "
@@ -207,13 +238,13 @@ class ClienteE1Real:
                 f"{self.guardian.gasto_usd:.4f} + proyección "
                 f"{self._proyeccion_usd:.4f} supera el tope compartido "
                 f"{self.guardian.tope_usd:.2f}")
-        antes = dict(self.cache._stats)
-        resp = self.cache.messages.create(**kwargs)
-        despues = self.cache._stats
+        antes = dict(cache._stats)
+        resp = cache.messages.create(**kwargs)
+        despues = cache._stats
         fue_miss = despues["misses"] > antes["misses"]
         self.llamadas += 1
         if fue_miss:
-            self._log_usage(resp.usage, doc)
+            self._log_usage(resp.usage, doc, componente)
             d_in = despues["tokens_in"] - antes["tokens_in"]
             d_out = despues["tokens_out"] - antes["tokens_out"]
             d_cw = despues["cache_write"] - antes["cache_write"]
@@ -239,6 +270,8 @@ class ClienteE1Real:
                                  "cache_write": self.p_cw, "cache_read": self.p_cr},
             "cache_stats": self.cache.stats(),
         }
+        if self.cache_reintento_forma is not None:
+            d["cache_stats_reintento_forma"] = self.cache_reintento_forma.stats()
         if self.guardian is not None:
             d["presupuesto_compartido"] = {
                 "tope_usd": self.guardian.tope_usd,
@@ -248,6 +281,8 @@ class ClienteE1Real:
 
     def close(self) -> None:
         self.cache.close()
+        if self.cache_reintento_forma is not None:
+            self.cache_reintento_forma.close()
 
 
 def extraer_chunk(cliente, chunk: dict, model: str, canal_abierto: bool = False) -> dict:
@@ -311,6 +346,17 @@ def crear_con_reintento_corte(cliente, kwargs: dict, doc: str | None = None,
     kwargs_reintento = dict(kwargs)
     kwargs_reintento["max_tokens"] = max_tokens_reintento
     return _crear(cliente, kwargs_reintento, doc), resp
+
+
+def crear_reintento_forma(cliente, kwargs: dict, doc: str | None = None):
+    """U-R2-CODIGO-2, C2, punto b: UNA re-llamada con el mismo request
+    (`kwargs` tal cual) ante una salida mal formada, en el namespace del
+    reintento por forma. Con un cliente que no tiene ese namespace (stubs),
+    el mismo despacho que `_crear`."""
+    fn = getattr(cliente, "crear_reintento_forma", None)
+    if fn is not None:
+        return fn(doc=doc, **kwargs)
+    return cliente.messages.create(**kwargs)
 
 
 def resumen_intento(resp) -> dict:

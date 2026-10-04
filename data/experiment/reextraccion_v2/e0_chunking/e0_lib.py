@@ -165,6 +165,41 @@ sites vigentes) habilita las variantes de marcador MEDIDAS en el censo:
   ninguna página llega a cuerpo en la etapa de marcadores y su camino
   sigue siendo el de B5.8.1, byte-idéntico.
 
+VERSIÓN e0-r2, U-R2-CODIGO-2 (C2). Cuatro cambios que rigen solo en los
+call sites de e0-r2 (correr_e0.escalera_e0_r2, procesar_tablas_r2 y
+subdividir_unidades_grandes con su tope); con los defaults ninguna rama
+nueva se ejecuta y la E0 legada queda byte-idéntica:
+  * renumeración por lista (`parsear_cuerpo(renumeraciones=…)`): un
+    encabezado de punto cuyo (TO, página, número impreso) está en la lista
+    abre el punto con el número corregido; el aviso `renumerado_por_lista`
+    y el nodo (`numero_impreso`) guardan el número impreso, y el chunk lo
+    declara en sus flags (`numero_impreso`, `correccion_numeracion`). Caso
+    único: la p. 16 de ric imprime 4.3, 4.3.1 y 4.3.2 donde la norma sigue
+    con 4.4, 4.4.1 y 4.4.2 (las citas a 4.4.1 y 4.4.2 y los encabezados
+    4.4.3 y 4.4.4 de la p. 18);
+  * cola de título estricta, en las páginas de una lista explícita
+    (`parsear_cuerpo(cola_titulo_estricta=…)`; `separar_encabezado_pie`):
+    el renglón que sigue a la línea de sección solo es la cola envuelta del
+    título si el título no terminó (sin punto final) y el renglón lo
+    continúa (empieza en minúscula, o el título termina en guion, coma o una
+    palabra de PALABRAS_QUE_CONTINUAN_TITULO); si no, es texto de la norma
+    («De corresponder, la exigencia…» en la p. 15 de ric). La lista son las
+    pp. 15, 30, 54 y 59 de ric: aplicada a toda página, la regla también
+    recupera texto de la norma en 7 TOs de la partición de 152, pero en
+    snp_cheq cambia la segmentación del 7.1 (un id nuevo) y en fabcra una
+    tabla deja de serializarse, y los cambios de E0 que mueven ids de la
+    partición no son de esta unidad (r2_codigo2/freno_c2.md);
+  * tope de la herencia (`construir_chunks(tope_herencia=(U, B))` y
+    `recortar_herencia`): la unidad cuya herencia pasa U caracteres
+    conserva los títulos de todos los ancestros y, de cada bloque de prosa
+    heredado, el extremo cercano a la unidad hasta B caracteres más; lo
+    omitido se reemplaza por una línea marcador y el chunk lo declara en
+    `herencia_recortada`;
+  * pies de página (`pies_de_paginas`): la versión de la hoja, la
+    Comunicación, la hoja y la fecha de vigencia que trae el pie de cada
+    página, leído con el mismo criterio con que e0-r2 lo recorta, y la
+    versión vigente del TO.
+
 Sin llamadas a LLM: código determinístico puro.
 """
 
@@ -217,6 +252,11 @@ MARCA_HISTORIAL = "historial de la norma"
 RE_SECCION = re.compile(r"^Secci[oó]n\s+(\d+)\s*[.:]\s*(.*)$")
 RE_SECCION_EN_LINEA = re.compile(r"Secci[oó]n\s+(\d+)\s*[.:]\s*(.*)$")
 GAP_TOP_TITULO = 16.0   # separación vertical máxima (pt) de la cola envuelta de un título de sección
+# e0-r2 (U-R2-CODIGO-2): palabras finales de un título que lo dejan abierto a una cola en mayúscula
+# («Régimen de Incentivo para» / «Grandes Inversiones (RIGI).»).
+PALABRAS_QUE_CONTINUAN_TITULO = frozenset({"a", "al", "con", "como", "de", "del", "e", "el", "en", "entre", "la",
+                                          "las", "los", "o", "para", "por", "que", "sin", "sobre", "su", "sus",
+                                          "u", "y"})
 RE_NUM_TOKEN = re.compile(r"^(\d+(?:\.\d+)*)\.$")   # primer token de un header de punto
 # el BCRA a veces omite el punto final del label ('13.4.1 el pago…',
 # '8.5.14.1 la norma…' — medidos en ext p.172 y p.117): se admite numeración
@@ -514,6 +554,7 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
                            banners_texto: set | None = None,
                            mayusculas_repetidas: set | None = None,
                            pie_desde_version: bool = False,
+                           cola_titulo_estricta: bool = False,
                            ) -> tuple[list[Linea], list[Linea], str | None]:
     """Devuelve (contenido, descartadas, seccion_corrida).
 
@@ -563,7 +604,12 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
     RE_PIE no reconoce («Versión :», sin «Página») y las líneas que quedan
     debajo y cortaban el recorte (fechas con puntos o con año de cinco
     dígitos, «Comunicación “C” …», «Circular CONAU …», «… 1 de 3»). False
-    (todos los demás call sites) deja el recorte histórico."""
+    (todos los demás call sites) deja el recorte histórico.
+
+    `cola_titulo_estricta` (solo la versión e0-r2, U-R2-CODIGO-2, C2): la
+    cola envuelta del título de sección se acepta solo si continúa el título
+    (`continua_titulo`); un renglón que no lo continúa es texto de la norma.
+    False deja la regla histórica (renglón inmediato sin numeración)."""
     descartadas: list[Linea] = []
     contenido = list(lineas)
     seccion_corrida: str | None = None
@@ -643,7 +689,8 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
             quitadas += 1
         elif seccion_corrida is not None and ultima_top_seccion is not None \
                 and contenido[0].top - ultima_top_seccion <= GAP_TOP_TITULO \
-                and not RE_NUM_TOKEN.match(t.split()[0] if t.split() else ""):
+                and not RE_NUM_TOKEN.match(t.split()[0] if t.split() else "") \
+                and (not cola_titulo_estricta or continua_titulo(seccion_corrida, t)):
             # cola envuelta del título de sección ('dos.', '(SECOEXPO).'):
             # renglón inmediato (interlineado de encabezado, no de contenido).
             # Una línea que arranca con numeración NUNCA es cola de título:
@@ -655,6 +702,118 @@ def separar_encabezado_pie(lineas: list[Linea], capturar_seccion: bool = True,
         else:
             break
     return contenido, descartadas, seccion_corrida
+
+
+def continua_titulo(titulo: str, renglon: str) -> bool:
+    """e0-r2 (U-R2-CODIGO-2, C2): `renglon` continúa el título de sección
+    `titulo` si el título no termina en punto y el renglón empieza en
+    minúscula o el título termina en guion, coma o una palabra de
+    PALABRAS_QUE_CONTINUAN_TITULO."""
+    tit = titulo.rstrip()
+    if not tit or tit.endswith("."):
+        return False
+    r = renglon.lstrip()
+    if r[:1].islower():
+        return True
+    if tit.endswith(("-", "‐", "–", ",")):
+        return True
+    palabras = re.findall(r"\w+", tit.lower())
+    return bool(palabras) and palabras[-1] in PALABRAS_QUE_CONTINUAN_TITULO
+
+
+# ------------------------------------------------- pies de página (e0-r2, U-R2-CODIGO-2)
+_COMILLAS_PIE = "\"“”'«»‘’"
+RE_PIE_COMUNICACION = re.compile(r"comunicaci[oó]n\s*[" + _COMILLAS_PIE + r"]?\s*(?P<l>[ABC])\s*[" + _COMILLAS_PIE
+                                 + r"]?\s*(?P<n>\d{1,2}\.?\d{3}|\d{1,4})", re.I)
+RE_PIE_VERSION_HOJA = re.compile(r"versi[oó]n\s*:\s*(?P<v>\S+?)\s*comunicaci", re.I)
+RE_PIE_HOJA = re.compile(r"p[aá]gina\s+(\d+)", re.I)
+RE_PIE_FECHA = re.compile(r"(?<!\d)(\d{1,2})[/.](\d{1,2})[/.](\d{2,5})(?!\d)")
+RE_ULTIMA_COMUNICACION = re.compile(
+    r"ltima\s+comunicaci[oó]n\s+incorporada\s*:?\s*[" + _COMILLAS_PIE + r"]?\s*([ABC])\s*[" + _COMILLAS_PIE
+    + r"]?\s*(\S+?)-?\s*(?:texto ordenado al\s*(.*))?$", re.I)
+CRITERIO_VERSION_VIGENTE = ("entre las páginas legibles, la de vigencia más reciente; si empatan, la de mayor número "
+                            "de Comunicación")
+
+
+def _fecha_pie(s: str):
+    import datetime  # noqa: PLC0415
+    m = RE_PIE_FECHA.search(s)
+    if not m:
+        return None
+    d, mes, a = int(m.group(1)), int(m.group(2)), int(m.group(3))
+    a = a + 2000 if a < 100 else a
+    try:
+        return datetime.date(a, mes, d)
+    except ValueError:
+        return None
+
+
+def renglones_del_pie(lineas: list[Linea]) -> list[str] | None:
+    """Renglones del pie de una página con el criterio con que e0-r2 lo
+    recorta (`separar_encabezado_pie`, `pie_desde_version`): la línea de
+    RE_PIE_VERSION entre las últimas VENTANA_PIE_VERSION y las que la
+    siguen, más los renglones de RE_PIE que quedan encima. None si la página
+    no tiene pie de versión."""
+    textos = [ln.texto.strip() for ln in lineas]
+    for i in range(len(textos) - 1, max(-1, len(textos) - 1 - VENTANA_PIE_VERSION), -1):
+        if RE_PIE_VERSION.match(textos[i]):
+            j = i
+            while j > 0 and any(p.match(textos[j - 1]) for p in RE_PIE):
+                j -= 1
+            return textos[j:i] + textos[i:]
+    return None
+
+
+def leer_pie(lineas: list[Linea]) -> dict:
+    """Pie de una página (U-R2-CODIGO-2, C2, punto n): estado («legible»:
+    trae la Comunicación y una fecha; «no_legible»: hay línea de versión pero
+    falta una de las dos; «sin_pie»), versión de la hoja (None si no se lee),
+    Comunicación, número de hoja, fecha de vigencia y renglones."""
+    pie = renglones_del_pie(lineas)
+    if pie is None:
+        return {"estado": "sin_pie"}
+    txt = " ".join(pie)
+    mc, mv, mh = RE_PIE_COMUNICACION.search(txt), RE_PIE_VERSION_HOJA.search(txt), RE_PIE_HOJA.search(txt)
+    f = _fecha_pie(" ".join(x for x in pie if not RE_PIE_COMUNICACION.search(x)) or txt)
+    ver = mv.group("v") if mv else None
+    ver_ok = bool(ver and re.fullmatch(r"\d+[aª]?\.?", ver))
+    return {"estado": "legible" if (mc and f) else "no_legible", "version_hoja": ver if ver_ok else None,
+            "version_hoja_legible": ver_ok,
+            "comunicacion": f"{mc.group('l').upper()} {mc.group('n').replace('.', '')}" if mc else None,
+            "hoja": int(mh.group(1)) if mh else None, "vigencia": f.isoformat() if f else None, "lineas": pie}
+
+
+def pies_de_paginas(to: str, archivo: str, paginas: list[list[Linea]], roles: list[str]) -> dict:
+    """`pies_<to>.json` de e0-r2 (U-R2-CODIGO-2, C2, punto n; diseño aprobado
+    en r2_codigo2/freno_c2_diseno.md): el pie de cada página (`leer_pie`), la
+    versión vigente del TO (CRITERIO_VERSION_VIGENTE; valor «Comunicación A
+    8378 (vigencia 20/12/2025)») y la «Última comunicación incorporada» de la
+    carátula, donde se lee, con el contraste. Las páginas sin pie y los pies
+    que no se leen no cuentan para la versión."""
+    import datetime  # noqa: PLC0415
+    filas = [{"pagina": i, "rol": rol, **leer_pie(ls)} for i, (ls, rol) in enumerate(zip(paginas, roles), 1)]
+    leg = [f for f in filas if f["estado"] == "legible"]
+    vig = max(leg, key=lambda f: (f["vigencia"], int(f["comunicacion"].split()[1]))) if leg else None
+    car = None
+    for ln in (paginas[0][:20] if paginas else []):
+        m = RE_ULTIMA_COMUNICACION.search(ln.texto.strip())
+        if m:
+            car = {"ultima_comunicacion_incorporada": f"{m.group(1).upper()} {m.group(2)}",
+                   "texto_ordenado_al": (m.group(3) or "").strip() or None, "linea": ln.texto.strip()}
+            break
+    coincide = (None if car is None or vig is None
+                or not re.fullmatch(r"\d+", car["ultima_comunicacion_incorporada"].split()[1])
+                else car["ultima_comunicacion_incorporada"] == vig["comunicacion"])
+    estados: dict[str, int] = {}
+    for f in filas:
+        estados[f["estado"]] = estados.get(f["estado"], 0) + 1
+    return {"to": to, "archivo": archivo, "criterio_version_vigente": CRITERIO_VERSION_VIGENTE,
+            "paginas": len(filas), "estados": dict(sorted(estados.items())),
+            "version_vigente": None if vig is None else {
+                "comunicacion": vig["comunicacion"], "vigencia": vig["vigencia"], "pagina": vig["pagina"],
+                "valor": f"Comunicación {vig['comunicacion']} (vigencia "
+                         f"{datetime.date.fromisoformat(vig['vigencia']).strftime('%d/%m/%Y')})"},
+            "caratula": car, "coincide_con_la_caratula": coincide, "paginas_detalle": filas}
 
 
 # ----------------------------------------------------------------- estructura
@@ -673,6 +832,7 @@ class Nodo:
     hijos: list["Nodo"] = field(default_factory=list)
     padre: "Nodo | None" = None
     sintetica: bool = False      # raíz del modo sin raíz (B5.8.1); jamás en vigente
+    numero_impreso: str | None = None   # e0-r2: el número impreso, si una lista lo corrigió (U-R2-CODIGO-2)
 
     def profundidad(self) -> int:
         return self.numero.count(".") + 1 if self.tipo == "punto" else 0
@@ -703,7 +863,9 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                    roles: list[str], modo_sin_raiz: bool = False,
                    marcadores_b582: bool = False,
                    mayusculas_repetidas: set | None = None,
-                   pie_desde_version: bool = False) -> ResultadoParseo:
+                   pie_desde_version: bool = False,
+                   cola_titulo_estricta: frozenset = frozenset(),
+                   renumeraciones: dict | None = None) -> ResultadoParseo:
     """Con `modo_sin_raiz=False` (todos los call sites vigentes) el
     comportamiento es el histórico. Con True rige además la gramática de
     raíces sintéticas del modo sin raíz de sección (B5.8.1; ver docstring del
@@ -713,7 +875,13 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
     Con `marcadores_b582=True` (B5.8.2; misma condición de activación, y
     nunca combinado con modo_sin_raiz en los call sites) rigen además las
     variantes de encabezado de sección y el descarte de banner de caja mixta
-    (ver docstring del módulo)."""
+    (ver docstring del módulo).
+
+    `cola_titulo_estricta` y `renumeraciones` (solo la versión e0-r2,
+    U-R2-CODIGO-2; ver el docstring del módulo): la primera es el conjunto
+    de páginas del TO donde `separar_encabezado_pie` aplica la cola de
+    título estricta; la segunda, la lista {(TO, página, número impreso):
+    número} de encabezados de punto que se abren con el número corregido."""
     secciones: list[Nodo] = []
     rechazos: list[dict] = []
     saltos: list[dict] = []
@@ -750,7 +918,8 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
         contenido, descartadas, seccion_corrida = separar_encabezado_pie(
             lineas, labels_preservables=banners if modo_sin_raiz else None,
             seccion_b582=marcadores_b582, banners_texto=banners_texto,
-            mayusculas_repetidas=mayusculas_repetidas, pie_desde_version=pie_desde_version)
+            mayusculas_repetidas=mayusculas_repetidas, pie_desde_version=pie_desde_version,
+            cola_titulo_estricta=pi in cola_titulo_estricta)
         for d in descartadas:
             acc_descartes.append({"pagina": d.pagina, "texto": d.texto})
 
@@ -887,6 +1056,11 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
             if m_num:
                 seccion = pila[0]   # las raíces sintéticas cambian pila a mitad de página
                 num = m_num.group(1)
+                impreso = None
+                if renumeraciones and (to, linea.pagina, num) in renumeraciones:
+                    impreso, num = num, renumeraciones[(to, linea.pagina, num)]
+                    avisos.append({"tipo": "renumerado_por_lista", "pagina": linea.pagina, "impreso": impreso,
+                                   "numero": num, "texto": linea.texto[:90]})
                 comp = _componentes(num)
                 resto = linea.texto.split(None, 1)
                 resto = resto[1] if len(resto) > 1 else ""
@@ -994,7 +1168,7 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                     titulo = linea.texto[len(tokens[0]):].strip()
                     nodo = Nodo(tipo="punto", numero=num, titulo=titulo,
                                 pagina=linea.pagina, label_x0=linea.x0,
-                                linea_label=linea, padre=padre)
+                                linea_label=linea, padre=padre, numero_impreso=impreso)
                     padre.hijos.append(nodo)
                     pila.append(nodo)
                     ultima_fue_label = True
@@ -1590,15 +1764,168 @@ def _materializa_bloque(texto: str) -> bool:
     return bool("".join(texto.split()))
 
 
+# --------------------------------------- tope de la herencia (e0-r2, U-R2-CODIGO-2)
+MARCA_RECORTE_HERENCIA = "[recorte de E0: no se transcriben {n} caracteres de este bloque heredado]"
+
+
+def _piezas_tramo(texto: str) -> list[str]:
+    """Renglones de un tramo; un bloque de tabla serializada ([TABLA … FIN
+    TABLA …]) es una sola pieza."""
+    out, tabla = [], None
+    for ln in texto.split("\n"):
+        if tabla is not None:
+            tabla.append(ln)
+            if ln.startswith("[FIN TABLA "):
+                out.append("\n".join(tabla))
+                tabla = None
+        elif ln.startswith("[TABLA "):
+            tabla = [ln]
+        else:
+            out.append(ln)
+    if tabla is not None:
+        out.append("\n".join(tabla))
+    return out
+
+
+def _recortar_tramo(texto: str, lado: str, bloque: int) -> str:
+    """Piezas enteras desde el extremo cercano (`lado`: «final» o «inicio»)
+    hasta `bloque` caracteres; la más cercana entra siempre."""
+    piezas = _piezas_tramo(texto)
+    idx = list(range(len(piezas)))
+    if lado == "final":
+        idx.reverse()
+    acum, quedan = 0, []
+    for k, i in enumerate(idx):
+        n = len(piezas[i]) + 1
+        if k == 0 or acum + n <= bloque:
+            quedan.append(i)
+            acum += n
+        else:
+            break
+    return "\n".join(piezas[i] for i in sorted(quedan))
+
+
+def recortar_herencia(tramos: list[dict], lados: list[str | None], umbral: int, bloque: int,
+                      saltar: frozenset = frozenset()) -> tuple[list[dict], list[dict]]:
+    """Tope de la herencia (e0-r2, U-R2-CODIGO-2, C2, punto h; diseño
+    aprobado en r2_codigo2/freno_c2_diseno.md). Si la suma del texto de los
+    tramos pasa `umbral`, de cada bloque de prosa heredado se conserva el
+    tramo más cercano a la unidad (si pasa `bloque` caracteres, sus renglones
+    desde el extremo cercano hasta `bloque`, sin partir una tabla
+    serializada) y, a continuación, tramos enteros hasta sumar `bloque`
+    caracteres más; los tramos `encabezado` (títulos) quedan enteros. Un
+    bloque es la intro o el chapeau de un ancestro, su cierre, o sus
+    intersticiales de un mismo lado de la unidad. `lados[i]` es el extremo
+    que se conserva del tramo i: «final» (intro, chapeau e intersticial
+    anterior a la unidad) o «inicio» (cierre e intersticial posterior);
+    None en los encabezados. En el lugar de lo omitido va un tramo marcador
+    de una línea (MARCA_RECORTE_HERENCIA), con el rol y la unidad de origen
+    del bloque. `saltar`: claves de bloque (unidad, rol, lado) que no se
+    recortan (ya recortados). Devuelve (tramos, bloques recortados)."""
+    if sum(len(t["texto"]) for t in tramos) <= umbral:
+        return tramos, []
+    grupos: dict[tuple, list[int]] = {}
+    for i, t in enumerate(tramos):
+        if t["tipo"] == "encabezado":
+            continue
+        clave = (t["unidad_origen"], t["tipo"], lados[i])
+        grupos.setdefault(clave, []).append(i)
+    reemplazo: dict[int, list[dict]] = {}
+    declarados = []
+    for clave, blq in grupos.items():
+        if clave in saltar:
+            continue
+        lado = clave[2]
+        orden = list(reversed(blq)) if lado == "final" else list(blq)
+        acum, conservados = 0, [orden[0]]
+        for i in orden[1:]:
+            n = len(tramos[i]["texto"])
+            if acum + n <= bloque:
+                conservados.append(i)
+                acum += n
+            else:
+                break
+        omitidos = [i for i in blq if i not in conservados]
+        cercano = orden[0]
+        recorte = None
+        if len(tramos[cercano]["texto"]) > bloque:
+            recorte = _recortar_tramo(tramos[cercano]["texto"], lado, bloque)
+            if recorte == tramos[cercano]["texto"]:
+                recorte = None
+        if not omitidos and recorte is None:
+            continue
+        n_om = sum(len(tramos[i]["texto"]) for i in omitidos)
+        if recorte is not None:
+            n_om += len(tramos[cercano]["texto"]) - len(recorte)
+        t0 = tramos[blq[0]]
+        declarados.append({"unidad_origen": t0["unidad_origen"], "rol": t0["tipo"], "conservado": lado,
+                           "caracteres_omitidos": n_om})
+        marca = {"tipo": t0["tipo"], "unidad_origen": t0["unidad_origen"],
+                 "texto": MARCA_RECORTE_HERENCIA.format(n=n_om),
+                 "paginas": sorted({p for i in blq for p in tramos[i].get("paginas") or []})}
+        for i in omitidos:
+            reemplazo[i] = []
+        nuevo = [{**tramos[cercano], "texto": recorte}] if recorte is not None else [tramos[cercano]]
+        if omitidos and lado == "final":
+            reemplazo[cercano] = nuevo
+            reemplazo[min(omitidos)] = [marca]
+        elif omitidos:
+            reemplazo[cercano] = nuevo
+            reemplazo[max(omitidos)] = [marca]
+        else:
+            reemplazo[cercano] = [marca] + nuevo if lado == "final" else nuevo + [marca]
+    if not declarados:
+        return tramos, []
+    out = []
+    for i, t in enumerate(tramos):
+        out.extend(reemplazo.get(i, [t]))
+    return out, declarados
+
+
+def lados_por_pagina(tramos: list[dict], paginas_unidad: list[int]) -> list[str | None]:
+    """Lado que se conserva de cada tramo, cuando no se tienen las líneas de
+    los segmentos (las partes `::parteK`, que arman su herencia en
+    correr_e0._sub_chunks_de): «final» en la intro y el chapeau, «inicio» en
+    el cierre; un intersticial es posterior a la unidad solo si todas sus
+    páginas son posteriores a las de la unidad."""
+    out: list[str | None] = []
+    for t in tramos:
+        if t["tipo"] == "encabezado":
+            out.append(None)
+        elif t["tipo"] == "cierre":
+            out.append("inicio")
+        elif t["tipo"] == "intersticial" and t.get("paginas") and paginas_unidad \
+                and min(t["paginas"]) > max(paginas_unidad):
+            out.append("inicio")
+        else:
+            out.append("final")
+    return out
+
+
+def _flags_numeracion(nodo: "Nodo") -> dict:
+    """e0-r2 (U-R2-CODIGO-2, C2, punto f): el número impreso de una unidad
+    renumerada por lista, y la corrección declarada."""
+    if not nodo.numero_impreso:
+        return {}
+    return {"numero_impreso": nodo.numero_impreso,
+            "correccion_numeracion": f"renumerado_por_lista: el PDF imprime {nodo.numero_impreso} donde la "
+                                     f"numeración del TO sigue con {nodo.numero}"}
+
+
 def construir_chunks(res: ResultadoParseo,
                      texto_lineas: Callable[[list[Linea]], str] | None = None,
-                     lineas_por_chunk: list[list[Linea]] | None = None) -> list[dict]:
+                     lineas_por_chunk: list[list[Linea]] | None = None,
+                     tope_herencia: tuple[int, int] | None = None) -> list[dict]:
     """Con los dos argumentos opcionales en None (todos los call sites de la
     versión legada de E0) el comportamiento es el histórico, byte a byte.
     Versión e0-r2 (U-R2-CODIGO, R1): `texto_lineas` arma el texto de una
     lista de líneas (sustituye las líneas de una tabla por su bloque
     serializado) y `lineas_por_chunk` recibe, en paralelo a la salida, las
-    líneas propias de cada chunk (insumo de la asignación de tablas)."""
+    líneas propias de cada chunk (insumo de la asignación de tablas).
+    `tope_herencia` = (U, B) (solo e0-r2, U-R2-CODIGO-2, C2, punto h): la
+    herencia de un chunk terminal que pasa U caracteres se recorta con
+    `recortar_herencia` y el chunk lo declara en `herencia_recortada`; el
+    lado de cada intersticial sale de la línea de su segmento."""
     chunks: list[dict] = []
 
     def _texto(lineas: list[Linea]) -> str:
@@ -1615,9 +1942,11 @@ def construir_chunks(res: ResultadoParseo,
         return (f"Sección {a.numero}. {a.titulo}" if a.tipo == "seccion"
                 else f"{a.numero}. {a.titulo}")
 
-    def herencia_de(nodo: Nodo) -> list[dict]:
+    def herencia_de(nodo: Nodo) -> tuple[list[dict], list[dict]]:
         """Cadena de herencia: por cada ancestro (sección → … → padre),
-        su título y sus segmentos no-terminales, cada tramo con provenance."""
+        su título y sus segmentos no-terminales, cada tramo con provenance.
+        Devuelve (tramos, bloques recortados); los recortados, solo con
+        `tope_herencia`."""
         cadena: list[Nodo] = []
         n = nodo.padre
         while n is not None:
@@ -1625,10 +1954,15 @@ def construir_chunks(res: ResultadoParseo,
             n = n.padre
         cadena.reverse()
         tramos: list[dict] = []
-        for a in cadena:
+        lados: list[str | None] = []
+        for k, a in enumerate(cadena):
             unidad = a.numero if a.tipo == "punto" else f"S{a.numero}"
             tramos.append({"tipo": "encabezado", "unidad_origen": unidad,
                            "texto": _titulo_linea(a), "paginas": [a.pagina]})
+            lados.append(None)
+            # hijo de `a` en el camino a la unidad: marca la posición de sus intersticiales
+            hijo = cadena[k + 1] if k + 1 < len(cadena) else nodo
+            marca_hijo = (hijo.pagina, hijo.linea_label.top if hijo.linea_label else 0.0)
             for item in _rol_segmentos(a):
                 if item["rol"] == "contenido":
                     continue  # no ocurre: los ancestros tienen hijos
@@ -1648,7 +1982,12 @@ def construir_chunks(res: ResultadoParseo,
                     "texto": texto_seg,
                     "paginas": _paginas_de(seg),
                 })
-        return tramos
+                lados.append("inicio" if rol == "cierre" or (rol == "intersticial" and seg
+                                                             and (seg[0].pagina, seg[0].top) > marca_hijo)
+                             else "final")
+        if tope_herencia is not None:
+            return recortar_herencia(tramos, lados, *tope_herencia)
+        return tramos, []
 
     def herencia_titulos(nodo: Nodo) -> list[dict]:
         """Cadena de títulos (tramos `encabezado`) desde la sección hasta el
@@ -1698,7 +2037,7 @@ def construir_chunks(res: ResultadoParseo,
             "chars_propio": len(texto),
             "chars_completo": len(completo),
             "herencia": herencia,
-            "flags": _flags_tabla_formula(lineas),
+            "flags": {**_flags_tabla_formula(lineas), **_flags_numeracion(nodo)},
             "sha256_propio": hashlib.sha256(texto.encode("utf-8")).hexdigest(),
             "sha256_completo": hashlib.sha256(completo.encode("utf-8")).hexdigest(),
         })
@@ -1724,13 +2063,14 @@ def construir_chunks(res: ResultadoParseo,
             else:
                 unidad = nodo.numero
                 texto_propio = tx(lineas)
-            herencia = herencia_de(nodo)
+            herencia, recortada = herencia_de(nodo)
             texto_herencia = "\n".join(t["texto"] for t in herencia)
             completo = (texto_herencia + "\n" + texto_propio) if texto_herencia else texto_propio
             flags = _flags_tabla_formula(lineas)
+            flags.update(_flags_numeracion(nodo))
             if lineas_por_chunk is not None:
                 lineas_por_chunk.append(lineas)
-            chunks.append({
+            chunk = {
                 "id": f"{res.to}::{unidad}",
                 "to": res.to,
                 "archivo": res.archivo,
@@ -1745,7 +2085,10 @@ def construir_chunks(res: ResultadoParseo,
                 "flags": flags,
                 "sha256_propio": hashlib.sha256(texto_propio.encode("utf-8")).hexdigest(),
                 "sha256_completo": hashlib.sha256(completo.encode("utf-8")).hexdigest(),
-            })
+            }
+            if recortada:
+                chunk["herencia_recortada"] = recortada
+            chunks.append(chunk)
         else:
             # Nodo NO terminal: sus bloques estructurales se emiten como
             # mini-chunks (enmienda 01 §2.a) interleaved en orden documental —
@@ -1897,7 +2240,9 @@ def serializar_estructura(res: ResultadoParseo) -> dict:
         }
         if n.sintetica:
             d["sintetica"] = True   # clave condicional: los artefactos vigentes
-        return d                    # quedan byte-idénticos
+        if n.numero_impreso:        # quedan byte-idénticos (ídem numero_impreso, e0-r2)
+            d["numero_impreso"] = n.numero_impreso
+        return d
     return {
         **({"modo_lectura": res.modo_lectura}
            if res.modo_lectura != "vigente" else {}),

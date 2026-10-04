@@ -467,10 +467,11 @@ def evidencia_literal(original: str, norm: str, mapa: list[int], evidencia: str)
 
 # ----------------------------------------------------------------------- #
 # Detector del perfil r2 (decisiones de la autora sobre el freno posterior #
-# a R3): reglas (a) a (i), cada una conmutable para medir su efecto. Sin   #
-# reglas, `detectar_menciones_r2` da exactamente `detectar_menciones`.     #
+# a R3): reglas (a) a (i), cada una conmutable para medir su efecto, más   #
+# la (j) de U-R2-CODIGO-2 (C2, punto a). Sin reglas,                       #
+# `detectar_menciones_r2` da exactamente `detectar_menciones`.             #
 # ----------------------------------------------------------------------- #
-REGLAS_R2 = frozenset("abcdefghi")
+REGLAS_R2 = frozenset("abcdefghij")
 RE_LINEA_SUELTA = re.compile(r"^[A-Za-z0-9]{1,2}$")
 RE_ANTES_DE_LINEA_SUELTA = re.compile(r"\b(?:puntos?|apartados?)\s*$", re.I)
 # (e) anáfora de la norma: las formas de RE_DICHO («de dicho ordenamiento»…),
@@ -502,6 +503,44 @@ RE_CIERRE_COMILLA = re.compile(r"[\"”»’']")
 LARGO_CAPTURA_G = 400
 # (h) «este punto» sin número: no genera remisión; se cuenta en el registro.
 RE_ESTE_PUNTO = re.compile(r"\b(?:este|el\s+presente|dicho)\s+punto\b(?!\s*\d)", re.I)
+# (j) U-R2-CODIGO-2, C2, punto a: una mención de puntos que el detector leería
+# como interna y a la que sigue el nombre de otra norma.
+#  - Patrón 1: título intermedio opcional entre comillas; «de»/«del» y artículo
+#    opcional; y «normas/disposiciones/reglamentación/texto ordenado/T.O.» con
+#    «de/sobre» opcional y un nombre entre comillas, o un nombre entre comillas
+#    solo, o «NIIF N», «NIC N», «Norma Internacional de Información Financiera
+#    (NIIF) N» («del punto 5.5. de la NIIF 9», «de las normas de “Grandes
+#    exposiciones…”», «de la “Reglamentación de la cuenta corriente
+#    bancaria”»). Nunca es interna: es externa a la norma nombrada; el nombre
+#    entre comillas se resuelve con la regla (g), y NIIF y NIC quedan «norma
+#    fuera del inventario». Un nombre que empieza como división del documento
+#    («Sección…», «Anexo…», «Capítulo…»; RE_NO_ES_NORMA) no es otra norma.
+#  - Patrón 2: «del Anexo de la Comunicación A NNNN»: la mención queda
+#    irresoluble con causa propia (CAUSA_ANEXO_COMUNICACION), sin arista, y la
+#    cita va al registro de citas a Comunicaciones.
+# Una cita sin norma nombrada a un punto que el TO no tiene sigue irresoluble
+# (patrón 3; decisión 7 del mandato de U-R2-CODIGO-2: no se adivina la norma).
+_ABRE_J, _CIERRA_J = "\"“«‘", "\"”»’"
+RE_NORMA_TRAS_NUMERO = re.compile(
+    r"\s*(?:[–—-]\s*)?"
+    r"(?:(?P<titulo>[" + _ABRE_J + r"][^" + _CIERRA_J + r"]{1,120}[" + _CIERRA_J + r"])\s*,?\s*)?"
+    r"(?:de|del)\s+(?:(?:la|las|los|el)\s+)?"
+    r"(?:"
+    r"(?:[Nn]ormas?|[Dd]isposiciones|[Rr]eglamentaci[oó]n|[Tt]exto\s+[Oo]rdenado|T\.?\s?O\.?)\s+"
+    r"(?:(?:de|sobre)\s+(?:(?:la|las|los|el)\s+)?)?"
+    r"(?P<q1>[" + _ABRE_J + r"])(?P<n1>[^" + _CIERRA_J + r"]{3,200})[" + _CIERRA_J + r"]"
+    r"|(?P<q2>[" + _ABRE_J + r"])(?P<n2>[^" + _CIERRA_J + r"]{3,200})[" + _CIERRA_J + r"]"
+    r"|(?P<n3>(?:NIIF|NIC)\s*\d+|Norma\s+Internacional\s+de\s+Informaci[oó]n\s+Financiera\s*(?:\(\s*NIIF\s*\)\s*)?\d+)"
+    r")")
+RE_ANEXO_COMUNICACION = re.compile(
+    r"\s*(?:[–—-]\s*)?(?:del|de\s+la)\s+[Aa]nexo(?:\s+[IVX]+)?\s+(?:a\s+|de\s+)?la\s+Comunicaci[oó]n\s*"
+    r"[\"“”'«»]?\s*(?P<letra>[ABC])\s*[\"“”'«»]?\s*(?:N[°º]\s*)?(?P<num>\d{1,2}\.?\d{3}|\d{1,4})")
+RE_NO_ES_NORMA = re.compile(r"(?:Secci[oó]n|Anexo|Cap[ií]tulo|T[ií]tulo|Punto|Apartado)\b", re.I)
+CAUSA_ANEXO_COMUNICACION = "punto del Anexo de una Comunicación"
+# (i), contador de U-R2-CODIGO-2 (C2, punto d): la línea «Sección N.» de un
+# encabezado heredado, leída como cita de la propia sección heredada, no es
+# una cita (autocita de encabezado).
+RE_SECCION_AUTOCITA = re.compile(r"^\s*Secci[oó]n\s+(\d+)\b", re.I)
 # RE_NORMA con grupos con nombre (sin la regla g).
 RE_NORMA_NOMBRADA = re.compile(
     r"(?:[Nn]ormas?\s+sobre|\bT\.?O\.?\s+(?:sobre|de)|[Tt]exto\s+[Oo]rdenado\s+(?:sobre|de))\s*"
@@ -634,6 +673,32 @@ def _expandir_puntos_r2(expr: str, reglas: frozenset) -> list[str]:
     return _expandir_puntos(expr)
 
 
+def norma_tras_el_numero(texto: str, fin: int) -> dict | None:
+    """Regla (j): el patrón 1 o 2 en el texto que sigue a una mención de
+    puntos que termina en `fin`, o None."""
+    m = RE_ANEXO_COMUNICACION.match(texto, fin)
+    if m:
+        return {"patron": "2", "norma_nombrada": f"Comunicación {m.group('letra')} {m.group('num').replace('.', '')}",
+                "fin": m.end(), "entrecomillada": False}
+    m = RE_NORMA_TRAS_NUMERO.match(texto, fin)
+    if m:
+        nombre = (m.group("n1") or m.group("n2") or m.group("n3")).strip()
+        if m.group("n3") is None and RE_NO_ES_NORMA.match(nombre):
+            return None
+        return {"patron": "1", "norma_nombrada": " ".join(nombre.split()), "fin": m.end(),
+                "entrecomillada": m.group("n3") is None}
+    return None
+
+
+def es_autocita_de_encabezado(men: dict, unidad_heredada: str) -> bool:
+    """Contador de la regla (i) (U-R2-CODIGO-2, C2, punto d): la mención sin
+    puntos cuya única sección es la propia sección heredada y cuya evidencia
+    empieza con «Sección N» (la línea del encabezado)."""
+    mt = RE_SECCION_AUTOCITA.match(men.get("evidencia") or "")
+    return (mt is not None and not men["puntos"] and men["secciones"] == [mt.group(1)]
+            and unidad_heredada == f"S{mt.group(1)}")
+
+
 def detectar_menciones_r2(texto: str, to_origen: str, reglas: frozenset = REGLAS_R2,
                           normas_previas: list[str | None] | None = None) -> list[dict]:
     """Detector del perfil r2. Con `reglas` vacío, el mismo resultado que
@@ -645,8 +710,11 @@ def detectar_menciones_r2(texto: str, to_origen: str, reglas: frozenset = REGLAS
     antecedente», y una mención de puntos o de sección seguida de una forma
     de RE_PROPIO_TO («de las presentes normas», «del presente régimen», «de
     este ordenamiento», «del presente texto ordenado»…) es interna; (f) «apartado»; (g) inventario por título; (h) «este punto» sin
-    número, registrado sin remisión. (a), (b) e (i) actúan fuera de este
-    detector (normalización, texto de e0-r2 y texto heredado).
+    número, registrado sin remisión; (j) una mención de puntos seguida del
+    nombre de otra norma no es interna (`norma_tras_el_numero`): externa a la
+    norma nombrada (patrón 1) o, tras «del Anexo de la Comunicación A NNNN»,
+    irresoluble con causa propia (patrón 2). (a), (b) e (i) actúan fuera de
+    este detector (normalización, texto de e0-r2 y texto heredado).
 
     `normas_previas`: TOs (o None) de las normas nombradas en los tramos
     anteriores del mismo punto, en orden; con (e), antecedentes de una anáfora
@@ -735,6 +803,20 @@ def detectar_menciones_r2(texto: str, to_origen: str, reglas: frozenset = REGLAS
     for pm in re_puntos.finditer(texto):
         propio = pm.end() in fines_propios
         if consumido(pm.start(), pm.end()) or (not propio and norma_despues(pm.end())):
+            continue
+        k = norma_tras_el_numero(texto, pm.end()) if "j" in reglas and not propio else None
+        if k is not None:
+            men = {"clase": "externa" if k["patron"] == "1" else "comunicacion_anexo",
+                   "norma_nombrada": k["norma_nombrada"], "to_destino": None,
+                   "puntos": _expandir_puntos_r2(pm.group(1), reglas), "secciones": [],
+                   "evidencia": texto[pm.start():k["fin"]].strip(), "norma_tras_el_numero": k["patron"]}
+            if k["patron"] == "1" and k["entrecomillada"]:
+                men["to_destino"], via = resolver_norma_r2_via(k["norma_nombrada"], True, reglas, k["norma_nombrada"])
+                if via:
+                    men["via_norma"] = via
+            elif k["patron"] == "2":
+                men["causa_irresoluble"] = CAUSA_ANEXO_COMUNICACION
+            menciones.append(men)
             continue
         men = {"clase": "interna", "norma_nombrada": None, "to_destino": to_origen,
                "puntos": _expandir_puntos_r2(pm.group(1), reglas), "secciones": [],
@@ -1010,7 +1092,7 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
               "procedencias_sin_texto_e0_detalle": [],
               "texto_de_e0": {"e0-r2": 0, "e0_legada": 0},
               "texto_heredado": {"menciones": 0, "con_nodos_que_nombran_la_unidad": 0,
-                                 "sin_nodos_que_nombran_la_unidad": 0},
+                                 "sin_nodos_que_nombran_la_unidad": 0, "autocitas_de_encabezado": 0},
               "d1_con_limite_estricto_distinto": {"menciones": 0, "ejemplos": []}}
 
     def agregar(src: str, tgt: str, procedencia: dict, men: dict, destino: str, alcance: str) -> bool:
@@ -1038,7 +1120,7 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                 "to_destino": men["to_destino"], "puntos": men["puntos"],
                 "secciones": men["secciones"], "evidencia": men["evidencia"],
                 "destinos": [], "irresolubles": [], "aristas_nuevas": 0}
-        for k in ("forma_anafora", "marca_propio_to", "via_norma"):
+        for k in ("forma_anafora", "marca_propio_to", "via_norma", "norma_tras_el_numero"):
             if men.get(k):
                 cita[k] = men[k]
         if men.get("causa_irresoluble"):
@@ -1195,6 +1277,10 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                 for men in menciones_por_tramo(_tramos_e0_de(p_h, chunk), p["to"], reglas):
                     if men["clase"] == "anafora_sin_numero":
                         continue
+                    if es_autocita_de_encabezado(men, u):
+                        # U-R2-CODIGO-2, C2, punto d: no es una cita; se cuenta aparte y no va al registro
+                        conteo["texto_heredado"]["autocitas_de_encabezado"] += 1
+                        continue
                     conteo["texto_heredado"]["menciones"] += 1
                     unidades_men = ([{**men, "puntos": [d], "secciones": []} for d in men["puntos"]]
                                     + [{**men, "puntos": [], "secciones": [s_]} for s_ in men["secciones"]])
@@ -1283,6 +1369,15 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
         "citas_texto_heredado": len({k for c in registro if c.get("atribucion") == "texto_heredado"
                                      for k in [(clave_origen(c), c["evidencia"], d["destino"]) for d in c["destinos"]]}),
     }
+    comunicaciones = registro_comunicaciones(chunks_por_to)
+    if "j" in reglas:
+        # (j), patrón 2: la cita a un punto del Anexo de una Comunicación, en el registro de Comunicaciones
+        anexo = {(c.get("chunk_id"), c["evidencia"], tuple(c["puntos"])): c for c in registro
+                 if c["clase"] == "comunicacion_anexo"}
+        comunicaciones["citas_a_puntos_de_anexo"] = [
+            {"to": c["procedencia"]["to"], "chunk_id": c.get("chunk_id"), "comunicacion": c["norma_nombrada"],
+             "puntos": c["puntos"], "tramo": c["evidencia"]} for _, c in sorted(anexo.items(), key=lambda kv: (
+                 kv[0][0] or "", kv[0][1], kv[0][2]))]
     return {"resumen": resumen, "registro": registro, "nuevas": nuevas,
             "procedencias_sin_texto_e0": conteo["procedencias_sin_texto_e0_detalle"],
-            "comunicaciones": registro_comunicaciones(chunks_por_to)}
+            "comunicaciones": comunicaciones}

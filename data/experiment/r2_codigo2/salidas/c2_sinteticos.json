@@ -1,0 +1,213 @@
+{
+ "b": {
+  "perfil": "v3_b54",
+  "namespace": "e1_extraccion|cv=e1-extractor-v1-p54a111e2175f|think=0",
+  "namespace_reintento": "e1_extraccion|cv=e1-extractor-v1-p54a111e2175f-rforma1|think=0",
+  "unidades": [
+   {
+    "chunk_id": "cap::5.3.2.3",
+    "motivo": "entities_o_relations_invalidos",
+    "clave_base": "c7cce28f0df8be20d5769b57ed1833a943dc482335e5f0e0e4c75b2b5c9a25ab",
+    "clave_reintento": "6677851fd9e78307b97e4b61a3b6402c5fe258659427e6fe3597b131ed23933b",
+    "clave_base_en_la_db": true,
+    "clave_reintento_en_la_db": false
+   },
+   {
+    "chunk_id": "ext::6.5.3",
+    "motivo": "entities_o_relations_invalidos",
+    "clave_base": "efc027b3e4c12401118d01881d7edbc2c5e915989bd0230203a61227f2a4c854",
+    "clave_reintento": "d7d511cdc5b5d6d623f0cf41c3ebcd4d9f93a0bcc0c2e100d3deb9d64031d582",
+    "clave_base_en_la_db": true,
+    "clave_reintento_en_la_db": false
+   },
+   {
+    "chunk_id": "ric::6.3",
+    "motivo": "entities_o_relations_invalidos",
+    "clave_base": "ebc9c1c90741e13103a3c067c11a35ec4c4af3547494c00160ae5be46cfb6c37",
+    "clave_reintento": "67067fdd5870cfb66fbe51a34410292e2d1729e970faa61ab82971cb71c9ed15",
+    "clave_base_en_la_db": true,
+    "clave_reintento_en_la_db": false
+   },
+   {
+    "chunk_id": "ctacte::5.6.1",
+    "motivo": "entities_o_relations_invalidos",
+    "clave_base": "b75604ae5db787a64d6baa2cea8025251665abf7c819dda73bac16a1ebffbf9d",
+    "clave_reintento": "023b4d8acf4a5865d75dd7865c4156f577a75c24fd0d0d179daa62f5b6f45152",
+    "clave_base_en_la_db": true,
+    "clave_reintento_en_la_db": false
+   }
+  ]
+ },
+ "o_k": {
+  "o": {
+   "r2b": [
+    {
+     "tramo": "no podrán superar el patrimonio neto de la entidad",
+     "comparacion": "maximo_inclusivo",
+     "base": "patrimonio neto de la entidad",
+     "regla_comparacion": "limite_relativo:negacion:raiz_super",
+     "origen": "e1",
+     "tramo_verificado": "no"
+    },
+    {
+     "tramo": "dos veces",
+     "valor": "2",
+     "unidad": "veces",
+     "comparacion": "minimo_estricto",
+     "base": "importe de referencia establecido en el punto 3.7",
+     "regla_comparacion": "simple:raiz_super",
+     "origen": "e1",
+     "tramo_verificado": "exacta",
+     "base_destino": "cla::3.7",
+     "base_via": "remision"
+    }
+   ],
+   "r2a": [
+    {
+     "tramo": "dos veces",
+     "valor": "2",
+     "unidad": "veces",
+     "comparacion": "minimo_estricto",
+     "base": "importe de referencia establecido en el punto 3.7",
+     "regla_comparacion": "simple:raiz_super",
+     "origen": "e1",
+     "tramo_verificado": "exacta",
+     "base_destino": "cla::3.7",
+     "base_via": "remision"
+    }
+   ]
+  },
+  "k": {
+   "tramo": "deberán observar los siguientes límites mínimos: […] multiplicar 6% por los activos ponderados",
+   "r2b": [
+    {
+     "tramo": "6%",
+     "valor": "6",
+     "unidad": "porcentaje",
+     "comparacion": "minimo_inclusivo",
+     "regla_comparacion": "encabezado:compuesta:adyacencia_minimo",
+     "origen": "e1",
+     "tramo_verificado": "no"
+    }
+   ]
+  }
+ },
+ "controles": [
+  {
+   "grupo": "B",
+   "nombre": "el namespace del reintento es el base con el sufijo «-rforma1» en el code_ver",
+   "ok": true
+  },
+  {
+   "grupo": "B",
+   "nombre": "sin sufijo, el namespace de siempre",
+   "ok": true
+  },
+  {
+   "grupo": "B1",
+   "nombre": "cap::5.3.2.3: dispara el reintento con el mismo request; bien formado, deja de quedar sin validación",
+   "ok": true
+  },
+  {
+   "grupo": "B2",
+   "nombre": "cap::5.3.2.3: agotado el reintento, error declarado y lista del resumen",
+   "ok": true
+  },
+  {
+   "grupo": "B3",
+   "nombre": "cap::5.3.2.3: sin el perfil r2, una llamada con el request de siempre y sin reintento (como hoy)",
+   "ok": true
+  },
+  {
+   "grupo": "B4",
+   "nombre": "cap::5.3.2.3: la clave base está en la db con el mismo crudo; la del reintento es otra y no está",
+   "ok": true
+  },
+  {
+   "grupo": "B1",
+   "nombre": "ext::6.5.3: dispara el reintento con el mismo request; bien formado, deja de quedar sin validación",
+   "ok": true
+  },
+  {
+   "grupo": "B2",
+   "nombre": "ext::6.5.3: agotado el reintento, error declarado y lista del resumen",
+   "ok": true
+  },
+  {
+   "grupo": "B3",
+   "nombre": "ext::6.5.3: sin el perfil r2, una llamada con el request de siempre y sin reintento (como hoy)",
+   "ok": true
+  },
+  {
+   "grupo": "B4",
+   "nombre": "ext::6.5.3: la clave base está en la db con el mismo crudo; la del reintento es otra y no está",
+   "ok": true
+  },
+  {
+   "grupo": "B1",
+   "nombre": "ric::6.3: dispara el reintento con el mismo request; bien formado, deja de quedar sin validación",
+   "ok": true
+  },
+  {
+   "grupo": "B2",
+   "nombre": "ric::6.3: agotado el reintento, error declarado y lista del resumen",
+   "ok": true
+  },
+  {
+   "grupo": "B3",
+   "nombre": "ric::6.3: sin el perfil r2, una llamada con el request de siempre y sin reintento (como hoy)",
+   "ok": true
+  },
+  {
+   "grupo": "B4",
+   "nombre": "ric::6.3: la clave base está en la db con el mismo crudo; la del reintento es otra y no está",
+   "ok": true
+  },
+  {
+   "grupo": "B1",
+   "nombre": "ctacte::5.6.1: dispara el reintento con el mismo request; bien formado, deja de quedar sin validación",
+   "ok": true
+  },
+  {
+   "grupo": "B2",
+   "nombre": "ctacte::5.6.1: agotado el reintento, error declarado y lista del resumen",
+   "ok": true
+  },
+  {
+   "grupo": "B3",
+   "nombre": "ctacte::5.6.1: sin el perfil r2, una llamada con el request de siempre y sin reintento (como hoy)",
+   "ok": true
+  },
+  {
+   "grupo": "B4",
+   "nombre": "ctacte::5.6.1: la clave base está en la db con el mismo crudo; la del reintento es otra y no está",
+   "ok": true
+  },
+  {
+   "grupo": "O",
+   "nombre": "r2b: la lista conserva el elemento del límite relativo y suma el de cuantía",
+   "ok": true
+  },
+  {
+   "grupo": "O",
+   "nombre": "r2a: la lista se reemplaza, como en los grafos sellados",
+   "ok": true
+  },
+  {
+   "grupo": "O",
+   "nombre": "los elementos validan con ElementoUmbral",
+   "ok": true
+  },
+  {
+   "grupo": "K",
+   "nombre": "r2b: el elemento de la cuantía del ítem toma «mínimos» del encabezado del tramo compuesto",
+   "ok": true
+  },
+  {
+   "grupo": "K",
+   "nombre": "la regla del encabezado rige también en r2a (no depende de la fase)",
+   "ok": true
+  }
+ ],
+ "resultado": "23/23"
+}

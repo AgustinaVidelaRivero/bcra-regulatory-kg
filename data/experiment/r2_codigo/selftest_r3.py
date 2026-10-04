@@ -17,7 +17,12 @@ Grupos (casos sintéticos salvo donde se indica):
       dirigida, datos reales, solo lectura);
   T7  reglas (a) a (i) del detector r2 (decisiones sobre el freno posterior a
       R3): un caso positivo y uno negativo por regla, «Superintendencia» no es
-      norma, y sin reglas el detector r2 es el de la cadena r1.
+      norma, y sin reglas el detector r2 es el de la cadena r1;
+  T8  U-R2-CODIGO-2, C2: la regla (j) del punto a (patrón 1, norma nombrada
+      después del número: externa; patrón 2, Anexo de una Comunicación:
+      irresoluble con causa propia y en el registro de Comunicaciones; patrón 3,
+      sin norma: sigue irresoluble) y el contador del punto d (la autocita del
+      encabezado de sección, contada aparte y fuera del registro).
 Escribe solo en un directorio temporal (TMPDIR). USD 0.
 
 Uso:
@@ -608,6 +613,76 @@ def t7():
           not ri_sin["nuevas"] and not any(s in ("Obligacion_no", "Obligacion_sub") for s, _ in pares_i))
 
 
+def t8():
+    print("T8. U-R2-CODIGO-2, C2: regla (j) del punto a y contador del punto d")
+    todas = "".join(sorted(REF.REGLAS_R2))
+    orig = REF.TITULOS_TOS
+    REF.TITULOS_TOS = {**dict(TITULOS_T7), "ctacte": "reglamentacion de la cuenta corriente bancaria"}
+    try:
+        def clases(t, reglas=todas, to="syn"):
+            return [(m["clase"], m["to_destino"], m["puntos"], m.get("norma_tras_el_numero"),
+                     m.get("causa_irresoluble")) for m in det(t, reglas, to)]
+        check("T8a+ patrón 1 «de la NIIF 9»: externa, norma fuera del inventario (no interna al 5.5 del TO)",
+              clases("conforme al punto 5.5. de la NIIF 9, la entidad", to="cap")
+              == [("externa", None, ["5.5"], "1", None)], str(clases("conforme al punto 5.5. de la NIIF 9", to="cap")))
+        check("T8a+ patrón 1 con título intermedio: «“Deterioro de Valor” de la Norma Internacional de Información "
+              "Financiera (NIIF) 9»",
+              clases("según la Sección 5.5. “Deterioro de Valor” de la Norma Internacional de Información Financiera "
+                     "(NIIF) 9", to="cap") == [("externa", None, [], None, None)]
+              or [x[0] for x in clases("según el punto 5.5. “Deterioro de Valor” de la Norma Internacional de "
+                                       "Información Financiera (NIIF) 9", to="cap")] == ["externa"])
+        m1 = clases("en los puntos 9.2.1.1. de la “Reglamentación de la cuenta corriente bancaria”", to="docvig")
+        check("T8a+ patrón 1 que nombra un TO del corpus: externa a ese TO (regla g)",
+              m1 == [("externa", "ctacte", ["9.2.1.1"], "1", None)], str(m1))
+        m2 = clases("receptadas en el punto 10.3.6. del Anexo de la Comunicación “A” 7914, las entidades", to="ext")
+        check("T8a+ patrón 2: irresoluble con la causa propia, sin destino",
+              m2 == [("comunicacion_anexo", None, ["10.3.6"], "2", REF.CAUSA_ANEXO_COMUNICACION)], str(m2))
+        m3 = clases("conforme a lo previsto en el punto 4.4.1. y en el modelo inserto", to="ric")
+        check("T8a- patrón 3 (sin norma nombrada): sigue interna", m3 == [("interna", "ric", ["4.4.1"], None, None)],
+              str(m3))
+        m4 = clases("según el punto 7.2. de la “Sección 3 – Criterios generales”", to="ri_dcpc")
+        check("T8a- un nombre que empieza como división del documento no es otra norma: el 7.2 sigue interno",
+              [(x[0], x[2]) for x in m4 if x[2]] == [("interna", ["7.2"])], str(m4))
+        m5 = clases("conforme al punto 5.5. de la NIIF 9", reglas=todas.replace("j", ""), to="cap")
+        check("T8a- sin la regla (j), la mención es interna (como en r2a)", [x[0] for x in m5] == ["interna"], str(m5))
+        m6 = clases("según el punto 1.2. de las presentes normas y el punto 5.5. de la NIIF 9", to="cap")
+        check("T8a+ la mención con marca de propio TO sigue interna; la otra, externa",
+              sorted((x[0], x[2]) for x in m6) == [("externa", ["5.5"]), ("interna", ["1.2"])], str(m6))
+    finally:
+        REF.TITULOS_TOS = orig
+    # registro de Comunicaciones (patrón 2) y contador (punto d), por el ensamblado de remisiones
+    hijo = chunk("syn::10.4.4", "10.4.4", "10.4.4. Las operaciones receptadas en el punto 10.3.6. del Anexo de la "
+                                         "Comunicación “A” 7914.")
+    hijo["herencia"] = [{"unidad_origen": "S10", "tipo": "encabezado", "texto": "Sección 10. Operaciones."}]
+    leg = [hijo, chunk("syn::10.3.6", "10.3.6", "10.3.6. Cuerpo.\nTexto.")]
+    kg = {"nodes": [nodo("Obligacion_o", "Obligacion", "10.4.4", "syn::10.4.4", "operaciones del punto 10.3.6. de la "
+                                                                              "Sección 10"),
+                    nodo("Restriccion_d", "Restriccion", "10.3.6", "syn::10.3.6")], "edges": []}
+    with e0_sintetico(leg):
+        r = REF.detectar_y_resolver(json.loads(json.dumps(kg)), perfil="r2")
+        r_sin = REF.detectar_y_resolver(json.loads(json.dumps(kg)), perfil="r2", reglas=REF.REGLAS_R2 - {"j"})
+    check("T8a+ patrón 2 en el ensamblado: sin arista a 10.3.6, irresoluble con la causa propia",
+          not r["nuevas"] and any(x["causa"] == REF.CAUSA_ANEXO_COMUNICACION for c in r["registro"]
+                                  for x in c["irresolubles"]))
+    check("T8a+ patrón 2 en el registro de Comunicaciones (citas_a_puntos_de_anexo)",
+          [(f["comunicacion"], f["puntos"]) for f in r["comunicaciones"].get("citas_a_puntos_de_anexo", [])]
+          == [("Comunicación A 7914", ["10.3.6"])], str(r["comunicaciones"].get("citas_a_puntos_de_anexo")))
+    check("T8a- sin la regla (j), la cita crea la remite_a interna falsa (como en r2a) y no hay citas de Anexo",
+          [(e["source"], e["target"]) for e in r_sin["nuevas"]] == [("Obligacion_o", "Restriccion_d")]
+          and "citas_a_puntos_de_anexo" not in r_sin["comunicaciones"])
+    th = r["resumen"]["texto_heredado"]
+    check("T8d+ (d) la línea «Sección 10.» del encabezado heredado es autocita: se cuenta aparte y no va al registro",
+          th["autocitas_de_encabezado"] == 1 and th["menciones"] == 0
+          and not any(c.get("atribucion") == "texto_heredado" for c in r["registro"]), json.dumps(th))
+    check("T8d- es_autocita_de_encabezado: una cita a otra sección, o con puntos, no es autocita",
+          REF.es_autocita_de_encabezado({"evidencia": "Sección 10. Operaciones", "puntos": [], "secciones": ["10"]},
+                                        "S10")
+          and not REF.es_autocita_de_encabezado({"evidencia": "Sección 10. Operaciones", "puntos": [],
+                                                 "secciones": ["10"]}, "S11")
+          and not REF.es_autocita_de_encabezado({"evidencia": "la Sección 10.", "puntos": [], "secciones": ["10"]},
+                                                "S10"))
+
+
 def main() -> int:
     t1()
     t2()
@@ -615,6 +690,7 @@ def main() -> int:
     t5(res, regs, cat)
     t6()
     t7()
+    t8()
     ok = sum(1 for _, b, _ in RES if b)
     print(f"SELFTEST R3: {ok}/{len(RES)} {'PASS' if ok == len(RES) else 'FAIL'}")
     return 0 if ok == len(RES) else 1

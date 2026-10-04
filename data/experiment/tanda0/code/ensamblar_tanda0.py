@@ -637,14 +637,19 @@ def _rangos_unidad_repetida(texto: str, cs: list) -> list[str]:
     return out
 
 
-def resolver_base(base: str | None, to: str, kg_def: dict[tuple[str, str], str]) -> dict:
+def resolver_base(base: str | None, to: str, kg_def: dict[tuple[str, str], str], detector_r2: bool = False) -> dict:
     """L-ESQ-R2 §1.3 (c): la base literal se resuelve a su punto por el
     mecanismo de remisiones (detectar_menciones sobre la base) o a una
     Definicion del mismo TO cuyo `termino` normalizado es la base; si no
-    resuelve, se marca."""
+    resuelve, se marca. Con `detector_r2` (fase r2b; U-R2-CODIGO-2, C2,
+    punto r), las menciones salen del mismo detector que `remite_a`
+    (`REF.menciones_por_tramo`, que normaliza el texto y aplica
+    `detectar_menciones_r2` con las reglas de REF.REGLAS_R2)."""
     if not base:
         return {"base_destino": None, "via": None, "marca": None}
-    for men in REF.detectar_menciones(base, to):
+    menciones = (REF.menciones_por_tramo([base], to, REF.REGLAS_R2) if detector_r2
+                 else REF.detectar_menciones(base, to))
+    for men in menciones:
         td = men["to_destino"]
         if td is None or td not in C.TOS_ORDEN:
             continue
@@ -661,7 +666,7 @@ def resolver_base(base: str | None, to: str, kg_def: dict[tuple[str, str], str])
 
 
 def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[str, list[str]], M, V, RCMP,
-                       pol) -> dict:
+                       pol, fase: str = "r2a") -> dict:
     """Par B en r2a (L-ESQ-R2 §1.3 y §1.4; mandato R3.f): la lista de umbrales
     de Restriccion, Obligacion, Condicion y Excepcion, armada en código con las
     reglas de U-PYD (reglas_comparacion.analizar), desde los tramos de E1 si
@@ -670,7 +675,15 @@ def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[s
     tal como está en esa fuente; se verifica contra el texto de E0 de los
     chunks del nodo y, si el chunk tiene tablas de e0-r2, contra sus celdas.
     Lo que no verifica queda marcado (`tramo_verificado = no`), sin
-    corregirse. El plazo heredado que no es un plazo va a `frecuencia`."""
+    corregirse. El plazo heredado que no es un plazo va a `frecuencia`.
+    Con la fase r2b (U-R2-CODIGO-2, C2): el plazo sin marcador queda
+    `no_determinada`, sin `comparacion_asumida` (punto m, enmienda 3 a
+    L-ESQ-R2); la lista se completa, no se reemplaza, y el elemento del
+    límite relativo que dejó validador_r2 se conserva junto a los de cuantía
+    (punto o); y la base se resuelve con el detector de `remite_a` (punto
+    r). En r2a, la regla anterior, para reproducir los grafos sellados."""
+    r2b = fase == "r2b"
+    plazo_sin_marcador = "no_determinada" if r2b else "maximo_asumido"
     chunks = {c["id"]: c for to in C.TOS_ORDEN for c in _chunks_r2(to)}
     kg_def = {}
     for n in kg["nodes"]:
@@ -682,6 +695,8 @@ def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[s
             "comparacion_asumida": 0, "no_determinada": 0, "tramo_verificado": {}, "verificado_en_tabla": {},
             "base_resuelta": 0, "base_no_resuelta": 0, "frecuencia_desde_plazo": 0,
             "frecuencia_fuera_de_lista": 0}
+    if r2b:
+        cont["elementos_previos_conservados"] = 0
 
     def suma(d, k):
         cont[d][k] = cont[d].get(k, 0) + 1
@@ -721,7 +736,7 @@ def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[s
         celdas = "\n".join(t for cid, _ in textos for t in tablas.get(cid, []))
         elementos, vistos = [], set()
         for texto, origen in fuentes:
-            cs = RCMP.analizar(texto, desc, titulo)
+            cs = RCMP.analizar(texto, desc, titulo, plazo_sin_marcador)
             rangos += [{"id": n["id"], "tramo": r} for r in _rangos_unidad_repetida(texto, cs)]
             for c in cs:
                 clave = (c.valor, c.unidad, c.moneda)
@@ -734,7 +749,7 @@ def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[s
                                           "tokens" if "tokens" in niveles else "no")
                 en_tabla = (None if not celdas else
                             V.verificar_tramo(c.texto, celdas, pol.holgura)[0] in ("exacta", "tokens"))
-                b = resolver_base(c.base, to, kg_def)
+                b = resolver_base(c.base, to, kg_def, detector_r2=r2b)
                 el.update(base_destino=b["base_destino"], base_via=b["via"],
                           base_no_resuelta=b["marca"] == "base_no_resuelta", verificado_en_tabla=en_tabla)
                 elementos.append(M.ElementoUmbral.model_validate(el).model_dump(mode="json", exclude_defaults=True))
@@ -747,7 +762,11 @@ def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[s
                 cont["no_determinada"] += c.comparacion == "no_determinada"
                 cont["base_resuelta"] += b["base_destino"] is not None
                 cont["base_no_resuelta"] += b["marca"] == "base_no_resuelta"
-        if elementos:
+        if elementos and r2b and props.get("umbrales"):
+            cont["elementos_previos_conservados"] += len(props["umbrales"])
+            props["umbrales"] = list(props["umbrales"]) + elementos
+            cont["nodos_con_lista"] += 1
+        elif elementos:
             props["umbrales"] = elementos
             cont["nodos_con_lista"] += 1
     cont["rangos_con_unidad_repetida"] = len(rangos)
@@ -801,9 +820,112 @@ def enriquecer_procedencias_r2(kg: dict) -> dict:
     return stats
 
 
-def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Path | None = None) -> dict:
+def titulos_oficiales_inventario(tos: list[str]) -> dict[str, str]:
+    """U-R2-CODIGO-2, C2, punto n: el título oficial de cada TO, tal cual, sin
+    el punto final, de las dos fuentes de `REF.titulos_de_inventario`
+    (`inventario_tos.csv`, `titulo_oficial`; para los cinco de desarrollo,
+    `inventario_resumen.json`, `subset_excluido`), sin normalizar: es la
+    materia del TextoOrdenado. Frena si falta alguno."""
+    import csv  # noqa: PLC0415
+    tit = {r["id"]: r["titulo_oficial"] for r in csv.DictReader(REF.INVENTARIO_TITULOS.open(encoding="utf-8"))}
+    for x in json.loads(REF.INVENTARIO_RESUMEN.read_text(encoding="utf-8"))["subset_excluido"]:
+        tit[x["id_interno"]] = x["titulo"]
+    faltan = [t for t in tos if t not in tit]
+    if faltan:
+        raise RuntimeError(f"TOs sin título en el inventario: {faltan}")
+    return {t: re.sub(r"\.\s*$", "", tit[t].strip()) for t in tos}
+
+
+def version_y_materia_r2b(kg: dict, canon: dict[str, str], e0_r2_dir: Path | None) -> dict:
+    """U-R2-CODIGO-2, C2, punto n (fase r2b): `version` del TextoOrdenado = la
+    versión vigente de `pies_<to>.json` de la E0 e0-r2 (el pie legible con la
+    vigencia más reciente; en un empate, el de mayor número), con la forma
+    «Comunicación A 8378 (vigencia 20/12/2025)»; `materia` = el título
+    oficial del inventario (`titulos_oficiales_inventario`). Un TO sin
+    `pies_<to>.json` o sin páginas legibles queda sin `version`, declarado.
+    Lo que traía E1 queda en `originales`."""
+    tit = titulos_oficiales_inventario(sorted(canon))
+    nodos = {n["id"]: n for n in kg["nodes"]}
+    filas, sin_version = {}, []
+    for to in sorted(canon):
+        n = nodos.get(canon[to])
+        if n is None:
+            continue
+        pies = None
+        if e0_r2_dir is not None and (Path(e0_r2_dir) / f"pies_{to}.json").exists():
+            pies = json.loads((Path(e0_r2_dir) / f"pies_{to}.json").read_text(encoding="utf-8"))
+        vig = (pies or {}).get("version_vigente")
+        nuevos = {"materia": tit[to]}
+        if vig:
+            nuevos["version"] = vig["valor"]
+        else:
+            sin_version.append(to)
+        props = n.setdefault("properties", {})
+        for k, v in nuevos.items():
+            previo = props.get(k)
+            if previo is not None and previo != v:
+                n.setdefault("originales", {}).setdefault(k, previo)
+            props[k] = v
+        if not vig and "version" in props:
+            n.setdefault("originales", {}).setdefault("version", props.pop("version"))
+        car = (pies or {}).get("caratula")
+        filas[to] = {"id": n["id"], "materia": tit[to], "version": nuevos.get("version"),
+                     "pagina_del_pie_vigente": (vig or {}).get("pagina"),
+                     "caratula": (car or {}).get("ultima_comunicacion_incorporada"),
+                     "coincide_con_la_caratula": (pies or {}).get("coincide_con_la_caratula")}
+    return {"por_to": filas, "sin_version": sin_version,
+            "coinciden_con_la_caratula": sum(1 for f in filas.values() if f["coincide_con_la_caratula"] is True),
+            "no_coinciden_con_la_caratula": sorted(t for t, f in filas.items()
+                                                   if f["coincide_con_la_caratula"] is False)}
+
+
+def aristas_derivadas_de_cola(kg: dict, chunks_cola: set[str]) -> dict:
+    """U-R2-CODIGO-2, C2, punto q (fase r2b): aristas sin la marca de la cola
+    que tocan un nodo que solo viene de la cola humana (nodo con la marca y
+    todas sus procedencias en chunks de la cola). Se cuentan aparte, después
+    de derivar `remite_a` y `establecida_en`, por predicado; la arista no
+    lleva marca (AristaR2 no la admite en esas aristas)."""
+    def chunks_de(o):
+        return {p.get("chunk_id") for p in o.get("provenances", [])}
+    solo = {n["id"] for n in kg["nodes"] if (n.get("properties") or {}).get("cola_humana") == "true"
+            and chunks_de(n) and chunks_de(n) <= chunks_cola}
+    filas = [{"source": e["source"], "relation": e["relation"], "target": e["target"],
+              "rol_fuente": e.get("rol_fuente"),
+              "nodo_de_la_cola": [x for x in (e["source"], e["target"]) if x in solo]}
+             for e in kg["edges"] if (e["source"] in solo or e["target"] in solo)
+             and (e.get("properties") or {}).get("cola_humana") != "true"]
+    filas.sort(key=lambda f: (f["source"], f["relation"], f["target"]))
+    return {"nodos_solo_de_la_cola": len(solo), "aristas": len(filas),
+            "por_predicado": C.conteo([{"r": f["relation"]} for f in filas], "r"), "filas": filas}
+
+
+def sumar_paso_por_e3(conteos: list[dict]) -> dict:
+    """U-R2-CODIGO-2, C2, punto s: suma de los conteos de
+    `runner_corpus.conteo_paso_por_e3` de cada TO (claves numéricas y
+    diccionarios de conteos, recursivamente)."""
+    total: dict = {}
+    for c in conteos:
+        for k, v in c.items():
+            if isinstance(v, dict):
+                total[k] = sumar_paso_por_e3([total.get(k, {}), v])
+            else:
+                total[k] = total.get(k, 0) + v
+    return {k: (dict(sorted(v.items())) if isinstance(v, dict) and k == "por_estado" else v)
+            for k, v in total.items()}
+
+
+def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Path | None = None,
+                     fase: str | None = None) -> dict:
     """Cadena r2. `w(nombre, obj)` y `wl(nombre, filas)` escriben JSON y JSONL
-    en <salida>/r2/ (None = no escriben)."""
+    en <salida>/r2/ (None = no escriben). `fase`: «r2a» o «r2b»; por defecto,
+    la del perfil del crudo (r2b con la forma r2). Pasarla explícita sirve a
+    los controles (U-R2-CODIGO-2, C2): el crudo de r2a ensamblado con las
+    reglas de r2b. Con r2b rigen además, solo en esta cadena, los puntos (m)
+    a (s) de C2 de U-R2-CODIGO-2: versión y materia del TextoOrdenado (n),
+    lista de umbrales completada (o), registro de omisiones (p), aristas
+    derivadas que tocan un nodo de la cola contadas aparte (q), base con el
+    detector de `remite_a` (r) y el conteo de elementos sin verificar por E3
+    en el reporte (s); el plazo sin marcador (m) va por `llenar_umbrales_r2`."""
     import runner_corpus as RC          # noqa: PLC0415 — solo con --perfil-r2
     w = w or (lambda *a, **k: None)
     wl = wl or (lambda *a, **k: None)
@@ -812,9 +934,18 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
     import reglas_comparacion as RCMP   # noqa: PLC0415 — pyd_r2/code, en el path por modulo_modelos_r2
     cat = E4.catalogo_r2()
     validar, pol = RC.validador_perfil_r2(perfil)
+    fase = fase or ("r2b" if RC.perfil_forma_r2(perfil) else "r2a")
+    if fase not in e2_lib.FASES_R2:
+        raise ValueError(f"fase desconocida: {fase!r}")
+    r2b = fase == "r2b"
     versiones = {"catalogo_sha256": cat["catalogo_sha256"], "politica_sha256": pol.sha256,
                  "perfil": "r2", "prefijo_hash": perfil.prefijo_hash}
     resumen: dict = {"perfil_e1_del_crudo": perfil.nombre, **versiones, "etapas": []}
+    if r2b:
+        resumen["fase"] = fase
+    omisiones: list[dict] = []
+    paso_por_e3: dict[str, dict] = {}
+    chunks_cola: set[str] = set()
     grafos, registro_total, resolucion_total, tramos_e1 = {}, [], [], {}
     conflictos_intra: list[dict] = []
     resumen["e2_por_to"] = {}
@@ -823,9 +954,15 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
         regs = RC.entrada_r2(to, C.SALIDA / to, chunks, perfil, validar)
         res = E4.resolver_relaciones_r2(regs, cat["indice"], cat["rol_por_to"], versiones)
         ens = e2_lib.ensamblar_r2(chunks, regs, cat["labels"], M.SUJETOS_R2_SET, M.firma_r2,
-                                  M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"], fase="r2b" if RC.perfil_forma_r2(perfil) else "r2a")
+                                  M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"], fase=fase)
         grafos[to] = {"nodes": ens["nodes"], "edges": ens["edges"]}
         cola_estados = {r["chunk_id"]: r["estado_e3"] for r in regs if r.get("cola_humana")}
+        if r2b:
+            # puntos p y s: el registro de omisiones (lo lee LN-7) y el conteo de elementos sin verificar por E3
+            omisiones += [{"chunk_id": r["chunk_id"], "to": to, **o} for r in regs
+                          for o in (r.get("validacion") or {}).get("omisiones", [])]
+            paso_por_e3[to] = RC.conteo_paso_por_e3(regs)
+            chunks_cola |= set(cola_estados)
         r_cola = e2_lib.flaggear_cola_r2(grafos[to], cola_estados)
         tramos_e1.update(ens["tramos_umbral"])
         conflictos_intra += [{**c, "to": to} for c in ens["conflictos_properties"]]
@@ -861,16 +998,20 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
     r_to = E4.canonizar_texto_ordenado(kg)
     r_conf = E4.filtrar_conflictos(conflictos_intra, m["conflictos"])
     catalogo = C.cargar_catalogo()
-    residual = E4.resolver_propuestos(deepcopy(kg), catalogo)
+    # U-R2-CODIGO-2, C2, punto e: la pasada residual de E4 se retira del perfil r2 (decisión 1 del mandato; en
+    # la medición de r2a propuso 0 resoluciones sobre 24 propuestos). La clave queda, marcada como retirada,
+    # porque la lee medicion_r2a/m2_medicion.py.
     resumen["e4"] = {"texto_ordenado": {"canonicos": r_to["canonicos"], "eliminados": len(r_to["eliminados"])},
                      "conflictos_cross_to": {k: v for k, v in r_conf.items()
                                              if k in ("n_total", "n_variantes_to", "n_reales")},
                      "pasada_residual_de_propuestos_medida_no_aplicada": {
-                         "propuestos": len(residual["tabla"]), "resolveria": residual["n_resueltos"],
-                         "motivos": residual["motivos"]}}
+                         "retirada": True, "motivo": "retirada del perfil r2 (U-R2-CODIGO-2, decisión 1 del "
+                                                     "mandato): en r2a propuso 0 resoluciones sobre 24 propuestos"}}
     w("e4_texto_ordenado.json", r_to)
     w("e4_conflictos.json", r_conf)
-    w("e4_pasada_residual_medida.json", residual["tabla"])
+    canon = {to: E4.id_texto_ordenado_canonico(C.archivo_de_to(to)) for to in C.TOS_ORDEN}
+    if r2b:
+        resumen["texto_ordenado_version_materia"] = version_y_materia_r2b(kg, canon, tablas_dir)
 
     r_esq = inyectar_esqueleto_v3(kg, catalogo)
     resumen["esqueleto"] = {k: v for k, v in r_esq.items() if k not in ("ids_creados", "paridad_kg_refinado")}
@@ -888,10 +1029,17 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
     w("remisiones_registro.json", r_ref["registro"])
     w("comunicaciones_registro.json", r_ref["comunicaciones"])
 
-    canon = {to: E4.id_texto_ordenado_canonico(C.archivo_de_to(to)) for to in C.TOS_ORDEN}
     resumen["establecida_en_derivada"] = derivar_establecida_en(kg, canon)
+    if r2b:
+        r_der = aristas_derivadas_de_cola(kg, chunks_cola)
+        resumen["aristas_derivadas_que_tocan_un_nodo_solo_de_la_cola"] = {k: v for k, v in r_der.items()
+                                                                         if k != "filas"}
+        w("aristas_derivadas_cola_humana.json", r_der["filas"])
+        wl("omisiones.jsonl", omisiones)
+        resumen["omisiones"] = {"filas": len(omisiones), "por_categoria": C.conteo(omisiones, "categoria")}
+        resumen["paso_por_e3"] = {"por_to": paso_por_e3, "total": sumar_paso_por_e3(list(paso_por_e3.values()))}
 
-    r_umb = llenar_umbrales_r2(kg, tramos_e1, _celdas_por_chunk(tablas_dir), M, V, RCMP, pol)
+    r_umb = llenar_umbrales_r2(kg, tramos_e1, _celdas_por_chunk(tablas_dir), M, V, RCMP, pol, fase)
     resumen["umbrales"] = r_umb["resumen"]
     w("umbrales_rangos_unidad_repetida.json", r_umb["rangos"])
 

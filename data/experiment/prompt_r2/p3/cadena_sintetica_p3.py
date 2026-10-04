@@ -357,8 +357,10 @@ def main() -> int:
     items2 = {x.get("id"): x for x in su2.get("items", [])}
     check("LN-3 sobre el grafo ensamblado → resuelto", items2.get("LN-3", {}).get("estado") == "resuelto",
           (t2.stderr or "")[-300:])
-    check("LÍMITE (el ensamblado no escribe omisiones.jsonl: ensamblar_tanda0.py, fuera de las escrituras): LN-7 "
-          "sobre el grafo ensamblado → no_aplicable", items2.get("LN-7", {}).get("estado") == "no_aplicable")
+    # Era un LÍMITE de P3 (el ensamblado no escribía omisiones.jsonl); lo levanta el punto p de C2 de U-R2-CODIGO-2:
+    # el ensamblado r2b escribe el registro de omisiones en su salida, donde lo lee LN-7.
+    check("el ensamblado r2b escribe omisiones.jsonl (C2 de U-R2-CODIGO-2, punto p): LN-7 sobre el grafo ensamblado "
+          "→ resuelto", items2.get("LN-7", {}).get("estado") == "resuelto")
 
     print("[4] guarda: una validación guardada sin índices")
     corrida2 = sal / "corrida_sin_indices"

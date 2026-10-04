@@ -74,6 +74,24 @@ MAPA = REPO / "experiment" / "exploracion" / "mapa_territorio_quemado_5TOs_5sets
 UMBRAL_CHARS_SUBCHUNK = 26182            # == C8; > estricto preserva dev
 OBJETIVO_CHARS_PARTE = UMBRAL_CHARS_SUBCHUNK // 2   # 13.091
 MIN_ITEMS_SUBCHUNK = 3
+# e0-r2, U-R2-CODIGO-2 (C2): tope de la herencia (punto h; diseño aprobado en
+# data/experiment/r2_codigo2/freno_c2_diseno.md): U = el tamaño objetivo de una
+# parte, B = 2.000 caracteres por bloque heredado.
+TOPE_HERENCIA_E0_R2 = (OBJETIVO_CHARS_PARTE, 2000)
+# e0-r2, U-R2-CODIGO-2 (C2, punto f): encabezados de punto que se abren con el
+# número corregido, por (TO, página, número impreso). La p. 16 de ric imprime
+# 4.3, 4.3.1 y 4.3.2 el bloque que la norma numera 4.4 (las citas a 4.4.1 y
+# 4.4.2 y los encabezados 4.4.3 y 4.4.4 de la p. 18); sin la lista, E0 los
+# rechaza como duplicados y deja las pp. 16 a 18 dentro de ric::4.3.3.
+RENUMERACIONES_E0_R2 = {("ric", 16, "4.3"): "4.4", ("ric", 16, "4.3.1"): "4.4.1",
+                        ("ric", 16, "4.3.2"): "4.4.2"}
+# e0-r2, U-R2-CODIGO-2 (C2, punto l): páginas, por TO, donde la cola envuelta
+# del título de sección se acepta solo si continúa el título (e0_lib,
+# `continua_titulo`). Son las cuatro páginas de ric donde la regla histórica
+# descartaba seis renglones de la norma (pp. 15, 30, 54 y 59). Una lista y no
+# la regla en toda página: en la partición de 152 TOs la regla general mueve
+# ids (snp_cheq) y deja sin serializar una tabla (fabcra).
+COLA_TITULO_ESTRICTA_E0_R2 = {"ric": frozenset({15, 30, 54, 59})}
 
 # familias de marcador de ítem, por precedencia de matcheo por línea
 FAMILIAS_ITEM = [
@@ -148,14 +166,20 @@ def _particionar_texto(texto: str, respetar_tablas: bool = False) -> dict | None
             "n_items": len(indices)}
 
 
-def _sub_chunks_de(c: dict, part: dict) -> list[dict]:
+def _sub_chunks_de(c: dict, part: dict, tope_herencia: tuple[int, int] | None = None) -> list[dict]:
     """Materializa las partes de una unidad particionada. La parte 1 lleva el
     chapeau en su TEXTO (es la unidad responsable de su contenido normativo);
     las partes 2..n lo reciben como herencia (tramos `encabezado` + `intro`
     con unidad_origen = la unidad, patrón E0: el contexto ancla, la unidad
     extrae). `unidad` no cambia: la provenance de los elementos extraídos
     sigue anclando en la unidad documental real. Flags y páginas se heredan
-    de la unidad completa (conservador, declarado)."""
+    de la unidad completa (conservador, declarado).
+
+    `tope_herencia` (e0-r2 y partición por corte del perfil r2;
+    U-R2-CODIGO-2, C2, punto h): las partes reciben el recorte de la unidad
+    (su herencia y `herencia_recortada`) y, si con el chapeau la herencia
+    pasa U, se recortan los bloques que no estaban recortados; el lado de un
+    intersticial sale de sus páginas (`E0.lados_por_pagina`)."""
     chapeau, grupos = part["chapeau"], part["grupos"]
     lineas_chapeau = chapeau.split("\n")
     tramos_chapeau = [{"tipo": "encabezado", "unidad_origen": c["unidad"],
@@ -169,11 +193,17 @@ def _sub_chunks_de(c: dict, part: dict) -> list[dict]:
     for k, g in enumerate(grupos, start=1):
         texto = (chapeau + "\n" + g) if k == 1 else g
         herencia = copy.deepcopy(c["herencia"])
+        recortada = copy.deepcopy(c.get("herencia_recortada") or [])
         if k > 1:
             herencia += copy.deepcopy(tramos_chapeau)
+        if tope_herencia is not None:
+            ya = frozenset((b["unidad_origen"], b["rol"], b["conservado"]) for b in recortada)
+            herencia, nuevos = E0.recortar_herencia(herencia, E0.lados_por_pagina(herencia, c["paginas"]),
+                                                    *tope_herencia, saltar=ya)
+            recortada += nuevos
         texto_herencia = "\n".join(t["texto"] for t in herencia)
         completo = (texto_herencia + "\n" + texto) if texto_herencia else texto
-        out.append({
+        parte = {
             "id": f"{c['id']}::parte{k}",
             "to": c["to"],
             "archivo": c["archivo"],
@@ -192,7 +222,10 @@ def _sub_chunks_de(c: dict, part: dict) -> list[dict]:
                           "familia_items": part["familia"]},
             "sha256_propio": hashlib.sha256(texto.encode("utf-8")).hexdigest(),
             "sha256_completo": hashlib.sha256(completo.encode("utf-8")).hexdigest(),
-        })
+        }
+        if recortada:
+            parte["herencia_recortada"] = recortada
+        out.append(parte)
     return out
 
 
@@ -212,7 +245,7 @@ def particionar_por_corte(c: dict) -> tuple[list[dict] | None, dict]:
     part = _particionar_texto(c["texto"], respetar_tablas=True)
     if part is None:
         return None, {**info, "motivo": "sin_items_detectables"}
-    subs = _sub_chunks_de(c, part)
+    subs = _sub_chunks_de(c, part, TOPE_HERENCIA_E0_R2)
     for s in subs:
         ls = s["texto"].split("\n")
         if sum(1 for l in ls if RE_INICIO_BLOQUE_TABLA.match(l)) != sum(1 for l in ls if RE_FIN_BLOQUE_TABLA.match(l)):
@@ -223,7 +256,8 @@ def particionar_por_corte(c: dict) -> tuple[list[dict] | None, dict]:
 
 def subdividir_unidades_grandes(chunks: list[dict],
                                 umbral: int = UMBRAL_CHARS_SUBCHUNK,
-                                no_partir: frozenset = frozenset()) -> tuple[list[dict], dict]:
+                                no_partir: frozenset = frozenset(),
+                                tope_herencia: tuple[int, int] | None = None) -> tuple[list[dict], dict]:
     """Aplica la partición a los chunks terminales cuyo texto propio EXCEDE el
     umbral (estricto). Los demás pasan tal cual (mismos objetos: con 0
     unidades sobre el umbral la salida serializada es byte-idéntica).
@@ -250,7 +284,7 @@ def subdividir_unidades_grandes(chunks: list[dict],
                 "id": c["id"], "chars_propio": c["chars_propio"],
                 "motivo": "sin_items_detectables"})
             continue
-        subs = _sub_chunks_de(c, part)
+        subs = _sub_chunks_de(c, part, tope_herencia)
         out.extend(subs)
         particiones.append({
             "id": c["id"], "chars_propio": c["chars_propio"],
@@ -948,7 +982,7 @@ def procesar_tablas_r2(res: E0.ResultadoParseo, pdf_path: Path, to: str,
     sustituciones, omitidas = preparar_serializacion(res, lineas0, tablas_to, pdf_path)
     lineas: list = []
     chunks = E0.construir_chunks(res, texto_lineas=texto_con_tablas(sustituciones, omitidas),
-                                 lineas_por_chunk=lineas)
+                                 lineas_por_chunk=lineas, tope_herencia=TOPE_HERENCIA_E0_R2)
     renombres = E0.desambiguar_ids(chunks)
     tablas_to["ids_desambiguados"] = renombres
     tablas_to["_dueno_linea"] = {id(l): chunks[i]["id"]
@@ -972,8 +1006,11 @@ def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str]):
     marcadores)."""
     def parsear(roles: list[str], **kw):
         rep = E0.titulos_mayusculas_repetidos(paginas, roles)
+        # U-R2-CODIGO-2 (C2): cola de título estricta (punto l) y renumeración por lista (punto f)
         return E0.parsear_cuerpo(to, archivo, paginas, roles, mayusculas_repetidas=rep,
-                                 pie_desde_version=True, **kw), rep
+                                 pie_desde_version=True,
+                                 cola_titulo_estricta=COLA_TITULO_ESTRICTA_E0_R2.get(to, frozenset()),
+                                 renumeraciones=RENUMERACIONES_E0_R2, **kw), rep
 
     def con_chunks(res) -> bool:
         r = copy.deepcopy(res)
@@ -1132,7 +1169,8 @@ def correr(salida: Path, manifiesto=None,
             chunks = E0.construir_chunks(res)
         # U-B5.3 decisión 6: partición por ítems de unidades sobre el umbral
         # C8 (identidad en el subset de desarrollo: 0 unidades lo superan).
-        chunks, rep_sub = subdividir_unidades_grandes(chunks, no_partir=no_partir)
+        chunks, rep_sub = subdividir_unidades_grandes(chunks, no_partir=no_partir,
+                                                      tope_herencia=TOPE_HERENCIA_E0_R2 if r2 else None)
         if rep_sub["particiones"] or rep_sub["no_particionables"]:
             sub_chunking[to] = rep_sub
         div = E0.divergencias_indice_cuerpo(res, indice)
@@ -1145,6 +1183,11 @@ def correr(salida: Path, manifiesto=None,
             json.dumps(indice, ensure_ascii=False, indent=1), encoding="utf-8")
         (salida / f"chunks_{to}.json").write_text(
             json.dumps(chunks, ensure_ascii=False, indent=1), encoding="utf-8")
+        if r2:
+            # U-R2-CODIGO-2 (C2, punto n): versión y Comunicación del pie de cada página, en un archivo propio
+            (salida / f"pies_{to}.json").write_text(
+                json.dumps(E0.pies_de_paginas(to, archivo, paginas, roles), ensure_ascii=False, indent=1),
+                encoding="utf-8")
 
         divergencias[to] = div
         cobertura[to] = cob
