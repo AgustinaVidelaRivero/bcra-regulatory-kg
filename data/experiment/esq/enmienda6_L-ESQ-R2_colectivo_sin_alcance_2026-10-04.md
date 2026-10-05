@@ -4,8 +4,8 @@
 
 Enmienda con fecha a L-ESQ-R2 (`data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`, FIRMADA en `4ef7650`;
 sha256 del texto firmado `66c4a1b9…`). L-ESQ-R2 no se edita: esta enmienda vive al lado y se lee junto con
-ella, con sus notas posteriores a la firma y con las enmiendas 2 (`5f9a731`), 3 (`8d01b04`), 4 (`5c58f38`) y
-5 (`3a4b980`). La enmienda 7 está en BORRADOR. Por la regla k de CLAUDE.md §4, toda cita de L-ESQ-R2 es del
+ella, con sus notas posteriores a la firma y con las enmiendas 2 (`5f9a731`), 3 (`8d01b04`), 4 (`5c58f38`),
+5 (`3a4b980`) y 7 (`44c6e1b`). Por la regla k de CLAUDE.md §4, toda cita de L-ESQ-R2 es del
 texto firmado (`git show 4ef7650:data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`), con su línea.
 
 No rige hasta la firma. La autora la firma con dos mediciones a la vista, las dos sobre el crudo de
@@ -15,9 +15,10 @@ Tiene dos partes. La parte A, para los documentos sin alcance, rige desde la fir
 documentos con alcance, es condicionada: rige solo si su lectura llega al piso.
 
 Versiones del borrador: la primera, con la regla del colectivo, quedó en `28ec100`; la segunda, con la
-relación sin mención, en `1f8d624`; la tercera, con la parte B, en `97c21e4`. Esta dice quién hace la lectura
-de la parte B y qué pasa si su población tiene menos de 30 relaciones (decisiones de la autora del
-04/10/2026).
+relación sin mención, en `1f8d624`; la tercera, con la parte B, en `97c21e4`; la cuarta, con quién hace la
+lectura de la parte B y qué pasa si su población tiene menos de 30 relaciones, en `fe4f3e7`. Esta suma la
+mención que el texto no trae, que pasa a tratarse como una relación sin mención (decisión de la autora del
+05/10/2026).
 
 ---
 
@@ -39,6 +40,8 @@ de la parte B y qué pasa si su población tiene menos de 30 relaciones (decisio
 - Si la mención verificada es una expresión de la lista y el documento tiene alcance, R3 devuelve su rol. Si
   no lo tiene, devuelve el motivo `colectivo_sin_sujeto_por_defecto` (`:377`).
 - Si la relación no trae mención, no se aplica ninguna regla textual y el motivo es `sin_mencion`.
+- Si trae una mención que no verifica (`mencion_verificada` = `no`), tampoco se aplica ninguna regla textual,
+  y el motivo es `mencion_no_verificada` (`:409-414`).
 - En la decisión, después de R1 gana la sugerencia del modelo si la hay (`:418`).
 - Toda relación de sujeto del grafo sale de una relación que emitió el modelo. Una norma para la que el
   modelo no emitió ninguna queda sin `aplica_a`.
@@ -66,6 +69,13 @@ de la parte B y qué pasa si su población tiene menos de 30 relaciones (decisio
   (`data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2a/r2/kg.json`).
 - El alcance del TO no está en ningún nodo del grafo: el TextoOrdenado no lo lleva como propiedad ni como
   arista.
+- **Menciones que el texto no trae.** El prefijo de P3c pide no emitir la relación cuando el texto no nombra
+  al sujeto, y el modelo a veces la emite igual, con una mención que no está en el texto. En las 27 unidades
+  de P4b y de P5 de U-PROMPT-R2: ninguna de 26 relaciones en P4b, sin temperatura fijada; 3 de 35 y 8 de 40 en
+  las dos corridas de P5, con temperatura 0. Las 11 dicen «las entidades», en tres unidades de cap y de
+  polcre, dos documentos con alcance (`data/experiment/prompt_r2/p5/salida/resultados_p5.jsonl`;
+  `data/experiment/prompt_r2/freno_p5.md`, §5.d). Con el prefijo anterior eran 10 de 45
+  (`data/experiment/prompt_r2/freno_p4b.md`, §6).
 
 **Por qué una enmienda.** Cambia una regla de un texto firmado, el orden del §3.2 y el punto 5 del §3.3, y
 agrega una relación derivada con un umbral de entrada.
@@ -82,9 +92,12 @@ identifica.
 1. **Expresión colectiva.** Cuando el documento no tiene alcance y la mención verificada de la relación es
    una expresión colectiva de la lista de R3, la sugerencia del modelo no se aplica. La relación va a
    cuarentena, con el motivo `colectivo_sin_sujeto_por_defecto`.
-2. **Relación sin mención.** Cuando el documento no tiene alcance y la relación no trae mención, la
-   sugerencia del modelo tampoco se aplica. La relación va a cuarentena, con el motivo `sin_mencion`.
-3. **El registro.** En los dos casos, la fila guarda la sugerencia (`sujeto_id_modelo`).
+2. **Relación sin mención, o con una mención que el texto no trae.** Cuando el documento no tiene alcance y
+   la relación no trae mención, o trae una que no verifica (`mencion_verificada` = `no`), la sugerencia del
+   modelo tampoco se aplica. La relación va a cuarentena, con el motivo `sin_mencion` o
+   `mencion_no_verificada`.
+3. **El registro.** En todos los casos, la fila guarda la sugerencia (`sujeto_id_modelo`) y, si la hay, la
+   mención como la escribió el modelo.
 4. **El orden.** R1 sigue primero: un label o un alias exacto gana también en un documento sin alcance. Las
    dos reglas van después de R1 y antes de R4.
 5. **Cuando el documento recibe alcance,** en el catálogo de resolución o en una release:
@@ -106,7 +119,7 @@ identifica.
   14 son «la entidad», las 14 verificadas (`data/experiment/prompt_r2/p4/salida/analisis_p4.json`, `2ed47a0`).
 
 **Las relaciones sin mención** dependen del prefijo. Con el de P3c, la regla 2 actúa solo sobre las
-relaciones sin mención que el modelo emita igual.
+relaciones sin mención que el modelo emita igual, y sobre las que traigan una mención que no verifica (§0).
 
 **Medición que falta, sobre el crudo de U-REEXT-T0** (la hace R2 de U-RERESOL-CAT), en los documentos sin
 alcance:
@@ -116,7 +129,10 @@ alcance:
 | Regla 1, con la lista de hoy | PENDIENTE | PENDIENTE |
 | Regla 1, con el singular y con «cada», «esta(s)», «dicha(s)» y «tal(es)» | PENDIENTE | PENDIENTE |
 | Regla 2, relaciones sin mención | PENDIENTE | PENDIENTE |
-| Aparte: relaciones con una mención que no verifica | PENDIENTE | PENDIENTE |
+| Regla 2, relaciones con una mención que no verifica | PENDIENTE | PENDIENTE |
+
+De las menciones que no verifican, en todos los documentos: cuántas son una expresión colectiva de la lista
+y cuántas nombran otra cosa, con la lista de las segundas.
 
 Y, en los documentos con alcance: en cuántas relaciones cambia el resultado de R3 o la marca de desacuerdo si
 la lista se amplía. Ampliar la lista de R3 cambia R3 también ahí.
@@ -134,12 +150,13 @@ que la de R3.
   un nodo por documento, porque el merge entre TOs renombra los propuestos repetidos
   (`corpus_v2/r1_invariantes.py:124`).
 - **Reprocesamiento.** Es un cambio de las reglas de sujetos por relación: fila F15d de la tabla, «solo código
-  sobre lo guardado» (`data/experiment/mantenimiento/tabla_reprocesamiento.md:157`). No cambia ningún request.
+  sobre lo guardado» (`data/experiment/mantenimiento/tabla_reprocesamiento.md:159`). No cambia ningún request.
 
 ## A.4 Límites declarados y lo que queda abierto
 
-- **Menciones que no verifican.** Las reglas no las alcanzan: sin verificación no hay regla textual, y gana el
-  modelo. R2 las cuenta aparte, en la tabla de A.2.
+- **Una mención que no verifica puede nombrar a un sujeto que el texto sí trae,** escrito de otra forma. La
+  regla 2 la trata igual que a la que el modelo inventó: no distingue una de otra. R2 lo mide antes de la
+  firma, con la lista de las que no son una expresión colectiva (A.2).
 - **Una relación sin mención en cuarentena no tiene con qué nombrar su nodo.** R2 dice, antes de la firma, cómo
   queda: una fila en el registro sin nodo, o un nodo por documento.
 - **Si la parte B no rige,** las filas de la regla 2 de un documento que recibe alcance no tienen mención que
@@ -151,8 +168,8 @@ que la de R3.
 ## A.5 Implementación, después de la firma
 
 - `corpus_v2/r1_e4.py`, `resolver_relaciones_r2` (`:383`): una rama nueva antes de `elif modelo:` (`:418`).
-  Si el documento no tiene alcance y el motivo es `colectivo_sin_sujeto_por_defecto` o `sin_mencion`, la
-  sugerencia no se aplica. El registro ya guarda `sujeto_id_modelo` (`:451`).
+  Si el documento no tiene alcance y el motivo es `colectivo_sin_sujeto_por_defecto`, `sin_mencion` o
+  `mencion_no_verificada`, la sugerencia no se aplica. El registro ya guarda `sujeto_id_modelo` (`:451`).
 - **Sin alcance** quiere decir sin entrada en `rol_por_to`. `ri2_ci.pdf` tiene entrada, con dos clases y sin
   rol: tiene alcance, y las reglas no lo tocan.
 - Casos nuevos en el selftest de la resolución, con un documento sin alcance.
@@ -166,22 +183,23 @@ que la de R3.
 ## B.1 Qué decide
 
 1. **La relación derivada.** En un documento con alcance, una norma (Obligacion, Restriccion o Potestad) sin
-   relación de sujeto con mención recibe `aplica_a` hacia el rol de alcance de su documento.
+   relación de sujeto con mención verificada recibe `aplica_a` hacia el rol de alcance de su documento.
 2. **Marcada como derivada.** La crea el código en el ensamblado; no la emite E1. Lleva una marca propia que
    dice que viene del alcance del documento y no del texto de la norma, y no lleva mención. La marca tiene
    que llegar al agente (borrador de `docs/mandatos/UNAV_DISENO_navegacion_agente.md`).
-3. **Precedencia.** Si el modelo emite igual una relación sin mención, con su sugerencia, en un documento con
-   alcance gana la derivada. La sugerencia no se aplica y queda guardada en `resolucion_sujetos.jsonl`.
+3. **Precedencia.** Si el modelo emite igual una relación sin mención, o con una mención que no verifica, con
+   su sugerencia, en un documento con alcance gana la derivada. La sugerencia no se aplica y queda guardada en
+   `resolucion_sujetos.jsonl`, con la mención como la escribió el modelo.
 4. **Lo que no toca.**
    - Las relaciones con mención verificada: R1, R2 y R3 siguen como hoy.
-   - Las relaciones con una mención que no verifica: sigue R4. Se cuentan aparte.
    - `ejecuta`: el alcance no es el ejecutor por defecto.
 5. **Si esta parte no rige,** en los documentos con alcance queda la regla de hoy: R4.
 
 ## B.2 La condición: una lectura posterior a U-REEXT-T0 (PENDIENTE)
 
 - **Población.** Las relaciones que esta parte crearía sobre KG-Tanda0-Diez-r2b. La arma R2-1 de U-RERESOL-CAT
-  por simulación, sin implementar la parte B.
+  por simulación, sin implementar la parte B. Incluye las normas cuya relación de sujeto trae una mención que
+  no verifica.
 - **Muestra.** 30, que R2-1 sortea con una semilla declarada antes de leer. Si la población tiene menos de 30
   relaciones, se leen todas.
 - **Qué se lee.** Cada una contra el texto de su unidad y su texto heredado. Es correcta si el rol de alcance
@@ -195,10 +213,12 @@ que la de R3.
 
 | Qué se mide | Valor |
 |---|---|
-| Normas sin relación de sujeto con mención, en documentos con alcance | PENDIENTE |
+| Normas sin relación de sujeto con mención verificada, en documentos con alcance | PENDIENTE |
 | De esas, con una relación sin mención que el modelo emitió igual | PENDIENTE |
+| De esas, con una relación cuya mención no verifica | PENDIENTE |
 | De esas, con una sugerencia distinta del rol de alcance | PENDIENTE |
 | Correctas en la muestra de 30 | PENDIENTE |
+| De las leídas, las que vienen de una mención que no verifica, y cuántas de esas son correctas | PENDIENTE |
 
 Si no llega al piso, la parte B no rige y la parte A no cambia.
 
@@ -217,6 +237,9 @@ Si no llega al piso, la parte B no rige y la parte A no cambia.
 - **`ri2_ci.pdf`** tiene alcance con dos clases y sin rol: la derivada no tiene un destino único. No está en la
   tanda 0. Queda fuera de esta parte hasta que se decida.
 - **Excepcion y Operacion** también admiten `aplica_a`, y esta parte no las cubre.
+- **Una norma con una relación de mención verificada y otra sin mención, o con una mención que no verifica.**
+  No recibe la derivada, porque ya tiene sujeto. Qué se hace con la segunda relación queda abierto: R2-1 las
+  cuenta y lo propone.
 
 ## B.5 Implementación, solo si rige
 
@@ -231,7 +254,7 @@ Si no llega al piso, la parte B no rige y la parte A no cambia.
 
 ## Qué no cambia
 
-- El texto de L-ESQ-R2, sus notas y sus enmiendas 2 a 5.
+- El texto de L-ESQ-R2, sus notas y sus enmiendas 2 a 5 y 7.
 - R1, R2 y el calificador, en todos los documentos. R3, en los documentos con alcance.
 - El prefijo de E1, su tool schema, el catálogo de sujetos y sus candados.
 - El paso de lectura del alcance entre tandas, que asigna solo clases que ya existen

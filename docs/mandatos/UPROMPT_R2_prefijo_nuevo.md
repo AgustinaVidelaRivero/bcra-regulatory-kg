@@ -1065,3 +1065,68 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   - **Mandato de U-REEXT-T0:** la decisión que quedaba al firmar está resuelta. Se firma después de P5, con
     lo que cierre esa etapa.
   El FRENO P5 está PENDIENTE.
+- **05/10/2026 — FRENO P5 revisado; decisiones de la autora.** La nota anterior quedó en `fd81f2a`. El freno
+  está en `data/experiment/prompt_r2/freno_p5.md` (sin commit al 05/10/2026). P5 costó USD 0,9078, de un tope
+  de 1,5.
+  - **Lo que se reproduce.** Corrí sus cinco scripts de USD 0 dos veces sobre una copia: las seis salidas son
+    iguales a las de `p5/salida/`. La batería da lo que dice el freno: `selftest_prompt_r2b` 55 de 55,
+    `selftest_ub53` 58 de 58, `selftest_e1` 80 de 80, `selftest_e3` 101 de 101, `selftest_e2` 41 de 41,
+    `selftest_pyd_r2` 398 de 398, `selftest_r3` 109 de 109, `selftest_r4` 26 de 26, las cadenas de P3 (27 de
+    27) y de P3b-2 (20 de 20), `c2_sinteticos` 23 de 23 y el del manifiesto 44 de 49, como corresponde sobre
+    una copia. El selftest de claves da OK, con su JSON igual al del repo, y la cadena r2a da `70d51e42…` y
+    `fa4c1043…`. El repo no cambió durante el control.
+  - **El código.** La temperatura va en dos constantes de `e1_extractor/prompt_r2b.py` (`:109-110`, 0 y 1) y
+    entra por el armado del pedido del perfil r2b. El reintento por salida mal formada la cambia en
+    `corpus_v2/runner_corpus.py` (`:488-496`), solo con un perfil de forma r2. En `cliente_e1.py` cambian solo
+    comentarios: su árbol de sintaxis sin docstrings es igual al de HEAD.
+  - **Recuento desde copias de las bases de caché de P5.** Los 27 pedidos de E1 son idénticos entre las dos
+    corridas y llevan `temperature` 0. El reintento forzado lleva 1, en el namespace `-rforma1`. Los 10 de E3
+    no llevan temperatura. Ninguna clave de P5 está en la base de P4b.
+  - **La temperatura de E1 queda en 0, y la variación queda declarada con sus cifras (decisión de la
+    autora).**
+    - E1, con temperatura 0: 6 de 27 respuestas idénticas entre dos corridas del mismo pedido; 5 más difieren
+      solo en la redacción, con los mismos conteos; 16 difieren en algún conteo, 13 de ellas en los tipos de
+      nodo y 3 en la cantidad de normas.
+    - E3, sin temperatura fijada: el mismo veredicto en 10 de 10 y la misma evaluación en 9 de 10. En
+      `cap::5.3.1.3`, el mismo reclamo sale con severidad alta en una corrida y media en la otra, y eso decide
+      si la unidad reintenta.
+    - El grafo es reproducible por la caché, no por el modelo.
+    - **Precisión sobre la nota que presentó P5.** Decía que, con temperatura 0, lo que diera el ejemplo en P5
+      era lo que daría U-REEXT-T0. No es así: la respuesta sigue variando, y U-REEXT-T0 trae una respuesta
+      más.
+  - **La condición 10 de la tanda 1** se confirma en el grafo de U-REEXT-T0, como estaba definida (decisión
+    de la autora). El ejemplo sale completo en las dos corridas: `cla::5.1.1::intro` da la Definicion de
+    alcance, y `cla::5.1.1.1`, la Excepcion, la Operacion de clasificar y una Condicion por cada condición. El
+    `exceptua` de la Excepcion se rechaza por la firma en las dos, como en P4b.
+  - **Las menciones que el texto no trae** vuelven: verifican 32 de 35 y 32 de 40, contra 26 de 26 en P4b.
+    Las 11 que no verifican dicen «las entidades», en `cap::6.3.2::intro`, `cap::6.3.2.1` y `polcre::5.3`. Con
+    tres corridas no se puede decir si es la temperatura o la variación.
+    - Decisión de la autora: una mención que el texto no trae se trata como una relación sin mención. Va en
+      la enmienda 6 a L-ESQ-R2, que sigue en BORRADOR: en un documento sin alcance, la parte A la manda a
+      cuarentena; en uno con alcance, la parte B la resuelve al rol del documento, si rige. R2 de
+      U-RERESOL-CAT lo mide antes de la firma.
+    - Cambia una regla de L-ESQ-R2: hoy esas relaciones las resuelve la sugerencia del modelo (§3.2, R4;
+      `corpus_v2/r1_e4.py:409-419`). Por eso va por enmienda firmada, y no se implementa antes.
+    - Límite que la enmienda declara: una mención que no verifica puede nombrar a un sujeto que el texto sí
+      trae, escrito de otra forma. R2 lista las que no son una expresión colectiva.
+  - **La lectura de las marcas por grupo no se revisa en detalle** (decisión de la autora): entre las dos
+    corridas cambian 4 de 27 marcas, así que las diferencias en grupos de 1 a 4 casos son ruido. Leí las dos
+    marcas dudosas, y quedan como están, sin cambiar ninguna decisión:
+    - `cap::10.3.3.1` registra «De lo contrario, será de aplicación lo siguiente:» como `meta_normativo` en
+      las dos corridas. El tramo lleva la condición del régimen alternativo, que la corrida A extrae aparte,
+      sin vínculo, y la B no extrae. No cumple.
+    - `cap::10.2.2.4` emite aparte, en las dos corridas, el deber del encabezado heredado, como Condicion con
+      el tramo del encabezado y `condicion_de` de las cuatro Obligacion del ítem. No cumple.
+    - Las dos salen igual en las dos corridas con temperatura 0, y en P4b no estaban.
+  - **Tabla de reprocesamiento (autorizado por la autora).** Corregí «las 40 variaciones» por 41, y 77 anclas
+    corridas, en 39 líneas: 64 ubicadas por el texto de su commit de origen, 3 con el bloque cambiado y 10 a
+    mano. De ellas, 60 son de los tres archivos que nombra el freno (`prompt_r2b.py`, `cliente_e1.py` y
+    `runner_corpus.py`) y 17, de `prompt_e3.py`, `perfil_e1.py` y `validador_r2.py`. Con la tabla corregida,
+    el selftest de claves da el mismo JSON, con el contraste en OK. Entra en el commit de P5.
+  - **El retiro de `claude-haiku-4-5`** no choca con U-REEXT-T0 (decisión de la autora; plan `:404`).
+  - **Contraste con los textos firmados.** Ninguno de los puntos choca con uno. El de las menciones cambia una
+    regla de L-ESQ-R2 y va por su enmienda 6.
+  - **De la revisión.** La página de retiros de la API dice que el SDK de Python deja de aceptar
+    `temperature` desde su versión 1.0. El repo fija `anthropic==0.100.0` (`requirements.txt:11`): no se
+    actualiza sin decidirlo, porque E1, el agente y los jueces la usan.
+  El commit de P5 y la firma del mandato de U-REEXT-T0 están PENDIENTES.

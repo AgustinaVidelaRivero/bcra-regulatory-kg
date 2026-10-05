@@ -1,4 +1,4 @@
-BORRADOR — PENDIENTE DE FIRMA (del 05/10/2026; se firma después de P5 de U-PROMPT-R2)
+BORRADOR — PENDIENTE DE FIRMA (versión para firmar, del 05/10/2026)
 
 MANDATO — U-REEXT-T0: RE-EXTRACCIÓN DE LOS DIEZ TOs DE LA TANDA 0 CON EL PERFIL r2b, GATE DE r2b Y PRIMERA
 LECTURA DE LA COLA HUMANA.
@@ -32,12 +32,12 @@ CONTEXTO, con sus anclas.
   tanda0_ens_diez_r2b.json y tanda0_ens_desarrollo_r2b.json (`20b7f60`). Hoy apuntan a
   `e0_chunking/salida_tanda0_r2`, el primero trae el tope anterior, de USD 69, y sus `sellos` están vacíos.
 - Referencias de costo: E1 a E3 de los diez TOs con el prefijo sellado costó USD 40,35 (plan `:400`). Con
-  el prefijo de P3c (`322c5a23e9b7`), la re-estimación de P4 con los cocientes que midió P4b (salida 0,886
-  y entrada 1,026 de las del prefijo de P3b-2) da una central de USD 43,85, con la salida ponderada por
-  estrato, a 47,49, sin ponderar; con el tercer escalón, de 44,21 a 48,45; y por el factor 1,4, de 62,74 a
-  67,83 (data/experiment/prompt_r2/p4b/salida/costo_p4b.json). Es una cota: las 27 unidades de P4b se
-  eligieron por lectura y son cortas (22.166 caracteres de texto propio entre todas), y P4b corrió sin
-  temperatura fijada. La proyección de T1 usa la salida que mida P5 con temperatura 0.
+  el prefijo de P3c (`322c5a23e9b7`) y temperatura 0, la re-estimación de P4 con los cocientes que midió P5
+  (salida 0,947 y 0,957, y entrada 1,026, de las del prefijo de P3b-2) da una central de USD 44,70, con la
+  salida ponderada por estrato, a 48,97, sin ponderar; con el tercer escalón, de 45,06 a 49,93; y por el
+  factor 1,4, de 63,93 a 69,91 (data/experiment/prompt_r2/p5/salida/costo_p5.json). Sin temperatura fijada,
+  P4b daba hasta 67,83. Es una cota: las 27 unidades se eligieron por lectura y son cortas (22.166
+  caracteres de texto propio entre todas). El tope de 72 alcanza, con USD 2,09 sobre la cota más alta.
 - Gate: docs/laudo_release_r2_pipeline.md, §3.1 (puntos 1 a 8), y docs/protocolo_entre_tandas.md, §1 y §4,
   con su enmienda 3 sobre las clases de reprocesamiento
   (docs/enmienda3_protocolo_entre_tandas_2026-10-04_clases_de_reprocesamiento.md, FIRMADA el 04/10/2026).
@@ -53,13 +53,17 @@ CONTEXTO, con sus anclas.
     `cla::5.1.1.1`, sin la Excepcion en P4 y con ella en P4b; en `cap::6.2.2.6`, 17 normas y 5.236 tokens de
     salida en P4, y 1 norma y 1.590 tokens en P4b.
   - Con el perfil r2b, E1 corre con temperatura 0, fijada en el pedido, y el reintento por salida mal
-    formada (namespace `-rforma1`), con temperatura 1, para obtener una respuesta distinta. Lo implementa y
-    lo mide P5 de U-PROMPT-R2. La temperatura 0 no vuelve determinística la respuesta (la misma
-    documentación del SDK): P5 mide cuántas respuestas salen idénticas.
+    formada (namespace `-rforma1`), con temperatura 1, para obtener una respuesta distinta
+    (`e1_extractor/prompt_r2b.py:109-110`; P5 de U-PROMPT-R2). La temperatura 0 no vuelve determinística la
+    respuesta: en P5, de las 27 unidades pedidas dos veces, 6 respuestas salieron idénticas, 5 difieren solo
+    en la redacción y 16 en algún conteo, y la marca de lectura cambia en 4 de 27.
   - E3 corre sin temperatura fijada, y su variación es un límite declarado (decisión de la autora del
     05/10/2026). Su modelo, `claude-sonnet-5`, rechaza con un error 400 un valor de `temperature`, `top_p` o
     `top_k` distinto del de por defecto (https://platform.claude.com/docs/en/models/sonnet-5/overview,
-    consultada el 05/10/2026), y no se cambia. P5 mide cuánto varían sus veredictos.
+    consultada el 05/10/2026; en P5 la API devolvió ese error), y no se cambia. En P5, sobre 10 unidades
+    verificadas dos veces, el veredicto coincidió en las 10 y la evaluación en 9: en una, la severidad de un
+    mismo reclamo decide distinto si la unidad reintenta.
+  - El grafo es reproducible por la caché, no por el modelo.
   - Consecuencias para esta unidad:
     - cada unidad se extrae una vez;
     - esta unidad no cambia el modelo ni los parámetros del pedido, y no vuelve a extraer una unidad para
@@ -75,6 +79,11 @@ CONTEXTO, con sus anclas.
   el de P3c; fuera de las 4 unidades del grupo e, elegidas porque su texto no nombra al sujeto, 29 de 47 y
   19 de 36. En P4, 129 de 143 con el prefijo sellado y 111 de 157 con el de P3b-2. Lo que se pierde se
   recupera con la parte B de la enmienda 6 a L-ESQ-R2, si llega a regir.
+- Menciones que el texto no trae. Con temperatura 0, en P5, vuelven: verifican 32 de 35 y 32 de 40
+  menciones de sujeto, contra 26 de 26 en P4b; las 11 que no verifican dicen «las entidades». Las normas con
+  `aplica_a` son 28 de 49 y 33 de 50. La enmienda 6, en BORRADOR, pasa a tratar esas menciones como
+  relaciones sin mención (decisión de la autora del 05/10/2026). Hasta su firma rige la regla de hoy: las
+  resuelve la sugerencia del modelo.
 
 T1 — PREPARACIÓN EN SECO Y SUITE (USD 0).
 1. Manifiestos r2b: `rutas.e0_salida` pasa a data/experiment/reextraccion_v2/e0_chunking/salida_tanda0_r2b/;
@@ -91,7 +100,7 @@ T1 — PREPARACIÓN EN SECO Y SUITE (USD 0).
      NOTAS de E3 (F23). Los puso P3c-2 de U-PROMPT-R2. T1 solo los verifica: que los módulos cargan con sus
      sha256 esperados y que en el selftest de claves las variaciones R29, R29b, R30 y R32 dan «frena».
    - `e1_extractor/selftest_prompt_r2b.py` lee `salida_tanda0_r2/` y exige que ninguna unidad lleve
-     `herencia_recortada` (`:143` y `:197-198`). Al pasar a `salida_tanda0_r2b/`, ese caso cambia: la única
+     `herencia_recortada` (`:146` y `:200-201`). Al pasar a `salida_tanda0_r2b/`, ese caso cambia: la única
      unidad con el recorte es `ric::11.2.3`, y su mensaje lleva la línea del recorte una vez. El archivo se
      suma a las escrituras de la unidad solo para ese caso.
    - Los scripts de `data/experiment/medicion_r2a/` que importan `reglas_comparacion` o `r1_referencias`
@@ -113,17 +122,18 @@ T1 — PREPARACIÓN EN SECO Y SUITE (USD 0).
      de 13.944 y una parte no se vuelve a partir. Las otras dos quedan en el borde. Es una cota: la razón
      baja con el tamaño (con el prefijo sellado, las tres de cap dieron 0,46, 0,69 y 0,84). Por su salida
      sellada y el crecimiento medido en P4 (×1,276 en el conjunto y hasta ×1,58 en las unidades de 3.000
-     caracteres o más, sin `ric::9.2.1`), `cap::4.2.1.2` daría entre 15.200 y 18.900 tokens. P4b midió
-     unidades cortas y no cambia esta cota. Además, sin temperatura fijada la salida de un mismo pedido
-     varió (de 5.236 a 1.590 tokens, de 884 a 1.448 y de 271 a 413 en los tres pedidos repetidos): todas
-     estas cifras son de antes de fijarla, y se leen con la salida que mida P5 con temperatura 0. La corrida
+     caracteres o más, sin `ric::9.2.1`), `cap::4.2.1.2` daría entre 15.200 y 18.900 tokens. P4b y P5
+     midieron unidades cortas y no cambian esta cota: con temperatura 0, la salida de P5 fue 0,947 y 0,957 de
+     la del prefijo de P3b-2. La salida de un mismo pedido varía: sin temperatura fijada, de 5.236 a 1.590
+     tokens en `cap::6.2.2.6`; con temperatura 0, las dos corridas de P5 sumaron 43.424 y 43.872. La corrida
      en seco lista las cuatro, con el mecanismo que cubre a cada una.
 3. Corrida en seco, sin llamar a la API: el request de cada unidad, su namespace y su clave de caché; las
    unidades por TO; la estimación por TO contra el tope; los namespaces de los reintentos.
    - Control contra P5: la clave de cada una de las 27 unidades de P4b se compara con la que dejó P5 de
-     U-PROMPT-R2 con temperatura 0. Se espera que coincidan las 27, y que ninguna sea la del brazo de P3c
-     de P4b, que corrió sin temperatura fijada. Si alguna difiere de la de P5, se reporta con su causa en el
-     FRENO T1: o cambió algo del pedido desde P5, o el runner arma el pedido de otra forma que su script.
+     U-PROMPT-R2 con temperatura 0 (data/experiment/prompt_r2/p5/salida/claves_despues.json). Se espera que
+     coincidan las 27, y que ninguna sea la del brazo de P3c de P4b, que corrió sin temperatura fijada. Si
+     alguna difiere de la de P5, se reporta con su causa en el FRENO T1: o cambió algo del pedido desde P5, o
+     el runner arma el pedido de otra forma que su script.
 4. Suite y shapes antes del gate:
    a. T6 y E4-b se parametrizan por los TextoOrdenado de los TOs del manifiesto del grafo bajo prueba, en
       lugar de los cinco de desarrollo fijos (scripts/regression_kg.py:1304-1313; E4-b depende de T6);
@@ -193,6 +203,9 @@ T2 — EXTRACCIÓN, E1 A E3 (tope USD 72).
     P4b, una: `ext::3.5.3::intro`). El criterio con que se cuenta una objeción se declara antes de contar.
 - Normas con sujeto: cuántas normas (Obligacion, Restriccion y Potestad) llevan `aplica_a`, por TO y en
   total, en el crudo y después de la validación (referencias, en el contexto).
+- Menciones de sujeto: cuántas relaciones `aplica_a` y `ejecuta` traen una mención que no verifica, por TO,
+  con la mención y la unidad de cada una. Es el insumo de la medición de R2 de U-RERESOL-CAT para la
+  enmienda 6.
 - Control de la caché de E3 (decisión de la autora del 04/10/2026). El namespace de E3 del perfil r2b es el
   de la tanda 0. Se cuentan los aciertos de caché de E3 contra entradas anteriores a la corrida
   (`created_at` anterior a su inicio). Se espera 0; si hay alguno, se lista con su unidad y su clave.
@@ -222,9 +235,9 @@ T3 — ENSAMBLADOS, REGISTRO Y GATE DE r2b (USD 0).
       05/10/2026): el nodo de la Excepcion de `cla::5.1.1.1` existe, y desde los nodos de
       `cla::5.1.1::intro` se llega a los de sus hijos por la jerarquía de la procedencia, sin agente. Se
       reporta además si `cla::5.1.1::intro` dejó la Definicion de alcance y cuántas Condicion tiene
-      `cla::5.1.1.1`. P4b mostró que el nodo es alcanzable, en una respuesta sin temperatura fijada; lo que
-      dio P5 con temperatura 0 está en «Lo que llega de las unidades anteriores». Si el nodo no está, se
-      reporta y la condición vuelve a la autora: la unidad no se vuelve a extraer acá;
+      `cla::5.1.1.1`. En P5, con temperatura 0, el ejemplo salió completo en las dos corridas; esta unidad
+      trae una respuesta más. Si el nodo no está, se reporta y la condición vuelve a la autora: la unidad no
+      se vuelve a extraer acá;
    d. el cierre de `BKL-0035` y de `BKL-0039`, medido sobre la extracción final, después de E3: ningún nodo
       de `ctacte::8.3::intro`, `ctacte::8.4::intro` ni `ctacte::6.4.7::intro` es una Obligacion cuyo contenido
       sea solo el encabezado de la lista (data/backlog/backlog.jsonl, `condicion_de_cierre`);
@@ -351,7 +364,7 @@ evaluación; actualizar el corpus; commitear.
 
 DECISIONES DE LA AUTORA AL FIRMAR.
 1. El tope de T2: queda en USD 72 (decisión de la autora del 04/10/2026, tras el FRENO P4). La
-   re-estimación con lo medido en P4b queda dentro: hasta 67,83 con el factor 1,4.
+   re-estimación con lo medido en P5 queda dentro: hasta 69,91 con el factor 1,4.
 2. Si las celdas con agente de la tanda 0 se vuelven a correr sobre los grafos r2b (referencia: USD 21,2577;
    propuesta: no en esta unidad).
 3. Las carpetas de salida (propuesta: `salida_r2b/`, `ens_diez_r2b/`, `ens_desarrollo_r2b/` y
@@ -364,8 +377,7 @@ queda sin fijar, declarada como límite, sin cambiar su modelo; la condición 10
 sale en esta corrida (T3, punto 3.c); y las tres lecturas nuevas de T4: la variación (punto 5.b), 30 unidades
 del grupo c (punto 7) y 30 omisiones `meta_normativo` con marca (punto 8).
 
-LO QUE LLEGA DE LAS UNIDADES ANTERIORES, con su commit. T1 lo controla. Lo de P5 se completa antes de la
-firma.
+LO QUE LLEGA DE LAS UNIDADES ANTERIORES, con su commit. T1 lo controla.
 - De P3c-2 de U-PROMPT-R2 (data/experiment/prompt_r2/freno_p3c2.md; `66cde30`). Reemplaza a lo de P3b-2
   (`c8c3970`: hash `3817de475c93`).
   - El prefijo: hash `322c5a23e9b7`, sha256 `ccffa4e3…`, 59.909 caracteres y 27.840 tokens medidos. El
@@ -397,16 +409,27 @@ firma.
   - `cap::6.2.2.6`: sin valores de `cap::tabla037` y con la omisión `tabla` declarada.
   - La pata de E3: su NOTA de las omisiones recuperó el contenido de `ext::3.5.3::intro` y no reclamó el
     encabezado heredado de `ext::13.1.4`.
-- De P5 de U-PROMPT-R2. PENDIENTE DE COMPLETAR ANTES DE LA FIRMA, con lo que cierre esa etapa:
-  - su commit, que es el del código de esta unidad;
-  - las constantes de la temperatura (0 en el pedido de E1 y 1 en el reintento por salida mal formada), su
-    fila de la tabla de reprocesamiento y su variación del selftest de claves;
-  - el archivo con las claves de las 27 unidades con temperatura 0, para el control del punto 3 de T1;
-  - la variación medida: cuántas de las 27 respuestas salieron idénticas entre sus dos corridas;
-  - el ejemplo con temperatura 0: si `cla::5.1.1::intro` deja la Definicion de alcance y si `cla::5.1.1.1`
-    deja la Excepcion;
-  - la salida por carácter de texto propio con temperatura 0, para la proyección de T1;
-  - la variación de los veredictos de E3: en cuántas de sus 10 unidades coinciden las dos corridas.
+- De P5 de U-PROMPT-R2 (data/experiment/prompt_r2/freno_p5.md; commit PENDIENTE al 05/10/2026; USD 0,9078 de
+  un tope de 1,5). Su commit es el del código de esta unidad.
+  - La temperatura: `TEMPERATURA_E1_R2B = 0` y `TEMPERATURA_REINTENTO_FORMA_R2B = 1`
+    (`e1_extractor/prompt_r2b.py:109-110`). El pedido del reintento por salida mal formada lo arma
+    `runner_corpus.kwargs_reintento_forma`. En la tabla de reprocesamiento, la fila F08e y la variación R14;
+    para el reintento, F08c y R25. La tabla tiene 40 filas, y el selftest de claves, 41 variaciones del
+    perfil r2b.
+  - No cambian el prefijo, el mensaje, el tool schema, el namespace de E1 ni el pedido de E3. Cambia la clave
+    de E1 de todas las unidades.
+  - Las claves de las 27 unidades con temperatura 0, para el control del punto 3 de T1:
+    data/experiment/prompt_r2/p5/salida/claves_despues.json.
+  - La variación medida, entre dos corridas del mismo pedido: en E1, 6 de 27 respuestas idénticas, 5 que
+    difieren solo en la redacción y 16 en algún conteo; en E3, sobre 10 unidades, el mismo veredicto en 10 y
+    la misma evaluación en 9.
+  - El ejemplo, con temperatura 0, en las dos corridas: `cla::5.1.1::intro` deja la Definicion de alcance, y
+    `cla::5.1.1.1`, la Excepcion, la Operacion de clasificar y una Condicion por cada condición. El
+    `exceptua` de la Excepcion hacia la Operacion se rechaza por la firma, como en P4b.
+  - La salida: 43.424 y 43.872 tokens en las 27 unidades, 1,959 y 1,979 por carácter de texto propio; contra
+    la del prefijo de P3b-2, 0,947 y 0,957. La entrada no cambia con la temperatura.
+  - La caché de prompts de la API se sigue leyendo entre un pedido con temperatura 0 y uno con 1.
+  - Los selftests que cambian: `selftest_prompt_r2b`, 55 de 55, y `selftest_ub53`, 58 de 58.
 - De C2 de U-R2-CODIGO-2 (data/experiment/r2_codigo2/freno_c2.md; `9f6361e`).
   - `salida_tanda0_r2b/`: 57 archivos, con sus diez `pies_<to>.json`, sin cambios desde ese commit al
     05/10/2026 (`git diff --stat 9f6361e -- data/experiment/reextraccion_v2/e0_chunking/salida_tanda0_r2b/`,

@@ -224,3 +224,16 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 105 líneas de arriba y n
   PENDIENTE DE FIRMA: se firma cuando R2 deje el script funcionando. Hasta entonces no rigen.
   El «seguí» de R2 está preparado, con R2 en dos pasos (R2-1, hasta la medición; R2-2, las dos reglas, con la
   enmienda 6 firmada). Su despacho está PENDIENTE: va después de U-REEXT-T0.
+- **05/10/2026 — la mención que el texto no trae entra a la enmienda 6 (decisión de la autora).** Sale de P5
+  de U-PROMPT-R2 (`data/experiment/prompt_r2/freno_p5.md`, sin commit al 05/10/2026): con el prefijo de P3c y
+  temperatura 0, verifican 32 de 35 y 32 de 40 menciones de sujeto; las 11 que no verifican dicen «las
+  entidades».
+  - Una mención que no verifica se trata como una relación sin mención: en un documento sin alcance, la
+    parte A la manda a cuarentena; en uno con alcance, la parte B la resuelve al rol del documento, si rige.
+    Está en el borrador de la enmienda 6, en su versión del 05/10/2026.
+  - R2 lo mide antes de la firma, con lo demás: en la tabla de A.2, la regla 2 en sus dos casos; de las
+    menciones que no verifican, cuántas son una expresión colectiva y cuántas nombran otra cosa; y en la
+    población de la parte B entran las normas cuya relación trae una mención que no verifica.
+  - Queda abierto, y R2-1 lo propone: qué se hace con una relación sin mención, o con una mención que no
+    verifica, de una norma que ya tiene otra relación con mención verificada.
+  El «seguí» de R2 está actualizado con esto. Su despacho sigue PENDIENTE: va después de U-REEXT-T0.
