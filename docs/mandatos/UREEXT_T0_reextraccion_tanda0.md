@@ -247,11 +247,22 @@ DECISIONES DE LA AUTORA AL FIRMAR.
 5. La semilla del sorteo de la cola humana.
 
 PENDIENTE DE COMPLETAR ANTES DE LA FIRMA, con lo que cierren las unidades en curso.
-- De P3c de U-PROMPT-R2 (diseño P3c-1 en curso al 04/10/2026): el hash y el sha256 del prefijo que
-  re-congele y el namespace de E1. Reemplazan a los de P3b-2 (`c8c3970`: hash `3817de475c93`, sha256
-  `8d84364f…` y namespace `e1_extraccion|cv=e1-extractor-v1-p3817de475c93|think=0`). También: si el tool
-  schema cambia (con P3b-2 no cambió: `0c391f2b…`), los sha256 de los cuatro candados y la lista de tablas
-  forzadas a residual, con `cap::tabla037`. La fase le llega a E2 por el parámetro `fase` de `ensamblar_r2`.
+- De P3c-2 de U-PROMPT-R2 (data/experiment/prompt_r2/freno_p3c2.md, corregido; commit PENDIENTE al
+  04/10/2026): lo que T1 controla. Reemplaza a lo de P3b-2 (`c8c3970`: hash `3817de475c93`).
+  - El prefijo: hash `322c5a23e9b7`, sha256 `ccffa4e3…`, 59.909 caracteres y 27.840 tokens medidos. El
+    parche de P3c tiene sha256 `5e3761c1…` y se aplica sobre el prefijo de P3b-2 (`8d84364f…`).
+  - El namespace de E1: `e1_extraccion|cv=e1-extractor-v1-p322c5a23e9b7|think=0`.
+  - El tool schema no cambia (`0c391f2b…`). El prefijo de E3 y su namespace tampoco (`21a836c7de6d`).
+  - Los candados de lo que no entra al hash del prefijo:
+    - la lista de tablas forzadas a residual, con `cap::tabla037`: sha256 `98cc96b2…`;
+    - el mensaje de E1: fixture `candado_mensaje_r2b.json`, sha256 `4d69f7f4…`, y mensaje `a9cb702c…`;
+    - el mensaje de E3: fixture `candado_mensaje_e3.json`, sha256 `e8fa5dc4…`, y mensaje `da17c22e…`.
+  - El tercer escalón del reintento: techo de 40.960 tokens, marca `escalon_3` en el registro de E1 y en su
+    resumen, y error definitivo `max_tokens_hit_tras_escalon_3`.
+  - Los contadores nuevos del validador: `omisiones.meta_normativo_con_marca`, con sus siete clases,
+    `omisiones.tramo_solo_heredado` y `omisiones.tramo_orden_de_lectura`.
+  - En el manifiesto, las unidades con tabla serializada confiable pasan de 37 a 36, por `cap::6.2.2.6`.
+  La fase le llega a E2 por el parámetro `fase` de `ensamblar_r2`.
 - De P4b de U-PROMPT-R2: la salida por carácter y el crecimiento de la salida con el prefijo de P3c, para
   la proyección de T1; y si ese prefijo emite la Excepcion de `cla::5.1.1.1` (condición 10 de la tanda 1,
   pendiente hasta P4b).

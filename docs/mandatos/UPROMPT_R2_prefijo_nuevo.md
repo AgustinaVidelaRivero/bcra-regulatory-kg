@@ -860,3 +860,30 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   - **P4b** va con lo ya decidido, más el contador de `meta_normativo` por brazo y la condición 10 de la
     tanda 1 decidida con el resultado del ejemplo. Se despacha después del commit de P3c-2.
   El mensaje de correcciones y el «seguí» de P4b están preparados; sus despachos están PENDIENTES.
+- **04/10/2026 — FRENO P3c-2 corregido, contrastado; decisiones de la autora.** La nota anterior quedó en
+  `44c6e1b`, con la firma de la enmienda 7. El freno corregido está en
+  `data/experiment/prompt_r2/freno_p3c2.md` (sin commit al 04/10/2026). Corrí sobre una copia lo que cambió
+  con la corrección, dos veces, y el resto como control: la re-validación de P4 y los sellos son iguales a los
+  del repo, `selftest_pyd_r2` da 395 de 395, el selftest de claves da OK con su JSON igual al del repo, y la
+  cadena r2a da los ocho sha256 de C2, con `70d51e42…` y `fa4c1043…`.
+  - **El contador de omisiones `meta_normativo`** tiene las siete clases. Sobre la salida guardada de P4 marca
+    15 de las 24 omisiones: las 9 normativas, y 6 que no están entre ellas, las mismas que con cuatro clases.
+    Por clase: deber 5, condición 4, alcance 3, excepción 2, modalidad 2, prohibición 0 y facultad 0; son 16
+    marcas en 15 omisiones, porque `cla::5.1.1.1` trae dos.
+  - **Límite declarado por la unidad.** Las marcas de las tres clases nuevas se escribieron conociendo las 9
+    normativas de P4: que detecte las 9 no es una medición fuera de muestra. P4 no tiene casos de prohibición
+    ni de facultad. La medición la hace P4b, por brazo, y después U-REEXT-T0.
+  - **La enmienda 7** lleva una nota posterior a la firma: su §3 nombraba cuatro clases, y el contador tiene
+    siete. El texto firmado no cambia (`81177f0c…`).
+  - **Tabla de reprocesamiento.** La unidad aplicó el texto autorizado en sus tres lugares. La autora decidió
+    aplicar además los otros tres que el freno corregido dejó propuestos, y los escribí en la revisión: el
+    reintento del ratchet, con el techo de 40.960 en las unidades del tercer escalón; el inventario de datos,
+    con el parche de P3c y las dos fixtures; y «contra el congelado de P3c-2». Con esos tres textos, el
+    selftest de claves da el mismo JSON y su contraste con la tabla sigue en OK.
+  - **P4b.** Los dos puntos de la revisión quedan confirmados: la comparación es de release contra release, y
+    P4b hace una llamada con el techo completo del tercer escalón, 40.960 tokens, dentro de su tope.
+  - **De la revisión, PENDIENTE de decisión de la autora.** La clase «modalidad» del contador marca sobre todo
+    el medio o la forma («mediante», «a través de», «por escrito», «en forma»), y no lo que el prefijo llama
+    modalidad: si algo se exige, se permite o se aconseja, o si basta una entre varias opciones. No marca
+    «indistintamente», «concurrentemente» ni «se recomienda». En P4 no cambia ninguna cifra.
+  El commit de P3c-2 y el despacho del «seguí» de P4b están PENDIENTES.
