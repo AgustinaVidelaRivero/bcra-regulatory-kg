@@ -1,0 +1,72 @@
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,6 +1,55 @@
+         else:
+             nodo.segmentos[-1].append(linea)
++
++    # ---- punto 7 de S0 (reabrir_padre); inertes sin el parámetro ----
++    def _pos(l: Linea) -> tuple:
++        return (l.pagina, l.top)
++
++    def _ultima_pos(n: Nodo) -> tuple:
++        ps = [_pos(n.linea_label)] if n.linea_label is not None else []
++        ps += [_pos(s[-1]) for s in n.segmentos if s]
++        ps += [_ultima_pos(h) for h in n.hijos]
++        return max(ps) if ps else (n.pagina, 0.0)
++
++    def camino_para_reabrir(padre_num: str) -> list[Nodo] | None:
++        """Desde el nodo más profundo de la pila, baja por últimos hijos hasta el punto
++        `padre_num`; None si en algún paso el último hijo no es un ancestro de ese punto (hay
++        algo abierto después) o si no existe."""
++        if not pila:
++            return None
++        n, camino = pila[-1], []
++        while n.hijos:
++            h = n.hijos[-1]
++            if h.tipo != "punto":
++                return None
++            if h.numero == padre_num:
++                return camino + [h]
++            if not padre_num.startswith(h.numero + "."):
++                return None
++            camino.append(h)
++            n = h
++        return None
++
++    def reabrir(camino: list[Nodo], hijo: str, linea: Linea) -> None:
++        """Reabre el punto (último de `camino`): la prosa de la pila posterior a su última línea
++        (la que el re-anclaje le dio a un ancestro) vuelve a él, o a su último hijo si es terminal
++        (continuación), y la pila sigue por el camino."""
++        objetivo = camino[-1]
++        tope = _ultima_pos(objetivo)
++        movidos = []
++        for x in pila:
++            for sg in list(x.segmentos):
++                if sg and _pos(sg[0]) > tope:
++                    x.segmentos.remove(sg)
++                    movidos.append(sg)
++        movidos.sort(key=lambda sg: _pos(sg[0]))
++        destino = objetivo.hijos[-1] if objetivo.hijos and not objetivo.hijos[-1].hijos else objetivo
++        destino.segmentos.extend(movidos)
++        pila.extend(camino)
++        avisos.append({"tipo": "padre_reabierto_r2", "numero": objetivo.numero, "hijo": hijo,
++                       "pagina": linea.pagina, "segmentos_devueltos": len(movidos),
++                       "lineas_devueltas": sum(len(sg) for sg in movidos), "destino": destino.numero})
+ 
+     for pi, (lineas, rol) in enumerate(zip(paginas, roles), start=1):
+         if rol != ROL_CUERPO:
+             continue
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,6 +1,11 @@
+                         if n.tipo == "punto" and n.numero == padre_num:
+                             padre = n
+                             break
++                    reapertura = None
++                    if padre is None and reabrir_padre and titulo_mayuscula and len(comp) >= 3:
++                        reapertura = camino_para_reabrir(padre_num)
++                        if reapertura:
++                            padre = reapertura[-1]
+                     if padre is None:
+                         motivo = f"padre_{padre_num}_no_abierto"
+                     else:

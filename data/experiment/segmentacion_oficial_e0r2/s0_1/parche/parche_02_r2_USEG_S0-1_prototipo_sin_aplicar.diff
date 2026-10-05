@@ -1,0 +1,24 @@
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,6 +1,9 @@
+         seccion = pila[0]
+         ultima_fue_label = False
+         previa: Linea | None = None
++        # regla 2 (c) de S0: filas de lista de códigos de la página (sin punto final, con hueco)
++        codigos_pagina = sum(1 for l in contenido if rotulos_r2 and l.ngaps >= 1 and l.texto.split()
++                             and RE_NUM_TOKEN_SIN_PUNTO.match(l.texto.split()[0]))
+ 
+         for linea in contenido:
+             anterior, previa = previa, linea
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,7 +1,8 @@
+                                      "texto": linea.texto[:120],
+                                      "motivo": motivo_raiz})
+                     m_num = None    # sigue como prosa (registro único del rechazo)
+-                elif comp_r[0] <= MAX_RAIZ and resto_r and len(comp_r) == 2 \
++                elif comp_r[0] <= MAX_RAIZ and resto_r and len(comp_r) == 2 and not motivo_2 \
++                        and not pagina_con_variante \
+                         and str(comp_r[0]) != pila[0].numero and titulo_may_r \
+                         and (ultima_raiz_num is None or comp_r[0] > ultima_raiz_num):
+                     # raíz IMPLÍCITA en profundidad 2 (arranque medido de ri_niif);

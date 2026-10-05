@@ -1,0 +1,188 @@
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,6 +1,48 @@
+ 
+ RE_INICIO_BLOQUE_TABLA = re.compile(r"^\[TABLA ")
+ RE_FIN_BLOQUE_TABLA = re.compile(r"^\[FIN TABLA ")
++# U-SEG-OFICIAL, S0, regla 6 (solo e0-r2 y la partición por corte del perfil r2): partición por
++# renglones cuando la unidad no tiene ítems detectables, y para un ítem solo más grande que el
++# objetivo. Corta después de un renglón que termina en punto, dos puntos o punto y coma; si en la
++# ventana no hay ninguno, en el último renglón que entra; nunca dentro de un bloque [TABLA … FIN
++# TABLA] (un bloque mayor que el objetivo queda en una parte propia).
++RE_FIN_ORACION_R6 = re.compile(r"[.:;]\s*$")
++
++
++def _piezas_renglones(lineas: list[str]) -> list[list[str]]:
++    piezas, tabla = [], None
++    for l in lineas:
++        if tabla is not None:
++            tabla.append(l)
++            if RE_FIN_BLOQUE_TABLA.match(l):
++                piezas.append(tabla)
++                tabla = None
++        elif RE_INICIO_BLOQUE_TABLA.match(l):
++            tabla = [l]
++        else:
++            piezas.append([l])
++    if tabla is not None:
++        piezas.append(tabla)
++    return piezas
++
++
++def partir_por_renglones(lineas: list[str], objetivo: int) -> list[str]:
++    """Grupos de renglones de a lo sumo `objetivo` caracteres (ver el comentario de RE_FIN_ORACION_R6)."""
++    piezas = _piezas_renglones(lineas)
++    tam = [len("\n".join(p)) + 1 for p in piezas]
++    corte_ok = [len(p) > 1 or bool(RE_FIN_ORACION_R6.search(p[-1])) for p in piezas]
++    grupos, i = [], 0
++    while i < len(piezas):
++        j, acum, ultimo_ok = i, 0, None
++        while j < len(piezas) and (j == i or acum + tam[j] <= objetivo):
++            acum += tam[j]
++            if corte_ok[j]:
++                ultimo_ok = j
++            j += 1
++        fin = j if j >= len(piezas) or ultimo_ok is None else ultimo_ok + 1
++        grupos.append("\n".join(l for p in piezas[i:fin] for l in p))
++        i = fin
++    return grupos
+ 
+ 
+ def _lineas_en_bloque_tabla(lineas: list[str]) -> set[int]:
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,7 +1,8 @@
+     return dentro
+ 
+ 
+-def _particionar_texto(texto: str, respetar_tablas: bool = False) -> dict | None:
++def _particionar_texto(texto: str, respetar_tablas: bool = False,
++                       renglones: int | None = None) -> dict | None:
+     """Partición por ítems del texto propio de una unidad. La línea 0 (label/
+     título) nunca es marcador. Devuelve chapeau + grupos (cada uno ≤ objetivo
+     salvo bloque único mayor) o None si no hay familia con MIN_ITEMS líneas.
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,7 +1,14 @@
+     familia = max(conteo, key=lambda f: len(conteo[f]))
+     indices = conteo[familia]
+     if len(indices) < MIN_ITEMS_SUBCHUNK:
+-        return None
++        if renglones is None or len(lineas) < 2:
++            return None
++        # regla 6 de S0: sin ítems, partición por renglones; el primer renglón (rótulo o título) es
++        # el chapeau
++        grupos = partir_por_renglones(lineas[1:], renglones)
++        if len(grupos) < 2:
++            return None
++        return {"chapeau": lineas[0], "grupos": grupos, "familia": "renglones", "n_items": 0}
+     chapeau = "\n".join(lineas[:indices[0]])
+     bloques = ["\n".join(lineas[i0:(indices[j + 1] if j + 1 < len(indices)
+                                     else len(lineas))])
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,7 +1,19 @@
+     grupos: list[str] = []
+     actual: list[str] = []
+     tam = 0
++    if renglones is not None and len(chapeau) + 1 > OBJETIVO_CHARS_PARTE and indices[0] > 1:
++        # regla 6 de S0: un chapeau mayor que el objetivo se parte por renglones; queda como chapeau
++        # su primer renglón (rótulo o título)
++        grupos.extend(partir_por_renglones(lineas[1:indices[0]], renglones))
++        chapeau = lineas[0]
+     for b in bloques:
++        if renglones is not None and len(b) + 1 > OBJETIVO_CHARS_PARTE:
++            # regla 6 de S0: un ítem solo más grande que el objetivo se parte por renglones
++            if actual:
++                grupos.append("\n".join(actual))
++                actual, tam = [], 0
++            grupos.extend(partir_por_renglones(b.split("\n"), renglones))
++            continue
+         if actual and tam + len(b) + 1 > OBJETIVO_CHARS_PARTE:
+             grupos.append("\n".join(actual))
+             actual, tam = [], 0
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,6 +1,17 @@
+         tam += len(b) + 1
+     if actual:
+         grupos.append("\n".join(actual))
++    if renglones is not None and grupos and indices[0] > 1 and chapeau != lineas[0] \
++            and len(chapeau) + 1 + len(grupos[0]) + 1 > OBJETIVO_CHARS_PARTE:
++        # regla 6 de S0: el chapeau entra solo, pero con el primer grupo pasa el objetivo (la parte 1 lleva los
++        # dos); su cuerpo va en partes propias y queda como chapeau su primer renglón
++        grupos = partir_por_renglones(lineas[1:indices[0]], renglones) + grupos
++        chapeau = lineas[0]
++    if len(grupos) < 2 and renglones is not None and len(lineas) > 1:
++        # regla 6 de S0: los ítems no alcanzan para partir; se parte por renglones
++        grupos = partir_por_renglones(lineas[1:], renglones)
++        if len(grupos) >= 2:
++            return {"chapeau": lineas[0], "grupos": grupos, "familia": "renglones", "n_items": 0}
+     if len(grupos) < 2:
+         return None  # partir en 1 no remedia nada: se declara, no se parte
+     return {"chapeau": chapeau, "grupos": grupos, "familia": familia,
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,6 +1,7 @@
+             "unidad": c["unidad"],
+             "titulo": f"{c['titulo']} (parte {k}/{n})",
+             "tipo": c["tipo"],
++            **({"rol_bloque": c["rol_bloque"]} if "rol_bloque" in c else {}),
+             "paginas": list(c["paginas"]),
+             "texto": texto,
+             "chars_propio": len(texto),
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,7 +1,8 @@
+     silencio)."""
+     info = {"id": c["id"], "chars_propio": c["chars_propio"],
+             "bloques_tabla": sum(1 for l in c["texto"].split("\n") if RE_INICIO_BLOQUE_TABLA.match(l))}
+-    part = _particionar_texto(c["texto"], respetar_tablas=True)
++    part = _particionar_texto(c["texto"], respetar_tablas=True,
++                              renglones=OBJETIVO_CHARS_PARTE if "r6" in REGLAS_S0_E0_R2 else None)
+     if part is None:
+         return None, {**info, "motivo": "sin_items_detectables"}
+     subs = _sub_chunks_de(c, part, TOPE_HERENCIA_E0_R2)
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,11 +1,13 @@
+     out: list[dict] = []
+     particiones: list[dict] = []
+     no_particionables: list[dict] = []
++    r6 = tope_herencia is not None and "r6" in REGLAS_S0_E0_R2
+     for c in chunks:
+-        if c.get("tipo") == "mini_chunk" or c["chars_propio"] <= umbral:
++        if (c.get("tipo") == "mini_chunk" and not r6) or c["chars_propio"] <= umbral:
++            # regla 6 (a) de S0: en e0-r2 un mini-chunk sobre el umbral ya no se saltea
+             out.append(c)
+             continue
+-        if c["id"] in no_partir:
++        if c["id"] in no_partir and not (r6 and PARTIR_TABLAS_R6):
+             # e0-r2 (U-R2-CODIGO): partir por ítems podría cortar un bloque de
+             # tabla serializada; la unidad se declara y no se parte
+             out.append(c)
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,17 +1,20 @@
+                 "id": c["id"], "chars_propio": c["chars_propio"],
+                 "motivo": "tabla_serializada"})
+             continue
+-        part = _particionar_texto(c["texto"])
++        part = (_particionar_texto(c["texto"], respetar_tablas=True, renglones=OBJETIVO_CHARS_PARTE) if r6
++                else _particionar_texto(c["texto"]))
+         if part is None:
+             out.append(c)
+             no_particionables.append({
+                 "id": c["id"], "chars_propio": c["chars_propio"],
+-                "motivo": "sin_items_detectables"})
++                "motivo": "sin_items_detectables",
++                **({"tipo": c["rol_bloque"]} if r6 and c.get("tipo") == "mini_chunk" else {})})
+             continue
+         subs = _sub_chunks_de(c, part, tope_herencia)
+         out.extend(subs)
+         particiones.append({
+             "id": c["id"], "chars_propio": c["chars_propio"],
++            **({"tipo": c["rol_bloque"]} if r6 and c.get("tipo") == "mini_chunk" else {}),
+             "familia_items": part["familia"], "n_items": part["n_items"],
+             "n_partes": len(subs),
+             "partes": [{"id": s["id"], "chars_propio": s["chars_propio"]}

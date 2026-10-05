@@ -1,0 +1,273 @@
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,6 +1,46 @@
+ RE_SECCION_B582_LETRA = re.compile(r"^Secci[oó]n\s+([A-Z]{1,6})\s*[.:\-–—]\s*(.*)$")
++
++
++# --------- U-SEG-OFICIAL, S0 (solo e0-r2; con los defaults ninguna rama nueva corre) ---------
++# Regla 1: sección escrita de otra forma. Además de «Sección N.» y «Sección N:», la línea de sección
++# de la zona de encabezado admite «Seccón N.» (opecam pp. 14 y 25), «Sección N – Título» (snp_dd
++# pp. 31-65, dmrd) y «Sección N Título» sin separador antes de un título en mayúscula (garopt pp. 6
++# y 7, inspag). 'S' mayúscula, como RE_SECCION: una remisión en prosa no abre sección.
++RE_SECCION_VARIANTE_R2 = re.compile(r"^Secci?[oó]n\s+(\d+)\s*(?:[.:]|[-–—]|(?=[A-ZÁÉÍÓÚÑ]))\s*(.*)$")
++# Regla 2: rótulos de punto que no lo son. (a) remisión envuelta: el resto del rótulo empieza en
++# minúscula con «y/a/al/hasta N.» o «de las normas / de la Sección / del presente…»
++# (rdbcra::2.3.1 «y 2.3.2. siguientes.», ri_tsa::1.1 «de las normas sobre…»); (b) un componente de
++# tres cifras o más es un número de ley o una cifra (ri_niif «21.526.»); (c) fila de una lista de
++# códigos: sin punto final, con hueco de columna, y al menos MIN_FILAS_CODIGO_R2 en la página
++# (los códigos de actividad «10.1 Producción…» de ri_dsf).
++RE_REMISION_ENVUELTA_R2 = re.compile(
++    r"^(?:(?:y|e|o|u|a|al|hasta)\s+(?:(?:los|el)\s+puntos?\s+)?\d+(?:\.\d+)*\.?(?=[\s,;:)]|$)"
++    r"|de\s+(?:las|los|la|el|este|esta|estas|estos)\s+(?:normas|presente|[Ss]ecci[oó]n|texto|[Aa]nexo|[Cc]ap[ií]tulo)\b"
++    r"|del\s+(?:presente|[Aa]nexo|[Cc]ap[ií]tulo|texto)\b)")
++MIN_FILAS_CODIGO_R2 = 3
++# Regla 4: marcador de letra y número (ri_spi): «APARTADO A: Título» abre la raíz A; «A.1.»,
++# «A.1.1.» son puntos de la raíz A. Solo en el modo sin raíz y solo si se pide.
++RE_APARTADO_R2 = re.compile(r"^APARTADO\s+([A-Z])\s*[:.\-–—]\s*(.+)$")
++RE_ROTULO_LETRA_R2 = re.compile(r"^([A-Z])\.(\d+(?:\.\d+)*)\.?$")
++
++
++def _match_seccion_r2(texto: str, variante: bool, abierta: str | None = None):
++    """RE_SECCION y, con `variante` (regla 1 de S0), RE_SECCION_VARIANTE_R2 con su guarda: la línea
++    variante abre o continúa una sección solo si no retrocede respecto de la sección abierta
++    (`abierta`) y, si no hay ninguna abierta, solo si es la 1 (la p. 5 de dmrd, una tabla resumen,
++    trae en su primer renglón la fila «Sección 9 – CCRA…»)."""
++    m = RE_SECCION.match(texto)
++    if m or not variante:
++        return m
++    m = RE_SECCION_VARIANTE_R2.match(texto)
++    if m is None:
++        return None
++    n = int(m.group(1))
++    if abierta is None or not abierta.isdigit():
++        return m if n == 1 else None
++    return m if n >= int(abierta) else None
+ 
+ 
+ def _match_seccion_b582(texto: str) -> tuple[str, str] | None:
+     """(numero VERBATIM, título) si la línea es un encabezado de sección en
+     alguna variante B5.8.2; None si no. Solo la consultan los caminos con
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,6 +1,9 @@
+                            mayusculas_repetidas: set | None = None,
+                            pie_desde_version: bool = False,
+                            cola_titulo_estricta: bool = False,
++                           seccion_variante: bool = False,
++                           cola_estricta_si_prosa: bool = False,
++                           seccion_abierta: str | None = None,
+                            ) -> tuple[list[Linea], list[Linea], str | None]:
+     """Devuelve (contenido, descartadas, seccion_corrida).
+ 
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,7 +1,12 @@
+                    mayusculas_repetidas: set | None = None,
+                    pie_desde_version: bool = False,
+                    cola_titulo_estricta: frozenset = frozenset(),
+-                   renumeraciones: dict | None = None) -> ResultadoParseo:
++                   renumeraciones: dict | None = None,
++                   seccion_variante: bool = False,
++                   rotulos_r2: bool = False,
++                   marcador_letra: bool = False,
++                   reabrir_padre: bool = False,
++                   cola_estricta_si_prosa: bool = False) -> ResultadoParseo:
+     """Con `modo_sin_raiz=False` (todos los call sites vigentes) el
+     comportamiento es el histórico. Con True rige además la gramática de
+     raíces sintéticas del modo sin raíz de sección (B5.8.1; ver docstring del
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,7 +1,13 @@
+     U-R2-CODIGO-2; ver el docstring del módulo): la primera es el conjunto
+     de páginas del TO donde `separar_encabezado_pie` aplica la cola de
+     título estricta; la segunda, la lista {(TO, página, número impreso):
+-    número} de encabezados de punto que se abren con el número corregido."""
++    número} de encabezados de punto que se abren con el número corregido.
++
++    U-SEG-OFICIAL, S0 (solo e0-r2; ver las constantes de la sección «U-SEG-OFICIAL, S0»):
++    `seccion_variante` (regla 1), `rotulos_r2` (regla 2), `marcador_letra` (regla 4, solo con
++    modo_sin_raiz) y `reabrir_padre` (punto 7: un rótulo con título en mayúscula cuyo padre se cerró
++    por un re-anclaje de prosa a un ancestro reabre ese padre, si es el último hijo de la cadena
++    abierta, y la prosa re-anclada después del padre vuelve a él o a su último hijo terminal)."""
+     secciones: list[Nodo] = []
+     rechazos: list[dict] = []
+     saltos: list[dict] = []
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,7 +1,14 @@
+             lineas, labels_preservables=banners if modo_sin_raiz else None,
+             seccion_b582=marcadores_b582, banners_texto=banners_texto,
+             mayusculas_repetidas=mayusculas_repetidas, pie_desde_version=pie_desde_version,
+-            cola_titulo_estricta=pi in cola_titulo_estricta)
++            cola_titulo_estricta=pi in cola_titulo_estricta, seccion_variante=seccion_variante,
++            cola_estricta_si_prosa=cola_estricta_si_prosa,
++            seccion_abierta=(next((x.numero for x in reversed(secciones) if x.numero.isdigit()
++                                   and not x.sintetica), None) if seccion_variante else None))
++        # regla 1 de S0: en una página cuya sección se leyó por la variante, el modo sin raíz no abre
++        # raíces sintéticas (los ítems «1.», «2.» de la sección no son raíces: dmrd p. 6)
++        pagina_con_variante = bool(seccion_variante and seccion_corrida is not None
++                                   and not RE_SECCION.match(seccion_corrida))
+         for d in descartadas:
+             acc_descartes.append({"pagina": d.pagina, "texto": d.texto})
+ 
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,13 +1,64 @@
+             if not m_num and tokens:
+                 m_num = RE_NUM_TOKEN_SIN_PUNTO.match(tokens[0])
++
++            if marcador_letra and modo_sin_raiz and tokens:
++                # ------- regla 4 de S0: marcador de letra y número (ri_spi) -------
++                ma = RE_APARTADO_R2.match(linea.texto.strip())
++                if ma:
++                    cerrar_hasta(None)
++                    raiz = Nodo(tipo="seccion", numero=ma.group(1), titulo=ma.group(2).strip(),
++                                pagina=linea.pagina, label_x0=linea.x0, linea_label=linea, sintetica=True)
++                    secciones.append(raiz)
++                    pila.append(raiz)
++                    ultima_fue_label = False
++                    continue
++                ml = RE_ROTULO_LETRA_R2.match(tokens[0])
++                resto_l = linea.texto[len(tokens[0]):].strip()
++                if ml and resto_l and pila and pila[0].numero == ml.group(1):
++                    num_l = f"{ml.group(1)}.{ml.group(2)}"
++                    partes_l = num_l.split(".")
++                    padre_l = (pila[0] if len(partes_l) == 2 else
++                               next((n for n in pila if n.tipo == "punto" and n.numero == ".".join(partes_l[:-1])),
++                                    None))
++                    hermanos_l = [h for h in padre_l.hijos if h.tipo == "punto"] if padre_l else []
++                    ultimo_l = int(hermanos_l[-1].numero.split(".")[-1]) if hermanos_l else 0
++                    if padre_l is None:
++                        rechazos.append({"pagina": linea.pagina, "x0": linea.x0, "texto": linea.texto[:120],
++                                         "motivo": f"padre_{'.'.join(partes_l[:-1])}_no_abierto"})
++                    elif int(partes_l[-1]) <= ultimo_l:
++                        rechazos.append({"pagina": linea.pagina, "x0": linea.x0, "texto": linea.texto[:120],
++                                         "motivo": f"no_sucede_al_hermano_{ultimo_l}"})
++                    else:
++                        padre_l.col_hijos = padre_l.col_hijos if padre_l.col_hijos is not None else linea.x0
++                        cerrar_hasta(padre_l)
++                        nodo = Nodo(tipo="punto", numero=num_l, titulo=resto_l, pagina=linea.pagina,
++                                    label_x0=linea.x0, linea_label=linea, padre=padre_l)
++                        padre_l.hijos.append(nodo)
++                        pila.append(nodo)
++                        ultima_fue_label = True
++                        continue
++
++            motivo_2 = None
++            if m_num and rotulos_r2:
++                # ------- regla 2 de S0: rótulos de punto que no lo son. Es un veto: actúa solo
++                # sobre un rótulo que la validación de siempre aceptaría (más abajo), y no deja
++                # abrir una raíz implícita; un renglón que ya se rechazaba conserva su motivo -------
++                resto_2 = linea.texto[len(tokens[0]):].strip()
++                if resto_2[:1].islower() and RE_REMISION_ENVUELTA_R2.match(resto_2):
++                    motivo_2 = "remision_envuelta_r2"
++                elif any(len(x) >= 3 for x in m_num.group(1).split(".")):
++                    motivo_2 = "numero_con_componente_de_tres_cifras_r2"
++                elif not tokens[0].endswith(".") and linea.ngaps >= 1 \
++                        and codigos_pagina >= MIN_FILAS_CODIGO_R2:
++                    motivo_2 = "fila_de_lista_de_codigos_r2"
+ 
+             if m_num and modo_sin_raiz:
+                 # ------- gramática de raíces sintéticas (B5.8.1; docstring) -------
+                 comp_r = _componentes(m_num.group(1))
+                 partes = linea.texto.split(None, 1)
+                 resto_r = partes[1] if len(partes) > 1 else ""
+                 titulo_may_r = bool(RE_TITULO_RAIZ.match(resto_r)) if resto_r else False
+-                if comp_r[0] <= MAX_RAIZ and resto_r and len(comp_r) == 1:
++                if comp_r[0] <= MAX_RAIZ and resto_r and len(comp_r) == 1 and not pagina_con_variante:
+                     # raíz EXPLÍCITA: guardas G0-G3
+                     motivo_raiz = None
+                     if _clave_banner(linea.texto.strip()) in banners:
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,6 +1,10 @@
+                                 else:
+                                     motivo = (f"resto_minuscula_y_columna_"
+                                               f"{linea.x0}_incompatible_{detalle}")
++                if motivo is None and motivo_2:
++                    motivo = motivo_2   # veto de la regla 2 de S0
++                if motivo is None and len(comp) > 1 and reapertura:
++                    reabrir(reapertura, num, linea)
+                 if motivo is None:
+                     padre.col_hijos = padre.col_hijos if padre.col_hijos is not None else linea.x0
+                     if comp[-1] != (ultimo + 1):
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,6 +1,25 @@
+ # la regla en toda página: en la partición de 152 TOs la regla general mueve
+ # ids (snp_cheq) y deja sin serializar una tabla (fabcra).
+ COLA_TITULO_ESTRICTA_E0_R2 = {"ric": frozenset({15, 30, 54, 59})}
++# U-SEG-OFICIAL, S0 (prototipo de S0-1, no aplicado al repo): reglas de E0 que cambian ids de la
++# partición, solo en e0-r2. r1 sección escrita de otra forma; r2 rótulos de punto que no lo son;
++# r3 continuación de índice solo con secciones con título; r4 marcador de letra y número (ri_spi);
++# r5 cola de título; r6 unidades grandes; r7 reapertura del padre cerrado por re-anclaje. En el
++# prototipo la variable de entorno S0_REGLAS elige cuáles corren (para medir cada una sola).
++import os  # noqa: E402
++REGLAS_S0_E0_R2 = frozenset(x for x in os.environ.get("S0_REGLAS", "r1,r2,r3,r4,r5,r6,r7,r1r7t").split(",") if x)
++MIN_APARTADOS_R4 = 2
++# regla 5 de S0 (recomendada): la lista de páginas de la cola de título estricta se amplía a las
++# páginas donde la regla general recupera texto corrido de la norma sin mover ids ni dañar una tabla
++# (medición de C2 de U-R2-CODIGO-2, `c2_e0.json`, `particion_152_cola_en_toda_pagina`, y de S0-1).
++# Quedan fuera fabcra (pp. 10, 11 y 13: celdas de su tabla002, que dejaría de serializarse) y las
++# pp. 89 a 93 de snp_cheq (encabezado de una tabla; mueve los ids de 7.1).
++COLA_TITULO_ESTRICTA_R5 = {"cirmo3": frozenset({19}), "cryl": frozenset({27}), "manori": frozenset({6}),
++                           "ri2_ci": frozenset({8, 9, 16, 24}), "snp_cheq": frozenset({80}),
++                           "snp_mep": frozenset({19})}
++# regla 6 (d): con True, la partición por tamaño parte también las unidades con tabla serializada,
++# respetando los bloques (como la partición por corte), en lugar de declararlas; mueve cap::4.2.1.2
++PARTIR_TABLAS_R6 = os.environ.get("S0_PARTIR_TABLAS", "0") == "1"
+ 
+ # familias de marcador de ítem, por precedencia de matcheo por línea
+ FAMILIAS_ITEM = [
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,13 +1,19 @@
+     (`mayusculas_repetidas` con los roles de esa etapa) y el pie desde la
+     línea «Versión». Devuelve (res, roles, repetidos, modo_lectura,
+     marcadores)."""
++    R = REGLAS_S0_E0_R2
++
+     def parsear(roles: list[str], **kw):
+         rep = E0.titulos_mayusculas_repetidos(paginas, roles)
+         # U-R2-CODIGO-2 (C2): cola de título estricta (punto l) y renumeración por lista (punto f)
+         return E0.parsear_cuerpo(to, archivo, paginas, roles, mayusculas_repetidas=rep,
+                                  pie_desde_version=True,
+-                                 cola_titulo_estricta=COLA_TITULO_ESTRICTA_E0_R2.get(to, frozenset()),
+-                                 renumeraciones=RENUMERACIONES_E0_R2, **kw), rep
++                                 cola_titulo_estricta=(COLA_TITULO_ESTRICTA_E0_R2.get(to, frozenset())
++                                                       | (COLA_TITULO_ESTRICTA_R5.get(to, frozenset())
++                                                          if "r5" in R else frozenset())),
++                                 renumeraciones=RENUMERACIONES_E0_R2,
++                                 seccion_variante="r1" in R, rotulos_r2="r2" in R,
++                                 reabrir_padre="r7" in R, cola_estricta_si_prosa="r5g" in R, **kw), rep
+ 
+     def con_chunks(res) -> bool:
+         r = copy.deepcopy(res)
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,12 +1,24 @@
+     res, rep = parsear(roles_v)
+     if con_chunks(res):
+         return res, roles_v, rep, "vigente", False
+-    roles_m = E0.clasificar_paginas(paginas, marcadores_b582=True)
++    roles_m = E0.clasificar_paginas(paginas, marcadores_b582=True, continuacion_con_titulo="r3" in R)
+     res_m, rep_m = parsear(roles_m, marcadores_b582=True)
+     if con_chunks(res_m):
+         return res_m, roles_m, rep_m, "marcadores", True
+     roles_s = E0.roles_para_modo_sin_raiz(paginas, roles_m)
+     res_s, rep_s = parsear(roles_s, modo_sin_raiz=True)
++    if "r4" in R:
++        # regla 4 de S0: si el modo sin raíz deja el TO en una sola unidad y el cuerpo tiene al menos
++        # MIN_APARTADOS_R4 líneas «APARTADO X: …», se lee con el marcador de letra y número (ri_spi)
++        apartados = sum(1 for ls, rol in zip(paginas, roles_s) if rol == E0.ROL_CUERPO
++                        for l in ls if E0.RE_APARTADO_R2.match(l.texto.strip()))
++        r = copy.deepcopy(res_s)
++        r.reasignaciones_continuidad = E0.aplicar_continuidad_enumeracion(r)
++        E0.corregir_fronteras_intra_palabra(r)
++        if apartados >= MIN_APARTADOS_R4 and len(E0.construir_chunks(r)) <= 1:
++            res_l, rep_l = parsear(roles_s, modo_sin_raiz=True, marcador_letra=True)
++            res_l.avisos.append({"tipo": "marcador_letra_r2", "apartados": apartados})
++            return res_l, roles_s, rep_l, "sin_raiz_letra", roles_m != roles_v
+     return res_s, roles_s, rep_s, "sin_raiz", roles_m != roles_v
+ 
+ 

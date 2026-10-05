@@ -1,0 +1,42 @@
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,7 +1,8 @@
+ 
+ 
+ def clasificar_paginas(paginas: list[list[Linea]],
+-                       marcadores_b582: bool = False) -> list[str]:
++                       marcadores_b582: bool = False,
++                       continuacion_con_titulo: bool = False) -> list[str]:
+     """portada = antes de la primera página de índice; índice = marcador
+     '-Índice-' (variantes con espacio/guion largo), 'Índice' a línea entera
+     sin guiones (con la guarda de RE_MARCA_INDICE_SIN_GUIONES: mayúscula
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,7 +1,14 @@
+     en_historial = False
+     for lineas in paginas:
+         textos = [l.texto.strip() for l in lineas]
+-        n_secc = sum(1 for t in textos if RE_SECCION.match(t))
++        if continuacion_con_titulo:
++            # regla 3 de S0 (e0-r2): para la continuación de índice cuentan solo las líneas de
++            # sección con título; «Sección 8.» sola o «Sección 4. de las normas…» son remisiones
++            # en prosa de una página de cuerpo (snp_mep p. 3, venliq p. 3, fimipyme p. 4)
++            n_secc = sum(1 for t in textos if (m := RE_SECCION.match(t))
++                         and RE_TITULO_RAIZ.match(m.group(2).strip()))
++        else:
++            n_secc = sum(1 for t in textos if RE_SECCION.match(t))
+         if any(MARCA_TABLA_ORIGEN in t.upper() for t in textos):
+             rol = ROL_TABLA
+             en_historial = False
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,7 +1,8 @@
+     for archivo, to in items:
+         pdf = pdfs[to]
+         paginas = E0.extraer_lineas(pdf)
+-        roles = E0.clasificar_paginas(paginas)
++        roles = (E0.clasificar_paginas(paginas, continuacion_con_titulo="r3" in REGLAS_S0_E0_R2) if r2
++                 else E0.clasificar_paginas(paginas))
+         if r2:
+             # K (U-R2-CODIGO): en la rama de mayúsculas del encabezado de página
+             # se descarta solo lo que se repite en al menos 2 páginas de cuerpo;

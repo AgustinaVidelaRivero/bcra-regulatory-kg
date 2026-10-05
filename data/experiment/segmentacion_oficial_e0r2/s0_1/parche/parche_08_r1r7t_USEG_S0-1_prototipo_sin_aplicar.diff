@@ -1,0 +1,59 @@
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,6 +1,39 @@
+             or E0._flags_tabla_formula(fuera)["contenido_tabular"])
++
++
++def fundir_tabla_en_intersticiales(res: E0.ResultadoParseo, tablas_to: dict, chunks0: list[dict]) -> list[dict]:
++    """Acompañamiento de las reglas 1 y 7 de S0 (e0-r2): una tabla marcada cuyas líneas caen en dos
++    o más intersticiales de un mismo nodo y de un mismo hueco entre hijos (sus celdas en la columna
++    de texto del ancestro se re-anclan renglón a renglón) se lleva a un solo segmento: se funden los
++    segmentos del nodo desde el primero hasta el último con líneas de la tabla. La tabla queda en un
++    solo chunk y puede serializarse. Devuelve las fusiones hechas."""
++    fusiones = []
++    for t in tablas_to["tablas"]:
++        if not t["marca"] or len(t["chunks"]) < 2 or not all("::intersticial" in c for c in t["chunks"]):
++            continue
++        nodo_seg: dict[int, tuple] = {}     # se recalcula: una fusión anterior cambia los segmentos
++        for l, cont in E0._recolectar_orden_documental(res):
++            if cont[0] == "seg":
++                nodo_seg[id(l)] = (cont[1], cont[2])
++        pares = [nodo_seg.get(id(l)) for s in t["segmentos"] for l in s["_lineas"]]
++        if any(p is None for p in pares) or len({id(p[0]) for p in pares}) != 1:
++            continue
++        nodo = pares[0][0]
++        idx = sorted({next(i for i, sg in enumerate(nodo.segmentos) if sg is p[1]) for p in pares})
++        i0, i1 = idx[0], idx[-1]
++        if i0 == i1:
++            continue
++        marcas = [(h.pagina, h.linea_label.top if h.linea_label else 0.0) for h in nodo.hijos]
++        pos = [(sg[0].pagina, sg[0].top) for sg in nodo.segmentos[i0:i1 + 1]]
++        hueco = {sum(1 for m in marcas if m < p) for p in pos}
++        if len(hueco) != 1 or min(pos) < marcas[0] or max(pos) > marcas[-1]:
++            continue     # cruza un hijo, o es intro o cierre: no se toca
++        fundido = [l for sg in nodo.segmentos[i0:i1 + 1] for l in sg]
++        nodo.segmentos[i0:i1 + 1] = [fundido]
++        fusiones.append({"tabla": t["id"], "nodo": nodo.numero, "segmentos_fundidos": i1 - i0 + 1})
++    return fusiones
+ 
+ 
+ def procesar_tablas_r2(res: E0.ResultadoParseo, pdf_path: Path, to: str,
+                        roles: list[str]) -> tuple[list[dict], dict, frozenset]:
+     """Camino e0-r2 completo de un TO: detección, asignación, serialización y
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -1,6 +1,14 @@
+     chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0)
+     E0.desambiguar_ids(chunks0)
+     asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
++    if "r1r7t" in REGLAS_S0_E0_R2:
++        fusiones = fundir_tabla_en_intersticiales(res, tablas_to, chunks0)
++        if fusiones:
++            res.avisos.append({"tipo": "tabla_fundida_en_un_intersticial_r2", "fusiones": fusiones})
++            lineas0 = []
++            chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0)
++            E0.desambiguar_ids(chunks0)
++            asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
+     sustituciones, omitidas = preparar_serializacion(res, lineas0, tablas_to, pdf_path)
+     lineas: list = []
+     chunks = E0.construir_chunks(res, texto_lineas=texto_con_tablas(sustituciones, omitidas),

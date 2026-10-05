@@ -1,0 +1,33 @@
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,6 +1,19 @@
+     descartadas: list[Linea] = []
+     contenido = list(lineas)
+     seccion_corrida: str | None = None
++    # regla 5 de S0 (`cola_estricta_si_prosa`, e0-r2): la cola de título estricta rige en toda página
++    # si el primer renglón candidato a cola es prosa (sin huecos de columna); si tiene huecos (el
++    # encabezado de una tabla: fabcra pp. 10 y 11, snp_cheq pp. 89 a 93) sigue la regla histórica
++    estado_cola: dict = {"prosa": None}
++
++    def _estricta(l: Linea) -> bool:
++        if cola_titulo_estricta:
++            return True
++        if not cola_estricta_si_prosa:
++            return False
++        if estado_cola["prosa"] is None:
++            estado_cola["prosa"] = l.ngaps == 0
++        return estado_cola["prosa"]
+ 
+     # pie (desde el final)
+     if pie_desde_version:
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,7 +1,7 @@
+         elif seccion_corrida is not None and ultima_top_seccion is not None \
+                 and contenido[0].top - ultima_top_seccion <= GAP_TOP_TITULO \
+                 and not RE_NUM_TOKEN.match(t.split()[0] if t.split() else "") \
+-                and (not cola_titulo_estricta or continua_titulo(seccion_corrida, t)):
++                and (not _estricta(contenido[0]) or continua_titulo(seccion_corrida, t)):
+             # cola envuelta del título de sección ('dos.', '(SECOEXPO).'):
+             # renglón inmediato (interlineado de encabezado, no de contenido).
+             # Una línea que arranca con numeración NUNCA es cola de título:

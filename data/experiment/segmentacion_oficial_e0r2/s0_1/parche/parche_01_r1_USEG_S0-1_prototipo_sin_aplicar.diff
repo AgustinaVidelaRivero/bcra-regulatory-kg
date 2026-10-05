@@ -1,0 +1,28 @@
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,11 +1,12 @@
+                     and not _es_titulo_mayusculas(ti):
+                 prosa_numerada = True
+             if ("B.C.R.A." in ti and not prosa_numerada) or (capturar_seccion and (
+-                    RE_SECCION.match(ti) or (seccion_b582 and _match_seccion_b582(ti)))):
++                    _match_seccion_r2(ti, seccion_variante, seccion_abierta)
++                    or (seccion_b582 and _match_seccion_b582(ti)))):
+                 forzadas = i + 1
+     while contenido and quitadas < 5:
+         t = contenido[0].texto.strip()
+-        m = RE_SECCION.match(t)
++        m = _match_seccion_r2(t, seccion_variante, seccion_abierta)
+         m_en_linea = RE_SECCION_EN_LINEA.search(t) if "B.C.R.A." in t else None
+         m_b582 = (_match_seccion_b582(t)
+                   if seccion_b582 and capturar_seccion and seccion_corrida is None
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -1,7 +1,7 @@
+             # las líneas siguen el flujo del punto abierto (página de continuación
+             # con encabezado anómalo); no se tiran.
+         else:
+-            m = RE_SECCION.match(seccion_corrida)
++            m = _match_seccion_r2(seccion_corrida, seccion_variante, "0")
+             if m:
+                 num_sec, titulo_sec = m.group(1), m.group(2).strip()
+             else:
