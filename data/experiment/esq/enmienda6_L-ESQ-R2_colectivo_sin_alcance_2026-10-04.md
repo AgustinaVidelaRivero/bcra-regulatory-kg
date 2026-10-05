@@ -15,7 +15,9 @@ Tiene dos partes. La parte A, para los documentos sin alcance, rige desde la fir
 documentos con alcance, es condicionada: rige solo si su lectura llega al piso.
 
 Versiones del borrador: la primera, con la regla del colectivo, quedó en `28ec100`; la segunda, con la
-relación sin mención, en `1f8d624`. Esta suma la parte B (decisión de la autora del 04/10/2026).
+relación sin mención, en `1f8d624`; la tercera, con la parte B, en `97c21e4`. Esta dice quién hace la lectura
+de la parte B y qué pasa si su población tiene menos de 30 relaciones (decisiones de la autora del
+04/10/2026).
 
 ---
 
@@ -178,13 +180,18 @@ que la de R3.
 
 ## B.2 La condición: una lectura posterior a U-REEXT-T0 (PENDIENTE)
 
-- **Población.** Las relaciones que esta parte crearía sobre KG-Tanda0-Diez-r2b.
-- **Muestra.** 30, sorteadas con una semilla declarada antes de leer.
+- **Población.** Las relaciones que esta parte crearía sobre KG-Tanda0-Diez-r2b. La arma R2-1 de U-RERESOL-CAT
+  por simulación, sin implementar la parte B.
+- **Muestra.** 30, que R2-1 sortea con una semilla declarada antes de leer. Si la población tiene menos de 30
+  relaciones, se leen todas.
 - **Qué se lee.** Cada una contra el texto de su unidad y su texto heredado. Es correcta si el rol de alcance
   del documento es a quien se aplica esa norma.
-- **Piso.** El límite inferior del intervalo de Wilson al 95 %, en 0,75 o más. Con 30 leídas son 28 correctas
-  (0,787); con 27 no llega (0,744).
-- **Quién.** Lectura asistida, declarada, con revisión de la autora.
+- **Piso.** El límite inferior del intervalo de Wilson al 95 %, en 0,75 o más.
+  - Con 30 leídas son 28 correctas (0,787); con 27 no llega (0,744).
+  - Con menos de 30, la misma regla sobre las leídas: de 25 a 29 admite dos incorrectas; de 19 a 24, una; de
+    12 a 18, ninguna.
+  - Con menos de 12 no puede llegar ni con todas correctas (con 11 da 0,741): la parte B no rige.
+- **Quién.** La lectura la hace R2-1, asistida y declarada, con revisión de la autora.
 
 | Qué se mide | Valor |
 |---|---|
@@ -193,7 +200,7 @@ que la de R3.
 | De esas, con una sugerencia distinta del rol de alcance | PENDIENTE |
 | Correctas en la muestra de 30 | PENDIENTE |
 
-Si no llega a 28 de 30, la parte B no rige y la parte A no cambia.
+Si no llega al piso, la parte B no rige y la parte A no cambia.
 
 ## B.3 Efectos declarados
 
@@ -217,7 +224,8 @@ Si no llega a 28 de 30, la parte B no rige y la parte A no cambia.
   `establecida_en` derivada (`data/experiment/pyd_r2/code/modelos_r2.py:190` y `:632`), y su método en
   `metodo_resolucion`.
 - La vista del agente y la exportación a Neo4j: U-NAV-DISENO.
-- La unidad que la implementa se define con la firma.
+- La implementa R2-2 de U-RERESOL-CAT, con esta enmienda firmada y solo si la lectura llegó al piso. Dónde va
+  y qué archivos toca lo propone R2-1, y la autora lo aprueba en su «seguí».
 
 ---
 
