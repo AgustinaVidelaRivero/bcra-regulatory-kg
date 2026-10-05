@@ -461,6 +461,27 @@ ERROR_PARTICIONADA = "particionada_por_corte"
 # reintentos_forma del resumen de E1). Sin reparación determinística.
 MOTIVOS_FORMA_E1 = ("salida_no_parseable", "salida_no_dict", "entities_o_relations_invalidos")
 ERROR_FORMA_TRAS_REINTENTO = "salida_mal_formada_tras_reintento"
+# U-PROMPT-R2, P3c-2 (decisión 6 de la autora sobre el FRENO P3c-1; solo con el perfil r2): tercer escalón del
+# reintento por corte (cliente_e1.crear_con_reintento_corte, con techo cliente_e1.MAX_TOKENS_ESCALON_3_R2, por
+# transmisión). Se dispara solo si el reintento corta y la unidad no se puede partir, o si la unidad es una parte. La
+# unidad lleva la marca `escalon_3` en su registro de E1 y va al resumen de E1; U-REEXT-T0 las lee todas.
+ERROR_TRAS_ESCALON_3 = "max_tokens_hit_tras_escalon_3"
+
+
+def corresponde_escalon_3(c: dict) -> bool:
+    """Tercer escalón: la unidad es una parte, o particionar_por_corte no la parte."""
+    if "sub_chunk" in c:
+        return True
+    import correr_e0    # noqa: PLC0415 — e0_chunking, solo con el perfil r2
+    return correr_e0.particionar_por_corte(c)[0] is None
+
+
+def techo_reintento_ratchet(reg_e1: dict | None) -> int:
+    """El techo del reintento del ratchet de E3 de una unidad: el de siempre o, si su E1 usó el tercer escalón (solo
+    con el perfil r2), el del escalón, por el mismo cliente con transmisión."""
+    if PERFIL_R2 and (reg_e1 or {}).get("escalon_3"):
+        return cliente_e1.MAX_TOKENS_ESCALON_3_R2
+    return MAX_TOKENS_REINTENTO
 
 
 def motivo_forma_e1(val: dict | None) -> str | None:
@@ -561,10 +582,21 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
         # U-B5.3 decisión 1: ante corte por max_tokens, UNA re-llamada en el
         # mismo pase con 32k (16k en el perfil r2, R4.b). El camino sin corte
         # pasa kwargs tal cual.
-        par, err = llamar_con_reintentos_api(
-            lambda: cliente_e1.crear_con_reintento_corte(
-                cliente, kwargs, doc=c["archivo"], max_tokens_reintento=techo_corte), c["id"])
-        resp, cortado = par if par is not None else (None, None)
+        escalon3 = False
+        if PERFIL_R2:
+            # P3c-2: con el perfil r2, el tercer escalón (los intentos cortados vuelven en orden)
+            par, err = llamar_con_reintentos_api(
+                lambda: cliente_e1.crear_con_reintento_corte(
+                    cliente, kwargs, doc=c["archivo"], max_tokens_reintento=techo_corte,
+                    escalon_3=lambda: corresponde_escalon_3(c)), c["id"])
+            resp, cortados = par if par is not None else (None, ())
+            cortado = cortados[0] if cortados else None
+            escalon3 = len(cortados) == 2
+        else:
+            par, err = llamar_con_reintentos_api(
+                lambda: cliente_e1.crear_con_reintento_corte(
+                    cliente, kwargs, doc=c["archivo"], max_tokens_reintento=techo_corte), c["id"])
+            resp, cortado = par if par is not None else (None, None)
         if resp is not None:
             usage = _usage_e1(resp)
             stop = getattr(resp, "stop_reason", None)
@@ -573,7 +605,7 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
             if stop == "max_tokens":
                 # el reintento también cortó: error DEFINITIVO contabilizado
                 # (decisión 5) — nunca queda como reintentable pendiente.
-                err = "max_tokens_hit_tras_reintento"
+                err = ERROR_TRAS_ESCALON_3 if escalon3 else "max_tokens_hit_tras_reintento"
             elif tool_input is None:
                 err = f"no_tool_use stop_reason={stop}"
         else:
@@ -586,7 +618,8 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
         reintento_forma = None
         if PERFIL_R2 and err is None and motivo_forma_e1(val) is not None:
             # punto b: el request que produjo la salida mal formada (con el techo de corte si lo hubo), tal cual
-            kwargs_forma = dict(kwargs, max_tokens=techo_corte) if cortado is not None else kwargs
+            kwargs_forma = (dict(kwargs, max_tokens=cliente_e1.MAX_TOKENS_ESCALON_3_R2) if escalon3
+                            else dict(kwargs, max_tokens=techo_corte) if cortado is not None else kwargs)
             reintento_forma = {"namespace": cliente_e1.namespace_e1(
                                    prefijo_hash=PERFIL.prefijo_hash_para_namespace,
                                    sufijo=cliente_e1.SUFIJO_REINTENTO_FORMA),
@@ -616,6 +649,10 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
             reg["reintento_corte"] = {
                 "max_tokens_reintento": techo_corte,
                 "intento_1": cliente_e1.resumen_intento(cortado)}
+        if escalon3:
+            # P3c-2: el tercer escalón, con el intento cortado del reintento; la marca la lee U-REEXT-T0 (T4)
+            reg["escalon_3"] = {"max_tokens": cliente_e1.MAX_TOKENS_ESCALON_3_R2,
+                                "intento_2": cliente_e1.resumen_intento(cortados[1])}
         partes = None
         if PERFIL_R2 and err == "max_tokens_hit_tras_reintento" and "sub_chunk" not in c:
             # R4.b: la unidad se parte (sin cortar bloques de tabla) y las
@@ -639,6 +676,7 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
             print(f"[{key} {procesadas}/{len(chunks)}] {c['id']:<28s} "
                   f"gasto_fase=USD {gasto_previo + cliente.gasto_usd:.4f}"
                   + (" REINTENTO_CORTE" if cortado is not None else "")
+                  + (" ESCALON_3" if escalon3 else "")
                   + (" REINTENTO_FORMA" if reintento_forma is not None else "")
                   + (f" ERROR {err}" if err else ""), flush=True)
         if checkpoint_cada and procesadas % checkpoint_cada == 0:
@@ -688,6 +726,11 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
         resumen["reintentos_forma"] = {
             "unidades": con_forma,
             "agotados": sorted(cid for cid in con_forma if finales_e1[cid].get("error") == ERROR_FORMA_TRAS_REINTENTO)}
+    con_escalon3 = sorted(cid for cid, r in finales_e1.items() if r.get("escalon_3")) if PERFIL_R2 else []
+    if con_escalon3:
+        resumen["escalon_3"] = {
+            "max_tokens": cliente_e1.MAX_TOKENS_ESCALON_3_R2, "unidades": con_escalon3,
+            "cortan_tambien": sorted(cid for cid in con_escalon3 if finales_e1[cid].get("error") == ERROR_TRAS_ESCALON_3)}
     particionadas = partes_por_corte(tdir) if PERFIL_R2 else {}
     if particionadas:
         resumen["particionadas_por_corte"] = {k: [x["id"] for x in v["partes"]]
@@ -755,7 +798,7 @@ def fase_e3(to: str, cli_e3, cli_e1r, estado: Estado, salida: Path,
             lambda: ratchet_e3.ciclo_ratchet(
                 c, val, cliente_verificador=cli_e3, cliente_extractor=cli_e1r,
                 model_e3=MODEL_E3, model_e1=MODEL_E1, registro=registro,
-                max_tokens_reintento=MAX_TOKENS_REINTENTO,
+                max_tokens_reintento=techo_reintento_ratchet(regs.get(c["id"])),
                 unidades_corpus=unidades_corpus, perfil=PERFIL),
             c["id"])
         if exp is None:
@@ -939,7 +982,7 @@ def claves_reintentos_cache(tdir: Path, chunks: list[dict], perfil, solo: set | 
                                           (regs_e1.get(cid) or {}).get("validacion"))
         kw = ratchet_e3.build_reextraccion_kwargs(
             por_id[cid], ev["bloqueantes_utilizables"], model=MODEL_E1, intento=1,
-            max_tokens_reintento=MAX_TOKENS_REINTENTO,
+            max_tokens_reintento=techo_reintento_ratchet(regs_e1.get(cid)),
             perfil=None if perfil.nombre == "produccion_dev" else perfil)
         out.append({"chunk_id": cid, "intento": 1, "namespace": ns,
                     "clave": cliente_e1.lc.compute_key(ns, cliente_e1.lc.canonical_request(kw))})
@@ -1252,7 +1295,8 @@ def main() -> int:
                     cli = cliente_e1.ClienteE1Real(
                         **P_E1, tope_usd=round(restante, 4),
                         run_label=f"corpus_{to}_e1", guardian=guardian,
-                        prefijo_hash=PERFIL.prefijo_hash_para_namespace)
+                        prefijo_hash=PERFIL.prefijo_hash_para_namespace,
+                        transmision=PERFIL_R2)
                 try:
                     fase_e1(to, cli, estado, args.salida, args.limite,
                             args.abortar_tras, ck)
@@ -1273,7 +1317,8 @@ def main() -> int:
                         **P_E1, tope_usd=round(restante, 4),
                         run_label=f"corpus_{to}_reintentos_e1",
                         db_path=DB_REINTENTOS_E1, guardian=guardian,
-                        prefijo_hash=PERFIL.prefijo_hash_para_namespace)
+                        prefijo_hash=PERFIL.prefijo_hash_para_namespace,
+                        transmision=PERFIL_R2)
                 try:
                     fase_e3(to, c3, c1, estado, args.salida, args.limite,
                             args.abortar_tras, ck)

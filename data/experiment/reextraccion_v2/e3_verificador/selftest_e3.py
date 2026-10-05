@@ -27,6 +27,9 @@ Verifica:
      con menos elementos marcado (k4), aviso de la nota en el reintento y marca de la copia de la nota (defensas 1
      y 2), el `todo` r2 de la cola humana y la NOTA de las omisiones declaradas (i); con los perfiles existentes,
      todo igual.
+  M. U-PROMPT-R2, P3c-2: las NOTAS de los puntos a y b son las del borrador aprobado, y el candado del mensaje de E3
+     (F23) compara el de su fixture y frena ante un espacio más en cualquiera de las dos NOTAS; el prefijo de E3 y su
+     candado no cambian.
 
 Uso:  python3 selftest_e3.py
 """
@@ -672,6 +675,43 @@ def main() -> int:
           and prompt_e3.NOTA_E3_OMISIONES not in prompt_e3.build_user_message(mini27, val_r2_norma))
     check("L: E3 congelado — el prefijo sigue intacto con P3b",
           prompt_e3.PREFIJO_HASH == resumen_sellado["prefijo_hash_e3"])
+
+    # ---------------- M. U-PROMPT-R2, P3c-2 -------------------------------- #
+    print("\n[M] P3c-2: NOTAS de los puntos a y b, y candado del mensaje (F23)")
+    from pathlib import Path as _P
+    repo = _P(prompt_e3.__file__).resolve().parents[4]
+    sys.path.insert(0, str(repo / "data" / "experiment" / "prompt_r2" / "p3c"))
+    import mensaje_p3c_borrador as MP3C  # noqa: PLC0415 — el borrador aprobado en el FRENO P3c-1
+    check("M a: la NOTA de las omisiones es la del borrador aprobado (sin el alcance; lista completa)",
+          prompt_e3.NOTA_E3_OMISIONES == MP3C.NOTA_OMISIONES_NUEVA
+          and "el alcance" not in prompt_e3.NOTA_E3_OMISIONES)
+    check("M b: la NOTA del encabezado de lista termina con la oración del borrador aprobado",
+          prompt_e3.NOTA_E3_ENCABEZADO_LISTA.endswith(MP3C.ENCABEZADO_NUEVO))
+    fix = json.loads(prompt_e3.CANDADO_MENSAJE_E3_JSON.read_text(encoding="utf-8"))
+    sint = [c for c in fix["casos"] if "sintetico" in c]
+    check("M: la fixture tiene 6 unidades con y sin la marca r2 y un caso sintético (la NOTA de las omisiones)",
+          len(fix["casos"]) == 13 and len(sint) == 1
+          and prompt_e3.NOTA_E3_OMISIONES in prompt_e3.build_user_message(sint[0]["chunk"], sint[0]["validacion"]))
+    check("M: el sha256 de los mensajes de la fixture es el sellado",
+          prompt_e3.sha256_mensajes_e3(fix["casos"]) == prompt_e3.MENSAJE_E3_SHA256_ESPERADO)
+    frena_e3 = []
+    for nombre in ("NOTA_E3_OMISIONES", "NOTA_E3_ENCABEZADO_LISTA"):
+        orig = getattr(prompt_e3, nombre)
+        try:
+            setattr(prompt_e3, nombre, orig + " ")
+            try:
+                prompt_e3._candado_mensaje_e3()
+                frena_e3.append(False)
+            except RuntimeError:
+                frena_e3.append(True)
+        finally:
+            setattr(prompt_e3, nombre, orig)
+    prompt_e3._candado_mensaje_e3()
+    check("M: un espacio más en cualquiera de las dos NOTAS hace frenar el candado; restaurado, pasa",
+          all(frena_e3), str(frena_e3))
+    check("M: el prefijo de E3 y su candado no cambian (21a836c7de6d); importar prompt_e3 importa prompt_r2b "
+          "(acoplamiento de la opción i)",
+          prompt_e3.PREFIJO_HASH == prompt_e3.PREFIJO_HASH_SELLADO == "21a836c7de6d" and "prompt_r2b" in sys.modules)
 
     # ---------------- H. Estimación reproducible ---------------------------- #
     print("\n[H] estimación reproducible")

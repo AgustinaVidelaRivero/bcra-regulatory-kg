@@ -73,11 +73,12 @@ PREFIJO_SHA256_V3_ESPERADO = (
 PREFIJO_HASH_V3_ESPERADO = "54a111e2175f"
 
 # Candado del prefijo r2b (U-PROMPT-R2: congelado en P2 tras el FRENO P1 del 03/10/2026, 14d6b63b508e;
-# re-congelado en P3b-2 con el parche aprobado en el FRENO P3b-1, 04/10/2026).
+# re-congelado en P3b-2 con el parche aprobado en el FRENO P3b-1, 04/10/2026, 3817de475c93; re-congelado en P3c-2
+# con el parche aprobado en el FRENO P3c-1, 04/10/2026).
 PREFIJO_SHA256_R2B_ESPERADO = (
-    "8d84364fc3b6f6b586ff09e11833a2328408ae6f93b081c8ae64a059ea839c8b"
+    "ccffa4e36ba26a4b63b5760a7657d4bb5f5357ccd2392fe2b67584e4c2efb775"
 )
-PREFIJO_HASH_R2B_ESPERADO = "3817de475c93"
+PREFIJO_HASH_R2B_ESPERADO = "322c5a23e9b7"
 _PYD_R2_CODE = _REPO / "data" / "experiment" / "pyd_r2" / "code"
 
 

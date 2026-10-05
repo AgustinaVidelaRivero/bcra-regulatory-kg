@@ -28,6 +28,14 @@ Lista de tablas forzadas a residual (diseño §4.2, regla 4): tablas_residuales_
 lado de este módulo, con la tabla, el motivo y la fecha de cada alta. Pasar una tabla a residual cambia el
 mensaje de las unidades que la traen, no el prefijo.
 
+P3c (FRENO P3c-1 aprobado, 438bbd5; decisiones 6633dc7 y 1873962): sobre el prefijo de P3b-2 (3817de475c93) se
+aplica el parche congelado en prompt_r2b_parche_p3c.json (puntos a a e: la regla 9 de la enmienda 7 a L-ESQ-R2, las
+listas que exceptúan, una Condicion por supuesto, la norma del encabezado que no se repite en el ítem y la mención
+que el texto no trae). El mensaje cambia la línea «Alcance de este TO» (punto e). Candados nuevos, que solo
+comparan (no entran al pedido ni cambian ninguna clave): la lista de tablas forzadas se lee con su sha256 (F04b) y,
+al final del módulo, el sha256 del mensaje de un conjunto fijo de unidades (candado_mensaje_r2b.json) controla las
+líneas fijas y condicionales del mensaje (F22 y F22b).
+
 Caching (docs/decisiones_caching_extraccion.md): system como bloque único con cache_control en el último bloque
 (decisión 1); el namespace de E1 se deriva del hash canónico con cliente_e1.namespace_e1.
 """
@@ -53,6 +61,8 @@ from comun_e1 import es_mini_chunk, puntos_admitidos  # noqa: E402
 
 REEMPLAZOS_JSON = _BASE / "prompt_r2b_reemplazos.json"
 PARCHE_P3B_JSON = _BASE / "prompt_r2b_parche_p3b.json"
+PARCHE_P3C_JSON = _BASE / "prompt_r2b_parche_p3c.json"
+CANDADO_MENSAJE_JSON = _BASE / "candado_mensaje_r2b.json"
 TABLAS_FORZADAS_JSON = _BASE / "tablas_residuales_forzadas_r2b.json"
 BLOQUE_CATALOGO_R2 = _CAT_R2 / "bloque_catalogo_r2.txt"
 ROL_POR_TO_R2_JSON = _CAT_R2 / "rol_por_to_r2.json"
@@ -71,8 +81,16 @@ PREFIJO_SHA256_R2B_P2 = "cdb374508523e7f2308b1e3dd9790cdcfbb4000f2f1616279504af9
 PREFIJO_HASH_R2B_P2 = "14d6b63b508e"
 # Re-congelado en P3b-2 (04/10/2026), con el parche aprobado en el FRENO P3b-1.
 PARCHE_P3B_SHA256_ESPERADO = "8679ea124f1f2adf58d3c65c03861751b905224ae1784b83338e425c0aa1752b"
-PREFIJO_SHA256_R2B_ESPERADO = "8d84364fc3b6f6b586ff09e11833a2328408ae6f93b081c8ae64a059ea839c8b"
-PREFIJO_HASH_R2B_ESPERADO = "3817de475c93"
+PREFIJO_SHA256_R2B_P3B = "8d84364fc3b6f6b586ff09e11833a2328408ae6f93b081c8ae64a059ea839c8b"
+PREFIJO_HASH_R2B_P3B = "3817de475c93"
+# Re-congelado en P3c-2 (04/10/2026), con el parche aprobado en el FRENO P3c-1.
+PARCHE_P3C_SHA256_ESPERADO = "5e3761c16d13a83d2071cb05494aea04a2c862259d39c7333e40db490f11c678"
+PREFIJO_SHA256_R2B_ESPERADO = "ccffa4e36ba26a4b63b5760a7657d4bb5f5357ccd2392fe2b67584e4c2efb775"
+PREFIJO_HASH_R2B_ESPERADO = "322c5a23e9b7"
+# Candados de P3c-2 (U-TABLA-REPROC, filas F04b, F22, F22b y F23): sellados después del ajuste del texto.
+TABLAS_FORZADAS_SHA256_ESPERADO = "98cc96b2fec4cd7febb1fba71df8490ea420c0c0419711a122daaf4f12c2bc67"
+CANDADO_MENSAJE_JSON_SHA256_ESPERADO = "4d69f7f4c8a542bf09d25c1bcc4343a06a70226240eb595e3d4285a516e0fa6d"
+MENSAJE_R2B_SHA256_ESPERADO = "a9cb702c0d243582d27345b78d2595b44e6cf0f4d9a2560fdd262aaa92955a56"
 
 ANCLA_INICIO_BLOQUE = "## Sujetos regulados"
 ANCLA_FIN_BLOQUE = "\n# PROVENANCE OBLIGATORIA POR ELEMENTO"
@@ -98,7 +116,7 @@ def _aplicar(t: str, reemplazos: list[dict]) -> str:
     return t
 
 
-def _armar_prefijo() -> tuple[str, list[dict], str, list[dict]]:
+def _armar_prefijo() -> tuple[str, list[dict], str, list[dict], str, list[dict]]:
     if v3.PREFIJO_SHA256_V3 != PREFIJO_SHA256_V3_ESPERADO:
         raise RuntimeError("candado r2b: el prefijo sellado v3_b54 no es el de U-B5.4 — se frena")
     doc = json.loads(_leer_con_candado(REEMPLAZOS_JSON, REEMPLAZOS_SHA256_ESPERADO))
@@ -116,10 +134,18 @@ def _armar_prefijo() -> tuple[str, list[dict], str, list[dict]]:
     parche = json.loads(_leer_con_candado(PARCHE_P3B_JSON, PARCHE_P3B_SHA256_ESPERADO))
     if parche.get("base_hash_canonico") != PREFIJO_HASH_R2B_P2:
         raise RuntimeError("candado r2b: el parche de P3b no declara la base de P2 — se frena")
-    return _aplicar(t_p2, parche["reemplazos"]), doc["reemplazos"], t_p2, parche["reemplazos"]
+    t_p3b = _aplicar(t_p2, parche["reemplazos"])
+    if hashlib.sha256(t_p3b.encode("utf-8")).hexdigest() != PREFIJO_SHA256_R2B_P3B:
+        raise RuntimeError("candado r2b: el prefijo de P3b-2, base del parche de P3c, no es el congelado — se frena")
+    parche_c = json.loads(_leer_con_candado(PARCHE_P3C_JSON, PARCHE_P3C_SHA256_ESPERADO))
+    if parche_c.get("base_hash_canonico") != PREFIJO_HASH_R2B_P3B:
+        raise RuntimeError("candado r2b: el parche de P3c no declara la base de P3b-2 — se frena")
+    return (_aplicar(t_p3b, parche_c["reemplazos"]), doc["reemplazos"], t_p2, parche["reemplazos"], t_p3b,
+            parche_c["reemplazos"])
 
 
-PREFIJO_SISTEMA_R2B, REEMPLAZOS_R2B, PREFIJO_SISTEMA_R2B_P2, REEMPLAZOS_P3B = _armar_prefijo()
+(PREFIJO_SISTEMA_R2B, REEMPLAZOS_R2B, PREFIJO_SISTEMA_R2B_P2, REEMPLAZOS_P3B, PREFIJO_SISTEMA_R2B_P3B,
+ REEMPLAZOS_P3C) = _armar_prefijo()
 TOOL_SCHEMA_R2B = json.loads(_leer_con_candado(TOOL_SCHEMA_R2_JSON, TOOL_SCHEMA_R2_SHA256_ESPERADO))
 ROL_POR_TO_R2 = json.loads(_leer_con_candado(ROL_POR_TO_R2_JSON, ROL_POR_TO_R2_SHA256_ESPERADO))
 LABELS_E2_R2 = json.loads(_leer_con_candado(LABELS_E2_R2_JSON, LABELS_E2_R2_SHA256_ESPERADO))
@@ -141,7 +167,8 @@ if PREFIJO_SHA256_R2B != PREFIJO_SHA256_R2B_ESPERADO or PREFIJO_HASH_R2B != PREF
 
 
 def _cargar_tablas_forzadas() -> frozenset:
-    doc = json.loads(TABLAS_FORZADAS_JSON.read_text(encoding="utf-8"))
+    # P3c-2 (F04b): la lista se lee con su sha256; un alta o una baja frena hasta re-sellar.
+    doc = json.loads(_leer_con_candado(TABLAS_FORZADAS_JSON, TABLAS_FORZADAS_SHA256_ESPERADO))
     for alta in doc["tablas"]:
         if not (alta.get("tabla") and alta.get("motivo") and alta.get("fecha")):
             raise RuntimeError(f"tablas forzadas a residual: alta incompleta {alta!r} — se frena")
@@ -313,6 +340,14 @@ CIERRES = "; los bloques que lo siguen son párrafos de cierre del punto que lo 
 LINEA_MINI_MITAD = ("Cadena de títulos (ubica el bloque; NO es contenido a extraer, salvo su última línea: E0 la tomó "
                     "como título, pero es el comienzo de la oración que sigue en tu bloque. Leela con el bloque, "
                     "extraé la oración entera, y el `tramo` puede empezar en esa línea):")
+# Líneas fijas del mensaje (P3c-2: constantes del módulo, para que el selftest de claves pueda variarlas; el mensaje
+# no cambia un byte).
+LINEA_TITULOS_MINI = "Cadena de títulos (ubica el bloque; NO es contenido a extraer):"
+LINEA_HERENCIA_PUNTO = ("Contexto estructural heredado (SOLO contexto y anclaje: NO extraigas contenido normativo de estos "
+                        "bloques — cada uno tiene su propia unidad de extracción; ver PROVENANCE):")
+LINEA_CIERRE = ("Extraé las entidades y relaciones según el schema. Recordá: nodo TextoOrdenado con local_id='to'; todo "
+                "elemento con `punto` de la lista admitida; toda entidad con su `tramo`; toda relación de sujeto con su "
+                "`sujeto_mencion`; `omisiones` siempre (vacía si no omitiste nada).")
 # Agregado 8 del «seguí» de P3b-2: solo en las unidades cuya herencia recorta E0 (C2 de U-R2-CODIGO-2, punto h;
 # el chunk lleva `herencia_recortada` y el bloque, la línea del recorte en el lugar de lo omitido).
 LINEA_RECORTE = ("La línea «[recorte de E0: …]» dentro de un bloque heredado no es texto de la norma: marca la parte "
@@ -325,6 +360,15 @@ def es_encabezado_de_lista(chunk: dict) -> bool:
             and " ".join((chunk.get("texto") or "").split()).endswith((":", "：")))
 
 
+# P3c, punto e (texto aprobado en el FRENO P3c-1): la mención se copia del texto y, si el texto no nombra a ningún
+# sujeto, no hay relación.
+LINEA_ALCANCE = ("Cuando el texto (el de tu unidad o el heredado) nombre al colectivo del TO con una expresión genérica "
+                 "('las entidades', 'los sujetos obligados'), {sug}, con esa expresión copiada del texto como "
+                 "`sujeto_mencion`. Si el texto no nombra a ningún sujeto, no emitas la relación: este alcance no "
+                 "reemplaza la mención. Es el sujeto de aplica_a cuando el texto se dirige al colectivo; NO es el "
+                 "ejecutor por defecto en ejecuta.")
+
+
 def linea_alcance(rol: dict | None) -> list[str]:
     if rol is None:
         return []
@@ -334,9 +378,7 @@ def linea_alcance(rol: dict | None) -> list[str]:
     else:
         ids = " o ".join(rol["clase_ids"])
         cab, sug = f"Alcance de este TO: {{{miembros}}}. ", f"sugerí {ids} en `sujeto_id`, según corresponda"
-    return [cab + "Cuando la norma se dirija genéricamente a 'las entidades' / 'los sujetos obligados' / "
-            f"el colectivo del TO, {sug}, con la expresión del texto como `sujeto_mencion`. Es el sujeto de "
-            "aplica_a cuando la norma se dirige al colectivo; NO es el ejecutor por defecto en ejecuta.", ""]
+    return [cab + LINEA_ALCANCE.format(sug=sug), ""]
 
 
 def build_user_message_r2b(chunk: dict) -> str:
@@ -358,15 +400,13 @@ def build_user_message_r2b(chunk: dict) -> str:
     if herencia:
         i = bloque_lista(chunk)
         if mini:
-            partes.append(LINEA_MINI_MITAD if mini_a_mitad(chunk)
-                          else "Cadena de títulos (ubica el bloque; NO es contenido a extraer):")
+            partes.append(LINEA_MINI_MITAD if mini_a_mitad(chunk) else LINEA_TITULOS_MINI)
         elif i is not None:
             h = herencia[i]
             partes.append(LINEA_ITEM.format(tipo=h["tipo"], unidad=h["unidad_origen"],
                                             cierres=CIERRES if i < len(herencia) - 1 else ""))
         else:
-            partes.append("Contexto estructural heredado (SOLO contexto y anclaje: NO extraigas contenido normativo "
-                          "de estos bloques — cada uno tiene su propia unidad de extracción; ver PROVENANCE):")
+            partes.append(LINEA_HERENCIA_PUNTO)
         if chunk.get("herencia_recortada"):
             partes.append(LINEA_RECORTE)
         for h in herencia:
@@ -382,9 +422,7 @@ def build_user_message_r2b(chunk: dict) -> str:
     partes.append(chunk["texto"])
     partes.append("```")
     partes.append("")
-    partes.append("Extraé las entidades y relaciones según el schema. Recordá: nodo TextoOrdenado con local_id='to'; "
-                  "todo elemento con `punto` de la lista admitida; toda entidad con su `tramo`; toda relación de "
-                  "sujeto con su `sujeto_mencion`; `omisiones` siempre (vacía si no omitiste nada).")
+    partes.append(LINEA_CIERRE)
     return "\n".join(partes)
 
 
@@ -403,6 +441,29 @@ def build_request_kwargs_r2b(chunk: dict, model: str, max_tokens: int = MAX_OUTP
 def labels_catalogo_r2() -> dict[str, dict]:
     """id → {label, nivel} del catálogo r2 (labels_e2_r2.json), para el E2 del perfil de E1."""
     return {sid: {"label": x["label"], "nivel": x["nivel"]} for sid, x in LABELS_E2_R2.items()}
+
+
+# Candado del mensaje de E1 (P3c-2; U-TABLA-REPROC, filas F22 y F22b). El mensaje no entra al hash del prefijo ni al
+# namespace: un cambio en una línea fija o condicional, o en la regla que la dispara, movería las claves sin que nada
+# frene. El candado arma el mensaje de un conjunto fijo de unidades que ejercita cada rama de build_user_message_r2b y
+# de bloque_flags (candado_mensaje_r2b.json: 12 unidades de salida_tanda0_r2b, elegidas por cobertura en
+# data/experiment/prompt_r2/p3c/candados_p3c.py, más una copia sintética para la rama del alcance por clase) y compara
+# su sha256 con el sellado. Solo compara: no entra al pedido ni cambia ninguna clave. Va al final del módulo.
+def sha256_mensajes(chunks: list[dict]) -> str:
+    """sha256 de los mensajes de E1 de `chunks`, unidos por un salto, el separador de registro (U+001E) y otro salto."""
+    return hashlib.sha256("\n\x1e\n".join(build_user_message_r2b(c) for c in chunks).encode("utf-8")).hexdigest()
+
+
+def _candado_mensaje() -> None:
+    doc = json.loads(_leer_con_candado(CANDADO_MENSAJE_JSON, CANDADO_MENSAJE_JSON_SHA256_ESPERADO))
+    sha = sha256_mensajes(doc["chunks"])
+    if sha != MENSAJE_R2B_SHA256_ESPERADO:
+        raise RuntimeError(f"candado r2b: el mensaje de E1 de las unidades fijas tiene sha256 {sha[:12]}… (sellado "
+                           f"{MENSAJE_R2B_SHA256_ESPERADO[:12]}…): cambió una línea del mensaje, la regla que la "
+                           f"dispara, la línea de alcance o la lista de tablas forzadas — se frena")
+
+
+_candado_mensaje()
 
 
 __all__ = [

@@ -269,6 +269,70 @@ def texto_en_orden_de_lectura(chunk: dict) -> str:
     return ((chunk.get("herencia") or [{}])[-1].get("texto") or "") + "\n" + (chunk.get("texto") or "")
 
 
+def verificar_tramo_omision(tramo: str, chunk: dict, holgura: Optional[int],
+                            reg: "_Registro") -> tuple[str, Optional[str]]:
+    """U-PROMPT-R2, P3c, punto g: el tramo de una omisión se verifica como el tramo simple de la entidad. Primero
+    contra el texto propio, como antes: lo que verifica ahí no cambia. Si no verifica, contra el texto completo y, en
+    un mini-chunk a mitad de oración, en el orden de lectura (P3b, h). El nivel conserva sus cuatro valores; lo que
+    verifica solo fuera del texto propio va a los contadores `omisiones.tramo_solo_heredado` y
+    `omisiones.tramo_orden_de_lectura`."""
+    nivel, literal = verificar_tramo(tramo, chunk.get("texto") or "", holgura)
+    if nivel != "no":
+        return nivel, literal
+    donde = None
+    n_c, lit_c = verificar_tramo(tramo, texto_completo(chunk), holgura)
+    if n_c != "no":
+        nivel, literal, donde = n_c, lit_c, "tramo_solo_heredado"
+    if nivel != "exacta" and _mini_a_mitad(chunk):
+        n_l, lit_l = verificar_tramo(tramo, texto_en_orden_de_lectura(chunk), holgura)
+        if _ORDEN_NIVEL[n_l] > _ORDEN_NIVEL[nivel]:
+            nivel, literal, donde = n_l, lit_l, "tramo_orden_de_lectura"
+    if donde is not None:
+        reg.cuenta("omisiones", donde)
+    return nivel, literal
+
+
+# U-PROMPT-R2, P3c (decisión 2 de la autora sobre el FRENO P3c-1): marcas que, en el tramo de una omisión
+# `meta_normativo`, señalan contenido que la regla 9 enmendada no admite ahí (enmienda 7 a L-ESQ-R2). Se buscan sobre
+# el tramo normalizado (minúsculas, sin tildes, palabras enteras). Cuentan y no rechazan: el contador lo suma el
+# reporte de U-REEXT-T0. Las siete clases son las de la enmienda 7, §1.2 (corrección del FRENO P3c-2): deber,
+# prohibición, facultad, condición, excepción, alcance y modalidad.
+# Un modal negado («no podrá», «no deberán», «no está facultada») dice una prohibición: cuenta en esa clase y no en
+# deber ni en facultad. La aplicación negada («no será de aplicación», «no se aplica», «no rige») es una excepción y no
+# un alcance. Deber, facultad y alcance se buscan sobre el tramo sin lo negado (_NEGADO).
+_COPULA = r"(es|son|sea|sean|sera|seran|resulta|resultan|resulte|resulten|resultara|resultaran)"
+_MODAL_NEGADO = (r"\b(no|ni|tampoco) (se )?((esta|estan|estara|estaran) )?(puede|pueden|podra|podran|podria|podrian|"
+                 r"debe|deben|debera|deberan|deberia|deberian|facultad[oa]s?)\b")
+_APLICACION_NEGADA = (r"\b(no|ni|tampoco) (se )?(" + _COPULA + r" )?(de aplicacion|aplica|aplican|aplicara|aplicaran|"
+                      r"aplicables?|rige|rigen|regira|regiran)\b")
+MARCAS_META_NORMATIVO = {
+    "deber": re.compile(r"\b(debe|deben|debera|deberan|deberia|deberian|se requiere|se requerira|se requeriran|"
+                        r"obligad[oa]s?|tendra que|tendran que)\b"),
+    "prohibicion": re.compile(_MODAL_NEGADO + r"|\b(prohib\w*|vedad[oa]s?|en ningun caso|abst(ener|endr)\w*)\b"
+                              r"|\bno (se )?((esta|estan|estara|estaran|sera|seran) )?(admit|permit|autoriz)\w*"),
+    "facultad": re.compile(r"\b(puede|pueden|podra|podran|podria|podrian|facultad[oa]?s?)\b"),
+    "condicion": re.compile(r"\b(cuando|siempre que|en tanto|en la medida en que|en caso de|a condicion de|"
+                            r"condicion|condiciones)\b"),
+    "excepcion": re.compile(r"\b(excepto|salvo|con excepcion de|exceptu\w*|exclu\w*)\b|" + _APLICACION_NEGADA),
+    "alcance": re.compile(r"\b(abarca|abarcan|abarcara|abarcaran|comprende|comprenden|comprendera|comprenderan|"
+                          r"comprendid[oa]s?|incluye|incluyen|incluira|incluiran|incluid[oa]s?|alcanzad[oa]s?|"
+                          r"rige para|rigen para|regira para|regiran para|se aplica|se aplican|se aplicara|"
+                          r"se aplicaran|aplicables? a|" + _COPULA + r" de aplicacion)\b"),
+    "modalidad": re.compile(r"\b(mediante|por medio de|a traves de|por intermedio de|por escrito|en forma|en soporte|"
+                            r"por via|alternativas?|alternativamente|modalidad|modalidades)\b"),
+}
+_NEGADO = re.compile(_MODAL_NEGADO + "|" + _APLICACION_NEGADA)
+_CLASES_SIN_NEGADO = ("deber", "facultad", "alcance")
+
+
+def marcas_meta_normativo(tramo: str) -> list[str]:
+    """Las clases de MARCAS_META_NORMATIVO presentes en el tramo, en el orden del diccionario."""
+    t = " ".join(norm_tokens(tramo))
+    sin_negado = _NEGADO.sub(" ", t)
+    return [clase for clase, rx in MARCAS_META_NORMATIVO.items()
+            if rx.search(sin_negado if clase in _CLASES_SIN_NEGADO else t)]
+
+
 def verificar_tramo_entidad(tramo: str, chunk: dict, punto: str, holgura: Optional[int],
                             reg: "_Registro") -> tuple[str, str, Optional[str]]:
     """Decisión 15: verifica el tramo de evidencia de una entidad y devuelve (tramo, nivel, tramo_modelo).
@@ -1254,7 +1318,6 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
     elif not isinstance(oms, list):
         res["rechazos"].append(_rechazo("omision", "omisiones_no_lista", "omisiones", oms))
         oms = []
-    texto_propio = chunk.get("texto") or ""
     flags = chunk.get("flags") or {}
     for j, o in enumerate(oms):
         origen = "e1"
@@ -1310,10 +1373,16 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
             reg.cuenta("omisiones", f"categoria:{cat}")
         tramo = _str_o_none(o.get("tramo"))
         tramo_modelo, corto = None, False
+        if tramo is not None and cat == "meta_normativo":
+            clases = marcas_meta_normativo(tramo)
+            if clases:
+                reg.cuenta("omisiones", "meta_normativo_con_marca")
+                for clase in clases:
+                    reg.cuenta("omisiones", f"meta_normativo_con_marca:{clase}")
         if tramo is None:
             nivel = "ausente"
         else:
-            nivel, literal = verificar_tramo(tramo, texto_propio, pol.holgura)
+            nivel, literal = verificar_tramo_omision(tramo, chunk, pol.holgura, reg)
             if nivel == "tokens" and literal is not None:
                 tramo, tramo_modelo = literal, o.get("tramo")
             corto = len(norm_tokens(tramo)) < pol.largo_min_omision

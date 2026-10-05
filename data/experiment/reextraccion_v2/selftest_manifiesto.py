@@ -500,11 +500,13 @@ def p10_r2b(tmp: Path) -> None:
           f"prefijos distintos: {len(prefijos)}")
     check("P10 namespace E1 r2b derivado del hash congelado",
           cliente_e1.namespace_e1(prefijo_hash=pf.prefijo_hash_para_namespace)
-          == "e1_extraccion|cv=e1-extractor-v1-p3817de475c93|think=0")  # re-congelado en P3b-2
+          == "e1_extraccion|cv=e1-extractor-v1-p322c5a23e9b7|think=0")  # re-congelado en P3c-2
     check("P10 requests E3 sobre la salida r2 simulada, byte a byte en doble corrida", tot3 == 2434 and ig3 == tot3,
           f"{ig3}/{tot3}")
-    check("P10 NOTAS r2 de E3: 212 encabezados de lista y 37 unidades con tabla serializada confiable",
-          n_enc == 212 and n_tab == 37, f"encabezados={n_enc} tablas={n_tab}")
+    # P3c-2, punto f: cap::tabla037 pasa a residual, y cap::6.2.2.6, que no trae otra tabla serializada, deja de
+    # llevar la NOTA de tablas confiables (37 → 36).
+    check("P10 NOTAS r2 de E3: 212 encabezados de lista y 36 unidades con tabla serializada confiable",
+          n_enc == 212 and n_tab == 36, f"encabezados={n_enc} tablas={n_tab}")
     check("P10 prefijo de E3 sin cambio (candado 21a836c7de6d)", prompt_e3.PREFIJO_HASH == "21a836c7de6d")
     huellas = []
     for i in (1, 2):

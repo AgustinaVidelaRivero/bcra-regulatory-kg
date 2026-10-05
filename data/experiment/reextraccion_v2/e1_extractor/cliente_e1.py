@@ -74,6 +74,43 @@ MAX_TOKENS_REINTENTO_CORTE_R2 = 16384
 SUFIJO_REINTENTO_FORMA = "-rforma1"
 COMPONENTE_E1 = "reextraccion_v2_e1"
 COMPONENTE_REINTENTO_FORMA = "reextraccion_v2_e1_reintento_forma"
+# Tercer escalón del reintento por corte (U-PROMPT-R2, P3c-2; decisión 6 de la autora sobre el FRENO P3c-1; solo el
+# runner del perfil r2 lo usa): si el reintento de MAX_TOKENS_REINTENTO_CORTE_R2 también corta y la unidad no se puede
+# partir, o si corta una parte, UNA llamada más con este techo. Por encima de LIMITE_SIN_TRANSMISION el SDK exige
+# transmisión por partes (anthropic 0.100.0, _base_client._calculate_nonstreaming_timeout: 3.600 s × max_tokens /
+# 128.000 > 600 s), así que el pedido va por AdaptadorTransmision, debajo del CachingClient sellado: la caché guarda
+# el mensaje final como el de cualquier llamada, y la clave cambia solo por max_tokens. Máximo de salida de
+# claude-haiku-4-5: 64.000 tokens (documentación de modelos de la API, consultada el 04/10/2026).
+MAX_TOKENS_ESCALON_3_R2 = 40960
+LIMITE_SIN_TRANSMISION = 21333
+TIMEOUT_TRANSMISION_S = 1800.0
+COMPONENTE_ESCALON_3 = "reextraccion_v2_e1_escalon3"
+
+
+class _MensajesPorTransmision:
+    def __init__(self, real, timeout: float):
+        self._real, self._timeout = real, timeout
+
+    def create(self, **kwargs):
+        from anthropic.types import Message  # noqa: PLC0415 — solo con el cliente real
+        with self._real.messages.stream(timeout=self._timeout, **kwargs) as flujo:
+            final = flujo.get_final_message()
+        crudo = final.model_dump(mode="json")
+        # El SDK devuelve un ParsedMessage: su bloque de texto lleva `parsed_output`, que un mensaje de create no
+        # trae. Se normaliza a Message para que el crudo que guarda la caché tenga la forma del de create.
+        for b in crudo.get("content") or []:
+            if isinstance(b, dict):
+                b.pop("parsed_output", None)
+        return Message.model_validate(crudo)
+
+
+class AdaptadorTransmision:
+    """Adaptador del cliente real con la interfaz que espera llm_cache.CachingClient (`messages.create(**kwargs)`):
+    llama `messages.stream(**kwargs)` con un timeout explícito (opción del pedido, fuera de la clave) y devuelve el
+    mensaje final, normalizado a anthropic.types.Message."""
+
+    def __init__(self, real, timeout: float = TIMEOUT_TRANSMISION_S):
+        self.messages = _MensajesPorTransmision(real, timeout)
 
 
 def namespace_e1(canal_abierto: bool = False, prefijo_hash: str | None = None, sufijo: str = "") -> str:
@@ -158,6 +195,7 @@ class ClienteE1Real:
         canal_abierto: bool = False,
         guardian=None,
         prefijo_hash: str | None = None,
+        transmision: bool = False,
     ):
         if min(precio_in_por_mtok, precio_out_por_mtok,
                precio_cache_write_por_mtok, precio_cache_read_por_mtok) <= 0 or tope_usd <= 0:
@@ -169,6 +207,12 @@ class ClienteE1Real:
         self._canal_abierto, self._prefijo_hash = canal_abierto, prefijo_hash
         # caché del reintento por forma (U-R2-CODIGO-2): se abre en el primer reintento
         self.cache_reintento_forma = None
+        # P3c-2: con transmision=True (solo el perfil r2), los pedidos con max_tokens por encima de
+        # LIMITE_SIN_TRANSMISION van por AdaptadorTransmision, en cachés propias que se abren en el primer pedido así
+        # (mismo db, mismo namespace que la caché de su camino).
+        self._transmision = transmision
+        self.cache_transmision = None
+        self.cache_reintento_forma_transmision = None
         self.p_in = precio_in_por_mtok
         self.p_out = precio_out_por_mtok
         self.p_cw = precio_cache_write_por_mtok
@@ -212,13 +256,31 @@ class ClienteE1Real:
         with CACHE_USAGE_LOG.open("a", encoding="utf-8") as f:
             f.write(json.dumps(line, ensure_ascii=False) + "\n")
 
+    def _transmite(self, kwargs: dict) -> bool:
+        return self._transmision and (kwargs.get("max_tokens") or 0) > LIMITE_SIN_TRANSMISION
+
+    def _cache_transmision(self, sufijo: str):
+        """La caché sobre AdaptadorTransmision del camino (sufijo vacío: el de siempre; el del reintento por forma)."""
+        attr = "cache_transmision" if not sufijo else "cache_reintento_forma_transmision"
+        if getattr(self, attr) is None:
+            setattr(self, attr, lc.CachingClient(
+                AdaptadorTransmision(self._real), domain=DOMAIN, db_path=self._db_path,
+                namespace=namespace_e1(self._canal_abierto, prefijo_hash=self._prefijo_hash, sufijo=sufijo),
+                thinking_enabled=False, run_label=self._run_label))
+        return getattr(self, attr)
+
     def create(self, *, doc: str | None = None, **kwargs):
+        if self._transmite(kwargs):
+            return self._crear_en(self._cache_transmision(""), COMPONENTE_ESCALON_3, doc, kwargs)
         return self._crear_en(self.cache, COMPONENTE_E1, doc, kwargs)
 
     def crear_reintento_forma(self, *, doc: str | None = None, **kwargs):
         """U-R2-CODIGO-2, C2, punto b: el mismo request en el namespace del
         reintento por forma (SUFIJO_REINTENTO_FORMA), con el mismo tope y la
         misma contabilidad D2."""
+        if self._transmite(kwargs):
+            return self._crear_en(self._cache_transmision(SUFIJO_REINTENTO_FORMA), COMPONENTE_REINTENTO_FORMA, doc,
+                                  kwargs)
         if self.cache_reintento_forma is None:
             self.cache_reintento_forma = lc.CachingClient(
                 self._real, domain=DOMAIN, db_path=self._db_path,
@@ -228,15 +290,19 @@ class ClienteE1Real:
         return self._crear_en(self.cache_reintento_forma, COMPONENTE_REINTENTO_FORMA, doc, kwargs)
 
     def _crear_en(self, cache, componente: str, doc: str | None, kwargs: dict):
-        if self.gasto_usd + self._proyeccion_usd > self.tope_usd:
+        proyeccion = self._proyeccion_usd
+        if self._transmite(kwargs):
+            # P3c-2: el pedido por transmisión se proyecta con su techo de salida, no con el del primer intento.
+            proyeccion += (kwargs["max_tokens"] - prompt_e1.MAX_OUTPUT_TOKENS) / 1e6 * self.p_out
+        if self.gasto_usd + proyeccion > self.tope_usd:
             raise TopeExcedido(
                 f"gasto acumulado USD {self.gasto_usd:.4f} + proyección "
-                f"{self._proyeccion_usd:.4f} supera el tope {self.tope_usd:.2f}")
-        if self.guardian is not None and self.guardian.excedido(self._proyeccion_usd):
+                f"{proyeccion:.4f} supera el tope {self.tope_usd:.2f}")
+        if self.guardian is not None and self.guardian.excedido(proyeccion):
             raise TopeExcedido(
                 f"presupuesto COMPARTIDO agotado: gasto combinado USD "
                 f"{self.guardian.gasto_usd:.4f} + proyección "
-                f"{self._proyeccion_usd:.4f} supera el tope compartido "
+                f"{proyeccion:.4f} supera el tope compartido "
                 f"{self.guardian.tope_usd:.2f}")
         antes = dict(cache._stats)
         resp = cache.messages.create(**kwargs)
@@ -272,6 +338,10 @@ class ClienteE1Real:
         }
         if self.cache_reintento_forma is not None:
             d["cache_stats_reintento_forma"] = self.cache_reintento_forma.stats()
+        if self.cache_transmision is not None:
+            d["cache_stats_transmision"] = self.cache_transmision.stats()
+        if self.cache_reintento_forma_transmision is not None:
+            d["cache_stats_reintento_forma_transmision"] = self.cache_reintento_forma_transmision.stats()
         if self.guardian is not None:
             d["presupuesto_compartido"] = {
                 "tope_usd": self.guardian.tope_usd,
@@ -283,6 +353,9 @@ class ClienteE1Real:
         self.cache.close()
         if self.cache_reintento_forma is not None:
             self.cache_reintento_forma.close()
+        for c in (self.cache_transmision, self.cache_reintento_forma_transmision):
+            if c is not None:
+                c.close()
 
 
 def extraer_chunk(cliente, chunk: dict, model: str, canal_abierto: bool = False) -> dict:
@@ -322,7 +395,7 @@ def _crear(cliente, kwargs: dict, doc: str | None):
 
 
 def crear_con_reintento_corte(cliente, kwargs: dict, doc: str | None = None,
-                              max_tokens_reintento: int = MAX_TOKENS_REINTENTO_CORTE):
+                              max_tokens_reintento: int = MAX_TOKENS_REINTENTO_CORTE, escalon_3=None):
     """Una llamada y, SOLO si la response cortó por max_tokens (stop_reason ==
     "max_tokens"), UNA re-llamada con max_tokens duplicado a 32.768. Sin
     tercera llamada.
@@ -339,13 +412,28 @@ def crear_con_reintento_corte(cliente, kwargs: dict, doc: str | None = None,
     Devuelve (resp_final, intento_cortado): intento_cortado es None si no
     hubo corte; si el reintento también corta, resp_final llega con
     stop_reason == "max_tokens" y el runner lo cuenta como error definitivo
-    (un pase no cierra con reintentables pendientes)."""
+    (un pase no cierra con reintentables pendientes).
+
+    Tercer escalón (U-PROMPT-R2, P3c-2; solo el runner del perfil r2 pasa
+    `escalon_3`, una función sin argumentos que dice si corresponde): si el
+    reintento también corta y `escalon_3()` es verdadero, UNA llamada más, el
+    mismo pedido con max_tokens = MAX_TOKENS_ESCALON_3_R2 (el cliente real la
+    despacha por transmisión). Con `escalon_3`, devuelve (resp_final, cortados),
+    con los intentos cortados en orden (ninguno, uno o dos). Sin `escalon_3`,
+    el par de siempre: los perfiles existentes no cambian."""
     resp = _crear(cliente, kwargs, doc)
     if getattr(resp, "stop_reason", None) != "max_tokens":
-        return resp, None
+        return (resp, None) if escalon_3 is None else (resp, ())
     kwargs_reintento = dict(kwargs)
     kwargs_reintento["max_tokens"] = max_tokens_reintento
-    return _crear(cliente, kwargs_reintento, doc), resp
+    resp2 = _crear(cliente, kwargs_reintento, doc)
+    if escalon_3 is None:
+        return resp2, resp
+    if getattr(resp2, "stop_reason", None) != "max_tokens" or not escalon_3():
+        return resp2, (resp,)
+    kwargs_3 = dict(kwargs)
+    kwargs_3["max_tokens"] = MAX_TOKENS_ESCALON_3_R2
+    return _crear(cliente, kwargs_3, doc), (resp, resp2)
 
 
 def crear_reintento_forma(cliente, kwargs: dict, doc: str | None = None):

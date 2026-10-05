@@ -1,0 +1,42 @@
+Control de la corrección del FRENO P3c-2 (control_correcciones.sh, en el scratchpad): dos corridas sobre una copia
+sin enlaces. Lo que cambia con la corrección: validador_r2 (marcas de meta_normativo), selftest_pyd_r2, la
+re-validación de P4 y la tabla de reprocesamiento (que lee el contraste del selftest de claves); el resto se corre
+igual, como control. Las salidas de p3c2/salida/ se comparan además con las del repo.
+enlaces en la copia: 0
+st_manifiesto 1: código 1
+st_manifiesto 2: código 1
+fixtures/candado_mensaje_r2b.json doble=igual
+fixtures/candado_mensaje_e3.json doble=igual
+sellos/verificacion_sellos_p3c2.json doble=igual
+revalidar/revalidacion_p4_p3c2.json doble=igual
+nofilt/nofiltracion_p3c2.json doble=igual
+nofilt/prefijo_r2b_p3c2.txt doble=igual
+nofilt/literales_p3c2.txt doble=igual
+costo/costo_p3c2.json doble=igual
+selftest_clave_cache.json doble=igual
+c2_cadena.json doble=igual
+candado_mensaje_r2b.json = repo
+candado_mensaje_e3.json = repo
+selftest_clave_cache.json = repo
+verificacion_sellos_p3c2.json = repo (p3c2/salida)
+revalidacion_p4_p3c2.json = repo (p3c2/salida)
+nofiltracion_p3c2.json = repo (p3c2/salida)
+costo_p3c2.json = repo (p3c2/salida)
+pyc nuevos: 0
+repo sin cambios durante el control (12874 archivos)
+
+Resultados de la corrida 1 (la 2 da lo mismo):
+st_prompt: RESULTADO: 51 ok, 0 FAIL
+st_e1: RESULTADO: 80 ok, 0 FAIL
+st_pyd: TOTAL: 395/395
+st_e3: RESULTADO: 101 ok, 0 FAIL
+st_e2: selftest E2: 41/41
+st_ub53: SELFTEST U-B5.3: 52/52
+st_r3: SELFTEST R3: 109/109 PASS
+st_r4: SELFTEST R4: 26/26 PASS
+st_manifiesto: selftest manifiesto: 44/49  (5 FALLOS)
+cadena_p3: RESULTADO: 27/27  (grafo sha256 4985f427c3ea…)
+cadena_p3b2: RESULTADO: 20/20  (grafo E2 sha256 c21263d452a8…)
+st_manifiesto: los 5 fallos son P5 (paridad E2 de pro, cla, ric, cap y ext: el reporte guarda la ruta absoluta), lo esperado sobre una copia
+claves: contraste con la tabla: OK VEREDICTO: OK
+c2_cadena (cadena r2a con el código corregido): diez r2a 70d51e42… y desarrollo r2a fa4c1043…, iguales a los de C2 (r2_codigo2/salidas/c2_cadena.json)

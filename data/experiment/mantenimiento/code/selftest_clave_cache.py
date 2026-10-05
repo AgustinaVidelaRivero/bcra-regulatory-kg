@@ -41,7 +41,11 @@ Perfil r2b (U-TABLA-REPROC):
       no existe: se arma una salida sintética mínima por unidad y se valida con
       validador_e1 y el esquema del perfil (`validacion_sintetica_r2`). Las
       variaciones de archivos de datos corren en un proceso hijo que los sirve
-      alterados EN MEMORIA, como en M1.
+      alterados EN MEMORIA, como en M1. Con los candados de U-PROMPT-R2,
+      P3c-2 (filas F04b, F22, F22b y F23), R29, R29b y R30 editan un literal
+      del módulo en una copia en memoria de su fuente, que el proceso hijo
+      importa en lugar del archivo, y frenan, como R32; R13c varía el techo del
+      tercer escalón del reintento por corte (fila F08d).
   C. Contraste fila por fila con la tabla de
      data/experiment/mantenimiento/tabla_reprocesamiento.md: cada fila declara
      el comportamiento de la clave de E1 y de E3 del perfil r2b y las
@@ -1043,6 +1047,25 @@ def variaciones_request_r2b(ar: Armado, chunks, vals, base_e1, base_e3) -> list[
     reg["ok"] = reg["ok"] and base_igual and distinto_del_base
     res.append(reg)
 
+    # R13c techo del tercer escalón del reintento por corte del perfil r2 (U-PROMPT-R2, P3c-2; cliente_e1,
+    # MAX_TOKENS_ESCALON_3_R2): el request del tercer escalón cambia de clave con el techo; el del primer intento y el del
+    # reintento, no.
+    t3 = ar.cliente_e1.MAX_TOKENS_ESCALON_3_R2
+    c13c, base_igual3, distinto3 = [], True, True
+    for cid in M:
+        kw = ar.kw_e1(chunks[cid])
+        k3 = ar.clave(ar.ns_e1, dict(kw, max_tokens=t3))
+        if k3 != ar.clave(ar.ns_e1, dict(kw, max_tokens=t3 + 1)):
+            c13c.append(cid)
+        base_igual3 &= ar.clave(ar.ns_e1, kw) == base_e1[cid]
+        distinto3 &= k3 not in (base_e1[cid], ar.clave(ar.ns_e1, dict(kw, max_tokens=t_r2)))
+    reg = solo_e1("R13c", f"techo del tercer escalón del reintento por corte del perfil r2: {t3} → {t3 + 1}", c13c,
+                  extra={"lectura": "cambia = la clave del request del tercer escalón",
+                         "clave_del_primer_intento_sin_cambio": base_igual3,
+                         "tercer_escalon_con_clave_distinta_del_primer_intento_y_del_reintento": distinto3})
+    reg["ok"] = reg["ok"] and base_igual3 and distinto3
+    res.append(reg)
+
     # R15 versión de código del cliente (CODE_VER del namespace), request idéntico.
     ns15 = ar.lc.make_namespace(ar.cliente_e1.DOMAIN,
                                 code_ver=f"{ar.cliente_e1.CODE_VER}-x-p{ar.pf.prefijo_hash}",
@@ -1113,38 +1136,9 @@ def variaciones_request_r2b(ar: Armado, chunks, vals, base_e1, base_e3) -> list[
     reg["ok"] = reg["ok"] and ns_0 == ar.ns_e1
     res.append(reg)
 
-    # R29 plantilla del mensaje de E1, línea condicional: la del ítem de una
-    # lista (regla g de P3b); R29b línea presente en todo mensaje (el cierre).
-    linea = R.LINEA_ITEM
-    try:
-        R.LINEA_ITEM = linea + " "
-        c29 = [cid for cid in M if ar.k_e1(chunks[cid]) != base_e1[cid]]
-        c29_e3 = [cid for cid in con_e3 if ar.k_e3(chunks[cid], vals[cid]) != base_e3[cid]]
-    finally:
-        R.LINEA_ITEM = linea
-    items = [cid for cid in M if R.es_item(chunks[cid])]
-    res.append(_registro("R29", "mensaje de E1 r2b: un espacio al final de la línea del ítem de una lista",
-                         todas, esperado_e1=items, cambia_e1=c29, esperado_e3=[], cambia_e3=c29_e3,
-                         universo_e3=con_e3))
-
-    def m29b(kw):
-        kw["messages"][0]["content"] = kw["messages"][0]["content"] + " "
-    c, ns = e1_con(m29b)
-    res.append(solo_e1("R29b", "mensaje de E1 r2b: un espacio al final de la línea de cierre (todo mensaje)", c,
-                       extra={"namespace": ns, "namespace_sin_cambio": ns == [ar.ns_e1]}))
-
-    # R30 NOTA del mensaje de E3 de las omisiones de esquema (P3b, punto i).
-    nota = ar.prompt_e3.NOTA_E3_OMISIONES
-    try:
-        ar.prompt_e3.NOTA_E3_OMISIONES = nota + " "
-        c30 = [cid for cid in M if ar.k_e1(chunks[cid]) != base_e1[cid]]
-        c30_e3 = [cid for cid in con_e3 if ar.k_e3(chunks[cid], vals[cid]) != base_e3[cid]]
-    finally:
-        ar.prompt_e3.NOTA_E3_OMISIONES = nota
-    con_nota = [cid for cid in con_e3 if CON_OMISION_R2B[cid]]
-    res.append(_registro("R30", "NOTA del mensaje de E3 de las omisiones de esquema: un espacio al final",
-                         todas, esperado_e1=[], cambia_e1=c30, esperado_e3=con_nota, cambia_e3=c30_e3,
-                         universo_e3=con_e3, extra={"namespace_e3": ar.ns_e3}))
+    # R29, R29b y R30 (U-PROMPT-R2, P3c-2): con los candados de F22, F22b y F23, la línea del ítem, la de cierre y
+    # la NOTA de las omisiones se varían editando el literal en una copia en memoria del módulo antes de
+    # importarlo, en un proceso hijo (variaciones_json_r2b, EDICIONES_FUENTE_R2B): frenan.
 
     # R31 lazo de E3: el aviso del feedback del reintento (P3b, defensa 1). El
     # request del reintento del ratchet cambia; el primer intento de E1 y la
@@ -1278,7 +1272,7 @@ def _alterar(variante: str) -> dict[str, str]:
         cl = next(c for c in d["clases"] if c["id"] == "Sujeto_entidad_financiera")
         cl["alias"] = list(cl.get("alias") or []) + ["variación del selftest"]
         return {str(JSON_V2.resolve()): json.dumps(d, ensure_ascii=False, indent=1)}
-    if variante in ("inventario", "inventario_r2b"):
+    if variante in ("inventario", "inventario_r2b", "R29", "R29b", "R30"):  # R29 a R30: editan una fuente, no un JSON
         return {}
     if variante == "R20":          # catálogo de resolución que lee el código: una entrada más en el índice de E4
         d = json.loads(INDICE_E4_R2.read_text(encoding="utf-8"))
@@ -1325,7 +1319,42 @@ def tabla_forzada_r2b() -> str:
     return next(t["tabla"] for t in c["flags"]["tablas_e0"] if t.get("serializada"))
 
 
-VARIANTES_HIJO_R2B = ("inventario_r2b", "R20", "R21", "R22", "R22b", "R22c", "R22d", "R28", "R32")
+VARIANTES_HIJO_R2B = ("inventario_r2b", "R20", "R21", "R22", "R22b", "R22c", "R22d", "R28", "R29", "R29b", "R30",
+                      "R32")
+# U-PROMPT-R2, P3c-2: R29, R29b y R30 editan un literal del módulo (un espacio al final) en una copia en memoria de su
+# fuente, que el proceso hijo importa en lugar del archivo: el candado del mensaje corre al importar y frena. No escribe.
+EDICIONES_FUENTE_R2B = {
+    "R29": ("prompt_r2b", REPO / "data/experiment/reextraccion_v2/e1_extractor/prompt_r2b.py",
+            '"ENCABEZADO DE UNA LISTA):")', '"ENCABEZADO DE UNA LISTA): ")'),
+    "R29b": ("prompt_r2b", REPO / "data/experiment/reextraccion_v2/e1_extractor/prompt_r2b.py",
+             '(vacía si no omitiste nada).")', '(vacía si no omitiste nada). ")'),
+    "R30": ("prompt_e3", REPO / "data/experiment/reextraccion_v2/e3_verificador/prompt_e3.py",
+            '"meta-normativos.")', '"meta-normativos. ")'),
+}
+
+
+def _instalar_fuente_editada(variante: str) -> None:
+    """Registra un buscador de módulos que sirve la fuente editada de EDICIONES_FUENTE_R2B[variante] en lugar del
+    archivo: todo import de ese módulo ejecuta la copia editada (y su candado)."""
+    import importlib.abc  # noqa: PLC0415
+    import importlib.util  # noqa: PLC0415
+    nombre, ruta, viejo, nuevo = EDICIONES_FUENTE_R2B[variante]
+    src = ruta.read_text(encoding="utf-8")
+    if src.count(viejo) != 1:
+        raise SystemExit(f"{variante}: el literal a editar aparece {src.count(viejo)} veces en {ruta.name}")
+    src = src.replace(viejo, nuevo)
+
+    class _Fuente(importlib.abc.MetaPathFinder, importlib.abc.Loader):
+        def find_spec(self, fullname, path, target=None):
+            return importlib.util.spec_from_loader(fullname, self, origin=str(ruta)) if fullname == nombre else None
+
+        def create_module(self, spec):
+            return None
+
+        def exec_module(self, module):
+            module.__file__ = str(ruta)
+            exec(compile(src, str(ruta), "exec"), module.__dict__)
+    sys.meta_path.insert(0, _Fuente())
 
 
 def _datos_del_repo(conj: set[str]) -> list[str]:
@@ -1393,6 +1422,8 @@ def main_hijo_r2b(variante: str) -> int:
     redir = _alterar(variante)
     leidos: set[str] = set()
     _instalar_redireccion(redir, leidos)
+    if variante in EDICIONES_FUENTE_R2B:
+        _instalar_fuente_editada(variante)
     out: dict = {"variante": variante}
     chunks = cargar_chunks_muestra_r2b()
     f_muestra = set(leidos)
@@ -1528,8 +1559,12 @@ def variaciones_json_r2b(base_e1, base_e3, vals, chunks) -> tuple[list[dict], di
         ("R22d", f"calibrador CAL-1 de E3: un espacio al final del texto de {UNIDAD_CALIBRADOR} "
                  "(e0_chunking/salida/chunks_ric.json)", [], "frena"),
         ("R28", "pies de cap (pies_cap.json de la E0 r2b): otra versión vigente", [], []),
-        ("R32", f"lista de tablas forzadas a residual: alta de la tabla {tabla}", con_tabla,
-         [c for c in con_tabla if c in con_e3]),
+        ("R29", "mensaje de E1 r2b: un espacio al final de la línea del ítem de una lista (literal del módulo)",
+         "frena", "frena"),
+        ("R29b", "mensaje de E1 r2b: un espacio al final de la línea de cierre (literal del módulo)", "frena", "frena"),
+        ("R30", "NOTA del mensaje de E3 de las omisiones de esquema: un espacio al final (literal del módulo)",
+         [], "frena"),
+        ("R32", f"lista de tablas forzadas a residual: alta de la tabla {tabla}", "frena", "frena"),
     )
     res, inv = [], None
     for vid, desc, esp1, esp3 in especificaciones:

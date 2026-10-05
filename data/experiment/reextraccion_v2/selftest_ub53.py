@@ -26,6 +26,12 @@ escalado). Puntos:
       chapeau según el patrón E0; unidades sin ítems declaradas sin partir.
   P6  candados: prefijo E1 y tool schema byte-idénticos (hash sellado), techo
       del ratchet intacto (16.384) y techo del reintento por corte == 32.768.
+  P7  U-PROMPT-R2, P3c-2: tercer escalón del reintento por corte (perfil r2):
+      corta, corta y no corta (tres llamadas, la última con 40.960); la unidad
+      que se parte, sin tercera llamada; el escalón que también corta; sin el
+      parámetro, el par de siempre; cuándo corresponde (una parte o una unidad
+      sin partición) y el techo del ratchet; y el adaptador de transmisión
+      dentro del cliente real, debajo de la caché, con un SDK falso.
 
 Uso:  .venv/bin/python3 selftest_ub53.py
 """
@@ -546,6 +552,170 @@ def p6_candados() -> None:
 
 
 # ========================================================================= #
+# P7 — U-PROMPT-R2, P3c-2: tercer escalón del reintento por corte (perfil r2) #
+# ========================================================================= #
+
+class _FlujoFalso:
+    """Lo que devuelve messages.stream del SDK falso: context manager con get_final_message."""
+
+    def __init__(self, final):
+        self._final = final
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+    def get_final_message(self):
+        return self._final
+
+
+class _FinalFalso:
+    """Mensaje final del SDK por transmisión: un ParsedMessage, con `parsed_output` en el bloque de texto."""
+
+    def __init__(self, msg: Message):
+        self._msg = msg
+
+    def model_dump(self, mode="json"):
+        d = self._msg.model_dump(mode=mode)
+        d["content"] = [dict(b, parsed_output=None) if b.get("type") == "text" else b for b in d["content"]]
+        return d
+
+
+class SdkFalsoConTransmision:
+    """SDK falso: messages.create (sin transmisión) y messages.stream (con transmisión), con registro de cada uno."""
+
+    def __init__(self, cola_create, cola_stream):
+        self._cc, self._cs = list(cola_create), list(cola_stream)
+        self.creates: list[dict] = []
+        self.streams: list[dict] = []
+        self.messages = self
+
+    def create(self, **kwargs):
+        self.creates.append(kwargs)
+        return self._cc.pop(0)
+
+    def stream(self, **kwargs):
+        self.streams.append(kwargs)
+        return _FlujoFalso(_FinalFalso(self._cs.pop(0)))
+
+
+def _cliente_real_offline(sdk, tmp: Path, transmision: bool, nombre: str):
+    """ClienteE1Real sin construir el cliente del SDK (sin red ni clave): los atributos de __init__, con el SDK falso."""
+    c = object.__new__(cliente_e1.ClienteE1Real)
+    c._real, c._db_path, c._run_label = sdk, tmp / f"{nombre}.db", f"selftest_ub53_{nombre}"
+    c._canal_abierto, c._prefijo_hash, c._transmision = False, "selftestp3c2", transmision
+    c.cache_reintento_forma = c.cache_transmision = c.cache_reintento_forma_transmision = None
+    c.p_in, c.p_out, c.p_cw, c.p_cr, c.tope_usd = 1.0, 5.0, 1.25, 0.1, 5.0
+    c.cache = lc.CachingClient(sdk, domain=cliente_e1.DOMAIN, db_path=c._db_path,
+                               namespace=cliente_e1.namespace_e1(prefijo_hash="selftestp3c2"),
+                               thinking_enabled=False, run_label=c._run_label)
+    c.gasto_usd, c.llamadas, c.llamadas_hit, c.guardian = 0.0, 0, 0, None
+    c._proyeccion_usd = 0.0
+    c._log_usage = lambda *a, **k: None   # el log de usage es solo de respuestas reales (decisión 3)
+    return c
+
+
+def p7_escalon_3(tmp: Path) -> None:
+    chunk = _chunk_fx("1.1. Título.\nLas entidades deberán informar.")
+    kwargs = prompt_e1.build_request_kwargs(chunk, model="claude-haiku-4-5")
+    techo2, techo3 = cliente_e1.MAX_TOKENS_REINTENTO_CORTE_R2, cliente_e1.MAX_TOKENS_ESCALON_3_R2
+    llamadas_criterio = []
+
+    def si():
+        llamadas_criterio.append(1)
+        return True
+
+    # corta, corta y no corta: tres llamadas, la 3ª con 40.960 y solo eso cambiado
+    stub = StubEspia([_msg("max_tokens", TOOL_CORTADO, 8192), _msg("max_tokens", TOOL_CORTADO, techo2),
+                      _msg("tool_use", TOOL_OK)])
+    resp, cortados = cliente_e1.crear_con_reintento_corte(stub, kwargs, max_tokens_reintento=techo2, escalon_3=si)
+    k3 = {k: v for k, v in stub.requests[2].items() if k != "max_tokens"}
+    check("P7 corta, corta y no corta: tres llamadas (8.192, 16.384 y 40.960), los dos intentos cortados devueltos",
+          [r["max_tokens"] for r in stub.requests] == [8192, techo2, techo3] and techo3 == 40960
+          and len(cortados) == 2 and resp.stop_reason == "tool_use" and len(llamadas_criterio) == 1)
+    check("P7 la 3ª llamada solo cambia max_tokens (resto byte-idéntico al pedido base)",
+          lc.canonical_request(k3) == lc.canonical_request({k: v for k, v in kwargs.items() if k != "max_tokens"}))
+    # la unidad se puede partir: sin tercera llamada, como hoy
+    stub = StubEspia([_msg("max_tokens", TOOL_CORTADO, 8192), _msg("max_tokens", TOOL_CORTADO, techo2)])
+    resp, cortados = cliente_e1.crear_con_reintento_corte(stub, kwargs, max_tokens_reintento=techo2,
+                                                          escalon_3=lambda: False)
+    check("P7 unidad que se parte: dos llamadas, sin tercera, la respuesta cortada y un intento cortado",
+          len(stub.requests) == 2 and resp.stop_reason == "max_tokens" and len(cortados) == 1)
+    # el escalón también corta: tres llamadas y la final cortada
+    stub = StubEspia([_msg("max_tokens", TOOL_CORTADO, 8192), _msg("max_tokens", TOOL_CORTADO, techo2),
+                      _msg("max_tokens", TOOL_CORTADO, techo3)])
+    resp, cortados = cliente_e1.crear_con_reintento_corte(stub, kwargs, max_tokens_reintento=techo2, escalon_3=si)
+    check("P7 el escalón también corta: tres llamadas y nunca una cuarta; la respuesta final cortada",
+          len(stub.requests) == 3 and resp.stop_reason == "max_tokens" and len(cortados) == 2)
+    # sin corte, o si el reintento no corta, el criterio ni se evalúa
+    llamadas_criterio.clear()
+    stub = StubEspia([_msg("tool_use", TOOL_OK)])
+    resp, cortados = cliente_e1.crear_con_reintento_corte(stub, kwargs, max_tokens_reintento=techo2, escalon_3=si)
+    stub2 = StubEspia([_msg("max_tokens", TOOL_CORTADO, 8192), _msg("tool_use", TOOL_OK)])
+    resp2, cortados2 = cliente_e1.crear_con_reintento_corte(stub2, kwargs, max_tokens_reintento=techo2, escalon_3=si)
+    check("P7 sin corte, o con el reintento que entra, no hay tercera llamada ni se evalúa el criterio",
+          cortados == () and len(stub.requests) == 1 and len(cortados2) == 1 and len(stub2.requests) == 2
+          and llamadas_criterio == [])
+    # sin el parámetro, el par de siempre (perfiles existentes)
+    stub = StubEspia([_msg("max_tokens", TOOL_CORTADO, 8192), _msg("max_tokens", TOOL_CORTADO, techo2)])
+    resp, cortado = cliente_e1.crear_con_reintento_corte(stub, kwargs, max_tokens_reintento=techo2)
+    check("P7 sin el parámetro: el par de siempre (respuesta, intento cortado), sin tercera llamada",
+          len(stub.requests) == 2 and getattr(cortado, "stop_reason", None) == "max_tokens")
+    # cuándo corresponde: una parte, o una unidad que no se parte (E0 de C2, solo lectura)
+    e0 = AQUI / "e0_chunking" / "salida_tanda0_r2b"
+    ch = {c["id"]: c for to in ("cap", "ric") for c in json.loads((e0 / f"chunks_{to}.json").read_text(encoding="utf-8"))}
+    partes, _ = correr_e0.particionar_por_corte(ch["cap::4.2.1.2"])
+    check("P7 corresponde: no en una unidad que se parte (cap::4.2.1.2), sí en sus partes y en una que no se parte "
+          "(ric::11.2::intro)",
+          RC.corresponde_escalon_3(ch["cap::4.2.1.2"]) is False and partes
+          and all(RC.corresponde_escalon_3(x) for x in partes) and RC.corresponde_escalon_3(ch["ric::11.2::intro"]))
+    viejo = RC.PERFIL_R2
+    try:
+        RC.PERFIL_R2 = True
+        t_r2 = (RC.techo_reintento_ratchet({"escalon_3": {"max_tokens": techo3}}), RC.techo_reintento_ratchet({}))
+        RC.PERFIL_R2 = False
+        t_otro = RC.techo_reintento_ratchet({"escalon_3": {"max_tokens": techo3}})
+    finally:
+        RC.PERFIL_R2 = viejo
+    check("P7 el reintento del ratchet de una unidad con escalón usa 40.960 solo con el perfil r2; si no, 16.384",
+          t_r2 == (techo3, RC.MAX_TOKENS_REINTENTO) and t_otro == RC.MAX_TOKENS_REINTENTO)
+    # el adaptador, dentro del cliente real y debajo de la caché (SDK falso, sin red)
+    texto = Message.model_validate({
+        "id": "msg_t", "type": "message", "role": "assistant", "model": "claude-haiku-4-5",
+        "content": [{"type": "text", "text": "x"}, {"type": "tool_use", "id": "tu_1", "name": prompt_e1.NOMBRE_TOOL,
+                                                    "input": TOOL_OK}],
+        "stop_reason": "tool_use", "stop_sequence": None,
+        "usage": {"input_tokens": 11, "output_tokens": 30000, "cache_creation_input_tokens": 0,
+                  "cache_read_input_tokens": 0}})
+    sdk = SdkFalsoConTransmision([_msg("tool_use", TOOL_OK)], [texto])
+    cli = _cliente_real_offline(sdk, tmp, True, "transmision")
+    k40 = dict(kwargs, max_tokens=techo3)
+    r40 = cli.create(doc="fx.pdf", **k40)
+    r8 = cli.create(doc="fx.pdf", **kwargs)
+    con = sqlite3.connect(cli._db_path)
+    crudos = [json.loads(x[0]) for x in con.execute("SELECT raw_json FROM cache")]
+    con.close()
+    check("P7 cliente con transmisión: max_tokens 40.960 va por messages.stream (con timeout explícito) y 8.192 por "
+          "create",
+          len(sdk.streams) == 1 and sdk.streams[0]["max_tokens"] == techo3
+          and sdk.streams[0].get("timeout") == cliente_e1.TIMEOUT_TRANSMISION_S and len(sdk.creates) == 1
+          and r40.stop_reason == "tool_use" and r8.stop_reason == "tool_use")
+    check("P7 el crudo guardado del mensaje por transmisión no trae parsed_output (forma de create)",
+          len(crudos) == 2 and all("parsed_output" not in b for c in crudos for b in c["content"]))
+    r40b = cli.create(doc="fx.pdf", **k40)
+    check("P7 repetir el pedido de 40.960: acierto de caché, sin otra transmisión",
+          len(sdk.streams) == 1 and r40b.stop_reason == "tool_use" and cli.cache_transmision.stats()["hits"] == 1)
+    cli.close()
+    sdk2 = SdkFalsoConTransmision([_msg("tool_use", TOOL_OK)], [])
+    cli2 = _cliente_real_offline(sdk2, tmp, False, "sin_transmision")
+    cli2.create(doc="fx.pdf", **k40)
+    check("P7 cliente sin transmisión (perfiles existentes): el mismo pedido va por create, como hoy",
+          len(sdk2.creates) == 1 and sdk2.streams == [] and cli2.cache_transmision is None)
+    cli2.close()
+
+# ========================================================================= #
 
 def main() -> int:
     with tempfile.TemporaryDirectory(prefix="selftest_ub53_") as td:
@@ -556,6 +726,7 @@ def main() -> int:
         p4_tope_compartido(tmp)
         p5_subchunking()
         p6_candados()
+        p7_escalon_3(tmp)
 
     print(f"\nSELFTEST U-B5.3: {_n - _fallos}/{_n}"
           + ("" if not _fallos else f"  ({_fallos} FALLOS)"), flush=True)

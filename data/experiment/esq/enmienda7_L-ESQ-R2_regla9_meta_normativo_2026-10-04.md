@@ -113,3 +113,18 @@ repo, con P3c-2 de U-PROMPT-R2 sin commit (`data/experiment/prompt_r2/freno_p3c2
   norma. P4b lo mide con un caso elegido por lectura.
 - **Una palabra de más en el prefijo:** conserva del texto anterior «declaraciones de objetivo, finalidad u
   objeto de las normas». El punto 1 del §1 nombra el objetivo y la finalidad, y no el objeto.
+
+## Notas posteriores a la firma
+
+El texto firmado es el de arriba, como quedó en `44c6e1b` (sha256 `81177f0c…`), y no cambia.
+
+- **04/10/2026 — el contador del §3 tiene siete clases (decisión de la autora).** El §3 dice que U-REEXT-T0 mide
+  con el contador de omisiones `meta_normativo` cuyo tramo trae una marca «de deber, de facultad, de condición o
+  de excepción». Por la decisión de la autora del mismo día
+  (`docs/mandatos/UPROMPT_R2_prefijo_nuevo.md:850-853`, `44c6e1b`), el contador cubre las siete clases del punto 2
+  del §1: deber, prohibición, facultad, condición, excepción, alcance y modalidad. Así lo implementó P3c-2 de
+  U-PROMPT-R2 (`data/experiment/pyd_r2/code/validador_r2.py`, `MARCAS_META_NORMATIVO`; sin commit al 04/10/2026).
+  Cuenta y no rechaza.
+  - **Límite declarado.** Las marcas de las tres clases nuevas se escribieron conociendo las 9 omisiones
+    normativas de P4. Que el contador detecte las 9 no es una medición fuera de muestra, y en P4 no hay ningún
+    caso de prohibición ni de facultad. La medición es la de P4b, por brazo, y la de U-REEXT-T0.

@@ -239,16 +239,29 @@ def _nota_flags_e0(flags: dict) -> str | None:
     )
 
 
-# U-PROMPT-R2, P3b, punto i (hallazgo 3.4): NOTA de las omisiones que el esquema deja afuera a propósito. Texto
-# aprobado en el FRENO P3b-1 (023f9a0). Va cuando la validación declara omisiones de esas categorías; en el mensaje
-# aparecen como «[categoría] tramo — nota» (validador_e1.proyectar_r2).
+# U-PROMPT-R2, P3b, punto i (hallazgo 3.4): NOTA de las omisiones que el esquema deja afuera a propósito. Va cuando
+# la validación declara omisiones de esas categorías; en el mensaje aparecen como «[categoría] tramo — nota»
+# (validador_e1.proyectar_r2). Texto de P3c, punto a (aprobado en el FRENO P3c-1, 438bbd5; enmienda 7 a L-ESQ-R2): el
+# alcance sale de `meta_normativo` y la lista de lo que no puede declararse así es la de la regla 9.
 NOTA_E3_OMISIONES = (
     "NOTA: el extractor declaró, en las omisiones, tramos que el esquema deja afuera a propósito: "
-    "[meta_normativo] (contenido sobre el sentido, el alcance, el objetivo o la vigencia de una norma, que no "
-    "prescribe la conducta de nadie), [fuera_de_tipos] (contenido normativo que ningún tipo del esquema representa) "
-    "y [relacion_sin_predicado] (un vínculo que ningún predicado del esquema representa). Un tramo declarado así no "
-    "es un faltante: no lo reclames. Sí es un faltante si lo declarado no es lo que dice su categoría (por ejemplo, "
-    "un deber o una prohibición declarados como meta-normativos).")
+    "[meta_normativo] (contenido sobre el sentido, el objetivo o la entrada en vigencia de una norma, que no prescribe "
+    "la conducta de nadie ni dice a quién o a qué se aplica), [fuera_de_tipos] (contenido normativo que ningún tipo del "
+    "esquema representa) y [relacion_sin_predicado] (un vínculo que ningún predicado del esquema representa). Un tramo "
+    "declarado así no es un faltante: no lo reclames. Sí es un faltante si lo declarado no es lo que dice su categoría: "
+    "un deber, una prohibición, una facultad, una condición, una excepción, un alcance o una modalidad declarados como "
+    "meta-normativos.")
+# NOTA del encabezado de lista (nota del 03/10/2026 al mandato; P3c-2: constante del módulo, para que el selftest de
+# claves pueda variarla). Su última oración es la de P3c, punto b (aprobada en el FRENO P3c-1).
+NOTA_E3_ENCABEZADO_LISTA = (
+    "NOTA: esta unidad es el encabezado de una lista (su texto termina en «:»); los ítems son los puntos "
+    "que siguen, cada uno con su propia unidad. En esta extracción se componen en cada ítem el sujeto, la "
+    "modalidad y el cuantificador del encabezado, y también lo que el encabezado fija para cada ítem (un "
+    "plazo, un ámbito, una condición que vale para todos los ítems). Esta unidad no emite un nodo por el "
+    "solo anuncio de la lista ni repite lo que se compone en los ítems: que falten aquí no es faltante. "
+    "Sí es faltante, si no fue extraído, lo que el encabezado enuncia aparte de la lista: una norma propia, "
+    "una excepción a la lista entera, la norma principal cuando los ítems son sus supuestos o condiciones, o la "
+    "norma y su excepción cuando los ítems son las condiciones de esa excepción.")
 CATEGORIAS_NOTA_OMISIONES = ("meta_normativo", "fuera_de_tipos", "relacion_sin_predicado")
 
 
@@ -300,15 +313,7 @@ def notas_r2(chunk: dict, validacion: dict | None = None) -> list[str]:
                           f"contenido_tabular_no_declarado; declarado, no.")
         notas.append(" ".join(partes))
     if R.es_encabezado_de_lista(chunk):
-        notas.append(
-            "NOTA: esta unidad es el encabezado de una lista (su texto termina en «:»); los ítems son los puntos "
-            "que siguen, cada uno con su propia unidad. En esta extracción se componen en cada ítem el sujeto, la "
-            "modalidad y el cuantificador del encabezado, y también lo que el encabezado fija para cada ítem (un "
-            "plazo, un ámbito, una condición que vale para todos los ítems). Esta unidad no emite un nodo por el "
-            "solo anuncio de la lista ni repite lo que se compone en los ítems: que falten aquí no es faltante. "
-            "Sí es faltante, si no fue extraído, lo que el encabezado enuncia aparte de la lista: una norma propia, "
-            "una excepción a la lista entera, o la norma principal cuando los ítems son sus supuestos o "
-            "condiciones.")
+        notas.append(NOTA_E3_ENCABEZADO_LISTA)
     if _declara_omisiones_de_esquema(validacion):
         notas.append(NOTA_E3_OMISIONES)
     return notas
@@ -384,3 +389,40 @@ if PREFIJO_HASH != PREFIJO_HASH_SELLADO:
         f"{PREFIJO_HASH_SELLADO} (namespace e3_verificacion|cv=e3-verificador-v1-p"
         f"{PREFIJO_HASH_SELLADO}|think=0): cambió un archivo de datos de los "
         f"calibradores o el texto del prompt de E3 — se frena")
+
+
+# Candado del mensaje de E3 (U-PROMPT-R2, P3c-2; U-TABLA-REPROC, fila F23). Las NOTAS del mensaje no entran al
+# prefijo de E3 ni a su namespace: un cambio en una NOTA movería las claves sin que nada frene. Este candado arma el
+# mensaje de un conjunto fijo de casos (candado_mensaje_e3.json: 6 unidades de salida_tanda0_r2b, elegidas por
+# cobertura en data/experiment/prompt_r2/p3c/candados_p3c.py, cada una con la marca de la forma r2 y sin ella, más
+# un caso sintético para la NOTA de las omisiones) y compara su sha256 con el sellado. Solo compara: el prefijo, su
+# candado y las claves no cambian. Corre entero al importar (opción i, decisión de la autora): con la marca r2 las
+# NOTAS importan prompt_r2b, así que importar este módulo importa también prompt_r2b y corre sus candados, aun en el
+# perfil sellado (acoplamiento declarado en el FRENO P3c-2).
+from pathlib import Path as _Path  # noqa: E402 — solo para este candado; el encabezado del módulo no cambia
+
+CANDADO_MENSAJE_E3_JSON = _Path(__file__).resolve().parent / "candado_mensaje_e3.json"
+CANDADO_MENSAJE_E3_JSON_SHA256_ESPERADO = "e8fa5dc47408d5f311d5677886cf9e90ab54e1808c64bd4514f66507d2375a82"
+MENSAJE_E3_SHA256_ESPERADO = "da17c22e6c988c6e2fea12e4369caf96d27fe8cbc98f8861f9470901410c6e01"
+
+
+def sha256_mensajes_e3(casos: list[dict]) -> str:
+    """sha256 de los mensajes de E3 de `casos` ({chunk, validacion}), unidos como en prompt_r2b.sha256_mensajes."""
+    return hashlib.sha256("\n\x1e\n".join(build_user_message(c["chunk"], c["validacion"]) for c in casos)
+                          .encode("utf-8")).hexdigest()
+
+
+def _candado_mensaje_e3() -> None:
+    b = CANDADO_MENSAJE_E3_JSON.read_bytes()
+    sha_f = hashlib.sha256(b).hexdigest()
+    if sha_f != CANDADO_MENSAJE_E3_JSON_SHA256_ESPERADO:
+        raise RuntimeError(f"candado E3: la fixture del mensaje tiene sha256 {sha_f[:12]}… (sellada "
+                           f"{CANDADO_MENSAJE_E3_JSON_SHA256_ESPERADO[:12]}…) — se frena")
+    sha = sha256_mensajes_e3(json.loads(b)["casos"])
+    if sha != MENSAJE_E3_SHA256_ESPERADO:
+        raise RuntimeError(f"candado E3: el mensaje de los casos fijos tiene sha256 {sha[:12]}… (sellado "
+                           f"{MENSAJE_E3_SHA256_ESPERADO[:12]}…): cambió una NOTA, la regla que la dispara o el "
+                           f"render de la unidad o de la extracción — se frena")
+
+
+_candado_mensaje_e3()

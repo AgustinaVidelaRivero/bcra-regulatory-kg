@@ -38,6 +38,9 @@ Grupos:
       coeficiente (j), «más del» y «menos del» (enmienda 5 a L-ESQ-R2),
       marcador del encabezado en un tramo compuesto (k) y plazo sin marcador
       (m, enmienda 3 a L-ESQ-R2; con «maximo_asumido», la regla anterior de r2a).
+  G16 U-PROMPT-R2, P3c-2: el tramo de la omisión contra el texto propio y el heredado,
+      con su contador (g), y el contador de las omisiones meta_normativo con marca, con
+      las siete clases de la enmienda 7 a L-ESQ-R2 (corrección del FRENO P3c-2).
 Con la enmienda 3 a L-ESQ-R2 (C2 de U-R2-CODIGO-2, punto m), los casos que
 esperaban un plazo sin marcador con máximo inclusivo y `comparacion_asumida`
 esperan `no_determinada`, con la regla `sin_marcador_plazo` y sin la marca.
@@ -682,7 +685,8 @@ def g7_mencion_omision(ch):
                 "(1 y 9 tokens marcados; 15 tokens no)",
              O[4]["tramo_corto"] is True and O[0]["tramo_corto"] is True and O[5]["tramo_corto"] is False
              and not r["rechazos"])
-    chequear(g, "la verificación del tramo de omisión usa solo el texto propio (no el heredado)",
+    chequear(g, "el tramo de prueba del heredado: no está en el texto propio y sí en el completo (con P3c, g, la "
+                "omisión lo verifica: G16)",
              V.verificar_tramo("Categorías de carteras", c["texto"], 0)[0] == "no"
              and V.verificar_tramo("Categorías de carteras", V.texto_completo(c), 0)[0] == "exacta")
 
@@ -1373,6 +1377,84 @@ def g14_p3b(ch):
              nd(sin, "o") == {} and "marcas_e3" not in sin)
 
 
+def g16_p3c(ch):
+    """U-PROMPT-R2, P3c-2: el tramo de la omisión contra el texto propio y el heredado (g) y el contador de las
+    omisiones `meta_normativo` con marca (decisión 2 de la autora sobre el FRENO P3c-1; siete clases desde la
+    corrección del FRENO P3c-2)."""
+    g = "G16 omisiones (P3c)"
+    pol = V.politica_default()
+    c = ch["cla::5.1.1.1"]
+    pt = "5.1.1.1"
+    to = ent("to", "TextoOrdenado", "Clasificación de deudores", pt)
+
+    def r2(oms, chunk=c):
+        return V.validar({"entities": [to], "relations": [], "omisiones": list(oms)}, chunk, forma="r2")
+    her = "Categorías de carteras"
+    r = r2([{"categoria": "meta_normativo", "tramo": her, "nota": "n"}])
+    chequear(g, "g: tramo que solo está en el heredado → verifica, contado como tramo_solo_heredado",
+             V.verificar_tramo(her, c["texto"], pol.holgura)[0] == "no"
+             and r["omisiones"][0]["tramo_verificado"] == "exacta" and cont(r, "omisiones", "tramo_solo_heredado") == 1)
+    r = r2([{"categoria": "tabla", "tramo": "importe de referencia establecido en el punto 3.7", "nota": "n"},
+            {"categoria": "formula", "tramo": "importe referencia", "nota": "n"}])
+    chequear(g, "g: un tramo que verifica en el texto propio no cambia (exacta y tokens) ni se cuenta aparte",
+             r["omisiones"][0]["tramo_verificado"] == "exacta" and r["omisiones"][1]["tramo_verificado"] == "tokens"
+             and r["omisiones"][1]["tramo"] == "importe de\nreferencia"
+             and cont(r, "omisiones", "tramo_solo_heredado") == 0)
+    r = r2([{"categoria": "meta_normativo", "tramo": "texto que no está en el punto", "nota": "n"}])
+    chequear(g, "g: un tramo ajeno al texto propio y al heredado sigue en no, sin contador",
+             r["omisiones"][0]["tramo_verificado"] == "no" and "tramo_solo_heredado" not in r["contadores"]["omisiones"]
+             and "tramo_orden_de_lectura" not in r["contadores"]["omisiones"])
+    mini = ch["cap::2.2.3::intro"]
+    t = "otorgadas por sucursales y subsidiarias locales de entidades"
+    r = r2([{"categoria": "meta_normativo", "tramo": t, "nota": "n"}], mini)
+    chequear(g, "g: en un mini-chunk a mitad de oración, el tramo que cruza del título al cuerpo verifica en el "
+                "orden de lectura",
+             r["omisiones"][0]["tramo_verificado"] == "exacta" and cont(r, "omisiones", "tramo_orden_de_lectura") == 1)
+    # Contador de meta_normativo con marca: cuenta y no rechaza; solo la categoría meta_normativo.
+    oms = [{"categoria": "meta_normativo", "tramo": "Las entidades financieras deben:", "nota": "n"},
+           {"categoria": "meta_normativo", "tramo": "cuando normas legales determinen cursos de acción", "nota": "n"},
+           {"categoria": "meta_normativo", "tramo": "Este requisito no será de aplicación para", "nota": "n"},
+           {"categoria": "meta_normativo", "tramo": "la Superintendencia podrá exigir medidas", "nota": "n"},
+           {"categoria": "meta_normativo", "tramo": "Los coeficientes aumentan con el tamaño del indicador", "nota": "n"},
+           {"categoria": "fuera_de_tipos", "tramo": "las entidades deberán informar", "nota": "n"},
+           {"categoria": "meta_normativo", "tramo": "Salvo cuando se trate de operaciones propias", "nota": "n"}]
+    r = r2(oms)
+    om = r["contadores"]["omisiones"]
+    chequear(g, "marca: 5 de las 6 meta_normativo traen marca; fuera_de_tipos no se cuenta; nada se rechaza",
+             om.get("meta_normativo_con_marca") == 5 and len(r["omisiones"]) == 7 and not r["rechazos"], str(om))
+    chequear(g, "marca: por clase, deber 1, facultad 1, condición 2 y excepción 2",
+             (om.get("meta_normativo_con_marca:deber"), om.get("meta_normativo_con_marca:facultad"),
+              om.get("meta_normativo_con_marca:condicion"), om.get("meta_normativo_con_marca:excepcion"))
+             == (1, 1, 2, 2), str(om))
+    chequear(g, "marca: palabra entera, sin tildes ni mayúsculas («Salvo», «será»), y no por subcadena",
+             V.marcas_meta_normativo("SALVO lo dispuesto") == ["excepcion"]
+             and V.marcas_meta_normativo("la salvedad del punto") == []
+             and V.marcas_meta_normativo("cuyos debentures") == [])
+    # Corrección del FRENO P3c-2: las siete clases de la enmienda 7. Un caso por clase nueva y uno que no marca.
+    oms = [{"categoria": "meta_normativo", "tramo": "las entidades no podrán cobrar esa comisión", "nota": "n"},
+           {"categoria": "meta_normativo", "tramo": "La categoría abarca los préstamos de cualquier monto", "nota": "n"},
+           {"categoria": "meta_normativo", "tramo": "el informe se remitirá mediante el sistema de transmisión",
+            "nota": "n"},
+           {"categoria": "meta_normativo", "tramo": "Con el objetivo de fortalecer la transparencia del sistema",
+            "nota": "n"}]
+    r = r2(oms)
+    om = r["contadores"]["omisiones"]
+    chequear(g, "marca (siete clases): prohibición, alcance y modalidad, una cada una; la finalidad no marca; nada se "
+                "rechaza",
+             om.get("meta_normativo_con_marca") == 3 and not r["rechazos"]
+             and (om.get("meta_normativo_con_marca:prohibicion"), om.get("meta_normativo_con_marca:alcance"),
+                  om.get("meta_normativo_con_marca:modalidad")) == (1, 1, 1)
+             and "meta_normativo_con_marca:facultad" not in om, str(om))
+    chequear(g, "marca: «no podrán» y «no deberán» cuentan como prohibición, no como facultad ni deber; «podrán» solo, "
+                "como facultad",
+             V.marcas_meta_normativo("no podrán cobrar") == ["prohibicion"]
+             and V.marcas_meta_normativo("no deberán superar") == ["prohibicion"]
+             and V.marcas_meta_normativo("podrán cobrar") == ["facultad"])
+    chequear(g, "marca: la aplicación negada es excepción y no alcance; la afirmada, alcance",
+             V.marcas_meta_normativo("no se aplica a las cajas") == ["excepcion"]
+             and V.marcas_meta_normativo("se aplica a las cajas") == ["alcance"])
+
+
 def g15_c2():
     """U-R2-CODIGO-2, C2: puntos c, i, j, k y m de reglas_comparacion."""
     g = "G15 U-R2-CODIGO-2 C2"
@@ -1517,6 +1599,7 @@ def main() -> int:
     g13_forma_r2(ch)
     g14_p3b(ch)
     g15_c2()
+    g16_p3c(ch)
     total = ok = 0
     print(f"política: {V.POLITICA.relative_to(REPO)}  sha256 {V.politica_default().sha256}")
     for grupo, filas in RES.items():
