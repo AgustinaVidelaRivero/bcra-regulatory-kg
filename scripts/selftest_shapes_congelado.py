@@ -17,6 +17,9 @@ tolerancia, firma de remite_a), S18, S20, S24, S25, S26, S27 (r2a/r2b), S28,
 S29, S30 y S31 (un único tramo, otra procedencia, sin E0); el candado de
 enums_r2.json; S21 con la función de remisiones en los dos perfiles; y el
 CLI con --perfil r2. El vocabulario r2 se lee de enums_r2.json real.
+S32 (U-REEXT-T0, T1, punto 4.b), informativa: cuantía en la descripción =>
+elemento en la lista, con el caso que pasa, el contraejemplo, la marca y la
+cuantía sin elemento de igual valor.
 
 Uso:
     PYTHONDONTWRITEBYTECODE=1 python3 scripts/selftest_shapes_congelado.py
@@ -914,6 +917,43 @@ def _():
     assert res["S31"]["result"] == "PASS" and res["S31"]["conteos"]["en_un_tramo_de_otra_procedencia_de_la_arista"] == 1
     res, ver, meta = evaluar_r2(grafo_base_r2(), e0=None)
     assert res["S31"]["result"] == sv.NO_COMPUTABLE and ver == "INCOMPLETO"
+
+
+@caso("r2 S32 (U-REEXT-T0, T1, 4.b): informativa; base con la cuantía en la lista -> PASS")
+def _():
+    res, ver, meta = evaluar_r2(grafo_base_r2())
+    assert "S32" in meta["informativas"] and "S32" not in meta["bloqueantes"]
+    assert res["S32"]["result"] == "PASS" and res["S32"]["conteos"]["nodos_con_cuantia"] == 1, res["S32"]["resumen"]
+    assert res["S32"]["conteos"]["con_lista"] == 1 and res["S32"]["conteos"]["cuantias_sin_elemento"] == 0 and ver == "PASA"
+
+
+@caso("r2 S32: Condicion con cuantía en la descripción y lista vacía -> FAIL informativa (el veredicto sigue PASA)")
+def _():
+    g = grafo_base_r2()
+    nodo_por_id(g, "Condicion_c")["properties"]["descripcion"] = "Si supera los 30 (treinta) días hábiles"
+    res, ver, _ = evaluar_r2(g)
+    assert res["S32"]["result"] == "FAIL" and res["S32"]["conteos"]["sin_lista_ni_marca"] == 1, res["S32"]["resumen"]
+    assert res["S32"]["conteos"]["sin_lista_por_tipo"] == {"Condicion": 1} and ver == "PASA"
+
+
+@caso("r2 S32: el umbral guardado sin lista cuenta como marca; Operacion (fuera de tipos_con_umbrales) no se evalúa")
+def _():
+    g = grafo_base_r2()
+    c = nodo_por_id(g, "Condicion_c")
+    c["properties"]["descripcion"] = "Si supera el 5%"
+    c["campos_heredados_v3"] = {"umbral": "5%"}
+    nodo_por_id(g, "Operacion_x")["properties"]["descripcion"] = "Pago de hasta USD 200"
+    res, _, _ = evaluar_r2(g)
+    assert res["S32"]["result"] == "PASS" and res["S32"]["conteos"]["con_marca"] == 1, res["S32"]["resumen"]
+    assert res["S32"]["conteos"]["nodos_con_cuantia"] == 2
+
+
+@caso("r2 S32: una cuantía de la descripción sin elemento de igual valor y unidad se cuenta aparte")
+def _():
+    g = grafo_base_r2()
+    nodo_por_id(g, "Restriccion_r")["properties"]["descripcion"] = "No podrá superar el 10% ni el 20%"
+    res, _, _ = evaluar_r2(g)
+    assert res["S32"]["result"] == "PASS" and res["S32"]["conteos"]["cuantias_sin_elemento"] == 1, res["S32"]["resumen"]
 
 
 @caso("r2 S21: lee las remisiones con la función (remite_a), desglose por alcance")

@@ -17,7 +17,11 @@ Solo stdlib; fixtures sintéticos mínimos escritos acá. Cubre:
     BKL-0023 con la lista de umbrales, el test del ejemplo cla::5.1.1.1,
     LN-1 a LN-8 y los censos (con el control sobre las 105 relaciones de la
     lectura de la matriz); complemento final: BKL-0006 y BKL-0023 del perfil
-    r2 direccionados por punto y monto.
+    r2 direccionados por punto y monto;
+  - U-REEXT-T0, T1, punto 4: T6 y E4-b con los TOs del manifiesto del grafo
+    bajo prueba (--manifiesto, reporte del ensamblado, default de cinco),
+    BKL-0001 y BKL-0002 por punto, FIRMAS-condicion_de, SIN-VERIF-E3 y las
+    entradas de los ids nuevos del catálogo r2.
 
 Uso: PYTHONDONTWRITEBYTECODE=1 python3 scripts/selftest_regression_kg.py
 """
@@ -315,7 +319,8 @@ caso("regresión: ranks sellados esperados que no coinciden → regresión RANKS
 caso("partición declarada 46 = 19 / 23 / 4, 15 retriever, grupos 12/12/12/10; ítems del perfil r2 aparte",
      RK.verificar_particion() == {"items": 46, "convertibles": 19, "con_condicion": 23, "no_convertibles": 4, "retriever": 15,
                                   "por_grupo": {"i-BKL": 12, "i-RT": 12, "ii": 12, "iii": 10},
-                                  "items_r2": ["RT-C6-5", "EJ-cla-5.1.1.1", "LN-1", "LN-2", "LN-3", "LN-4", "LN-5", "LN-6", "LN-7", "LN-8"]})
+                                  "items_r2": ["RT-C6-5", "EJ-cla-5.1.1.1", "LN-1", "LN-2", "LN-3", "LN-4", "LN-5", "LN-6", "LN-7", "LN-8"]
+                                  + list(RK.ITEMS_UREEXT)})
 ids = [t["id"] for t in RK.TESTS]
 caso("los 4 no convertibles tienen estado fijo no_aplicable", all(RK.TESTS[ids.index(i)]["fn"](None)["estado"] == "no_aplicable" for i in ("BKL-0026", "BKL-0027", "I1", "I2")))
 caso("los cinco verificado sin evento de aplicación llevan la nota", all(RK.NOTA_SIN_APLICACION in RK.TESTS[ids.index(i)]["nota"] for i in ("BKL-0007", "BKL-0026", "BKL-0027", "BKL-0028", "BKL-0029")))
@@ -604,6 +609,214 @@ caso("censo de remisiones: las dos formas, por firma y por alcance (regla aplica
      cr["aristas"] == 2 and cr["por_forma"] == {"referencia": 1, "remite_a": 1}
      and cr["aristas_por_alcance"] == {"externa": 1, "interna": 1} and cr["citas"] == 2
      and cr["firmas_fuera_de_remite_a"] == 0)
+
+# --------------------------------------------------------------------------- #
+# U-REEXT-T0, T1, punto 4 (mandato firmado en e2027dd)                         #
+# --------------------------------------------------------------------------- #
+# 4.a: T6 y E4-b con los TOs del manifiesto del grafo bajo prueba
+E2_STUB = {"e2_lib": SimpleNamespace(slugify_full=lambda s: "".join(c if c.isalnum() else "_" for c in s.lower()).strip("_"))}
+
+
+def g_to(*archivos):
+    return RK.Grafo({"nodes": [nodo_gen3(f"TextoOrdenado_{E2_STUB['e2_lib'].slugify_full(a)}", "TextoOrdenado", a,
+                                         {"archivo": a}) for a in archivos], "edges": []})
+
+
+with tempfile.TemporaryDirectory(prefix="selftest_t6_") as tmp6:
+    tmp6 = Path(tmp6)
+    man = tmp6 / "manifiesto_sintetico.json"
+    man.write_text(json.dumps({"tos": [{"id": "a", "archivo": "a.pdf"}, {"id": "b", "archivo": "b.pdf"}]}), encoding="utf-8")
+    c_man = RK.Contexto(g_to("a.pdf", "b.pdf"), RK.Catalogo(CATALOGO, "s", "0" * 64), 3, "flaggeada", e4=E2_STUB,
+                        manifiesto=str(man))
+    caso("T6 (4.a): con --manifiesto, un TextoOrdenado por TO del manifiesto (2 de 2) → resuelto",
+         RK.t_t6(c_man)["estado"] == "resuelto" and RK.t_t6(c_man)["valores"]["n_esperado"] == 2)
+    caso("E4-b (4.a): archivos del manifiesto → resuelto", RK.t_e4_b(c_man)["estado"] == "resuelto")
+    c_de_mas = RK.Contexto(g_to("a.pdf", "b.pdf", "c.pdf"), RK.Catalogo(CATALOGO, "s", "0" * 64), 3, "flaggeada", e4=E2_STUB,
+                           manifiesto=str(man))
+    caso("T6 y E4-b (4.a) contraejemplo: un TextoOrdenado fuera del manifiesto → persiste",
+         RK.t_t6(c_de_mas)["estado"] == "persiste" and RK.t_e4_b(c_de_mas)["estado"] == "persiste")
+    (tmp6 / "kg.json").write_text(json.dumps({"nodes": g_to("a.pdf", "b.pdf").N, "edges": []}), encoding="utf-8")
+    (tmp6 / "reporte_ensamblado_r2.json").write_text(json.dumps({"manifiesto": {"path": str(man)}}), encoding="utf-8")
+    c_rep = RK.Contexto(RK.Grafo.desde_ruta(tmp6 / "kg.json"), RK.Catalogo(CATALOGO, "s", "0" * 64), 3, "flaggeada", e4=E2_STUB)
+    r_rep = RK.t_t6(c_rep)
+    caso("T6 (4.a): sin --manifiesto, el manifiesto.path del reporte del ensamblado junto al kg.json → resuelto",
+         r_rep["estado"] == "resuelto" and "reporte_ensamblado_r2.json" in r_rep["valores"]["fuente_de_los_tos"])
+cinco = {t: f"{t}.pdf" for t in ("pro", "cla", "ric", "cap", "ext")}
+c_def = RK.Contexto(g_to(*cinco.values()), RK.Catalogo(CATALOGO, "s", "0" * 64), 3, "flaggeada", e4=E2_STUB,
+                    archivos_e0=cinco)
+c_def.registro_dir = None
+r_def = RK.t_t6(c_def)
+caso("T6 (4.a): sin manifiesto ni reporte, los cinco TOs de desarrollo de E0, como antes → resuelto",
+     r_def["estado"] == "resuelto" and r_def["valores"]["fuente_de_los_tos"].startswith("los cinco TOs de desarrollo"))
+c_def10 = RK.Contexto(g_to(*cinco.values(), "x.pdf"), RK.Catalogo(CATALOGO, "s", "0" * 64), 3, "flaggeada", e4=E2_STUB,
+                      archivos_e0=cinco)
+c_def10.registro_dir = None
+caso("T6 (4.a): sin manifiesto, un sexto TextoOrdenado sigue dando persiste (comportamiento anterior)",
+     RK.t_t6(c_def10)["estado"] == "persiste")
+
+# 4.f: BKL-0001 y BKL-0002 por punto
+EXT_PDF = "TO_exterior_cambios_actual.pdf"
+_l75 = "La exposición máxima frente a una misma contraparte individual no deberá superar 75 veces el Salario Mínimo, Vital y Móvil"
+g01 = RK.Grafo({"nodes": [nodo_gen3("R75", "Restriccion", "Límite", {"descripcion": _l75}, punto="2.8.3.3")], "edges": []})
+g01_otro = RK.Grafo({"nodes": [nodo_gen3("R75", "Restriccion", "Límite", {"descripcion": _l75}, punto="2.10")], "edges": []})
+caso("BKL-0001 (4.f): «75» y «salario mínimo» anclados en cap 2.8.3.3 → resuelto", RK.t_bkl_0001(ctx_sintetico(g01))["estado"] == "resuelto")
+caso("BKL-0001 (4.f) contraejemplo: el contenido anclado en 2.10 (RX-03) → persiste",
+     RK.t_bkl_0001(ctx_sintetico(g01_otro))["estado"] == "persiste")
+g01_175 = RK.Grafo({"nodes": [nodo_gen3("R", "Restriccion", "L", {"descripcion": _l75.replace(" 75 ", " 175 ")}, punto="2.8.3.3")],
+                    "edges": []})
+caso("BKL-0001 (4.f) contraejemplo: «175» no es «75» → persiste", RK.t_bkl_0001(ctx_sintetico(g01_175))["estado"] == "persiste")
+caso("BKL-0001 (4.f): sin nodos de Capitales Mínimos → no_aplicable",
+     RK.t_bkl_0001(ctx_sintetico(RK.Grafo({"nodes": [], "edges": []})))["estado"] == "no_aplicable")
+_v3 = ("El acceso al mercado de cambios se produce con una anterioridad no mayor a los 3 (tres) días hábiles a la fecha de "
+       "vencimiento del servicio de capital o interés a pagar")
+
+
+def n_ext(nid, punto, desc):
+    return nodo_gen3(nid, "Restriccion", nid, {"descripcion": desc}, punto=punto, archivo=EXT_PDF, to="ext")
+
+
+caso("BKL-0002 (4.f): la ventana de 3 días hábiles anclada en ext 3.5.3 → resuelto",
+     RK.t_bkl_0002(ctx_sintetico(RK.Grafo({"nodes": [n_ext("V", "3.5.3", _v3)], "edges": []})))["estado"] == "resuelto")
+caso("BKL-0002 (4.f): también anclada en un sub-punto (3.5.3.1) → resuelto",
+     RK.t_bkl_0002(ctx_sintetico(RK.Grafo({"nodes": [n_ext("V", "3.5.3.1", _v3)], "edges": []})))["estado"] == "resuelto")
+caso("BKL-0002 (4.f) contraejemplo: anclada en 3.17 (RX-03) → persiste",
+     RK.t_bkl_0002(ctx_sintetico(RK.Grafo({"nodes": [n_ext("V", "3.17", _v3), n_ext("W", "3.5.3", "otra cosa")],
+                                           "edges": []})))["estado"] == "persiste")
+caso("BKL-0002 (4.f) contraejemplo: «5 (cinco) días hábiles» → persiste",
+     RK.t_bkl_0002(ctx_sintetico(RK.Grafo({"nodes": [n_ext("V", "3.5.3", _v3.replace("3 (tres)", "5 (cinco)"))],
+                                           "edges": []})))["estado"] == "persiste")
+caso("BKL-0001 y BKL-0002 son ítems fuera de la partición, del grupo ii, de U-REEXT-T0",
+     RK.convertibilidad("BKL-0001") == "U-REEXT-T0" and RK.grupo("BKL-0002") == "ii" and "BKL-0001" not in RK.CONVERTIBLES)
+
+# 4.c: las dos firmas nuevas de condicion_de y el conteo de no verificadas por E3
+g_fc = RK.Grafo({"nodes": [nodo_gen3("C", "Condicion", "C"), nodo_gen3("O", "Operacion", "O"), nodo_gen3("P", "Potestad", "P")],
+                 "edges": [ar3("C", "condicion_de", "O"), ar3("C", "condicion_de", "P")]})
+r_fc = RK.t_firmas_condicion_de(ctx_r2(g_fc.N, g_fc.E))
+caso("FIRMAS-condicion_de (4.c): las dos firmas en la matriz de enums_r2.json y 0 no verificadas → resuelto",
+     r_fc["estado"] == "resuelto" and r_fc["valores"]["condicion_de_desde_condicion_por_destino"] == {"Operacion": 1, "Potestad": 1})
+g_fc_nv = RK.Grafo({"nodes": g_fc.N, "edges": [ar3("C", "condicion_de", "O", no_verificada_e3=True), ar3("C", "condicion_de", "P")]})
+caso("FIRMAS-condicion_de (4.c) contraejemplo: una relación con no_verificada_e3 (como r2a) → persiste",
+     RK.t_firmas_condicion_de(ctx_r2(g_fc_nv.N, g_fc_nv.E))["estado"] == "persiste")
+c_fc_sin = ctx_r2(g_fc.N, g_fc.E)
+c_fc_sin._enums_r2 = dict(c_fc_sin.enums_r2, ampliacion_r2=[["condicion_de", "Condicion", "Operacion"]])
+caso("FIRMAS-condicion_de (4.c) contraejemplo: la matriz sin Condicion → Potestad → persiste",
+     RK.t_firmas_condicion_de(c_fc_sin)["estado"] == "persiste")
+caso("FIRMAS-condicion_de (4.c): perfil existente → no_aplicable",
+     RK.t_firmas_condicion_de(ctx_sintetico(g_fc))["estado"] == "no_aplicable")
+
+# 4.e: cero elementos de extracción sin verificar por E3
+def n_r2b(nid, tipo, chunk="cap::1.2", props=None):
+    n = nodo_gen3(nid, tipo, nid, props or {})
+    for pv in n["provenances"]:
+        pv["chunk_id"] = chunk
+    return n
+
+
+def rep_r2b(**tot):
+    base = {"entidades_sin_verificar": 0, "relaciones_sin_verificar": 0, "excluidos_entidades": 2, "excluidos_relaciones": 1,
+            "unidades_sin_indices_e3": 0, "cola_humana": {"unidades": 1, "por_estado": {"cola_humana": 1}, "entidades": 1,
+                                                          "relaciones": 0}}
+    base.update(tot)
+    return {"fase": "r2b", "paso_por_e3": {"por_to": {}, "total": base}, "aristas_no_verificadas_e3": {"total": 0, "por_firma": {}},
+            "aristas_derivadas_que_tocan_un_nodo_solo_de_la_cola": {"nodos_solo_de_la_cola": 1, "aristas": 0}}
+
+
+g_sv = RK.Grafo({"nodes": [n_r2b("O", "Obligacion"), n_r2b("Op", "Operacion"), n_r2b("Q", "Condicion", props={"cola_humana": "true"}),
+                           nodo_gen3("TextoOrdenado_x", "TextoOrdenado", "x"), nodo_gen3("Sujeto_banco", "Sujeto", "Bancos")],
+                 "edges": [ar3("O", "regula", "Op"), ar3("O", "remite_a", "Op", no_verificada_e3=True),
+                           ar3("O", "establecida_en", "TextoOrdenado_x", rol_fuente="derivada_de_procedencia")]})
+with tempfile.TemporaryDirectory(prefix="selftest_sinverif_") as tmpv:
+    tmpv = Path(tmpv)
+
+    def r_sv(g, rep):
+        (tmpv / "reporte_ensamblado_r2.json").write_text(json.dumps(rep), encoding="utf-8")
+        return RK.t_sin_verif_e3(ctx_sintetico(g, indice=IndiceFalso([]), perfil="r2", registro_dir=tmpv))
+    rr = r_sv(g_sv, rep_r2b())
+    caso("SIN-VERIF-E3 (4.e): r2b con todos los conteos en 0; la marca en una remite_a (derivada) no cuenta; la cola aparte → resuelto",
+         rr["estado"] == "resuelto" and rr["valores"]["aparte"]["nodos_con_la_marca_de_la_cola"] == 1, rr["detalle"][:160])
+    caso("SIN-VERIF-E3 (4.e) contraejemplo: el registro trae 1 relación sin verificar → persiste",
+         r_sv(g_sv, rep_r2b(relaciones_sin_verificar=1))["estado"] == "persiste")
+    g_sv_nv = RK.Grafo({"nodes": g_sv.N, "edges": g_sv.E + [ar3("O", "aplica_a", "Sujeto_banco", no_verificada_e3=True)]})
+    caso("SIN-VERIF-E3 (4.e) contraejemplo: una arista de E1 con no_verificada_e3 → persiste",
+         r_sv(g_sv_nv, rep_r2b())["estado"] == "persiste")
+    g_sv_sp = RK.Grafo({"nodes": g_sv.N + [nodo_gen3("Ox", "Obligacion", "Ox")], "edges": g_sv.E})
+    caso("SIN-VERIF-E3 (4.e) contraejemplo: un nodo de los nueve tipos sin procedencia de unidad (chunk_id) → persiste",
+         r_sv(g_sv_sp, rep_r2b())["estado"] == "persiste")
+    rep_sin = rep_r2b()
+    del rep_sin["paso_por_e3"]
+    caso("SIN-VERIF-E3 (4.e) contraejemplo: el reporte r2b sin el conteo de paso por E3 → persiste (nunca PASS vacuo)",
+         r_sv(g_sv, rep_sin)["estado"] == "persiste")
+    caso("SIN-VERIF-E3 (4.e): reporte de r2a (sin fase) → no_aplicable",
+         r_sv(g_sv, {"aristas_no_verificadas_e3": {"total": 697}})["estado"] == "no_aplicable")
+caso("SIN-VERIF-E3 (4.e): sin reporte del ensamblado → no_aplicable; perfil existente → no_aplicable",
+     RK.t_sin_verif_e3(ctx_sintetico(g_sv, perfil="r2", registro_dir=tempfile.gettempdir() + "/no_existe_ureext"))["estado"]
+     == "no_aplicable" and RK.t_sin_verif_e3(ctx_sintetico(g_sv))["estado"] == "no_aplicable")
+
+# 4.d: una entrada por cada id nuevo decidido
+LINGOB = "lingob.pdf"
+CAT_ID = {"version": "3.1-sintetico", "clases": [
+    {"id": "Sujeto_entidad_financiera", "label": "Entidades financieras", "nivel": "clase", "alias": []},
+    {"id": "Sujeto_entidad_financiera_del_exterior", "label": "Entidades financieras del exterior", "nivel": "clase",
+     "alias": ["Entidad financiera del exterior"]},
+    {"id": "Sujeto_instancia_de_gobierno_societario", "label": "Instancias de gobierno societario", "nivel": "clase", "alias": []},
+    {"id": "Sujeto_directorio", "label": "Directorio", "nivel": "clase", "alias": ["Consejo de Administración"]},
+    {"id": "Sujeto_titular_de_cuenta_corriente_en_el_bcra", "label": "Titulares de cuenta corriente en el BCRA", "nivel": "clase",
+     "alias": []}],
+    "roles": [{"id": "Sujeto_rol_alcance_convca", "label": "Rol convca", "nivel": "rol",
+               "miembros": ["Sujeto_titular_de_cuenta_corriente_en_el_bcra"], "residuo_declarado": {}}]}
+
+
+def ctx_id(g, cat=CAT_ID):
+    return RK.Contexto(g, RK.Catalogo(cat, "c", "0" * 64), 3, "flaggeada", perfil="r2")
+
+
+def n_lingob(nid, tipo, punto):
+    return nodo_gen3(nid, tipo, nid, {"descripcion": nid}, punto=punto, archivo=LINGOB, to="lingob")
+
+
+sk = [ar3("Sujeto_directorio", "subclase_de", "Sujeto_instancia_de_gobierno_societario", rol_fuente="esqueleto")]
+g_dir = RK.Grafo({"nodes": [n_lingob("Ob", "Obligacion", "2.3.2"), nodo_gen3("Sujeto_directorio", "Sujeto", "Directorio")],
+                  "edges": sk + [ar3("Ob", "aplica_a", "Sujeto_directorio", sujeto_mencion="el Directorio")]})
+f_dir = RK.TESTS[[t["id"] for t in RK.TESTS].index("ID-directorio")]["fn"]
+caso("ID-directorio (4.d): la Obligacion de lingob 2.3.2 con aplica_a al Directorio y el padre en el esqueleto → resuelto",
+     f_dir(ctx_id(g_dir))["estado"] == "resuelto", f_dir(ctx_id(g_dir))["detalle"][:200])
+g_dir_ef = RK.Grafo({"nodes": g_dir.N + [nodo_gen3("Sujeto_entidad_financiera", "Sujeto", "EF")],
+                     "edges": g_dir.E + [ar3("Ob", "aplica_a", "Sujeto_entidad_financiera")]})
+caso("ID-directorio (4.d) contraejemplo: la misma norma también con aplica_a a Sujeto_entidad_financiera (BKL-0034) → persiste",
+     f_dir(ctx_id(g_dir_ef))["estado"] == "persiste")
+g_dir_men = RK.Grafo({"nodes": g_dir.N + [n_lingob("Ob2", "Obligacion", "9.9"), nodo_gen3("Sujeto_entidad_financiera", "Sujeto", "EF")],
+                      "edges": g_dir.E + [ar3("Ob2", "aplica_a", "Sujeto_entidad_financiera", sujeto_mencion="Consejo de Administración")]})
+caso("ID-directorio (4.d) contraejemplo: una mención igual a un alias del id llega a otro id → persiste",
+     f_dir(ctx_id(g_dir_men))["estado"] == "persiste")
+caso("ID-directorio (4.d): un grafo sin nodos de contenido del TO del ancla (el Sujeto del esqueleto con procedencia de "
+     "lingob no cuenta) → no_aplicable",
+     f_dir(ctx_id(RK.Grafo({"nodes": [nodo_gen3("Sujeto_directorio", "Sujeto", "Directorio", archivo=LINGOB, to=None,
+                                                punto="1.3")], "edges": sk})))["estado"] == "no_aplicable")
+caso("BKL-0001 (4.f): un Sujeto del esqueleto con procedencia de cap no es cobertura del TO → no_aplicable",
+     RK.t_bkl_0001(ctx_sintetico(RK.Grafo({"nodes": [nodo_gen3("Sujeto_x", "Sujeto", "X", punto="1.1")], "edges": []})))["estado"]
+     == "no_aplicable")
+g_dir_vacia = RK.Grafo({"nodes": [n_lingob("Op", "Operacion", "2.3.2"), nodo_gen3("Sujeto_directorio", "Sujeto", "Directorio")],
+                        "edges": sk})
+caso("ID-directorio (4.d) contraejemplo: el TO está pero el ancla no tiene ninguna norma → persiste",
+     f_dir(ctx_id(g_dir_vacia))["estado"] == "persiste")
+f_efx = RK.TESTS[[t["id"] for t in RK.TESTS].index("ID-entidad_financiera_del_exterior")]["fn"]
+caso("ID-entidad_financiera_del_exterior (4.d): sin menciones ni anclas, catálogo sin alias del exterior en el doméstico → resuelto",
+     f_efx(ctx_id(RK.Grafo({"nodes": [], "edges": []})))["estado"] == "resuelto")
+cat_alias = json.loads(json.dumps(CAT_ID))
+cat_alias["clases"][0]["alias"] = ["Entidades financieras del exterior"]
+caso("ID-entidad_financiera_del_exterior (4.d) contraejemplo: el doméstico con un alias del exterior (BKL-0028) → persiste",
+     f_efx(ctx_id(RK.Grafo({"nodes": [], "edges": []}), cat_alias))["estado"] == "persiste")
+f_tit = RK.TESTS[[t["id"] for t in RK.TESTS].index("ID-titular_de_cuenta_corriente_en_el_bcra")]["fn"]
+g_tit = RK.Grafo({"nodes": [nodo_gen3("Sujeto_titular_de_cuenta_corriente_en_el_bcra", "Sujeto", "T")],
+                  "edges": [ar3("Sujeto_titular_de_cuenta_corriente_en_el_bcra", "miembro_de", "Sujeto_rol_alcance_convca",
+                                rol_fuente="esqueleto")]})
+caso("ID-titular (4.d): miembro del rol de convca en el esqueleto y residuo sin colectivo_operativo_sin_id → resuelto",
+     f_tit(ctx_id(g_tit))["estado"] == "resuelto")
+caso("ID-titular (4.d) contraejemplo: sin la arista miembro_de (BKL-0029) → persiste",
+     f_tit(ctx_id(RK.Grafo({"nodes": g_tit.N, "edges": []})))["estado"] == "persiste")
+caso("ID-* (4.d): ocho entradas, una por id nuevo, de perfil r2 (existente → no_aplicable)",
+     len(RK.ITEMS_ID) == 8 and f_dir(ctx_sintetico(g_dir))["estado"] == "no_aplicable"
+     and all(RK.convertibilidad(i) == "U-REEXT-T0" for i in RK.ITEMS_ID))
 
 # --------------------------------------------------------------------------- #
 for x in OK:

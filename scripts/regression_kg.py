@@ -53,6 +53,19 @@ Perfil r2 (U-R2-CODIGO, R5; enmienda 1 al mandato, R5.b). Con --perfil r2:
   - censos informativos, fuera de los ítems y de la fixture: aristas entre dos
     nodos con la misma descripción y remisiones por firma y por alcance.
 
+U-REEXT-T0, T1, punto 4 (mandato firmado en e2027dd), ítems fuera de la
+partición de 46 (ITEMS_UREEXT):
+  - T6 y E4-b leen los TOs del manifiesto del grafo bajo prueba (--manifiesto,
+    o el `manifiesto.path` del reporte de su ensamblado); sin manifiesto, los
+    cinco TOs de desarrollo, como antes;
+  - BKL-0001 (cap 2.8.3.3) y BKL-0002 (ext 3.5.3), tests por punto como T1;
+  - FIRMAS-condicion_de: las dos firmas nuevas y 0 relaciones no verificadas
+    por E3 (L-ESQ-R2 §6.5);
+  - SIN-VERIF-E3: cero elementos de extracción sin verificar, con la cola
+    humana aparte (FRENO P3 de U-PROMPT-R2, A3); no_aplicable en r2a;
+  - ID-<id>: una entrada por cada id nuevo del catálogo r2 (L-ESQ-R2 §7.5),
+    con su lectura de la tanda 0 en DEF_IDS_NUEVOS.
+
 Estados: resuelto = la comprobación del ítem se cumple sobre el grafo;
 persiste = no se cumple (el defecto está presente); no_aplicable = la
 precondición del ítem no se da en este grafo (objeto o capa ausente cuya
@@ -63,7 +76,7 @@ no_aplicable, con la razón.
 Interfaz:
   python3 scripts/regression_kg.py --kg RUTA --generacion {2,3} --catalogo RUTA
       --politica-cuarentena {laudada,flaggeada} [--esperado RUTA]
-      [--esqueleto-referencia RUTA] [--out RUTA.md]
+      [--esqueleto-referencia RUTA] [--out RUTA.md] [--manifiesto RUTA]
   Sin --out no escribe nada. Sin --esperado reporta estados y no computa
   regresión. --solo ID[,ID] (opcional, para el selftest y depuración) corre un
   subconjunto de ítems.
@@ -114,6 +127,9 @@ LECTURA_MATRIZ_CSV = ("uestmat_muestra_60_leida.csv", "uestmat_muestra_complemen
 REGISTRO_NO_MAPEADOS = "no_mapeados_sujetos.jsonl"
 RESOLUCION_SUJETOS = "resolucion_sujetos.jsonl"
 PERFILES = ("existente", "r2")
+# U-REEXT-T0, T1, punto 4.a: el manifiesto del grafo bajo prueba se lee del reporte de su ensamblado
+# (`manifiesto.path`) cuando --manifiesto no lo da; sin ninguno de los dos, los cinco TOs de desarrollo de E0.
+REPORTES_ENSAMBLADO = ("reporte_ensamblado_r2.json", "reporte_ensamblado_r1.json", "reporte_ensamblado.json")
 DEFAULT_ESQUELETO_REF = RAIZ / "data" / "experiment" / "grafo_v2" / "reensamblado_v3" / "kg.json"
 
 ESTADOS = ("resuelto", "persiste", "no_aplicable")
@@ -143,7 +159,17 @@ NO_CONVERTIBLES = ("BKL-0026", "BKL-0027", "I1", "I2")
 # y de su partición: RT-C6-5, la cláusula de mutuales como test (R4.d); el
 # test del ejemplo cla::5.1.1.1 y LN-1 a LN-8 (R5.a).
 ITEMS_LN = tuple(f"LN-{i}" for i in range(1, 9))
-ITEMS_R2 = ("RT-C6-5", "EJ-cla-5.1.1.1") + ITEMS_LN
+# U-REEXT-T0, T1, punto 4 (mandato firmado en e2027dd), fuera de la partición de 46: los tests por punto de BKL-0001
+# y BKL-0002 (f), la entrada de las dos firmas nuevas de condicion_de (c), el control de cero elementos sin verificar
+# por E3 (e) y una entrada por cada id nuevo decidido del catálogo r2 (d).
+ITEMS_PUNTO = ("BKL-0001", "BKL-0002")
+IDS_NUEVOS_R2 = ("Sujeto_entidad_financiera_del_exterior", "Sujeto_banco_del_exterior",
+                 "Sujeto_entidad_cambiaria_del_exterior", "Sujeto_titular_de_cuenta_corriente_en_el_bcra",
+                 "Sujeto_instancia_de_gobierno_societario", "Sujeto_directorio", "Sujeto_alta_gerencia",
+                 "Sujeto_comite_de_auditoria")
+ITEMS_ID = tuple("ID-" + i.removeprefix("Sujeto_") for i in IDS_NUEVOS_R2)
+ITEMS_UREEXT = ITEMS_PUNTO + ("FIRMAS-condicion_de", "SIN-VERIF-E3") + ITEMS_ID
+ITEMS_R2 = ("RT-C6-5", "EJ-cla-5.1.1.1") + ITEMS_LN + ITEMS_UREEXT
 # Dependen del retriever (tabla_resumen_B21_fase1.md:20).
 RETRIEVER = ("BKL-0017", "BKL-0019", "BKL-0004", "BKL-0003", "BKL-0005",
              "RT-C5-1", "RT-C5-2", "RT-C5-3", "RT-C5-4",
@@ -437,8 +463,12 @@ class Contexto:
                  esqueleto_ref_ruta=None, relaciones_esqueleto=None, indice=None,
                  muestra30=None, archivos_e0=None, e4=None, esqueleto_ref: Grafo | None = None,
                  perfil: str = "existente", registro_dir=None, esqueleto_catalogo=None,
-                 enums_r2=None, marcas_nodo_r2=None):
+                 enums_r2=None, marcas_nodo_r2=None, manifiesto=None, tos_bajo_prueba=None):
         self.grafo = grafo
+        # U-REEXT-T0, T1, punto 4.a: manifiesto del grafo bajo prueba (ruta), o la tabla ya resuelta
+        # (fuente, {to: archivo}) para el selftest
+        self._manifiesto = manifiesto
+        self._tos_bajo_prueba = tos_bajo_prueba
         self.cat = catalogo
         self.generacion = generacion
         self.politica = politica
@@ -550,6 +580,35 @@ class Contexto:
             rc = self.e4["r1_comun"]
             self._archivos_e0 = {to: rc.archivo_de_to(to) for to in rc.TOS_ORDEN}
         return self._archivos_e0
+
+    def ruta_manifiesto(self):
+        """(ruta del manifiesto del grafo bajo prueba, de dónde sale) o (None, motivo): --manifiesto, o el
+        `manifiesto.path` del reporte del ensamblado junto al kg.json (REPORTES_ENSAMBLADO, en ese orden)."""
+        if self._manifiesto:
+            return Path(self._manifiesto), "--manifiesto"
+        if self.registro_dir is not None:
+            for nombre in REPORTES_ENSAMBLADO:
+                p = self.registro_dir / nombre
+                if p.exists():
+                    m = json.loads(p.read_text(encoding="utf-8")).get("manifiesto")
+                    if isinstance(m, dict) and m.get("path"):
+                        return RAIZ / m["path"], f"{nombre} (manifiesto.path)"
+        return None, "sin --manifiesto ni manifiesto en el reporte del ensamblado"
+
+    @property
+    def tos_bajo_prueba(self) -> tuple:
+        """U-REEXT-T0, T1, punto 4.a: (fuente, {to: archivo}) de los TOs del manifiesto del grafo bajo prueba; sin
+        manifiesto, los cinco TOs de desarrollo de E0 (archivos_e0), como antes."""
+        if self._tos_bajo_prueba is None:
+            ruta, origen = self.ruta_manifiesto()
+            if ruta is not None:
+                man = json.loads(Path(ruta).read_text(encoding="utf-8"))
+                rel = str(Path(ruta).resolve().relative_to(RAIZ)) if Path(ruta).resolve().is_relative_to(RAIZ) else str(ruta)
+                self._tos_bajo_prueba = (f"manifiesto {rel} ({origen})", {t["id"]: t["archivo"] for t in man["tos"]})
+            else:
+                self._tos_bajo_prueba = (f"los cinco TOs de desarrollo de E0, r1_comun.TOS_ORDEN ({origen})",
+                                         dict(self.archivos_e0))
+        return self._tos_bajo_prueba
 
 
 def res(estado: str, detalle: str, **extra) -> dict:
@@ -1304,14 +1363,19 @@ def t_t5(ctx: Contexto) -> dict:
 
 
 def t_t6(ctx: Contexto) -> dict:
-    """r1_tests.py:56-61: 5 TextoOrdenado con id TextoOrdenado_<slugify_full(archivo de E0)>."""
+    """r1_tests.py:56-61: un TextoOrdenado por TO, con id TextoOrdenado_<slugify_full(archivo)>. U-REEXT-T0, T1,
+    punto 4.a: los TOs son los del manifiesto del grafo bajo prueba (Contexto.tos_bajo_prueba); sin manifiesto, los
+    cinco de desarrollo de E0, como antes (scripts/regression_kg.py:1306-1313 en 53b7708)."""
     G = ctx.grafo
     slug = ctx.e4["e2_lib"].slugify_full
-    ids_esp = {f"TextoOrdenado_{slug(a)}" for a in ctx.archivos_e0.values()}
+    fuente, archivos = ctx.tos_bajo_prueba
+    ids_esp = {f"TextoOrdenado_{slug(a)}" for a in archivos.values()}
     tos = [n for n in G.N if n.get("type") == "TextoOrdenado"]
     ids = sorted(n["id"] for n in tos)
-    val = {"pass": len(tos) == 5 and set(ids) == ids_esp, "n": len(tos), "ids": ids, "ids_esperados": sorted(ids_esp)}
-    return res("resuelto" if val["pass"] else "persiste", f"n={len(tos)} fuera_del_esperado={sorted(set(ids) - ids_esp)} faltan={sorted(ids_esp - set(ids))}", valores=val)
+    val = {"pass": len(tos) == len(ids_esp) and set(ids) == ids_esp, "n": len(tos), "n_esperado": len(ids_esp),
+           "fuente_de_los_tos": fuente, "ids": ids, "ids_esperados": sorted(ids_esp)}
+    return res("resuelto" if val["pass"] else "persiste", f"n={len(tos)} de {len(ids_esp)} ({fuente}) "
+               f"fuera_del_esperado={sorted(set(ids) - ids_esp)} faltan={sorted(ids_esp - set(ids))}", valores=val)
 
 
 def t7_cuarentena(G: Grafo, catalogo_ids: frozenset, politica: str) -> dict:
@@ -1504,10 +1568,11 @@ def t_e4_a8(ctx: Contexto) -> dict:
 
 
 def t_e4_b(ctx: Contexto) -> dict:
-    """Un único TextoOrdenado por TO con id y archivo desde E0 (= T6 + F3 properties.archivo ∈ archivos de E0)."""
+    """Un único TextoOrdenado por TO con id y archivo desde E0 (= T6 + F3 properties.archivo ∈ archivos de E0).
+    U-REEXT-T0, T1, punto 4.a: los archivos son los de los TOs del manifiesto del grafo bajo prueba, como en T6."""
     r = t_t6(ctx)
     G = ctx.grafo
-    arch = set(ctx.archivos_e0.values())
+    arch = set(ctx.tos_bajo_prueba[1].values())
     tos = [(n["id"], prop(n, "archivo")) for n in G.N if n.get("type") == "TextoOrdenado"]
     fuera = [(i, a) for i, a in tos if a not in arch]
     ok = r["estado"] == "resuelto" and not fuera
@@ -1903,6 +1968,257 @@ def censo_remisiones(G: Grafo) -> dict:
 
 
 # =========================================================================== #
+# Tests de U-REEXT-T0, T1, punto 4 (mandato firmado en e2027dd)               #
+# =========================================================================== #
+RE_75 = re.compile(r"(?<![\d.,])75(?![\d.,])")
+RE_TRES = re.compile(r"(?<![\d.,])3(?![\d.,])|\btres\b")
+TIPOS_NORMA = ("Obligacion", "Restriccion", "Potestad")
+EXPEDIENTE = "data/backlog/expediente_retriage_v3.md"
+
+
+def cubre_to(G: Grafo, archivo_pref: str) -> bool:
+    """¿El grafo tiene nodos de contenido del TO? Los Sujeto del esqueleto llevan la procedencia del catálogo
+    (source_doc y location del TO donde se dio de alta el id): no cuentan como cobertura."""
+    return any(n.get("type") != "Sujeto" for n in G.buscar(None, archivo_pref))
+
+
+def t_bkl_0001(ctx: Contexto) -> dict:
+    """BKL-0001 por punto (punto 4.f, como T1 lo es de BKL-0024). El contenido sale del expediente del retriage
+    (EXPEDIENTE, E1): la exposición máxima frente a una misma contraparte individual, para personas humanas en
+    cartera de consumo, de 75 veces el Salario Mínimo, Vital y Móvil (cap 2.8.3.3). Resuelto: algún nodo anclado en
+    cap 2.8.3.3 dice «75» y «salario minimo». El defecto registrado es que el contenido estaba anclado en otro punto
+    (location «Punto 2.10.», RX-03). no_aplicable: el grafo no tiene nodos anclados en Capitales Mínimos."""
+    G = ctx.grafo
+    if not cubre_to(G, CAP):
+        return res("no_aplicable", "el grafo no tiene nodos anclados en Capitales Mínimos")
+    nodos = G.buscar(None, CAP, "2.8.3.3")
+    con = [n for n in nodos if RE_75.search(texto(n)) and "salario minimo" in texto(n)]
+    val = {"pass": bool(con), "nodos_anclados_2_8_3_3": len(nodos),
+           "nodos_con_75_veces_smvm": [{"id": n["id"][:72], "type": n.get("type"), "label": n.get("label")} for n in con][:6]}
+    return res("resuelto" if con else "persiste", f"anclados_2_8_3_3={len(nodos)} con_75_veces_smvm={len(con)}", valores=val)
+
+
+def t_bkl_0002(ctx: Contexto) -> dict:
+    """BKL-0002 por punto (punto 4.f). El contenido sale del expediente del retriage (EXPEDIENTE, E2): «El acceso al
+    mercado de cambios se produce con una anterioridad no mayor a los 3 (tres) días hábiles a la fecha de vencimiento
+    del servicio de capital o interés a pagar» (ext 3.5.3). Resuelto: algún nodo anclado en ext 3.5.3 o en uno de sus
+    sub-puntos dice «dias habiles», «3» o «tres», «vencimiento» y «capital» o «interes». El defecto registrado es que
+    el contenido estaba anclado en otros puntos (locations «Punto 1.2.» y «Punto 3.17.», RX-02 y RX-03).
+    no_aplicable: el grafo no tiene nodos anclados en Exterior y Cambios."""
+    G = ctx.grafo
+    if not cubre_to(G, EXT):
+        return res("no_aplicable", "el grafo no tiene nodos anclados en Exterior y Cambios")
+    nodos = G.buscar(None, EXT, "3.5.3", prefijo_punto=True)
+
+    def dice(n: dict) -> bool:
+        t = texto(n)
+        return "dias habiles" in t and bool(RE_TRES.search(t)) and "vencimiento" in t and ("capital" in t or "interes" in t)
+    con = [n for n in nodos if dice(n)]
+    puntos = sorted({p for n in con for a, p in anclas(n) if a.startswith(EXT)})
+    val = {"pass": bool(con), "nodos_anclados_3_5_3": len(nodos), "puntos": puntos,
+           "nodos_con_la_ventana": [{"id": n["id"][:72], "type": n.get("type"), "label": n.get("label")} for n in con][:6]}
+    return res("resuelto" if con else "persiste", f"anclados_3_5_3={len(nodos)} con_la_ventana_de_3_dias_habiles={len(con)} "
+               f"puntos={puntos}", valores=val)
+
+
+def t_firmas_condicion_de(ctx: Contexto) -> dict:
+    """Las dos firmas nuevas de `condicion_de` (punto 4.c; L-ESQ-R2 §6.3 y §6.5): Condicion → Operacion y
+    Condicion → Potestad están en la matriz del perfil r2 (`firmas_r2` y `ampliacion_r2` de enums_r2.json), y el
+    grafo no tiene relaciones marcadas como no verificadas por E3 (`no_verificada_e3`), que en el grafo de la
+    release tiene que dar 0 (en r2a entran marcadas por la firma: §6.4). Los conteos de las dos firmas son
+    informativos: su confirmación es la lectura posterior a U-REEXT-T0 (§6.3)."""
+    if ctx.perfil != "r2":
+        return res("no_aplicable", NOTA_PERFIL_EXISTENTE)
+    G = ctx.grafo
+    dom, rng = (ctx.enums_r2.get("firmas_r2") or {}).get("condicion_de") or [[], []]
+    amp = {tuple(x) for x in ctx.enums_r2.get("ampliacion_r2") or []}
+    en_matriz = OrderedDict((f"Condicion->{t}", "Condicion" in dom and t in rng and ("condicion_de", "Condicion", t) in amp)
+                            for t in ("Operacion", "Potestad"))
+    por_destino = Counter(G.tipo(e["target"]) for e in G.E
+                          if e.get("relation") == "condicion_de" and G.tipo(e["source"]) == "Condicion")
+    nv = [e for e in G.E if e.get("no_verificada_e3")]
+    nv_firma = Counter(f"{G.tipo(e['source'])}-{e['relation']}-{G.tipo(e['target'])}" for e in nv)
+    sub = OrderedDict([("firmas_en_la_matriz", all(en_matriz.values())), ("cero_no_verificadas_e3", not nv)])
+    val = {"firmas_en_la_matriz": en_matriz,
+           "condicion_de_desde_condicion_por_destino": dict(sorted(por_destino.items(), key=lambda kv: str(kv[0]))),
+           "no_verificadas_e3": len(nv), "no_verificadas_e3_por_firma": dict(sorted(nv_firma.items()))}
+    return res("resuelto" if all(sub.values()) else "persiste",
+               f"matriz {dict(en_matriz)}; condicion_de → Operacion {por_destino.get('Operacion', 0)}, → Potestad "
+               f"{por_destino.get('Potestad', 0)}; no_verificada_e3 {len(nv)} {dict(sorted(nv_firma.items()))}",
+               subchecks=sub, valores=val)
+
+
+# Exentos del control de cero elementos sin verificar (FRENO P3 de U-PROMPT-R2, A3, punto 5; 4aa92c7): los
+# elementos de umbral, los Sujeto (no están entre los nueve tipos), el TextoOrdenado canónico y las aristas derivadas.
+ROL_FUENTE_DERIVADA = ("derivada_de_procedencia", "esqueleto")
+REPORTE_ENSAMBLADO_R2 = "reporte_ensamblado_r2.json"
+
+
+def es_derivada(e: dict) -> bool:
+    return e.get("rol_fuente") in ROL_FUENTE_DERIVADA or e.get("relation") == remisiones.PREDICADO_REMISION
+
+
+def t_sin_verif_e3(ctx: Contexto) -> dict:
+    """Cero elementos de extracción sin verificar por E3 (punto 4.e), con la especificación del FRENO P3 de
+    U-PROMPT-R2, A3 (data/experiment/prompt_r2/freno_p3.md, seis puntos; 4aa92c7):
+      1. ámbito: perfil r2 y fase r2b (la fase sale del reporte del ensamblado, `fase`); con r2a, no_aplicable;
+      2. aristas de E1 (predicados de enums_r2 que no son derivadas: rol_fuente derivada_de_procedencia o esqueleto,
+         o `remite_a`) sin `no_verificada_e3`;
+      3. nodos de los nueve tipos, salvo el TextoOrdenado: todo nodo tiene una procedencia de una unidad
+         (chunk_id); el que viene de la cola humana lleva la marca `cola_humana` y se cuenta aparte;
+      4. el registro de la entrada, del reporte del ensamblado r2b (punto s de C2 de U-R2-CODIGO-2,
+         `paso_por_e3.total`): 0 entidades y 0 relaciones sin verificar fuera de la cola, y 0 aristas
+         `aristas_no_verificadas_e3`; la cola, los excluidos (`no_vistos_e3`) y las unidades sin índices, aparte;
+      5. exentos: ROL_FUENTE_DERIVADA, `remite_a`, los Sujeto, el TextoOrdenado y los elementos de umbral;
+      6. persiste con cualquier conteo mayor que 0."""
+    if ctx.perfil != "r2":
+        return res("no_aplicable", NOTA_PERFIL_EXISTENTE)
+    p = ctx.registro_dir / REPORTE_ENSAMBLADO_R2 if ctx.registro_dir is not None else None
+    if p is None or not p.exists():
+        return res("no_aplicable", f"sin {REPORTE_ENSAMBLADO_R2} en {ctx.registro_dir}: el control lee el conteo del "
+                   "reporte del ensamblado r2b")
+    rep = json.loads(p.read_text(encoding="utf-8"))
+    if rep.get("fase") != "r2b":
+        return res("no_aplicable", f"fase {rep.get('fase') or 'r2a'}: el control rige desde r2b; los grafos r2a llevan "
+                   "la marca no_verificada_e3 por la firma (FRENO P3 de U-PROMPT-R2, A3, punto 1)")
+    G = ctx.grafo
+    preds = set(ctx.enums_r2.get("predicado") or [])
+    tipos = set(ctx.enums_r2.get("tipo_entidad") or []) - {"TextoOrdenado"}
+    aristas_e1 = [e for e in G.E if e.get("relation") in preds and not es_derivada(e)]
+    sin_verif = [e for e in aristas_e1 if e.get("no_verificada_e3")]
+    nodos = [n for n in G.N if n.get("type") in tipos]
+    sin_proc = [n for n in nodos if not any(pv.get("chunk_id") for pv in provenances(n))]
+    cola = [n for n in nodos if str(prop(n, "cola_humana")).lower() == "true"]
+    tot = (rep.get("paso_por_e3") or {}).get("total") or {}
+    conteos = OrderedDict([("aristas_e1_con_no_verificada_e3", len(sin_verif)),
+                           ("nodos_sin_procedencia_de_unidad", len(sin_proc)),
+                           ("registro_entidades_sin_verificar", tot.get("entidades_sin_verificar")),
+                           ("registro_relaciones_sin_verificar", tot.get("relaciones_sin_verificar")),
+                           ("reporte_aristas_no_verificadas_e3", (rep.get("aristas_no_verificadas_e3") or {}).get("total"))])
+    ausentes = [k for k, v in conteos.items() if v is None]
+    ok = not ausentes and all(v == 0 for v in conteos.values())
+    aparte = {"cola_humana_registro": tot.get("cola_humana"), "nodos_con_la_marca_de_la_cola": len(cola),
+              "aristas_derivadas_que_tocan_un_nodo_solo_de_la_cola":
+                  rep.get("aristas_derivadas_que_tocan_un_nodo_solo_de_la_cola"),
+              "no_vistos_e3": {"entidades": tot.get("excluidos_entidades"), "relaciones": tot.get("excluidos_relaciones")},
+              "unidades_sin_indices_e3": tot.get("unidades_sin_indices_e3")}
+    return res("resuelto" if ok else "persiste",
+               f"{dict(conteos)}" + (f"; ausentes del reporte: {ausentes}" if ausentes else "")
+               + f"; aparte: cola {tot.get('cola_humana')}, nodos con la marca {len(cola)}",
+               valores={"conteos": conteos, "aparte": aparte, "aristas_e1": len(aristas_e1), "nodos": len(nodos),
+                        "ejemplos_sin_verificar": [(e["source"][:60], e["relation"], e["target"][:60]) for e in sin_verif[:5]],
+                        "ejemplos_sin_procedencia": [n["id"][:72] for n in sin_proc[:5]]})
+
+
+# Una entrada por cada id nuevo decidido (punto 4.d; L-ESQ-R2 §7.3 y §7.5), leída contra su chunk. «lectura» es mi
+# lectura de la e0 de la tanda 0 (salida_tanda0_r2b, 9f6361e) hecha en T1; «anclas»: (archivo, punto, prefijo,
+# id que no debe recibir la norma) donde el id es el sujeto de la norma.
+DEF_IDS_NUEVOS = OrderedDict([
+    ("Sujeto_entidad_financiera_del_exterior", {
+        "bkl": "BKL-0028", "domestico": "Sujeto_entidad_financiera", "anclas": (),
+        "lectura": "34 chunks de la tanda 0 nombran a las entidades financieras del exterior; en los 34 son "
+                   "contraparte u objeto (prestamista, depositario, beneficiario, garante), no el sujeto de una norma"}),
+    ("Sujeto_banco_del_exterior", {
+        "bkl": "BKL-0028", "domestico": "Sujeto_banco", "anclas": (),
+        "lectura": "9 chunks de la tanda 0 nombran a los bancos del exterior; en los 9 son contraparte u objeto"}),
+    ("Sujeto_entidad_cambiaria_del_exterior", {
+        "bkl": "BKL-0028", "domestico": "Sujeto_entidad_cambiaria", "anclas": (),
+        "lectura": "ningún chunk de la tanda 0 nombra a las entidades cambiarias o compañías cambistas del exterior"}),
+    ("Sujeto_titular_de_cuenta_corriente_en_el_bcra", {
+        "bkl": "BKL-0029", "rol": "Sujeto_rol_alcance_convca", "anclas": (),
+        "lectura": "ningún chunk de la tanda 0 nombra a los titulares de cuenta corriente en el BCRA (convca no está "
+                   "en la tanda 0): la condición de cierre es la del rol de convca"}),
+    ("Sujeto_instancia_de_gobierno_societario", {
+        "bkl": "BKL-0034", "subclases": ("Sujeto_directorio", "Sujeto_alta_gerencia", "Sujeto_comite_de_auditoria"),
+        "anclas": (),
+        "lectura": "clase que agrupa a los tres órganos; ningún chunk de la tanda 0 la nombra"}),
+    ("Sujeto_directorio", {
+        "bkl": "BKL-0034", "padre": "Sujeto_instancia_de_gobierno_societario",
+        "anclas": (("lingob", "2.3.2", False, "Sujeto_entidad_financiera"),),
+        "lectura": "lingob::2.3.2::intro: «2.3.2. Se asegurará de que la Alta Gerencia implemente procedimientos…», "
+                   "bajo «A esos efectos, el Directorio:» (lingob::2.3::intro); condición de cierre de BKL-0034"}),
+    ("Sujeto_alta_gerencia", {
+        "bkl": "BKL-0034", "padre": "Sujeto_instancia_de_gobierno_societario",
+        "anclas": (("lingob", "3.1", True, "Sujeto_entidad_financiera"),),
+        "lectura": "lingob::3.1::intro: «La Alta Gerencia, como una buena práctica, será responsable de:», con los "
+                   "ítems 3.1.1 a 3.1.7, todos de la Alta Gerencia"}),
+    ("Sujeto_comite_de_auditoria", {
+        "bkl": "BKL-0034", "padre": "Sujeto_instancia_de_gobierno_societario",
+        "anclas": (("lingob", "4.1", False, None), ("lingob", "5.1.4", False, None)),
+        "lectura": "lingob::4.1: «El Comité de auditoría deberá considerar la implementación de programas de "
+                   "capacitación…»; lingob::5.1.4: «El Comité de auditoría deberá coordinar los esfuerzos de las "
+                   "auditorías externa e interna…»"}),
+])
+RE_ARTICULO_INICIAL = re.compile(r"^(?:el|la|los|las|del|de la|de los|de las|al)\s+")
+
+
+def mencion_normalizada(s) -> str:
+    return RE_ARTICULO_INICIAL.sub("", norm(s))
+
+
+def t_id_nuevo(id_: str):
+    d = DEF_IDS_NUEVOS[id_]
+
+    def fn(ctx: Contexto) -> dict:
+        """Entrada del id nuevo (punto 4.d): (a) el id está en el catálogo; (b) la condición de cierre de su entrada
+        del backlog sobre el catálogo y el esqueleto; (c) toda arista de sujeto cuya mención es el label o un alias
+        del id (sin artículo) llega al id; (d) en cada ancla de la lectura, alguna norma (Obligacion, Restriccion o
+        Potestad) anclada tiene aplica_a hacia el id, y ninguna hacia el id excluido. Si el grafo no tiene nodos del
+        TO de ninguna de sus anclas, no_aplicable."""
+        if ctx.perfil != "r2":
+            return res("no_aplicable", NOTA_PERFIL_EXISTENTE)
+        G, cat = ctx.grafo, ctx.cat
+        sub, val = OrderedDict(), OrderedDict([("bkl", d["bkl"]), ("lectura", d["lectura"])])
+        sub["a_en_el_catalogo"] = id_ in cat.ids
+        ent = cat.clases.get(id_) or cat.roles.get(id_) or {}
+        nombres = {mencion_normalizada(x) for x in [ent.get("label")] + list(ent.get("alias") or []) if x}
+        if "domestico" in d:
+            alias_dom = [a for a in ((cat.clases.get(d["domestico"]) or {}).get("alias") or []) if "del exterior" in norm(a)]
+            sub["b_domestico_sin_alias_del_exterior"] = not alias_dom
+            val["b_alias_del_exterior_en_el_domestico"] = alias_dom
+        if "rol" in d:
+            miembro = any(e["relation"] == "miembro_de" and e["target"] == d["rol"] for e in G.salientes(id_))
+            residuo = (cat.roles.get(d["rol"]) or {}).get("residuo_declarado") or {}
+            sub["b_miembro_del_rol_en_el_grafo"] = miembro
+            sub["b_residuo_sin_colectivo_operativo_sin_id"] = "colectivo_operativo_sin_id" not in residuo
+        if "subclases" in d:
+            hijos = sorted(e["source"] for e in G.entrantes(id_) if e["relation"] == "subclase_de")
+            sub["b_subclases_en_el_esqueleto"] = all(h in hijos for h in d["subclases"])
+            val["b_subclases"] = hijos
+        if "padre" in d:
+            sub["b_padre_en_el_esqueleto"] = any(e["relation"] == "subclase_de" and e["target"] == d["padre"]
+                                                 for e in G.salientes(id_))
+        preds = set(ctx.enums_r2.get("predicados_sujeto") or [])
+        con_mencion = [e for e in G.E if e.get("relation") in preds and e.get("rol_fuente") != "esqueleto"
+                       and mencion_normalizada(e.get("sujeto_mencion")) in nombres]
+        otro = [e for e in con_mencion if e["target"] != id_]
+        sub["c_menciones_al_id"] = not otro
+        val["c_aristas_con_la_mencion"] = len(con_mencion)
+        val["c_a_otro_id"] = [(e["source"][:60], e["relation"], e["target"], e.get("sujeto_mencion")) for e in otro[:8]]
+        val["d_anclas"] = []
+        cubiertas = [x for x in d["anclas"] if cubre_to(G, x[0])]
+        if d["anclas"] and not cubiertas:
+            return res("no_aplicable", f"{d['bkl']}: el grafo no tiene nodos del TO de las anclas de la lectura "
+                       f"({sorted({x[0] for x in d['anclas']})}); la entrada se lee contra esos chunks", valores=val)
+        for to_pref, punto, pref, excluido in cubiertas:
+            normas = [n for n in G.buscar(None, to_pref, punto, prefijo_punto=pref) if n.get("type") in TIPOS_NORMA]
+            hacia = [n for n in normas if G.arista(n["id"], "aplica_a", id_)]
+            mal = [n for n in normas if excluido and G.arista(n["id"], "aplica_a", excluido)]
+            ok = bool(hacia) and not mal
+            sub[f"d_{to_pref}_{punto}"] = ok
+            val["d_anclas"].append({"ancla": f"{to_pref}::{punto}" + (" y sub-puntos" if pref else ""),
+                                    "normas": len(normas), "con_aplica_a_al_id": len(hacia),
+                                    "con_aplica_a_al_excluido": len(mal), "excluido": excluido})
+        estado = "resuelto" if all(sub.values()) else "persiste"
+        return res(estado, f"{d['bkl']}: " + "; ".join(f"{k} {v}" for k, v in sub.items())
+                   + f"; aristas con la mención {len(con_mencion)}"
+                   + ("; sin anclas en la tanda 0 (" + d["lectura"] + ")" if not d["anclas"] else ""),
+                   subchecks=sub, valores=val)
+    fn.__name__ = "t_id_" + id_.removeprefix("Sujeto_")
+    return fn
+
+
+# =========================================================================== #
 # Registro de los 46 ítems (id del inventario, forma, direccionamiento, evidencia)
 # =========================================================================== #
 def T(id_, fn, forma, direcc, evidencia, nota=""):
@@ -2019,10 +2335,34 @@ TESTS = [
       "reports/u_listas_nomap/diseno_listas_nomap.md §g; L-ESQ-R2 §5.5", "no_aplicable en r2a: las omisiones con categoría y tramo son de r2b"),
     T("LN-8", t_ln_8, "F1 (bloque del prompt = JSON único)", "generados_r2/bloque_catalogo_r2.txt; catalogo_sujetos_r2.json",
       "reports/u_listas_nomap/diseno_listas_nomap.md §g; L-ESQ-R2 §7.5"),
-]
+    # U-REEXT-T0, T1, punto 4 (mandato firmado en e2027dd)
+    T("BKL-0001", t_bkl_0001, "F1 (nodo anclado en el punto con el contenido)",
+      "(TO_capitales, 2.8.3.3, cualquier tipo, «75» + «salario minimo»)",
+      f"{EXPEDIENTE}:28-41 (E1); docs/mandatos/UREEXT_T0_reextraccion_tanda0.md:152-154 (e2027dd)",
+      "test por punto, como T1 de BKL-0024; no_aplicable sin nodos de Capitales Mínimos"),
+    T("BKL-0002", t_bkl_0002, "F1 (nodo anclado en el punto o un sub-punto con el contenido)",
+      "(TO_exterior, 3.5.3 y sub-puntos, cualquier tipo, «dias habiles» + «3»/«tres» + «vencimiento» + «capital»/«interes»)",
+      f"{EXPEDIENTE}:43-55 (E2); docs/mandatos/UREEXT_T0_reextraccion_tanda0.md:152-154 (e2027dd)",
+      "test por punto, como T1 de BKL-0024; no_aplicable sin nodos de Exterior y Cambios"),
+    T("FIRMAS-condicion_de", t_firmas_condicion_de,
+      "F3 (firmas en la matriz de enums_r2.json) + conteo de no_verificada_e3 = 0 + F4 informativo (aristas por firma)",
+      "firmas_r2 y ampliacion_r2 de pyd_r2/generados/enums_r2.json; aristas condicion_de desde Condicion; no_verificada_e3",
+      "data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md:784-822 (§6.3 a §6.5, 4ef7650)"),
+    T("SIN-VERIF-E3", t_sin_verif_e3,
+      "conteos del grafo (aristas de E1 con no_verificada_e3, nodos sin procedencia de unidad) + del reporte del ensamblado r2b (paso_por_e3, aristas_no_verificadas_e3)",
+      "aristas con predicado de E1 no derivadas; nodos de los nueve tipos salvo TextoOrdenado; reporte_ensamblado_r2.json",
+      "data/experiment/prompt_r2/freno_p3.md:82-111 (A3, seis puntos; 4aa92c7); data/experiment/r2_codigo2/freno_c2.md (punto s; 9f6361e)",
+      "la cola humana es la excepción explícita y se cuenta aparte (A5); no_aplicable en r2a"),
+] + [T(i, t_id_nuevo(s), "F1 (id en el catálogo) + condición de cierre sobre catálogo y esqueleto + F4 (menciones y anclas)",
+       f"{s}: menciones por label y alias; anclas de la lectura en DEF_IDS_NUEVOS",
+       "data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md:887-925 (§7.3 a §7.5, 4ef7650); data/backlog/backlog.jsonl "
+       f"(condicion_de_cierre de {DEF_IDS_NUEVOS[s]['bkl']})", DEF_IDS_NUEVOS[s]["lectura"])
+     for i, s in zip(ITEMS_ID, IDS_NUEVOS_R2)]
 
 
 def convertibilidad(id_: str) -> str:
+    if id_ in ITEMS_UREEXT:
+        return "U-REEXT-T0"
     if id_ in CONVERTIBLES:
         return "convertible"
     if id_ in CON_CONDICION:
@@ -2035,6 +2375,8 @@ def convertibilidad(id_: str) -> str:
 
 
 def grupo(id_: str) -> str:
+    if id_ in ITEMS_PUNTO:
+        return "ii"
     if id_ in ITEMS_R2 and not id_.startswith("RT"):
         return "r2"
     return "i-BKL" if id_.startswith("BKL") else "i-RT" if id_.startswith("RT") else "ii" if id_[0] in "TI" else "iii"
@@ -2210,7 +2552,7 @@ def correr(args) -> tuple:
     if G.generacion_detectada and G.generacion_detectada != args.generacion:
         raise SystemExit(f"--generacion {args.generacion} no coincide con el formato de provenance detectado (gen {G.generacion_detectada}) en {kg_path}")
     ctx = Contexto(G, cat, args.generacion, args.politica_cuarentena, esqueleto_ref_ruta=args.esqueleto_referencia,
-                   perfil=args.perfil, registro_dir=args.registro_dir)
+                   perfil=args.perfil, registro_dir=args.registro_dir, manifiesto=args.manifiesto)
     solo = set(args.solo.split(",")) if args.solo else None
     items = ejecutar(ctx, solo)
     resumen = Counter(it["estado"] for it in items)
@@ -2226,6 +2568,7 @@ def correr(args) -> tuple:
         ("harness_sha256", sha256_path(EVALUACION / "harness.py")), ("loader_sha256", sha256_path(EVALUACION / "loader.py")),
         ("particion", verificar_particion()), ("solo", sorted(solo) if solo else None),
         ("perfil", args.perfil), ("registro_dir", str(ctx.registro_dir) if ctx.registro_dir else None),
+        ("tos_bajo_prueba", ctx._tos_bajo_prueba[0] if ctx._tos_bajo_prueba is not None else None),
     ])
     salida["resumen"] = {"items": len(items), "resuelto": resumen.get("resuelto", 0), "persiste": resumen.get("persiste", 0), "no_aplicable": resumen.get("no_aplicable", 0)}
     salida["ranks_sellados"] = resumen_ranks(items)
@@ -2285,6 +2628,9 @@ def parser() -> argparse.ArgumentParser:
     ap.add_argument("--registro-dir", default=None, dest="registro_dir",
                     help="directorio con no_mapeados_sujetos.jsonl y resolucion_sujetos.jsonl (default: el del kg.json)")
     ap.add_argument("--sin-censos", action="store_true", dest="sin_censos", help="no computa los censos informativos")
+    ap.add_argument("--manifiesto", default=None,
+                    help="manifiesto del grafo bajo prueba (U-REEXT-T0, T1, punto 4.a: TOs de T6 y E4-b); default: el "
+                         "manifiesto.path del reporte del ensamblado junto al kg.json, o los cinco TOs de desarrollo")
     return ap
 
 

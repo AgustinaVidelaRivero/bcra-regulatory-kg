@@ -78,6 +78,9 @@ enmienda 2). Con `--perfil r2`:
   COMPUTABLE»). S27 es informativa con `--fase r2a` (default) y bloqueante con
   `--fase r2b`. S28 lee el registro de no mapeados (`--registro-dir`, default
   el directorio del kg.json; sin registro, «NO COMPUTABLE»).
+- S32 (U-REEXT-T0, T1, punto 4.b), informativa: cuantía en la descripción =>
+  elemento en la lista de umbrales, con el detector de cuantías del pipeline
+  (pyd_r2/code/reglas_comparacion.py, solo stdlib, cargado del fuente).
 - Veredicto: NO PASA si alguna bloqueante falla; INCOMPLETO si ninguna falla y
   alguna bloqueante es NO COMPUTABLE; PASA si no. Código de salida 0 / 1 / 3.
 
@@ -212,6 +215,9 @@ NUMERACION_PERFIL = {
 # ---------------------------------------------------------------------------
 RUTA_ENUMS_R2 = os.path.join(REPO_ROOT, "data", "experiment", "pyd_r2", "generados", "enums_r2.json")
 RUTA_MODELOS_R2 = os.path.join(REPO_ROOT, "data", "experiment", "pyd_r2", "code", "modelos_r2.py")
+# S32 (U-REEXT-T0, T1, punto 4.b): el detector de cuantías del pipeline (reglas_comparacion.detectar_cuantias, solo
+# stdlib), cargado del fuente; no se copia nada acá.
+RUTA_REGLAS_COMPARACION = os.path.join(REPO_ROOT, "data", "experiment", "pyd_r2", "code", "reglas_comparacion.py")
 RUTA_GENERADOS_R2 = os.path.join(REPO_ROOT, "data", "experiment", "catalogo_unico", "generados_r2")
 RUTA_IDS_S19_R2 = os.path.join(RUTA_GENERADOS_R2, "ids_s19_r2.json")
 RUTA_EXCEPCIONES_S15_R2 = os.path.join(RUTA_GENERADOS_R2, "entrada_esqueleto_r2.json")
@@ -224,7 +230,7 @@ NO_COMPUTABLE = "NO COMPUTABLE"
 
 BLOQUEANTES_R2 = ("S1", "S2", "S3", "S4", "S5", "S6", "S15", "S18", "S19", "S20", "S24", "S25", "S26",
                   "S28", "S29", "S30", "S31")
-INFORMATIVAS_R2 = ("S7", "S8", "S9", "S10", "S11", "S12", "S21", "S22", "S23")
+INFORMATIVAS_R2 = ("S7", "S8", "S9", "S10", "S11", "S12", "S21", "S22", "S23", "S32")
 
 NUMERACION_PERFIL_R2 = {
     "S18": "Reescrita (L-ESQ-R2 §1.5): Restriccion de tipo limite_cuantitativo => lista de umbrales "
@@ -239,6 +245,10 @@ NUMERACION_PERFIL_R2 = {
     "S30": "alcance de remite_a en la lista cerrada y coherente con los extremos (bloqueante).",
     "S31": "evidencia de remite_a: tramo literal de un único tramo del texto de E0 de su chunk_id "
            "(bloqueante; sin --e0, NO COMPUTABLE).",
+    "S32": "Cuantía en la descripción => elemento en la lista (informativa; L-ESQ-R2 §1.5 y "
+           "reports/u_umbral/reporte_u_umbral.md §2): en los tipos con lista de umbrales, un nodo cuya descripción "
+           "trae una cuantía (reglas_comparacion.detectar_cuantias) tiene la lista no vacía o el umbral guardado "
+           "(marca); aparte, las cuantías de la descripción sin un elemento de igual valor y unidad.",
 }
 
 # Shapes de v0 que quedan FUERA del perfil, declaradas para que el hueco se
@@ -1093,6 +1103,7 @@ def cargar_vocabulario_r2(ruta=RUTA_ENUMS_R2, sha_esperado=SHA256_ENUMS_R2_ESPER
         "claves_por_tipo": {t: tuple(v) for t, v in d["claves_por_tipo"].items()},
         "marcas_nodo": _marcas_nodo_r2(),
         "predicados_sujeto": tuple(d["predicados_sujeto"]),
+        "tipos_con_umbrales": tuple(d["tipos_con_umbrales"]),     # S32 (U-REEXT-T0, T1, punto 4.b)
         # listas cerradas de valores: «Tipo.campo», «umbral.campo», «omision.campo» y las marcas
         # (mencion_verificada, tramo_verificado, coherencia_tipo_predicado)
         "enums": {k: tuple(v) for k, v in d.items() if isinstance(v, list) and k not in (
@@ -1392,6 +1403,59 @@ def shape_s31_evidencia(edges, e0_dir):
                 viol, conteos={"remite_a": len(rem), **dict(sorted(c.items())), "violaciones": len(viol), "e0": e0_dir})
 
 
+def _reglas_comparacion(ruta=RUTA_REGLAS_COMPARACION):
+    """reglas_comparacion.py del pipeline (pyd_r2/code), cargado del fuente sin bytecode (solo stdlib)."""
+    nombre = "reglas_comparacion_s32"
+    if nombre in sys.modules:
+        return sys.modules[nombre]
+    spec = importlib.util.spec_from_file_location(nombre, ruta)
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[nombre] = mod      # dataclasses lo busca en sys.modules al definir Cuantia
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def shape_s32_cuantia(nodes, vocab, rc=None):
+    """S32 (informativa): cuantía en la descripción => elemento en la lista de umbrales (o el umbral guardado como
+    marca, como en S18). Por nodo, en los tipos de `tipos_con_umbrales`; aparte, por cuantía: las de la descripción
+    sin un elemento de igual (valor, unidad) en la lista."""
+    rc = rc or _reglas_comparacion()
+    tipos = tuple(vocab["tipos_con_umbrales"])
+    viol, por_tipo = [], Counter()
+    con_cuantia = con_lista = con_marca = cuantias = sin_elemento = 0
+    for n in nodes:
+        if n["type"] not in tipos:
+            continue
+        props = n.get("properties") or {}
+        cs = rc.detectar_cuantias(str(props.get("descripcion") or ""))
+        if not cs:
+            continue
+        con_cuantia += 1
+        lista = props.get("umbrales")
+        valores = {(str(u.get("valor")), u.get("unidad")) for u in lista if isinstance(u, dict)} \
+            if isinstance(lista, list) else set()
+        cuantias += len(cs)
+        sin_elemento += sum(1 for c in cs if (str(c.valor), c.unidad) not in valores)
+        if isinstance(lista, list) and lista:
+            con_lista += 1
+        elif "umbral" in (n.get("campos_heredados_v3") or {}) or "umbral" in (n.get("properties_no_definidas") or {}):
+            con_marca += 1
+        else:
+            por_tipo[n["type"]] += 1
+            viol.append(f"nodo {n['id']}: {len(cs)} cuantía(s) en la descripción ({', '.join(c.texto for c in cs[:3])}) "
+                        f"y lista vacía")
+    return _res(
+        "S32", "INFORMATIVA — " + NUMERACION_PERFIL_R2["S32"],
+        "PASS" if not viol else "FAIL",
+        f"{con_cuantia} nodos con cuantía en la descripción: {con_lista} con lista, {con_marca} con el umbral guardado "
+        f"(marca), {len(viol)} sin ninguna {dict(sorted(por_tipo.items()))}; cuantías de la descripción {cuantias}, "
+        f"sin elemento de igual valor y unidad {sin_elemento}.",
+        viol, conteos={"nodos_con_cuantia": con_cuantia, "con_lista": con_lista, "con_marca": con_marca,
+                       "sin_lista_ni_marca": len(viol), "sin_lista_por_tipo": dict(sorted(por_tipo.items())),
+                       "cuantias_en_la_descripcion": cuantias, "cuantias_sin_elemento": sin_elemento,
+                       "detector_sha256": sha256_archivo(RUTA_REGLAS_COMPARACION)})
+
+
 def evaluar_perfil_r2(g, vocab, fase, registro_ruta, e0_dir, ids_s19_ruta=RUTA_IDS_S19_R2,
                       excepciones_ruta=RUTA_EXCEPCIONES_S15_R2):
     nodes, edges = g["nodes"], g["edges"]
@@ -1434,6 +1498,7 @@ def evaluar_perfil_r2(g, vocab, fase, registro_ruta, e0_dir, ids_s19_ruta=RUTA_I
         shape_s21_referencias(edges, node_by_id, perfil="r2"),
         shape_s22_padre_sugerido(edges, node_by_id),
         shape_s23_aplica_a_cuarentena(edges, node_by_id),
+        shape_s32_cuantia(nodes, vocab),
     ]
     resultados = {r["rid"]: r for r in lista}
     bloq = list(BLOQUEANTES_R2) + (["S27"] if fase == "r2b" else [])
