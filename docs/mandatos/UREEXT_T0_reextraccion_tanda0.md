@@ -1,4 +1,4 @@
-BORRADOR — PENDIENTE DE FIRMA (versión para firmar, del 05/10/2026)
+FIRMADO por la autora el 05/10/2026 (firma por mensaje de la autora; versión para firmar en `1d8fe9f`, sobre el borrador de `f959beb`)
 
 MANDATO — U-REEXT-T0: RE-EXTRACCIÓN DE LOS DIEZ TOs DE LA TANDA 0 CON EL PERFIL r2b, GATE DE r2b Y PRIMERA
 LECTURA DE LA COLA HUMANA.
@@ -367,15 +367,15 @@ temperatura; volver a extraer una unidad fuera de los reintentos del pipeline; t
 grafos sellados de r1 y de r2a; correr EV2 o cualquier celda con agente; usar las 15 preguntas como
 evaluación; actualizar el corpus; commitear.
 
-DECISIONES DE LA AUTORA AL FIRMAR.
-1. El tope de T2: USD 80 (decisión de la autora del 05/10/2026; antes, USD 72). La re-estimación con lo
-   medido en P5 llega a 69,91 con el factor 1,4.
-2. Si las celdas con agente de la tanda 0 se vuelven a correr sobre los grafos r2b (referencia: USD 21,2577;
-   propuesta: no en esta unidad).
-3. Las carpetas de salida (propuesta: `salida_r2b/`, `ens_diez_r2b/`, `ens_desarrollo_r2b/` y
-   `data/experiment/reext_t0/`).
-4. Si el registro y la carga en Neo4j van en esta unidad (propuesta: sí, en T3).
-5. La semilla del sorteo de la cola humana (propuesta: `U-REEXT-T0:cola-humana:2026-10-05`).
+DECISIONES DE LA AUTORA AL FIRMAR, tomadas el 05/10/2026.
+1. El tope de T2: USD 80 (antes, USD 72). La re-estimación con lo medido en P5 llega a 69,91 con el factor
+   1,4.
+2. Las celdas con agente de la tanda 0 no se vuelven a correr sobre los grafos r2b en esta unidad
+   (referencia de su costo: USD 21,2577).
+3. Las carpetas de salida: `salida_r2b/`, `ens_diez_r2b/`, `ens_desarrollo_r2b/` y
+   `data/experiment/reext_t0/`.
+4. El registro de los dos grafos y su carga en Neo4j van en esta unidad, en T3.
+5. La semilla del sorteo de la cola humana: `U-REEXT-T0:cola-humana:2026-10-05`.
 Ya decididas por la autora el 05/10/2026, y en el texto de arriba: la temperatura de E1, en 0, y la del
 reintento por salida mal formada, en 1, con P5 de U-PROMPT-R2 como precondición; la temperatura de E3, que
 queda sin fijar, declarada como límite, sin cambiar su modelo; la condición 10, si el nodo de la Excepcion no
