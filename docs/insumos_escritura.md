@@ -230,15 +230,21 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
 
 ## 6. Segmentación oficial con e0-r2 de los 152 TOs (U-SEG-OFICIAL) — pendiente
 
-- **Ruta y commit:** NO EXISTE todavía. Mandato en borrador,
+- **Ruta y commit:** NO EXISTE todavía. Mandato firmado por la autora el 05/10/2026,
   `docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md`; plan, B2.11, unidad 15 (`docs/plan_tesis.md:404`).
-  Se genera después del cierre de U-R2-CODIGO-2, que cambia e0-r2.
+  Se genera después del cierre de U-R2-CODIGO-2 (`9f6361e`), que cambia e0-r2.
 - **Qué va a contener:** la E0 de los 152 TOs con su manifiesto (qué TOs se segmentan por punto y
   cuáles van por la vía de páginas) y las cifras de la segmentación, cada una con su archivo, su
   clave y su comando.
-- **Alimenta:** la sección 4.1 de la tesis. Hasta que exista, sus cifras no se toman de la
-  segmentación legada (`data/experiment/segmentacion_84/b584_particion/`) ni de la escalera de R5 de
-  U-R2-CODIGO, que corrió en el scratchpad (`data/experiment/r2_codigo/r5_freno.md`, §D).
+- **Alimenta:** la sección 4.1 de la tesis y las cifras que la tesis toma de la segmentación fuera de
+  esa sección (punto 4 de S2 del mandato): las unidades por conjunto, los puntos y el porcentaje de
+  terminales por clase de documento, y los documentos que toman el primer nivel como sección o no son
+  segmentables. Las definiciones de ese punto se fijan contra el texto vigente del capítulo 4 antes de
+  despachar S2; hoy esas cifras salen de la partición legada
+  (`reports/u_insumos_cap/estadisticas_corpus.md` y `reports/u_cap3_datos/datos.md`). Hasta que el
+  artefacto exista, las cifras de la sección 4.1 no se toman de la segmentación legada
+  (`data/experiment/segmentacion_84/b584_particion/`) ni de la escalera de R5 de U-R2-CODIGO, que corrió
+  en el scratchpad (`data/experiment/r2_codigo/r5_freno.md`, §D).
 - **Disparador de escritura (VSEG41, 03/10/2026).** Cuando la segmentación oficial quede commiteada,
   se corre una verificación de solo lectura sobre ese artefacto que recomputa las cifras de la sección
   4.1 marcadas [AL CIERRE: e0-r2] en el .tex. La verificación lista, por cada marca:

@@ -1,4 +1,4 @@
-BORRADOR — PENDIENTE DE FIRMA (versión para firmar, del 05/10/2026)
+FIRMADO por la autora el 05/10/2026 (firma por mensaje de la autora; versión para firmar en `f1e4e1b`). La decisión 6 queda abierta: es precondición de S2.
 
 MANDATO — U-SEG-OFICIAL: SEGMENTACIÓN OFICIAL CON e0-r2 DE LOS 152 TOs DEL UNIVERSO, VERSIONADA CON SU MANIFIESTO.
 Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
@@ -22,7 +22,7 @@ Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar.
     U-REEXT-T0 escribe mientras corre: esa carpeta, las bases de caché de E1 y de E3, los logs de usage y
     data/experiment/reext_t0/.
   - S0-2, la implementación, edita `e0_lib.py` y `correr_e0.py`: no arranca hasta que la autora haya
-    commiteado el FRENO T5 de U-REEXT-T0 (decisión 4 al firmar). Antes de editar, mostrá ese commit con
+    commiteado el FRENO T5 de U-REEXT-T0 (decisión 4). Antes de editar, mostrá ese commit con
     `git log`. Si no está, frená sin escribir.
   - S1 y S2 no editan código y escriben solo en la carpeta de la unidad.
 
@@ -162,6 +162,10 @@ S1. MANIFIESTO Y CORRIDA.
 FRENO S1.
 
 S2. DIFERENCIAS CONTRA LA PARTICIÓN Y CIFRAS.
+PRECONDICIÓN DE S2 (decisión 6, abierta al firmar): antes de despachar S2, la autora fija contra el texto
+vigente del capítulo 4 las definiciones del punto 4: qué TOs forman cada conjunto, qué es una clase de
+documento y qué documentos «toman el primer nivel como sección». Llegan en el «seguí» de S2. Sin ellas,
+el punto 4 no se computa: frená.
 1. Diferencias contra `b584_particion/`, atribuidas por clase como en el control de R5: ids desambiguados
    (L), unidades sin partir por tabla, ids de K, lo que cambien los puntos (f), (h), (l) y (n) de
    U-R2-CODIGO-2 y lo que cambie S0; texto distinto por tablas, pies, K y arrastre. Lo que ninguna clase
@@ -178,20 +182,24 @@ S2. DIFERENCIAS CONTRA LA PARTICIÓN Y CIFRAS.
 4. Cifras que la tesis toma de la segmentación fuera de la sección 4.1 (hallazgo de la escritura del
    capítulo 4, del 05/10/2026). Hoy salen de la partición legada:
    reports/u_insumos_cap/estadisticas_corpus.md (`ded3494`) y reports/u_cap3_datos/datos.md, D3. Se
-   recomputan con las reglas que declara ese reporte (R0, R1, R3 y R12), y cada una va al lado de la cifra
-   legada, con su diferencia:
-   a. las unidades por conjunto, en total y por tipo de unidad: desarrollo (los cinco TOs de desarrollo),
-      validación (los cinco TOs de la tanda 0 que no son de desarrollo) y universo a escalar (los 152). La
-      fuente de los dos primeros es la e0-r2 de la tanda 0 (`salida_tanda0_r2b/`, `9f6361e`), que esta
-      unidad solo lee; la del tercero, la salida de S1. Legadas: 1.763, 671 y 9.324;
-   b. los puntos de la estructura y el porcentaje de terminales (R12), por clase de documento (la categoría
-      de R1: normativa general y régimen informativo) y por conjunto. Legadas, por conjunto: 1.475 de 1.810,
-      577 de 710 y 7.413 de 9.105;
-   c. los documentos que toman el primer nivel como sección (modo de lectura sin raíz) y los que no son
-      segmentables o son parciales, con la lista de TOs de cada grupo. Legadas: 56 sin raíz, de los que 42
-      son reconocidos plenos, 2 parciales y 12 no segmentables.
-   Si una regla de aquel reporte no se puede aplicar igual sobre e0-r2, se declara y no se adapta en
-   silencio.
+   recomputan sobre la segmentación oficial, y cada una va al lado de la cifra legada, con su diferencia:
+   a. las unidades por conjunto (desarrollo, validación y universo a escalar), en total y por tipo de
+      unidad;
+   b. los puntos de la estructura y el porcentaje de terminales, por clase de documento;
+   c. los documentos que toman el primer nivel como sección o no son segmentables, con la lista de TOs de
+      cada grupo.
+   Las definiciones de los conjuntos, de la clase de documento y del «primer nivel como sección» son las de
+   la precondición de S2: no se toman del reporte legado. Lo que hay para fijarlas:
+   - el reporte legado agrupa por conjunto (`desarrollo_5`, `tanda0_5` y `corpus_152`: 1.763, 671 y 9.324
+     unidades; 1.475 de 1.810, 577 de 710 y 7.413 de 9.105 puntos terminales) y por categoría (normativa
+     general y régimen informativo), y cuenta 56 TOs en modo de lectura sin raíz;
+   - el borrador del 30/09/2026 de los capítulos 3 y 4 agrupa los documentos en tres grupos, según cuánto
+     de su contenido está escrito como puntos normativos numerados: 138, 2 y 12 (dato de la autora; ese
+     texto no está en el repo: NO VERIFICADA). Son las cantidades de las tres clases de la partición
+     (`particion_152.json`, `agregados`: 138 reconocidos plenos, 2 parciales y 12 no segmentables).
+   La fuente de los TOs que no son de la partición es la e0-r2 de la tanda 0 (`salida_tanda0_r2b/`,
+   `9f6361e`), que esta unidad solo lee. Si una regla del reporte legado no se puede aplicar igual sobre
+   e0-r2, se declara y no se adapta en silencio.
    Los puntos 3 y 4 van a `cifras_segmentacion_oficial.md` en la carpeta de la salida, cada cifra con su
    archivo, su clave y su comando, recomputada contra su artefacto. Es el artefacto que lee la verificación
    de las marcas [AL CIERRE: e0-r2] de la sección 4.1 (docs/insumos_escritura.md, §6), y del que la tesis
@@ -208,22 +216,21 @@ archivo que U-REEXT-T0 esté escribiendo; editar código del repo en S0-1; cambi
 editar la tabla de reprocesamiento; tocar `.gitignore`; commitear. En S1 y S2 el código de E0 no se edita:
 si un control falla por el código, se reporta y no se corrige ahí.
 
-DECISIONES DE LA AUTORA AL FIRMAR.
-1. La carpeta de la salida (propuesta: data/experiment/segmentacion_oficial_e0r2/).
-2. Si el manifiesto incluye a los 14 fuera de las tandas, con la vía que les fijan las enmiendas firmadas a
-   las adendas 1 y 2 del laudo B5.5 (`e82e22f`) (propuesta: sí, para que el artefacto cubra los 152).
-3. Si la salida se commitea entera o solo el manifiesto con los sha256 (propuesta: se decide en el FRENO
-   S1, con el tamaño medido).
-4. Desde cuándo puede arrancar S0-2, que edita código de E0 (propuesta: desde el commit del FRENO T5 de
-   U-REEXT-T0, porque T3 y T5 también corren código de E0 sobre copias del árbol de trabajo; como mínimo,
-   desde el del FRENO T2).
-5. Si S0-1 arranca ya, en paralelo con T2 de U-REEXT-T0 (propuesta: sí).
-6. Las definiciones del punto 4 de S2 (propuesta: validación, los cinco TOs de la tanda 0 que no son de
-   desarrollo; clase de documento, la categoría de R1; primer nivel como sección, el modo de lectura sin
-   raíz).
-7. La clase A del punto 6 de S0 (propuesta: las 14 de la cota de P4, recalculadas con la medición de T2 de
-   U-REEXT-T0; la decisión del 04/10/2026 hablaba de 8).
-8. El control de la tabla de reprocesamiento y del selftest de claves en S0-2 (propuesta: sí).
+DECISIONES DE LA AUTORA AL FIRMAR, tomadas el 05/10/2026.
+1. La carpeta de la salida: data/experiment/segmentacion_oficial_e0r2/.
+2. El manifiesto incluye a los 14 fuera de las tandas, con la vía que les fijan las enmiendas firmadas a
+   las adendas 1 y 2 del laudo B5.5 (`e82e22f`), para que el artefacto cubra los 152.
+3. Si la salida se commitea entera o solo el manifiesto con los sha256 se decide en el FRENO S1, con el
+   tamaño medido.
+4. S0-2, que edita código de E0, arranca desde el commit del FRENO T5 de U-REEXT-T0: T3 y T5 también
+   corren código de E0 sobre copias del árbol de trabajo.
+5. S0-1 arranca ya, en paralelo con T2 de U-REEXT-T0.
+6. ABIERTA. Las definiciones del punto 4 de S2 no se firman ahora, porque salen de un reporte legado y no
+   del texto de la tesis. Se fijan contra el texto vigente del capítulo 4 antes de despachar S2
+   (precondición de S2).
+7. La clase A del punto 6 de S0 son las 14 de la cota de P4, recalculadas con la medición de T2 de
+   U-REEXT-T0. La decisión del 04/10/2026 hablaba de 8.
+8. S0-2 lleva el control de la tabla de reprocesamiento y del selftest de claves.
 
 REQUISITOS: los de CLAUDE.md §4 (a a l), con PYTHONDONTWRITEBYTECODE=1 y .venv/bin/python -B; corridas,
 selftests y verificaciones sobre una copia sin enlaces, con el sha256 de los archivos del repo antes y
