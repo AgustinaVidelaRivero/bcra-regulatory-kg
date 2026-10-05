@@ -887,3 +887,27 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     modalidad: si algo se exige, se permite o se aconseja, o si basta una entre varias opciones. No marca
     «indistintamente», «concurrentemente» ni «se recomienda». En P4 no cambia ninguna cifra.
   El commit de P3c-2 y el despacho del «seguí» de P4b están PENDIENTES.
+- **04/10/2026 — corrección de la clase «modalidad» del contador, contrastada (decisión de la autora).** P3c-2
+  quedó en `66cde30` y la nota anterior, en `599b304`. La corrección está en
+  `data/experiment/prompt_r2/freno_p3c2_modalidad.md` (sin commit al 04/10/2026): cambia
+  `pyd_r2/code/validador_r2.py` y su selftest. La corrí dos veces sobre una copia: `selftest_pyd_r2` da 398 de
+  398, la re-validación de P4 sale igual a la del paquete de la unidad, el selftest de claves da OK con su JSON
+  igual al del repo, y la cadena r2a da los ocho sha256 de C2, con `70d51e42…` y `fa4c1043…`.
+  - **La clase «modalidad»** sigue la definición del prefijo y tiene tres subclases, cada una con su contador:
+    opción (basta una entre varias, o se exigen todas), consejo (lo que se aconseja) y forma (el medio o la
+    forma de un acto, que eran las marcas anteriores). La clase cuenta si marca alguna de las tres.
+  - **Sobre la salida guardada de P4,** el contador marca 17 de las 24 omisiones `meta_normativo`: las 9
+    normativas, y 8 que no están entre ellas. Por clase: deber 5, condición 4, alcance 3, excepción 2,
+    modalidad 5, prohibición 0 y facultad 0. Las 5 de modalidad son de opción; consejo y forma, 0. Son 19
+    marcas en 17 omisiones, porque `cla::5.1.1.1` y `polcre::7.1::intro` traen dos.
+  - **Las dos marcadas nuevas fuera de las 9** son `cap::8.5.2` y `cap::8.5.3`, por «cualquiera de». En
+    sustancia son contenido normativo: la consecuencia de un incumplimiento («La falta de cumplimiento de
+    cualquiera de estos límites mínimos será considerada incumplimiento de integración del capital mínimo»),
+    declarada como `meta_normativo`, con el tramo en el texto heredado, el cierre de la lista de `cap::8.5`.
+  - **`p3c2/salida/revalidacion_p4_p3c2.json`** quedó commiteado con P3c-2 con las cifras de entonces (15 de
+    24). La autora decidió reemplazarlo por la salida regenerada, y lo escribí en la revisión: es la del
+    paquete de la unidad, igual byte a byte a la de mi corrida sobre una copia (sha256 `d5c6c58b…`). Entra en
+    el commit de esta corrección.
+  - **P4b** corre sobre el commit de esta corrección y reporta el contador por clase y por subclase, con la
+    lectura de cada omisión marcada.
+  El commit de la corrección y el despacho del «seguí» de P4b están PENDIENTES.

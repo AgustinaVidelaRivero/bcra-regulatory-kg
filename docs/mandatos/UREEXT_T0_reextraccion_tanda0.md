@@ -114,8 +114,9 @@ T2 — EXTRACCIÓN, E1 A E3 (tope USD 72).
   `copia_nota_e3`); salidas mal formadas y sus reintentos; unidades que cortan en el primer intento, en el
   reintento y las partidas por corte, con sus tokens de salida; las unidades que usan el tercer escalón del
   reintento (P3c-2 de U-PROMPT-R2), con su marca; las omisiones `meta_normativo` cuyo tramo trae una marca
-  de deber, de facultad, de condición o de excepción (contador de `validador_r2`, decisión de la autora del
-  04/10/2026); y los tokens de salida por carácter de texto
+  de alguna de las siete clases de la enmienda 7 a L-ESQ-R2 (deber, prohibición, facultad, condición,
+  excepción, alcance y modalidad), con las tres subclases de modalidad (contador de `validador_r2`, decisión
+  de la autora del 04/10/2026); y los tokens de salida por carácter de texto
   propio de todas las unidades (decisión de la autora del 04/10/2026): la mediana, el percentil 90 y el
   máximo por tramo de tamaño del texto propio; aparte, las unidades de 3.000 caracteres o más (con el
   prefijo sellado, mediana 0,86 en 40 unidades; en P4, 1,175 en 6) y, una por una, las de 10.000 o más. Con
@@ -259,8 +260,9 @@ PENDIENTE DE COMPLETAR ANTES DE LA FIRMA, con lo que cierren las unidades en cur
     - el mensaje de E3: fixture `candado_mensaje_e3.json`, sha256 `e8fa5dc4…`, y mensaje `da17c22e…`.
   - El tercer escalón del reintento: techo de 40.960 tokens, marca `escalon_3` en el registro de E1 y en su
     resumen, y error definitivo `max_tokens_hit_tras_escalon_3`.
-  - Los contadores nuevos del validador: `omisiones.meta_normativo_con_marca`, con sus siete clases,
-    `omisiones.tramo_solo_heredado` y `omisiones.tramo_orden_de_lectura`.
+  - Los contadores nuevos del validador: `omisiones.meta_normativo_con_marca`, con sus siete clases y las
+    tres subclases de modalidad (opción, consejo y forma), `omisiones.tramo_solo_heredado` y
+    `omisiones.tramo_orden_de_lectura`.
   - En el manifiesto, las unidades con tabla serializada confiable pasan de 37 a 36, por `cap::6.2.2.6`.
   La fase le llega a E2 por el parámetro `fase` de `ensamblar_r2`.
 - De P4b de U-PROMPT-R2: la salida por carácter y el crecimiento de la salida con el prefijo de P3c, para
