@@ -339,3 +339,59 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     ponderada, cada una con su nombre y su intervalo; los errores por clase y subclase, con la lista de
     los casos) y el del censo de renglones.
   - El piso es condición de la tanda 1 (docs/checklist_pre_escalado.md:81, condición 7).
+- **05/10/2026 — S2, punto 4.g: la tabla de las marcas del capítulo 4 (decisión de la autora).** La nota
+  anterior quedó en `2faff14`.
+  - Para qué. Al aprobarse el FRENO S2, la autora arma un mandato de escritura que resuelve las marcas del
+    capítulo 4 que dependen de esta unidad: [PENDIENTE: S0 de U-SEG-OFICIAL] y [AL CIERRE: U-SEG-OFICIAL]
+    (docs/plan_tesis.md:404). Las marcas están en la fuente de Overleaf y no se ven desde el repo. Esta
+    tabla hace que ese mandato sea mecánico.
+  - Qué va. En `cifras_segmentacion_oficial.md`, una tabla con una fila por marca, o por dato si una marca
+    pide varios. De cada fila: a qué se refiere, la cifra o el dato que la resuelve, el archivo y la clave
+    de donde sale, y el comando que lo reproduce. Como mínimo, estas filas:
+    1. los párrafos sin numerar que empiezan con un número de punto (36 en la verificación del 03/10/2026):
+       cuántos son con el código vigente, cuáles pasan a ser subpuntos y cuáles quedan como límite (S0,
+       punto 7);
+    2. ri_spi: si quedó segmentado, con qué regla y en cuántas unidades (S0, punto 4);
+    3. los documentos no segmentables, uno por uno, con sus páginas;
+    4. las cifras y la tabla de los grupos de documentos, con la fila de lo que queda fuera del grafo (4.e);
+    5. la tabla de los conjuntos de la sección 3.6 de la tesis (4.a);
+    6. la tabla de reglas del apéndice: las reglas vigentes, con los documentos que usa cada una (4.d);
+    7. las unidades partidas por tamaño: cuántas, en cuántas partes, y las que quedan sin partir, con su
+       causa;
+    8. la regla de tablas: en cuántos TOs corre, en cuántos encuentra tablas y cuántas unidades llevan una
+       tabla serializada.
+  - Si el «seguí» de S2 trae la lista literal de las marcas, la tabla lleva una fila por cada una, con su
+    texto. Si una marca no se puede resolver con lo que dejó esta unidad, su fila lo dice, con la razón: no
+    se completa con una cifra legada.
+  - Las filas 4, 5 y 6 dependen de las definiciones de la precondición de S2.
+  - No entran las marcas de U-BLOQUE-A: esperan a la tanda 3.
+- **05/10/2026 — decisiones de la autora sobre el FRENO S0-1; corrección del censo de renglones de S1; dos
+  diseños más antes de S0-2.** S0-1 quedó commiteada en `3920323`, con el prototipo revisado, como parche sin
+  aplicar, en `s0_1/parche/`.
+  - La revisión independiente reprodujo S0-1 sobre una copia: la tanda 0, 57 de 57 archivos iguales; 23 TOs
+    cambian y 129 salen idénticos; las unidades pasan de 9.385 a 9.533; la cobertura, exacta en los 152; y el
+    censo del punto 7, de 36 a 0.
+  - Decisiones.
+    1. Regla 5: la lista de 9 páginas (cirmo3 19, cryl 27, manori 6, ri2_ci 8, 9, 16 y 24, snp_cheq 80 y
+       snp_mep 19). No la regla general.
+    2. Acompañamiento T: se adopta.
+    3. Regla 6. En E0: la partición por renglones entra en la partición por tamaño (más de 26.182
+       caracteres); el umbral no baja, y las unidades con tabla serializada no se parten en E0. En E1: la
+       partición por corte (`correr_e0.particionar_por_corte`, que usa el runner de E1) de las unidades de
+       la tanda 0 no cambia. Con el prototipo de S0-1 cambiaba en dos, `cap::4.2.1.2` y `ric::11.2::intro`
+       (hallazgo de la revisión). La partición por renglones rige en E1 solo donde hoy no hay salida y el
+       tercer escalón no alcanza. El objetivo de las partes se fija con la medición de T2 de U-REEXT-T0.
+    4. ri_cc (pp. 2 a 47) y ri_tsa (pp. 3 a 61): E0 no cambia. S1 las declara en el manifiesto como
+       páginas de norma sin unidad, con su censo: 105 páginas y 101.721 caracteres
+       (`s0_1/censos/censo_r3b.json`, sin las carátulas). Entran por la vía de página con la tanda 3, en
+       U-BLOQUE-A (docs/plan_tesis.md:772).
+    5. El catálogo 11.x de rdbcra y la lista de puntos leída como cuerpo (manori, ri_niif y dmrd): la
+       instancia de S0-1 diseña las dos reglas con su censo, sin implementar, antes de S0-2. Rigen las
+       condiciones de S0-1 y una más: la partición por corte de las unidades de la tanda 0 no cambia. Si la
+       de rdbcra no sale limpia, deja marcadas sus 97 unidades terminales 11.x, para decidir si se extraen.
+       Tiene su freno. S0-2 implementa solo lo que la autora apruebe.
+  - Corrección al punto 8 de S1 (censo de renglones, nota de `2faff14`). Como estaba escrito, el rol de
+    portada y el de índice contaban como rol declarado, y el censo no listaría las páginas de ri_cc y de
+    ri_tsa, que tienen rol de portada y son norma. Se precisa: toda página con rol de portada o de índice
+    que no sea la primera página del documento va a la lista, con sus renglones y cuántos son de texto
+    corrido. Se leen las que tengan texto corrido.

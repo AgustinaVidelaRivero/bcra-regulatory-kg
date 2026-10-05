@@ -274,3 +274,11 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      pendiente de ingreso». El ingreso es de U-BLOQUE-A, condición de entrada de la tanda 3
      (`docs/plan_tesis.md:772`; decisión de la autora), con mandato a redactar después de U-REEXT-T0. Hasta
      que esa unidad cierre, la frase es un compromiso: se revisa en la versión final de la tesis.
+  4. **Lo que cambia en el capítulo 4 con S0 de U-SEG-OFICIAL (05/10/2026).** Son cifras del prototipo de
+     S0-1 (`3920323`; `data/experiment/segmentacion_oficial_e0r2/FRENO_S0-1.md`), reproducidas por la
+     revisión sobre una copia. Se confirman con la corrida oficial de S1:
+     - ri_spi deja de ser no segmentable: pasa de 1 unidad a 95, por su marcador de letra y número;
+     - los documentos no segmentables pasan de 12 a 11, y sus páginas, de 161 a 150 (ri_spi tiene 11);
+     - el primer grupo, el de los documentos escritos en puntos, incluye dos con páginas fuera de toda
+       unidad: ri_cc (pp. 2 a 47) y ri_tsa (pp. 3 a 61), 105 páginas en total. Entran por la vía de página
+       con la tanda 3 (`docs/plan_tesis.md:772`).
