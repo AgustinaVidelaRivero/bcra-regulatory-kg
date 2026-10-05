@@ -87,3 +87,11 @@ controles de claves y de la cadena:
 - **PENDIENTE:**
   - el commit de esta corrección;
   - el «seguí» de P4b, que cuenta el contador por brazo, con sus subclases.
+
+## Nota posterior al commit (05/10/2026)
+
+El texto de arriba quedó en `bb212f1` y no cambia. Una precisión sobre su encabezado, que dice «HEAD `599b304`
+(P3c-2 commiteada por la autora)»: `599b304` era el HEAD al escribir este freno y es el commit de las notas del
+mandato (3 archivos de `docs/`); P3c-2 quedó en `66cde30` (34 archivos). La cita del párrafo siguiente es
+correcta: la nota del mandato que dejó pendiente esta corrección es la de `599b304`. La unidad declaró el error en
+`data/experiment/prompt_r2/freno_p4b.md` («Error propio, con su causa»).

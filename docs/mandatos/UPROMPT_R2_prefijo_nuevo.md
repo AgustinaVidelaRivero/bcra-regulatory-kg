@@ -911,3 +911,139 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   - **P4b** corre sobre el commit de esta corrección y reporta el contador por clase y por subclase, con la
     lectura de cada omisión marcada.
   El commit de la corrección y el despacho del «seguí» de P4b están PENDIENTES.
+- **05/10/2026 — FRENO P4b revisado; la variación del modelo como límite; decisiones de la autora.** La
+  corrección de la clase modalidad quedó en `bb212f1` y la nota anterior, en `91c6a24`. El freno está en
+  `data/experiment/prompt_r2/freno_p4b.md` (sin commit al 05/10/2026). P4b costó USD 0,8111, de un tope de 1,5.
+  - **Lo que se reproduce.** Corrí sus cinco scripts de USD 0 dos veces sobre una copia: la proyección, el
+    análisis, las fichas, las marcas, la tabla y el costo salen iguales a los de `p4b/salida/`. Recomputé
+    aparte, desde `resultados_p4b.jsonl`: 27 unidades por brazo y 54 pedidos sin errores ni cortes; normas con
+    `aplica_a`, 36 de 54 con el prefijo de P3b-2 y 19 de 42 con el de P3c; omisiones `meta_normativo`, 10 y
+    12, con marca 6 y 7, y con el tramo solo en el texto heredado 5 y 6; salida, 45.855 y 40.626 tokens.
+    `selftest_pyd_r2` da 398 de 398, `selftest_e1` 80 de 80 y `selftest_e3` 101 de 101. El repo no cambió
+    durante el control.
+  - **La selección se regenera solo sin el freno en el árbol.** `seleccion_p4b.py` excluye toda unidad que
+    nombre un `.md` de `data/experiment/prompt_r2/`, salvo los de `p4b/`. `freno_p4b.md` está fuera de `p4b/`
+    y nombra 24 de las 27 unidades: con él en el árbol, el script frena. Sin él, da el sha256 sellado
+    (`e2551cf3…`). El sello, tomado antes de correr, es la evidencia de la elección.
+  - **Límite: la variación del modelo.**
+    - E1 y E3 corren sin temperatura fijada. Ningún pedido de las bases de P4 y de P4b lleva `temperature`,
+      `top_p` ni `top_k` (149 de E1 y 11 de E3), y el código no los pone
+      (`e1_extractor/prompt_r2b.py:429-438` y `e3_verificador/prompt_e3.py:357-373`). Rige el valor por
+      defecto del proveedor, que la documentación del SDK instalado da en 1,0 y que, dice, no vuelve
+      determinística la respuesta ni siquiera en 0 (anthropic 0.100.0,
+      `resources/messages/messages.py:266-273`). Para E1 ya estaba declarado como límite de
+      reproducibilidad (`docs/plan_tesis.md:855`; `data/experiment/mantenimiento/tabla_reprocesamiento.md:113`).
+    - Los tres pedidos del brazo anterior de P4b que ya estaban en la base de P4 (`cla::5.1.1::intro`,
+      `cla::5.1.1.1` y `cap::6.2.2.6`) son idénticos: el mismo `request_json` byte a byte, el mismo namespace
+      y la misma clave, que se recomputa. Las tres respuestas son distintas.
+      - `cla::5.1.1.1`: en P4, dos Operacion y una Condicion, sin Excepcion (884 tokens); en P4b, dos
+        Operacion, dos Condicion y la Excepcion (1.448).
+      - `cla::5.1.1::intro`: en P4, ningún nodo de contenido (271); en P4b, una Operacion (413). Las dos
+        declaran la frase del alcance como `meta_normativo`.
+      - `cap::6.2.2.6`: en P4, 16 Restriccion, una por banda de la tabla, y una Potestad (5.236); en P4b, una
+        Restriccion (1.590).
+    - No hay más pedidos repetidos entre las bases de P4, de P4b, de P3c-2 y de la tanda 0.
+    - **Cómo se lee P4b.** Cada brazo es una respuesta por unidad. Con grupos de 1 a 4 casos, una diferencia
+      entre brazos puede ser variación del modelo: un mismo pedido cambió de 17 normas a 1. Lo que no depende
+      de una respuesta: `cap::tabla037` ya no va en el mensaje, y las 26 menciones de sujeto del brazo de P3c
+      verifican, contra 35 de 45.
+    - **Lo que cambia hacia atrás.** Las notas anteriores dicen que el prefijo de P3b-2 «no emite» la
+      Excepcion de `cla::5.1.1.1`. Vale para la corrida de P4: el mismo pedido la emitió en P4b.
+  - **Decisiones de la autora.**
+    - El prefijo de P3c (`322c5a23e9b7`) queda congelado para U-REEXT-T0, sin otra vuelta de ajuste. Lo que
+      P4b no vio mejorar (las listas b1 y b2, el grupo c y parte del a) se mide en U-REEXT-T0 y se corrige en
+      código o se declara.
+    - La condición 10 de la tanda 1 se verifica en el grafo de U-REEXT-T0, como estaba definida.
+    - b1 se mide solo con el ejemplo; `ctacte::3.2` queda como lectura dudosa, declarada.
+    - El contador de omisiones `meta_normativo` no suma las siete formas que se le escaparon: se escribirían
+      mirando los casos. U-REEXT-T0 separa las omisiones con el tramo en el texto heredado, lee una muestra
+      de las que no tienen marca y reporta cuántas corrigió E3 con su NOTA.
+    - La baja de las normas con `aplica_a` es el efecto esperado del punto e, a recuperar con la parte B de
+      la enmienda 6 a L-ESQ-R2 si rige.
+    - `freno_p3c2_modalidad.md` lleva una nota: P3c-2 está en `66cde30`, no en `599b304`.
+  - **Contraste con los textos firmados.** Ninguna de las decisiones choca con uno. La pareada «no decide
+    nada sola» (decisión 14 de este mandato, `:133-136`), y el protocolo entre tandas deja las correcciones
+    posteriores en código o como residuo declarado (§6, decisión D1). Después de U-REEXT-T0, el prefijo solo
+    cambia por el procedimiento de hallazgo grave de ese §6.
+  - **De la revisión, PENDIENTE de decisión de la autora,** en el mandato de U-REEXT-T0: la temperatura
+    (propuesta: no se fija); qué pasa con la condición 10 si el nodo no sale; la medida de la variación con
+    las 27 unidades de P4b, que U-REEXT-T0 vuelve a pedir; y la muestra de control de `meta_normativo` de
+    L-ESQ-R2 §5.3, que no estaba en ningún mandato.
+  El commit de P4b y la firma del mandato de U-REEXT-T0 están PENDIENTES.
+- **05/10/2026 — la autora confirma las decisiones de la nota anterior y decide fijar la temperatura; etapa
+  P5.** P4b quedó en `046e493`. La nota anterior está sin commit al escribir esta.
+  - **Decisión de la autora: la temperatura se fija antes de U-REEXT-T0.** Con el perfil r2b, E1 y E3 corren
+    con temperatura 0, fijada en el pedido. El reintento por salida mal formada (namespace `-rforma1`) corre
+    con temperatura 1, para obtener una respuesta distinta. Va en una etapa corta de esta unidad, P5.
+  - **E3 no admite la decisión como está: PENDIENTE de decisión de la autora.**
+    - El modelo de E3 es `claude-sonnet-5` (`corpus_v2/runner_corpus.py:92`). Su página en la documentación
+      oficial dice que un valor de `temperature`, `top_p` o `top_k` distinto del de por defecto devuelve un
+      error 400 (https://platform.claude.com/docs/en/models/sonnet-5/overview, «Good to know»). La
+      referencia de la API de mensajes dice que los modelos posteriores a Claude Opus 4.6 solo aceptan 1,0
+      (https://platform.claude.com/docs/en/api/messages, parámetro `temperature`). Las consulté el
+      05/10/2026.
+    - El repo ya tiene un caso igual: `evaluacion/verificador.py:55` no pasa `temperature` porque su modelo
+      la rechaza.
+    - El modelo de E1, `claude-haiku-4-5`, es anterior, y su página no trae esa restricción. El agente de la
+      evaluación ya lo usa con temperatura 0 (`evaluacion/harness.py:47-48`;
+      `reports/tanda0/registro_modelos_2a.json`).
+    - Propuesta de la revisión: E3 queda sin temperatura fijada, declarado como límite, y P5 mide cuánto
+      varían sus veredictos. La alternativa es cambiar el modelo de E3 por uno que la admita: cambia el
+      pedido de E3 de todas las unidades (fila F10), con un prompt y unos calibradores probados con el
+      modelo de hoy.
+  - **P5,** con tope de USD 1,5:
+    a. fija los parámetros en el perfil r2b, solo con la forma r2, sin tocar el prefijo, el mensaje ni el
+       tool schema; los perfiles existentes dan byte a byte igual;
+    b. suma su fila a la tabla de reprocesamiento y su variación al selftest de claves: cambiar la
+       temperatura mueve la clave de todas las unidades;
+    c. mide la variación: las 27 unidades de P4b con el prefijo de P3c, dos veces con temperatura 0, en
+       una base de caché propia; reporta cuántas respuestas salen idénticas y, en las que difieren, cuánto
+       (nodos, normas y omisiones); y compara la del ejemplo (`cla::5.1.1::intro` y `cla::5.1.1.1`) con la
+       de P4b.
+  - **Contraste con los textos firmados: fijar la temperatura no choca con ninguno.**
+    - La decisión 7 del pre-registro de la tanda 0 (`docs/preregistro_tanda0.md:686-689`, sellado en
+      `c80b03f`, sha256 `4b45145d…`) dice que E1 corre sin temperatura fijada y que no se edita código del
+      pipeline «para esta tanda». Rige la corrida de la tanda 0, que ya está sellada. r2b es otra release,
+      con la re-extracción que declara la enmienda de uso de la ventana
+      (`data/experiment/esq/enmienda_uso_ventana_2026-09-30.md:69-71`, firmada en `30f106c`). El
+      pre-registro no se edita ni se enmienda: su tabla A6 sigue siendo el registro de la tanda 0.
+    - La enmienda de uso de la ventana no nombra los parámetros del pedido en el alcance del ciclo (`:43-55`).
+      La temperatura no es esquema, prefijo ni formato de salida, y no abre otra re-extracción: usa la que
+      ya está declarada.
+    - El protocolo entre tandas (§6, decisión D1) cierra el prefijo, el esquema y el formato durante el
+      escalado. La temperatura es un parámetro del pedido de E1, la fila F08 de la tabla de
+      reprocesamiento, de clase «todo»: después de U-REEXT-T0, cambiarla obliga a re-extraer todo.
+    - El texto firmado de este mandato dice «Fuera de P4, ninguna llamada a la API» (`:12`). Las llamadas de
+      P5 van por la autorización de la autora que registra esta nota, como las de P3c-2 y las de P4b.
+  - **Lo que pide el cambio.**
+    - La decisión sobre E3.
+    - Los archivos de código, autorizados uno por uno. Propuesta: `e1_extractor/prompt_r2b.py`,
+      `e1_extractor/cliente_e1.py`, `corpus_v2/runner_corpus.py` solo si el pedido del reintento se arma
+      ahí, y los selftests de esos módulos.
+    - En la tabla de reprocesamiento, además de la fila: F08c y R25, porque el reintento por salida mal
+      formada deja de ser «el mismo request»; R14, que hoy agrega `temperature` 0 a un pedido que no la
+      tiene; y la línea `:113`, que dice que E1 corre sin temperatura fijada. De paso, el §1 nombra el
+      namespace de r2b con el hash de P3b-2 (`:20` y `:22`) y cita el pedido de E1 en `prompt_r2b.py:391-400`,
+      que hoy está en `:429-438`.
+    - Dos bases de caché para la medición, una por corrida: con una sola, la segunda corrida saldría de la
+      caché local.
+    - Volver a medir lo que P4 y P4b midieron sin temperatura fijada: la salida por carácter, que alimenta
+      el costo y la capacidad del reintento, y el ejemplo. Con temperatura 0, lo que dé el ejemplo en P5 es
+      lo que daría U-REEXT-T0: si la Excepcion de `cla::5.1.1.1` no sale, la condición 10 vuelve a la
+      autora antes de re-extraer.
+    - El registro de modelos de r2b, con la temperatura de cada pedido. El borrador del laudo de la
+      release r2 (`docs/laudo_release_r2_pipeline.md:310-311`) dice que E1 corre sin temperatura fijada:
+      se pone al día cuando se firme.
+    - Un riesgo: la temperatura 0 de E1 dura lo que dure su modelo. Los modelos posteriores a Claude Opus
+      4.6 no la admiten, así que un reemplazo de `claude-haiku-4-5` correría con el valor por defecto. Se
+      suma al riesgo de su retiro (`docs/plan_tesis.md:404`).
+  - **También decididas por la autora,** para el mandato de U-REEXT-T0: si el nodo de la condición 10 no
+    sale, la condición vuelve a la autora y la unidad no se vuelve a extraer ahí; y las tres lecturas nuevas
+    de T4 (la variación, 30 unidades del grupo c y 30 omisiones `meta_normativo` con marca). La lectura de la
+    variación compara con la medición de P5, no con P4b.
+  - **De la revisión, a confirmar por la autora,** en el «seguí» de P5: una llamada que confirme que la API
+    rechaza `temperature` 0 con el modelo de E3; una llamada forzada del reintento por salida mal formada
+    con temperatura 1; E3 dos veces sobre la misma salida de E1, en las 5 unidades de la pata de E3 de P4b;
+    y que las bases de P5 no se reutilicen en U-REEXT-T0. El nombre de la etapa, P5, también es de la
+    revisión.
+  El «seguí» de P5 está preparado; su despacho está PENDIENTE, después de la decisión sobre E3.
