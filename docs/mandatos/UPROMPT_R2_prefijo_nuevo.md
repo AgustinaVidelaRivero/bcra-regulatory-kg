@@ -1130,3 +1130,19 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     `temperature` desde su versión 1.0. El repo fija `anthropic==0.100.0` (`requirements.txt:11`): no se
     actualiza sin decidirlo, porque E1, el agente y los jueces la usan.
   El commit de P5 y la firma del mandato de U-REEXT-T0 están PENDIENTES.
+- **05/10/2026 — plataforma y modelo de E1 de la release r2b; la comparación de modelos se posterga
+  (decisiones de la autora).** La nota anterior quedó en `0583e7f`, y P5, en `53b7708`.
+  - Plataforma: la API de Anthropic para E1 y para E3, en toda la release r2b (plan `:400`). El mandato del
+    adaptador de Amazon Bedrock queda archivado, sin ejecutar.
+  - Modelo de E1: `claude-haiku-4-5`, con temperatura 0, como lo dejó P5.
+  - Se redactó una etapa P6 para comparar ese modelo con `claude-sonnet-5-5`, `claude-opus-5-5` y
+    `claude-fable-5-1` antes de U-REEXT-T0. No se ejecuta ahora y no decide el modelo de la release: pasa a
+    ser un experimento de la tesis, posterior al escalado (plan `:778`). Su borrador queda como base, marcado
+    POSTERGADO (`docs/mandatos/UPROMPT_R2_P6_exploracion_modelo_E1.md`), y se re-redacta en ese momento.
+  - Dato de esa redacción (documentación oficial, consultada el 05/10/2026; direcciones en el borrador): los
+    tres modelos nuevos no aceptan el pedido de E1 tal cual. Rechazan el `tool_choice` forzado y una
+    `temperature` distinta de la de por defecto; Opus 5.5 y Fable 5.1 no dejan apagar el pensamiento, y en
+    Sonnet 5.5 lo más bajo es `between_tools`. La comparación va a pedir un pedido adaptado por modelo.
+  - Contraste con los textos firmados: ninguna de estas decisiones choca con uno. No cambia nada de lo que
+    cerró P5, y U-REEXT-T0 no suma ninguna etapa previa.
+  La firma del mandato de U-REEXT-T0 está PENDIENTE.

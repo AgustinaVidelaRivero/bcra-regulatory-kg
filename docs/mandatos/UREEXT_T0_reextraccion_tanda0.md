@@ -10,9 +10,9 @@ tocar cualquier llamada al modelo: sus cinco decisiones son vinculantes.
   05/10/2026, tras el FRENO P5 de U-PROMPT-R2; antes era USD 72, y antes, 69; docs/plan_tesis.md:400). Fuera
   de T2, USD 0 y ninguna llamada a la API. Si la proyección de T2 pasa el tope, se frena y se reporta: el
   tope no se sube solo.
-- Plataforma: la API de Anthropic. La autora evalúa correr la extracción por Amazon Bedrock, y la firma de
-  este mandato espera esa decisión. Si cambia la plataforma, cambian el cliente, el id del modelo, el
-  namespace de la caché y las precondiciones.
+- Plataforma y modelos: la API de Anthropic para E1 y para E3, en toda la release r2b (decisión de la
+  autora del 05/10/2026). E1 corre con `claude-haiku-4-5` y temperatura 0, y E3, con `claude-sonnet-5`
+  (`corpus_v2/runner_corpus.py:89-94`). Esta unidad no cambia la plataforma, el cliente ni un modelo.
 - PRECONDICIONES, todas commiteadas por la autora. Si falta alguna, frená sin escribir.
   - De U-PROMPT-R2: P4, la pareada (`2ed47a0`); P3c-1, el diseño del ajuste (`438bbd5`); P3c-2, el prefijo
     re-congelado y los candados de F04b, F22, F22b y F23 (`66cde30`); la corrección de la clase modalidad
@@ -375,7 +375,7 @@ DECISIONES DE LA AUTORA AL FIRMAR.
 3. Las carpetas de salida (propuesta: `salida_r2b/`, `ens_diez_r2b/`, `ens_desarrollo_r2b/` y
    `data/experiment/reext_t0/`).
 4. Si el registro y la carga en Neo4j van en esta unidad (propuesta: sí, en T3).
-5. La semilla del sorteo de la cola humana.
+5. La semilla del sorteo de la cola humana (propuesta: `U-REEXT-T0:cola-humana:2026-10-05`).
 Ya decididas por la autora el 05/10/2026, y en el texto de arriba: la temperatura de E1, en 0, y la del
 reintento por salida mal formada, en 1, con P5 de U-PROMPT-R2 como precondición; la temperatura de E3, que
 queda sin fijar, declarada como límite, sin cambiar su modelo; la condición 10, si el nodo de la Excepcion no
