@@ -318,9 +318,26 @@ MARCAS_META_NORMATIVO = {
                           r"comprendid[oa]s?|incluye|incluyen|incluira|incluiran|incluid[oa]s?|alcanzad[oa]s?|"
                           r"rige para|rigen para|regira para|regiran para|se aplica|se aplican|se aplicara|"
                           r"se aplicaran|aplicables? a|" + _COPULA + r" de aplicacion)\b"),
-    "modalidad": re.compile(r"\b(mediante|por medio de|a traves de|por intermedio de|por escrito|en forma|en soporte|"
-                            r"por via|alternativas?|alternativamente|modalidad|modalidades)\b"),
 }
+# La modalidad es la del prefijo r2b (prueba de la regla 9): «si algo se exige, se permite o se aconseja, o si basta una
+# entre varias opciones» (decisión de la autora posterior al commit de P3c-2, 04/10/2026). Lo que se exige y lo que se
+# permite ya lo cuentan deber y facultad. La modalidad tiene tres subclases, cada una con su contador:
+#   - opcion: el cuantificador entre varias opciones, si basta una o se exigen todas;
+#   - consejo: la recomendación del prefijo (la conducta que se aconseja, deseable, conveniente o práctica que se
+#     espera);
+#   - forma: el medio o la forma de un acto. Un requisito de forma también es contenido normativo, pero no es la
+#     modalidad del prefijo: va aparte para que el reporte los distinga.
+# La clase cuenta si marca alguna de las tres.
+SUBCLASES_MODALIDAD = {
+    "opcion": re.compile(r"\b(indistintamente|concurrentemente|cualquiera (de|del)|alguno (de|del)|alguna de|"
+                         r"a opcion (de|del)|alternativas?|alternativamente)\b"),
+    "consejo": re.compile(r"\b(se recomienda|se recomiendan|se aconseja|se aconsejan|buenas? practicas?|"
+                          r"practicas? que se esperan?|" + _COPULA + r" (recomendables?|aconsejables?|deseables?|"
+                          r"convenientes?))\b"),
+    "forma": re.compile(r"\b(mediante|por medio de|a traves de|por intermedio de|por escrito|en forma|en soporte|"
+                        r"por via|modalidad|modalidades)\b"),
+}
+MARCAS_META_NORMATIVO["modalidad"] = re.compile("|".join(rx.pattern for rx in SUBCLASES_MODALIDAD.values()))
 _NEGADO = re.compile(_MODAL_NEGADO + "|" + _APLICACION_NEGADA)
 _CLASES_SIN_NEGADO = ("deber", "facultad", "alcance")
 
@@ -331,6 +348,12 @@ def marcas_meta_normativo(tramo: str) -> list[str]:
     sin_negado = _NEGADO.sub(" ", t)
     return [clase for clase, rx in MARCAS_META_NORMATIVO.items()
             if rx.search(sin_negado if clase in _CLASES_SIN_NEGADO else t)]
+
+
+def subclases_modalidad(tramo: str) -> list[str]:
+    """Las subclases de SUBCLASES_MODALIDAD presentes en el tramo, en el orden del diccionario."""
+    t = " ".join(norm_tokens(tramo))
+    return [sub for sub, rx in SUBCLASES_MODALIDAD.items() if rx.search(t)]
 
 
 def verificar_tramo_entidad(tramo: str, chunk: dict, punto: str, holgura: Optional[int],
@@ -1379,6 +1402,9 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
                 reg.cuenta("omisiones", "meta_normativo_con_marca")
                 for clase in clases:
                     reg.cuenta("omisiones", f"meta_normativo_con_marca:{clase}")
+                if "modalidad" in clases:
+                    for sub in subclases_modalidad(tramo):
+                        reg.cuenta("omisiones", f"meta_normativo_con_marca:modalidad.{sub}")
         if tramo is None:
             nivel = "ausente"
         else:

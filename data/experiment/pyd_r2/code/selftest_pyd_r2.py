@@ -40,7 +40,8 @@ Grupos:
       (m, enmienda 3 a L-ESQ-R2; con «maximo_asumido», la regla anterior de r2a).
   G16 U-PROMPT-R2, P3c-2: el tramo de la omisión contra el texto propio y el heredado,
       con su contador (g), y el contador de las omisiones meta_normativo con marca, con
-      las siete clases de la enmienda 7 a L-ESQ-R2 (corrección del FRENO P3c-2).
+      las siete clases de la enmienda 7 a L-ESQ-R2 (corrección del FRENO P3c-2) y la
+      modalidad del prefijo en tres subclases: opción, consejo y forma.
 Con la enmienda 3 a L-ESQ-R2 (C2 de U-R2-CODIGO-2, punto m), los casos que
 esperaban un plazo sin marcador con máximo inclusivo y `comparacion_asumida`
 esperan `no_determinada`, con la regla `sin_marcador_plazo` y sin la marca.
@@ -1453,6 +1454,30 @@ def g16_p3c(ch):
     chequear(g, "marca: la aplicación negada es excepción y no alcance; la afirmada, alcance",
              V.marcas_meta_normativo("no se aplica a las cajas") == ["excepcion"]
              and V.marcas_meta_normativo("se aplica a las cajas") == ["alcance"])
+    # Modalidad del prefijo (decisión posterior al commit de P3c-2): subclases opción, consejo y forma. Un caso por
+    # subclase y uno de finalidad con «mediante».
+    fin_mediante = "Con el fin de promover la estabilidad mediante una mejor gestión del riesgo"
+    oms = [{"categoria": "meta_normativo", "tramo": "el cálculo se hará indistintamente sobre saldos diarios o promedio",
+            "nota": "n"},
+           {"categoria": "meta_normativo", "tramo": "Es recomendable que la entidad documente sus procedimientos",
+            "nota": "n"},
+           {"categoria": "meta_normativo", "tramo": "la comunicación se cursará por escrito al domicilio constituido",
+            "nota": "n"},
+           {"categoria": "meta_normativo", "tramo": fin_mediante, "nota": "n"}]
+    r = r2(oms)
+    om = r["contadores"]["omisiones"]
+    chequear(g, "modalidad: opción 1, consejo 1 y forma 2 (la del medio y la finalidad con «mediante»); la clase cuenta "
+                "las 4; nada se rechaza",
+             (om.get("meta_normativo_con_marca:modalidad"), om.get("meta_normativo_con_marca:modalidad.opcion"),
+              om.get("meta_normativo_con_marca:modalidad.consejo"), om.get("meta_normativo_con_marca:modalidad.forma"))
+             == (4, 1, 1, 2) and om.get("meta_normativo_con_marca") == 4 and not r["rechazos"], str(om))
+    chequear(g, "modalidad: la finalidad con «mediante» cae solo en la subclase forma, sin otra clase",
+             V.marcas_meta_normativo(fin_mediante) == ["modalidad"] and V.subclases_modalidad(fin_mediante) == ["forma"])
+    chequear(g, "modalidad: las marcas de opción y de consejo caen en su subclase («concurrentemente», «a opción del», "
+                "«cualquiera de», «se aconseja», «buena práctica»)",
+             all(V.subclases_modalidad(t) == ["opcion"] for t in ("que cumplan concurrentemente ambos requisitos",
+                                                                   "a opción del cliente", "cualquiera de los dos"))
+             and all(V.subclases_modalidad(t) == ["consejo"] for t in ("se aconseja revisarlo", "una buena práctica")))
 
 
 def g15_c2():
