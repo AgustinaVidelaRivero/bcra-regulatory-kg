@@ -8,7 +8,7 @@ La clave es sha256(namespace + "\\n" + request canónico)
 requests con el código real del pipeline —el `build_request_kwargs` de cada
 perfil de E1 (`perfil_e1.perfil`: data/experiment/b54_catalogo_v3/code/
 prompt_v3_b54.py:524 en `v3_b54`, data/experiment/reextraccion_v2/
-e1_extractor/prompt_r2b.py:391 en `r2b`) y `prompt_e3.build_request_kwargs`
+e1_extractor/prompt_r2b.py:440 en `r2b`) y `prompt_e3.build_request_kwargs`
 para E3 (data/experiment/reextraccion_v2/e3_verificador/prompt_e3.py:352)— y
 calcula la clave con `compute_key`, sin importar ni construir ningún cliente
 de la API.
@@ -45,7 +45,11 @@ Perfil r2b (U-TABLA-REPROC):
       P3c-2 (filas F04b, F22, F22b y F23), R29, R29b y R30 editan un literal
       del módulo en una copia en memoria de su fuente, que el proceso hijo
       importa en lugar del archivo, y frenan, como R32; R13c varía el techo del
-      tercer escalón del reintento por corte (fila F08d).
+      tercer escalón del reintento por corte (fila F08d). Con la temperatura de
+      U-PROMPT-R2, P5 (el pedido del perfil r2b lleva `temperature` 0, y el
+      reintento por salida mal formada, 1), R14 varía la temperatura del pedido
+      (fila F08e) y R25 arma el reintento con prompt_r2b.kwargs_reintento_forma_r2b
+      (fila F08c).
   C. Contraste fila por fila con la tabla de
      data/experiment/mantenimiento/tabla_reprocesamiento.md: cada fila declara
      el comportamiento de la clave de E1 y de E3 del perfil r2b y las
@@ -1020,13 +1024,26 @@ def variaciones_request_r2b(ar: Armado, chunks, vals, base_e1, base_e3) -> list[
                                 f"{TO_ROL_VARIADO}", todas, esperado_e1=esperadas, cambia_e1=c11,
                          esperado_e3=[], cambia_e3=c11_e3, universo_e3=con_e3))
 
-    # R12 modelo de E1; R13 max_tokens del primer intento; R14 temperature.
+    # R12 modelo de E1; R13 max_tokens del primer intento.
     for vid, desc, mod in (
             ("R12", "modelo de E1", lambda kw: kw.__setitem__("model", kw["model"] + "-otro")),
-            ("R13", "max_tokens del primer intento de E1", lambda kw: kw.__setitem__("max_tokens", kw["max_tokens"] * 2)),
-            ("R14", "temperature agregada al request de E1", lambda kw: kw.__setitem__("temperature", 0.0))):
+            ("R13", "max_tokens del primer intento de E1", lambda kw: kw.__setitem__("max_tokens", kw["max_tokens"] * 2))):
         c, _ = e1_con(mod)
         res.append(solo_e1(vid, desc, c))
+
+    # R14 temperatura del pedido de E1 del perfil r2b (U-PROMPT-R2, P5; fila F08e): el pedido lleva
+    # TEMPERATURA_E1_R2B; cambiarla mueve la clave de todas las unidades, y el pedido sin temperatura (el de P4 y P4b)
+    # tiene otra clave.
+    t0 = R.TEMPERATURA_E1_R2B
+    c14, _ = e1_con(lambda kw: kw.__setitem__("temperature", t0 + 1))
+    lleva = all(ar.kw_e1(chunks[cid]).get("temperature") == t0 for cid in M)
+    sin_t = [cid for cid in M if ar.clave(ar.ns_e1, {k: v for k, v in ar.kw_e1(chunks[cid]).items()
+                                                     if k != "temperature"}) != base_e1[cid]]
+    reg = solo_e1("R14", f"temperatura del pedido de E1 del perfil r2b: {t0} → {t0 + 1}", c14,
+                  extra={"temperatura_del_pedido": t0, "el_pedido_lleva_la_temperatura": lleva,
+                         "sin_temperatura_cambia_la_clave": sorted(sin_t) == sorted(M)})
+    reg["ok"] = reg["ok"] and lleva and sorted(sin_t) == sorted(M)
+    res.append(reg)
 
     # R13b techo del reintento por corte del perfil r2 (cliente_e1.py:68): el
     # request del reintento cambia de clave con el techo; el del primer intento no.
@@ -1123,17 +1140,31 @@ def variaciones_request_r2b(ar: Armado, chunks, vals, base_e1, base_e3) -> list[
                          todas, esperado_e1=[], cambia_e1=c19, esperado_e3=[], cambia_e3=c19_e3,
                          universo_e3=con_e3, extra={"modulos_bloqueados": list(MODULOS_SOLO_CODIGO_R2)}))
 
-    # R25 reintento por salida mal formada (cliente_e1.py:74): el mismo request
-    # en el namespace con sufijo; con sufijo vacío, el namespace de siempre.
+    # R25 reintento por salida mal formada (cliente_e1.py:76): el pedido del primer intento con la temperatura del
+    # reintento (U-PROMPT-R2, P5: prompt_r2b.kwargs_reintento_forma_r2b), en el namespace con sufijo; con sufijo
+    # vacío, el namespace de siempre.
     ns_f = ar.cliente_e1.namespace_e1(prefijo_hash=ar.pf.prefijo_hash_para_namespace,
                                       sufijo=ar.cliente_e1.SUFIJO_REINTENTO_FORMA)
     ns_0 = ar.cliente_e1.namespace_e1(prefijo_hash=ar.pf.prefijo_hash_para_namespace, sufijo="")
-    c25 = [cid for cid in M if ar.clave(ns_f, ar.kw_e1(chunks[cid])) != base_e1[cid]]
-    reg = solo_e1("R25", "reintento por salida mal formada: el mismo request en el namespace del reintento", c25,
+    c25, solo_temp, otra_que_mismo_pedido = [], True, True
+    for cid in M:
+        kw = ar.kw_e1(chunks[cid])
+        kf = R.kwargs_reintento_forma_r2b(kw)
+        if ar.clave(ns_f, kf) != base_e1[cid]:
+            c25.append(cid)
+        solo_temp &= (kf.get("temperature") == R.TEMPERATURA_REINTENTO_FORMA_R2B
+                      and {k: v for k, v in kf.items() if k != "temperature"}
+                      == {k: v for k, v in kw.items() if k != "temperature"}
+                      and ar.clave(ar.ns_e1, kw) == base_e1[cid])
+        otra_que_mismo_pedido &= ar.clave(ns_f, kf) != ar.clave(ns_f, kw)
+    reg = solo_e1("R25", "reintento por salida mal formada: el pedido del primer intento con temperature "
+                         f"{R.TEMPERATURA_REINTENTO_FORMA_R2B}, en el namespace del reintento", c25,
                   extra={"namespace_reintento_forma": ns_f,
                          "namespace_con_sufijo_vacio_igual_al_base": ns_0 == ar.ns_e1,
+                         "difiere_del_primer_intento_solo_en_la_temperatura": solo_temp,
+                         "clave_distinta_de_la_del_mismo_pedido_en_su_namespace": otra_que_mismo_pedido,
                          "lectura": "cambia = la clave del reintento no es la del primer intento"})
-    reg["ok"] = reg["ok"] and ns_0 == ar.ns_e1
+    reg["ok"] = reg["ok"] and ns_0 == ar.ns_e1 and solo_temp and otra_que_mismo_pedido
     res.append(reg)
 
     # R29, R29b y R30 (U-PROMPT-R2, P3c-2): con los candados de F22, F22b y F23, la línea del ítem, la de cierre y

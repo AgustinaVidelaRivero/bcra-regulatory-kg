@@ -36,6 +36,11 @@ comparan (no entran al pedido ni cambian ninguna clave): la lista de tablas forz
 al final del módulo, el sha256 del mensaje de un conjunto fijo de unidades (candado_mensaje_r2b.json) controla las
 líneas fijas y condicionales del mensaje (F22 y F22b).
 
+P5 (decisión de la autora del 05/10/2026, nota del mandato): el pedido lleva `temperature` 0
+(TEMPERATURA_E1_R2B), y el reintento por salida mal formada, 1 (TEMPERATURA_REINTENTO_FORMA_R2B). No cambian el
+prefijo, el mensaje, el tool schema ni el namespace; cambia la clave de E1 de todas las unidades (fila de la
+temperatura en data/experiment/mantenimiento/tabla_reprocesamiento.md).
+
 Caching (docs/decisiones_caching_extraccion.md): system como bloque único con cache_control en el último bloque
 (decisión 1); el namespace de E1 se deriva del hash canónico con cliente_e1.namespace_e1.
 """
@@ -97,6 +102,12 @@ ANCLA_FIN_BLOQUE = "\n# PROVENANCE OBLIGATORIA POR ELEMENTO"
 
 MAX_OUTPUT_TOKENS = v3.MAX_OUTPUT_TOKENS      # primer intento a 8.192 (diseño §8.3)
 NOMBRE_TOOL = v3.NOMBRE_TOOL                  # extraer_kg_e1
+# Temperatura del pedido de E1 (P5; decisión de la autora del 05/10/2026, nota del mandato): 0 en el pedido que arma
+# build_request_kwargs_r2b, del que salen el primer intento, el reintento por corte, el tercer escalón y el reintento
+# del ratchet; 1 en el reintento por salida mal formada, para obtener una respuesta distinta
+# (kwargs_reintento_forma_r2b). Entra en la clave de la caché local, no en el prefijo ni en el namespace.
+TEMPERATURA_E1_R2B = 0
+TEMPERATURA_REINTENTO_FORMA_R2B = 1
 
 
 def _leer_con_candado(p: Path, esperado: str) -> bytes:
@@ -431,11 +442,18 @@ def build_request_kwargs_r2b(chunk: dict, model: str, max_tokens: int = MAX_OUTP
     return {
         "model": model,
         "max_tokens": max_tokens,
+        "temperature": TEMPERATURA_E1_R2B,
         "system": bloques_sistema_r2b(),
         "tools": [TOOL_SCHEMA_R2B],
         "tool_choice": {"type": "tool", "name": NOMBRE_TOOL},
         "messages": [{"role": "user", "content": build_user_message_r2b(chunk)}],
     }
+
+
+def kwargs_reintento_forma_r2b(kwargs: dict) -> dict:
+    """P5: el pedido del reintento por salida mal formada, el que produjo la salida (con su techo) con la temperatura
+    del reintento; el pedido recibido no se toca. Lo usa runner_corpus.kwargs_reintento_forma con el perfil r2b."""
+    return dict(kwargs, temperature=TEMPERATURA_REINTENTO_FORMA_R2B)
 
 
 def labels_catalogo_r2() -> dict[str, dict]:
@@ -469,6 +487,8 @@ _candado_mensaje()
 __all__ = [
     "PREFIJO_SISTEMA_R2B", "TOOL_SCHEMA_R2B", "ROL_POR_TO_R2", "REEMPLAZOS_R2B", "TABLAS_RESIDUALES_FORZADAS",
     "PREFIJO_HASH_R2B", "PREFIJO_SHA256_R2B", "PREFIJO_CANONICO_R2B", "MAX_OUTPUT_TOKENS", "NOMBRE_TOOL",
-    "bloques_sistema_r2b", "build_user_message_r2b", "build_request_kwargs_r2b", "estado_tablas", "tiene_riesgo",
+    "TEMPERATURA_E1_R2B", "TEMPERATURA_REINTENTO_FORMA_R2B",
+    "bloques_sistema_r2b", "build_user_message_r2b", "build_request_kwargs_r2b", "kwargs_reintento_forma_r2b",
+    "estado_tablas", "tiene_riesgo",
     "es_item", "es_encabezado_de_lista", "labels_catalogo_r2",
 ]

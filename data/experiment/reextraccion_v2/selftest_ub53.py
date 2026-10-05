@@ -32,12 +32,21 @@ escalado). Puntos:
       parámetro, el par de siempre; cuándo corresponde (una parte o una unidad
       sin partición) y el techo del ratchet; y el adaptador de transmisión
       dentro del cliente real, debajo de la caché, con un SDK falso.
+  P8  U-PROMPT-R2, P5: temperatura del perfil r2b. El primer intento, el
+      reintento por corte y el tercer escalón llevan temperature 0, del mismo
+      armado; el reintento del ratchet también; el reintento por salida mal
+      formada (runner_corpus.kwargs_reintento_forma y fase_e1, con un stub)
+      lleva temperature 1, con el resto del pedido igual, y va por el camino
+      del namespace -rforma1; con el perfil sellado y el camino r2, el
+      reintento sigue siendo el mismo pedido, sin temperatura.
 
 Uso:  .venv/bin/python3 selftest_ub53.py
 """
 
 from __future__ import annotations
 
+import contextlib
+import io
 import json
 import os
 import sqlite3
@@ -715,6 +724,100 @@ def p7_escalon_3(tmp: Path) -> None:
           len(sdk2.creates) == 1 and sdk2.streams == [] and cli2.cache_transmision is None)
     cli2.close()
 
+
+# ========================================================================= #
+# P8 — temperatura del perfil r2b (U-PROMPT-R2, P5)                         #
+# ========================================================================= #
+
+class StubFormaR2:
+    """Primera respuesta mal formada (contenedores no-lista) y el reintento con TOOL_OK; registra por qué camino
+    llega cada pedido (create o crear_reintento_forma)."""
+
+    def __init__(self):
+        self.requests: list[tuple[str, dict]] = []
+        self.messages = self
+        self.gasto_usd = 0.0
+
+    def create(self, **kwargs):
+        self.requests.append(("create", kwargs))
+        return _msg("tool_use", dict(TOOL_CORTADO))
+
+    def crear_reintento_forma(self, doc=None, **kwargs):
+        self.requests.append(("reintento_forma", kwargs))
+        return _msg("tool_use", dict(TOOL_OK))
+
+    def resumen(self):
+        return {"llamadas": len(self.requests)}
+
+
+def _fase_e1_un_chunk(tmp: Path, nombre: str, chunk: dict, perfil, r2: bool, cli) -> list[dict]:
+    """fase_e1 del runner sobre un solo chunk, con el perfil dado (como r2_codigo2/c2_sinteticos.py)."""
+    e0, sal = tmp / f"e0_{nombre}", tmp / f"sal_{nombre}"
+    e0.mkdir()
+    (sal / chunk["to"]).mkdir(parents=True)
+    (e0 / f"chunks_{chunk['to']}.json").write_text(json.dumps([chunk], ensure_ascii=False), encoding="utf-8")
+    orig = (RC.PERFIL, RC.PERFIL_R2, RC.E0_DIR, RC.ESTIMADO_USD)
+    RC.PERFIL, RC.PERFIL_R2, RC.E0_DIR = perfil, r2, e0
+    RC.ESTIMADO_USD = {**RC.ESTIMADO_USD, chunk["to"]: {"e1": 0.0, "e3": 0.0}}
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            RC.fase_e1(chunk["to"], cli, RC.Estado(sal), sal, None, None, None)
+    finally:
+        RC.PERFIL, RC.PERFIL_R2, RC.E0_DIR, RC.ESTIMADO_USD = orig
+    return [json.loads(x) for x in (sal / chunk["to"] / "extracciones_e1.jsonl").read_text(
+        encoding="utf-8").splitlines()]
+
+
+def p8_temperatura_r2b(tmp: Path) -> None:
+    import perfil_e1    # noqa: PLC0415
+    import prompt_r2b   # noqa: PLC0415
+    import ratchet_e3   # noqa: PLC0415
+    r2b, v3 = perfil_e1.perfil("r2b"), perfil_e1.perfil("v3_b54")
+    cid = "ctacte::3.2.4"
+    ch_r2b = next(c for c in json.loads((AQUI / "e0_chunking" / "salida_tanda0_r2b" / "chunks_ctacte.json").read_text(
+        encoding="utf-8")) if c["id"] == cid)
+    ch_v3 = next(c for c in json.loads((AQUI / "e0_chunking" / "salida_tanda0" / "chunks_ctacte.json").read_text(
+        encoding="utf-8")) if c["id"] == cid)
+    kw = r2b.build_request_kwargs(ch_r2b, model=RC.MODEL_E1)
+    techo2, techo3 = cliente_e1.MAX_TOKENS_REINTENTO_CORTE_R2, cliente_e1.MAX_TOKENS_ESCALON_3_R2
+    stub = StubEspia([_msg("max_tokens", TOOL_CORTADO, 8192), _msg("max_tokens", TOOL_CORTADO, techo2),
+                      _msg("tool_use", TOOL_OK)])
+    cliente_e1.crear_con_reintento_corte(stub, kw, max_tokens_reintento=techo2, escalon_3=lambda: True)
+    check("P8 perfil r2b: primer intento, reintento por corte y tercer escalón llevan temperature 0 (8.192, 16.384 y "
+          "40.960)",
+          [(r["max_tokens"], r.get("temperature")) for r in stub.requests]
+          == [(8192, 0), (techo2, 0), (techo3, 0)] and prompt_r2b.TEMPERATURA_E1_R2B == 0)
+    kw_ratchet = ratchet_e3.build_reextraccion_kwargs(ch_r2b, [], model=RC.MODEL_E1,
+                                                      max_tokens_reintento=RC.MAX_TOKENS_REINTENTO, perfil=r2b)
+    check("P8 perfil r2b: el reintento del ratchet sale del mismo armado, con temperature 0",
+          kw_ratchet.get("temperature") == 0 and kw_ratchet["max_tokens"] == RC.MAX_TOKENS_REINTENTO)
+    kf = RC.kwargs_reintento_forma(kw, r2b)
+    check("P8 kwargs_reintento_forma, perfil r2b: el mismo pedido con temperature 1, sin tocar el pedido base",
+          kf.get("temperature") == 1 and kw.get("temperature") == 0
+          and {k: v for k, v in kf.items() if k != "temperature"} == {k: v for k, v in kw.items() if k != "temperature"}
+          and lc.compute_key("ns", lc.canonical_request(kf)) != lc.compute_key("ns", lc.canonical_request(kw)))
+    kw_v3 = v3.build_request_kwargs(ch_v3, model=RC.MODEL_E1)
+    check("P8 kwargs_reintento_forma, perfil sellado: el mismo pedido (mismo objeto), sin temperatura",
+          RC.kwargs_reintento_forma(kw_v3, v3) is kw_v3 and "temperature" not in kw_v3)
+    cli = StubFormaR2()
+    regs = _fase_e1_un_chunk(tmp, "r2b", ch_r2b, r2b, True, cli)
+    caminos = [(c, r.get("temperature")) for c, r in cli.requests]
+    resto = [{k: v for k, v in r.items() if k != "temperature"} for _, r in cli.requests]
+    ns_f = cliente_e1.namespace_e1(prefijo_hash=r2b.prefijo_hash_para_namespace,
+                                   sufijo=cliente_e1.SUFIJO_REINTENTO_FORMA)
+    check("P8 fase_e1 con el perfil r2b: salida mal formada → reintento por forma con temperature 1, el resto del "
+          "pedido igual al primero, en el namespace -rforma1",
+          caminos == [("create", 0), ("reintento_forma", 1)] and len(resto) == 2 and resto[0] == resto[1]
+          and regs[0].get("reintento_forma", {}).get("namespace") == ns_f and regs[0]["error"] is None,
+          json.dumps({"caminos": caminos, "error": regs[0]["error"]}, ensure_ascii=False))
+    cli_v3 = StubFormaR2()
+    regs_v3 = _fase_e1_un_chunk(tmp, "v3", ch_v3, v3, True, cli_v3)
+    check("P8 fase_e1 con el perfil sellado y el camino r2: el reintento por forma es el mismo pedido, sin temperatura "
+          "(como en U-R2-CODIGO-2)",
+          [c for c, _ in cli_v3.requests] == ["create", "reintento_forma"]
+          and lc.canonical_request(cli_v3.requests[0][1]) == lc.canonical_request(cli_v3.requests[1][1])
+          and "temperature" not in cli_v3.requests[1][1] and "reintento_forma" in regs_v3[0])
+
 # ========================================================================= #
 
 def main() -> int:
@@ -727,6 +830,7 @@ def main() -> int:
         p5_subchunking()
         p6_candados()
         p7_escalon_3(tmp)
+        p8_temperatura_r2b(tmp)
 
     print(f"\nSELFTEST U-B5.3: {_n - _fallos}/{_n}"
           + ("" if not _fallos else f"  ({_fallos} FALLOS)"), flush=True)

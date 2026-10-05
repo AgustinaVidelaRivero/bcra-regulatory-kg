@@ -1,5 +1,5 @@
 """
-selftest_prompt_r2b.py — U-PROMPT-R2, P2, P3b-2 y P3c-2: selftest OFFLINE del perfil r2b (prompt_r2b.py). Cero
+selftest_prompt_r2b.py — U-PROMPT-R2, P2, P3b-2, P3c-2 y P5: selftest OFFLINE del perfil r2b (prompt_r2b.py). Cero
 llamadas a la API.
 
   P3c-2: el prefijo se re-congela con el parche de P3c sobre el de P3b-2 (3817de475c93), con su candado; la lista de
@@ -24,6 +24,9 @@ llamadas a la API.
      salvo en los 1.053 ítems (g) y los 121 mini-chunks a mitad de oración (h); la línea del recorte de E0 va solo
      en un chunk con `herencia_recortada`.
   F. Tablas forzadas a residual: con una tabla en la lista, cambia el mensaje de su unidad y no el prefijo.
+  H. P5: el pedido lleva `temperature` 0 (TEMPERATURA_E1_R2B) en las 2.434 unidades, sin cambiar el prefijo; la
+     temperatura del reintento por salida mal formada es 1 (TEMPERATURA_REINTENTO_FORMA_R2B). El camino del runner
+     (reintento por corte, tercer escalón, ratchet y reintento por forma) lo prueba selftest_ub53.py, P8.
 
 Uso (desde la raíz del repo):
   PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B data/experiment/reextraccion_v2/e1_extractor/selftest_prompt_r2b.py
@@ -258,9 +261,28 @@ def main() -> int:
         P.TABLAS_RESIDUALES_FORZADAS = viejo
     check("sacar cap::tabla037 de la lista hace frenar el candado del mensaje", sin_lista)
     P._candado_mensaje()
-    check("restaurado, el candado pasa; el candado no entra al pedido (mismas claves del request)",
-          set(P.build_request_kwargs_r2b(chunks[0], model="m")) == {"model", "max_tokens", "system", "tools",
-                                                                     "tool_choice", "messages"})
+    check("restaurado, el candado pasa; el candado no entra al pedido (mismas claves del request, con la temperatura "
+          "de P5)",
+          set(P.build_request_kwargs_r2b(chunks[0], model="m")) == {"model", "max_tokens", "temperature", "system",
+                                                                     "tools", "tool_choice", "messages"})
+
+    print("\n[H] temperatura (P5)")
+    temps = {repr(P.build_request_kwargs_r2b(c, model="m")["temperature"]) for c in chunks}
+    check("el pedido lleva temperature 0 (TEMPERATURA_E1_R2B, entero) en las 2.434 unidades",
+          temps == {"0"} and P.TEMPERATURA_E1_R2B == 0 and type(P.TEMPERATURA_E1_R2B) is int, str(temps))
+    check("la temperatura del reintento por salida mal formada es 1 (TEMPERATURA_REINTENTO_FORMA_R2B, entero)",
+          P.TEMPERATURA_REINTENTO_FORMA_R2B == 1 and type(P.TEMPERATURA_REINTENTO_FORMA_R2B) is int)
+    sin_t = {k: v for k, v in P.build_request_kwargs_r2b(chunks[0], model="m").items() if k != "temperature"}
+    check("fuera de la temperatura, el pedido es el de P3c-2: el prefijo y su hash no cambian",
+          sin_t["system"] == P.bloques_sistema_r2b() and sin_t["tools"] == [P.TOOL_SCHEMA_R2B]
+          and P.PREFIJO_HASH_R2B == "322c5a23e9b7" and sin_t["max_tokens"] == 8192)
+    base = P.build_request_kwargs_r2b(chunks[0], model="m")
+    con_techo = dict(base, max_tokens=16384)
+    rf = P.kwargs_reintento_forma_r2b(con_techo)
+    check("kwargs_reintento_forma_r2b: el pedido recibido (con su techo) con temperature 1, sin tocar el recibido",
+          rf["temperature"] == 1 and con_techo["temperature"] == 0 and rf["max_tokens"] == 16384
+          and {k: v for k, v in rf.items() if k != "temperature"}
+          == {k: v for k, v in con_techo.items() if k != "temperature"})
 
     print(f"\nRESULTADO: {OK} ok, {FAIL} FAIL")
     return 0 if FAIL == 0 else 1

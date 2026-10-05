@@ -70,7 +70,9 @@ MAX_TOKENS_REINTENTO_CORTE_R2 = 16384
 # el runner del perfil r2 lo usa): el MISMO request, en un namespace propio
 # (sufijo del code_ver), porque con el mismo namespace la caché devolvería la
 # misma salida; va a la misma db y su log de usage lleva un component propio
-# (decisiones de caching D1 a D4).
+# (decisiones de caching D1 a D4). Con el perfil r2b (U-PROMPT-R2, P5), el
+# request lleva además la temperatura del reintento: lo arma
+# runner_corpus.kwargs_reintento_forma; este cliente lo pasa tal cual.
 SUFIJO_REINTENTO_FORMA = "-rforma1"
 COMPONENTE_E1 = "reextraccion_v2_e1"
 COMPONENTE_REINTENTO_FORMA = "reextraccion_v2_e1_reintento_forma"
@@ -275,9 +277,10 @@ class ClienteE1Real:
         return self._crear_en(self.cache, COMPONENTE_E1, doc, kwargs)
 
     def crear_reintento_forma(self, *, doc: str | None = None, **kwargs):
-        """U-R2-CODIGO-2, C2, punto b: el mismo request en el namespace del
-        reintento por forma (SUFIJO_REINTENTO_FORMA), con el mismo tope y la
-        misma contabilidad D2."""
+        """U-R2-CODIGO-2, C2, punto b: el request que recibe, tal cual, en el
+        namespace del reintento por forma (SUFIJO_REINTENTO_FORMA), con el
+        mismo tope y la misma contabilidad D2 (con el perfil r2b, el runner lo
+        arma con la temperatura del reintento; U-PROMPT-R2, P5)."""
         if self._transmite(kwargs):
             return self._crear_en(self._cache_transmision(SUFIJO_REINTENTO_FORMA), COMPONENTE_REINTENTO_FORMA, doc,
                                   kwargs)
@@ -437,10 +440,12 @@ def crear_con_reintento_corte(cliente, kwargs: dict, doc: str | None = None,
 
 
 def crear_reintento_forma(cliente, kwargs: dict, doc: str | None = None):
-    """U-R2-CODIGO-2, C2, punto b: UNA re-llamada con el mismo request
+    """U-R2-CODIGO-2, C2, punto b: UNA re-llamada con el request que recibe
     (`kwargs` tal cual) ante una salida mal formada, en el namespace del
-    reintento por forma. Con un cliente que no tiene ese namespace (stubs),
-    el mismo despacho que `_crear`."""
+    reintento por forma: con los perfiles existentes, el mismo request; con
+    el perfil r2b, el mismo con la temperatura del reintento
+    (runner_corpus.kwargs_reintento_forma; U-PROMPT-R2, P5). Con un cliente
+    que no tiene ese namespace (stubs), el mismo despacho que `_crear`."""
     fn = getattr(cliente, "crear_reintento_forma", None)
     if fn is not None:
         return fn(doc=doc, **kwargs)

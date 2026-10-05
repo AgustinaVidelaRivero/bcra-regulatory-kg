@@ -458,7 +458,8 @@ ERROR_PARTICIONADA = "particionada_por_corte"
 # U-R2-CODIGO-2, C2, punto b: con el perfil r2, una salida con tool_use que validador_e1 rechaza entera por su
 # forma recibe UN reintento con el mismo request en su propio namespace (cliente_e1.SUFIJO_REINTENTO_FORMA); si
 # vuelve mal formada, la unidad queda con este error y va a la lista declarada (errores_definitivos y
-# reintentos_forma del resumen de E1). Sin reparación determinística.
+# reintentos_forma del resumen de E1). Sin reparación determinística. Con el perfil r2b (U-PROMPT-R2, P5), el
+# request del reintento cambia en la temperatura (kwargs_reintento_forma).
 MOTIVOS_FORMA_E1 = ("salida_no_parseable", "salida_no_dict", "entities_o_relations_invalidos")
 ERROR_FORMA_TRAS_REINTENTO = "salida_mal_formada_tras_reintento"
 # U-PROMPT-R2, P3c-2 (decisión 6 de la autora sobre el FRENO P3c-1; solo con el perfil r2): tercer escalón del
@@ -482,6 +483,16 @@ def techo_reintento_ratchet(reg_e1: dict | None) -> int:
     if PERFIL_R2 and (reg_e1 or {}).get("escalon_3"):
         return cliente_e1.MAX_TOKENS_ESCALON_3_R2
     return MAX_TOKENS_REINTENTO
+
+
+def kwargs_reintento_forma(kwargs: dict, perfil) -> dict:
+    """El pedido del reintento por salida mal formada (punto b): el que produjo la salida, con su techo. Con un perfil
+    de forma r2 (r2b; U-PROMPT-R2, P5), con la temperatura del reintento (prompt_r2b.kwargs_reintento_forma_r2b),
+    para obtener una respuesta distinta; con los perfiles existentes, el mismo pedido, tal cual."""
+    if not perfil_forma_r2(perfil):
+        return kwargs
+    import prompt_r2b    # noqa: PLC0415 — e1_extractor, solo con el perfil r2b
+    return prompt_r2b.kwargs_reintento_forma_r2b(kwargs)
 
 
 def motivo_forma_e1(val: dict | None) -> str | None:
@@ -617,9 +628,11 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
                if tool_input is not None else None)
         reintento_forma = None
         if PERFIL_R2 and err is None and motivo_forma_e1(val) is not None:
-            # punto b: el request que produjo la salida mal formada (con el techo de corte si lo hubo), tal cual
-            kwargs_forma = (dict(kwargs, max_tokens=cliente_e1.MAX_TOKENS_ESCALON_3_R2) if escalon3
-                            else dict(kwargs, max_tokens=techo_corte) if cortado is not None else kwargs)
+            # punto b: el request que produjo la salida mal formada (con el techo de corte si lo hubo), tal cual; con el
+            # perfil r2b (U-PROMPT-R2, P5), con la temperatura del reintento
+            kwargs_forma = kwargs_reintento_forma(
+                dict(kwargs, max_tokens=cliente_e1.MAX_TOKENS_ESCALON_3_R2) if escalon3
+                else dict(kwargs, max_tokens=techo_corte) if cortado is not None else kwargs, PERFIL)
             reintento_forma = {"namespace": cliente_e1.namespace_e1(
                                    prefijo_hash=PERFIL.prefijo_hash_para_namespace,
                                    sufijo=cliente_e1.SUFIJO_REINTENTO_FORMA),
