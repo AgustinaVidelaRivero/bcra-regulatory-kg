@@ -261,3 +261,12 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      da vacío el 03/10/2026. Su cantidad y su texto quedan NO VERIFICADOS hasta esa verificación.
   2. No se registra en el tablero de correcciones (`docs/tablero_correcciones.md`), que es por síntoma
      del grafo.
+  3. **Un compromiso, no un hecho (05/10/2026).** El capítulo 4 afirma que los bloques de texto corrido de
+     los documentos no segmentables ingresan al grafo al ensamblar el corpus escalado (el texto está en
+     Overleaf y no se ve desde el repo). Hoy ningún grafo tiene esas 77 unidades de prosa, y su procedencia
+     por página existe solo en `data/experiment/cobertura_bloque_a/chunks_a2.json` y
+     `a2_salida/extracciones_a2.jsonl`. El documento de cifras de esa unidad lo dice
+     (`data/experiment/cobertura_bloque_a/cifras_vigentes.md:12-17`): lo escribible es «medido y adjudicado,
+     pendiente de ingreso». El ingreso es de U-BLOQUE-A, condición de entrada de la tanda 3
+     (`docs/plan_tesis.md:772`; decisión de la autora), con mandato a redactar después de U-REEXT-T0. Hasta
+     que esa unidad cierre, la frase es un compromiso: se revisa en la versión final de la tesis.
