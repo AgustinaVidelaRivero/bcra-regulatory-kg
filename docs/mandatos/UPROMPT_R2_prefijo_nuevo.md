@@ -836,3 +836,27 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     del tercer escalón (tope USD 0,20), los archivos de código de la nota anterior, y la fila F08d con la
     variación R13c.
   El «seguí» de P3c-2 está preparado, con estas decisiones; su despacho está PENDIENTE.
+- **04/10/2026 — FRENO P3c-2 revisado; correcciones, enmienda 7 FIRMADA y «seguí» de P4b (decisiones de la
+  autora).** La nota anterior quedó en `1873962`. El freno está en `data/experiment/prompt_r2/freno_p3c2.md`
+  (sin commit al 04/10/2026). Corrí sus controles sobre una copia: los cinco scripts de USD 0 dan las salidas
+  de `p3c2/salida/`, las dos fixtures y `selftest_clave_cache.json` salen iguales a los del repo, y los
+  selftests dan lo que dice el freno (51, 80, 392, 101, 41, 52 y 109 casos, sin fallos; el del manifiesto,
+  44 de 49, como corresponde sobre una copia). La cadena r2a con el código nuevo da los ocho sha256 de C2,
+  con `70d51e42…` y `fa4c1043…`. El prefijo implementado es el borrador aprobado, byte a byte: 59.909
+  caracteres, hash `322c5a23e9b7`.
+  - **Enmienda 7 a L-ESQ-R2, FIRMADA por la autora el 04/10/2026** (commit de la firma PENDIENTE): el texto
+    implementado coincide con su §1. «Régimen de transición con condiciones» no aparece con esas palabras y
+    lo cubre la prueba de P3C-a3; quedó dicho en la nota de la verificación de la enmienda.
+  - **El contador de omisiones `meta_normativo`** pasa a las siete clases de la enmienda 7: deber,
+    prohibición, facultad, condición, excepción, alcance y modalidad. Con las cuatro de hoy detecta 5 de las
+    9 normativas de P4; las otras 4 son de alcance o de modalidad. Sigue contando sin rechazar. La unidad
+    declara la lista de marcas, suma casos al selftest y re-valida la salida guardada de P4.
+  - **Tabla de reprocesamiento:** autorizado el texto del §10 del freno, en tres lugares fuera de las filas ya
+    autorizadas: el §1 («Sin candado»), la nota de F22, F22b y F23, y la lista «Solo r2b», con F08d.
+  - **Desvío aceptado:** la llamada real del tercer escalón transmitió con 24.576 tokens de techo y no con
+    40.960, porque con 40.960 el peor caso proyectado pasaba el tope de USD 0,20. Como 24.576 supera el
+    límite sin transmisión, el despacho y la transmisión son los del escalón. El techo completo lo ejercita
+    `selftest_ub53.py` con un SDK falso. La llamada costó USD 0,042 y no se repite.
+  - **P4b** va con lo ya decidido, más el contador de `meta_normativo` por brazo y la condición 10 de la
+    tanda 1 decidida con el resultado del ejemplo. Se despacha después del commit de P3c-2.
+  El mensaje de correcciones y el «seguí» de P4b están preparados; sus despachos están PENDIENTES.

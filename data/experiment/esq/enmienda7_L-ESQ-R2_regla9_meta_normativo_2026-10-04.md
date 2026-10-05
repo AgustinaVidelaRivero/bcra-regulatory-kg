@@ -1,6 +1,6 @@
 # Enmienda 7 a L-ESQ-R2 — la regla 9: el alcance y los regímenes de transición no son meta-normativos
 
-**BORRADOR — PENDIENTE DE FIRMA** · Redactada: 2026-10-04.
+**FIRMADA por la autora** el 04/10/2026 · Redactada: 2026-10-04.
 
 Enmienda con fecha a L-ESQ-R2 (`data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`, FIRMADA en `4ef7650`;
 sha256 del texto firmado `66c4a1b9…`). L-ESQ-R2 no se edita: esta enmienda vive al lado y se lee junto con
@@ -8,8 +8,8 @@ ella, con sus notas posteriores a la firma y con las enmiendas 2 (`5f9a731`), 3 
 5 (`3a4b980`). La enmienda 6 está en BORRADOR. Por la regla k de CLAUDE.md §4, toda cita de L-ESQ-R2 es del
 texto firmado (`git show 4ef7650:data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`), con su línea.
 
-No rige hasta la firma. La autora la firma antes del commit de P3c-2 de U-PROMPT-R2, la etapa que re-congela
-el prefijo con este cambio.
+Rige desde la firma. La autora la firmó antes del commit de P3c-2 de U-PROMPT-R2, la etapa que re-congela el
+prefijo con este cambio, con el texto implementado verificado contra el §1 (nota de la verificación, al pie).
 
 ---
 
@@ -94,4 +94,22 @@ L-ESQ-R2 describe.
 
 ## Firma
 
-BORRADOR — PENDIENTE DE FIRMA de la autora.
+FIRMADA por la autora el 04/10/2026. Rige desde esta firma.
+
+## Nota de la verificación, a la firma (04/10/2026)
+
+La firma tenía una condición: que el texto implementado coincidiera con el §1. Lo verifiqué sobre una copia del
+repo, con P3c-2 de U-PROMPT-R2 sin commit (`data/experiment/prompt_r2/freno_p3c2.md`).
+
+- **El prefijo implementado** tiene 59.909 caracteres, sha256 `ccffa4e3…` y hash `322c5a23e9b7`. Es el borrador
+  aprobado de P3c-1, byte a byte, y sus 15 reemplazos son los de `438bbd5`.
+- **Los seis puntos del §1 están en su texto:** lo que queda como meta-normativo (P3C-a1 y P3C-a2), lo que deja
+  de serlo y adónde va (P3C-a3 y P3C-a4), la prueba entre finalidad y alcance (P3C-a3), el encabezado puro de una
+  lista (P3C-a3 y P3C-a6) y la Definicion (P3C-a5). Las frases «alcance jurídico» y «aplicabilidad temporal» ya
+  no están. La NOTA de E3 de las omisiones de esquema dice lo mismo.
+- **«Régimen de transición con condiciones» no aparece con esas palabras** en el prefijo. Lo cubre la prueba de
+  P3C-a3: un tramo con una condición o con un alcance nunca es `meta_normativo`. Lo considero suficiente: una
+  transición con condiciones trae una condición, y una regla de aplicabilidad temporal dice a qué se aplica la
+  norma. P4b lo mide con un caso elegido por lectura.
+- **Una palabra de más en el prefijo:** conserva del texto anterior «declaraciones de objetivo, finalidad u
+  objeto de las normas». El punto 1 del §1 nombra el objetivo y la finalidad, y no el objeto.
