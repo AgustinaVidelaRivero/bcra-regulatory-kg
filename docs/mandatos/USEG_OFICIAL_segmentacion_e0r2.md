@@ -256,3 +256,19 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     Corresponden a las tres clases de `particion_152.json`: 138 reconocidos plenos, 2 parciales y 12 no
     segmentables. Se confirma antes del despacho de S2, junto con las otras dos definiciones (los conjuntos
     y el «primer nivel como sección»). Hasta entonces rige la precondición de S2.
+- **05/10/2026 — séptimo punto del diseño de S0-1: párrafos sin numerar que empiezan con un número de
+  punto (decisión de la autora, tras la verificación VSEG41 del 03/10/2026).** La nota anterior quedó en
+  `2bfda2a`.
+  - El hallazgo. Entre los párrafos sin numerar del universo (los intersticiales de e0-r2), 36 tienen como
+    primera línea un número de punto de 2 o más niveles y pueden ser subpuntos que la segmentación no
+    reconoce: 27 en ri_mmsef, 6 en rdbcra, 2 en ri_dcpc y 1 en snp_cheq. De ellos, 28 quedan atribuidos a una
+    sección (27 a S2 de ri_mmsef y 1 a S3 de snp_cheq) y 8 a un punto (6 a `rdbcra::2.3` y 2 a
+    `ri_dcpc::3.1`). La cifra es de esa verificación, que corrió sobre una copia con la e0-r2 de su fecha,
+    anterior a C2 de U-R2-CODIGO-2; su lista no está en el repo.
+  - Qué se suma. El diseño de S0-1 lleva un séptimo punto, junto con las seis reglas: el censo de esos
+    párrafos recomputado con el código vigente, si se reconocen como subpuntos y con qué regla, y qué TOs y
+    qué ids cambian en los 152. Se diseña junto con la regla 2 (rótulos de punto que no lo son; rdbcra está
+    en las dos), la regla 1 y la guarda de snp_cheq de la regla 5, porque se cruzan.
+  - Condición. La E0 de la tanda 0 sigue byte a byte igual, y los documentos que la regla no toca dan los
+    mismos ids. Si no se puede corregir así, queda registrado como límite medido, con la lista de los casos.
+  - En los controles del FRENO S0-2, «una de las seis reglas» se lee como «una de las siete».

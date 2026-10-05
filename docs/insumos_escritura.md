@@ -239,7 +239,11 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
 - **Alimenta:** la sección 4.1 de la tesis y las cifras que la tesis toma de la segmentación fuera de
   esa sección (punto 4 de S2 del mandato): las unidades por conjunto, los puntos y el porcentaje de
   terminales por clase de documento, y los documentos que toman el primer nivel como sección o no son
-  segmentables. Las definiciones de ese punto se fijan contra el texto vigente del capítulo 4 antes de
+  segmentables. Por la nota del 05/10/2026 al pie del mandato (`2bfda2a`), también: la lista de las reglas
+  de segmentación vigentes en e0-r2, con los documentos que usa cada una, para rehacer la tabla de reglas
+  de la tesis (4.d); y las unidades por grupo de documentos, con documentos y páginas, más lo que queda
+  fuera del grafo según las enmiendas a las adendas 1 y 2 del laudo B5.5 (4.e). Las definiciones de ese
+  punto, la de «clase de documento» incluida, se fijan contra el texto vigente del capítulo 4 antes de
   despachar S2; hoy esas cifras salen de la partición legada
   (`reports/u_insumos_cap/estadisticas_corpus.md` y `reports/u_cap3_datos/datos.md`). Hasta que el
   artefacto exista, las cifras de la sección 4.1 no se toman de la segmentación legada
