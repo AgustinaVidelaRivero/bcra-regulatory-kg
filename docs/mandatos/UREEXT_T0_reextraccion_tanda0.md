@@ -6,15 +6,18 @@ Repo bcra-regulatory-kg. Leé CLAUDE.md antes de empezar, y docs/decisiones_cach
 tocar cualquier llamada al modelo: sus cinco decisiones son vinculantes.
 - Unidad en CINCO ETAPAS, T1 a T5, con FRENO obligatorio al final de cada una: reporte corto (no más de 40
   líneas) y espera del «seguí» escrito de la autora.
-- Costo de API: solo en T2, con tope de USD 72 para E1 a E3 de los diez TOs (decisión de la autora del
-  04/10/2026, tras el FRENO P3b-2 de U-PROMPT-R2, y mantenido por la autora tras el FRENO P4; antes era
-  USD 69; docs/plan_tesis.md:400). Fuera de T2, USD 0 y ninguna llamada a la API. Si la proyección de T2
-  pasa el tope, se frena y se reporta: el tope no se sube solo.
+- Costo de API: solo en T2, con tope de USD 80 para E1 a E3 de los diez TOs (decisión de la autora del
+  05/10/2026, tras el FRENO P5 de U-PROMPT-R2; antes era USD 72, y antes, 69; docs/plan_tesis.md:400). Fuera
+  de T2, USD 0 y ninguna llamada a la API. Si la proyección de T2 pasa el tope, se frena y se reporta: el
+  tope no se sube solo.
+- Plataforma: la API de Anthropic. La autora evalúa correr la extracción por Amazon Bedrock, y la firma de
+  este mandato espera esa decisión. Si cambia la plataforma, cambian el cliente, el id del modelo, el
+  namespace de la caché y las precondiciones.
 - PRECONDICIONES, todas commiteadas por la autora. Si falta alguna, frená sin escribir.
   - De U-PROMPT-R2: P4, la pareada (`2ed47a0`); P3c-1, el diseño del ajuste (`438bbd5`); P3c-2, el prefijo
     re-congelado y los candados de F04b, F22, F22b y F23 (`66cde30`); la corrección de la clase modalidad
     del contador (`bb212f1`); P4b, la prueba corta (`046e493`); y P5, la etapa que fija la temperatura de
-    E1 (decisión de la autora del 05/10/2026; commit PENDIENTE a esa fecha).
+    E1 (decisión de la autora del 05/10/2026; `53b7708`).
   - De U-R2-CODIGO-2: el cierre de C2, con el código y `salida_tanda0_r2b/` (`9f6361e`).
 - Código: el del pipeline es el del commit de P5 de U-PROMPT-R2, que sobre `bb212f1` cambia solo la
   temperatura del pedido. El prefijo no recibe otro ajuste antes de esta unidad (decisión de la autora del
@@ -37,7 +40,9 @@ CONTEXTO, con sus anclas.
   salida ponderada por estrato, a 48,97, sin ponderar; con el tercer escalón, de 45,06 a 49,93; y por el
   factor 1,4, de 63,93 a 69,91 (data/experiment/prompt_r2/p5/salida/costo_p5.json). Sin temperatura fijada,
   P4b daba hasta 67,83. Es una cota: las 27 unidades se eligieron por lectura y son cortas (22.166
-  caracteres de texto propio entre todas). El tope de 72 alcanza, con USD 2,09 sobre la cota más alta.
+  caracteres de texto propio entre todas). El tope de 80 deja USD 10,09 sobre la cota más alta: con 72
+  quedaban 2,09, menos que la diferencia entre dos mediciones de las mismas unidades (P5 midió un 7 % más
+  de salida que P4b). El runner frena en cada checkpoint si la proyección del total pasa el tope.
 - Gate: docs/laudo_release_r2_pipeline.md, §3.1 (puntos 1 a 8), y docs/protocolo_entre_tandas.md, §1 y §4,
   con su enmienda 3 sobre las clases de reprocesamiento
   (docs/enmienda3_protocolo_entre_tandas_2026-10-04_clases_de_reprocesamiento.md, FIRMADA el 04/10/2026).
@@ -87,14 +92,14 @@ CONTEXTO, con sus anclas.
 
 T1 — PREPARACIÓN EN SECO Y SUITE (USD 0).
 1. Manifiestos r2b: `rutas.e0_salida` pasa a data/experiment/reextraccion_v2/e0_chunking/salida_tanda0_r2b/;
-   los sellos, a los del prefijo re-congelado; y el tope global, a USD 72. Es el primer paso de la unidad
+   los sellos, a los del prefijo re-congelado; y el tope global, a USD 80. Es el primer paso de la unidad
    (decisión de la autora del 04/10/2026).
 2. Control de las entradas, cada una contra su valor de «Lo que llega de las unidades anteriores»: el hash
    y el sha256 del prefijo y el del tool schema; el namespace de E1; el prefijo y el namespace de E3; los
    57 archivos de `salida_tanda0_r2b/` contra los del commit de C2; el candado del catálogo; la temperatura
    del pedido de E1 (0) y la del reintento por salida mal formada (1); y el código: entre el commit de P5
    y el HEAD de la corrida no cambió ningún archivo de la cadena de E0 a E5, de los validadores ni de los
-   perfiles (`git diff --stat <commit de P5> HEAD`, sobre esas rutas, vacío).
+   perfiles (`git diff --stat 53b7708 HEAD`, sobre esas rutas, vacío).
    - Candados de los insumos que no entran al hash del prefijo (decisión de la autora del 04/10/2026): la
      lista de tablas forzadas a residual (F04b), las líneas fijas del mensaje de E1 (F22 y F22b) y las
      NOTAS de E3 (F23). Los puso P3c-2 de U-PROMPT-R2. T1 solo los verifica: que los módulos cargan con sus
@@ -174,7 +179,7 @@ T1 — PREPARACIÓN EN SECO Y SUITE (USD 0).
    d. Las semillas de los sorteos de T4 que dependen de la salida de T2 (las omisiones `meta_normativo`).
 FRENO T1.
 
-T2 — EXTRACCIÓN, E1 A E3 (tope USD 72).
+T2 — EXTRACCIÓN, E1 A E3 (tope USD 80).
 - Perfil r2b, los diez TOs, en el orden del manifiesto. Salida nueva en
   data/experiment/reextraccion_v2/corpus_tanda0/salida_r2b/ (se crea).
 - Con lo que traen P3b-2, C2 y P3c-2: el reintento por salida de E1 mal formada; los veredictos de E3 que
@@ -363,8 +368,8 @@ grafos sellados de r1 y de r2a; correr EV2 o cualquier celda con agente; usar la
 evaluación; actualizar el corpus; commitear.
 
 DECISIONES DE LA AUTORA AL FIRMAR.
-1. El tope de T2: queda en USD 72 (decisión de la autora del 04/10/2026, tras el FRENO P4). La
-   re-estimación con lo medido en P5 queda dentro: hasta 69,91 con el factor 1,4.
+1. El tope de T2: USD 80 (decisión de la autora del 05/10/2026; antes, USD 72). La re-estimación con lo
+   medido en P5 llega a 69,91 con el factor 1,4.
 2. Si las celdas con agente de la tanda 0 se vuelven a correr sobre los grafos r2b (referencia: USD 21,2577;
    propuesta: no en esta unidad).
 3. Las carpetas de salida (propuesta: `salida_r2b/`, `ens_diez_r2b/`, `ens_desarrollo_r2b/` y
@@ -409,8 +414,8 @@ LO QUE LLEGA DE LAS UNIDADES ANTERIORES, con su commit. T1 lo controla.
   - `cap::6.2.2.6`: sin valores de `cap::tabla037` y con la omisión `tabla` declarada.
   - La pata de E3: su NOTA de las omisiones recuperó el contenido de `ext::3.5.3::intro` y no reclamó el
     encabezado heredado de `ext::13.1.4`.
-- De P5 de U-PROMPT-R2 (data/experiment/prompt_r2/freno_p5.md; commit PENDIENTE al 05/10/2026; USD 0,9078 de
-  un tope de 1,5). Su commit es el del código de esta unidad.
+- De P5 de U-PROMPT-R2 (data/experiment/prompt_r2/freno_p5.md; `53b7708`; USD 0,9078 de un tope de 1,5). Su
+  commit es el del código de esta unidad.
   - La temperatura: `TEMPERATURA_E1_R2B = 0` y `TEMPERATURA_REINTENTO_FORMA_R2B = 1`
     (`e1_extractor/prompt_r2b.py:109-110`). El pedido del reintento por salida mal formada lo arma
     `runner_corpus.kwargs_reintento_forma`. En la tabla de reprocesamiento, la fila F08e y la variación R14;
