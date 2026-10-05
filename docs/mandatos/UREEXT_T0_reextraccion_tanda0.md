@@ -56,10 +56,10 @@ CONTEXTO, con sus anclas.
     formada (namespace `-rforma1`), con temperatura 1, para obtener una respuesta distinta. Lo implementa y
     lo mide P5 de U-PROMPT-R2. La temperatura 0 no vuelve determinística la respuesta (la misma
     documentación del SDK): P5 mide cuántas respuestas salen idénticas.
-  - E3: PENDIENTE de decisión de la autora. La decisión era fijarla también en 0, pero el modelo de E3,
-    `claude-sonnet-5`, rechaza con un error 400 un valor de `temperature`, `top_p` o `top_k` distinto del de
-    por defecto (https://platform.claude.com/docs/en/models/sonnet-5/overview, consultada el 05/10/2026).
-    Mientras no se decida otra cosa, E3 sigue sin temperatura fijada y su variación es un límite declarado.
+  - E3 corre sin temperatura fijada, y su variación es un límite declarado (decisión de la autora del
+    05/10/2026). Su modelo, `claude-sonnet-5`, rechaza con un error 400 un valor de `temperature`, `top_p` o
+    `top_k` distinto del de por defecto (https://platform.claude.com/docs/en/models/sonnet-5/overview,
+    consultada el 05/10/2026), y no se cambia. P5 mide cuánto varían sus veredictos.
   - Consecuencias para esta unidad:
     - cada unidad se extrae una vez;
     - esta unidad no cambia el modelo ni los parámetros del pedido, y no vuelve a extraer una unidad para
@@ -171,7 +171,7 @@ T2 — EXTRACCIÓN, E1 A E3 (tope USD 72).
   llegan como texto, leídos en código; el reintento con menos elementos, marcado; la marca de la copia de
   la nota; y el tercer escalón del reintento por corte.
 - Registro del modelo de cada llamada, con la temperatura que lleva su pedido guardado: 0 en E1, 1 en el
-  reintento por salida mal formada, y «default del proveedor» donde el pedido no la lleva. Costo real
+  reintento por salida mal formada, y «default del proveedor» en E3, cuyo pedido no la lleva. Costo real
   contra el estimado, por etapa y por TO.
 - Contadores: vocabulario retirado, que tiene que ser 0; unidades por estado final; unidades sin validación,
   listadas; unidades con cada marca de E3 (`lectura_veredicto_e3`, `reintento_con_menos_elementos` y
@@ -312,7 +312,8 @@ T5 — REPORTE (USD 0).
   supuesto, y las omisiones `meta_normativo` con contenido normativo, con las del texto heredado aparte. De
   cada una, lo que se puede corregir en código entre tandas y lo que quedaría como límite declarado con su
   cifra. Decide la autora.
-- La variación del modelo: la medición de P5 y la del punto 5.b de T4, y lo que queda sin fijar (E3).
+- La variación del modelo: la medición de P5, la del punto 5.b de T4 y la de los veredictos de E3, que
+  corre sin temperatura fijada.
 - Lo que sigue a esta unidad, sin hacerlo: la lectura de confirmación de `condicion_de` → Operacion y →
   Potestad; la medición de la `remite_a` estructural (30 aristas, piso de Wilson 0,75) y del lado del
   destino, después de la unidad que atribuye `remite_a` por tramo; la alternativa de unión de las
@@ -357,12 +358,11 @@ DECISIONES DE LA AUTORA AL FIRMAR.
    `data/experiment/reext_t0/`).
 4. Si el registro y la carga en Neo4j van en esta unidad (propuesta: sí, en T3).
 5. La semilla del sorteo de la cola humana.
-6. La temperatura de E3. El modelo de E3 no admite fijarla (contexto). Propuesta: queda sin fijar, declarada
-   como límite, con la variación de sus veredictos medida en P5.
 Ya decididas por la autora el 05/10/2026, y en el texto de arriba: la temperatura de E1, en 0, y la del
-reintento por salida mal formada, en 1, con P5 de U-PROMPT-R2 como precondición; la condición 10, si el nodo
-de la Excepcion no sale en esta corrida (T3, punto 3.c); y las tres lecturas nuevas de T4: la variación
-(punto 5.b), 30 unidades del grupo c (punto 7) y 30 omisiones `meta_normativo` con marca (punto 8).
+reintento por salida mal formada, en 1, con P5 de U-PROMPT-R2 como precondición; la temperatura de E3, que
+queda sin fijar, declarada como límite, sin cambiar su modelo; la condición 10, si el nodo de la Excepcion no
+sale en esta corrida (T3, punto 3.c); y las tres lecturas nuevas de T4: la variación (punto 5.b), 30 unidades
+del grupo c (punto 7) y 30 omisiones `meta_normativo` con marca (punto 8).
 
 LO QUE LLEGA DE LAS UNIDADES ANTERIORES, con su commit. T1 lo controla. Lo de P5 se completa antes de la
 firma.
@@ -406,7 +406,7 @@ firma.
   - el ejemplo con temperatura 0: si `cla::5.1.1::intro` deja la Definicion de alcance y si `cla::5.1.1.1`
     deja la Excepcion;
   - la salida por carácter de texto propio con temperatura 0, para la proyección de T1;
-  - lo que la autora decida para E3.
+  - la variación de los veredictos de E3: en cuántas de sus 10 unidades coinciden las dos corridas.
 - De C2 de U-R2-CODIGO-2 (data/experiment/r2_codigo2/freno_c2.md; `9f6361e`).
   - `salida_tanda0_r2b/`: 57 archivos, con sus diez `pies_<to>.json`, sin cambios desde ese commit al
     05/10/2026 (`git diff --stat 9f6361e -- data/experiment/reextraccion_v2/e0_chunking/salida_tanda0_r2b/`,

@@ -1047,3 +1047,21 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     y que las bases de P5 no se reutilicen en U-REEXT-T0. El nombre de la etapa, P5, también es de la
     revisión.
   El «seguí» de P5 está preparado; su despacho está PENDIENTE, después de la decisión sobre E3.
+- **05/10/2026 — decisión de la autora sobre E3; «seguí» de P5 despachado.** La nota anterior quedó en
+  `1297ff8`.
+  - **E3: su temperatura queda sin fijar, declarada como límite.** Su modelo, `claude-sonnet-5`, rechaza un
+    valor distinto del de por defecto. No se cambia el modelo de E3. P5 mide cuánto varían sus veredictos.
+  - **Autorizaciones confirmadas por la autora:** las decisiones de P5, el gasto de API con tope de USD 1,5
+    y los archivos de código de la nota anterior (`e1_extractor/prompt_r2b.py`, `e1_extractor/cliente_e1.py`,
+    `corpus_v2/runner_corpus.py` solo si el pedido del reintento se arma ahí, y los selftests de esos
+    módulos).
+  - **El «seguí» de P5 fue despachado por la autora,** con un cambio sobre el texto preparado: E3 corre dos
+    veces sobre 10 unidades, no sobre 5. Lo demás va como estaba preparado, con lo que la nota anterior
+    dejaba a confirmar: la llamada que confirma que la API rechaza `temperature` 0 con el modelo de E3, la
+    llamada forzada del reintento por salida mal formada con temperatura 1, una base de caché por corrida,
+    y que las bases de P5 no se reutilicen en U-REEXT-T0.
+  - **Riesgo sumado al plan** (`docs/plan_tesis.md:404`): un reemplazo de `claude-haiku-4-5` probablemente no
+    admita temperatura 0, porque los modelos posteriores a Claude Opus 4.6 no admiten fijarla.
+  - **Mandato de U-REEXT-T0:** la decisión que quedaba al firmar está resuelta. Se firma después de P5, con
+    lo que cierre esa etapa.
+  El FRENO P5 está PENDIENTE.
