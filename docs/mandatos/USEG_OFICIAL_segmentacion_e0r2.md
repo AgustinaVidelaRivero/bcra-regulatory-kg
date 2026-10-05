@@ -272,3 +272,70 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   - Condición. La E0 de la tanda 0 sigue byte a byte igual, y los documentos que la regla no toca dan los
     mismos ids. Si no se puede corregir así, queda registrado como límite medido, con la lista de los casos.
   - En los controles del FRENO S0-2, «una de las seis reglas» se lee como «una de las siete».
+- **05/10/2026 — lectura de cortes contra el PDF y censo de renglones: puntos 7 y 8 de S1, y su cifra en S2
+  (decisiones de la autora).** La nota anterior quedó en `b56984c`.
+  - Por qué. Ningún control de E0 mide si cada unidad empieza y termina donde empieza y termina su punto:
+    los que hay son regresión contra lo sellado, invariantes que calcula el propio código y censos de
+    síntomas. El invariante de cero pérdida da exacto en los 152 TOs (`conteos_b584.json`), y la revisión
+    independiente encontró renglones fuera de toda unidad (reports/u_revision_libre/freno_a.md, 2.3 y 2.4).
+  - S1, punto 7: lectura de cortes.
+    - Qué se lee. Una muestra de unidades de la corrida de S1, cada una contra la página del PDF renderizada
+      como imagen. No contra el texto que extrae la librería de E0.
+    - Criterio. Una unidad es correcta si: (1) empieza donde empieza su punto; (2) termina donde termina;
+      (3) no trae texto de otro punto ni restos de encabezados o pies de página; (4) no le falta texto
+      propio; y (5) su número es el del punto.
+    - Tres reglas para los casos dudosos. Una parte de una unidad partida por tamaño es correcta si corta en
+      un límite de ítem y está declarada. Los guiones de silabeo no son error. Un párrafo sin numerar es
+      correcto si cubre exactamente ese párrafo.
+    - Dos clases de error; cada error lleva su clase y su subclase. De corte: empieza fuera de su punto,
+      termina fuera de su punto, le falta texto propio, trae texto de otro punto, o su número no es el del
+      punto. De limpieza: restos de encabezado o restos de pie de página.
+    - Muestra, según la clase que el manifiesto de S1 le da a cada TO:
+      - primer grupo, los documentos escritos en puntos de principio a fin (los reconocidos plenos): 90
+        unidades, 40 de TOs en modo de lectura vigente, 10 en marcadores y 40 sin raíz;
+      - segundo grupo: las unidades por punto de ri2_pm, todas (25 en la partición);
+      - tercer grupo: un juicio por cada documento no segmentable (12 en la partición): que no tenga una
+        numeración de puntos que la segmentación debió reconocer.
+    - Sorteo. Semilla `U-SEG-OFICIAL:cortes:2026-10-05`. Por estrato,
+      `random.Random(f"{semilla}:{estrato}").sample(ids, n)`, con `ids` = los ids de todas las unidades del
+      estrato (puntos terminales, párrafos sin numerar, secciones sin puntos y partes), ordenados. Si un
+      estrato tiene menos unidades que su tamaño, se leen todas.
+    - Sello previo. El criterio, la muestra y la semilla quedan fijados cuando esta nota se commitea, antes
+      de la corrida de S1. El primer paso de S1 muestra ese commit; si la nota no está commiteada, frená.
+      Después de la corrida, la instancia sortea y deja la lista de la muestra con su sha256 y su hora,
+      antes del freno: de cada unidad, su id, su TO, sus páginas, su tipo y su texto propio; y, de cada
+      estrato del primer grupo, cuántas unidades tiene, que es su peso en la estimación ponderada. La
+      instancia de la unidad no lee ni marca.
+    - Quién lee. La instancia que revisa el FRENO S1, que renderiza las páginas desde los PDF. La autora
+      revisa todas las unidades marcadas como error o como dudosas, y 20 de las correctas, sorteadas con la
+      semilla `U-SEG-OFICIAL:cortes:2026-10-05:revision`. Valen las marcas que queden después de esa
+      revisión.
+    - Piso. En el primer grupo, la cota inferior de Wilson al 95 % de la proporción de unidades sin error de
+      corte tiene que ser de 0,90 o más. Se calcula sobre las 90, sin ponderar por estrato: con 90, se
+      cumple con hasta 3 errores de corte (0,907) y no con 4 (0,891). Se reporta también por modo de
+      lectura, como fracción. Los errores de limpieza se cuentan y se reportan por grupo, y no frenan.
+    - Dos cifras del primer grupo, y el reporte dice cuál es cuál.
+      - La del piso: la cota inferior de Wilson sobre las 90, sin ponderar. Decide si la salida de S1 pasa.
+      - La del corpus, que es la que cita la tesis: la estimación ponderada por el tamaño de cada modo de
+        lectura, con su intervalo. El peso de un modo son sus unidades sobre las del primer grupo en la
+        corrida de S1 (los mismos `ids` del sorteo). La estimación es la suma, por modo, de su peso por su
+        fracción de unidades sin error de corte. El intervalo es el de Wilson al 95 % con esa estimación y
+        con el tamaño efectivo de la muestra, 1 / Σ(peso² / unidades leídas del modo), sin redondear. Es
+        una aproximación: trata a la muestra ponderada como una simple de ese tamaño, y se declara así.
+    - Si no llega al piso, la salida de S1 no se commitea y S2 no se despacha: la autora decide si vuelve a
+      S0 o si queda como límite declarado con su cifra.
+    - Una unidad con error que sea de un TO de la tanda 0 cuenta para el piso y, además, se reporta aparte:
+      su corrección cambiaría la E0 de la tanda 0 (`salida_tanda0_r2b/`), y la decide la autora.
+    - ri_spi. Si S0 le dio unidades, deja de ser del tercer grupo: se leen 10 de sus unidades, sorteadas con
+      la misma semilla, con el criterio del primer grupo, y se reportan aparte, sin entrar al piso.
+  - S1, punto 8: censo de renglones. Por cada página de los 152 PDF, los renglones del texto del PDF que no
+    están en ninguna unidad ni en un rol declarado (portada, índice, historial, tabla de origen, ficha de
+    registro, encabezado o pie). Un renglón quitado por estar en la zona de encabezado o de pie cuenta como
+    rol declarado solo si se repite en otras páginas del documento; si no se repite, va a la lista. La
+    regla de comparación se declara antes de correr. Se reporta el total por TO y la lista de páginas con
+    sus renglones; lo que no tenga explicación se lee. No tiene piso.
+  - S2, punto 4.f. `cifras_segmentacion_oficial.md` lleva el resultado de la lectura de cortes (por grupo,
+    las unidades correctas como fracción; en el primer grupo, además, las dos cifras, la del piso y la
+    ponderada, cada una con su nombre y su intervalo; los errores por clase y subclase, con la lista de
+    los casos) y el del censo de renglones.
+  - El piso es condición de la tanda 1 (docs/checklist_pre_escalado.md:81, condición 7).

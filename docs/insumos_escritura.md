@@ -242,7 +242,11 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
   segmentables. Por la nota del 05/10/2026 al pie del mandato (`2bfda2a`), también: la lista de las reglas
   de segmentación vigentes en e0-r2, con los documentos que usa cada una, para rehacer la tabla de reglas
   de la tesis (4.d); y las unidades por grupo de documentos, con documentos y páginas, más lo que queda
-  fuera del grafo según las enmiendas a las adendas 1 y 2 del laudo B5.5 (4.e). Las definiciones de ese
+  fuera del grafo según las enmiendas a las adendas 1 y 2 del laudo B5.5 (4.e). Por la tercera nota al
+  pie del mandato, del 05/10/2026, también el resultado de la lectura de cortes contra el PDF y el del
+  censo de renglones fuera de toda unidad (4.f). De la lectura, la cifra que cita la tesis es la
+  estimación ponderada por modo de lectura, con su intervalo; la cota sin ponderar sobre las 90 unidades
+  es la del piso, y no es la que representa al corpus. Las definiciones de ese
   punto, la de «clase de documento» incluida, se fijan contra el texto vigente del capítulo 4 antes de
   despachar S2; hoy esas cifras salen de la partición legada
   (`reports/u_insumos_cap/estadisticas_corpus.md` y `reports/u_cap3_datos/datos.md`). Hasta que el
