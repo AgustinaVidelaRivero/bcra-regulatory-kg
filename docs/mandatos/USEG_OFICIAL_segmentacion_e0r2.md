@@ -237,3 +237,22 @@ selftests y verificaciones sobre una copia sin enlaces, con el sha256 de los arc
 después, con las exclusiones declaradas de la convivencia; fuentes firmadas leídas en el commit de su firma;
 todo conteo recomputado contra su artefacto; cada dato con su ancla o marcado NO VERIFICADA; cero nombres
 de personas; paquete de revisión con manifest.
+
+NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen junto con él.
+- **05/10/2026 — complemento del punto 4 de S2 (decisión de la autora, tras VERIF-SEG-OFICIAL-41).** La firma
+  quedó commiteada en `e543cb2`, y S0-1 está despachada. En `cifras_segmentacion_oficial.md` también van,
+  cada cifra con su archivo, su clave y su comando, recomputada contra su artefacto:
+  - 4.d. La lista de las reglas de segmentación vigentes en e0-r2, las que queden después de S0-2, con los
+    documentos que usa cada una. Sirve para rehacer la tabla de reglas de la tesis, que hoy sale de la
+    partición legada (reports/u_cap3_datos/datos.md, D3). Cada regla va con el lugar del código donde está
+    y con la lista de los TOs en los que actúa, sacada de la salida de S1.
+  - 4.e. Las unidades por grupo de documentos, con sus documentos y sus páginas, en tres grupos: los
+    escritos en puntos de principio a fin, los que tienen fichas y listados de registro, y los no
+    segmentables. Y una fila aparte con lo que queda fuera del grafo según las enmiendas a las adendas 1 y 2
+    del laudo B5.5 (docs/enmiendas_adendas_1_y_2_laudo_B5.5_2026-10-04.md, leídas en `e82e22f`), con la
+    razón de cada caso. Legadas, para poner al lado (`particion_152.json`, `agregados`): 138 documentos,
+    4.183 páginas y 9.266 unidades; 2, 2.413 y 46; y 12, 161 y 12.
+  - Los tres grupos de 4.e son la propuesta de la autora para la «clase de documento» de la decisión 6.
+    Corresponden a las tres clases de `particion_152.json`: 138 reconocidos plenos, 2 parciales y 12 no
+    segmentables. Se confirma antes del despacho de S2, junto con las otras dos definiciones (los conjuntos
+    y el «primer nivel como sección»). Hasta entonces rige la precondición de S2.
