@@ -1,0 +1,307 @@
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -775,6 +775,7 @@
+                            pie_desde_version: bool = False,
+                            cola_titulo_estricta: bool = False,
+                            seccion_variante: bool = False,
++                           cola_estricta_si_prosa: bool = False,
+                            seccion_abierta: str | None = None,
+                            ) -> tuple[list[Linea], list[Linea], str | None]:
+     """Devuelve (contenido, descartadas, seccion_corrida).
+@@ -834,6 +835,19 @@
+     descartadas: list[Linea] = []
+     contenido = list(lineas)
+     seccion_corrida: str | None = None
++    # regla 5 de S0 (`cola_estricta_si_prosa`, e0-r2): la cola de título estricta rige en toda página
++    # si el primer renglón candidato a cola es prosa (sin huecos de columna); si tiene huecos (el
++    # encabezado de una tabla: fabcra pp. 10 y 11, snp_cheq pp. 89 a 93) sigue la regla histórica
++    estado_cola: dict = {"prosa": None}
++
++    def _estricta(l: Linea) -> bool:
++        if cola_titulo_estricta:
++            return True
++        if not cola_estricta_si_prosa:
++            return False
++        if estado_cola["prosa"] is None:
++            estado_cola["prosa"] = l.ngaps == 0
++        return estado_cola["prosa"]
+ 
+     # pie (desde el final)
+     if pie_desde_version:
+@@ -912,7 +926,7 @@
+         elif seccion_corrida is not None and ultima_top_seccion is not None \
+                 and contenido[0].top - ultima_top_seccion <= GAP_TOP_TITULO \
+                 and not RE_NUM_TOKEN.match(t.split()[0] if t.split() else "") \
+-                and (not cola_titulo_estricta or continua_titulo(seccion_corrida, t)):
++                and (not _estricta(contenido[0]) or continua_titulo(seccion_corrida, t)):
+             # cola envuelta del título de sección ('dos.', '(SECOEXPO).'):
+             # renglón inmediato (interlineado de encabezado, no de contenido).
+             # Una línea que arranca con numeración NUNCA es cola de título:
+@@ -1095,6 +1109,7 @@
+                    rotulos_r2: bool = False,
+                    marcador_letra: bool = False,
+                    reabrir_padre: bool = False,
++                   cola_estricta_si_prosa: bool = False,
+                    no_rotulos: frozenset = frozenset(),
+                    rotulos_fila: frozenset = frozenset()) -> ResultadoParseo:
+     """Con `modo_sin_raiz=False` (todos los call sites vigentes) el
+@@ -1118,11 +1133,7 @@
+     `seccion_variante` (regla 1), `rotulos_r2` (regla 2), `marcador_letra` (regla 4, solo con
+     modo_sin_raiz) y `reabrir_padre` (punto 7: un rótulo con título en mayúscula cuyo padre se cerró
+     por un re-anclaje de prosa a un ancestro reabre ese padre, si es el último hijo de la cadena
+-    abierta, y la prosa re-anclada después del padre vuelve a él o a su último hijo terminal).
+-    `no_rotulos` (regla 8): (página, top) de los renglones de las listas de puntos leídas como cuerpo
+-    (`lineas_de_listas_r8`), que no abren raíz ni se aceptan como punto. `rotulos_fila` (regla 9, parte
+-    9a): (página, top) de los renglones con el número de una fila de catálogo, que son rótulo aunque su
+-    resto siga en minúscula."""
++    abierta, y la prosa re-anclada después del padre vuelve a él o a su último hijo terminal)."""
+     secciones: list[Nodo] = []
+     rechazos: list[dict] = []
+     saltos: list[dict] = []
+@@ -1210,6 +1221,7 @@
+             seccion_b582=marcadores_b582, banners_texto=banners_texto,
+             mayusculas_repetidas=mayusculas_repetidas, pie_desde_version=pie_desde_version,
+             cola_titulo_estricta=pi in cola_titulo_estricta, seccion_variante=seccion_variante,
++            cola_estricta_si_prosa=cola_estricta_si_prosa,
+             seccion_abierta=(next((x.numero for x in reversed(secciones) if x.numero.isdigit()
+                                    and not x.sintetica), None) if seccion_variante else None))
+         # regla 1 de S0: en una página cuya sección se leyó por la variante, el modo sin raíz no abre
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -92,22 +92,25 @@
+ # la regla en toda página: en la partición de 152 TOs la regla general mueve
+ # ids (snp_cheq) y deja sin serializar una tabla (fabcra).
+ COLA_TITULO_ESTRICTA_E0_R2 = {"ric": frozenset({15, 30, 54, 59})}
+-# U-SEG-OFICIAL, S0-2 (mandato firmado en e543cb2 y notas al pie; diseño en data/experiment/
+-# segmentacion_oficial_e0r2/s0_1/ y s0_1bis/): reglas de E0 que cambian ids de la partición. Corren solo en
+-# e0-r2; la versión legada no las conoce. Regla 1, sección escrita de otra forma; 2, rótulos de punto que no lo
+-# son; 3, continuación de índice solo con secciones con título, y página de cuerpo que es entera una lista de la
+-# regla 8; 4, marcador de letra y número (ri_spi); 5, cola de título en una lista de páginas; 6, unidades grandes
+-# (partición por renglones); 7, reapertura del padre cerrado por re-anclaje, con el acompañamiento T (una tabla
+-# partida en intersticiales de un mismo hueco se funde); 8, lista de puntos leída como cuerpo; 9, filas de un
+-# catálogo en tabla.
++# U-SEG-OFICIAL, S0 (prototipo de S0-1, no aplicado al repo): reglas de E0 que cambian ids de la
++# partición, solo en e0-r2. r1 sección escrita de otra forma; r2 rótulos de punto que no lo son;
++# r3 continuación de índice solo con secciones con título; r4 marcador de letra y número (ri_spi);
++# r5 cola de título; r6 unidades grandes; r7 reapertura del padre cerrado por re-anclaje. En el
++# prototipo la variable de entorno S0_REGLAS elige cuáles corren (para medir cada una sola).
++import os  # noqa: E402
++REGLAS_S0_E0_R2 = frozenset(x for x in os.environ.get("S0_REGLAS", "r1,r2,r3,r3i,r4,r5,r6,r7,r1r7t,r8,r9").split(",") if x)
+ MIN_APARTADOS_R4 = 2
+-# regla 5 de S0: la lista de páginas de la cola de título estricta se amplía a las páginas donde la regla general
+-# recupera texto corrido de la norma sin mover ids ni dañar una tabla (medición de C2 de U-R2-CODIGO-2, `c2_e0.json`,
+-# `particion_152_cola_en_toda_pagina`, y de S0-1). Quedan fuera fabcra (pp. 10, 11 y 13: celdas de su tabla002,
+-# que dejaría de serializarse) y las pp. 89 a 93 de snp_cheq (encabezado de una tabla; mueve los ids de 7.1).
++# regla 5 de S0 (recomendada): la lista de páginas de la cola de título estricta se amplía a las
++# páginas donde la regla general recupera texto corrido de la norma sin mover ids ni dañar una tabla
++# (medición de C2 de U-R2-CODIGO-2, `c2_e0.json`, `particion_152_cola_en_toda_pagina`, y de S0-1).
++# Quedan fuera fabcra (pp. 10, 11 y 13: celdas de su tabla002, que dejaría de serializarse) y las
++# pp. 89 a 93 de snp_cheq (encabezado de una tabla; mueve los ids de 7.1).
+ COLA_TITULO_ESTRICTA_R5 = {"cirmo3": frozenset({19}), "cryl": frozenset({27}), "manori": frozenset({6}),
+                            "ri2_ci": frozenset({8, 9, 16, 24}), "snp_cheq": frozenset({80}),
+                            "snp_mep": frozenset({19})}
++# regla 6 (d): con True, la partición por tamaño parte también las unidades con tabla serializada,
++# respetando los bloques (como la partición por corte), en lugar de declararlas; mueve cap::4.2.1.2
++PARTIR_TABLAS_R6 = os.environ.get("S0_PARTIR_TABLAS", "0") == "1"
+ 
+ # familias de marcador de ítem, por precedencia de matcheo por línea
+ FAMILIAS_ITEM = [
+@@ -328,18 +331,19 @@
+ # por corte de las unidades de la tanda 0 no cambia, y la partición por renglones entra solo donde hoy no hay salida
+ # porque el tercer escalón del reintento por corte (cliente_e1, techo MAX_TOKENS_ESCALON_3_R2 = 40.960) no alcanza:
+ # en una unidad sin ítems que pasa su capacidad, o en el ítem (o el chapeau) que deja una parte por ítems sobre esa
+-# capacidad; las demás partes quedan como en la partición por ítems. La capacidad usa la salida por carácter de
+-# texto propio medida en T2 de U-REEXT-T0: el p90 de las 39 unidades de 3.000 caracteres o más, 1,5051
+-# (data/experiment/reext_t0/freno_t2.md:12; decisión de la autora del 06/10/2026, en la nota al pie del mandato de
+-# U-REEXT-T0, docs/mandatos/UREEXT_T0_reextraccion_tanda0.md:485-487). Con esa razón salen la capacidad del tercer
+-# escalón y el objetivo de las partes por renglones, en E0 y en E1; el objetivo de la partición por ítems
+-# (OBJETIVO_CHARS_PARTE, 13.091) no cambia.
+-MAX_TOKENS_ESCALON_3_R6 = 40960
+-RAZON_TOKENS_POR_CARACTER_R6 = 1.5051
+-CAPACIDAD_ESCALON_3_R6 = 27214           # 40.960 / 1,5051 = 27.214,1
++# capacidad; las demás partes quedan como en la partición por ítems. La capacidad usa los tokens de salida por
++# carácter de texto propio: la cota de P4 de U-PROMPT-R2 (mediana 1,175) hasta la medición de T2 de U-REEXT-T0, que
++# la fija; el objetivo de las partes también se fija con T2. En el prototipo, S0_RAZON_E1 cambia la razón.
++MAX_TOKENS_ESCALON_3_R6 = 40960
++RAZON_TOKENS_POR_CARACTER_R6 = float(os.environ.get("S0_RAZON_E1", "1.5051"))
+ OBJETIVO_PARTES_RENGLONES_R6 = 10886     # 16.384 / 1,5051 = 10.885,65
+ 
+ 
++def capacidad_escalon_3_r6() -> float:
++    """Caracteres de texto propio que entran en el tercer escalón con la razón vigente."""
++    return MAX_TOKENS_ESCALON_3_R6 / RAZON_TOKENS_POR_CARACTER_R6
++
++
+ def particionar_por_corte(c: dict) -> tuple[list[dict] | None, dict]:
+     """Partición de una unidad cuya extracción cortó por max_tokens también en
+     el reintento (perfil r2, U-R2-CODIGO R4.b; BKL-0030, laudo de r2 §1.1 (b)):
+@@ -353,23 +357,24 @@
+     silencio)."""
+     info = {"id": c["id"], "chars_propio": c["chars_propio"],
+             "bloques_tabla": sum(1 for l in c["texto"].split("\n") if RE_INICIO_BLOQUE_TABLA.match(l))}
+-    # regla 6 de S0 en E1: la partición por ítems es la de siempre; la partición por renglones rige solo donde
+-    # hoy no hay salida y el tercer escalón no alcanza (ver CAPACIDAD_ESCALON_3_R6)
+-    cap3 = CAPACIDAD_ESCALON_3_R6
++    # regla 6 de S0 en E1 (S0-1 bis): la partición por ítems es la de siempre; la partición por renglones rige
++    # solo donde hoy no hay salida y el tercer escalón no alcanza (ver capacidad_escalon_3_r6)
++    r6 = "r6" in REGLAS_S0_E0_R2
++    cap3 = capacidad_escalon_3_r6()
+     part = _particionar_texto(c["texto"], respetar_tablas=True)
+     if part is None:
+-        if not ("sub_chunk" not in c and c["chars_propio"] > cap3):
++        if not (r6 and "sub_chunk" not in c and c["chars_propio"] > cap3):
+             return None, {**info, "motivo": "sin_items_detectables"}
+         part = _particionar_texto(c["texto"], respetar_tablas=True, renglones=OBJETIVO_PARTES_RENGLONES_R6)
+         if part is None:
+             return None, {**info, "motivo": "sin_items_detectables"}
+         info["renglones_r6"] = "sin_items_y_sobre_el_tercer_escalon"
+     subs = _sub_chunks_de(c, part, TOPE_HERENCIA_E0_R2)
+-    if "renglones_r6" not in info and any(s["chars_propio"] > cap3 for s in subs):
++    if r6 and "renglones_r6" not in info and any(s["chars_propio"] > cap3 for s in subs):
+         # solo se parten por renglones los ítems (o el chapeau) que pasan el tercer escalón; las demás partes
+         # quedan como en la partición por ítems
+         part2 = _particionar_texto(c["texto"], respetar_tablas=True, renglones=OBJETIVO_PARTES_RENGLONES_R6,
+-                                   umbral_renglones=cap3)
++                                   umbral_renglones=int(cap3))
+         if part2 is not None:
+             part, subs = part2, _sub_chunks_de(c, part2, TOPE_HERENCIA_E0_R2)
+             info["renglones_r6"] = "parte_sobre_el_tercer_escalon"
+@@ -392,13 +397,13 @@
+     out: list[dict] = []
+     particiones: list[dict] = []
+     no_particionables: list[dict] = []
+-    r6 = tope_herencia is not None     # e0-r2: regla 6 de S0
++    r6 = tope_herencia is not None and "r6" in REGLAS_S0_E0_R2
+     for c in chunks:
+         if (c.get("tipo") == "mini_chunk" and not r6) or c["chars_propio"] <= umbral:
+             # regla 6 (a) de S0: en e0-r2 un mini-chunk sobre el umbral ya no se saltea
+             out.append(c)
+             continue
+-        if c["id"] in no_partir:
++        if c["id"] in no_partir and not (r6 and PARTIR_TABLAS_R6):
+             # e0-r2 (U-R2-CODIGO): partir por ítems podría cortar un bloque de
+             # tabla serializada; la unidad se declara y no se parte
+             out.append(c)
+@@ -1263,14 +1268,14 @@
+     chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0)
+     E0.desambiguar_ids(chunks0)
+     asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
+-    # acompañamiento T de las reglas 1 y 7 de S0
+-    fusiones = fundir_tabla_en_intersticiales(res, tablas_to, chunks0)
+-    if fusiones:
+-        res.avisos.append({"tipo": "tabla_fundida_en_un_intersticial_r2", "fusiones": fusiones})
+-        lineas0 = []
+-        chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0)
+-        E0.desambiguar_ids(chunks0)
+-        asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
++    if "r1r7t" in REGLAS_S0_E0_R2:
++        fusiones = fundir_tabla_en_intersticiales(res, tablas_to, chunks0)
++        if fusiones:
++            res.avisos.append({"tipo": "tabla_fundida_en_un_intersticial_r2", "fusiones": fusiones})
++            lineas0 = []
++            chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0)
++            E0.desambiguar_ids(chunks0)
++            asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
+     sustituciones, omitidas = preparar_serializacion(res, lineas0, tablas_to, pdf_path)
+     lineas: list = []
+     chunks = E0.construir_chunks(res, texto_lineas=texto_con_tablas(sustituciones, omitidas),
+@@ -1297,24 +1302,28 @@
+     (`mayusculas_repetidas` con los roles de esa etapa) y el pie desde la
+     línea «Versión». Devuelve (res, roles, repetidos, modo_lectura,
+     marcadores)."""
++    R = REGLAS_S0_E0_R2
++
+     def indice(roles: list[str]) -> list[str]:
+-        # regla 3 de S0, ampliación: páginas de cuerpo que son enteras una lista de la regla 8
+-        return E0.paginas_indice_r8(paginas, roles)
++        # regla 3 de S0, ampliación (S0-2): páginas de cuerpo que son enteras una lista de la regla 8
++        return E0.paginas_indice_r8(paginas, roles) if "r3i" in R else roles
+ 
+     def parsear(roles: list[str], **kw):
+         rep = E0.titulos_mayusculas_repetidos(paginas, roles)
+-        # regla 8 de S0: renglones de listas de puntos leídas como cuerpo, con los roles de esta etapa
+-        kw["no_rotulos"] = E0.lineas_de_listas_r8(paginas, roles)
+-        if rotulos_fila_r9:
++        if "r8" in R:
++            # regla 8 de S0 (S0-1 bis): renglones de listas de puntos leídas como cuerpo, con los roles de esta etapa
++            kw["no_rotulos"] = E0.lineas_de_listas_r8(paginas, roles)
++        if "r9" in R and rotulos_fila_r9:
+             kw["rotulos_fila"] = rotulos_fila_r9     # regla 9 de S0, parte 9a
+-        # U-R2-CODIGO-2 (C2): cola de título estricta (punto l, ampliada por la regla 5 de S0) y renumeración
+-        # por lista (punto f); reglas 1, 2 y 7 de S0
++        # U-R2-CODIGO-2 (C2): cola de título estricta (punto l) y renumeración por lista (punto f)
+         return E0.parsear_cuerpo(to, archivo, paginas, roles, mayusculas_repetidas=rep,
+                                  pie_desde_version=True,
+                                  cola_titulo_estricta=(COLA_TITULO_ESTRICTA_E0_R2.get(to, frozenset())
+-                                                       | COLA_TITULO_ESTRICTA_R5.get(to, frozenset())),
++                                                       | (COLA_TITULO_ESTRICTA_R5.get(to, frozenset())
++                                                          if "r5" in R else frozenset())),
+                                  renumeraciones=RENUMERACIONES_E0_R2,
+-                                 seccion_variante=True, rotulos_r2=True, reabrir_padre=True, **kw), rep
++                                 seccion_variante="r1" in R, rotulos_r2="r2" in R,
++                                 reabrir_padre="r7" in R, cola_estricta_si_prosa="r5g" in R, **kw), rep
+ 
+     def con_chunks(res) -> bool:
+         r = copy.deepcopy(res)
+@@ -1327,24 +1336,25 @@
+     res, rep = parsear(roles_v)
+     if con_chunks(res):
+         return res, roles_v, rep, "vigente", False
+-    roles_m0 = E0.clasificar_paginas(paginas, marcadores_b582=True, continuacion_con_titulo=True)
++    roles_m0 = E0.clasificar_paginas(paginas, marcadores_b582=True, continuacion_con_titulo="r3" in R)
+     roles_m = indice(roles_m0)
+     res_m, rep_m = parsear(roles_m, marcadores_b582=True)
+     if con_chunks(res_m):
+         return res_m, roles_m, rep_m, "marcadores", True
+     roles_s = indice(E0.roles_para_modo_sin_raiz(paginas, roles_m0))
+     res_s, rep_s = parsear(roles_s, modo_sin_raiz=True)
+-    # regla 4 de S0: si el modo sin raíz deja el TO en una sola unidad y el cuerpo tiene al menos
+-    # MIN_APARTADOS_R4 líneas «APARTADO X: …», se lee con el marcador de letra y número (ri_spi)
+-    apartados = sum(1 for ls, rol in zip(paginas, roles_s) if rol == E0.ROL_CUERPO
+-                    for l in ls if E0.RE_APARTADO_R2.match(l.texto.strip()))
+-    r = copy.deepcopy(res_s)
+-    r.reasignaciones_continuidad = E0.aplicar_continuidad_enumeracion(r)
+-    E0.corregir_fronteras_intra_palabra(r)
+-    if apartados >= MIN_APARTADOS_R4 and len(E0.construir_chunks(r)) <= 1:
+-        res_l, rep_l = parsear(roles_s, modo_sin_raiz=True, marcador_letra=True)
+-        res_l.avisos.append({"tipo": "marcador_letra_r2", "apartados": apartados})
+-        return res_l, roles_s, rep_l, "sin_raiz_letra", roles_m0 != roles_v0
++    if "r4" in R:
++        # regla 4 de S0: si el modo sin raíz deja el TO en una sola unidad y el cuerpo tiene al menos
++        # MIN_APARTADOS_R4 líneas «APARTADO X: …», se lee con el marcador de letra y número (ri_spi)
++        apartados = sum(1 for ls, rol in zip(paginas, roles_s) if rol == E0.ROL_CUERPO
++                        for l in ls if E0.RE_APARTADO_R2.match(l.texto.strip()))
++        r = copy.deepcopy(res_s)
++        r.reasignaciones_continuidad = E0.aplicar_continuidad_enumeracion(r)
++        E0.corregir_fronteras_intra_palabra(r)
++        if apartados >= MIN_APARTADOS_R4 and len(E0.construir_chunks(r)) <= 1:
++            res_l, rep_l = parsear(roles_s, modo_sin_raiz=True, marcador_letra=True)
++            res_l.avisos.append({"tipo": "marcador_letra_r2", "apartados": apartados})
++            return res_l, roles_s, rep_l, "sin_raiz_letra", roles_m0 != roles_v0
+     return res_s, roles_s, rep_s, "sin_raiz", roles_m0 != roles_v0
+ 
+ 
+@@ -1433,7 +1443,7 @@
+     for archivo, to in items:
+         pdf = pdfs[to]
+         paginas = E0.extraer_lineas(pdf)
+-        roles = (E0.clasificar_paginas(paginas, continuacion_con_titulo=True) if r2
++        roles = (E0.clasificar_paginas(paginas, continuacion_con_titulo="r3" in REGLAS_S0_E0_R2) if r2
+                  else E0.clasificar_paginas(paginas))
+         if r2:
+             # K (U-R2-CODIGO): en la rama de mayúsculas del encabezado de página
+@@ -1441,9 +1451,11 @@
+             # agregado 8: pie desde la línea «Versión»; agregado 9: escalera
+             # de la partición (marcadores y sin raíz) cuando el camino vigente
+             # no da chunks
+-            # regla 9 de S0: las tablas se detectan antes del parseo para leer las filas de catálogo
+-            tablas_r9 = tablas_de_to_r2(pdf, to)
+-            filas_r9 = filas_de_catalogo_r9(pdf, tablas_r9, paginas)
++            tablas_r9, filas_r9 = None, []
++            if "r9" in REGLAS_S0_E0_R2:
++                # regla 9 de S0: las tablas se detectan antes del parseo para leer las filas de catálogo
++                tablas_r9 = tablas_de_to_r2(pdf, to)
++                filas_r9 = filas_de_catalogo_r9(pdf, tablas_r9, paginas)
+             res, roles, repetidos, modo_lectura, marcadores_e0 = escalera_e0_r2(
+                 to, archivo, paginas, roles,
+                 rotulos_fila_r9=frozenset(f["rotulo"] for f in filas_r9 if f["rotulo"]))

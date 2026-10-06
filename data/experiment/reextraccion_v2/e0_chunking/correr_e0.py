@@ -92,6 +92,22 @@ RENUMERACIONES_E0_R2 = {("ric", 16, "4.3"): "4.4", ("ric", 16, "4.3.1"): "4.4.1"
 # la regla en toda página: en la partición de 152 TOs la regla general mueve
 # ids (snp_cheq) y deja sin serializar una tabla (fabcra).
 COLA_TITULO_ESTRICTA_E0_R2 = {"ric": frozenset({15, 30, 54, 59})}
+# U-SEG-OFICIAL, S0-2 (mandato firmado en e543cb2 y notas al pie; diseño en data/experiment/
+# segmentacion_oficial_e0r2/s0_1/ y s0_1bis/): reglas de E0 que cambian ids de la partición. Corren solo en
+# e0-r2; la versión legada no las conoce. Regla 1, sección escrita de otra forma; 2, rótulos de punto que no lo
+# son; 3, continuación de índice solo con secciones con título, y página de cuerpo que es entera una lista de la
+# regla 8; 4, marcador de letra y número (ri_spi); 5, cola de título en una lista de páginas; 6, unidades grandes
+# (partición por renglones); 7, reapertura del padre cerrado por re-anclaje, con el acompañamiento T (una tabla
+# partida en intersticiales de un mismo hueco se funde); 8, lista de puntos leída como cuerpo; 9, filas de un
+# catálogo en tabla.
+MIN_APARTADOS_R4 = 2
+# regla 5 de S0: la lista de páginas de la cola de título estricta se amplía a las páginas donde la regla general
+# recupera texto corrido de la norma sin mover ids ni dañar una tabla (medición de C2 de U-R2-CODIGO-2, `c2_e0.json`,
+# `particion_152_cola_en_toda_pagina`, y de S0-1). Quedan fuera fabcra (pp. 10, 11 y 13: celdas de su tabla002,
+# que dejaría de serializarse) y las pp. 89 a 93 de snp_cheq (encabezado de una tabla; mueve los ids de 7.1).
+COLA_TITULO_ESTRICTA_R5 = {"cirmo3": frozenset({19}), "cryl": frozenset({27}), "manori": frozenset({6}),
+                           "ri2_ci": frozenset({8, 9, 16, 24}), "snp_cheq": frozenset({80}),
+                           "snp_mep": frozenset({19})}
 
 # familias de marcador de ítem, por precedencia de matcheo por línea
 FAMILIAS_ITEM = [
@@ -104,6 +120,48 @@ FAMILIAS_ITEM = [
 
 RE_INICIO_BLOQUE_TABLA = re.compile(r"^\[TABLA ")
 RE_FIN_BLOQUE_TABLA = re.compile(r"^\[FIN TABLA ")
+# U-SEG-OFICIAL, S0, regla 6 (solo e0-r2 y la partición por corte del perfil r2): partición por
+# renglones cuando la unidad no tiene ítems detectables, y para un ítem solo más grande que el
+# objetivo. Corta después de un renglón que termina en punto, dos puntos o punto y coma; si en la
+# ventana no hay ninguno, en el último renglón que entra; nunca dentro de un bloque [TABLA … FIN
+# TABLA] (un bloque mayor que el objetivo queda en una parte propia).
+RE_FIN_ORACION_R6 = re.compile(r"[.:;]\s*$")
+
+
+def _piezas_renglones(lineas: list[str]) -> list[list[str]]:
+    piezas, tabla = [], None
+    for l in lineas:
+        if tabla is not None:
+            tabla.append(l)
+            if RE_FIN_BLOQUE_TABLA.match(l):
+                piezas.append(tabla)
+                tabla = None
+        elif RE_INICIO_BLOQUE_TABLA.match(l):
+            tabla = [l]
+        else:
+            piezas.append([l])
+    if tabla is not None:
+        piezas.append(tabla)
+    return piezas
+
+
+def partir_por_renglones(lineas: list[str], objetivo: int) -> list[str]:
+    """Grupos de renglones de a lo sumo `objetivo` caracteres (ver el comentario de RE_FIN_ORACION_R6)."""
+    piezas = _piezas_renglones(lineas)
+    tam = [len("\n".join(p)) + 1 for p in piezas]
+    corte_ok = [len(p) > 1 or bool(RE_FIN_ORACION_R6.search(p[-1])) for p in piezas]
+    grupos, i = [], 0
+    while i < len(piezas):
+        j, acum, ultimo_ok = i, 0, None
+        while j < len(piezas) and (j == i or acum + tam[j] <= objetivo):
+            acum += tam[j]
+            if corte_ok[j]:
+                ultimo_ok = j
+            j += 1
+        fin = j if j >= len(piezas) or ultimo_ok is None else ultimo_ok + 1
+        grupos.append("\n".join(l for p in piezas[i:fin] for l in p))
+        i = fin
+    return grupos
 
 
 def _lineas_en_bloque_tabla(lineas: list[str]) -> set[int]:
@@ -120,7 +178,8 @@ def _lineas_en_bloque_tabla(lineas: list[str]) -> set[int]:
     return dentro
 
 
-def _particionar_texto(texto: str, respetar_tablas: bool = False) -> dict | None:
+def _particionar_texto(texto: str, respetar_tablas: bool = False,
+                       renglones: int | None = None, umbral_renglones: int | None = None) -> dict | None:
     """Partición por ítems del texto propio de una unidad. La línea 0 (label/
     título) nunca es marcador. Devuelve chapeau + grupos (cada uno ≤ objetivo
     salvo bloque único mayor) o None si no hay familia con MIN_ITEMS líneas.
@@ -129,8 +188,13 @@ def _particionar_texto(texto: str, respetar_tablas: bool = False) -> dict | None
 
     `respetar_tablas` (solo la partición por corte del perfil r2, U-R2-CODIGO
     R4.b): una línea dentro de un bloque [TABLA … FIN TABLA] nunca es marcador
-    de ítem, así que ningún límite de parte cae dentro de un bloque."""
+    de ítem, así que ningún límite de parte cae dentro de un bloque.
+
+    `renglones` (regla 6 de S0): objetivo de las partes de la partición por renglones; `umbral_renglones`, el tamaño
+    desde el que un ítem o el chapeau se parten por renglones (por omisión, el objetivo de las partes; la partición
+    por corte de E1 pasa la capacidad del tercer escalón, para partir solo lo que hoy no tiene salida)."""
     lineas = texto.split("\n")
+    umbral_r = umbral_renglones if umbral_renglones is not None else OBJETIVO_CHARS_PARTE
     en_tabla = _lineas_en_bloque_tabla(lineas) if respetar_tablas else set()
     conteo: dict[str, list[int]] = {f: [] for f, _ in FAMILIAS_ITEM}
     for i, l in enumerate(lineas[1:], start=1):
@@ -144,7 +208,14 @@ def _particionar_texto(texto: str, respetar_tablas: bool = False) -> dict | None
     familia = max(conteo, key=lambda f: len(conteo[f]))
     indices = conteo[familia]
     if len(indices) < MIN_ITEMS_SUBCHUNK:
-        return None
+        if renglones is None or len(lineas) < 2:
+            return None
+        # regla 6 de S0: sin ítems, partición por renglones; el primer renglón (rótulo o título) es
+        # el chapeau
+        grupos = partir_por_renglones(lineas[1:], renglones)
+        if len(grupos) < 2:
+            return None
+        return {"chapeau": lineas[0], "grupos": grupos, "familia": "renglones", "n_items": 0}
     chapeau = "\n".join(lineas[:indices[0]])
     bloques = ["\n".join(lineas[i0:(indices[j + 1] if j + 1 < len(indices)
                                     else len(lineas))])
@@ -152,7 +223,19 @@ def _particionar_texto(texto: str, respetar_tablas: bool = False) -> dict | None
     grupos: list[str] = []
     actual: list[str] = []
     tam = 0
+    if renglones is not None and len(chapeau) + 1 > umbral_r and indices[0] > 1:
+        # regla 6 de S0: un chapeau mayor que el objetivo se parte por renglones; queda como chapeau
+        # su primer renglón (rótulo o título)
+        grupos.extend(partir_por_renglones(lineas[1:indices[0]], renglones))
+        chapeau = lineas[0]
     for b in bloques:
+        if renglones is not None and len(b) + 1 > umbral_r:
+            # regla 6 de S0: un ítem solo más grande que el objetivo se parte por renglones
+            if actual:
+                grupos.append("\n".join(actual))
+                actual, tam = [], 0
+            grupos.extend(partir_por_renglones(b.split("\n"), renglones))
+            continue
         if actual and tam + len(b) + 1 > OBJETIVO_CHARS_PARTE:
             grupos.append("\n".join(actual))
             actual, tam = [], 0
@@ -160,6 +243,17 @@ def _particionar_texto(texto: str, respetar_tablas: bool = False) -> dict | None
         tam += len(b) + 1
     if actual:
         grupos.append("\n".join(actual))
+    if renglones is not None and grupos and indices[0] > 1 and chapeau != lineas[0] \
+            and len(chapeau) + 1 + len(grupos[0]) + 1 > umbral_r:
+        # regla 6 de S0: el chapeau entra solo, pero con el primer grupo pasa el objetivo (la parte 1 lleva los
+        # dos); su cuerpo va en partes propias y queda como chapeau su primer renglón
+        grupos = partir_por_renglones(lineas[1:indices[0]], renglones) + grupos
+        chapeau = lineas[0]
+    if len(grupos) < 2 and renglones is not None and len(lineas) > 1:
+        # regla 6 de S0: los ítems no alcanzan para partir; se parte por renglones
+        grupos = partir_por_renglones(lineas[1:], renglones)
+        if len(grupos) >= 2:
+            return {"chapeau": lineas[0], "grupos": grupos, "familia": "renglones", "n_items": 0}
     if len(grupos) < 2:
         return None  # partir en 1 no remedia nada: se declara, no se parte
     return {"chapeau": chapeau, "grupos": grupos, "familia": familia,
@@ -210,6 +304,7 @@ def _sub_chunks_de(c: dict, part: dict, tope_herencia: tuple[int, int] | None = 
             "unidad": c["unidad"],
             "titulo": f"{c['titulo']} (parte {k}/{n})",
             "tipo": c["tipo"],
+            **({"rol_bloque": c["rol_bloque"]} if "rol_bloque" in c else {}),
             "paginas": list(c["paginas"]),
             "texto": texto,
             "chars_propio": len(texto),
@@ -229,6 +324,22 @@ def _sub_chunks_de(c: dict, part: dict, tope_herencia: tuple[int, int] | None = 
     return out
 
 
+# Regla 6 de S0 en E1 (S0-1 bis; nota del 05/10/2026 al pie del mandato de U-SEG-OFICIAL, d59921f): la partición
+# por corte de las unidades de la tanda 0 no cambia, y la partición por renglones entra solo donde hoy no hay salida
+# porque el tercer escalón del reintento por corte (cliente_e1, techo MAX_TOKENS_ESCALON_3_R2 = 40.960) no alcanza:
+# en una unidad sin ítems que pasa su capacidad, o en el ítem (o el chapeau) que deja una parte por ítems sobre esa
+# capacidad; las demás partes quedan como en la partición por ítems. La capacidad usa la salida por carácter de
+# texto propio medida en T2 de U-REEXT-T0: el p90 de las 39 unidades de 3.000 caracteres o más, 1,5051
+# (data/experiment/reext_t0/freno_t2.md:12; decisión de la autora del 06/10/2026, en la nota al pie del mandato de
+# U-REEXT-T0, docs/mandatos/UREEXT_T0_reextraccion_tanda0.md:485-487). Con esa razón salen la capacidad del tercer
+# escalón y el objetivo de las partes por renglones, en E0 y en E1; el objetivo de la partición por ítems
+# (OBJETIVO_CHARS_PARTE, 13.091) no cambia.
+MAX_TOKENS_ESCALON_3_R6 = 40960
+RAZON_TOKENS_POR_CARACTER_R6 = 1.5051
+CAPACIDAD_ESCALON_3_R6 = 27214           # 40.960 / 1,5051 = 27.214,1
+OBJETIVO_PARTES_RENGLONES_R6 = 10886     # 16.384 / 1,5051 = 10.885,65
+
+
 def particionar_por_corte(c: dict) -> tuple[list[dict] | None, dict]:
     """Partición de una unidad cuya extracción cortó por max_tokens también en
     el reintento (perfil r2, U-R2-CODIGO R4.b; BKL-0030, laudo de r2 §1.1 (b)):
@@ -242,10 +353,26 @@ def particionar_por_corte(c: dict) -> tuple[list[dict] | None, dict]:
     silencio)."""
     info = {"id": c["id"], "chars_propio": c["chars_propio"],
             "bloques_tabla": sum(1 for l in c["texto"].split("\n") if RE_INICIO_BLOQUE_TABLA.match(l))}
+    # regla 6 de S0 en E1: la partición por ítems es la de siempre; la partición por renglones rige solo donde
+    # hoy no hay salida y el tercer escalón no alcanza (ver CAPACIDAD_ESCALON_3_R6)
+    cap3 = CAPACIDAD_ESCALON_3_R6
     part = _particionar_texto(c["texto"], respetar_tablas=True)
     if part is None:
-        return None, {**info, "motivo": "sin_items_detectables"}
+        if not ("sub_chunk" not in c and c["chars_propio"] > cap3):
+            return None, {**info, "motivo": "sin_items_detectables"}
+        part = _particionar_texto(c["texto"], respetar_tablas=True, renglones=OBJETIVO_PARTES_RENGLONES_R6)
+        if part is None:
+            return None, {**info, "motivo": "sin_items_detectables"}
+        info["renglones_r6"] = "sin_items_y_sobre_el_tercer_escalon"
     subs = _sub_chunks_de(c, part, TOPE_HERENCIA_E0_R2)
+    if "renglones_r6" not in info and any(s["chars_propio"] > cap3 for s in subs):
+        # solo se parten por renglones los ítems (o el chapeau) que pasan el tercer escalón; las demás partes
+        # quedan como en la partición por ítems
+        part2 = _particionar_texto(c["texto"], respetar_tablas=True, renglones=OBJETIVO_PARTES_RENGLONES_R6,
+                                   umbral_renglones=cap3)
+        if part2 is not None:
+            part, subs = part2, _sub_chunks_de(c, part2, TOPE_HERENCIA_E0_R2)
+            info["renglones_r6"] = "parte_sobre_el_tercer_escalon"
     for s in subs:
         ls = s["texto"].split("\n")
         if sum(1 for l in ls if RE_INICIO_BLOQUE_TABLA.match(l)) != sum(1 for l in ls if RE_FIN_BLOQUE_TABLA.match(l)):
@@ -265,8 +392,10 @@ def subdividir_unidades_grandes(chunks: list[dict],
     out: list[dict] = []
     particiones: list[dict] = []
     no_particionables: list[dict] = []
+    r6 = tope_herencia is not None     # e0-r2: regla 6 de S0
     for c in chunks:
-        if c.get("tipo") == "mini_chunk" or c["chars_propio"] <= umbral:
+        if (c.get("tipo") == "mini_chunk" and not r6) or c["chars_propio"] <= umbral:
+            # regla 6 (a) de S0: en e0-r2 un mini-chunk sobre el umbral ya no se saltea
             out.append(c)
             continue
         if c["id"] in no_partir:
@@ -277,17 +406,20 @@ def subdividir_unidades_grandes(chunks: list[dict],
                 "id": c["id"], "chars_propio": c["chars_propio"],
                 "motivo": "tabla_serializada"})
             continue
-        part = _particionar_texto(c["texto"])
+        part = (_particionar_texto(c["texto"], respetar_tablas=True, renglones=OBJETIVO_PARTES_RENGLONES_R6) if r6
+                else _particionar_texto(c["texto"]))
         if part is None:
             out.append(c)
             no_particionables.append({
                 "id": c["id"], "chars_propio": c["chars_propio"],
-                "motivo": "sin_items_detectables"})
+                "motivo": "sin_items_detectables",
+                **({"tipo": c["rol_bloque"]} if r6 and c.get("tipo") == "mini_chunk" else {})})
             continue
         subs = _sub_chunks_de(c, part, tope_herencia)
         out.extend(subs)
         particiones.append({
             "id": c["id"], "chars_propio": c["chars_propio"],
+            **({"tipo": c["rol_bloque"]} if r6 and c.get("tipo") == "mini_chunk" else {}),
             "familia_items": part["familia"], "n_items": part["n_items"],
             "n_partes": len(subs),
             "partes": [{"id": s["id"], "chars_propio": s["chars_propio"]}
@@ -439,6 +571,118 @@ def fraccion_recuadro(tabla: dict) -> float:
             if len(llenas) == 1:
                 en_una += n
     return round(en_una / total, 4) if total else 0.0
+
+
+# Regla 9 de S0 (S0-1 bis): filas de un catálogo en tabla (el catálogo de infracciones de rdbcra, sección 11, pp.
+# 36-48). Cada fila lleva en la primera celda solo el número del punto, y en las otras la descripción, la gravedad y
+# las multas; la descripción está centrada en la fila, así que empieza renglones antes del renglón del número, y el
+# número puede quedar en un renglón cuyo resto sigue en minúscula. Fila de catálogo = fila cuya primera celda es solo
+# un número de punto (primer componente hasta MAX_RAIZ, como todo rótulo de E0: deja afuera, por ejemplo, la tabla de
+# códigos NCM de ext p. 167, «8802.11.00»), en un segmento de tabla de e0_tablas con al menos MIN_FILAS_CATALOGO_R9
+# filas así. La banda de cada fila es la de `find_tables()` (los bordes de la tabla en el PDF; mismos ajustes que
+# e0_tablas). Dos partes: 9a, en el parseo: el renglón del número de una fila es rótulo aunque su resto siga en
+# minúscula (la celda es la evidencia; solo levanta los rechazos por resto en minúscula); 9b, después del parseo y
+# antes de armar los chunks (y antes del acompañamiento T): los renglones de la banda que quedaron en otra unidad
+# pasan al punto de la fila, los anteriores a su número como `lineas_previas`. El texto sigue el orden del PDF.
+MIN_FILAS_CATALOGO_R9 = 3
+RE_CELDA_ROTULO_R9 = re.compile(r"^(\d+(?:\.\d+)+)\.?$")
+
+
+def _rotulo_de_celda_r9(fila: list):
+    m = RE_CELDA_ROTULO_R9.match((fila[0] or "").strip()) if fila else None
+    return m if m and int(m.group(1).split(".")[0]) <= E0.MAX_RAIZ else None
+
+
+def filas_de_catalogo_r9(pdf_path: Path, tablas_to: dict, paginas: list) -> list[dict]:
+    """Filas de catálogo de un TO (ver el comentario de la regla 9), cada una con su banda y la posición
+    (página, top) del renglón de su número, si hay uno solo en la banda que empiece con él."""
+    candidatos = []
+    for t in tablas_to["tablas"]:
+        if t["origen"] != "e0_tablas":
+            continue
+        for s in t["segmentos"]:
+            n = sum(1 for f in s["filas"] if _rotulo_de_celda_r9(f))
+            if n >= MIN_FILAS_CATALOGO_R9:
+                candidatos.append((t, s))
+    if not candidatos:
+        return []
+    import pdfplumber  # noqa: PLC0415 — solo con filas de catálogo
+    filas = []
+    with pdfplumber.open(str(pdf_path)) as pdf:
+        for t, s in candidatos:
+            tbs = pdf.pages[s["pagina"] - 1].find_tables()
+            tb = tbs[s["indice_en_pagina"]] if s["indice_en_pagina"] < len(tbs) else None
+            if tb is None or [round(v, 1) for v in tb.bbox] != s["bbox"] or tb.extract() != s["filas"]:
+                continue        # la tabla no se reproduce: la fila no se toca
+            lineas = paginas[s["pagina"] - 1]
+            for k, (row, f) in enumerate(zip(tb.rows, s["filas"])):
+                m = _rotulo_de_celda_r9(f)
+                if not m:
+                    continue
+                y0, y1 = row.bbox[1], row.bbox[3]
+                cand = [l for l in lineas if y0 - TOL_TOP_TABLA <= l.top < y1 - TOL_TOP_TABLA
+                        and l.texto.split() and l.texto.split()[0].rstrip(".") == m.group(1)]
+                filas.append({"tabla": t["id"], "pagina": s["pagina"], "fila": k,
+                              "banda": [round(y0, 1), round(y1, 1)], "numero": m.group(1),
+                              "rotulo": (s["pagina"], cand[0].top) if len(cand) == 1 else None})
+    return filas
+
+
+def anclar_filas_de_catalogo_r9(res: E0.ResultadoParseo, tablas_to: dict, filas: list[dict]) -> dict:
+    """Parte 9b de la regla 9: cada renglón de la banda de una fila pasa al punto terminal de esa fila (el nodo cuyo
+    label es el renglón del número). Una fila sin ese punto, o con el label de otro nodo en su banda, no se toca.
+    Devuelve el informe por fila."""
+    orden = E0._recolectar_orden_documental(res)
+    cont = {id(l): c for l, c in orden}
+    dueno_label = {(l.pagina, l.top): c[1] for l, c in orden if c[0] == "label"}
+    segs = {(t["id"], s["pagina"]): s for t in tablas_to["tablas"] for s in t["segmentos"]}
+    movidas: dict[int, tuple] = {}
+    informe = []
+    for f in filas:
+        fila = {"numero": f["numero"], "pagina": f["pagina"], "banda": f["banda"]}
+        informe.append(fila)
+        nodo = dueno_label.get(tuple(f["rotulo"])) if f["rotulo"] else None
+        if nodo is None or nodo.hijos or nodo.numero != f["numero"]:
+            fila["estado"] = "sin_punto_terminal"
+            continue
+        y0, y1 = f["banda"]
+        seg = segs.get((f["tabla"], f["pagina"]))
+        banda = [l for l in (seg.get("_lineas", []) if seg else [])
+                 if y0 - TOL_TOP_TABLA <= l.top < y1 - TOL_TOP_TABLA and l is not nodo.linea_label]
+        if any(cont[id(l)][0] == "label" for l in banda):
+            fila["estado"] = "otro_label_en_la_banda"
+            continue
+        pos_label = (nodo.linea_label.pagina, nodo.linea_label.top)
+        antes = despues = 0
+        desde = set()
+        for l in banda:
+            c = cont[id(l)]
+            if c[1] is nodo and c[0] == "seg":
+                continue
+            lado = "antes" if (l.pagina, l.top) < pos_label else "despues"
+            movidas[id(l)] = (l, nodo, lado)
+            antes += lado == "antes"
+            despues += lado == "despues"
+            desde.add(c[1].numero if c[1].tipo == "punto" else f"S{c[1].numero}")
+        fila.update({"estado": "anclada", "renglones_antes": antes, "renglones_despues": despues,
+                     "desde": sorted(desde)})
+    if movidas:
+        def rec(n: E0.Nodo) -> None:
+            n.segmentos = [sg for sg in ([l for l in s if id(l) not in movidas] for s in n.segmentos) if sg]
+            for h in n.hijos:
+                rec(h)
+        for sec in res.secciones:
+            rec(sec)
+        clave = lambda l: (l.pagina, l.top, l.x0)  # noqa: E731
+        por_nodo: dict[int, tuple] = {}
+        for l, nodo, lado in movidas.values():
+            por_nodo.setdefault(id(nodo), (nodo, [], []))[1 if lado == "antes" else 2].append(l)
+        for nodo, antes, despues in por_nodo.values():
+            nodo.lineas_previas = sorted(nodo.lineas_previas + antes, key=clave)
+            if despues:
+                nodo.segmentos = [sorted([l for s in nodo.segmentos for l in s] + despues, key=clave)]
+    return {"filas": len(filas), "ancladas": sum(1 for f in informe if f["estado"] == "anclada"),
+            "renglones_movidos": len(movidas), "detalle": informe}
 
 
 def tablas_de_to_r2(pdf_path: Path, to: str) -> dict:
@@ -969,16 +1213,64 @@ def aplicar_marcas_r2(chunks: list[dict], lineas_por_chunk: list[list[E0.Linea]]
             or E0._flags_tabla_formula(fuera)["contenido_tabular"])
 
 
+def fundir_tabla_en_intersticiales(res: E0.ResultadoParseo, tablas_to: dict, chunks0: list[dict]) -> list[dict]:
+    """Acompañamiento de las reglas 1 y 7 de S0 (e0-r2): una tabla marcada cuyas líneas caen en dos
+    o más intersticiales de un mismo nodo y de un mismo hueco entre hijos (sus celdas en la columna
+    de texto del ancestro se re-anclan renglón a renglón) se lleva a un solo segmento: se funden los
+    segmentos del nodo desde el primero hasta el último con líneas de la tabla. La tabla queda en un
+    solo chunk y puede serializarse. Devuelve las fusiones hechas."""
+    fusiones = []
+    for t in tablas_to["tablas"]:
+        if not t["marca"] or len(t["chunks"]) < 2 or not all("::intersticial" in c for c in t["chunks"]):
+            continue
+        nodo_seg: dict[int, tuple] = {}     # se recalcula: una fusión anterior cambia los segmentos
+        for l, cont in E0._recolectar_orden_documental(res):
+            if cont[0] == "seg":
+                nodo_seg[id(l)] = (cont[1], cont[2])
+        pares = [nodo_seg.get(id(l)) for s in t["segmentos"] for l in s["_lineas"]]
+        if any(p is None for p in pares) or len({id(p[0]) for p in pares}) != 1:
+            continue
+        nodo = pares[0][0]
+        idx = sorted({next(i for i, sg in enumerate(nodo.segmentos) if sg is p[1]) for p in pares})
+        i0, i1 = idx[0], idx[-1]
+        if i0 == i1:
+            continue
+        marcas = [(h.pagina, h.linea_label.top if h.linea_label else 0.0) for h in nodo.hijos]
+        pos = [(sg[0].pagina, sg[0].top) for sg in nodo.segmentos[i0:i1 + 1]]
+        hueco = {sum(1 for m in marcas if m < p) for p in pos}
+        if len(hueco) != 1 or min(pos) < marcas[0] or max(pos) > marcas[-1]:
+            continue     # cruza un hijo, o es intro o cierre: no se toca
+        fundido = [l for sg in nodo.segmentos[i0:i1 + 1] for l in sg]
+        nodo.segmentos[i0:i1 + 1] = [fundido]
+        fusiones.append({"tabla": t["id"], "nodo": nodo.numero, "segmentos_fundidos": i1 - i0 + 1})
+    return fusiones
+
+
 def procesar_tablas_r2(res: E0.ResultadoParseo, pdf_path: Path, to: str,
-                       roles: list[str]) -> tuple[list[dict], dict, frozenset]:
+                       roles: list[str], tablas_to: dict | None = None,
+                       filas_r9: list[dict] | None = None) -> tuple[list[dict], dict, frozenset]:
     """Camino e0-r2 completo de un TO: detección, asignación, serialización y
-    marca. Devuelve (chunks, tablas_to, ids de chunks con bloque)."""
-    tablas_to = tablas_de_to_r2(pdf_path, to)
+    marca. Devuelve (chunks, tablas_to, ids de chunks con bloque). Con la regla 9 de S0, las tablas llegan ya
+    detectadas (se detectan antes del parseo) y las filas de catálogo se anclan antes de armar los chunks."""
+    if tablas_to is None:
+        tablas_to = tablas_de_to_r2(pdf_path, to)
     asignar_lineas_a_tablas(res, tablas_to, roles)
+    if filas_r9:
+        inf = anclar_filas_de_catalogo_r9(res, tablas_to, filas_r9)
+        if inf["ancladas"]:     # una tabla con forma de catálogo sin ninguna fila anclada no deja rastro
+            res.avisos.append({"tipo": "filas_de_catalogo_r9", **inf})
     lineas0: list = []
     chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0)
     E0.desambiguar_ids(chunks0)
     asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
+    # acompañamiento T de las reglas 1 y 7 de S0
+    fusiones = fundir_tabla_en_intersticiales(res, tablas_to, chunks0)
+    if fusiones:
+        res.avisos.append({"tipo": "tabla_fundida_en_un_intersticial_r2", "fusiones": fusiones})
+        lineas0 = []
+        chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0)
+        E0.desambiguar_ids(chunks0)
+        asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
     sustituciones, omitidas = preparar_serializacion(res, lineas0, tablas_to, pdf_path)
     lineas: list = []
     chunks = E0.construir_chunks(res, texto_lineas=texto_con_tablas(sustituciones, omitidas),
@@ -996,7 +1288,8 @@ def procesar_tablas_r2(res: E0.ResultadoParseo, pdf_path: Path, to: str,
     return chunks, tablas_to, con_bloque
 
 
-def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str]):
+def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str],
+                   rotulos_fila_r9: frozenset = frozenset()):
     """Escalera de E0 de la partición (correr_b584.correr_to), solo para la
     versión e0-r2 (U-R2-CODIGO, agregado 9). Etapa 1: camino vigente. Si no da
     chunks, etapa 2: reglas de marcador (B5.8.2). Si tampoco, etapa 3: modo
@@ -1004,13 +1297,24 @@ def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str]):
     (`mayusculas_repetidas` con los roles de esa etapa) y el pie desde la
     línea «Versión». Devuelve (res, roles, repetidos, modo_lectura,
     marcadores)."""
+    def indice(roles: list[str]) -> list[str]:
+        # regla 3 de S0, ampliación: páginas de cuerpo que son enteras una lista de la regla 8
+        return E0.paginas_indice_r8(paginas, roles)
+
     def parsear(roles: list[str], **kw):
         rep = E0.titulos_mayusculas_repetidos(paginas, roles)
-        # U-R2-CODIGO-2 (C2): cola de título estricta (punto l) y renumeración por lista (punto f)
+        # regla 8 de S0: renglones de listas de puntos leídas como cuerpo, con los roles de esta etapa
+        kw["no_rotulos"] = E0.lineas_de_listas_r8(paginas, roles)
+        if rotulos_fila_r9:
+            kw["rotulos_fila"] = rotulos_fila_r9     # regla 9 de S0, parte 9a
+        # U-R2-CODIGO-2 (C2): cola de título estricta (punto l, ampliada por la regla 5 de S0) y renumeración
+        # por lista (punto f); reglas 1, 2 y 7 de S0
         return E0.parsear_cuerpo(to, archivo, paginas, roles, mayusculas_repetidas=rep,
                                  pie_desde_version=True,
-                                 cola_titulo_estricta=COLA_TITULO_ESTRICTA_E0_R2.get(to, frozenset()),
-                                 renumeraciones=RENUMERACIONES_E0_R2, **kw), rep
+                                 cola_titulo_estricta=(COLA_TITULO_ESTRICTA_E0_R2.get(to, frozenset())
+                                                       | COLA_TITULO_ESTRICTA_R5.get(to, frozenset())),
+                                 renumeraciones=RENUMERACIONES_E0_R2,
+                                 seccion_variante=True, rotulos_r2=True, reabrir_padre=True, **kw), rep
 
     def con_chunks(res) -> bool:
         r = copy.deepcopy(res)
@@ -1018,16 +1322,30 @@ def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str]):
         E0.corregir_fronteras_intra_palabra(r)
         return bool(E0.construir_chunks(r))
 
+    roles_v0 = roles_v
+    roles_v = indice(roles_v0)
     res, rep = parsear(roles_v)
     if con_chunks(res):
         return res, roles_v, rep, "vigente", False
-    roles_m = E0.clasificar_paginas(paginas, marcadores_b582=True)
+    roles_m0 = E0.clasificar_paginas(paginas, marcadores_b582=True, continuacion_con_titulo=True)
+    roles_m = indice(roles_m0)
     res_m, rep_m = parsear(roles_m, marcadores_b582=True)
     if con_chunks(res_m):
         return res_m, roles_m, rep_m, "marcadores", True
-    roles_s = E0.roles_para_modo_sin_raiz(paginas, roles_m)
+    roles_s = indice(E0.roles_para_modo_sin_raiz(paginas, roles_m0))
     res_s, rep_s = parsear(roles_s, modo_sin_raiz=True)
-    return res_s, roles_s, rep_s, "sin_raiz", roles_m != roles_v
+    # regla 4 de S0: si el modo sin raíz deja el TO en una sola unidad y el cuerpo tiene al menos
+    # MIN_APARTADOS_R4 líneas «APARTADO X: …», se lee con el marcador de letra y número (ri_spi)
+    apartados = sum(1 for ls, rol in zip(paginas, roles_s) if rol == E0.ROL_CUERPO
+                    for l in ls if E0.RE_APARTADO_R2.match(l.texto.strip()))
+    r = copy.deepcopy(res_s)
+    r.reasignaciones_continuidad = E0.aplicar_continuidad_enumeracion(r)
+    E0.corregir_fronteras_intra_palabra(r)
+    if apartados >= MIN_APARTADOS_R4 and len(E0.construir_chunks(r)) <= 1:
+        res_l, rep_l = parsear(roles_s, modo_sin_raiz=True, marcador_letra=True)
+        res_l.avisos.append({"tipo": "marcador_letra_r2", "apartados": apartados})
+        return res_l, roles_s, rep_l, "sin_raiz_letra", roles_m0 != roles_v0
+    return res_s, roles_s, rep_s, "sin_raiz", roles_m0 != roles_v0
 
 
 def lineas_conservadas_k(paginas: list, roles: list[str], repetidos: set[str]) -> list:
@@ -1115,14 +1433,20 @@ def correr(salida: Path, manifiesto=None,
     for archivo, to in items:
         pdf = pdfs[to]
         paginas = E0.extraer_lineas(pdf)
-        roles = E0.clasificar_paginas(paginas)
+        roles = (E0.clasificar_paginas(paginas, continuacion_con_titulo=True) if r2
+                 else E0.clasificar_paginas(paginas))
         if r2:
             # K (U-R2-CODIGO): en la rama de mayúsculas del encabezado de página
             # se descarta solo lo que se repite en al menos 2 páginas de cuerpo;
             # agregado 8: pie desde la línea «Versión»; agregado 9: escalera
             # de la partición (marcadores y sin raíz) cuando el camino vigente
             # no da chunks
-            res, roles, repetidos, modo_lectura, marcadores_e0 = escalera_e0_r2(to, archivo, paginas, roles)
+            # regla 9 de S0: las tablas se detectan antes del parseo para leer las filas de catálogo
+            tablas_r9 = tablas_de_to_r2(pdf, to)
+            filas_r9 = filas_de_catalogo_r9(pdf, tablas_r9, paginas)
+            res, roles, repetidos, modo_lectura, marcadores_e0 = escalera_e0_r2(
+                to, archivo, paginas, roles,
+                rotulos_fila_r9=frozenset(f["rotulo"] for f in filas_r9 if f["rotulo"]))
             conservadas = lineas_conservadas_k(paginas, roles, repetidos)
         else:
             res = E0.parsear_cuerpo(to, archivo, paginas, roles)
@@ -1152,7 +1476,8 @@ def correr(salida: Path, manifiesto=None,
                   else E0.parsear_indice(paginas, roles))
         no_partir: frozenset = frozenset()
         if r2:
-            chunks, tablas_to, no_partir = procesar_tablas_r2(res, pdf, to, roles)
+            chunks, tablas_to, no_partir = procesar_tablas_r2(res, pdf, to, roles, tablas_to=tablas_r9,
+                                                              filas_r9=filas_r9)
             dueno = tablas_to.pop("_dueno_linea")
             if conservadas:
                 encabezados_conservados[to] = [

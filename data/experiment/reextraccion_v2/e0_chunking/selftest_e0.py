@@ -49,6 +49,22 @@ Tests de la corrección post-calibración (reglas 1 y 2, ver e0_lib):
   h) ric 4.4: la regla 1 no aplica (no hay continuidad de lista en esa
      costura) — cero reasignaciones en ric y el contenido de 4.4.3/4.4.4
      sigue, como limitación documentada, dentro del propio de 4.3.3.
+
+Tests de S0 de U-SEG-OFICIAL (S0-2; solo la versión e0-r2, con los PDFs de la
+partición, data/experiment/escalado_prep/pdfs/; diseño en
+data/experiment/segmentacion_oficial_e0r2/s0_1/ y s0_1bis/):
+  j) la versión legada no cambia: los parámetros nuevos de clasificar_paginas
+     y parsear_cuerpo están apagados por default;
+  k) un caso medido por regla, corriendo e0-r2 sobre nueve TOs: regla 1
+     (garopt, «Sección N –»), 2 (ri_dsf, códigos de actividad que no son
+     puntos), 3 (venliq, primera página de cuerpo; adfsp p. 3, índice por
+     lista), 4 (ri_spi, marcador de letra), 7 (ri_mmsef, reapertura del
+     padre), T (ri_dcpc, tabla fundida), 8 (manori, lista de la sección
+     vetada), 9 (rdbcra, filas del catálogo) y la cobertura exacta;
+  l) casos sintéticos de las reglas 5 (cola de título en la lista de
+     páginas), 6 (partición por renglones en E0 y en E1, con la capacidad
+     del tercer escalón) y 8 (detección de la lista y sus guardas);
+  m) doble corrida de e0-r2 sobre dos de esos TOs, byte a byte igual.
 """
 
 from __future__ import annotations
@@ -278,6 +294,170 @@ def test_minichunks(d: Path) -> None:
           str({to: (c["chunks_terminales"], c["mini_chunks"]) for to, c in conteos.items()}))
 
 
+# ------------------------------------------- S0 de U-SEG-OFICIAL (e0-r2)
+
+PDFS_PARTICION = AQUI.resolve().parents[1] / "escalado_prep" / "pdfs"
+TOS_S0 = ("garopt", "ri_dsf", "venliq", "adfsp", "ri_spi", "ri_mmsef", "ri_dcpc", "manori", "rdbcra")
+
+
+class _ManifiestoParticion:
+    """Lo que `correr_e0.correr` lee de un manifiesto: ids, archivo y PDF (los de la partición)."""
+    tiene_oraculo = False
+    mapa_territorio = None
+
+    def __init__(self, ids):
+        self.ids = list(ids)
+
+    def archivo_de(self, to: str) -> str:
+        return f"{to}.pdf"
+
+    def pdf_de(self, to: str) -> Path:
+        return PDFS_PARTICION / f"{to}.pdf"
+
+
+def _linea(texto: str, pagina: int, top: float, x0: float = 60.0, ngaps: int = 0):
+    return correr_e0.E0.Linea(pagina=pagina, top=top, x0=x0, texto=texto, ngaps=ngaps,
+                              ultimo_numerico=False, primer_codigo=False)
+
+
+def _unidad(texto: str, uid: str = "x::S1", tipo: str = "seccion_sin_puntos") -> dict:
+    return {"id": uid, "to": "x", "archivo": "x.pdf", "unidad": uid.split("::", 1)[1], "titulo": "t",
+            "tipo": tipo, "paginas": [1], "texto": texto, "chars_propio": len(texto),
+            "chars_completo": len(texto), "herencia": [], "flags": {}, "sha256_propio": "",
+            "sha256_completo": ""}
+
+
+def test_s0_legada() -> None:
+    import inspect
+    E0 = correr_e0.E0
+    print("== j) S0 de U-SEG-OFICIAL: la versión legada no cambia")
+    p = inspect.signature(E0.parsear_cuerpo).parameters
+    nuevos = {"seccion_variante": False, "rotulos_r2": False, "marcador_letra": False, "reabrir_padre": False,
+              "no_rotulos": frozenset(), "rotulos_fila": frozenset()}
+    check("parsear_cuerpo: los parámetros de las reglas 1, 2, 4, 7, 8 y 9 apagados por default",
+          all(p[k].default == v for k, v in nuevos.items()), str({k: p[k].default for k in nuevos}))
+    q = inspect.signature(E0.clasificar_paginas).parameters
+    check("clasificar_paginas: la regla 3 apagada por default", q["continuacion_con_titulo"].default is False)
+    r = inspect.signature(E0.separar_encabezado_pie).parameters
+    check("separar_encabezado_pie: la regla 1 apagada por default",
+          r["seccion_variante"].default is False and r["seccion_abierta"].default is None)
+
+
+def test_s0_casos(d: Path) -> None:
+    print(f"== k) S0 de U-SEG-OFICIAL: un caso medido por regla (e0-r2 sobre {len(TOS_S0)} TOs)")
+    correr_e0.correr(d, manifiesto=_ManifiestoParticion(TOS_S0), version_e0="e0-r2")
+    ch = {to: cargar(d, f"chunks_{to}.json") for to in TOS_S0}
+    ids = {to: [c["id"] for c in ch[to]] for to in TOS_S0}
+    est = {to: cargar(d, f"estructura_{to}.json") for to in TOS_S0}
+
+    def avisos(to: str, tipo: str) -> list:
+        return [x for x in est[to]["avisos"] if x["tipo"] == tipo]
+
+    check("regla 1: garopt abre «Sección 2 –» y sus puntos (garopt::2.1.1)",
+          "garopt::2.1.1" in ids["garopt"], f"{len(ids['garopt'])} chunks")
+    check("regla 2: ri_dsf no lee como puntos los códigos de actividad de la sección 10 (sin ri_dsf::10.1)",
+          "ri_dsf::10.1" not in ids["ri_dsf"]
+          and any(r["motivo"] == "fila_de_lista_de_codigos_r2" for r in est["ri_dsf"]["rechazos_header"]))
+    check("regla 3: venliq recupera la primera página de cuerpo (venliq::1.1.1, sin chapeau de S1)",
+          "venliq::1.1.1" in ids["venliq"] and "venliq::S1::chapeau_seccion" not in ids["venliq"])
+    check("regla 3, ampliación: adfsp p. 3 (una lista entera de la regla 8) es índice: sin adfsp::S6",
+          "adfsp::S6" not in ids["adfsp"] and "adfsp::6.1" in ids["adfsp"])
+    check("regla 4: ri_spi en 95 unidades por el marcador de letra (ri_spi::A.1.1)",
+          len(ids["ri_spi"]) == 95 and "ri_spi::A.1.1" in ids["ri_spi"]
+          and bool(avisos("ri_spi", "marcador_letra_r2")), f"{len(ids['ri_spi'])} unidades")
+    check("regla 7: ri_mmsef reabre el padre (ri_mmsef::2.2.1, aviso padre_reabierto_r2)",
+          "ri_mmsef::2.2.1" in ids["ri_mmsef"] and bool(avisos("ri_mmsef", "padre_reabierto_r2")))
+    check("acompañamiento T: ri_dcpc funde una tabla partida en intersticiales",
+          bool(avisos("ri_dcpc", "tabla_fundida_en_un_intersticial_r2")))
+    vetos = [r for r in est["manori"]["rechazos_header"] if r["motivo"] == "lista_de_puntos_r8"]
+    check("regla 8: manori veta los 10 rótulos de sus listas de sección (pp. 3 y 57) y 1.1.1 encuentra padre",
+          len(vetos) == 10 and sorted({r["pagina"] for r in vetos}) == [3, 57] and "manori::1.1.1" in ids["manori"],
+          f"{len(vetos)} vetos")
+    cat = avisos("rdbcra", "filas_de_catalogo_r9")
+    u = next((c for c in ch["rdbcra"] if c["id"] == "rdbcra::11.2.7"), None)
+    check("regla 9: rdbcra ancla las 119 filas del catálogo (223 renglones) y acepta rdbcra::11.1.1",
+          len(cat) == 1 and (cat[0]["filas"], cat[0]["ancladas"], cat[0]["renglones_movidos"]) == (119, 119, 223)
+          and "rdbcra::11.1.1" in ids["rdbcra"])
+    check("regla 9: rdbcra::11.2.7 lleva su fila entera, en el orden del PDF",
+          u is not None and u["texto"] == "Operaciones de cambio en\n11.2.7. días y horarios no habilita- "
+                                        "Alta 200 100\ndos al efecto.")
+    cob = cargar(d, "cobertura.json")
+    check("cobertura exacta en los nueve TOs", all(cob[to]["cobertura_exacta"] for to in TOS_S0))
+
+
+def test_s0_sinteticos() -> None:
+    E0 = correr_e0.E0
+    print("== l) S0 de U-SEG-OFICIAL: casos sintéticos de las reglas 5, 6 y 8")
+    check("regla 5: la lista de las 9 páginas de la cola de título estricta",
+          correr_e0.COLA_TITULO_ESTRICTA_R5 == {"cirmo3": {19}, "cryl": {27}, "manori": {6}, "ri2_ci": {8, 9, 16, 24},
+                                                "snp_cheq": {80}, "snp_mep": {19}})
+    pag = [_linea("B.C.R.A.", 1, 30.0), _linea("Sección 3. Normas generales.", 1, 44.0),
+           _linea("Las entidades deberán informar el saldo diario.", 1, 56.0)]
+    _, _, sec_h = E0.separar_encabezado_pie(pag)
+    _, _, sec_e = E0.separar_encabezado_pie(pag, cola_titulo_estricta=True)
+    check("regla 5: con la cola estricta, un renglón que no continúa el título es texto de la norma",
+          sec_h != sec_e and sec_e == "Sección 3. Normas generales.", f"{sec_h!r} / {sec_e!r}")
+    check("regla 6: constantes (tercer escalón 27.214, partes por renglones 10.886, por ítems 13.091)",
+          (correr_e0.CAPACIDAD_ESCALON_3_R6, correr_e0.OBJETIVO_PARTES_RENGLONES_R6,
+           correr_e0.OBJETIVO_CHARS_PARTE) == (27214, 10886, 13091))
+    renglon = "Las entidades financieras deberán cumplir con las disposiciones de esta sección y su anexo."
+    grande = _unidad("Título de la sección\n" + "\n".join([renglon] * 330))
+    chica = _unidad("Título\n" + "\n".join([renglon] * 220))
+    p, info = correr_e0.particionar_por_corte(grande)
+    check("regla 6 en E1: una unidad sin ítems sobre el tercer escalón se parte por renglones (partes de 10.886 o menos)",
+          p is not None and info.get("renglones_r6") == "sin_items_y_sobre_el_tercer_escalon"
+          and max(s["chars_propio"] for s in p) <= 10886, str([s["chars_propio"] for s in p] if p else None))
+    p, info = correr_e0.particionar_por_corte(chica)
+    check("regla 6 en E1: una unidad sin ítems bajo el tercer escalón no se parte (llega entera al tercer escalón)",
+          p is None and info["motivo"] == "sin_items_detectables", str(len(chica["texto"])))
+    items = ("Encabezado del punto\n1. Primer ítem corto.\n" + "\n".join([renglon] * 5)
+             + "\n2. Segundo ítem largo.\n" + "\n".join([renglon] * 440)
+             + "\n3. Tercer ítem corto.\n" + "\n".join([renglon] * 5))
+    p, info = correr_e0.particionar_por_corte(_unidad(items, "x::1.1", "punto_terminal"))
+    tam = [s["chars_propio"] for s in p] if p else []
+    check("regla 6 en E1: solo se parte por renglones el ítem que pasa el tercer escalón",
+          info.get("renglones_r6") == "parte_sobre_el_tercer_escalon" and len(tam) == 6
+          and tam[0] == tam[-1] + 21 and max(tam[1:-1]) <= 10886, str(tam))
+    out, rep = correr_e0.subdividir_unidades_grandes([grande], tope_herencia=correr_e0.TOPE_HERENCIA_E0_R2)
+    check("regla 6 en E0 (e0-r2): una unidad sin ítems sobre el umbral se parte por renglones",
+          len(out) == 3 and not rep["no_particionables"], str([c["chars_propio"] for c in out]))
+    out, rep = correr_e0.subdividir_unidades_grandes([grande])
+    check("regla 6 en E0 (legada): la misma unidad queda declarada sin partir",
+          len(out) == 1 and rep["no_particionables"][0]["motivo"] == "sin_items_detectables")
+    out, rep = correr_e0.subdividir_unidades_grandes([grande], no_partir=frozenset({"x::S1"}),
+                                                     tope_herencia=correr_e0.TOPE_HERENCIA_E0_R2)
+    check("regla 6 en E0: una unidad con tabla serializada no se parte (declarada)",
+          len(out) == 1 and rep["no_particionables"][0]["motivo"] == "tabla_serializada")
+    # regla 8: lista en la p. 1 cuyos números reaparecen con su título más adelante, con texto entre punto y punto
+    titulos = ["Alcance general.", "Requisitos de información.", "Plazos de presentación."]
+    p1 = [_linea("Sección 1. Disposiciones.", 1, 30.0)] + [
+        _linea(f"1.{i + 1}. {t}", 1, 50.0 + 14 * i, x0=80.0) for i, t in enumerate(titulos)]
+    cuerpo = []
+    for i, t in enumerate(titulos):
+        cuerpo += [_linea(f"1.{i + 1}. {t}", 2, 50.0 + 70 * i, x0=80.0)] + [
+            _linea("Texto de la norma que desarrolla el punto con su contenido propio.", 2, 64.0 + 70 * i + 12 * k)
+            for k in range(4)]
+    roles = [E0.ROL_CUERPO, E0.ROL_CUERPO]
+    check("regla 8: detecta la lista de la p. 1 (sus tres rótulos)",
+          E0.lineas_de_listas_r8([p1, cuerpo], roles) == frozenset((1, 50.0 + 14 * i) for i in range(3)))
+    otro = [_linea(f"1.{i + 1}. {t}", 2, 50.0 + 70 * i, x0=80.0) for i, t in
+            enumerate(["Otra cosa.", "Distinto título.", "Nada que ver."])]
+    check("regla 8: si los títulos de la reaparición son otros, no es una lista",
+          E0.lineas_de_listas_r8([p1, otro], roles) == frozenset())
+    check("regla 3, ampliación: la página que es entera la lista pasa a índice; la de cuerpo, no",
+          E0.paginas_indice_r8([p1, cuerpo], roles) == [E0.ROL_INDICE, E0.ROL_CUERPO])
+
+
+def test_s0_doble(base: Path) -> None:
+    print("== m) S0 de U-SEG-OFICIAL: doble corrida de e0-r2, byte a byte")
+    for nombre in ("a", "b"):
+        correr_e0.correr(base / f"doble_{nombre}", manifiesto=_ManifiestoParticion(("garopt", "ri_spi")),
+                         version_e0="e0-r2")
+    sha_a, sha_b = correr_e0.shas_salida(base / "doble_a"), correr_e0.shas_salida(base / "doble_b")
+    check("e0-r2 sobre garopt y ri_spi: dos corridas con los mismos sha256", sha_a == sha_b and bool(sha_a),
+          f"{len(sha_a)} archivos")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dir-a", default=None)
@@ -298,6 +478,11 @@ def main() -> int:
     test_t4(dir_a)
     test_correcciones(dir_a)
     test_minichunks(dir_a)
+    base_s0 = Path(tempfile.mkdtemp(prefix="e0_selftest_s0_"))
+    test_s0_legada()
+    test_s0_casos(base_s0 / "casos")
+    test_s0_sinteticos()
+    test_s0_doble(base_s0)
 
     total = len(RESULTADOS)
     ok = sum(1 for _, b, _ in RESULTADOS if b)

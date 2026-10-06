@@ -167,6 +167,7 @@ La enmienda 3 al protocolo quedó firmada el 04/10/2026 (`0cb0c70`; asentado el 
 | F18a | Un TO modificado en el sitio, con el cambio solo en páginas que E0 no convierte en unidades (portada, índice, tabla de origen, historial) | E0 e0-r2 sobre el PDF nuevo, dentro de una release declarada | ninguna llamada si E0 devuelve las mismas unidades byte a byte; se re-sella el sha del PDF; si cambia el pie de alguna página, F16b | no cambia (unidades idénticas) | no cambia (unidades idénticas) | nada; solo código si cambia la versión del pie (F16b) | 9 | `e0_chunking/e0_lib.py:394-439`, `:914-915` | A1, A3, A1r, A3r, R00 |
 | F18b | Un TO modificado en el sitio, con cambio en páginas de cuerpo | E0 e0-r2 sobre el PDF nuevo, dentro de una release declarada | E1 y E3 de las unidades cuyo request cambia (filas F01 a F04, F19 y F21); el resto sale de la caché; F16b por el pie | cambia (las unidades cuyo request cambia) | cambia (las unidades cuyo request cambia) | E1 y E3 de las afectadas | 9 | `e0_lib.py:914-915`; `prompt_r2b.py:395-437` | R01, R02, R04, R07 |
 | F19 | Una unidad agregada o retirada por un cambio de numeración | E0; la unidad nueva y las renumeradas cambian su número, el numeral del texto y la herencia de sus descendientes | E1 y E3 de la unidad nueva, de las hermanas renumeradas y de sus descendientes; una unidad retirada no llama a la API y sale del ensamblado en código | cambia (nueva, renumeradas y descendientes) | cambia (renumeradas y descendientes) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:402-407`, `:423-425`; `comun_e1.py:63-87` | R24, R07 |
+| F19b | Una unidad agregada o retirada por una regla de segmentación de E0 (release de e0-r2), sin cambio en el PDF | E0 e0-r2: texto, id y herencia de la unidad nueva, y la herencia de las unidades que la citan | E1 y E3 de las unidades nuevas y de las que cambian texto o herencia (F01 a F03); una unidad retirada no llama a la API y sale del ensamblado en código | cambia (nuevas: sin clave previa) | cambia (nuevas) | E1 y E3 de las afectadas | 9 | `correr_e0.py:95-100` (reglas de S0-2), `:327-339` (regla 6), `:576-585` (regla 9), `:1266` (T); `e0_lib.py:352` (regla 8), `:473` (regla 3, ampliación) | R24 (la unidad nueva de la renumeración; sin variación propia: en la tanda 0 no ocurre) |
 | F20 | Partición por corte (perfil r2): una unidad que corta también en el reintento se parte por ítems sin cortar tablas; un cambio del mecanismo (ítems, tope de la herencia de las partes) | runner, con `correr_e0.particionar_por_corte`; partes `::parteK` registradas en `particiones_por_corte.json` | E1 y E3 de las partes; la unidad entera conserva sus claves | cambia (las partes: sin clave previa) | cambia (las partes) | E1 y E3 de las afectadas | 9 | `correr_e0.py:169-229`, `:232-254`; `runner_corpus.py:67-68`, `:473-586`, `:741-750` | R26 |
 | F21 | Recorte de la herencia de e0-r2 (tope U = 13.091 y B = 2.000 caracteres; marca y línea del recorte) | E0 e0-r2: herencia y `herencia_recortada` de las unidades cuya herencia pasa U; línea del recorte en el mensaje de E1 | E1 de esas unidades (en la tanda 0, solo `ric::11.2.3`); su E3 por la salida nueva | cambia (las recortadas) | no cambia (encabezados enteros, con la salida de E1 fija) | E1 y E3 de las afectadas | 9 | `correr_e0.py:77-80`; `e0_lib.py:1808-1883`; `prompt_r2b.py:362-365`, `:421-422` | R27 |
 | F22 | Plantilla del mensaje de E1 r2b: una línea presente en todo mensaje (cierre, rótulos fijos) | mensaje de usuario; no entra al hash del prefijo ni al namespace; candado del mensaje de E1 (U-PROMPT-R2, P3c-2) al importar `prompt_r2b`: el sha256 del mensaje de las unidades de `candado_mensaje_r2b.json` | nada se arma hasta re-sellar el candado del mensaje; re-sellado, E1 de todas las unidades y E3 de todas por la salida nueva | frena (candado del mensaje de E1) | frena (sin perfil no hay salida validada de E1) | frena; re-sellado, todo | 9 | `prompt_r2b.py:354-361`, `:395-437`; candado `:464-484` | R29b |
@@ -266,6 +267,13 @@ Notas a filas:
   página cambiada entra a `pies_<to>.json` y, si cambia la versión vigente, al TextoOrdenado (F16b).
 - **F19.** Con la E0 r2b, el selftest incorpora un punto antes de `pro::2.3`: se renumeran 2.3 a 2.7 y cambian las
   claves de 42 de las 101 unidades de pro, en E1 y en E3. La caché no reconoce «mismo contenido, otro número».
+- **F19b.** Fila propuesta en el FRENO S0-2 de U-SEG-OFICIAL (`segmentacion_oficial_e0r2/s0_2/REPORTE_S0-2.md`, §5). F19 cubre
+  la unidad que aparece o desaparece por un cambio de numeración del documento y F01 el texto de una unidad que sigue
+  existiendo; ninguna decía qué pasa con la unidad que una regla de segmentación agrega o retira sin que el PDF cambie
+  (en S0-2, 553 ids nuevos y 384 que desaparecen en 26 TOs; `s0_2/censos/atribucion_S0-2.json`). La clave de una unidad
+  nueva no existe en la caché, así que E1 y E3 corren para ella como para la unidad nueva de R24; la fila cita esa
+  variación porque el contraste exige una por fila y en la tanda 0 ninguna regla de S0 agrega ni retira unidades
+  (57 archivos byte a byte). Las unidades que cambian texto o herencia por la misma regla van por F01 a F03.
 - **F20.** En la tanda 0, la única unidad grande que se puede partir por ítems es `cap::4.2.1.2` (borrador del
   mandato de U-REEXT-T0, T1). El selftest la parte en 2 partes, cada una con su propia clave en E1 y en E3 (R26).
 - **F22, F22b y F23.** Las líneas fijas del mensaje de E1 y las NOTAS del mensaje de E3 no entran al hash del
@@ -346,7 +354,7 @@ Resultado (salida en `selftest_clave_cache.json`):
   requests.
 - `validador_e1` y `validador_r2` se cargan solo al validar la salida de E1.
 
-**Contraste con esta tabla:** OK, en las 40 filas.
+**Contraste con esta tabla:** OK, en las 42 filas (41 hasta la fila F19b, sumada el 06/10/2026 en S0-2 de U-SEG-OFICIAL; selftest de claves OK sobre copia con la fila).
 
 ## 5. Costo de referencia por clase
 

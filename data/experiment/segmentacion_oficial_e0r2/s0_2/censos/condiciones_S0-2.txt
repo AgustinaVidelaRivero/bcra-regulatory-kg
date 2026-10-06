@@ -1,0 +1,43 @@
+# Condiciones de S0-2 (U-SEG-OFICIAL), 06/10/2026. Sobre copias del repo sin enlaces; corridas en el scratchpad:
+# base_152 = E0 de 9f6361e (152 TOs); s02_impl_152 y s02_impl_152_b = el código de S0-2, dos veces; s02_impl_t0 y s02_impl_t0_b, la tanda 0.
+
+## Código de S0-2 (sha256, iguales en el repo y en la copia probada)
+c5e7106a1b2d4cc6d30c5128c8d242802e8d2a7e9d497ba66fda28e2464e6044  data/experiment/reextraccion_v2/e0_chunking/e0_lib.py
+4570a0c88d3e9fe99d5245182fb94a1b2262eb7eca8ba2d9c3184ebc7af2195c  data/experiment/reextraccion_v2/e0_chunking/correr_e0.py
+af114a4d793e20d6e487e92e1561a88e4d8cacaace34a76704061afedf14fea7  data/experiment/reextraccion_v2/e0_chunking/selftest_e0.py
+
+## 1. Tanda 0 contra salida_tanda0_r2b/ (cmp archivo por archivo)
+tanda0 iguales 57 distintos 0 de 57; archivos en la corrida 57
+tanda 0, segunda corrida: iguales a salida_tanda0_r2b 57 de 57; iguales a la primera corrida 57 de 57; archivos 57
+
+## 2. particionar_por_corte sobre las 2.439 unidades de salida_tanda0_r2b/ (s0_1bis/scripts/particion_corte_unidades.py)
+435af2fe6ef171de8481ab4d84938f3f1fb49c213a8e12374d5bff3c15271ed4  corte_t0_s02.json
+435af2fe6ef171de8481ab4d84938f3f1fb49c213a8e12374d5bff3c15271ed4  corte_t0_9f6361e.json
+unidades 2439 2439 distintas 0
+cap::4.2.1.2 con 9f6361e: [15056, 11669] | con S0-2: [15056, 11669] | igual: True
+
+## 3. TOs que ninguna regla toca (s0_1bis/scripts/condicion_tos_no_tocados.py base_152 s02_impl_152 <26 TOs>)
+{"tos": 152, "version_e0_igual": true, "archivos_por_to": 760, "tos_con_diferencias": ["adfsp", "ceninf", "cirmo3", "cryl", "dmrd", "fimipyme", "garopt", "inspag", "manori", "manual", "nmaeef", "opecam", "rdbcra", "ri2_ae", "ri2_ci", "ri_ccna", "ri_dcpc", "ri_dsf", "ri_mmsef", "ri_niif", "ri_spi", "ri_tsa", "snp_cheq", "snp_dd", "snp_mep", "venliq"], "fuera_de_los_declarados": [], "declarados_sin_diferencias": [], "tos_iguales_byte_a_byte": 126}
+cobertura exacta en 152 de 152
+unidades 9554
+sobre el umbral de 26.182: partidas 10 | declaradas 9 ['tabla_serializada'] | salteadas 0
+
+## 4. Doble corrida (cmp de las dos corridas de los 152)
+152, doble corrida: 0 distintos de 768; archivos en la segunda 768
+
+## 5. Selftests de E0 sobre la copia con el código final (última línea de cada consola)
+selftest_e0: SELFTEST: 84/84 PASS (línea de base con HEAD: SELFTEST: 57/57 PASS)
+selftest_b52: SELFTEST B5.2: 39/39 PASS (línea de base con HEAD: SELFTEST B5.2: 39/39 PASS)
+selftest_b581: SELFTEST B5.8.1: 34/34 PASS (línea de base con HEAD: SELFTEST B5.8.1: 34/34 PASS)
+selftest_b582: SELFTEST B5.8.2: 59/59 PASS (línea de base con HEAD: SELFTEST B5.8.2: 59/59 PASS)
+selftest_b583: 33/33 checks OK (línea de base con HEAD: 33/33 checks OK)
+
+## 6. Selftest de claves sobre la copia con el código nuevo y las bases (selftest_clave_cache.py --salida-r2b …)
+anclaje r2b e1: OK | e3: OK | claves r2b en la db de E1: 2449
+inventario r2b: hijo reproduce = True | módulos solo-código cargados al armar = []
+contraste con la tabla: OK
+VEREDICTO: OK
+salida igual byte a byte a data/experiment/mantenimiento/selftest_clave_cache.json de 0a3ac81
+
+## 7. Control de las filas del catálogo de rdbcra (s0_1bis/scripts/control_filas_catalogo.py)
+{  "e0": "s02_impl_152",  "filas": 119,  "por_estado": {   "limpia": 119  },  "con_renglones_fuera_de_toda_banda": [],  "detalle": [   {    "numero": "11.1.1",    "pagina": 36,    "banda": [     211.4

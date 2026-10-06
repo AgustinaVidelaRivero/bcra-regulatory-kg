@@ -433,3 +433,37 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   conocido, `pro::1.1.2.7`, PDF p. 3) se censa en S1 sobre los 152 TOs, como una línea más del censo de renglones (punto 7
   de S1), con la lista de casos. Según la cifra, S2 lo declara límite o la regla entra en la release siguiente de E0 (S0-2
   cierra antes que S1 y no cambia por esto).
+- **06/10/2026 — revisión del FRENO S0-2 y decisiones de la autora (S0-2 sin commit al escribir esta nota; la nota anterior
+  quedó en 0a3ac81).**
+  - La revisión independiente reprodujo S0-2 sobre una copia sin enlaces (el código de S0-2 y, como base, el código de E0 de
+    HEAD, `9f6361e`): la tanda 0, 57 de 57 archivos iguales a `salida_tanda0_r2b/`; los 152 TOs, 26 cambian y 126 salen byte a
+    byte iguales a la corrida base; 9.554 unidades (base 9.385; 553 ids nuevos y 384 que desaparecen), con el conteo de los 26
+    igual al del FRENO; doble corrida sin diferencias; selftest_e0 84/84, b52 39/39, b581 34/34, b582 59/59, b583 33/33;
+    selftest de claves OK con el contraste en OK y salida igual a la del repo, sin mover ninguna clave de la tanda 0; las 119
+    filas del catálogo limpias con el mismo detalle; 10 unidades partidas y 9 enteras con tabla serializada sobre el umbral.
+    Conciliación de las unidades: 9.385 con el código de C2 (`s0_1/DISENO_S0-1.md:18`) → 9.533 con S0-1 (+423 −275) → 9.555
+    con S0-1 bis (+179 −157) → 9.554 con S0-2; la diferencia de −1 con S0-1 bis son los 41 eventos de las decisiones 5 y 8
+    (3 ids nuevos y 4 que desaparecen; `s0_2/censos/conciliacion_S0-1_S0-1bis_S0-2.json`).
+  - Decisión 8 (páginas de índice). La regla escrita alcanzaba 4 de las 6 páginas; S0-2 admitió tres formas más (rótulo pegado
+    al número, palabra partida y título antes del primer rótulo) y con ellas pasan a índice las 6 y, además, nmaeef p. 14 y
+    ri2_ae p. 13 (178 renglones, 152 en las 6). La revisión leyó esas dos páginas contra el PDF: las dos son el índice del
+    Anexo II (rótulos 1 a 2.8, sin texto normativo); nmaeef p. 36, que abre con una lista de rótulos y sigue con cuerpo, queda
+    como cuerpo, y ceninf p. 1 también; fuera de las 8 páginas no cambia ningún rol (`s0_2/censos/censo_rol_indice.json`).
+    Decisión: se aceptan las tres formas, acotadas por el censo de páginas de la regla (`s0_2/scripts/censo_rol_indice.py`):
+    toda página que cambie de rol en una corrida futura es hallazgo y se reporta antes de usarse.
+  - Decisión 9 (orden por celda en el catálogo de rdbcra). La revisión verificó sobre el PDF (pp. 36 a 54, `pdftotext -layout`)
+    que en las 119 filas el número, la gravedad y las multas comparten renglón y que en 63 ese renglón lleva además un tramo
+    de la descripción; el orden por celda partiría ese renglón, dejaría texto fuera de los renglones del PDF y el control por
+    renglones (`s0_1bis/scripts/control_filas_catalogo.py`) no podría dar limpia ninguna fila. Decisión: se ratifica que no se
+    adopta; la unidad de cada fila conserva el orden del PDF, con las 119 filas limpias. La lectura de cortes de S1 y la
+    verificación literal del tramo de E1 necesitan renglones enteros del PDF.
+  - Fila F19b de la tabla de reprocesamiento (unidad agregada o retirada por una regla de segmentación de E0, sin cambio en el
+    PDF). La propuesta del FRENO la dejaba sin variación del selftest de claves; el contraste exige una por fila
+    (`mantenimiento/code/selftest_clave_cache.py:1704-1705`), así que la fila cita R24 (la unidad nueva de la renumeración,
+    tokens cambia/cambia), verificado con el selftest de claves sobre una copia con la fila (OK). Decisión: se suma la fila, con
+    su nota por fila y la línea del contraste corregida a 42 filas (el texto decía 40 desde 53b7708 y el selftest de 0a3ac81 ya
+    contaba 41), en el commit de S0-2.
+  - Para S1: el código es el de S0-2, sin interruptores (`s0_2/REPORTE_S0-2.md` §7); 7 de las 8 páginas que pasaron a índice van
+    a la lista del censo de renglones; el rótulo del estrato en la semilla del sorteo es el valor literal de `modo_lectura` de
+    `segmentacion_84/b584_particion/conteos_b584.json` (vigente, marcadores, sin_raiz); ri_spi, con 95 unidades en S0-2, sale
+    del tercer grupo y se leen 10 de sus unidades aparte.
