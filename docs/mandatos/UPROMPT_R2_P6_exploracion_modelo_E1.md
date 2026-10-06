@@ -1,3 +1,5 @@
+**[06/10/2026]** Re-redactado como U-COMP-E1, la comparación chica antes de la tanda 1 (`docs/mandatos/UCOMP_E1_comparacion_chica_modelo.md`), por decisión de la autora del 06/10/2026, con tope de USD 25; este borrador queda como base histórica.
+
 POSTERGADO: experimento posterior al escalado (decisión de la autora del 05/10/2026). BORRADOR, sin firmar.
 - No se ejecuta ahora y no decide el modelo de E1 de la release r2b, que es `claude-haiku-4-5` con
   temperatura 0 (docs/plan_tesis.md:400).
