@@ -395,3 +395,36 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     ri_tsa, que tienen rol de portada y son norma. Se precisa: toda página con rol de portada o de índice
     que no sea la primera página del documento va a la lista, con sus renglones y cuántos son de texto
     corrido. Se leen las que tengan texto corrido.
+- **05/10/2026 — decisiones de la autora sobre el FRENO S0-1 bis.** S0-1 bis quedó commiteada en `d9d2212`
+  (44 archivos: `s0_1bis/` y `FRENO_S0-1bis.md`), con el prototipo revisado como parche sin aplicar en
+  `s0_1bis/parche/` (el completo sobre `9f6361e` y el incremental sobre el de S0-1; los dos dan `e0_lib.py`
+  `81c3409851ba82a3…` y `correr_e0.py` `f737028b1918cce0…`).
+  - La revisión independiente reprodujo S0-1 bis sobre una copia: la tanda 0, 57 de 57 archivos iguales; 145 TOs
+    iguales a la corrida final de S0-1 y 7 que cambian; las unidades pasan de 9.533 a 9.555 (179 ids nuevos y 157
+    que desaparecen); la partición por corte de las 2.439 unidades de la tanda 0, igual a la de `9f6361e` con
+    1,175 y con 1,498 (`435af2fe…`); las 119 filas del catálogo de rdbcra recontadas (91 con unidad y 28
+    rechazadas); y otras 10 filas leídas contra el PDF con semilla propia, las 10 con su descripción, su gravedad
+    y sus multas, sin texto de otra fila.
+  - Decisiones.
+    1. Regla 9: las dos partes, 9a (acepta el número de la fila, que la celda prueba) y 9b (lleva a la unidad de
+       su fila los renglones de su banda). Los 49 ids que cambian en rdbcra (28 nuevos y 21 que desaparecen) se
+       atribuyen a la regla 9.
+    2. Páginas de índice leídas como cuerpo (adfsp p. 3, ceninf p. 2, cirmo3 pp. 3 y 4, nmaeef p. 2 y ri_niif
+       p. 1): rol de índice, como ampliación de la regla 3 sobre lo que la regla 8 detecta: una página cuyo
+       contenido, quitados el encabezado, el pie, las líneas «Sección N.» y «Tabla de correlaciones.», es una
+       lista de la regla 8 entera, es índice, siga o no a otra página de índice. Con su censo de páginas, que
+       incluye también nmaeef pp. 14 y 36 y ri2_ae p. 13 (índices de anexos cuyos rótulos hoy se rechazan y
+       quedan como texto dentro de otra unidad), y con el control de que una página de índice nueva no vuelva
+       portada a una página de cuerpo anterior (ceninf p. 1). Efecto medido por la revisión al forzar el rol en
+       las 6 páginas: desaparecen `adfsp::S6`, `cirmo3::S7`, `nmaeef::S0` y `ri_niif::S1`; aparece `ri_niif::S0`
+       con el cuerpo de la Sección 1 (pp. 2 a 4); `ceninf::S1::chapeau_seccion` queda con el chapeau de la p. 3;
+       cobertura exacta; 152 renglones pasan de cuerpo a rol declarado. El límite de ri_niif se declara: la línea
+       «Sección 1.» está en mitad de la p. 2 y E0 solo lee encabezados de sección en la zona de título.
+    3. Orden de los renglones dentro de cada fila del catálogo: en el prototipo es el del PDF, y en las filas de
+       varias líneas el renglón del número con la gravedad y las multas cae en mitad de la descripción
+       (`rdbcra::11.2.1`, hallazgo de la revisión). S0-2 evalúa el orden por celda (número, descripción,
+       gravedad, multas), con la condición de que no cambie nada fuera de rdbcra.
+    4. El comentario del bloque «Regla 8 de S0» del prototipo describe un subconjunto de lo que el código
+       acepta entre rótulos; se corrige en S0-2.
+  - Quedan para el «seguí» de S0-2: la razón de tokens por carácter, la capacidad del tercer escalón y el
+    objetivo de las partes, con la medición de T2 de U-REEXT-T0, y el commit del FRENO T5.
