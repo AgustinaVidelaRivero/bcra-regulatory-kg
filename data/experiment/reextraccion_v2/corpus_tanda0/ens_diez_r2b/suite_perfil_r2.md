@@ -1,19 +1,19 @@
 # Regression suite — data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json
 
-- kg: `data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json` sha256 `12c5cfc3ea4c46536c72b6eafdb6c890c626b550f76dd96c50a579156975e055` — 8818 nodos / 27629 aristas; generación declarada 3 (formato detectado: 3)
+- kg: `data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json` sha256 `a9631a64b422bdae634fb05135373c6f04c6272cdf7acd43a1be9f5b6c1f5f57` — 8816 nodos / 27632 aristas; generación declarada 3 (formato detectado: 3)
 - catálogo: `data/experiment/catalogo_unico/generados_r2/catalogo_suite_r2.json` (versión 3.1, sha256 `122902e013a31b484eef8baf129cb404b48ce7b44aee4fc1657616c5e2d54f32`); política de cuarentena: **flaggeada**
 - esqueleto de referencia (T4): `data/experiment/grafo_v2/reensamblado_v3/kg.json` (no cargado)
 - retriever: GraphIndex de data/experiment/evaluacion/harness.py (importado; sha256 `fd267e833866f86850e43130e627b08d78e05523b97484696de0ab0c8c9fba9e`), loader.load_graph_from_path adapter_key=None
 - partición declarada: {'items': 46, 'convertibles': 19, 'con_condicion': 23, 'no_convertibles': 4, 'retriever': 15, 'por_grupo': {'i-BKL': 12, 'i-RT': 12, 'ii': 12, 'iii': 10}, 'items_r2': ['RT-C6-5', 'EJ-cla-5.1.1.1', 'LN-1', 'LN-2', 'LN-3', 'LN-4', 'LN-5', 'LN-6', 'LN-7', 'LN-8', 'BKL-0001', 'BKL-0002', 'FIRMAS-condicion_de', 'SIN-VERIF-E3', 'ID-entidad_financiera_del_exterior', 'ID-banco_del_exterior', 'ID-entidad_cambiaria_del_exterior', 'ID-titular_de_cuenta_corriente_en_el_bcra', 'ID-instancia_de_gobierno_societario', 'ID-directorio', 'ID-alta_gerencia', 'ID-comite_de_auditoria']}
 
-## Resumen: 68 ítems — resuelto 45 / persiste 12 / no_aplicable 11
-Ranks sellados (retriever in-memory): consultas que coinciden con el sellado 6/25; objetivos 25/69; objetivos en ventana declarada 13; objetivos ausentes 21.
+## Resumen: 68 ítems — resuelto 48 / persiste 11 / no_aplicable 9
+Ranks sellados (retriever in-memory): consultas que coinciden con el sellado 6/27; objetivos 26/75; objetivos en ventana declarada 17; objetivos ausentes 23.
 
 | Id | Grupo | Convertibilidad | Retr. | Forma | Estado | Detalle |
 |---|---|---|---|---|---|---|
 | BKL-0017 | i-BKL | convertible | sí | F1 + F4 ×2 + F5 ×3 (limite 10) | **persiste** | nodo=1 ['Obligacion_los_clientes_de_la_entidad_tanto_residentes_en_el_pais_de_los']; establecida_en=True; aplica_a=True; consultas en ventana=0/3 (persiste solo por alcanzabilidad si lo demás cumple) |
-| BKL-0006 | i-BKL | convertible | no | F3 (montos de la tabla) + F4 (exceptua → restantes) + F5 ×2 informativo (limite 10 / 13) | **no_aplicable** | sin Restriccion anclada en cap 1.2 con un monto de la tabla del 1.2 en la lista de umbrales |
-| BKL-0023 | i-BKL | convertible | no | F3 (properties.umbral) | **no_aplicable** | sin Restriccion anclada en cap 1.2 con un monto de la tabla del 1.2 en la lista de umbrales, ni de compañías financieras ni de bancos |
+| BKL-0006 | i-BKL | convertible | no | F3 (montos de la tabla) + F4 (exceptua → restantes) + F5 ×2 informativo (limite 10 / 13) | **resuelto** | tabla=True; sin Excepcion de cajas en cap 1.2 (sub-check no aplicable); Restriccion:Restriccion_exigencia_basica_de_capital_minimo_par clase=bancos montos=['5.000'] umbral=['5000000000 moneda ARS'] \|\| Restriccion:Re… |
+| BKL-0023 | i-BKL | convertible | no | F3 (properties.umbral) | **resuelto** | Restriccion de bancos (remisión de la oración de compañías financieras): n=1 ['Restriccion_exigencia_basica_de_capital_minimo_para_bancos_5_000_millone'] umbrales=[['5000000000 moneda ARS']] |
 | BKL-0019 | i-BKL | con condición | sí | F4 ×8 (subclase_de si laudada / padre_sugerido si flaggeada) + F4 ausente (excluida, laudada) | **no_aplicable** | ninguno de los 8 sujetos propuestos está en el grafo (por label ni por id de cuarentena) |
 | BKL-0004 | i-BKL | convertible | sí | F1 ×9 + F4 (8 regula + 9 establecida_en) + F5 ×8 (7 consultas + proxy RT-C5-4; limite 10) | **persiste** | nodos 7/9 -> N1@6.5:0 N2@6.5.1:1 N3@6.5.2:0 N4@6.5.2.1:1 N5@6.5.2.2:1 N6@6.5.2.3:3 N7@6.5.3:1 N8@6.5.4:2 N9@6.5.5:4; sin N1: aristas no evaluables; objetivos en ventana=2/30 |
 | BKL-0003 | i-BKL | convertible | sí | F1 + F4 ×2 + F4 ausente (a Sujeto) + F5 ×11 (N1 + controles rol/pnfc; limite 10) | **persiste** | Excepcion=0 []; objetivos en ventana=8/16 |
@@ -42,28 +42,28 @@ Ranks sellados (retriever in-memory): consultas que coinciden con el sellado 6/2
 | T4 | ii | con condición | no | F1 + F4 (R-T4: esqueleto igual al de build_skeleton sobre --catalogo; U-R2-CODIGO, R5.a) | **resuelto** | R-T4: build_skeleton(catálogo) nodos=110 aristas=126; grafo aristas=126 (excluidas cuarentena_laudada=0); faltan_nodos=0 faltan_triplas=0 sobran_triplas=0 |
 | T5 | ii | con condición | no | F4 + F3 (R-T5: remisión por contenido, en las dos formas; U-R2-CODIGO, R5.a) | **persiste** | R-T5: presentes 26/30 (sin tipo 29; verbatim 0); remisiones con evidencia=13380 {'remite_a': 13380} |
 | T6 | ii | con condición | no | F1 | **resuelto** | n=10 de 10 (manifiesto data/experiment/reextraccion_v2/manifiestos/tanda0_ens_diez_r2b.json (reporte_ensamblado_r2.json (manifiesto.path))) fuera_del_esperado=[] faltan=[] |
-| T7 | ii | con condición | no | F3 + F4 + F4 ausente (política de cuarentena, decisión 3) | **resuelto** | politica=flaggeada propuestos=100 aristas_padre_sugerido=93 malos=0 {} fuera_catalogo_no_propuestos=0 |
+| T7 | ii | con condición | no | F3 + F4 + F4 ausente (política de cuarentena, decisión 3) | **resuelto** | politica=flaggeada propuestos=98 aristas_padre_sugerido=98 malos=0 {} fuera_catalogo_no_propuestos=0 |
 | I1 | ii | no convertible | no | ninguna (no convertible) | **no_aplicable** | no convertible: conservación de nodos Σ pre-merge − merges = finales exige los grafos pre-merge (salida/<to>/grafo_<to>.json) y los conteos de merge, que solo existen para la cadena r1 (inventario_B21_fase1.md:135) |
 | I2 | ii | no convertible | no | ninguna (no convertible) | **no_aplicable** | no convertible: conservación de aristas, ídem I1 (inventario_B21_fase1.md:136) |
-| I3 | ii | convertible | no | F1 (conteo: unicidad de ids y de triplas) | **resuelto** | nodes=8818 edges=27629 ids_duplicados=0 triplas_duplicadas=0 |
+| I3 | ii | convertible | no | F1 (conteo: unicidad de ids y de triplas) | **resuelto** | nodes=8816 edges=27632 ids_duplicados=0 triplas_duplicadas=0 |
 | I4 | ii | convertible | no | F4 (cero colgantes) | **resuelto** | colgantes=0 |
 | I5 | ii | convertible | no | F2 (al menos una provenance por nodo y arista, adaptador) | **resuelto** | nodos_sin=0 aristas_sin=0 |
-| E4-a1 | iii | con condición | no | F1 ausente (ningún propuesto residual resoluble por label_exacto) | **resuelto** | propuestos=100 con candidato label_exacto=0 resolubles no resueltos=0 [] |
-| E4-a2 | iii | con condición | no | F1 ausente (alias_exacto) | **resuelto** | propuestos=100 con candidato alias_exacto=0 resolubles no resueltos=0 [] |
-| E4-a3 | iii | con condición | no | F1 ausente (id_slug; e2_lib.slugify_full importado) | **resuelto** | propuestos=100 con candidato id_slug=0 resolubles no resueltos=0 [] |
-| E4-a4 | iii | con condición | no | F1 ausente (label_singularizado) | **resuelto** | propuestos=100 con candidato label_singularizado=0 resolubles no resueltos=0 [] |
-| E4-a5 | iii | con condición | no | F1 ausente (alias_en_parentesis) + F3 (padre_sugerido) | **resuelto** | propuestos=100 con candidato alias_en_parentesis=0 resolubles no resueltos=0 []; propuestos con padre_sugerido=93 |
-| E4-a6 | iii | con condición | no | F1 ausente (claves ambiguas / alias_resueltos que re-resuelven sin ambigüedad) | **resuelto** | claves ambiguas del índice=4; propuestos residuales con motivo ambiguo=0/100; alias_resueltos re-resueltos=0/0 malos=[] |
-| E4-a7 | iii | con condición | no | F3 (cuarentena=true normalizada) + F1 (todo Sujeto no propuesto ∈ catálogo) | **resuelto** | propuestos=100 sin_cuarentena_true=0 con_id_de_catalogo=0 sujetos_fuera_catalogo_no_propuestos=0 |
+| E4-a1 | iii | con condición | no | F1 ausente (ningún propuesto residual resoluble por label_exacto) | **resuelto** | propuestos=98 con candidato label_exacto=0 resolubles no resueltos=0 [] |
+| E4-a2 | iii | con condición | no | F1 ausente (alias_exacto) | **resuelto** | propuestos=98 con candidato alias_exacto=0 resolubles no resueltos=0 [] |
+| E4-a3 | iii | con condición | no | F1 ausente (id_slug; e2_lib.slugify_full importado) | **resuelto** | propuestos=98 con candidato id_slug=0 resolubles no resueltos=0 [] |
+| E4-a4 | iii | con condición | no | F1 ausente (label_singularizado) | **resuelto** | propuestos=98 con candidato label_singularizado=0 resolubles no resueltos=0 [] |
+| E4-a5 | iii | con condición | no | F1 ausente (alias_en_parentesis) + F3 (padre_sugerido) | **resuelto** | propuestos=98 con candidato alias_en_parentesis=0 resolubles no resueltos=0 []; propuestos con padre_sugerido=98 |
+| E4-a6 | iii | con condición | no | F1 ausente (claves ambiguas / alias_resueltos que re-resuelven sin ambigüedad) | **resuelto** | claves ambiguas del índice=4; propuestos residuales con motivo ambiguo=0/98; alias_resueltos re-resueltos=0/0 malos=[] |
+| E4-a7 | iii | con condición | no | F3 (cuarentena=true normalizada) + F1 (todo Sujeto no propuesto ∈ catálogo) | **resuelto** | propuestos=98 sin_cuarentena_true=0 con_id_de_catalogo=0 sujetos_fuera_catalogo_no_propuestos=0 |
 | E4-a8 | iii | con condición | no | F3 (alias_resueltos en ids de catálogo) + F1 ausente + F4 ausente; parte pre-E4 no_aplicable | **no_aplicable** | el ensamblado del grafo bajo prueba no tiene e4_propuestos.json junto al kg.json (el perfil r2 registra la resolución de sujetos en resolucion_sujetos.jsonl): sin evento de E4-a8 que verificar |
 | E4-b | iii | con condición | no | F1 (= T6) + F3 (properties.archivo ∈ archivos de E0) | **resuelto** | TextoOrdenado=10; con properties.archivo en el conjunto de E0: 10/10; fuera=[]; T6=resuelto |
 | E4-c | iii | con condición | no | ninguna directa (no observable sobre un kg.json) | **no_aplicable** | solo observable con el registro de conflictos (salida_r1/e4_conflictos.json) o los grafos pre-E4: los conflictos de properties no se persisten en el kg.json; el proxy débil (un solo valor de materia/version por TextoO… |
 | EJ-cla-5.1.1.1 | r2 | perfil r2 | no | F4 ×2 (vínculos normativos a la Operacion) + F4 (remisión a cla::3.7) + F3 informativo (umbral) | **resuelto** | (i) True [('condicion_de', 2)]; (ii) remite_a a cla::3.7: 2; (iii) informativo: True |
 | LN-1 | r2 | perfil r2 | no | F3 (valores de lista cerrada o marca fuera_de_lista; nodo y elemento de umbral) | **resuelto** | sin tratar 0 {}; marca en valor de la lista 0; marcados fuera de lista {'Obligacion.frecuencia': 64, 'umbral.unidad': 6}; elementos de umbral 1373 (sin tramo_verificado válido 0) |
-| LN-2 | r2 | perfil r2 | no | F3 (claves cerradas por tipo) | **resuelto** | nodos evaluados 8608; claves fuera de la definición 0 {}; definidas que figuran como no definidas 0; con properties_no_definidas 153 |
-| LN-3 | r2 | perfil r2 | no | F3 (mención y mencion_verificada en aristas de sujeto) | **resuelto** | aristas de sujeto 2618: con mención 2618, con mencion_verificada en la lista 2618, con las dos 2618; mencion_verificada {'exacta': 2351, 'no': 257, 'tokens': 10} |
-| LN-4 | r2 | perfil r2 | no | F3 (metodo_resolucion) + conteo de desacuerdos | **resuelto** | aristas de sujeto 2618, sin metodo_resolucion 0; por método {'R1_alias_exacto': 71, 'R1_label_exacto': 457, 'R2_calificador': 15, 'R2_id_slug+label_singularizado': 6, 'R2_label_singularizado': 2, 'R3': 1, 'R4_sugerenc… |
-| LN-5 | r2 | perfil r2 | no | F1 (registro ↔ grafo) | **persiste** | filas 294 {'cuarentena': 166, 'resuelto_a_clase': 128}; propuestos 100; propuestos sin fila 2; filas en cuarentena sin nodo 0 |
+| LN-2 | r2 | perfil r2 | no | F3 (claves cerradas por tipo) | **resuelto** | nodos evaluados 8608; claves fuera de la definición 0 {}; definidas que figuran como no definidas 0; con properties_no_definidas 167 |
+| LN-3 | r2 | perfil r2 | no | F3 (mención y mencion_verificada en aristas de sujeto) | **resuelto** | aristas de sujeto 2616: con mención 2616, con mencion_verificada en la lista 2616, con las dos 2616; mencion_verificada {'exacta': 2349, 'no': 257, 'tokens': 10} |
+| LN-4 | r2 | perfil r2 | no | F3 (metodo_resolucion) + conteo de desacuerdos | **resuelto** | aristas de sujeto 2616, sin metodo_resolucion 0; por método {'R1_alias_exacto': 71, 'R1_label_exacto': 457, 'R2_calificador': 15, 'R2_id_slug+label_singularizado': 6, 'R2_label_singularizado': 2, 'R3': 1, 'R4_sugerenc… |
+| LN-5 | r2 | perfil r2 | no | F1 (registro ↔ grafo) | **resuelto** | filas 294 {'cuarentena': 164, 'descartado': 2, 'resuelto_a_clase': 128}; propuestos 98; propuestos sin fila 0; filas en cuarentena sin nodo 0 |
 | LN-6 | r2 | perfil r2 | no | F1 (re-resolución idempotente, byte a byte) | **resuelto** | re-resolución con el mismo catálogo (sha c3ad15811c7e…): filas 294, resueltas ahora 0, registro igual byte a byte: True |
 | LN-7 | r2 | perfil r2 | no | F3 (categoría del enum y tramo de cada omisión) | **resuelto** | omisiones 1882; sin categoría del enum o sin tramo verificado/marcado 0 |
 | LN-8 | r2 | perfil r2 | no | F1 (bloque del prompt = JSON único) | **resuelto** | bloque 110 ids, JSON vigentes 110 (lápidas 5); solo en el bloque 0, solo en el JSON 0, con label, alias, instancia o TO del rol distintos 0 |
@@ -82,7 +82,7 @@ Ranks sellados (retriever in-memory): consultas que coinciden con el sellado 6/2
 
 ## Regresión contra la fixture
 Fixture `scripts/regression_kg_esperado.json` (sha256 `7a7e8064cc0027f83c18a907a81d79e21c7263939f842e77ca9a536a075f2b93`; subárbol estado_esperado sha256 `b7255a71b02869baf6f5cc5e1d4937042b51ee3854a04676346680a77e84296a`), entrada **None** (None).
-la fixture no tiene entrada con kg_sha256 12c5cfc3ea4c46536c72b6eafdb6c890c626b550f76dd96c50a579156975e055: no se computa regresión
+la fixture no tiene entrada con kg_sha256 a9631a64b422bdae634fb05135373c6f04c6272cdf7acd43a1be9f5b6c1f5f57: no se computa regresión
 
 ## Censos informativos (fuera de los ítems y de la fixture)
 - aristas entre dos nodos con la misma descripción: 5 {'Condicion --condicion_de--> Obligacion': 1, 'Obligacion --condiciona--> Operacion': 1, 'Obligacion --regula--> Operacion': 1, 'Operacion --remite_a--> Operacion': 1, 'Operacion --requiere--> Obligacion': 1} (sin regla de retiro)
@@ -94,6 +94,8 @@ la fixture no tiene entrada con kg_sha256 12c5cfc3ea4c46536c72b6eafdb6c890c626b5
 - [BKL-0017] «criterio general clasificación deudores» (limite pedido 10): C1: rank=None sellado=1 limite=10 ≠
 - [BKL-0017] «qué clientes deben ser clasificados» (limite pedido 10): C1: rank=None sellado=1 limite=10 ≠
 - [BKL-0017] «clasificación residentes en el exterior» (limite pedido 10): C1: rank=None sellado=3 limite=10 ≠
+- [BKL-0006] «exigencia básica bancos» (limite pedido 10): C2.bancos: rank=1 sellado=1 limite=10 = | C2.excepcion: rank=None sellado=3 limite=10 ≠ [objetivo AUSENTE] | C2.restantes: rank=2 sellado=4 limite=10 ≠
+- [BKL-0006] «exigencia básica restantes entidades» (limite pedido 13): C2.excepcion: rank=None sellado=1 limite=10 ≠ [objetivo AUSENTE] | C2.restantes: rank=1 sellado=2 limite=10 ≠ | C2.bancos: rank=3 sellado=13 limite=13 ≠
 - [BKL-0004] «niveles clasificación deudores cartera comercial» (limite pedido 10): C5.N1: rank=None sellado=1 limite=10 ≠ [objetivo AUSENTE] | C5.N7: rank=None sellado=4 limite=10 ≠ | C5.N9: rank=None sellado=5 limite=10 ≠ | C5.N2: rank=None sellado=6 limite=10 ≠ | C5.N3: rank=None sellado=8 limite=10 ≠ [objetivo AUSENTE]
 - [BKL-0004] «seguimiento especial deudores» (limite pedido 10): C5.N1: rank=None sellado=1 limite=10 ≠ [objetivo AUSENTE] | C5.N4: rank=None sellado=3 limite=10 ≠ | C5.N6: rank=None sellado=4 limite=10 ≠ | C5.N5: rank=None sellado=5 limite=10 ≠ | C5.N3: rank=None sellado=6 limite=10 ≠ [objetivo AUSENTE]
 - [BKL-0004] «punto 6.5 niveles clasificación» (limite pedido 10): C5.N1: rank=None sellado=1 limite=10 ≠ [objetivo AUSENTE] | C5.N7: rank=None sellado=2 limite=10 ≠ | C5.N9: rank=None sellado=3 limite=10 ≠ | C5.N2: rank=None sellado=4 limite=10 ≠ | C5.N8: rank=None sellado=5 limite=10 ≠ | C5.N3: rank=None sellado=6 limite=10 ≠ [objetivo AUSENTE]

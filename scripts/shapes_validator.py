@@ -235,7 +235,8 @@ INFORMATIVAS_R2 = ("S7", "S8", "S9", "S10", "S11", "S12", "S21", "S22", "S23", "
 NUMERACION_PERFIL_R2 = {
     "S18": "Reescrita (L-ESQ-R2 §1.5): Restriccion de tipo limite_cuantitativo => lista de umbrales "
            "no vacía o marca (el umbral guardado sin lista: campos_heredados_v3.umbral o "
-           "properties_no_definidas.umbral). El enunciado de docs/esquema_v2_diseño.md:325 no rige en el perfil r2.",
+           "properties_no_definidas.umbral; en r2b, también la marca properties_no_definidas."
+           "umbral_no_cuantificable del ensamblado). El enunciado de docs/esquema_v2_diseño.md:325 no rige en el perfil r2.",
     "S24": "Enum de Restriccion.tipo (bloqueante salvo la marca fuera_de_lista).",
     "S25": "Enum de Comunicacion.tipo, con «externa» (bloqueante salvo la marca fuera_de_lista).",
     "S26": "Claves cerradas por tipo (bloqueante).",
@@ -1210,14 +1211,19 @@ def _shape_enum(rid, tipo, campo, nodes, vocab, enunciado):
 
 
 def shape_s18_r2(nodes):
-    viol, con_lista, con_marca = [], 0, 0
+    viol, con_lista, con_marca, no_cuantificable = [], 0, 0, []
     lq = [n for n in nodes if n["type"] == "Restriccion" and (n.get("properties") or {}).get("tipo") == "limite_cuantitativo"]
     for n in lq:
         lista = (n.get("properties") or {}).get("umbrales")
+        nd = n.get("properties_no_definidas") or {}
         if isinstance(lista, list) and lista:
             con_lista += 1
-        elif "umbral" in (n.get("campos_heredados_v3") or {}) or "umbral" in (n.get("properties_no_definidas") or {}):
+        elif "umbral" in (n.get("campos_heredados_v3") or {}) or "umbral" in nd:
             con_marca += 1
+        elif nd.get("umbral_no_cuantificable") is True:
+            # T3-bis de U-REEXT-T0, decisión 3: la marca r2b del ensamblado cuenta como umbral guardado sin lista.
+            con_marca += 1
+            no_cuantificable.append(f"{n['id']} ({nd.get('umbral_no_cuantificable_motivo')})")
         else:
             viol.append(f"nodo {n['id']}: limite_cuantitativo sin lista de umbrales ni umbral guardado "
                         f"(descripcion={((n.get('properties') or {}).get('descripcion') or '')[:90]!r})")
@@ -1227,7 +1233,8 @@ def shape_s18_r2(nodes):
         f"{len(lq)} Restricciones limite_cuantitativo: {con_lista} con lista, {con_marca} con el umbral guardado "
         f"sin lista (marca), {len(viol)} sin ninguna.",
         viol, conteos={"limite_cuantitativo": len(lq), "con_lista": con_lista, "con_marca": con_marca,
-                       "sin_lista_ni_marca": len(viol)})
+                       "sin_lista_ni_marca": len(viol), "con_marca_umbral_no_cuantificable": len(no_cuantificable),
+                       "marcados_umbral_no_cuantificable": no_cuantificable})
 
 
 def shape_s26_claves(nodes, vocab):

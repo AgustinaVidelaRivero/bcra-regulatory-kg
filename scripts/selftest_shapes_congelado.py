@@ -793,6 +793,20 @@ def _():
     assert res["S18"]["result"] == "PASS" and res["S18"]["conteos"]["con_marca"] == 1
 
 
+@caso("r2 S18: la marca r2b umbral_no_cuantificable (properties_no_definidas, booleana) cuenta como umbral guardado")
+def _():
+    g = grafo_base_r2()
+    n = nodo_por_id(g, "Restriccion_r")
+    del n["properties"]["umbrales"]
+    n["properties_no_definidas"] = {"umbral_no_cuantificable": "true"}
+    espera_r2_fail(g, "S18")
+    n["properties_no_definidas"] = {"umbral_no_cuantificable": True, "umbral_no_cuantificable_motivo": "sin cuantía detectable",
+                                    "umbral_no_cuantificable_detector_sha256": "0" * 64}
+    res, ver, _ = evaluar_r2(g)
+    c = res["S18"]["conteos"]
+    assert res["S18"]["result"] == "PASS" and c["con_marca"] == 1 and c["con_marca_umbral_no_cuantificable"] == 1, c
+
+
 @caso("r2 S18: limite_cualitativo sin lista no se exige")
 def _():
     g = grafo_base_r2()

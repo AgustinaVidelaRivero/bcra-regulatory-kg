@@ -1,17 +1,17 @@
 # Validador de shapes — perfil r2
 
 - **Grafo:** `data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json`
-- **sha256 del grafo:** `12c5cfc3ea4c46536c72b6eafdb6c890c626b550f76dd96c50a579156975e055`
+- **sha256 del grafo:** `a9631a64b422bdae634fb05135373c6f04c6272cdf7acd43a1be9f5b6c1f5f57`
 - **Fecha:** 2026-10-06
-- **Nodos:** 8818
-- **Aristas:** 27629
+- **Nodos:** 8816
+- **Aristas:** 27632
 - **Perfil:** r2 (fase r2b)
 - **Vocabulario:** `/Users/agustinavidelarivero/INGENIERIA IA/TESIS/bcra-regulatory-kg/data/experiment/pyd_r2/generados/enums_r2.json` (sha256 `abd197ac8bbb818f680dc80d1b9c9df3e1f1f733fce3fd46b35e7440e7ce4241`); marcas de nodo de `/Users/agustinavidelarivero/INGENIERIA IA/TESIS/bcra-regulatory-kg/data/experiment/pyd_r2/code/modelos_r2.py`: ['cola_humana', 'cola_chunks', 'estado_e3', 'colision_cross_to']
 - **Catálogo único (S19, S29):** `/Users/agustinavidelarivero/INGENIERIA IA/TESIS/bcra-regulatory-kg/data/experiment/catalogo_unico/generados_r2/ids_s19_r2.json` — 110 ids
 - **Lista de S15:** `/Users/agustinavidelarivero/INGENIERIA IA/TESIS/bcra-regulatory-kg/data/experiment/catalogo_unico/generados_r2/entrada_esqueleto_r2.json`
 - **Registro (S28):** `data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/no_mapeados_sujetos.jsonl`
 - **E0 (S31):** `data/experiment/reextraccion_v2/e0_chunking/salida_tanda0_r2b`
-- **Veredicto global: NO PASA** — bloqueantes en FAIL: S3, S18, S19, S28
+- **Veredicto global: PASA**
 
 ## Bloqueantes
 
@@ -19,7 +19,7 @@
 
 Toda arista usa una relación admitida por el perfil r2: los 13 predicados de enums_r2.json ∪ remite_a (enmienda 2 de L-ESQ-R2) ∪ las 4 de esqueleto ∪ padre_sugerido.
 
-**Resultado:** 27629/27629 aristas con relación admitida (19 relaciones admitidas); 0 violaciones.
+**Resultado:** 27632/27632 aristas con relación admitida (19 relaciones admitidas); 0 violaciones.
 
 Sin violaciones.
 
@@ -27,25 +27,23 @@ Sin violaciones.
 
 Integridad referencial: origen y destino de toda arista existen como nodos.
 
-**Resultado:** 0 aristas colgantes sobre 27629.
+**Resultado:** 0 aristas colgantes sobre 27632.
 
 Sin violaciones.
 
-### S3 — FAIL
+### S3 — PASS
 
 Toda arista respeta las firmas del perfil r2: matriz ampliada de enums_r2.json (firmas_r2, con condicion_de -> Operacion|Potestad) ∪ remite_a con origen en los siete tipos de contenido y destino en esos siete o TextoOrdenado ∪ esqueleto solo Sujeto->Sujeto ∪ padre_sugerido solo de Sujeto propuesto a Sujeto clase|rol. Una referencia con origen distinto de TextoOrdenado es violación, con o sin rol_fuente.
 
-**Resultado:** 27628/27629 aristas conformes a firma; 1 violaciones. Evaluadas: 14030 por matriz, 13380 remite_a, 126 de esqueleto, 93 padre_sugerido.
+**Resultado:** 27632/27632 aristas conformes a firma; 0 violaciones. Evaluadas: 14028 por matriz, 13380 remite_a, 126 de esqueleto, 98 padre_sugerido.
 
-```
-idx 27512: padre_sugerido Sujeto[propuesto] -> Sujeto[instancia] (Sujeto_propuesto_se -> Sujeto_sefyc; rol_fuente='cuarentena_flaggeada'; padre_sugerido solo propuesto->clase|rol)
-```
+Sin violaciones.
 
 ### S4 — PASS
 
 Todo nodo y toda arista tienen provenance dict con al menos {to, archivo, punto, rol_documental}, provenances lista no vacía con provenance == provenances[0]; para rol_documental distinto de esqueleto, to y archivo no vacíos (para esqueleto se admiten to nulo, chunk_id nulo y paginas vacía).
 
-**Resultado:** Nodos OK: 8818/8818. Aristas OK: 27629/27629. Violaciones: 0.
+**Resultado:** Nodos OK: 8816/8816. Aristas OK: 27632/27632. Violaciones: 0.
 
 Sin violaciones.
 
@@ -53,7 +51,7 @@ Sin violaciones.
 
 Todo provenance.punto (de nodo y de arista) es una string no vacía.
 
-**Resultado:** Nodos con punto: 8818/8818. Aristas: 27629/27629. Violaciones: 0.
+**Resultado:** Nodos con punto: 8816/8816. Aristas: 27632/27632. Violaciones: 0.
 
 Sin violaciones.
 
@@ -88,44 +86,21 @@ Lista declarada (12 roles; por causa: {'sin_id_en_catalogo': 6, 'aplanamiento_re
     - Sujeto_rol_alcance_traval
 ```
 
-### S18 — FAIL
+### S18 — PASS
 
-ERROR — Reescrita (L-ESQ-R2 §1.5): Restriccion de tipo limite_cuantitativo => lista de umbrales no vacía o marca (el umbral guardado sin lista: campos_heredados_v3.umbral o properties_no_definidas.umbral). El enunciado de docs/esquema_v2_diseño.md:325 no rige en el perfil r2.
+ERROR — Reescrita (L-ESQ-R2 §1.5): Restriccion de tipo limite_cuantitativo => lista de umbrales no vacía o marca (el umbral guardado sin lista: campos_heredados_v3.umbral o properties_no_definidas.umbral; en r2b, también la marca properties_no_definidas.umbral_no_cuantificable del ensamblado). El enunciado de docs/esquema_v2_diseño.md:325 no rige en el perfil r2.
 
-**Resultado:** 346 Restricciones limite_cuantitativo: 332 con lista, 0 con el umbral guardado sin lista (marca), 14 sin ninguna.
+**Resultado:** 346 Restricciones limite_cuantitativo: 332 con lista, 14 con el umbral guardado sin lista (marca), 0 sin ninguna.
 
-```
-nodo Restriccion_cuando_la_suma_de_los_requisitos_de_capital_de_una_entidad_financiera_por_exposi_74a15c: limite_cuantitativo sin lista de umbrales ni umbral guardado (descripcion='Cuando la suma de los requisitos de capital de una entidad financiera por exposiciones con')
-nodo Restriccion_el_monto_de_las_certificaciones_de_aumento_de_exportaciones_de_bienes_emitidas_d_769ce0: limite_cuantitativo sin lista de umbrales ni umbral guardado (descripcion='El monto de las certificaciones de aumento de exportaciones de bienes emitidas debe consid')
-nodo Restriccion_en_el_caso_de_una_extraccion_con_una_tarjeta_prepaga_sera_de_aplicacion_el_limit_7282fd: limite_cuantitativo sin lista de umbrales ni umbral guardado (descripcion='En el caso de una extracción con una tarjeta prepaga, será de aplicación el límite dispues')
-nodo Restriccion_exigencia_adicional_de_capital_para_la_cobertura_del_riesgo_gamma_que_mide_la_ta_72fa25: limite_cuantitativo sin lista de umbrales ni umbral guardado (descripcion='Exigencia adicional de capital para la cobertura del riesgo gamma, que mide la tasa de cam')
-nodo Restriccion_exigencia_adicional_de_capital_para_la_cobertura_del_riesgo_vega_que_mide_la_sen_0616b8: limite_cuantitativo sin lista de umbrales ni umbral guardado (descripcion='Exigencia adicional de capital para la cobertura del riesgo vega, que mide la sensibilidad')
-nodo Restriccion_la_exigencia_de_capital_minimo_por_riesgo_operacional_determinada_mediante_la_ex_3c9f4e: limite_cuantitativo sin lista de umbrales ni umbral guardado (descripcion='La exigencia de capital mínimo por riesgo operacional determinada mediante la expresión de')
-nodo Restriccion_la_exposicion_maxima_frente_a_una_misma_contraparte_individual_no_debera_superar_f97a2c: limite_cuantitativo sin lista de umbrales ni umbral guardado (descripcion='La exposición máxima frente a una misma contraparte individual no deberá superar, al momen')
-nodo Restriccion_las_compensaciones_horizontales_estan_sujetas_a_una_escala_de_desestimaciones_ho_8791ea: limite_cuantitativo sin lista de umbrales ni umbral guardado (descripcion='Las compensaciones horizontales están sujetas a una escala de desestimaciones horizontales')
-nodo Restriccion_las_entidades_financieras_situadas_en_cualquiera_de_las_posiciones_de_una_operac_3aa950: limite_cuantitativo sin lista de umbrales ni umbral guardado (descripcion='Las entidades financieras situadas en cualquiera de las posiciones de una operación garant')
-nodo Restriccion_las_opciones_y_sus_subyacentes_al_contado_o_a_termino_estan_sujetas_a_una_exigen_63036d: limite_cuantitativo sin lista de umbrales ni umbral guardado (descripcion='Las opciones y sus subyacentes, al contado o a término, están sujetas a una exigencia de c')
-nodo Restriccion_las_operaciones_de_titulizacion_que_incluyan_una_opcion_de_exclusion_que_no_cump_03ec35: limite_cuantitativo sin lista de umbrales ni umbral guardado (descripcion='Las operaciones de titulización que incluyan una opción de exclusión que no cumpla la tota')
-nodo Restriccion_los_rechazos_de_cheques_generaran_las_multas_legalmente_establecidas_segun_se_co_17f64d: limite_cuantitativo sin lista de umbrales ni umbral guardado (descripcion='Los rechazos de cheques generarán las multas legalmente establecidas, según se consigna a ')
-nodo Restriccion_partidas_fuera_de_balance_que_refieren_a_compromisos_se_sujetan_al_menor_de_los__da643f: limite_cuantitativo sin lista de umbrales ni umbral guardado (descripcion='Partidas fuera de balance que refieren a compromisos se sujetan al menor de los CCF que re')
-nodo Restriccion_si_el_cliente_es_beneficiario_directo_del_decreto_277_22_el_valor_de_los_benefic_e67451: limite_cuantitativo sin lista de umbrales ni umbral guardado (descripcion='Si el cliente es beneficiario directo del Decreto 277/22, el valor de los beneficios del d')
-```
+Sin violaciones.
 
-### S19 — FAIL
+### S19 — PASS
 
 ERROR — Catálogo de sujetos: todo Sujeto tiene nivel ∈ {clase, instancia, rol, propuesto}; si nivel ≠ propuesto, su id está en el catálogo (clases ∪ roles) del artefacto de --excepciones; si nivel = propuesto, tiene properties.cuarentena y properties.padre_sugerido.
 
-**Resultado:** 210 Sujetos ({'clase': 70, 'instancia': 5, 'propuesto': 100, 'rol': 35}); catálogo de 110 ids; 0 fuera del catálogo, 0 con nivel inválido, 7 propuestos incompletos.
+**Resultado:** 208 Sujetos ({'clase': 70, 'instancia': 5, 'propuesto': 98, 'rol': 35}); catálogo de 110 ids; 0 fuera del catálogo, 0 con nivel inválido, 0 propuestos incompletos.
 
-```
-Sujeto_propuesto_cada_una (propuesto): sin properties.padre_sugerido
-Sujeto_propuesto_dichas_evaluaciones (propuesto): sin properties.padre_sugerido
-Sujeto_propuesto_la_entidad (propuesto): sin properties.padre_sugerido
-Sujeto_propuesto_la_entidad_encargada_del_seguimiento_de_anticipos_y_otras_financiaciones_de_expo (propuesto): sin properties.padre_sugerido
-Sujeto_propuesto_la_entidad_que_curso_la_operacion_de_canje_y_o_arbitraje (propuesto): sin properties.padre_sugerido
-Sujeto_propuesto_los_casos (propuesto): sin properties.padre_sugerido
-Sujeto_propuesto_los_cobros_de_exportaciones (propuesto): sin properties.padre_sugerido
-```
+Sin violaciones.
 
 ### S20 — PASS
 
@@ -159,22 +134,19 @@ ERROR — Claves cerradas por tipo: las properties de cada nodo de los nueve tip
 
 Sin violaciones.
 
-### S28 — FAIL
+### S28 — PASS
 
 ERROR — Sujeto propuesto con fila en el registro de no mapeados (bloqueante).
 
-**Resultado:** 100 Sujetos propuestos; 294 filas en el registro; 2 propuestos sin fila.
+**Resultado:** 98 Sujetos propuestos; 294 filas en el registro; 0 propuestos sin fila.
 
-```
-Sujeto_propuesto_la_entidad__ctacte: Sujeto propuesto sin fila en no_mapeados_sujetos.jsonl
-Sujeto_propuesto_la_entidad__ext: Sujeto propuesto sin fila en no_mapeados_sujetos.jsonl
-```
+Sin violaciones.
 
 ### S29 — PASS
 
 ERROR — Destino de padre_sugerido en el catálogo único (bloqueante: U-CAT-UNICO está cerrada).
 
-**Resultado:** 93 aristas padre_sugerido; 0 con destino fuera del catálogo único (110 ids).
+**Resultado:** 98 aristas padre_sugerido; 0 con destino fuera del catálogo único (110 ids).
 
 Sin violaciones.
 
@@ -198,7 +170,7 @@ Sin violaciones.
 
 ERROR — Arista de sujeto con mención y método (informativa en r2a, bloqueante desde r2b). Fase: r2b.
 
-**Resultado:** 2618 aristas de sujeto fuera del esqueleto; 0 sin mención, verificación o método ({}).
+**Resultado:** 2616 aristas de sujeto fuera del esqueleto; 0 sin mención, verificación o método ({}).
 
 Sin violaciones.
 
@@ -1180,7 +1152,7 @@ Tabla por type (usa cada key / ambas / ninguna):
   Operacion: descripcion=1824, description=0, ambas=0, ninguna=0 (total 1824)
   Potestad: descripcion=401, description=0, ambas=0, ninguna=0 (total 401)
   Restriccion: descripcion=800, description=0, ambas=0, ninguna=0 (total 800)
-  Sujeto: descripcion=0, description=0, ambas=0, ninguna=210 (total 210)
+  Sujeto: descripcion=0, description=0, ambas=0, ninguna=208 (total 208)
   TextoOrdenado: descripcion=0, description=0, ambas=0, ninguna=10 (total 10)
 
 Nodos con AMBAS keys (0):
@@ -1206,7 +1178,7 @@ Restriccion: 0 sin establecida_en
 
 Todo nodo del dominio r2 de aplica_a (Excepcion/Obligacion/Operacion/Potestad/Restriccion) tiene >=1 arista saliente aplica_a.
 
-**Resultado:** Sin aplica_a: Excepcion=407, Obligacion=691, Operacion=1618, Potestad=141, Restriccion=539 (total 3396).
+**Resultado:** Sin aplica_a: Excepcion=407, Obligacion=693, Operacion=1618, Potestad=141, Restriccion=539 (total 3398).
 
 ```
 Excepcion: 407 sin aplica_a
@@ -1617,7 +1589,7 @@ Excepcion: 407 sin aplica_a
     - Excepcion_si_el_ponderador_resultante_del_tratamiento_de_transparencia_es_menor_que_el_pon_2927b7
     - Excepcion_si_existe_prueba_en_contrario_del_pais_de_domicilio_se_aplicaran_las_disposicion_432968
     - Excepcion_si_las_entidades_financieras_no_ejercen_la_opcion_de_clasificacion_todas_las_exp_cc5c60
-Obligacion: 691 sin aplica_a
+Obligacion: 693 sin aplica_a
     - Obligacion_a_efectos_de_una_verificacion_independiente_de_los_precios_cuando_las_fuentes_de_cef9f1
     - Obligacion_a_fin_de_determinar_el_importe_de_la_cancelacion_se_admite_computar_el_50_de_las_144069
     - Obligacion_a_fin_de_determinar_el_importe_de_la_cancelacion_se_admitira_computar_el_50_de_l_ffcc75
@@ -1678,6 +1650,7 @@ Obligacion: 691 sin aplica_a
     - Obligacion_cuando_la_exclusion_se_aprueba_durante_un_periodo_intermedio_de_calculo_sera_com_1bbc19
     - Obligacion_cuando_la_liquidacion_de_la_proteccion_crediticia_requiera_transferencia_de_la_o_c86947
     - Obligacion_cuando_la_notificacion_sea_por_via_electronica_debe_ser_clara_de_facil_acceso_pa_89e4c0
+    - Obligacion_cuando_la_operacion_ha_sido_liquidada_por_mas_de_una_entidad_cada_una_puede_cert_cc744f
     - Obligacion_cuando_la_presentacion_a_registro_se_efectua_en_alguno_de_los_14_dias_corridos_i_66e2c7
     - Obligacion_cuando_las_exposiciones_cubiertas_tienen_vencimientos_diferentes_se_usara_el_pla_3c3e0d
     - Obligacion_cuando_las_financiaciones_cuenten_con_garantias_preferidas_b_la_entidad_podra_re_f8792e
@@ -2239,6 +2212,7 @@ Obligacion: 691 sin aplica_a
     - Obligacion_se_computara_el_importe_que_surja_de_aplicar_a_los_valores_contables_de_los_inst_f49fe2
     - Obligacion_se_considera_que_la_condicion_para_la_percepcion_del_incentivo_economico_no_ha_s_0ed96d
     - Obligacion_se_considerara_cumplido_lo_requerido_con_el_ingreso_de_los_fondos_a_la_posicion__395cea
+    - Obligacion_se_considerara_la_ultima_calificacion_informada_para_el_calculo_de_la_exigencia__768b58
     - Obligacion_se_consideraran_las_situaciones_que_cada_persona_registre_para_la_inclusion_en_l_233cf5
     - Obligacion_se_consignara_como_numero_y_fecha_de_resolucion_la_de_la_comunicacion_a_6456__ri_422734
     - Obligacion_se_continuara_informando_codigo_de_consolidacion_3_para_el_ratio_de_apalancamien_48a766
@@ -4899,44 +4873,44 @@ idx 8652: Definicion_t_ultimo_dia_trimestre_calendario__el_ultimo_dia_de_un_trim
 idx 8656: Definicion_tipo_de_liquidacion_en_rendicion_de_cuentas__el_tipo_de_liquidacion_puede_ser_an_17df53 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
 idx 8657: Definicion_tipo_de_liquidacion_en_rendicion_de_cuentas__el_tipo_de_liquidacion_puede_ser_an_17df53 -> TextoOrdenado_pagjub_pdf destino='pagjub::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
 idx 10743: Obligacion_consignar_numero_de_identificacion_personal_segun_normas_sobre_documentos_de_ide_4f723d -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
-idx 11434: Obligacion_debera_cumplirse_con_lo_establecido_en_el_texto_ordenado_sobre_politica_de_credi_c2b9be -> TextoOrdenado_polcre_pdf destino='polcre::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4.1', '1.4.2']...
-idx 11762: Obligacion_el_cliente_debera_presentar_un_documento_de_identidad_admitido_en_las_normas_sob_d60d96 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
-idx 12562: Obligacion_el_usuario_debe_indicar_en_su_presentacion_al_bcra_nombre_apellido_numero_de_doc_f9e1bb -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
-idx 12828: Obligacion_en_los_casos_de_cheques_librados_al_portador_o_a_favor_de_una_persona_determinad_dad168 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
-idx 14377: Obligacion_la_entidad_financiera_debe_informar_a_la_sefyc_el_origen_del_incremento_de_la_ca_a325e0 -> TextoOrdenado_to_clasificacion_deudores_actual_pdf destino='cla::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '10.1', '10.2.1']...
-idx 14391: Obligacion_la_entidad_financiera_debe_presentar_cuando_corresponda_las_modificaciones_a_su__803fd4 -> TextoOrdenado_to_clasificacion_deudores_actual_pdf destino='cla::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '10.1', '10.2.1']...
-idx 14394: Obligacion_la_entidad_financiera_debe_proporcionar_las_explicaciones_que_la_sefyc_requiera__e5a41c -> TextoOrdenado_to_clasificacion_deudores_actual_pdf destino='cla::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '10.1', '10.2.1']...
-idx 14844: Obligacion_la_exigencia_mensual_de_capital_minimo_por_riesgo_operacional_se_determinara_ten_b9cec2 -> TextoOrdenado_to_capitales_minimos_actual_pdf destino='cap::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.4.1']...
-idx 14901: Obligacion_la_informacion_debera_incluir_la_clasificacion_promedio_de_los_deudores_conforme_42c267 -> TextoOrdenado_to_clasificacion_deudores_actual_pdf destino='cla::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '10.1', '10.2.1']...
-idx 14942: Obligacion_la_nota_de_rendicion_de_cuentas_debe_incluir_la_identificacion_de_los_responsabl_4d2473 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
-idx 14943: Obligacion_la_nota_de_rendicion_de_cuentas_debe_incluir_la_identificacion_de_los_responsabl_4d2473 -> TextoOrdenado_pagjub_pdf destino='pagjub::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
-idx 15166: Obligacion_las_disposiciones_sobre_observancia_individual_del_to_sobre_politica_de_credito__3cb734 -> TextoOrdenado_polcre_pdf destino='polcre::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4.1', '1.4.2']...
-idx 15466: Obligacion_las_entidades_financieras_comprendidas_exclusivamente_sus_casas_en_el_pais_obser_a5adab -> TextoOrdenado_polcre_pdf destino='polcre::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4.1', '1.4.2']...
-idx 15483: Obligacion_las_entidades_financieras_controlantes_sujetas_a_supervision_consolidada_deben_o_0df242 -> TextoOrdenado_polcre_pdf destino='polcre::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4.1', '1.4.2']...
-idx 15505: Obligacion_las_entidades_financieras_deben_certificar_que_los_datos_consignados_en_la_nota__63f844 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
-idx 15506: Obligacion_las_entidades_financieras_deben_certificar_que_los_datos_consignados_en_la_nota__63f844 -> TextoOrdenado_pagjub_pdf destino='pagjub::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
-idx 15777: Obligacion_las_entidades_financieras_participantes_deben_remitir_al_bcra_para_su_procesamie_362635 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
-idx 15778: Obligacion_las_entidades_financieras_participantes_deben_remitir_al_bcra_para_su_procesamie_362635 -> TextoOrdenado_pagjub_pdf destino='pagjub::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
-idx 16108: Obligacion_las_personas_incorporadas_a_la_central_de_cheques_rechazados_y_o_central_de_cuen_aa1ad1 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
-idx 17047: Obligacion_observar_las_disposiciones_de_las_normas_sobre_proteccion_de_los_usuarios_de_ser_657ad5 -> TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf destino='pro::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1.1', '1.1.2.1', '1.1.2.2', '1.1.2.3', '1.1.2.4']...
-idx 17467: Obligacion_presentar_el_tipo_y_numero_del_documento_para_establecer_la_identificacion_de_lo_f84e3c -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
-idx 18658: Operacion_admision_de_activos_como_garantia_metodo_simple__cap_5_3_1_2_f5db38 -> TextoOrdenado_to_exterior_cambios_actual_pdf destino='ext::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
-idx 20396: Operacion_endoso_de_cheque_a_favor_de_persona_determinada__ctacte_5_1_2_c105c4 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
-idx 20583: Operacion_financiacion_a_clientes_cartera_comercial_importacion_bk__polcre_2_1_7_197f3e -> TextoOrdenado_to_clasificacion_deudores_actual_pdf destino='cla::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '10.1', '10.2.1']...
-idx 22340: Operacion_presentacion_de_documento_de_identidad_operacion_presencial__ext_5_4_1_9fcd2b -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
-idx 22346: Operacion_presentacion_de_fotocopias_autenticadas_de_documentos__ctacte_8_8_2_2_98344f -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
-idx 22351: Operacion_presentacion_de_nota_de_rendicion_de_cuentas__pagjub_2_2_76e316 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
-idx 22352: Operacion_presentacion_de_nota_de_rendicion_de_cuentas__pagjub_2_2_76e316 -> TextoOrdenado_pagjub_pdf destino='pagjub::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
-idx 22928: Operacion_tenencia_de_oro_amonedado_o_en_barras_de_buena_entrega__cap_2_12_1_3_134e48 -> TextoOrdenado_to_exterior_cambios_actual_pdf destino='ext::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
-idx 23005: Operacion_transmision_por_endoso_de_cheque_a_favor_de_persona_determinada__ctacte_5_1_2_4ac6cc -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
-idx 23007: Operacion_transmision_por_endoso_de_cheque_con_clausula_no_a_la_orden__ctacte_5_1_2_0ad763 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 11433: Obligacion_debera_cumplirse_con_lo_establecido_en_el_texto_ordenado_sobre_politica_de_credi_c2b9be -> TextoOrdenado_polcre_pdf destino='polcre::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4.1', '1.4.2']...
+idx 11761: Obligacion_el_cliente_debera_presentar_un_documento_de_identidad_admitido_en_las_normas_sob_d60d96 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 12561: Obligacion_el_usuario_debe_indicar_en_su_presentacion_al_bcra_nombre_apellido_numero_de_doc_f9e1bb -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 12827: Obligacion_en_los_casos_de_cheques_librados_al_portador_o_a_favor_de_una_persona_determinad_dad168 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 14376: Obligacion_la_entidad_financiera_debe_informar_a_la_sefyc_el_origen_del_incremento_de_la_ca_a325e0 -> TextoOrdenado_to_clasificacion_deudores_actual_pdf destino='cla::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '10.1', '10.2.1']...
+idx 14390: Obligacion_la_entidad_financiera_debe_presentar_cuando_corresponda_las_modificaciones_a_su__803fd4 -> TextoOrdenado_to_clasificacion_deudores_actual_pdf destino='cla::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '10.1', '10.2.1']...
+idx 14393: Obligacion_la_entidad_financiera_debe_proporcionar_las_explicaciones_que_la_sefyc_requiera__e5a41c -> TextoOrdenado_to_clasificacion_deudores_actual_pdf destino='cla::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '10.1', '10.2.1']...
+idx 14843: Obligacion_la_exigencia_mensual_de_capital_minimo_por_riesgo_operacional_se_determinara_ten_b9cec2 -> TextoOrdenado_to_capitales_minimos_actual_pdf destino='cap::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.4.1']...
+idx 14900: Obligacion_la_informacion_debera_incluir_la_clasificacion_promedio_de_los_deudores_conforme_42c267 -> TextoOrdenado_to_clasificacion_deudores_actual_pdf destino='cla::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '10.1', '10.2.1']...
+idx 14941: Obligacion_la_nota_de_rendicion_de_cuentas_debe_incluir_la_identificacion_de_los_responsabl_4d2473 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 14942: Obligacion_la_nota_de_rendicion_de_cuentas_debe_incluir_la_identificacion_de_los_responsabl_4d2473 -> TextoOrdenado_pagjub_pdf destino='pagjub::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
+idx 15165: Obligacion_las_disposiciones_sobre_observancia_individual_del_to_sobre_politica_de_credito__3cb734 -> TextoOrdenado_polcre_pdf destino='polcre::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4.1', '1.4.2']...
+idx 15465: Obligacion_las_entidades_financieras_comprendidas_exclusivamente_sus_casas_en_el_pais_obser_a5adab -> TextoOrdenado_polcre_pdf destino='polcre::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4.1', '1.4.2']...
+idx 15482: Obligacion_las_entidades_financieras_controlantes_sujetas_a_supervision_consolidada_deben_o_0df242 -> TextoOrdenado_polcre_pdf destino='polcre::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4.1', '1.4.2']...
+idx 15504: Obligacion_las_entidades_financieras_deben_certificar_que_los_datos_consignados_en_la_nota__63f844 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 15505: Obligacion_las_entidades_financieras_deben_certificar_que_los_datos_consignados_en_la_nota__63f844 -> TextoOrdenado_pagjub_pdf destino='pagjub::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
+idx 15776: Obligacion_las_entidades_financieras_participantes_deben_remitir_al_bcra_para_su_procesamie_362635 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 15777: Obligacion_las_entidades_financieras_participantes_deben_remitir_al_bcra_para_su_procesamie_362635 -> TextoOrdenado_pagjub_pdf destino='pagjub::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
+idx 16107: Obligacion_las_personas_incorporadas_a_la_central_de_cheques_rechazados_y_o_central_de_cuen_aa1ad1 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 17046: Obligacion_observar_las_disposiciones_de_las_normas_sobre_proteccion_de_los_usuarios_de_ser_657ad5 -> TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf destino='pro::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1.1', '1.1.2.1', '1.1.2.2', '1.1.2.3', '1.1.2.4']...
+idx 17466: Obligacion_presentar_el_tipo_y_numero_del_documento_para_establecer_la_identificacion_de_lo_f84e3c -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 18656: Operacion_admision_de_activos_como_garantia_metodo_simple__cap_5_3_1_2_f5db38 -> TextoOrdenado_to_exterior_cambios_actual_pdf destino='ext::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
+idx 20394: Operacion_endoso_de_cheque_a_favor_de_persona_determinada__ctacte_5_1_2_c105c4 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 20581: Operacion_financiacion_a_clientes_cartera_comercial_importacion_bk__polcre_2_1_7_197f3e -> TextoOrdenado_to_clasificacion_deudores_actual_pdf destino='cla::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '10.1', '10.2.1']...
+idx 22338: Operacion_presentacion_de_documento_de_identidad_operacion_presencial__ext_5_4_1_9fcd2b -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 22344: Operacion_presentacion_de_fotocopias_autenticadas_de_documentos__ctacte_8_8_2_2_98344f -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 22349: Operacion_presentacion_de_nota_de_rendicion_de_cuentas__pagjub_2_2_76e316 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 22350: Operacion_presentacion_de_nota_de_rendicion_de_cuentas__pagjub_2_2_76e316 -> TextoOrdenado_pagjub_pdf destino='pagjub::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
+idx 22926: Operacion_tenencia_de_oro_amonedado_o_en_barras_de_buena_entrega__cap_2_12_1_3_134e48 -> TextoOrdenado_to_exterior_cambios_actual_pdf destino='ext::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2', '1.3', '1.4', '1.5']...
+idx 23003: Operacion_transmision_por_endoso_de_cheque_a_favor_de_persona_determinada__ctacte_5_1_2_4ac6cc -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
+idx 23005: Operacion_transmision_por_endoso_de_cheque_con_clausula_no_a_la_orden__ctacte_5_1_2_0ad763 -> TextoOrdenado_docvig_pdf destino='docvig::TO' via='to_entero': punto 'TO' ∉ puntos del destino ['1.1', '1.2.1', '1.2.2', '1.2.3', '2.1.1.1']...
 ```
 
 ### S22 — PASS
 
 INFORMATIVA — Coherencia de padre_sugerido: el destino de la arista es properties.padre_sugerido del origen y el origen está en cuarentena.
 
-**Resultado:** 93 aristas padre_sugerido; 0 incoherentes (0 con destino distinto, 0 con origen fuera de cuarentena).
+**Resultado:** 98 aristas padre_sugerido; 0 incoherentes (0 con destino distinto, 0 con origen fuera de cuarentena).
 
 Sin violaciones.
 
@@ -4944,7 +4918,7 @@ Sin violaciones.
 
 INFORMATIVA — aplica_a hacia sujetos en cuarentena: aristas aplica_a cuyo destino es un Sujeto de nivel propuesto (conteo; nunca bloqueante).
 
-**Resultado:** 2585 aristas aplica_a; 164 hacia Sujetos propuestos (98 destinos distintos).
+**Resultado:** 2583 aristas aplica_a; 162 hacia Sujetos propuestos (96 destinos distintos).
 
 ```
 idx 8815: Excepcion_cuando_la_entidad_es_notificada_a_traves_de_secoexpo_sobre_su_responsabilidad_en_f4501e -> Sujeto_propuesto_la_entidad__ext
@@ -4960,164 +4934,162 @@ idx 10886: Obligacion_cuando_la_adquisicion_de_titulos_valores_se_ha_concretado_
 idx 10890: Obligacion_cuando_la_certificacion_sea_emitida_sobre_un_echeq_la_entidad_certificante_deber_0086ce -> Sujeto_propuesto_la_entidad_certificante
 idx 10918: Obligacion_cuando_la_financiacion_es_otorgada_por_entidades_financieras_locales_el_seguimie_035c38 -> Sujeto_propuesto_la_entidad_que_otorgo_la_financiacion
 idx 10924: Obligacion_cuando_la_importacion_encuadre_en_los_puntos_10_3_3_10_9_1_10_9_2_y_10_9_3_la_en_742af9 -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente
-idx 10965: Obligacion_cuando_la_operacion_ha_sido_liquidada_por_mas_de_una_entidad_cada_una_puede_cert_cc744f -> Sujeto_propuesto_cada_una
-idx 10982: Obligacion_cuando_la_presentacion_se_efectue_a_traves_de_mandatario_o_beneficiario_de_una_c_742744 -> Sujeto_propuesto_la_entidad__ctacte
-idx 10995: Obligacion_cuando_la_utilizacion_de_los_mecanismos_del_punto_7_9_redunde_en_un_monto_que_ex_c984af -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento
-idx 11004: Obligacion_cuando_los_activos_se_constituyen_en_garantia_de_una_cuenta_con_operaciones_sft__a30ac9 -> Sujeto_propuesto_el_miembro_o_cliente
-idx 11064: Obligacion_cuando_se_trate_de_cheques_librados_por_medios_electronicos_el_cuentacorrentista_be1e86 -> Sujeto_propuesto_el_cuentacorrentista
-idx 11076: Obligacion_cuando_se_trate_de_operaciones_destinadas_a_los_proyectos_comprendidos_en_el_pun_2421cb -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento
-idx 11138: Obligacion_dar_cumplimiento_en_su_presentacion_a_los_recaudos_pertinentes_del_punto_4_2_1___262857 -> Sujeto_propuesto_la_asociacion_denunciante
-idx 11228: Obligacion_deber_de_calcular_en_la_institucion_el_promedio_de_las_exigencias_por_riesgo_de__b8bed6 -> Sujeto_propuesto_esta_institucion
-idx 11264: Obligacion_deber_de_comunicar_de_inmediato_a_la_entidad_la_contingencia_ocurrida_extravio_s_ea082f -> Sujeto_propuesto_el_titular_o_en_su_caso_del_tenedor_desposeido
-idx 11269: Obligacion_deber_de_considerar_lo_dispuesto_en_el_punto_3_1_12_cuando_se_trate_de_una_entid_4ab0ea -> Sujeto_propuesto_una_entidad_originante
-idx 11308: Obligacion_deber_de_dirigir_una_nota_a_la_gerencia_de_cuentas_corrientes_del_bcra_suscripta_f48803 -> Sujeto_propuesto_los_funcionarios_responsables_designados_conforme_a_la_metodologia_del_punto_1_4
-idx 11431: Obligacion_debera_contarse_con_los_datos_de_cada_empresa_participe_y_del_representante_en_l_1e935a -> Sujeto_propuesto_las_cuentas_corrientes
-idx 11710: Obligacion_el_beneficiario_debe_nominar_una_unica_entidad_financiera_local_que_sera_respons_ddc935 -> Sujeto_propuesto_el_beneficiario
-idx 11714: Obligacion_el_boleto_de_cambio_debe_constar_con_el_caracter_de_declaracion_jurada_del_orden_242afb -> Sujeto_propuesto_el_ordenante_de_la_operacion_de_cambio
-idx 11725: Obligacion_el_boleto_debe_constar_con_la_firma_del_cliente_que_realiza_la_operacion_de_camb_1e82ba -> Sujeto_propuesto_el_cliente_que_realiza_la_operacion_de_cambio
-idx 11736: Obligacion_el_calendario_de_pagos_de_los_incentivos_debe_ser_sensible_al_horizonte_temporal_92b01a -> Sujeto_propuesto_los_incentivos_economicos
-idx 11778: Obligacion_el_comite_de_incentivos_al_personal_debe_emplear_su_criterio_para_calcular_el_aj_2fc031 -> Sujeto_propuesto_el_comite_de_incentivos_al_personal
-idx 11860: Obligacion_el_cuentacorrentista_debe_dar_aviso_a_la_entidad_por_escrito_del_extravio_sustra_5ac513 -> Sujeto_propuesto_el_cuentacorrentista
-idx 11862: Obligacion_el_cuentacorrentista_debe_dar_cuenta_a_la_entidad_por_escrito_de_cualquier_cambi_5094bf -> Sujeto_propuesto_el_cuentacorrentista
-idx 11869: Obligacion_el_cuentacorrentista_debe_devolver_a_la_entidad_todos_los_cheques_en_blanco_que__4d4205 -> Sujeto_propuesto_el_cuentacorrentista
-idx 11871: Obligacion_el_cuentacorrentista_debe_devolver_a_la_entidad_todos_los_cheques_en_blanco_que__be0130 -> Sujeto_propuesto_el_cuentacorrentista
-idx 11873: Obligacion_el_cuentacorrentista_debe_mantener_acreditados_los_fondos_por_el_importe_corresp_ef7902 -> Sujeto_propuesto_el_cuentacorrentista
-idx 11879: Obligacion_el_cuentacorrentista_debe_mantener_suficiente_provision_de_fondos_o_contar_con_a_5155ae -> Sujeto_propuesto_el_cuentacorrentista
-idx 11883: Obligacion_el_cuentacorrentista_debe_proceder_de_igual_forma_dar_aviso_a_la_entidad_por_esc_6ca558 -> Sujeto_propuesto_el_cuentacorrentista
-idx 11885: Obligacion_el_cuentacorrentista_debe_reintegrar_los_cuadernos_de_cheques_donde_figure_el_do_d6a9c2 -> Sujeto_propuesto_el_cuentacorrentista
-idx 12208: Obligacion_el_ingreso_y_liquidacion_de_divisas_por_el_mercado_de_cambios_debera_concretarse_507384 -> Sujeto_propuesto_los_exportadores
-idx 12307: Obligacion_el_proveedor_de_proteccion_debe_calcular_su_exigencia_de_capital_como_si_mantuvi_4f3c57 -> Sujeto_propuesto_el_proveedor_de_proteccion
-idx 12331: Obligacion_el_registro_de_un_ingreso_sera_responsabilidad_de_la_entidad_interviniente_en_la_949b00 -> Sujeto_propuesto_la_entidad_interviniente_en_la_operacion
-idx 12405: Obligacion_el_responsable_del_regimen_informativo_y_el_auditor_externo_de_la_entidad_deben__5bd372 -> Sujeto_propuesto_el_responsable_del_regimen_informativo_y_el_auditor_externo_de_la_entidad
-idx 12543: Obligacion_el_titular_o_tenedor_desposeido_debe_ratificar_personalmente_en_el_dia_la_denunc_9a9234 -> Sujeto_propuesto_el_titular_o_en_su_caso_del_tenedor_desposeido
-idx 12880: Obligacion_en_titulizaciones_tradicionales_con_opcion_de_exclusion_incompleta_las_exposicio_5c4553 -> Sujeto_propuesto_las_exposiciones_subyacentes
-idx 12889: Obligacion_en_todos_los_casos_en_que_se_considere_una_operacion_garantizada_por_una_asegura_c347fe -> Sujeto_propuesto_la_entidad_interviniente
-idx 12899: Obligacion_en_todos_los_casos_se_debera_verificar_la_vigencia_del_documento_de_identidad_pr_25303b -> Sujeto_propuesto_estas_verificaciones
-idx 12947: Obligacion_es_conveniente_que_la_mayoria_de_los_miembros_de_los_comites_revistan_la_condici_2740b7 -> Sujeto_propuesto_la_mayoria_de_los_miembros
-idx 13432: Obligacion_la_asociacion_denunciante_debera_acreditar_su_condicion_de_entidad_reconocida__p_ec03f1 -> Sujeto_propuesto_la_asociacion_denunciante
-idx 13434: Obligacion_la_auditoria_interna_debe_verificar_que_las_comisiones_y_cargos_aplicados_a_los__335271 -> Sujeto_propuesto_la_auditoria_interna
-idx 13436: Obligacion_la_auditoria_interna_debe_verificar_que_los_registros_centralizados_de_consultas_ab8aa0 -> Sujeto_propuesto_la_auditoria_interna
-idx 13438: Obligacion_la_auditoria_interna_debe_verificar_que_se_ha_notificado_a_los_usuarios_en_el_co_3d227e -> Sujeto_propuesto_la_auditoria_interna
-idx 13440: Obligacion_la_auditoria_interna_debe_verificar_que_se_ha_notificado_a_los_usuarios_en_el_cu_747cb6 -> Sujeto_propuesto_la_auditoria_interna
-idx 13442: Obligacion_la_auditoria_interna_debe_verificar_que_se_proporciona_a_los_usuarios_copia_de_l_907551 -> Sujeto_propuesto_la_auditoria_interna
-idx 13480: Obligacion_la_cartera_de_negociacion_debera_ser_gestionada_de_forma_activa__cap_6_1_2_1_ba64df -> Sujeto_propuesto_la_cartera
-idx 13492: Obligacion_la_certificacion_emitida_por_la_entidad_encargada_del_seguimiento_de_la_oficiali_cb52c3 -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento_de_la_oficializacion_de_importacion
-idx 13496: Obligacion_la_certificacion_presentada_en_el_bcra_debe_incluir_como_minimo_detalle_del_punt_5b0d80 -> Sujeto_propuesto_la_entidad__ext
-idx 13506: Obligacion_la_circunstancia_de_que_la_capitalizacion_esta_ad_referendum_de_aprobacion_deber_afd416 -> Sujeto_propuesto_la_asamblea_o_autoridad_equivalente
-idx 13518: Obligacion_la_compensacion_a_los_tenedores_de_estos_instrumentos_por_la_quita_realizada_deb_0fe053 -> Sujeto_propuesto_los_tenedores_de_estos_instrumentos
-idx 13527: Obligacion_la_decision_de_capitalizacion_de_los_conceptos_indicados_en_los_puntos_8_6_1_a_8_321b07 -> Sujeto_propuesto_la_asamblea_o_autoridad_equivalente
-idx 13533: Obligacion_la_decision_de_capitalizacion_de_los_conceptos_indicados_en_los_puntos_8_6_1_a_8_78ce2f -> Sujeto_propuesto_la_asamblea_o_autoridad_equivalente
-idx 13568: Obligacion_la_denominacion_de_las_cuentas_de_deposito_de_garantias_de_terceros_debera_lleva_b3fa5f -> Sujeto_propuesto_mercados_o_camaras_compensadoras_de_capitales
-idx 13572: Obligacion_la_determinacion_de_incentivos_economicos_para_el_personal_que_realiza_tareas_de_7b4326 -> Sujeto_propuesto_el_personal_que_realiza_tareas_de_control_financiero_y_de_control_de_riesgo
-idx 13574: Obligacion_la_devolucion_de_las_certificaciones_no_utilizadas_sera_efectuada_entre_las_enti_0063e2 -> Sujeto_propuesto_las_entidades_involucradas
-idx 13603: Obligacion_la_documentacion_utilizada_por_la_entidad_financiera_y_hojas_de_trabajo_que_aval_5ca0a9 -> Sujeto_propuesto_la_entidad__ext
-idx 13619: Obligacion_la_entidad_a_cargo_del_seguimiento_debe_exigir_una_declaracion_jurada_sobre_el_c_5453ec -> Sujeto_propuesto_la_entidad_a_cargo_del_seguimiento
-idx 13621: Obligacion_la_entidad_a_cargo_del_seguimiento_debe_incorporar_en_el_sepaimpo_los_registros__7d9807 -> Sujeto_propuesto_la_entidad_a_cargo_del_seguimiento
-idx 13628: Obligacion_la_entidad_a_cargo_del_seguimiento_debe_notificar_a_la_nueva_entidad_la_voluntad_e09e50 -> Sujeto_propuesto_la_entidad_a_cargo_del_seguimiento
-idx 13632: Obligacion_la_entidad_a_cargo_del_seguimiento_debera_considerar_como_utilizada_toda_certifi_4429d9 -> Sujeto_propuesto_la_entidad_a_cargo_del_seguimiento
-idx 13721: Obligacion_la_entidad_debe_contar_con_una_declaracion_jurada_del_cliente_en_la_que_conste_q_1a3040 -> Sujeto_propuesto_la_entidad__ext
-idx 13771: Obligacion_la_entidad_debe_intervenir_en_la_operacion_dejando_constancia_de_la_fecha_y_mont_e676fc -> Sujeto_propuesto_la_entidad__ext
-idx 13790: Obligacion_la_entidad_debe_realizar_la_correspondiente_intervencion_de_la_documentacion_adu_fc829f -> Sujeto_propuesto_la_entidad__ext
-idx 13793: Obligacion_la_entidad_debe_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_po_42a8cd -> Sujeto_propuesto_la_mencionada_entidad
-idx 13806: Obligacion_la_entidad_debe_remitir_adicionalmente_la_certificacion_del_cumplimiento_de_cond_bc636d -> Sujeto_propuesto_la_entidad__ext
-idx 13813: Obligacion_la_entidad_debe_solicitar_los_dictamenes_profesionales_que_estime_necesarios_par_76f50d -> Sujeto_propuesto_la_entidad__ext
-idx 14104: Obligacion_la_entidad_debera_presentar_descargo_en_el_plazo_de_5_dias_habiles_conforme_a_lo_6fb9fc -> Sujeto_propuesto_la_entidad
-idx 14148: Obligacion_la_entidad_debera_regularizar_el_incumplimiento_en_la_forma_prevista_en_el_punto_8fab6a -> Sujeto_propuesto_la_entidad
-idx 14232: Obligacion_la_entidad_encargada_del_seguimiento_de_anticipos_y_otras_financiaciones_de_expo_d0dad1 -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento_de_anticipos_y_otras_financiaciones_de_expo
-idx 14234: Obligacion_la_entidad_encargada_del_seguimiento_de_la_oficializacion_del_despacho_de_import_46c5a3 -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento_de_la_oficializacion_del_despacho_de_import
-idx 14238: Obligacion_la_entidad_encargada_del_seguimiento_de_la_prefinanciacion_cancelada_debe_regist_ab62b2 -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento_de_la_prefinanciacion_cancelada
-idx 14244: Obligacion_la_entidad_encargada_del_seguimiento_debe_realizar_la_denuncia_de_incumplido_cua_2d9ddc -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento
-idx 14246: Obligacion_la_entidad_encargada_del_seguimiento_debe_realizar_la_denuncia_dentro_de_los_10__b56486 -> Sujeto_propuesto_la_entidad__ext
-idx 14248: Obligacion_la_entidad_encargada_del_seguimiento_debe_reportar_cuando_otorgue_extensiones_de_3305df -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento
-idx 14265: Obligacion_la_entidad_encargada_del_seguimiento_debera_remitir_al_bcra_la_certificacion_de__339ea6 -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento
-idx 14275: Obligacion_la_entidad_encargada_del_seguimiento_del_pago_con_registro_de_ingreso_aduanero_p_fcb753 -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento_del_pago_con_registro_de_ingreso_aduanero_p
-idx 14277: Obligacion_la_entidad_encargada_del_seguimiento_del_pago_debe_considerar_los_tipos_de_pase__fd7018 -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento_del_pago
-idx 14539: Obligacion_la_entidad_interviniente_debe_contar_con_una_certificacion_de_la_entidad_encarga_20da6c -> Sujeto_propuesto_la_entidad_interviniente
-idx 14611: Obligacion_la_entidad_nominada_debera_emitir_a_pedido_del_importador_certificaciones_con_el_f99c5c -> Sujeto_propuesto_la_entidad_nominada
-idx 14651: Obligacion_la_entidad_nominada_es_la_unica_responsable_de_emitir_los_certificados_de_aplica_9fd09e -> Sujeto_propuesto_esta_entidad
-idx 14654: Obligacion_la_entidad_nominada_por_el_exportador_debe_incorporar_la_operacion_al_seguimient_28ac80 -> Sujeto_propuesto_la_entidad_nominada_por_el_exportador
-idx 14715: Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_debe_contar_con_una_declaracion_fe303d -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion
-idx 14719: Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debe_cont_460149 -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente
-idx 14721: Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debe_cont_69bc3c -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente
-idx 14749: Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debe_cont_6f147c -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente
-idx 14752: Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debe_cont_f17172 -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente
-idx 14754: Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debe_veri_13f6d3 -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente
-idx 14786: Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debera_ve_cd8203 -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente
-idx 14795: Obligacion_la_entidad_que_interviene_adicionalmente_debera_considerar_los_siguientes_elemen_876c3c -> Sujeto_propuesto_la_entidad_que_interviene_adicionalmente
-idx 14797: Obligacion_la_entidad_que_interviene_adicionalmente_debera_presentar_copia_de_la_solicitud__49a4f5 -> Sujeto_propuesto_la_entidad_que_interviene_adicionalmente
-idx 14799: Obligacion_la_entidad_que_interviene_adicionalmente_debera_presentar_copia_del_certificado__2e10f8 -> Sujeto_propuesto_la_entidad_que_interviene_adicionalmente
-idx 15149: Obligacion_las_conclusiones_de_la_verificacion_seran_volcadas_semestralmente_en_un_informe__73a49c -> Sujeto_propuesto_el_responsable_del_regimen_informativo_y_el_auditor_externo_de_la_entidad
-idx 15157: Obligacion_las_cuentas_corrientes_deberan_contar_con_el_uso_de_cheques__ctacte_1_2_b4eaf5 -> Sujeto_propuesto_las_cuentas_corrientes
-idx 15445: Obligacion_las_entidades_del_grupo_a_deben_separar_los_depositos_sin_vencimiento_consideran_29766b -> Sujeto_propuesto_las_entidades_del_grupo_a
-idx 15449: Obligacion_las_entidades_encargadas_del_seguimiento_deberan_cumplimentar_los_reportes_de_in_9d4062 -> Sujeto_propuesto_las_entidades_encargadas_del_seguimiento
-idx 15451: Obligacion_las_entidades_encargadas_del_seguimiento_en_el_sepaimpo_deberan_verificar_el_mon_356734 -> Sujeto_propuesto_la_s_entidad_es_encargada_s_del_seguimiento_de_las_oficializaciones_involucradas
-idx 15453: Obligacion_las_entidades_encargadas_del_seguimiento_en_sepaimpo_deberan_verificar_las_condi_55ed79 -> Sujeto_propuesto_la_s_entidad_es_encargada_s_del_seguimiento_de_las_oficializaciones_involucradas
-idx 15838: Obligacion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc_0609fb -> Sujeto_propuesto_las_empresas_no_financieras_emisoras_de_tarjetas_locales
-idx 15958: Obligacion_las_evaluaciones_crediticias_deberan_basarse_en_metodologias_que_combinen_enfoqu_f98d83 -> Sujeto_propuesto_dichas_evaluaciones
-idx 15974: Obligacion_las_financiaciones_deberan_ser_atendidas_exclusivamente_solo_con_fondos_provenie_0be6ca -> Sujeto_propuesto_las_sucursales_o_subsidiarias_locales
-idx 16007: Obligacion_las_inversiones_incluyen_las_participaciones_directas_indirectas_y_sinteticas__c_55b42f -> Sujeto_propuesto_las_inversiones
-idx 16009: Obligacion_las_medidas_de_desempeno_del_personal_que_realiza_tareas_de_control_financiero_y_d16884 -> Sujeto_propuesto_dicho_personal
-idx 16083: Obligacion_las_partes_asumen_responsabilidad_ineludible_de_no_poder_invocar_razon_alguna_en_616df3 -> Sujeto_propuesto_las_partes
-idx 16102: Obligacion_las_personas_incorporadas_a_la_central_de_cheques_rechazados_y_o_central_de_cuen_6886af -> Sujeto_propuesto_las_personas_que_hayan_sido_incorporadas_a_ellas
-idx 16104: Obligacion_las_personas_incorporadas_a_la_central_de_cheques_rechazados_y_o_central_de_cuen_96b0bb -> Sujeto_propuesto_las_personas_que_hayan_sido_incorporadas_a_ellas_como_consecuencia_de_ese_motivo
-idx 16106: Obligacion_las_personas_incorporadas_a_la_central_de_cheques_rechazados_y_o_central_de_cuen_aa1ad1 -> Sujeto_propuesto_las_personas_que_hayan_sido_incorporadas_a_ellas
-idx 16149: Obligacion_las_posiciones_de_la_cartera_de_negociacion_deberan_ser_valuadas_en_forma_diaria_1c8a06 -> Sujeto_propuesto_las_posiciones
-idx 16249: Obligacion_los_administradores_de_las_carteras_crediticias_deberan_suministrar_informacion__7849dd -> Sujeto_propuesto_los_administradores_de_las_carteras_crediticias
-idx 16304: Obligacion_los_aportes_de_capital_deben_ser_efectuados_en_efectivo_a_los_fines_de_todas_las_6e3ef1 -> Sujeto_propuesto_los_aportes
-idx 16355: Obligacion_los_cheques_deberan_contener_las_enunciaciones_esenciales_requeridas_por_los_art_bbdc2d -> Sujeto_propuesto_los_cheques
-idx 16363: Obligacion_los_cheques_se_ajustaran_a_lo_establecido_por_el_bcra__ctacte_3_1_9f4b2a -> Sujeto_propuesto_los_cheques
-idx 16446: Obligacion_los_cobros_de_exportaciones_deben_ser_ingresados_y_liquidados_en_el_mercado_de_c_8549d2 -> Sujeto_propuesto_los_cobros_de_exportaciones
-idx 16585: Obligacion_los_directores_independientes_y_aquellos_que_no_reunan_esa_condicion_pero_posean_740e66 -> Sujeto_propuesto_los_directores_independientes_como_aquellos_que_no_reunan_esa_condicion_pero_pos
-idx 16709: Obligacion_los_incentivos_economicos_para_el_personal_que_realiza_tareas_de_control_financi_2f455e -> Sujeto_propuesto_el_personal_que_realiza_tareas_de_control_financiero_y_de_control_de_riesgo
-idx 16752: Obligacion_los_mecanismos_deben_asegurar_el_cumplimiento_de_los_principios_de_no_negacion_p_4d75fc -> Sujeto_propuesto_las_partes
-idx 16774: Obligacion_los_pedidos_de_conformidad_deberan_ser_presentados_ante_el_bcra_exclusivamente_p_49d9d3 -> Sujeto_propuesto_la_entidad_nominada_por_el_exportador
-idx 16803: Obligacion_los_responsables_de_la_gestion_de_riesgos_deberan_conocer_las_debilidades_de_los_19980c -> Sujeto_propuesto_los_responsables_de_la_gestion_de_riesgos
-idx 16810: Obligacion_los_restantes_derivados_sobre_acciones_futuros_forwards_swaps_de_acciones_indivi_87e5d4 -> Sujeto_propuesto_los_restantes_derivados_sobre_acciones_y_las_posiciones_fuera_de_balance_sensibl
-idx 16890: Obligacion_los_usuarios_deberan_comunicar_de_inmediato_al_banco_con_el_que_operan_y_al_banc_693ab0 -> Sujeto_propuesto_los_usuarios
-idx 17361: Obligacion_para_operaciones_anteriores_al_02_09_19_la_entidad_debe_intervenir_la_documentac_ef4bc1 -> Sujeto_propuesto_la_entidad__ext
-idx 17385: Obligacion_para_operaciones_del_punto_3_11_3_al_momento_de_constitucion_de_las_garantias_la_6c9af4 -> Sujeto_propuesto_la_entidad__ext
-idx 17425: Obligacion_politica_que_contenga_los_criterios_sobre_cuya_base_el_personal_con_atribucion_e_a2f100 -> Sujeto_propuesto_el_personal_con_atribucion_en_materia_crediticia_de_la_entidad_financiera
-idx 17495: Obligacion_proveer_informacion_que_permita_al_miembro_compensador_calcular_la_exigencia_de__b1295a -> Sujeto_propuesto_la_ccp_la_entidad_financiera_la_autoridad_de_control_de_la_ccp_u_otro_organismo_
-idx 17510: Obligacion_rechazar_la_registracion_de_cheques_de_pago_diferido_que_contengan_defectos_form_5ef09c -> Sujeto_propuesto_debera_rechazarse
-idx 17516: Obligacion_recomendacion_de_comunicar_a_los_usuarios_que_no_deben_olvidar_retirar_la_tarjet_3ee36c -> Sujeto_propuesto_los_usuarios
-idx 17701: Obligacion_se_considerara_la_ultima_calificacion_informada_para_el_calculo_de_la_exigencia__768b58 -> Sujeto_propuesto_se
-idx 17733: Obligacion_se_debe_efectuar_un_boleto_de_venta_por_el_concepto_correspondiente_a_la_cancela_3e13b3 -> Sujeto_propuesto_la_entidad__ext
-idx 17781: Obligacion_se_deberan_extremar_los_recaudos_a_fin_de_prevenir_la_operatoria_con_personas_qu_aaea15 -> Sujeto_propuesto_estas_verificaciones
-idx 18046: Obligacion_se_requiere_la_conformidad_previa_del_bcra_para_prefinanciaciones_de_exportacion_edc311 -> Sujeto_propuesto_la_entidad__ext
-idx 18119: Obligacion_si_el_presentante_actua_como_representante_legal_o_apoderado_debe_adjuntar_el_in_d88dba -> Sujeto_propuesto_representantes_legales_o_apoderados
-idx 18174: Obligacion_solicitar_a_clientes_titulares_de_cuentas_declarables_que_sean_personas_humanas__18b996 -> Sujeto_propuesto_sus_clientes_titulares_de_cuentas_declarables_que_sean_personas_humanas
-idx 18176: Obligacion_solicitar_a_clientes_titulares_de_cuentas_declarables_que_sean_personas_juridica_1861f4 -> Sujeto_propuesto_sus_clientes_titulares_de_cuentas_declarables_que_sean_personas_juridicas_y_otro
-idx 18235: Obligacion_vencido_el_plazo_de_10_dias_habiles_sin_que_se_haya_regularizado_el_incumplimien_105ceb -> Sujeto_propuesto_la_entidad
-idx 18268: Operacion_absorcion_de_perdidas_por_instrumentos_de_pasivo__cap_8_3_2_12_b2d35b -> Sujeto_propuesto_los_instrumentos_que_son_parte_del_pasivo
-idx 18567: Operacion_acreditacion_de_cuenta_anses_rendicion_no_presentada_o_no_aceptada__pagjub_2_8_5_f710ef -> Sujeto_propuesto_la_anses
-idx 19000: Operacion_aviso_de_rechazo_al_pago_de_cheques__ctacte_10_2_2_1_a110f9 -> Sujeto_propuesto_los_titulares_de_cuentas_libradores_y_avalistas
-idx 21217: Operacion_inversiones_en_instrumentos_computables_como_capital_regulatorio__cap_8_4_2_2_cce289 -> Sujeto_propuesto_companias_de_seguro
-idx 21325: Operacion_operacion_de_cuentas_corrientes_uniones_transitorias__ctacte_1_3_3_eaef72 -> Sujeto_propuesto_las_cuentas_corrientes
-idx 21803: Operacion_pago_de_importacion_de_bien_con_registro_aduanero__ext_10_11_5_4b359d -> Sujeto_propuesto_un_cliente
-idx 22635: Operacion_registro_de_operacion_con_pasaporte_personal_diplomatico__ext_5_7_3_030a3b -> Sujeto_propuesto_personal_diplomatico_acreditado_en_el_pais
-idx 23574: Potestad_autoaseguramiento_alternativo_riesgos_de_fallecimiento_e_invalidez__los_sujetos__a5f012 -> Sujeto_propuesto_podran
-idx 23812: Potestad_excluir_partidas_del_bi_de_forma_inmediata__una_vez_aprobada_la_solicitud_de_exc_3fce4d -> Sujeto_propuesto_la_entidad
-idx 23854: Potestad_extension_de_certificados_individual_o_conjunta__los_certificados_podran_extende_80f374 -> Sujeto_propuesto_los_certificados
-idx 24125: Potestad_facultad_de_emitir_certificacion__la_entidad_financiera_nominada_tiene_la_facult_6115b2 -> Sujeto_propuesto_la_entidad_nominada
-idx 24526: Potestad_solicitud_de_ampliacion_de_plazo_hasta_fecha_estimada_de_aplicacion__el_exportad_f2314b -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento_del_permiso
-idx 24848: Restriccion_cuando_la_asistencia_se_otorgue_en_moneda_distinta_de_la_de_los_recursos_del_ext_087a73 -> Sujeto_propuesto_la_entidad_local
-idx 24994: Restriccion_el_codigo_de_etica_debe_abarcar_la_prevencion_de_la_corrupcion_y_de_otras_practi_5407bc -> Sujeto_propuesto_directorio_para_la_alta_gerencia_y_para_todo_el_personal
-idx 24996: Restriccion_el_codigo_de_etica_debe_abarcar_la_regulacion_de_los_actos_en_competencia_entend_33c294 -> Sujeto_propuesto_directorio_para_la_alta_gerencia_y_para_todo_el_personal
-idx 25502: Restriccion_exigencia_basica_de_capital_minimo_para_restantes_entidades_salvo_cajas_de_credi_a4fc21 -> Sujeto_propuesto_restantes_entidades_salvo_cajas_de_credito_cooperativas
-idx 25610: Restriccion_la_aplicacion_de_las_divisas_solo_podra_ser_convalidada_hasta_el_monto_que_resul_5272bf -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento
-idx 25625: Restriccion_la_cobertura_debera_extinguir_totalmente_el_monto_adeudado_en_caso_de_fallecimie_dca7ba -> Sujeto_propuesto_la_cobertura
-idx 25631: Restriccion_la_delegacion_es_valida_solo_a_los_efectos_operativos_del_presente_regimen_sin_p_24e534 -> Sujeto_propuesto_esta_delegacion
-idx 26034: Restriccion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc_c492c2 -> Sujeto_propuesto_las_empresas_no_financieras_emisoras_de_tarjetas_locales
-idx 26345: Restriccion_los_casos_que_no_cumplan_las_condiciones_requeridas_quedan_sujetos_a_la_conformi_055104 -> Sujeto_propuesto_los_casos
-idx 26588: Restriccion_los_terminos_contractuales_de_la_accion_no_deberan_contener_clausula_alguna_que__ce92d0 -> Sujeto_propuesto_los_terminos_contractuales
-idx 26675: Restriccion_no_emitir_cheques_comunes_apartandose_de_las_condiciones_convenidas_por_escrito__bf22b5 -> Sujeto_propuesto_el_cuentacorrentista
+idx 10981: Obligacion_cuando_la_presentacion_se_efectue_a_traves_de_mandatario_o_beneficiario_de_una_c_742744 -> Sujeto_propuesto_la_entidad__ctacte
+idx 10994: Obligacion_cuando_la_utilizacion_de_los_mecanismos_del_punto_7_9_redunde_en_un_monto_que_ex_c984af -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento
+idx 11003: Obligacion_cuando_los_activos_se_constituyen_en_garantia_de_una_cuenta_con_operaciones_sft__a30ac9 -> Sujeto_propuesto_el_miembro_o_cliente
+idx 11063: Obligacion_cuando_se_trate_de_cheques_librados_por_medios_electronicos_el_cuentacorrentista_be1e86 -> Sujeto_propuesto_el_cuentacorrentista
+idx 11075: Obligacion_cuando_se_trate_de_operaciones_destinadas_a_los_proyectos_comprendidos_en_el_pun_2421cb -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento
+idx 11137: Obligacion_dar_cumplimiento_en_su_presentacion_a_los_recaudos_pertinentes_del_punto_4_2_1___262857 -> Sujeto_propuesto_la_asociacion_denunciante
+idx 11227: Obligacion_deber_de_calcular_en_la_institucion_el_promedio_de_las_exigencias_por_riesgo_de__b8bed6 -> Sujeto_propuesto_esta_institucion
+idx 11263: Obligacion_deber_de_comunicar_de_inmediato_a_la_entidad_la_contingencia_ocurrida_extravio_s_ea082f -> Sujeto_propuesto_el_titular_o_en_su_caso_del_tenedor_desposeido
+idx 11268: Obligacion_deber_de_considerar_lo_dispuesto_en_el_punto_3_1_12_cuando_se_trate_de_una_entid_4ab0ea -> Sujeto_propuesto_una_entidad_originante
+idx 11307: Obligacion_deber_de_dirigir_una_nota_a_la_gerencia_de_cuentas_corrientes_del_bcra_suscripta_f48803 -> Sujeto_propuesto_los_funcionarios_responsables_designados_conforme_a_la_metodologia_del_punto_1_4
+idx 11430: Obligacion_debera_contarse_con_los_datos_de_cada_empresa_participe_y_del_representante_en_l_1e935a -> Sujeto_propuesto_las_cuentas_corrientes
+idx 11709: Obligacion_el_beneficiario_debe_nominar_una_unica_entidad_financiera_local_que_sera_respons_ddc935 -> Sujeto_propuesto_el_beneficiario
+idx 11713: Obligacion_el_boleto_de_cambio_debe_constar_con_el_caracter_de_declaracion_jurada_del_orden_242afb -> Sujeto_propuesto_el_ordenante_de_la_operacion_de_cambio
+idx 11724: Obligacion_el_boleto_debe_constar_con_la_firma_del_cliente_que_realiza_la_operacion_de_camb_1e82ba -> Sujeto_propuesto_el_cliente_que_realiza_la_operacion_de_cambio
+idx 11735: Obligacion_el_calendario_de_pagos_de_los_incentivos_debe_ser_sensible_al_horizonte_temporal_92b01a -> Sujeto_propuesto_los_incentivos_economicos
+idx 11777: Obligacion_el_comite_de_incentivos_al_personal_debe_emplear_su_criterio_para_calcular_el_aj_2fc031 -> Sujeto_propuesto_el_comite_de_incentivos_al_personal
+idx 11859: Obligacion_el_cuentacorrentista_debe_dar_aviso_a_la_entidad_por_escrito_del_extravio_sustra_5ac513 -> Sujeto_propuesto_el_cuentacorrentista
+idx 11861: Obligacion_el_cuentacorrentista_debe_dar_cuenta_a_la_entidad_por_escrito_de_cualquier_cambi_5094bf -> Sujeto_propuesto_el_cuentacorrentista
+idx 11868: Obligacion_el_cuentacorrentista_debe_devolver_a_la_entidad_todos_los_cheques_en_blanco_que__4d4205 -> Sujeto_propuesto_el_cuentacorrentista
+idx 11870: Obligacion_el_cuentacorrentista_debe_devolver_a_la_entidad_todos_los_cheques_en_blanco_que__be0130 -> Sujeto_propuesto_el_cuentacorrentista
+idx 11872: Obligacion_el_cuentacorrentista_debe_mantener_acreditados_los_fondos_por_el_importe_corresp_ef7902 -> Sujeto_propuesto_el_cuentacorrentista
+idx 11878: Obligacion_el_cuentacorrentista_debe_mantener_suficiente_provision_de_fondos_o_contar_con_a_5155ae -> Sujeto_propuesto_el_cuentacorrentista
+idx 11882: Obligacion_el_cuentacorrentista_debe_proceder_de_igual_forma_dar_aviso_a_la_entidad_por_esc_6ca558 -> Sujeto_propuesto_el_cuentacorrentista
+idx 11884: Obligacion_el_cuentacorrentista_debe_reintegrar_los_cuadernos_de_cheques_donde_figure_el_do_d6a9c2 -> Sujeto_propuesto_el_cuentacorrentista
+idx 12207: Obligacion_el_ingreso_y_liquidacion_de_divisas_por_el_mercado_de_cambios_debera_concretarse_507384 -> Sujeto_propuesto_los_exportadores
+idx 12306: Obligacion_el_proveedor_de_proteccion_debe_calcular_su_exigencia_de_capital_como_si_mantuvi_4f3c57 -> Sujeto_propuesto_el_proveedor_de_proteccion
+idx 12330: Obligacion_el_registro_de_un_ingreso_sera_responsabilidad_de_la_entidad_interviniente_en_la_949b00 -> Sujeto_propuesto_la_entidad_interviniente_en_la_operacion
+idx 12404: Obligacion_el_responsable_del_regimen_informativo_y_el_auditor_externo_de_la_entidad_deben__5bd372 -> Sujeto_propuesto_el_responsable_del_regimen_informativo_y_el_auditor_externo_de_la_entidad
+idx 12542: Obligacion_el_titular_o_tenedor_desposeido_debe_ratificar_personalmente_en_el_dia_la_denunc_9a9234 -> Sujeto_propuesto_el_titular_o_en_su_caso_del_tenedor_desposeido
+idx 12879: Obligacion_en_titulizaciones_tradicionales_con_opcion_de_exclusion_incompleta_las_exposicio_5c4553 -> Sujeto_propuesto_las_exposiciones_subyacentes
+idx 12888: Obligacion_en_todos_los_casos_en_que_se_considere_una_operacion_garantizada_por_una_asegura_c347fe -> Sujeto_propuesto_la_entidad_interviniente
+idx 12898: Obligacion_en_todos_los_casos_se_debera_verificar_la_vigencia_del_documento_de_identidad_pr_25303b -> Sujeto_propuesto_estas_verificaciones
+idx 12946: Obligacion_es_conveniente_que_la_mayoria_de_los_miembros_de_los_comites_revistan_la_condici_2740b7 -> Sujeto_propuesto_la_mayoria_de_los_miembros
+idx 13431: Obligacion_la_asociacion_denunciante_debera_acreditar_su_condicion_de_entidad_reconocida__p_ec03f1 -> Sujeto_propuesto_la_asociacion_denunciante
+idx 13433: Obligacion_la_auditoria_interna_debe_verificar_que_las_comisiones_y_cargos_aplicados_a_los__335271 -> Sujeto_propuesto_la_auditoria_interna
+idx 13435: Obligacion_la_auditoria_interna_debe_verificar_que_los_registros_centralizados_de_consultas_ab8aa0 -> Sujeto_propuesto_la_auditoria_interna
+idx 13437: Obligacion_la_auditoria_interna_debe_verificar_que_se_ha_notificado_a_los_usuarios_en_el_co_3d227e -> Sujeto_propuesto_la_auditoria_interna
+idx 13439: Obligacion_la_auditoria_interna_debe_verificar_que_se_ha_notificado_a_los_usuarios_en_el_cu_747cb6 -> Sujeto_propuesto_la_auditoria_interna
+idx 13441: Obligacion_la_auditoria_interna_debe_verificar_que_se_proporciona_a_los_usuarios_copia_de_l_907551 -> Sujeto_propuesto_la_auditoria_interna
+idx 13479: Obligacion_la_cartera_de_negociacion_debera_ser_gestionada_de_forma_activa__cap_6_1_2_1_ba64df -> Sujeto_propuesto_la_cartera
+idx 13491: Obligacion_la_certificacion_emitida_por_la_entidad_encargada_del_seguimiento_de_la_oficiali_cb52c3 -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento_de_la_oficializacion_de_importacion
+idx 13495: Obligacion_la_certificacion_presentada_en_el_bcra_debe_incluir_como_minimo_detalle_del_punt_5b0d80 -> Sujeto_propuesto_la_entidad__ext
+idx 13505: Obligacion_la_circunstancia_de_que_la_capitalizacion_esta_ad_referendum_de_aprobacion_deber_afd416 -> Sujeto_propuesto_la_asamblea_o_autoridad_equivalente
+idx 13517: Obligacion_la_compensacion_a_los_tenedores_de_estos_instrumentos_por_la_quita_realizada_deb_0fe053 -> Sujeto_propuesto_los_tenedores_de_estos_instrumentos
+idx 13526: Obligacion_la_decision_de_capitalizacion_de_los_conceptos_indicados_en_los_puntos_8_6_1_a_8_321b07 -> Sujeto_propuesto_la_asamblea_o_autoridad_equivalente
+idx 13532: Obligacion_la_decision_de_capitalizacion_de_los_conceptos_indicados_en_los_puntos_8_6_1_a_8_78ce2f -> Sujeto_propuesto_la_asamblea_o_autoridad_equivalente
+idx 13567: Obligacion_la_denominacion_de_las_cuentas_de_deposito_de_garantias_de_terceros_debera_lleva_b3fa5f -> Sujeto_propuesto_mercados_o_camaras_compensadoras_de_capitales
+idx 13571: Obligacion_la_determinacion_de_incentivos_economicos_para_el_personal_que_realiza_tareas_de_7b4326 -> Sujeto_propuesto_el_personal_que_realiza_tareas_de_control_financiero_y_de_control_de_riesgo
+idx 13573: Obligacion_la_devolucion_de_las_certificaciones_no_utilizadas_sera_efectuada_entre_las_enti_0063e2 -> Sujeto_propuesto_las_entidades_involucradas
+idx 13602: Obligacion_la_documentacion_utilizada_por_la_entidad_financiera_y_hojas_de_trabajo_que_aval_5ca0a9 -> Sujeto_propuesto_la_entidad__ext
+idx 13618: Obligacion_la_entidad_a_cargo_del_seguimiento_debe_exigir_una_declaracion_jurada_sobre_el_c_5453ec -> Sujeto_propuesto_la_entidad_a_cargo_del_seguimiento
+idx 13620: Obligacion_la_entidad_a_cargo_del_seguimiento_debe_incorporar_en_el_sepaimpo_los_registros__7d9807 -> Sujeto_propuesto_la_entidad_a_cargo_del_seguimiento
+idx 13627: Obligacion_la_entidad_a_cargo_del_seguimiento_debe_notificar_a_la_nueva_entidad_la_voluntad_e09e50 -> Sujeto_propuesto_la_entidad_a_cargo_del_seguimiento
+idx 13631: Obligacion_la_entidad_a_cargo_del_seguimiento_debera_considerar_como_utilizada_toda_certifi_4429d9 -> Sujeto_propuesto_la_entidad_a_cargo_del_seguimiento
+idx 13720: Obligacion_la_entidad_debe_contar_con_una_declaracion_jurada_del_cliente_en_la_que_conste_q_1a3040 -> Sujeto_propuesto_la_entidad__ext
+idx 13770: Obligacion_la_entidad_debe_intervenir_en_la_operacion_dejando_constancia_de_la_fecha_y_mont_e676fc -> Sujeto_propuesto_la_entidad__ext
+idx 13789: Obligacion_la_entidad_debe_realizar_la_correspondiente_intervencion_de_la_documentacion_adu_fc829f -> Sujeto_propuesto_la_entidad__ext
+idx 13792: Obligacion_la_entidad_debe_realizar_un_boleto_de_venta_de_cambio_a_nombre_del_importador_po_42a8cd -> Sujeto_propuesto_la_mencionada_entidad
+idx 13805: Obligacion_la_entidad_debe_remitir_adicionalmente_la_certificacion_del_cumplimiento_de_cond_bc636d -> Sujeto_propuesto_la_entidad__ext
+idx 13812: Obligacion_la_entidad_debe_solicitar_los_dictamenes_profesionales_que_estime_necesarios_par_76f50d -> Sujeto_propuesto_la_entidad__ext
+idx 14103: Obligacion_la_entidad_debera_presentar_descargo_en_el_plazo_de_5_dias_habiles_conforme_a_lo_6fb9fc -> Sujeto_propuesto_la_entidad
+idx 14147: Obligacion_la_entidad_debera_regularizar_el_incumplimiento_en_la_forma_prevista_en_el_punto_8fab6a -> Sujeto_propuesto_la_entidad
+idx 14231: Obligacion_la_entidad_encargada_del_seguimiento_de_anticipos_y_otras_financiaciones_de_expo_d0dad1 -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento_de_anticipos_y_otras_financiaciones_de_expo
+idx 14233: Obligacion_la_entidad_encargada_del_seguimiento_de_la_oficializacion_del_despacho_de_import_46c5a3 -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento_de_la_oficializacion_del_despacho_de_import
+idx 14237: Obligacion_la_entidad_encargada_del_seguimiento_de_la_prefinanciacion_cancelada_debe_regist_ab62b2 -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento_de_la_prefinanciacion_cancelada
+idx 14243: Obligacion_la_entidad_encargada_del_seguimiento_debe_realizar_la_denuncia_de_incumplido_cua_2d9ddc -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento
+idx 14245: Obligacion_la_entidad_encargada_del_seguimiento_debe_realizar_la_denuncia_dentro_de_los_10__b56486 -> Sujeto_propuesto_la_entidad__ext
+idx 14247: Obligacion_la_entidad_encargada_del_seguimiento_debe_reportar_cuando_otorgue_extensiones_de_3305df -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento
+idx 14264: Obligacion_la_entidad_encargada_del_seguimiento_debera_remitir_al_bcra_la_certificacion_de__339ea6 -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento
+idx 14274: Obligacion_la_entidad_encargada_del_seguimiento_del_pago_con_registro_de_ingreso_aduanero_p_fcb753 -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento_del_pago_con_registro_de_ingreso_aduanero_p
+idx 14276: Obligacion_la_entidad_encargada_del_seguimiento_del_pago_debe_considerar_los_tipos_de_pase__fd7018 -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento_del_pago
+idx 14538: Obligacion_la_entidad_interviniente_debe_contar_con_una_certificacion_de_la_entidad_encarga_20da6c -> Sujeto_propuesto_la_entidad_interviniente
+idx 14610: Obligacion_la_entidad_nominada_debera_emitir_a_pedido_del_importador_certificaciones_con_el_f99c5c -> Sujeto_propuesto_la_entidad_nominada
+idx 14650: Obligacion_la_entidad_nominada_es_la_unica_responsable_de_emitir_los_certificados_de_aplica_9fd09e -> Sujeto_propuesto_esta_entidad
+idx 14653: Obligacion_la_entidad_nominada_por_el_exportador_debe_incorporar_la_operacion_al_seguimient_28ac80 -> Sujeto_propuesto_la_entidad_nominada_por_el_exportador
+idx 14714: Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_debe_contar_con_una_declaracion_fe303d -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion
+idx 14718: Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debe_cont_460149 -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente
+idx 14720: Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debe_cont_69bc3c -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente
+idx 14748: Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debe_cont_6f147c -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente
+idx 14751: Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debe_cont_f17172 -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente
+idx 14753: Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debe_veri_13f6d3 -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente
+idx 14785: Obligacion_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente_debera_ve_cd8203 -> Sujeto_propuesto_la_entidad_que_concrete_la_oferta_de_suscripcion_en_nombre_del_cliente
+idx 14794: Obligacion_la_entidad_que_interviene_adicionalmente_debera_considerar_los_siguientes_elemen_876c3c -> Sujeto_propuesto_la_entidad_que_interviene_adicionalmente
+idx 14796: Obligacion_la_entidad_que_interviene_adicionalmente_debera_presentar_copia_de_la_solicitud__49a4f5 -> Sujeto_propuesto_la_entidad_que_interviene_adicionalmente
+idx 14798: Obligacion_la_entidad_que_interviene_adicionalmente_debera_presentar_copia_del_certificado__2e10f8 -> Sujeto_propuesto_la_entidad_que_interviene_adicionalmente
+idx 15148: Obligacion_las_conclusiones_de_la_verificacion_seran_volcadas_semestralmente_en_un_informe__73a49c -> Sujeto_propuesto_el_responsable_del_regimen_informativo_y_el_auditor_externo_de_la_entidad
+idx 15156: Obligacion_las_cuentas_corrientes_deberan_contar_con_el_uso_de_cheques__ctacte_1_2_b4eaf5 -> Sujeto_propuesto_las_cuentas_corrientes
+idx 15444: Obligacion_las_entidades_del_grupo_a_deben_separar_los_depositos_sin_vencimiento_consideran_29766b -> Sujeto_propuesto_las_entidades_del_grupo_a
+idx 15448: Obligacion_las_entidades_encargadas_del_seguimiento_deberan_cumplimentar_los_reportes_de_in_9d4062 -> Sujeto_propuesto_las_entidades_encargadas_del_seguimiento
+idx 15450: Obligacion_las_entidades_encargadas_del_seguimiento_en_el_sepaimpo_deberan_verificar_el_mon_356734 -> Sujeto_propuesto_la_s_entidad_es_encargada_s_del_seguimiento_de_las_oficializaciones_involucradas
+idx 15452: Obligacion_las_entidades_encargadas_del_seguimiento_en_sepaimpo_deberan_verificar_las_condi_55ed79 -> Sujeto_propuesto_la_s_entidad_es_encargada_s_del_seguimiento_de_las_oficializaciones_involucradas
+idx 15837: Obligacion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc_0609fb -> Sujeto_propuesto_las_empresas_no_financieras_emisoras_de_tarjetas_locales
+idx 15957: Obligacion_las_evaluaciones_crediticias_deberan_basarse_en_metodologias_que_combinen_enfoqu_f98d83 -> Sujeto_propuesto_dichas_evaluaciones
+idx 15973: Obligacion_las_financiaciones_deberan_ser_atendidas_exclusivamente_solo_con_fondos_provenie_0be6ca -> Sujeto_propuesto_las_sucursales_o_subsidiarias_locales
+idx 16006: Obligacion_las_inversiones_incluyen_las_participaciones_directas_indirectas_y_sinteticas__c_55b42f -> Sujeto_propuesto_las_inversiones
+idx 16008: Obligacion_las_medidas_de_desempeno_del_personal_que_realiza_tareas_de_control_financiero_y_d16884 -> Sujeto_propuesto_dicho_personal
+idx 16082: Obligacion_las_partes_asumen_responsabilidad_ineludible_de_no_poder_invocar_razon_alguna_en_616df3 -> Sujeto_propuesto_las_partes
+idx 16101: Obligacion_las_personas_incorporadas_a_la_central_de_cheques_rechazados_y_o_central_de_cuen_6886af -> Sujeto_propuesto_las_personas_que_hayan_sido_incorporadas_a_ellas
+idx 16103: Obligacion_las_personas_incorporadas_a_la_central_de_cheques_rechazados_y_o_central_de_cuen_96b0bb -> Sujeto_propuesto_las_personas_que_hayan_sido_incorporadas_a_ellas_como_consecuencia_de_ese_motivo
+idx 16105: Obligacion_las_personas_incorporadas_a_la_central_de_cheques_rechazados_y_o_central_de_cuen_aa1ad1 -> Sujeto_propuesto_las_personas_que_hayan_sido_incorporadas_a_ellas
+idx 16148: Obligacion_las_posiciones_de_la_cartera_de_negociacion_deberan_ser_valuadas_en_forma_diaria_1c8a06 -> Sujeto_propuesto_las_posiciones
+idx 16248: Obligacion_los_administradores_de_las_carteras_crediticias_deberan_suministrar_informacion__7849dd -> Sujeto_propuesto_los_administradores_de_las_carteras_crediticias
+idx 16303: Obligacion_los_aportes_de_capital_deben_ser_efectuados_en_efectivo_a_los_fines_de_todas_las_6e3ef1 -> Sujeto_propuesto_los_aportes
+idx 16354: Obligacion_los_cheques_deberan_contener_las_enunciaciones_esenciales_requeridas_por_los_art_bbdc2d -> Sujeto_propuesto_los_cheques
+idx 16362: Obligacion_los_cheques_se_ajustaran_a_lo_establecido_por_el_bcra__ctacte_3_1_9f4b2a -> Sujeto_propuesto_los_cheques
+idx 16445: Obligacion_los_cobros_de_exportaciones_deben_ser_ingresados_y_liquidados_en_el_mercado_de_c_8549d2 -> Sujeto_propuesto_los_cobros_de_exportaciones
+idx 16584: Obligacion_los_directores_independientes_y_aquellos_que_no_reunan_esa_condicion_pero_posean_740e66 -> Sujeto_propuesto_los_directores_independientes_como_aquellos_que_no_reunan_esa_condicion_pero_pos
+idx 16708: Obligacion_los_incentivos_economicos_para_el_personal_que_realiza_tareas_de_control_financi_2f455e -> Sujeto_propuesto_el_personal_que_realiza_tareas_de_control_financiero_y_de_control_de_riesgo
+idx 16751: Obligacion_los_mecanismos_deben_asegurar_el_cumplimiento_de_los_principios_de_no_negacion_p_4d75fc -> Sujeto_propuesto_las_partes
+idx 16773: Obligacion_los_pedidos_de_conformidad_deberan_ser_presentados_ante_el_bcra_exclusivamente_p_49d9d3 -> Sujeto_propuesto_la_entidad_nominada_por_el_exportador
+idx 16802: Obligacion_los_responsables_de_la_gestion_de_riesgos_deberan_conocer_las_debilidades_de_los_19980c -> Sujeto_propuesto_los_responsables_de_la_gestion_de_riesgos
+idx 16809: Obligacion_los_restantes_derivados_sobre_acciones_futuros_forwards_swaps_de_acciones_indivi_87e5d4 -> Sujeto_propuesto_los_restantes_derivados_sobre_acciones_y_las_posiciones_fuera_de_balance_sensibl
+idx 16889: Obligacion_los_usuarios_deberan_comunicar_de_inmediato_al_banco_con_el_que_operan_y_al_banc_693ab0 -> Sujeto_propuesto_los_usuarios
+idx 17360: Obligacion_para_operaciones_anteriores_al_02_09_19_la_entidad_debe_intervenir_la_documentac_ef4bc1 -> Sujeto_propuesto_la_entidad__ext
+idx 17384: Obligacion_para_operaciones_del_punto_3_11_3_al_momento_de_constitucion_de_las_garantias_la_6c9af4 -> Sujeto_propuesto_la_entidad__ext
+idx 17424: Obligacion_politica_que_contenga_los_criterios_sobre_cuya_base_el_personal_con_atribucion_e_a2f100 -> Sujeto_propuesto_el_personal_con_atribucion_en_materia_crediticia_de_la_entidad_financiera
+idx 17494: Obligacion_proveer_informacion_que_permita_al_miembro_compensador_calcular_la_exigencia_de__b1295a -> Sujeto_propuesto_la_ccp_la_entidad_financiera_la_autoridad_de_control_de_la_ccp_u_otro_organismo_
+idx 17509: Obligacion_rechazar_la_registracion_de_cheques_de_pago_diferido_que_contengan_defectos_form_5ef09c -> Sujeto_propuesto_debera_rechazarse
+idx 17515: Obligacion_recomendacion_de_comunicar_a_los_usuarios_que_no_deben_olvidar_retirar_la_tarjet_3ee36c -> Sujeto_propuesto_los_usuarios
+idx 17731: Obligacion_se_debe_efectuar_un_boleto_de_venta_por_el_concepto_correspondiente_a_la_cancela_3e13b3 -> Sujeto_propuesto_la_entidad__ext
+idx 17779: Obligacion_se_deberan_extremar_los_recaudos_a_fin_de_prevenir_la_operatoria_con_personas_qu_aaea15 -> Sujeto_propuesto_estas_verificaciones
+idx 18044: Obligacion_se_requiere_la_conformidad_previa_del_bcra_para_prefinanciaciones_de_exportacion_edc311 -> Sujeto_propuesto_la_entidad__ext
+idx 18117: Obligacion_si_el_presentante_actua_como_representante_legal_o_apoderado_debe_adjuntar_el_in_d88dba -> Sujeto_propuesto_representantes_legales_o_apoderados
+idx 18172: Obligacion_solicitar_a_clientes_titulares_de_cuentas_declarables_que_sean_personas_humanas__18b996 -> Sujeto_propuesto_sus_clientes_titulares_de_cuentas_declarables_que_sean_personas_humanas
+idx 18174: Obligacion_solicitar_a_clientes_titulares_de_cuentas_declarables_que_sean_personas_juridica_1861f4 -> Sujeto_propuesto_sus_clientes_titulares_de_cuentas_declarables_que_sean_personas_juridicas_y_otro
+idx 18233: Obligacion_vencido_el_plazo_de_10_dias_habiles_sin_que_se_haya_regularizado_el_incumplimien_105ceb -> Sujeto_propuesto_la_entidad
+idx 18266: Operacion_absorcion_de_perdidas_por_instrumentos_de_pasivo__cap_8_3_2_12_b2d35b -> Sujeto_propuesto_los_instrumentos_que_son_parte_del_pasivo
+idx 18565: Operacion_acreditacion_de_cuenta_anses_rendicion_no_presentada_o_no_aceptada__pagjub_2_8_5_f710ef -> Sujeto_propuesto_la_anses
+idx 18998: Operacion_aviso_de_rechazo_al_pago_de_cheques__ctacte_10_2_2_1_a110f9 -> Sujeto_propuesto_los_titulares_de_cuentas_libradores_y_avalistas
+idx 21215: Operacion_inversiones_en_instrumentos_computables_como_capital_regulatorio__cap_8_4_2_2_cce289 -> Sujeto_propuesto_companias_de_seguro
+idx 21323: Operacion_operacion_de_cuentas_corrientes_uniones_transitorias__ctacte_1_3_3_eaef72 -> Sujeto_propuesto_las_cuentas_corrientes
+idx 21801: Operacion_pago_de_importacion_de_bien_con_registro_aduanero__ext_10_11_5_4b359d -> Sujeto_propuesto_un_cliente
+idx 22633: Operacion_registro_de_operacion_con_pasaporte_personal_diplomatico__ext_5_7_3_030a3b -> Sujeto_propuesto_personal_diplomatico_acreditado_en_el_pais
+idx 23572: Potestad_autoaseguramiento_alternativo_riesgos_de_fallecimiento_e_invalidez__los_sujetos__a5f012 -> Sujeto_propuesto_podran
+idx 23810: Potestad_excluir_partidas_del_bi_de_forma_inmediata__una_vez_aprobada_la_solicitud_de_exc_3fce4d -> Sujeto_propuesto_la_entidad
+idx 23852: Potestad_extension_de_certificados_individual_o_conjunta__los_certificados_podran_extende_80f374 -> Sujeto_propuesto_los_certificados
+idx 24123: Potestad_facultad_de_emitir_certificacion__la_entidad_financiera_nominada_tiene_la_facult_6115b2 -> Sujeto_propuesto_la_entidad_nominada
+idx 24524: Potestad_solicitud_de_ampliacion_de_plazo_hasta_fecha_estimada_de_aplicacion__el_exportad_f2314b -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento_del_permiso
+idx 24846: Restriccion_cuando_la_asistencia_se_otorgue_en_moneda_distinta_de_la_de_los_recursos_del_ext_087a73 -> Sujeto_propuesto_la_entidad_local
+idx 24992: Restriccion_el_codigo_de_etica_debe_abarcar_la_prevencion_de_la_corrupcion_y_de_otras_practi_5407bc -> Sujeto_propuesto_directorio_para_la_alta_gerencia_y_para_todo_el_personal
+idx 24994: Restriccion_el_codigo_de_etica_debe_abarcar_la_regulacion_de_los_actos_en_competencia_entend_33c294 -> Sujeto_propuesto_directorio_para_la_alta_gerencia_y_para_todo_el_personal
+idx 25500: Restriccion_exigencia_basica_de_capital_minimo_para_restantes_entidades_salvo_cajas_de_credi_a4fc21 -> Sujeto_propuesto_restantes_entidades_salvo_cajas_de_credito_cooperativas
+idx 25608: Restriccion_la_aplicacion_de_las_divisas_solo_podra_ser_convalidada_hasta_el_monto_que_resul_5272bf -> Sujeto_propuesto_la_entidad_encargada_del_seguimiento
+idx 25623: Restriccion_la_cobertura_debera_extinguir_totalmente_el_monto_adeudado_en_caso_de_fallecimie_dca7ba -> Sujeto_propuesto_la_cobertura
+idx 25629: Restriccion_la_delegacion_es_valida_solo_a_los_efectos_operativos_del_presente_regimen_sin_p_24e534 -> Sujeto_propuesto_esta_delegacion
+idx 26032: Restriccion_las_entidades_financieras_y_las_empresas_no_financieras_emisoras_de_tarjetas_loc_c492c2 -> Sujeto_propuesto_las_empresas_no_financieras_emisoras_de_tarjetas_locales
+idx 26343: Restriccion_los_casos_que_no_cumplan_las_condiciones_requeridas_quedan_sujetos_a_la_conformi_055104 -> Sujeto_propuesto_los_casos
+idx 26586: Restriccion_los_terminos_contractuales_de_la_accion_no_deberan_contener_clausula_alguna_que__ce92d0 -> Sujeto_propuesto_los_terminos_contractuales
+idx 26673: Restriccion_no_emitir_cheques_comunes_apartandose_de_las_condiciones_convenidas_por_escrito__bf22b5 -> Sujeto_propuesto_el_cuentacorrentista
 ```
 
 ### S32 — PASS
 
 INFORMATIVA — Cuantía en la descripción => elemento en la lista (informativa; L-ESQ-R2 §1.5 y reports/u_umbral/reporte_u_umbral.md §2): en los tipos con lista de umbrales, un nodo cuya descripción trae una cuantía (reglas_comparacion.detectar_cuantias) tiene la lista no vacía o el umbral guardado (marca); aparte, las cuantías de la descripción sin un elemento de igual valor y unidad.
 
-**Resultado:** 797 nodos con cuantía en la descripción: 797 con lista, 0 con el umbral guardado (marca), 0 sin ninguna {}; cuantías de la descripción 983, sin elemento de igual valor y unidad 143.
+**Resultado:** 797 nodos con cuantía en la descripción: 797 con lista, 0 con el umbral guardado (marca), 0 sin ninguna {}; cuantías de la descripción 983, sin elemento de igual valor y unidad 141.
 
 Sin violaciones.
 
@@ -5125,40 +5097,40 @@ Sin violaciones.
 
 | Severidad | Regla | Resultado | Resumen |
 |---|---|---|---|
-| bloqueante | S1 | PASS | 27629/27629 aristas con relación admitida (19 relaciones admitidas); 0 violaciones. |
-| bloqueante | S2 | PASS | 0 aristas colgantes sobre 27629. |
-| bloqueante | S3 | FAIL | 27628/27629 aristas conformes a firma; 1 violaciones. Evaluadas: 14030 por matriz, 13380 remite_a, 126 de esqueleto, 93 padre_sugerido. |
-| bloqueante | S4 | PASS | Nodos OK: 8818/8818. Aristas OK: 27629/27629. Violaciones: 0. |
-| bloqueante | S5 | PASS | Nodos con punto: 8818/8818. Aristas: 27629/27629. Violaciones: 0. |
+| bloqueante | S1 | PASS | 27632/27632 aristas con relación admitida (19 relaciones admitidas); 0 violaciones. |
+| bloqueante | S2 | PASS | 0 aristas colgantes sobre 27632. |
+| bloqueante | S3 | PASS | 27632/27632 aristas conformes a firma; 0 violaciones. Evaluadas: 14028 por matriz, 13380 remite_a, 126 de esqueleto, 98 padre_sugerido. |
+| bloqueante | S4 | PASS | Nodos OK: 8816/8816. Aristas OK: 27632/27632. Violaciones: 0. |
+| bloqueante | S5 | PASS | Nodos con punto: 8816/8816. Aristas: 27632/27632. Violaciones: 0. |
 | bloqueante | S6 | PASS | Archivos válidos (43): TextoOrdenado ['TO_capitales_minimos_actual.pdf', 'TO_clasificacion_deudores_actual.pdf', 'TO_exterior_cambios_actual.pdf', 'TO_proteccion_usuarios_servicios_financieros_actual.pdf', 'TO_regimen_informativo_contable_mensual_actual.pdf', 'ctacte.pdf', 'docvig.pdf', 'lingob.pdf', 'pagjub.pdf', 'polcre.pdf'] ∪ esqueleto ['actgar.pdf', 'adrei.pdf', 'autenf.pdf', 'catalogo_sujetos_v3.json', 'ccbcra.pdf', 'convca.pdf', 'cryl.pdf', 'ctacor.pdf', 'depaho.pdf', 'efemin.pdf', 'esquema_v2_clases.json', 'esquema_v3_clases.json', 'fabcra.pdf', 'icmecma.pdf', 'lavdin.pdf', 'ordcom.pdf', 'osapsa.pdf', 'pfmipyme.pdf', 'pimf.pdf', 'ratiofn.pdf', 'rdbcra.pdf', 'repefe.pdf', 'retype.pdf', 'rmrtsd.pdf', 'rrci.pdf', 'servco.pdf', 'snp_atm.pdf', 'snp_debin.pdf', 'snp_psp.pdf', 'snp_spd.pdf', 'snp_tr_nc.pdf', 'supcon.pdf', 'traval.pdf']. Violaciones: 0. |
 | bloqueante | S15 | PASS | 35 roles, 51 aristas miembro_de; 12 huérfanos (12 declarados, 0 sin declarar); 0 miembros que no son clase. Lista declarada: 12 ({'sin_id_en_catalogo': 6, 'aplanamiento_rechazado': 5, 'instancia_rechazada': 1}). |
-| bloqueante | S18 | FAIL | 346 Restricciones limite_cuantitativo: 332 con lista, 0 con el umbral guardado sin lista (marca), 14 sin ninguna. |
-| bloqueante | S19 | FAIL | 210 Sujetos ({'clase': 70, 'instancia': 5, 'propuesto': 100, 'rol': 35}); catálogo de 110 ids; 0 fuera del catálogo, 0 con nivel inválido, 7 propuestos incompletos. |
+| bloqueante | S18 | PASS | 346 Restricciones limite_cuantitativo: 332 con lista, 14 con el umbral guardado sin lista (marca), 0 sin ninguna. |
+| bloqueante | S19 | PASS | 208 Sujetos ({'clase': 70, 'instancia': 5, 'propuesto': 98, 'rol': 35}); catálogo de 110 ids; 0 fuera del catálogo, 0 con nivel inválido, 0 propuestos incompletos. |
 | bloqueante | S20 | PASS | 2419 nodos Obligacion; 0 violaciones; fuera de lista con marca: 0 {}; sin valor: 0. |
 | bloqueante | S24 | PASS | 800 nodos Restriccion; 0 violaciones; fuera de lista con marca: 0 {}; sin valor: 0. |
 | bloqueante | S25 | PASS | 88 nodos Comunicacion; 0 violaciones; fuera de lista con marca: 0 {}; sin valor: 34. |
 | bloqueante | S26 | PASS | 8608 nodos evaluados; 0 violaciones {}; marcas de nodo admitidas: ['cola_humana', 'cola_chunks', 'estado_e3', 'colision_cross_to']. |
-| bloqueante | S28 | FAIL | 100 Sujetos propuestos; 294 filas en el registro; 2 propuestos sin fila. |
-| bloqueante | S29 | PASS | 93 aristas padre_sugerido; 0 con destino fuera del catálogo único (110 ids). |
+| bloqueante | S28 | PASS | 98 Sujetos propuestos; 294 filas en el registro; 0 propuestos sin fila. |
+| bloqueante | S29 | PASS | 98 aristas padre_sugerido; 0 con destino fuera del catálogo único (110 ids). |
 | bloqueante | S30 | PASS | 13380 aristas remite_a ({'externa': 671, 'interna': 12663, 'to_entero': 46}); 0 violaciones. |
 | bloqueante | S31 | PASS | 13380 aristas remite_a: {'en_un_tramo_del_chunk_de_la_arista': 13380}; 0 violaciones. |
-| bloqueante | S27 | PASS | 2618 aristas de sujeto fuera del esqueleto; 0 sin mención, verificación o método ({}). |
+| bloqueante | S27 | PASS | 2616 aristas de sujeto fuera del esqueleto; 0 sin mención, verificación o método ({}). |
 | informativa | S7 | FAIL | 243 grupos violatorios (562 nodos involucrados). |
 | informativa | S8 | WARN | 40 grupos con el mismo label normalizado en types distintos. |
 | informativa | S9 | PASS | 0 nodos con ambas keys. |
 | informativa | S10 | PASS | Sin establecida_en: Condicion=0, Definicion=0, Excepcion=0, Obligacion=0, Operacion=0, Potestad=0, Restriccion=0 (total 0). |
-| informativa | S11 | WARN | Sin aplica_a: Excepcion=407, Obligacion=691, Operacion=1618, Potestad=141, Restriccion=539 (total 3396). |
+| informativa | S11 | WARN | Sin aplica_a: Excepcion=407, Obligacion=693, Operacion=1618, Potestad=141, Restriccion=539 (total 3398). |
 | informativa | S12 | FAIL | 256 Excepciones sin salida exceptua/exceptua_obligacion. |
 | informativa | S21 | WARN | 13380 remisiones ({'interna': 12663, 'externa': 671, 'to_entero': 46}); 46 incoherentes (por alcance: {'to_entero': 46}). |
-| informativa | S22 | PASS | 93 aristas padre_sugerido; 0 incoherentes (0 con destino distinto, 0 con origen fuera de cuarentena). |
-| informativa | S23 | WARN | 2585 aristas aplica_a; 164 hacia Sujetos propuestos (98 destinos distintos). |
-| informativa | S32 | PASS | 797 nodos con cuantía en la descripción: 797 con lista, 0 con el umbral guardado (marca), 0 sin ninguna {}; cuantías de la descripción 983, sin elemento de igual valor y unidad 143. |
+| informativa | S22 | PASS | 98 aristas padre_sugerido; 0 incoherentes (0 con destino distinto, 0 con origen fuera de cuarentena). |
+| informativa | S23 | WARN | 2583 aristas aplica_a; 162 hacia Sujetos propuestos (96 destinos distintos). |
+| informativa | S32 | PASS | 797 nodos con cuantía en la descripción: 797 con lista, 0 con el umbral guardado (marca), 0 sin ninguna {}; cuantías de la descripción 983, sin elemento de igual valor y unidad 141. |
 
-**Veredicto global: NO PASA**
+**Veredicto global: PASA**
 
 ## Numeración de las shapes del perfil r2
 
-- S18: Reescrita (L-ESQ-R2 §1.5): Restriccion de tipo limite_cuantitativo => lista de umbrales no vacía o marca (el umbral guardado sin lista: campos_heredados_v3.umbral o properties_no_definidas.umbral). El enunciado de docs/esquema_v2_diseño.md:325 no rige en el perfil r2.
+- S18: Reescrita (L-ESQ-R2 §1.5): Restriccion de tipo limite_cuantitativo => lista de umbrales no vacía o marca (el umbral guardado sin lista: campos_heredados_v3.umbral o properties_no_definidas.umbral; en r2b, también la marca properties_no_definidas.umbral_no_cuantificable del ensamblado). El enunciado de docs/esquema_v2_diseño.md:325 no rige en el perfil r2.
 - S24: Enum de Restriccion.tipo (bloqueante salvo la marca fuera_de_lista).
 - S25: Enum de Comunicacion.tipo, con «externa» (bloqueante salvo la marca fuera_de_lista).
 - S26: Claves cerradas por tipo (bloqueante).

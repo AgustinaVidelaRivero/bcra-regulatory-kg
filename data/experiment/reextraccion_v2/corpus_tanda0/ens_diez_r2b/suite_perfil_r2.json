@@ -2,9 +2,9 @@
  "suite": "scripts/regression_kg.py (U-B2.1 fase 2)",
  "parametros": {
   "kg": "data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json",
-  "kg_sha256": "12c5cfc3ea4c46536c72b6eafdb6c890c626b550f76dd96c50a579156975e055",
-  "n_nodes": 8818,
-  "n_edges": 27629,
+  "kg_sha256": "a9631a64b422bdae634fb05135373c6f04c6272cdf7acd43a1be9f5b6c1f5f57",
+  "n_nodes": 8816,
+  "n_edges": 27632,
   "generacion": 3,
   "generacion_detectada": 3,
   "catalogo": "data/experiment/catalogo_unico/generados_r2/catalogo_suite_r2.json",
@@ -59,17 +59,17 @@
  },
  "resumen": {
   "items": 68,
-  "resuelto": 45,
-  "persiste": 12,
-  "no_aplicable": 11
+  "resuelto": 48,
+  "persiste": 11,
+  "no_aplicable": 9
  },
  "ranks_sellados": {
-  "consultas": 25,
+  "consultas": 27,
   "consultas_coinciden_sellado": 6,
-  "objetivos": 69,
-  "objetivos_coinciden_sellado": 25,
-  "objetivos_en_ventana": 13,
-  "objetivos_ausentes": 21
+  "objetivos": 75,
+  "objetivos_coinciden_sellado": 26,
+  "objetivos_en_ventana": 17,
+  "objetivos_ausentes": 23
  },
  "items": [
   {
@@ -154,9 +154,93 @@
    "direccionamiento": "(TO_capitales, 1.2, cualquier tipo, «exigencia basica» + «bancos» / «restantes entidades»); Excepcion por (cap, 1.2, Excepcion, «cajas de credito cooperativas»)",
    "evidencia": "data/backlog/retests/C2_retest_2026-07-31.md:51-63 ((1)-(4) PASS; (5) informativo :59-63); reports/revision_UB21_diag/sonda_anclas_C1_C7_UB21.py:114-134; reports/revision_UB21_diag/inventario_B21_fase1.md:100",
    "nota": "los ids viejos/nuevos del retest (3) son ids de contenido: excluidos del estado por la decisión 1",
-   "estado": "no_aplicable",
-   "detalle": "sin Restriccion anclada en cap 1.2 con un monto de la tabla del 1.2 en la lista de umbrales",
-   "subchecks": {}
+   "estado": "resuelto",
+   "detalle": "tabla=True; sin Excepcion de cajas en cap 1.2 (sub-check no aplicable); Restriccion:Restriccion_exigencia_basica_de_capital_minimo_par clase=bancos montos=['5.000'] umbral=['5000000000 moneda ARS'] || Restriccion:Restriccion_exigencia_basica_de_capital_minimo_par clase=restantes montos=['2.500'] umbral=['2500000000 moneda ARS']",
+   "subchecks": {
+    "tabla_bancos_5000_restantes_2500": true
+   },
+   "ranks": [
+    {
+     "consulta": "exigencia básica bancos",
+     "limite_pedido": 10,
+     "fuente": "data/backlog/retests/C2_retest_2026-07-31.md:61-63",
+     "objetivos": [
+      {
+       "objetivo": "C2.bancos",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 1,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": true,
+       "coincide_sellado": true,
+       "cuenta_para_estado": false
+      },
+      {
+       "objetivo": "C2.excepcion",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 3,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": false
+      },
+      {
+       "objetivo": "C2.restantes",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 2,
+       "rank_esperado_sellado": 4,
+       "limite": 10,
+       "en_ventana": true,
+       "coincide_sellado": false,
+       "cuenta_para_estado": false
+      }
+     ]
+    },
+    {
+     "consulta": "exigencia básica restantes entidades",
+     "limite_pedido": 13,
+     "fuente": "data/backlog/retests/C2_retest_2026-07-31.md:61-63",
+     "objetivos": [
+      {
+       "objetivo": "C2.excepcion",
+       "objetivo_presente": false,
+       "n_ids": 0,
+       "rank": null,
+       "rank_esperado_sellado": 1,
+       "limite": 10,
+       "en_ventana": false,
+       "coincide_sellado": false,
+       "cuenta_para_estado": false
+      },
+      {
+       "objetivo": "C2.restantes",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 1,
+       "rank_esperado_sellado": 2,
+       "limite": 10,
+       "en_ventana": true,
+       "coincide_sellado": false,
+       "cuenta_para_estado": false
+      },
+      {
+       "objetivo": "C2.bancos",
+       "objetivo_presente": true,
+       "n_ids": 1,
+       "rank": 3,
+       "rank_esperado_sellado": 13,
+       "limite": 13,
+       "en_ventana": true,
+       "coincide_sellado": false,
+       "cuenta_para_estado": false
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "BKL-0023",
@@ -167,8 +251,16 @@
    "direccionamiento": "(TO_capitales, 1.2, Restriccion, «companias financieras que realicen, en forma directa, operaciones de comercio exterior»)",
    "evidencia": "data/backlog/retests/C3_retest_2026-08-02.md:30-37 ((a)-(d) 4/4); reports/revision_UB21_diag/sonda_anclas_C1_C7_UB21.py:146-155; reports/revision_UB21_diag/inventario_B21_fase1.md:101",
    "nota": "sin nodo o sin umbral → no_aplicable, nunca PASS vacuo (pieza e)",
-   "estado": "no_aplicable",
-   "detalle": "sin Restriccion anclada en cap 1.2 con un monto de la tabla del 1.2 en la lista de umbrales, ni de compañías financieras ni de bancos"
+   "estado": "resuelto",
+   "detalle": "Restriccion de bancos (remisión de la oración de compañías financieras): n=1 ['Restriccion_exigencia_basica_de_capital_minimo_para_bancos_5_000_millone'] umbrales=[['5000000000 moneda ARS']]",
+   "valores": {
+    "umbrales": [
+     [
+      "5000000000 moneda ARS"
+     ]
+    ],
+    "direccionamiento": "Restriccion de bancos (remisión de la oración de compañías financieras)"
+   }
   },
   {
    "id": "BKL-0019",
@@ -1646,13 +1738,13 @@
    "direccionamiento": "Sujetos con nivel=propuesto; catálogo parametrizado",
    "evidencia": "r1_tests.py:63-82; tests_respuesta_conocida_r1.json:115-118; reports/revision_UB21_diag/sonda_T1_T7_cuatro_grafos_UB21_salida.txt:30,58; reports/revision_UB21_diag/inventario_B21_fase1.md:134, §5.2 :262",
    "estado": "resuelto",
-   "detalle": "politica=flaggeada propuestos=100 aristas_padre_sugerido=93 malos=0 {} fuera_catalogo_no_propuestos=0",
+   "detalle": "politica=flaggeada propuestos=98 aristas_padre_sugerido=98 malos=0 {} fuera_catalogo_no_propuestos=0",
    "valores": {
     "pass": true,
     "politica": "flaggeada",
-    "n_sujetos": 210,
-    "n_propuestos": 100,
-    "n_padre_sugerido": 93,
+    "n_sujetos": 208,
+    "n_propuestos": 98,
+    "n_padre_sugerido": 98,
     "malos": [],
     "sujetos_fuera_catalogo_no_propuestos": []
    }
@@ -1688,10 +1780,10 @@
    "direccionamiento": "JSON crudo",
    "evidencia": "r1_invariantes.py:9,72-77; reports/revision_UB21_diag/sonda_T1_T7_cuatro_grafos_UB21_salida.txt:60; reports/revision_UB21_diag/inventario_B21_fase1.md:137",
    "estado": "resuelto",
-   "detalle": "nodes=8818 edges=27629 ids_duplicados=0 triplas_duplicadas=0",
+   "detalle": "nodes=8816 edges=27632 ids_duplicados=0 triplas_duplicadas=0",
    "valores": {
-    "nodes": 8818,
-    "edges": 27629,
+    "nodes": 8816,
+    "edges": 27632,
     "ids_duplicados": 0,
     "triplas_duplicadas": 0
    }
@@ -1734,9 +1826,9 @@
    "direccionamiento": "Sujetos propuestos; r1_e4.indice_catalogo / resolver_label sobre el catálogo parametrizado",
    "evidencia": "data/experiment/reextraccion_v2/corpus_v2/r1_e4.py:10,89,101; reports/revision_UB21_diag/inventario_B21_fase1.md:167, §4 :234-250",
    "estado": "resuelto",
-   "detalle": "propuestos=100 con candidato label_exacto=0 resolubles no resueltos=0 []",
+   "detalle": "propuestos=98 con candidato label_exacto=0 resolubles no resueltos=0 []",
    "valores": {
-    "n_propuestos": 100,
+    "n_propuestos": 98,
     "resolubles": []
    }
   },
@@ -1749,9 +1841,9 @@
    "direccionamiento": "ídem",
    "evidencia": "r1_e4.py:11,92-93,102; reports/revision_UB21_diag/inventario_B21_fase1.md:168, §4",
    "estado": "resuelto",
-   "detalle": "propuestos=100 con candidato alias_exacto=0 resolubles no resueltos=0 []",
+   "detalle": "propuestos=98 con candidato alias_exacto=0 resolubles no resueltos=0 []",
    "valores": {
-    "n_propuestos": 100,
+    "n_propuestos": 98,
     "resolubles": []
    }
   },
@@ -1764,9 +1856,9 @@
    "direccionamiento": "ídem",
    "evidencia": "r1_e4.py:12,90,103; data/experiment/reextraccion_v2/e2_reduce/e2_lib.py:90; reports/revision_UB21_diag/inventario_B21_fase1.md:169, §4",
    "estado": "resuelto",
-   "detalle": "propuestos=100 con candidato id_slug=0 resolubles no resueltos=0 []",
+   "detalle": "propuestos=98 con candidato id_slug=0 resolubles no resueltos=0 []",
    "valores": {
-    "n_propuestos": 100,
+    "n_propuestos": 98,
     "resolubles": []
    }
   },
@@ -1779,9 +1871,9 @@
    "direccionamiento": "ídem",
    "evidencia": "r1_e4.py:13-14,53-58,91,104; reports/revision_UB21_diag/inventario_B21_fase1.md:170, §4",
    "estado": "resuelto",
-   "detalle": "propuestos=100 con candidato label_singularizado=0 resolubles no resueltos=0 []",
+   "detalle": "propuestos=98 con candidato label_singularizado=0 resolubles no resueltos=0 []",
    "valores": {
-    "n_propuestos": 100,
+    "n_propuestos": 98,
     "resolubles": []
    }
   },
@@ -1794,9 +1886,9 @@
    "direccionamiento": "ídem",
    "evidencia": "r1_e4.py:15-17,108-112; reports/revision_UB21_diag/inventario_B21_fase1.md:171, §4",
    "estado": "resuelto",
-   "detalle": "propuestos=100 con candidato alias_en_parentesis=0 resolubles no resueltos=0 []; propuestos con padre_sugerido=93",
+   "detalle": "propuestos=98 con candidato alias_en_parentesis=0 resolubles no resueltos=0 []; propuestos con padre_sugerido=98",
    "valores": {
-    "n_propuestos": 100,
+    "n_propuestos": 98,
     "resolubles": []
    }
   },
@@ -1809,7 +1901,7 @@
    "direccionamiento": "ídem + Sujetos con properties.alias_resueltos",
    "evidencia": "r1_e4.py:7-9,79-84,113-117; reports/revision_UB21_diag/inventario_B21_fase1.md:172, §4",
    "estado": "resuelto",
-   "detalle": "claves ambiguas del índice=4; propuestos residuales con motivo ambiguo=0/100; alias_resueltos re-resueltos=0/0 malos=[]",
+   "detalle": "claves ambiguas del índice=4; propuestos residuales con motivo ambiguo=0/98; alias_resueltos re-resueltos=0/0 malos=[]",
    "valores": {
     "claves_ambiguas": 4,
     "ambiguos_residuales": 0,
@@ -1825,9 +1917,9 @@
    "direccionamiento": "Sujetos; catálogo parametrizado",
    "evidencia": "r1_e4.py:18-19,141-147; reports/revision_UB21_diag/inventario_B21_fase1.md:173",
    "estado": "resuelto",
-   "detalle": "propuestos=100 sin_cuarentena_true=0 con_id_de_catalogo=0 sujetos_fuera_catalogo_no_propuestos=0",
+   "detalle": "propuestos=98 sin_cuarentena_true=0 con_id_de_catalogo=0 sujetos_fuera_catalogo_no_propuestos=0",
    "valores": {
-    "n_propuestos": 100,
+    "n_propuestos": 98,
     "sin_cuarentena": [],
     "fuera": []
    }
@@ -1971,7 +2063,7 @@
    "direccionamiento": "nodos de los nueve tipos; claves_por_tipo de enums_r2.json + modelos_r2.MARCAS_NODO",
    "evidencia": "reports/u_listas_nomap/diseno_listas_nomap.md §g; L-ESQ-R2 §2.5",
    "estado": "resuelto",
-   "detalle": "nodos evaluados 8608; claves fuera de la definición 0 {}; definidas que figuran como no definidas 0; con properties_no_definidas 153",
+   "detalle": "nodos evaluados 8608; claves fuera de la definición 0 {}; definidas que figuran como no definidas 0; con properties_no_definidas 167",
    "valores": {
     "fuera_de_la_definicion": {},
     "definidas_como_no_definidas": {},
@@ -1994,14 +2086,14 @@
    "evidencia": "reports/u_listas_nomap/diseno_listas_nomap.md §g; L-ESQ-R2 §3.5",
    "nota": "persiste en r2a hasta la mención de E1 de r2b (P-b1)",
    "estado": "resuelto",
-   "detalle": "aristas de sujeto 2618: con mención 2618, con mencion_verificada en la lista 2618, con las dos 2618; mencion_verificada {'exacta': 2351, 'no': 257, 'tokens': 10}",
+   "detalle": "aristas de sujeto 2616: con mención 2616, con mencion_verificada en la lista 2616, con las dos 2616; mencion_verificada {'exacta': 2349, 'no': 257, 'tokens': 10}",
    "valores": {
-    "aristas": 2618,
-    "con_mencion": 2618,
-    "con_mencion_verificada": 2618,
-    "con_las_dos": 2618,
+    "aristas": 2616,
+    "con_mencion": 2616,
+    "con_mencion_verificada": 2616,
+    "con_las_dos": 2616,
     "por_mencion_verificada": {
-     "exacta": 2351,
+     "exacta": 2349,
      "no": 257,
      "tokens": 10
     }
@@ -2016,9 +2108,9 @@
    "direccionamiento": "aristas aplica_a / ejecuta fuera del esqueleto; resolucion_sujetos.jsonl",
    "evidencia": "reports/u_listas_nomap/diseno_listas_nomap.md §g; L-ESQ-R2 §3.5",
    "estado": "resuelto",
-   "detalle": "aristas de sujeto 2618, sin metodo_resolucion 0; por método {'R1_alias_exacto': 71, 'R1_label_exacto': 457, 'R2_calificador': 15, 'R2_id_slug+label_singularizado': 6, 'R2_label_singularizado': 2, 'R3': 1, 'R4_sugerencia_modelo': 1900, 'cuarentena': 166}; desacuerdos regla/modelo 430",
+   "detalle": "aristas de sujeto 2616, sin metodo_resolucion 0; por método {'R1_alias_exacto': 71, 'R1_label_exacto': 457, 'R2_calificador': 15, 'R2_id_slug+label_singularizado': 6, 'R2_label_singularizado': 2, 'R3': 1, 'R4_sugerencia_modelo': 1900, 'cuarentena': 164}; desacuerdos regla/modelo 430",
    "valores": {
-    "aristas": 2618,
+    "aristas": 2616,
     "sin_metodo": 0,
     "por_metodo": {
      "R1_alias_exacto": 71,
@@ -2028,7 +2120,7 @@
      "R2_label_singularizado": 2,
      "R3": 1,
      "R4_sugerencia_modelo": 1900,
-     "cuarentena": 166
+     "cuarentena": 164
     },
     "desacuerdos_regla_modelo": 430
    }
@@ -2041,15 +2133,12 @@
    "forma": "F1 (registro ↔ grafo)",
    "direccionamiento": "Sujetos propuestos; no_mapeados_sujetos.jsonl (id_nodo, estado)",
    "evidencia": "reports/u_listas_nomap/diseno_listas_nomap.md §g y §d; L-ESQ-R2 §4.5",
-   "estado": "persiste",
-   "detalle": "filas 294 {'cuarentena': 166, 'resuelto_a_clase': 128}; propuestos 100; propuestos sin fila 2; filas en cuarentena sin nodo 0",
+   "estado": "resuelto",
+   "detalle": "filas 294 {'cuarentena': 164, 'descartado': 2, 'resuelto_a_clase': 128}; propuestos 98; propuestos sin fila 0; filas en cuarentena sin nodo 0",
    "valores": {
     "filas": 294,
-    "propuestos": 100,
-    "propuestos_sin_fila": [
-     "Sujeto_propuesto_la_entidad__ctacte",
-     "Sujeto_propuesto_la_entidad__ext"
-    ],
+    "propuestos": 98,
+    "propuestos_sin_fila": [],
     "cuarentena_sin_nodo": []
    }
   },
@@ -2239,7 +2328,7 @@
      },
      "unidades_sin_indices_e3": 0
     },
-    "aristas_e1": 13284,
+    "aristas_e1": 13282,
     "nodos": 8598,
     "ejemplos_sin_verificar": [],
     "ejemplos_sin_procedencia": []
@@ -2615,6 +2704,6 @@
   "estado_esperado_sha256": "b7255a71b02869baf6f5cc5e1d4937042b51ee3854a04676346680a77e84296a",
   "parte": null,
   "entrada": null,
-  "nota": "la fixture no tiene entrada con kg_sha256 12c5cfc3ea4c46536c72b6eafdb6c890c626b550f76dd96c50a579156975e055: no se computa regresión"
+  "nota": "la fixture no tiene entrada con kg_sha256 a9631a64b422bdae634fb05135373c6f04c6272cdf7acd43a1be9f5b6c1f5f57: no se computa regresión"
  }
 }

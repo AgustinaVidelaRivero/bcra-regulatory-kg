@@ -697,6 +697,7 @@ def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[s
             "frecuencia_fuera_de_lista": 0}
     if r2b:
         cont["elementos_previos_conservados"] = 0
+        cont["unidad_desde_rotulo"] = {"elementos": 0, "por_to": {}, "nodos": []}
 
     def suma(d, k):
         cont[d][k] = cont[d].get(k, 0) + 1
@@ -769,8 +770,253 @@ def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[s
         elif elementos:
             props["umbrales"] = elementos
             cont["nodos_con_lista"] += 1
+        if r2b and props.get("umbrales"):
+            # T3-bis de U-REEXT-T0, decisión 2: la cuantía que es una celda de una tabla serializada con rótulo
+            # hereda la unidad del rótulo; el tramo no cambia.
+            bloques = bloques_con_rotulo(textos)
+            if bloques:
+                nuevos = []
+                for el in props["umbrales"]:
+                    h = unidad_desde_rotulo(el, bloques, RCMP, M, desc, titulo, plazo_sin_marcador)
+                    nuevos.append(h or el)
+                    if h:
+                        u = cont["unidad_desde_rotulo"]
+                        u["elementos"] += 1
+                        u["por_to"][to] = u["por_to"].get(to, 0) + 1
+                        u["nodos"].append({"id": n["id"], "to": to, "tramo": h["tramo"], "valor": h.get("valor"),
+                                           "unidad": h.get("unidad"), "moneda": h.get("moneda"),
+                                           "tabla": h["originales"]["tabla"],
+                                           "rotulo": h["originales"]["unidad_desde_rotulo"]})
+                props["umbrales"] = nuevos
     cont["rangos_con_unidad_repetida"] = len(rangos)
     return {"resumen": cont, "rangos": rangos}
+
+
+# ------------------------------------------------------------------------- #
+# T3-bis de U-REEXT-T0 (fase r2b): propuestos después del merge cross-TO,    #
+# unidad del rótulo de tabla y marca de umbral no cuantificable              #
+# ------------------------------------------------------------------------- #
+# Decisión 1.b: una mención hecha solo de pronombres, determinantes o palabras funcionales (lista cerrada, sobre el
+# texto normalizado por C.norm) no nombra un sujeto.
+PALABRAS_VACIAS_SUJETO = frozenset((
+    "se", "el", "ella", "ellos", "ellas", "ello", "este", "esta", "estos", "estas", "esto", "ese", "esa", "esos",
+    "esas", "eso", "aquel", "aquella", "aquellos", "aquellas", "aquello", "cada", "uno", "una", "unos", "unas",
+    "otro", "otra", "otros", "otras", "quien", "quienes", "quienquiera", "cual", "cuales", "la", "los", "las", "lo",
+    "le", "les", "su", "sus", "mismo", "misma", "mismos", "mismas", "dicho", "dicha", "dichos", "dichas", "tal",
+    "tales", "ambos", "ambas", "todo", "toda", "todos", "todas", "alguno", "alguna", "algunos", "algunas",
+    "ninguno", "ninguna", "cualquiera", "que", "de", "del", "al", "a", "y", "o", "u", "e"))
+MARCA_MENCION_VACIA = "mencion_pronombre_o_palabra_vacia"
+TABLAS_FORZADAS_R2B = REX / "e1_extractor" / "tablas_residuales_forzadas_r2b.json"
+MOTIVO_SIN_CUANTIA = "sin cuantía detectable"
+MOTIVO_TABLA_FORZADA = "cuantías solo en tabla residual forzada"
+RE_BLOQUE_TABLA = re.compile(r"\[TABLA (\S+) \|[^\]\n]*\]\n(.*?)\n\[FIN TABLA \1\]", re.S)
+RE_ROTULO_TABLA = re.compile(r"^Rótulo: (.+)$", re.M)
+RE_FILA_TABLA = re.compile(r"^Fila \d+: (.*)$", re.M)
+
+
+def mencion_vacia(label: str) -> bool:
+    toks = re.findall(r"\w+", C.norm(label))
+    return bool(toks) and all(t in PALABRAS_VACIAS_SUJETO for t in toks)
+
+
+def normalizar_propuestos_r2b(kg: dict, registro: list[dict], renombres: dict[str, dict[str, str]], cat: dict) -> dict:
+    """Decisión 1 de T3-bis de U-REEXT-T0 (fase r2b), después del merge cross-TO y antes del esqueleto, que arma
+    las aristas padre_sugerido desde la propiedad del propuesto:
+    a. el propuesto renombrado por la colisión cross-TO (sufijo __<to>) lleva su id nuevo en las filas de su TO del
+       registro de no mapeados (LN-5, S28);
+    b. el propuesto cuya mención es un pronombre o una palabra vacía se descarta: el nodo y sus aristas salen del
+       grafo, sus filas del registro quedan con estado «descartado» y la marca, y las aristas quitadas se listan con
+       la norma, la unidad, la mención y el tramo, sin asignarles rol. El padre_sugerido hacia un Sujeto de nivel
+       instancia se reemplaza por la clase de la instancia (instancia_de; marca padre_sugerido_instancia) o, sin
+       clase, se quita con la marca padre_sugerido_descartado (S3);
+    c. el propuesto sin padre_sugerido recibe el rol de alcance de su TO (rol_por_to del catálogo r2) con la marca
+       padre_por_defecto (S19); si sus TOs no dan un único rol, queda sin padre y listado.
+    Muta kg y las filas del registro. Devuelve el resumen y las filas de las aristas quitadas."""
+    entrada = cat["entrada_esqueleto"]
+    clases = {c["id"]: c for c in entrada["clases"]}
+    roles = {r["id"] for r in entrada["roles"]}
+    res = {"filas_renombradas": [], "descartados": [], "padre_desde_instancia": [], "padre_descartado": [],
+           "padre_por_defecto": [], "sin_rol_de_alcance": []}
+    for to, ren in sorted(renombres.items()):
+        for f in registro:
+            if f.get("to") == to and f.get("id_nodo") in ren:
+                res["filas_renombradas"].append({"to": to, "chunk_id": f.get("chunk_id"),
+                                                 "indice_relacion": f.get("indice_relacion"),
+                                                 "id_anterior": f["id_nodo"], "id_nodo": ren[f["id_nodo"]]})
+                f["id_nodo"] = ren[f["id_nodo"]]
+    by_id = {n["id"]: n for n in kg["nodes"]}
+    propuestos = sorted((n for n in kg["nodes"] if n["type"] == "Sujeto" and n["properties"].get("nivel") == "propuesto"),
+                        key=lambda n: n["id"])
+    descartar = {n["id"] for n in propuestos if mencion_vacia(n["label"])}
+    quitadas = sorted((e for e in kg["edges"] if e["source"] in descartar or e["target"] in descartar),
+                      key=lambda e: (e["source"], e["relation"], e["target"]))
+    filas_quitadas = []
+    for e in quitadas:
+        prop = e["target"] if e["target"] in descartar else e["source"]
+        otro = by_id.get(e["source"] if prop == e["target"] else e["target"], {})
+        pv = e.get("provenance") or {}
+        fila_reg = next((f for f in registro if f.get("id_nodo") == prop and f.get("chunk_id") == pv.get("chunk_id")),
+                        {})
+        filas_quitadas.append({
+            "propuesto": prop, "mencion": by_id[prop]["label"], "marca": MARCA_MENCION_VACIA,
+            "relacion": e["relation"], "source": e["source"], "target": e["target"],
+            "to": pv.get("to"), "archivo": pv.get("archivo"), "chunk_id": pv.get("chunk_id"), "punto": pv.get("punto"),
+            "sujeto_mencion": e.get("sujeto_mencion"), "mencion_verificada": e.get("mencion_verificada"),
+            "indice_relacion": fila_reg.get("indice_relacion"),
+            "extremo": otro.get("id"), "extremo_tipo": otro.get("type"), "extremo_label": otro.get("label"),
+            "tramo_del_extremo": next((p.get("tramo") for p in otro.get("provenances", [])
+                                       if p.get("chunk_id") == pv.get("chunk_id") and p.get("tramo")), None)})
+    if descartar:
+        kg["edges"][:] = [e for e in kg["edges"] if e["source"] not in descartar and e["target"] not in descartar]
+        kg["nodes"][:] = [n for n in kg["nodes"] if n["id"] not in descartar]
+        for f in registro:
+            if f.get("id_nodo") in descartar:
+                f["estado"] = "descartado"
+                f["motivo_descarte"] = MARCA_MENCION_VACIA
+    for i in sorted(descartar):
+        res["descartados"].append({
+            "id": i, "mencion": by_id[i]["label"], "padre_sugerido": by_id[i]["properties"].get("padre_sugerido"),
+            "tos": sorted({p.get("to") for p in by_id[i].get("provenances", []) if p.get("to")}),
+            "aristas_quitadas": sum(1 for x in filas_quitadas if x["propuesto"] == i),
+            "filas_del_registro": sum(1 for f in registro if f.get("id_nodo") == i)})
+    propuestos = [n for n in propuestos if n["id"] not in descartar]
+    for n in propuestos:
+        p = n["properties"].get("padre_sugerido")
+        if not p or (clases.get(p) or {}).get("nivel") != "instancia":
+            continue
+        clase = clases[p].get("instancia_de")
+        if clase and ((clases.get(clase) or {}).get("nivel") == "clase" or clase in roles):
+            n["properties"]["padre_sugerido"] = clase
+            n["properties"]["padre_sugerido_instancia"] = p
+            res["padre_desde_instancia"].append({"id": n["id"], "instancia": p, "padre_sugerido": clase})
+        else:
+            del n["properties"]["padre_sugerido"]
+            n["properties"]["padre_sugerido_descartado"] = p
+            res["padre_descartado"].append({"id": n["id"], "instancia": p})
+    for n in propuestos:
+        if n["properties"].get("padre_sugerido"):
+            continue
+        tos = sorted({p.get("to") for p in n.get("provenances", []) if p.get("to")})
+        rol = {to: (cat["rol_por_to"].get(C.archivo_de_to(to)) or {}).get("rol_id") for to in tos}
+        candidatos = set(rol.values())
+        if len(candidatos) == 1 and None not in candidatos:
+            r = candidatos.pop()
+            n["properties"]["padre_sugerido"] = r
+            n["properties"]["padre_por_defecto"] = "true"
+            res["padre_por_defecto"].append({"id": n["id"], "mencion": n["label"], "tos": tos, "padre_sugerido": r})
+        else:
+            res["sin_rol_de_alcance"].append({"id": n["id"], "mencion": n["label"], "rol_por_to": rol})
+    resumen = {k: len(v) for k, v in res.items()}
+    resumen.update(aristas_quitadas=len(filas_quitadas), detalle=res)
+    return {"resumen": resumen, "aristas_quitadas": filas_quitadas}
+
+
+def bloques_con_rotulo(textos: list[tuple[str, str]]) -> list[dict]:
+    """Bloques de tabla serializada ([TABLA …] … [FIN TABLA …]) con una línea «Rótulo:», de los textos de E0 del
+    nodo, con el conjunto de valores de sus celdas («columna = valor» de las líneas «Fila n:»)."""
+    out, vistos = [], set()
+    for cid, t in textos:
+        for m in RE_BLOQUE_TABLA.finditer(t or ""):
+            r = RE_ROTULO_TABLA.search(m.group(2))
+            if not r or (cid, m.group(1)) in vistos:
+                continue
+            vistos.add((cid, m.group(1)))
+            celdas = {c.split(" = ", 1)[1].strip() for f in RE_FILA_TABLA.findall(m.group(2))
+                      for c in f.split(" | ") if " = " in c}
+            out.append({"chunk_id": cid, "tabla": m.group(1), "rotulo": r.group(1).strip(), "celdas": celdas})
+    return out
+
+
+def unidad_desde_rotulo(el: dict, bloques: list[dict], RCMP, M, desc, titulo, plazo_sin_marcador) -> dict | None:
+    """Decisión 2 de T3-bis: un elemento sin valor ni unidad cuyo tramo es el valor de una celda de un bloque con
+    rótulo hereda la unidad del rótulo («-En millones de pesos-»): la cuantía se detecta sobre «<tramo> <unidad>»
+    con las reglas de U-PYD y el elemento gana valor, unidad y moneda; tramo, comparación y verificación no
+    cambian (si la comparación del texto compuesto fuera otra, no se aplica). La regla anterior, el rótulo y la
+    tabla quedan en `originales`."""
+    if el.get("valor") is not None or el.get("unidad") is not None:
+        return None
+    tramo = str(el.get("tramo") or "").strip()
+    for b in bloques:
+        if tramo not in b["celdas"]:
+            continue
+        frase = re.sub(r"^en\s+", "", b["rotulo"].strip(" -–—()[]"), flags=re.I).strip()
+        compuesto = f"{tramo} {frase}"
+        cs = RCMP.analizar(compuesto, desc, titulo, plazo_sin_marcador) if frase else []
+        if len(cs) != 1 or cs[0].texto != compuesto or cs[0].valor is None or cs[0].comparacion != el.get("comparacion"):
+            continue
+        c = cs[0]
+        nuevo = dict(el)
+        nuevo.update(valor=c.valor, unidad=c.unidad, regla_comparacion=c.regla)
+        for k in ("moneda", "dias_tipo"):
+            if getattr(c, k) is not None:
+                nuevo[k] = getattr(c, k)
+        if c.fuera_de_lista:
+            nuevo["fuera_de_lista"] = sorted(set(nuevo.get("fuera_de_lista") or []) | set(c.fuera_de_lista))
+        nuevo["originales"] = {**(el.get("originales") or {}), "regla_comparacion": el.get("regla_comparacion"),
+                               "unidad_desde_rotulo": b["rotulo"], "tabla": b["tabla"], "chunk_id": b["chunk_id"]}
+        return M.ElementoUmbral.model_validate(nuevo).model_dump(mode="json", exclude_defaults=True)
+    return None
+
+
+def _celdas_por_tabla(tablas_dir: Path | None) -> dict[str, list[tuple[str, list[str]]]]:
+    """chunk_id → [(id de tabla, textos de sus celdas)] de las tablas de e0-r2 (como `_celdas_por_chunk`, por tabla)."""
+    out: dict[str, list[tuple[str, list[str]]]] = {}
+    if tablas_dir is None:
+        return out
+    for to in C.TOS_ORDEN:
+        p = Path(tablas_dir) / f"tablas_{to}.json"
+        if not p.exists():
+            continue
+        for t in json.loads(p.read_text(encoding="utf-8"))["tablas"]:
+            celdas = [str(c) for s in t.get("segmentos", []) for f in s.get("filas", []) for c in f if c]
+            for cid in t.get("chunks", []):
+                out.setdefault(cid, []).append((t["id"], celdas))
+    return out
+
+
+def marcar_umbral_no_cuantificable_r2b(kg: dict, tramos_e1: dict[str, list[str]], celdas_tabla: dict, RCMP) -> dict:
+    """Decisión 3 de T3-bis (S18, primera pieza): la Restriccion limite_cuantitativo que queda sin lista de
+    umbrales y sin cuantía detectable (RCMP.detectar_cuantias) en su descripción, sus tramos (los de umbral de E1 y
+    el de la entidad, en la procedencia) y las celdas de las tablas de sus chunks lleva la marca r2b
+    `umbral_no_cuantificable` con el sha256 del detector. Ampliación tomada en la sesión de T3-bis: también la lleva,
+    con su propio motivo y el sha256 de la lista, la que solo tiene cuantías en celdas de tablas forzadas a residual
+    (tablas_residuales_forzadas_r2b.json). La marca va en `properties_no_definidas`: NodoR2 y la shape S26 cierran
+    las claves de `properties` por tipo."""
+    det_sha = C.sha256_path(Path(RCMP.__file__))
+    crudo = TABLAS_FORZADAS_R2B.read_bytes()
+    forz_sha = C.sha256_bytes(crudo)
+    forzadas = {t["tabla"] for t in json.loads(crudo.decode("utf-8"))["tablas"]}
+    filas, sin_marca = [], []
+    for n in sorted(kg["nodes"], key=lambda x: x["id"]):
+        props = n["properties"]
+        if n["type"] != "Restriccion" or props.get("tipo") != "limite_cuantitativo" or props.get("umbrales"):
+            continue
+        cids = sorted({p.get("chunk_id") for p in n.get("provenances", []) if p.get("chunk_id")})
+        textos = ([("descripcion", props.get("descripcion"))] + [("tramo_de_umbral_e1", t) for t in tramos_e1.get(n["id"], [])]
+                  + [("tramo", p.get("tramo")) for p in n.get("provenances", []) if p.get("tramo")])
+        en_texto = sorted({o for o, t in textos if isinstance(t, str) and RCMP.detectar_cuantias(t)})
+        tablas_con = sorted({tid for cid in cids for tid, cs in celdas_tabla.get(cid, [])
+                             if any(RCMP.detectar_cuantias(x) for x in cs)})
+        fila = {"id": n["id"], "to": n["provenance"].get("to"), "chunks": cids, "descripcion": props.get("descripcion"),
+                "cuantias_en": en_texto, "tablas_con_cuantias": tablas_con}
+        if not en_texto and not tablas_con:
+            motivo = MOTIVO_SIN_CUANTIA
+        elif not en_texto and all(t in forzadas for t in tablas_con):
+            motivo = MOTIVO_TABLA_FORZADA
+        else:
+            sin_marca.append(fila)
+            continue
+        nd = n.setdefault("properties_no_definidas", {})
+        nd["umbral_no_cuantificable"] = True
+        nd["umbral_no_cuantificable_motivo"] = motivo
+        nd["umbral_no_cuantificable_detector_sha256"] = det_sha
+        if motivo == MOTIVO_TABLA_FORZADA:
+            nd["umbral_no_cuantificable_tablas_forzadas_sha256"] = forz_sha
+        filas.append({**fila, "motivo": motivo})
+    return {"resumen": {"marcados": len(filas), "por_motivo": C.conteo([{"m": f["motivo"]} for f in filas], "m"),
+                        "por_to": C.conteo(filas, "to"), "sin_marca_con_cuantia": [f["id"] for f in sin_marca],
+                        "detector_sha256": det_sha, "tablas_forzadas_sha256": forz_sha},
+            "filas": filas, "sin_marca": sin_marca}
 
 
 def enriquecer_procedencias_r2(kg: dict) -> dict:
@@ -988,6 +1234,10 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
     inv = INV.verificar_invariantes(kg, m["grafos_pre_merge"], merges_nodo=len(m["merges_cross_to"]),
                                     merges_arista=INV.merges_arista_de(m["grafos_pre_merge"], kg["edges"]))
     assert inv["ok"], inv["fallos"]
+    if r2b:
+        r_prop = normalizar_propuestos_r2b(kg, registro_total, m["renombres"], cat)
+        resumen["propuestos_r2b"] = r_prop["resumen"]
+        wl("propuestos_descartados_aristas_quitadas.jsonl", r_prop["aristas_quitadas"])
     resumen["merge"] = {"merges_cross_to": len(m["merges_cross_to"]),
                         "nodos_con_colision_cross_to": sum(1 for n in kg["nodes"] if n.get("properties", {}).get(
                             "colision_cross_to") == "true"),
@@ -1042,6 +1292,10 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
     r_umb = llenar_umbrales_r2(kg, tramos_e1, _celdas_por_chunk(tablas_dir), M, V, RCMP, pol, fase)
     resumen["umbrales"] = r_umb["resumen"]
     w("umbrales_rangos_unidad_repetida.json", r_umb["rangos"])
+    if r2b:
+        r_nc = marcar_umbral_no_cuantificable_r2b(kg, tramos_e1, _celdas_por_tabla(tablas_dir), RCMP)
+        resumen["umbral_no_cuantificable"] = r_nc["resumen"]
+        w("umbral_no_cuantificable.json", {"marcados": r_nc["filas"], "sin_marca_con_cuantia": r_nc["sin_marca"]})
 
     resumen["procedencia"] = enriquecer_procedencias_r2(kg)
     inv = INV.verificar_invariantes(kg)
