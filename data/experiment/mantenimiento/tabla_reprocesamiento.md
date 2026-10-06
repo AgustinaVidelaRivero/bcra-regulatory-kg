@@ -251,6 +251,14 @@ Notas a filas:
   `r1_e4.py:499`): un cambio frena los dos y, re-sellado, si toca la forma o los alias de los tipos o los
   predicados, también es F14. `validador_r2` usa además las reglas de ítem y de mini-chunk a mitad de oración del
   mensaje de E1 (`validador_r2.py:251-264`): un cambio en esas reglas es F22b y F14b a la vez.
+- **F15. Parámetro `con_cola` de la cadena r2 (U-SINCOLA-T0, enmienda 1 al mandato, 06/10/2026).**
+  `ensamblar_tanda0.py --sin-cola` llega ahora también a la cadena r2: `correr_cadena_r2` descarta, en un
+  único punto y después de `entrada_r2`, los registros de la cola humana (`descartar_cola_r2`), y lo que
+  sigue (omisiones, paso por E3, marca de la cola, aristas derivadas que tocan la cola) se computa sobre lo
+  que queda; el reporte del ensamblado declara `con_cola` y las unidades descartadas por TO. Es solo código
+  sobre lo guardado: no toca el request de E1 ni el de E3, así que no mueve ninguna clave de la caché
+  (`selftest_clave_cache` sigue en verde, A1r y A3r OK). Sin la bandera, la salida es la de siempre: los dos
+  r2b sellados, byte a byte.
 - **F18a.** E0 solo arma unidades con páginas de cuerpo (`e0_lib.py:914-915`). Caso a la vista: en la corrida del
   2026-09-07, `ctacte` cambió solo en la página 85 de 86 (`job_actualizacion/corridas/2026-09-07/reporte.md:80`),
   que en la E0 de la tanda 0 no pertenece a ninguna unidad. Que E0 sobre el PDF nuevo devuelva las mismas unidades

@@ -1,0 +1,103 @@
+--- <REPO>/data/experiment/tanda0/code/ensamblar_tanda0.py	2026-10-06 11:10:32
++++ <SCRATCHPAD>/copia_sc1bis/data/experiment/tanda0/code/ensamblar_tanda0.py	2026-10-06 16:54:12
+@@ -1158,10 +1158,25 @@
+                 total[k] = total.get(k, 0) + v
+     return {k: (dict(sorted(v.items())) if isinstance(v, dict) and k == "por_estado" else v)
+             for k, v in total.items()}
++
++
++def descartar_cola_r2(regs: list[dict], con_cola: bool) -> tuple[list[dict], list[str]]:
++    """U-SINCOLA-T0, enmienda 1 al mandato (06/10/2026), punto 3.c: con
++    `con_cola` False, los registros de la cola humana que devuelve
++    `runner_corpus.entrada_r2` (`cola_humana` True) se descartan antes de
++    `resolver_relaciones_r2` y de `ensamblar_r2`, en ese único punto; el
++    registro de omisiones, el paso por E3, `cola_estados`, `flaggear_cola_r2`
++    y `aristas_derivadas_de_cola` se computan sobre lo que queda. Con True, los
++    registros vuelven tal cual. Devuelve (registros, chunk_ids descartados en
++    el orden de E0)."""
++    if con_cola:
++        return regs, []
++    return ([r for r in regs if not r.get("cola_humana")],
++            [r["chunk_id"] for r in regs if r.get("cola_humana")])
+ 
+ 
+ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Path | None = None,
+-                     fase: str | None = None) -> dict:
++                     fase: str | None = None, con_cola: bool = True) -> dict:
+     """Cadena r2. `w(nombre, obj)` y `wl(nombre, filas)` escriben JSON y JSONL
+     en <salida>/r2/ (None = no escriben). `fase`: «r2a» o «r2b»; por defecto,
+     la del perfil del crudo (r2b con la forma r2). Pasarla explícita sirve a
+@@ -1171,7 +1186,10 @@
+     lista de umbrales completada (o), registro de omisiones (p), aristas
+     derivadas que tocan un nodo de la cola contadas aparte (q), base con el
+     detector de `remite_a` (r) y el conteo de elementos sin verificar por E3
+-    en el reporte (s); el plazo sin marcador (m) va por `llenar_umbrales_r2`."""
++    en el reporte (s); el plazo sin marcador (m) va por `llenar_umbrales_r2`.
++    `con_cola` (U-SINCOLA-T0, enmienda 1, 06/10/2026): con False, los registros
++    de la cola humana se descartan después de `entrada_r2`, en ese único punto
++    (`descartar_cola_r2`), y lo que sigue se computa sobre lo que queda."""
+     import runner_corpus as RC          # noqa: PLC0415 — solo con --perfil-r2
+     w = w or (lambda *a, **k: None)
+     wl = wl or (lambda *a, **k: None)
+@@ -1189,6 +1207,8 @@
+     resumen: dict = {"perfil_e1_del_crudo": perfil.nombre, **versiones, "etapas": []}
+     if r2b:
+         resumen["fase"] = fase
++    resumen["con_cola"] = con_cola
++    resumen["cola_descartada_por_to"] = {}
+     omisiones: list[dict] = []
+     paso_por_e3: dict[str, dict] = {}
+     chunks_cola: set[str] = set()
+@@ -1198,6 +1218,8 @@
+     for to in C.TOS_ORDEN:
+         chunks = _chunks_r2(to)
+         regs = RC.entrada_r2(to, C.SALIDA / to, chunks, perfil, validar)
++        regs, descartadas = descartar_cola_r2(regs, con_cola)
++        resumen["cola_descartada_por_to"][to] = {"n": len(descartadas), "chunks": descartadas}
+         res = E4.resolver_relaciones_r2(regs, cat["indice"], cat["rol_por_to"], versiones)
+         ens = e2_lib.ensamblar_r2(chunks, regs, cat["labels"], M.SUJETOS_R2_SET, M.firma_r2,
+                                   M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"], fase=fase)
+@@ -1401,7 +1423,11 @@
+ 
+ 
+ def ensamblar_manifiesto_r2(man: MC.Manifiesto, entrada: Path, salida: Path,
+-                            tablas_dir: Path | None = None) -> dict:
++                            tablas_dir: Path | None = None, con_cola: bool = True) -> dict:
++    """`con_cola` (U-SINCOLA-T0, enmienda 1 al mandato, 06/10/2026): con False,
++    las dos corridas de `correr_cadena_r2` descartan los registros de la cola
++    humana (`descartar_cola_r2`); el reporte declara `con_cola` y las unidades
++    descartadas por TO. Con True (default), la salida de siempre."""
+     perfil = perfil_e1.perfil(man.perfil_e1)
+     entrada, salida = Path(entrada), Path(salida)
+     salida_r2 = salida / "r2"
+@@ -1423,9 +1449,9 @@
+ 
+     with redirigido(plan):
+         print("=== cadena r2, corrida 1 ===", flush=True)
+-        a = correr_cadena_r2(man, perfil, w, wl, tablas_dir)
++        a = correr_cadena_r2(man, perfil, w, wl, tablas_dir, con_cola=con_cola)
+         print("=== cadena r2, corrida 2 (sin escribir) ===", flush=True)
+-        b = correr_cadena_r2(man, perfil, None, None, tablas_dir)
++        b = correr_cadena_r2(man, perfil, None, None, tablas_dir, con_cola=con_cola)
+     salida_r2.mkdir(parents=True, exist_ok=True)
+     (salida_r2 / "kg.json").write_text(a["kg_json"], encoding="utf-8")
+     reporte = {"grafo": f"{man.nombre}/r2", "perfil": "r2",
+@@ -1504,7 +1530,8 @@
+     ap.add_argument("--salida", type=Path, required=True, help="directorio de salida del ensamblado")
+     ap.add_argument("--hasta", choices=ETAPAS, default="final")
+     ap.add_argument("--sin-cola", action="store_true",
+-                    help="no inyectar la cola flaggeada (r1 corrió CON cola: default con cola)")
++                    help="no inyectar la cola flaggeada (r1 corrió CON cola: default con cola); en la cadena r2 "
++                         "(U-SINCOLA-T0, enmienda 1) descarta los registros de la cola humana después de entrada_r2")
+     ap.add_argument("--motor", choices=("replica", "ensamblar_r1"), default="replica",
+                     help="replica (default) = cadena r1 paso a paso; ensamblar_r1 = ensamblar_r1.correr "
+                          "directo (solo perfil produccion_dev)")
+@@ -1527,7 +1554,7 @@
+     forma_r2 = esq is not None and getattr(esq, "forma_salida", "v3") == "r2"
+     if args.perfil_r2 or forma_r2:
+         tablas = args.tablas_e0_r2 if args.tablas_e0_r2 is not None else (man.e0_salida if forma_r2 else None)
+-        res = ensamblar_manifiesto_r2(man, args.entrada, args.salida, tablas)
++        res = ensamblar_manifiesto_r2(man, args.entrada, args.salida, tablas, con_cola=not args.sin_cola)
+         print(json.dumps(res, ensure_ascii=False, indent=1))
+         if args.resumen_json:
+             args.resumen_json.parent.mkdir(parents=True, exist_ok=True)

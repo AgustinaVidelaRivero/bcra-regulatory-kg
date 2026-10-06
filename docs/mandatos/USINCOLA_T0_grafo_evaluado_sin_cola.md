@@ -182,3 +182,17 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 135 líneas de arriba (`7
   §7, ítem 4) y se mide aparte, sin re-sellar, cuántos reclamos desaparecen con E3 corregido (O3 de U-E3-LISTAS). Los grafos de esta
   unidad son los evaluados de la tanda 0, con la exclusión de la cola y ese límite declarados. Cuando llegue el FRENO de SC1-bis, la
   mesa lo revisa y la autora despacha SC2 (sello y carga). La lectura de muestra de las unidades aceptadas se despacha tras SC2.
+- **06/10/2026 — revisión del FRENO SC1-bis: las dos cifras NO VERIFICADA y la declaración de los «punto sin nodos».** (1) El «18
+  unidades» del ejemplo de la tesis (SC1.6 del texto firmado) era una cifra de la mesa sin ancla: sale de contar los ids `cla::…` de
+  `docs/tesis/figuras/ejemplo_prestamo_datos.json`, que son 18 porque incluyen dos rótulos de búsqueda (`cla::3.7_en_top5`,
+  `cla::5.1.1.1_en_top5`); las unidades del ejemplo son 16 ids, 15 con chunk en la E0 r2b (`cla::5.1.1` es el punto contenedor, sin
+  chunk propio), y 0 están en la cola: el control de SC1.6 vale con esa definición. (2) El «715» de la forma A es `condicion_de_item`
+  (601) más `sin_condicion_de` (114) de `reext_t0/t3bis/salida/controles_t3bis.json`, `e_forma_A.conteos`; en el grafo sin cola los
+  denominadores son 575 y 113 (688) con los mismos 42 casos. (3) El aumento de las citas irresolubles por «punto sin nodos» en el grafo
+  sin cola (diez: 213 de 495 → 255 de 530 en el reporte) se explica entero por la exclusión: en el registro de remisiones, 45 de las 257
+  entradas «punto sin nodos» del grafo sin cola apuntan a una unidad de la cola (0 en el completo); sin ellas quedan 212 de 495, lo
+  mismo que en el completo (213 de 503 por entradas). Cuando se reporte la cobertura del grafo evaluado, la cifra se declara
+  desglosada: «citas a un punto sin nodos: N; de ellas, con destino en una unidad excluida del grafo evaluado por la regla de la cola:
+  M, irresolubles por construcción y no por el detector; netas: N − M», con la cifra del grafo completo al lado. SC2 lo incorpora al
+  registro de la vista y a su freno; la causa «destino en unidad excluida» como categoría propia del detector queda para una unidad
+  de código posterior (U-OMISIONES-COD).
