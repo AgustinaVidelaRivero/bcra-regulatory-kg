@@ -678,3 +678,30 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   alcance); en lo demás vale la propuesta. No hay control al azar con una lectura adicional de la autora: el control
   es la coincidencia de dos lecturas independientes completas de los puntos 1, 6, 7 y 8, con una tercera en los
   puntos 7 y 8, y la adjudicación de la autora sobre las divergencias.
+
+- **06/10/2026 — decisiones de la autora sobre el FRENO T4, segundo tramo (`data/experiment/reext_t0/freno_t4_tramo2.md`,
+  sin commit al escribir esta nota; primer tramo en `be6b074`, nota anterior en `04cec96`).**
+    1. Cola humana. Con la adjudicación, 12 de 30 unidades con error (Wilson al 95 %: 0,246–0,577): la regla del 25 %
+       se dispara, y la autora decide que las 74 unidades de la cola humana de la tanda 0 **salen del grafo evaluado de
+       la tanda 0**, como fija la enmienda al protocolo del 04/10/2026 (§1, punto 6). La forma de la salida (un
+       ensamblado nuevo sin las 74, o un filtro sobre el grafo sellado en la carga y en la evaluación) queda PENDIENTE,
+       a decidir con la comparación de la revisión.
+    2. Fe de erratas de la decisión 2 de la nota del 06/10/2026 (`04cec96`): las siete clases del contador de
+       omisiones `meta_normativo` (`data/experiment/pyd_r2/code/validador_r2.py`, `MARCAS_META_NORMATIVO`) son deber,
+       prohibición, facultad, condición, excepción, alcance y modalidad; la nota decía «cuantificador» en lugar de
+       «prohibición». La decisión no cambia (una remisión sin contenido propio cuenta solo si trae una de las siete
+       clases) y ninguna cifra cambia: las 5 remisiones puras no traen ninguna clase de las dos listas.
+    3. Decisiones posteriores (06/10/2026, con el segundo tramo commiteado en `889b2f9`). La forma de la salida es la
+       (a): un ensamblado nuevo sin la cola, en una unidad corta después de T5 (nombre propuesto: U-SINCOLA-T0;
+       registrada en `docs/plan_tesis.md`, B2.11), con `ensamblar_tanda0.py --sin-cola` y el criterio de toda la
+       procedencia en la cola (313 nodos y 1.503 aristas salen; los 21 nodos compartidos se quedan), su sello, su
+       entrada en la suite (las expectativas de la entrada r2b sellada, sin cambiar ninguna; lo que difiera por la
+       salida de la cola, declarado) y su recarga en Neo4j. T5 la reporta y no la ejecuta.
+    4. Adjudicación de la clasificación por supuesto del punto 7: en `ext::4.1.3.2`, «emisoras no financieras» va
+       **dentro de una norma** (es el sujeto de la Operacion por `aplica_a`), no omitido, como lo leyó la revisión.
+       Cifras por supuesto que quedan, sobre 137 (Wilson al 95 %): Condicion con relación 43 (0,242–0,396), dentro de
+       una norma 77 (0,478–0,642), fusionados 7 (0,025–0,102), omitidos 2 (0,004–0,052), sin relación 8 (0,030–0,111).
+       Observación que se declara con el denominador: las filas de la fase A que enumeran (i) a vii), a) a d), i) a
+       iii), los tres «cuando») se cuentan por miembro, y dos filas («desde el 14/04/25 con pagos a la vista», en
+       `ext::10.4.4` y `ext::10.3.6`) se parten en fecha y porción; la columna `miembro` de `tasas_t4.json` lo
+       documenta. La cifra del criterio sellado (1 de 30) no cambia.

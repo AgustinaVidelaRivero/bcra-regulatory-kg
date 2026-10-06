@@ -311,8 +311,11 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      con marca; `t4/salida/sorteos_t4.json`), las normativas sobre el tramo propio quedan entre 377 y 526 según la
      lectura (centros de las fracciones; los intervalos de Wilson, en el paquete de revisión del FRENO T4), y las del
      tramo heredado en 302; la cifra firme sale del segundo tramo, con la adjudicación. (b) Una Condicion por supuesto:
-     1 de 30 unidades del grupo c cumple el criterio sellado; en 26 de 30 unidades hay al menos un supuesto dentro de
-     una norma, y en la mayoría de ellas otros supuestos sí quedan como Condicion con su relación: la proporción por
-     supuesto sale del segundo tramo (medida complementaria). Los dos miden lo que el modelo de E1 hace con el prefijo congelado:
+     1 de 30 unidades del grupo c cumple el criterio sellado; en 25 de 30 unidades hay al menos un supuesto dentro de
+     una norma, y en la mayoría de ellas otros supuestos sí quedan como Condicion con su relación. Medida por supuesto
+     del segundo tramo (`t4/salida/tasas_t4.json`, 137 supuestos de la fase A, clasificación de la instancia con
+     segunda lectura de la mesa y adjudicación de la autora del 06/10/2026): 43 de 137 son Condicion con su relación
+     hacia la norma que condicionan (Wilson al 95 %: 0,242–0,396), 77 de 137 van dentro de una norma (0,478–0,642), 7
+     fusionados, 2 omitidos y 8 sin relación; las enumeraciones de la fase A se cuentan por miembro. Los dos miden lo que el modelo de E1 hace con el prefijo congelado:
      son la línea de base de la comparación con otro modelo, y lo que se pueda corregir en código entre tandas se
      declara aparte de lo que queda como límite del modelo.
