@@ -4,8 +4,9 @@ Registro que solo agrega, previsto por la enmienda 4 al protocolo entre tandas (
 (`data/experiment/reresolucion_catalogo/freno_r1.md`, §4). Una fila por documento y por tanda; las entradas de clase no van a
 `catalogo_sujetos_r2.json` (candados). R2-2 de U-RERESOL-CAT define el formato legible por código y lo carga desde acá, sin
 cambiar las decisiones. Regla del paso de lectura: solo clases que ya existen, nombradas de forma exacta por el pasaje (una o
-dos); el título vale como pasaje cuando el cuerpo no tiene frase de alcance y nombra exactamente una clase (enmienda 4, §2,
-punto 7); una sección de un régimen informativo cuyo rol existe reutiliza ese rol (§2, punto 8, acotado: no decide ESQ-RI-3).
+dos); el título vale como pasaje solo si el cuerpo no tiene frase de alcance y nombra una o dos clases exactas que son el
+sujeto obligado o el informante del documento, no el objeto de la norma (enmienda 4, §2, punto 7, precisión de la autora del
+06/10/2026); una sección de un régimen informativo cuyo rol existe reutiliza ese rol (§2, punto 8, acotado: no decide ESQ-RI-3).
 Fichas con los pasajes completos: paquete de la mesa `hoja_de_ruta_tanda1_mesa/fichas_alcance_12_documentos_tanda1_mesa.md`
 (06/10/2026). Catálogo: `catalogo_sujetos_r2.json` (115 entradas; 80 clases e instancias, 35 roles).
 
@@ -32,18 +33,21 @@ quedan cubiertos para el pre-registro de la tanda 1 (la lista real sale de la se
 ## Candidatos a la regla del título en el resto del universo (no decididos; lectura del cuerpo pendiente)
 
 Recómputo del 06/10/2026 sobre `escalado_prep/inventario_tos.csv` contra los labels y alias del catálogo (singular y plural):
-86 de los 152 TOs no tienen alcance; en 25 de ellos el título nombra exactamente una clase (3 son ri_ccna, ri_cc y nmcief, ya
-decididos) y en 5 nombra dos («casas y agencias de cambio»: ri2_ae, reqcac, ri2_cs, ri2_pm, ri_itme), que la regla del título no
-cubre. Los 22 restantes son candidatos para la lectura de su tanda: la regla exige además que el cuerpo no tenga frase de
-alcance, y conviene exigir que la clase nombrada sea el sujeto obligado o informante, no el objeto del régimen.
+86 de los 152 TOs no tienen alcance; en 25 el título nombra exactamente una clase (3 son ri_ccna, ri_cc y nmcief, ya
+decididos) y en 5 nombra dos («casas y agencias de cambio»). Con la regla precisada («una o dos clases exactas que son el
+sujeto obligado o el informante»), los 27 no decididos se reparten así. La otra condición de la regla, que el cuerpo no tenga
+frase de alcance, se verifica en la lectura de la tanda de cada uno.
 
-| TO | clase que nombra el título | ¿la clase es el sujeto obligado o informante? (lectura del título) |
+| estado | TO | clase(s) que nombra el título |
 |---|---|---|
-| inspag, cateloc, horari, seguef, nmaeef, ri_ii_31_12_19, ri_mmsef, ri_sef | `Sujeto_entidad_financiera` | sí |
-| ri_ccpnp | `Sujeto_caja_de_credito` | sí |
-| ri_pspapt, ri_pspii (no segmentable), ri_psprca, ri_psp | `Sujeto_proveedor_de_servicios_de_pago` | sí |
-| opecam | `Sujeto_entidad_cambiaria` | sí |
-| regpri | `Sujeto_banco` | dudoso: bancos provinciales y municipales en privatización |
-| ri_icpipsp, ri_iepsp | `Sujeto_proveedor_de_servicios_de_pago`, `Sujeto_proveedor_no_financiero_de_credito` | dudoso: informes de contadores sobre el cumplimiento de esos sujetos |
-| fimipyme, ri_fcem (no segmentable), ri_pfmipyme (no segmentable) | `Sujeto_mipyme` | no: la MiPyME es destinataria; obligan a las entidades o a las plataformas |
-| ri_dsf, ri_esd | `Sujeto_deudor` | no: el deudor es el objeto informado; informan las entidades financieras |
+| candidato (la clase es el sujeto obligado o informante) | inspag, cateloc, horari, seguef, nmaeef, ri_ii_31_12_19, ri_mmsef, ri_sef | `Sujeto_entidad_financiera` |
+| candidato | ri_ccpnp | `Sujeto_caja_de_credito` |
+| candidato | ri_pspapt, ri_pspii (no segmentable), ri_psprca, ri_psp | `Sujeto_proveedor_de_servicios_de_pago` |
+| candidato | opecam | `Sujeto_entidad_cambiaria` |
+| candidato (dos clases) | ri2_ae, reqcac, ri2_cs, ri2_pm (fichas: release posterior), ri_itme (no segmentable) | `Sujeto_casa_de_cambio`, `Sujeto_agencia_de_cambio` |
+| dudoso: decide la lectura | regpri | `Sujeto_banco` (bancos provinciales y municipales en privatización) |
+| dudoso: decide la lectura | ri_icpipsp, ri_iepsp | `Sujeto_proveedor_de_servicios_de_pago`, `Sujeto_proveedor_no_financiero_de_credito` (informes de contadores sobre el cumplimiento de esos sujetos) |
+| **FUERA DE LA REGLA** (el título nombra el objeto, no el sujeto; decisión de la autora del 06/10/2026) | fimipyme, ri_fcem (no segmentable), ri_pfmipyme (no segmentable) | `Sujeto_mipyme`: la MiPyME es destinataria; obligan a las entidades o a las plataformas |
+| **FUERA DE LA REGLA** (ídem) | ri_dsf, ri_esd | `Sujeto_deudor`: el deudor es el objeto informado; informan las entidades financieras |
+
+Suma: 19 candidatos (14 con una clase, 5 con dos), 3 dudosos, 5 fuera de la regla = 27.

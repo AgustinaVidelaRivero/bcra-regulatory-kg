@@ -65,10 +65,12 @@ prueba (enmienda 2, punto 3).
 5. **Quién decide.** La lectura es asistida y declarada. La aprueba la autora, documento por documento, antes
    de extraer.
 6. **Costo.** La lectura se hace siempre sin API.
-7. **El título como pasaje de alcance** (regla general declarada por la autora el 06/10/2026). Cuando el cuerpo de un
-   documento no tiene frase de alcance y su título nombra exactamente una clase del catálogo, el título vale como pasaje
-   de alcance y el documento recibe esa entrada de clase; se aplica igual a todo documento en esa situación, y la lectura
-   deja constancia de que la base es el título. Primer caso: ri_cc → `Sujeto_caja_de_credito`.
+7. **El título como pasaje de alcance** (regla general declarada por la autora el 06/10/2026 y precisada el mismo día). El
+   título vale como pasaje de alcance solo si el cuerpo del documento no tiene frase de alcance, y si nombra una o dos
+   clases exactas del catálogo que son el sujeto obligado o el informante del documento, no el objeto de la norma («una o
+   dos», como la regla del pasaje del punto 3). El documento recibe esa entrada de clase; se aplica igual a todo documento
+   en esa situación, y la lectura deja constancia de que la base es el título. Primer caso: ri_cc → `Sujeto_caja_de_credito`.
+   Fuera de la regla por nombrar el objeto: fimipyme, ri_fcem y ri_pfmipyme (MiPyME) y ri_dsf y ri_esd (deudores).
 8. **Secciones de un mismo régimen informativo** (decisión de la autora del 06/10/2026, acotada). Un documento que es una
    sección de un régimen informativo cuyo rol ya está en el catálogo reutiliza ese rol (primer caso: ri_rml y ri_gerc →
    `Sujeto_rol_entidad_comprendida_reginf`, el del Régimen Informativo Contable Mensual). No decide ESQ-RI-3, que es la
