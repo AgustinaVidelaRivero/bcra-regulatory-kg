@@ -196,3 +196,40 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 135 líneas de arriba (`7
   M, irresolubles por construcción y no por el detector; netas: N − M», con la cifra del grafo completo al lado. SC2 lo incorpora al
   registro de la vista y a su freno; la causa «destino en unidad excluida» como categoría propia del detector queda para una unidad
   de código posterior (U-OMISIONES-COD).
+- **06/10/2026 — revisión del FRENO SC2 (final de la unidad) y nota de cierre (SC2 sin commit al escribir esta nota; la nota
+  anterior quedó en 01046b6).**
+  - La revisión independiente reprodujo SC2 sobre una copia sin enlaces: las siete entradas selladas de la fixture, iguales en
+    su texto canónico a las de HEAD, y las dos nuevas copian su entrada r2b salvo `kg`, `kg_sha256`, `registro_dir`, el rótulo y
+    la evidencia (diff +848/−0); `grafos.py` con exactamente dos claves más (+34/−0) y las selladas iguales; la suite sobre la copia
+    con la fixture del repo da en los dos grafos los mismos 68 estados que el r2b sellado (56 coinciden, 9 NO VERIFICADAS, 3
+    regresiones declaradas: RT-C5-3, RT-C6-1, RT-C6-2) y los mismos archivos que dejó SC2 en cada ensamblado; las shapes PASA con
+    resultados y conteos iguales; `selftest_regression_kg` 184/184 y `selftest_shapes_congelado` 84/84; la corrida en seco de SC2
+    (`sincola_t0/sc2/dry_registro_sc2.py`) OK con 9 claves; el desglose de «punto sin nodos» recomputado igual a lo declarado en los
+    dos grafos; el control de Neo4j, en solo lectura, OK (8.503 / 26.129 y 6.723 / 22.084, 0 nodos y 0 aristas con la marca de
+    la cola, `KG_Meta.kg_sha256` igual al sha256 del archivo, `commit_sellado` PENDIENTE); sha256 de 449 archivos del repo igual
+    antes y después; 2.213 `.pyc`.
+  - Conciliación de «punto sin nodos» (cuatro cifras, dos unidades de conteo). El registro de remisiones cuenta ítems de
+    `irresolubles` (uno por entrada del registro; una misma cita puede estar en dos entradas); el reporte del ensamblado cuenta
+    citas distintas por (chunk de origen, tramo, unidad citada), la `unidad_de_cita` que declara. En el grafo sin cola de los diez,
+    257 ítems son 255 citas distintas: `ext::7.1.1.3` cita a `ext::7.1.1.1` y a `ext::7.1.1.2` con el mismo tramo en dos
+    entradas; en desarrollo, 217 son 215 por las mismas dos. Lo mismo explica 503 contra 495 y 540 contra 530 (repeticiones en
+    todas las causas); en el grafo completo no hay repetición entre las de «punto sin nodos» (213 = 213; 175 = 175). Las netas
+    (212 en diez, 174 en desarrollo, iguales en las dos unidades de conteo) no coinciden con el grafo completo (213 y 175): la
+    diferencia es una cita cuyo ORIGEN es una unidad de la cola (`ext::8.5.19.2` → `ext::8.5.17`), que el grafo completo cuenta y
+    el grafo sin cola no tiene porque la unidad que cita quedó excluida. Las 45 (diez) y 43 (desarrollo) «con destino en una
+    unidad excluida» del registro son 43 y 41 citas distintas: 36 y 34 con destino en una unidad de la cola, y 7 con destino en
+    `cap::6.3`, cuyo único bloque con nodos (`cap::6.3::intro`) está en la cola; sin ellas, las 43 y 41 citas que el grafo sin cola
+    suma respecto del completo se explican enteras por la exclusión.
+  - Fe de erratas de la nota de la revisión de SC1-bis (01046b6, punto 3): decía «sin ellas quedan 212 de 495, lo mismo que en el
+    completo (213 de 503 por entradas)». No es lo mismo: 212 = 213 − 1, por la cita con origen en la cola; y «212 de 495» mezclaba
+    la unidad del registro (ítems) con la del reporte (citas distintas). La fórmula de declaración de esa nota sigue vigente, con
+    la unidad de conteo dicha en cada cifra.
+  - Propuesta de la mesa para la cifra que cita la tesis (la decisión es de la autora y se asienta con el sello): la del reporte
+    del ensamblado, citas distintas, que es la unidad que la sección 4.5 ya usa para `remite_a`: en el grafo evaluado de los diez,
+    255 citas a un punto sin nodos de 530 irresolubles, 43 con destino en una unidad excluida por la regla de la cola, netas 212;
+    grafo completo 213 de 495, una de ellas con origen en la cola. Desarrollo: 215 de 446, 41, 174; completo 175 de 411.
+  - Pasos siguientes. El sello (`commit_sellado` en `grafos.py`) va en el commit siguiente de la autora, con la decisión anterior;
+    con él la unidad queda CERRADA. R2-1 de U-RERESOL-CAT, en FRENO con W1 a W3 como parches, los aplica al repo cuando su «seguí»
+    siguiente le traiga el hash del commit de SC2 (la instancia no lo detecta sola: su despacho fijó la condición, no el aviso).
+    La lectura de muestra de las unidades aceptadas, prevista tras SC2, queda en su mandato en versión para firmar
+    (`docs/mandatos/ULECTURA_ACEPTADAS_tasa_error_tanda0.md`, unidad U-LECTURA-ACEPTADAS).

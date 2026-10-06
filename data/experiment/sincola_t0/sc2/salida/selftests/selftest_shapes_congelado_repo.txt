@@ -1,0 +1,87 @@
+[ok ] base: todas las bloqueantes PASS, informativas en 0, veredicto PASA
+[ok ] vocabulario: 9 tipos, 13 predicados, enum de 6, requisito_de_estructura retirado
+[ok ] candado: un sha esperado distinto FRENA (CandadoShaError)
+[ok ] candado: un módulo inexistente FRENA (VocabularioCongeladoError)
+[ok ] S1 pasa: esqueleto, padre_sugerido y los 13 predicados son admitidos
+[ok ] S1 falla: relación fuera del vocabulario
+[ok ] S2 pasa: sin aristas colgantes
+[ok ] S2 falla: arista hacia un nodo inexistente
+[ok ] S3 pasa: matriz congelada + esqueleto + referencia cruzada + padre_sugerido
+[ok ] S3 falla: aplica_a hacia un no-Sujeto (matriz)
+[ok ] S3 falla: esqueleto entre no-Sujetos
+[ok ] S3 falla: referencia nodo->nodo SIN rol_fuente=referencia_cruzada cae en la matriz
+[ok ] S3 falla: padre_sugerido desde un Sujeto no propuesto
+[ok ] S3 falla: padre_sugerido hacia un Sujeto propuesto
+[ok ] S4 pasa: provenance g3 con esqueleto de to nulo admitido
+[ok ] S4 falla: falta la clave rol_documental
+[ok ] S4 falla: to nulo en un rol_documental distinto de esqueleto
+[ok ] S4 falla: provenances vacía
+[ok ] S4 falla: provenance != provenances[0] (en una arista)
+[ok ] S5 pasa: todos los punto no vacíos
+[ok ] S5 falla: punto vacío
+[ok ] S6 pasa: archivos = TextoOrdenado ∪ esqueleto, sin nada codificado
+[ok ] S6 falla: archivo que no es de ningún TextoOrdenado ni de esqueleto
+[ok ] S15 pasa: rol con miembro_de de una clase; lista declarada 0 = huérfanos 0
+[ok ] S15 falla: rol huérfano no declarado
+[ok ] S19 pasa: clase y rol en catálogo, propuesto con cuarentena y padre_sugerido
+[ok ] S19 falla: Sujeto clase fuera del catálogo
+[ok ] S19 falla: nivel inválido
+[ok ] S19 falla: propuesto sin padre_sugerido
+[ok ] S19 falla: sin --excepciones el catálogo es vacío
+[ok ] S20 pasa: tipos dentro del enum congelado
+[ok ] S20 falla: valor RETIRADO (requisito_de_estructura) se cuenta como retirado
+[ok ] S20 falla: otro valor fuera del enum se cuenta aparte
+[ok ] S20 falla: tipo ausente cuenta como otro valor fuera del enum
+[ok ] S7 pasa: (type, label) únicos
+[ok ] S7 falla (informativa): duplicado exacto no cambia el veredicto
+[ok ] S8 pasa: sin colisión de label entre types
+[ok ] S8 WARN (informativa): mismo label en dos types
+[ok ] S9 pasa: ningún nodo con 'descripcion' y 'description' a la vez
+[ok ] S9 falla (informativa): nodo con ambas keys, veredicto intacto
+[ok ] S10 pasa: todo el dominio congelado de establecida_en tiene establecida_en
+[ok ] S10 falla (informativa): Operacion sin establecida_en, veredicto intacto
+[ok ] S11 pasa: todo el dominio congelado de aplica_a tiene aplica_a
+[ok ] S11 WARN (informativa): Operacion sin aplica_a, veredicto intacto
+[ok ] S12 pasa: sin Excepciones huérfanas
+[ok ] S12 falla (informativa): Excepcion sin exceptua, veredicto intacto
+[ok ] S21 pasa: destino sin prefijo <to>:: está en el conjunto de puntos del destino
+[ok ] S21 pasa: coincidencia con provenances[1] (conjunto, no provenance[0])
+[ok ] S21 WARN (informativa): destino fuera del conjunto, desglosado por via
+[ok ] S22 pasa: padre_sugerido coherente con el origen en cuarentena
+[ok ] S22 WARN (informativa): destino distinto de properties.padre_sugerido
+[ok ] S22 WARN (informativa): origen fuera de cuarentena
+[ok ] S23 pasa: ningún aplica_a hacia propuestos
+[ok ] S23 WARN (informativa): aplica_a hacia un Sujeto propuesto, nunca bloqueante
+[ok ] CLI: --perfil congelado sobre el base -> exit 0, .md y .json con veredicto PASA
+[ok ] CLI: --perfil congelado con bloqueante en FAIL -> exit 1, .json NO PASA
+[ok ] CLI: sin --perfil el código de salida sigue siendo 0 y no se escribe .json
+[ok ] r2 base: todas las bloqueantes PASS, veredicto PASA
+[ok ] r2 candado: enums_r2.json con otro sha -> CandadoShaError
+[ok ] r2 S1: remite_a admitida; relación inventada -> FAIL
+[ok ] r2 S3: referencia nodo->nodo con rol_fuente referencia_cruzada es violación (sin tolerancia)
+[ok ] r2 S3: remite_a desde un Sujeto o hacia una Comunicacion -> FAIL; hacia TextoOrdenado -> PASS
+[ok ] r2 S3: condicion_de Condicion -> Operacion admitida por la matriz ampliada
+[ok ] r2 S18: limite_cuantitativo sin lista -> FAIL; con el umbral guardado (campos_heredados_v3) -> PASS
+[ok ] r2 S18: la marca r2b umbral_no_cuantificable (properties_no_definidas, booleana) cuenta como umbral guardado
+[ok ] r2 S18: limite_cualitativo sin lista no se exige
+[ok ] r2 S20: valor fuera de lista sin marca -> FAIL; con fuera_de_lista -> PASS; en la lista con marca -> FAIL
+[ok ] r2 S24: valor fuera de lista sin marca -> FAIL; con fuera_de_lista -> PASS; en la lista con marca -> FAIL
+[ok ] r2 S25: valor fuera de lista sin marca -> FAIL; con fuera_de_lista -> PASS; en la lista con marca -> FAIL
+[ok ] r2 S25: Comunicacion.tipo «externa» está en la lista
+[ok ] r2 S26: clave fuera de la definición -> FAIL; en properties_no_definidas -> PASS; marcas de nodo admitidas
+[ok ] r2 S27: sin mención es informativa en r2a (WARN, PASA) y bloqueante en r2b (FAIL)
+[ok ] r2 S28: propuesto sin fila -> FAIL; sin registro -> NO COMPUTABLE y veredicto INCOMPLETO
+[ok ] r2 S29: padre_sugerido hacia un id fuera del catálogo único -> FAIL
+[ok ] r2 S30: alcance fuera de lista, incoherente con los extremos o to_entero sin destino ::TO -> FAIL
+[ok ] r2 S31: evidencia en un único tramo -> PASS; en la unión de dos tramos -> FAIL; ausente -> FAIL
+[ok ] r2 S31: evidencia en otra procedencia de la arista (fusión) -> PASS; sin --e0 -> NO COMPUTABLE
+[ok ] r2 S32 (U-REEXT-T0, T1, 4.b): informativa; base con la cuantía en la lista -> PASS
+[ok ] r2 S32: Condicion con cuantía en la descripción y lista vacía -> FAIL informativa (el veredicto sigue PASA)
+[ok ] r2 S32: el umbral guardado sin lista cuenta como marca; Operacion (fuera de tipos_con_umbrales) no se evalúa
+[ok ] r2 S32: una cuantía de la descripción sin elemento de igual valor y unidad se cuenta aparte
+[ok ] r2 S21: lee las remisiones con la función (remite_a), desglose por alcance
+[ok ] congelado S21: con la función, mismas cuentas que antes (referencia con rol_fuente)
+[ok ] CLI: --perfil r2 sobre el base r2 -> exit 0, .json PASA; sin --e0 -> exit 3 INCOMPLETO
+
+84 casos: 84 ok, 0 fallas
+vocabulario: <REPO>/data/experiment/esq/code/prompt_congelado.py (sha256 prefijo e69feaaa04779bd6347cc9e3974d2c1749519f1230e70a0459e66f46517cd720)

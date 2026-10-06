@@ -145,6 +145,40 @@ GRAFOS = {
         "vista_runtime": "comun_ev2.cargar_runtime('tanda0_ens_diez_r2b') tras importar reext_t0/t3bis/registro_vista_r2b (registro en memoria, patrón comun_tanda0); r2b no se evalúa con EV2",
         "indice_fulltext": "nodos_fulltext_kg_tanda0_diez_r2b",
     },
+    # Tanda 0, grafo evaluado sin la cola humana (U-SINCOLA-T0, SC2, punto 2; ensamblados en SC1-bis, 01046b6): los
+    # r2b re-ensamblados sin las 74 unidades de la cola humana (59 en desarrollo) con ensamblar_tanda0.py --sin-cola
+    # (enmienda 1, 1f7c159). Su vista runtime la registra en memoria data/experiment/sincola_t0/
+    # registro_vista_r2b_sincola.py (patrón de reext_t0/t3bis/registro_vista_r2b.py), que declara además el desglose de
+    # las citas irresolubles por «punto sin nodos». commit_sellado: "PENDIENTE" hasta que la autora selle los grafos en
+    # su commit siguiente (como en c9540c0).
+    "KG_Tanda0_Desarrollo_r2b_sincola": {
+        "nombre_canonico": "KG-Tanda0-Desarrollo-r2b-sincola",
+        "label": "KG_Tanda0_Desarrollo_r2b_sincola",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_tanda0" / "ens_desarrollo_r2b_sincola" / "r2" / "kg.json",
+        "sha256": "2922b72dca2c2bcb204a04f53fc89f265ac2c57e83e6aaab2ce1af8b82d413e4",
+        "commit_sellado": "PENDIENTE",
+        "n_nodos": 6723,
+        "n_aristas": 22084,
+        "ev2_key": "tanda0_ens_desarrollo_r2b_sincola",
+        "requiere_registro_dir": EXPERIMENT_DIR / "sincola_t0",
+        "requiere_registro_modulo": "registro_vista_r2b_sincola",
+        "vista_runtime": "comun_ev2.cargar_runtime('tanda0_ens_desarrollo_r2b_sincola') tras importar sincola_t0/registro_vista_r2b_sincola (registro en memoria, patrón comun_tanda0); grafo evaluado de la tanda 0 sin la cola humana; r2b no se evalúa con EV2",
+        "indice_fulltext": "nodos_fulltext_kg_tanda0_desarrollo_r2b_sincola",
+    },
+    "KG_Tanda0_Diez_r2b_sincola": {
+        "nombre_canonico": "KG-Tanda0-Diez-r2b-sincola",
+        "label": "KG_Tanda0_Diez_r2b_sincola",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_tanda0" / "ens_diez_r2b_sincola" / "r2" / "kg.json",
+        "sha256": "e22fae1afc3cf37fbe5b49ee0b220d51d0ec5febc13abeb6ebf7b74226da34fb",
+        "commit_sellado": "PENDIENTE",
+        "n_nodos": 8503,
+        "n_aristas": 26129,
+        "ev2_key": "tanda0_ens_diez_r2b_sincola",
+        "requiere_registro_dir": EXPERIMENT_DIR / "sincola_t0",
+        "requiere_registro_modulo": "registro_vista_r2b_sincola",
+        "vista_runtime": "comun_ev2.cargar_runtime('tanda0_ens_diez_r2b_sincola') tras importar sincola_t0/registro_vista_r2b_sincola (registro en memoria, patrón comun_tanda0); grafo evaluado de la tanda 0 sin la cola humana; r2b no se evalúa con EV2",
+        "indice_fulltext": "nodos_fulltext_kg_tanda0_diez_r2b_sincola",
+    },
 }
 CLAVES = list(GRAFOS.keys())
 GRAFO_DEFAULT = "KG_Refinado"   # el grafo vigente (docs/tablero.md); compatibilidad con c26cb9b
