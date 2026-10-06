@@ -564,3 +564,45 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     registro de E1 la clave de caché o el sha256 de la salida original del modelo, porque hoy esa salida (la tercera,
     la que se repara) queda solo en la caché y se recupera recomputando la clave; y la variación propia de F08f en el
     selftest de claves.
+- **06/10/2026 — decisiones de la autora sobre el FRENO T3 (T3 en `c499eb3`).** El gate de r2b no pasó: shapes S3,
+  S18, S19 y S28 en FAIL y 6 regresiones de la suite en cada grafo (BKL-0006, BKL-0023, RT-C5-3, RT-C6-1, RT-C6-2 y
+  LN-5), con los grafos ensamblados en `data/experiment/reextraccion_v2/corpus_tanda0/ens_{diez,desarrollo}_r2b/`
+  (kg.json `12c5cfc3…` y `6de41495…`; `data/experiment/reext_t0/freno_t3.md`). La revisión independiente reprodujo los
+  dos ensamblados, la doble corrida, las 6 regresiones y las 4 shapes sobre una copia fresca, y leyó cada falla en los
+  nodos y en el texto de su unidad. La fixture de la suite no se tocó: los `kg_sha256` de las entradas r2b se completan
+  una sola vez, con los grafos finales.
+  - Decisiones.
+    1. **T3-bis**, antes de T4, con USD 0: correcciones de código y re-ensamblado de los dos grafos, con el gate de
+       nuevo. En el ensamblado: la colisión cross-TO de un propuesto actualiza su fila en `no_mapeados_sujetos.jsonl`
+       (LN-5 y S28); un `padre_sugerido` hacia una instancia se reemplaza por su clase o se quita con marca, y un
+       propuesto cuya mención es un pronombre o una palabra vacía se descarta con marca (S3); un propuesto sin
+       `padre_sugerido` recibe el rol de alcance de su TO con la marca `padre_por_defecto` (S19). En el normalizador de
+       umbrales de E2: la cuantía que viene de una celda de tabla serializada hereda la unidad del rótulo de la tabla y
+       gana valor y unidad normalizados (BKL-0006 y BKL-0023 pasan con su sello intacto). S18 en dos piezas: el
+       ensamblado escribe la marca r2b `umbral_no_cuantificable` en las Restricciones `limite_cuantitativo` sin cuantía
+       detectable en descripción, tramo ni celdas, y la shape la cuenta como «umbral guardado sin lista»; lo que la
+       shape espera no cambia. `remite_a` no se toca: el detector ya lee el texto de la unidad.
+    2. **BKL-0021** («la entidad nominada», Exterior): opción (c), un rol nuevo en el catálogo por U-RERESOL-CAT
+       (enmienda 4 al protocolo: censo, laudo, ítem nuevo en la suite y entrada en el esqueleto); mientras tanto,
+       opción (d): los dos propuestos siguen en cuarentena, declarados. Hoy las menciones de la figura van 16 al rol
+       de alcance de Exterior, 4 a `Sujeto_entidad_financiera` y 4 a los dos propuestos.
+    3. **Declaraciones, posteriores al resultado y con su lectura** (se escriben en el freno de T3-bis con los textos
+       pegados; ninguna expectativa sellada cambia por el resultado):
+       - RT-C6-1 y RT-C6-2: la norma (`pro::1.1.2.5`) dice «excepto que se trate de asociaciones mutuales **o**
+         cooperativas, por las financiaciones que otorguen»; la descripción de la Excepcion de r2b dice «las asociaciones
+         mutuales **y** cooperativas, en lo que respecta a las financiaciones que otorguen». Es una **desviación de
+         fidelidad del modelo en la descripción** («y» por «o»), con el alcance igual (cada clase queda exceptuada) y
+         el `tramo` fiel («excepto que se trate de asociaciones mutuales o cooperativas»); la Definicion del mismo
+         chunk conserva el «o».
+       - RT-C5-3: «antes de 60 días desde la mora» por «antes de los 60 días contados desde la fecha en que se
+         verificó la mora»: **paráfrasis sin cambio de sentido**; el ítem está mal diseñado para r2b porque compara
+         literalmente un gold escrito para extracción textual.
+       - `remite_a`: sobre el texto propio de las 2.439 unidades el detector del perfil r2 encuentra 1.385 citas; r2b
+         registra 1.380 y deja 5 sin registrar (`cla::3.3.4` → 1.1.4 y 1.1.5, `ctacte::6.2::intro` → 6.1,
+         `ctacte::7.2.2.5` → 1.3.1.9, `ext::7.9.3::intersticial` → 7.9.2), que valdrían 4 aristas en 1 unidad. La baja
+         de 620 aristas frente a r2a es fan-out en el destino (los Operacion anclados en los puntos citados pasan de
+         3.133 a 1.684), no pérdida de citas.
+    4. **Para la tesis**: el caso de RT-C6 ilustra el papel del tramo literal frente a la descripción: el tramo (la
+       cita textual que E1 guarda y E3 verifica) conserva el conector de la norma mientras la descripción lo cambia;
+       la fidelidad se audita en el tramo, y la descripción es la lectura del modelo. Registrado en
+       `docs/insumos_escritura.md`, sección 7.

@@ -282,3 +282,23 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      - el primer grupo, el de los documentos escritos en puntos, incluye dos con páginas fuera de toda
        unidad: ri_cc (pp. 2 a 47) y ri_tsa (pp. 3 a 61), 105 páginas en total. Entran por la vía de página
        con la tanda 3 (`docs/plan_tesis.md:772`).
+
+## 7. Re-extracción de la tanda 0 con el perfil r2b (U-REEXT-T0) — pendiente
+
+- **Ruta y commit:** en curso. Mandato firmado por la autora el 05/10/2026 (`docs/mandatos/UREEXT_T0_reextraccion_tanda0.md`,
+  `e2027dd`, con sus notas al pie); extracción en `3d793aa`, `4ab7a0a` y `ad99ac7`; ensamblados r2b de T3 en `c499eb3`
+  (`data/experiment/reextraccion_v2/corpus_tanda0/ens_{diez,desarrollo}_r2b/`), con el gate sin pasar y una vuelta
+  T3-bis aprobada el 06/10/2026 (nota al pie del mandato). Los grafos finales se sellan después de T3-bis.
+- **Qué va a contener para la tesis:** las cifras de la re-extracción (costo, estados, la reparación acotada como
+  procedimiento con su cifra: 12 salidas mal formadas en 8 unidades, 6 resueltas con un reintento, 2 reparadas, 0
+  agotadas; nota del 06/10/2026, `5527178`), el gate de r2b y lo que la suite y las shapes dijeron de él.
+- **Insumos ya decididos** (06/10/2026):
+  1. **El tramo literal frente a la descripción** (decisión de la autora sobre el FRENO T3). El ítem RT-C6-1/2 de la
+     suite muestra el papel de las dos capas del nodo: la norma (`pro::1.1.2.5`) dice «excepto que se trate de
+     asociaciones mutuales **o** cooperativas, por las financiaciones que otorguen»; la descripción de la Excepcion que
+     extrajo E1 con el perfil r2b dice «las asociaciones mutuales **y** cooperativas, en lo que respecta a las
+     financiaciones que otorguen»; su `tramo` (la cita textual que E1 guarda y E3 verifica contra el texto) conserva el
+     «o». La fidelidad al texto se audita en el tramo; la descripción es la lectura del modelo, y puede cambiar un
+     conector sin que el tramo lo haga. Se declara como desviación de fidelidad del modelo en la descripción, con el
+     alcance igual (cada clase queda exceptuada) y el tramo fiel. Fuentes: `docs/mandatos/UREEXT_T0_reextraccion_tanda0.md`
+     (nota del 06/10/2026 sobre el FRENO T3, decisión 3) y el freno de T3-bis cuando exista.
