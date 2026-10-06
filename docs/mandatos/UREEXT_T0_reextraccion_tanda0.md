@@ -705,3 +705,31 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
        iii), los tres «cuando») se cuentan por miembro, y dos filas («desde el 14/04/25 con pagos a la vista», en
        `ext::10.4.4` y `ext::10.3.6`) se parten en fecha y porción; la columna `miembro` de `tasas_t4.json` lo
        documenta. La cifra del criterio sellado (1 de 30) no cambia.
+- **06/10/2026 — decisiones de la autora sobre el FRENO T5, final (`data/experiment/reext_t0/freno_t5.md` y
+  `reporte_u_reext_t0.md`; T4 en `be6b074` y `889b2f9`, notas en `04cec96` y `c9d4c40`): CIERRE DE LA UNIDAD.**
+  1. Revisión de la mesa, sobre una copia sin enlaces (0 enlaces; sha256 de las carpetas que la corrida puede tocar antes y
+     después, 513 archivos, sin cambios; 2.213 `.pyc`): `t5/comandos_t5.sh` corrido entero; `anexo_cifras_t5.md` byte a byte
+     igual al del repo y al del paquete; `anexo_cifras_t5.json` igual salvo los sha de `suite_diez_r2b.json` y
+     `suite_desarrollo_r2b.json`, que llevan la ruta de escritura (P20, punto 6); controles a–r iguales a
+     `controles_t3bis.json`; el tablero derivado igual al del repo; shapes, selftest de claves (A1r y A3r OK, JSON igual byte
+     a byte al que T5 copió al repo), preguntas sin cola y reparación acotada iguales; las consolas de la suite difieren solo
+     en la línea «escrito:» con la ruta. Gasto final 50,401698 de 80. `git diff` de `tabla_reprocesamiento.md`: solo F05
+     (`:140`), F10 (`:150`), F14 (`:157`) y el §5 (`:340-375`, dentro de `:338-392`).
+  2. El enlace `.venv` momentáneo en la copia de la instancia (contra la regla l, declarado por ella): la comparación de sha
+     de la instancia (cambian solo la tabla, el JSON del selftest y el `debug.log` de Neo4j, que git ignora) y el control de la
+     mesa (ningún archivo de `.venv` del repo modificado el 06/10/2026 después de las 12:00) confirman que nada se escribió a
+     través del enlace. Queda como error declarado, sin efecto.
+  3. Correcciones autorizadas por la autora sobre las cuatro desactualizaciones que T5 reportó sin tocar: tablero de
+     correcciones `:55` (el `kg_sha256` de la fixture está completo desde `c9540c0`); tabla de reprocesamiento, §4 (nota a
+     A1r y A3r, que dan OK) y sus notas de `:129`, `:187-188`, `:220` y `:245` (la enmienda 3 al protocolo está firmada,
+     `0cb0c70`); `docs/insumos_escritura.md` §7, ítem 2 (son 26 de 30 unidades con un supuesto dentro de una norma tras la
+     adjudicación de `ext::4.1.3.2`, recontado sobre los 137 supuestos; cifras finales del punto 8); checklist P20, punto 3
+     (`selftest_clave_cache` da OK; queda `selftest_canal_abierto_e1`). Pendientes que la mesa vio y no estaban autorizados: el
+     §6 de la tabla (`:405` y `:414`) repite «NO_VERIFICABLE hasta que existan las dbs», y la nota de `:129` dice «F13
+     pendiente de R1 de U-RERESOL-CAT» cuando R1 ya cerró (`c98093a`).
+  4. Lo que sigue, según el reporte y las decisiones del día: U-SINCOLA-T0 (grafo evaluado sin la cola, forma (a); mandato
+     en borrador); la unidad de mantenimiento de la fila P20 (ocho puntos); las correcciones en código que salieron de T4,
+     en una unidad propia entre tandas; el experimento de comparación de modelos de E1 en B6.4, con los dos hallazgos de T4
+     como línea de base; la forma A del vínculo declarada límite (condición 6, checklist `:81`).
+  5. Con el commit de este freno, del reporte, de `t5/` y de estas correcciones, U-REEXT-T0 queda CERRADA. Commit PENDIENTE
+     de la autora.

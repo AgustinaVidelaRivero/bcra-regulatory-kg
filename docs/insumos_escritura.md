@@ -302,20 +302,28 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      conector sin que el tramo lo haga. Se declara como desviación de fidelidad del modelo en la descripción, con el
      alcance igual (cada clase queda exceptuada) y el tramo fiel. Fuentes: `docs/mandatos/UREEXT_T0_reextraccion_tanda0.md`
      (nota del 06/10/2026 sobre el FRENO T3, decisión 3) y el freno de T3-bis cuando exista.
-  2. **Dos hallazgos de T4, material para el experimento posterior de comparación de modelos** (06/10/2026; lecturas de
-     la instancia, adjudicación de la autora PENDIENTE; `data/experiment/reext_t0/freno_t4.md` y `t4/salida/`). (a)
+  2. **Dos hallazgos de T4, material para el experimento posterior de comparación de modelos** (06/10/2026; lecturas de la
+      instancia con segunda lectura de la mesa y adjudicación de la autora, `04cec96` y `c9d4c40`;
+      `data/experiment/reext_t0/freno_t4.md`, `freno_t4_tramo2.md` y `t4/salida/tasas_t4.json`). (a)
      Omisiones `meta_normativo` con contenido normativo según el §1 de la enmienda 7: en la muestra de 30 sin marca del
      contador, 19 de 30 son normativas (14 de 30 sin contar las remisiones puras) y 4 tienen el tramo en el texto
-     heredado; en la de 30 con marca, 25 de 30 (27 de 30 en la segunda lectura de la mesa), 18 con el tramo heredado y 3
-     habilitantes. Proyectadas a las 1.137 omisiones `meta_normativo` del ensamblado r2b de diez (733 sin marca y 404
-     con marca; `t4/salida/sorteos_t4.json`), las normativas sobre el tramo propio quedan entre 377 y 526 según la
-     lectura (centros de las fracciones; los intervalos de Wilson, en el paquete de revisión del FRENO T4), y las del
-     tramo heredado en 302; la cifra firme sale del segundo tramo, con la adjudicación. (b) Una Condicion por supuesto:
-     1 de 30 unidades del grupo c cumple el criterio sellado; en 25 de 30 unidades hay al menos un supuesto dentro de
-     una norma, y en la mayoría de ellas otros supuestos sí quedan como Condicion con su relación. Medida por supuesto
+     heredado; en la de 30 con marca, 27 de 30 (adjudicación de la autora), 18 con el tramo heredado y 3 habilitantes. Proyectadas a las 1.137 omisiones `meta_normativo` del ensamblado r2b de diez (733 sin marca y 404
+     con marca; `t4/salida/sorteos_t4.json`), las normativas sobre el tramo propio son 390,9 [264,9; 511,4] con las remisiones o 268,8
+      [160,3; 399,4] sin ellas en las 733 sin marca, y 134,7 [77,7; 206,9] en las 404 con marca; las del tramo heredado van
+      aparte: 340,1 (97,7 más 242,4). Wilson al 95 %; `t4/salida/tasas_t4.json`, punto 8. (b) Una Condicion por supuesto:
+     1 de 30 unidades del grupo c cumple el criterio sellado; en 26 de 30 unidades hay al menos un supuesto dentro de
+      una norma (recontado sobre los 137 supuestos con la adjudicación de `ext::4.1.3.2`), y en la mayoría de ellas otros supuestos sí quedan como Condicion con su relación. Medida por supuesto
      del segundo tramo (`t4/salida/tasas_t4.json`, 137 supuestos de la fase A, clasificación de la instancia con
      segunda lectura de la mesa y adjudicación de la autora del 06/10/2026): 43 de 137 son Condicion con su relación
      hacia la norma que condicionan (Wilson al 95 %: 0,242–0,396), 77 de 137 van dentro de una norma (0,478–0,642), 7
      fusionados, 2 omitidos y 8 sin relación; las enumeraciones de la fase A se cuentan por miembro. Los dos miden lo que el modelo de E1 hace con el prefijo congelado:
      son la línea de base de la comparación con otro modelo, y lo que se pueda corregir en código entre tandas se
      declara aparte de lo que queda como límite del modelo.
+  3. **El vínculo entre unidades, forma A, como límite declarado** (decisión de la autora del 06/10/2026). En el grafo r2b de
+     la tanda 0 (diez TOs, `a9631a64`), 42 de 715 Condicion de ítem conservan la norma que condicionan en el encabezado de un
+     ancestro, sin arista hacia ella (0,059; Wilson al 95 % [0,044; 0,078]; control 3.e de T3 de U-REEXT-T0,
+     `data/experiment/reext_t0/t3bis/salida/controles_t3bis.json`, `e_forma_A`; referencia con la matriz congelada: 36 de las
+     56 sin `condicion_de`, sobre 458). El grafo no deriva esa arista: el enlazador estructural que propuso U-DIAG-PROCESO
+     (VU-B) dio en r2a 13 de 23 con predicado tipado y 45 de 76 con `remite_a`, bajo el piso 0,75 (U-DIAG-VINCULO, `b0ee084`);
+     la lectura la resuelve la navegación por la jerarquía de la procedencia (condición 10 del checklist). Complemento
+     pendiente, sin plazo: la lectura de precisión de los 42 casos (cuántos tienen de verdad la norma en el encabezado).

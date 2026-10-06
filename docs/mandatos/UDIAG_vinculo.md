@@ -37,3 +37,15 @@ CRITERIO DE ACEPTACIÓN
 - las 5 tareas respondidas con path:línea, commit o la salida del comando, o NO ENCONTRADO;
 - la tarea 1 con la respuesta explícita sobre el ejemplo;
 - git status --short sin cambios propios fuera de reports/u_diag_vinculo/, y .pyc con las mismas entradas al inicio y al cierre.
+
+NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 39 líneas de arriba (`8744a5c`) y no cambia.
+
+- **06/10/2026 — la forma A del vínculo se declara límite (decisión de la autora; condición 6 de la tanda 1).** Medida sobre
+  el grafo r2b de la tanda 0 en T3 y T3-bis de U-REEXT-T0 (control 3.e; `data/experiment/reext_t0/t3bis/salida/controles_t3bis.json`,
+  `e_forma_A`): 42 de 715 Condicion de ítem conservan la norma que condicionan en el encabezado de un ancestro sin arista hacia
+  ella (0,059; Wilson al 95 % [0,044; 0,078]; referencia con la matriz congelada, 36 de las 56 sin `condicion_de`, sobre 458). Se
+  declara límite con esa cifra (checklist `:81`, condición 6; `docs/insumos_escritura.md` §7, ítem 3). El enlazador estructural
+  (direcciones (a-T) y (a-R) de esta unidad; VU-B de U-DIAG-PROCESO) no se implementa antes de la tanda 1: en r2a dio 13 de 23 y
+  45 de 76, bajo el piso 0,75, y pide enmienda firmada. La lectura de precisión de los 42 casos (`casos_forma_A`) queda como
+  complemento, sin plazo y a USD 0. La vía de lectura es la navegación por la jerarquía de la procedencia (condición 10; vista de
+  todos los nodos de un punto, A1.8).

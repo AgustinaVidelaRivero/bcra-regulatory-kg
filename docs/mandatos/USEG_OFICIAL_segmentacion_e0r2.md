@@ -428,3 +428,8 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
        acepta entre rótulos; se corrige en S0-2.
   - Quedan para el «seguí» de S0-2: la razón de tokens por carácter, la capacidad del tercer escalón y el
     objetivo de las partes, con la medición de T2 de U-REEXT-T0, y el commit del FRENO T5.
+- **06/10/2026 — el hallazgo 1.16 de U-REVISION-LIBRE entra al censo de S1 (decisión de la autora; condición 9 de la
+  tanda 1).** El cierre de una lista que queda dentro del último ítem (`reports/u_revision_libre/reporte.md:50`; un caso
+  conocido, `pro::1.1.2.7`, PDF p. 3) se censa en S1 sobre los 152 TOs, como una línea más del censo de renglones (punto 7
+  de S1), con la lista de casos. Según la cifra, S2 lo declara límite o la regla entra en la release siguiente de E0 (S0-2
+  cierra antes que S1 y no cambia por esto).

@@ -237,3 +237,13 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 105 líneas de arriba y n
   - Queda abierto, y R2-1 lo propone: qué se hace con una relación sin mención, o con una mención que no
     verifica, de una norma que ya tiene otra relación con mención verificada.
   El «seguí» de R2 está actualizado con esto. Su despacho sigue PENDIENTE: va después de U-REEXT-T0.
+- **06/10/2026 — decisiones de la autora sobre W2 y W3 de R2 (opciones de la mesa en el paquete `hoja_de_ruta_tanda1_mesa/`,
+  `punto6_W2_W3_opciones_mesa.md`).** W2, dos cosas: (a) un solo nombre de método: `reresolver_registro` escribe el mismo
+  nombre que la cadena del ensamblado (`R1_` más los criterios; hoy escribe `R1`, `corpus_v2/r1_e4.py:484-486`), con un
+  selftest del caso; (b) el cargador del catálogo de resolución va como función nueva en `r1_e4.py`, junto a `catalogo_r2()`
+  y con su propio candado, porque W1 (parámetro opcional del ensamblador, nota del 04/10/2026, punto a) necesita un
+  cargador importable; una sola implementación del candado. W3: `scripts/regression_kg.py` recibe una opción para que LN-6
+  lea los generados de resolución; sin ella, rutas fijas y salida byte a byte igual, para que el gate de cada tanda
+  verifique la idempotencia contra el catálogo que de verdad usó el ensamblado. Las tres escrituras van después de
+  U-SINCOLA-T0, que exige el código del sello intacto. R2 se despacha en dos pasos: R2-1 (script, prueba, medición de la
+  enmienda 6 §A.2 y lectura de la parte B), firma de la enmienda 6, R2-2 (las dos reglas), firma de la enmienda 4.

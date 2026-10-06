@@ -126,7 +126,7 @@ la tabla sigue la composición real de la clave, por decisión de la autora del 
 - F10: en «todo» con E1 y E3 (`:84-85`);
 - F14: en «solo código» (`:79-80`).
 
-La enmienda al protocolo está en curso. F13 queda pendiente de R1 de U-RERESOL-CAT (notas a F13 y F13b).
+La enmienda 3 al protocolo quedó firmada el 04/10/2026 (`0cb0c70`; asentado el 06/10/2026 en T5 de U-REEXT-T0). F13 queda pendiente de R1 de U-RERESOL-CAT (notas a F13 y F13b).
 
 ## 3. La tabla
 
@@ -137,7 +137,7 @@ La enmienda al protocolo está en curso. F13 queda pendiente de R1 de U-RERESOL-
 | F03 | Texto de un bloque heredado de prosa (intro, cierre, chapeau de sección, intersticial) | E0; mini-chunk del bloque (fila F01) y herencia del mensaje de E1 de los descendientes; no entra al fuente de E3 de los descendientes | E1 del mini-chunk y de los descendientes que lo heredan; E3 de esas unidades porque cambia su salida de E1 | cambia (los descendientes que lo heredan) | no cambia (descendientes, con la salida de E1 fija) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:423-425`; `comun_e3.py:123-125` | R03 |
 | F04 | Marcas de E0 sin cambio de texto: contenido tabular, residual, fórmula y sus evidencias, y los metadatos de las tablas serializadas por e0-r2 (modo, celdas propagadas o con alcance, filas de subtítulo, combinadas sin propagar) | E0; bloque de tablas y marcas del mensaje de E1 y NOTA de E3 | E1 y E3 de las unidades re-marcadas | cambia (las re-marcadas) | cambia (las re-marcadas) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:206-303`; `prompt_e3.py:224-239`, `:274-314` | R04, R04b |
 | F04b | Lista de tablas forzadas a residual (`tablas_residuales_forzadas_r2b.json`): alta o baja de una tabla | al construir el perfil de E1: la lista se lee con su sha256 (candado de U-PROMPT-R2, P3c-2), y el candado del mensaje de E1 la ejercita; re-sellada, el mensaje de E1 y la NOTA de E3 de las unidades que traen la tabla | nada se arma hasta re-sellar la lista y el candado del mensaje; re-sellada, E1 y E3 de las unidades que traen la tabla | frena (candado de la lista) | frena (sin perfil no hay salida validada de E1) | frena; re-sellada, E1 y E3 de las afectadas | 9 | `prompt_r2b.py:180-189` (candado `TABLAS_FORZADAS_SHA256_ESPERADO`), `:464-484`; `prompt_e3.py:274-319` | R32 |
-| F05 | Páginas, id, sha256 y conteos de caracteres de una unidad sin cambio de texto (corrimiento de páginas; ids desambiguados por e0-r2, `BKL-0037`) | E0; procedencia que arma E2 e identidad de los registros persistidos | E2 y ensamblado en código | no cambia | no cambia | solo código sobre lo guardado (difiere del protocolo, `a304b89:82`; enmienda en curso: ver nota) | 12 | `prompt_r2b.py:395-437` y `prompt_e3.py:322-354` no leen esos campos; `runner_corpus.py:163-175` | R05, R06 |
+| F05 | Páginas, id, sha256 y conteos de caracteres de una unidad sin cambio de texto (corrimiento de páginas; ids desambiguados por e0-r2, `BKL-0037`) | E0; procedencia que arma E2 e identidad de los registros persistidos | E2 y ensamblado en código | no cambia | no cambia | solo código sobre lo guardado (difiere del protocolo, `a304b89:82`; lo fija la enmienda 3 al protocolo entre tandas, firmada el 04/10/2026 en `0cb0c70`, §1, punto 1) | 12 | `prompt_r2b.py:395-437` y `prompt_e3.py:322-354` no leen esos campos; `runner_corpus.py:163-175` | R05, R06 |
 | F06 | Prefijo de E1 r2b (texto de sistema: prefijo sellado v3, reemplazos anclados, parche de P3b) | E1; system del request y hash del prefijo en el namespace | E1 de todas las unidades; E3 de todas por la salida nueva de E1; re-sello del perfil (antes frenan los candados: F11b) | cambia (todas, con namespace nuevo) | no cambia (con la salida de E1 fija) | todo | 9 | `prompt_r2b.py:130-159`, `:170-177`; `cliente_e1.py:122-143`; candado `perfil_e1.py:213-218` | R08 |
 | F07 | Tool schema de E1 r2b (`tool_schema_r2.json`) | E1; tools del request y hash del prefijo | igual que F06 | cambia (todas, con namespace nuevo) | no cambia (con la salida de E1 fija) | todo | 9 | `prompt_r2b.py:160`, `:170-172` | R09 |
 | F08 | Modelo o `max_tokens` del request base de E1 (modelo, `max_tokens` de 8.192) | E1; request | E1 de todas; E3 de todas por la salida nueva | cambia (todas) | no cambia (con la salida de E1 fija) | todo | 9 | `runner_corpus.py:91`; `prompt_r2b.py:103`, `:440-450` | R12, R13 |
@@ -147,14 +147,14 @@ La enmienda al protocolo está en curso. F13 queda pendiente de R1 de U-RERESOL-
 | F08e | Temperatura del pedido de E1 del perfil r2b (U-PROMPT-R2, P5): `temperature` 0, fijada en el pedido base, del que salen el primer intento, el reintento por corte, el tercer escalón y el reintento del ratchet | E1; request (`temperature`); no entra al hash del prefijo ni al namespace | E1 de todas; E3 de todas por la salida nueva | cambia (todas) | no cambia (con la salida de E1 fija) | todo | 9 | `prompt_r2b.py:105-110`, `:445`; `cliente_e1.py:441-449`; `ratchet_e3.py:366-368` | R14 |
 | F08f | Reparación acotada de la salida de E1 sin la clave `relations` (U-REEXT-T0, T2-ter; decisión de la autora del 06/10/2026): la forma reparable (dict con `entities` lista y sin la clave `relations`), el momento (agotados los dos reintentos por forma, solo con el perfil r2b) y la condición de aceptación (con `relations = []`, `validador_e1` no rechaza el chunk); la unidad queda marcada (`reparacion_forma`) y contada aparte (`reparadas_forma`) | runner, al cerrar el camino de forma, después de agotar los reintentos; sobre la respuesta guardada, no sobre el request | E3 de las reparadas (reclama las relaciones que falten); E2 de su TO en código | no cambia | cambia (las reparadas: su validación es otra) | E3 de las afectadas | 9 | `runner_corpus.py:542-559`, `:710-720`, `:727-728`, `:816-819` | R18 (la misma variación que F14: la salida validada de E1 alterada en código mueve la clave de E3 y no la de E1); una variación propia de la reparación queda pendiente para la unidad de mantenimiento del runner (checklist, fila P20) |
 | F09 | Versión de código del namespace (`CODE_VER` de E1), con el request idéntico | namespace de la caché | igual que F06, sin cambiar un byte del request | cambia (todas) | no cambia | todo | 9 | `cliente_e1.py:50`, `:139-143` | R15 |
-| F10 | Prompt de E3 (instrucciones, calibradores o tool schema) o su modelo | E3; system, tools y modelo del request, y hash del prefijo en el namespace | E3 de todas las unidades; E1 base sale de la caché; los reintentos de E1 del ratchet cambian donde cambia el feedback | no cambia | cambia (todas, con namespace nuevo si cambia el prefijo; antes frena el candado: F10b) | todo, con E3 de todas (difiere del protocolo, `a304b89:84-85`; enmienda en curso: ver nota) | 9 | `prompt_e3.py:57-145`, `:152-196`, `:213-217`, `:357-374`; `cliente_e3.py:55-62`; `runner_corpus.py:94` | R16, R17 |
+| F10 | Prompt de E3 (instrucciones, calibradores o tool schema) o su modelo | E3; system, tools y modelo del request, y hash del prefijo en el namespace | E3 de todas las unidades; E1 base sale de la caché; los reintentos de E1 del ratchet cambian donde cambia el feedback | no cambia | cambia (todas, con namespace nuevo si cambia el prefijo; antes frena el candado: F10b) | todo, con E3 de todas (difiere del protocolo, `a304b89:84-85`; lo fija la enmienda 3 al protocolo entre tandas, firmada el 04/10/2026 en `0cb0c70`, §1, punto 2) | 9 | `prompt_e3.py:57-145`, `:152-196`, `:213-217`, `:357-374`; `cliente_e3.py:55-62`; `runner_corpus.py:94` | R16, R17 |
 | F10b | Archivos de datos de los calibradores de E3, con el candado del prefijo de E3 (`924ef4d`) | al importar `prompt_e3` | nada se arma hasta re-sellar el prefijo de E3; re-sellado, F10 | no cambia | frena (candado del prefijo de E3) | frena; re-sellado, todo (F10) | 9 | `prompt_e3.py:385-391`; `calibradores_e3.py:82-84` | R22d |
 | F11 | Catálogo de sujetos en el bloque del prefijo de E1 o en el enum de `sujeto_id`, incluido un rol de alcance nuevo (sección «Roles de alcance por TO» del bloque) | E1; system y tools | igual que F06; los candados frenan hasta el re-sello (F11b, F13b) | cambia (todas, con namespace nuevo) | no cambia (con la salida de E1 fija) | todo | 9 | `prompt_r2b.py:72`, `:80`, `:137-142`; `modelos_r2.py:692`; `generar_desde_catalogo.py:118`, `:133` | R10, R10b |
 | F11b | Archivos de datos con candado que arman el prefijo o el mensaje de E1 r2b: reemplazos anclados, parche de P3b, bloque de catálogo, tool schema, `rol_por_to_r2.json`, `labels_e2_r2.json` y, por la cadena sellada, `esquema_v2_clases.json` | al construir el perfil de E1 | nada se arma hasta re-sellar; re-sellado, la fila del contenido (F06, F07, F11 o F12) | frena (candado al construir el perfil) | frena (sin perfil no hay salida validada de E1) | frena; re-sellado, la clase de la fila del contenido | 9 | `prompt_r2b.py:77-98`, `:113-118`, `:130-162`; `perfil_e1.py:213-218`; `prompt_congelado.py:156-160` | R21, R22, R22b |
 | F12 | Tabla TO→rol de alcance (`rol_por_to_r2.json`, línea «Alcance de este TO»): una entrada de clase para un TO | E1; mensaje de usuario de las unidades de ese TO; en el ensamblado, el sujeto por defecto de una expresión colectiva | E1 y E3 de las unidades de ese TO; ensamblado en código | cambia (las del TO) | no cambia (con la salida de E1 fija) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:376-392`, `:409`; `r1_e4.py:383`; candado `prompt_r2b.py:81` | R11 |
 | F13 | Catálogo de resolución que lee solo el código, separado del catálogo del request | E4, esqueleto, resolución de sujetos y S19, sobre lo guardado | E4, esqueleto y lo que sigue del ensamblado, en código, cuando la separación exista; hoy no existe (F13b) | no cambia | no cambia | PENDIENTE (R1 de U-RERESOL-CAT) | 12 | `docs/mandatos/URERESOL_CAT_reresolucion_catalogo.md:49-55`; hoy, `r1_e4.py:522-541` | R20 |
 | F13b | Un id nuevo en `catalogo_sujetos_r2.json`, con el código de hoy | candado del catálogo al construir el perfil; re-sellado, el bloque del prefijo y el enum (F11) | nada se arma hasta re-sellar el catálogo y sus generados; re-sellado, E1 y E3 de todas | frena (candado del catálogo) | frena (sin perfil no hay salida validada de E1) | frena; re-sellado, todo (F11) | 9 | `modelos_r2.py:61-96`; `prompt_r2b.py:80`; `r1_e4.py:528-535`; `generar_desde_catalogo.py:118`, `:133`, `:138` | R22c |
-| F14 | Validador de E1 (`validador_e1`), con las correcciones de tipo y predicado que toma de `validador_r2` y su política, la traducción de la forma r2 y el índice del crudo | sobre la salida cruda de E1 guardada, antes de E3: su salida es el mensaje de E3 | validación en código y E3 de las unidades cuya salida validada cambia, porque el ensamblado r2b toma solo lo que vio E3; E1 sale de la caché | no cambia | cambia (las unidades cuya salida validada cambia) | E1 y E3 de las afectadas (difiere del protocolo, `a304b89:79-80`; enmienda en curso: ver nota) | 9 | `validador_e1.py:98-118`, `:135-222`, `:388-391`; `comun_e3.py:140-192`; `runner_corpus.py:1188-1195` | R18 |
+| F14 | Validador de E1 (`validador_e1`), con las correcciones de tipo y predicado que toma de `validador_r2` y su política, la traducción de la forma r2 y el índice del crudo | sobre la salida cruda de E1 guardada, antes de E3: su salida es el mensaje de E3 | validación en código y E3 de las unidades cuya salida validada cambia, porque el ensamblado r2b toma solo lo que vio E3; E1 sale de la caché | no cambia | cambia (las unidades cuya salida validada cambia) | E1 y E3 de las afectadas (difiere del protocolo, `a304b89:79-80`; lo fija la enmienda 3 al protocolo entre tandas, firmada el 04/10/2026 en `0cb0c70`, §1, punto 3, con la regla de cruce del §3, `bd77541`) | 9 | `validador_e1.py:98-118`, `:135-222`, `:388-391`; `comun_e3.py:140-192`; `runner_corpus.py:1188-1195` | R18 |
 | F14b | Validador r2 y su política en el ensamblado (`validador_r2.validar` con lo que vio E3) | sobre el crudo guardado del intento que aceptó E3 | entrada r2, E2 y ensamblado en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `validador_r2.py:756`, `:768-769`, `:1084-1086`, `:1301-1303`; `runner_corpus.py:1231-1243`; candados `r1_e4.py:499`, `validador_e1.py:102` | R19 |
 | F15 | E2 r2 y ensamblado (entrada r2, fusión, merge cross-TO, cola humana marcada, omisiones, aristas derivadas que tocan la cola, procedencia, reportes) | después de E3, sobre el crudo guardado y `finales.jsonl` | E2 y ensamblado en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `runner_corpus.py:1151-1206`, `:1246-1296`; `tanda0/code/ensamblar_tanda0.py:917-1076` | R19 |
 | F15b | Umbrales (cuantías, comparador, negación, plazo sin marcador, base) | ensamblado r2 | umbrales y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `ensamblar_tanda0.py:668`, `:1042`; `reglas_comparacion.py:246`, `:502`, `:710` | R19 |
@@ -184,8 +184,8 @@ Notas a filas:
   tabla, su motivo y su fecha es la única guarda.
 - **F05. Difiere del texto firmado del protocolo entre tandas** (`a304b89:82`), que pone F05 entre las filas que
   pagan E1 y E3 de las afectadas. La tabla sigue la composición real de la clave: ni el mensaje de E1 ni el de E3
-  leen páginas, id, sha256 ni conteos (R05, R06; con el perfil sellado, V05, V06). La enmienda al protocolo está en
-  curso (decisión de la autora del 04/10/2026). Ninguna unidad paga en ninguna de las dos lecturas.
+  leen páginas, id, sha256 ni conteos (R05, R06; con el perfil sellado, V05, V06). La enmienda 3 al protocolo quedó
+  firmada el 04/10/2026 (`0cb0c70`; asentado el 06/10/2026 en T5 de U-REEXT-T0). Ninguna unidad paga en ninguna de las dos lecturas.
   Como el id no entra al request, desambiguar los ids repetidos de la partición (69 en cuatro TOs,
   `docs/tablero_correcciones.md:70`) no cambia ninguna clave. Lo que cambia es la identidad de los registros
   persistidos, que el runner indexa por id y protege ante ids repetidos (`runner_corpus.py:163-175`).
@@ -217,7 +217,7 @@ Notas a filas:
   todas las unidades pagan E1 y E3. La tabla sigue la composición real de la clave: un cambio del prompt o del
   modelo de E3 mueve la clave de E3 de todas las unidades y ninguna de E1 (R16, R17). F10 cumple la definición de
   «todo» de la sección 2, pero lo que se paga es E3 de todas más los reintentos de E1 donde cambia el feedback. La
-  enmienda al protocolo está en curso (decisión de la autora del 04/10/2026).
+  enmienda 3 al protocolo quedó firmada el 04/10/2026 (`0cb0c70`; asentado el 06/10/2026 en T5 de U-REEXT-T0).
 - **F10b.** Desde `924ef4d` el prefijo de E3 tiene candado: cambiar un archivo de datos de los calibradores frena
   la importación de `prompt_e3` y, con ella, el runner entero (R22d).
 - **F11, F11b, F12 y F13b.** En el perfil r2b, todo lo que el catálogo aporta al request está protegido por
@@ -242,7 +242,7 @@ Notas a filas:
   mensaje de E3 (R18). El ensamblado r2b deja entrar solo lo que vio E3 (`validador_r2.py:768-769`, `:1084-1086` y
   `:1214-1216`, con los índices de la validación guardada, `runner_corpus.py:1188-1195`; P3 de U-PROMPT-R2,
   `4aa92c7`). Por eso un cambio en `validador_e1` no llega al grafo sin volver a correr E3 en las unidades cuya
-  salida validada cambia. La enmienda al protocolo está en curso (decisión de la autora del 04/10/2026).
+  salida validada cambia. La enmienda 3 al protocolo quedó firmada el 04/10/2026 (`0cb0c70`; asentado el 06/10/2026 en T5 de U-REEXT-T0).
   «Solo código» exige además el crudo de E1 de cada unidad. El de la primera pasada está en
   `extracciones_e1.jsonl`; el de las unidades aceptadas tras un reintento del ratchet, en `reintentos_e3.jsonl`
   desde `924ef4d` y, en corridas anteriores, solo en `e1_reintentos.db` (`runner_corpus.py:1096-1124`).
@@ -302,6 +302,8 @@ Qué hace (detalle en el docstring del script):
 - **A1r y A3r, anclaje sobre las dbs de U-REEXT-T0** (`--salida-r2b`, por defecto `corpus_tanda0/salida_r2b`).
   Hasta que esa salida exista quedan NO_VERIFICABLE, y rige, declarado, el anclaje del perfil sellado (decisión 3
   de la autora al firmar el mandato de U-TABLA-REPROC). Se corre de nuevo cuando existan las dbs de U-REEXT-T0.
+  **[06/10/2026, T5 de U-REEXT-T0]** Las dbs existen (`corpus_tanda0/salida_r2b/`, extracción en `3d793aa`, `4ab7a0a` y
+  `ad99ac7`): corrido con `--salida-r2b`, A1r y A3r dan OK (resultado abajo).
 - **R00 a R32.**
   - Una entrada por vez, sobre una muestra fija de trece unidades de `salida_tanda0_r2b/` (`MUESTRA_R2B`): las
     diez de M1, dos con tablas serializadas y la única con la herencia recortada.
@@ -324,7 +326,10 @@ Resultado (salida en `selftest_clave_cache.json`):
   de `9f6361e` era idéntica byte a byte a la de `e18d616`.
 
 **Perfil r2b:**
-- A1r y A3r: NO_VERIFICABLE. La db de E1 tiene 0 claves en el namespace r2b.
+- A1r y A3r: OK desde el 06/10/2026 (T5 de U-REEXT-T0; `--salida-r2b corpus_tanda0/salida_r2b`, dos corridas iguales sobre una
+  copia y reproducido por la revisión; `data/experiment/reext_t0/t5/comandos_t5.sh`, bloque 5): A1r, 2.449 de 2.449 claves de E1
+  presentes en la db r2b (8 en `-rforma1` y 2 en `-rforma2`); A3r, 2.440 pares presentes. Antes de esa salida eran
+  NO_VERIFICABLE, con 0 claves en el namespace r2b.
 - R00 a R32: las 41 variaciones dan lo esperado, unidad por unidad.
 
 **Inventario:**
@@ -337,19 +342,23 @@ Resultado (salida en `selftest_clave_cache.json`):
 
 ## 5. Costo de referencia por clase
 
-**Perfil r2b** (U-REEXT-T0 y las tandas). Es una estimación sobre el crudo de la tanda 0, no una medición del
-prefijo nuevo. Sale de la estimación central B de P1 más los componentes de P3b-2:
-- E1: USD 25,6634 para las 2.434 unidades, USD 0,010544 por unidad.
-- E3 con los reintentos del ratchet: USD 25,0785 para 2.427 unidades, USD 0,010333 por unidad.
+**Perfil r2b** (U-REEXT-T0 y las tandas). Es la tarifa observada en la corrida de U-REEXT-T0 (T2, 05/10/2026,
+prefijo `322c5a23e9b7`; protocolo, §1, punto 4), sobre las 2.439 unidades de E0 de la tanda 0:
+- E1: USD 24,7195, USD 0,010135 por unidad.
+- E3 con los reintentos del ratchet: USD 24,9403, USD 0,010226 por unidad (verificación 21,9706, 0,009008 por
+  unidad; reintentos de E1 del ratchet 2,9697, 0,001218 por unidad).
+- E1 y E3: USD 49,6598, USD 0,020361 por unidad.
 
-Se reemplaza por la tarifa observada al cerrar U-REEXT-T0 (protocolo, §1, punto 4).
+La corrida de reparación de U-REEXT-T0 (T2-bis, USD 0,49291, y T2-ter, USD 0,249002, sobre unidades de cap) no
+entra en la tarifa por unidad: el presupuesto de la unidad cerró en USD 50,401698 de 80. La estimación que esta
+tarifa reemplaza (E1 0,010544 y E3 0,010333 por unidad, de P1 y P3b-2) está en `2a857db`.
 
 | Clase | Costo de referencia (r2b) | Ancla |
 |---|---|---|
 | nada | USD 0 | — |
 | solo código sobre lo guardado | USD 0 | principio 12, `docs/plan_tesis.md:299` |
-| E1 y E3 de las afectadas | Por unidad que paga las dos etapas: USD 0,020877 (E1 0,010544 y E3 0,010333). Las filas que pagan solo E3 de las afectadas (F14 y F23) pagan 0,010333; las que pagan solo un reintento (F08b, F08c y F24) pagan el reintento y su re-verificación | comando 1 |
-| todo | E1 a E3 de los diez TOs de la tanda 0: USD 50,74 de estimación central, 71,04 con el factor 1,4. El tope de U-REEXT-T0 es USD 72. F10 paga solo E3: 0,010333 por unidad, USD 25,08 en la tanda 0 | `data/experiment/prompt_r2/p3b2/salida/costo_p3b2.json`, comando 1; `docs/plan_tesis.md:400` |
+| E1 y E3 de las afectadas | Por unidad que paga las dos etapas: USD 0,020361 (E1 0,010135 y E3 0,010226). Las filas que pagan solo E3 de las afectadas (F14 y F23) pagan 0,010226; las que pagan solo un reintento (F08b, F08c y F24) pagan el reintento y su re-verificación | comando 1 |
+| todo | E1 a E3 de los diez TOs de la tanda 0: USD 49,6598 observados en U-REEXT-T0, de un tope de 80. F10 paga solo E3: 0,010226 por unidad, USD 24,9403 en la tanda 0 | `data/experiment/reext_t0/salida/contadores_t2.json` (`3d793aa`), comando 1 |
 
 **Perfil sellado** (`v3_b54`, la tanda 0), medido en su corrida y sin cambios desde `e18d616`:
 - E1: USD 0,007425 por unidad (18,07154 / 2.434).
@@ -359,14 +368,16 @@ Se reemplaza por la tarifa observada al cerrar U-REEXT-T0 (protocolo, §1, punto
 
 Esos valores salen de los comandos 2 y 3.
 
-Comando 1 (tarifa del perfil r2b: E1, E3 y la suma, por unidad; total de la tanda 0 contra la estimación central y
-con el factor; fuentes: `censo_p1.json`, commit `20b7f60`, y `costo_p3b2.json`, commit `c8c3970`):
+Comando 1 (tarifa observada del perfil r2b: E1, E3 y su desglose en verificación y reintentos de E1 del ratchet, y
+la suma, cada uno con su tarifa por unidad sobre las 2.439 unidades; fuente: los contadores de la corrida de
+U-REEXT-T0, `data/experiment/reext_t0/salida/contadores_t2.json`, commit `3d793aa`, que toman el gasto por etapa de
+`estado_corpus.json` y el de cada cliente de los resúmenes de E1 y E3):
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B -c "import json;b=json.load(open('data/experiment/prompt_r2/p1/salida/censo_p1.json'))['costos']['B_central'];c=json.load(open('data/experiment/prompt_r2/p3b2/salida/costo_p3b2.json'))['u_reext_t0'];k=c['componentes_usd'];e1=b['e1_usd']+sum(v for n,v in k.items() if n.startswith('e1_'));e3=b['e3_usd']+sum(v for n,v in k.items() if not n.startswith('e1_'));print(round(e1,4),round(e1/2434,6),round(e3,4),round(e3/2427,6),round(e1+e3,4),round(e1/2434+e3/2427,6),c['central_usd'],c['con_factor_1_4_usd'])"
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B -c "import json;g=json.load(open('data/experiment/reext_t0/salida/contadores_t2.json'))['b_gasto'];cl=g['clientes'];v=sum(c['e3']['gasto_usd_real'] for c in cl.values());r=sum(c['e1_reintentos']['gasto_usd_real'] for c in cl.values());n=2439;print(g['total_e1_usd'],round(g['total_e1_usd']/n,6),g['total_e3_usd'],round(g['total_e3_usd']/n,6),round(v,4),round(v/n,6),round(r,4),round(r/n,6),g['total_usd'],round(g['total_usd']/n,6))"
 ```
 
-Salida: `25.6634 0.010544 25.0785 0.010333 50.7419 0.020877 50.74 71.04`.
+Salida: `24.7195 0.010135 24.9403 0.010226 21.9706 0.009008 2.9697 0.001218 49.6598 0.020361`.
 
 Comando 2 (gasto de E1 y E3 de la tanda 0, por fase cerrada):
 
