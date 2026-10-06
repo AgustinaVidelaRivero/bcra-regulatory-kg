@@ -485,3 +485,12 @@ El texto firmado no se edita; estas notas se leen junto con él.
   el 04/10/2026 y firmó la enmienda con ese cambio: los cambios de la clase F14 se corrigen entre tandas igual
   que los de E0, con E1 y E3 solo de las unidades afectadas y su costo declarado antes de correr. La versión
   anterior del §3 es la de `0cb0c70`.
+- **06/10/2026 — insumo del pre-registro de la tanda 1: el alcance de los documentos del ejemplo del §7 (decisión de la
+  autora).** De los 20 TOs del ejemplo, 8 ya tenían alcance en el catálogo (adrei, ayccef, cajasc, depaho, efemin, expaef,
+  lingeef, opefci) y los 12 restantes quedaron decididos: 6 con clase existente (ri_ccna, ri_cc por el título, ri_dcpc,
+  snp_cheq con dos clases, manori, nmcief con dos clases), 3 con un rol existente reutilizado (ri_rml y ri_gerc, secciones del
+  Régimen Informativo Contable Mensual; snp_tr, por la remisión de su texto a las normas complementarias) y 3 sin alcance
+  declarado (ri_oc, ceninf, cirmo3), con sus menciones colectivas a cuarentena según la enmienda 6 a L-ESQ-R2 cuando se firme.
+  Registro: `data/experiment/catalogo_unico/registro_alcance_por_tanda.md`; regla general del título y regla de las secciones de
+  un mismo régimen en la enmienda 4 (BORRADOR), §2, puntos 7 y 8; checklist `:81`, condición 11. La lista real de la tanda 1 sale
+  de la segmentación oficial: lo que cambie respecto del ejemplo se lee con el mismo paso.

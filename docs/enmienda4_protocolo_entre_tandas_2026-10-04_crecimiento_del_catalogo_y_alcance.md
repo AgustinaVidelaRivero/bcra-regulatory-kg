@@ -65,6 +65,14 @@ prueba (enmienda 2, punto 3).
 5. **Quién decide.** La lectura es asistida y declarada. La aprueba la autora, documento por documento, antes
    de extraer.
 6. **Costo.** La lectura se hace siempre sin API.
+7. **El título como pasaje de alcance** (regla general declarada por la autora el 06/10/2026). Cuando el cuerpo de un
+   documento no tiene frase de alcance y su título nombra exactamente una clase del catálogo, el título vale como pasaje
+   de alcance y el documento recibe esa entrada de clase; se aplica igual a todo documento en esa situación, y la lectura
+   deja constancia de que la base es el título. Primer caso: ri_cc → `Sujeto_caja_de_credito`.
+8. **Secciones de un mismo régimen informativo** (decisión de la autora del 06/10/2026, acotada). Un documento que es una
+   sección de un régimen informativo cuyo rol ya está en el catálogo reutiliza ese rol (primer caso: ri_rml y ri_gerc →
+   `Sujeto_rol_entidad_comprendida_reginf`, el del Régimen Informativo Contable Mensual). No decide ESQ-RI-3, que es la
+   pregunta entre regímenes distintos.
 
 ## 3. La regla de cruce para F08d
 
@@ -81,7 +89,9 @@ afectadas, con su costo declarado antes de correr.
   `catalogo_sujetos_r2.json` sin romper sus candados. R1 propone un registro que solo agrega, leído junto con
   el de la release (`freno_r1.md`, §4). Lo implementa R2 de U-RERESOL-CAT (decisión de la autora del
   04/10/2026), con `e1_extractor/prompt_r2b.py` autorizado solo para leer ese registro al armar el mensaje,
-  sin cambiar el prefijo.
+  sin cambiar el prefijo. **[06/10/2026]** El registro arranca con las doce entradas de la tanda 1 decididas por la autora,
+  en `data/experiment/catalogo_unico/registro_alcance_por_tanda.md` (lectura humana, una fila por documento y por tanda);
+  R2-2 define el formato legible por código y lo carga desde ahí, sin cambiar las decisiones.
 - **La fila F08d,** que existe cuando P3c-2 de U-PROMPT-R2 la sume a la tabla.
 
 ## 5. Qué no cambia
