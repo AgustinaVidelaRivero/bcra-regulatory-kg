@@ -128,6 +128,16 @@ l. COPIAS PARA VERIFICAR: la copia sobre la que corre una verificación
    Precedente, del 03/10/2026: en P2 de U-PROMPT-R2, `selftest_corpus`
    corrió sobre el repo y reescribió 11 archivos rastreados, que hubo
    que restaurar (`data/experiment/prompt_r2/freno_p2.md`, §7).
+   La corrida en seco de un runner ejercita el mismo camino de imports
+   y de código que el runner: importa el runner y llama a sus
+   funciones, sin arreglar el `sys.path` por fuera, y recorre las
+   ramas que la corrida real puede tomar (corte, reintento, partición,
+   tercer escalón, salida mal formada). Precedente, del 05/10/2026: en
+   T1 de U-REEXT-T0 la corrida en seco agregaba `e0_chunking` al
+   `sys.path` (`data/experiment/reext_t0/t1_corrida_en_seco.py:54`) y
+   el runner no (`corpus_v2/runner_corpus.py:64-67`); en T2,
+   `import correr_e0` falló al partir por corte y `cap::4.2.1.2` quedó
+   sin validación (`data/experiment/reext_t0/freno_t2.md`).
 
 ## 4bis. Prompt caching en extracción
 

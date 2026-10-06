@@ -451,3 +451,44 @@ REQUISITOS: los de CLAUDE.md §4 (a a l), con PYTHONDONTWRITEBYTECODE=1 y .venv/
 selftests sobre una copia sin enlaces, con el sha256 de los archivos del repo antes y después; fuentes
 firmadas leídas en el commit de su firma; todo conteo recomputado contra su artefacto; los conteos sobre
 grupos chicos, como fracción y sin porcentaje; cero nombres de personas.
+
+NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen junto con él.
+- **06/10/2026 — decisiones de la autora sobre el FRENO T2 (T2 en `3d793aa`).** La corrida de T2 costó USD
+  49,6598 de un tope de 80 y dejó 2.439 unidades con estado final: 1.337 completo_ok_directo, 811
+  aceptado_con_residuales, 216 aceptado_tras_reintento, 73 en la cola humana y 2 sin validación
+  (`data/experiment/reext_t0/freno_t2.md`).
+  - La revisión independiente reprodujo T2 sobre copias de la salida, de las bases y del usage: los estados, el
+    gasto (24,7195 de E1 y 24,9403 de E3), las 5.378 filas nuevas de las bases contra las 5.378 líneas nuevas de
+    usage, la temperatura de cada pedido (0 en E1, 1 en el reintento por forma, 0 en los reintentos del ratchet,
+    sin fijar en E3), los 7 cortes (6 en 8.192 y 1 en 16.384, `cap::4.2.1.2`) y las dos cifras de 404 omisiones
+    `meta_normativo`, que cuentan conjuntos distintos (las 404 con marca del contador en la validación final y las
+    404 objetadas por E3 en el crudo de la primera verificación tienen 136 omisiones en común).
+  - Decisiones.
+    1. Defecto del runner. `corpus_v2/runner_corpus.py` no agrega `e0_chunking` al `sys.path` (`:64-67`), e
+       `import correr_e0` falla en `corresponde_escalon_3` (`:476`) y en la partición por corte (`:673`); el
+       import solo se ejecuta cuando el reintento de 16.384 también corta, así que alcanzó a una sola unidad,
+       `cap::4.2.1.2`, que quedó sin validación. Se corrige antes de T3, en una etapa T2-bis con tope de USD 3:
+       la línea de `sys.path` para `e0_chunking` y un interruptor `--reabrir-fase` que reabre las fases cerradas
+       de un TO conservando su gasto como gasto previo (sin el interruptor, nada cambia). La corrección no mueve
+       ninguna clave de caché (fila F20 de la tabla de reprocesamiento, cuya ancla suma el bloque del path; el
+       selftest de claves tiene que dar 0 cambios). En ese archivo el código del pipeline deja de ser el de
+       `53b7708`; el commit de T2-bis pasa a ser la referencia.
+    2. `cap::4.2.1.2` se re-extrae en T2-bis con el runner corregido y el código de E0 de HEAD, que es el de
+       `9f6361e`: la partición por corte de 15.056 y 11.669 caracteres, la misma que S0-2 de U-SEG-OFICIAL tiene
+       que conservar. E1 re-llama solo las unidades con error; E3 verifica solo las partes. El código de E0 no se
+       toca. T3 espera a T2-bis.
+    3. `cap::3.1.1.2`: sus dos salidas (temperatura 0 y 1) son `tool_use` con dos entidades y sin la clave
+       `relations`, y `validador_e1` rechaza el chunk entero. Recibe un segundo reintento por forma, con sufijo
+       `-rforma2` y temperatura 1, una sola vez; si vuelve mal formada, queda sin validación, declarada. La regla
+       «sin reparación determinística» de C2 no cambia.
+    4. Medición para la regla 6 en E1 de S0-2 de U-SEG-OFICIAL (nota del 05/10/2026 al pie de su mandato,
+       `d59921f`): se toma el p90 de la salida por carácter de las 39 unidades de 3.000 caracteres o más, 1,5051
+       (mediana 1,1582). Capacidad del tercer escalón: 40.960 / 1,5051 = 27.214 caracteres; objetivo de las
+       partes por renglones: 16.384 / 1,5051 = 10.886. El objetivo de la partición por ítems (13.091) no cambia.
+       Con la mediana no cambiaba ninguna clase del diseño de S0-1 bis; con el p90 cambian `ri2_cs::S3` y
+       `ri_cc::S3` (su parte de 27.274 caracteres pasa a partirse por renglones). Se elige el p90 porque la
+       capacidad es la guarda contra una unidad sin salida y la razón de las unidades grandes de T2 va de 0,25 a
+       1,79.
+    5. La lección de T1 (la corrida en seco agregaba `e0_chunking` al path por su cuenta y por eso no vio el
+       defecto) queda en CLAUDE.md, §4, regla l: la corrida en seco de un runner ejercita el mismo camino de
+       imports y de código que el runner, sin arreglar el `sys.path` por fuera.
