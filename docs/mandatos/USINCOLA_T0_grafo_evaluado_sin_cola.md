@@ -133,3 +133,43 @@ como hecha; cero nombres de personas; grep de convenciones al cierre; paquetes `
 DECISIONES TOMADAS AL FIRMAR (06/10/2026; están en la cabecera): (1) los nombres de las entradas y de las claves; (2) sí,
 KG-Tanda0-Desarrollo-r2b también se rearma sin la cola, para que el grafo donde se afina A1.8 tenga la misma política que el
 evaluado; costo marginal, una corrida más.
+
+NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 135 líneas de arriba (`723680e`, sha256 `da78aa8b0f7098ee…`) y no cambia.
+
+- **06/10/2026 — ENMIENDA 1: la cadena r2 recibe `con_cola` (decisión de la autora tras el FRENO SC1: salida (A)).**
+  1. **Hecho que la motiva** (`data/experiment/sincola_t0/freno_sc1.md`, SC1.2): `--sin-cola` solo actúa en la cadena r1
+     (`ensamblar_tanda0.py` `main()`, `:1536-1537` → `ensamblar_manifiesto` → `etapa_e2`); la rama r2 de `main()` (`:1527-1530`)
+     llama a `ensamblar_manifiesto_r2` (`:1403`) sin la bandera, y ni esa función ni `correr_cadena_r2` (`:1163`) la reciben. Con la
+     bandera, el grafo r2b sale byte a byte igual al sellado (diez `a9631a64`, desarrollo `6e756043`) y entran las 74 unidades de
+     la cola (59 en desarrollo). SC1.1 quedó hecho (manifiestos `fdfb5bf6…` y `031e164c…`); SC1.3 a SC1.8 no corrieron.
+  2. **Error de la revisión, registrado.** La comparación de la mesa del 06/10/2026 (paquete del FRENO T4, segundo tramo) y la
+     decisión 2 del texto firmado describieron al ensamblador con `--sin-cola` como el que «recomputa registros, derivadas y
+     fusiones» en r2; eso no se verificó en la cadena r2 (el reporte de T5, §6, repitió la afirmación). La decisión 2 sigue
+     valiendo como criterio (toda la procedencia en la cola; los 21 compartidos se quedan, recomputados), no como descripción
+     del código.
+  3. **Qué se autoriza** (levanta, solo para este cambio, la precondición c y el PROHIBIDO «cambiar `ensamblar_tanda0.py`»): en
+     `data/experiment/tanda0/code/ensamblar_tanda0.py`, (a) `main()` pasa `con_cola=not args.sin_cola` también a la rama r2;
+     (b) `ensamblar_manifiesto_r2` recibe `con_cola: bool = True` y lo pasa a sus dos corridas de `correr_cadena_r2`; (c)
+     `correr_cadena_r2` recibe `con_cola` y, cuando es False, descarta los registros con `cola_humana` que devuelve
+     `runner_corpus.entrada_r2` (`:1200`) antes de `resolver_relaciones_r2` y de `ensamblar_r2`, en ese único punto (el plan de
+     redirecciones, `:582`, no lee registros). Con eso el registro de omisiones, el conteo de paso por E3, `cola_estados`,
+     `flaggear_cola_r2` y `aristas_derivadas_de_cola` se computan sobre lo que queda, y el reporte del ensamblado declara
+     `con_cola` y las unidades descartadas por TO. Nada más cambia: ni las reglas de E2, ni la resolución de sujetos, ni las
+     derivadas, ni la fase. El criterio es el de la decisión 2.
+  4. **Condiciones.** (i) Sin la bandera, byte a byte: la cadena r1 (su doble corrida y `--selftest-dev`), los dos r2a
+     (`70d51e42…`, `fa4c1043…`) y los dos r2b sellados (`a9631a64`, `6e756043`): el control de T3-bis. (ii) Con la bandera: salen
+     exactamente las 74 (diez) y las 59 (desarrollo: cap 10, cla 3, ext 43, pro 2, ric 1) y ninguna otra; 0 nodos y 0 aristas
+     con la marca de la cola; `aristas_derivadas_de_cola` en 0; los 21 compartidos presentes, sin procedencia de la cola. (iii)
+     Selftest: un caso nuevo en `data/experiment/r2_codigo/selftest_r3.py`, que ya tiene registros sintéticos de la cola
+     (`:301-348`): con `con_cola=False`, la unidad en cola no aporta nodos ni aristas, un nodo con procedencia en ella y en otra
+     unidad queda solo con la otra, y el registro de omisiones no lleva las suyas; con `con_cola=True`, la salida de hoy. (iv)
+     Tabla de reprocesamiento: nota a la fila F15 (E2 r2 y ensamblado): parámetro `con_cola` de la cadena r2, solo código sobre lo
+     guardado, no mueve claves de E1 ni de E3; `selftest_clave_cache` sigue en verde.
+  5. **Convivencia con R2-1 de U-RERESOL-CAT.** W1 toca las mismas funciones (`plan_redirecciones_r2`, `correr_cadena_r2`,
+     `ensamblar_manifiesto_r2`: parámetro opcional del catálogo de resolución). Orden: primero esta enmienda (SC1-bis),
+     commiteada; R2-1 se despacha después y parte de ese commit. Los dos parámetros son independientes y conviven en las
+     mismas firmas.
+  6. **Etapas.** SC1-bis: el cambio sobre una copia, el selftest y los controles (i) a (iv); después, SC1.3 a SC1.8 del texto
+     firmado para los dos grafos, con el código nuevo; FRENO SC1 completo. SC2 no cambia.
+  7. **Escrituras agregadas:** `data/experiment/tanda0/code/ensamblar_tanda0.py`, `data/experiment/r2_codigo/selftest_r3.py`,
+     `data/experiment/mantenimiento/tabla_reprocesamiento.md` (nota a F15). Lo demás, como en el texto firmado.
