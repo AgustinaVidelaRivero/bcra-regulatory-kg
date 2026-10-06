@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Figura «el ejemplo después del ensamblado» (capítulo 4, sección 4.5), versión 2.
+"""Figura «el ejemplo después del ensamblado» (capítulo 4, sección 4.5), versión 3.
 
-Continuación de la figura de la salida del extractor (sección 4.2, versión 2):
+Continuación de la figura de la salida del extractor (sección 4.2, versión 3):
 el mismo fragmento de grafo del punto 5.1.1.1 de Clasificación de deudores,
 leído ahora del grafo ensamblado. Lo que ya estaba en la figura del extractor
 conserva su disposición, su estilo y sus rótulos (baja entero, sin otro cambio,
@@ -15,18 +15,25 @@ para dejar arriba una franja nueva); lo que agrega el ensamblado se dibuja así:
   base, con el nombre del campo en castellano y la comparación leída en
   castellano (LECTURA_COMPARACION).
 No se dibujan, a propósito, las relaciones que cumplen EXCLUIR: las
-establecida_en que el ensamblado deriva de la procedencia (hoy, las de las dos
-condiciones, EXCLUIDAS). El inventario las descuenta y el script las informa.
+establecida_en que el ensamblado deriva de la procedencia (EXCLUIDAS; en el
+grafo de la versión 3, ninguna: el extractor devolvió las cuatro). El
+inventario las descuenta y el script las informa.
 Si algo de lo que ya estaba cambió en el grafo (una etiqueta, un nodo unido,
-una relación retirada), se dibuja como está en el grafo y el script lo informa.
+una relación retirada), se dibuja como está en el grafo y el script lo informa:
+en la versión 3, la exceptua de la excepción a la operación, que el validador
+rechaza, no está en el grafo y no se dibuja.
 Nada se marca en color y no hay leyenda.
 
 Versión 1 (04/10/2026): dibujaba también las dos establecida_en derivadas (con
 un cruce) y el valor interno de la comparación (minimo_estricto).
+Versión 2 (04/10/2026): sobre KG-Tanda0-Desarrollo-r2a y la figura del
+extractor versión 2 (perfil del esquema congelado).
+Versión 3: sobre el grafo sellado de la re-extracción de la tanda 0 con el
+perfil r2b (KG-Tanda0-Diez-r2b) y la figura del extractor versión 3.
 
 Fuentes, con candado de sha256:
-- el grafo (--grafo y --sha256-grafo; por omisión, KG-Tanda0-Desarrollo-r2a,
-  el grafo de la tanda 0 sobre el conjunto de desarrollo con el perfil r2). Se
+- el grafo (--grafo y --sha256-grafo; por omisión, KG-Tanda0-Diez-r2b, el
+  grafo sellado de la re-extracción de la tanda 0 con el perfil r2b). Se
   dibuja su vecindario de la unidad: las aristas que tienen a cla::5.1.1.1 entre
   sus procedencias, salvo las excluidas, y sus extremos (entre ellos, el destino
   de la remisión al 3.7). El script frena si un nodo que viene solo de la
@@ -69,7 +76,9 @@ Antes de componer la figura corren diez pruebas negativas: las cinco de la
 figura del extractor (una relación de más, una entidad de menos, un rótulo
 sobre una caja, un tramo diagonal y un cruce de más) y cinco nuevas (una
 remite_a continua, un campo de umbral de menos, el umbral lejos de su caja,
-una caja de las que ya estaban corrida y una relación excluida dibujada).
+una caja de las que ya estaban corrida y una relación retirada dibujada; en la
+versión 2, la última era una relación excluida dibujada, y en el grafo de la
+versión 3 no hay relaciones excluidas).
 Cada una tiene que hacer fallar su control. Con --perturbar <caso> se compone
 la figura con ese defecto: los controles fallan y no se escribe nada.
 
@@ -89,7 +98,7 @@ Uso (desde la raíz del repo):
         --grafo <kg.json> --sha256-grafo <sha256> [--salida <directorio>]
     PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B docs/tesis/figuras/generar_figura_ensamblado_ejemplo.py \\
         --perturbar {relacion_de_mas,entidad_de_menos,rotulo_sobre_caja,tramo_diagonal,cruce_de_flechas,\\
-                     remite_continua,umbral_campo_de_menos,umbral_lejos,caja_movida,excluida_dibujada}
+                     remite_continua,umbral_campo_de_menos,umbral_lejos,caja_movida,retirada_dibujada}
 """
 
 import argparse
@@ -118,13 +127,13 @@ REG = EX.REG
 # --------------------------------------------------------------------------- #
 # Fuentes y candados                                                           #
 # --------------------------------------------------------------------------- #
-# KG-Tanda0-Desarrollo-r2a: tanda 0, conjunto de desarrollo, perfil r2; se
-# reemplaza con --grafo y --sha256-grafo (por ejemplo, con el grafo del
-# escalado).
-GRAFO_POR_OMISION = ("data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo_r2a/r2/kg.json",
-                     "93a7af7279a415ee72cfec547bcd080d4c85a96746e219ed94dea4239007e8dd")
-# SVG de la figura del extractor (versión 2), el registrado en su LEEME.
-SVG_EXTRACTOR = "46e6cb24bd397eaa8d6d6a1ba3a83ba329ff8a0739e2cf319bd10feea6e9fac5"
+# KG-Tanda0-Diez-r2b: re-extracción de la tanda 0 con el perfil r2b
+# (U-REEXT-T0; ensamblado en bbc38dc, sello en c9540c0); se reemplaza con
+# --grafo y --sha256-grafo (por ejemplo, con el grafo del escalado).
+GRAFO_POR_OMISION = ("data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json",
+                     "a9631a64b422bdae634fb05135373c6f04c6272cdf7acd43a1be9f5b6c1f5f57")
+# SVG de la figura del extractor (versión 3), el registrado en su LEEME.
+SVG_EXTRACTOR = "9a393b325cae953f3da697658cb435fdace001cf91cb8eee1ea28980b7dfe64d"
 UNIDAD = EX.UNIDAD
 REMISION = "remite_a"
 
@@ -134,26 +143,27 @@ CLAVES_UMBRAL = ("tramo", "valor", "unidad", "comparacion", "base", "regla_compa
                  "tramo_verificado", "base_destino", "base_via")
 CAMPOS_UMBRAL = (("valor", "valor"), ("unidad", "unidad"), ("comparacion", "comparación"), ("base", "base"))
 # Definiciones de los valores de la comparación: el docstring de
-# reglas_comparacion.py (U-PYD).
+# reglas_comparacion.py (U-PYD), en la versión con la que se ensambló el grafo
+# (la de 9f6361e, igual en bbc38dc; la versión 2 leía la de 57a8dd2).
 REGLAS_COMPARACION = ("data/experiment/pyd_r2/code/reglas_comparacion.py",
-                      "0cd2afbf7356e3674cbe54daf367ea5c55353b8be326551fea28ed1ece3db821")
+                      "69c48d24387bcb788925cd1513496e015b7594f0469124f45f5082f3465b9d79")
 # Lectura en castellano de cada valor de la comparación, con las líneas del
 # docstring de reglas_comparacion.py que lo definen y sus formas.
 LECTURA_COMPARACION = {
-    "minimo_estricto": "mayor que",            # :14-17 «super-», «exced-», «más de», «mayor(es) a»
-    "maximo_estricto": "menor que",            # :17 «inferior(es) a», «menos de», «menor(es) a»
-    "minimo_inclusivo": "mayor o igual que",   # :26-28 «igual o superior/mayor», «al menos», «como mínimo»
-    "maximo_inclusivo": "menor o igual que",   # :28-29 «igual o inferior/menor», «como máximo», «hasta»
-    "igual": "igual a",                        # :35-36 «igual(es) a/al», «equivalente(s) a/al»
-    "coeficiente": "coeficiente",              # :10-11 «pondera…», «ponderador», «coeficiente», «factor»
-    "no_determinada": "no determinada",        # :44-45 cuantía sin marcador que no es un plazo
+    "minimo_estricto": "mayor que",            # :15-18 «super-», «exced-», «más de», «mayor(es) a»
+    "maximo_estricto": "menor que",            # :18 «inferior(es) a», «menos de», «menor(es) a»
+    "minimo_inclusivo": "mayor o igual que",   # :40-42 «igual o superior/mayor», «al menos», «como mínimo»
+    "maximo_inclusivo": "menor o igual que",   # :42-43 «igual o inferior/menor», «como máximo», «hasta»
+    "igual": "igual a",                        # :52-53 «igual(es) a/al», «equivalente(s) a/al»
+    "coeficiente": "coeficiente",              # :11-12 «pondera…», «ponderador», «coeficiente», «factor»
+    "no_determinada": "no determinada",        # :68 cuantía sin marcador
 }
 # Relaciones del vecindario que no se dibujan, a propósito: las que cumplen
 # EXCLUIR (las establecida_en que el ensamblado deriva de la procedencia). Las
 # que cumplen la regla tienen que ser exactamente EXCLUIDAS (por rol); si el
 # grafo trae otras, el script frena.
 EXCLUIR = {"relation": "establecida_en", "rol_fuente": "derivada_de_procedencia"}
-EXCLUIDAS = (("e2", "establecida_en", "to"), ("e3", "establecida_en", "to"))
+EXCLUIDAS = ()                              # el extractor devolvió las cuatro establecida_en
 
 # --------------------------------------------------------------------------- #
 # Disposición                                                                  #
@@ -162,23 +172,23 @@ W, ANCHO_CM, MARGEN = EX.W, EX.ANCHO_CM, EX.MARGEN
 CAJA_W = EX.CAJA_W
 CLAVE_SUJETO = EX.CLAVE_SUJETO
 # Nodos nuevos: rol -> (tipo, procedencias). El destino de la remisión al 3.7
-# va en la franja de arriba, sobre la definición de la cartera comercial.
+# va en la franja de arriba, sobre la operación (el umbral ocupa el centro,
+# sobre la condición del monto).
 NUEVOS = {"nodo_3.7": ("Definicion", ("cla::3.7",))}
-LUGAR_NUEVOS = {"nodo_3.7": (EX.X_COL[2], MARGEN)}
+LUGAR_NUEVOS = {"nodo_3.7": (EX.X_COL[0], MARGEN)}
 # Lo que ya estaba baja el alto de una caja más una calle (DY, calculado en
 # geometria_vieja), para dejar arriba la franja del nodo del 3.7 y del umbral.
 # Umbral: el panel va arriba de la caja de su nodo, con su última línea a
 # SEP_UMBRAL del borde superior de la caja; nombres en Menlo, valores en
 # Helvetica envueltos en ANCHO_VALOR.
-UMBRAL_DE = "e2"
+UMBRAL_DE = "e3"
 SEP_UMBRAL = 35
 SEP_MARCA = 8
 SEP_VALOR = 10
 ANCHO_VALOR = 185
 UMBRAL_JUNTO = 40                           # del panel a su caja, como máximo
 UMBRAL_A_FLECHA = 9                         # de cualquier texto del panel a una flecha, como mínimo
-# Cruces declarados: ninguno. El único cruce de la versión 1 era el de la
-# establecida_en derivada de la condición del repago, que ya no se dibuja.
+# Cruces declarados: ninguno.
 CRUCES_DECLARADOS = {}
 
 
@@ -186,28 +196,24 @@ def rutas_nuevas(C):
     """Puntos y rótulo de cada relación nueva, a partir de los rectángulos
     (x0, y0, x1, y1) de las cajas por rol. Rótulo: (tramo, lado, centro o
     None para el medio del tramo)."""
-    m, s, d, n = C["e2"], C["e3"], C["e1"], C["nodo_3.7"]
-    x_hueco_izq = (m[2] + s[0]) / 2.0            # entre las dos condiciones
-    y_carril = s[1] - 18                          # carril de la remite_a de la condición, sobre la fila de arriba
+    m, o, n = C["e3"], C["e1"], C["nodo_3.7"]
+    x_hueco = m[0] - 33                           # entre la columna de la izquierda y la condición del monto
+    calle = (n[3] + m[1]) / 2.0                   # entre la franja de arriba y la fila de la condición
     return {
-        # remite_a de la condición del monto: sale por su lado derecho, sube
-        # por el hueco, corre sobre la fila de arriba y entra por abajo a la
-        # caja del 3.7.
-        ("e2", REMISION, "nodo_3.7"): ([(m[2], m[1] + 20), (x_hueco_izq, m[1] + 20), (x_hueco_izq, y_carril),
-                                        (n[0] + 34, y_carril), (n[0] + 34, n[3])], (2, "arriba", None)),
-        # remite_a de la definición: recta hacia arriba.
-        ("e1", REMISION, "nodo_3.7"): ([((d[0] + d[2]) / 2.0, d[1]), ((n[0] + n[2]) / 2.0, n[3])],
-                                       (0, "derecha", None)),
+        # remite_a de la condición del monto: sale por su lado izquierdo, arriba
+        # de la condicion_de, sube por el hueco y entra de costado a la caja
+        # del 3.7.
+        ("e3", REMISION, "nodo_3.7"): ([(m[0], m[1] + 16), (x_hueco, m[1] + 16), (x_hueco, (n[1] + n[3]) / 2.0),
+                                        (n[2], (n[1] + n[3]) / 2.0)], (1, "izquierda", calle)),
+        # remite_a de la operación: recta hacia arriba, a la izquierda de la
+        # condicion_de que le llega.
+        ("e1", REMISION, "nodo_3.7"): ([(o[0] + 46, o[1]), (o[0] + 46, n[3])], (0, "derecha", calle)),
     }
 
 
-def ruta_excluida_de_prueba(C):
-    """Para la prueba negativa de la relación excluida dibujada: la ruta de la
-    establecida_en de la condición del repago en la versión 1."""
-    s, d, t = C["e3"], C["e1"], C["to"]
-    x, y = (s[2] + d[0]) / 2.0, t[3] + 24
-    pts = [(s[2], s[3] - 24), (x, s[3] - 24), (x, y), (t[0] + 44, y), (t[0] + 44, t[3])]
-    return pts, (1, "izquierda", (t[3] + y) / 2.0)
+# Prueba negativa de la relación retirada dibujada: la exceptua que el
+# validador rechaza, con su recorrido de la figura del extractor.
+RETIRADA_DE_PRUEBA = ("e2", "exceptua", "e1")
 
 
 # --------------------------------------------------------------------------- #
@@ -450,28 +456,28 @@ def flechas(viejo, cajas, dy, nuevas, retiradas, E, perturbacion):
     for clave in nuevas:
         pts, (tramo, lado, centro) = declaradas[clave]
         out.append({"clave": clave, "pts": pts, "rotulo": lugar_rotulo(pts, tramo, lado, centro, E)})
-    if perturbacion == "excluida_dibujada":
-        pts, (tramo, lado, centro) = ruta_excluida_de_prueba(C)
-        out.append({"clave": EXCLUIDAS[1], "pts": pts, "rotulo": lugar_rotulo(pts, tramo, lado, centro, E)})
+    if perturbacion == "retirada_dibujada":
+        if RETIRADA_DE_PRUEBA not in retiradas:
+            freno(f"la relación de la prueba negativa {RETIRADA_DE_PRUEBA} no es una retirada")
+        j = next(j for j, fl in enumerate(viejo["flechas"]) if fl["clave"] == RETIRADA_DE_PRUEBA)
+        r = viejo["rotulos"][j]
+        out.append({"clave": RETIRADA_DE_PRUEBA, "pts": [(x, y + dy) for x, y in viejo["flechas"][j]["pts"]],
+                    "rotulo": (r["x"], r["y"] + dy, r["anchor"])})
     if perturbacion == "relacion_de_mas":
-        a, b = C["e2"], C["e3"]
+        a, b = C[EX.RELACION_DE_MAS[0]], C[EX.RELACION_DE_MAS[2]]
         ym = (a[1] + a[3]) / 2.0
-        out.append({"clave": ("e2", "regula", "e3"), "pts": [(a[2], ym), (b[0], ym)],
+        out.append({"clave": EX.RELACION_DE_MAS, "pts": [(a[2], ym), (b[0], ym)],
                     "rotulo": lugar_rotulo([(a[2], ym), (b[0], ym)], 0, "arriba", None, E)})
     for i, fl in enumerate(out):
         fl["i"] = i
         fl["pts"] = [(float(x), float(y)) for x, y in fl["pts"]]
         fl["discontinua"] = fl["clave"][1] == REMISION and not (
-            perturbacion == "remite_continua" and fl["clave"] == ("e2", REMISION, "nodo_3.7"))
-        if perturbacion == "cruce_de_flechas" and fl["clave"] == ("e3", "condicion_de", "e4"):
-            (x, ya), (_, yb) = fl["pts"]
-            xa = next(f for f in out if f["clave"] == ("e2", "condicion_de", "e4"))["pts"][0][0] - 20
-            ym = (ya + yb) / 2.0
-            fl["pts"] = [(x, ya), (x, ym), (xa, ym), (xa, yb)]
-        if perturbacion == "tramo_diagonal" and fl["clave"] == ("e4", "aplica_a", CLAVE_SUJETO):
-            fl["pts"][-1] = (fl["pts"][-1][0] + 30, fl["pts"][-1][1])
-        if perturbacion == "rotulo_sobre_caja" and fl["clave"] == ("e4", "aplica_a", CLAVE_SUJETO):
-            c = cajas[CLAVE_SUJETO]
+            perturbacion == "remite_continua" and fl["clave"] == (UMBRAL_DE, REMISION, "nodo_3.7"))
+        # Las pruebas del cruce y del tramo diagonal, con los recorridos de la
+        # figura del extractor.
+        fl["pts"] = [(float(x), float(y)) for x, y in EX.perturbar_ruta(fl["clave"], fl["pts"], C, perturbacion)]
+        if perturbacion == "rotulo_sobre_caja" and fl["clave"] == EX.ROTULO_SOBRE_CAJA[0]:
+            c = cajas[EX.ROTULO_SOBRE_CAJA[1]]
             fl["rotulo"] = (c["x"] + c["w"] / 2.0, c["y"] + c["h"] / 2.0, "middle")
     return out
 
@@ -824,7 +830,7 @@ PRUEBAS_NEGATIVAS = (("relacion_de_mas", "inventario"), ("entidad_de_menos", "in
                      ("rotulo_sobre_caja", "textos"), ("tramo_diagonal", "trazos"),
                      ("cruce_de_flechas", "cruces"), ("remite_continua", "remisiones"),
                      ("umbral_campo_de_menos", "umbral"), ("umbral_lejos", "umbral"),
-                     ("caja_movida", "conservacion"), ("excluida_dibujada", "inventario"))
+                     ("caja_movida", "conservacion"), ("retirada_dibujada", "inventario"))
 
 
 def pruebas_negativas(*a):

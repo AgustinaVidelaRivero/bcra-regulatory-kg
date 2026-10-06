@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Figura «la salida del extractor para el ejemplo» (capítulo 4, sección 4.2), versión 2.
+"""Figura «la salida del extractor para el ejemplo» (capítulo 4, sección 4.2), versión 3.
 
 Lo que devolvió el extractor para la unidad del punto 5.1.1.1 de Clasificación
 de deudores, el ejemplo que recorre la tesis, dibujado como lo que es en el
@@ -12,18 +12,26 @@ deformaciones ni errores y no lleva leyenda: cada caja dice su tipo.
 
 Versión 1 (03/10/2026): el formato de la figura de la ficha (sección 3.8), con
 la unidad a la izquierda y la lista de entidades y relaciones a la derecha.
-Versión 2: el fragmento de grafo, con el estilo de la figura del esquema final
-(sección 3.10, versión 3).
+Versión 2 (04/10/2026): el fragmento de grafo, con el estilo de la figura del
+esquema final (sección 3.10, versión 3), sobre la salida del perfil del
+esquema congelado (v3_b54).
+Versión 3: la misma figura sobre la salida del perfil final (r2b) en la
+re-extracción de la tanda 0; dibuja todas las entidades y relaciones de la
+salida cruda, también la que el validador rechaza, sin marcarla. Esa salida no
+trae relaciones con un sujeto, así que no hay caja de sujeto ni se lee el
+catálogo.
 
 Nada del contenido se tipea ni se supone (con candado de sha256):
 - la extracción es el `tool_input_crudo` del único registro de la unidad en el
   archivo de registros de E1 que se pasa con --registro y --sha256 (por
-  omisión, el de la corrida de la tanda 0 sobre el conjunto de desarrollo,
-  perfil v3_b54); si el archivo tiene cero o más de un registro de la unidad,
-  el script frena;
-- el nombre de cada sujeto es el `label` de su entrada en el catálogo de
-  sujetos que se pasa con --catalogo y --sha256-catalogo (por omisión, el
-  catálogo v3, el del perfil v3_b54); el identificador interno no se dibuja;
+  omisión, el de la re-extracción de la tanda 0 con el perfil r2b); si el
+  archivo tiene cero o más de un registro de la unidad, el script frena; las
+  omisiones, los tramos y los umbrales de la salida no son entidades ni
+  relaciones: no se dibujan y el script los informa;
+- el nombre de cada sujeto, si la salida trae relaciones con uno, es el
+  `label` de su entrada en el catálogo de sujetos que se pasa con --catalogo y
+  --sha256-catalogo (por omisión, el catálogo v3); el catálogo se lee solo en
+  ese caso; el identificador interno no se dibuja;
 - el estilo de cada caja (relleno, borde, grosor, esquinas y la discontinua
   del sujeto), la tipografía de tipos y rótulos, el gris y el grosor de las
   flechas se leen de figura_esquema_final.svg (versión 3); las puntas son las
@@ -32,9 +40,9 @@ Nada del contenido se tipea ni se supone (con candado de sha256):
   devolvió el modelo, envueltos por palabras en el ancho de la caja, sin
   abreviar.
 La disposición (DISPOSICION y RUTAS) es la de este registro: cada entidad, cada
-sujeto y cada relación tiene su lugar declarado; si el registro trae una que
-no lo tiene, el script frena (regenerar con otra corrida pide una disposición
-nueva).
+sujeto y cada relación tiene su lugar declarado, y cada relación su recorrido
+y el lugar de su rótulo; si el registro trae una que no lo tiene, el script
+frena (regenerar con otra corrida pide una disposición nueva).
 
 Controles, en cada corrida (el script frena si fallan):
 - inventario: el SVG se relee y, solo desde su geometría, se rearman las cajas
@@ -106,10 +114,11 @@ NS = "{http://www.w3.org/2000/svg}"
 # --------------------------------------------------------------------------- #
 # Fuentes y candados                                                           #
 # --------------------------------------------------------------------------- #
-# Registros de E1 de la corrida de la tanda 0 (perfil v3_b54) para el
-# documento del ejemplo; se reemplaza con --registro y --sha256.
-REGISTRO_POR_OMISION = ("data/experiment/reextraccion_v2/corpus_tanda0/salida/cla/extracciones_e1.jsonl",
-                        "1d3baa2349a1298e68748126522b78b079d1b4569cbaa6789624c4399273f1f1")
+# Registros de E1 de la re-extracción de la tanda 0 con el perfil r2b
+# (U-REEXT-T0, 3d793aa) para el documento del ejemplo; se reemplaza con
+# --registro y --sha256.
+REGISTRO_POR_OMISION = ("data/experiment/reextraccion_v2/corpus_tanda0/salida_r2b/cla/extracciones_e1.jsonl",
+                        "47bf7b584902fe396cc14a291f56fb61237c21a4ab8bd546422eb0a63d5fde59")
 # Catálogo de sujetos del perfil v3_b54; se reemplaza con --catalogo y
 # --sha256-catalogo.
 CATALOGO_POR_OMISION = ("data/experiment/catalogo_unico/catalogo_sujetos_v3.json",
@@ -122,8 +131,12 @@ SUJETO = "Sujeto"
 
 # Claves del registro que se conocen; una clave fuera de estas listas frena el
 # script: la figura no descarta en silencio algo que el modelo devolvió.
-CLAVES_SALIDA = ("entities", "relations", "omisiones_no_prosa")
-CLAVES_ENTIDAD = ("local_id", "type", "label", "punto", "properties")
+CLAVES_SALIDA = ("entities", "relations", "omisiones_no_prosa", "omisiones")
+CLAVES_ENTIDAD = ("local_id", "type", "label", "punto", "properties", "tramo", "umbrales")
+# Claves que la figura no dibuja (no son entidades ni relaciones): el script
+# las informa.
+NO_DIBUJADAS_SALIDA = ("omisiones_no_prosa", "omisiones")
+NO_DIBUJADAS_ENTIDAD = ("punto", "properties", "tramo", "umbrales")
 CLAVES_RELACION = ("source", "predicate", "target", "sujeto_id", "punto")
 
 # Nada de esto puede aparecer en un texto dibujado.
@@ -154,24 +167,50 @@ DIST_ROTULO = 4.0                           # del rótulo a su flecha
 DISTANCIA_PARALELAS = EF.DISTANCIA_PARALELAS           # 10
 CRUCES_DECLARADOS = {}                      # ninguno
 
-# Columnas y filas: arriba, las dos condiciones y la definición; al medio, la
-# operación (entre las dos condiciones) y el Texto Ordenado (debajo de la
-# definición); abajo, el sujeto (debajo de la operación).
+# Columnas y filas. La operación y el Texto Ordenado son los dos extremos a los
+# que llegan las otras tres entidades: van en la fila del medio, a la
+# izquierda y a la derecha, unidos por su establecida_en. Arriba, en el
+# centro, la condición del monto; abajo, la excepción (debajo de la
+# operación) y la condición del repago (en el centro).
 X_COL = (MARGEN, (MARGEN + W - MARGEN - CAJA_W) / 2.0, W - MARGEN - CAJA_W)
-X_OPERACION = (X_COL[0] + X_COL[1]) / 2.0
-CLAVE_SUJETO = "sujeto:Sujeto_rol_obligado_a_clasificar_clasificacion"
-DISPOSICION = {"e2": (X_COL[0], 0), "e3": (X_COL[1], 0), "e1": (X_COL[2], 0),
-               "e4": (X_OPERACION, 1), "to": (X_COL[2], 1),
-               CLAVE_SUJETO: (X_OPERACION, 2)}
-# Rutas: (origen, nombre, destino) -> (forma, x de la vertical, lado del
-# rótulo). «vertical»: del borde inferior del origen al superior del destino,
-# en esa x; «horizontal»: del borde derecho del origen al izquierdo del
-# destino, a la altura media de las dos cajas (que comparten fila).
-RUTAS = {("e1", "establecida_en", "to"): ("vertical", X_COL[2] + CAJA_W / 2.0, "izquierda"),
-         ("e2", "condicion_de", "e4"): ("vertical", X_OPERACION + 41, "izquierda"),
-         ("e3", "condicion_de", "e4"): ("vertical", X_OPERACION + CAJA_W - 41, "derecha"),
-         ("e4", "establecida_en", "to"): ("horizontal", None, "arriba"),
-         ("e4", "aplica_a", CLAVE_SUJETO): ("vertical", X_OPERACION + CAJA_W / 2.0, "derecha")}
+CLAVE_SUJETO = "sujeto:Sujeto_rol_obligado_a_clasificar_clasificacion"   # versión 2; esta salida no trae sujetos
+DISPOSICION = {"e3": (X_COL[1], 0),
+               "e1": (X_COL[0], 1), "to": (X_COL[2], 1),
+               "e2": (X_COL[0], 2), "e4": (X_COL[1], 2)}
+CANAL = 24                                  # debajo de la fila de abajo, para la establecida_en de la excepción
+ENTRADA = 20                                # de la altura media de la operación y del Texto Ordenado
+
+
+def rutas_declaradas(C):
+    """Recorrido y rótulo de cada relación, a partir de los rectángulos
+    (x0, y0, x1, y1) de las cajas por identificador local. Rótulo: (tramo,
+    lado, centro o None para el medio del tramo); los de los tramos
+    verticales van en la calle entre filas."""
+    m, o, t, x, r = C["e3"], C["e1"], C["to"], C["e2"], C["e4"]
+    xo, xt = (o[0] + o[2]) / 2.0, (t[0] + t[2]) / 2.0
+    ym_m, ym_o = (m[1] + m[3]) / 2.0, (o[1] + o[3]) / 2.0
+    calle_01, calle_12 = (m[3] + o[1]) / 2.0, (o[3] + r[1]) / 2.0
+    ya, yb = ym_o + ENTRADA, x[3] + CANAL
+    return {
+        # La condición del monto, por sus dos lados, baja a la operación y al
+        # Texto Ordenado.
+        ("e3", "condicion_de", "e1"): ([(m[0], ym_m), (xo, ym_m), (xo, o[1])], (1, "derecha", calle_01)),
+        ("e3", "establecida_en", "to"): ([(m[2], ym_m), (xt, ym_m), (xt, t[1])], (1, "izquierda", calle_01)),
+        # La operación, al Texto Ordenado, recta.
+        ("e1", "establecida_en", "to"): ([(o[2], ym_o), (t[0], ym_o)], (0, "arriba", None)),
+        # La condición del repago sube por la fila del medio y entra de costado
+        # a la operación y al Texto Ordenado.
+        ("e4", "condicion_de", "e1"): ([(r[0] + 20, r[1]), (r[0] + 20, ya), (o[2], ya)], (0, "derecha", calle_12)),
+        ("e4", "establecida_en", "to"): ([(r[2] - 20, r[1]), (r[2] - 20, ya), (t[0], ya)], (0, "derecha", calle_12)),
+        # La excepción sube recta a la operación y llega al Texto Ordenado por
+        # debajo de la fila de abajo.
+        ("e2", "exceptua", "e1"): ([(xo, x[1]), (xo, o[3])], (0, "derecha", None)),
+        ("e2", "establecida_en", "to"): ([(xo, x[3]), (xo, yb), (xt, yb), (xt, t[3])],
+                                         (2, "izquierda", (r[1] + r[3]) / 2.0)),
+    }
+
+
+RUTAS = tuple(rutas_declaradas({k: (0, 0, 1, 1) for k in DISPOSICION}))
 
 
 def freno(motivo):
@@ -247,8 +286,7 @@ def resolver(args):
     extra = sorted(k for k in ext if k not in CLAVES_SALIDA)
     if extra:
         freno(f"la salida cruda tiene claves no previstas {extra}")
-    if ext.get("omisiones_no_prosa"):
-        freno("la salida cruda declara omisiones de contenido no prosa, que la figura no dibuja")
+    no_dibujado = [(k, ext[k]) for k in NO_DIBUJADAS_SALIDA if ext.get(k)]
     nodos = {}
     for i, e in enumerate(ext["entities"]):
         extra = sorted(k for k in e if k not in CLAVES_ENTIDAD)
@@ -259,10 +297,13 @@ def resolver(args):
         if e["local_id"] in nodos:
             freno(f"identificador local repetido: {e['local_id']}")
         nodos[e["local_id"]] = {"tipo": e["type"], "etiqueta": e["label"]}
+        no_dibujado += [(f"{e['local_id']}.{k}", e[k]) for k in NO_DIBUJADAS_ENTIDAD if e.get(k)]
 
-    # Sujetos: el nombre legible de su entrada en el catálogo.
-    crudo_cat = leer_con_candado(args.catalogo, args.sha256_catalogo).decode("utf-8")
-    cat, lineas_cat = json.loads(crudo_cat), crudo_cat.split("\n")
+    # Sujetos: el nombre legible de su entrada en el catálogo, que se lee solo
+    # si alguna relación llega a un sujeto.
+    if any("sujeto_id" in r for r in ext["relations"]):
+        crudo_cat = leer_con_candado(args.catalogo, args.sha256_catalogo).decode("utf-8")
+        cat, lineas_cat = json.loads(crudo_cat), crudo_cat.split("\n")
     relaciones, sujetos = [], {}
     for i, r in enumerate(ext["relations"]):
         extra = sorted(k for k in r if k not in CLAVES_RELACION)
@@ -299,8 +340,9 @@ def resolver(args):
     claves_r = [(r["origen"], r["nombre"], r["destino"]) for r in relaciones]
     if sorted(claves_r) != sorted(RUTAS) or len(set(claves_r)) != len(claves_r):
         freno("las rutas declaradas no son exactamente las relaciones del registro")
+    sha_linea = hashlib.sha256((crudo.split("\n")[linea - 1] + "\n").encode("utf-8")).hexdigest()
     return {"linea": linea, "n_regs": len(regs), "reg": reg, "ext": ext, "nodos": nodos,
-            "relaciones": relaciones, "sujetos": sujetos}
+            "relaciones": relaciones, "sujetos": sujetos, "no_dibujado": no_dibujado, "sha_linea": sha_linea}
 
 
 # --------------------------------------------------------------------------- #
@@ -350,47 +392,63 @@ def geometria(res, E):
     ancho = CAJA_W - 2 * PAD_X
     lineas = {k: envolver(n["etiqueta"], ancho, FS_ETIQUETA) for k, n in res["nodos"].items()}
     alto = math.ceil(alto_contenido(E, max(len(v) for v in lineas.values())) + 2 * PAD_Y)
-    filas = (MARGEN, MARGEN + alto + CALLE_V, MARGEN + 2 * (alto + CALLE_V))
+    filas = tuple(MARGEN + f * (alto + CALLE_V) for f in range(1 + max(f for _, f in DISPOSICION.values())))
     return {k: {"x": float(x), "y": float(filas[fila]), "w": float(CAJA_W), "h": float(alto),
                 "lineas": lineas[k]} for k, (x, fila) in DISPOSICION.items()}, alto
 
 
+# Relaciones que plantan las pruebas negativas (son las mismas en la figura del
+# ensamblado, que las reutiliza).
+RELACION_DE_MAS = ("e2", "regula", "e4")
+RUTA_CON_CRUCE = ("e4", "condicion_de", "e1")      # sube por encima de la establecida_en de la operación
+RUTA_DIAGONAL = ("e1", "establecida_en", "to")
+ROTULO_SOBRE_CAJA = (("e1", "establecida_en", "to"), "to")
+
+
+def perturbar_ruta(clave, pts, C, perturbacion):
+    """Los recorridos de las pruebas negativas del cruce y del tramo diagonal."""
+    if perturbacion == "cruce_de_flechas" and clave == RUTA_CON_CRUCE:
+        o = C["e1"]
+        y = (o[1] + o[3]) / 2.0 - ENTRADA
+        return [pts[0], (pts[0][0], y), (o[2], y)]
+    if perturbacion == "tramo_diagonal" and clave == RUTA_DIAGONAL:
+        return [pts[0], (pts[-1][0], pts[-1][1] + 30)]
+    return pts
+
+
 def rutas(res, cajas, perturbacion):
-    """Puntos de cada flecha y lado de su rótulo."""
+    """Puntos de cada flecha y lugar de su rótulo."""
     lista = [(r["origen"], r["nombre"], r["destino"]) for r in res["relaciones"]]
     if perturbacion == "relacion_de_mas":
-        lista.append(("e2", "regula", "e3"))
+        lista.append(RELACION_DE_MAS)
+    C = {k: (c["x"], c["y"], c["x"] + c["w"], c["y"] + c["h"]) for k, c in cajas.items()}
+    declaradas = rutas_declaradas(C)
     out = []
     for i, clave in enumerate(lista):
-        o, _, d = clave
-        forma, x, lado = RUTAS.get(clave, ("horizontal", None, "arriba"))
-        a, b = cajas[o], cajas[d]
-        if forma == "vertical":
-            pts = [(x, a["y"] + a["h"]), (x, b["y"])]
+        if clave in declaradas:
+            pts, rotulo = declaradas[clave]
         else:
-            ym = a["y"] + a["h"] / 2.0
-            pts = [(a["x"] + a["w"], ym), (b["x"], ym)]
-        if perturbacion == "cruce_de_flechas" and clave == ("e3", "condicion_de", "e4"):
-            ym = (a["y"] + a["h"] + b["y"]) / 2.0
-            xa = RUTAS[("e2", "condicion_de", "e4")][1] - 20
-            pts = [(x, a["y"] + a["h"]), (x, ym), (xa, ym), (xa, b["y"])]
-        if perturbacion == "tramo_diagonal" and clave == ("e4", "aplica_a", CLAVE_SUJETO):
-            pts = [pts[0], (pts[1][0] + 30, pts[1][1])]
-        out.append({"i": i, "clave": clave, "pts": [(float(p), float(q)) for p, q in pts], "lado": lado})
+            a, b = C[clave[0]], C[clave[2]]
+            ym = (a[1] + a[3]) / 2.0
+            pts, rotulo = [(a[2], ym), (b[0], ym)], (0, "arriba", None)
+        pts = perturbar_ruta(clave, pts, C, perturbacion)
+        out.append({"i": i, "clave": clave, "pts": [(float(p), float(q)) for p, q in pts], "rotulo": rotulo})
     return out
 
 
 def lugar_rotulo(fl, E):
-    """Ancla y alineación del rótulo, junto al tramo más largo de su flecha:
+    """Ancla y alineación del rótulo, junto al tramo declarado de su flecha:
     arriba de un tramo horizontal o al costado de uno vertical, a
-    DIST_ROTULO."""
+    DIST_ROTULO, en el centro declarado o en el medio del tramo."""
     fs = E["fs_rotulo"]
-    p, q = max(zip(fl["pts"], fl["pts"][1:]), key=lambda t: abs(t[1][0] - t[0][0]) + abs(t[1][1] - t[0][1]))
+    tramo, lado, centro = fl["rotulo"]
+    p, q = fl["pts"][tramo], fl["pts"][tramo + 1]
     asc, desc = EF.ASC_MONO * fs, EF.DESC_MONO * fs
-    if fl["lado"] == "arriba":
-        return (p[0] + q[0]) / 2.0, p[1] - DIST_ROTULO - desc, "middle"
-    ym = (p[1] + q[1]) / 2.0 + (asc - desc) / 2.0
-    if fl["lado"] == "izquierda":
+    if lado == "arriba":
+        x = (p[0] + q[0]) / 2.0 if centro is None else centro
+        return x, p[1] - DIST_ROTULO - desc, "middle"
+    ym = ((p[1] + q[1]) / 2.0 if centro is None else centro) + (asc - desc) / 2.0
+    if lado == "izquierda":
         return p[0] - DIST_ROTULO, ym, "end"
     return p[0] + DIST_ROTULO, ym, "start"
 
@@ -447,12 +505,13 @@ def componer(res, E, perturbacion=None):
     # Rótulos, con halo, encima de todo.
     for fl in flechas:
         x, y, anchor = lugar_rotulo(fl, E)
-        if perturbacion == "rotulo_sobre_caja" and fl["clave"] == ("e4", "aplica_a", CLAVE_SUJETO):
-            c = cajas[CLAVE_SUJETO]
+        if perturbacion == "rotulo_sobre_caja" and fl["clave"] == ROTULO_SOBRE_CAJA[0]:
+            c = cajas[ROTULO_SOBRE_CAJA[1]]
             x, y, anchor = c["x"] + c["w"] / 2.0, c["y"] + c["h"] / 2.0, "middle"
         texto(partes, E, fl["clave"][1], x, y, E["fs_rotulo"], True, anchor, ("rotulo", fl["i"]),
               color=E["gris_rotulo"], halo=True)
-    alto_total = math.ceil(max(c["y"] + c["h"] for c in todas.values()) + MARGEN)
+    alto_total = math.ceil(max([c["y"] + c["h"] for c in todas.values()]
+                               + [y for fl in flechas for _, y in fl["pts"]]) + MARGEN)
     cabeza = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{ANCHO_CM:g}cm" '
               f'height="{ANCHO_CM * alto_total / W:.3f}cm" viewBox="0 0 {W} {alto_total}" '
               f'font-family="{E["sans"]}">',
@@ -805,11 +864,17 @@ def main():
     ext = res["ext"]
     print("FUENTES (sha256 comprobado):")
     print(f"  registro  {args.registro}:{res['linea']}   {args.sha256}")
-    print(f"  catálogo  {args.catalogo}   {args.sha256_catalogo}")
+    if res["sujetos"]:
+        print(f"  catálogo  {args.catalogo}   {args.sha256_catalogo}")
     print(f"  estilo    {ESTILO[0]}   {ESTILO[1]}")
-    print(f"REGISTRO: línea {res['linea']} de {res['n_regs']} registros del archivo, el único de {UNIDAD}; "
-          f"stop_reason {res['reg']['stop_reason']!r}, sin error; {len(ext['entities'])} entidades y "
-          f"{len(ext['relations'])} relaciones en la salida cruda")
+    print(f"REGISTRO: línea {res['linea']} de {res['n_regs']} registros del archivo, el único de {UNIDAD} "
+          f"(sha256 de la línea {res['sha_linea']}); stop_reason {res['reg']['stop_reason']!r}, sin error; "
+          f"{len(ext['entities'])} entidades y {len(ext['relations'])} relaciones en la salida cruda")
+    for k, v in res["no_dibujado"]:
+        print(f"NO DIBUJADO (no es entidad ni relación): {k} = {json.dumps(v, ensure_ascii=False)}")
+    if not res["sujetos"]:
+        print("SUJETOS: ninguna relación de la salida llega a un sujeto; no hay caja de sujeto y el catálogo "
+              "no se lee")
     for _, s in sorted(res["sujetos"].items()):
         print(f"SUJETO: {s['id']} -> {s['etiqueta']!r} (catálogo, líneas {s['lineas']}: id y label)")
     print("ESTILO por tipo (de la figura del esquema final): "
