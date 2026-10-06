@@ -534,3 +534,33 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     visible desde que existe `salida_r2b/`, `3d793aa`) y `selftest_canal_abierto_e1` (bloque B, 45 de 46, desde
     `0e50e3d`, 31/08/2026). El primero se corrige en T2-ter; el segundo, con la parada ordenada por SIGUSR1 y el tope
     por corrida, en la unidad de mantenimiento del runner (checklist, fila P20, `e1c84c1`).
+- **06/10/2026 — decisiones de la autora sobre el FRENO T2-ter (T2-ter en `ad99ac7`).** T2-ter costó USD 0,249002
+  de un tope de 1 (`data/experiment/reext_t0/freno_t2ter.md`): la reparación acotada se aplicó a `cap::4.2.1.2::parte1`
+  y a `cap::3.1.1.2` sobre sus salidas guardadas, sin pagar E1 (7 aciertos de caché); `cap::3.1.1.2` quedó
+  aceptado_con_residuales con 2 nodos; la parte 1, tras un reintento del ratchet, en la cola humana con 54 nodos
+  marcados; sin validación 0; el E2 r2 de cap pasó de 2.190 a 2.244 nodos; A1r del selftest de claves corregido (de
+  FRENO a OK, con la variación R25b) y la tabla de reprocesamiento re-anclada (0 desplazadas). La revisión
+  independiente reprodujo las cifras sobre copias (la cuenta de las 2.439, el gasto por tokens, las 4 filas nuevas y las
+  4 líneas de usage, el selftest de claves en OK) y recontó la cifra de la reparación desde los registros.
+  - Decisiones.
+    1. Fila F08f de la tabla de reprocesamiento (reparación acotada), escrita en la revisión: clave de E1 «no cambia»,
+       clave de E3 «cambia (las reparadas)», clase «E3 de las afectadas», anclas `runner_corpus.py:542-559`,
+       `:710-720`, `:727-728` y `:816-819`. Cita la variación R18 (la de F14: la salida validada de E1 alterada en
+       código mueve la clave de E3 y no la de E1), porque el contraste del selftest de claves exige que toda variación
+       citada exista y la variación propia que proponía T2-ter (R25c) no está implementada: con ella la tabla hacía
+       fallar el selftest. La variación propia queda pendiente para la unidad de mantenimiento del runner (checklist,
+       fila P20). F08c vuelve a describir solo los dos reintentos por forma (R25, R25b).
+    2. Cifra de la reparación para la tesis, recontada desde `extracciones_e1.jsonl` y las bases: 12 salidas de E1 mal
+       formadas en 8 unidades (8 primeros intentos, 2 en `-rforma1` y 2 en `-rforma2`, todas con `entities` lista y sin
+       la clave `relations`); 6 unidades resueltas con un reintento, 2 reparadas (`cap::3.1.1.2` y
+       `cap::4.2.1.2::parte1`) y 0 agotadas. El «seguí» de T2-ter decía «10 unidades y 8 resueltas»: error de la
+       revisión, no del repo (la nota anterior da las 12 salidas por intento, sin cifra de unidades); corregido.
+    3. La parte 1 de `cap::4.2.1.2` integra la población de la cola humana de T4 (74 entradas: 73 unidades y la
+       parte 1). El sorteo se hace en T4 con la semilla y el procedimiento sellados en T1
+       (`data/experiment/reext_t0/sellos_t4.json`); corrido en la revisión sobre la cola actual, la parte 1 sale
+       sorteada. Si al llegar a T4 la cola fuera otra y la parte 1 no saliera, se lee aparte y declarada. Los sellos
+       no se tocan.
+  - Para la unidad de mantenimiento del runner (checklist, fila P20): guardar en la marca `reparacion_forma` del
+    registro de E1 la clave de caché o el sha256 de la salida original del modelo, porque hoy esa salida (la tercera,
+    la que se repara) queda solo en la caché y se recupera recomputando la clave; y la variación propia de F08f en el
+    selftest de claves.
