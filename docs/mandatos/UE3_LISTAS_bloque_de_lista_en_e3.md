@@ -1,6 +1,7 @@
 # Mandato U-E3-LISTAS — el bloque que abre la lista entra al verificador de E3
 
-**VERSIÓN PARA FIRMAR (06/10/2026) — PENDIENTE DE FIRMA DE LA AUTORA.** Redactado por la mesa sobre el FRENO de U-DIAG-E3-LISTAS
+**FIRMADO por la autora el 06/10/2026** (firma por mensaje de la autora; versión para firmar en `9bca986`; decisiones al firmar en la
+nota al pie del 06/10/2026). Redactado por la mesa sobre el FRENO de U-DIAG-E3-LISTAS
 (reporte y propuesta archivados en `reports/u_diag_e3_listas/`) y las decisiones de la autora del 06/10/2026: la corrección rige desde
 la tanda 1; la tanda 0 no se re-verifica, declara el límite (`docs/insumos_escritura.md` §7, ítem 4) y lo mide aparte con O3, que es
 parte de esta unidad. Gasto de API: solo O3, con tope USD 1.
@@ -77,5 +78,19 @@ candado, porque el candado corre al importar y frena: por eso O2 trabaja sobre l
 quien importa `prompt_e3` hoy son los selftests de `r2_codigo/`, `selftest_clave_cache`, `selftest_dirigida_tanda0` y los scripts
 cerrados de `prompt_r2/` y `reext_t0/` (ninguno corre en las unidades en paralelo, salvo `selftest_r3.py`, que SC1-bis corre sobre su
 propia copia). `git status --short` completo al inicio, lo ajeno listado y sin tocar; 2.213 `.pyc` al inicio, declarados si difieren.
-DECISIONES DE LA AUTORA AL FIRMAR: (1) el nombre de la unidad; (2) si la NOTA del ítem va con el texto propuesto o con uno suyo (se fija
-en O1, con el texto final en el FRENO O1).
+DECISIONES DE LA AUTORA AL FIRMAR: tomadas el 06/10/2026; están en la nota al pie.
+
+NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 81 líneas de arriba (commit de la firma: PENDIENTE de la autora; versión para
+firmar en `9bca986`) y no cambia.
+
+- **06/10/2026 — decisiones de la autora al firmar.** (1) El nombre es U-E3-LISTAS. (2) La NOTA del ítem se redacta sobre el texto
+  propuesto en la pieza 2, con tres precisiones que O1 resuelve: (a) cada cláusula corresponde a una regla del prefijo de E1 y la cita,
+  sin agregar ningún criterio que E1 no tenga; las reglas son R28, R29, R30 y R16 (`e1_extractor/prompt_r2b_reemplazos.json:12`,
+  `:108`, `:114` —composición con el encabezado de una lista—, `:120`) y P3C-b1, P3C-b2, P3C-b3, P3C-c1, P3C-c2, P3C-d1 y P3C-d2
+  (`e1_extractor/prompt_r2b_parche_p3c.json:48`, `:55`, `:62`, `:69`, `:76`, `:83`, `:90`); las de las listas de condiciones son
+  P3C-c1 y P3C-c2 (una Condicion por supuesto) y P3C-b3 (la excepción cuando los ítems son sus condiciones); (b) cubre los tres tipos de
+  lista: la de lo que queda afuera de una clase (b1), la de una norma con sus excepciones (b2, «se prohíbe…, excepto para:»), donde el
+  ítem es el supuesto en que la norma no rige, y la de condiciones o requisitos; (c) no solo exime: controla. Con el bloque a la vista,
+  E3 verifica que lo compuesto en el ítem (sujeto, modalidad, cuantificador) coincida con lo que fija el encabezado; si no coincide,
+  sigue siendo un error. (3) El texto final de la NOTA lo aprueba la autora en el FRENO O1, que muestra el texto y una prueba en seco
+  (sin API: el mensaje de E3 armado con la pieza 1 y la NOTA) sobre ítems de los tres tipos, incluidos `cla::5.1.1.1` y uno de `ext::3.6.1`.
