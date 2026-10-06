@@ -64,6 +64,8 @@ REX = AQUI.parent
 sys.path.insert(0, str(REX / "e1_extractor"))
 sys.path.insert(0, str(REX / "e3_verificador"))
 sys.path.insert(0, str(REX / "e2_reduce"))
+# U-REEXT-T0, T2-bis: correr_e0 (tercer escalón y partición por corte del perfil r2) se importa desde e0_chunking
+sys.path.insert(0, str(REX / "e0_chunking"))
 sys.path.insert(0, str(REX))
 
 import comun_e1                     # noqa: E402
@@ -378,6 +380,21 @@ class Estado:
     def fase_cerrada(self, key: str) -> bool:
         return key in self.d["fases_cerradas"]
 
+    def reabrir_fase(self, key: str) -> bool:
+        """U-REEXT-T0, T2-bis (--reabrir-fase): saca la fase de fases_cerradas y la deja como fase_actual con su gasto
+        en gasto_previo_usd; abrir_fase lo conserva y cerrar_fase la vuelve a cerrar con el gasto previo más el nuevo.
+        La reapertura queda en `reaperturas`, con el resumen de la fase cerrada. No hace nada si la fase no está
+        cerrada (ya reabierta, o en curso tras un corte) o si hay otra fase en curso, cuyo gasto no se pisa."""
+        if key not in self.d["fases_cerradas"] or self.d.get("fase_actual") is not None:
+            return False
+        cerrada = self.d["fases_cerradas"].pop(key)
+        self.d["fase_actual"] = {"key": key, "gasto_previo_usd": cerrada["gasto_usd"],
+                                 "gasto_proceso_usd": 0.0, "unidades_hechas": 0}
+        self.d.setdefault("reaperturas", []).append({"key": key, "ts": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+                                                     "fase_cerrada": cerrada})
+        self.persistir()
+        return True
+
 
 # ----------------------------- proyección/freno -------------------------- #
 def proyeccion(estado: Estado, fase_key: str | None, frac: float) -> dict:
@@ -507,6 +524,19 @@ def _usage_e1(resp) -> dict:
             "output_tokens": getattr(u, "output_tokens", 0) or 0,
             "cache_write_tokens": getattr(u, "cache_creation_input_tokens", 0) or 0,
             "cache_read_tokens": getattr(u, "cache_read_input_tokens", 0) or 0}
+
+
+def salida_reintento_forma(resp, c: dict) -> tuple:
+    """usage, stop_reason, tool input y validación de la respuesta de un reintento por forma."""
+    tool_input = next((b.input for b in resp.content if getattr(b, "type", None) == "tool_use"), None)
+    val = (validador_e1.validar_salida(tool_input, c, esquema=PERFIL.esquema).as_dict()
+           if tool_input is not None else None)
+    return _usage_e1(resp), getattr(resp, "stop_reason", None), tool_input, val
+
+
+def mal_formada_tras_reintento(stop, tool_input, val: dict | None) -> bool:
+    """La respuesta de un reintento por forma que deja la unidad con ERROR_FORMA_TRAS_REINTENTO."""
+    return stop == "max_tokens" or tool_input is None or motivo_forma_e1(val) is not None
 
 
 def partes_por_corte(tdir: Path) -> dict[str, dict]:
@@ -642,12 +672,22 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
             if resp_f is None:
                 err = err_f
             else:
-                usage, stop = _usage_e1(resp_f), getattr(resp_f, "stop_reason", None)
-                tool_input = next((b.input for b in resp_f.content
-                                   if getattr(b, "type", None) == "tool_use"), None)
-                val = (validador_e1.validar_salida(tool_input, c, esquema=PERFIL.esquema).as_dict()
-                       if tool_input is not None else None)
-                if stop == "max_tokens" or tool_input is None or motivo_forma_e1(val) is not None:
+                usage, stop, tool_input, val = salida_reintento_forma(resp_f, c)
+                if mal_formada_tras_reintento(stop, tool_input, val) and perfil_forma_r2(PERFIL):
+                    # U-REEXT-T0, T2-bis: UN segundo reintento, el mismo pedido (con la temperatura del reintento) en
+                    # el namespace -rforma2; el registro guarda la salida del primero en reintento_2.intento_2
+                    reintento_forma["reintento_2"] = {
+                        "namespace": cliente_e1.namespace_e1(prefijo_hash=PERFIL.prefijo_hash_para_namespace,
+                                                             sufijo=cliente_e1.SUFIJO_REINTENTO_FORMA_2),
+                        "motivo": motivo_forma_e1(val), "intento_2": cliente_e1.resumen_intento(resp_f)}
+                    resp_f2, err_f2 = llamar_con_reintentos_api(
+                        lambda: cliente_e1.crear_reintento_forma(cliente, kwargs_forma, doc=c["archivo"],
+                                                                 sufijo=cliente_e1.SUFIJO_REINTENTO_FORMA_2), c["id"])
+                    if resp_f2 is None:
+                        err = err_f2
+                    else:
+                        usage, stop, tool_input, val = salida_reintento_forma(resp_f2, c)
+                if err is None and mal_formada_tras_reintento(stop, tool_input, val):
                     err = ERROR_FORMA_TRAS_REINTENTO
         reg = {
             "chunk_id": c["id"], "unidad": c["unidad"], "tipo_unidad": c["tipo"],
@@ -739,6 +779,9 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
         resumen["reintentos_forma"] = {
             "unidades": con_forma,
             "agotados": sorted(cid for cid in con_forma if finales_e1[cid].get("error") == ERROR_FORMA_TRAS_REINTENTO)}
+        con_segundo = sorted(cid for cid in con_forma if "reintento_2" in finales_e1[cid]["reintento_forma"])
+        if con_segundo:
+            resumen["reintentos_forma"]["con_segundo_reintento"] = con_segundo
     con_escalon3 = sorted(cid for cid, r in finales_e1.items() if r.get("escalon_3")) if PERFIL_R2 else []
     if con_escalon3:
         resumen["escalon_3"] = {
@@ -880,6 +923,14 @@ def cerrar_e2(to: str, salida: Path, limite: int | None = None) -> dict:
     chunks = chunks_sin_ids_repetidos(comun_e1.cargar_chunks((to,), e0_dir=E0_DIR), to)
     if limite:
         chunks = chunks[:limite]
+    # U-REEXT-T0, T2-bis (corrección autorizada por la autora fuera de los puntos a-c): el fan-in de este E2 espera las
+    # unidades de la E0, y el compactado lleva las partes de una unidad partida por corte (perfil r2), no la unidad.
+    # La unidad va con su último registro de E1 (error particionada_por_corte), como rechazada en E1, y se declara
+    # aparte en el reporte, reemplazada por sus partes, que entran al E2 r2. Sin particiones, nada cambia.
+    partidas = partes_por_corte(tdir) if PERFIL_R2 else {}
+    if partidas:
+        regs_todos = cargar_jsonl_last_wins(tdir / "extracciones_e1.jsonl")
+        regs_e1 = {**regs_e1, **{cid: regs_todos[cid] for cid in partidas if cid in regs_todos}}
 
     path_final = tdir / f"extracciones_finales_{to}.jsonl"
     with path_final.open("w", encoding="utf-8") as f:
@@ -904,6 +955,11 @@ def cerrar_e2(to: str, salida: Path, limite: int | None = None) -> dict:
                          censo_oraculo=CENSO_ORACULO_ARG, e0_dir=E0_DIR,
                          limitaciones=LIMITACIONES, esquema=PERFIL.esquema,
                          labels_catalogo=PERFIL.labels_catalogo)
+    if partidas:
+        res["reporte"]["particionadas_por_corte"] = {
+            cid: {"reemplazada_por": [p["id"] for p in v["partes"]],
+                  "en_este_fan_in": "rechazada en E1 con el error particionada_por_corte; sus partes entran al E2 r2"}
+            for cid, v in sorted(partidas.items())}
     (tdir / f"grafo_{to}.json").write_text(res["grafo_json"], encoding="utf-8")
     (tdir / f"reporte_e2_{to}.json").write_text(
         json.dumps(res["reporte"], ensure_ascii=False, indent=1), encoding="utf-8")
@@ -1254,6 +1310,9 @@ def main() -> int:
     ap.add_argument("--perfil-r2", action="store_true",
                     help="U-R2-CODIGO R3.a: también el E2 del perfil r2 (archivos *_r2_*, "
                          "resolucion_sujetos.jsonl y no_mapeados_sujetos.jsonl por TO)")
+    ap.add_argument("--reabrir-fase", type=str, default=None,
+                    help="U-REEXT-T0, T2-bis: fases cerradas que se reabren antes de su salteo, separadas por coma "
+                         "(p. ej. cap:e1,cap:e3); conservan su gasto como gasto previo y la corrida las vuelve a cerrar")
     args = ap.parse_args()
     global PERFIL_R2
 
@@ -1264,6 +1323,8 @@ def main() -> int:
     tos = ([t.strip() for t in args.tos.split(",") if t.strip()]
            if args.tos else list(TOS_ORDEN))
     assert all(t in TOS_ORDEN for t in tos), tos
+    reabrir = {k.strip() for k in (args.reabrir_fase or "").split(",") if k.strip()}
+    assert all(k.split(":")[0] in tos and k.split(":")[-1] in ("e1", "e3") for k in reabrir), reabrir
 
     if not args.stub:
         if args.autorizado_tope != TOPE_GLOBAL_USD:
@@ -1298,6 +1359,9 @@ def main() -> int:
         for to in tos:
             ck = args.checkpoint_cada or CHECKPOINT_CADA.get(to)
             # ------- fase E1 -------
+            if f"{to}:e1" in reabrir and estado.reabrir_fase(f"{to}:e1"):
+                print(f"[{to}:e1] reabierta (--reabrir-fase), gasto previo USD "
+                      f"{estado.d['fase_actual']['gasto_previo_usd']:.6f}", flush=True)
             if estado.fase_cerrada(f"{to}:e1"):
                 print(f"[{to}:e1] ya cerrada — se saltea", flush=True)
             else:
@@ -1316,6 +1380,9 @@ def main() -> int:
                 finally:
                     cli.close()
             # ------- fase E3 (incluye reintentos E1) -------
+            if f"{to}:e3" in reabrir and estado.reabrir_fase(f"{to}:e3"):
+                print(f"[{to}:e3] reabierta (--reabrir-fase), gasto previo USD "
+                      f"{estado.d['fase_actual']['gasto_previo_usd']:.6f}", flush=True)
             if estado.fase_cerrada(f"{to}:e3"):
                 print(f"[{to}:e3] ya cerrada — se saltea", flush=True)
             else:

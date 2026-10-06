@@ -74,6 +74,10 @@ MAX_TOKENS_REINTENTO_CORTE_R2 = 16384
 # request lleva además la temperatura del reintento: lo arma
 # runner_corpus.kwargs_reintento_forma; este cliente lo pasa tal cual.
 SUFIJO_REINTENTO_FORMA = "-rforma1"
+# U-REEXT-T0, T2-bis (decisión 3 de la autora sobre el FRENO T2): si el reintento por forma también vuelve mal formado,
+# el runner del perfil r2b hace UN segundo reintento, el mismo pedido, en este namespace; su log de usage lleva el
+# component del reintento por forma.
+SUFIJO_REINTENTO_FORMA_2 = "-rforma2"
 COMPONENTE_E1 = "reextraccion_v2_e1"
 COMPONENTE_REINTENTO_FORMA = "reextraccion_v2_e1_reintento_forma"
 # Tercer escalón del reintento por corte (U-PROMPT-R2, P3c-2; decisión 6 de la autora sobre el FRENO P3c-1; solo el
@@ -262,9 +266,11 @@ class ClienteE1Real:
         return self._transmision and (kwargs.get("max_tokens") or 0) > LIMITE_SIN_TRANSMISION
 
     def _cache_transmision(self, sufijo: str):
-        """La caché sobre AdaptadorTransmision del camino (sufijo vacío: el de siempre; el del reintento por forma)."""
-        attr = "cache_transmision" if not sufijo else "cache_reintento_forma_transmision"
-        if getattr(self, attr) is None:
+        """La caché sobre AdaptadorTransmision del camino (sufijo vacío: el de siempre; el de cada reintento por
+        forma)."""
+        attr = ("cache_transmision" if not sufijo else "cache_reintento_forma_transmision"
+                if sufijo == SUFIJO_REINTENTO_FORMA else "cache_reintento_forma_2_transmision")
+        if getattr(self, attr, None) is None:
             setattr(self, attr, lc.CachingClient(
                 AdaptadorTransmision(self._real), domain=DOMAIN, db_path=self._db_path,
                 namespace=namespace_e1(self._canal_abierto, prefijo_hash=self._prefijo_hash, sufijo=sufijo),
@@ -276,21 +282,22 @@ class ClienteE1Real:
             return self._crear_en(self._cache_transmision(""), COMPONENTE_ESCALON_3, doc, kwargs)
         return self._crear_en(self.cache, COMPONENTE_E1, doc, kwargs)
 
-    def crear_reintento_forma(self, *, doc: str | None = None, **kwargs):
+    def crear_reintento_forma(self, *, doc: str | None = None, sufijo: str = SUFIJO_REINTENTO_FORMA, **kwargs):
         """U-R2-CODIGO-2, C2, punto b: el request que recibe, tal cual, en el
         namespace del reintento por forma (SUFIJO_REINTENTO_FORMA), con el
         mismo tope y la misma contabilidad D2 (con el perfil r2b, el runner lo
-        arma con la temperatura del reintento; U-PROMPT-R2, P5)."""
+        arma con la temperatura del reintento; U-PROMPT-R2, P5). Con
+        sufijo=SUFIJO_REINTENTO_FORMA_2, el segundo reintento (U-REEXT-T0,
+        T2-bis), en su namespace."""
         if self._transmite(kwargs):
-            return self._crear_en(self._cache_transmision(SUFIJO_REINTENTO_FORMA), COMPONENTE_REINTENTO_FORMA, doc,
-                                  kwargs)
-        if self.cache_reintento_forma is None:
-            self.cache_reintento_forma = lc.CachingClient(
+            return self._crear_en(self._cache_transmision(sufijo), COMPONENTE_REINTENTO_FORMA, doc, kwargs)
+        attr = "cache_reintento_forma" if sufijo == SUFIJO_REINTENTO_FORMA else "cache_reintento_forma_2"
+        if getattr(self, attr, None) is None:
+            setattr(self, attr, lc.CachingClient(
                 self._real, domain=DOMAIN, db_path=self._db_path,
-                namespace=namespace_e1(self._canal_abierto, prefijo_hash=self._prefijo_hash,
-                                       sufijo=SUFIJO_REINTENTO_FORMA),
-                thinking_enabled=False, run_label=self._run_label)
-        return self._crear_en(self.cache_reintento_forma, COMPONENTE_REINTENTO_FORMA, doc, kwargs)
+                namespace=namespace_e1(self._canal_abierto, prefijo_hash=self._prefijo_hash, sufijo=sufijo),
+                thinking_enabled=False, run_label=self._run_label))
+        return self._crear_en(getattr(self, attr), COMPONENTE_REINTENTO_FORMA, doc, kwargs)
 
     def _crear_en(self, cache, componente: str, doc: str | None, kwargs: dict):
         proyeccion = self._proyeccion_usd
@@ -345,6 +352,9 @@ class ClienteE1Real:
             d["cache_stats_transmision"] = self.cache_transmision.stats()
         if self.cache_reintento_forma_transmision is not None:
             d["cache_stats_reintento_forma_transmision"] = self.cache_reintento_forma_transmision.stats()
+        for attr in ("cache_reintento_forma_2", "cache_reintento_forma_2_transmision"):   # T2-bis
+            if getattr(self, attr, None) is not None:
+                d[f"cache_stats_{attr[len('cache_'):]}"] = getattr(self, attr).stats()
         if self.guardian is not None:
             d["presupuesto_compartido"] = {
                 "tope_usd": self.guardian.tope_usd,
@@ -356,7 +366,8 @@ class ClienteE1Real:
         self.cache.close()
         if self.cache_reintento_forma is not None:
             self.cache_reintento_forma.close()
-        for c in (self.cache_transmision, self.cache_reintento_forma_transmision):
+        for c in (self.cache_transmision, self.cache_reintento_forma_transmision,
+                  getattr(self, "cache_reintento_forma_2", None), getattr(self, "cache_reintento_forma_2_transmision", None)):
             if c is not None:
                 c.close()
 
@@ -439,16 +450,20 @@ def crear_con_reintento_corte(cliente, kwargs: dict, doc: str | None = None,
     return _crear(cliente, kwargs_3, doc), (resp, resp2)
 
 
-def crear_reintento_forma(cliente, kwargs: dict, doc: str | None = None):
+def crear_reintento_forma(cliente, kwargs: dict, doc: str | None = None, sufijo: str = SUFIJO_REINTENTO_FORMA):
     """U-R2-CODIGO-2, C2, punto b: UNA re-llamada con el request que recibe
     (`kwargs` tal cual) ante una salida mal formada, en el namespace del
     reintento por forma: con los perfiles existentes, el mismo request; con
     el perfil r2b, el mismo con la temperatura del reintento
     (runner_corpus.kwargs_reintento_forma; U-PROMPT-R2, P5). Con un cliente
-    que no tiene ese namespace (stubs), el mismo despacho que `_crear`."""
+    que no tiene ese namespace (stubs), el mismo despacho que `_crear`. Con
+    sufijo=SUFIJO_REINTENTO_FORMA_2, el segundo reintento (U-REEXT-T0,
+    T2-bis); el primero se despacha como siempre, sin el argumento."""
     fn = getattr(cliente, "crear_reintento_forma", None)
     if fn is not None:
-        return fn(doc=doc, **kwargs)
+        if sufijo == SUFIJO_REINTENTO_FORMA:
+            return fn(doc=doc, **kwargs)
+        return fn(doc=doc, sufijo=sufijo, **kwargs)
     return cliente.messages.create(**kwargs)
 
 
