@@ -30,8 +30,9 @@ Puntos:
       sin KeyError; oráculo declarado sin el TO → ValueError con mensaje.
   P9  gancho: indice_fragmentos se expone verbatim y NINGÚN módulo del
       pipeline lo consume.
-  P10 U-PROMPT-R2, perfil r2b (manifiesto tanda0_10tos_r2b, E0 e0-r2):
-      requests de E1 de las 2.434 unidades y de E3 sobre una salida simulada
+  P10 U-PROMPT-R2, perfil r2b (manifiesto tanda0_10tos_r2b, E0 de C2 de
+      U-R2-CODIGO-2, salida_tanda0_r2b, desde T1 de U-REEXT-T0):
+      requests de E1 de las 2.439 unidades y de E3 sobre una salida simulada
       (validada con la traducción r2), byte a byte en doble corrida sin API;
       prefijo de E1 idéntico entre unidades y con el sha congelado; prefijo de
       E3 sin cambio; NOTAS r2 contadas; runner con clientes simulados (pro) en
@@ -465,8 +466,10 @@ def p10_r2b(tmp: Path) -> None:
     import runner_corpus as RC  # noqa: PLC0415
     man = MC.cargar(MANIFIESTO_R2B)
     pf = perfil_e1.perfil(man.perfil_e1)
-    check("P10 manifiesto r2b: perfil r2b, E0 e0-r2, forma de salida r2",
-          pf.nombre == "r2b" and man.e0_salida.name == "salida_tanda0_r2" and pf.esquema.forma_salida == "r2")
+    # U-REEXT-T0, T1: el manifiesto r2b lee la E0 de C2 de U-R2-CODIGO-2 (salida_tanda0_r2b, 9f6361e), que suma 5
+    # unidades en ric (2.434 → 2.439)
+    check("P10 manifiesto r2b: perfil r2b, E0 salida_tanda0_r2b, forma de salida r2",
+          pf.nombre == "r2b" and man.e0_salida.name == "salida_tanda0_r2b" and pf.esquema.forma_salida == "r2")
     tot = ig = 0
     prefijos = set()
     tot3 = ig3 = n_enc = n_tab = 0
@@ -489,7 +492,7 @@ def p10_r2b(tmp: Path) -> None:
             msg = m1["messages"][0]["content"]
             n_enc += "es el encabezado de una lista" in msg
             n_tab += "tablas serializadas por E0 (bloques [TABLA" in msg
-    check("P10 requests E1 r2b byte a byte en doble corrida (2.434 unidades)", tot == 2434 and ig == tot,
+    check("P10 requests E1 r2b byte a byte en doble corrida (2.439 unidades)", tot == 2439 and ig == tot,
           f"{ig}/{tot}")
     unico = json.loads(next(iter(prefijos))) if len(prefijos) == 1 else {}
     check("P10 prefijo E1 r2b idéntico entre unidades, con el sha congelado y el tool schema de la generación P2",
@@ -501,12 +504,13 @@ def p10_r2b(tmp: Path) -> None:
     check("P10 namespace E1 r2b derivado del hash congelado",
           cliente_e1.namespace_e1(prefijo_hash=pf.prefijo_hash_para_namespace)
           == "e1_extraccion|cv=e1-extractor-v1-p322c5a23e9b7|think=0")  # re-congelado en P3c-2
-    check("P10 requests E3 sobre la salida r2 simulada, byte a byte en doble corrida", tot3 == 2434 and ig3 == tot3,
+    check("P10 requests E3 sobre la salida r2 simulada, byte a byte en doble corrida", tot3 == 2439 and ig3 == tot3,
           f"{ig3}/{tot3}")
     # P3c-2, punto f: cap::tabla037 pasa a residual, y cap::6.2.2.6, que no trae otra tabla serializada, deja de
-    # llevar la NOTA de tablas confiables (37 → 36).
-    check("P10 NOTAS r2 de E3: 212 encabezados de lista y 36 unidades con tabla serializada confiable",
-          n_enc == 212 and n_tab == 36, f"encabezados={n_enc} tablas={n_tab}")
+    # llevar la NOTA de tablas confiables (37 → 36). Con la E0 de C2 (U-REEXT-T0, T1): ric::4.3.3 deja de llevarla y
+    # pasan a llevarla ric::4.4.1 a ric::4.4.4 (data/experiment/r2_codigo2/freno_c2.md:68): 36 − 1 + 4 = 39.
+    check("P10 NOTAS r2 de E3: 212 encabezados de lista y 39 unidades con tabla serializada confiable",
+          n_enc == 212 and n_tab == 39, f"encabezados={n_enc} tablas={n_tab}")
     check("P10 prefijo de E3 sin cambio (candado 21a836c7de6d)", prompt_e3.PREFIJO_HASH == "21a836c7de6d")
     huellas = []
     for i in (1, 2):
