@@ -606,3 +606,39 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
        cita textual que E1 guarda y E3 verifica) conserva el conector de la norma mientras la descripción lo cambia;
        la fidelidad se audita en el tramo, y la descripción es la lectura del modelo. Registrado en
        `docs/insumos_escritura.md`, sección 7.
+- **06/10/2026 — decisiones de la autora sobre el FRENO T3-bis (T3-bis en `bbc38dc`; sello de los grafos r2b en
+  `c9540c0`).** El gate de r2b pasa con los grafos re-ensamblados: diez
+  `a9631a64b422bdae634fb05135373c6f04c6272cdf7acd43a1be9f5b6c1f5f57` (8.816 nodos / 27.632 aristas) y desarrollo
+  `6e7560433148cfe0c476cdd61199c32278187c4196d6f90dc0a38976a6d8e9a2` (6.990 / 23.445); shapes bloqueantes en PASS en
+  los dos (S18 con 14 y 13 marcados), suite con 0 regresiones nuevas, LN-5, BKL-0006 y BKL-0023 en resuelto, 3
+  regresiones declaradas (RT-C5-3, RT-C6-1 y RT-C6-2), 56 coincidencias y 9 NO VERIFICADAS
+  (`data/experiment/reext_t0/freno_t3bis.md`). La revisión independiente reprodujo sobre una copia los dos sha, la
+  doble corrida (los directorios difieren solo en la ruta de salida que guarda el reporte del ensamblador), las shapes
+  en PASS y las 3 regresiones; leyó el código y confirmó que las correcciones del ensamblado corren solo con el perfil
+  r2b (`if r2b:` en `correr_cadena_r2`; r1 y r2a se siguen reproduciendo).
+  - Decisiones.
+    1. La marca de S18 va en `properties_no_definidas.umbral_no_cuantificable` (con `_motivo` y `_detector_sha256`),
+       como la puso la instancia: ponerla en `properties` exige tocar `modelos_r2.py` (`NodoR2` es `extra="forbid"` y
+       S26 cierra `properties` por tipo), que está sellado. La shape S18 la cuenta como «umbral guardado sin lista».
+       Se confirma la ampliación tomada en la sesión: también se marcan las cuantías que están solo en celdas de una
+       tabla residual forzada (`cap::tabla037`, 1 nodo por grafo), con su motivo y el sha256 de la lista (`98cc96b2…`).
+    2. Propuestos (decisión 1 de T3-bis): se confirman los descartes de «se» y «cada una» por mención vacía (2 aristas
+       quitadas por grafo, con fila «descartado») y los 6 propuestos con `padre_por_defecto` (4 de ext hacia
+       `Sujeto_rol_entidad_autorizada_exterior`, 2 de cap hacia `Sujeto_rol_alcance_capmin`). Los propuestos cuya
+       mención es un verbo («podrán», `pro::2.3.12.1`, padre sugerido por E1 `Sujeto_rol_sujeto_obligado_proteccion`;
+       «Deberá rechazarse», `ctacte::6.3.1`, padre sugerido `Sujeto_banco`; conservan el padre de E1, no el de por
+       defecto) y los demostrativos y anafóricos («Esta entidad», «esta Institución», «Esta delegación», «Dichas
+       evaluaciones», «Los casos», «Estas verificaciones») quedan listados, con la norma, la unidad, la mención y el
+       tramo, como insumo de U-RERESOL-CAT, sin otra regla ahora (lista en el paquete de la revisión y en
+       `t3bis/salida/declaraciones_t3bis.md`): en diez, 2 verbales (los dos) y 2 descartados; en desarrollo, 1 verbal
+       («podrán»; ctacte no está) y 2 descartados.
+    3. Sellado, en este orden, ya hecho: (i) el commit de T3-bis (`bbc38dc`: código, ensamblados, declaraciones, freno
+       y `t3bis/`), sin la fixture; (ii) con ese hash, el commit del sello (`c9540c0`): los dos `kg_sha256` de la
+       fixture completados sin otro cambio (verificado por la revisión: el resto de la fixture es idéntico),
+       `commit_sellado` = `bbc38dc` en las dos entradas r2b de `data/experiment/neo4j/grafos.py`, y la recarga de los
+       dos grafos en Neo4j con gate 5 OK (`t3bis/salida/neo4j_sello_*/carga_neo4j_tanda0.json`: `KG_Meta` lleva el
+       sha y `commit_sellado` `bbc38dc`; `verificar_carga` compara solo `kg_sha256`).
+    4. Las declaraciones de la decisión 5 de T3 quedan escritas en `t3bis/salida/declaraciones_t3bis.md` con los textos
+       de la norma y de los nodos; valen como posteriores al resultado.
+  - Sigue T4 (lectura de la cola humana y preguntas de control) con los grafos sellados; la cola tiene 74 entradas, con
+    la parte 1 de `cap::4.2.1.2`; el tercer escalón no tiene casos en r2b.
