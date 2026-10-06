@@ -539,6 +539,26 @@ def mal_formada_tras_reintento(stop, tool_input, val: dict | None) -> bool:
     return stop == "max_tokens" or tool_input is None or motivo_forma_e1(val) is not None
 
 
+# U-REEXT-T0, T2-ter (decisión 2 de la autora sobre el FRENO T2-bis): la única excepción a «sin reparación
+# determinística» de C2. Con el perfil r2b y agotados los reintentos por forma, una salida con `entities` lista y sin la
+# clave `relations` sigue con `relations = []` si así validador_e1 la acepta; la unidad queda marcada (reparacion_forma)
+# y va a E3, que reclama las relaciones que falten. Cualquier otra salida mal formada sigue el camino de siempre.
+MOTIVO_REPARACION_FORMA = "relations_ausente"
+
+
+def reparar_relations_ausente(stop, tool_input, c: dict) -> tuple | None:
+    """(salida con relations = [], su validación) si la salida es la única forma reparable y así no tiene rechazos de
+    chunk; si no, None."""
+    if stop == "max_tokens" or not isinstance(tool_input, dict) or "relations" in tool_input \
+            or not isinstance(tool_input.get("entities"), list):
+        return None
+    reparada = {**tool_input, "relations": []}
+    val = validador_e1.validar_salida(reparada, c, esquema=PERFIL.esquema).as_dict()
+    if any(r.get("nivel") == "chunk" for r in val.get("rechazos", [])):
+        return None
+    return reparada, val
+
+
 def partes_por_corte(tdir: Path) -> dict[str, dict]:
     """id de la unidad partida → {partes, informe}, de particiones_por_corte.json
     (vacío si el archivo no existe: corrida sin particiones)."""
@@ -656,7 +676,7 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
         val = (validador_e1.validar_salida(tool_input, c,
                                            esquema=PERFIL.esquema).as_dict()
                if tool_input is not None else None)
-        reintento_forma = None
+        reintento_forma = reparacion_forma = None
         if PERFIL_R2 and err is None and motivo_forma_e1(val) is not None:
             # punto b: el request que produjo la salida mal formada (con el techo de corte si lo hubo), tal cual; con el
             # perfil r2b (U-PROMPT-R2, P5), con la temperatura del reintento
@@ -688,13 +708,24 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
                     else:
                         usage, stop, tool_input, val = salida_reintento_forma(resp_f2, c)
                 if err is None and mal_formada_tras_reintento(stop, tool_input, val):
-                    err = ERROR_FORMA_TRAS_REINTENTO
+                    reparada = reparar_relations_ausente(stop, tool_input, c) if perfil_forma_r2(PERFIL) else None
+                    if reparada is None:
+                        err = ERROR_FORMA_TRAS_REINTENTO
+                    else:
+                        # T2-ter: el registro guarda la salida reparada (la entrada de E2 r2 vuelve a validar el
+                        # crudo); la del modelo queda en la caché
+                        tool_input, val = reparada
+                        reparacion_forma = {"motivo": MOTIVO_REPARACION_FORMA,
+                                            "intento": cliente_e1.SUFIJO_REINTENTO_FORMA_2
+                                            if "reintento_2" in reintento_forma else cliente_e1.SUFIJO_REINTENTO_FORMA}
         reg = {
             "chunk_id": c["id"], "unidad": c["unidad"], "tipo_unidad": c["tipo"],
             "titulo": c["titulo"], "stop_reason": stop, "error": err,
             "usage": usage, "tool_input_crudo": tool_input, "validacion": val}
         if reintento_forma is not None:
             reg["reintento_forma"] = reintento_forma
+        if reparacion_forma is not None:
+            reg["reparacion_forma"] = reparacion_forma
         if cortado is not None:
             # decisión 2: AMBOS intentos persistidos íntegros — el crudo
             # completo del intento 1 ya está en la db (write-through); acá
@@ -782,6 +813,10 @@ def fase_e1(to: str, cliente, estado: Estado, salida: Path,
         con_segundo = sorted(cid for cid in con_forma if "reintento_2" in finales_e1[cid]["reintento_forma"])
         if con_segundo:
             resumen["reintentos_forma"]["con_segundo_reintento"] = con_segundo
+    reparadas = sorted(cid for cid, r in finales_e1.items() if "reparacion_forma" in r)
+    if reparadas:
+        # T2-ter: las unidades reparadas, contadas aparte de los reintentos por forma
+        resumen["reparadas_forma"] = {"motivo": MOTIVO_REPARACION_FORMA, "unidades": reparadas}
     con_escalon3 = sorted(cid for cid, r in finales_e1.items() if r.get("escalon_3")) if PERFIL_R2 else []
     if con_escalon3:
         resumen["escalon_3"] = {

@@ -424,28 +424,35 @@ def _jsonl_last_wins(p: Path) -> dict[str, dict]:
 def bloque_anclaje_r2b(ar: Armado, salida_r2b: Path) -> dict:
     """A1r y A3r. E1: la clave de cada unidad de la E0 r2b (con las partes por
     corte de la salida, si las hay) más las de los reintentos por corte, en el
-    namespace del perfil, y las de los reintentos por forma, en el suyo. E3: la
+    namespace del perfil, y las de los reintentos por forma, con el pedido del
+    reintento (temperatura 1), en el suyo y, si hubo segundo, en -rforma2. E3: la
     primera verificación de cada unidad aceptada por E1. Sin la salida de
     U-REEXT-T0 el bloque queda NO_VERIFICABLE (decisión 3 de la autora): se
     informa igual cuántas claves tiene hoy el namespace r2b en la db."""
     import comun_e3
+    import prompt_r2b
     ns_forma = ar.cliente_e1.namespace_e1(prefijo_hash=ar.pf.prefijo_hash_para_namespace,
                                           sufijo=ar.cliente_e1.SUFIJO_REINTENTO_FORMA)
+    ns_forma2 = ar.cliente_e1.namespace_e1(prefijo_hash=ar.pf.prefijo_hash_para_namespace,
+                                           sufijo=ar.cliente_e1.SUFIJO_REINTENTO_FORMA_2)
     out: dict = {"namespace_e1": ar.ns_e1, "namespace_e1_reintento_forma": ns_forma,
+                 "namespace_e1_segundo_reintento_forma": ns_forma2,
                  "namespace_e3": ar.ns_e3, "prefijo_hash_e1": ar.pf.prefijo_hash,
                  "prefijo_hash_e3": ar.prompt_e3.PREFIJO_HASH,
                  "e0": _rel(E0_TANDA0_R2B), "salida_u_reext_t0": _rel(salida_r2b)}
     db1 = claves_db(DB_E1, ar.ns_e1)
     db1f = claves_db(DB_E1, ns_forma)
+    db1f2 = claves_db(DB_E1, ns_forma2)
     out["claves_db_e1_en_namespace_r2b"] = None if db1 is None else len(db1)
     out["claves_db_e1_en_namespace_reintento_forma"] = None if db1f is None else len(db1f)
+    out["claves_db_e1_en_namespace_segundo_reintento_forma"] = None if db1f2 is None else len(db1f2)
     if not salida_r2b.exists():
         motivo = ("no existe la salida de U-REEXT-T0: el anclaje del perfil r2b se corre cuando exista; "
                   "rige el del perfil sellado sobre las dbs de la tanda 0 (decisión 3 de la autora)")
         out["e1"] = {"estado": "NO_VERIFICABLE", "motivo": motivo}
         out["e3"] = {"estado": "NO_VERIFICABLE", "motivo": motivo}
         return out
-    calc, calc_forma, pares = set(), set(), []
+    calc, calc_forma, calc_forma2, pares = set(), set(), set(), []
     n_unidades = 0
     for to in TOS_TANDA0:
         tdir = salida_r2b / to
@@ -468,16 +475,25 @@ def bloque_anclaje_r2b(ar: Armado, salida_r2b: Path) -> dict:
             if techo:
                 calc.add(ar.clave(ar.ns_e1, dict(kw, max_tokens=techo)))
             if "reintento_forma" in r:
-                calc_forma.add(ar.clave(ns_forma, dict(kw, max_tokens=techo) if techo else kw))
+                # U-REEXT-T0, T2-ter: el pedido del reintento como lo arma el runner (kwargs_reintento_forma): el que
+                # produjo la salida, con su techo, y la temperatura del reintento de P5 (como R25); el segundo
+                # reintento, el mismo pedido en el namespace -rforma2
+                techo_f = (ar.cliente_e1.MAX_TOKENS_ESCALON_3_R2 if r.get("escalon_3") else techo)
+                kwf = prompt_r2b.kwargs_reintento_forma_r2b(dict(kw, max_tokens=techo_f) if techo_f else kw)
+                calc_forma.add(ar.clave(ns_forma, kwf))
+                if "reintento_2" in r["reintento_forma"]:
+                    calc_forma2.add(ar.clave(ns_forma2, kwf))
         compact = comun_e3.cargar_extracciones(tdir / "extracciones_e1_compact.jsonl") \
             if (tdir / "extracciones_e1_compact.jsonl").exists() else {}
         pares += comun_e3.pares_de(con_partes, compact)
     out["e1"] = {"estado": "OK" if db1 is not None and calc <= db1 and calc_forma <= (db1f or set())
-                 else "DISCREPANCIA",
+                 and calc_forma2 <= (db1f2 or set()) else "DISCREPANCIA",
                  "registros_e1": n_unidades, "claves_calculadas": len(calc),
                  "calculadas_presentes_en_db": len(calc & (db1 or set())),
                  "claves_reintento_forma_calculadas": len(calc_forma),
-                 "reintento_forma_presentes_en_db": len(calc_forma & (db1f or set()))}
+                 "reintento_forma_presentes_en_db": len(calc_forma & (db1f or set())),
+                 "claves_segundo_reintento_forma_calculadas": len(calc_forma2),
+                 "segundo_reintento_forma_presentes_en_db": len(calc_forma2 & (db1f2 or set()))}
     db3 = claves_db(DB_E3, ar.ns_e3)
     calc3 = {ar.k_e3(c, v) for c, v in pares}
     out["e3"] = {"estado": "OK" if db3 is not None and calc3 <= db3 and len(calc3) == len(pares)
@@ -1165,6 +1181,24 @@ def variaciones_request_r2b(ar: Armado, chunks, vals, base_e1, base_e3) -> list[
                          "clave_distinta_de_la_del_mismo_pedido_en_su_namespace": otra_que_mismo_pedido,
                          "lectura": "cambia = la clave del reintento no es la del primer intento"})
     reg["ok"] = reg["ok"] and ns_0 == ar.ns_e1 and solo_temp and otra_que_mismo_pedido
+    res.append(reg)
+
+    # R25b segundo reintento por salida mal formada (U-REEXT-T0, T2-bis; cliente_e1.SUFIJO_REINTENTO_FORMA_2): el
+    # mismo pedido del reintento, en el namespace -rforma2; su clave no es la del primer intento ni la del reintento.
+    ns_f2 = ar.cliente_e1.namespace_e1(prefijo_hash=ar.pf.prefijo_hash_para_namespace,
+                                       sufijo=ar.cliente_e1.SUFIJO_REINTENTO_FORMA_2)
+    c25b, distinta_del_reintento = [], True
+    for cid in M:
+        kf = R.kwargs_reintento_forma_r2b(ar.kw_e1(chunks[cid]))
+        if ar.clave(ns_f2, kf) != base_e1[cid]:
+            c25b.append(cid)
+        distinta_del_reintento &= ar.clave(ns_f2, kf) != ar.clave(ns_f, kf)
+    reg = solo_e1("R25b", "segundo reintento por salida mal formada: el pedido del reintento en el namespace "
+                          "-rforma2", c25b,
+                  extra={"namespace_segundo_reintento_forma": ns_f2,
+                         "clave_distinta_de_la_del_reintento": distinta_del_reintento,
+                         "lectura": "cambia = la clave del segundo reintento no es la del primer intento"})
+    reg["ok"] = reg["ok"] and distinta_del_reintento and ns_f2 not in (ns_f, ar.ns_e1)
     res.append(reg)
 
     # R29, R29b y R30 (U-PROMPT-R2, P3c-2): con los candados de F22, F22b y F23, la línea del ítem, la de cierre y
