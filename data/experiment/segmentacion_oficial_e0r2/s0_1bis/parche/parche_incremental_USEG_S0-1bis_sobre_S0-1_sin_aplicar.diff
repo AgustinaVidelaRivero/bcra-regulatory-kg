@@ -1,0 +1,547 @@
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -347,6 +347,114 @@
+ # «A.1.1.» son puntos de la raíz A. Solo en el modo sin raíz y solo si se pide.
+ RE_APARTADO_R2 = re.compile(r"^APARTADO\s+([A-Z])\s*[:.\-–—]\s*(.+)$")
+ RE_ROTULO_LETRA_R2 = re.compile(r"^([A-Z])\.(\d+(?:\.\d+)*)\.?$")
++
++
++# Regla 8 de S0 (S0-1 bis): una lista de puntos leída como cuerpo. En los 152 TOs hay doce: la lista de una sección
++# («La sección se encuentra organizada en cinco puntos:» y 1.1 a 1.5, manori pp. 3 y 57) y páginas de índice que E0
++# lee como cuerpo (adfsp p. 3, ceninf p. 2, cirmo3 pp. 3 y 4, nmaeef pp. 2, 14 y 36, ri2_ae p. 13 y ri_niif p. 1).
++# Sus renglones no son rótulos: quedan como texto del nodo abierto. Una lista es una corrida de rótulos en una
++# página, con al menos MIN_ROTULOS_LISTA_R8 de dos niveles o más, en la que entre rótulos solo hay líneas
++# «Sección N.», ítems cortos que empiezan en mayúscula o en un número romano y, como mucho, un renglón en minúscula
++# (el corte del título); en la que cada número reaparece como rótulo en una página posterior del TO, con el mismo
++# título en al menos FRAC_TITULO_LISTA_R8 de los rótulos (el índice de cirmo3 difiere del cuerpo en 4 de 62; deja
++# afuera ri_pnp p. 6, una enumeración de requisitos); en la que a lo sumo FRAC_CORTE_LISTA_R8 de los rótulos lleva
++# un renglón en minúscula (una lista es de títulos); y cuyos números no reaparecen a su vez en forma de lista: entre
++# las reapariciones hay, en mediana, más de BRECHA_REAPARICION_R8 renglones (el cuerpo tiene texto entre punto y
++# punto; la declaración jurada de ri_ccna p. 32, repetida como formulario en p. 41, no). Es un veto, como la regla 2:
++# actúa sobre un rótulo que se aceptaría o abriría una raíz; un renglón que ya se rechazaba conserva su motivo (así,
++# en nmaeef pp. 14 y 36 y en ri2_ae p. 13 la regla no cambia nada).
++MIN_ROTULOS_LISTA_R8 = 3
++LARGO_ITEM_LISTA_R8 = 70
++FRAC_TITULO_LISTA_R8 = 0.8
++FRAC_CORTE_LISTA_R8 = 0.25
++BRECHA_REAPARICION_R8 = 3
++
++
++def _rotulo_lista_r8(linea: "Linea"):
++    t = linea.texto.strip()
++    tok = t.split()[0] if t.split() else ""
++    m = RE_NUM_TOKEN.match(tok) or RE_NUM_TOKEN_SIN_PUNTO.match(tok)
++    if not m or int(m.group(1).split(".")[0]) > MAX_RAIZ:
++        return None
++    resto = t[len(tok):].strip()
++    if not resto or not RE_TITULO_RAIZ.match(resto):
++        return None
++    return m.group(1), _norm_titulo(resto)[:20].strip()
++
++
++def lineas_de_listas_r8(paginas: list[list["Linea"]], roles: list[str], informe: list | None = None) -> frozenset:
++    """(página, top) de los rótulos de las listas de puntos leídas como cuerpo (ver MIN_ROTULOS_LISTA_R8).
++    Con `informe`, agrega una fila por corrida candidata con sus medidas y la guarda que la descarta (censo)."""
++    cuerpo = [l for ls, r in zip(paginas, roles) if r == ROL_CUERPO for l in ls]
++    corridas, actual, ult, minus = [], [], None, 0
++    cortes: set = set()
++    for l in cuerpo:
++        r = _rotulo_lista_r8(l)
++        if r is not None:
++            if actual and actual[-1][0].pagina != l.pagina:
++                corridas.append(actual)
++                actual = []
++            actual.append((l, r))
++            ult, minus = l, 0
++            continue
++        t = l.texto.strip()
++        if actual and l.pagina == ult.pagina:
++            if RE_SECCION.match(t):
++                continue
++            if l.x0 > ult.x0 + TOL_X and len(t) < LARGO_ITEM_LISTA_R8:
++                if not t[:1].islower():
++                    continue
++                if minus < 1:
++                    minus += 1
++                    cortes.add(id(ult))
++                    continue
++                actual.pop()        # el último rótulo tiene texto propio: no es de la lista
++        if actual:
++            corridas.append(actual)
++        actual, ult, minus = [], None, 0
++    if actual:
++        corridas.append(actual)
++    out = set()
++    for c in corridas:
++        prof2 = sum(1 for _, (n, _t) in c if "." in n)
++        fila = {"pagina": c[0][0].pagina, "rotulos": len(c), "rotulos_prof2": prof2,
++                "numeros": [n for _, (n, _t) in c], "primera": c[0][0].texto[:70]}
++        if informe is not None and len(c) >= MIN_ROTULOS_LISTA_R8:
++            informe.append(fila)
++        if prof2 < MIN_ROTULOS_LISTA_R8:
++            fila["descarte"] = "menos_de_3_rotulos_prof2"
++            continue
++        pag = c[-1][0].pagina
++        despues: dict = {}
++        primera_pos: dict = {}
++        for i, l in enumerate(cuerpo):
++            if l.pagina > pag:
++                r = _rotulo_lista_r8(l)
++                if r is not None:
++                    despues.setdefault(r[0], set()).add(r[1])
++                    primera_pos.setdefault(r[0], i)
++        def igual(t1: str, t2: str) -> bool:
++            return bool(t1 and t2) and (t1.startswith(t2) or t2.startswith(t1))
++        fila["reaparecen"] = sum(1 for _, (n, _t) in c if n in despues)
++        if not all(n in despues for _, (n, _t) in c):
++            fila["descarte"] = "no_reaparecen_todos"
++            continue
++        con_titulo = sum(1 for _, (n, tit) in c if any(igual(tit, t2) for t2 in despues[n]))
++        con_corte = sum(1 for l, _ in c if id(l) in cortes)
++        pos = [primera_pos[n] for _, (n, _t) in c]
++        brechas = sorted(b - a for a, b in zip(pos, pos[1:]))
++        brecha = brechas[len(brechas) // 2] if brechas else 0
++        fila.update({"con_titulo": con_titulo, "con_corte": con_corte, "brecha_mediana": brecha})
++        if con_titulo < FRAC_TITULO_LISTA_R8 * len(c):
++            fila["descarte"] = "titulos_distintos"
++        elif con_corte > FRAC_CORTE_LISTA_R8 * len(c):
++            fila["descarte"] = "renglones_en_minuscula"
++        elif brecha <= BRECHA_REAPARICION_R8:
++            fila["descarte"] = "reaparicion_en_forma_de_lista"
++        else:
++            fila["descarte"] = None
++            out.update((l.pagina, l.top) for l, _ in c)
++    return frozenset(out)
+ 
+ 
+ def _match_seccion_r2(texto: str, variante: bool, abierta: str | None = None):
+@@ -898,6 +1006,9 @@
+     padre: "Nodo | None" = None
+     sintetica: bool = False      # raíz del modo sin raíz (B5.8.1); jamás en vigente
+     numero_impreso: str | None = None   # e0-r2: el número impreso, si una lista lo corrigió (U-R2-CODIGO-2)
++    # regla 9 de S0 (S0-1 bis): renglones de la fila de catálogo del punto que están antes del renglón de su
++    # número (la descripción empieza más arriba, centrada en la fila); el texto del punto los lleva antes del label
++    lineas_previas: list[Linea] = field(default_factory=list)
+ 
+     def profundidad(self) -> int:
+         return self.numero.count(".") + 1 if self.tipo == "punto" else 0
+@@ -935,7 +1046,9 @@
+                    rotulos_r2: bool = False,
+                    marcador_letra: bool = False,
+                    reabrir_padre: bool = False,
+-                   cola_estricta_si_prosa: bool = False) -> ResultadoParseo:
++                   cola_estricta_si_prosa: bool = False,
++                   no_rotulos: frozenset = frozenset(),
++                   rotulos_fila: frozenset = frozenset()) -> ResultadoParseo:
+     """Con `modo_sin_raiz=False` (todos los call sites vigentes) el
+     comportamiento es el histórico. Con True rige además la gramática de
+     raíces sintéticas del modo sin raíz de sección (B5.8.1; ver docstring del
+@@ -1127,6 +1240,11 @@
+             m_num = RE_NUM_TOKEN.match(tokens[0]) if tokens else None
+             if not m_num and tokens:
+                 m_num = RE_NUM_TOKEN_SIN_PUNTO.match(tokens[0])
++            # regla 8 de S0: renglón de una lista de puntos leída como cuerpo (veto; no abre raíces)
++            en_lista = bool(m_num) and (linea.pagina, linea.top) in no_rotulos
++            # regla 9 de S0: el renglón lleva el número de una fila de catálogo (la celda de la tabla es solo ese
++            # número); el resto en minúscula es la descripción de la fila, no una referencia envuelta
++            fila_r9 = bool(m_num) and (linea.pagina, linea.top) in rotulos_fila
+ 
+             if marcador_letra and modo_sin_raiz and tokens:
+                 # ------- regla 4 de S0: marcador de letra y número (ri_spi) -------
+@@ -1197,6 +1315,8 @@
+                     elif col_raiz is not None and linea.x0 > col_raiz + TOL_X:
+                         motivo_raiz = (f"raiz_en_columna_profunda_{linea.x0}"
+                                        f"_vs_{col_raiz}")
++                    if motivo_raiz is None and en_lista:
++                        motivo_raiz = "lista_de_puntos_r8"   # veto de la regla 8 de S0
+                     if motivo_raiz is None:
+                         if ultima_raiz_num is not None \
+                                 and comp_r[0] != ultima_raiz_num + 1:
+@@ -1228,7 +1348,14 @@
+                                         if s is not nodo_preambulo), None)
+                     if not (raiz_previa is not None
+                             and raiz_previa.col_hijos is not None
+-                            and linea.x0 > raiz_previa.col_hijos + TOL_X):
++                            and linea.x0 > raiz_previa.col_hijos + TOL_X) and en_lista:
++                        # veto de la regla 8 de S0: un renglón de lista no abre la raíz; queda como texto
++                        rechazos.append({"pagina": linea.pagina, "x0": linea.x0, "texto": linea.texto[:120],
++                                         "motivo": "lista_de_puntos_r8"})
++                        m_num = None
++                    elif not (raiz_previa is not None
++                              and raiz_previa.col_hijos is not None
++                              and linea.x0 > raiz_previa.col_hijos + TOL_X):
+                         if ultima_raiz_num is not None \
+                                 and comp_r[0] != ultima_raiz_num + 1:
+                             saltos.append({"tipo": "salto_raiz", "de": ultima_raiz_num,
+@@ -1299,7 +1426,7 @@
+                         if comp[-1] <= ultimo:
+                             motivo = f"no_sucede_al_hermano_{ultimo}"
+                         elif not titulo_mayuscula and comp[-1] != ultimo + 1 \
+-                                and not contexto_lista:
++                                and not contexto_lista and not fila_r9:
+                             motivo = (f"resto_minuscula_y_salto_de_{ultimo}"
+                                       f"_a_{comp[-1]}_sin_contexto_de_lista")
+                         else:
+@@ -1348,11 +1475,20 @@
+                                         "x0": linea.x0, "esperada": detalle,
+                                         "texto": linea.texto[:90],
+                                     })
++                                elif fila_r9:
++                                    avisos.append({
++                                        "tipo": "aceptado_fila_de_catalogo_r9",
++                                        "numero": num, "pagina": linea.pagina,
++                                        "x0": linea.x0, "esperada": detalle,
++                                        "texto": linea.texto[:90],
++                                    })
+                                 else:
+                                     motivo = (f"resto_minuscula_y_columna_"
+                                               f"{linea.x0}_incompatible_{detalle}")
+                 if motivo is None and motivo_2:
+                     motivo = motivo_2   # veto de la regla 2 de S0
++                if motivo is None and en_lista:
++                    motivo = "lista_de_puntos_r8"   # veto de la regla 8 de S0
+                 if motivo is None and len(comp) > 1 and reapertura:
+                     reabrir(reapertura, num, linea)
+                 if motivo is None:
+@@ -1628,6 +1764,8 @@
+     entradas: list[tuple[Linea, tuple]] = []
+ 
+     def rec(n: Nodo, i_sec: int) -> None:
++        for l in n.lineas_previas:
++            entradas.append((l, ("previa", n, i_sec)))
+         if n.linea_label is not None:
+             entradas.append((n.linea_label, ("label", n, i_sec)))
+         for s in n.segmentos:
+@@ -2241,7 +2379,7 @@
+     def emitir(nodo: Nodo) -> None:
+         es_terminal = not nodo.hijos
+         if es_terminal:
+-            lineas: list[Linea] = []
++            lineas: list[Linea] = list(nodo.lineas_previas)
+             if nodo.linea_label is not None:
+                 lineas.append(nodo.linea_label)
+             for s in nodo.segmentos:
+@@ -2399,6 +2537,8 @@
+         total += 1
+ 
+     def rec(n: Nodo):
++        for l in n.lineas_previas:
++            contar(l)
+         if n.linea_label is not None:
+             contar(n.linea_label)
+         for s in n.segmentos:
+@@ -2438,6 +2578,10 @@
+             d["sintetica"] = True   # clave condicional: los artefactos vigentes
+         if n.numero_impreso:        # quedan byte-idénticos (ídem numero_impreso, e0-r2)
+             d["numero_impreso"] = n.numero_impreso
++        if n.lineas_previas:        # regla 9 de S0; ídem
++            d["lineas_previas"] = {"paginas": _paginas_de(n.lineas_previas),
++                                   "chars": len(_texto_segmento(n.lineas_previas)),
++                                   "texto": _texto_segmento(n.lineas_previas)}
+         return d
+     return {
+         **({"modo_lectura": res.modo_lectura}
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -98,7 +98,7 @@
+ # r5 cola de título; r6 unidades grandes; r7 reapertura del padre cerrado por re-anclaje. En el
+ # prototipo la variable de entorno S0_REGLAS elige cuáles corren (para medir cada una sola).
+ import os  # noqa: E402
+-REGLAS_S0_E0_R2 = frozenset(x for x in os.environ.get("S0_REGLAS", "r1,r2,r3,r4,r5,r6,r7,r1r7t").split(",") if x)
++REGLAS_S0_E0_R2 = frozenset(x for x in os.environ.get("S0_REGLAS", "r1,r2,r3,r4,r5,r6,r7,r1r7t,r8,r9").split(",") if x)
+ MIN_APARTADOS_R4 = 2
+ # regla 5 de S0 (recomendada): la lista de páginas de la cola de título estricta se amplía a las
+ # páginas donde la regla general recupera texto corrido de la norma sin mover ids ni dañar una tabla
+@@ -182,7 +182,7 @@
+ 
+ 
+ def _particionar_texto(texto: str, respetar_tablas: bool = False,
+-                       renglones: int | None = None) -> dict | None:
++                       renglones: int | None = None, umbral_renglones: int | None = None) -> dict | None:
+     """Partición por ítems del texto propio de una unidad. La línea 0 (label/
+     título) nunca es marcador. Devuelve chapeau + grupos (cada uno ≤ objetivo
+     salvo bloque único mayor) o None si no hay familia con MIN_ITEMS líneas.
+@@ -191,8 +191,13 @@
+ 
+     `respetar_tablas` (solo la partición por corte del perfil r2, U-R2-CODIGO
+     R4.b): una línea dentro de un bloque [TABLA … FIN TABLA] nunca es marcador
+-    de ítem, así que ningún límite de parte cae dentro de un bloque."""
++    de ítem, así que ningún límite de parte cae dentro de un bloque.
++
++    `renglones` (regla 6 de S0): objetivo de las partes de la partición por renglones; `umbral_renglones`, el tamaño
++    desde el que un ítem o el chapeau se parten por renglones (por omisión, el objetivo de las partes; la partición
++    por corte de E1 pasa la capacidad del tercer escalón, para partir solo lo que hoy no tiene salida)."""
+     lineas = texto.split("\n")
++    umbral_r = umbral_renglones if umbral_renglones is not None else OBJETIVO_CHARS_PARTE
+     en_tabla = _lineas_en_bloque_tabla(lineas) if respetar_tablas else set()
+     conteo: dict[str, list[int]] = {f: [] for f, _ in FAMILIAS_ITEM}
+     for i, l in enumerate(lineas[1:], start=1):
+@@ -221,13 +226,13 @@
+     grupos: list[str] = []
+     actual: list[str] = []
+     tam = 0
+-    if renglones is not None and len(chapeau) + 1 > OBJETIVO_CHARS_PARTE and indices[0] > 1:
++    if renglones is not None and len(chapeau) + 1 > umbral_r and indices[0] > 1:
+         # regla 6 de S0: un chapeau mayor que el objetivo se parte por renglones; queda como chapeau
+         # su primer renglón (rótulo o título)
+         grupos.extend(partir_por_renglones(lineas[1:indices[0]], renglones))
+         chapeau = lineas[0]
+     for b in bloques:
+-        if renglones is not None and len(b) + 1 > OBJETIVO_CHARS_PARTE:
++        if renglones is not None and len(b) + 1 > umbral_r:
+             # regla 6 de S0: un ítem solo más grande que el objetivo se parte por renglones
+             if actual:
+                 grupos.append("\n".join(actual))
+@@ -242,7 +247,7 @@
+     if actual:
+         grupos.append("\n".join(actual))
+     if renglones is not None and grupos and indices[0] > 1 and chapeau != lineas[0] \
+-            and len(chapeau) + 1 + len(grupos[0]) + 1 > OBJETIVO_CHARS_PARTE:
++            and len(chapeau) + 1 + len(grupos[0]) + 1 > umbral_r:
+         # regla 6 de S0: el chapeau entra solo, pero con el primer grupo pasa el objetivo (la parte 1 lleva los
+         # dos); su cuerpo va en partes propias y queda como chapeau su primer renglón
+         grupos = partir_por_renglones(lineas[1:indices[0]], renglones) + grupos
+@@ -322,6 +327,23 @@
+     return out
+ 
+ 
++# Regla 6 de S0 en E1 (S0-1 bis; nota del 05/10/2026 al pie del mandato de U-SEG-OFICIAL, d59921f): la partición
++# por corte de las unidades de la tanda 0 no cambia, y la partición por renglones entra solo donde hoy no hay salida
++# porque el tercer escalón del reintento por corte (cliente_e1, techo MAX_TOKENS_ESCALON_3_R2 = 40.960) no alcanza:
++# en una unidad sin ítems que pasa su capacidad, o en el ítem (o el chapeau) que deja una parte por ítems sobre esa
++# capacidad; las demás partes quedan como en la partición por ítems. La capacidad usa los tokens de salida por
++# carácter de texto propio: la cota de P4 de U-PROMPT-R2 (mediana 1,175) hasta la medición de T2 de U-REEXT-T0, que
++# la fija; el objetivo de las partes también se fija con T2. En el prototipo, S0_RAZON_E1 cambia la razón.
++MAX_TOKENS_ESCALON_3_R6 = 40960
++RAZON_TOKENS_POR_CARACTER_R6 = float(os.environ.get("S0_RAZON_E1", "1.175"))
++OBJETIVO_PARTES_RENGLONES_R6 = OBJETIVO_CHARS_PARTE
++
++
++def capacidad_escalon_3_r6() -> float:
++    """Caracteres de texto propio que entran en el tercer escalón con la razón vigente."""
++    return MAX_TOKENS_ESCALON_3_R6 / RAZON_TOKENS_POR_CARACTER_R6
++
++
+ def particionar_por_corte(c: dict) -> tuple[list[dict] | None, dict]:
+     """Partición de una unidad cuya extracción cortó por max_tokens también en
+     el reintento (perfil r2, U-R2-CODIGO R4.b; BKL-0030, laudo de r2 §1.1 (b)):
+@@ -335,11 +357,27 @@
+     silencio)."""
+     info = {"id": c["id"], "chars_propio": c["chars_propio"],
+             "bloques_tabla": sum(1 for l in c["texto"].split("\n") if RE_INICIO_BLOQUE_TABLA.match(l))}
+-    part = _particionar_texto(c["texto"], respetar_tablas=True,
+-                              renglones=OBJETIVO_CHARS_PARTE if "r6" in REGLAS_S0_E0_R2 else None)
++    # regla 6 de S0 en E1 (S0-1 bis): la partición por ítems es la de siempre; la partición por renglones rige
++    # solo donde hoy no hay salida y el tercer escalón no alcanza (ver capacidad_escalon_3_r6)
++    r6 = "r6" in REGLAS_S0_E0_R2
++    cap3 = capacidad_escalon_3_r6()
++    part = _particionar_texto(c["texto"], respetar_tablas=True)
+     if part is None:
+-        return None, {**info, "motivo": "sin_items_detectables"}
++        if not (r6 and "sub_chunk" not in c and c["chars_propio"] > cap3):
++            return None, {**info, "motivo": "sin_items_detectables"}
++        part = _particionar_texto(c["texto"], respetar_tablas=True, renglones=OBJETIVO_PARTES_RENGLONES_R6)
++        if part is None:
++            return None, {**info, "motivo": "sin_items_detectables"}
++        info["renglones_r6"] = "sin_items_y_sobre_el_tercer_escalon"
+     subs = _sub_chunks_de(c, part, TOPE_HERENCIA_E0_R2)
++    if r6 and "renglones_r6" not in info and any(s["chars_propio"] > cap3 for s in subs):
++        # solo se parten por renglones los ítems (o el chapeau) que pasan el tercer escalón; las demás partes
++        # quedan como en la partición por ítems
++        part2 = _particionar_texto(c["texto"], respetar_tablas=True, renglones=OBJETIVO_PARTES_RENGLONES_R6,
++                                   umbral_renglones=int(cap3))
++        if part2 is not None:
++            part, subs = part2, _sub_chunks_de(c, part2, TOPE_HERENCIA_E0_R2)
++            info["renglones_r6"] = "parte_sobre_el_tercer_escalon"
+     for s in subs:
+         ls = s["texto"].split("\n")
+         if sum(1 for l in ls if RE_INICIO_BLOQUE_TABLA.match(l)) != sum(1 for l in ls if RE_FIN_BLOQUE_TABLA.match(l)):
+@@ -540,6 +578,118 @@
+     return round(en_una / total, 4) if total else 0.0
+ 
+ 
++# Regla 9 de S0 (S0-1 bis): filas de un catálogo en tabla (el catálogo de infracciones de rdbcra, sección 11, pp.
++# 36-48). Cada fila lleva en la primera celda solo el número del punto, y en las otras la descripción, la gravedad y
++# las multas; la descripción está centrada en la fila, así que empieza renglones antes del renglón del número, y el
++# número puede quedar en un renglón cuyo resto sigue en minúscula. Fila de catálogo = fila cuya primera celda es solo
++# un número de punto (primer componente hasta MAX_RAIZ, como todo rótulo de E0: deja afuera, por ejemplo, la tabla de
++# códigos NCM de ext p. 167, «8802.11.00»), en un segmento de tabla de e0_tablas con al menos MIN_FILAS_CATALOGO_R9
++# filas así. La banda de cada fila es la de `find_tables()` (los bordes de la tabla en el PDF; mismos ajustes que
++# e0_tablas). Dos partes: 9a, en el parseo: el renglón del número de una fila es rótulo aunque su resto siga en
++# minúscula (la celda es la evidencia; solo levanta los rechazos por resto en minúscula); 9b, después del parseo y
++# antes de armar los chunks (y antes del acompañamiento T): los renglones de la banda que quedaron en otra unidad
++# pasan al punto de la fila, los anteriores a su número como `lineas_previas`. El texto sigue el orden del PDF.
++MIN_FILAS_CATALOGO_R9 = 3
++RE_CELDA_ROTULO_R9 = re.compile(r"^(\d+(?:\.\d+)+)\.?$")
++
++
++def _rotulo_de_celda_r9(fila: list):
++    m = RE_CELDA_ROTULO_R9.match((fila[0] or "").strip()) if fila else None
++    return m if m and int(m.group(1).split(".")[0]) <= E0.MAX_RAIZ else None
++
++
++def filas_de_catalogo_r9(pdf_path: Path, tablas_to: dict, paginas: list) -> list[dict]:
++    """Filas de catálogo de un TO (ver el comentario de la regla 9), cada una con su banda y la posición
++    (página, top) del renglón de su número, si hay uno solo en la banda que empiece con él."""
++    candidatos = []
++    for t in tablas_to["tablas"]:
++        if t["origen"] != "e0_tablas":
++            continue
++        for s in t["segmentos"]:
++            n = sum(1 for f in s["filas"] if _rotulo_de_celda_r9(f))
++            if n >= MIN_FILAS_CATALOGO_R9:
++                candidatos.append((t, s))
++    if not candidatos:
++        return []
++    import pdfplumber  # noqa: PLC0415 — solo con filas de catálogo
++    filas = []
++    with pdfplumber.open(str(pdf_path)) as pdf:
++        for t, s in candidatos:
++            tbs = pdf.pages[s["pagina"] - 1].find_tables()
++            tb = tbs[s["indice_en_pagina"]] if s["indice_en_pagina"] < len(tbs) else None
++            if tb is None or [round(v, 1) for v in tb.bbox] != s["bbox"] or tb.extract() != s["filas"]:
++                continue        # la tabla no se reproduce: la fila no se toca
++            lineas = paginas[s["pagina"] - 1]
++            for k, (row, f) in enumerate(zip(tb.rows, s["filas"])):
++                m = _rotulo_de_celda_r9(f)
++                if not m:
++                    continue
++                y0, y1 = row.bbox[1], row.bbox[3]
++                cand = [l for l in lineas if y0 - TOL_TOP_TABLA <= l.top < y1 - TOL_TOP_TABLA
++                        and l.texto.split() and l.texto.split()[0].rstrip(".") == m.group(1)]
++                filas.append({"tabla": t["id"], "pagina": s["pagina"], "fila": k,
++                              "banda": [round(y0, 1), round(y1, 1)], "numero": m.group(1),
++                              "rotulo": (s["pagina"], cand[0].top) if len(cand) == 1 else None})
++    return filas
++
++
++def anclar_filas_de_catalogo_r9(res: E0.ResultadoParseo, tablas_to: dict, filas: list[dict]) -> dict:
++    """Parte 9b de la regla 9: cada renglón de la banda de una fila pasa al punto terminal de esa fila (el nodo cuyo
++    label es el renglón del número). Una fila sin ese punto, o con el label de otro nodo en su banda, no se toca.
++    Devuelve el informe por fila."""
++    orden = E0._recolectar_orden_documental(res)
++    cont = {id(l): c for l, c in orden}
++    dueno_label = {(l.pagina, l.top): c[1] for l, c in orden if c[0] == "label"}
++    segs = {(t["id"], s["pagina"]): s for t in tablas_to["tablas"] for s in t["segmentos"]}
++    movidas: dict[int, tuple] = {}
++    informe = []
++    for f in filas:
++        fila = {"numero": f["numero"], "pagina": f["pagina"], "banda": f["banda"]}
++        informe.append(fila)
++        nodo = dueno_label.get(tuple(f["rotulo"])) if f["rotulo"] else None
++        if nodo is None or nodo.hijos or nodo.numero != f["numero"]:
++            fila["estado"] = "sin_punto_terminal"
++            continue
++        y0, y1 = f["banda"]
++        seg = segs.get((f["tabla"], f["pagina"]))
++        banda = [l for l in (seg.get("_lineas", []) if seg else [])
++                 if y0 - TOL_TOP_TABLA <= l.top < y1 - TOL_TOP_TABLA and l is not nodo.linea_label]
++        if any(cont[id(l)][0] == "label" for l in banda):
++            fila["estado"] = "otro_label_en_la_banda"
++            continue
++        pos_label = (nodo.linea_label.pagina, nodo.linea_label.top)
++        antes = despues = 0
++        desde = set()
++        for l in banda:
++            c = cont[id(l)]
++            if c[1] is nodo and c[0] == "seg":
++                continue
++            lado = "antes" if (l.pagina, l.top) < pos_label else "despues"
++            movidas[id(l)] = (l, nodo, lado)
++            antes += lado == "antes"
++            despues += lado == "despues"
++            desde.add(c[1].numero if c[1].tipo == "punto" else f"S{c[1].numero}")
++        fila.update({"estado": "anclada", "renglones_antes": antes, "renglones_despues": despues,
++                     "desde": sorted(desde)})
++    if movidas:
++        def rec(n: E0.Nodo) -> None:
++            n.segmentos = [sg for sg in ([l for l in s if id(l) not in movidas] for s in n.segmentos) if sg]
++            for h in n.hijos:
++                rec(h)
++        for sec in res.secciones:
++            rec(sec)
++        clave = lambda l: (l.pagina, l.top, l.x0)  # noqa: E731
++        por_nodo: dict[int, tuple] = {}
++        for l, nodo, lado in movidas.values():
++            por_nodo.setdefault(id(nodo), (nodo, [], []))[1 if lado == "antes" else 2].append(l)
++        for nodo, antes, despues in por_nodo.values():
++            nodo.lineas_previas = sorted(nodo.lineas_previas + antes, key=clave)
++            if despues:
++                nodo.segmentos = [sorted([l for s in nodo.segmentos for l in s] + despues, key=clave)]
++    return {"filas": len(filas), "ancladas": sum(1 for f in informe if f["estado"] == "anclada"),
++            "renglones_movidos": len(movidas), "detalle": informe}
++
++
+ def tablas_de_to_r2(pdf_path: Path, to: str) -> dict:
+     """Tablas lógicas de un TO para la versión e0-r2: las de e0_tablas y las
+     de R-TC2, cada una con su origen y la guarda G-RECUADRO aplicada."""
+@@ -1102,11 +1252,18 @@
+ 
+ 
+ def procesar_tablas_r2(res: E0.ResultadoParseo, pdf_path: Path, to: str,
+-                       roles: list[str]) -> tuple[list[dict], dict, frozenset]:
++                       roles: list[str], tablas_to: dict | None = None,
++                       filas_r9: list[dict] | None = None) -> tuple[list[dict], dict, frozenset]:
+     """Camino e0-r2 completo de un TO: detección, asignación, serialización y
+-    marca. Devuelve (chunks, tablas_to, ids de chunks con bloque)."""
+-    tablas_to = tablas_de_to_r2(pdf_path, to)
++    marca. Devuelve (chunks, tablas_to, ids de chunks con bloque). Con la regla 9 de S0, las tablas llegan ya
++    detectadas (se detectan antes del parseo) y las filas de catálogo se anclan antes de armar los chunks."""
++    if tablas_to is None:
++        tablas_to = tablas_de_to_r2(pdf_path, to)
+     asignar_lineas_a_tablas(res, tablas_to, roles)
++    if filas_r9:
++        inf = anclar_filas_de_catalogo_r9(res, tablas_to, filas_r9)
++        if inf["ancladas"]:     # una tabla con forma de catálogo sin ninguna fila anclada no deja rastro
++            res.avisos.append({"tipo": "filas_de_catalogo_r9", **inf})
+     lineas0: list = []
+     chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0)
+     E0.desambiguar_ids(chunks0)
+@@ -1136,7 +1293,8 @@
+     return chunks, tablas_to, con_bloque
+ 
+ 
+-def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str]):
++def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str],
++                   rotulos_fila_r9: frozenset = frozenset()):
+     """Escalera de E0 de la partición (correr_b584.correr_to), solo para la
+     versión e0-r2 (U-R2-CODIGO, agregado 9). Etapa 1: camino vigente. Si no da
+     chunks, etapa 2: reglas de marcador (B5.8.2). Si tampoco, etapa 3: modo
+@@ -1148,6 +1306,11 @@
+ 
+     def parsear(roles: list[str], **kw):
+         rep = E0.titulos_mayusculas_repetidos(paginas, roles)
++        if "r8" in R:
++            # regla 8 de S0 (S0-1 bis): renglones de listas de puntos leídas como cuerpo, con los roles de esta etapa
++            kw["no_rotulos"] = E0.lineas_de_listas_r8(paginas, roles)
++        if "r9" in R and rotulos_fila_r9:
++            kw["rotulos_fila"] = rotulos_fila_r9     # regla 9 de S0, parte 9a
+         # U-R2-CODIGO-2 (C2): cola de título estricta (punto l) y renumeración por lista (punto f)
+         return E0.parsear_cuerpo(to, archivo, paginas, roles, mayusculas_repetidas=rep,
+                                  pie_desde_version=True,
+@@ -1281,7 +1444,14 @@
+             # agregado 8: pie desde la línea «Versión»; agregado 9: escalera
+             # de la partición (marcadores y sin raíz) cuando el camino vigente
+             # no da chunks
+-            res, roles, repetidos, modo_lectura, marcadores_e0 = escalera_e0_r2(to, archivo, paginas, roles)
++            tablas_r9, filas_r9 = None, []
++            if "r9" in REGLAS_S0_E0_R2:
++                # regla 9 de S0: las tablas se detectan antes del parseo para leer las filas de catálogo
++                tablas_r9 = tablas_de_to_r2(pdf, to)
++                filas_r9 = filas_de_catalogo_r9(pdf, tablas_r9, paginas)
++            res, roles, repetidos, modo_lectura, marcadores_e0 = escalera_e0_r2(
++                to, archivo, paginas, roles,
++                rotulos_fila_r9=frozenset(f["rotulo"] for f in filas_r9 if f["rotulo"]))
+             conservadas = lineas_conservadas_k(paginas, roles, repetidos)
+         else:
+             res = E0.parsear_cuerpo(to, archivo, paginas, roles)
+@@ -1311,7 +1481,8 @@
+                   else E0.parsear_indice(paginas, roles))
+         no_partir: frozenset = frozenset()
+         if r2:
+-            chunks, tablas_to, no_partir = procesar_tablas_r2(res, pdf, to, roles)
++            chunks, tablas_to, no_partir = procesar_tablas_r2(res, pdf, to, roles, tablas_to=tablas_r9,
++                                                              filas_r9=filas_r9)
+             dueno = tablas_to.pop("_dueno_linea")
+             if conservadas:
+                 encabezados_conservados[to] = [

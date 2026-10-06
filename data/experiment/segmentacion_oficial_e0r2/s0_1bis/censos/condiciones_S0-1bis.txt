@@ -1,0 +1,23 @@
+# Condiciones de S0-1 bis (U-SEG-OFICIAL), 05/10/2026. Corridas en el scratchpad: final_c = final de S0-1;
+# bis_final2 = final de S0-1 bis; t0_bis_final = tanda 0 de S0-1 bis; proto8_solo_S0-1 = prototipo nuevo con las reglas de S0-1.
+# Código del prototipo (sha256):
+81c3409851ba82a3eada400048ed4fe7198cc3004dd6de6233eeaa147210dcd6  e0_lib.py
+f737028b1918cce099698272821a8f5db43a8a29792e572451ba95032c0b19ab  correr_e0.py
+
+## 1. Tanda 0 contra salida_tanda0_r2b/ (cmp archivo por archivo; S0_REGLAS=r1,r2,r3,r4,r5,r6,r7,r1r7t,r8,r9)
+$ correr_tanda0.py --codigo <copia> --salida t0_bis_final && for f in salida_tanda0_r2b/*.json; do cmp ...; done
+tanda0 iguales 57 distintos 0 de 57; archivos en la corrida 57
+
+## 2. TOs que las reglas nuevas no tocan
+$ condicion_tos_no_tocados.py final_c bis_final2 adfsp,ceninf,cirmo3,manori,nmaeef,rdbcra,ri_niif condicion_tos_no_tocados.json
+{"tos": 152, "version_e0_igual": true, "archivos_por_to": 760, "tos_con_diferencias": ["adfsp", "ceninf", "cirmo3", "manori", "nmaeef", "rdbcra", "ri_niif"], "fuera_de_los_declarados": [], "declarados_sin_diferencias": [], "tos_iguales_byte_a_byte": 145}
+
+## 3. particionar_por_corte sobre las 2.439 unidades de la tanda 0 (sha256 de la salida de particion_corte_unidades.py)
+$ particion_corte_unidades.py <copia de 9f6361e | prototipo, con S0_RAZON_E1=1.175 | 1.498 | prototipo de S0-1> t0_bis_final <salida>
+435af2fe6ef171de8481ab4d84938f3f1fb49c213a8e12374d5bff3c15271ed4  corte_t0_9f6361e.json
+435af2fe6ef171de8481ab4d84938f3f1fb49c213a8e12374d5bff3c15271ed4  corte_t0_final_razon_1.175.json
+435af2fe6ef171de8481ab4d84938f3f1fb49c213a8e12374d5bff3c15271ed4  corte_t0_final_razon_1.498.json
+82db07541002d78059c1d8b981dd922f77cb48d6f7bc82c05efd94d4632b2696  corte_t0_proto6.json
+
+## 4. Código inerte: el prototipo nuevo con S0_REGLAS=r1,r2,r3,r4,r5,r6,r7,r1r7t contra la final de S0-1 (152 TOs, cmp)
+proto8 sin r8 ni r9 vs final de S0-1: 0 distintos de 768
