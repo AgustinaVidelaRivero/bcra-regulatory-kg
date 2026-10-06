@@ -126,7 +126,7 @@ la tabla sigue la composición real de la clave, por decisión de la autora del 
 - F10: en «todo» con E1 y E3 (`:84-85`);
 - F14: en «solo código» (`:79-80`).
 
-La enmienda 3 al protocolo quedó firmada el 04/10/2026 (`0cb0c70`; asentado el 06/10/2026 en T5 de U-REEXT-T0). F13 queda pendiente de R1 de U-RERESOL-CAT (notas a F13 y F13b).
+La enmienda 3 al protocolo quedó firmada el 04/10/2026 (`0cb0c70`; asentado el 06/10/2026 en T5 de U-REEXT-T0). F13 queda pendiente de R2 de U-RERESOL-CAT (R1 cerró en `c98093a`; asentado el 06/10/2026; notas a F13 y F13b).
 
 ## 3. La tabla
 
@@ -402,7 +402,8 @@ Salida: `0.461274 {'e1': 0.1898, 'e3': 0.2096, 'reint': 0.0618} ['cap::3.1.14.1'
   - El perfil sellado, en lo que dice la sección 3, «Diferencias con el perfil sellado».
   - El perfil `produccion_dev`, con el que se construyó r1, arma otro request (`prompt_e1.build_request_kwargs`) y
     no lo verifiqué.
-- **Anclaje del perfil r2b.** Sigue NO_VERIFICABLE hasta que existan las dbs de U-REEXT-T0. Mientras tanto:
+- **Anclaje del perfil r2b.** Verificado el 06/10/2026 con las dbs de U-REEXT-T0 (T5 de la unidad; A1r y A3r OK, §4). Hasta
+  esa fecha era NO_VERIFICABLE y regían, como sostén:
   - la composición de la clave está probada por las variaciones;
   - el cálculo de la clave, por el anclaje del perfil sellado (mismo `compute_key` y mismo `canonical_request`).
 - **Salida sintética de E1.** La clave de E3 del perfil r2b se probó con esa salida, no con la salida real del
@@ -411,4 +412,5 @@ Salida: `0.461274 {'e1': 0.1898, 'e3': 0.2096, 'reint': 0.0618} ['cap::3.1.14.1'
   clave. Cuántas unidades afecta un cambio real depende de cómo E0 extrae el texto del PDF nuevo (cortes de línea,
   guiones, pies de página); eso no lo mide esta tabla.
 - **Dbs de caché.** No se versionan (`docs/laudo_release_r2_pipeline.md:307-312`). Sin ellas el anclaje queda
-  NO_VERIFICABLE y toda unidad pasa a pagarse.
+  NO_VERIFICABLE y toda unidad pasa a pagarse. Las de U-REEXT-T0 existen desde el 05/10/2026 en `corpus_tanda0/salida_r2b/`
+  (fuera del versionado) y con ellas el anclaje r2b quedó verificado el 06/10/2026 (§4).
