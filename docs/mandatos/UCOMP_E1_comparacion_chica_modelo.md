@@ -1,9 +1,14 @@
 # Mandato U-COMP-E1 — comparación chica del modelo de E1 antes de la tanda 1
 
-**VERSIÓN PARA FIRMAR (06/10/2026) — PENDIENTE DE FIRMA DE LA AUTORA.** Re-redacción del borrador postergado P6 de U-PROMPT-R2
-(`docs/mandatos/UPROMPT_R2_P6_exploracion_modelo_E1.md`, 05/10/2026), por decisión de la autora del 06/10/2026: la comparación se
-adelanta antes de la tanda 1, acotada a las dos fallas mayores que dejó T4 de U-REEXT-T0 y a unidades ya leídas, con un gasto de API
-de hasta USD 25. Toda llamada al modelo respeta `docs/decisiones_caching_extraccion.md` (cinco decisiones vinculantes).
+**FIRMADO por la autora el 06/10/2026** (firma por mensaje de la autora; versión para firmar en `f36b01d`). **Decisiones al firmar:** (1)
+nombre U-COMP-E1; (2) lectura cegada con códigos; (3) tope USD 35 con doble corrida en los dos brazos. **Ajustes a la firma** (revisión
+de la mesa tras el FRENO de U-DIAG-E3-LISTAS, 06/10/2026): los brazos se comparan en su intento 0 y sin E3, porque el verificador no
+recibe el bloque que abre la lista en 1.015 de 1.054 ítems y reclama en falso sobre ellos, y los ítems son la mayoría de las 87 unidades;
+la línea de base de Haiku es su intento 0 (`extracciones_e1.jsonl`), que coincide con la extracción final leída en T4 en 79 de las 87
+unidades, con una relectura de la mesa en las 8 que tuvieron reintento; el tramo se verifica por código (`validador_r2.verificar_tramo_entidad`,
+texto propio y heredado), no por E3. Re-redacción del borrador postergado P6 de U-PROMPT-R2 (`docs/mandatos/UPROMPT_R2_P6_exploracion_modelo_E1.md`,
+05/10/2026), por decisión de la autora del 06/10/2026: la comparación se adelanta antes de la tanda 1, acotada a las dos fallas mayores
+que dejó T4 de U-REEXT-T0 y a unidades ya leídas, con un gasto de API de hasta USD 35. Toda llamada al modelo respeta `docs/decisiones_caching_extraccion.md` (cinco decisiones vinculantes).
 
 QUÉ PREGUNTA. Con el prefijo congelado de la release r2b (`322c5a23e9b7`) y `claude-haiku-4-5` a temperatura 0, T4 midió dos fallas
 (`data/experiment/reext_t0/reporte_u_reext_t0.md` §2, `0a3ac81`; `t4/salida/tasas_t4.json`, `889b2f9`): (1) el supuesto de una norma
@@ -17,46 +22,54 @@ QUÉ NO DECIDE. El modelo de E1 de la release r2b sigue siendo `claude-haiku-4-5
 decisión de una release nueva con sus costos; si ninguno lo cambia, las dos fallas se declaran límite del diseño con las cifras de los
 tres modelos. El experimento completo de B6.4 (plan `:778`) queda para después del escalado.
 
-LÍNEA DE BASE. `claude-haiku-4-5`, perfil r2b, con las salidas de U-REEXT-T0 (`corpus_tanda0/salida_r2b/`, bases selladas) y las lecturas
-de T4 adjudicadas por la autora (`04cec96`, `c9d4c40`): no se paga de nuevo ni se vuelve a leer.
+LÍNEA DE BASE. `claude-haiku-4-5`, perfil r2b, en su **intento 0**: la primera respuesta de E1, sin el ratchet de E3
+(`corpus_tanda0/salida_r2b/<to>/extracciones_e1.jsonl`, una fila por unidad; difiere de la final en toda unidad con reintento). Las
+lecturas de T4 adjudicadas por la autora (`04cec96`, `c9d4c40`) valen como lecturas del intento 0 en 79 de las 87 unidades (`n_reintentos`
+0 en `finales.jsonl`); en las 8 con un reintento (5 `aceptado_tras_reintento`, 3 `cola_humana`) la mesa relee el intento 0 con las mismas
+fichas, y la extracción final leída en T4 queda aparte como línea de base del pipeline. Cuatro de las 87 están en la cola humana (3
+`cola_humana`, 1 `veredicto_inutilizable`): entran igual, declaradas. No se paga de nuevo.
 
 UNIDADES. Las 87 unidades ya leídas en T4: las 30 del grupo c (`t4/salida/fichas_punto7_grupo_c.json`, `mas_de_un_supuesto`; 137
 supuestos clasificados) y las 59 unidades de las 60 omisiones leídas (`fichas_punto8_omisiones.json`; dos unidades están en los dos
 grupos). Por TO: cap 15, cla 13, ctacte 7, ext 29, lingob 7, pagjub 2, polcre 3, pro 4, ric 7. Lista sellada en `comp_e1/unidades.json` con su sha256 en C0.
 
 BRAZOS (los de P6, sin el brazo F). En los dos: el prefijo de la release r2b con su punto de caché, el mismo mensaje por unidad que armó
-E1 en U-REEXT-T0 (perfil r2b, E0 r2b de `salida_tanda0_r2b/`), el mismo tool schema (sin `strict`), dos corridas en S y una en O (para caber en el tope; ver COSTO y la decisión 3 al
-firmar), cada una en su base propia y en un namespace que no es el del pipeline.
+E1 en U-REEXT-T0 (perfil r2b, E0 r2b de `salida_tanda0_r2b/`), el mismo tool schema (sin `strict`), dos corridas por brazo (decisión 3 al firmar), cada una en su base propia y en un
+namespace que no es el del pipeline. Los brazos se evalúan en su intento 0: sin ratchet y sin E3 (ajuste a la firma).
 
 | brazo | modelo | qué cambia del pedido de E1 (los modelos nuevos rechazan el pedido de r2b tal cual; P6, consulta del 05/10/2026) | corridas |
 |---|---|---|---|
 | H | `claude-haiku-4-5` | nada; las salidas de U-REEXT-T0, sin pagar | 1 (la de r2b) |
 | S | `claude-sonnet-5-5` | sin `temperature`; `tool_choice` `auto`; `thinking` `between_tools`; `max_tokens` 16.384 | 2 |
-| O | `claude-opus-5-5` | sin `temperature`; `tool_choice` `auto`; `output_config.effort` `low`; `max_tokens` 16.384 | 1 (2 si el tope sube a USD 35; decisión 3) |
+| O | `claude-opus-5-5` | sin `temperature`; `tool_choice` `auto`; `output_config.effort` `low`; `max_tokens` 16.384 | 2 |
 
 Reglas del pedido, como en P6: si corta, un reintento a 40.960 con transmisión; respuesta sin llamada a la herramienta o mal formada, un
-solo reintento igual en un namespace aparte; cada corte, reintento y rechazo se registra; lo que se compara es «modelo más pedido». E3:
-la primera verificación del verificador vigente (`claude-sonnet-5`, prompt de E3 sin cambios), sobre cada salida de S y O, sin el ciclo de
-reintentos.
+solo reintento igual en un namespace aparte; cada corte, reintento y rechazo se registra; lo que se compara es «modelo más pedido». E3 no corre
+en esta unidad (ajuste a la firma): U-DIAG-E3-LISTAS mostró que el verificador no recibe el bloque que abre la lista y reclama en falso
+sobre los ítems; Haiku se compara también sin él, en su intento 0. La verificación de tramos es por código (M2 y M4).
 
 MEDICIONES, por brazo y por corrida, sobre las mismas fichas de T4:
 M1. Los 137 supuestos del grupo c, clasificados con las cinco clases de T4 (Condicion con su relación hacia la norma; dentro de una
     norma; fusionado; omitido; sin relación), por el mismo lector y con el mismo criterio con que se clasificaron las salidas de Haiku.
 M2. Las 46 omisiones normativas de T4 (y las 14 no normativas, aparte), en cuatro clases: extraída como contenido tipificado con tramo
-    verificado por E3; extraída sin tramo verificado; registrada otra vez como omisión (con su categoría); ausente.
-M3. Variación entre corridas en S (dos corridas): unidades iguales byte a byte con la misma clave; en O solo si tiene dos corridas, si no
-    se declara no medida. Cortes, respuestas sin herramienta y rechazos, en los dos brazos.
-M4. Veredictos de E3 por brazo (completo, bloqueantes, residuales) y costo real por unidad y por brazo, con tokens de entrada y salida.
+    verificado por código (`pyd_r2/code/validador_r2.verificar_tramo_entidad`: contra el texto propio y el heredado, con la regla del
+    tramo de dos segmentos en los ítems; nivel «exacta» o «tokens»); extraída con tramo no verificable (nivel «no»); registrada otra vez
+    como omisión (con su categoría); ausente.
+M3. Variación entre las dos corridas de cada brazo: unidades iguales byte a byte con la misma clave; cortes, respuestas sin
+    herramienta y rechazos.
+M4. Por brazo y corrida: elementos con tramo no verificable por código (nivel «no», sobre todo lo emitido), elementos fuera del esquema
+    o del tool schema, y costo real por unidad y por brazo, con tokens de entrada y salida.
 
-LECTURA. Fichas por unidad, brazo y corrida con un código y sin el nombre del brazo (cegada en lo que se pueda; se declara qué la
-descubre, por ejemplo el estilo). Primera lectura de la instancia; segunda lectura completa de la mesa; adjudicación de la autora
+LECTURA. Fichas por unidad, brazo y corrida con un código y sin el nombre del brazo (decisión 2 al firmar: cegada con códigos; se
+declara qué puede descubrir el brazo, por ejemplo el estilo o el largo). Las 8 relecturas del intento 0 de Haiku van con código entre
+las demás. Primera lectura de la instancia; segunda lectura completa de la mesa; adjudicación de la autora
 sobre las divergencias, como en T4. Ninguna lectura usa la API.
 
 CRITERIO, ESCRITO ANTES DE CORRER (sellado en C0 con su sha256 y su hora; no se cambia después de la primera llamada paga). Un brazo
-«cambia el cuadro» si, en la peor de sus corridas (dos en S; una en O, salvo la decisión 3 al firmar), cumple al menos una:
+«cambia el cuadro» si, en la peor de sus dos corridas, cumple al menos una:
 C1. Condicion con su relación en al menos 113 de los 137 supuestos (límite inferior de Wilson al 95 % ≥ 0,75; Haiku: 43).
-C2. Al menos 41 de las 46 omisiones normativas extraídas como contenido tipificado con tramo verificado (límite inferior ≥ 0,75;
-    Haiku: 0, por definición).
+C2. Al menos 41 de las 46 omisiones normativas extraídas como contenido tipificado con tramo verificado por código (límite inferior
+    ≥ 0,75; Haiku: 0 por definición, porque en su intento 0 están registradas como omisión).
 Si un brazo lo cumple: la autora abre la decisión de una release nueva, con lo que implica (el modelo entra en la clave de caché y en el
 pedido: toda la tanda 0 se re-extrae; la reproducibilidad declarada cambia, porque el pedido adaptado no fija temperatura ni fuerza la
 herramienta; costo del escalado multiplicado por 2,6 con S o 5,2 con O; enmienda a la decisión del 05/10/2026 y al laudo de release r2).
@@ -67,31 +80,31 @@ QUIÉN LO EJECUTA Y CÓMO CONVIVE. Una instancia nueva, en su propia sesión; ni
 Es la única de las tres que usa la API: necesita la clave en el entorno (no se lee ni se imprime; las otras dos la tienen prohibida).
 Escribe solo en `data/experiment/comp_e1/` (código, bases de caché propias, salidas, fichas, frenos) y en su scratchpad. Lee la E0 r2b
 (`salida_tanda0_r2b/`, archivos), el perfil y el prefijo (`e1_extractor/`, `prompt_r2/p3c`), las fichas y tasas de T4 (`reext_t0/t4/`),
-el verificador de E3 y los generados del catálogo; nunca las bases del pipeline (`salida_r2b/`, solo para leer las claves de Haiku en
+el validador r2 (`pyd_r2/code`) y los generados del catálogo; nunca las bases del pipeline (`salida_r2b/`, solo para leer las claves de Haiku en
 C0, en modo solo lectura). No toca `e0_chunking/` (S0-2), `corpus_tanda0/ens_*`, `manifiestos/`, la fixture ni `grafos.py` (SC1 y SC2).
 `git status --short` completo al inicio: lo ajeno se lista y no se toca. Copia sin enlaces para toda corrida; `PYTHONDONTWRITEBYTECODE=1`;
 2.213 `.pyc` al inicio, declarados si difieren.
 
-COSTO. Estimación con la tarifa observada en U-REEXT-T0 (E1 Haiku 0,010135 y E3 0,010226 por unidad; `0a3ac81`), el factor de tamaño de
-las 87 unidades respecto de la media de la tanda 0 (1,78: 2.069 contra 1.165 caracteres completos; son listas largas), los precios por
-token de la página de cada modelo (Sonnet 5.5 el doble de Haiku 4.5; Opus 5.5 el cuádruple) y un 30 % más de tokens por el tokenizador
-nuevo: cada corrida de E1 cuesta ≈ USD 4,08 en S y ≈ 8,16 en O, y cada verificación de E3 ≈ 1,58. Diseño que cabe en el tope: S dos
-corridas (8,16), O una (8,16), E3 tres (4,75): **≈ USD 21,1; con un 15 % de margen por cortes y reintentos ≈ 24,2**. Con O a dos
-corridas: ≈ USD 30,8 y 35,4 con margen, fuera del tope autorizado (decisión 3 al firmar). **Tope: USD 25**, con freno duro antes de cada
-llamada (presupuesto propio en `data/experiment/comp_e1/presupuesto.json`). Si el control previo (C0) estima más que el tope con el
-conteo real de tokens, se frena sin gastar y se propone el recorte antes de seguir.
+COSTO. Estimación con la tarifa observada en U-REEXT-T0 (E1 Haiku 0,010135 por unidad; `0a3ac81`), el factor de tamaño de las 87
+unidades respecto de la media de la tanda 0 (1,78: 2.069 contra 1.165 caracteres completos; son listas largas), los precios por token
+de la página de cada modelo (Sonnet 5.5 el doble de Haiku 4.5; Opus 5.5 el cuádruple) y un 30 % más de tokens por el tokenizador
+nuevo: cada corrida de E1 cuesta ≈ USD 4,08 en S y ≈ 8,16 en O; sin E3 (ajuste a la firma), las cuatro corridas ≈ USD 24,5 y con un
+15 % de margen por cortes y reintentos ≈ 28,2. **Tope: USD 35** (decisión 3), con freno duro antes de cada llamada (presupuesto propio
+en `data/experiment/comp_e1/presupuesto.json`). Si el control previo (C0) estima más que el tope con el conteo real de tokens, se
+frena sin gastar y se propone el recorte antes de seguir.
 
 ETAPAS.
 C0. Control previo, USD 0: (a) las claves de E1 de las 87 unidades con el perfil r2b son las de las bases de `salida_r2b/` (lectura
-    `mode=ro`); (b) los dos modelos están disponibles para la cuenta, y el conteo de tokens con el pedido adaptado de cada brazo da la
+    `mode=ro`), y el intento 0 de las 87 está en `extracciones_e1.jsonl` (sha256 de la lista; las 8 con reintento identificadas); (b) los dos modelos están disponibles para la cuenta, y el conteo de tokens con el pedido adaptado de cada brazo da la
     estimación de costo recomputada (≤ 25 o freno); (c) sellos con sha256 y hora, antes de la primera llamada: la lista de unidades, las
     fichas de T4 que se usan de base, el texto del criterio y el de las reglas de lectura. FRENO C0 (corto; la autora da el «seguí»).
-C1. E1 de S (dos corridas) y de O (una, o dos según la decisión 3), en serie, con el freno duro del presupuesto; E3 sobre cada salida. Registro de cortes, reintentos
+C1. E1 de S y de O, dos corridas cada uno, en serie, con el freno duro del presupuesto; sin E3. Registro de cortes, reintentos
     y rechazos. Si el presupuesto llega al tope, parada ordenada y freno con lo que haya.
-C2. Fichas de M1 y M2 (instancia), M3 y M4 por script. FRENO C2: segunda lectura de la mesa y adjudicación de la autora.
+C2. Fichas de M1 y M2 (instancia), más las 8 fichas del intento 0 de Haiku; M3 y M4 por script. FRENO C2: segunda lectura de la mesa
+    y adjudicación de la autora.
 C3. Cifras finales con la adjudicación, criterio aplicado tal cual, tabla por brazo y corrida, costo real. FRENO final.
 
-CRITERIOS DE ACEPTACIÓN. Sellos de C0 anteriores a la primera llamada paga; gasto real ≤ 25 con su desglose; las tres corridas (cuatro con la decisión 3) con su
+CRITERIOS DE ACEPTACIÓN. Sellos de C0 anteriores a la primera llamada paga; gasto real ≤ 35 con su desglose; las cuatro corridas con su
 base y su registro; M1 sobre los 137 supuestos y M2 sobre las 60 omisiones en cada corrida; divergencias de lectura adjudicadas; el criterio
 aplicado sin cambios; doble corrida de los scripts de cifras byte a byte; el repo sin cambios fuera de `comp_e1/` (sha256 antes y
 después); grep de convenciones.
@@ -99,6 +112,5 @@ ESCRITURAS: `data/experiment/comp_e1/` (se crea) y el scratchpad. Paquetes `revi
 PROHIBIDO: tocar el código del pipeline, el prefijo, el mensaje, el tool schema, el perfil, el verificador, las bases del pipeline, los
 grafos, la fixture, `grafos.py`, EV2; usar los brazos en cualquier corrida del pipeline; leer o imprimir la clave de la API; commitear.
 REQUISITOS: CLAUDE.md §4 (a a l).
-DECISIONES DE LA AUTORA AL FIRMAR: (1) el nombre de la unidad; (2) si la lectura se hace cegada con códigos o abierta y declarada;
-(3) si el tope sube a USD 35 para que el brazo O también tenga dos corridas (estimación ≈ USD 31 sin margen y 35 con margen; con el
-tope de 25, O corre una vez y su variación queda sin medir).
+DECISIONES TOMADAS AL FIRMAR (06/10/2026; en la cabecera): (1) U-COMP-E1; (2) lectura cegada con códigos; (3) tope USD 35 con doble
+corrida en los dos brazos.

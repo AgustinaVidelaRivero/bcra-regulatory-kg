@@ -173,3 +173,7 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 135 líneas de arriba (`7
      firmado para los dos grafos, con el código nuevo; FRENO SC1 completo. SC2 no cambia.
   7. **Escrituras agregadas:** `data/experiment/tanda0/code/ensamblar_tanda0.py`, `data/experiment/r2_codigo/selftest_r3.py`,
      `data/experiment/mantenimiento/tabla_reprocesamiento.md` (nota a F15). Lo demás, como en el texto firmado.
+- **06/10/2026 — SC2 en espera (decisión de la autora).** El FRENO de U-DIAG-E3-LISTAS mostró que el verificador de E3 no recibe el bloque
+  que abre la lista y reclama en falso sobre los ítems (17 reintentos y 7 unidades de la cola por esos reclamos en la tanda 0). Hasta que la
+  autora decida qué se hace con la tanda 0 (re-verificar con E3 corregido o declarar el límite), U-SINCOLA-T0 termina SC1-bis y frena
+  antes de SC2 (sello y carga). La lectura de muestra de las unidades aceptadas, prevista tras SC2, también espera.
