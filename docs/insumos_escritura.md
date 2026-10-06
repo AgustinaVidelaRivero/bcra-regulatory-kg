@@ -327,3 +327,16 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      (VU-B) dio en r2a 13 de 23 con predicado tipado y 45 de 76 con `remite_a`, bajo el piso 0,75 (U-DIAG-VINCULO, `b0ee084`);
      la lectura la resuelve la navegación por la jerarquía de la procedencia (condición 10 del checklist). Complemento
      pendiente, sin plazo: la lectura de precisión de los 42 casos (cuántos tienen de verdad la norma en el encabezado).
+  4. **El verificador de E3 y los ítems de lista: límite declarado de la tanda 0** (decisión de la autora del 06/10/2026, opción (ii)
+     con (iii), tras U-DIAG-E3-LISTAS; reporte y propuesta en `reports/u_diag_e3_listas/`). En la tanda 0, 1.054 de las 2.440 unidades
+     verificadas son ítems de una lista; el fuente que recibió E3 lleva solo los bloques heredados de tipo encabezado
+     (`e3_verificador/comun_e3.py:123-125`), así que en 1.015 ítems el bloque que abre la lista no llegó ni al texto ni a la verificación
+     de citas, y ningún ítem recibió la regla de composición (la NOTA va solo al encabezado, `prompt_e3.py:315-316`). Efecto medido:
+     31 reclamos que piden en el ítem la norma del encabezado, que el prefijo de E1 manda no emitir ahí (16 bloqueantes); 5 reclamos de
+     polaridad, ninguno fundado; 9 de 15 falsas alarmas de contenido agregado en una muestra con semilla (Wilson al 95 % [0,357; 0,802]);
+     17 reintentos y 7 unidades de la cola humana (5 de las 29 `cola_humana`) por esos reclamos; 2 errores reales de composición que
+     siguen en pie (`pro::4.2.1.4`, `lingob::7.1.7`). Los ítems son 1.054 de 2.440 unidades pero 50 de las 74 de la cola. La tanda 0 no
+     se re-verifica (principio 9; la clase es «E3 de las afectadas» y se corrige entre tandas): la corrección rige desde la tanda 1
+     (U-E3-LISTAS: el bloque que abre la lista en el fuente y en las citas de E3, y una NOTA del ítem), y la medición aparte (O3 de esa
+     unidad: E3 corregido sobre las 24 unidades afectadas, sin re-sellar) da cuántos reclamos desaparecen y cuántas de las 17
+     extracciones finales cambió un reintento infundado, comparadas con su intento 0. PENDIENTE: las cifras de O3.

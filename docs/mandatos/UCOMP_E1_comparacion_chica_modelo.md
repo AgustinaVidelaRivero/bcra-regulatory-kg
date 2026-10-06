@@ -114,3 +114,12 @@ grafos, la fixture, `grafos.py`, EV2; usar los brazos en cualquier corrida del p
 REQUISITOS: CLAUDE.md §4 (a a l).
 DECISIONES TOMADAS AL FIRMAR (06/10/2026; en la cabecera): (1) U-COMP-E1; (2) lectura cegada con códigos; (3) tope USD 35 con doble
 corrida en los dos brazos.
+
+NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 116 líneas de arriba (`cbcb823`, sha256 `89ce5508c574c4bc…`) y no cambia.
+
+- **06/10/2026 — las 8 relecturas del intento 0 de Haiku pasan por el mismo proceso que T4 (precisión de la autora).** En las 8
+  unidades con reintento (5 `aceptado_tras_reintento`, 3 `cola_humana`), el intento 0 de Haiku se lee con el proceso completo de T4 y
+  no solo por la mesa: primera lectura de la instancia con las mismas fichas y clases de M1 y M2, segunda lectura completa de la mesa y
+  adjudicación de la autora sobre las divergencias, con código entre las demás fichas (lectura cegada). Se hace en C2, junto con las
+  fichas de los brazos, para que la línea de base del intento 0 sea igual de sólida que la de T4 en las otras 79. Donde el texto firmado
+  dice «la mesa relee», se lee así.

@@ -177,3 +177,8 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 135 líneas de arriba (`7
   que abre la lista y reclama en falso sobre los ítems (17 reintentos y 7 unidades de la cola por esos reclamos en la tanda 0). Hasta que la
   autora decida qué se hace con la tanda 0 (re-verificar con E3 corregido o declarar el límite), U-SINCOLA-T0 termina SC1-bis y frena
   antes de SC2 (sello y carga). La lectura de muestra de las unidades aceptadas, prevista tras SC2, también espera.
+- **06/10/2026 — la tanda 0 no se re-verifica: opción (ii) con (iii) (decisión de la autora); se levanta la espera de SC2.** La
+  tanda 0 queda como está: el límite del verificador sobre los ítems de lista se declara con sus cifras (`docs/insumos_escritura.md`
+  §7, ítem 4) y se mide aparte, sin re-sellar, cuántos reclamos desaparecen con E3 corregido (O3 de U-E3-LISTAS). Los grafos de esta
+  unidad son los evaluados de la tanda 0, con la exclusión de la cola y ese límite declarados. Cuando llegue el FRENO de SC1-bis, la
+  mesa lo revisa y la autora despacha SC2 (sello y carga). La lectura de muestra de las unidades aceptadas se despacha tras SC2.
