@@ -112,6 +112,38 @@ GRAFOS = {
         "vista_runtime": "comun_ev2.cargar_runtime('tanda0_ens_diez') tras importar tanda0/code/comun_tanda0 (registro en memoria, patrón comun_r1)",
         "indice_fulltext": "nodos_fulltext_kg_tanda0_diez_r1",
     },
+    # Tanda 0, perfil r2b (U-REEXT-T0, T3, punto 4): ensamblados r2b de la re-extracción de la tanda 0. Su vista runtime
+    # la registra en memoria data/experiment/reext_t0/t3/registro_vista_r2b.py (patrón comun_tanda0, sin editarlo).
+    # commit_sellado: "PENDIENTE" hasta que la autora selle los grafos (no None: Neo4j no guarda propiedades nulas y
+    # cargar_kg.verificar_carga lee la clave de KG_Meta).
+    "KG_Tanda0_Desarrollo_r2b": {
+        "nombre_canonico": "KG-Tanda0-Desarrollo-r2b",
+        "label": "KG_Tanda0_Desarrollo_r2b",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_tanda0" / "ens_desarrollo_r2b" / "r2" / "kg.json",
+        "sha256": "6de41495105736330a11e8f19d3625f57987938570e4bcf84aa623bea5a952f0",
+        "commit_sellado": "PENDIENTE",
+        "n_nodos": 6992,
+        "n_aristas": 23442,
+        "ev2_key": "tanda0_ens_desarrollo_r2b",
+        "requiere_registro_dir": EXPERIMENT_DIR / "reext_t0" / "t3",
+        "requiere_registro_modulo": "registro_vista_r2b",
+        "vista_runtime": "comun_ev2.cargar_runtime('tanda0_ens_desarrollo_r2b') tras importar reext_t0/t3/registro_vista_r2b (registro en memoria, patrón comun_tanda0); r2b no se evalúa con EV2",
+        "indice_fulltext": "nodos_fulltext_kg_tanda0_desarrollo_r2b",
+    },
+    "KG_Tanda0_Diez_r2b": {
+        "nombre_canonico": "KG-Tanda0-Diez-r2b",
+        "label": "KG_Tanda0_Diez_r2b",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_tanda0" / "ens_diez_r2b" / "r2" / "kg.json",
+        "sha256": "12c5cfc3ea4c46536c72b6eafdb6c890c626b550f76dd96c50a579156975e055",
+        "commit_sellado": "PENDIENTE",
+        "n_nodos": 8818,
+        "n_aristas": 27629,
+        "ev2_key": "tanda0_ens_diez_r2b",
+        "requiere_registro_dir": EXPERIMENT_DIR / "reext_t0" / "t3",
+        "requiere_registro_modulo": "registro_vista_r2b",
+        "vista_runtime": "comun_ev2.cargar_runtime('tanda0_ens_diez_r2b') tras importar reext_t0/t3/registro_vista_r2b (registro en memoria, patrón comun_tanda0); r2b no se evalúa con EV2",
+        "indice_fulltext": "nodos_fulltext_kg_tanda0_diez_r2b",
+    },
 }
 CLAVES = list(GRAFOS.keys())
 GRAFO_DEFAULT = "KG_Refinado"   # el grafo vigente (docs/tablero.md); compatibilidad con c26cb9b
