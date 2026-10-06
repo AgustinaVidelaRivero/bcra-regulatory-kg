@@ -233,3 +233,7 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 135 líneas de arriba (`7
     siguiente le traiga el hash del commit de SC2 (la instancia no lo detecta sola: su despacho fijó la condición, no el aviso).
     La lectura de muestra de las unidades aceptadas, prevista tras SC2, queda en su mandato en versión para firmar
     (`docs/mandatos/ULECTURA_ACEPTADAS_tasa_error_tanda0.md`, unidad U-LECTURA-ACEPTADAS).
+- **06/10/2026 — sello de los dos grafos sin la cola y cifra de «punto sin nodos» para la tesis (decisión de la autora).** SC2
+  quedó commiteada en `dde9f44`; este commit pone ese hash en `commit_sellado` de `KG_Tanda0_Diez_r2b_sincola` y
+  `KG_Tanda0_Desarrollo_r2b_sincola` (`data/experiment/neo4j/grafos.py`). La cifra de «punto sin nodos» que cita la tesis es
+  la del reporte del ensamblado (citas distintas por chunk de origen, tramo y unidad citada, la unidad de cita que ya usa la sección 4.5): diez 255 de 530 citas irresolubles, 43 con destino en una unidad excluida por la regla de la cola, netas 212, grafo completo 213 de 495 (una con origen en la cola); desarrollo 215 de 446, 41, 174, completo 175 de 411. Con este commit, U-SINCOLA-T0 queda CERRADA.
