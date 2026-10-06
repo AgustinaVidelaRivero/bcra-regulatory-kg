@@ -302,3 +302,17 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      conector sin que el tramo lo haga. Se declara como desviación de fidelidad del modelo en la descripción, con el
      alcance igual (cada clase queda exceptuada) y el tramo fiel. Fuentes: `docs/mandatos/UREEXT_T0_reextraccion_tanda0.md`
      (nota del 06/10/2026 sobre el FRENO T3, decisión 3) y el freno de T3-bis cuando exista.
+  2. **Dos hallazgos de T4, material para el experimento posterior de comparación de modelos** (06/10/2026; lecturas de
+     la instancia, adjudicación de la autora PENDIENTE; `data/experiment/reext_t0/freno_t4.md` y `t4/salida/`). (a)
+     Omisiones `meta_normativo` con contenido normativo según el §1 de la enmienda 7: en la muestra de 30 sin marca del
+     contador, 19 de 30 son normativas (14 de 30 sin contar las remisiones puras) y 4 tienen el tramo en el texto
+     heredado; en la de 30 con marca, 25 de 30 (27 de 30 en la segunda lectura de la mesa), 18 con el tramo heredado y 3
+     habilitantes. Proyectadas a las 1.137 omisiones `meta_normativo` del ensamblado r2b de diez (733 sin marca y 404
+     con marca; `t4/salida/sorteos_t4.json`), las normativas sobre el tramo propio quedan entre 377 y 526 según la
+     lectura (centros de las fracciones; los intervalos de Wilson, en el paquete de revisión del FRENO T4), y las del
+     tramo heredado en 302; la cifra firme sale del segundo tramo, con la adjudicación. (b) Una Condicion por supuesto:
+     1 de 30 unidades del grupo c cumple el criterio sellado; en 26 de 30 unidades hay al menos un supuesto dentro de
+     una norma, y en la mayoría de ellas otros supuestos sí quedan como Condicion con su relación: la proporción por
+     supuesto sale del segundo tramo (medida complementaria). Los dos miden lo que el modelo de E1 hace con el prefijo congelado:
+     son la línea de base de la comparación con otro modelo, y lo que se pueda corregir en código entre tandas se
+     declara aparte de lo que queda como límite del modelo.

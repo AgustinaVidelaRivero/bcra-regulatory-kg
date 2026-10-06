@@ -642,3 +642,39 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
        de la norma y de los nodos; valen como posteriores al resultado.
   - Sigue T4 (lectura de la cola humana y preguntas de control) con los grafos sellados; la cola tiene 74 entradas, con
     la parte 1 de `cap::4.2.1.2`; el tercer escalón no tiene casos en r2b.
+
+- **06/10/2026 — decisiones de la autora sobre el FRENO T4, primer tramo (sorteos, fichas y puntos 2 a 4;
+  `data/experiment/reext_t0/freno_t4.md` y `t4/`, sin commit al escribir esta nota; T3-bis en `bbc38dc`, sello de los
+  grafos r2b en `c9540c0`).** Las lecturas de los puntos 1 y 5 a 8 son propuestas de la instancia; la adjudicación de
+  la autora llega con el «seguí» del segundo tramo. Decisiones sobre las preguntas del freno:
+    1. Cada punto mantiene la regla fijada antes de leer. En `ext::10.3.6` la marca del punto 5 (la regla de P4b sobre
+       la respuesta de E1, reusada de P5) es «cumple»; con la regla del punto 7 esa misma respuesta no cumpliría (la
+       porción con pagos a la vista va dentro de la Excepcion) y la extracción final, tras el reintento, cumple. La
+       diferencia se declara; no se reconcilia.
+    2. Una remisión sin contenido propio no es normativa: cuenta solo si trae una de las siete clases del contador
+       (deber, facultad, condición, excepción, alcance, modalidad, cuantificador). El reporte da las dos cifras, con y
+       sin remisiones.
+    3. Las recomendaciones («es deseable», «se recomienda», «es conveniente», «debería») son normativas, como
+       modalidad de consejo.
+    4. «Habilitante» se lee con la definición del pre-registro de ESQ-3b v2 (`40493c9`) y el §4 de la enmienda 7
+       (`44c6e1b`): una norma cuyo efecto es que un sujeto pueda realizar algo.
+    5. Las omisiones cuyo tramo está en el texto heredado se reportan aparte; la pérdida real se cuenta sobre el tramo
+       propio.
+  Medida complementaria del punto 7, declarada posterior al resultado: además de la cifra del criterio sellado por
+  unidad, el segundo tramo computa una medida descriptiva por supuesto: de todos los supuestos identificados en las
+  fichas de las 30 unidades, cuántos quedaron como Condicion con su relación hacia la norma que condicionan, cuántos
+  dentro de una norma, cuántos fusionados, cuántos omitidos y cuántos sin relación, con su intervalo de Wilson al
+  95 %, desglosado por documento. La cifra del criterio sellado no cambia.
+  Regla de la cola humana: con la propuesta de la instancia (12 con error de 30; 13 si la dudosa cuenta) el límite
+  superior de Wilson al 95 % de la tasa de error es 0,577 (0,608), y la regla del 25 % de la enmienda al protocolo
+  (`docs/enmienda_protocolo_entre_tandas_2026-10-04_cola_humana.md`, §1, punto 6, que tolera hasta 2 errores en 30) se
+  dispara: las 74 unidades de la cola humana de la tanda 0 se re-procesan o salen del grafo evaluado de esta tanda,
+  y se reporta cuál de las dos y por qué. Cuál, lo decide la autora tras la adjudicación: PENDIENTE.
+  Adjudicación (06/10/2026, tras el commit del primer tramo en `be6b074`), por mayoría de tres lecturas: la de la
+  instancia, la de la revisión (completas en los puntos 1, 6, 7 y 8) y una tercera de la autora en los puntos 7 y 8.
+  Punto 1: `cap::6.2.2.4` sin error. Punto 5: vale la propuesta, declarado sin segunda lectura. Punto 6: vale la
+  propuesta, incluidas las 3 dudosas. Punto 7: `polcre::7.1.2` no_cumple con la etiqueta sin_relacion; `ric::9.1.3`
+  no_cumple. Punto 8: con marca 14 (`lingob::3.2::intro`) y 26 (`cla::6.5.5.9`) normativas y dudosas (modalidad y
+  alcance); en lo demás vale la propuesta. No hay control al azar con una lectura adicional de la autora: el control
+  es la coincidencia de dos lecturas independientes completas de los puntos 1, 6, 7 y 8, con una tercera en los
+  puntos 7 y 8, y la adjudicación de la autora sobre las divergencias.
