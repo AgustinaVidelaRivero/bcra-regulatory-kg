@@ -492,3 +492,45 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     5. La lección de T1 (la corrida en seco agregaba `e0_chunking` al path por su cuenta y por eso no vio el
        defecto) queda en CLAUDE.md, §4, regla l: la corrida en seco de un runner ejercita el mismo camino de
        imports y de código que el runner, sin arreglar el `sys.path` por fuera.
+- **06/10/2026 — decisiones de la autora sobre el FRENO T2-bis (T2-bis en `4ab7a0a`; fila P20 del checklist en
+  `e1c84c1`).** T2-bis costó USD 0,49291 de un tope de 3 (`data/experiment/reext_t0/freno_t2bis.md`): `cap::4.2.1.2`
+  se partió en 15.056 y 11.669 caracteres (la partición de `9f6361e`); la parte 2 salió en `-rforma1`, E3 la aceptó
+  con residuales y aporta 22 nodos al E2 r2 de cap (2.168 → 2.190); la parte 1 salió mal formada en 16.384, en
+  `-rforma1` y en `-rforma2`, y `cap::3.1.1.2` también en `-rforma2`: las dos quedaron sin validación. La revisión
+  independiente reprodujo las cifras sobre copias (9 filas nuevas y 9 líneas de usage, el gasto por tokens, la
+  partición, 188 de 188 archivos del E2 y del E2 r2 de los diez TOs iguales a T2) y encontró que las 12 salidas mal
+  formadas de T2 y T2-bis (8 primeros intentos, 2 en `-rforma1` y 2 en `-rforma2`) tienen el mismo defecto: traen
+  `entities` como lista y no traen la clave `relations`.
+  - Decisiones.
+    1. Corrección de `cerrar_e2` (fuera de los puntos a–c del despacho de T2-bis; autorizada en la sesión y
+       confirmada aquí): la unidad partida por corte va al fan-in del E2 del perfil de E1 con su último registro de
+       E1 (error `particionada_por_corte`), como rechazada en E1, y el reporte la declara aparte, reemplazada por
+       sus partes, que entran al E2 r2. Sin particiones nada cambia; con la corrección, el E2 y el E2 r2 de los diez
+       TOs regenerados sobre la salida de T2 salen byte a byte iguales (188 de 188).
+    2. Reparación acotada de la salida de E1 sin la clave `relations`: solo después de agotar los reintentos por
+       forma (`-rforma1` y `-rforma2`); solo si la salida es un dict con `entities` lista, sin la clave `relations`,
+       y con `relations = []` el validador de E1 la acepta; la unidad queda marcada en su registro
+       (`reparacion_forma`) y contada aparte en el resumen de E1; E3 la verifica como a cualquier otra y, si faltan
+       relaciones, las reclama (el ratchet las pide). Es la única excepción a la regla «sin reparación
+       determinística» de C2 de U-R2-CODIGO-2; cualquier otra salida mal formada sigue el camino de siempre. No
+       mueve ninguna clave de E1 (actúa sobre la respuesta guardada, no sobre el pedido); las unidades reparadas
+       pagan E3. Fila en la tabla de reprocesamiento: F08c ampliada (segundo reintento y reparación), con una
+       variación nueva del selftest de claves para el namespace `-rforma2`, o una fila propia (F08f) si F08c queda
+       ambigua; lo propone T2-ter en su freno.
+    3. T2-ter, antes de T3, con tope de USD 1: la reparación aplicada a `cap::4.2.1.2::parte1` y a `cap::3.1.1.2`
+       sobre sus salidas guardadas (0 llamadas a E1; E3 de las dos unidades y sus reintentos del ratchet); la
+       corrección de A1r en `data/experiment/mantenimiento/code/selftest_clave_cache.py` (la clave del reintento por
+       forma se arma con `prompt_r2b.kwargs_reintento_forma_r2b`, y en `-rforma2` para el segundo reintento), que T5
+       necesita como anclaje del perfil r2b; y la tabla de reprocesamiento (las 24 menciones con anclas desplazadas
+       por el código de T2-bis, `data/experiment/reext_t0/t2bis/anclas_desplazadas_tabla.txt`, y F08c).
+    4. La razón de tokens por carácter para la regla 6 en E1 de S0-2 de U-SEG-OFICIAL se mantiene en 1,5051 (p90 de
+       T2 sin las partes): con las partes da 1,4820 (41 unidades) o 1,4936 (40 con E1 válida); la única unidad del
+       diseño de S0-1 bis entre 27.214 y 27.638 caracteres es `ri_cc::S3`, que con 1,5051 se parte por renglones.
+    5. La reparación se declara en la tesis como procedimiento, con su cifra (cuántas unidades se repararon y sobre
+       cuántas salidas mal formadas), que T5 toma del resumen de E1 de la corrida; el capítulo 4 la describe junto
+       con el reintento por forma.
+  - Selftests que fallan desde HEAD por causas ajenas a estas unidades: `selftest_clave_cache` (A1r arma la clave del
+    reintento por forma con el pedido base, sin la temperatura 1 de P5: código de `2a857db` que P5 no actualizó,
+    visible desde que existe `salida_r2b/`, `3d793aa`) y `selftest_canal_abierto_e1` (bloque B, 45 de 46, desde
+    `0e50e3d`, 31/08/2026). El primero se corrige en T2-ter; el segundo, con la parada ordenada por SIGUSR1 y el tope
+    por corrida, en la unidad de mantenimiento del runner (checklist, fila P20, `e1c84c1`).
