@@ -585,13 +585,36 @@ def main() -> int:
     # abre la lista. La NOTA de los flags sigue siendo la de siempre, byte a byte.
     nota_item_k = prompt_e3.nota_item_lista(flag)
     notas_k = lambda m: m.split("TEXTO FUENTE ÍNTEGRO DE LA UNIDAD", 1)[0]  # noqa: E731
+
+    def k_igual(m_v3: str, m_r2: str) -> bool:
+        # U-E3-LISTAS, O4: el mensaje r2 esperado se arma desde el v3 (las NOTAS de siempre más la NOTA del ítem, y el
+        # resto con el fuente entre cercas sustituido por el que lleva el bloque) y se compara byte a byte, con el
+        # rótulo y las cercas del fuente.
+        if nota_item_k is None:
+            return m_r2 == m_v3
+        fuente_v3_entre_cercas = "```\n" + fuente_integro(flag) + "\n```"
+        fuente_r2_entre_cercas = "```\n" + fuente_integro(flag, True) + "\n```"
+        resto_v3 = m_v3[len(notas_k(m_v3)):]
+        esperado = (notas_k(m_v3) + nota_item_k + "\n\n"
+                    + resto_v3.replace(fuente_v3_entre_cercas, fuente_r2_entre_cercas, 1))
+        return m_r2 == esperado
     check("K: sin tablas serializadas (E0 legada), la NOTA r2 es la de siempre, byte a byte (U-E3-LISTAS: en un "
           "ítem, más la NOTA del ítem y el bloque que abre la lista)",
-          "detectados determinísticamente (flag de E0)" in m_v3
-          and (m_v3 == m_r2 if nota_item_k is None else
-               (notas_k(m_r2) == notas_k(m_v3) + nota_item_k + "\n\n"
-                and m_r2.split("ELEMENTOS EXTRAÍDOS", 1)[1] == m_v3.split("ELEMENTOS EXTRAÍDOS", 1)[1]
-                and f"```\n{fuente_integro(flag, True)}\n```" in m_r2)))
+          "detectados determinísticamente (flag de E0)" in m_v3 and k_igual(m_v3, m_r2))
+    # los tres mensajes manipulados que el check dejaba pasar en O2 tienen que frenar
+    fuente_r2_k = fuente_integro(flag, True)
+    m_linea = m_r2.replace("```\n\nELEMENTOS EXTRAÍDOS", "```\nTEXTO ESPURIO\n\nELEMENTOS EXTRAÍDOS", 1)
+    m_rotulo = m_r2.replace("TEXTO FUENTE ÍNTEGRO DE LA UNIDAD (contexto heredado + punto propio):",
+                            "TEXTO FUENTE ÍNTEGRO DE LA UNIDAD (otro rótulo):", 1)
+    m_dup_dentro = m_r2.replace(f"```\n{fuente_r2_k}\n```", f"```\n{fuente_r2_k}\n{fuente_r2_k}\n```", 1)
+    m_dup_cercas = m_r2.replace(f"```\n{fuente_r2_k}\n```", f"```\n{fuente_r2_k}\n```\n```\n{fuente_r2_k}\n```", 1)
+    check("K: frena una línea extra entre la cerca de cierre del fuente y «ELEMENTOS EXTRAÍDOS»",
+          m_linea != m_r2 and not k_igual(m_v3, m_linea))
+    check("K: frena otro rótulo de la sección del fuente",
+          m_rotulo != m_r2 and not k_igual(m_v3, m_rotulo))
+    check("K: frena el fuente duplicado, dentro de las mismas cercas y con sus propias cercas",
+          m_dup_dentro != m_r2 and m_dup_cercas != m_r2
+          and not k_igual(m_v3, m_dup_dentro) and not k_igual(m_v3, m_dup_cercas))
     check("K: E3 congelado — el prefijo sigue intacto con la NOTA r2 y la ampliación",
           prompt_e3.PREFIJO_HASH == resumen_sellado["prefijo_hash_e3"])
 
