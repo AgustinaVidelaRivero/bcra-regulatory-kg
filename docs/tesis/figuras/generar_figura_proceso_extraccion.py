@@ -1,93 +1,113 @@
 #!/usr/bin/env python3
-"""Figura «del documento al grafo» para la Introducción.
+"""Figura «del documento al grafo» para la Introducción (Figura 1.3), versión 2.
 
 Siete elementos en secuencia de izquierda a derecha, en dos filas unidas por
 una flecha de continuidad: el Texto Ordenado de entrada, las cinco etapas del
-proceso y el grafo de salida. Dos colores distinguen las etapas que ejecuta un
-modelo de lenguaje de las determinísticas; la leyenda va al pie.
+proceso (segmentación, extracción, validación, revisión y ensamblado) y el
+grafo de salida. Dos colores distinguen las etapas que ejecuta un modelo de
+lenguaje de las determinísticas; la leyenda va al pie.
 
-Misma técnica, tipografía y paleta por tipo de nodo que la figura «de la norma
-al grafo»: el SVG se escribe a mano, sin dependencias externas ni red, y la
-generación es determinística (dos corridas producen el mismo SVG byte a byte).
-El PNG se exporta con rsvg-convert al ancho físico de la figura a 300 dpi, y
-el script le graba la densidad en el encabezado.
+Versión 1 (28/09/2026; generador en fbe69d4): las cinco etapas eran
+segmentación, extracción, revisión, ensamblado y resolución de remisiones, y el
+recuadro «Grafo» dibujaba, del grafo r1, una Restriccion del 5.1.1.1 con
+limita hacia la Operacion y referencia hacia la Obligacion del 3.7.
+Versión 2:
+- la caja del validador, en código, entre el extractor y el revisor;
+- la resolución de las remisiones deja de ser una caja propia: pasa al
+  ensamblado («une las partes y deriva las remisiones»);
+- con una caja más en la primera fila, el revisor pasa a la segunda: sus dos
+  salidas laterales («vuelve a extraer», hacia el extractor, y «marcado para
+  revisión humana») se dibujan desde allí;
+- el recuadro «Grafo» dibuja tres nodos de la figura 1.1 versión 2: la
+  Condicion del monto y la Operacion del 5.1.1.1, unidas por condicion_de, y
+  la Definicion del 3.7, con la remite_a resaltada; los colores de tipo son
+  los de la figura del esquema final (los de la figura 1.1);
+- los controles de medidas corren siempre (en la versión 1, con --verificar)
+  y se suman los de geometría y de inventario de la figura 1.1.
 
-Los tres nodos y las dos aristas del panel «Grafo» no se tipean: se leen de
-ejemplo_prestamo_datos.json (ejemplo del préstamo, que escribe
-extraer_datos_ejemplo_prestamo.py) y el script comprueba al generar, contra el
-grafo r1 (kg.json), que el archivo es el sellado, que cada nodo está con ese
-tipo y ese punto de procedencia y que cada arista existe exactamente una vez
-con ese origen, esa relación y ese destino. Cada nodo se rotula con su tipo,
-escrito como en el código, y su punto de procedencia; cada arista, con el
-nombre de la relación tal como está en el grafo. La etiqueta que el nodo tiene
-en el grafo se imprime al correr.
+Los tres nodos y las dos aristas del recuadro «Grafo» no se tipean: se toman
+del subgrafo de la figura 1.1 (generar_figura_norma_a_grafo.cargar_subgrafo,
+que lee el grafo de desarrollo r2b y el de diez documentos con su candado y
+comprueba que lo dibujado está igual en los dos). La firma de condicion_de
+(Condicion → Operacion) se comprueba en la matriz del esquema r2 y remite_a en
+la lista de predicados derivados por código del ensamblado, los dos en
+modelos_r2.py (leído con su candado). Cada nodo se rotula con su tipo, escrito
+como en el código, y su punto de procedencia; cada arista, con el nombre de la
+relación tal como está en el grafo.
 
-Uso:
-    PYTHONDONTWRITEBYTECODE=1 python3 generar_figura_proceso_extraccion.py
-    PYTHONDONTWRITEBYTECODE=1 python3 generar_figura_proceso_extraccion.py --verificar
+Misma técnica, tipografía y tamaños que la versión 1: el SVG se escribe a
+mano, sin red, y la generación es determinística.
 
-Con --verificar, además, mide cada texto con las métricas reales de Helvetica
-(requiere PIL y la fuente del sistema; si faltan, lo informa y sigue) y
-comprueba que ningún texto exceda su caja, se superponga con otro, salga del
-lienzo ni quede por debajo del tamaño mínimo impreso.
+Controles, en cada corrida (el script frena si fallan): cada texto medido con
+las métricas reales de Helvetica entra en su caja, no se superpone con otro,
+no sale del lienzo y no queda por debajo de 9 pt impresos; inventario del
+recuadro «Grafo» releído del SVG contra el grafo; geometría de la figura 1.1
+(ningún trazo atraviesa una caja, ningún texto sobre un trazo que no es el
+suyo, 0 cruces). Antes de componer corren dos pruebas negativas (una arista de
+más en el recuadro y la salida lateral cruzando la flecha de continuidad).
+
+Salidas, byte-reproducibles: figura_proceso_extraccion.svg, .png (300 dpi,
+densidad grabada) y .pdf (SOURCE_DATE_EPOCH=0).
+
+Uso (desde la raíz del repo):
+    PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B docs/tesis/figuras/generar_figura_proceso_extraccion.py
+    PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B docs/tesis/figuras/generar_figura_proceso_extraccion.py --salida DIR
 """
 
-import hashlib
-import json
-import os
-import shutil
-import struct
-import subprocess
 import sys
-import zlib
+
+sys.dont_write_bytecode = True  # importar los módulos hermanos no deja __pycache__
+
+import argparse  # noqa: E402
+import os  # noqa: E402
+import xml.etree.ElementTree as ET  # noqa: E402
+from collections import Counter  # noqa: E402
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
-DATOS = os.path.join(AQUI, "ejemplo_prestamo_datos.json")
-SALIDA_SVG = os.path.join(AQUI, "figura_proceso_extraccion.svg")
-SALIDA_PNG = os.path.join(AQUI, "figura_proceso_extraccion.png")
-RAIZ = os.path.abspath(os.path.join(AQUI, "..", "..", ".."))
-KG = os.path.join(RAIZ, "data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json")
-# sha256 del kg.json sobre el que se verificó la figura (U-FIG-PROC-V,
-# reports/verificacion_figura_proceso.md §1). Si el archivo cambia, el script
-# frena: la figura afirma que estos nodos y aristas están en ese grafo.
-KG_SHA256 = "0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a"
+sys.path.insert(0, AQUI)
+import generar_figura_norma_a_grafo as base  # noqa: E402
+
+NOMBRE = "figura_proceso_extraccion"
+freno = base.freno
+NS = base.NS
+
+# Esquema r2: matriz de firmas y predicados derivados por código (U-R2-CODIGO;
+# igual en bbc38dc, el commit de los dos grafos).
+MODELOS_R2 = ("data/experiment/pyd_r2/code/modelos_r2.py",
+              "e67f15ae13dd5419ea0ce1a08dbef63c86cbdf9c269772a0b02a4e27b4c3a2ca")
+# Líneas de modelos_r2.py que el script exige, literales: la ampliación de
+# condicion_de a Operacion (AMPLIACION_R2) y remite_a como predicado derivado,
+# con su firma y sus propiedades.
+LITERALES_R2 = {
+    "extraccion": '    ("condicion_de", "Condicion", "Operacion"),',
+    "derivado": 'PREDICADOS_DERIVADOS = ("remite_a",)',
+    "tipos_contenido": 'TIPOS_CONTENIDO = ("Operacion", "Restriccion", "Excepcion", "Obligacion", "Potestad", "Condicion",',
+    "firma_derivada": '    "remite_a": (TIPOS_CONTENIDO, TIPOS_CONTENIDO + ("TextoOrdenado",)),',
+    "propiedades": 'PROPIEDADES_REMISION = ("alcance", "destino", "evidencia")',
+}
 
 # --------------------------------------------------------------------------- #
-# Tamaño impreso                                                               #
-# A4 con márgenes de 3 cm: ancho de texto 21 - 6 = 15 cm. La figura entra a    #
-# 0,85 de ese ancho. Todo tamaño de letra se controla contra ese ancho físico. #
+# Tamaño impreso (como en la versión 1)                                        #
+# A4 con márgenes de 3 cm: ancho de texto 15 cm; la figura entra a 0,85.       #
 # --------------------------------------------------------------------------- #
 ANCHO_TEXTO_CM = 15.0
 FRACCION = 0.85
 ANCHO_FIGURA_CM = ANCHO_TEXTO_CM * FRACCION          # 12,75 cm
 PT_POR_CM = 72.0 / 2.54
 ANCHO_FIGURA_PT = ANCHO_FIGURA_CM * PT_POR_CM         # 361,4 pt
-DPI = 300
-ANCHO_PNG_PX = round(ANCHO_FIGURA_CM / 2.54 * DPI)    # 1506 px
 PT_MINIMO = 9.0
-
 W = 720                                               # unidades del lienzo
 
 
 def puntos_impresos(px):
-    """Tamaño en puntos de `px` unidades del lienzo con la figura a 12,75 cm."""
     return px * ANCHO_FIGURA_PT / W
 
 
 # --------------------------------------------------------------------------- #
-# Paleta y tipografía                                                          #
-# COLOR_TIPO: copiada de generar_figura_norma_a_grafo.py (COLOR_TIPO).         #
+# Paleta y tipografía (como en la versión 1, salvo los colores de tipo, que    #
+# son los de la figura del esquema final)                                      #
 # --------------------------------------------------------------------------- #
 TIPOGRAFIA = "Helvetica,Arial,sans-serif"
-COLOR_TIPO = {
-    "Restriccion": "#b23a48",
-    "Obligacion": "#2a6f97",
-    "Operacion": "#52796f",
-    "Sujeto": "#6d597a",
-}
-# Cajas de proceso: relleno claro y borde del mismo tono, texto oscuro. Los
-# nodos del grafo van en color pleno con texto blanco, de modo que las dos
-# codificaciones (clase de etapa, tipo de nodo) no se confunden.
 MODELO = {"relleno": "#fbe3d3", "borde": "#e07b39"}           # modelo de lenguaje
 DETERMINISTICA = {"relleno": "#e1e7ee", "borde": "#4a5a6a"}   # determinística
 NEUTRO = {"relleno": "#fafafa", "borde": "#999999"}
@@ -96,21 +116,16 @@ TINTA_SUB = "#444444"
 FLECHA = "#555555"
 GRIS_ARISTA = "#8a8a8a"
 GRIS_ROTULO = "#555555"
-# Trazo de remisión: ACENTO y ACENTO_TEXTO de generar_figura_norma_a_grafo.py
-# (:92-93), con su grosor (2.6) y su punta de flecha.
-ACENTO = "#e07b39"
-ACENTO_TEXTO = "#8a4513"
+ACENTO = base.ACENTO
+ACENTO_TEXTO = base.ACENTO_TEXTO
 
-FS_TITULO = 19        # rótulo de cada elemento, en negrita
-FS_SUB = 18           # subtexto, rótulos laterales, nodos y leyenda
+FS_TITULO = 19
+FS_SUB = 18
 IL_TITULO = 23
 IL_SUB = 22
 
 # --------------------------------------------------------------------------- #
-# Contenido: siete elementos con rótulos y orden fijos, los del párrafo que    #
-# la figura ilustra.                                                          #
-# Los cortes de línea de los rótulos se fijan a mano; los subtextos se         #
-# envuelven solos.                                                             #
+# Contenido                                                                    #
 # --------------------------------------------------------------------------- #
 ELEMENTOS = {
     "a": {"rotulo": ["Texto", "Ordenado"], "sub": None, "clase": NEUTRO},
@@ -120,15 +135,14 @@ ELEMENTOS = {
     "c": {"rotulo": ["Extracción de", "entidades y", "relaciones"],
           "sub": "un modelo de lenguaje, bajo un esquema fijo",
           "clase": MODELO},
+    "v": {"rotulo": ["Validación", "contra el", "esquema"],
+          "sub": "en código",
+          "clase": DETERMINISTICA},
     "d": {"rotulo": ["Revisión contra", "el texto", "de origen"],
           "sub": "un segundo modelo",
           "clase": MODELO},
     "e": {"rotulo": ["Ensamblado en", "un único grafo"],
-          "sub": "determinístico",
-          "clase": DETERMINISTICA},
-    "f": {"rotulo": ["Resolución de", "remisiones"],
-          "sub": "arista si el punto citado se localiza; registrada como no "
-                 "resuelta si no",
+          "sub": "une las partes y deriva las remisiones",
           "clase": DETERMINISTICA},
     "g": {"rotulo": ["Grafo"], "sub": None, "clase": NEUTRO},
 }
@@ -136,116 +150,69 @@ SALIDA_VUELVE = "vuelve a extraer"
 SALIDA_MARCADO = ["marcado para", "revisión humana"]
 LEYENDA = [(MODELO, "Etapa que ejecuta un modelo de lenguaje"),
            (DETERMINISTICA, "Etapa determinística")]
-
-# Nodos del panel «Grafo»: tres nodos del ejemplo del préstamo, los mismos que
-# la figura «de la norma al grafo» dibuja como restricción del monto (punto
-# 5.1.1.1), obligación a la que remite (punto 3.7) y operación que limita
-# (punto 5.1.1.1). Cada nodo se toma por su clave en ejemplo_prestamo_datos.json,
-# de donde salen el id, el tipo y el punto que se rotula; el script comprueba en
-# kg.json que el nodo exista con ese tipo y ese punto como procedencia
-# punto_propio. Tres nodos y no cuatro: los nodos de tipo Sujeto son de
-# catálogo y no tienen un punto propio único, así que no pueden llevar el
-# rótulo de procedencia que la figura quiere mostrar.
-NODOS_FIGURA = [
-    ("R", "restriccion_monto"),     # monto que supera dos veces el importe de referencia
-    ("O", "obligacion_3_7"),        # importe de referencia
-    ("OP", "operacion"),            # inclusión en cartera comercial
-]
-
-# Aristas del panel, con la relación tal como está en el grafo y su clase.
-# La de clase "extraccion" es una firma (tipo de origen, relación, tipo de
-# destino) admitida por la matriz de dominio y rango del esquema congelado:
-# DOMAIN_RANGE_CONGELADO, data/experiment/esq/code/prompt_congelado.py:97-99,
-# que hereda sin cambios la fila de data/experiment/esq/code/prompt_esq3b.py
-# :172 (limita). La de clase "remision" no sale de la extracción: es la arista
-# que produce la resolución de remisiones (relación `referencia` con
-# rol_fuente = referencia_cruzada,
-# data/experiment/reextraccion_v2/corpus_v2/r1_referencias.py:231-234), y por
-# eso no se coteja contra esa matriz sino contra ese rol_fuente. Cada arista
-# debe existir en kg.json con ese origen, esa relación y ese destino.
-FIRMAS_ADMITIDAS = {
-    ("Restriccion", "limita", "Operacion"),
-}
-ARISTAS_FIGURA = [("R", "limita", "OP", "extraccion"),
-                  ("R", "referencia", "O", "remision")]
-ROL_REMISION = "referencia_cruzada"
-# Rótulo de cada arista: el nombre de la relación tal como está en el grafo.
-# El mismo texto que la leyenda de las figuras «de la norma al grafo» y «la
-# misma pregunta con dos formas de consultar».
 LEYENDA_REMISION = "remisión de un punto a otro"
-# Rótulo de cada nodo: su tipo, escrito como en el código (primera línea), y
-# «punto N» (segunda línea, en negrita).
+
+# Nodos del recuadro «Grafo»: (posición, clave en el subgrafo de la figura 1.1).
+# Arriba al centro, la Condicion del monto; abajo a la izquierda, la Definicion
+# del 3.7; abajo a la derecha, la Operacion (la composición de la versión 1).
+NODOS_FIGURA = [
+    ("C", "condicion_monto"),
+    ("D", "definicion_3_7"),
+    ("OP", "operacion"),
+]
+# Aristas: (origen, relación, destino, clase). «extraccion»: una relación que
+# devuelve el extractor, con firma en la matriz del esquema r2; «remision»: un
+# predicado derivado por código en el ensamblado.
+ARISTAS_FIGURA = [("C", "condicion_de", "OP", "extraccion"),
+                  ("C", "remite_a", "D", "remision")]
 
 
-def provenances(elem):
-    """Provenances del elemento sin duplicados, en el orden del archivo."""
-    ps = ([elem["provenance"]] if elem.get("provenance") else []) + (elem.get("provenances") or [])
-    vistos, salida = set(), []
-    for p in ps:
-        clave = (p.get("to"), p.get("punto"), p.get("rol_documental"))
-        if clave not in vistos:
-            vistos.add(clave)
-            salida.append(p)
-    return salida
+def leer_esquema_r2():
+    texto = base.leer_con_candado(*MODELOS_R2).decode("utf-8")
+    lineas = texto.split("\n")
+    donde = {}
+    for k, lit in LITERALES_R2.items():
+        n = [i for i, l in enumerate(lineas, 1) if l == lit]
+        if len(n) != 1:
+            freno(f"{MODELOS_R2[0]}: la línea {lit!r} aparece {len(n)} veces")
+        donde[k] = n[0]
+    tipos = LITERALES_R2["tipos_contenido"] + lineas[donde["tipos_contenido"]]
+    return donde, tipos
 
 
 def cargar_grafo():
-    """Lee los nodos del JSON del ejemplo, comprueba el sha de kg.json y
-    resuelve en él los nodos y aristas del panel.
-
-    Devuelve (nodos, aristas): `nodos` mapea clave -> dict con id, tipo, punto
-    y etiqueta del grafo; `aristas` es una lista de dicts con origen, destino,
-    relación, rótulo, clase e índice de la arista en kg['edges'] (las aristas
-    del grafo no tienen id propio).
-    """
-    with open(DATOS, encoding="utf-8") as fh:
-        datos = json.load(fh)
-    if datos["fuentes"]["kg"]["sha256"] != KG_SHA256:
-        raise SystemExit("el JSON del ejemplo se extrajo de otro kg.json")
-    with open(KG, "rb") as fh:
-        crudo = fh.read()
-    sha = hashlib.sha256(crudo).hexdigest()
-    if sha != KG_SHA256:
-        raise SystemExit(f"kg.json no es el verificado: sha {sha[:12]}… ≠ {KG_SHA256[:12]}…")
-    kg = json.loads(crudo.decode("utf-8"))
-    por_id = {n["id"]: n for n in kg["nodes"]}
-
+    """Nodos y aristas del recuadro, del subgrafo de la figura 1.1."""
+    sub = base.cargar_subgrafo(base.GRAFO)
+    diez = base.cargar_subgrafo(base.GRAFO_DIEZ)
+    base.comparar_grafos(sub, diez)
+    donde, tipos_contenido = leer_esquema_r2()
     nodos = {}
-    for clave, clave_json in NODOS_FIGURA:
-        dn = datos["grafo"]["nodos"][clave_json]
-        n = por_id.get(dn["id"])
-        if n is None or n["type"] != dn["type"] or not any(
-                p.get("punto") == dn["punto"] and p.get("rol_documental") == "punto_propio"
-                for p in provenances(n)):
-            raise SystemExit(f"nodo {clave}: {dn['id']} no está en kg.json con tipo "
-                             f"{dn['type']} y punto {dn['punto']}")
-        nodos[clave] = {"id": n["id"], "tipo": n["type"], "punto": dn["punto"],
-                        "etiqueta": n.get("label", "")}
-
+    for clave, k in NODOS_FIGURA:
+        n = sub["nodos"][k]
+        nodos[clave] = {"clave": k, "id": n["id"], "tipo": n["type"], "punto": n["punto"], "etiqueta": n["label"]}
+    por_clave = {(a["origen"], a["relation"], a["destino"]): a for a in sub["aristas"]}
     aristas = []
     for a, rel, b, clase in ARISTAS_FIGURA:
-        ida, idb = nodos[a]["id"], nodos[b]["id"]
-        hits = [(i, e) for i, e in enumerate(kg["edges"])
-                if e["source"] == ida and e["target"] == idb and e["relation"] == rel]
-        if len(hits) != 1:
-            raise SystemExit(f"arista {a} {rel} {b}: {len(hits)} coincidencias en kg.json, no una")
-        i, e = hits[0]
-        if clase == "remision":
-            if e.get("rol_fuente") != ROL_REMISION:
-                raise SystemExit(f"arista {a} {rel} {b}: rol_fuente {e.get('rol_fuente')!r} "
-                                 f"≠ {ROL_REMISION!r}")
+        e = por_clave.get((nodos[a]["clave"], rel, nodos[b]["clave"]))
+        if e is None:
+            freno(f"arista {a} {rel} {b} ausente del subgrafo de la figura 1.1")
+        if clase == "extraccion":
+            if (nodos[a]["tipo"], rel, nodos[b]["tipo"]) != ("Condicion", "condicion_de", "Operacion"):
+                freno(f"arista de extracción sin su línea en {MODELOS_R2[0]}: {a} {rel} {b}")
+            if e["properties"]:
+                freno(f"arista {a} {rel} {b}: propiedades inesperadas {e['properties']}")
         else:
-            if (nodos[a]["tipo"], rel, nodos[b]["tipo"]) not in FIRMAS_ADMITIDAS:
-                raise SystemExit(f"arista fuera de la matriz del esquema: {a} {rel} {b}")
-            if e.get("rol_fuente") is not None:
-                raise SystemExit(f"arista {a} {rel} {b}: rol_fuente inesperado {e.get('rol_fuente')!r}")
-        aristas.append({"a": a, "b": b, "relacion": rel, "rotulo": rel,
-                        "clase": clase, "indice": i})
-    return nodos, aristas
+            if rel != "remite_a" or not all(f'"{nodos[x]["tipo"]}"' in tipos_contenido for x in (a, b)):
+                freno(f"arista de remisión fuera de la firma derivada: {a} {rel} {b}")
+            if sorted(e["properties"]) != ["alcance", "destino", "evidencia"]:
+                freno(f"arista {a} {rel} {b}: propiedades {sorted(e['properties'])}")
+        aristas.append({"a": a, "b": b, "relacion": rel, "clase": clase, "indice": e["indice"],
+                        "properties": e["properties"]})
+    return nodos, aristas, sub, diez, donde
+
 
 # --------------------------------------------------------------------------- #
-# Métricas de Helvetica (unidades/1000 em), para envolver y centrar sin        #
-# librerías de tipografía. Misma tabla que la figura «de la norma al grafo».   #
+# Métricas de Helvetica para componer (la tabla de la versión 1)               #
 # --------------------------------------------------------------------------- #
 _W = {
     " ": 278, "!": 278, '"': 355, "#": 556, "$": 556, "%": 889, "&": 667,
@@ -273,7 +240,6 @@ _W["í"] = 278
 
 
 def ancho(texto, fs, negrita=False):
-    """Ancho estimado en unidades del lienzo. Helvetica Bold es ~4 % más ancha."""
     total = sum(_W.get(c, 556) for c in texto)
     return total / 1000.0 * fs * (1.04 if negrita else 1.0)
 
@@ -292,14 +258,7 @@ def envolver(texto, fs, ancho_max, negrita=False):
     return lineas
 
 
-def esc(t):
-    return t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-
-
-def f(v):
-    """Formato fijo: el SVG no debe depender de la representación del float."""
-    return f"{v:.1f}"
-
+esc, f = base.esc, base.f
 
 # --------------------------------------------------------------------------- #
 # Primitivas de dibujo. Todo texto pasa por `texto()`, que lo deja registrado  #
@@ -308,34 +267,33 @@ def f(v):
 REGISTRO = []
 
 
-def texto(partes, x, y, s, fs, negrita=False, relleno=TINTA, ancho_max=None,
-          contexto=""):
+def texto(partes, x, y, s, fs, negrita=False, relleno=TINTA, ancho_max=None, contexto="", rotulo=None):
     """Texto centrado en `x` con línea de base `y`."""
     peso = "bold" if negrita else "normal"
-    partes.append(f'<text x="{f(x)}" y="{f(y)}" text-anchor="middle" '
-                  f'font-size="{fs}" font-weight="{peso}" fill="{relleno}">'
-                  f'{esc(s)}</text>')
+    marca = f' data-rotulo="{rotulo}"' if rotulo is not None else ""
+    partes.append(f'<text x="{f(x)}" y="{f(y)}" text-anchor="middle" font-size="{fs}" '
+                  f'font-weight="{peso}" fill="{relleno}"{marca}>{esc(s)}</text>')
     REGISTRO.append({"s": s, "fs": fs, "negrita": negrita, "cx": x, "y": y,
                      "ancho_max": ancho_max, "contexto": contexto})
 
 
 def texto_izq(partes, x, y, s, fs, negrita=False, relleno=TINTA, contexto=""):
-    """Texto alineado a la izquierda en `x` (solo la leyenda lo usa)."""
     peso = "bold" if negrita else "normal"
-    partes.append(f'<text x="{f(x)}" y="{f(y)}" font-size="{fs}" '
-                  f'font-weight="{peso}" fill="{relleno}">{esc(s)}</text>')
+    partes.append(f'<text x="{f(x)}" y="{f(y)}" font-size="{fs}" font-weight="{peso}" '
+                  f'fill="{relleno}">{esc(s)}</text>')
     REGISTRO.append({"s": s, "fs": fs, "negrita": negrita, "x0": x, "y": y,
                      "ancho_max": None, "contexto": contexto})
 
 
-def caja(partes, x, y, w, h, clase, grosor="1.6", rx=8, guiones=False):
+def caja(partes, x, y, w, h, clase, grosor="1.6", rx=8, guiones=False, nombre=None):
     dash = ' stroke-dasharray="5,4"' if guiones else ""
+    marca = f' data-caja="{nombre}"' if nombre else ""
     partes.append(f'<rect x="{f(x)}" y="{f(y)}" width="{f(w)}" height="{f(h)}" '
                   f'fill="{clase["relleno"]}" stroke="{clase["borde"]}" '
-                  f'stroke-width="{grosor}" rx="{rx}"{dash}/>')
+                  f'stroke-width="{grosor}" rx="{rx}"{dash}{marca}/>')
 
 
-def trazo(partes, puntos, color, grosor, marcador, guiones=False, radio=9):
+def trazo(partes, puntos, color, grosor, marcador, guiones=False, radio=9, arista=None):
     """Poligonal con esquinas redondeadas y punta de flecha al final."""
     d = f"M{f(puntos[0][0])},{f(puntos[0][1])}"
     for i in range(1, len(puntos) - 1):
@@ -351,8 +309,9 @@ def trazo(partes, puntos, color, grosor, marcador, guiones=False, radio=9):
         d += f" L{f(ex)},{f(ey)} Q{f(x1)},{f(y1)} {f(sx)},{f(sy)}"
     d += f" L{f(puntos[-1][0])},{f(puntos[-1][1])}"
     dash = ' stroke-dasharray="5,4"' if guiones else ""
-    partes.append(f'<path d="{d}" fill="none" stroke="{color}" '
-                  f'stroke-width="{grosor}"{dash} marker-end="url(#{marcador})"/>')
+    marca = f' data-arista="{arista}"' if arista is not None else ""
+    partes.append(f'<path d="{d}" fill="none" stroke="{color}" stroke-width="{grosor}"{dash} '
+                  f'marker-end="url(#{marcador})"{marca}/>')
 
 
 # --------------------------------------------------------------------------- #
@@ -361,8 +320,8 @@ def trazo(partes, puntos, color, grosor, marcador, guiones=False, radio=9):
 MARGEN = 10
 SEP = 22                       # separación entre cajas (largo de la flecha)
 PAD_X, PAD_Y = 10, 12
-HOLGURA = 2                    # margen de seguridad al envolver subtextos
-W_DOC, W_PROC, W_F = 104, 168, 192
+HOLGURA = 2
+W_DOC, W_PROC = 104, 168
 
 
 def lineas_de(clave, w):
@@ -377,20 +336,17 @@ def alto_contenido(clave, w):
 
 
 def dibujar_proceso(partes, clave, x, y, w, h):
-    """Caja de etapa: rótulo en negrita y subtexto, centrados en la caja."""
     el = ELEMENTOS[clave]
-    caja(partes, x, y, w, h, el["clase"])
+    caja(partes, x, y, w, h, el["clase"], nombre=f"etapa_{clave}")
     rot, sub = lineas_de(clave, w)
     cx = x + w / 2.0
     yy = y + (h - alto_contenido(clave, w)) / 2.0
     for linea in rot:
-        texto(partes, cx, yy + FS_TITULO - 2, linea, FS_TITULO, True, TINTA,
-              w - 2 * PAD_X, f"({clave}) rótulo")
+        texto(partes, cx, yy + FS_TITULO - 2, linea, FS_TITULO, True, TINTA, w - 2 * PAD_X, f"({clave}) rótulo")
         yy += IL_TITULO
     yy += 8
     for linea in sub:
-        texto(partes, cx, yy + FS_SUB - 3, linea, FS_SUB, False, TINTA_SUB,
-              w - 2 * PAD_X, f"({clave}) subtexto")
+        texto(partes, cx, yy + FS_SUB - 3, linea, FS_SUB, False, TINTA_SUB, w - 2 * PAD_X, f"({clave}) subtexto")
         yy += IL_SUB
 
 
@@ -405,8 +361,7 @@ def dibujar_documento(partes, x, y, w, h):
                   f'L{f(x)},{f(y + 4)} Q{f(x)},{f(y)} {f(x + 4)},{f(y)} Z" '
                   f'fill="{clase["relleno"]}" stroke="{clase["borde"]}" stroke-width="1.6"/>')
     partes.append(f'<path d="M{f(x + w - p)},{f(y)} L{f(x + w - p)},{f(y + p)} '
-                  f'L{f(x + w)},{f(y + p)}" fill="none" stroke="{clase["borde"]}" '
-                  f'stroke-width="1.6"/>')
+                  f'L{f(x + w)},{f(y + p)}" fill="none" stroke="{clase["borde"]}" stroke-width="1.6"/>')
     for k, largo in enumerate([0.52, 0.76, 0.76, 0.60]):
         yy = y + 22 + k * 11
         partes.append(f'<path d="M{f(x + 12)},{f(yy)} L{f(x + 12 + (w - 24) * largo)},{f(yy)}" '
@@ -418,156 +373,146 @@ def dibujar_documento(partes, x, y, w, h):
         yy += IL_TITULO
 
 
-# Composición original de la figura: la Restricción arriba, centrada; la
-# Obligación abajo a la izquierda y la Operación abajo a la derecha; las dos
-# aristas salen de la Restricción en diagonal con el rótulo al costado. El ancho
-# de nodo era 116 y pasó a 132 para que entrara «punto 3.17.1.4» en negrita
-# (120 unidades a 18 px) en el ejemplo anterior. Sin la arista «requiere», el
-# panel termina 10 unidades debajo de la fila inferior de nodos.
+# Recuadro «Grafo», como en la versión 1: el nodo de arriba centrado, los otros
+# dos abajo a izquierda y derecha, separados GAP_NODOS; las dos aristas salen
+# del de arriba en diagonal con el rótulo al costado. Con el recuadro más ancho
+# que en la versión 1 (la fila 2 tiene una caja de 168 en lugar de una de 192),
+# los nodos de abajo se centran con la separación de la versión 1 (12) en lugar
+# de pegarse a los bordes, y la diagonal llega a ENTRADA del centro del nodo de
+# destino (16 en la versión 1), para que «condicion_de», más largo que «limita»,
+# entre a la derecha de su trazo dentro del recuadro.
 W_NODO, H_NODO = 132, 50
-Y_NODOS, SEP_NODOS = 40, 52      # arranque de los nodos y separación entre filas
+Y_NODOS, SEP_NODOS = 40, 52
+GAP_NODOS = 12
+ENTRADA = 30
 ALTO_GRAFO = Y_NODOS + 2 * H_NODO + SEP_NODOS + 10
 
 
-def dibujar_grafo(partes, x, y, w, h, nodos, aristas):
-    """(g) Contenedor neutro con el rótulo, los tres nodos en triángulo y las
-    dos aristas con el nombre de su relación."""
+def dibujar_grafo(partes, x, y, w, h, nodos, aristas, colores):
     caja(partes, x, y, w, h, ELEMENTOS["g"]["clase"])
     cx = x + w / 2.0
-    texto(partes, cx, y + 27, ELEMENTOS["g"]["rotulo"][0], FS_TITULO, True,
-          TINTA, w - 2 * PAD_X, "(g) rótulo")
+    texto(partes, cx, y + 27, ELEMENTOS["g"]["rotulo"][0], FS_TITULO, True, TINTA, w - 2 * PAD_X, "(g) rótulo")
     y_sup = y + Y_NODOS
     y_inf = y_sup + H_NODO + SEP_NODOS
-    pos = {
-        "R": (cx - W_NODO / 2.0, y_sup),
-        "O": (x + PAD_X, y_inf),
-        "OP": (x + w - PAD_X - W_NODO, y_inf),
-    }
+    pos = {"C": (cx - W_NODO / 2.0, y_sup), "D": (cx - GAP_NODOS / 2.0 - W_NODO, y_inf),
+           "OP": (cx + GAP_NODOS / 2.0, y_inf)}
     cxn = {k: px + W_NODO / 2.0 for k, (px, _) in pos.items()}
-    y_rot = (y_sup + H_NODO + y_inf) / 2.0          # centro de la franja entre filas
-
-    for ar_ in aristas:
-        a, b, rel, clase = ar_["a"], ar_["b"], ar_["rotulo"], ar_["clase"]
-        if a != "R":
-            raise SystemExit(f"arista {a}-{b}: esta composición solo traza aristas "
-                             f"que salen de la Restricción")
+    y_rot = (y_sup + H_NODO + y_inf) / 2.0
+    for k, ar_ in enumerate(aristas):
+        a, b, rel, clase = ar_["a"], ar_["b"], ar_["relacion"], ar_["clase"]
+        if a != "C":
+            freno(f"arista {a}-{b}: esta composición solo traza aristas que salen del nodo de arriba")
         remision = clase == "remision"
         color = ACENTO if remision else GRIS_ARISTA
         grosor = "2.6" if remision else "1.6"
         marcador = "arA" if remision else "arG"
         relleno = ACENTO_TEXTO if remision else GRIS_ROTULO
-        # Diagonal desde el borde inferior de la Restricción; el rótulo va del
-        # lado de afuera, a 8 unidades del trazo a la altura de su base.
         lado = -1 if cxn[b] < cx else +1
         p0 = (cx + lado * 24, y_sup + H_NODO)
-        p1 = (cxn[b] - lado * 16, y_inf - 2)
-        trazo(partes, [p0, p1], color, grosor, marcador)
+        p1 = (cxn[b] - lado * ENTRADA, y_inf - 2)
+        trazo(partes, [p0, p1], color, grosor, marcador, arista=k)
         t = (y_rot + 11 - p0[1]) / (p1[1] - p0[1])
         x_trazo = p0[0] + (p1[0] - p0[0]) * t
         ar = ancho(rel, FS_SUB, remision)
-        texto(partes, x_trazo + lado * (8 + ar / 2.0), y_rot + 6, rel, FS_SUB,
-              remision, relleno, None, f"(g) arista {a}-{b} ({clase})")
-
+        texto(partes, x_trazo + lado * (8 + ar / 2.0), y_rot + 6, rel, FS_SUB, remision, relleno, None,
+              f"(g) arista {a}-{b} ({clase})", rotulo=k)
     for clave, _ in NODOS_FIGURA:
         nodo = nodos[clave]
         px, py = pos[clave]
+        c = colores[nodo["tipo"]]
         partes.append(f'<rect x="{f(px)}" y="{f(py)}" width="{W_NODO}" height="{H_NODO}" '
-                      f'fill="{COLOR_TIPO[nodo["tipo"]]}" fill-opacity="0.95" '
-                      f'stroke="black" stroke-width="1.4" rx="7"/>')
+                      f'fill="{c["relleno"]}" stroke="{c["borde"]}" stroke-width="{c["grosor"]}" '
+                      f'rx="{base.RX_NODO}" data-caja="{clave}"/>')
         ncx = px + W_NODO / 2.0
-        texto(partes, ncx, py + 21, nodo["tipo"], FS_SUB, False, "white",
-              W_NODO - 10, f"(g) nodo {clave} rótulo")
-        texto(partes, ncx, py + 42, "punto " + nodo["punto"], FS_SUB, True, "white",
-              W_NODO - 10, f"(g) nodo {clave} punto")
+        texto(partes, ncx, py + 21, nodo["tipo"], FS_SUB, False, TINTA, W_NODO - 10, f"(g) nodo {clave} tipo")
+        texto(partes, ncx, py + 42, "punto " + nodo["punto"], FS_SUB, True, TINTA, W_NODO - 10,
+              f"(g) nodo {clave} punto")
 
 
-def componer(nodos, aristas):
+def componer(nodos, aristas, colores, perturbacion=None):
     del REGISTRO[:]
     partes = []
 
-    # ---- fila 1: (a) (b) (c) (d) ------------------------------------------ #
-    y_lazo = MARGEN + FS_SUB + 10            # tramo horizontal de «vuelve a extraer»
-    y1 = y_lazo + 30
-    h1 = max(alto_contenido(k, W_PROC) for k in "bcd") + 2 * PAD_Y
+    # ---- fila 1: (a) (b) (c) (v) ------------------------------------------ #
+    y1 = MARGEN + 6
+    h1 = max(alto_contenido(k, W_PROC) for k in "bcv") + 2 * PAD_Y
     xa = MARGEN
     xb = xa + W_DOC + SEP
     xc = xb + W_PROC + SEP
-    xd = xc + W_PROC + SEP
+    xv = xc + W_PROC + SEP
     cy1 = y1 + h1 / 2.0
     h_doc = 132
     dibujar_documento(partes, xa, cy1 - h_doc / 2.0, W_DOC, h_doc)
-    for clave, x in (("b", xb), ("c", xc), ("d", xd)):
+    for clave, x in (("b", xb), ("c", xc), ("v", xv)):
         dibujar_proceso(partes, clave, x, y1, W_PROC, h1)
-    for x0, x1 in ((xa + W_DOC, xb), (xb + W_PROC, xc), (xc + W_PROC, xd)):
+    for x0, x1 in ((xa + W_DOC, xb), (xb + W_PROC, xc), (xc + W_PROC, xv)):
         trazo(partes, [(x0 + 2, cy1), (x1 - 2, cy1)], FLECHA, "1.8", "arN")
 
-    # ---- salidas laterales de (d) ----------------------------------------- #
-    cxc, cxd = xc + W_PROC / 2.0, xd + W_PROC / 2.0
-    trazo(partes, [(cxd, y1), (cxd, y_lazo), (cxc, y_lazo), (cxc, y1 - 2)],
-          GRIS_ARISTA, "1.6", "arG", guiones=True)
-    texto(partes, (cxc + cxd) / 2.0, y_lazo - 9, SALIDA_VUELVE, FS_SUB, False,
-          GRIS_ROTULO, cxd - cxc, "(d) salida lateral 1")
-
-    w_marc = max(ancho(s, FS_SUB) for s in SALIDA_MARCADO) + 26
-    h_marc = len(SALIDA_MARCADO) * IL_SUB + 14
-    y_marc = y1 + h1 + 26
-    trazo(partes, [(cxd, y1 + h1), (cxd, y_marc - 2)], GRIS_ARISTA, "1.6", "arG",
-          guiones=True)
-    caja(partes, cxd - w_marc / 2.0, y_marc, w_marc, h_marc,
-         {"relleno": "white", "borde": GRIS_ARISTA}, grosor="1.3", rx=8, guiones=True)
-    yy = y_marc + 7 + FS_SUB - 2
-    for linea in SALIDA_MARCADO:
-        texto(partes, cxd, yy, linea, FS_SUB, False, GRIS_ROTULO, w_marc - 12,
-              "(d) salida lateral 2")
-        yy += IL_SUB
-
-    # ---- fila 2: (e) (f) (g) ---------------------------------------------- #
-    y_cont = y_marc + h_marc + 16            # tramo horizontal de la continuidad
+    # ---- entre filas: la vuelta al extractor y la continuidad ------------- #
+    y_lazo = y1 + h1 + 33               # tramo horizontal de «vuelve a extraer»
+    y_cont = y_lazo + 16                # tramo horizontal de la continuidad
     y2 = y_cont + 30
-    xe = MARGEN
-    xf = xe + W_PROC + SEP
-    xg = xf + W_F + SEP
+    xd = MARGEN
+    xe = xd + W_PROC + SEP
+    xg = xe + W_PROC + SEP
     wg = W - MARGEN - xg
     hg = ALTO_GRAFO
-    h2 = max(alto_contenido("e", W_PROC), alto_contenido("f", W_F)) + 2 * PAD_Y
+    h2 = max(alto_contenido("d", W_PROC), alto_contenido("e", W_PROC)) + 2 * PAD_Y
     cy2 = y2 + hg / 2.0
-    ye = cy2 - h2 / 2.0
-    dibujar_proceso(partes, "e", xe, ye, W_PROC, h2)
-    dibujar_proceso(partes, "f", xf, ye, W_F, h2)
-    dibujar_grafo(partes, xg, y2, wg, hg, nodos, aristas)
-    for x0, x1 in ((xe + W_PROC, xf), (xf + W_F, xg)):
+    yd = cy2 - h2 / 2.0
+    cxc, cxd = xc + W_PROC / 2.0, xd + W_PROC / 2.0
+    x_vuelta = xd + 30                  # sale de (d) a la izquierda de la continuidad
+    x_cont = W - MARGEN - 8
+
+    # ---- fila 2: (d) (e) (g) ---------------------------------------------- #
+    dibujar_proceso(partes, "d", xd, yd, W_PROC, h2)
+    dibujar_proceso(partes, "e", xe, yd, W_PROC, h2)
+    dibujar_grafo(partes, xg, y2, wg, hg, nodos, aristas, colores)
+    for x0, x1 in ((xd + W_PROC, xe), (xe + W_PROC, xg)):
         trazo(partes, [(x0 + 2, cy2), (x1 - 2, cy2)], FLECHA, "1.8", "arN")
 
-    # ---- flecha de continuidad (d) → (e) ---------------------------------- #
-    x_cont = W - MARGEN - 8
-    cxe = xe + W_PROC / 2.0
-    trazo(partes, [(xd + W_PROC + 2, cy1), (x_cont, cy1), (x_cont, y_cont),
-                   (cxe, y_cont), (cxe, ye - 2)], FLECHA, "1.8", "arN")
+    # ---- flecha de continuidad (v) → (d) ---------------------------------- #
+    trazo(partes, [(xv + W_PROC + 2, cy1), (x_cont, cy1), (x_cont, y_cont), (cxd, y_cont), (cxd, yd - 2)],
+          FLECHA, "1.8", "arN")
+
+    # ---- salidas laterales de (d) ----------------------------------------- #
+    x_sale = x_vuelta if perturbacion != "salida_cruza" else cxd + 40
+    trazo(partes, [(x_sale, yd), (x_sale, y_lazo), (cxc, y_lazo), (cxc, y1 + h1 + 2)],
+          GRIS_ARISTA, "1.6", "arG", guiones=True, arista="vuelta")
+    texto(partes, (x_vuelta + cxc) / 2.0, y_lazo - 9, SALIDA_VUELVE, FS_SUB, False, GRIS_ROTULO,
+          cxc - x_vuelta, "(d) salida lateral 1", rotulo="vuelta")
+    w_marc = max(ancho(s, FS_SUB) for s in SALIDA_MARCADO) + 26
+    h_marc = len(SALIDA_MARCADO) * IL_SUB + 14
+    y_marc = yd + h2 + 26
+    trazo(partes, [(cxd, yd + h2), (cxd, y_marc - 2)], GRIS_ARISTA, "1.6", "arG", guiones=True)
+    caja(partes, cxd - w_marc / 2.0, y_marc, w_marc, h_marc, {"relleno": "white", "borde": GRIS_ARISTA},
+         grosor="1.3", rx=8, guiones=True, nombre="marcado")
+    yy = y_marc + 7 + FS_SUB - 2
+    for linea in SALIDA_MARCADO:
+        texto(partes, cxd, yy, linea, FS_SUB, False, GRIS_ROTULO, w_marc - 12, "(d) salida lateral 2")
+        yy += IL_SUB
 
     # ---- leyenda ----------------------------------------------------------- #
-    y_ley = y2 + hg + 20
+    y_ley = max(y2 + hg, y_marc + h_marc) + 20
     h_ley = 68
     partes.append(f'<rect x="{f(MARGEN)}" y="{f(y_ley)}" width="{f(W - 2 * MARGEN)}" '
                   f'height="{h_ley}" fill="white" stroke="#e2e2e2" rx="5"/>')
     xx = MARGEN + 18
     for clase, rotulo in LEYENDA:
         partes.append(f'<rect x="{f(xx)}" y="{f(y_ley + 12)}" width="24" height="16" '
-                      f'fill="{clase["relleno"]}" stroke="{clase["borde"]}" '
-                      f'stroke-width="1.6" rx="3"/>')
+                      f'fill="{clase["relleno"]}" stroke="{clase["borde"]}" stroke-width="1.6" rx="3"/>')
         texto_izq(partes, xx + 33, y_ley + 26, rotulo, FS_SUB, False, TINTA, "leyenda")
         xx += 33 + ancho(rotulo, FS_SUB) + 40
     xx, y_fl = MARGEN + 18, y_ley + 48
     partes.append(f'<path d="M{f(xx)},{f(y_fl)} L{f(xx + 44)},{f(y_fl)}" fill="none" '
                   f'stroke="{ACENTO}" stroke-width="2.6" marker-end="url(#arA)"/>')
-    texto_izq(partes, xx + 58, y_ley + 54, LEYENDA_REMISION, FS_SUB, True,
-              ACENTO_TEXTO, "leyenda")
+    texto_izq(partes, xx + 58, y_ley + 54, LEYENDA_REMISION, FS_SUB, True, ACENTO_TEXTO, "leyenda")
     alto_total = y_ley + h_ley + MARGEN
 
     alto_cm = ANCHO_FIGURA_CM * alto_total / W
     cabeza = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{ANCHO_FIGURA_CM:.2f}cm" '
-        f'height="{alto_cm:.2f}cm" viewBox="0 0 {W} {f(alto_total)}" '
-        f'font-family="{TIPOGRAFIA}">',
+        f'height="{alto_cm:.2f}cm" viewBox="0 0 {W} {f(alto_total)}" font-family="{TIPOGRAFIA}">',
         f'<rect width="{W}" height="{f(alto_total)}" fill="white"/>',
         '<defs>'
         '<marker id="arN" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" '
@@ -582,131 +527,159 @@ def componer(nodos, aristas):
 
 
 # --------------------------------------------------------------------------- #
-# PNG a 300 dpi                                                                #
+# Controles                                                                    #
 # --------------------------------------------------------------------------- #
-def grabar_densidad(ruta, dpi):
-    """Inserta el bloque pHYs (píxeles por metro) después de IHDR."""
-    with open(ruta, "rb") as fh:
-        datos = fh.read()
-    firma, resto = datos[:8], datos[8:]
-    bloques, i = [], 0
-    while i < len(resto):
-        largo = struct.unpack(">I", resto[i:i + 4])[0]
-        bloques.append((resto[i + 4:i + 8], resto[i:i + 12 + largo]))
-        i += 12 + largo
-    ppm = round(dpi / 0.0254)
-    cuerpo = b"pHYs" + struct.pack(">IIB", ppm, ppm, 1)
-    phys = struct.pack(">I", 9) + cuerpo + struct.pack(">I", zlib.crc32(cuerpo) & 0xFFFFFFFF)
-    salida = firma
-    for tipo, crudo in bloques:
-        if tipo == b"pHYs":
-            continue
-        salida += crudo
-        if tipo == b"IHDR":
-            salida += phys
-    with open(ruta, "wb") as fh:
-        fh.write(salida)
-
-
-def exportar_png():
-    rsvg = shutil.which("rsvg-convert")
-    if not rsvg:
-        print("rsvg-convert no está instalado: se escribió el SVG y no el PNG.")
-        return False
-    subprocess.run([rsvg, "-w", str(ANCHO_PNG_PX), "-f", "png", "-o", SALIDA_PNG,
-                    SALIDA_SVG], check=True)
-    grabar_densidad(SALIDA_PNG, DPI)
-    return True
-
-
-# --------------------------------------------------------------------------- #
-# Verificación de medidas                                                      #
-# --------------------------------------------------------------------------- #
-FUENTE_SISTEMA = "/System/Library/Fonts/Helvetica.ttc"
-
-
-def medidor():
-    """Devuelve una función ancho(s, fs, negrita) con métricas reales, o None."""
-    try:
-        from PIL import ImageFont
-    except ImportError:
-        return None
-    if not os.path.exists(FUENTE_SISTEMA):
-        return None
-    cache = {}
-
-    def medir(s, fs, negrita):
-        clave = (fs, negrita)
-        if clave not in cache:
-            # La fuente se carga a 10x para medir con resolución de décimas.
-            cache[clave] = ImageFont.truetype(FUENTE_SISTEMA, fs * 10,
-                                              index=1 if negrita else 0)
-        return cache[clave].getlength(s) / 10.0
-    return medir
-
-
-def verificar(alto_total):
-    medir = medidor()
-    fuente = "métricas reales de Helvetica" if medir else "tabla de métricas del script"
-    if not medir:
-        print("PIL o la fuente del sistema no están: se verifica con la tabla del script.")
-        medir = ancho
-    print(f"\nVERIFICACIÓN DE MEDIDAS ({fuente})")
+def verificar_medidas(alto_total):
+    """Cada texto, medido con las métricas reales de Helvetica: entra en su
+    caja, no sale del lienzo, no queda por debajo de PT_MINIMO y no se
+    superpone con otro."""
+    medir = base.medidor()
     fallas, cajas = [], []
     for r in REGISTRO:
         a = medir(r["s"], r["fs"], r["negrita"])
         x0 = r["x0"] if "x0" in r else r["cx"] - a / 2.0
         bb = (x0, r["y"] - r["fs"] * 0.78, x0 + a, r["y"] + r["fs"] * 0.22)
         cajas.append((r, bb))
-        pt = puntos_impresos(r["fs"])
-        estado = []
-        if pt < PT_MINIMO:
-            estado.append(f"letra {pt:.2f} pt < {PT_MINIMO}")
+        if puntos_impresos(r["fs"]) < PT_MINIMO:
+            fallas.append(f"{r['s']!r}: letra {puntos_impresos(r['fs']):.2f} pt < {PT_MINIMO}")
         if r["ancho_max"] is not None and a > r["ancho_max"]:
-            estado.append(f"ancho {a:.1f} > caja {r['ancho_max']:.1f}")
+            fallas.append(f"{r['s']!r}: ancho {a:.1f} > caja {r['ancho_max']:.1f}")
         if bb[0] < 0 or bb[2] > W or bb[1] < 0 or bb[3] > alto_total:
-            estado.append("fuera del lienzo")
-        tope = f"{r['ancho_max']:6.1f}" if r["ancho_max"] is not None else "     –"
-        print(f"  {'MAL' if estado else 'ok '} {pt:5.2f} pt  ancho {a:6.1f} / {tope}  "
-              f"{r['contexto']:26s} {r['s']!r}" + ("  <-- " + "; ".join(estado) if estado else ""))
-        fallas += [(r["s"], e) for e in estado]
+            fallas.append(f"{r['s']!r}: fuera del lienzo")
     for i in range(len(cajas)):
         for j in range(i + 1, len(cajas)):
             (ra, a), (rb, b) = cajas[i], cajas[j]
-            if a[0] < b[2] and b[0] < a[2] and a[1] < b[3] and b[1] < a[3]:
-                fallas.append((ra["s"], f"se superpone con {rb['s']!r}"))
-                print(f"  MAL superposición: {ra['s']!r} / {rb['s']!r}")
-    print(f"  textos medidos: {len(REGISTRO)}   fallas: {len(fallas)}")
-    return not fallas
+            if base.se_solapan(a, b):
+                fallas.append(f"{ra['s']!r} se superpone con {rb['s']!r}")
+    return fallas
+
+
+def inventario(svg):
+    """Nodos (tipo, punto) y aristas (origen, relación, destino) del recuadro
+    «Grafo», releídos del SVG: cajas rx=7, sus dos textos, y los trazos con
+    data-arista con sus extremos a 3 unidades o menos del borde de una caja."""
+    raiz = ET.fromstring(svg)
+    cajas = {}
+    for r in raiz.iter(NS + "rect"):
+        if r.get("data-caja") and r.get("rx") == str(base.RX_NODO):
+            x, y, ww, hh = (float(r.get(k)) for k in ("x", "y", "width", "height"))
+            cajas[r.get("data-caja")] = (x, y, x + ww, y + hh)
+    textos = list(raiz.iter(NS + "text"))
+    nodos = {}
+    for k, R in cajas.items():
+        dentro = sorted((t for t in textos if R[0] < float(t.get("x")) < R[2] and R[1] < float(t.get("y")) < R[3]),
+                        key=lambda t: float(t.get("y")))
+        s = [t.text for t in dentro]
+        nodos[k] = (s[0], s[1][len("punto "):]) if len(s) == 2 and s[1].startswith("punto ") else None
+    rotulos = {t.get("data-rotulo"): t.text for t in textos if t.get("data-rotulo") is not None}
+
+    def caja_de(p):
+        en = [k for k, R in cajas.items() if R[0] - 3 <= p[0] <= R[2] + 3 and R[1] - 3 <= p[1] <= R[3] + 3
+              and not (R[0] + 3 < p[0] < R[2] - 3 and R[1] + 3 < p[1] < R[3] - 3)]
+        return en[0] if len(en) == 1 else None
+    aristas = []
+    for p in raiz.iter(NS + "path"):
+        ident = p.get("data-arista")
+        if ident is None or ident == "vuelta":
+            continue
+        pts = base.puntos_de(p.get("d"))
+        o, d = caja_de(pts[0]), caja_de(pts[-1])
+        aristas.append((nodos.get(o), rotulos.get(ident), nodos.get(d)))
+    return list(nodos.values()), aristas
+
+
+def controlar_inventario(svg, nodos, aristas):
+    dib_n, dib_a = inventario(svg)
+    esp_n = [(n["tipo"], n["punto"]) for n in nodos.values()]
+    esp_a = [((nodos[a["a"]]["tipo"], nodos[a["a"]]["punto"]), a["relacion"],
+              (nodos[a["b"]]["tipo"], nodos[a["b"]]["punto"])) for a in aristas]
+    fallas = []
+    for nombre, esp, dib in (("nodo", esp_n, dib_n), ("arista", esp_a, dib_a)):
+        for x in sorted((Counter(esp) - Counter(dib)).elements(), key=str):
+            fallas.append(f"{nombre} del grafo que no está en la figura: {x}")
+        for x in sorted((Counter(dib) - Counter(esp)).elements(), key=str):
+            fallas.append(f"{nombre} de la figura que no está en el grafo: {x}")
+    return fallas, dib_n, dib_a
+
+
+PRUEBAS_NEGATIVAS = (("arista_de_mas", "inventario", "arista de la figura que no está en el grafo"),
+                     ("salida_cruza", "geometria", "cruce(s) entre trazos"))
+
+
+def controlar(nodos, aristas, colores, perturbacion=None):
+    dib = list(aristas)
+    if perturbacion == "arista_de_mas":
+        dib.append({"a": "C", "b": "OP", "relacion": "remite_a", "clase": "remision"})
+    svg, alto = componer(nodos, dib, colores, perturbacion)
+    c = {"medidas": verificar_medidas(alto)}
+    c["inventario"], dib_n, dib_a = controlar_inventario(svg, nodos, aristas)
+    c["geometria"], info = base.controlar_geometria(svg, ANCHO_FIGURA_CM, W)
+    return svg, alto, c, info, dib_n, dib_a
+
+
+def pruebas_negativas(nodos, aristas, colores):
+    vivas = []
+    for caso, control, patron in PRUEBAS_NEGATIVAS:
+        _, _, c, _, _, _ = controlar(nodos, aristas, colores, caso)
+        propia = [x for x in c[control] if patron in x]
+        if not propia:
+            freno(f"la prueba negativa {caso} no hizo fallar el control de {control} con «{patron}»")
+        vivas.append((caso, control, propia[0], sorted(k for k, v in c.items() if v and k != control)))
+    return vivas
+
+
+def argumentos():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--salida", default=AQUI,
+                    help="directorio donde escribir el SVG, el PNG y el PDF (por omisión, el del script)")
+    ap.add_argument("--perturbar", choices=[c for c, _, _ in PRUEBAS_NEGATIVAS], default=None,
+                    help="compone la figura con ese defecto: los controles fallan y no se escribe nada")
+    return ap.parse_args()
 
 
 def main():
-    nodos, aristas = cargar_grafo()
-    print(f"GRAFO: {os.path.relpath(KG, RAIZ)}   sha256 {KG_SHA256[:12]}… (comprobado)")
-    print(f"DATOS: {os.path.relpath(DATOS, RAIZ)}   sha256 "
-          f"{hashlib.sha256(open(DATOS, 'rb').read()).hexdigest()}")
+    args = argumentos()
+    nodos, aristas, sub, diez, donde = cargar_grafo()
+    colores = base.leer_colores_tipo()
+    print("FUENTES (sha256 comprobado):")
+    for nombre, par in (("grafo", base.GRAFO), ("grafo diez", base.GRAFO_DIEZ), ("estilo", base.ESTILO),
+                        ("esquema r2", MODELOS_R2)):
+        print(f"  {nombre:11s} {par[0]}   {par[1]}")
+    print(f"  {MODELOS_R2[0]}: " + ", ".join(f"{k} :{v}" for k, v in donde.items()))
     for clave, _ in NODOS_FIGURA:
         n = nodos[clave]
-        print(f"  nodo {clave:2s} {n['tipo']:11s} punto {n['punto']:9s} {n['id']}")
+        print(f"  nodo {clave:2s} {n['tipo']:10s} punto {n['punto']:8s} {n['id']}")
         print(f"          etiqueta en el grafo: {n['etiqueta']!r}")
     for a in aristas:
-        print(f"  arista kg['edges'][{a['indice']}]  {a['a']} --{a['relacion']}--> {a['b']}  "
-              f"({a['clase']}; rótulo {a['rotulo']!r})")
-    svg, alto_total = componer(nodos, aristas)
-    with open(SALIDA_SVG, "w", encoding="utf-8") as fh:
-        fh.write(svg)
-    print(f"SVG: {SALIDA_SVG}   lienzo {W} x {alto_total:.0f}")
-    print(f"Impresa a {ANCHO_FIGURA_CM:.2f} cm de ancho ({ANCHO_FIGURA_PT:.1f} pt), "
-          f"alto {ANCHO_FIGURA_CM * alto_total / W:.2f} cm:")
-    for nombre, fs in (("rótulos de elemento", FS_TITULO),
-                       ("subtextos, salidas, nodos, leyenda", FS_SUB)):
-        print(f"    {nombre:36s} {fs} -> {puntos_impresos(fs):5.2f} pt (mínimo {PT_MINIMO})")
-    if exportar_png():
-        print(f"PNG: {SALIDA_PNG}   {ANCHO_PNG_PX} px de ancho, {DPI} dpi")
-    if "--verificar" in sys.argv[1:]:
-        if not verificar(alto_total):
-            raise SystemExit("FALLA: la verificación de medidas encontró defectos")
+        print(f"  arista kg['edges'][{a['indice']}]  {a['a']} --{a['relacion']}--> {a['b']}  ({a['clase']}; "
+              f"properties {a['properties']})")
+    vivas = pruebas_negativas(nodos, aristas, colores)
+    print(f"PRUEBAS NEGATIVAS: {len(vivas)} de {len(PRUEBAS_NEGATIVAS)} hacen fallar su control")
+    for caso, control, falla, otros in vivas:
+        print(f"  {caso} -> {control}: {falla}" + (f" (fallan también: {', '.join(otros)})" if otros else ""))
+    svg, alto, c, info, dib_n, dib_a = controlar(nodos, aristas, colores, args.perturbar)
+    if args.perturbar:
+        print(f"PERTURBACIÓN: {args.perturbar}")
+    print(f"MEDIDAS: {len(REGISTRO)} textos medidos con las métricas reales de Helvetica; fallas: {len(c['medidas'])}")
+    print(f"INVENTARIO (releído del SVG): nodos {dib_n}; aristas {dib_a}; fallas: {len(c['inventario'])}")
+    print(f"GEOMETRÍA: {info['textos']} textos, {info['cajas']} cajas, {info['trazos']} trazos con flecha; "
+          f"cruces {len(info['cruces'])}; fallas: {len(c['geometria'])}")
+    for k in c:
+        for falla in c[k]:
+            print(f"  MAL [{k}] {falla}")
+    if any(c.values()):
+        raise SystemExit("FALLA: la figura tiene defectos; no se escribe nada")
+    print(f"TAMAÑO: lienzo {W} x {alto:.0f}, impreso a {ANCHO_FIGURA_CM:.2f} x {ANCHO_FIGURA_CM * alto / W:.2f} cm")
+    for nombre, fs in (("rótulos de elemento", FS_TITULO), ("subtextos, salidas, nodos, leyenda", FS_SUB)):
+        print(f"  {nombre:36s} {fs} -> {puntos_impresos(fs):5.2f} pt (mínimo {PT_MINIMO})")
+    rutas = base.exportar(svg, args.salida, NOMBRE, ANCHO_FIGURA_CM)
+    for e in ("svg", "png", "pdf"):
+        print(f"{e.upper()}: {os.path.relpath(rutas[e], base.RAIZ)}   sha256 {base.sha256(rutas[e])}")
+    print(f"  PNG {base.png_dimensiones(rutas['png'])} px a {base.DPI} dpi; {base.version_rsvg()}")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except base.Freno as e:
+        raise SystemExit(f"FRENO {e}")

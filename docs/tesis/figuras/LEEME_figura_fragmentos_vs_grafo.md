@@ -1,176 +1,265 @@
-# figura_fragmentos_vs_grafo — registro de generación (Figura 1.2)
+# figura_fragmentos_vs_grafo — registro de generación (Figura 1.2), versión 2
 
-Figura «la misma pregunta con dos formas de consultar» para la Introducción, con
-el ejemplo del préstamo: el punto 5.1.1.1 del Texto Ordenado de Clasificación de
-deudores, que remite al punto 3.7 («importe de referencia»).
+Figura «la misma pregunta con dos formas de consultar» para la Introducción,
+con el ejemplo del préstamo: el punto 5.1.1.1 del Texto Ordenado de
+Clasificación de deudores, que remite al punto 3.7 («importe de referencia»).
 
 - Arriba, la pregunta común.
-- Izquierda, «Recuperación por fragmentos», bajo el subtítulo «Los dos puntos
-  del ejemplo»: el punto 5.1.1.1 con su texto completo, la frase de remisión
-  resaltada y la marca «recuperado · puesto 2»; el punto 3.7 en gris, con su
-  texto y la marca «fuera de lo recuperado · puesto 1.523»; y la línea «resto
-  del top-5: 5.1.1.2 · 5.1.2.2 · 5.1.2.1 · 7.4». Debajo, la respuesta que se
-  puede redactar solo con lo recuperado y la marca de lo que falta.
-- Derecha, «Consulta del grafo»: «1 · Buscar» con la pregunta; «2 · Abrir el
-  nodo encontrado», la Restriccion del monto (5.1.1.1); «3 · Seguir las
-  aristas», `referencia` hasta la Obligacion del 3.7 y `limita` hasta la
-  Operacion (5.1.1.1), que la otra Restriccion del 5.1.1.1 (repago) también
-  limita. Debajo, la respuesta con las dos condiciones del punto 5.1.1.1; la
-  fila del 3.7 va con sangría bajo la del monto, porque la precisa.
+- Izquierda, «Recuperación por fragmentos», **igual que en la versión 1**: el
+  punto 5.1.1.1 con su texto completo, la frase de remisión resaltada y la
+  marca «recuperado · puesto 2»; el punto 3.7 en gris, con la marca «fuera de
+  lo recuperado · puesto 1.523»; la línea «resto del top-5: 5.1.1.2 · 5.1.2.2
+  · 5.1.2.1 · 7.4»; y debajo la respuesta que se puede redactar con lo
+  recuperado y la marca de lo que falta.
+- Derecha, «Consulta del grafo», sobre el grafo de desarrollo r2b: «1 ·
+  Buscar» con la pregunta y la línea «BM25 sobre las etiquetas y las
+  descripciones de los nodos: la Operacion queda en el puesto 3.»; «2 · Abrir
+  el nodo encontrado», la `Operacion` del 5.1.1.1; «3 · Seguir las aristas»:
+  la `remite_a` hasta la `Definicion` del 3.7 y las dos `condicion_de` que le
+  llegan desde las `Condicion` del 5.1.1.1. Debajo, la respuesta con lo que
+  esos nodos dicen.
 
 **El lado derecho muestra el camino que el grafo pone al alcance desde el nodo
 encontrado; no es la traza de una corrida del agente.** Qué nodo se abre y qué
 aristas se siguen es una decisión de la figura (`NODO_ENCONTRADO`,
 `ARISTAS_CONSULTA`); lo que se lee del grafo es que esos nodos y esas aristas
-existen.
+existen y el puesto de la búsqueda.
 
-Historia: generada el 2026-09-28 en U-FIG-EJEMPLO, que reemplazó la versión del
-ejemplo de los dividendos (generador y PNG del commit `fb6ef69`); ajustada el
-mismo día en U-FIG-EJEMPLO-AJUSTE (§5). La versión de U-FIG-EJEMPLO no llegó a
-commitearse: al cierre del ajuste, `git status` mostraba el generador y el PNG
-como modificados respecto de `fb6ef69`.
+Tamaño impreso: **12,75 × 14,77 cm** (lienzo 860 × 996). Cruces entre
+aristas: **0**.
 
-## 1. Comandos de generación
+## Versiones
 
-```bash
-PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/extraer_datos_ejemplo_prestamo.py
-PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/generar_figura_fragmentos_vs_grafo.py --verificar-busqueda
+- **Versión 1** (28/09/2026, U-FIG-EJEMPLO y U-FIG-EJEMPLO-AJUSTE):
+  generador y PNG en `fbe69d4`; este LEEME, en `e6e6021`. Sobre KG-Reextraído-r1;
+  abría la `Restriccion` del monto y seguía `referencia` hasta la
+  `Obligacion` del 3.7 y `limita` hasta la `Operacion`; la búsqueda de nodos
+  era la del índice de texto completo de Neo4j, copiada de
+  `reports/u_med_ejemplo/` (LEEME de la versión 1, §4). sha256 en `fbe69d4`:
+  generador `0e7c379d71e4cda0192e26320d4f24ad4a26dc35a3da047bcbac8309412d43ad`,
+  PNG `b5306b2fbf146e20d005ce469d7de86c78c03ac3bcc95e645597760c85954533`
+  (1506 × 1829 px); SVG intermedio, no versionado,
+  `9b0574b7ecadcfac8675c03f64c704993238d2ec202671df2c9eab6ae5a0f706`
+  (860 × 1044). En FIG-INTRO-R2B regeneré la versión 1 con su generador de
+  HEAD sobre una copia y dio esos dos sha256.
+- **Versión 2** (07/10/2026, FIG-INTRO-R2B). Qué cambió:
+  - **la columna del grafo**: grafo de desarrollo r2b; se abre la `Operacion`
+    y se siguen la `remite_a` y las dos `condicion_de` (§3);
+  - **la búsqueda de nodos**: BM25 con la función de la columna de
+    fragmentos, sobre etiqueta, descripción e id (§4), en lugar del índice de
+    Neo4j, que esta unidad no usa;
+  - **la respuesta de la derecha**: ajustada a las etiquetas de los nodos
+    dibujados (§5);
+  - **los nodos**: «Tipo · punto N» y la etiqueta, con los colores de tipo
+    de la figura del esquema final (los de la figura 1.1, versión 2); la
+    franja de cada fila de la respuesta, en el borde de ese color;
+  - **la leyenda**: solo las dos clases de arista (como en la figura 1.1);
+  - **las salidas**: se guardan el SVG y el PDF además del PNG;
+  - **los controles**: inventario, geometría, alto máximo y pruebas
+    negativas (§7).
+  La pregunta, la columna de fragmentos, la respuesta de la izquierda,
+  anchos, tamaños de letra y paleta no cambian (§2).
+
+## 1. Comandos
+
+```
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B docs/tesis/figuras/generar_figura_fragmentos_vs_grafo.py
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B docs/tesis/figuras/generar_figura_fragmentos_vs_grafo.py --observacion-harness
 ```
 
-El generador escribe solo el PNG (el SVG va por stdin a `rsvg-convert` 2.62.3;
-`--svg RUTA` lo guarda aparte). Con `--verificar-busqueda` vuelve a correr la
-búsqueda léxica sobre los fragmentos de E0 (sin Neo4j ni API) y se detiene si
-el top-5 o los puestos de 5.1.1.1 y 3.7 no son los del JSON; en la última
-corrida coincidieron.
+Escribe `figura_fragmentos_vs_grafo.svg`, `.png` y `.pdf` en
+`docs/tesis/figuras/` (`--salida DIR` para otro directorio). Recalcula las dos
+búsquedas en cada corrida (sin Neo4j ni API). Con `--observacion-harness`
+informa además lo de §6. Importa, sin modificarlo,
+`generar_figura_norma_a_grafo.py` (versión 2: textos, subgrafo, candados,
+colores, nodos, leyenda, controles y exportación).
 
-## 2. Grafo, pregunta y fuentes
+## 2. Fuentes
 
-- Grafo: KG-Reextraído-r1,
-  `data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json`, sha256
-  `0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a`.
-- Pregunta: «Para una entidad financiera, ¿qué condiciones hacen que los
-  créditos para consumo o vivienda deban clasificarse en la cartera comercial?»
+| Papel | Archivo | sha256 | Ancla |
+|---|---|---|---|
+| grafo, textos, estilo | los de la figura 1.1 versión 2 | ver su LEEME, §2 | `generar_figura_norma_a_grafo.py:105-119` |
+| búsqueda BM25 | `docs/tesis/figuras/busqueda_lexica_fragmentos.py` | `13caa596ad25b9aae3e19ab5e1c4cf30821cf853418320090e2b5ed4cdbcf9d3` | `fbe69d4`; `tok_bm25` y `bm25` (:35-67), k1 = 1,2 y b = 0,75 (:30) |
+| índice de la versión 1 | `data/experiment/reextraccion_v2/e0_chunking/salida_enm01/chunks_{cap,cla,ext,pro,ric}.json` | `1931138d…`, `98808886…`, `cbcd1a86…`, `d8717d1c…`, `fafebb82…` | los de `ejemplo_prestamo_datos.json` → `busqueda_fragmentos.sha256_insumos`; el generador los lee con esos candados |
+| observación (§6) | `data/experiment/evaluacion/harness.py` | `fd267e833866f86850e43130e627b08d78e05523b97484696de0ab0c8c9fba9e` | `7e8b91e` |
+| observación (§6) | `data/experiment/evaluacion/loader.py` | `5aba8b7a0aa46e8d5c4c83b33884b8cae7d0a099884a7d3bc935de4d3097af8b` | `2698f6f` |
 
-| Dato de la figura | De dónde sale |
-|---|---|
-| Pregunta | `ejemplo_prestamo_datos.json` → `pregunta` |
-| Textos de 5.1.1.1 y 3.7, frase resaltada | JSON → `textos` (campo `texto` de los fragmentos E0 de `chunks_cla.json`, cortes de línea quitados y «pro-ductiva» reunida) |
-| Puestos 2 y 1.523, resto del top-5 | JSON → `busqueda_fragmentos` (BM25, variante A, calculada por el extractor con `busqueda_lexica_fragmentos.py`) |
-| Nodos, etiquetas, puntos y aristas | JSON → `grafo`, comprobados contra `kg.json` al generar |
+Candados en el generador: `generar_figura_fragmentos_vs_grafo.py:75-84`.
 
-| Archivo | sha256 |
-|---|---|
-| `data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json` | `0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a` |
-| `data/experiment/reextraccion_v2/e0_chunking/salida_enm01/chunks_cap.json` | `1931138dac0a107a69a7ff6312400f00465b991d52135457735beeb3e442c825` |
-| `data/experiment/reextraccion_v2/e0_chunking/salida_enm01/chunks_cla.json` | `98808886a406d8321c678836a55f92eea983d594d95358dd21ceb537487ac0b1` |
-| `data/experiment/reextraccion_v2/e0_chunking/salida_enm01/chunks_ext.json` | `cbcd1a86f55ea49110610587873881c68c13a9d7975d3fd5e465f26302be2d12` |
-| `data/experiment/reextraccion_v2/e0_chunking/salida_enm01/chunks_pro.json` | `d8717d1c7423bb5f4d80cc830ff97635ce4d9839f8490b73860ea272568620e2` |
-| `data/experiment/reextraccion_v2/e0_chunking/salida_enm01/chunks_ric.json` | `fafebb82e07b34191b60022c1c179ea7d2213fd1f5d5f3a408b518c836c94c0d` |
-| `docs/tesis/figuras/busqueda_lexica_fragmentos.py` | `13caa596ad25b9aae3e19ab5e1c4cf30821cf853418320090e2b5ed4cdbcf9d3` |
-| `docs/tesis/figuras/extraer_datos_ejemplo_prestamo.py` | `4c3a441972d27304b6d58d0664dbc15b893bce7ad3e7d2d49afad947f51eeea7` |
-| `docs/tesis/figuras/ejemplo_prestamo_datos.json` | `25ab7b4c0d76fd735244fe0fecc17ceaba1b0e8bfd2312e7aa3cbd5c849672a2` |
-| `docs/tesis/figuras/generar_figura_fragmentos_vs_grafo.py` | `0e7c379d71e4cda0192e26320d4f24ad4a26dc35a3da047bcbac8309412d43ad` |
-| `docs/tesis/figuras/generar_figura_norma_a_grafo.py` (importado) | `9b0e45a299a0a078d250ccc999d192cbb83038bd8c00baa6bd8972d021b73f3d` |
+**Lo que no cambia, comprobado.** Los 28 elementos del SVG de la pregunta
+común y de la columna de fragmentos (x < 420, y < 657) son, uno por uno, los
+del SVG de la versión 1 regenerado (comparación hecha en FIG-INTRO-R2B, fuera
+del repositorio): el texto de los fragmentos sale ahora de
+`salida_tanda0_r2b/chunks_cla.json`, idéntico al de la versión 1 (LEEME de la
+figura 1.1, §3).
 
-`busqueda_lexica_fragmentos.py` tiene `tok_bm25` y `bm25` copiadas sin cambios
-de `reports/u_inv_ejemplo/uinvejemplo_bm25.py` (commit `24e0116`; líneas 22-54;
-sha256 `de9056c80c9a8b1e828ec6fbb6c712f140015b634c962604408354a5869b7ebe`;
-antes en `/tmp/u_inv_ejemplo/`), réplica de
-`data/experiment/bakeoff_embeddings/code/e3_medicion.py:56-90`: tokenizador en
-minúsculas sin diacríticos, Okapi BM25 con k1 = 1,2 y b = 0,75, sobre el texto
-completo de cada fragmento (encabezados heredados + texto propio). La elección
-del ejemplo está en `reports/u_inv_candidatos/` (commit `791166d`; antes en
-`/tmp/u_inv_candidatos/`).
+## 3. Columna de la consulta
 
-Salida:
+- **Paso 1**: la pregunta y el resultado de la búsqueda de §4: la `Operacion`
+  del 5.1.1.1 en el puesto 3. Si quedara fuera del top-5
+  (`LIMITE_RECUPERACION`, :89, el umbral de la columna de fragmentos), el
+  script frena (`busqueda_nodos`, :212-238).
+- **Paso 2**: la `Operacion` «Inclusión en cartera comercial — créditos
+  consumo/vivienda», punto 5.1.1.1 (`NODO_ENCONTRADO`, :98).
+- **Paso 3** (`ARISTAS_CONSULTA`, :99-103; `NODOS_ALCANZADOS`, :104): la
+  `remite_a` de la `Operacion` a la `Definicion` «Importe de referencia —
+  nivel máximo de ventas anuales» (punto 3.7), resaltada; la `condicion_de`
+  de la `Condicion` «Superar dos veces importe referencia punto 3.7» y la de
+  la `Condicion` «Repago vinculado a actividad productiva/comercial» (punto
+  5.1.1.1), que llegan a la `Operacion`. Cada arista sale del nodo abierto o
+  llega a él por un tronco a la izquierda (`TRONCOS`, :366); el nodo de más
+  arriba usa el tronco de más adentro, y por eso no se cruzan.
 
-| Archivo | sha256 |
-|---|---|
-| `figura_fragmentos_vs_grafo.png` (1506 × 1829 px, 300 dpi) | `b5306b2fbf146e20d005ce469d7de86c78c03ac3bcc95e645597760c85954533` |
-| SVG intermedio (no se guarda en el repositorio; 860 × 1044) | `9b0574b7ecadcfac8675c03f64c704993238d2ec202671df2c9eab6ae5a0f706` |
+Las tres aristas son del subgrafo de la figura 1.1 (índices 17765, 5540 y 5161
+en `kg['edges']` del grafo de desarrollo; LEEME de la figura 1.1, §5).
 
-Generación determinística verificada: mismo PNG y mismo SVG con
-`PYTHONHASHSEED` 0, 1, 2 y 3.
+**El primer nodo del 5.1.1.1 que devuelve la búsqueda no es la `Operacion`**
+sino la `Excepcion` «Excepción cartera comercial — créditos
+consumo/vivienda», en el puesto 1, cuya única arista en el grafo es su
+`establecida_en` hacia el Texto Ordenado: desde ella no se llega ni a la
+`Operacion` ni al 3.7. La figura no la dibuja; el script comprueba que es la
+declarada (`PRIMERO_NO_DIBUJADO`, :107) y que no tiene otra arista. Es el caso
+de las excepciones sin unir del hallazgo (a) de VERIF-CAP3-COHERENCIA
+(verificación de solo lectura del 07/10/2026; su paquete no está en el
+repositorio). Por qué la `Excepcion` quedó sin unir: LEEME de la figura 1.1,
+§6.
 
-## 3. Qué está escrito a mano
+## 4. Las dos búsquedas
 
-Solo los textos de las dos respuestas (`RESPUESTA_*` en el generador):
+**Fragmentos** (BM25 de `busqueda_lexica_fragmentos.py` sobre los 1.763
+fragmentos de `salida_enm01`, el índice de la versión 1; `busqueda_fragmentos`,
+:185-202). Recalculada en cada corrida: **los puestos no cambian** respecto de
+la versión 1.
 
-- Izquierda: «Pasan a la cartera comercial si superan dos veces el importe de
-  referencia establecido en el punto 3.7 y su repago depende de la actividad
-  productiva o comercial del cliente (punto 5.1.1.1).», y debajo la marca
-  «✗ el importe de referencia (punto 3.7): no recuperado» (la cruz se dibuja con
-  dos trazos).
-- Derecha: «Pasan a la cartera comercial si se cumplen las dos condiciones del
-  punto 5.1.1.1:», y tres filas: «5.1.1.1 · superan dos veces el importe de
-  referencia»; con sangría debajo de ella, «3.7 · el importe de referencia es el
-  nivel máximo de ventas anuales de la categoría Micro del sector Comercio (Ley
-  24.467)»; «5.1.1.1 · su repago depende de la actividad productiva o comercial,
-  no de ingresos fijos». El número de cada fila se lee del punto del nodo del que
-  sale la condición (restricción del monto, obligación del 3.7, restricción del
-  repago), y la franja de la fila lleva el color del tipo de ese nodo.
+| Puesto | Fragmento | Puntaje |
+|---|---|---|
+| 1 | cla::5.1.1.2 | 28,1501 |
+| 2 | cla::5.1.1.1 | 26,1982 |
+| 3 | cla::5.1.2.2 | 23,0787 |
+| 4 | cla::5.1.2.1 | 22,6035 |
+| 5 | cla::7.4 | 21,7776 |
+| 1.523 | cla::3.7 | 1,4976 |
 
-Son también decisiones de composición, no datos: el umbral de lo recuperado
-(top-5), el nodo que se abre en el paso 2, las tres aristas del paso 3 y la
+**Nodos** (`busqueda_nodos`, :212-238): la misma función `bm25`, con los
+mismos parámetros, sobre el texto de cada nodo del grafo de desarrollo
+(6.990 nodos; 6.477 con puntaje): su etiqueta, su `descripcion` y su id,
+unidos por saltos de línea (`CAMPOS_NODO`, :109; `texto_nodo`, :205-209).
+Ningún nodo tiene `descripcion` y `description` a la vez (el script lo
+comprueba). Desempate por id ascendente, el de `bm25`.
+
+| Puesto | Tipo | Etiqueta | Puntaje |
+|---|---|---|---|
+| 1 | Excepcion | Excepción cartera comercial — créditos consumo/vivienda | 48,2101 |
+| 2 | Operacion | Suma de créditos para consumo o vivienda a cartera comercial para encuadramiento | 43,7280 |
+| **3** | **Operacion** | **Inclusión en cartera comercial — créditos consumo/vivienda** | 40,0347 |
+| 4 | Condicion | Cartera comercial o para consumo o vivienda | 40,0154 |
+| 5 | Operacion | Clasificación de deudores de créditos fideicomitidos | 32,6526 |
+
+Puestos de los demás nodos dibujados: `Condicion` del repago 666,
+`Definicion` del 3.7 2.656, `Condicion` del monto 6.364. El Texto Ordenado,
+que también tiene al 5.1.1.1 entre sus 143 procedencias, no tiene puntaje.
+Los diez primeros, en la salida del generador.
+
+## 5. Respuestas
+
+Escritas a mano (`RESPUESTA_*`, :114-128); son también decisiones de
+composición el umbral del top-5, el nodo que se abre, las tres aristas y la
 sangría de la fila del 3.7.
 
-## 4. Búsquedas del ejemplo
+- Izquierda, igual que en la versión 1: «Pasan a la cartera comercial si
+  superan dos veces el importe de referencia establecido en el punto 3.7 y su
+  repago depende de la actividad productiva o comercial del cliente (punto
+  5.1.1.1).», con la marca «✗ el importe de referencia (punto 3.7): no
+  recuperado». Lo dice el texto del 5.1.1.1, que es lo recuperado.
+- Derecha: «Pasan a la cartera comercial si se cumplen las dos condiciones del
+  punto 5.1.1.1:» y tres filas, cada una de la etiqueta de un nodo dibujado:
+  «5.1.1.1 · superan dos veces el importe de referencia» (`Condicion` del
+  monto); con sangría debajo, «3.7 · el importe de referencia es el nivel
+  máximo de ventas anuales» (`Definicion`; en la versión 1 seguía «de la
+  categoría Micro del sector Comercio (Ley 24.467)», que no está en la
+  etiqueta); «5.1.1.1 · su repago está vinculado a la actividad productiva o
+  comercial» (`Condicion` del repago; en la versión 1, «depende de la
+  actividad productiva o comercial, no de ingresos fijos»). El número de
+  cada fila se lee del punto del nodo.
 
-- **Fragmentos, variante A** (la que dibuja la figura): 1.763 fragmentos, 1.741
-  con puntaje positivo. Top-5: 5.1.1.2 (28,1501), 5.1.1.1 (26,1982), 5.1.2.2
-  (23,0787), 5.1.2.1 (22,6035), 7.4 (21,7776); 3.7 en el puesto 1.523 (1,4976).
-  El extractor la recalcula y comprueba que reproduce
-  `reports/u_med_ejemplo/umed2_analista_paso1_resultado.json` (commit
-  `200462f`; sha256 `a69c44b00a7f4920d1a4e5224167e6edacf4b7153d004d2185050cb2387f5408`,
-  línea 11 de `reports/u_med_ejemplo/umed_manifest.txt`; antes en
-  `/tmp/u_med_ejemplo/`): misma pregunta, mismos sha256 de los cinco
-  `chunks_*.json`, mismos tokens, mismo top-10 con los mismos puntajes exactos,
-  y los puestos 2 y 1.523.
-- **Fragmentos, variante B** (palabras vacías y raíces de Snowball para español,
-  nltk 3.10.3), copiada en el JSON desde el mismo archivo: top-5 7.4, 5.1.1.2,
-  10.2.1, 10.1, 5.1.1.1; 5.1.1.1 en el puesto 5; 3.7 sin puntaje (ningún término
-  en común con la pregunta). La lista de palabras vacías está en
-  `reports/u_med_ejemplo/umed2_analista_nltk_data/corpora/stopwords/spanish`
-  (sha256 `6125eadf28ba664a60bf4296147bcbd40b80be93670056fdb229960ac15e2310`,
-  igual a la línea 30 de `reports/u_med_ejemplo/umed2_analista_nltk_data_listado.sha256`);
-  los paquetes de la venv de esa medición, con su versión, figuran en
-  `reports/u_med_ejemplo/umed2_analista_venv_listado.sha256` (líneas 11, 34, 43,
-  59, 201, 717, 1566 y 1577).
-- **Nodos** (índice de texto completo `nodos_fulltext_kg_reextraido_r1`, 2.346
-  nodos con coincidencia), copiada en el JSON desde
-  `reports/u_med_ejemplo/umed2_analista_paso3_resultado.json` (sha256
-  `047e6f6e80b6b88e300cfb090bd2223ea967de8c9cbea9e10f9c04a9c168a3cd`, línea 18
-  del manifiesto): los nodos de 5.1.1.1 aparecen en los puestos 2 (Operacion), 4
-  (Restriccion del monto, el nodo que abre la figura) y 156 (Restriccion del
-  repago); ningún nodo de 3.7 tiene coincidencia. En la figura, el 3.7 se
-  alcanza siguiendo la arista `referencia` desde la restricción del monto (la
-  Obligacion del 3.7 tiene 13 aristas `referencia` entrantes, de 13 orígenes
-  distintos, en `kg['edges']` de `kg.json`; la figura dibuja la de este punto).
+## 6. Observación para el diseño de la navegación del agente (no se dibuja)
 
-## 5. Composición
+Con `--observacion-harness`, el generador corre `buscar_nodos` del harness
+congelado (`data/experiment/evaluacion/harness.py:148-176`) con la misma
+pregunta sobre el grafo de desarrollo, cargado con
+`loader.load_graph_from_path` (`observacion_harness`, :241-270). Esa búsqueda
+cuenta los tokens de la pregunta que están en la etiqueta o el id del nodo
+(`harness.py:106-107`, `:137-139`), ordena por ese conteo, el largo de la
+etiqueta y el id (`:157`) y devuelve 10 por omisión (`:148`, `:158-161`;
+descripción de la tool, `:253`). El script comprueba que su orden es el de
+`GraphIndex.buscar_nodos`.
 
-- Los fragmentos muestran el texto completo del punto, con el número de punto
-  en negrita al comienzo, donde el texto lo trae; la marca de estado ocupa la
-  primera línea del recuadro, con el puesto.
-- **Ajuste U-FIG-EJEMPLO-AJUSTE.** La oración de entrada de «Respuesta con lo
-  consultado» anuncia dos condiciones y debajo hay tres filas: la del 3.7 precisa
-  la condición del monto, no es una tercera. Esa fila va con 24 px de sangría
-  (`SANGRIA_FILA`) debajo de la del monto y conserva su franja de color. El
-  número de líneas de cada fila no cambió y el alto del PNG tampoco (1829 px).
-- Las filas de las respuestas se envuelven en varias líneas cuando hace falta.
-- Los nodos alcanzados están en `X_NODO` 118 (ancho 264) y los troncos de las
-  aristas en x = 34 y x = 20, para que el rótulo `referencia` en negrita entre en
-  el tramo horizontal; el script se detiene si un rótulo no entra.
-- La leyenda nombra solo los tipos dibujados (Restriccion, Obligacion,
-  Operacion), escritos como en el código.
-- Tope de alto del PNG: 1850 px (`ALTO_MAX_PNG_PX`); la figura mide 1829 px
-  (15,49 cm impresa a 12,75 cm de ancho).
-- Tamaños: texto corrido 17 px → 7,14 pt; rótulos y leyenda 15 px → 6,30 pt,
-  impresos a 12,75 cm.
-- Verificación geométrica con `docs/tesis/figuras/verificar_geometria_svg.py` (sha256
-  `fd8d062df7b7529131f466df628298e02dd079517aa66624caeea6a8b722df19`; métricas reales de
-  Helvetica) sobre el SVG intermedio: 72 textos, 4 nodos, 10 trazos con flecha;
-  ningún texto se superpone con otro ni pisa un nodo, ningún trazo atraviesa un
-  nodo. Comandos (el SVG se guarda fuera del repositorio):
-  `PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/generar_figura_fragmentos_vs_grafo.py --svg "$TMPDIR/figura_fragmentos_vs_grafo.svg"`
-  y `PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/verificar_geometria_svg.py "$TMPDIR/figura_fragmentos_vs_grafo.svg"`.
+- 4.804 nodos con coincidencia;
+- la `Excepcion` del 5.1.1.1, en el puesto 1 (9 tokens en común);
+- la `Operacion` del 5.1.1.1, en el **puesto 12** (6 tokens): **fuera de los
+  10 que devuelve por omisión**;
+- la `Condicion` del repago, en el 3.698 (1 token);
+- la `Condicion` del monto y la `Definicion` del 3.7, **sin coincidencia**.
+
+Queda registrado como observación para U-NAV-DISENO.
+
+## 7. Controles y pruebas negativas
+
+Extracto de la salida de la corrida que escribió las salidas de §9:
+
+```
+PRUEBAS NEGATIVAS: 3 de 3 hacen fallar su control
+  arista_de_mas -> inventario: arista de la figura que no está en el grafo: (('Operacion', ...), 'condicion_de', ('Condicion', ...)) (fallan también: geometria)
+  cruce -> geometria: 3 cruce(s) entre trazos, declarados 0: [('0', None), ('1', None), ('2', None)]
+  rotulo_sobre_caja -> geometria: texto sobre la caja condicion_monto: 'remite_a' (fallan también: inventario)
+INVENTARIO (releído del SVG): 4 nodos y 3 aristas; fallas: 0
+GEOMETRÍA: 67 textos, 4 cajas, 10 trazos con flecha; cruces 0; fallas: 0
+TAMAÑO: lienzo 860 x 996.0, impreso a 12.75 x 14.77 cm; alto de las columnas: fragmentos 528, consulta 486
+```
+
+- Inventario y geometría: los de la figura 1.1 (`controlar_inventario` y
+  `controlar_geometria` de `generar_figura_norma_a_grafo.py`); 0 cruces entre
+  los diez trazos con flecha (tres aristas y siete flechas de flujo y de
+  leyenda).
+- Alto máximo del PNG: 1850 px, el de la versión 1 (`ALTO_MAX_PNG_PX`, :153);
+  la figura mide 1745.
+- Pruebas negativas: `PRUEBAS_NEGATIVAS`, :556-558. Con `--perturbar <caso>`,
+  sobre una copia, las tres terminan con código 1 y ningún archivo escrito;
+  con `busqueda_lexica_fragmentos.py` alterado en una copia, el generador
+  frena por el candado.
+- Verificación geométrica de la versión 1 (`verificar_geometria_svg.py`, no
+  rastreado, sha256 `fd8d062d…`): 67 textos, 4 nodos, 10 trazos con flecha;
+  fallas: 0.
+
+## 8. Tamaño
+
+- Lienzo 860 × 996 → **12,75 × 14,77 cm** (versión 1: 860 × 1044 → 15,49 cm).
+  PNG 1506 × 1745 px a 300 dpi; PDF 361,4 × 418,6 pt.
+- Letra impresa a 12,75 cm: texto corrido, títulos, encabezados y nodos 17 →
+  7,14 pt; marcas, pasos, rótulos, pregunta de la búsqueda y leyenda 15 →
+  6,30 pt. Los mismos tamaños que la versión 1.
+- Columna de la consulta: el nodo abierto, de 320 de ancho; los alcanzados,
+  de 246 (`X_NODO, ANCHO_NODO`, :365), para que «condicion_de» entre en el
+  tramo horizontal entre su tronco y el nodo.
+
+## 9. Salidas (versión 2)
+
+| Archivo | sha256 |
+|---|---|
+| `generar_figura_fragmentos_vs_grafo.py` | `7329c3a8e210f3106ce3eafb7be56ea0932deaee6ee575fa27dfd02f2b8874c8` |
+| `figura_fragmentos_vs_grafo.svg` | `9d47fd54810f121812c590ead103116d9c86bd8004774c29708fa4ca05dbb756` |
+| `figura_fragmentos_vs_grafo.png` | `15293be290b8f61aa61f0252fae04d1e8c58bae6a56ccac974866fc72ef0b49c` |
+| `figura_fragmentos_vs_grafo.pdf` | `2aad5fee3747443c1c3b7ecfd15de974fc7434db8b0ecd5afa88e001f7eb5408` |
+
+Generación determinística: las mismas salidas con `PYTHONHASHSEED` 0, 1 y
+4242, sobre una copia de las fuentes.
+
+## 10. Observaciones
+
+- La búsqueda de nodos de la versión 2 no es la del agente evaluado: el
+  servidor del grafo del banco usa el índice Lucene de Neo4j
+  (`data/experiment/banco_mcp/mcp_kg/config_mcp_kg.json:4-6`, `backend`
+  `neo4j`, `modo` `fulltext`) y esta unidad no usa Neo4j. Es BM25 con la misma
+  función que la columna de fragmentos, sin el analizador en castellano del
+  índice de Neo4j.
+- **Impreso**: NO VERIFICADO.
