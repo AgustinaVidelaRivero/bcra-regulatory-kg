@@ -1,0 +1,236 @@
+% =====================================================================
+% Bloques de comentarios para el esqueleto del informe (U-DISENO-EVAL,
+% 29/09/2026, HEAD 8e0597c). Uno por sección: 4.7, 5.1, 5.2, 5.3, 5.4,
+% 5.5 y 6.4. Estados: (a) decidido y registrado; (b) decidido de otra
+% forma; (c) no registrado o pendiente; (d) descartado. «plan :n» es
+% docs/plan_tesis.md, línea n. Detalle y comandos en
+% reports/diseno_evaluaciones_2909/fichas.md.
+% =====================================================================
+%
+% ---------------------------------------------------------------------
+% BLOQUE 4.7 · El agente y el sistema de consulta
+% ---------------------------------------------------------------------
+% (a) Dos instrumentos declarados, no intercambiables (principio 8,
+%     plan :268-274): el harness congelado (Haiku 4.5, tres herramientas,
+%     tope de 15 llamadas; data/experiment/evaluacion/harness.py:47 y :50)
+%     sostiene lo sellado, y el banco Claude Code con MCP (claude -p,
+%     claude-sonnet-5; data/experiment/banco_mcp/README.md:146-150)
+%     sostiene la comparación. Sus resultados no se cruzan en una tabla.
+% (a) Herramientas del grafo: buscar_nodos, ver_nodo, ver_vecinos
+%     (harness.py:240-286, según plan :825).
+% (a) El tope se controla por turno: 80 de 456 trazas de la corrida base
+%     de EV2 lo superan, con máximo 18 (plan :825; cifra dada por el
+%     mandato, no rehecha).
+% (a) Búsqueda sobre Neo4j full-text, BM25 (laudo A1.6, plan :321;
+%     docs/laudo_promocion_backend.md).
+% (a) Contrato de respuesta {respuesta, citas, respondible}; las citas
+%     salen de procedencias vistas (harness.py:17-18 y :323-345).
+% (b) H1: Claude Code con contextos aislados solo para la comparación, no
+%     para todas las evaluaciones (principio 8); aislamiento configurado y
+%     verificado (plan :328).
+% (a) H2: el brazo es el servidor MCP que se enchufa; el prompt es una
+%     plantilla más el bloque de herramientas del brazo, pasado como
+%     argumento de claude -p (banco_mcp/README.md:162-165).
+% (a) A1.8 congela la configuración del agente antes del pre-registro de
+%     B6.3 (plan :323). [PENDIENTE] diagnóstico en cuatro capas y mejoras.
+% (a) Evidencia para A1.8: tope de 15 alcanzado en 23/40, 27/40, 17/40 y
+%     11/20 respuestas base de C2 a C5, y 28/40 en C1 (plan :323; NO
+%     VERIFICADO en esta unidad).
+% [DECIDE LA AUTORA] qué mejoras de A1.8 entran y con qué criterio de
+%     aceptación (plan :323).
+% [DECIDE LA AUTORA] instrumento de la fidelidad final B6.3 (b) (fichas:
+%     Q1, C-4, F-1).
+% Contradicción C-1: el plan pone esta sección al inicio del capítulo 5
+%     (plan :826).
+%
+% ---------------------------------------------------------------------
+% BLOQUE 5.1 · Evaluación intrínseca del grafo
+% ---------------------------------------------------------------------
+% (a) H8 precisión: 100 tripletas nodo-relación-nodo con su evidencia,
+%     estratificadas por relación y por TO; juicios de corrección e
+%     importancia; adjudicación de la autora de a 10 como referencia
+%     (plan :403-408, :415-416, :424-426).
+% (a) H9 juez de tripletas: prompt congelado por sha, N=3 modal, ciego;
+%     acuerdo en las dos direcciones antes de escalar, con umbral
+%     declarado (plan :414-418, :427).
+% (b) H10 dificultad: registrada solo como priorización asistida por LLM
+%     (plan :420-421); faltan la confirmación humana con información o
+%     enlaces y la vía a un experto. [DECIDE LA AUTORA] (fichas F-3).
+% (a) H11 recall: tripleta más importante por fragmento, ranking por otro
+%     modelo, orden de las top-100 validado por la autora, presencia por
+%     regla, recall@10/50/100, ausentes adjudicadas después (plan
+%     :409-414, :416, :419-420, :429-430).
+% (a) Wilson para toda proporción y precisión por etapa E0-E5 (plan
+%     :396-402).
+% (a) Secuencia D-f: el instrumento se valida sobre KG-Reextraído-r1 y la
+%     medición que cuenta es B6.3 (d) (plan :393;
+%     docs/laudo_D-f_secuencia_tripletas.md).
+% [PENDIENTE] pre-registro de tripletas: el archivo que cita B4.1,
+%     docs/preregistro_evaluacion_tripletas.md, es NO ENCONTRADO.
+% [DECIDE LA AUTORA] inconsistencia B4.2 frente a B6.3 (d) (plan :424).
+% (a) Observación (12) de la tanda 0: 30 aristas de extracción leídas
+%     contra el texto, 25 correctas (enmienda 8e13be3;
+%     reports/tanda0/obs12_lectura/fila_obs12.md).
+% (a) Métricas intrínsecas informativas en el gate hasta el laudo de
+%     umbrales B3.1; shapes y regression suite como gate de release
+%     (plan :378). [PENDIENTE] laudo B3.1 (plan :386).
+% [DECIDE LA AUTORA] quién adjudica las tripletas: el plan pone a la
+%     autora como referencia y reemplaza la anotación de tripletas gold
+%     (plan :415-416 y :393-394); el registro del 04/09 encuadra la
+%     validación como anotación de un experto del dominio sobre una
+%     submuestra, con destino B4
+%     (docs/registro_reunion_mentores_2026-09-04.md:81-83 y :94); la
+%     propuesta promete un gold standard de tripletas anotado manualmente
+%     (docs/ppf/main.tex:134 y :166), que el plan registra como promesa
+%     sin cumplir, «no negociable» (plan :236-238). Fichas C-8 y F-7.
+%
+% ---------------------------------------------------------------------
+% BLOQUE 5.2 · Diseño de la evaluación por respuestas
+% ---------------------------------------------------------------------
+% (b) H7 preguntas: una instancia aislada, que lee solo los PDF y el mapa
+%     de territorio, redacta la pregunta y el gold (ancla y de 2 a 5
+%     criterios, cada uno con su cita textual); no hay respuesta de
+%     referencia ni un segundo modelo (registro_generacion_ev2_fidelidad.md
+%     :8-21 y :61-65, en data/experiment/exploracion/ev2_fidelidad/).
+% (a) EV2: 40 preguntas y 164 criterios (preguntas_ev2_fidelidad.json;
+%     comando en fichas).
+% (a) Tipos de pregunta por la regla v2 (41abf18); EV2 es 40 de 40 de dato
+%     directo (plan :1255). [DECIDE LA AUTORA] cuotas de preguntas de
+%     varios puntos y de abstención en el conjunto final (plan :753).
+% (a) Juez de fidelidad de EV2: claude-sonnet-4-6, temperatura 0, N=3 con
+%     voto modal, ciego al grafo, mapping fijo §2 (ev2_juez/mapping.py
+%     :40-54), prompt fd446f8e (plan :1257).
+% (a) Validaciones de ese juez: calibración U6; muestra simétrica, 11/12
+%     exacto y 52/53 por criterio; hoja de trabajo, 30 a adjudicación =
+%     21 resueltos 2/18/1 + 9 resueltos 1/5/3 (plan :1257; cifras dadas
+%     por el mandato).
+% (a) Juez de la Fase 2.3 (sección 3.6): 12 trazas, 20 celdas con veredicto
+%     humano, 20 acuerdos, 0 desacuerdos (evaluacion/02_calibracion_juez.md
+%     :13-24, recomputado). Contradicción C-3 con plan :1257, que dice 26,
+%     25 y 1 (es el conteo de símbolos del archivo).
+% (a) Adjudicación ciega con muestra de control simétrica, protocolo de
+%     C1 (ev2_r1/code/worksheet_r1.py:6-19).
+% [DECIDE LA AUTORA] tanda 0: las 174 marcas de la adjudicación de C2 a
+%     C5 las puso una instancia de modelo (8e0597c), contra el anexo E5.c
+%     (decisión 5) y el pre-registro (docs/preregistro_tanda0.md:308-309).
+%     Fichas C-6 y F-6.
+% (a) Regla de cegado: ninguna lectura ajena visible durante la
+%     adjudicación (docs/cola_mejoras_diferidas.md, entrada 10).
+% (a) Tamaño del conjunto final por potencia y análisis pareado (plan
+%     :750). [PENDIENTE] el cálculo.
+%
+% ---------------------------------------------------------------------
+% BLOQUE 5.3 · Fidelidad de las respuestas
+% ---------------------------------------------------------------------
+% (a) Fidelidad en desarrollo sobre EV2, que es examen: una evaluación por
+%     sistema, con pre-registro (principio 7, plan :264-267).
+%     KG-Reextraído-r1: 6/26/8 (774acac; comando en fichas).
+% (a) Encadenamiento §7: re-corridas N=3 de las parciales y agregación
+%     sellada (ev2_encadenamiento/code/agregacion_enc.py, 9044a04).
+% (a) Tanda 0 como validación de diseño: celdas C2 a C5 (plan :724).
+%     [PENDIENTE] tabla definitiva de E5.c, a recomputar por 8e0597c; NO
+%     VERIFICADO en esta unidad.
+% (a) Medición final: B6.3 (b), una sola vez, pre-registrada, sobre un
+%     conjunto fresco disjunto del desarrollo (plan :750; principio 10,
+%     :283-295).
+% [DECIDE LA AUTORA] instrumento de B6.3 (b) (fichas F-1, C-4).
+% (a) Componente (e), exactitud de cita: tres indicadores determinísticos
+%     (plan :750; scripts/ucita2_indicadores.py:9-20). El harness solo
+%     controla que las citas salgan de procedencias vistas (harness.py
+%     :323-345 y :551-560).
+% (a) H13: el grafo evaluado también en tareas extrínsecas (principio 9,
+%     plan :275-276).
+% (a) Si el resultado obliga a tocar el pipeline, el arreglo va a una
+%     release posterior y la evaluación no se re-corre (plan :750).
+% (c) Costo de cada corrida de fidelidad: registrado por corrida en
+%     desarrollo (ev2_reporte/reporte_ev2.md:380-398; ev2_r1/reporte/
+%     gasto_etapa1_r1.json y gasto_s7_r1.json;
+%     reports/tanda0/tabla_celdas_E5.json); para B6.3 (b), solo tope y
+%     estimación, sin forma de reporte declarada (plan :750); la propuesta
+%     promete costo y latencia (docs/ppf/main.tex:134). Contradicción: el
+%     plan llama «juez de fidelidad» a los USD 7,29 de r1 (plan :750),
+%     que incluyen el agente. [DECIDE LA AUTORA] Fichas C-9 y F-8.
+%
+% ---------------------------------------------------------------------
+% BLOQUE 5.4 · Atribución causal de fallas
+% ---------------------------------------------------------------------
+% (a) A0.2: regla sellada con cuatro clases (ausencia en el grafo, no
+%     alcanzado, visto sin consultar, consultado y mal respondido) y
+%     precedencia presente, consultada, vista (plan :307, :1256;
+%     ev2_reporte/regla_atribucion.md:152-159).
+% (a) H6: reportes desde las trazas; A0.2 por replay determinístico está
+%     hecha, y A2.0-reportes (plan :329) está [PENDIENTE] y es recortable
+%     (plan :877).
+% (a) A2.0-gate: la atribución sobrevive a sesiones de Claude Code en las
+%     cuatro clases (plan :327).
+% (a) Caso por caso de los nodos incompletos que la clase generacion
+%     oculta (P-6, plan :1258).
+% (a) Lectura de E6 de la tanda 0, punto 3: cada respuesta parcial o
+%     incorrecta se clasifica según si la información estaba en el grafo
+%     y no se navegó, o no estaba (plan :728).
+% [PENDIENTE] A0.3, muestra al verificador (plan :309), y B2.7, gate del
+%     verificador sobre la generación 3, con la restricción H5 (plan :379).
+% Contradicción C-1: el plan promete estas clases al capítulo 6 (P-4,
+%     plan :1256).
+%
+% ---------------------------------------------------------------------
+% BLOQUE 5.5 · Comparación contra la recuperación por fragmentos
+% ---------------------------------------------------------------------
+% (a) H2: un agente y un prompt; el brazo es el servidor MCP (plan :328,
+%     :331; banco_mcp/README.md:162-165).
+% (b) H1: el banco de Claude Code se usa para esta comparación, no para
+%     todas (principio 8, plan :268-274); aislamiento verificado (:328).
+% (a) H5: la misma fragmentación, fragmentos de E0 con herencia, top-k=5
+%     (plan :331; laudo 2 del 20/09).
+% (a) Brazos: el grafo; fragmentos con BM25 (comparación principal);
+%     fragmentos con denso harrier-oss-v1-0.6b (secundaria); el híbrido
+%     B1.9 queda como exploración sobre el desarrollo (plan :331-333).
+% (b) H3: harrier-oss-v1-0.6b elegido por un bake-off propio; el MTEB fue
+%     solo criterio de entrada (docs/decision_modelo_embeddings.md:16-38 y
+%     :119); configuración leída de la model card (:125-158).
+% (a) H4: embeddings sobre los nodos del grafo, B1.10 (plan :365),
+%     condicionados a que ganen. [PENDIENTE]
+% (a) A2 es validación de diseño sobre el desarrollo (D-h, plan :976-977);
+%     B6.3 (f) es la comparación final, con peso confirmatorio (D-h2,
+%     plan :981).
+% [DECIDE LA AUTORA] conjunto de A2: las 40 de EV2 (plan :331) frente a
+%     la regla de A1.8 (plan :323). Fichas C-2 y F-2.
+% (a) Mismo analizador y modo en las dos búsquedas léxicas, o diferencia
+%     declarada (plan :331, :750).
+% [PENDIENTE] prerrequisito H-B2 de A2.1: semántica de num_turns contra
+%     --max-turns (plan :331).
+% (a) Válvula de costo: la configuración secundaria puede bajar a N=1 si se
+%     declara en el pre-registro (plan :750).
+% Contradicción C-1: P-2 promete esta comparación al capítulo 7 (plan
+%     :1254).
+% (c) Costo de cada corrida de la comparación: A2.1 y A2.3 prevén costo
+%     por pregunta, latencia p50/p95 y un Pareto fidelidad-costo (plan
+%     :331, :333), y el banco calcula el costo desde tokens con precios
+%     sellados (plan :327); no hay corrida ni pre-registro de A2.1, y
+%     B6.3 (f) solo declara tope y estimación (plan :750).
+%     [DECIDE LA AUTORA] Fichas C-9 y F-8.
+%
+% ---------------------------------------------------------------------
+% BLOQUE 6.4 · La actualización ante cambios normativos
+% ---------------------------------------------------------------------
+% (a) U-JOB-ACT cerrada (9278923): re-scraping mensual, deltas por sha,
+%     mapeo delta, procedencia, partes del grafo afectadas, y reporte; la
+%     ejecución de una actualización es una release declarada (plan
+%     :1078-1081).
+% (a) Alcance vigilado: 157 TOs (plan :1096-1100). Señal de cambio: el sha
+%     del contenido, no la cabecera ni lo que el documento declara (plan
+%     :1138-1140).
+% (a) Fechas de descarga ancladas en artefactos (fe de erratas,
+%     docs/fe_erratas_fecha_corpus_congelado.md; plan :1086-1093).
+% (a) Decisión de la autora: exigencia 7 cumplida; exigencia 6
+%     (validación temporal) ABIERTA con su material localizado, los tres
+%     TOs modificados del conjunto de desarrollo (plan :1143-1147).
+%     [PENDIENTE] exigencia 6.
+% (a) El corpus no se actualiza; toda actualización es laudo de la autora
+%     (plan :1147-1148).
+% (a) H12: el grafo evaluado se reporta sin cambios y el corregido es una
+%     versión posterior (principio 9, plan :275-282; reunión del 19/08 en
+%     docs/tesis/esqueleto_intro.md:208-212).
+% [DECIDE LA AUTORA] D-i: el objetivo específico 6 no tenía sección (plan
+%     :982); la estructura del 29/09 le asigna la 6.4.
+% =====================================================================
