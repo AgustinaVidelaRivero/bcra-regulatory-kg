@@ -1,17 +1,17 @@
 # Protocolo de los dos grafos: el evaluado y el corregido
 
-**BORRADOR — PENDIENTE DE FIRMA DE LA AUTORA** (redactado el 07/10/2026 en la unidad RECONC-DISENO-EVAL; entrado al repo como
-BORRADOR el 07/10/2026; no sellado). Será una sección del protocolo del ciclo de refinamiento de B2.6
-(`docs/protocolo_ciclo_refinamiento.md`, hoy NO ENCONTRADO, `plan:382` y checklist W3 `:217`) cuando ese protocolo exista. Los
-nombres del §1 quedaron DECIDIDOS por la autora el 07/10/2026 (D13); los demás puntos marcados <DECIDE LA AUTORA> llevan una
-propuesta.
+**FIRMADO por la autora el 07/10/2026** (firma por mensaje de la autora; BORRADOR redactado el 07/10/2026 en la unidad
+RECONC-DISENO-EVAL y entrado al repo en `93bebd2`). Rige desde esta firma, con dos decisiones al firmar: la propuesta del §3, punto 4,
+aceptada, y la ubicación en la tesis según la estructura vigente (§2, punto 4; §3, punto 3; §5, punto 3). Será una sección del protocolo
+del ciclo de refinamiento de B2.6 (`docs/protocolo_ciclo_refinamiento.md`, hoy NO ENCONTRADO, `plan:382` y checklist W3 `:217`) cuando ese
+protocolo exista. Los nombres del §1 quedaron DECIDIDOS por la autora el 07/10/2026 (D13).
 
 ## 0. De dónde sale
 
 - D13 de las reuniones del 18 y el 19/08/2026 (acta confirmada el 07/10/2026, `docs/registro_reunion_mentores_2026-08-18_19.md`): la versión científica reporta el grafo tal como se evaluó; el
   entregable puede corregirse después, declarado como posterior; dos contribuciones, el método y el grafo.
 - Principio 9 (`plan:277-283`, plan v6 en `87db24c`, 23/08/2026) y laudo 3 del 20/09/2026 sobre nombres y capítulos
-  (`plan:284`, asentado en `e58d41d`).
+  (`plan:287`, asentado en `e58d41d`).
 - Laudo D-f, §5, último ítem (`966253e:docs/laudo_D-f_secuencia_tripletas.md:53-54`).
 - B6.3, regla dura: si el resultado obliga a tocar el pipeline, el arreglo produce una release posterior y no se re-corre la
   evaluación para mejorar el número (`plan:773`).
@@ -25,11 +25,11 @@ propuesta.
 
 | nombre en la prosa | qué es | dónde está definido |
 |---|---|---|
-| **el grafo evaluado** | el grafo escalado, sellado antes del pre-registro de B6.3; el que mide el capítulo de evaluación | laudo 3 (`plan:284`) |
-| **el grafo corregido** | la release posterior a los informes de B6.3 y de B4, declarada como tal; el entregable | laudo 3 (`plan:284`) |
+| **el grafo evaluado** | el grafo escalado, sellado antes del pre-registro de B6.3; el que mide el capítulo 5 (Evaluaciones) | laudo 3 (`plan:287`) |
+| **el grafo corregido** | la release posterior a los informes de B6.3 y de B4, declarada como tal; el entregable del capítulo 6 (Recurso) | laudo 3 (`plan:287`) |
 | **grafo sin cola de la tanda N** (decidido el 07/10/2026) | el ensamblado de una tanda sin las unidades de la cola humana; el que miden las vigilancias y lecturas de la tanda | hoy la enmienda 5 lo llama «grafo evaluado de cada tanda» (`ccd8fad:…:27`) |
 | **grafo completo de la tanda N** (decidido el 07/10/2026) | el ensamblado de la tanda con la cola adentro y marcada | enmienda 5, §1 («sellado junto con el completo») |
-| KG-Reextraído-r1, r2, r2b… | nombres de release del ciclo B2.6 | se quedan en el plan; en la tesis, en una tabla del capítulo del pipeline (`plan:284`) |
+| KG-Reextraído-r1, r2, r2b… | nombres de release del ciclo B2.6 | se quedan en el plan; en la tesis, en una tabla del capítulo 4 (Construcción) (`plan:287`) |
 
 Para la tanda 0: «grafo sin cola de la tanda 0» = KG-Tanda0-Diez-r2b-sincola (`e22fae1a…`) y KG-Tanda0-Desarrollo-r2b-sincola
 (`2922b72d…`), sellados en `dde9f44` y `235a295`; el mandato de U-SINCOLA-T0 los llama «grafo evaluado de la tanda 0»
@@ -54,7 +54,7 @@ tanda”»); los textos nuevos usan los nombres nuevos; la tesis, solo «el graf
 3. **Qué no se hace.** No se corrige en el lugar; no se vuelve a correr B6.3 sobre otra versión para mejorar una cifra
    (`plan:773`). Todo defecto que muestre la evaluación va al backlog con su `capa_pipeline` y el id del hallazgo.
 4. **Qué se reporta.** Todo lo de B6.3, (b) a (f), sobre este grafo y tal como salió, con la cifra de la cola al lado (unidades
-   fuera y su tasa de error leída).
+   fuera y su tasa de error leída). Va al capítulo 5 (Evaluaciones).
 
 ## 3. El grafo corregido
 
@@ -66,12 +66,13 @@ tanda”»); los textos nuevos usan los nombres nuevos; la tesis, solo «el graf
    el pipeline, en código antes que en reproceso (principio 12, `plan:299`) → re-corrida con caché → gate de release (suite de
    regresión, shapes, intrínsecas; `plan:382`) → sha nuevo → release declarada.
 3. **Qué se reporta.** La lista de correcciones con su origen (hallazgo, qué cambió, qué test lo prueba), el gate de release,
-   la diferencia de tamaño contra el evaluado (unidades, nodos, aristas) y el costo. Va al capítulo de conclusiones, como
-   entregable (laudo 3), y a la publicación (C2), con los dos grafos y sus sha.
+   la diferencia de tamaño contra el evaluado (unidades, nodos, aristas) y el costo. Va al capítulo 6 (Recurso), como
+   entregable, y a la publicación (C2), con los dos grafos y sus sha. El laudo 3 lo ubicaba en las conclusiones; la estructura
+   vigente de la tesis lo lleva al capítulo 6 (decisión de la autora del 07/10/2026).
 4. **Qué no se reporta como evaluación.** Ninguna cifra sobre el conjunto de test de B6.3 se presenta como si fuera la evaluación.
-   Propuesta <DECIDE LA AUTORA>: el grafo corregido no se mide sobre ese conjunto; su mejora se demuestra con los tests de
-   regresión nacidos de cada hallazgo (cada uno falla en el evaluado y pasa en el corregido). Si se mide igual, se reporta como
-   análisis exploratorio posterior y nunca en la misma tabla (regla de admisibilidad de B6.3, `plan:773`).
+   **Decidido por la autora el 07/10/2026, con la firma:** el grafo corregido no se mide sobre ese conjunto; su mejora se demuestra
+   con los tests de regresión nacidos de cada hallazgo (cada uno falla en el evaluado y pasa en el corregido). Si se midiera, se
+   reporta como análisis exploratorio posterior y nunca en la misma tabla (regla de admisibilidad de B6.3, `plan:773`).
 
 ## 4. Lo que no es el grafo corregido
 
@@ -84,7 +85,16 @@ B6.3 (`plan:741`). Ninguna de ellas es «el grafo corregido».
 1. El protocolo del ciclo de refinamiento de B2.6, del que este documento sería una sección (W3, `checklist:217`).
 2. ~~La decisión de nombres y las notas al pie de los documentos firmados.~~ Hecho el 07/10/2026: nombres decididos; notas al pie
    en el mandato de U-SINCOLA-T0 y en la enmienda 5 al protocolo entre tandas.
-3. La numeración de capítulos (F-4): el laudo 3 ubica el grafo evaluado en la sección 4.5 y la medición en el capítulo 8
-   (`plan:284`), y la estructura del 30/09 (C1.11, `plan:857`) cambió los capítulos.
+3. ~~La numeración de capítulos (F-4).~~ **Cerrada el 07/10/2026 (decisión de la autora, con la firma).** Estructura vigente de la
+   tesis: 1 Introducción, 2 Marco, 3 Esquema, 4 Construcción, 5 Evaluaciones, 6 Recurso, 7 Conclusiones. La medición del grafo
+   evaluado va en el capítulo 5; el grafo corregido, como entregable, en el capítulo 6. El laudo 3 (`plan:287`) los ubicaba en el
+   capítulo 8 y en las conclusiones; la nota fechada en el plan asienta el cambio.
 4. Mencionarlo a los mentores: la enmienda 5 deja fuera del grafo evaluado las unidades que el verificador no aceptó (74 en la
    tanda 0, `plan:400`), y eso cambia qué es «el grafo que se evalúa» respecto de lo conversado el 19/08.
+
+## Firma
+
+FIRMADO por la autora el 07/10/2026 (BORRADOR en `93bebd2`). Rige desde esta firma. Decisiones al firmar: (a) la propuesta del §3,
+punto 4: el grafo corregido no se mide sobre el conjunto de test de B6.3, y si se midiera va como análisis exploratorio posterior,
+nunca en la misma tabla; (b) la ubicación en la estructura vigente de la tesis: la medición del grafo evaluado en el capítulo 5 y el
+grafo corregido, como entregable, en el capítulo 6 (F-4 cerrada). Siguen abiertos el §5, puntos 1 y 4.

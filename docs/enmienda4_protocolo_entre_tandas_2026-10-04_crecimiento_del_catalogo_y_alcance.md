@@ -1,6 +1,7 @@
 # Enmienda 4 al protocolo entre tandas — cómo crece el catálogo de sujetos, cuándo se lee el alcance de un documento nuevo y la regla de cruce del tercer escalón
 
-**VERSIÓN PARA FIRMAR — PENDIENTE DE FIRMA DE LA AUTORA** · Redactada el 04/10/2026 (BORRADOR); versión para firmar del 07/10/2026, al cierre de
+**FIRMADA por la autora el 07/10/2026** (versión para firmar commiteada en `1190a8a`; firma por mensaje de la autora). Rige desde esta firma.
+Redactada el 04/10/2026 (BORRADOR); versión para firmar del 07/10/2026, al cierre de
 R2 de U-RERESOL-CAT (R2-1 y R2-1 bis `0737497`, R2-2 `a079275`, R2-3 `803623a`, R2-3 bis `dac7d57`). Actualizada el 07/10/2026 (noche) con lo
 que congela la firma (§6) y lo que hace falta antes de la tanda 1 (§7).
 
@@ -9,7 +10,7 @@ firmado: las primeras 398 líneas, sha256 `b23d37c5396a…`). El protocolo no se
 y se lee junto con él, con la enmienda sobre la cola humana (`8d01b04`), la enmienda 2 (`0b98045`) y la
 enmienda 3 (`0cb0c70`, con su §3 en `bd77541`).
 
-No rige hasta la firma. La condición para firmarla (R2 de U-RERESOL-CAT con el script de re-resolución funcionando, con su prueba;
+La condición para firmarla (R2 de U-RERESOL-CAT con el script de re-resolución funcionando, con su prueba;
 enmienda 2, punto 3) está cumplida: `reresolver_catalogo.py` y su selftest (66/66), la prueba T1–T4 sobre el crudo r2b (R2-1), el registro
 de alcance legible por código (R2-2), la salida de S19 con el runner alineado (R2-3) y la regla general del padre del propuesto en un
 documento sin alcance, con cualquier motivo (R2-3 bis).
@@ -156,7 +157,7 @@ reprocesamiento).
    acumulado. Al cierre de la tanda 0 hay 14 claves sobre el umbral (decisión 1). Su lectura y aprobación es la primera aplicación del
    §1, después de esta firma; no es condición de la tanda 1.
 
-## Decisiones al firmar (propuestas por la mesa el 07/10/2026; las confirma la autora con la firma)
+## Decisiones al firmar (propuestas por la mesa el 07/10/2026; confirmadas por la autora con la firma del 07/10/2026)
 
 1. **Umbral de la cuarentena (§1, punto 2): 2 unidades distintas**, confirmado con el registro de U-REEXT-T0: en diez, 145 filas en cuarentena
    con la mención verificada, en 87 claves; 14 claves llegan a 2 unidades o más (`data/experiment/reresolucion_catalogo/freno_r2_1.md:152-154`).
@@ -172,4 +173,5 @@ reprocesamiento).
 
 ## Firma
 
-PENDIENTE DE FIRMA de la autora (versión para firmar del 07/10/2026).
+FIRMADA por la autora el 07/10/2026 (versión para firmar en `1190a8a`). Rige desde esta firma, con las cinco decisiones al firmar. Lo
+primero que dispara: la fila 11-bis del checklist y la unidad U-ALCANCE-E1 (§7), antes de la extracción de la tanda 1.
