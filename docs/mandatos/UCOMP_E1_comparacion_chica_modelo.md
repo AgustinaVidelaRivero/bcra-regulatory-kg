@@ -202,3 +202,11 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 116 líneas de arriba (`c
     camino crítico: la segunda lectura a ciegas de la mesa (despacho preparado; material de 87 unidades, 1,5 millones de caracteres) corre
     después del 08/10/2026 y la autora adjudica las divergencias (estimación: 40 a 80).
   - Commit de C2 PENDIENTE de la autora.
+- **07/10/2026 — C2 commiteada en `4e9a1fc`; decisión de la autora sobre las reglas de lectura.** Las cuatro reglas declaradas por la
+  instancia en C2 (nota anterior: la Condicion con `condicion_de` hacia una Operacion cuenta como relación; la Excepcion con relación cuenta
+  solo si es cláusula de excepción; un supuesto extraído como Restriccion, Obligacion o Definicion sin Condicion es `dentro_de_norma`; en M2,
+  «extraída» exige que el tramo verificado de una entidad cubra el tramo omitido, y lo que está solo en la descripción cuenta como ausente; la
+  precedencia de la entidad sobre la omisión para el código N) **rigen también para la segunda lectura a ciegas de la mesa**. La sesión de la
+  segunda lectura se despachó antes de esta nota; la autora le comunicó las cuatro reglas por escrito al despacharla, antes de que estuvieran
+  en el mandato. Control de la revisión de esa lectura: su reporte tiene que declarar desde cuándo aplicó las reglas (hora) y, si clasificó
+  algo antes de recibirlas, re-clasificar esos ítems con las reglas y contarlos aparte.
