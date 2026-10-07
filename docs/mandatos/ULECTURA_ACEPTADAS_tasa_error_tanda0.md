@@ -76,3 +76,20 @@ adjudicación.
 - Convivencia: puede correr en paralelo con S1 de U-SEG-OFICIAL, C1 de U-COMP-E1, O1 de U-E3-LISTAS y R2 de U-RERESOL-CAT; no comparte
   archivos con ninguna.
 - Esfuerzo: 60 fichas; del orden de 2 h de la instancia, 4 h de la mesa y 1 h de la autora.
+
+## Notas posteriores a la firma
+
+El texto firmado (las 76 líneas anteriores a esta sección, `9502ca4`) no se edita; estas notas se leen junto con él.
+
+- **06/10/2026 — revisión del FRENO L1 y segunda lectura de la mesa (L0 y L1 sin commit al escribir esta nota).** La mesa leyó a ciegas las
+  60 fichas de `fichas_l1.md` (sin los veredictos de la instancia) con el criterio del §1 y después comparó: el mismo veredicto en las 60
+  (ítems 6 de 30 con error: `cap::5.4.5`, `ext::3.17.3.4`, `ctacte::6.1.2.5`, `ext::7.9.1.1`, `ctacte::6.1.2.7`, `lingob::2.3.2.1`; no ítems 4
+  de 30: `ext::7.3.11`, `ext::10.2.4::cierre`, `ctacte::1.5.2.9`, `ctacte::9.1.3`), sin divergencias; un matiz en `ext::3.17.3.4` (la mesa señala
+  A1 y la instancia A2: las dos aristas quedan sin sostén). Los cuatro casos límite que la instancia declaró se leen igual (`cap::5.4.5`,
+  `lingob::2.3.2.1` y `ctacte::9.1.3` con error; `ext::14.2.1.6` sin error, con observación de mención). Decisiones de la autora: (1) tres
+  cifras en el reporte y en la vigilancia por tanda: la tasa de la unidad con el criterio de T4 (la extracción), comparable con los 12 de 30 de
+  la cola; aparte, la de las `remite_a` por cita y destino (hoy 0 de 167 en 11 unidades); y los tipos documentales mal asignados
+  (`Comunicacion` para un punto del mismo TO o para una ley) como observación, no como error, como en T4; (2) `cla::1.2.1`, vista por la
+  instancia antes del sello, se declara en el reporte de L2 con la coincidencia de las dos lecturas y no se reemplaza (la semilla la fija la
+  firma y el sorteo no depende de lo que se mire). La adjudicación de la autora sobre las 10 con error y las dudas es el hueco del «seguí» de
+  L2; L2 computa los estimadores con ella.
