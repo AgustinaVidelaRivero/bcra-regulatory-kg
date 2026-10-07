@@ -1,10 +1,10 @@
 # Pre-registro de la evaluación por tripletas (B4)
 
-**VERSIÓN PARA FIRMAR — PENDIENTE DE FIRMA DE LA AUTORA** (borrador del 07/10/2026 en RECONC-DISENO-EVAL, entrado al repo en
-`93bebd2`; versión para firmar del mismo día con las once decisiones de la autora del §10 y sus siete ajustes; no sellado; ningún número
-de este documento es un resultado). Es el archivo que B4.1 nombra (`plan:416`). Su firma es, a la vez, el laudo D-b (`plan:961`: alcance,
-escala de importancia, regla de presencia y umbral de acuerdo del juez), sin el cual B4 no arranca. La firma se asienta al pie, con fecha;
-el texto firmado no se edita después: recibe notas fechadas.
+**FIRMADO por la autora el 07/10/2026** (versión para firmar commiteada en `865a5b2`, con las once decisiones del §10 y sus siete ajustes;
+firma por mensaje de la autora, que ratifica los topes de USD 35 para la etapa V y USD 55 para la etapa T; borrador del mismo día en `93bebd2`).
+Desde esta firma es el pre-registro de B4 y el laudo D-b (`plan:961`: alcance, escala de importancia, regla de presencia y umbral de acuerdo
+del juez). No sellado como medición: ningún número de este documento es un resultado. El texto firmado no se edita después: recibe
+notas fechadas al pie.
 
 ## 0. De dónde sale
 
@@ -288,4 +288,5 @@ python3 -c "import json,glob;L=[len(u.get('texto') or '') for p in glob.glob('da
 
 ## Firma
 
-PENDIENTE DE FIRMA de la autora.
+FIRMADO por la autora el 07/10/2026 (versión para firmar en `865a5b2`). Rige desde esta firma. Decisiones al firmar: las once del §10, con los
+topes de USD 35 (V) y USD 55 (T).
