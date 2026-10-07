@@ -94,3 +94,54 @@ firmar en `9bca986`) y no cambia.
   E3 verifica que lo compuesto en el ítem (sujeto, modalidad, cuantificador) coincida con lo que fija el encabezado; si no coincide,
   sigue siendo un error. (3) El texto final de la NOTA lo aprueba la autora en el FRENO O1, que muestra el texto y una prueba en seco
   (sin API: el mensaje de E3 armado con la pieza 1 y la NOTA) sobre ítems de los tres tipos, incluidos `cla::5.1.1.1` y uno de `ext::3.6.1`.
+- **06/10/2026 — revisión del FRENO O1 y decisiones de la autora (O1 sin commit al escribir esta nota; enmienda 1 a este mandato,
+  autorizada por la autora).** La revisión independiente reprodujo O1 con los comandos del paquete sobre copias de `d9d8888` sin
+  enlaces: las 8 salidas del diagnóstico iguales byte a byte; la medición antes y después igual al FRENO (los 1.054 ítems cambian; los
+  1.386 no ítems, las 2.440 unidades sin la marca r2 (y 2.427 de v3_b54 y 1.762 de r1) y los 13 casos del candado, byte a byte iguales;
+  2.396.141 caracteres agregados); la prueba en seco con los mismos reclamos antes y después (4 de 5 sin base; 1 sigue); los archivos del
+  repo que O1 lee, iguales antes y después; 2.213 `.pyc`.
+  - **D1, citas con el bloque: SÍ, variante A** (enmienda 1 a este mandato). Se autoriza una línea en `ratchet_e3.py:283`:
+    `cita_en_fuente(cita, chunk)` pasa a `cita_en_fuente(cita, chunk, _forma_r2(validacion))`, el mismo patrón de `ampliacion_activa(validacion)`
+    en esa función (`:238`). Razón: sin el bloque en la fuente de las citas, toda cita de E3 al encabezado queda sin verificar y los
+    veredictos inutilizables aumentan; con A, sobre los veredictos de hoy, 37 citas pasan a verificadas y 19 unidades pasan de cola por
+    veredicto inutilizable a reintento. `ratchet_e3.py` sigue PROHIBIDO salvo esa línea; el riesgo declarado (una cita a la norma del
+    encabezado se vuelve feedback del reintento, contra P3C-d2) lo mide O3.
+  - **D2, párrafos partidos: SÍ.** El bloque que abre la lista son los bloques contiguos del mismo tipo y la misma unidad de origen (23
+    ítems, 6 bloques, 8.819 caracteres más). Un tercer ítem en la fixture del candado, `pro::2.3.6.1`, además de los dos firmados; los
+    valores del candado se recomputan en O2 con el texto final y la autora los confirma en el FRENO O2.
+  - **D3, la norma del encabezado vuelta a emitir en el ítem: SÍ, sin cláusula en la NOTA.** E3 no la reclama; O3 cuenta por código, en
+    las unidades afectadas, los ítems que repiten la norma de su encabezado (label o descripción con la norma del bloque), como medida.
+  - **D4, largo y costo: SÍ**, 1.991 o 2.098 caracteres; unos USD 1,76 por corrida del tamaño de la tanda 0 (estimación con la razón
+    marginal de E1, 3,06 caracteres por token).
+  - **D5, qué compara A3r después del cambio.** A3r (`selftest_clave_cache.py:498-499`, anclaje `:1841`) deja de exigir las 2.440
+    claves de E3 presentes: con el código vigente recomputa las 2.440 y exige que las 1.386 de no ítems estén en la base y que las 1.054
+    ausentes sean exactamente las de los ítems (`prompt_r2b.es_item`), contadas y listadas; cualquier otra ausencia o presencia es
+    DISCREPANCIA. La fila nueva de la tabla («E3 de las afectadas», F23b: el bloque que abre la lista y la NOTA del ítem en el mensaje de
+    E3) declara ese anclaje; el bloque M de `selftest_e3` pasa de 13 a 18 casos (17 con los dos ítems, más `pro::2.3.6.1` con y sin la
+    marca, según lo que recompute O2); las anclas de F04, F10, F10b, F23 y F01 a F03 se actualizan por el corrimiento de líneas.
+  - **La población de O3 son 20 unidades distintas, no 24**: 17 con reintento por los reclamos P, C, B y B2 y 7 en la cola, 4 en los dos
+    grupos (`ext::3.18.1.1`, `ext::3.5.6.1`, `ext::3.6.1.1`, `ext::3.6.4.2`); lista sellada `cc6b0cd6…`.
+  - `reports/u_diag_e3_listas/` (:4-5 de este mandato) no está en el repo: el comando de archivo del 06/10/2026 frenaba por una ruta
+    absoluta en `UDIAG_E3_LISTAS_grep_convenciones.txt` y no llegó a commitear. Se archiva con el comando corregido (rutas reemplazadas
+    en las copias), en el commit de O1.
+- **07/10/2026 — la NOTA del ítem aprobada con tres correcciones de la autora (versión 2; sin commit al escribir esta nota).**
+  - (a) La tercera viñeta de la propuesta de O1 mezclaba los dos subcasos de P3C-b1 (`prompt_r2b_parche_p3c.json:48`) y sus dos ejemplos
+    entre comillas asignaban una forma a una lista entera. En la versión 2 la viñeta se parte en dos, calcadas del prefijo: «lo que queda
+    afuera» (cada ítem nombra un miembro excluido: Excepcion que dice qué queda afuera y de qué norma, con la contra-excepción como norma que
+    vuelve a regir y una Condicion por condición) y «las condiciones de una sola excepción» (cada ítem describe un supuesto de la única
+    salvedad: Condicion de esa excepción con su cuantificador; en la variante de línea de título, con supuestos alternativos la excepción
+    compuesta con su supuesto). Y, porque la frontera entre b1 y b2 la decide E1 leyendo («Mirá qué trae cada ítem»), la NOTA dice que, si no
+    queda claro si los ítems son miembros o supuestos, cualquiera de las dos formas vale y no es faltante. Los ejemplos entre comillas salen.
+  - (b) La oración de la variante de línea de título («si se exigen juntos o no queda claro, el ítem es solo una Condicion y esa norma no se
+    extrae en ningún ítem») es la regla literal de E1: R30, `prompt_r2b_reemplazos.json:114` («si se exigen juntos («y», «la totalidad»,
+    «concurrentemente») o no queda claro, el ítem es solo una Condicion, y la norma del encabezado no se extrae en ningún ítem: repetirla con
+    una sola condición la daría por suficiente»). Medido en la tanda 0 (copia de `d9d8888` con el prototipo de O1; `comun_e3.indice_bloque_lista`
+    sobre los 1.053 ítems de la E0 r2b y los tipos de entidad de `extracciones_finales_r2_<to>.jsonl`): 39 ítems de 10 puntos abren su lista
+    desde la línea de título; en 9 de los 10 puntos algún ítem lleva una norma (Obligacion, Restriccion, Potestad o Excepcion); en 1,
+    `cap::10.2.1` (2 ítems, solo Definicion), ningún ítem lleva una norma y la del encabezado, si la hay, no está en el grafo. Es un conteo por
+    tipo de entidad, no una lectura de si la norma compuesta coincide con el encabezado: cota superior de 1 punto en 10. Queda declarado como
+    límite del grafo en la tesis, con esa cifra; la NOTA lo dice y no lo calla.
+  - (c) Los dos tipeos señalados («partede», «propia:con») no están en los artefactos de O1 (grep sobre el texto propuesto, el parche del
+    prototipo, los 1.054 mensajes generados y la prueba en seco: 0 coincidencias); en la versión 2 las dos palabras van con su espacio.
+  - El texto aprobado, la tabla cláusula → regla actualizada (filas C5a, C6, C5b, C5b′ y C7) y el «seguí» de O2 (versión 2: los valores del
+    candado de O1 se recomputan con esta NOTA, D2 y el tercer ítem) están en el paquete de la mesa; O2 pone el texto en `prompt_e3.py`.
