@@ -45,8 +45,16 @@ Grupos (casos sintéticos salvo donde se indica):
       sugerencia, la raíz del catálogo (`Sujeto_sujeto`) con la marca
       `padre_por_defecto_generico`; una instancia sugerida pasa a su clase;
       dos sugerencias distintas o una fuera del catálogo, la raíz; en un
-      documento con alcance, un motivo que no es de la parte A o un padre que
-      ya está, la salida de siempre.
+      documento con alcance o con un padre que ya está, la salida de siempre;
+      `sin_match` sin alcance, la raíz (desde R2-3 bis).
+  T12 R2-3 bis (decisión de la autora del 07/10/2026, regla general): en un
+      documento sin alcance, todo propuesto sin padre del modelo, con
+      cualquier motivo del registro, toma la sugerencia única del catálogo o
+      la raíz, con su marca. Un caso sintético por motivo (`sin_match` con y
+      sin sugerencia, `ambiguo` con dos, `id_fuera_de_catalogo` con una fuera
+      del catálogo, `mencion_no_verificada`, `sin_mencion`), con S19 sobre su
+      grafo (falla antes, pasa después); control: el mismo propuesto en un
+      documento con alcance sigue por el paso c.
 Escribe solo en un directorio temporal (TMPDIR). USD 0.
 
 Uso:
@@ -938,24 +946,82 @@ def t11():
           pc["Sujeto_propuesto_inst"].get("padre_sugerido") == "Sujeto_organismo_publico"
           and pc["Sujeto_propuesto_inst"].get("padre_sugerido_instancia") == "Sujeto_bcra"
           and pc["Sujeto_propuesto_inst"].get("padre_desde_sugerencia_modelo") == "true", str(pc["Sujeto_propuesto_inst"]))
-    gen = r_c["resumen"]["detalle"]["padre_por_defecto_generico"]
+    gen = {x["id"]: x for x in r_c["resumen"]["detalle"]["padre_por_defecto_generico"]}
     check("T11h dos sugerencias distintas o una fuera del catálogo: la raíz con la marca (b) y las sugerencias listadas",
           all(pc[i].get("padre_sugerido") == "Sujeto_sujeto" and pc[i].get("padre_por_defecto_generico") == "true"
               for i in ("Sujeto_propuesto_dos", "Sujeto_propuesto_fuera"))
-          and [(x["id"], x["sugerencias"], x["filas"]) for x in gen]
-          == [("Sujeto_propuesto_dos", ["Sujeto_banco", "Sujeto_entidad_financiera"], 2),
-              ("Sujeto_propuesto_fuera", ["Sujeto_inexistente"], 1)], json.dumps(gen))
+          and (gen["Sujeto_propuesto_dos"]["sugerencias"], gen["Sujeto_propuesto_dos"]["filas"])
+          == (["Sujeto_banco", "Sujeto_entidad_financiera"], 2)
+          and (gen["Sujeto_propuesto_fuera"]["sugerencias"], gen["Sujeto_propuesto_fuera"]["filas"])
+          == (["Sujeto_inexistente"], 1), json.dumps(list(gen.values())))
     rc = r_c["resumen"]
-    check("T11i con alcance, motivo fuera de la parte A o padre que ya está: la salida de siempre",
+    check("T11i con alcance o padre que ya está, la salida de siempre; sin_match sin alcance, la raíz (R2-3 bis)",
           pc["Sujeto_propuesto_con_alcance"].get("padre_sugerido") == rol_cla
           and pc["Sujeto_propuesto_con_alcance"].get("padre_por_defecto") == "true"
-          and "padre_sugerido" not in pc["Sujeto_propuesto_sin_match"]
+          and pc["Sujeto_propuesto_sin_match"].get("padre_sugerido") == "Sujeto_sujeto"
+          and pc["Sujeto_propuesto_sin_match"].get("padre_por_defecto_generico") == "true"
           and pc["Sujeto_propuesto_con_padre"] == {"nivel": "propuesto", "cuarentena": "true",
                                                     "padre_sugerido": "Sujeto_entidad_financiera"}
           and (rc["padre_desde_sugerencia_modelo"], rc["padre_por_defecto_generico"], rc["padre_por_defecto"],
-               rc["sin_rol_de_alcance"]) == (1, 2, 1, 1)
-          and [x["id"] for x in rc["detalle"]["sin_rol_de_alcance"]] == ["Sujeto_propuesto_sin_match"],
+               rc["sin_rol_de_alcance"]) == (1, 3, 1, 0)
+          and gen["Sujeto_propuesto_sin_match"]["motivos"] == ["sin_match"],
           json.dumps({k: v for k, v in rc.items() if k != "detalle"}))
+
+
+def t12():
+    print("T12. R2-3 bis: regla general en un documento sin alcance, un caso por motivo (S19)")
+    import ensamblar_tanda0 as ET  # noqa: PLC0415 — en el path por t11
+    import shapes_validator as SV  # noqa: PLC0415
+    cat = E4.catalogo_r2()
+    e0 = REX / "e0_chunking" / "salida_tanda0_r2b"
+    ids19, defecto = SV.cargar_ids_s19_r2()
+    prop = "Sujeto_propuesto_los_exportadores"
+
+    def caso(to, motivo, sugerencias):
+        pv = {"to": to, "chunk_id": f"{to}::9.1"}
+        kg = {"nodes": [{"id": prop, "type": "Sujeto", "label": "los exportadores",
+                         "properties": {"nivel": "propuesto", "cuarentena": "true"}, "provenance": pv, "provenances": [pv]},
+                        {"id": "Obligacion_x", "type": "Obligacion", "label": "O", "properties": {"descripcion": "d"},
+                         "provenance": pv, "provenances": [pv]}],
+              "edges": [{"source": "Obligacion_x", "target": prop, "relation": "aplica_a", "provenance": pv,
+                         "provenances": [pv]}]}
+        reg = [{"to": to, "chunk_id": f"{to}::9.1", "indice_relacion": i, "id_nodo": prop, "estado": "cuarentena",
+                "motivo": motivo, "sujeto_id_modelo": s} for i, s in enumerate(sugerencias)]
+        antes = SV.shape_s19_catalogo(kg["nodes"], ids19, defecto)
+        orig = C.E0_ENM01
+        C.E0_ENM01 = e0                 # archivo_de_to lee la E0 r2b, como en la cadena
+        try:
+            r = ET.normalizar_propuestos_r2b(kg, reg, {}, cat)
+            rol = cat["rol_por_to"].get(C.archivo_de_to(to), {}).get("rol_id")
+        finally:
+            C.E0_ENM01 = orig
+        return kg["nodes"][0]["properties"], r["resumen"], antes, SV.shape_s19_catalogo(kg["nodes"], ids19, defecto), rol
+    casos = [("T12a sin_match con sugerencia del catálogo: la sugerencia, marca (a)", "sin_match",
+              ["Sujeto_entidad_financiera"], "Sujeto_entidad_financiera", "padre_desde_sugerencia_modelo"),
+             ("T12b sin_match sin sugerencia: la raíz, marca (b)", "sin_match", [None], "Sujeto_sujeto",
+              "padre_por_defecto_generico"),
+             ("T12c ambiguo con dos sugerencias distintas: la raíz, marca (b)", "ambiguo",
+              ["Sujeto_banco", "Sujeto_entidad_financiera"], "Sujeto_sujeto", "padre_por_defecto_generico"),
+             ("T12d id_fuera_de_catalogo con sugerencia fuera del catálogo: la raíz, marca (b)", "id_fuera_de_catalogo",
+              ["Sujeto_inexistente"], "Sujeto_sujeto", "padre_por_defecto_generico"),
+             ("T12e mencion_no_verificada con sugerencia del catálogo: la sugerencia, marca (a)", "mencion_no_verificada",
+              ["Sujeto_sujeto_regulado"], "Sujeto_sujeto_regulado", "padre_desde_sugerencia_modelo"),
+             ("T12f sin_mencion sin sugerencia: la raíz, marca (b)", "sin_mencion", [None], "Sujeto_sujeto",
+              "padre_por_defecto_generico")]
+    for nombre, motivo, sugerencias, padre, marca in casos:
+        pr, rs, antes, despues, _ = caso("docvig", motivo, sugerencias)
+        lista = rs["detalle"][marca]
+        check(nombre + "; S19 falla antes y pasa después",
+              pr.get("padre_sugerido") == padre and pr.get(marca) == "true"
+              and not {"padre_desde_sugerencia_modelo", "padre_por_defecto_generico", "padre_por_defecto"} - {marca} & set(pr)
+              and rs["sin_rol_de_alcance"] == 0 and len(lista) == 1 and lista[0]["motivos"] == [motivo]
+              and antes["result"] == "FAIL" and despues["result"] == "PASS", f"{pr} | {despues['resumen']}")
+    pr, rs, antes, despues, rol = caso("cla", "sin_match", ["Sujeto_entidad_financiera"])
+    check("T12g control: el mismo propuesto en un documento con alcance sigue por el paso c (rol del TO, padre_por_defecto)",
+          rol and pr.get("padre_sugerido") == rol and pr.get("padre_por_defecto") == "true"
+          and "padre_desde_sugerencia_modelo" not in pr and "padre_por_defecto_generico" not in pr
+          and (rs["padre_desde_sugerencia_modelo"], rs["padre_por_defecto_generico"], rs["padre_por_defecto"],
+               rs["sin_rol_de_alcance"]) == (0, 0, 1, 0) and despues["result"] == "PASS", f"{pr} | rol {rol}")
 
 
 def main() -> int:
@@ -969,6 +1035,7 @@ def main() -> int:
     t9()
     t10()
     t11()
+    t12()
     ok = sum(1 for _, b, _ in RES if b)
     print(f"SELFTEST R3: {ok}/{len(RES)} {'PASS' if ok == len(RES) else 'FAIL'}")
     return 0 if ok == len(RES) else 1

@@ -15,9 +15,10 @@ sugerencia del modelo guardada. Cuando el documento recibe alcance (registro de 
 con la regla de la cadena: R1; si no, la sugerencia guardada (R4), aunque la mención no verifique (esas filas conservan su
 marca y se cuentan aparte); sin sugerencia, R3. Una fila sin mención en cuarentena es condición con disparador: si aparece,
 se frena (`parte_a.filas_sin_mencion_en_cuarentena` del reporte).
-Mientras el documento no tiene alcance, el nodo de esas filas cuelga, por una arista `padre_sugerido` flaggeada, de la
-sugerencia guardada si es una sola del catálogo (marca `padre_desde_sugerencia_modelo`; una instancia, de su clase) y, si
-no, de la raíz `Sujeto_sujeto` (marca `padre_por_defecto_generico`); S19 lo exige (R2-3).
+Mientras el documento no tiene alcance, todo propuesto sin padre del modelo, con filas en cuarentena de cualquier motivo
+(no solo los de la parte A), cuelga por una arista `padre_sugerido` flaggeada de la sugerencia guardada si es una sola del
+catálogo (marca `padre_desde_sugerencia_modelo`; una instancia, de su clase) y, si no, de la raíz `Sujeto_sujeto` (marca
+`padre_por_defecto_generico`); S19 lo exige (R2-3 y R2-3 bis).
 
 **1. Candidatas (al cierre de la tanda).** Del registro acumulado, las claves con la mención verificada en cuarentena en
 al menos 2 unidades distintas (enmienda 4, §1.2; `r2_1_medicion.py`, sección `umbral`), ninguna colectiva. Cada una se
