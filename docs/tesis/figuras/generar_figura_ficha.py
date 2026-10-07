@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Figura «una ficha de la medición de cobertura» (capítulo 3, sección 3.8), versión 2.1.
+"""Figura «una ficha de la medición de cobertura» (capítulo 3, sección 3.8), versión 2.2.
 
 Una ficha real del instrumento con el que se midió la cobertura del esquema de
 partida, con las respuestas de la lectura marcadas sobre el texto:
@@ -16,7 +16,9 @@ partida, con las respuestas de la lectura marcadas sobre el texto:
 - en la lista de relaciones, la fila de la relación que la lectura registró
   como parte de la deformación (la que llega a la entidad deformada), en el
   naranja de la deformación (versión 2.1);
-- abajo, una leyenda de dos líneas con el significado de cada color.
+- abajo, una leyenda de dos líneas con el significado de cada color (en la
+  versión 2.2, la deformación definida como contenido representado con un
+  tipo o una relación que no le corresponde).
 
 Nada del contenido se tipea ni se supone (FUENTES, con candado de sha256):
 - la ficha, su texto y su extracción salen del worksheet de la lectura; el
@@ -172,7 +174,7 @@ SUB_RELACIONES = "Relaciones: origen, nombre y destino"
 PROPUESTO = "(sujeto propuesto)"
 # Leyenda: (clave del resaltado, par de colores, texto).
 LEYENDA = (("deformacion", proc.MODELO,
-            "Deformación: contenido representado con un tipo que no le corresponde"),
+            "Deformación: contenido representado con un tipo o una relación que no le corresponde"),
            ("omision", proc.DETERMINISTICA, "Omisión: contenido que quedó sin extraer"))
 # Nada de esto puede aparecer en un texto dibujado.
 PROHIBIDOS = (re.compile(r"\bfichas?\b", re.I), re.compile(r"\bayccef\b", re.I), re.compile(r"::"),
