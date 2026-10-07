@@ -52,3 +52,14 @@ propia.
 - [ ] B6.3 (evaluación final) incorpora las tripletas dentro de su pre-registro sellado.
 - [ ] La release r2 sigue el principio 9: el grafo evaluado se sella y las correcciones que la
       evaluación motive se aplican en una versión posterior, declarada como tal.
+
+## Notas posteriores a la firma
+
+El texto firmado son las 54 líneas de arriba (`966253e`, sha256 `85f48f148444…`) y no cambia.
+
+- **07/10/2026 — el grafo de la validación del instrumento (decisión 1 de la autora al llevar a versión para firmar el pre-registro de
+  tripletas, `docs/preregistro_evaluacion_tripletas.md`).** La etapa de validación (B4.2 y B4.3) corre sobre **KG-Tanda0-Desarrollo-r2b-sincola**
+  (`2922b72d…`, sello `dde9f44`/`235a295`; «grafo sin cola de la tanda 0»), no sobre KG-Reextraído-r1 como dice la letra de este laudo:
+  r2b tiene el esquema congelado y la cadena del escalado, así que la escala de importancia y la regla de presencia se validan sobre el
+  vocabulario que después se mide. Cambia el objeto de la validación, no la secuencia ni el doble rol del §5. Si ese grafo se re-sella
+  antes del sorteo, vale el sello vigente al sortear.
