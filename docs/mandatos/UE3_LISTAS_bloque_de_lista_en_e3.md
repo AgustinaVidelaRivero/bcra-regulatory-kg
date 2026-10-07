@@ -210,3 +210,21 @@ firmar en `9bca986`) y no cambia.
     sellada lo describe como «la norma del encabezado»; lo adjudica la autora con el material verbatim del paquete de la mesa
     (`trabajo55/out/residuo_B_ext_3_6_4_1_y_3_16_2_1.md`), y si es un reclamo fundado no lo cubre el caso resuelto.
   - Commit de O3 PENDIENTE de la autora; O4 (check K) se despacha con su hash.
+- **07/10/2026 — O3 commiteada en `6dde4b9` y O4 en `d007be8`; revisión del FRENO O4 por la mesa y decisiones de la autora.** Reproducido sobre
+  una copia de `d007be8` armada con `git archive`, sin enlaces, con las bases de la caché de E3: `selftest_e3` 114/114; con el cuerpo de
+  `k_igual` cambiado por el predicado de O2 fallan exactamente los 3 checks nuevos (111 ok, 3 FAIL) y nada más cambia; la prueba de la mesa
+  (`verif_check_k.py`, `7f0ebf4e…`) con la columna del predicado de O4: el mensaje real pasa y los 7 manipulados frenan (O2 dejaba pasar el 1,
+  el 2, el 3 y el 7); el candado sin cambios (fixture `079d2489…`, mensaje `66bc8656…`; `prompt_e3` verifica al importar) y, entre `6dde4b9` y
+  `d007be8`, fuera de `selftest_e3.py` y el freno no cambió nada de la unidad (`prompt_e3.py`, `comun_e3.py`, `ratchet_e3.py` y la fixture,
+  iguales). **El desvío declarado está bien resuelto:** la decisión decía «el fuente duplicado» y el despacho agregó «dentro de las cercas»;
+  probado por variante con el predicado de O2, el duplicado dentro de las mismas cercas ya frenaba (falla la contención del fuente con sus
+  cercas) y el que pasaba era el bloque entero repetido con sus cercas; el check (c) de O4 exige que frenen las dos variantes, y con O4 frenan.
+  Repo sin cambios durante la verificación; 2.213 `.pyc`.
+  - **La unidad sigue abierta hasta O5** (decisión de la autora del 07/10/2026): el residuo de O3 se cierra con un caso resuelto en la NOTA del
+    ítem, con despacho preparado por la mesa (`despacho_O5_UE3_LISTAS_mesa.md`), que necesita antes la adjudicación de `ext::3.16.2.1` y el tope
+    de gasto. Lectura de la mesa sobre el material verbatim: en `ext::3.6.4.1` y `ext::3.6.4.2` el extractor declaró como `[meta_normativo]` el
+    texto del bloque que abre la lista (el intro del 3.6.4, otra unidad) para dejar constancia de que se compone con el ítem, y E3 lo reclama:
+    falsa alarma que el caso resuelto cubre; en `ext::3.16.2.1` el tramo reclamado («la entidad también podrá aceptar una declaración jurada del
+    cliente…», con sus incisos i a vii) está en el texto propio del ítem, no en el bloque que abre la lista, y el extractor lo declaró
+    `[meta_normativo]` siendo una facultad con su marco: a juicio de la mesa el reclamo es fundado y no lo cubre el caso resuelto (la lectura
+    sellada de O3 lo había descripto como «la norma del encabezado»). Adjudica la autora.
