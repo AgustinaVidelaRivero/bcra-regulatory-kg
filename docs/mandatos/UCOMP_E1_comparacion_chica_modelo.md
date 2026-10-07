@@ -173,3 +173,6 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 116 líneas de arriba (`c
     cuenta como error de API, no como refusal, y en transmisión la llamada no se persiste ni entra al presupuesto. Ninguna unidad puede quedar
     como salida válida vacía ni como corte: a lo sumo cambia la etiqueta. En C2 y C3 no hay API.
   - Commit de C1 PENDIENTE de la autora; el «seguí» de C2 está preparado por la mesa.
+- **07/10/2026 — C1 commiteada en `6e16bb3`; C2 despachada con el «seguí» de la mesa** (fichas cegadas con códigos sellados; M1 y
+  M2 por corrida; las 8 relecturas del intento 0 con código). Sigue el FRENO C2: segunda lectura de la mesa y adjudicación de la
+  autora sobre las divergencias.

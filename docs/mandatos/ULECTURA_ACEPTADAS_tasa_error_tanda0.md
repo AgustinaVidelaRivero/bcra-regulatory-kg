@@ -113,3 +113,9 @@ El texto firmado (las 76 líneas anteriores a esta sección, `9502ca4`) no se ed
     `hoja_de_ruta_tanda1_mesa/analisis_vigilancia_lectura_aceptadas_L2_mesa.md` (scratchpad de la mesa). Decide la autora al firmar el
     pre-registro.
   - L2 es la última etapa: el commit de L2 cierra la unidad. Commit PENDIENTE de la autora.
+- **07/10/2026 — L2 commiteada en `86324cc`: la unidad queda CERRADA. Decisión de la autora sobre la vigilancia:** la regla por
+  tanda es la de dos niveles por estrato propuesta por la mesa (atención con el test binomial exacto unilateral contra la tasa de
+  la tanda 0 al 5 %: 11 de 30 ítems, 8 de 30 no ítems, que amplía la lectura con 30 unidades más del estrato; freno con los
+  intervalos disjuntos o con la atención confirmada sobre las 60; el mismo test sobre el acumulado desde la tanda 2; la
+  ponderada se reporta con el intervalo del §5 y el conservador no es umbral). Se asienta en el pre-registro de la tanda 1 (A4),
+  no en este mandato ni en el reporte de L2, que quedan como están.

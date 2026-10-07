@@ -82,7 +82,10 @@ edita porque es el prefijo de E3 (F10).
 - Al validar la salida de E1: `pyd_r2/politica_campos_r2.json`.
 - No los abre el armado de ningún request:
   - `pies_<to>.json`;
-  - `indice_e4_r2.json`, `entrada_esqueleto_r2.json`, `ids_s19_r2.json` y `catalogo_suite_r2.json`.
+  - `indice_e4_r2.json`, `entrada_esqueleto_r2.json`, `ids_s19_r2.json` y `catalogo_suite_r2.json`;
+  - el registro de alcance por tanda (`catalogo_unico/registro_alcance_por_tanda.md`) y los generados del catálogo de
+    resolución (`manifest_generados_resolucion_r2.json`, sus ampliaciones y el compuesto), hasta que el registro se cablee en
+    `prompt_r2b.py` (F13c).
 
 **Candados:**
 - Del perfil r2b, contra el congelado de P3c-2:
@@ -133,7 +136,7 @@ la tabla sigue la composición real de la clave, por decisión de la autora del 
 - F10: en «todo» con E1 y E3 (`:84-85`);
 - F14: en «solo código» (`:79-80`).
 
-La enmienda 3 al protocolo quedó firmada el 04/10/2026 (`0cb0c70`; asentado el 06/10/2026 en T5 de U-REEXT-T0). F13 queda pendiente de R2 de U-RERESOL-CAT (R1 cerró en `c98093a`; asentado el 06/10/2026; notas a F13 y F13b).
+La enmienda 3 al protocolo quedó firmada el 04/10/2026 (`0cb0c70`; asentado el 06/10/2026 en T5 de U-REEXT-T0). F13 quedó implementada por R2 de U-RERESOL-CAT (R1 en `c98093a`; R2-1 y R2-1 bis en `0737497`; R2-2 en `a079275`; asentado el 07/10/2026): ver las filas F13, F13b y F13c y su nota.
 
 ## 3. La tabla
 
@@ -158,19 +161,20 @@ La enmienda 3 al protocolo quedó firmada el 04/10/2026 (`0cb0c70`; asentado el 
 | F10b | Archivos de datos de los calibradores de E3, con el candado del prefijo de E3 (`924ef4d`) | al importar `prompt_e3` | nada se arma hasta re-sellar el prefijo de E3; re-sellado, F10 | no cambia | frena (candado del prefijo de E3) | frena; re-sellado, todo (F10) | 9 | `prompt_e3.py:450-456`; `calibradores_e3.py:82-84` | R22d |
 | F11 | Catálogo de sujetos en el bloque del prefijo de E1 o en el enum de `sujeto_id`, incluido un rol de alcance nuevo (sección «Roles de alcance por TO» del bloque) | E1; system y tools | igual que F06; los candados frenan hasta el re-sello (F11b, F13b) | cambia (todas, con namespace nuevo) | no cambia (con la salida de E1 fija) | todo | 9 | `prompt_r2b.py:72`, `:80`, `:137-142`; `modelos_r2.py:692`; `generar_desde_catalogo.py:118`, `:133` | R10, R10b |
 | F11b | Archivos de datos con candado que arman el prefijo o el mensaje de E1 r2b: reemplazos anclados, parche de P3b, bloque de catálogo, tool schema, `rol_por_to_r2.json`, `labels_e2_r2.json` y, por la cadena sellada, `esquema_v2_clases.json` | al construir el perfil de E1 | nada se arma hasta re-sellar; re-sellado, la fila del contenido (F06, F07, F11 o F12) | frena (candado al construir el perfil) | frena (sin perfil no hay salida validada de E1) | frena; re-sellado, la clase de la fila del contenido | 9 | `prompt_r2b.py:77-98`, `:113-118`, `:130-162`; `perfil_e1.py:213-218`; `prompt_congelado.py:156-160` | R21, R22, R22b |
-| F12 | Tabla TO→rol de alcance (`rol_por_to_r2.json`, línea «Alcance de este TO»): una entrada de clase para un TO | E1; mensaje de usuario de las unidades de ese TO; en el ensamblado, el sujeto por defecto de una expresión colectiva | E1 y E3 de las unidades de ese TO; ensamblado en código | cambia (las del TO) | no cambia (con la salida de E1 fija) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:376-392`, `:409`; `r1_e4.py:383`; candado `prompt_r2b.py:81` | R11 |
-| F13 | Catálogo de resolución que lee solo el código, separado del catálogo del request | E4, esqueleto, resolución de sujetos y S19, sobre lo guardado | E4, esqueleto y lo que sigue del ensamblado, en código, cuando la separación exista; hoy no existe (F13b) | no cambia | no cambia | PENDIENTE (R1 de U-RERESOL-CAT) | 12 | `docs/mandatos/URERESOL_CAT_reresolucion_catalogo.md:49-55`; hoy, `r1_e4.py:522-541` | R20 |
-| F13b | Un id nuevo en `catalogo_sujetos_r2.json`, con el código de hoy | candado del catálogo al construir el perfil; re-sellado, el bloque del prefijo y el enum (F11) | nada se arma hasta re-sellar el catálogo y sus generados; re-sellado, E1 y E3 de todas | frena (candado del catálogo) | frena (sin perfil no hay salida validada de E1) | frena; re-sellado, todo (F11) | 9 | `modelos_r2.py:61-96`; `prompt_r2b.py:80`; `r1_e4.py:528-535`; `generar_desde_catalogo.py:118`, `:133`, `:138` | R22c |
+| F12 | Tabla TO→rol de alcance (`rol_por_to_r2.json`, línea «Alcance de este TO»): una entrada de clase para un TO en la tabla de la release (entre tandas, la entrada de un documento nuevo va al registro de alcance por tanda, F13c) | E1; mensaje de usuario de las unidades de ese TO; en el ensamblado, el sujeto por defecto de una expresión colectiva | E1 y E3 de las unidades de ese TO; ensamblado en código | cambia (las del TO) | no cambia (con la salida de E1 fija) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:376-392`, `:409`; `r1_e4.py:383`; candado `prompt_r2b.py:81` | R11 |
+| F13 | Catálogo de resolución, que lee solo el código: la lista de ampliaciones que solo agrega (alta de un id con su padre, o de un alias de un id existente), compuesta con el catálogo del request y leída con su candado (`r1_e4.catalogo_resolucion_r2`; manifiesto `manifest_generados_resolucion_r2.json`) | E4, E2, merge entre TOs, esqueleto, S19 y la suite, sobre lo guardado; el bloque del prefijo, el enum y el tool schema salen solo del catálogo del request | re-resolución del registro de no mapeados, E2 y ensamblado en código (`reresolver_catalogo.py` rehace el grafo desde el crudo guardado a USD 0 y lo verifica; el reporte dice cuántas relaciones resolvió cada versión del catálogo); ningún request | no cambia | no cambia | solo código sobre lo guardado | 12 | `r1_e4.py:593-642`; `ensamblar_tanda0.py:1187-1225` (`--catalogo-resolucion`, W1 de R2-1); `scripts/regression_kg.py:467-471`, `:1820-1830` (`--generados-resolucion`, W3); `reresolucion_catalogo/reresolver_catalogo.py`; enmienda 2 al protocolo (`0b98045`) y enmienda 4 §1 (BORRADOR) | R20 |
+| F13b | Un id nuevo en `catalogo_sujetos_r2.json`, el catálogo del request (cambio de release; entre tandas, un id o un alias nuevo va al catálogo de resolución, F13, sin tocar el request) | candado del catálogo al construir el perfil; re-sellado, el bloque del prefijo y el enum (F11) | nada se arma hasta re-sellar el catálogo y sus generados; re-sellado, E1 y E3 de todas | frena (candado del catálogo) | frena (sin perfil no hay salida validada de E1) | frena; re-sellado, todo (F11) | 9 | `modelos_r2.py:61-96`; `prompt_r2b.py:80`; `r1_e4.py:528-535`; `generar_desde_catalogo.py:118`, `:133`, `:138` | R22c |
+| F13c | Registro de alcance por tanda (`catalogo_unico/registro_alcance_por_tanda.md`, legible por código desde R2-2 de U-RERESOL-CAT): una entrada de clase o de rol reutilizado para un documento nuevo, o un documento declarado sin alcance | en el ensamblado, el `rol_por_to` del catálogo de resolución: la resolución por relación (R4 o R3 si el documento recibe alcance; cuarentena por la parte A de la enmienda 6 a L-ESQ-R2 si no lo tiene, solo en r2b); en E1, la línea de alcance del mensaje solo cuando el registro esté cableado en `prompt_r2b.py` (condición 11-bis del checklist, después de la firma de la enmienda 4; hoy el mensaje no lo lee: R2-2 lo midió idéntico en las 2.439 unidades y en los 13 casos del candado) | hoy: resolución, E2 y ensamblado en código; con el registro cableado en E1: además E1 y E3 de las unidades del documento que recibe alcance, como F12, y el candado del mensaje de E1 se re-sella | no cambia (hoy; con el registro cableado, cambia en las unidades del documento que recibe alcance, como F12) | no cambia (con la salida de E1 fija) | solo código sobre lo guardado (hoy); con el registro cableado, E1 y E3 de las afectadas (F12) | 12 | `r1_e4.py:417-423` (parte A), `:593-642`; `reresolucion_catalogo/reresolver_catalogo.py` (`--registro-alcance`); `reresolucion_catalogo/salidas/r2_2_registro_alcance_por_tanda.json`; enmienda 4 al protocolo §2 (BORRADOR) | R20 |
 | F14 | Validador de E1 (`validador_e1`), con las correcciones de tipo y predicado que toma de `validador_r2` y su política, la traducción de la forma r2 y el índice del crudo | sobre la salida cruda de E1 guardada, antes de E3: su salida es el mensaje de E3 | validación en código y E3 de las unidades cuya salida validada cambia, porque el ensamblado r2b toma solo lo que vio E3; E1 sale de la caché | no cambia | cambia (las unidades cuya salida validada cambia) | E1 y E3 de las afectadas (difiere del protocolo, `a304b89:79-80`; lo fija la enmienda 3 al protocolo entre tandas, firmada el 04/10/2026 en `0cb0c70`, §1, punto 3, con la regla de cruce del §3, `bd77541`) | 9 | `validador_e1.py:98-118`, `:135-222`, `:388-391`; `comun_e3.py:167-219`; `runner_corpus.py:1188-1195` | R18 |
 | F14b | Validador r2 y su política en el ensamblado (`validador_r2.validar` con lo que vio E3) | sobre el crudo guardado del intento que aceptó E3 | entrada r2, E2 y ensamblado en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `validador_r2.py:756`, `:768-769`, `:1084-1086`, `:1301-1303`; `runner_corpus.py:1231-1243`; candados `r1_e4.py:499`, `validador_e1.py:102` | R19 |
 | F15 | E2 r2 y ensamblado (entrada r2, fusión, merge cross-TO, cola humana marcada, omisiones, aristas derivadas que tocan la cola, procedencia, reportes) | después de E3, sobre el crudo guardado y `finales.jsonl` | E2 y ensamblado en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `runner_corpus.py:1151-1206`, `:1246-1296`; `tanda0/code/ensamblar_tanda0.py:917-1076` | R19 |
 | F15b | Umbrales (cuantías, comparador, negación, plazo sin marcador, base) | ensamblado r2 | umbrales y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `ensamblar_tanda0.py:668`, `:1042`; `reglas_comparacion.py:246`, `:502`, `:710` | R19 |
 | F15c | `remite_a` (detector de citas: reglas (a) a (i), citas a otra norma y a anexos de Comunicaciones) | ensamblado r2, sobre el texto de la E0 e0-r2 | remisiones y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `r1_referencias.py:702`, `:1027`; `ensamblar_tanda0.py:1022` | R19 |
-| F15d | Sujetos por relación (reglas R1 a R4 y registro de no mapeados) | ensamblado r2 | resolución, E2 y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `r1_e4.py:306`, `:383`; `ensamblar_tanda0.py:955` | R19 |
+| F15d | Sujetos por relación (reglas R1 a R4, registro de no mapeados y, solo en r2b, la parte A de la enmienda 6 a L-ESQ-R2: cuarentena en los documentos sin alcance, R2-2) | ensamblado r2 | resolución, E2 y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `r1_e4.py:306`, `:383`, `:417-423`; `ensamblar_tanda0.py:955`, `:1237` | R19 |
 | F15e | Unión de las operaciones por punto (fase r2b) | E2 r2 | E2 y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `e2_lib.py:845-871`, `:869-870` | R19 |
 | F16 | E4 y esqueleto (TextoOrdenado canónico, esqueleto del catálogo r2, `establecida_en` derivada) | después del merge | E4, esqueleto y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `ensamblar_tanda0.py:998`, `:1016`, `:592`, `:1032` | R19 |
 | F16b | Metadato de los pies (`pies_<to>.json`): versión vigente y carátula del TextoOrdenado | E0 e0-r2 escribe el archivo; lo lee el ensamblado, no el armado de los requests | versión y materia del TextoOrdenado y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `correr_e0.py:1188-1189`; `e0_lib.py:786-816`; `ensamblar_tanda0.py:839` | R28 |
-| F17 | Un TO nuevo | E0 e0-r2 sobre su PDF; E1 y E3 de sus unidades; ensamblado | E0, E1 y E3 de todas sus unidades; los demás TOs salen de la caché. Más F12 si recibe una entrada de clase; si necesita un rol nuevo, entra sin línea de alcance, declarado | cambia (todas las del TO nuevo: sin clave previa) | cambia (todas las del TO nuevo; no verificable en el selftest: no hay salida de E1 previa) | E1 y E3 de las afectadas | 9 | `runner_corpus.py:616-623`; `prompt_r2b.py:383-385`; `docs/mandatos/URERESOL_CAT_reresolucion_catalogo.md:165-171` | R23 |
+| F17 | Un TO nuevo | E0 e0-r2 sobre su PDF; E1 y E3 de sus unidades; ensamblado | E0, E1 y E3 de todas sus unidades; los demás TOs salen de la caché. Más F12 si recibe una entrada de clase; si necesita un rol nuevo, entra sin línea de alcance, declarado; su alcance se lee antes de extraer y entra por el registro por tanda (F13c) | cambia (todas las del TO nuevo: sin clave previa) | cambia (todas las del TO nuevo; no verificable en el selftest: no hay salida de E1 previa) | E1 y E3 de las afectadas | 9 | `runner_corpus.py:616-623`; `prompt_r2b.py:383-385`; `docs/mandatos/URERESOL_CAT_reresolucion_catalogo.md:165-171` | R23 |
 | F18a | Un TO modificado en el sitio, con el cambio solo en páginas que E0 no convierte en unidades (portada, índice, tabla de origen, historial) | E0 e0-r2 sobre el PDF nuevo, dentro de una release declarada | ninguna llamada si E0 devuelve las mismas unidades byte a byte; se re-sella el sha del PDF; si cambia el pie de alguna página, F16b | no cambia (unidades idénticas) | no cambia (unidades idénticas) | nada; solo código si cambia la versión del pie (F16b) | 9 | `e0_chunking/e0_lib.py:394-439`, `:914-915` | A1, A3, A1r, A3r, R00 |
 | F18b | Un TO modificado en el sitio, con cambio en páginas de cuerpo | E0 e0-r2 sobre el PDF nuevo, dentro de una release declarada | E1 y E3 de las unidades cuyo request cambia (filas F01 a F04, F19 y F21); el resto sale de la caché; F16b por el pie | cambia (las unidades cuyo request cambia) | cambia (las unidades cuyo request cambia) | E1 y E3 de las afectadas | 9 | `e0_lib.py:914-915`; `prompt_r2b.py:395-437` | R01, R02, R04, R07 |
 | F19 | Una unidad agregada o retirada por un cambio de numeración | E0; la unidad nueva y las renumeradas cambian su número, el numeral del texto y la herencia de sus descendientes | E1 y E3 de la unidad nueva, de las hermanas renumeradas y de sus descendientes; una unidad retirada no llama a la API y sale del ensamblado en código | cambia (nueva, renumeradas y descendientes) | cambia (renumeradas y descendientes) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:402-407`, `:423-425`; `comun_e1.py:63-87` | R24, R07 |
@@ -191,8 +195,10 @@ Notas a filas:
 - **F04 y F04b.** Con una tabla serializada, la NOTA de E3 depende de la marca de residual, no de la de contenido
   tabular (`prompt_r2b.py:206-208`): R04 invierte las dos. Un alta en la lista de tablas forzadas a residual tiene
   el efecto de F04 sobre las unidades que traen la tabla, como dice la nota del 03/10/2026 al protocolo (§6). El
-  archivo no tiene candado: un alta cambia esas claves sin frenar (R32). La disciplina de declarar cada alta con su
-  tabla, su motivo y su fecha es la única guarda.
+  archivo tiene candado desde P3c-2 de U-PROMPT-R2 (`prompt_r2b.py:96`, `:182`, `TABLAS_FORZADAS_SHA256_ESPERADO`): un alta frena al
+  construir el perfil (R32) y, re-sellada la lista, mueve esas claves como F04. La disciplina de declarar cada alta con su
+  tabla, su motivo y su fecha sigue, para el re-sellado. (Corregido el 07/10/2026: el texto anterior decía que el archivo no
+  tenía candado, en contradicción con la fila F04b y con el código.)
 - **F05. Difiere del texto firmado del protocolo entre tandas** (`a304b89:82`), que pone F05 entre las filas que
   pagan E1 y E3 de las afectadas. La tabla sigue la composición real de la clave: ni el mensaje de E1 ni el de E3
   leen páginas, id, sha256 ni conteos (R05, R06; con el perfil sellado, V05, V06). La enmienda 3 al protocolo quedó
@@ -239,15 +245,15 @@ Notas a filas:
   Una entrada de clase para un TO cambia solo el mensaje de ese TO (F12). Un rol nuevo entra al bloque del prefijo
   y al enum (F11). Un documento que necesite un rol nuevo entra sin línea de alcance, declarado
   (`URERESOL_CAT_reresolucion_catalogo.md:165-171`).
-- **F13 y F13b.** F13 queda PENDIENTE de R1 de U-RERESOL-CAT (decisión 2 de la autora al firmar el mandato de
-  U-TABLA-REPROC), que diseña la separación entre el catálogo del request, fijo por release, y el catálogo de
-  resolución (`URERESOL_CAT_reresolucion_catalogo.md:49-55`).
-  Hoy los dos lados salen del mismo archivo: un id nuevo frena y, re-sellado, es F11 (F13b). R20 muestra que el
-  armado de los requests no lee `indice_e4_r2.json`, pero ese archivo no puede cambiar solo: sale del mismo
-  catálogo y su manifiesto frena el ensamblado.
-  La enmienda 2 al protocolo (`0b98045:13-16`) clasifica el crecimiento del catálogo con F13; describe la
-  separación que R1 tiene que construir, no el código de hoy. Su fe de erratas está PENDIENTE y queda a cargo de
-  la mesa revisora.
+- **F13, F13b y F13c.** F13 quedó implementada por R2 de U-RERESOL-CAT (decisión 2 de la autora al firmar el mandato de
+  U-TABLA-REPROC; diseño en R1, `c98093a`; código en R2-1 y R2-1 bis, `0737497`, W1 a W3; parte A y registro de alcance en
+  R2-2, `a079275`): el catálogo del request queda fijo por release y el de resolución es el del request más una lista de
+  ampliaciones que solo agrega, con su manifiesto y su candado (`r1_e4.py:593-642`). Ningún request lee los generados de
+  resolución (R20: el armado no abre `indice_e4_r2.json`; R2-2: el mensaje de E1 con el registro de alcance cargado es
+  idéntico en las 2.439 unidades). Un id nuevo en el catálogo del request sigue siendo F13b (frena y, re-sellado, F11).
+  La enmienda 2 al protocolo (`0b98045:13-16`) clasifica el crecimiento del catálogo con F13; su fe de erratas del §0 quedó
+  FIRMADA el 04/10/2026 (`0cb0c70`, al pie de la enmienda). (Corregido el 07/10/2026: esta nota y la cabecera de la sección 2
+  decían F13 pendiente de R1 y de R2, y la fe de erratas pendiente.)
 - **F14. Difiere del texto firmado del protocolo entre tandas** (`a304b89:79-80`), que pone el validador entre las
   filas de solo código. Con el perfil r2b hay dos validadores. `validador_e1` corre antes de E3, y su salida es el
   mensaje de E3 (R18). El ensamblado r2b deja entrar solo lo que vio E3 (`validador_r2.py:768-769`, `:1084-1086` y
@@ -387,7 +393,7 @@ Resultado (salida en `selftest_clave_cache.json`):
   requests.
 - `validador_e1` y `validador_r2` se cargan solo al validar la salida de E1.
 
-**Contraste con esta tabla:** OK, en las 43 filas (41 hasta la fila F19b, sumada el 06/10/2026 en S0-2 de U-SEG-OFICIAL; selftest de claves OK sobre copia con la fila; 43 con la fila F23b de U-E3-LISTAS, O2, 07/10/2026).
+**Contraste con esta tabla:** OK, en las 44 filas (41 hasta la fila F19b, sumada el 06/10/2026 en S0-2 de U-SEG-OFICIAL; 43 con la fila F23b de U-E3-LISTAS, O2, 07/10/2026; 44 con la fila F13c, 07/10/2026, selftest corrido sobre una copia con la tabla corregida y su JSON regenerado).
 
 ## 5. Costo de referencia por clase
 
@@ -397,6 +403,10 @@ prefijo `322c5a23e9b7`; protocolo, §1, punto 4), sobre las 2.439 unidades de E0
 - E3 con los reintentos del ratchet: USD 24,9403, USD 0,010226 por unidad (verificación 21,9706, 0,009008 por
   unidad; reintentos de E1 del ratchet 2,9697, 0,001218 por unidad).
 - E1 y E3: USD 49,6598, USD 0,020361 por unidad.
+- **[07/10/2026]** Agregado medido de U-E3-LISTAS (O2, `7fe848c`): el bloque que abre la lista y la NOTA del ítem suman 918.107
+  tokens de entrada de E3 por corrida del tamaño de la tanda 0 (1.054 ítems), USD 1,84 a USD 2 por millón: USD 0,000754 por
+  unidad sobre las 2.439. La tarifa de referencia de las tandas desde la tanda 1 es 0,020361 + 0,000754 = USD 0,021115 por
+  unidad (nota del 07/10/2026 al protocolo entre tandas); O3 mide el costo real por ítem.
 
 La corrida de reparación de U-REEXT-T0 (T2-bis, USD 0,49291, y T2-ter, USD 0,249002, sobre unidades de cap) no
 entra en la tarifa por unidad: el presupuesto de la unidad cerró en USD 50,401698 de 80. La estimación que esta

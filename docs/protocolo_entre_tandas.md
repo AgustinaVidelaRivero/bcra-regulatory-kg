@@ -494,3 +494,18 @@ El texto firmado no se edita; estas notas se leen junto con él.
   Registro: `data/experiment/catalogo_unico/registro_alcance_por_tanda.md`; regla general del título y regla de las secciones de
   un mismo régimen en la enmienda 4 (BORRADOR), §2, puntos 7 y 8; checklist `:81`, condición 11. La lista real de la tanda 1 sale
   de la segmentación oficial: lo que cambie respecto del ejemplo se lee con el mismo paso.
+- **07/10/2026 — §1, punto 4, y §5: la tarifa de referencia desde la tanda 1 (decisión de la autora).** El texto firmado compara el
+  costo de cada tanda con la tarifa de la tanda 0 con el esquema congelado (E1 0,007425 y E3 0,009179 por unidad, USD 0,0166
+  juntas, `:66-67`, `:177-187`, `:207`, `:224`, `:238`, `:245`), y la nota del 03/10/2026 estimaba 0,0202 con el prefijo nuevo. La
+  tanda 1 corre con las instrucciones finales, cuya tarifa observada es otra: U-REEXT-T0, T5 (`data/experiment/reext_t0/reporte_u_reext_t0.md:183-185`;
+  `tabla_reprocesamiento.md` §5, comando 1): E1 USD 0,010135 y E3 USD 0,010226 por unidad (verificación 0,009008 más
+  reintentos de E1 del ratchet 0,001218), USD 0,020361 juntas, sobre las 2.439 unidades de la tanda 0. Decisión: desde la tanda 1,
+  **la tarifa de referencia es la observada con las instrucciones finales más el agregado medido de U-E3-LISTAS**: O2 (`7fe848c`)
+  midió que el bloque que abre la lista y la NOTA del ítem suman 918.107 tokens de entrada de E3 por corrida del tamaño de la
+  tanda 0 (1.054 ítems), USD 1,84 a USD 2 por millón, USD 0,000754 por unidad sobre las 2.439. Referencia: **E1 0,010135, E3
+  0,010980, USD 0,021115 por unidad** (redondeado, 0,0211). Con ella, el ejemplo del §7 (3.292 unidades) cuesta ≈ USD 69,5 (contra
+  54,65 a 0,0166 y 66,4 a 0,0202); la partición completa (9.324), ≈ USD 197; la tanda 3 (976), ≈ USD 20,6. La cifra 0,0166 queda
+  como la tarifa de la tanda 0 con el perfil sellado, para el registro, y no se compara más con las tandas. Se lee junto con las
+  tablas del §5 (`:177-187`). El pre-registro de la tanda 1 toma esta referencia (A7) y la ajusta si O3 de U-E3-LISTAS (costo
+  real por ítem con la NOTA) da un agregado distinto del medido en seco; la desviación real contra el estimado sigue el punto 4
+  del §1 y P9.

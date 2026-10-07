@@ -175,3 +175,13 @@ firmar en `9bca986`) y no cambia.
     regenerado no entró al commit. El JSON de O2 (43 filas, con F23b) lo deja al día; la discrepancia no afectó ninguna clave.
   - Los valores del candado quedan PROPUESTOS hasta la confirmación de la autora; el commit de O2 y el «seguí» de O3 (preparado por la
     mesa, con los valores y el tope de USD 1) son PENDIENTES de la autora.
+- **07/10/2026 — O2 commiteada en `7fe848c`; los dos valores del candado CONFIRMADOS por la autora** (fixture `079d2489…`, mensaje
+  `66bc8656…`); O3 despachada con el «seguí» de la mesa. Incidente declarado por la autora: el primer intento del commit de O2 frenó
+  por un `.DS_Store`, y el despacho de O3 salió con el hash de C1 de U-COMP-E1 (`6e16bb3`) en lugar del de O2; la instancia recibió
+  el hash correcto (`7fe848c`) y la orden de verificar de nuevo las precondiciones. La revisión del FRENO O3 controla que las
+  precondiciones citen `7fe848c` y que el código de E3 usado sea el de ese commit.
+  - **Decisión de la autora sobre el check K de `selftest_e3.py`:** vuelve a frenar con una línea extra tras la cerca, con otro rótulo
+    de la sección del fuente y con el fuente duplicado, con su caso de prueba. Entra como un paso corto aparte de esta unidad
+    (O4, USD 0, sin API): el texto firmado autoriza escribir `selftest_e3.py` (ESCRITURAS) y el cambio no toca el mensaje ni el
+    candado; se despacha después del FRENO O3 para no cruzarse con la corrida de O3, y queda antes de la tanda 1. Despacho preparado
+    por la mesa (`despacho_O4_checkK_UE3_LISTAS_mesa.md`).

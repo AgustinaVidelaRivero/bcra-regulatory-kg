@@ -320,3 +320,12 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 105 líneas de arriba y n
     fila F08d en la tabla, umbral de 2 unidades medido en R2-1: 14 claves llegan a 2 en diez); la mesa recomienda firmarla después de R2-3
     (para no firmar una regla cuyo gate frena en S19), con las decisiones al firmar: umbral 2 confirmado, parte A solo en r2b, cableado
     del registro como condición 11-bis. Commit de R2-2 PENDIENTE de la autora.
+- **07/10/2026 — decisiones de la autora sobre el FRENO R2-2 (R2-2 commiteada en `a079275`).** (1) S19: el propuesto de la parte A
+  recibe como `padre_sugerido` la sugerencia guardada del modelo, con marca (`padre_desde_sugerencia_modelo`); sin sugerencia, la
+  raíz del catálogo con marca (`padre_por_defecto_generico`); S19 no se toca. (2) Un solo re-sellado del grafo evaluado de la tanda 0:
+  después del grupo C (bases de los relativos) de U-OMISIONES-COD v2 si corre antes del pre-registro de la tanda 1; si no, se
+  re-sella con R2-3 y la corrección de bases rige desde la tanda 1, declarada. (3) La enmienda 4 al protocolo se firma después de
+  R2-3. (4) R2-3 (USD 0): la salida de S19 y la corrección de `runner_corpus.py:1261` (`parte_a` en `cerrar_e2_r2`), con sus casos
+  de selftest, sin re-sellar; despacho preparado por la mesa (`despacho_R2-3_URERESOL_CAT_mesa.md`). La tabla de reprocesamiento
+  recibió el 07/10/2026 la fila F13c (registro de alcance por tanda) y F13 pasó a «solo código sobre lo guardado» (implementada
+  por R2), con el selftest de claves corrido sobre una copia y su JSON regenerado.

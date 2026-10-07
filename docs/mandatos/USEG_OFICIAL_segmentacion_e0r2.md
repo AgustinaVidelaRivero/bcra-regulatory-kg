@@ -467,3 +467,45 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     a la lista del censo de renglones; el rótulo del estrato en la semilla del sorteo es el valor literal de `modo_lectura` de
     `segmentacion_84/b584_particion/conteos_b584.json` (vigente, marcadores, sin_raiz); ri_spi, con 95 unidades en S0-2, sale
     del tercer grupo y se leen 10 de sus unidades aparte.
+- **07/10/2026 — resultado de S1 y de su lectura de cortes: NO llega al piso; decisiones de la autora PENDIENTES (S1 sin commit, por la
+  nota del 05/10/2026: sin piso, la salida no se commitea y S2 no se despacha).** La revisión independiente del FRENO S1 (sesión de solo
+  lectura; paquete `revision_USEG_OFICIAL_S1_mesa/`) reprodujo los controles (doble corrida 768 y 768 archivos, 0 distintos; tanda 0 25 de
+  25 byte a byte; 9.554 unidades; sorteo recomputado igual a la muestra sellada `6ed08891…`) y leyó las 136 unidades de la muestra contra
+  las páginas del PDF (son 136, no 137: 90 + 25 + 11 + 10; hallazgo de la autora). Cifra del piso: 73 de 90 sin error de corte, cota inferior
+  de Wilson al 95 % **0,718** (con las 2 dudosas como error, 71 de 90, 0,694); el piso de 0,90 admite 3 errores y hubo 17, en 11 TOs. Por
+  modo: vigente 39 de 40, marcadores 5 de 10, sin raíz 29 de 40. Cifra del corpus, ponderada por el peso de cada modo (0,871 / 0,025 /
+  0,104): 0,937, con un intervalo aproximado [0,836; 0,978]. Mecanismos de los 17: cuerpo de punto que queda como intersticial del padre
+  partido por renglón (7: ri_dcpc ×4, nmcief ×2, snp_cheq); numeración o título no leído y pegado a la unidad anterior (7: seggar, ri_tar,
+  ri_sef, nmcief, ri_ccna, ri_icpipsp, nmaeef); índice del Anexo I leído como cuerpo (2: ri2_ae p. 3); primer renglón tomado como título
+  (1: seguef 2.1.6). La mesa verificó siete de los 17 contra la página (uno por mecanismo; `verificacion_muestra_errores_S1_y_S0-3_mesa.md`
+  en el scratchpad de la mesa): los siete coinciden. Censo de los 28 renglones sin explicación: 7 renglones de norma perdidos por la regla
+  K de la zona de encabezado (fimipyme p. 4, ri_cc pp. 60 y 62) y colas de título (ri2_ci p. 5); la clase «parte de un título heredado»
+  tiene 14 renglones (no 20), todos títulos de sección. Dos documentos con la raíz mal segmentada: ri_cc (tres regímenes con numeración
+  que reinicia) y ri_ai (sección 2 no abierta). Glosa corregida: «35 de 35 entradas de agregados iguales» incluye 15 ausentes en los dos
+  lados (sub_chunking, encabezados_conservados e ids_desambiguados).
+  - El resultado no depende de la lectura de la autora: para llegar al piso habría que revertir 14 de los 17 errores. La autora propone
+    leer ahora 5 o 6 casos (uno por mecanismo) y hacer la lectura completa de la nota del 05/10/2026 sobre la muestra de la corrida que
+    siga a la corrección. La mesa lo considera compatible con esa nota si la lectura de hoy se asienta como lectura de calibración (fecha
+    y casos) y la revisión del piso se hace entera, con otra semilla, sobre la muestra nueva.
+  - Decisión PENDIENTE de la autora: volver a S0 con una etapa acotada (S0-3) antes de la tanda 1, o declarar el límite con su cifra.
+    Recomendación de la mesa: S0-3 acotada (3 a 4 días de calendario, USD 0, reversible, con la tanda 0 byte a byte como control), porque
+    corregir después de extraer cuesta re-extracción por unidad y re-sellado por tanda, y 7 de los 17 errores llevan texto de otro punto
+    al punto equivocado. Alcance propuesto (cinco mecanismos; los dos documentos de raíz como límite declarado) y muestra nueva con otra
+    semilla: en el documento de la mesa citado arriba. ri_spi (clase y vía), ri_tar p. 1 r. 10 y las vías de ri2_pm y ri_spi se deciden
+    después de la corrida nueva.
+  - Commit de S1 mientras tanto (propuesta): el registro de la medición (freno, manifiesto, reporte, controles, sorteo y marcas de
+    lectura), no `s1/e0/` (47 MB), que la corrida siguiente reemplaza y queda en un tar.gz fuera del repo con su sha.
+- **07/10/2026 — decisión de la autora: S0-3, acotada, antes de la tanda 1.** S1 no se commitea entera: se commitea el registro de la
+  medición (freno, manifiesto, reporte, controles, censos, sorteo y las marcas de la lectura de cortes de la revisión, copiadas a
+  `s1/lectura_cortes/`) y `s1/e0/` queda en un tar.gz fuera del repo con su sha256. S0-3 cubre cinco mecanismos (cuerpo de punto
+  como intersticial del padre; numeración o título no leído; índice leído como cuerpo; primer renglón como título; la zona de
+  encabezado de la regla K con los renglones perdidos y las colas de título), con censo previo por regla, los 25 archivos de la
+  tanda 0 byte a byte y el selftest de claves sin mover ninguna clave de la tanda 0; después S1-bis con la lectura de cortes entera
+  de la nota del 05/10/2026 sobre una muestra nueva, con otra semilla. Sobre ri_cc y ri_ai (análisis de la mesa en
+  `analisis_ri_cc_ri_ai_fuera_de_la_extraccion_mesa.md`): ri_ai cae en la tanda 3 y su defecto (la línea «Sección 2.» en el 6.º
+  renglón de la zona de encabezado) entra en el mecanismo 5 de S0-3; ri_cc está en el ejemplo de la tanda 1 pero su defecto es de
+  sub-documento (tres regímenes con numeración que reinicia; 14 de sus 35 unidades y 63.845 de 88.994 caracteres en la parte mal
+  segmentada) y la regla que lo corrige es un mecanismo nuevo, con riesgo sobre ri_tsa y ri2_pm: la mesa recomienda dejarlo fuera
+  de la tanda 1 (la cuota del estrato 2 se completa con otro RI en el pre-registro), declararlo como límite de sub-documento y
+  corregirlo en una S0-4 antes de la tanda 3; decisión PENDIENTE de la autora, escrita en el despacho de S0-3 como supuesto. La
+  lectura de calibración de la autora (5 o 6 casos de la muestra de S1) se asienta con fecha y casos cuando ocurra.
