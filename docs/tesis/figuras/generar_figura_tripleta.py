@@ -1,419 +1,667 @@
 #!/usr/bin/env python3
-"""Figura «anatomía de una tripleta» para el marco teórico (§2.1.1).
+"""Figura «anatomía de una tripleta» para el capítulo 2 (Figura 2.1), versión 2.
 
-Una sola tripleta real del grafo r1, del ejemplo del préstamo: la Restriccion
-del monto del punto 5.1.1.1 del Texto Ordenado de Clasificación de deudores
-—limita→ la Operacion del mismo punto. Dos nodos con su etiqueta del grafo,
-completa, y «punto N», la arista con el nombre de la relación tal como está en
-el grafo, y tres llamadas en gris que nombran las partes de la tripleta: nodo
-de origen, relación (nombre y dirección) y nodo de destino, con el tipo escrito
-como en el código. Sin leyenda.
+Una sola tripleta real del grafo de la tanda 0 con el perfil r2b, del ejemplo
+del préstamo: la Condicion del monto del punto 5.1.1.1 del Texto Ordenado de
+Clasificación de deudores —condicion_de→ la Operacion de la inclusión en la
+cartera comercial, del mismo punto. Cada nodo con el formato de la figura 1.1
+versión 2: primera línea en negrita con el tipo, escrito como en el código, y
+el punto («Condicion · punto 5.1.1.1»), y debajo la etiqueta del grafo,
+completa; la arista con el nombre de la relación tal como está en el grafo;
+tres llamadas en gris que nombran las partes de la tripleta: «nodo de origen»
+y «nodo de destino», centradas sobre su caja, y «relación · nombre y
+dirección», debajo de la arista. Sin leyenda.
 
-La arista es de extracción, no de remisión: se dibuja en trazo continuo con el
-gris oscuro de la paleta compartida, porque el naranja está reservado a las
-remisiones en las figuras de la Introducción.
+Versión 1 (28/09/2026; generador en fbe69d4): sobre KG-Reextraído-r1 (sha256
+0226e947…), la Restriccion del monto —limita→ la Operacion; nodos con la
+etiqueta y debajo «punto N», relleno del color de su tipo y texto blanco; el
+tipo y el punto, en las llamadas de los nodos.
+Versión 2: la tripleta y el grafo de arriba; el formato de los nodos, los
+colores de tipo (relleno, borde y grosor) y el texto oscuro, los de la figura
+1.1 versión 2; las llamadas de los nodos, sin el tipo ni el punto, que pasan a
+la caja. El resto del trazado de la versión 1 no cambia: lienzo de 720
+unidades impreso a 12,75 cm, dos nodos de 260 unidades en una fila, las
+llamadas de los nodos arriba y la de la relación abajo, la arista en trazo
+continuo gris oscuro con su rótulo en negrita encima, y los mismos tamaños de
+letra.
 
-Reutiliza por importación, de generar_figura_norma_a_grafo.py: la paleta por
-tipo de nodo, los grises, la tipografía, la tabla de métricas de Helvetica y el
-envoltorio de etiquetas; y de
-generar_figura_proceso_extraccion.py: el ancho impreso de 12,75 cm con su
-lienzo de 720 unidades, la exportación a PNG a 300 dpi con la densidad
-grabada y el medidor con métricas reales de Helvetica.
+Fuentes, con candado de sha256 (el script frena si alguna no es la verificada):
+- GRAFO: el grafo de desarrollo r2b, del que se dibuja;
+- GRAFO_DIEZ: el grafo de diez documentos r2b, en el que se comprueba que lo
+  dibujado está igual;
+- ESTILO: figura_esquema_final.svg, de donde salen los colores de tipo (los
+  mismos que lee la figura 1.1);
+- MODELOS_R2: modelos_r2.py, donde se comprueba la firma de la arista en la
+  matriz del esquema r2 y que la relación no es un predicado derivado;
+- FIGURA_1_1: figura_norma_a_grafo.svg versión 2, contra cuyos nodos se
+  comparan el tipo, el punto, la etiqueta y los colores de los dos nodos.
+Los tres primeros candados son los de generar_figura_norma_a_grafo.py, del que
+se importan la carga del subgrafo (cargar_subgrafo, comparar_grafos), los
+colores de tipo (leer_colores_tipo), los controles de geometría y la
+exportación.
 
-Los dos nodos y la arista no se tipean: se leen de ejemplo_prestamo_datos.json
-(que escribe extraer_datos_ejemplo_prestamo.py) y se comprueban en kg.json con
-las mismas verificaciones que la figura del proceso: el archivo debe ser el
-sellado (candado de sha256); cada nodo debe estar con ese tipo y ese punto de
-procedencia con rol punto_propio; la arista (origen, relación, destino) debe
-existir exactamente una vez, en el índice que declara el JSON, con una firma
-(tipo de origen, relación, tipo de destino) admitida por la matriz de dominio y
-rango del esquema congelado y sin rol_fuente (las aristas de la resolución de
-remisiones llevan rol_fuente = referencia_cruzada y no son de extracción). Lo
-resuelto se imprime al correr.
+Controles, en cada corrida (el script frena si alguno falla):
+- grafo: cada nodo, con su tipo y su etiqueta, una sola vez y con su punto
+  como única procedencia punto_propio; la arista, una sola vez; entre los dos
+  nodos el grafo no tiene otras aristas; los nodos de la unidad que no se
+  dibujan son los declarados en NO_DIBUJADOS; todo igual en los dos grafos; la
+  arista sin rol_fuente ni propiedades, con su firma en la matriz del esquema
+  r2 y su relación fuera de los predicados derivados;
+- figura 1.1: los dos nodos están en figura_norma_a_grafo.svg con el mismo
+  tipo, punto, etiqueta, relleno, borde y grosor;
+- inventario: el SVG se relee y, solo desde su geometría y sus textos, se
+  rearma la tripleta (tipo, punto y etiqueta de cada caja, la caja a la que
+  apunta cada llamada, rótulo de la arista, caja donde empieza y caja donde
+  termina con la flecha) y los colores de cada caja; tienen que ser los del
+  grafo y los del tipo;
+- geometría (controlar_geometria de la figura 1.1, más las líneas de llamada):
+  medidas con las métricas reales de Helvetica, ningún texto superpuesto con
+  otro, sobre una caja que no lo contiene, sobre un trazo que no es el suyo ni
+  fuera del lienzo; ningún trazo que toque una caja; 0 cruces entre trazos;
+  letra impresa de 7 pt o más.
+Antes de componer la figura corren seis pruebas negativas (dirección
+invertida, llamadas de los nodos intercambiadas, etiqueta cambiada, tipo
+cambiado, rótulo sobre una caja y una línea de llamada que cruza la arista);
+cada una tiene que hacer fallar su control.
+Con --perturbar <caso> se compone la figura con ese defecto: los controles
+fallan y no se escribe nada.
 
-Uso (desde cualquier directorio):
-    PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/generar_figura_tripleta.py
-    PYTHONDONTWRITEBYTECODE=1 python3 docs/tesis/figuras/generar_figura_tripleta.py --verificar
+Salidas, byte-reproducibles: figura_tripleta.svg, .png (300 dpi, densidad
+grabada) y .pdf (fecha de creación fijada con SOURCE_DATE_EPOCH=0).
 
-Con --verificar, además, mide cada texto con las métricas reales de Helvetica
-(requiere PIL y la fuente del sistema; si faltan, lo informa y sigue) y
-comprueba que ningún texto exceda su caja, se superponga con otro texto o con
-un nodo ajeno, salga del lienzo ni quede por debajo del tamaño mínimo impreso.
+Uso (desde la raíz del repo):
+    PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B docs/tesis/figuras/generar_figura_tripleta.py
+    PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B docs/tesis/figuras/generar_figura_tripleta.py --salida DIR
+    PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B docs/tesis/figuras/generar_figura_tripleta.py \\
+        --perturbar {direccion_invertida,llamadas_intercambiadas,etiqueta_distinta,tipo_cambiado,
+                     rotulo_sobre_caja,cruce}
 """
 
-import hashlib
-import json
-import os
-import shutil
-import subprocess
 import sys
 
-sys.dont_write_bytecode = True
+sys.dont_write_bytecode = True  # importar los módulos hermanos no deja __pycache__
+
+import argparse  # noqa: E402
+import ast  # noqa: E402
+import json  # noqa: E402
+import os  # noqa: E402
+import xml.etree.ElementTree as ET  # noqa: E402
+from collections import Counter  # noqa: E402
+
 AQUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, AQUI)
-import generar_figura_norma_a_grafo as base          # noqa: E402
-import generar_figura_proceso_extraccion as proc     # noqa: E402
+import generar_figura_norma_a_grafo as base  # noqa: E402
 
-DATOS = os.path.join(AQUI, "ejemplo_prestamo_datos.json")
-SALIDA_SVG = os.path.join(AQUI, "figura_tripleta.svg")
-SALIDA_PNG = os.path.join(AQUI, "figura_tripleta.png")
-RAIZ = os.path.abspath(os.path.join(AQUI, "..", "..", ".."))
-KG = os.path.join(RAIZ, "data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json")
-# sha256 del kg.json sobre el que se verificó la tripleta (el mismo candado que
-# la figura del proceso, reports/verificacion_figura_proceso.md §1). Si el
-# archivo cambia, el script frena: la figura afirma que esta arista está ahí.
-KG_SHA256 = "0226e9477baee02d772bbfecee78a49441b189d0e0512ca5e22956dfb084196a"
+NOMBRE = "figura_tripleta"
+NS = base.NS
+freno = base.freno
+f, esc = base.f, base.esc
 
 # --------------------------------------------------------------------------- #
-# Tamaño impreso: el de la figura del proceso (12,75 cm = 0,85 del ancho de     #
-# texto; lienzo de 720 unidades; una unidad imprime a 361,4 / 720 pt).          #
+# Fuentes y candados                                                           #
 # --------------------------------------------------------------------------- #
-W = proc.W                                            # 720
-ANCHO_FIGURA_CM = proc.ANCHO_FIGURA_CM                # 12,75
-ANCHO_FIGURA_PT = proc.ANCHO_FIGURA_PT                # 361,4
-DPI = proc.DPI                                        # 300
-ANCHO_PNG_PX = proc.ANCHO_PNG_PX                      # 1506
-PT_MINIMO = 7.0                                       # letra mínima impresa (mandato)
-puntos_impresos = proc.puntos_impresos
-
-# --------------------------------------------------------------------------- #
-# Paleta, tipografía y métricas: las del generador base                        #
-# --------------------------------------------------------------------------- #
-TIPOGRAFIA = base.TIPOGRAFIA
-COLOR_TIPO = base.COLOR_TIPO
-GRIS_ARISTA = base.GRIS_ARISTA      # líneas de llamada
-GRIS_ROTULO = base.GRIS_ROTULO      # texto de las llamadas
-# Trazo y rótulo de la arista: el gris oscuro de la paleta compartida (borde de
-# las etapas determinísticas en generar_figura_proceso_extraccion.py,
-# DETERMINISTICA["borde"]). No es el naranja ACENTO del generador base, que
-# las figuras de la Introducción reservan a las remisiones.
-TRAZO_ARISTA = "#4a5a6a"
-ancho, envolver, esc, f = base.ancho, base.envolver, base.esc, base.f
-# El punto medio de las llamadas no está en la tabla del generador base (que
-# asigna 556 a lo desconocido); en Helvetica mide 278/1000 em, como el punto.
-base._W.setdefault("·", 278)
-
-FS_NODO = 17          # etiqueta y «punto N» de los nodos (8,53 pt)
-FS_ARISTA = 17        # rótulo de la arista, en negrita (8,53 pt)
-FS_LLAMADA = 15       # las tres llamadas en gris (7,53 pt)
-IL_NODO = 21          # interlínea dentro del nodo
+# Los dos grafos r2b y la figura del esquema final: los candados de la figura
+# 1.1 (generar_figura_norma_a_grafo.py, GRAFO, GRAFO_DIEZ y ESTILO).
+GRAFO = base.GRAFO
+GRAFO_DIEZ = base.GRAFO_DIEZ
+ESTILO = base.ESTILO
+# Esquema r2: matriz de firmas y predicados derivados por código (igual en
+# bbc38dc, el commit de los dos grafos).
+MODELOS_R2 = ("data/experiment/pyd_r2/code/modelos_r2.py",
+              "e67f15ae13dd5419ea0ce1a08dbef63c86cbdf9c269772a0b02a4e27b4c3a2ca")
+# Figura 1.1 versión 2 (FIG-INTRO-R2B, 88bfe89): sus nodos fijan el tipo, el
+# punto, la etiqueta y los colores con que se dibujan los dos de esta figura.
+FIGURA_1_1 = ("docs/tesis/figuras/figura_norma_a_grafo.svg",
+              "874292f54e3c5d70b036b070b6beb7e8ce4c568a2aa6862fde23d865588f3e9b")
 
 # --------------------------------------------------------------------------- #
 # Contenido                                                                    #
 # --------------------------------------------------------------------------- #
-# (clave en la figura, clave del nodo en ejemplo_prestamo_datos.json). Del JSON
-# salen id, tipo, etiqueta y punto; el nodo debe estar así en kg.json.
-NODOS_FIGURA = [
-    ("R", "restriccion_monto"),   # nodo de origen
-    ("OP", "operacion"),          # nodo de destino
-]
-# (origen, relación en el grafo, destino). Debe existir exactamente una arista
-# así en kg.json, en el índice de kg['edges'] que declara el JSON (las aristas
-# del grafo no tienen id propio).
-ARISTA_FIGURA = ("R", "limita", "OP")
-# Clase de la arista y su comprobación. "extraccion": la firma (tipo de
-# origen, relación, tipo de destino) debe estar en la matriz de dominio y rango
-# del esquema congelado (DOMAIN_RANGE_CONGELADO,
-# data/experiment/esq/code/prompt_congelado.py:97-99, que hereda la fila
-# `limita` de data/experiment/esq/code/prompt_esq3b.py:172) y la arista no
-# lleva rol_fuente. "remision": la arista la produce la resolución de
-# remisiones y lleva rol_fuente = referencia_cruzada
-# (data/experiment/reextraccion_v2/corpus_v2/r1_referencias.py:231-234).
-CLASE_ARISTA = "extraccion"
-FIRMAS_ADMITIDAS = {
-    ("Restriccion", "limita", "Operacion"),
-}
-ROL_REMISION = "referencia_cruzada"
+UNIDAD = "cla::5.1.1.1"
+# Nodos dibujados: (clave, tipo, chunk de su procedencia punto_propio, etiqueta
+# tal como está en el grafo). Las claves son las de la figura 1.1 (data-caja
+# de figura_norma_a_grafo.svg). El primero es el nodo de origen.
+NODOS = (
+    ("condicion_monto", "Condicion", "cla::5.1.1.1", "Superar dos veces importe referencia punto 3.7"),
+    ("operacion", "Operacion", "cla::5.1.1.1", "Inclusión en cartera comercial — créditos consumo/vivienda"),
+)
+ORIGEN, DESTINO = NODOS[0][0], NODOS[1][0]
+# La arista: (origen, relación en el grafo, destino). Debe existir exactamente
+# una vez en cada grafo.
+ARISTA = (ORIGEN, "condicion_de", DESTINO)
+# Nodos de la unidad 5.1.1.1 que no se dibujan, a propósito: (tipo, etiqueta).
+NO_DIBUJADOS = (("Condicion", "Repago vinculado a actividad productiva/comercial"),
+                ("Excepcion", "Excepción cartera comercial — créditos consumo/vivienda"))
 # Rótulo de la arista: el nombre de la relación tal como está en el grafo (la
 # figura muestra la anatomía de la tripleta, no su lectura en castellano).
-ROTULO_ARISTA = "limita"
-# Las tres llamadas, en gris. Los dos nodos toman tipo (escrito como en el
-# código) y punto de lo resuelto.
-LLAMADA_ORIGEN = "nodo de origen · tipo {tipo} · punto {punto}"
-LLAMADA_RELACION = "relación · nombre y dirección"
-LLAMADA_DESTINO = "nodo de destino · tipo {tipo} · punto {punto}"
+ROTULO_ARISTA = ARISTA[1]
+# Las tres llamadas, en gris. El tipo y el punto de cada nodo van en su caja.
+LLAMADA = {"origen": "nodo de origen",
+           "relacion": "relación · nombre y dirección",
+           "destino": "nodo de destino"}
 LINEAS_ETIQUETA = 3   # la etiqueta del grafo, sin abreviar, entra en tres líneas
 
-
-def cargar_grafo():
-    """Lee los nodos y la arista del JSON del ejemplo, comprueba el sha de
-    kg.json y los resuelve en él.
-
-    Devuelve (nodos, arista): `nodos` mapea clave -> dict con id, tipo, punto,
-    etiqueta del grafo y demás puntos propios; `arista` es un dict con origen,
-    destino, relación, índice en kg['edges'], rol_fuente tal como figura (o su
-    ausencia), procedencia y propiedades.
-    """
-    with open(DATOS, encoding="utf-8") as fh:
-        datos = json.load(fh)
-    if datos["fuentes"]["kg"]["sha256"] != KG_SHA256:
-        raise SystemExit("el JSON del ejemplo se extrajo de otro kg.json")
-    with open(KG, "rb") as fh:
-        crudo = fh.read()
-    sha = hashlib.sha256(crudo).hexdigest()
-    if sha != KG_SHA256:
-        raise SystemExit(f"kg.json no es el verificado: sha {sha[:12]}… ≠ {KG_SHA256[:12]}…")
-    kg = json.loads(crudo.decode("utf-8"))
-    por_id = {n["id"]: n for n in kg["nodes"]}
-
-    nodos, clave_json = {}, dict(NODOS_FIGURA)
-    for clave, cj in NODOS_FIGURA:
-        dn = datos["grafo"]["nodos"][cj]
-        n = por_id.get(dn["id"])
-        punto = dn["punto"]
-        if n is None or n["type"] != dn["type"] or n.get("label") != dn["label"] \
-                or punto not in base.puntos_propios(n):
-            raise SystemExit(f"nodo {clave}: {dn['id']} no está en kg.json con tipo "
-                             f"{dn['type']}, esa etiqueta y punto {punto}")
-        nodos[clave] = {"id": n["id"], "tipo": n["type"], "punto": punto,
-                        "etiqueta": n["label"],
-                        "otros_puntos": [p for p in base.puntos_propios(n) if p != punto]}
-
-    a, rel, b = ARISTA_FIGURA
-    en_json = [x for x in datos["grafo"]["aristas"]
-               if (x["origen"], x["relation"], x["destino"]) == (clave_json[a], rel, clave_json[b])]
-    if len(en_json) != 1:
-        raise SystemExit(f"arista {a} {rel} {b}: {len(en_json)} entradas en el JSON, no una")
-    indice_esperado = en_json[0]["indice"]
-    ida, idb = nodos[a]["id"], nodos[b]["id"]
-    hits = [(i, e) for i, e in enumerate(kg["edges"])
-            if e["source"] == ida and e["target"] == idb and e["relation"] == rel]
-    if len(hits) != 1:
-        raise SystemExit(f"arista {a} {rel} {b}: {len(hits)} coincidencias en kg.json, no una")
-    i, e = hits[0]
-    if i != indice_esperado:
-        raise SystemExit(f"arista {a} {rel} {b}: índice {i} en kg['edges'], esperado {indice_esperado}")
-    if CLASE_ARISTA == "remision":
-        if e.get("rol_fuente") != ROL_REMISION:
-            raise SystemExit(f"arista {a} {rel} {b}: rol_fuente {e.get('rol_fuente')!r} "
-                             f"≠ {ROL_REMISION!r}")
-    else:
-        firma = (nodos[a]["tipo"], rel, nodos[b]["tipo"])
-        if firma not in FIRMAS_ADMITIDAS:
-            raise SystemExit(f"arista fuera de la matriz del esquema: {firma}")
-        if "rol_fuente" in e:
-            raise SystemExit(f"arista {a} {rel} {b}: rol_fuente inesperado {e['rol_fuente']!r}")
-    inversas = [k for k, x in enumerate(kg["edges"]) if x["source"] == idb and x["target"] == ida]
-    arista = {"a": a, "b": b, "relacion": rel, "indice": i, "clase": CLASE_ARISTA,
-              "rol_fuente": e["rol_fuente"] if "rol_fuente" in e else "(clave ausente)",
-              "propiedades": e.get("properties"),
-              "provenance": e.get("provenance") or {},
-              "inversas": inversas}
-    return nodos, arista
-
-
 # --------------------------------------------------------------------------- #
-# Primitivas de dibujo. Todo texto pasa por `texto()`, que lo deja registrado  #
-# para la verificación de medidas.                                             #
+# Tamaño impreso, paleta y tipografía                                          #
 # --------------------------------------------------------------------------- #
-REGISTRO = []
-CAJAS_NODO = []
+# Como en la versión 1 (el de la figura del proceso): 0,85 del ancho de texto
+# de 15 cm; lienzo de 720 unidades.
+ANCHO_FIGURA_CM = 15.0 * 0.85                         # 12,75 cm
+W = 720
+PT_MINIMO = 7.0                                       # letra mínima impresa
+TINTA = "#1f1f1f"                                     # texto de los nodos (figura 1.1)
+GRIS_ARISTA = base.GRIS_ARISTA                        # líneas de llamada
+GRIS_ROTULO = base.GRIS_ROTULO                        # texto de las llamadas
+# Trazo y rótulo de la arista, como en la versión 1: el gris oscuro de la
+# paleta compartida (borde de las etapas determinísticas de la figura del
+# proceso). No es el naranja ACENTO de la figura 1.1, que las figuras de la
+# Introducción reservan a las remisiones.
+TRAZO_ARISTA = "#4a5a6a"
 
+FS_NODO = 17          # encabezado «Tipo · punto N» y etiqueta de los nodos
+FS_ARISTA = 17        # rótulo de la arista, en negrita
+FS_LLAMADA = 15       # las tres llamadas en gris
+IL_NODO = 21          # interlínea dentro del nodo
 
-def texto(partes, x, y, s, fs, negrita=False, relleno="#1f1f1f", anclaje="middle",
-          ancho_max=None, dentro_de=None, contexto=""):
-    """Texto con línea de base `y`; `anclaje` es start, middle o end."""
-    peso = "bold" if negrita else "normal"
-    partes.append(f'<text x="{f(x)}" y="{f(y)}" text-anchor="{anclaje}" '
-                  f'font-size="{fs}" font-weight="{peso}" fill="{relleno}">'
-                  f'{esc(s)}</text>')
-    REGISTRO.append({"s": s, "fs": fs, "negrita": negrita, "x": x, "y": y,
-                     "anclaje": anclaje, "ancho_max": ancho_max,
-                     "dentro_de": dentro_de, "contexto": contexto})
-
-
-def linea(partes, x0, y0, x1, y1, color, grosor, marcador=None, opacidad="1"):
-    m = f' marker-end="url(#{marcador})"' if marcador else ""
-    partes.append(f'<path d="M{f(x0)},{f(y0)} L{f(x1)},{f(y1)}" fill="none" '
-                  f'stroke="{color}" stroke-width="{grosor}" opacity="{opacidad}"{m}/>')
-
-
-# --------------------------------------------------------------------------- #
-# Geometría: una fila de dos nodos unidos por la arista; las llamadas de los    #
-# nodos arriba, la de la relación abajo, cada una con una línea de llamada.     #
-# --------------------------------------------------------------------------- #
 MARGEN = 24
 W_NODO = 260
 PAD_NODO = 12
 LARGO_LLAMADA = 18      # línea de llamada entre el texto y el elemento
 HOLGURA_LLAMADA = 5     # aire entre la línea de llamada y el texto o el nodo
+BORDE = 3.0             # distancia máxima de un extremo de la arista al borde de su caja (inventario)
+CERCA = 9.0             # distancia máxima de un extremo de llamada a lo que nombra (inventario)
 
 
+# --------------------------------------------------------------------------- #
+# Carga                                                                        #
+# --------------------------------------------------------------------------- #
+def leer_esquema_r2():
+    """Las asignaciones de modelos_r2.py que el script necesita, leídas con
+    ast (sin importar ni ejecutar el módulo): {nombre: (valor, línea)}."""
+    arbol = ast.parse(base.leer_con_candado(*MODELOS_R2).decode("utf-8"))
+    buscadas = ("PREDICADOS", "AMPLIACION_R2", "PREDICADOS_DERIVADOS")
+    salida = {}
+    for nodo in arbol.body:
+        if isinstance(nodo, ast.Assign) and len(nodo.targets) == 1 and isinstance(nodo.targets[0], ast.Name):
+            nombre = nodo.targets[0].id
+        elif isinstance(nodo, ast.AnnAssign) and isinstance(nodo.target, ast.Name):
+            nombre = nodo.target.id
+        else:
+            continue
+        if nombre in buscadas:
+            if nombre in salida:
+                freno(f"{MODELOS_R2[0]}: {nombre} asignado dos veces")
+            salida[nombre] = (ast.literal_eval(nodo.value), nodo.lineno)
+    if sorted(salida) != sorted(buscadas):
+        freno(f"{MODELOS_R2[0]}: faltan {sorted(set(buscadas) - set(salida))}")
+    return salida
+
+
+def controlar_firma(sub, diez, esquema):
+    """La arista es de extracción: su relación es un predicado del esquema, no
+    un predicado derivado; su firma está en la matriz r2; sin rol_fuente ni
+    propiedades en ninguno de los dos grafos."""
+    o, rel, d = ARISTA
+    firma = (rel, sub["nodos"][o]["type"], sub["nodos"][d]["type"])
+    if rel not in esquema["PREDICADOS"][0]:
+        freno(f"{rel} no está en PREDICADOS de {MODELOS_R2[0]}")
+    if rel in esquema["PREDICADOS_DERIVADOS"][0]:
+        freno(f"{rel} es un predicado derivado: la arista no es de extracción")
+    if firma not in esquema["AMPLIACION_R2"][0]:
+        freno(f"la firma {firma} no está en AMPLIACION_R2 de {MODELOS_R2[0]}")
+    for g in (sub, diez):
+        kg = json.loads(base.leer_con_candado(g["ruta"], g["sha256"]).decode("utf-8"))
+        e = kg["edges"][g["aristas"][0]["indice"]]
+        if "rol_fuente" in e or e.get("properties"):
+            freno(f"{g['ruta']}: la arista lleva rol_fuente o propiedades")
+        inversas = [i for i, x in enumerate(kg["edges"])
+                    if x["source"] == g["nodos"][d]["id"] and x["target"] == g["nodos"][o]["id"]]
+        if inversas:
+            freno(f"{g['ruta']}: aristas en sentido inverso {inversas}")
+    return firma
+
+
+def leer_figura_1_1():
+    """Cajas de la figura 1.1 versión 2: {data-caja: {tipo, punto, etiqueta,
+    relleno, borde, grosor}}, desde el encabezado en negrita «Tipo · punto N»
+    y las líneas de la etiqueta que la caja contiene."""
+    raiz = ET.fromstring(base.leer_con_candado(*FIGURA_1_1).decode("utf-8"))
+    textos = list(raiz.iter(NS + "text"))
+    cajas = {}
+    for r in raiz.iter(NS + "rect"):
+        clave = r.get("data-caja")
+        if not clave:
+            continue
+        x, y, w, h = (float(r.get(k)) for k in ("x", "y", "width", "height"))
+        dentro = sorted((t for t in textos if x < float(t.get("x")) < x + w and y < float(t.get("y")) < y + h),
+                        key=lambda t: float(t.get("y")))
+        if not dentro or dentro[0].get("font-weight") != "bold" or " · punto " not in (dentro[0].text or ""):
+            freno(f"{FIGURA_1_1[0]}: la caja {clave} no tiene el encabezado «Tipo · punto N»")
+        tipo, punto = dentro[0].text.split(" · punto ", 1)
+        cajas[clave] = {"tipo": tipo, "punto": punto, "etiqueta": " ".join(t.text for t in dentro[1:]),
+                        "relleno": r.get("fill"), "borde": r.get("stroke"), "grosor": r.get("stroke-width")}
+    return cajas
+
+
+def controlar_figura_1_1(sub, colores):
+    """Los dos nodos, iguales a los de la figura 1.1: tipo, punto, etiqueta y
+    colores."""
+    cajas = leer_figura_1_1()
+    for clave, _, _, _ in NODOS:
+        n, c = sub["nodos"][clave], cajas.get(clave)
+        if c is None:
+            freno(f"{FIGURA_1_1[0]}: no tiene la caja {clave}")
+        if (c["tipo"], c["punto"], c["etiqueta"]) != (n["type"], n["punto"], n["label"]):
+            freno(f"{FIGURA_1_1[0]}: la caja {clave} es {c['tipo']} {c['punto']} {c['etiqueta']!r}, "
+                  f"no {n['type']} {n['punto']} {n['label']!r}")
+        if {k: c[k] for k in ("relleno", "borde", "grosor")} != colores[n["type"]]:
+            freno(f"{FIGURA_1_1[0]}: la caja {clave} no tiene los colores de {n['type']} en {ESTILO[0]}")
+    return cajas
+
+
+def cargar():
+    sub = base.cargar_subgrafo(GRAFO, NODOS, (ARISTA,), NO_DIBUJADOS, UNIDAD)
+    diez = base.cargar_subgrafo(GRAFO_DIEZ, NODOS, (ARISTA,), NO_DIBUJADOS, UNIDAD)
+    base.comparar_grafos(sub, diez)
+    esquema = leer_esquema_r2()
+    firma = controlar_firma(sub, diez, esquema)
+    colores = base.leer_colores_tipo()
+    for _, tipo, _, _ in NODOS:
+        if tipo not in colores:
+            freno(f"{ESTILO[0]} no tiene caja {tipo}")
+    cajas_1_1 = controlar_figura_1_1(sub, colores)
+    return sub, diez, esquema, firma, colores, cajas_1_1
+
+
+# --------------------------------------------------------------------------- #
+# Composición: una fila de dos nodos unidos por la arista; las llamadas de los  #
+# nodos arriba, la de la relación abajo, cada una con su línea de llamada.     #
+# --------------------------------------------------------------------------- #
 def lineas_nodo(nodo):
-    """Líneas de texto del nodo: la etiqueta del grafo envuelta y «punto N»."""
-    lineas = [(l, False) for l in base.envolver_etiqueta(nodo["etiqueta"], FS_NODO,
-                                                          W_NODO - 2 * PAD_NODO)]
-    if len(lineas) > LINEAS_ETIQUETA:
-        raise SystemExit(f"la etiqueta {nodo['etiqueta']!r} ocupa {len(lineas)} líneas, "
-                         f"máximo {LINEAS_ETIQUETA}")
-    if " ".join(l for l, _ in lineas) != nodo["etiqueta"]:
-        raise SystemExit(f"la etiqueta dibujada no es la del grafo: {nodo['etiqueta']!r}")
-    lineas.append(("punto " + nodo["punto"], True))
+    """Líneas del nodo con el formato de la figura 1.1 (lineas_nodo del
+    generador base): «Tipo · punto N» en negrita y debajo la etiqueta del
+    grafo, completa, sin abreviar, envuelta al ancho de la caja; el generador
+    base frena si una línea no entra o si lo dibujado no es la etiqueta."""
+    lineas = base.lineas_nodo(nodo, W_NODO - 2 * PAD_NODO, FS_NODO)
+    if len(lineas) - 1 > LINEAS_ETIQUETA:
+        freno(f"la etiqueta {nodo['label']!r} ocupa {len(lineas) - 1} líneas, máximo {LINEAS_ETIQUETA}")
     return lineas
 
 
-def componer(nodos, arista):
-    del REGISTRO[:]
-    del CAJAS_NODO[:]
-    partes = []
-    n_lineas = max(len(lineas_nodo(nodos[k])) for k, _ in NODOS_FIGURA)
-    h_nodo = 2 * PAD_NODO + n_lineas * IL_NODO
+def texto(partes, x, y, s, fs, negrita, relleno, anclaje, extra=""):
+    partes.append(f'<text x="{f(x)}" y="{f(y)}" text-anchor="{anclaje}" font-size="{fs}" '
+                  f'font-weight="{"bold" if negrita else "normal"}" fill="{relleno}"{extra}>{esc(s)}</text>')
 
-    # Fila superior: las dos llamadas de los nodos y sus líneas de llamada.
+
+def linea_llamada(partes, x0, y0, x1, y1, cual):
+    partes.append(f'<path d="M{f(x0)},{f(y0)} L{f(x1)},{f(y1)}" fill="none" stroke="{GRIS_ARISTA}" '
+                  f'stroke-width="1.0" opacity="1" data-llamada="{cual}"/>')
+
+
+def componer(sub, colores, perturbacion=None):
+    nodos = {k: dict(v) for k, v in sub["nodos"].items()}
+    tipo_colores = {k: v["type"] for k, v in nodos.items()}   # los colores salen del tipo del grafo
+    if perturbacion == "etiqueta_distinta":
+        nodos[DESTINO]["label"] = "Inclusión en cartera comercial — créditos de consumo o vivienda"
+    if perturbacion == "tipo_cambiado":
+        nodos[ORIGEN]["type"] = "Restriccion"                 # solo el encabezado de la caja
+    llamada_sobre = {"origen": ORIGEN, "destino": DESTINO}
+    if perturbacion == "llamadas_intercambiadas":
+        llamada_sobre = {"origen": DESTINO, "destino": ORIGEN}
+    lineas = {k: lineas_nodo(nodos[k]) for k in (ORIGEN, DESTINO)}
+    h_nodo = 2 * PAD_NODO + max(len(v) for v in lineas.values()) * IL_NODO
+
     y_llam = MARGEN + FS_LLAMADA
     y_nodo = y_llam + HOLGURA_LLAMADA + LARGO_LLAMADA + HOLGURA_LLAMADA
-    pos = {"R": MARGEN, "OP": W - MARGEN - W_NODO}
+    pos = {ORIGEN: MARGEN, DESTINO: W - MARGEN - W_NODO}
     centro = {k: x + W_NODO / 2.0 for k, x in pos.items()}
     cy = y_nodo + h_nodo / 2.0
+    partes = []
 
-    for clave, llamada, x_txt, anclaje in (
-            ("R", LLAMADA_ORIGEN, MARGEN, "start"),
-            ("OP", LLAMADA_DESTINO, W - MARGEN, "end")):
-        nodo = nodos[clave]
-        s = llamada.format(tipo=nodo["tipo"], punto=nodo["punto"])
-        texto(partes, x_txt, y_llam, s, FS_LLAMADA, False, GRIS_ROTULO, anclaje,
-              W - 2 * MARGEN, None, f"llamada {clave}")
-        linea(partes, centro[clave], y_llam + HOLGURA_LLAMADA,
-              centro[clave], y_nodo - HOLGURA_LLAMADA, GRIS_ARISTA, "1.0")
+    # Fila superior: las llamadas de los dos nodos, centradas sobre su caja, y
+    # sus líneas hasta el borde superior de la caja.
+    for cual in ("origen", "destino"):
+        clave = llamada_sobre[cual]
+        texto(partes, centro[clave], y_llam, LLAMADA[cual], FS_LLAMADA, False, GRIS_ROTULO, "middle")
+        linea_llamada(partes, centro[clave], y_llam + HOLGURA_LLAMADA, centro[clave], y_nodo - HOLGURA_LLAMADA, cual)
 
     # La arista: del borde derecho del origen al borde izquierdo del destino,
-    # trazo continuo en el gris oscuro, con su rótulo encima.
-    x0, x1 = pos["R"] + W_NODO + 2, pos["OP"] - 2
-    linea(partes, x0, cy, x1, cy, TRAZO_ARISTA, "2.6", "arL", "0.95")
+    # a 2 unidades de cada uno, trazo continuo en el gris oscuro, con su rótulo
+    # encima.
+    x0, x1 = pos[ORIGEN] + W_NODO + 2, pos[DESTINO] - 2
+    if perturbacion == "direccion_invertida":
+        x0, x1 = x1, x0
+    partes.append(f'<path d="M{f(x0)},{f(cy)} L{f(x1)},{f(cy)}" fill="none" stroke="{TRAZO_ARISTA}" '
+                  f'stroke-width="2.6" opacity="0.95" marker-end="url(#arL)" data-arista="0"/>')
     x_medio = (x0 + x1) / 2.0
-    texto(partes, x_medio, cy - 9, ROTULO_ARISTA, FS_ARISTA, True, TRAZO_ARISTA, "middle",
-          x1 - x0 - 2 * HOLGURA_LLAMADA, None, "rótulo de la arista")
+    y_rotulo = cy - 9
+    if perturbacion == "rotulo_sobre_caja":
+        x_medio = pos[DESTINO] + 12
+    texto(partes, x_medio, y_rotulo, ROTULO_ARISTA, FS_ARISTA, True, TRAZO_ARISTA, "middle", ' data-rotulo="0"')
 
-    # Los dos nodos: caja del color de su tipo, etiqueta y «punto N» en blanco.
-    for clave, _ in NODOS_FIGURA:
-        nodo = nodos[clave]
-        px = pos[clave]
-        partes.append(f'<rect x="{f(px)}" y="{f(y_nodo)}" width="{f(W_NODO)}" '
-                      f'height="{f(h_nodo)}" fill="{COLOR_TIPO[nodo["tipo"]]}" '
-                      f'fill-opacity="0.95" stroke="black" stroke-width="1.8" rx="7"/>')
-        CAJAS_NODO.append((clave, (px, y_nodo, px + W_NODO, y_nodo + h_nodo)))
-        lineas = lineas_nodo(nodo)
-        yy = y_nodo + (h_nodo - len(lineas) * IL_NODO) / 2.0 + FS_NODO - 2
-        for s, negrita in lineas:
-            texto(partes, centro[clave], yy, s, FS_NODO, negrita, "white", "middle",
-                  W_NODO - 2 * PAD_NODO, clave, f"nodo {clave}")
+    # Los dos nodos: caja con los colores de su tipo, encabezado y etiqueta.
+    for clave in (ORIGEN, DESTINO):
+        c = colores[tipo_colores[clave]]
+        partes.append(f'<rect x="{f(pos[clave])}" y="{f(y_nodo)}" width="{f(W_NODO)}" height="{f(h_nodo)}" '
+                      f'fill="{c["relleno"]}" stroke="{c["borde"]}" stroke-width="{c["grosor"]}" '
+                      f'rx="{base.RX_NODO}" data-caja="{clave}"/>')
+        yy = y_nodo + (h_nodo - len(lineas[clave]) * IL_NODO) / 2.0 + FS_NODO - 2
+        for s, negrita in lineas[clave]:
+            texto(partes, centro[clave], yy, s, FS_NODO, negrita, TINTA, "middle")
             yy += IL_NODO
 
     # Fila inferior: la llamada de la relación, con su línea desde la arista.
+    x_rel = (pos[ORIGEN] + W_NODO + pos[DESTINO]) / 2.0
     y_llam_rel = y_nodo + h_nodo + HOLGURA_LLAMADA + FS_LLAMADA
-    linea(partes, x_medio, cy + HOLGURA_LLAMADA, x_medio, y_llam_rel - FS_LLAMADA - HOLGURA_LLAMADA,
-          GRIS_ARISTA, "1.0")
-    texto(partes, x_medio, y_llam_rel, LLAMADA_RELACION, FS_LLAMADA, False, GRIS_ROTULO,
-          "middle", None, None, "llamada relación")
+    y_ini_rel = cy + HOLGURA_LLAMADA
+    if perturbacion == "cruce":
+        y_ini_rel = cy - 2 * HOLGURA_LLAMADA
+    linea_llamada(partes, x_rel, y_ini_rel, x_rel, y_llam_rel - FS_LLAMADA - HOLGURA_LLAMADA, "relacion")
+    texto(partes, x_rel, y_llam_rel, LLAMADA["relacion"], FS_LLAMADA, False, GRIS_ROTULO, "middle")
     alto_total = y_llam_rel + HOLGURA_LLAMADA + MARGEN
 
-    alto_cm = ANCHO_FIGURA_CM * alto_total / W
-    cabeza = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{ANCHO_FIGURA_CM:.2f}cm" '
-        f'height="{alto_cm:.2f}cm" viewBox="0 0 {W} {f(alto_total)}" '
-        f'font-family="{TIPOGRAFIA}">',
-        f'<rect width="{W}" height="{f(alto_total)}" fill="white"/>',
-        '<defs>'
-        '<marker id="arL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" '
-        f'markerHeight="6" orient="auto"><path d="M0,0L10,5L0,10z" fill="{TRAZO_ARISTA}"/></marker>'
-        '</defs>',
-    ]
-    return "\n".join(cabeza + partes + ["</svg>"]) + "\n", alto_total
-
-
-def exportar_png():
-    rsvg = shutil.which("rsvg-convert")
-    if not rsvg:
-        print("rsvg-convert no está instalado: se escribió el SVG y no el PNG.")
-        return False
-    subprocess.run([rsvg, "-w", str(ANCHO_PNG_PX), "-f", "png", "-o", SALIDA_PNG,
-                    SALIDA_SVG], check=True)
-    proc.grabar_densidad(SALIDA_PNG, DPI)
-    return True
+    defs = ('<defs><marker id="arL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" '
+            f'orient="auto"><path d="M0,0L10,5L0,10z" fill="{TRAZO_ARISTA}"/></marker></defs>')
+    out = [base.cabecera_svg(W, alto_total, ANCHO_FIGURA_CM),
+           f'<rect width="{W}" height="{f(alto_total)}" fill="white"/>', defs] + partes + ["</svg>"]
+    return "\n".join(out) + "\n", alto_total
 
 
 # --------------------------------------------------------------------------- #
-# Verificación de medidas                                                      #
+# Inventario: la tripleta releída del SVG                                       #
 # --------------------------------------------------------------------------- #
-def verificar(alto_total):
-    medir = proc.medidor()
-    fuente = "métricas reales de Helvetica" if medir else "tabla de métricas del script"
-    if not medir:
-        print("PIL o la fuente del sistema no están: se verifica con la tabla del script.")
-        medir = ancho
-    print(f"\nVERIFICACIÓN DE MEDIDAS ({fuente})")
-    fallas, cajas = [], []
-    for r in REGISTRO:
-        a = medir(r["s"], r["fs"], r["negrita"])
-        x0 = {"start": r["x"], "middle": r["x"] - a / 2.0, "end": r["x"] - a}[r["anclaje"]]
-        bb = (x0, r["y"] - r["fs"] * 0.78, x0 + a, r["y"] + r["fs"] * 0.22)
-        cajas.append((r, bb))
-        pt = puntos_impresos(r["fs"])
-        estado = []
-        if pt < PT_MINIMO:
-            estado.append(f"letra {pt:.2f} pt < {PT_MINIMO}")
-        if r["ancho_max"] is not None and a > r["ancho_max"]:
-            estado.append(f"ancho {a:.1f} > caja {r['ancho_max']:.1f}")
-        if bb[0] < 0 or bb[2] > W or bb[1] < 0 or bb[3] > alto_total:
-            estado.append("fuera del lienzo")
-        for clave, nb in CAJAS_NODO:
-            cruza = bb[0] < nb[2] and nb[0] < bb[2] and bb[1] < nb[3] and nb[1] < bb[3]
-            if r["dentro_de"] == clave:
-                if not (nb[0] <= bb[0] and bb[2] <= nb[2] and nb[1] <= bb[1] and bb[3] <= nb[3]):
-                    estado.append(f"sale del nodo {clave}")
-            elif cruza:
-                estado.append(f"pisa el nodo {clave}")
-        tope = f"{r['ancho_max']:6.1f}" if r["ancho_max"] is not None else "     –"
-        print(f"  {'MAL' if estado else 'ok '} {pt:5.2f} pt  ancho {a:6.1f} / {tope}  "
-              f"{r['contexto']:20s} {r['s']!r}" + ("  <-- " + "; ".join(estado) if estado else ""))
-        fallas += [(r["s"], e) for e in estado]
-    for i in range(len(cajas)):
-        for j in range(i + 1, len(cajas)):
-            (ra, a), (rb, b) = cajas[i], cajas[j]
-            if a[0] < b[2] and b[0] < a[2] and a[1] < b[3] and b[1] < a[3]:
-                fallas.append((ra["s"], f"se superpone con {rb['s']!r}"))
-                print(f"  MAL superposición: {ra['s']!r} / {rb['s']!r}")
-    print(f"  textos medidos: {len(REGISTRO)}   fallas: {len(fallas)}")
-    return not fallas
+def distancia_a_tramo(p, a, b):
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    t = 0.0 if dx == dy == 0 else max(0.0, min(1.0, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / (dx * dx + dy * dy)))
+    return ((p[0] - a[0] - t * dx) ** 2 + (p[1] - a[1] - t * dy) ** 2) ** 0.5
+
+
+def inventario_svg(svg):
+    """Solo desde el SVG: cada caja de nodo (rect rx=7 con data-caja) con sus
+    colores, su encabezado «Tipo · punto N» y su etiqueta; la arista (trazo
+    con data-arista) con la caja en cuyo borde empieza, la caja en cuyo borde
+    termina (la de la flecha) y su rótulo; y cada línea de llamada
+    (data-llamada) con el texto junto a uno de sus extremos y la caja o la
+    arista junto al otro."""
+    medir = base.medidor()
+    raiz = ET.fromstring(svg)
+    cajas = {}
+    for r in raiz.iter(NS + "rect"):
+        if r.get("data-caja") and r.get("rx") == str(base.RX_NODO):
+            x, y, w, h = (float(r.get(k)) for k in ("x", "y", "width", "height"))
+            cajas[r.get("data-caja")] = {"R": (x, y, x + w, y + h), "relleno": r.get("fill"),
+                                         "borde": r.get("stroke"), "grosor": r.get("stroke-width")}
+    textos = base.textos_svg(raiz, medir)
+    fallas = []
+    for k, c in cajas.items():
+        R = c["R"]
+        dentro = sorted((t for t in textos if base.contiene(R, t["bb"])), key=lambda t: t["y"])
+        if (not dentro or not dentro[0]["negrita"] or " · punto " not in dentro[0]["s"]
+                or any(t["negrita"] for t in dentro[1:])):
+            fallas.append(f"la caja {k} no empieza con «Tipo · punto N» en negrita seguido de la etiqueta")
+            c["tipo"] = c["punto"] = c["etiqueta"] = None
+            continue
+        c["tipo"], c["punto"] = dentro[0]["s"].split(" · punto ", 1)
+        c["etiqueta"] = " ".join(t["s"] for t in dentro[1:])
+
+    def caja_en_borde(p):
+        en = [k for k, c in cajas.items()
+              if (abs(p[0] - c["R"][0]) <= BORDE or abs(p[0] - c["R"][2]) <= BORDE) and c["R"][1] <= p[1] <= c["R"][3]
+              or (abs(p[1] - c["R"][1]) <= BORDE or abs(p[1] - c["R"][3]) <= BORDE) and c["R"][0] <= p[0] <= c["R"][2]]
+        return en[0] if len(en) == 1 else None
+    aristas = []
+    rotulos = {t["rotulo"]: t["s"] for t in textos if t["rotulo"] is not None}
+    for p in raiz.iter(NS + "path"):
+        if p.get("data-arista") is None:
+            continue
+        pts = base.puntos_de(p.get("d"))
+        aristas.append({"pts": pts, "origen": caja_en_borde(pts[0]), "destino": caja_en_borde(pts[-1]),
+                        "rotulo": rotulos.get(p.get("data-arista")), "flecha": bool(p.get("marker-end"))})
+
+    def texto_junto(p):
+        cerca = [t for t in textos if t["bb"][0] - 1 <= p[0] <= t["bb"][2] + 1
+                 and min(abs(p[1] - t["bb"][1]), abs(p[1] - t["bb"][3])) <= CERCA]
+        return cerca[0] if len(cerca) == 1 else None
+
+    def caja_junto(p):
+        cerca = [k for k, c in cajas.items() if c["R"][0] <= p[0] <= c["R"][2]
+                 and min(abs(p[1] - c["R"][1]), abs(p[1] - c["R"][3])) <= CERCA]
+        return cerca[0] if len(cerca) == 1 else None
+
+    def arista_junto(p):
+        cerca = [i for i, a in enumerate(aristas)
+                 if any(distancia_a_tramo(p, u, v) <= CERCA for u, v in zip(a["pts"], a["pts"][1:]))]
+        return cerca[0] if len(cerca) == 1 else None
+    llamadas = []
+    for p in raiz.iter(NS + "path"):
+        if p.get("data-llamada") is None:
+            continue
+        pts = base.puntos_de(p.get("d"))
+        hallado = None
+        for a, b in ((pts[0], pts[-1]), (pts[-1], pts[0])):
+            t = texto_junto(a)
+            if t is None:
+                continue
+            k, i = caja_junto(b), arista_junto(b)
+            if (k is None) == (i is None):
+                continue
+            hallado = {"texto": t["s"], "caja": k, "arista": i, "pts": pts}
+        if hallado is None:
+            fallas.append(f"línea de llamada sin texto en un extremo y una caja o la arista en el otro: {pts}")
+        else:
+            llamadas.append(hallado)
+    return cajas, aristas, llamadas, fallas
+
+
+def controlar_inventario(svg, sub, colores):
+    """La tripleta rearmada desde el SVG contra la del grafo."""
+    cajas, aristas, llamadas, fallas = inventario_svg(svg)
+    o, rel, d = ARISTA
+    par = {k: (n["type"], n["punto"], n["label"]) for k, n in sub["nodos"].items()}
+    esperada = [(par[o], rel, par[d])]
+    # Cada caja tiene los colores del tipo que escribe su encabezado.
+    for k, c in cajas.items():
+        if c["tipo"] is None:
+            continue
+        if c["tipo"] not in colores:
+            fallas.append(f"la caja {k} dice {c['tipo']}, que no tiene colores en {ESTILO[0]}")
+        elif {x: c[x] for x in ("relleno", "borde", "grosor")} != colores[c["tipo"]]:
+            fallas.append(f"la caja {k} dice {c['tipo']} y no tiene los colores de {c['tipo']}")
+    # Cada llamada de nodo nombra su papel; tipo, punto y etiqueta son los de la
+    # caja a la que apunta.
+    papel = {LLAMADA["origen"]: "origen", LLAMADA["destino"]: "destino"}
+    nodo_de = {}
+    for ll in llamadas:
+        if ll["texto"] in papel:
+            cual = papel[ll["texto"]]
+            if ll["caja"] is None:
+                fallas.append(f"la llamada {ll['texto']!r} no apunta a una caja")
+                continue
+            c = cajas[ll["caja"]]
+            if cual in nodo_de:
+                fallas.append(f"dos llamadas de nodo de {cual}")
+            nodo_de[cual] = (ll["caja"], (c["tipo"], c["punto"], c["etiqueta"]))
+        elif ll["texto"] == LLAMADA["relacion"]:
+            if ll["arista"] is None:
+                fallas.append("la llamada de la relación no apunta a la arista")
+        else:
+            fallas.append(f"llamada desconocida: {ll['texto']!r}")
+    if sorted(nodo_de) != ["destino", "origen"]:
+        fallas.append(f"llamadas de nodo: {sorted(nodo_de)}, no origen y destino")
+    if [ll["texto"] for ll in llamadas].count(LLAMADA["relacion"]) != 1:
+        fallas.append("no hay exactamente una llamada de la relación")
+    dibujadas = []
+    for a in aristas:
+        if not a["flecha"]:
+            fallas.append("la arista no tiene flecha")
+        extremos = {}
+        for cual, caja in (("origen", a["origen"]), ("destino", a["destino"])):
+            if caja is None or cual not in nodo_de:
+                extremos[cual] = None
+            elif nodo_de[cual][0] != caja:
+                fallas.append(f"la arista {cual} en la caja {caja}; la llamada de {cual}, en {nodo_de[cual][0]}")
+                extremos[cual] = None
+            else:
+                extremos[cual] = nodo_de[cual][1]
+        dibujadas.append((extremos["origen"], a["rotulo"], extremos["destino"]))
+    for nombre, esp, dib in (("nodo", list(par.values()), [v[1] for v in nodo_de.values()]),
+                             ("arista", esperada, dibujadas)):
+        for x in sorted((Counter(esp) - Counter(dib)).elements(), key=str):
+            fallas.append(f"{nombre} del grafo que no está en la figura: {x}")
+        for x in sorted((Counter(dib) - Counter(esp)).elements(), key=str):
+            fallas.append(f"{nombre} de la figura que no está en el grafo: {x}")
+    return fallas, nodo_de, dibujadas, llamadas
+
+
+# --------------------------------------------------------------------------- #
+# Geometría                                                                    #
+# --------------------------------------------------------------------------- #
+def controlar_llamadas(svg):
+    """Las líneas de llamada, que controlar_geometria no mira (no llevan
+    flecha): ninguna toca una caja ni un texto, y entre todos los trazos
+    (arista y llamadas) no hay cruces."""
+    raiz = ET.fromstring(svg)
+    medir = base.medidor()
+    textos = base.textos_svg(raiz, medir)
+    cajas = []
+    for r in raiz.iter(NS + "rect"):
+        if r.get("data-caja"):
+            x, y, w, h = (float(r.get(k)) for k in ("x", "y", "width", "height"))
+            cajas.append((r.get("data-caja"), (x, y, x + w, y + h)))
+    trazos = [(p.get("data-llamada") or f"arista {p.get('data-arista')}", base.puntos_de(p.get("d")))
+              for p in raiz.iter(NS + "path") if p.get("data-llamada") or p.get("data-arista")]
+    fallas = []
+    for ident, pts in trazos:
+        if ident.startswith("arista"):
+            continue
+        for p, q in zip(pts, pts[1:]):
+            for nombre, c in cajas:
+                if base.tramo_toca_rect(p, q, c):
+                    fallas.append(f"la llamada {ident} toca la caja {nombre}")
+            for t in textos:
+                if base.tramo_toca_rect(p, q, t["bb"]):
+                    fallas.append(f"la llamada {ident} toca el texto {t['s']!r}")
+    cruces = []
+    for i in range(len(trazos)):
+        for j in range(i + 1, len(trazos)):
+            (ia, pa), (ib, pb) = trazos[i], trazos[j]
+            if any(base.tramos_se_tocan(p1, p2, q1, q2) for p1, p2 in zip(pa, pa[1:]) for q1, q2 in zip(pb, pb[1:])):
+                cruces.append((ia, ib))
+    if cruces:
+        fallas.append(f"{len(cruces)} cruce(s) entre trazos, declarados 0: {cruces}")
+    return fallas, {"trazos": len(trazos), "cruces": cruces}
+
+
+# --------------------------------------------------------------------------- #
+# Controles y pruebas negativas                                                #
+# --------------------------------------------------------------------------- #
+# Prueba negativa -> control que tiene que fallar y texto de la falla propia.
+PRUEBAS_NEGATIVAS = (("direccion_invertida", "inventario", "arista de la figura que no está en el grafo"),
+                     ("llamadas_intercambiadas", "inventario", "la llamada de origen, en"),
+                     ("etiqueta_distinta", "inventario", "nodo de la figura que no está en el grafo"),
+                     ("tipo_cambiado", "inventario", "no tiene los colores de Restriccion"),
+                     ("rotulo_sobre_caja", "geometria", "texto sobre la caja"),
+                     ("cruce", "llamadas", "cruce(s) entre trazos"))
+
+
+def controlar(sub, colores, perturbacion=None):
+    svg, alto = componer(sub, colores, perturbacion)
+    c = {}
+    c["inventario"], nodo_de, dibujadas, llamadas = controlar_inventario(svg, sub, colores)
+    c["geometria"], info = base.controlar_geometria(svg, ANCHO_FIGURA_CM, W, pt_minimo=PT_MINIMO)
+    c["llamadas"], info_ll = controlar_llamadas(svg)
+    return svg, alto, c, info, info_ll, nodo_de, dibujadas, llamadas
+
+
+def pruebas_negativas(sub, colores):
+    vivas = []
+    for caso, control, patron in PRUEBAS_NEGATIVAS:
+        c = controlar(sub, colores, caso)[2]
+        propia = [x for x in c[control] if patron in x]
+        if not propia:
+            freno(f"la prueba negativa {caso} no hizo fallar el control de {control} con «{patron}»")
+        vivas.append((caso, control, propia[0], sorted(k for k, v in c.items() if v and k != control)))
+    return vivas
+
+
+def argumentos():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--salida", default=AQUI,
+                    help="directorio donde escribir el SVG, el PNG y el PDF (por omisión, el del script)")
+    ap.add_argument("--perturbar", choices=[c for c, _, _ in PRUEBAS_NEGATIVAS], default=None,
+                    help="compone la figura con ese defecto: los controles fallan y no se escribe nada")
+    return ap.parse_args()
+
+
+def informe(sub, diez, esquema, firma, colores, cajas_1_1):
+    print("FUENTES (sha256 comprobado):")
+    for nombre, par in (("grafo", GRAFO), ("grafo diez", GRAFO_DIEZ), ("estilo", ESTILO),
+                        ("esquema r2", MODELOS_R2), ("figura 1.1", FIGURA_1_1)):
+        print(f"  {nombre:11s} {par[0]}   {par[1]}")
+    print(f"GRAFO: {sub['ruta']}   ({sub['n_nodos']} nodos, {sub['n_aristas']} aristas)")
+    print(f"  igual en {diez['ruta']}   ({diez['n_nodos']} nodos, {diez['n_aristas']} aristas)")
+    for clave, n in sub["nodos"].items():
+        print(f"  nodo {clave:15s} {n['type']:9s} punto {n['punto']:8s} {n['label']!r}")
+        print(f"       id {n['id']}   (en diez: {diez['nodos'][clave]['id'] == n['id']})")
+    a, b = sub["aristas"][0], diez["aristas"][0]
+    print(f"  arista kg['edges'][{a['indice']}] (diez [{b['indice']}]) {a['origen']} --{a['relation']}--> "
+          f"{a['destino']}   procedencia {a['chunks']}   properties {json.dumps(a['properties'])}")
+    print(f"  firma {firma}: AMPLIACION_R2 ({MODELOS_R2[0]}:{esquema['AMPLIACION_R2'][1]}); "
+          f"{firma[0]} en PREDICADOS (:{esquema['PREDICADOS'][1]}) y fuera de PREDICADOS_DERIVADOS "
+          f"(:{esquema['PREDICADOS_DERIVADOS'][1]}) = {list(esquema['PREDICADOS_DERIVADOS'][0])}; "
+          f"sin rol_fuente ni propiedades; sin aristas en sentido inverso")
+    print("  NO DIBUJADO, aristas de los nodos dibujados hacia fuera del dibujo (nodo, sentido, relación, tipo del otro extremo):")
+    for k, v in sorted(sub["afuera"].items()):
+        print(f"    {k}: {v}")
+    print("  NO DIBUJADO, nodos de la unidad y sus aristas:")
+    for k, v in sub["no_dibujados"].items():
+        print(f"    {k}: {v}")
+    print("COLORES DE TIPO (de la figura del esquema final; iguales en la figura 1.1):")
+    for clave, tipo, _, _ in NODOS:
+        print(f"  {tipo:9s} {colores[tipo]}   figura 1.1, caja {clave}: {cajas_1_1[clave]}")
 
 
 def main():
-    nodos, arista = cargar_grafo()
-    print(f"GRAFO: {os.path.relpath(KG, RAIZ)}   sha256 {KG_SHA256[:12]}… (comprobado)")
-    print(f"DATOS: {os.path.relpath(DATOS, RAIZ)}   sha256 "
-          f"{hashlib.sha256(open(DATOS, 'rb').read()).hexdigest()}")
-    for clave, _ in NODOS_FIGURA:
-        n = nodos[clave]
-        otros = f"  (además en {', '.join(n['otros_puntos'])})" if n["otros_puntos"] else ""
-        print(f"  nodo {clave:2s} {n['tipo']:11s} punto {n['punto']:9s} {n['id']}{otros}")
-        print(f"          etiqueta en el grafo, dibujada completa [{len(n['etiqueta'])}]: "
-              f"{n['etiqueta']!r}")
-    pv = arista["provenance"]
-    print(f"  arista kg['edges'][{arista['indice']}]  {arista['a']} --{arista['relacion']}--> "
-          f"{arista['b']}  clase {arista['clase']}  rol_fuente {arista['rol_fuente']}")
-    print(f"          firma ({nodos[arista['a']]['tipo']}, {arista['relacion']}, "
-          f"{nodos[arista['b']]['tipo']}) admitida por la matriz del esquema")
-    print(f"          procedencia {pv.get('chunk_id')!r}  páginas {pv.get('paginas')!r}  "
-          f"rol_documental {pv.get('rol_documental')!r}")
-    print(f"          properties: {json.dumps(arista['propiedades'], ensure_ascii=False)}")
-    print(f"          aristas en sentido inverso ({arista['b']} -> {arista['a']}): {len(arista['inversas'])}")
+    args = argumentos()
+    sub, diez, esquema, firma, colores, cajas_1_1 = cargar()
+    informe(sub, diez, esquema, firma, colores, cajas_1_1)
 
-    svg, alto_total = componer(nodos, arista)
-    with open(SALIDA_SVG, "w", encoding="utf-8") as fh:
-        fh.write(svg)
-    print(f"SVG: {SALIDA_SVG}   lienzo {W} x {alto_total:.0f}")
-    print(f"Impresa a {ANCHO_FIGURA_CM:.2f} cm de ancho ({ANCHO_FIGURA_PT:.1f} pt), "
-          f"alto {ANCHO_FIGURA_CM * alto_total / W:.2f} cm:")
-    for nombre, fs in (("etiqueta y punto de los nodos", FS_NODO),
-                       ("rótulo de la arista", FS_ARISTA),
-                       ("llamadas", FS_LLAMADA)):
-        print(f"    {nombre:32s} {fs} -> {puntos_impresos(fs):5.2f} pt (mínimo {PT_MINIMO})")
-    if exportar_png():
-        print(f"PNG: {SALIDA_PNG}   {ANCHO_PNG_PX} px de ancho, {DPI} dpi")
-    if "--verificar" in sys.argv[1:]:
-        if not verificar(alto_total):
-            raise SystemExit("FALLA: la verificación de medidas encontró defectos")
+    vivas = pruebas_negativas(sub, colores)
+    print(f"PRUEBAS NEGATIVAS: {len(vivas)} de {len(PRUEBAS_NEGATIVAS)} hacen fallar su control")
+    for caso, control, falla, otros in vivas:
+        print(f"  {caso} -> {control}: {falla}" + (f" (fallan también: {', '.join(otros)})" if otros else ""))
+
+    svg, alto, c, info, info_ll, nodo_de, dibujadas, llamadas = controlar(sub, colores, args.perturbar)
+    if args.perturbar:
+        print(f"PERTURBACIÓN: {args.perturbar}")
+    print(f"INVENTARIO (releído del SVG): {len(nodo_de)} nodos, {len(dibujadas)} arista, "
+          f"{len(llamadas)} llamadas; fallas: {len(c['inventario'])}")
+    for cual in ("origen", "destino"):
+        if cual in nodo_de:
+            print(f"  nodo de {cual:7s} caja {nodo_de[cual][0]}: {nodo_de[cual][1]}")
+    for t in dibujadas:
+        print(f"  arista {t[0]} --{t[1]}--> {t[2]}")
+    for ll in llamadas:
+        print(f"  llamada {ll['texto']!r} -> " + (f"caja {ll['caja']}" if ll["caja"] else f"arista {ll['arista']}"))
+    print(f"GEOMETRÍA: {info['textos']} textos, {info['cajas']} cajas, {info['trazos']} trazo con flecha; "
+          f"{info_ll['trazos']} trazos con las llamadas; cruces {len(info_ll['cruces'])}; "
+          f"fallas: {len(c['geometria']) + len(c['llamadas'])}")
+    for k in c:
+        for falla in c[k]:
+            print(f"  MAL [{k}] {falla}")
+    if any(c.values()):
+        raise SystemExit("FALLA: la figura tiene defectos; no se escribe nada")
+    print(f"TAMAÑO: lienzo {W} x {f(alto)}, impreso a {ANCHO_FIGURA_CM:.2f} x {ANCHO_FIGURA_CM * alto / W:.2f} cm")
+    for fs, pt in sorted(info["tamanos"].items()):
+        print(f"  letra {fs:g} unidades -> {pt:.2f} pt (mínimo {PT_MINIMO})")
+    rutas = base.exportar(svg, args.salida, NOMBRE, ANCHO_FIGURA_CM)
+    for e in ("svg", "png", "pdf"):
+        print(f"{e.upper()}: {os.path.relpath(rutas[e], base.RAIZ)}   sha256 {base.sha256(rutas[e])}")
+    print(f"  PNG {base.png_dimensiones(rutas['png'])} px a {base.DPI} dpi; {base.version_rsvg()}")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except base.Freno as e:
+        raise SystemExit(f"FRENO {e}")
