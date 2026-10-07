@@ -30,6 +30,12 @@ Fichas con los pasajes completos: paquete de la mesa `hoja_de_ruta_tanda1_mesa/f
 Resumen: 6 clase, 3 rol reutilizado, 3 sin alcance declarado. Con los 8 del ejemplo que ya tenían alcance, los 20 del ejemplo
 quedan cubiertos para el pre-registro de la tanda 1 (la lista real sale de la segmentación oficial).
 
+**07/10/2026 — decisión de la autora: ri_cc sale de la tanda 1** (defecto de sub-documento en su segmentación: tres regímenes con
+numeración que reinicia; límite declarado; se corrige en una S0-4 de U-SEG-OFICIAL antes de la tanda 3, donde entra con los demás
+regímenes informativos). Su fila queda: la decisión de alcance (clase `Sujeto_caja_de_credito` por el título) rige cuando entre. La cuota
+del estrato 2 del §7 se completa con otro régimen informativo; la mesa propone **ri_pgn** (ficha abajo, en la tabla de candidatos, y en
+`hoja_de_ruta_tanda1_mesa/ficha_alcance_ri_pgn_reemplazo_ri_cc_mesa.md`); su fila entra a esta tabla cuando la autora decida.
+
 ## Candidatos a la regla del título en el resto del universo (no decididos; lectura del cuerpo pendiente)
 
 Recómputo del 06/10/2026 sobre `escalado_prep/inventario_tos.csv` contra los labels y alias del catálogo (singular y plural):
@@ -41,6 +47,7 @@ frase de alcance, se verifica en la lectura de la tanda de cada uno.
 | estado | TO | clase(s) que nombra el título |
 |---|---|---|
 | candidato (la clase es el sujeto obligado o informante) | inspag, cateloc, horari, seguef, nmaeef, ri_ii_31_12_19, ri_mmsef, ri_sef | `Sujeto_entidad_financiera` |
+| candidato PROPUESTO como reemplazo de ri_cc en la tanda 1 (07/10/2026; decisión PENDIENTE de la autora): sección del Régimen Informativo Contable Mensual, como ri_rml y ri_gerc (regla §2.8) | ri_pgn | `Sujeto_rol_entidad_comprendida_reginf` (rol reutilizado) o, por el pasaje de `ri_pgn::S1` («Las entidades financieras deberán suministrar información…»), `Sujeto_entidad_financiera` |
 | candidato | ri_ccpnp | `Sujeto_caja_de_credito` |
 | candidato | ri_pspapt, ri_pspii (no segmentable), ri_psprca, ri_psp | `Sujeto_proveedor_de_servicios_de_pago` |
 | candidato | opecam | `Sujeto_entidad_cambiaria` |

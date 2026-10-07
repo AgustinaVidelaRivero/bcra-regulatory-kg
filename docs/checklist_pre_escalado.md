@@ -208,6 +208,21 @@ tanda 1.
 | Q11 | Ciclo de corrección de esquema de la tanda 1, siempre antes del pre-registro de B6.3 | `:765` | decidido (30/09): no hay ciclo de corrección de esquema en la tanda 1; la ventana se usó en B2.11 | No |
 | Q12 | B6.3: definir de antemano quién lee y adjudica (casos a adjudicación del juez, muestra de control, tripletas de B4): modelo con muestra humana de control de tamaño suficiente y declarada, o experto del dominio | esta lista (29/09); antecedente, desvíos declarados en `:746`, `:749` y `:751` | registrado | Sí, con los mentores |
 
+**[07/10/2026] Decisiones de la autora sobre el diseño de las evaluaciones (RECONC-DISENO-EVAL; acta confirmada del 18 y el 19/08/2026 en
+`docs/registro_reunion_mentores_2026-08-18_19.md`):** (1) principio 8 reescrito: toda evaluación nueva con agente sobre un grafo corre en el
+banco Claude Code + MCP; el harness congelado solo para lo ya sellado (lista cerrada). Con eso, **N7** sigue (la configuración congelada
+de A1.8 se implementa como herramientas MCP) y **F-1 queda resuelta**: B6.3 (b) y (f) son la misma corrida y la misma tabla. (2) D1 con
+dos comparaciones principales (denso y BM25): **Q4** vale para las dos; **Q5** se calcula con corrección por dos comparaciones (Holm) y
+con las tasas de pares discordantes de A2.2; **Q2** declara el analizador del servidor BM25 de fragmentos. (3) A2.2 después de la tanda 1 y
+antes de las ablaciones de A1.8 (**Q6** se mide ahí). (4) B1.10 plegada a A1.8 (**N5**: la búsqueda híbrida es una de las mejoras
+candidatas). (5) A2.0-reportes en versión mínima con verificador. (6) D5: el índice se reconstruye sobre la E0 r2b de desarrollo para A2
+y sobre el manifiesto de E0 del grafo evaluado para B6.3, con todas las unidades (también las de la cola) y las que superan la ventana
+partidas y declaradas. (7) **Q7** resuelta por el §9 del pre-registro de tripletas (`docs/preregistro_evaluacion_tripletas.md`, BORRADOR:
+B6.3 (d) con el instrumento validado en B4.2 y B4.3 antes de sellar). (8) **W3**: el protocolo de los dos grafos entra al repo como BORRADOR
+(`docs/protocolo_dos_grafos.md`), con los nombres decididos («grafo sin cola / completo de la tanda N»); será una sección del protocolo de
+B2.6 cuando exista. (9) D15: U-COMP-E1 antes de la tanda 1 y B6.4 después del escalado, las dos. Quedan con los mentores: **Q4**, **Q12**
+y **P15** (quién adjudica), y los 14 desvíos de `desvios_para_mentores_reconc_diseno_eval.md` (resumen de la mesa para la próxima reunión).
+
 ## 5. Escritura
 
 | # | Qué es | Registro | Estado | Decisión |

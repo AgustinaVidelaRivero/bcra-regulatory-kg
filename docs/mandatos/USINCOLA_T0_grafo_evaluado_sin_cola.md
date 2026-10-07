@@ -237,3 +237,9 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 135 líneas de arriba (`7
   quedó commiteada en `dde9f44`; este commit pone ese hash en `commit_sellado` de `KG_Tanda0_Diez_r2b_sincola` y
   `KG_Tanda0_Desarrollo_r2b_sincola` (`data/experiment/neo4j/grafos.py`). La cifra de «punto sin nodos» que cita la tesis es
   la del reporte del ensamblado (citas distintas por chunk de origen, tramo y unidad citada, la unidad de cita que ya usa la sección 4.5): diez 255 de 530 citas irresolubles, 43 con destino en una unidad excluida por la regla de la cola, netas 212, grafo completo 213 de 495 (una con origen en la cola); desarrollo 215 de 446, 41, 174, completo 175 de 411. Con este commit, U-SINCOLA-T0 queda CERRADA.
+- **07/10/2026 — nombres de los dos grafos de cada tanda (decisión D13 de la autora, RECONC-DISENO-EVAL).** Donde este mandato y su
+  nota de cierre dicen «grafo evaluado de la tanda 0» (o «grafo evaluado sin la cola»), léase **«grafo sin cola de la tanda 0»**: los
+  dos grafos sellados en `dde9f44` y `235a295` (KG-Tanda0-Diez-r2b-sincola `e22fae1a…` y KG-Tanda0-Desarrollo-r2b-sincola
+  `2922b72d…`); el ensamblado con la cola adentro y marcada es **«grafo completo de la tanda 0»**. «El grafo evaluado», a secas, queda
+  reservado al escalado sellado antes del pre-registro de B6.3 (laudo 3 del 20/09/2026, `docs/plan_tesis.md`, principio 9) y «el grafo
+  corregido» a la release posterior a la evaluación (`docs/protocolo_dos_grafos.md`, BORRADOR). El texto firmado no se edita.

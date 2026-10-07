@@ -69,3 +69,13 @@ cola humana (`docs/enmienda_protocolo_entre_tandas_2026-10-04_cola_humana.md`, F
 ## Firma
 
 FIRMADA por la autora el 06/10/2026. Rige desde esta firma. El pre-registro de la tanda 1 la cita como fuente de la fila de la cola.
+
+## Notas posteriores a la firma
+
+El texto firmado son las 71 líneas de arriba (`ccd8fad`, sha256 `84dff0a3e925…`) y no cambia.
+
+- **07/10/2026 — nombres (decisión D13 de la autora, RECONC-DISENO-EVAL).** Donde esta enmienda dice «grafo evaluado de cada tanda» (el
+  ensamblado sin la cola humana), léase **«grafo sin cola de la tanda N»**; el ensamblado sellado al lado, con la cola adentro y marcada, es
+  **«grafo completo de la tanda N»**. «El grafo evaluado» queda reservado al escalado sellado antes del pre-registro de B6.3 (laudo 3 del
+  20/09/2026) y «el grafo corregido» a la release posterior a la evaluación (`docs/protocolo_dos_grafos.md`, BORRADOR). Las reglas de esta
+  enmienda no cambian.
