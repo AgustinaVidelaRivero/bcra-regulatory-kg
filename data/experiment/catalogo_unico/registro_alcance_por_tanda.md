@@ -7,6 +7,9 @@ cambiar las decisiones. Regla del paso de lectura: solo clases que ya existen, n
 dos); el título vale como pasaje solo si el cuerpo no tiene frase de alcance y nombra una o dos clases exactas que son el
 sujeto obligado o el informante del documento, no el objeto de la norma (enmienda 4, §2, punto 7, precisión de la autora del
 06/10/2026); una sección de un régimen informativo cuyo rol existe reutiliza ese rol (§2, punto 8, acotado: no decide ESQ-RI-3).
+**Precedencia (decisión de la autora del 07/10/2026):** entre secciones de un mismo régimen informativo, el rol del régimen prevalece
+aunque el pasaje de la sección nombre una clase exacta, para que todas las secciones del régimen compartan el mismo sujeto (enmienda 4,
+§2, punto 8).
 Fichas con los pasajes completos: paquete de la mesa `hoja_de_ruta_tanda1_mesa/fichas_alcance_12_documentos_tanda1_mesa.md`
 (06/10/2026). Catálogo: `catalogo_sujetos_r2.json` (115 entradas; 80 clases e instancias, 35 roles).
 
@@ -15,9 +18,9 @@ Fichas con los pasajes completos: paquete de la mesa `hoja_de_ruta_tanda1_mesa/f
 | TO | título (inventario) | decisión | id(s) del catálogo | base | pasaje (chunk de la partición legada, página) |
 |---|---|---|---|---|---|
 | ri_ccna | RI para Cajas de Crédito - Normas de Auditoría | clase | `Sujeto_caja_de_credito` | pasaje | `ri_ccna::S1`, pp. 2-3: «Las Cajas de Crédito deberán informar al Banco Central…» |
-| ri_cc | RI para Cajas de Crédito - contable | clase | `Sujeto_caja_de_credito` | título (regla §2.7) | cuerpo sin frase de alcance (`ri_cc::1.1`, p. 49; `ri_cc::S1`, p. 71); el título nombra una sola clase |
 | ri_rml | RI Cont. Mensual - Efectivo mínimo y aplicación de recursos | rol reutilizado | `Sujeto_rol_entidad_comprendida_reginf` | sección del mismo régimen (§2.8) | `ri_rml::1.1`, p. 2: «…entidades comprendidas en el Grupo “A”… o las restantes entidades» |
 | ri_gerc | RI Cont. Mensual - Grandes exposiciones al riesgo de crédito | rol reutilizado | `Sujeto_rol_entidad_comprendida_reginf` | sección del mismo régimen (§2.8) | `ri_gerc::2.3` y `::2.4::intro`, p. 4 |
+| ri_pgn | RI Cont. Mensual - Posición Global Neta en Moneda Extranjera | rol reutilizado | `Sujeto_rol_entidad_comprendida_reginf` | sección del mismo régimen (§2.8), con la precedencia del rol sobre la clase que nombra el pasaje (07/10/2026) | `ri_pgn::S1`, p. 2: «Las entidades financieras deberán suministrar información respecto de la Posición Global Neta… con las formalidades del Régimen Informativo Contable Mensual» |
 | ri_oc | RI Cont. Mensual - Operaciones de Cambio | sin alcance declarado | — | los informantes (entidades autorizadas a operar en cambios, incluidas casas y agencias) no son los del régimen general | `ri_oc::S0`, pp. 1-2; `::3.3`, p. 6 |
 | ri_dcpc | RI - Disposiciones complementarias al plan de cuentas | clase | `Sujeto_entidad_financiera` | pasaje | `ri_dcpc::S1`, pp. 3-4: «El presente marco contable… para las entidades financieras» |
 | snp_cheq | Sistema Nacional de Pagos - Cheques y otros instrumentos compensables | clase (dos) | `Sujeto_entidad_financiera`, `Sujeto_camara_electronica_de_compensacion` | pasaje | `snp_cheq::2.4`, p. 11 (ámbito); `::2.2.2.3`, pp. 6-7 (participantes) |
@@ -27,14 +30,22 @@ Fichas con los pasajes completos: paquete de la mesa `hoja_de_ruta_tanda1_mesa/f
 | manori | Manuales de originación y administración de préstamos | clase | `Sujeto_entidad_financiera` | pasaje | `manori::S1::chapeau_seccion`, p. 3: «…que las entidades financieras pueden seguir…» |
 | nmcief | Normas mínimas sobre controles internos para entidades financieras | clase (dos) | `Sujeto_entidad_financiera`, `Sujeto_sujeto_del_perimetro_consolidado` | pasaje | `nmcief::S0`, p. 2: «…también deberán observarse en las filiales y subsidiarias que consolidan…» |
 
-Resumen: 6 clase, 3 rol reutilizado, 3 sin alcance declarado. Con los 8 del ejemplo que ya tenían alcance, los 20 del ejemplo
-quedan cubiertos para el pre-registro de la tanda 1 (la lista real sale de la segmentación oficial).
+Resumen (07/10/2026): 5 clase, 4 rol reutilizado, 3 sin alcance declarado; 12 documentos, con ri_pgn en lugar de ri_cc. Con los 8 del
+ejemplo que ya tenían alcance, los 20 del ejemplo quedan cubiertos para el pre-registro de la tanda 1 (la lista real sale de la
+segmentación oficial).
 
 **07/10/2026 — decisión de la autora: ri_cc sale de la tanda 1** (defecto de sub-documento en su segmentación: tres regímenes con
 numeración que reinicia; límite declarado; se corrige en una S0-4 de U-SEG-OFICIAL antes de la tanda 3, donde entra con los demás
 regímenes informativos). Su fila queda: la decisión de alcance (clase `Sujeto_caja_de_credito` por el título) rige cuando entre. La cuota
-del estrato 2 del §7 se completa con otro régimen informativo; la mesa propone **ri_pgn** (ficha abajo, en la tabla de candidatos, y en
-`hoja_de_ruta_tanda1_mesa/ficha_alcance_ri_pgn_reemplazo_ri_cc_mesa.md`); su fila entra a esta tabla cuando la autora decida.
+del estrato 2 del §7 la completa **ri_pgn** (decisión de la autora del 07/10/2026; fila arriba, rol reutilizado por la regla §2.8 con la
+precedencia del rol del régimen). La fila de ri_cc pasa a la tabla «Tanda 3 (anticipada)», abajo, para que esta tabla tenga solo los
+documentos de la tanda 1.
+
+## Tanda 3 (anticipada) — decisiones tomadas antes de la tanda, para documentos que salieron de la tanda 1
+
+| TO | título (inventario) | decisión | id(s) del catálogo | base | pasaje (chunk de la partición legada, página) |
+|---|---|---|---|---|---|
+| ri_cc | RI para Cajas de Crédito - contable | clase | `Sujeto_caja_de_credito` | título (regla §2.7); decidido el 06/10/2026 para la tanda 1, fuera de ella el 07/10/2026 (límite de sub-documento; S0-4 antes de la tanda 3) | cuerpo sin frase de alcance (`ri_cc::1.1`, p. 49; `ri_cc::S1`, p. 71); el título nombra una sola clase |
 
 ## Candidatos a la regla del título en el resto del universo (no decididos; lectura del cuerpo pendiente)
 
@@ -47,7 +58,7 @@ frase de alcance, se verifica en la lectura de la tanda de cada uno.
 | estado | TO | clase(s) que nombra el título |
 |---|---|---|
 | candidato (la clase es el sujeto obligado o informante) | inspag, cateloc, horari, seguef, nmaeef, ri_ii_31_12_19, ri_mmsef, ri_sef | `Sujeto_entidad_financiera` |
-| candidato PROPUESTO como reemplazo de ri_cc en la tanda 1 (07/10/2026; decisión PENDIENTE de la autora): sección del Régimen Informativo Contable Mensual, como ri_rml y ri_gerc (regla §2.8) | ri_pgn | `Sujeto_rol_entidad_comprendida_reginf` (rol reutilizado) o, por el pasaje de `ri_pgn::S1` («Las entidades financieras deberán suministrar información…»), `Sujeto_entidad_financiera` |
+| DECIDIDO el 07/10/2026 (fila en la tabla de la tanda 1): reemplaza a ri_cc; sección del Régimen Informativo Contable Mensual, como ri_rml y ri_gerc (regla §2.8, con la precedencia del rol) | ri_pgn | `Sujeto_rol_entidad_comprendida_reginf` (rol reutilizado) o, por el pasaje de `ri_pgn::S1` («Las entidades financieras deberán suministrar información…»), `Sujeto_entidad_financiera` |
 | candidato | ri_ccpnp | `Sujeto_caja_de_credito` |
 | candidato | ri_pspapt, ri_pspii (no segmentable), ri_psprca, ri_psp | `Sujeto_proveedor_de_servicios_de_pago` |
 | candidato | opecam | `Sujeto_entidad_cambiaria` |
