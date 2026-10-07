@@ -352,3 +352,38 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 105 líneas de arriba y n
     `segui_R2-3bis_URERESOL_CAT_mesa.md`. La enmienda 4 al protocolo quedó en versión para firmar (decisiones al firmar propuestas); la autora
     la firma después de R2-3 bis.
   - Commit de R2-3 PENDIENTE de la autora (con las anclas de la tabla, la enmienda 4 para firmar y el registro de los 15 excluidos).
+- **07/10/2026 (noche) — R2-3 commiteada en `803623a` y R2-3 bis en `dac7d57`; revisión del FRENO R2-3 bis por la mesa; cierre de R2.**
+  Reproducido sobre copias sin enlaces, con el código de `dac7d57` y, como control, con el ensamblador de `803623a`, los dos puestos con
+  `git archive` y verificados por sha contra `git show`.
+  - **Parche.** 7 archivos: el ensamblador +9/−9, `selftest_r3` +77/−10, el procedimiento +4/−3, y cuatro nuevos. `runner_corpus.py` no
+    cambia. En la rama b′ (`ensamblar_tanda0.py:906-931`) sale el filtro por `E4.MOTIVOS_PARTE_A` (`:909`). El archivo sigue con 1.649
+    líneas, y las anclas de la tabla de reprocesamiento al ensamblador siguen apuntando a lo que nombran.
+  - **Las seis cadenas** dan lo mismo con el ensamblador de `dac7d57` y con el de `803623a`: r2a `70d51e42…` y `fa4c1043…`; r2b diez
+    `40c54830…` y sin cola diez `8d747e57…`; desarrollo `6e756043…` y sin cola desarrollo `2922b72d…`. `controles`, corrido dos veces, da
+    el JSON commiteado byte a byte.
+  - **Shapes** de las dos de diez: PASA, S19 PASS, 0 bloqueantes en FAIL.
+  - **Selftests.**
+    - `selftest_r3` da 140/140. Control negativo: con el ensamblador de `803623a` da 135/140, y fallan exactamente T11i y T12a a T12d.
+    - `selftest_reresolver_catalogo` 66/66, `selftest_regression_kg` 184/184, `selftest_prompt_r2b` 55/55 y `pruebas_t3bis` 17/17.
+    - `selftest_catalogo_unico` queda sin verificar en la copia: exige `.git` y frena en K1.
+  - **Simulación.**
+    - Dos corridas, iguales byte a byte al JSON commiteado; también recomputada sin importar el ensamblador.
+    - Los 6 propuestos del paso c (cap: 2 con 5 filas; ext: 4 con 4) van a la raíz, con `padre_por_defecto_generico`; marca (a) 0,
+      `sin_rol_de_alcance` 0, y S19 PASS en las cuatro variantes.
+    - La cuarentena antes de normalizar: 4 + 19 + 147 = 170 filas.
+  - **`selftest_clave_cache --salida-r2b`:** OK (A1r 2.449/2.449; A3r 1.386 y 1.054; contraste de 44 filas, 0 discrepancias); el JSON es
+    igual al del repo.
+  - **Control del repo.** Sin cambios durante la verificación: 1.352 archivos de las rutas tocadas, diff vacío; 2.213 `.pyc`.
+  - **Una oración del FRENO, precisada.** El FRENO dice que «en la tanda 0 ningún propuesto fuera de la parte A está en un documento sin
+    alcance», y no es exacto. En docvig, `Sujeto_propuesto_estas_verificaciones` tiene 2 filas `sin_match` en cuarentena. La rama b′ no lo
+    toca porque el nodo ya trae `padre_sugerido` (`Sujeto_sujeto_regulado`). La oración exacta: ningún propuesto *sin padre del modelo*. No
+    cambia ninguna cifra.
+  - **Etiqueta a poner al día (PENDIENTE, en el próximo asiento de la tabla):** la fila F15d (`tabla_reprocesamiento.md:173`) describe
+    `:906-931` como la regla de la parte A de R2-3, pero desde R2-3 bis cubre cualquier motivo.
+  - **El error propio de R2-3 que declara el FRENO** está bien descrito en lo que afirma y en su causa. Le falta que el ancla `:955` de F15d
+    nunca nombró su fila, y que de las 14 anclas eran correctas 3.
+  - **Cierre de R2.** Con R2-3 bis queda cumplida la condición de la enmienda 4 al protocolo: el script funcionando, la parte A y la regla
+    general del padre. La enmienda queda lista para firmar, actualizada hoy con lo que congela (§6) y lo que hace falta antes de la tanda 1
+    (§7: la unidad del cableado del registro en `prompt_r2b.py`, después de la firma). U-RERESOL-CAT no tomó dos pases: BKL-0021 (opción c,
+    decisión del 06/10) y BKL-0028. Van a la ficha del laudo B2.4. Siguen PENDIENTES de la autora la firma de la enmienda 4 y el cierre de
+    la unidad.
