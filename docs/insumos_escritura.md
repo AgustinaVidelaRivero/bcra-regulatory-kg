@@ -338,8 +338,30 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      siguen en pie (`pro::4.2.1.4`, `lingob::7.1.7`). Los ítems son 1.054 de 2.440 unidades pero 50 de las 74 de la cola. La tanda 0 no
      se re-verifica (principio 9; la clase es «E3 de las afectadas» y se corrige entre tandas): la corrección rige desde la tanda 1
      (U-E3-LISTAS: el bloque que abre la lista en el fuente y en las citas de E3, y una NOTA del ítem), y la medición aparte (O3 de esa
-     unidad: E3 corregido sobre las 24 unidades afectadas, sin re-sellar) da cuántos reclamos desaparecen y cuántas de las 17
-     extracciones finales cambió un reintento infundado, comparadas con su intento 0. PENDIENTE: las cifras de O3.
+     unidad: E3 corregido sobre las 20 unidades afectadas, sin re-sellar) da cuántos reclamos desaparecen y cuántas de las 17
+     extracciones finales cambió un reintento infundado, comparadas con su intento 0. Cifras de O3 (07/10/2026; USD 0,238 en 20
+     llamadas; `data/experiment/e3_listas/freno_o3.md`, cifras en `data/experiment/e3_listas/o3/resumen_o3.json`; las 20 son 17 con
+     reintento por esos reclamos y 7 en la cola, 4 en los dos grupos, lista sellada `cc6b0cd6…`): (a) primera verificación con E3
+     corregido, con la extracción que vio E3 en la tanda 0: de los 21 reclamos P, C, B y B2 del intento 0 (3 C, 16 B, 2 B2) desaparecen
+     18 y persisten 3 por la regla sellada antes de contar (`o3/criterio_o3.md`), 15 y 6 por la lectura; aparecen 3 nuevos (un C, un B
+     y un B2; el C, leído, es el reclamo viejo de `docvig::3.3.2`, que viene del cierre del punto y no de la lista); 11 de las 20
+     unidades salen completas y 16 de las 20 se aceptarían sin reintento (14 de las 17 que reintentaron); van al reintento
+     `ext::3.6.4.1` y `ext::3.16.2.1` (reclamos B que, leídos, son falsas alarmas contra la NOTA) y `ext::3.18.1.1` (reclamos de
+     composición fundados), y a la cola `docvig::3.3.2`. (b) De las 17 extracciones finales, 13 son el reintento y las 13 cambiaron
+     respecto del intento 0 (entran 58 entidades y 40 relaciones, salen 26 y 7, cambian de descripción 5); las 4 cuya final es el
+     intento 0, control, sin cambios; en 11 de las 13 el E3 corregido acepta el intento 0. (c) La norma del encabezado vuelta a
+     emitir en el ítem (conteo por código, D3): 1 de las 20 unidades en el intento 0 y 8 en la final; las 7 nuevas son finales del
+     reintento con un reclamo B en el intento 0. D1 (el bloque en el fuente de las citas): de los 14 faltantes nuevos, 6 verifican su
+     cita solo por D1 y 2 de ellos bloquean, los dos en `ext::3.18.1.1` y de composición, no la norma del encabezado: el riesgo
+     declarado de D1 no aparece en las 20.
+     **Límite declarado de la tanda 0 y hallazgo para la tesis (decisión de la autora del 07/10/2026):** en la tanda 0, el verificador
+     reclamó en los ítems de lista normas que están en el encabezado (reclamos P, C, B y B2 que P3C-d1 y d2 no piden extraer en el ítem);
+     esos reclamos falsos dispararon reintentos y 13 de las 17 extracciones finales del grupo afectado son el reintento, distinto del
+     intento 0 (entran 58 entidades y 40 relaciones, salen 26 y 7): en 11 de las 13, el verificador corregido (NOTA del ítem, D1 y D2)
+     habría aceptado el intento 0; y la norma del encabezado aparece repetida en el ítem en 8 de las 20 unidades de la extracción final,
+     contra 1 en el intento 0. El grafo evaluado de la tanda 0 (`e22fae1a…`) conserva esas extracciones: no se re-verifica ni se re-extrae
+     (principio 9, enmienda 5); el límite se declara con estas cifras, y desde la tanda 1 rige el verificador corregido (`7fe848c`). Para la
+     tesis: un reclamo falso del verificador no es inocuo, cambia la extracción (reintento con feedback) y puede duplicar normas.
   5. **Tasa de error por unidad de las aceptadas de la tanda 0** (U-LECTURA-ACEPTADAS, L2 del 07/10/2026; reporte
      `data/experiment/lectura_aceptadas/reporte_l2.md`, cifras en `estimadores_l2.json`; L0 y L1 en `6e611d6`). Método: 30
      unidades por estrato (ítems de lista y no ítems), sorteadas con semilla sellada antes de leer entre las 2.366 aceptadas

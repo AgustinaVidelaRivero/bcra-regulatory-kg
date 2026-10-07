@@ -185,3 +185,28 @@ firmar en `9bca986`) y no cambia.
     (O4, USD 0, sin API): el texto firmado autoriza escribir `selftest_e3.py` (ESCRITURAS) y el cambio no toca el mensaje ni el
     candado; se despacha después del FRENO O3 para no cruzarse con la corrida de O3, y queda antes de la tanda 1. Despacho preparado
     por la mesa (`despacho_O4_checkK_UE3_LISTAS_mesa.md`).
+- **07/10/2026 — revisión del FRENO O3 por la mesa (O3 sin commit al escribir esta nota; O2 en `7fe848c`).** Reproducido sobre una copia sin
+  enlaces, sin API, desde la base propia de O3 en solo lectura: 20 llamadas, todas `tool_use`, tokens 59.900 / 4.510 / 11.637 / 221.103, gasto
+  USD 0,238213 recomputado con los precios de `runner_corpus.py:94-96` y la fórmula de `cliente_e3.py:190-198`, igual por llamada a
+  `presupuesto.json`; la base (`ab532154…`, 20 filas) sin claves ni rutas; lista sellada `cc6b0cd6…` y los 20 mensajes iguales a los de O2
+  por tres vías; criterio sellado a las 08:11:02 y primera llamada a las 08:11:20; la lectura sellada antes de computar. (a) 21 = 3 C + 16 B
+  + 2 B2; por la regla desaparecen 18 y persisten 3; por la lectura 15 y 6; 3 nuevos; 14 faltantes, 5 bloqueantes; 11 completas; 16 de 20
+  aceptadas, 14 de las 17; D1 6 de 14. (b) 13 de 17 finales son el reintento y cambiaron (58/40 entran, 26/7 salen, 5 cambian); 11 de 13
+  aceptarían el intento 0. (c) D3 1 y 8, las 7 nuevas con reclamo B en el intento 0. Doble corrida byte a byte y conteo propio desde las
+  respuestas crudas, iguales. Las 3 bases de E3 y los `kg.json` de diez intactos. Precisión: los «65 `kg.json`» son 65 archivos cuyo nombre
+  termina así (21 + 44). El ítem 4 de `insumos_escritura.md` (16 líneas de O3) cierra con (a), (b) y (c); la autora decidió el 07/10/2026
+  registrar además el efecto de los reintentos por reclamos falsos como límite declarado de la tanda 0 y hallazgo para la tesis (8 líneas
+  más en el mismo ítem). La base de caché de O3 entra al commit, como las de C1.
+  - **Residuo (decisión de la autora, sin urgencia):** los dos reclamos B que persisten pese a la NOTA (`ext::3.6.4.1` y `ext::3.6.4.2`) nacen
+    de la interacción entre las dos NOTAS: la del ítem dice que la norma del encabezado no se emite en el ítem y que no es faltante; la de
+    omisiones dice que un deber declarado como `[meta_normativo]` sí lo es; y el extractor declaró el encabezado («requerirá la conformidad
+    previa del BCRA excepto…») como `[meta_normativo]` con la glosa de que se compone con el ítem. El juez sigue la segunda. **Se cierra con
+    un caso resuelto de una oración en la NOTA de omisiones**: «si la omisión declarada [meta_normativo] es el texto del encabezado de la
+    lista de este ítem (el bloque citado arriba), no es faltante: ese encabezado se extrae en su propia unidad». Costo: es un cambio de la
+    NOTA (F23 y F23b): frena el candado del mensaje de E3 hasta re-sellarlo (dos valores nuevos, bloque M de `selftest_e3`, medición en seco
+    como O1 y O2), USD 0; en la tanda 0 no se re-verifica nada (límite declarado); la tanda 1 nace con la NOTA v3. Propuesta: una etapa O5
+    de esta unidad, después de O4, con una re-verificación paga de las tres unidades del residuo bajo el saldo del tope de O3 (USD 0,76
+    de 1) como control. En `ext::3.16.2.1` el tramo que E3 reclama está en el texto propio del ítem y no en el encabezado: la lectura
+    sellada lo describe como «la norma del encabezado»; lo adjudica la autora con el material verbatim del paquete de la mesa
+    (`trabajo55/out/residuo_B_ext_3_6_4_1_y_3_16_2_1.md`), y si es un reclamo fundado no lo cubre el caso resuelto.
+  - Commit de O3 PENDIENTE de la autora; O4 (check K) se despacha con su hash.
