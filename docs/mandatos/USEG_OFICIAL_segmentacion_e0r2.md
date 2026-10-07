@@ -509,3 +509,53 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   de la tanda 1 (la cuota del estrato 2 se completa con otro RI en el pre-registro), declararlo como límite de sub-documento y
   corregirlo en una S0-4 antes de la tanda 3; decisión PENDIENTE de la autora, escrita en el despacho de S0-3 como supuesto. La
   lectura de calibración de la autora (5 o 6 casos de la muestra de S1) se asienta con fecha y casos cuando ocurra.
+- **07/10/2026 — revisión del FRENO S0-3 por la mesa y decisiones de la autora (S0-3 sin commit al escribir esta nota; el registro de S1 en
+  `ee7c07c`).** Reproducido sobre una copia sin enlaces, con el parche aplicado solo en la copia (dos diffs sobre `26c6502`: `e0_lib.py`,
+  `correr_e0.py`, `selftest_e0.py`, +483/−43, más el de interruptores; sha iguales a los del LEEME; hunk por regla: 1b en un solo hunk y las
+  guardas en los declarados; dos refactorizaciones fuera de los flags, equivalentes y controladas con el prototipo sin reglas): tanda 0 **57 de
+  57** byte a byte con `salida_tanda0_r2b/` y los 25 de la tanda 0 dentro de los 152 iguales; el prototipo no corre el mecanismo 4 en la tanda
+  0 (`TOS_TANDA0_SIN_M4`); doble corrida de los 152, 768 y 768 archivos, 0 distintos entre sí y 0 contra la corrida de la instancia;
+  conciliación propia contra S1: 9.554 → 9.409, +70 −215, 64 TOs, por TO igual al censo (ri_mmsef cambia dos avisos y un campo del nodo, no
+  unidades: el freno decía «solo un aviso»); mecanismo 4 en los 152: 150 intros en 51 TOs (104 con dos puntos, 30 de un renglón, 16 de
+  varios); selftests 110/110, 39/39, 34/34, 59/59, 33/33; selftest de claves OK con el JSON igual al del repo; los 17 errores de S1 antes y
+  después: 12 cambian hacia la corrección (listados uno por uno) y 5 quedan con el texto igual (ri_sef S0, nmaeef 2.9, nmcief
+  S3::chapeau_seccion, ri_ccna S8::cierre::parte7, ri_icpipsp S8); Wilson inferior con 5 en 90 = 0,8765 y P(≤ 3 en 90 | 5/90) = 0,2570.
+  Repo sin cambios durante la verificación; 2.213 `.pyc`.
+  - **Decisión: no ir a S1-bis con S0-3 solo.** Comparación de la mesa (`analisis_S0-4_vs_exclusion_parcial_mesa.md`): adelantar **S0-4**, la
+    regla de sub-documento, antes de S1-bis (recomendado y preferido por la autora), con lista explícita de TOs donde corre (los del censo de
+    reinicios de numeración: ri_sef, nmcief, ri_ccna, ri_icpipsp, ri_cc y los que el censo sume), ri_tsa y ri2_pm fuera por lista hasta una
+    lectura propia, y los dos controles duros (tanda 0 byte a byte; selftest de claves). La alternativa (declararlos parcialmente segmentables
+    y sacarlos de la tanda 1) recorta el corpus a medida del piso y saca de la tanda 1 a nmcief y ri_ccna, que tienen alcance decidido.
+    nmaeef 2.9 queda como límite declarado (el inverso del mecanismo 1). El código de E0 del repo se cambia una sola vez, con S0-4 (el
+    parche de S0-3 es su base). Costo: 2 días de S0-4, después S1-bis con la lectura de cortes entera y S2.
+  - **Regla 1b y guardas:** tocan solo lo declarado (hunk por regla verificado). **Apartados de ri_ai S4:** fuera, para S0-4.
+  - **Mecanismo 4 en la tanda 0 (lectura de la mesa sobre la muestra de 15 de los 123 intros que cambiarían; sorteo
+    `S0-3:mecanismo4:muestra_mesa`; material en `trabajo54/out_mesa/mecanismo4_tanda0_cambios.md`).** Dos familias. (i) **Títulos partidos
+    en dos renglones** (12 de 15: `ext::11.1.5`, `cap::2.12.10`, `ext::7.11`, `ctacte::1.3`, `ext::9.3.10`, `ext::9.3.1`, `ctacte::10.2.2`,
+    `ext::10.10`, `ext::9.3.3`, `ext::11.1.3`, `ext::3.17`, `cap::5.2.3`): E0 toma el primer renglón como título y el segundo («ellas.»,
+    «ques.», «previsto en la Sección 8.).») abre el intro; el mecanismo 4 antepone el rótulo al intro, que pasa a repetir el título que ya
+    está en la herencia y sigue sin texto normativo propio cuando era de un renglón: **neutro**, mueve el defecto en vez de corregirlo. (ii)
+    **Oración tomada como título** (3 de 15: `ext::3.17.3` «La entidad nominada deberá tomar registro…», `cap::6.9.2` «Políticas y
+    procedimientos… para asegurarse de que:», `ext::5.5.1` «Incluir en las transferencias…»): el intro empezaba a mitad de la oración; el
+    mecanismo 4 lo completa: **corrección real** del mismo tipo que seguef 2.1.6, aunque la etiqueta de título siga en la herencia (E1 ya
+    veía la oración entera por la herencia, así que el efecto sobre la extracción es chico). Recomendación: **(a), excluir la tanda 0 del
+    mecanismo 4**, como corre el prototipo: 12 de 15 cambios son neutros y los 3 reales no justifican re-extraer 738 unidades (unos USD 15 de
+    E1 y E3 a la tarifa de referencia) ni un re-sellado más. Para los 152, reemplazar el mecanismo 4 por dos reglas acotadas en S0-4: (4a)
+    «oración-título», que abre el intro desde el rótulo solo cuando el renglón del título es una oración (termina en «:» o lleva verbo
+    deóntico), y (4b) «título envuelto», que **junta al título el renglón que lo completa** (el título no termina en punto o termina en guion
+    de corte, y el renglón siguiente, en la misma columna, es corto y termina en punto) y no emite el intro vacío: así se juntan los 30
+    títulos partidos de los 152 (y los 22 de la tanda 0 quedan declarados), con su censo y su caso de selftest.
+  - **Mecanismo 1b:** incluir (corrige snp_cheq, 109 ids; un solo hunk). **Guardas:** se aceptan (tocan solo lo declarado). **Apartados de ri_ai
+    S4:** fuera, para S0-4. La atribución por regla de los 1.206 eventos se reproduce byte a byte (cada regla sola sobre los 152: 1a −69, 1b −109, 2a +11 −3,
+    2b 0, 2c +42 −25, 3 +15 −9, 4 0 ids y 762 unidades que cambian, 5a y 5b 0, 5c +2; interacción 0) y la tanda 0 da 57 de 57 con cada
+    regla sola; control más fuerte que el del freno: el parche con todos los interruptores apagados deja los 768 archivos de los 152 y
+    los 57 de la tanda 0 byte a byte iguales, así que las dos refactorizaciones fuera de los flags son inertes.
+  - **Decisiones de la autora sobre S0-3 (07/10/2026, noche):** (1) **S0-4 antes de S1-bis**, con el diseño de la mesa: regla de
+    sub-documento con lista explícita de TOs (ri_sef, nmcief, ri_ccna, ri_icpipsp y ri_cc), ri_tsa y ri2_pm fuera por lista hasta una
+    lectura propia (siguen `parcial_declarado`), los dos controles duros intactos (tanda 0 byte a byte; selftest de claves sin mover ninguna
+    clave de la tanda 0) y el código de E0 del repo cambiado una sola vez, en S0-4, con el parche de S0-3 como base. (2) **Mecanismo 4:**
+    excluido de la tanda 0 y reemplazado en los 152 por dos reglas acotadas, «oración-título» (4a) y «título envuelto» (4b), que también
+    quedan fuera de la tanda 0 por lista; los 22 títulos partidos y las 3 oraciones tomadas como título de la tanda 0 se declaran como límite.
+    (3) **Regla 1b y guardas:** sí. (4) **Apartados de ri_ai S4:** a S0-4. nmaeef 2.9 queda como límite declarado. Despacho de S0-4
+    preparado por la mesa (`despacho_S0-4_USEG_OFICIAL_mesa.md`), con el hash del commit de S0-3 como único hueco.
+  - Commit de S0-3 PENDIENTE de la autora (registro de la etapa: parche, diseño, censos y freno); el código de E0 del repo no cambia hasta S0-4.
