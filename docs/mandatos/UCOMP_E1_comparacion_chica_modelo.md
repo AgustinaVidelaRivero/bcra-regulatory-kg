@@ -152,3 +152,24 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 116 líneas de arriba (`c
     declara en las fichas y en M3: las dos unidades llevan la marca «intento 0 de Haiku = reintento (corte / forma)»; cada brazo se compara
     por unidad con su salida persistida después de su propia regla; los cortes, reintentos y rechazos se cuentan por brazo (M3).
   - C1 se despacha con el «seguí» de la mesa, con el gasto estimado y el tope.
+- **07/10/2026 — revisión del FRENO C1 por la mesa (C1 sin commit al escribir esta nota; C0 en `25480b9`).** Reproducido sobre una copia sin
+  enlaces, sin API: 4 × 87 registros con 87 ids iguales al conjunto sellado (`unidades.json`, `b607d1f6…`); 0 errores, 0 cortes, 0 sin
+  herramienta, 0 mal formadas, 0 refusals, 0 reintentos (`stop_reason = tool_use` en 348 de 348). Gasto recomputado desde
+  `cache_usage_c1.jsonl` con los precios de `comun_c1.py:34-35`: 2,915682 / 2,904940 / 5,110691 / 4,905310 = **15,836623** de 35, igual a
+  `presupuesto.json`. Pedidos iguales a C0: el sha canónico del request recomputado desde el perfil r2b y los chunks, 87 de 87 en cada brazo
+  (sobre el cuerpo completo: modelo, `max_tokens`, system, mensajes, tools, `tool_choice`, `thinking`/`output_config`; sin `temperature`).
+  M3 recomputado: S 1 de 87, O 4 de 87. M4: `medir_c1.py` dos veces, byte a byte con el repo. Las cuatro bases SQLite (8,1 MB cada una) traen
+  el request completo y la respuesta cruda de cada llamada (87 filas por base), sin claves ni rutas absolutas (grep de `sk-ant`, `api_key`,
+  `/Users/`: 0): entran al commit (32,5 MB). Selftest 21/21 sin camino a la API. Los 11 sellos de C0 intactos; 2.213 `.pyc`.
+  - **Variabilidad entre corridas** (`trabajo51/out/variabilidad_c1.json`, scratchpad de la mesa): además de las unidades idénticas (S 1, O 4),
+    por unidad la diferencia de relaciones entre las dos corridas es 0 en 39 (S) y 47 (O) de 87, de 1 a 2 en 24 y 21, de 3 a 5 en 17 y 12,
+    y más de 5 en 7 y 7; la de entidades es 0 en 54 y 52. Consecuencia para la lectura: el criterio «en la peor de sus dos corridas» es
+    conservador por diseño (las dos corridas tienen que pasar); con esta dispersión, C3 reporta las cifras de cada corrida y su diferencia,
+    y la tesis dice que el veredicto se apoya en la peor de dos, no en un promedio.
+  - **Refusals** (precisión a la declaración 1 del freno; sin efecto en C1): con el SDK instalado (`anthropic` 0.100.0,
+    `RefusalStopDetails.category` admite solo `cyber` y `bio`), un refusal con otra categoría en el camino base se registra bien
+    (`error = "refusal"`, M3 lo cuenta en refusals); en los caminos que revalidan estricto (hit de caché, `llm_cache.py:211`; transmisión,
+    `cliente_e1.py:110`) da `ValidationError`, y `correr_c1.llamar` (`:50-53`) lo registra como `api_error` con `stop_reason` nulo: M3 lo
+    cuenta como error de API, no como refusal, y en transmisión la llamada no se persiste ni entra al presupuesto. Ninguna unidad puede quedar
+    como salida válida vacía ni como corte: a lo sumo cambia la etiqueta. En C2 y C3 no hay API.
+  - Commit de C1 PENDIENTE de la autora; el «seguí» de C2 está preparado por la mesa.
