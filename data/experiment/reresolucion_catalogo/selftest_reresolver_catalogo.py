@@ -23,6 +23,14 @@ Grupos:
       rechaza (sujeto_id_fuera_de_catalogo) y con él entra.
   S9  W3: LN-6 con --generados-resolucion lee el catálogo de resolución con su candado: el registro ya re-resuelto es
       idempotente y uno sin re-resolver no.
+  S10 R2-2, parte A de la enmienda 6: `decidir` reproduce la cadena con la parte A en un documento sin alcance; la fila
+      resuelta por calificador queda en `resuelto_a_clase`, como en la cadena; con un alcance nuevo de prueba, (a) da lo
+      mismo que la cadena (R4 con la sugerencia guardada, también con la mención que no verifica, que conserva su marca)
+      y (a+) predice esos cambios.
+  S11 R2-2, registro de alcance por tanda: lector del .md (clase, dos clases, rol reutilizado, sin alcance), entradas con
+      la forma de rol_por_to (la misma que la de una clase de la release), los frenos (decisión desconocida, ids que no
+      cierran, documento que ya tiene alcance, rol sin alcance en la release) y el catálogo de resolución con alcances
+      (sha propio, rol_por_to de la release intacto más las entradas nuevas, candado del cargador).
 
 Uso, desde la raíz de una copia del repo:
   PYTHONDONTWRITEBYTECODE=1 <repo>/.venv/bin/python -B data/experiment/reresolucion_catalogo/selftest_reresolver_catalogo.py
@@ -375,6 +383,114 @@ def s9(tmp: Path, g: dict):
     check("S9d con la opción, el candado del catálogo de resolución frena", frena(ln6, rr["filas"], malo))
 
 
+def s10():
+    print("S10. parte A: decidir, calificador y alcance nuevo")
+    cat = E4.catalogo_r2()
+    idx, pref, rol_to = cat["indice"], E4._prefijos(cat["indice"]), cat["rol_por_to"]
+    m = "Sujeto_sujeto_regulado"
+    rels = [rel(0, "las entidades", "exacta", m), rel(1, None, "ausente", m), rel(2, "los obligados", "no", m),
+            rel(3, "Entidades financieras", "exacta", m), rel(4, "administradores de las carteras crediticias", "exacta", m),
+            rel(5, "Entidades financieras comprendidas en el Grupo A", "exacta")]
+    vers = {**VERS, "catalogo_sha256": cat["catalogo_sha256"]}
+    res = E4.resolver_relaciones_r2(copy.deepcopy(registro_sintetico(rels, "docvig", "docvig.pdf")), idx, rol_to, vers,
+                                    parte_a=True)
+    malas = [f["indice_relacion"] for f in res["resolucion"]
+             if RR.decidir(f, None, idx, pref, None, True) != {c: f[c] for c in RR.CAMPOS_DECISION}]
+    check("S10a decidir reproduce la cadena con la parte A en un documento sin alcance", not malas, str(malas))
+    check("S10b la cadena manda a cuarentena el colectivo, la sin mención y la no verificada",
+          [f["metodo_resolucion"] for f in res["resolucion"]][:3] == ["cuarentena"] * 3)
+    idx_sin = {k: v for k, v in idx.items() if k[1] not in ("entidades financieras", "entidad financiera")}
+    r_cal = E4.resolver_relaciones_r2(copy.deepcopy(registro_sintetico([rels[5]])), idx_sin, rol_to, vers)
+    rr_cal = E4.reresolver_registro(r_cal["registro"], idx, rol_to, {"cla": "TO_clasificacion_deudores_actual.pdf"}, "v1")
+    r_cad = E4.resolver_relaciones_r2(copy.deepcopy(registro_sintetico([rels[5]])), idx, rol_to, vers)
+    check("S10c el calificador deja la fila en resuelto_a_clase, como la cadena (decisión 4)",
+          rr_cal["filas"][0]["estado"] == "resuelto_a_clase" == r_cad["registro"][0]["estado"]
+          and rr_cal["filas"][0]["metodo"] == "R2_calificador", str(rr_cal["filas"][0]["estado"]))
+    nuevo = dict(rol_to, **{"docvig.pdf": RR.entradas_de_alcance(
+        {"tandas": {"p": [{"to": "docvig", "archivo": "docvig.pdf", "decision": "clase",
+                           "ids": ["Sujeto_entidad_financiera"]}]}}, rol_to, cat["labels"])["docvig.pdf"]})
+    cat0 = {**cat}
+    cat1 = {**cat, "rol_por_to": nuevo, "catalogo_sha256": "sha_alcance"}
+    aa = RR.camino_a(res["registro"], cat1, {"docvig": "docvig.pdf"})
+    cadena = E4.resolver_relaciones_r2(copy.deepcopy(registro_sintetico(rels, "docvig", "docvig.pdf")), idx, nuevo,
+                                       vers, parte_a=True)
+    dest_a = {f["indice_relacion"]: (f["resuelto_a"], f["metodo"]) for f in aa["filas"] if f["estado"] != "cuarentena"}
+    dest_b = {f["indice_relacion"]: (f["resuelto_a"], f["metodo_resolucion"]) for f in cadena["resolucion"]}
+    check("S10d con el alcance nuevo, (a) resuelve las tres como la cadena (R4) y es idempotente",
+          aa["resueltas_ahora"] == 3 and aa["idempotente"] and all(dest_a[i] == dest_b[i] for i in (0, 1, 2)),
+          f"{dest_a} | {dest_b}")
+    check("S10e la resuelta con la mención que no verifica conserva su marca",
+          next(f for f in aa["filas"] if f["indice_relacion"] == 2)["mencion_verificada"] == "no")
+    am = RR.camino_a_mas(res["resolucion"], res["registro"], cat0, cat1, {"docvig": "docvig.pdf"}, parte_a=True)
+    check("S10f (a+) reproduce la decisión guardada con la parte A y predice las tres del alcance nuevo",
+          am["reproduce_la_decision_guardada"]
+          and sorted(c["indice_relacion"] for c in am["cambian"] if c["tipo"] == "destino") == [0, 1, 2], str(am["cambian_por_tipo"]))
+
+
+MD_PRUEBA = """# Registro de prueba
+
+## Tanda 7 — prueba
+
+| TO | título | decisión | id(s) del catálogo | base | pasaje |
+|---|---|---|---|---|---|
+| doc_a | A | clase | `Sujeto_banco` | pasaje | x |
+| doc_b | B | clase (dos) | `Sujeto_entidad_financiera`, `Sujeto_banco` | pasaje | x |
+| doc_c | C | rol reutilizado | `Sujeto_rol_alcance_capmin` | sección | x |
+| doc_d | D | sin alcance declarado | — | no hay pasaje | x |
+
+## Candidatos (no decididos)
+
+| estado | TO | clase |
+|---|---|---|
+| candidato | doc_e | `Sujeto_banco` |
+"""
+
+
+def s11(tmp: Path):
+    print("S11. registro de alcance por tanda")
+    cat = E4.catalogo_r2()
+    md = tmp / "registro.md"
+    md.write_text(MD_PRUEBA, encoding="utf-8")
+    reg = RR.leer_registro_alcance(md)
+    filas = reg["tandas"]["7"]
+    check("S11a lector: cuatro filas de la tanda, los candidatos fuera",
+          list(reg["tandas"]) == ["7"] and [(f["to"], f["decision"], len(f["ids"])) for f in filas]
+          == [("doc_a", "clase", 1), ("doc_b", "clase", 2), ("doc_c", "rol_reutilizado", 1), ("doc_d", "sin_alcance", 0)])
+    ent = RR.entradas_de_alcance(reg, cat["rol_por_to"], cat["labels"])
+    ref = cat["rol_por_to"]["ctacte.pdf"]                      # la release mapea ctacte a la clase Sujeto_banco
+    capmin = next(e for e in cat["rol_por_to"].values() if e.get("rol_id") == "Sujeto_rol_alcance_capmin")
+    check("S11b entradas: una clase como en la release, dos clases sin rol, el rol reutilizado igual a su entrada, "
+          "sin alcance sin entrada",
+          list(ent) == ["doc_a.pdf", "doc_b.pdf", "doc_c.pdf"] and dict(ent["doc_a.pdf"]) == dict(ref)
+          and ent["doc_b.pdf"]["rol_id"] is None and ent["doc_b.pdf"]["clase_ids"] == ["Sujeto_entidad_financiera", "Sujeto_banco"]
+          and dict(ent["doc_c.pdf"]) == dict(capmin))
+    malos = {"decisión desconocida": MD_PRUEBA.replace("| clase | `Sujeto_banco` |", "| quizás | `Sujeto_banco` |"),
+             "ids que no cierran": MD_PRUEBA.replace("clase (dos)", "clase"),
+             "columnas de menos": MD_PRUEBA.replace("| doc_d | D | sin alcance declarado | — | no hay pasaje | x |", "| doc_d | D |")}
+    for nombre, texto in malos.items():
+        (tmp / "malo.md").write_text(texto, encoding="utf-8")
+        check(f"S11c frena: {nombre}", frena(RR.leer_registro_alcance, tmp / "malo.md"))
+    ya = {"tandas": {"7": [{"to": "ctacte", "archivo": "ctacte.pdf", "decision": "clase", "ids": ["Sujeto_banco"]}]}}
+    sin_rol = {"tandas": {"7": [{"to": "x", "archivo": "x.pdf", "decision": "rol_reutilizado",
+                                 "ids": ["Sujeto_entidad_financiera"]}]}}
+    check("S11d frena: el documento ya tiene alcance (solo agrega)",
+          frena(RR.entradas_de_alcance, ya, cat["rol_por_to"], cat["labels"]))
+    check("S11e frena: un rol reutilizado que no es un rol", frena(RR.entradas_de_alcance, sin_rol, cat["rol_por_to"], cat["labels"]))
+    g = tmp / "g_alcance"
+    rep = RR.generar_resolucion(escribir(tmp, lista()), g, md)
+    c = E4.catalogo_resolucion_r2(g)
+    check("S11f catálogo de resolución con alcances: sha propio, n_alcances 3, rol_por_to = release + las tres",
+          c["catalogo_sha256"] != M.CATALOGO_R2_SHA256 and rep["manifiesto"]["n_alcances"] == 3
+          and rep["manifiesto"]["n_altas"] == 0
+          and list(c["rol_por_to"]) == list(cat["rol_por_to"]) + ["doc_a.pdf", "doc_b.pdf", "doc_c.pdf"]
+          and all(c["rol_por_to"][k] == v for k, v in cat["rol_por_to"].items()))
+    req = E4.catalogo_r2()
+    sin_deriva = lambda e: {k: v for k, v in e.items() if k != "deriva_de"}  # noqa: E731
+    check("S11g con alcances, el índice, los labels y el esqueleto son los del request (el esqueleto, salvo de qué "
+          "catálogo deriva)", c["indice"] == req["indice"] and c["labels"] == req["labels"]
+          and sin_deriva(c["entrada_esqueleto"]) == sin_deriva(req["entrada_esqueleto"]))
+
+
 def main() -> int:
     s1()
     with tempfile.TemporaryDirectory(prefix="selftest_reresolver_") as t:
@@ -387,6 +503,8 @@ def main() -> int:
         s7()
         s8(g)
         s9(tmp, g)
+        s10()
+        s11(tmp)
     ok = sum(1 for _, o, _ in RES if o)
     print(f"\nselftest_reresolver_catalogo: {ok}/{len(RES)} OK")
     return 0 if ok == len(RES) else 1

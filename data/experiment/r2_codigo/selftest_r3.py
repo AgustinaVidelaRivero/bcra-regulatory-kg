@@ -28,6 +28,13 @@ Grupos (casos sintéticos salvo donde se indica):
       aporta nodos ni aristas, el nodo compartido queda solo con la otra
       procedencia y el registro de omisiones no lleva las suyas; con True, la
       salida de hoy.
+  T10 enmienda 6 a L-ESQ-R2, parte A (firmada el 06/10/2026; R2-2 de
+      U-RERESOL-CAT): en un documento sin alcance y con `parte_a`, la
+      expresión colectiva, la relación sin mención y la mención que no
+      verifica van a cuarentena con la sugerencia guardada; R1 sigue primero y
+      la mención verificada sin regla sigue por R4; sin `parte_a`, en un
+      documento con alcance y en uno con entrada de dos clases (sin rol), la
+      salida de siempre; re-resolución con el alcance nuevo igual a la cadena.
 Escribe solo en un directorio temporal (TMPDIR). USD 0.
 
 Uso:
@@ -750,6 +757,61 @@ def t9():
           f"sin {rc_sin} | con {rc_con}")
 
 
+def t10():
+    print("T10. enmienda 6, parte A (documento sin alcance)")
+    cat = E4.catalogo_r2()
+    idx, rol_to = cat["indice"], cat["rol_por_to"]
+    modelo = "Sujeto_sujeto_regulado"
+
+    def rel(i, mencion, nivel, mod=modelo):
+        return {"predicate": "aplica_a", "source": "e1", "target": None, "punto": "1.1", "indice_crudo": i,
+                "sujeto_mencion": mencion, "mencion_verificada": nivel, "sujeto_id_modelo": mod,
+                "padre_sugerido": None, "padre_sugerido_crudo": None, "originales": {}}
+    rels = [rel(0, "las entidades", "exacta"), rel(1, None, "ausente"), rel(2, "los obligados del punto", "no"),
+            rel(3, "Entidades financieras", "exacta"), rel(4, "administradores de las carteras crediticias", "exacta")]
+
+    def regs(to, archivo):
+        return [{"chunk_id": f"{to}::1.1", "to": to, "archivo": archivo, "e0_sha256_completo": "h",
+                 "validacion": {"entidades": [{"local_id": "e1", "type": "Obligacion", "label": "O"}],
+                                "relaciones": json.loads(json.dumps(rels))}}]
+    vers = {"catalogo_sha256": cat["catalogo_sha256"], "politica_sha256": "p", "perfil": "r2", "prefijo_hash": "h"}
+    check("T10 docvig no tiene entrada en rol_por_to", "docvig.pdf" not in rol_to)
+    con = E4.resolver_relaciones_r2(regs("docvig", "docvig.pdf"), idx, rol_to, vers, parte_a=True)
+    sin = E4.resolver_relaciones_r2(regs("docvig", "docvig.pdf"), idx, rol_to, vers)
+    met = [(f["metodo_resolucion"], f["resuelto_a"]) for f in con["resolucion"]]
+    check("T10a con parte_a: colectivo, sin mención y no verificada a cuarentena; R1 primero; sin_match sigue por R4",
+          met == [("cuarentena", None), ("cuarentena", None), ("cuarentena", None),
+                  ("R1_label_exacto", "Sujeto_entidad_financiera"), ("R4_sugerencia_modelo", modelo)], str(met))
+    mot = {f["indice_relacion"]: (f["motivo"], f["sujeto_id_modelo"], f["mencion"]) for f in con["registro"]}
+    check("T10b las tres filas guardan el motivo, la sugerencia y la mención",
+          mot == {0: ("colectivo_sin_sujeto_por_defecto", modelo, "las entidades"), 1: ("sin_mencion", modelo, None),
+                  2: ("mencion_no_verificada", modelo, "los obligados del punto")}, str(mot))
+    check("T10c sin parte_a, la salida de siempre (las tres por R4)",
+          [f["metodo_resolucion"] for f in sin["resolucion"]][:3] == ["R4_sugerencia_modelo"] * 3 and not sin["registro"])
+    con_cla = E4.resolver_relaciones_r2(regs("cla", "TO_clasificacion_deudores_actual.pdf"), idx, rol_to, vers, parte_a=True)
+    sin_cla = E4.resolver_relaciones_r2(regs("cla", "TO_clasificacion_deudores_actual.pdf"), idx, rol_to, vers)
+    check("T10d en un documento con alcance, parte_a no cambia nada", con_cla == sin_cla)
+    dos = dict(rol_to, **{"dos.pdf": {"rol_id": None, "clase_ids": ["Sujeto_entidad_financiera", "Sujeto_banco"],
+                                      "label": "x", "miembros_ids": [], "miembros_labels": []}})
+    r_dos = E4.resolver_relaciones_r2(regs("dos", "dos.pdf"), idx, dos, vers, parte_a=True)
+    check("T10e con entrada de dos clases (sin rol) el documento tiene alcance: la parte A no lo toca",
+          [f["metodo_resolucion"] for f in r_dos["resolucion"]][:3] == ["R4_sugerencia_modelo"] * 3)
+    archivo = {"docvig": "docvig.pdf"}
+    quieto = E4.reresolver_registro(con["registro"], idx, rol_to, archivo, "sha_nuevo")
+    check("T10f sin alcance, la re-resolución deja las tres en cuarentena", quieto["resueltas_ahora"] == 0)
+    nuevo = dict(rol_to, **{"docvig.pdf": {"rol_id": "Sujeto_entidad_financiera", "clase_ids": ["Sujeto_entidad_financiera"],
+                                           "label": "Entidades financieras", "miembros_ids": ["Sujeto_entidad_financiera"],
+                                           "miembros_labels": ["Entidades financieras"]}})
+    rr = E4.reresolver_registro(con["registro"], idx, nuevo, archivo, "sha_nuevo")
+    cadena = E4.resolver_relaciones_r2(regs("docvig", "docvig.pdf"), idx, nuevo, vers, parte_a=True)
+    destino_rr = {f["indice_relacion"]: (f["resuelto_a"], f["metodo"], f["mencion_verificada"]) for f in rr["filas"]}
+    destino_cad = {f["indice_relacion"]: (f["resuelto_a"], f["metodo_resolucion"]) for f in cadena["resolucion"]}
+    check("T10g con el alcance nuevo, las tres resuelven por R4 con la sugerencia, como la cadena; la no verificada "
+          "conserva su marca", rr["resueltas_ahora"] == 3
+          and all(destino_rr[i][:2] == destino_cad[i] == (modelo, "R4_sugerencia_modelo") for i in (0, 1, 2))
+          and destino_rr[2][2] == "no", f"{destino_rr} | {destino_cad}")
+
+
 def main() -> int:
     t1()
     t2()
@@ -759,6 +821,7 @@ def main() -> int:
     t7()
     t8()
     t9()
+    t10()
     ok = sum(1 for _, b, _ in RES if b)
     print(f"SELFTEST R3: {ok}/{len(RES)} {'PASS' if ok == len(RES) else 'FAIL'}")
     return 0 if ok == len(RES) else 1

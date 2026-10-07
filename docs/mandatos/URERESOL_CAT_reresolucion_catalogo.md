@@ -271,3 +271,52 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 105 líneas de arriba y n
     pre-medición sobre el crudo r2b y vigencia desde la release siguiente.
   - W1 a W3 se aplican al repo en R2-1 bis («seguí» despachado el 06/10/2026, con SC2 de U-SINCOLA-T0 commiteada en `dde9f44`); el
     commit de R2-1 y R2-1 bis es de la autora. R2-2 se despacha después de ese commit.
+- **07/10/2026 — revisión del FRENO R2-2 y decisiones de la autora (R2-2 sin commit al escribir esta nota; R2-1 y R2-1 bis en `0737497`).**
+  - **Se reproduce, sobre una copia sin enlaces** (sin API, sin Neo4j): diffs de los seis archivos iguales a los del paquete (r1_e4 +48/−14,
+    ensamblar_tanda0 +1/−1, reresolver_catalogo +196/−23, selftest_r3 +63, selftest_reresolver_catalogo +118, procedimiento +48/−44); r2b
+    diez `892f3803…` (8.817/27.632) y sin cola diez `75f8e599…` (8.504/26.129), con diff exacto contra los sellados: +1 nodo
+    `Sujeto_propuesto_las_entidades` y las 4 `aplica_a` de `docvig::3.4` (relaciones 5, 6, 7 y 9; 3 Obligacion y 1 Restriccion) que pasan
+    de `Sujeto_sujeto_regulado` al propuesto, nada más; registro con 4 filas nuevas (`cuarentena`, `colectivo_sin_sujeto_por_defecto`,
+    sugerencia `Sujeto_sujeto_regulado` guardada) y 0 cambiadas; r2a `70d51e42…`/`fa4c1043…` y los dos desarrollo `6e756043…`/`2922b72d…`
+    byte a byte con el código nuevo y con el de HEAD; los nueve con alcance, `resolucion_sujetos` 2.605/2.534 y registro 291/286 byte a
+    byte; las 15 filas `R2_calificador` con estado `resuelto_a_clase` (128 = 113 R4 + 15 en diez; 125 = 110 + 15 sin cola); S19 PASS→FAIL
+    con exactamente 1 propuesto incompleto, S4/S5/S28/S23 cambian de cifra sin cambiar de estado, `sin_rol_de_alcance` 0→1; con el alcance
+    de prueba (docvig → `Sujeto_entidad_financiera`) el grafo vuelve a `a9631a64…` y (a) = (b) = (a+); el mensaje de E1 con el registro
+    cargado idéntico (sha `48fdec19…`) en las 2.439 unidades de la E0 r2b de los diez TOs y en los 13 casos del candado (`a9cb702c…`);
+    selftests `selftest_r3` 124/124, `selftest_reresolver_catalogo` 66/66, `selftest_regression_kg` 184/184, `selftest_prompt_r2b` 55/55,
+    `selftest_catalogo_unico` 60/60 (solo con el `.git` del repo a la vista: sobre una copia sin `.git` frena en K1, como ya pasa con el
+    manifiesto, regla l). Suite entrada por entrada: r2a diez sin regresiones; las cuatro entradas r2b con las 3 regresiones preexistentes
+    (RT-C5-3, RT-C6-1, RT-C6-2, declaradas en `bbc38dc`); los dos grafos nuevos de diez no tienen entrada en la fixture hasta re-sellar: el
+    commit de R2-2 no deja la suite más en rojo de lo que ya está; lo que bloquea es S19. Las 12 filas del registro de alcance (9 con
+    alcance, 3 sin: ri_oc, ceninf, cirmo3) coinciden con `data/experiment/catalogo_unico/registro_alcance_por_tanda.md`. La pre-medición B′
+    cierra (1.362 / 986 / 968 / 946, sobre las normas de las unidades aceptadas de los 9 TOs con alcance del crudo r2b diez; «nombran otro
+    Sujeto» = mención en el texto propio o heredado, no entidad). La clasificación de los archivos ajenos cierra. Repo sin cambios durante
+    la verificación; 2.213 `.pyc`.
+  - **Decisiones de la autora, asentadas.** (1) La parte A solo en r2b: `parte_a=False` por defecto en `resolver_relaciones_r2` y la cadena
+    pasa `parte_a=(fase == "r2b")` (`ensamblar_tanda0.py:1237`). (2) Precisión a la decisión 2 del 06/10/2026: cuando un documento sin
+    alcance recibe alcance, la fila de la regla 2 con sugerencia guardada se resuelve por R4 como en la cadena, aunque la mención no
+    verifique (darle el rol es la parte B, no adoptada); conserva la marca `mencion_no_verificada` y se cuenta aparte (sección `parte_a`
+    del reporte del script). (3) `prompt_r2b.py` no se toca en esta unidad: el cableado del registro de alcance al armar el mensaje
+    (autorizado por la enmienda 4, §4, solo lectura del registro, sin cambiar el prefijo) queda como CONDICIÓN previa a la extracción de
+    la tanda 1, después de la firma de la enmienda 4, en el checklist (11-bis) y en el pre-registro; mueve el candado del mensaje de E1,
+    las claves de E1 de los documentos con alcance nuevo y una fila de la tabla de reprocesamiento.
+  - **S19 bloqueante: decisión PENDIENTE de la autora.** Análisis de las tres salidas en `hoja_de_ruta_tanda1_mesa/analisis_S19_propuesto_sin_alcance_R2-2_mesa.md`
+    (scratchpad de la mesa). Recomendación de la mesa: el propuesto de la parte A recibe como `padre_sugerido` la sugerencia guardada del
+    modelo (`sujeto_id_modelo`) con la marca `padre_desde_sugerencia_modelo`, y, sin sugerencia, la raíz del catálogo con la marca
+    `padre_por_defecto_generico`; S19 no se toca; nunca la exención. Donde: una etapa R2-3 (USD 0) de esta unidad, con un caso en
+    `selftest_r3` y la fila F15d («solo código sobre lo guardado»).
+  - **Hallazgo nuevo: `runner_corpus.py:1261` (`cerrar_e2_r2`, la E2 r2 por TO del runner) llama a `resolver_relaciones_r2` sin `parte_a`.**
+    Es el flujo de la extracción de la tanda 1 (`runner_corpus.py:1446`); el grafo de la tanda sale del ensamblado, que sí la aplica, pero
+    los artefactos por TO del runner (`grafo_r2_<to>.json`, `resolucion_sujetos.jsonl`, `no_mapeados_sujetos.jsonl`) quedarían sin la
+    parte A en los documentos sin alcance. Corrección: `parte_a=perfil_forma_r2(PERFIL)` en esa línea, con un caso de selftest; va en R2-3
+    (`hallazgo_runner_1261_parte_A_mesa.md`).
+  - **Pre-medición B′ (BKL-0040):** la regla «no asignar el rol si la norma nombra otro sujeto» daría el rol a 1.362 − 986 = 376 normas (el
+    28 % de las sin `aplica_a` de los nueve documentos con alcance), y no a 986. Observación de la verificación: «palabra entera» está
+    implementada como «rodeada de espacios»; con límite de palabra (`\b`) serían 1.056 y 306. La precisión de la regla sigue sin medir:
+    el rediseño necesita su lectura de 30 normas de las 376, como la parte B. Nada de esto rige.
+  - **Re-sellado del grafo evaluado:** NO con R2-2 (los sha `892f3803…`/`75f8e599…` cambian otra vez con la salida de S19). Borrador de
+    la etapa y de su orden con la corrección de bases en `borrador_resellado_grafo_evaluado_tanda0_mesa.md`.
+  - **Firma de la enmienda 4 del protocolo:** lo que la enmienda pedía está (script con su prueba, registro de alcance legible por código,
+    fila F08d en la tabla, umbral de 2 unidades medido en R2-1: 14 claves llegan a 2 en diez); la mesa recomienda firmarla después de R2-3
+    (para no firmar una regla cuyo gate frena en S19), con las decisiones al firmar: umbral 2 confirmado, parte A solo en r2b, cableado
+    del registro como condición 11-bis. Commit de R2-2 PENDIENTE de la autora.

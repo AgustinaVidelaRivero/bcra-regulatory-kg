@@ -380,14 +380,27 @@ def resolver_mencion_r2(mencion: str, padre: str | None, idx: dict, prefijos: li
     return out
 
 
+MOTIVOS_PARTE_A = ("colectivo_sin_sujeto_por_defecto", "sin_mencion", "mencion_no_verificada")
+
+
 def resolver_relaciones_r2(registros: list[dict], idx: dict, rol_por_archivo: dict,
-                           versiones: dict) -> dict:
+                           versiones: dict, parte_a: bool = False) -> dict:
     """Resolución por relación de las relaciones de sujeto validadas por el
     perfil r2. Regla de decisión (L-ESQ-R2 §3.3, punto 5): la regla textual
     gana solo con R1; con R2, el calificador o R3 gana la sugerencia del
     modelo si la hay; sin regla, la sugerencia del modelo (R4). Siempre se
     registran los dos ids. Una mención que no verifica (`no`) no resuelve:
     queda la sugerencia del modelo o el registro (P-b4).
+
+    `parte_a` (enmienda 6 a L-ESQ-R2, parte A, firmada el 06/10/2026; la
+    cadena la activa en r2b): en un documento sin alcance (sin entrada en
+    `rol_por_archivo`), la sugerencia del modelo no reemplaza a un sujeto que
+    el texto no identifica. La expresión colectiva de la lista de R3 (regla 1,
+    motivo `colectivo_sin_sujeto_por_defecto`) y la relación sin mención o con
+    una mención que no verifica (regla 2, `sin_mencion` o
+    `mencion_no_verificada`) van a cuarentena, después de R1 y antes de R4; la
+    fila guarda la sugerencia y la mención del modelo. Con False (default),
+    la regla de siempre.
 
     Muta cada relación de sujeto agregando `sujeto_id_resuelto` y
     `metodo_resolucion` (o, sin resolver, la clave de su fila del registro).
@@ -401,6 +414,7 @@ def resolver_relaciones_r2(registros: list[dict], idx: dict, rol_por_archivo: di
         cid, to = reg["chunk_id"], reg["to"]
         ents = {e["local_id"]: e for e in val.get("entidades", [])}
         rol = (rol_por_archivo.get(reg["archivo"]) or {}).get("rol_id")
+        sin_alcance = parte_a and reg["archivo"] not in rol_por_archivo
         for r in val.get("relaciones", []):
             if r["predicate"] not in PREDICADOS_SUJETO_R2:
                 continue
@@ -415,6 +429,8 @@ def resolver_relaciones_r2(registros: list[dict], idx: dict, rol_por_archivo: di
             final, metodo = None, None
             if regla["regla"] == "R1":
                 final, metodo = regla["id"], "R1_" + "+".join(c for c in regla["criterios"] if c in CRITERIOS_R1)
+            elif sin_alcance and regla["motivo"] in MOTIVOS_PARTE_A:
+                pass                    # enmienda 6, parte A: cuarentena con la sugerencia guardada
             elif modelo:
                 final, metodo = modelo, "R4_sugerencia_modelo"
             elif regla["regla"] == "R2":
@@ -469,24 +485,42 @@ def resolver_relaciones_r2(registros: list[dict], idx: dict, rol_por_archivo: di
 def reresolver_registro(filas: list[dict], idx: dict, rol_por_archivo: dict, archivo_por_to: dict,
                         catalogo_sha256: str) -> dict:
     """P-d3: re-resolución por programa de las filas en cuarentena cuando
-    cambia el sha256 del catálogo. Aplica las reglas sobre la mención guardada
-    (sin el modelo: su sugerencia ya se aplicó al resolver); una fila que
-    resuelve pasa a `resuelto` con el sha nuevo. Idempotente: re-aplicada con
-    el mismo índice, no cambia nada. El método se escribe como en
-    `resolver_relaciones_r2` (R2 de U-RERESOL-CAT, W2: `R1_` y `R2_` con sus
+    cambia el sha256 del catálogo. Cada fila se decide con la misma regla que
+    `resolver_relaciones_r2` (R2-2 de U-RERESOL-CAT, decisión 2): R1 sobre la
+    mención verificada; si la fila guarda una sugerencia del modelo (solo la
+    parte A de la enmienda 6 deja una en cuarentena), sigue en cuarentena
+    mientras el documento no tenga alcance y, si lo recibe, gana la sugerencia
+    (R4), aunque la mención no verifique; sin sugerencia, R2, el calificador o
+    R3 sobre la mención verificada. Una fila que resuelve pasa a `resuelto`
+    (al calificador, `resuelto_a_clase`, como en la cadena) con el sha nuevo.
+    Idempotente: re-aplicada con el mismo índice, no cambia nada. El método se
+    escribe como en `resolver_relaciones_r2` (W2: `R1_` y `R2_` con sus
     criterios; el calificador y R3, con el nombre de la regla)."""
     prefijos = _prefijos(idx)
     out, cambiadas = [], 0
     for f in filas:
         g = dict(f)
-        if f["estado"] == "cuarentena" and f.get("mencion") and f.get("mencion_verificada") in ("exacta", "tokens"):
-            rol = (rol_por_archivo.get(archivo_por_to.get(f["to"])) or {}).get("rol_id")
-            r = resolver_mencion_r2(f["mencion"], f.get("padre_sugerido"), idx, prefijos, rol)
-            if r["id"]:
-                metodo = ("R1_" + "+".join(c for c in r["criterios"] if c in CRITERIOS_R1) if r["regla"] == "R1"
-                          else "R2_" + "+".join(r["criterios"]) if r["regla"] == "R2" else r["regla"])
-                g.update(estado="resuelto", resuelto_a=r["id"], metodo=metodo,
-                         calificador=r["calificador"], catalogo_sha256_resolucion=catalogo_sha256)
+        if f["estado"] == "cuarentena":
+            archivo = archivo_por_to.get(f["to"])
+            rol = (rol_por_archivo.get(archivo) or {}).get("rol_id")
+            modelo = f.get("sujeto_id_modelo")
+            r = (resolver_mencion_r2(f["mencion"], f.get("padre_sugerido"), idx, prefijos, rol)
+                 if f.get("mencion") and f.get("mencion_verificada") in ("exacta", "tokens") else None)
+            motivo = r["motivo"] if r else ("mencion_no_verificada" if f.get("mencion") else "sin_mencion")
+            final, metodo = None, None
+            if r and r["regla"] == "R1":
+                final, metodo = r["id"], "R1_" + "+".join(c for c in r["criterios"] if c in CRITERIOS_R1)
+            elif modelo and archivo not in rol_por_archivo and motivo in MOTIVOS_PARTE_A:
+                pass                    # parte A: sigue en cuarentena mientras el documento no tenga alcance
+            elif modelo:
+                final, metodo = modelo, "R4_sugerencia_modelo"
+            elif r and r["id"]:
+                final, metodo = r["id"], ("R2_" + "+".join(r["criterios"]) if r["regla"] == "R2" else r["regla"])
+            if final:
+                g.update(estado="resuelto_a_clase" if metodo == "R2_calificador" else "resuelto", resuelto_a=final,
+                         metodo=metodo, catalogo_sha256_resolucion=catalogo_sha256)
+                if r and metodo != "R4_sugerencia_modelo":
+                    g["calificador"] = r["calificador"]
                 cambiadas += 1
         out.append(g)
     return {"filas": out, "resueltas_ahora": cambiadas, "catalogo_sha256": catalogo_sha256}

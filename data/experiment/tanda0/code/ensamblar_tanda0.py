@@ -1234,7 +1234,7 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
         regs = RC.entrada_r2(to, C.SALIDA / to, chunks, perfil, validar)
         regs, descartadas = descartar_cola_r2(regs, con_cola)
         resumen["cola_descartada_por_to"][to] = {"n": len(descartadas), "chunks": descartadas}
-        res = E4.resolver_relaciones_r2(regs, cat["indice"], cat["rol_por_to"], versiones)
+        res = E4.resolver_relaciones_r2(regs, cat["indice"], cat["rol_por_to"], versiones, parte_a=r2b)
         ens = e2_lib.ensamblar_r2(chunks, regs, cat["labels"], sujetos_de_resolucion(cat, M), M.firma_r2,
                                   M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"], fase=fase)
         grafos[to] = {"nodes": ens["nodes"], "edges": ens["edges"]}

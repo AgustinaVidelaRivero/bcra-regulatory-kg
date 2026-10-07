@@ -6,15 +6,27 @@ ampliaciones que solo agrega: alta de un id con su padre, o alta de un alias de 
 resolución lo lee el código (E4, E2, merge entre TOs, esqueleto, S19 y la suite); el bloque del prefijo, el enum y el
 tool schema salen solo del catálogo del request, así que ningún request de E1 cambia.
 
+El alcance de los documentos nuevos (enmienda 4 al protocolo, §2; R2-2) entra por el registro de alcance por tanda
+(`catalogo_unico/registro_alcance_por_tanda.md`), que solo agrega: una entrada por documento con alcance (clase o rol
+reutilizado) que el catálogo de resolución suma al `rol_por_to` de la release. La regla de la parte A de la enmienda 6 a
+L-ESQ-R2 (firmada el 06/10/2026) corre en r2b: en un documento sin alcance, la expresión colectiva y la relación sin
+mención o con mención que no verifica van a cuarentena con la sugerencia guardada (r1_e4.resolver_relaciones_r2).
+
 Se corre desde la raíz de una COPIA del repo (CLAUDE.md §4.k y §4.l). Subcomandos:
 
-  componer --ampliaciones A.json --salida G
+  registro --md R.md --salida J.json
+      Lee el registro de alcance por tanda tal como está y escribe su forma legible por código: las filas por tanda y, por
+      tanda, las entradas con la forma de rol_por_to_r2.json y los documentos sin alcance declarado.
+
+  componer --ampliaciones A.json --salida G [--registro-alcance R.md] [--tandas 1,2]
       Compone el catálogo de resolución y escribe en G sus generados de resolución (índice de E4, labels de E2,
       rol_por_to, entrada del esqueleto, ids de S19 y catálogo de la suite), la lista de ampliaciones, el catálogo
-      compuesto (solo si hay ampliaciones) y el manifiesto con los tres sha256 (request, ampliaciones y compuesto), que
-      es el candado que lee r1_e4.catalogo_resolucion_r2. Sin ampliaciones, el compuesto es el del request y los
-      generados salen byte a byte iguales a los de generados_r2/. Escribe además G/reporte_composicion.json, fuera del
-      candado: las claves del índice de E4 que se agregan, que pasan a ambiguas o que cambian de id.
+      compuesto (solo si hay ampliaciones o alcances) y el manifiesto con los tres sha256 (request, ampliaciones y
+      compuesto), que es el candado que lee r1_e4.catalogo_resolucion_r2. Con el registro, el compuesto lleva sus
+      entradas (clave `alcance_de_resolucion`) y el rol_por_to de resolución las suma al de la release. Sin ampliaciones
+      ni alcances, el compuesto es el del request y los generados salen byte a byte iguales a los de generados_r2/.
+      Escribe además G/reporte_composicion.json, fuera del candado: las claves del índice de E4 que se agregan, que pasan
+      a ambiguas o que cambian de id, y las entradas de alcance nuevas.
 
   correr --manifiesto M --entrada E --e0-r2 D --anterior A --generados-resolucion G --salida S
          [--generados-anterior G0] [--sin-cola] [--sin-gate]
@@ -47,6 +59,7 @@ import copy
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 from collections import Counter, OrderedDict
@@ -69,6 +82,9 @@ ARCHIVO_COMPUESTO = "catalogo_resolucion_r2.json"
 SOLO_DEL_REQUEST = ("bloque_catalogo_r2.txt", "enums_tool_schema_r2.json")
 GENERADOR = "data/experiment/reresolucion_catalogo/reresolver_catalogo.py"
 OPERACIONES = ("alta_id", "alta_alias")
+REGISTRO_ALCANCE_MD = RAIZ / "data" / "experiment" / "catalogo_unico" / "registro_alcance_por_tanda.md"
+FORMATO_REGISTRO_ALCANCE = "registro_alcance_por_tanda/1"
+DECISIONES_ALCANCE = (("clase", "clase"), ("rol reutilizado", "rol_reutilizado"), ("sin alcance declarado", "sin_alcance"))
 VERIFICADAS = ("exacta", "tokens")
 REGISTRO = "no_mapeados_sujetos.jsonl"
 REGISTRO_CADENA = "no_mapeados_sujetos_cadena.jsonl"
@@ -84,6 +100,10 @@ ARCHIVOS_QUE_CAMBIAN = ("kg.json", REGISTRO, RESOLUCION, "reporte_ensamblado_r2.
 
 class ErrorAmpliacion(RuntimeError):
     """La lista de ampliaciones no cumple su formato o una regla del crecimiento."""
+
+
+class ErrorRegistroAlcance(RuntimeError):
+    """El registro de alcance por tanda no cumple su formato o choca con el alcance de la release."""
 
 
 # --------------------------------------------------------------------------------------------------------------- #
@@ -131,6 +151,98 @@ def clave(f: dict) -> tuple:
 
 def ordenado(c: Counter) -> dict:
     return dict(sorted(c.items(), key=lambda kv: (-kv[1], str(kv[0]))))
+
+
+# --------------------------------------------------------------------------------------------------------------- #
+# registro de alcance por tanda (enmienda 4 al protocolo, §2 y §4; R2-2)                                           #
+# --------------------------------------------------------------------------------------------------------------- #
+def leer_registro_alcance(md: Path) -> OrderedDict:
+    """El registro de alcance por tanda, leído tal como está: las filas de las tablas bajo «## Tanda N …», con las
+    columnas TO | título | decisión | id(s) del catálogo | base | pasaje. Decisión: «clase» o «clase (dos)» (una o dos
+    clases del catálogo), «rol reutilizado» (un rol que ya tiene alcance en la release) o «sin alcance declarado» (sin
+    ids). El archivo del documento es `<TO>.pdf`, la convención de `escalado_prep/pdfs/` y de las claves de rol_por_to
+    de los documentos fuera del subset. Las tablas que no están bajo un encabezado de tanda (los candidatos) no entran.
+    Frena (ErrorRegistroAlcance) ante una fila que no cumple."""
+    texto = Path(md).read_text(encoding="utf-8")
+    tandas: OrderedDict = OrderedDict()
+    tanda = None
+    for n, linea in enumerate(texto.splitlines(), 1):
+        m = re.match(r"^## Tanda (\S+)", linea)
+        if m:
+            tanda = m.group(1)
+            tandas.setdefault(tanda, [])
+            continue
+        if linea.startswith("## "):
+            tanda = None
+            continue
+        if tanda is None or not linea.startswith("|") or linea.startswith("|---"):
+            continue
+        celdas = [c.strip() for c in linea.strip().strip("|").split("|")]
+        if celdas and celdas[0] == "TO":
+            continue
+        if len(celdas) != 6:
+            raise ErrorRegistroAlcance(f"línea {n}: {len(celdas)} columnas (esperadas 6)")
+        to, titulo, decision, ids_txt, base, _pasaje = celdas
+        tipo = next((v for k, v in DECISIONES_ALCANCE if decision.startswith(k)), None)
+        ids = re.findall(r"`(Sujeto_[A-Za-z0-9_]+)`", ids_txt)
+        if tipo is None:
+            raise ErrorRegistroAlcance(f"línea {n}: decisión {decision!r} desconocida")
+        if (tipo == "clase" and len(ids) != (2 if "(dos)" in decision else 1)) or \
+                (tipo == "rol_reutilizado" and len(ids) != 1) or (tipo == "sin_alcance" and ids):
+            raise ErrorRegistroAlcance(f"línea {n}: {len(ids)} ids para la decisión {decision!r}")
+        tandas[tanda].append(OrderedDict([("to", to), ("archivo", f"{to}.pdf"), ("titulo", titulo),
+                                          ("decision", tipo), ("ids", ids), ("base", base), ("linea", n)]))
+    return OrderedDict([("formato", FORMATO_REGISTRO_ALCANCE), ("fuente", ruta(md)),
+                        ("fuente_sha256", sha256_texto(texto)), ("tandas", tandas)])
+
+
+def entradas_de_alcance(registro: dict, rol_por_to: dict, labels: dict, tandas=None) -> OrderedDict:
+    """archivo → entrada con la forma de rol_por_to_r2.json (generar_desde_catalogo.generar_rol_por_to): una clase o
+    dos, la de un mapeo a clase (`rol_id` es la clase si es una, None si son dos); rol reutilizado, la entrada del rol en
+    el rol_por_to de la release, sin cambios. Sin alcance declarado, sin entrada. Solo agrega: frena si el documento ya
+    tiene alcance o aparece dos veces, si un id no es del catálogo o no es del nivel que pide la decisión, o si el rol no
+    tiene entrada en la release."""
+    roles = {}
+    for e in rol_por_to.values():
+        if e.get("rol_id") and (labels.get(e["rol_id"]) or {}).get("nivel") == "rol":
+            roles.setdefault(e["rol_id"], e)
+    out: OrderedDict = OrderedDict()
+    for tanda, filas in registro["tandas"].items():
+        if tandas is not None and tanda not in tandas:
+            continue
+        for f in filas:
+            if f["decision"] == "sin_alcance":
+                continue
+            a = f["archivo"]
+            if a in rol_por_to or a in out:
+                raise ErrorRegistroAlcance(f"{f['to']}: el documento ya tiene alcance (solo agrega)")
+            for i in f["ids"]:
+                nivel = (labels.get(i) or {}).get("nivel")
+                if nivel is None or (nivel == "rol") != (f["decision"] == "rol_reutilizado"):
+                    raise ErrorRegistroAlcance(f"{f['to']}: {i} no es un id de nivel válido para «{f['decision']}»")
+            if f["decision"] == "rol_reutilizado":
+                if f["ids"][0] not in roles:
+                    raise ErrorRegistroAlcance(f"{f['to']}: el rol {f['ids'][0]} no tiene alcance en la release")
+                out[a] = copy.deepcopy(roles[f["ids"][0]])
+            else:
+                lbl = [labels[i]["label"] for i in f["ids"]]
+                out[a] = OrderedDict([("rol_id", f["ids"][0] if len(f["ids"]) == 1 else None),
+                                      ("clase_ids", list(f["ids"])), ("label", " / ".join(lbl)),
+                                      ("miembros_ids", list(f["ids"])), ("miembros_labels", lbl)])
+    return out
+
+
+def registro_legible(md: Path) -> OrderedDict:
+    """La forma legible por código del registro: las filas por tanda y, por tanda, sus entradas de rol_por_to (contra el
+    rol_por_to y los labels del catálogo del request) y los documentos sin alcance declarado."""
+    reg = leer_registro_alcance(md)
+    cat = E4.catalogo_r2()
+    out = OrderedDict(reg)
+    out["rol_por_to_por_tanda"] = OrderedDict((t, entradas_de_alcance(reg, cat["rol_por_to"], cat["labels"], [t]))
+                                              for t in reg["tandas"])
+    out["sin_alcance_declarado_por_tanda"] = OrderedDict(
+        (t, [f["to"] for f in filas if f["decision"] == "sin_alcance"]) for t, filas in reg["tandas"].items())
+    return out
 
 
 # --------------------------------------------------------------------------------------------------------------- #
@@ -201,8 +313,11 @@ def componer(cat_request: dict, sha_request: str, ampl: dict) -> dict:
     return cat
 
 
-def generar_resolucion(ruta_ampliaciones: Path, salida: Path) -> dict:
-    """Escribe en `salida` el catálogo de resolución y sus generados, con el manifiesto. Devuelve el reporte."""
+def generar_resolucion(ruta_ampliaciones: Path, salida: Path, registro_md: Path | None = None,
+                       tandas: list[str] | None = None) -> dict:
+    """Escribe en `salida` el catálogo de resolución y sus generados, con el manifiesto. Devuelve el reporte. Con
+    `registro_md`, las entradas de alcance de esas tandas (todas, sin `tandas`) entran al compuesto (clave
+    `alcance_de_resolucion`, que cambia su sha) y al rol_por_to de resolución, después de las de la release."""
     M = E4.modulo_modelos_r2()
     texto_req = CATALOGO_REQUEST.read_text(encoding="utf-8")
     sha_req = sha256_texto(texto_req)
@@ -211,8 +326,16 @@ def generar_resolucion(ruta_ampliaciones: Path, salida: Path) -> dict:
     b_ampl = Path(ruta_ampliaciones).read_bytes()
     ampl = json.loads(b_ampl.decode("utf-8"))
     cat = componer(json.loads(texto_req), sha_req, ampl)
+    alcances, reg = OrderedDict(), None
+    if registro_md is not None:
+        reg = leer_registro_alcance(registro_md)
+        req = E4.catalogo_r2()
+        alcances = entradas_de_alcance(reg, req["rol_por_to"], req["labels"], tandas)
+        cat["alcance_de_resolucion"] = OrderedDict([
+            ("registro", reg["fuente"]), ("registro_sha256", reg["fuente_sha256"]),
+            ("tandas", list(tandas) if tandas is not None else list(reg["tandas"])), ("entradas", alcances)])
     texto = json.dumps(cat, ensure_ascii=False, indent=1) + "\n"
-    n = len(ampl.get("ampliaciones") or [])
+    n = len(ampl.get("ampliaciones") or []) + len(alcances)
     salida = Path(salida)
     salida.mkdir(parents=True, exist_ok=True)
     if n == 0:
@@ -223,6 +346,9 @@ def generar_resolucion(ruta_ampliaciones: Path, salida: Path) -> dict:
         fuente = salida / ARCHIVO_COMPUESTO
         fuente.write_text(texto, encoding="utf-8")
     gen = GEN.generar_todo(fuente)
+    if alcances:
+        rol = json.loads(gen["rol_por_to_r2.json"])
+        gen["rol_por_to_r2.json"] = json_texto({**rol, **alcances})
     (salida / ARCHIVO_AMPLIACIONES).write_bytes(b_ampl)
     archivos = OrderedDict()
     for nombre in E4.ARCHIVOS_RESOLUCION_R2:
@@ -231,6 +357,9 @@ def generar_resolucion(ruta_ampliaciones: Path, salida: Path) -> dict:
     man = OrderedDict([("formato", E4.FORMATO_RESOLUCION_R2), ("catalogo_request", ruta(CATALOGO_REQUEST)),
                        ("catalogo_request_sha256", sha_req), ("ampliaciones", ARCHIVO_AMPLIACIONES),
                        ("ampliaciones_sha256", sha256_bytes(b_ampl)), ("n_ampliaciones", n),
+                       ("n_altas", n - len(alcances)), ("n_alcances", len(alcances)),
+                       ("registro_alcance", reg["fuente"] if reg else None),
+                       ("registro_alcance_sha256", reg["fuente_sha256"] if reg else None),
                        ("catalogo", ARCHIVO_COMPUESTO if n else ruta(CATALOGO_REQUEST)),
                        ("catalogo_sha256", sha256_texto(texto)), ("generador", GENERADOR),
                        ("no_generados_solo_del_request", list(SOLO_DEL_REQUEST)), ("archivos", archivos)])
@@ -250,6 +379,7 @@ def generar_resolucion(ruta_ampliaciones: Path, salida: Path) -> dict:
                                                        if v == "__AMBIGUO__" and idx_req.get(k, "__AMBIGUO__") != v])),
         ("indice_claves_que_cambian_de_id", sorted([list(k) + [idx_req[k], v] for k, v in idx_res.items()
                                                     if k in idx_req and idx_req[k] != v and v != "__AMBIGUO__"])),
+        ("alcances_nuevos", alcances),
     ])
     (salida / "reporte_composicion.json").write_text(json_texto(rep), encoding="utf-8")
     return rep
@@ -273,15 +403,19 @@ def camino_a(filas: list[dict], cat_res: dict, archivo_por_to: dict) -> dict:
                                           if a.get(k) != b.get(k)})}
 
 
-def decidir(f: dict, padre: str | None, idx: dict, prefijos: list, rol: str | None) -> dict:
+def decidir(f: dict, padre: str | None, idx: dict, prefijos: list, rol: str | None, sin_alcance: bool = False) -> dict:
     """La regla de decisión de r1_e4.resolver_relaciones_r2 sobre una fila de resolucion_sujetos.jsonl, con los mismos
-    campos que la fila guarda. El control `reproduce_la_decision_guardada` la contrasta con la de la cadena."""
+    campos que la fila guarda. `sin_alcance`: la parte A de la enmienda 6 rige (fase r2b) y el documento no tiene
+    entrada en rol_por_to. El control `reproduce_la_decision_guardada` la contrasta con la de la cadena."""
     m, nivel, modelo = f.get("mencion"), f.get("mencion_verificada"), f.get("sujeto_id_modelo")
     regla = (E4.resolver_mencion_r2(m, padre, idx, prefijos, rol) if m and nivel in VERIFICADAS
-             else {"regla": None, "id": None, "criterios": [], "calificador": None})
+             else {"regla": None, "id": None, "criterios": [], "calificador": None,
+                   "motivo": "mencion_no_verificada" if m else "sin_mencion"})
     final, metodo = None, None
     if regla["regla"] == "R1":
         final, metodo = regla["id"], "R1_" + "+".join(c for c in regla["criterios"] if c in E4.CRITERIOS_R1)
+    elif sin_alcance and regla.get("motivo") in E4.MOTIVOS_PARTE_A:
+        pass
     elif modelo:
         final, metodo = modelo, "R4_sugerencia_modelo"
     elif regla["regla"] == "R2":
@@ -295,7 +429,7 @@ def decidir(f: dict, padre: str | None, idx: dict, prefijos: list, rol: str | No
 
 
 def camino_a_mas(resolucion: list[dict], registro: list[dict], cat_ant: dict, cat_res: dict,
-                 archivo_por_to: dict) -> dict:
+                 archivo_por_to: dict, parte_a: bool = False) -> dict:
     por_reg = {clave(f): f for f in registro}
     pre_ant, pre_res = E4._prefijos(cat_ant["indice"]), E4._prefijos(cat_res["indice"])
     no_reproduce, cambian = [], []
@@ -305,11 +439,12 @@ def camino_a_mas(resolucion: list[dict], registro: list[dict], cat_ant: dict, ca
         padre = fr.get("padre_sugerido")
         rol_ant = (cat_ant["rol_por_to"].get(archivo_por_to.get(f["to"])) or {}).get("rol_id")
         rol_res = (cat_res["rol_por_to"].get(archivo_por_to.get(f["to"])) or {}).get("rol_id")
-        antes = decidir(f, padre, cat_ant["indice"], pre_ant, rol_ant)
+        archivo = archivo_por_to.get(f["to"])
+        antes = decidir(f, padre, cat_ant["indice"], pre_ant, rol_ant, parte_a and archivo not in cat_ant["rol_por_to"])
         guardada = {c: f.get(c) for c in CAMPOS_DECISION}
         if antes != guardada:
             no_reproduce.append({"clave": list(k), "guardada": guardada, "recomputada": antes})
-        despues = decidir(f, padre, cat_res["indice"], pre_res, rol_res)
+        despues = decidir(f, padre, cat_res["indice"], pre_res, rol_res, parte_a and archivo not in cat_res["rol_por_to"])
         if despues != antes:
             campos = [c for c in CAMPOS_DECISION if antes[c] != despues[c]]
             tipo = ("destino" if "resuelto_a" in campos else "metodo" if "metodo_resolucion" in campos
@@ -448,11 +583,12 @@ def diferencia(kg0: dict, kg1: dict) -> dict:
                                     for k in sorted(set(e0) & set(e1)) if e0[k] != e1[k]}}
 
 
-def prediccion(a: dict, a_mas: dict, acum: dict, comp: dict, kg0: dict) -> dict:
+def prediccion(a: dict, a_mas: dict, acum: dict, comp: dict, kg0: dict, tos_alcance_nuevo=()) -> dict:
     """Cambios de destino por procedencia (chunk, destino anterior, destino nuevo): de (a), las filas que resuelven
     (del nodo en cuarentena al id); de (a+), las relaciones fuera de la cuarentena que cambian de destino; y los
     renombres de id_nodo de las filas que siguen en cuarentena. Más los propuestos que desaparecen (ninguna fila sigue
-    en cuarentena con su id), los ids nuevos con su esqueleto y los ids que reciben un alias."""
+    en cuarentena con su id), los ids nuevos con su esqueleto, los ids que reciben un alias y los TOs que reciben
+    alcance (sus propuestos sin padre toman el rol de alcance como padre por defecto)."""
     cambios = []
     for d in a["resueltas"]:
         cambios.append([d["chunk_id"], d["id_nodo"], d["resuelto_a"], "a"])
@@ -475,6 +611,7 @@ def prediccion(a: dict, a_mas: dict, acum: dict, comp: dict, kg0: dict) -> dict:
             "propuestos_que_desaparecen": sorted(i for i in viejos if i not in sigue and i.startswith("Sujeto_propuesto_")),
             "ids_nuevos": [i for i in comp["ids_nuevos"] if i not in nodos0],
             "alias_nuevos_en": sorted({i for i, _ in comp["alias_nuevos"]}),
+            "tos_con_alcance_nuevo": sorted(tos_alcance_nuevo),
             "a_mas_por_procedencia": [[c["chunk_id"], c["despues"]["resuelto_a"] or c["antes"]["resuelto_a"]]
                                       for c in a_mas["cambian"]]}
 
@@ -504,6 +641,9 @@ def contrastar(pred: dict, kg0: dict, kg1: dict) -> dict:
                                                               if c[3] == "renombre"}
     agregados_ok = set(pred["ids_nuevos"]) | {c[2] for c in pred["cambios_de_destino"] if c[2]}
     tocados = {c[1] for c in pred["cambios_de_destino"] if c[1]} | {c[2] for c in pred["cambios_de_destino"] if c[2]}
+    tos_nuevos = set(pred.get("tos_con_alcance_nuevo") or ())
+    tocados |= {n["id"] for n in kg1["nodes"] if n["type"] == "Sujeto" and n["properties"].get("nivel") == "propuesto"
+                and any(p.get("to") in tos_nuevos for p in n.get("provenances") or [])}
     no_explicado += [{"nodo_quitado": i} for i in dif["nodos_quitados"] if i not in quitados_ok]
     no_explicado += [{"nodo_agregado": i} for i in dif["nodos_agregados"] if i not in agregados_ok]
     no_explicado += [{"nodo_que_cambia": i, "campos": c} for i, c in dif["nodos_que_cambian"].items()
@@ -515,7 +655,8 @@ def contrastar(pred: dict, kg0: dict, kg1: dict) -> dict:
                      if k[1] not in sujeto and not (k[0] in quitados or k[2] in quitados)]
     no_explicado += [{"arista_agregada": k} for k in dif["aristas_agregadas"]
                      if k[1] not in sujeto and not (k[0] in agregados and (k[1] in RELACIONES_ESQUELETO
-                                                                           or k[1] == "padre_sugerido"))]
+                                                                           or k[1] == "padre_sugerido"))
+                     and not (k[1] == "padre_sugerido" and k[0] in tocados)]
     procedencias_a_mas = {tuple(x) for x in pred["a_mas_por_procedencia"]}
     kg1_aristas = {(e["source"], e["relation"], e["target"]): e for e in kg1["edges"]}
     for k, campos in dif["aristas_que_cambian"].items():
@@ -640,6 +781,8 @@ def correr(args) -> int:
     manifiesto = Path(args.manifiesto)
     man = ENS.MC.cargar(manifiesto)
     archivo_por_to = {t["id"]: t["archivo"] for t in man.tos}
+    import runner_corpus as RC          # noqa: PLC0415 — en el path por el ensamblador
+    parte_a = bool(RC.perfil_forma_r2(ENS.perfil_e1.perfil(man.perfil_e1)))      # la cadena la activa en r2b
     cat_res = E4.catalogo_resolucion_r2(args.generados_resolucion)
     cat_ant = E4.catalogo_resolucion_r2(args.generados_anterior) if args.generados_anterior else E4.catalogo_r2()
     gen_res = Path(args.generados_resolucion)
@@ -652,7 +795,9 @@ def correr(args) -> int:
     kg_ant = json.loads((anterior / "kg.json").read_text(encoding="utf-8"))
 
     a = camino_a(reg_ant, cat_res, archivo_por_to)
-    a_mas = camino_a_mas(res_ant, reg_ant, cat_ant, cat_res, archivo_por_to)
+    a_mas = camino_a_mas(res_ant, reg_ant, cat_ant, cat_res, archivo_por_to, parte_a)
+    tos_alcance_nuevo = {to for to, arch in archivo_por_to.items()
+                         if arch in cat_res["rol_por_to"] and arch not in cat_ant["rol_por_to"]}
     print(f"(a) resueltas {a['resueltas_ahora']}; (a+) cambian {len(a_mas['cambian'])} {a_mas['cambian_por_tipo']}; "
           f"reproduce la decisión guardada: {a_mas['reproduce_la_decision_guardada']}", flush=True)
     b = camino_b(manifiesto, Path(args.entrada), salida, Path(args.e0_r2), not args.sin_cola, cat_res)
@@ -662,14 +807,15 @@ def correr(args) -> int:
     acum = registro_acumulado(a["filas"], a_mas, reg_b, res_b, cat_res)
     (salida_r2 / REGISTRO).rename(salida_r2 / REGISTRO_CADENA)
     escribir_jsonl(salida_r2 / REGISTRO, acum["filas"])
-    pred = prediccion(a, a_mas, acum, comp, kg_ant)
+    pred = prediccion(a, a_mas, acum, comp, kg_ant, tos_alcance_nuevo)
     cont = contrastar(pred, kg_ant, kg_b)
     res_vs = resolucion_b_contra_a_mas(res_ant, res_b, a_mas, cat_res)
     cuarentena_a = {tuple(x["clave"]) for x in a_mas["cambian"] if x["estado_registro"] == "cuarentena"}
     a_y_a_mas = sorted([d["to"], d["chunk_id"], d["indice_relacion"]] for d in a["resueltas"]
                        if not any(k[0] == d["to"] and k[1] == d["chunk_id"] and k[3] == d["indice_relacion"]
                                   for k in cuarentena_a))
-    tos_tocados = {c[0].split("::")[0] for c in pred["cambios_de_destino"]} | {x["to"] for x in a_mas["cambian"]}
+    tos_tocados = ({c[0].split("::")[0] for c in pred["cambios_de_destino"]} | {x["to"] for x in a_mas["cambian"]}
+                   | tos_alcance_nuevo)
     arch = archivos_contra_anterior(anterior, salida_r2, tos_tocados)
     rep = OrderedDict()
     rep["entrada"] = OrderedDict([("manifiesto", ruta(manifiesto)), ("entrada", ruta(args.entrada)),
@@ -701,7 +847,21 @@ def correr(args) -> int:
         ("registro_resueltas_por_version", dict(Counter(f.get("catalogo_sha256_resolucion") for f in acum["filas"]
                                                         if f["estado"] in ("resuelto", "resuelto_a_clase")))),
         ("registro_por_estado", ordenado(Counter(f["estado"] for f in acum["filas"])))])
+    # enmienda 6, parte A (r2b): filas en cuarentena con la sugerencia guardada, filas resueltas por R4 con una mención
+    # que no verifica (se cuentan aparte, decisión de la autora del 07/10/2026) y la fila sin mención en cuarentena,
+    # condición con disparador (decisión 5 del despacho de R2-2): si aparece, el script la marca y se frena
+    sin_mencion = [list(clave(f)) for f in acum["filas"] if f["estado"] == "cuarentena" and f.get("motivo") == "sin_mencion"]
+    rep["parte_a"] = OrderedDict([
+        ("rige", parte_a), ("tos_con_alcance_nuevo", sorted(tos_alcance_nuevo)),
+        ("cuarentena_con_sugerencia_por_motivo", ordenado(Counter(
+            f["motivo"] for f in acum["filas"] if f["estado"] == "cuarentena" and f.get("sujeto_id_modelo")))),
+        ("resueltas_por_r4_con_mencion_no_verificada", [list(clave(f)) for f in acum["filas"]
+                                                        if f.get("metodo") == "R4_sugerencia_modelo"
+                                                        and f.get("mencion_verificada") not in VERIFICADAS]),
+        ("filas_sin_mencion_en_cuarentena", sin_mencion)])
     no_explicado = list(cont["no_explicado"])
+    if sin_mencion:
+        no_explicado.append({"disparador_fila_sin_mencion_en_cuarentena": len(sin_mencion)})
     if not a_mas["reproduce_la_decision_guardada"]:
         no_explicado.append({"a_mas_no_reproduce_la_decision_guardada": len(a_mas["no_reproduce"])})
     if not a["idempotente"]:
@@ -756,9 +916,14 @@ def correr(args) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
+    r = sub.add_parser("registro", help="forma legible por código del registro de alcance por tanda")
+    r.add_argument("--md", type=Path, default=REGISTRO_ALCANCE_MD)
+    r.add_argument("--salida", type=Path, required=True)
     p = sub.add_parser("componer", help="compone el catálogo de resolución y escribe sus generados con el candado")
     p.add_argument("--ampliaciones", type=Path, required=True)
     p.add_argument("--salida", type=Path, required=True)
+    p.add_argument("--registro-alcance", dest="registro_alcance", type=Path, default=None)
+    p.add_argument("--tandas", default=None, help="tandas del registro, separadas por coma (default: todas)")
     q = sub.add_parser("correr", help="(a), (a+), (b), contraste, registro acumulado y gate")
     q.add_argument("--manifiesto", type=Path, required=True)
     q.add_argument("--entrada", type=Path, required=True)
@@ -770,12 +935,20 @@ def main() -> int:
     q.add_argument("--sin-cola", dest="sin_cola", action="store_true")
     q.add_argument("--sin-gate", dest="sin_gate", action="store_true")
     args = ap.parse_args()
+    if args.cmd == "registro":
+        out = registro_legible(args.md)
+        args.salida.parent.mkdir(parents=True, exist_ok=True)
+        args.salida.write_text(json_texto(out), encoding="utf-8")
+        print(f"{sha256_path(args.salida)}  {ruta(args.salida)}: " + ", ".join(
+            f"tanda {t}: {len(f)} filas, {len(out['rol_por_to_por_tanda'][t])} con alcance" for t, f in out["tandas"].items()))
+        return 0
     if args.cmd == "componer":
-        rep = generar_resolucion(args.ampliaciones, args.salida)
+        rep = generar_resolucion(args.ampliaciones, args.salida, args.registro_alcance,
+                                 args.tandas.split(",") if args.tandas else None)
         print(json.dumps({k: rep[k] for k in ("ids_nuevos", "alias_nuevos", "indice_claves_que_pasan_a_ambiguas",
                                               "indice_claves_que_cambian_de_id")}, ensure_ascii=False))
-        print(f"catálogo de resolución {rep['manifiesto']['catalogo_sha256']} ({rep['manifiesto']['n_ampliaciones']} "
-              f"ampliaciones) en {ruta(args.salida)}")
+        print(f"catálogo de resolución {rep['manifiesto']['catalogo_sha256']} ({rep['manifiesto']['n_altas']} altas, "
+              f"{rep['manifiesto']['n_alcances']} alcances) en {ruta(args.salida)}")
         return 0
     return correr(args)
 
