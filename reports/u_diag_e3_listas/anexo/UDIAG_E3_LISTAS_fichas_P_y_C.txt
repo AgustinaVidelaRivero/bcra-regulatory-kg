@@ -1,0 +1,287 @@
+====================================================================================================
+cla::5.1.1.1|verificacion|0|0
+[encabezado | punto S5]
+    Sección 5. Categorías de carteras.
+[encabezado | punto 5.1]
+    5.1. Categorías.
+[intro | punto 5.1]
+    La cartera se agrupará en dos categorías básicas:
+[encabezado | punto 5.1.1]
+    5.1.1. Cartera comercial.
+[intro | punto 5.1.1]  <== ABRE LA LISTA
+    Abarca todas las financiaciones comprendidas, con excepción de las siguientes:
+[texto propio | punto 5.1.1.1]
+    5.1.1.1. Los créditos para consumo o vivienda. Los créditos de esta clase que superen el equivalente a dos veces el importe de referencia establecido en el punto 3.7. y cuyo repago no se encuentre vinculado a ingresos fijos o periódicos del cliente sino a la evolución de su actividad pro- ductiva o comercial se incluirán dentro de la cartera comercial.
+-- EXTRACCIÓN QUE VIO E3:
+   e1 Operacion «Inclusión en cartera comercial — créditos consumo/vivienda» — Inclusión de créditos para consumo o vivienda en la cartera comercial cuando superan dos veces el importe de referencia del punto 3.7 y su repago está vinculado a la evolución de la actividad productiva o comercial del cliente, no a ingresos fijos o periódicos.
+   e2 Excepcion «Excepción cartera comercial — créditos consumo/vivienda» — Los créditos para consumo o vivienda quedan exceptuados de la cartera comercial, salvo cuando reúnen las condiciones especificadas en el punto 5.1.1.1.
+   e3 Condicion «Superar dos veces importe referencia punto 3.7» — El crédito debe superar el equivalente a dos veces el importe de referencia establecido en el punto 3.7.
+   e4 Condicion «Repago vinculado a actividad productiva/comercial» — El repago del crédito no debe estar vinculado a ingresos fijos o periódicos del cliente, sino a la evolución de su actividad productiva o comercial.
+   e3 -condicion_de-> e1
+   e4 -condicion_de-> e1
+   OMISIÓN: [meta_normativo] Los créditos para consumo o vivienda. — Encabezado de punto que anuncia la clase de créditos tratada; no prescribe conducta sino que nombra el tema. El contenido normativo está en el párrafo siguiente.
+-- FALTANTE: {"tipo": "otro", "severidad": "media", "bloqueante": false, "cita_verificada": true}
+   CITA: se incluirán dentro de la cartera comercial.
+   NOTA: el nodo e2 'Excepcion' invierte la sustancia del fuente: el fuente establece que cumpliendo las condiciones el crédito SE INCLUYE en cartera comercial (una regla de inclusión/asignación), no que 'queda exceptuado salvo que reúna las condiciones'. No es una excepción a una regla general de exclusión, sino la regla de inclusión misma condicionada.
+====================================================================================================
+ctacte::5.1.1.2|verificacion|0|0
+[encabezado | punto S5]
+    Sección 5. Endosos, modalidades especiales de emisión y aval.
+[encabezado | punto 5.1]
+    5.1. Endoso.
+[encabezado | punto 5.1.1]
+    5.1.1. Límite.
+[intro | punto 5.1.1]  <== ABRE LA LISTA
+    Los cheques que se presenten al cobro o –en su caso– a la registración hasta el 31.12.27 inclusive, sólo podrán contener la cantidad de endosos que seguidamente se indican:
+[cierre | punto 5.1.1]
+    Se exceptúan de las limitaciones establecidas en este punto a los endosos que las enti- dades financieras realicen para la obtención de financiación, a favor de una entidad fi- nanciera o de un fiduciario de un fideicomiso financiero, en ambos casos comprendidos en la Ley de Entidades Financieras y las sucesivas transmisiones a favor de otros sujetos de la misma naturaleza, así como cuando los cheques se depositen en la Caja de Valo- res S.A. para ser negociados en las bolsas de comercio y mercados de valores autoriza- dos por la Comisión Nacional de Valores de la República Argentina, en cuyo caso los en- dosos deberán ser extendidos con la cláusula “... para su negociación en mercados de valores”. También se exceptuarán de la citada limitación los endosos a favor del BCRA y aquellos efectuados en los ECHEQ.
+[texto propio | punto 5.1.1.2]
+    5.1.1.2. Cheques de pago diferido: hasta 2 (dos) endosos.
+-- EXTRACCIÓN QUE VIO E3:
+   e1 Operacion «Cheques de pago diferido» — Cheques de pago diferido, operación regulada por límite de endosos
+   e2 Restriccion «Límite endosos — cheques pago diferido» — Los cheques de pago diferido que se presenten al cobro o a la registración hasta el 31.12.27 inclusive sólo podrán contener hasta 2 (dos) endosos
+   e3 Excepcion «Excepción endosos para financiación» — Quedan exceptuados los endosos que las entidades financieras realicen para obtener financiación a favor de una entidad financiera o de un fiduciario de fideicomiso financiero comprendidos en la Ley de Entidades Financieras, y las sucesivas transmisiones a favor de otros sujetos de la misma naturaleza
+   e4 Excepcion «Excepción endosos — depósito en Caja de Valores» — Quedan exceptuados los endosos cuando los cheques se depositen en la Caja de Valores S.A. para ser negociados en bolsas de comercio y mercados de valores autorizados por la CNV, debiendo extenderse los endosos con la cláusula "... para su negociación en mercados de valores"
+   e5 Excepcion «Excepción endosos a favor del BCRA» — Quedan exceptuados los endosos a favor del BCRA
+   e6 Excepcion «Excepción endosos en ECHEQ» — Quedan exceptuados los endosos efectuados en los ECHEQ
+   e2 -limita-> e1
+   e3 -exceptua-> e2
+   e4 -exceptua-> e2
+   e5 -exceptua-> e2
+   e6 -exceptua-> e2
+   OMISIÓN: [meta_normativo] Los cheques que se presenten al cobro o –en su caso– a la registración hasta el 31.12.27 inclusive — Cláusula temporal que fija el alcance temporal de la norma (hasta 31.12.27), no prescribe conducta
+-- FALTANTE: {"tipo": "otro", "severidad": "baja", "bloqueante": false, "cita_verificada": true}
+   CITA: Cheques de pago diferido: hasta 2 (dos) endosos.
+   NOTA: El texto fuente provisto del punto propio es muy breve y no contiene las excepciones ni la cláusula temporal que aparecen en lo extraído (financiación, Caja de Valores, BCRA, ECHEQ, fecha 31.12.27); esas excepciones y calificadores no figuran en el fuente íntegro entregado para esta unidad, por lo que no pueden verificarse contra él. Dado que no hay forma de contrastar si están efectivamente en el fuente completo real, se señala como posible discrepancia de alcance entre fuente mostrado y lo extraído, sin poder confirmar faltante sustantivo adicional.
+====================================================================================================
+docvig::3.3.2|verificacion|0|0
+[encabezado | punto S3]
+    Sección 3. Rectificación de documentos de identidad.
+[encabezado | punto 3.3]
+    3.3. Acreditación de los cambios.
+[intro | punto 3.3]  <== ABRE LA LISTA
+    Los clientes deberán presentar la siguiente documentación respaldatoria:
+[cierre | punto 3.3]
+    No será obligatoria para el cliente la entrega de las constancias del CUIT/CUIL a raíz de la recti- ficación en el nombre y/o apellido y/o en otros datos de identificación, excepto cuando se trate de modificaciones en el número de documento de identidad de acuerdo con lo previsto en el punto 3.1.4.
+[texto propio | punto 3.3.2]
+    3.3.2. En los supuestos contemplados en los puntos 3.1.2., 3.1.3. y 3.1.4. se requerirá la exhibi- ción del DNI-m o DNI-d expedido con posterioridad a la rectificación y la entrega, para el legajo del cliente, de una copia junto con –en su caso– una constancia que avale la modi- ficación. Dicha constancia podrá consistir en: i. Copia autenticada del acto administrativo o de la sentencia. ii. Testimonio de la sentencia. iii. Notificación de la sentencia. iv. Auto de identidad dictado en sede judicial.
+-- EXTRACCIÓN QUE VIO E3:
+   e1 Operacion «Exhibición DNI-m o DNI-d post-rectificación» — Exhibición del DNI-m o DNI-d expedido con posterioridad a la rectificación
+   e2 Operacion «Entrega copia DNI para legajo» — Entrega para el legajo del cliente de una copia del DNI junto con, en su caso, una constancia que avale la modificación
+   e3 Definicion «Constancia que avale la modificación» — Documento que puede consistir en: copia autenticada del acto administrativo o de la sentencia, testimonio de la sentencia, notificación de la sentencia, o auto de identidad dictado en sede judicial
+   e4 Obligacion «Presentar documentación — cambios en datos de identificación» — Los clientes deberán presentar documentación respaldatoria en los supuestos de cambios en nombre, apellido, otros datos de identificación o número de documento de identidad: exhibición del DNI-m o DNI-d expedido con posterioridad a la rectificación y entrega de copia para el legajo junto con constancia que avale la modificación
+   e5 Excepcion «Excepción — constancia CUIT/CUIL no obligatoria» — No es obligatoria la entrega de constancias del CUIT/CUIL por rectificación en nombre, apellido u otros datos de identificación, excepto en modificaciones del número de documento de identidad
+   e6 Condicion «Supuestos de cambios en datos de identificación» — Cuando se verifiquen los supuestos contemplados en los puntos 3.1.2., 3.1.3. y 3.1.4. (cambios en nombre, apellido, otros datos de identificación o número de documento)
+   e4 -aplica_a-> None
+   e5 -aplica_a-> None
+   e6 -condicion_de-> e4
+   e5 -exceptua_obligacion-> e4
+   OMISIÓN: [meta_normativo] Dicha constancia podrá consistir en: — Enunciado introductorio que anuncia la enumeración de opciones; el contenido normativo (qué opciones son válidas) está en los ítems i-iv, que se extraen en la Definicion e3
+-- FALTANTE: {"tipo": "otro", "severidad": "alta", "bloqueante": true, "cita_verificada": false}
+   CITA: Excepción — constancia CUIT/CUIL no obligatoria
+   NOTA: la entidad e5 y la condición e6 introducen contenido (excepción de CUIT/CUIL, supuestos de nombre/apellido/número de documento) que no aparece en el texto fuente de este punto; el fuente de 3.3.2 no menciona CUIT/CUIL ni describe los supuestos de 3.1.2/3.1.3/3.1.4, por lo que no es verificable contra el fuente dado
+====================================================================================================
+ext::3.5.6.1|re_verificacion|1|0
+[encabezado | punto S3]
+    Sección 3. Disposiciones específicas para los egresos por el mercado de cambios
+[chapeau_seccion | punto S3]
+    Las entidades previamente a dar acceso al mercado de cambio por las operaciones comprendidas en los puntos 3.1. a 3.15. –incluyendo aquellas que se concreten a través de canjes o arbitrajes–, adicionalmente a los requisitos y condiciones específicas detalladas en cada punto, deberán cumplimentar los requisitos complementarios que constan en el punto 3.16. que resulten aplicables.
+[encabezado | punto 3.5]
+    3.5. Pagos de títulos de deuda suscriptos en el exterior y endeudamientos financieros con el
+[intro | punto 3.5]
+    exterior. Las entidades podrán dar acceso al mercado de cambios para realizar pagos de capital o intereses de títulos de deuda con registro público en el exterior, otros endeudamientos financieros con el exterior y títulos de deuda con registro público en el país denominados en moneda extranjera íntegramente suscriptos en el exterior, en la medida que se verifiquen las siguientes condiciones:
+[encabezado | punto 3.5.6]
+    3.5.6. Se requerirá la conformidad previa del BCRA para el acceso al mercado de cambios
+[intro | punto 3.5.6]  <== ABRE LA LISTA
+    para la cancelación de capital e intereses de endeudamientos financieros comprendidos en este punto 3.5. cuando el acreedor sea una contraparte vinculada al deudor. Este requisito no resultará aplicable cuando la operación encuadre en alguna de las siguientes situaciones:
+[cierre | punto 3.5.6]
+    Las deudas comprendidas en este punto continuarán sujetas a la conformidad previa aun cuando existiese una modificación del acreedor o del deudor que conlleve a que ya no exista una vinculación entre el acreedor y el deudor residente.
+[texto propio | punto 3.5.6.1]
+    3.5.6.1. se trate de operaciones propias de las entidades financieras locales.
+-- EXTRACCIÓN QUE VIO E3:
+   e1 Obligacion «Conformidad previa BCRA — acceso mercado cambios» — Se requiere la conformidad previa del BCRA para el acceso al mercado de cambios para la cancelación de capital e intereses de endeudamientos financieros comprendidos en el punto 3.5 cuando el acreedor sea una contraparte vinculada al deudor.
+   e2 Excepcion «Excepción — operaciones propias entidades financieras locales» — No se requiere conformidad previa del BCRA cuando se trate de operaciones propias de las entidades financieras locales.
+   e2 -exceptua_obligacion-> e1
+-- FALTANTE: {"tipo": "otro", "severidad": "alta", "bloqueante": true, "cita_verificada": true}
+   CITA: 3.5.6.1. se trate de operaciones propias de las entidades financieras locales.
+   NOTA: El punto propio enumera un caso en el que se requiere conformidad previa del BCRA (inciso de la enumeración que abre 3.5.6), pero lo extraído lo invirtió en una Excepcion que exime de esa conformidad, contradiciendo el sentido original del fuente: el texto dice que CUANDO se trate de operaciones propias de entidades financieras locales SÍ se requiere conformidad previa (es un supuesto que dispara la exigencia), no una excepción que la exime.
+====================================================================================================
+ext::3.5.6.2|verificacion|0|2
+[encabezado | punto S3]
+    Sección 3. Disposiciones específicas para los egresos por el mercado de cambios
+[chapeau_seccion | punto S3]
+    Las entidades previamente a dar acceso al mercado de cambio por las operaciones comprendidas en los puntos 3.1. a 3.15. –incluyendo aquellas que se concreten a través de canjes o arbitrajes–, adicionalmente a los requisitos y condiciones específicas detalladas en cada punto, deberán cumplimentar los requisitos complementarios que constan en el punto 3.16. que resulten aplicables.
+[encabezado | punto 3.5]
+    3.5. Pagos de títulos de deuda suscriptos en el exterior y endeudamientos financieros con el
+[intro | punto 3.5]
+    exterior. Las entidades podrán dar acceso al mercado de cambios para realizar pagos de capital o intereses de títulos de deuda con registro público en el exterior, otros endeudamientos financieros con el exterior y títulos de deuda con registro público en el país denominados en moneda extranjera íntegramente suscriptos en el exterior, en la medida que se verifiquen las siguientes condiciones:
+[encabezado | punto 3.5.6]
+    3.5.6. Se requerirá la conformidad previa del BCRA para el acceso al mercado de cambios
+[intro | punto 3.5.6]  <== ABRE LA LISTA
+    para la cancelación de capital e intereses de endeudamientos financieros comprendidos en este punto 3.5. cuando el acreedor sea una contraparte vinculada al deudor. Este requisito no resultará aplicable cuando la operación encuadre en alguna de las siguientes situaciones:
+[cierre | punto 3.5.6]
+    Las deudas comprendidas en este punto continuarán sujetas a la conformidad previa aun cuando existiese una modificación del acreedor o del deudor que conlleve a que ya no exista una vinculación entre el acreedor y el deudor residente.
+[texto propio | punto 3.5.6.2]
+    3.5.6.2. se trate de un endeudamiento financiero comprendido en este punto 3.5. que tenga una vida promedio no inferior a 6 (seis) meses y los fondos hayan sido ingresados y liquidados por el mercado de cambios a partir del 21/04/25.
+-- EXTRACCIÓN QUE VIO E3:
+   c1 Condicion «Vida promedio mínima 6 meses» — El endeudamiento financiero debe tener una vida promedio no inferior a 6 meses
+   c2 Condicion «Fondos ingresados y liquidados desde 21/04/25» — Los fondos deben haber sido ingresados y liquidados por el mercado de cambios a partir del 21 de abril de 2025
+   e1 Excepcion «Excepción conformidad previa BCRA — endeudamiento con contraparte vinculada» — Excepción a la exigencia de conformidad previa del BCRA para acceso al mercado de cambios en cancelación de capital e intereses de endeudamientos financieros cuando el acreedor sea contraparte vinculada, cuando se trate de un endeudamiento con vida promedio no inferior a 6 meses y fondos ingresados y liquidados desde 21/04/25
+   c1 -condicion_de-> e1
+   c2 -condicion_de-> e1
+-- FALTANTE: {"tipo": "otro", "severidad": "alta", "bloqueante": true, "cita_verificada": false}
+   CITA: cuando el acreedor sea contraparte vinculada
+   NOTA: la descripción de e1 agrega la condición 'cuando el acreedor sea contraparte vinculada' que no aparece en el texto fuente del punto 3.5.6.2; esto sugiere que el extractor incorporó contenido de otro punto (posiblemente 3.5.6.1) no presente en esta unidad, lo cual indica que el contexto que define a qué excepción se refiere este inciso no está debidamente respaldado por el fuente de esta unidad
+====================================================================================================
+ext::3.6.1.1|re_verificacion|1|1
+[encabezado | punto S3]
+    Sección 3. Disposiciones específicas para los egresos por el mercado de cambios
+[chapeau_seccion | punto S3]
+    Las entidades previamente a dar acceso al mercado de cambio por las operaciones comprendidas en los puntos 3.1. a 3.15. –incluyendo aquellas que se concreten a través de canjes o arbitrajes–, adicionalmente a los requisitos y condiciones específicas detalladas en cada punto, deberán cumplimentar los requisitos complementarios que constan en el punto 3.16. que resulten aplicables.
+[encabezado | punto 3.6]
+    3.6. Pagos de títulos de deuda u otros valores representativos de deuda denominados y
+[intro | punto 3.6]
+    pagaderos en moneda extranjera en el país y obligaciones en moneda extranjera entre residentes.
+[encabezado | punto 3.6.1]
+    3.6.1. Se prohíbe el acceso al mercado de cambios para el pago de deudas y otras
+[intro | punto 3.6.1]  <== ABRE LA LISTA
+    obligaciones en moneda extranjera entre residentes concertadas a partir del 01/09/19, excepto para la cancelación en el país a partir de su vencimiento de capital e intereses de:
+[texto propio | punto 3.6.1.1]
+    3.6.1.1. las financiaciones en moneda extranjera otorgadas por entidades financieras locales, incluyendo los pagos por los consumos en moneda extranjera efectuados mediante tarjetas de crédito o de compra, excepto la cancelación de giros en descubierto en cuentas corrientes en dólares estadounidenses que sólo podrá efectuarse con fondos en esa moneda de libre disponibilidad del cliente.
+-- EXTRACCIÓN QUE VIO E3:
+   e1 Excepcion «Excepción financiaciones entidades financieras locales» — Quedan exceptuadas de la prohibición de acceso al mercado de cambios las financiaciones en moneda extranjera otorgadas por entidades financieras locales, incluyendo los pagos por consumos en moneda extranjera efectuados mediante tarjetas de crédito o de compra
+   e2 Restriccion «Prohibición cancelación giros descubierto USD» — La cancelación de giros en descubierto en cuentas corrientes en dólares estadounidenses solo podrá efectuarse con fondos en esa moneda de libre disponibilidad del cliente
+   e1 -aplica_a-> entidades financieras locales
+   OMISIÓN: [relacion_sin_predicado] excepto la cancelación de giros en descubierto en cuentas corrientes en dólares estadounidenses que sólo podrá efectuarse con fondos en esa moneda de libre disponibilidad del cliente
+-- FALTANTE: {"tipo": "otro", "severidad": "media", "bloqueante": false, "cita_verificada": true}
+   CITA: las financiaciones en moneda extranjera otorgadas por entidades financieras locales, incluyendo los pagos por los consumos en moneda extranjera efectuados mediante tarjetas de crédito o de compra
+   NOTA: el ítem enumerado del punto 3.6.1 (una de las deudas cuyo pago queda prohibido) quedó representado únicamente como la descripción de la Excepcion e1, sin que exista una entidad que porte el alcance prohibitivo base sobre financiaciones en moneda extranjera de entidades financieras locales
+====================================================================================================
+ext::3.6.1.1|verificacion|0|0
+[encabezado | punto S3]
+    Sección 3. Disposiciones específicas para los egresos por el mercado de cambios
+[chapeau_seccion | punto S3]
+    Las entidades previamente a dar acceso al mercado de cambio por las operaciones comprendidas en los puntos 3.1. a 3.15. –incluyendo aquellas que se concreten a través de canjes o arbitrajes–, adicionalmente a los requisitos y condiciones específicas detalladas en cada punto, deberán cumplimentar los requisitos complementarios que constan en el punto 3.16. que resulten aplicables.
+[encabezado | punto 3.6]
+    3.6. Pagos de títulos de deuda u otros valores representativos de deuda denominados y
+[intro | punto 3.6]
+    pagaderos en moneda extranjera en el país y obligaciones en moneda extranjera entre residentes.
+[encabezado | punto 3.6.1]
+    3.6.1. Se prohíbe el acceso al mercado de cambios para el pago de deudas y otras
+[intro | punto 3.6.1]  <== ABRE LA LISTA
+    obligaciones en moneda extranjera entre residentes concertadas a partir del 01/09/19, excepto para la cancelación en el país a partir de su vencimiento de capital e intereses de:
+[texto propio | punto 3.6.1.1]
+    3.6.1.1. las financiaciones en moneda extranjera otorgadas por entidades financieras locales, incluyendo los pagos por los consumos en moneda extranjera efectuados mediante tarjetas de crédito o de compra, excepto la cancelación de giros en descubierto en cuentas corrientes en dólares estadounidenses que sólo podrá efectuarse con fondos en esa moneda de libre disponibilidad del cliente.
+-- EXTRACCIÓN QUE VIO E3:
+   e1 Restriccion «Prohibición acceso mercado cambios — deudas entre residentes» — Se prohíbe el acceso al mercado de cambios para el pago de deudas y otras obligaciones en moneda extranjera entre residentes concertadas a partir del 01/09/19
+   e2 Excepcion «Cancelación en país — financiaciones entidades financieras» — Excepción a la prohibición de acceso al mercado de cambios: se permite la cancelación en el país de financiaciones en moneda extranjera otorgadas por entidades financieras locales, incluyendo pagos por consumos en moneda extranjera efectuados mediante tarjetas de crédito o de compra
+   e3 Restriccion «Prohibición cancelación giros descubierto — fondos en moneda extranjera» — Se exceptúa de la excepción anterior la cancelación de giros en descubierto en cuentas corrientes en dólares estadounidenses, que solo podrá efectuarse con fondos en esa moneda de libre disponibilidad del cliente
+   e2 -exceptua-> e1
+   OMISIÓN: [fuera_de_tipos] excepto para la cancelación en el país a partir de su vencimiento de capital e intereses de: — Enunciado introductorio que anuncia la lista de excepciones; no es una norma autónoma sino un encabezado que se compone con los ítems. El contenido normativo se extrae en cada ítem como ex
+-- FALTANTE: {"tipo": "otro", "severidad": "alta", "bloqueante": true, "cita_verificada": true}
+   CITA: 3.6.1.1. las financiaciones en moneda extranjera otorgadas por entidades financieras locales, incluyendo los pagos por los consumos en moneda extranjera efectuados mediante tarjetas de crédito o de compra, excepto la cancelación de giros en descubierto en cuentas corrientes en dólares estadounidenses que sólo podrá efectuarse con fondos en esa moneda de libre disponibilidad del cliente.
+   NOTA: El punto 3.6.1.1 es en sí mismo un ítem de la enumeración de excepciones a la prohibición general del 3.6.1 (acceso al mercado de cambios para pago de deudas), según el encabezado heredado declarado como omisión 'excepto para la cancelación en el país ... de:'. La extracción invierte la estructura: modela 3.6.1.1 como si el acceso para financiaciones estuviera prohibido (e2 lo presenta como 'excepción a la prohibición' en el sentido correcto, pero e1 describe una prohibición distinta —deudas entre residentes a partir del 01/09/19— que no es la prohibición que 3.6.1.1 exceptúa). El fuente indica que 3.6.1 prohíbe el acceso para 'el pago de deudas y otras [obligaciones]' en general, y 3.6.1.1 es uno de los renglones de la lista de excepciones permitidas a esa prohibición (financiaciones de entidades financieras locales), no una obligación aparte sobre deudas entre residentes.
+====================================================================================================
+ext::4.4.4|verificacion|0|0
+[encabezado | punto S4]
+    Sección 4. Otras disposiciones específicas.
+[encabezado | punto 4.4]
+    4.4. Suscripción de bonos BOPREAL por parte de deudores de importaciones de bienes con
+[intro | punto 4.4]  <== ABRE LA LISTA
+    registro de ingreso aduanero hasta el 12/12/23. Los importadores de bienes podrán suscribir Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por hasta el monto de la deuda pendiente de pago por sus importaciones de bienes con registro de ingreso aduanero hasta el 12/12/23. La entidad que concrete la oferta de suscripción en nombre del cliente deberá contar con las respectivas certificaciones sobre el monto pendiente de pago emitidas por la/s entidad/es encargada/s del seguimiento de las oficializaciones involucradas en el Seguimiento de Pagos de Importaciones de Bienes (SEPAIMPO), las cuales deberán verificar que:
+[cierre | punto 4.4]
+    En caso de que la importación de bienes encuadre en los puntos 10.3.3., 10.9.1., 10.9.2. y 10.9.3., la entidad que concrete la oferta de suscripción en nombre del cliente deberá verificar en forma directa lo previsto en los puntos 4.4.1. a 4.4.5. y, adicionalmente, contar con una declaración jurada del cliente en la que deja constancia de que no ha solicitado la utilización de este mecanismo en otra entidad por esa deuda. La entidad también deberá realizar la correspondiente intervención de la documentación aduanera. Adicionalmente, la mencionada entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto “B26. Registro de importaciones de bienes por adjudicación de bonos BOPREAL”; consignando el valor nominal en moneda extranjera de bonos BOPREAL adjudicado al importador y el número de oficialización al que corresponde.
+[texto propio | punto 4.4.4]
+    4.4.4. el cliente cumple los requisitos complementarios previstos en los puntos 3.16.1. a 3.16.4. El punto 3.16.3. sólo será aplicable para clientes que no sean personas humanas residentes.
+-- EXTRACCIÓN QUE VIO E3:
+   c1 Condicion «Cumplimiento requisitos complementarios 3.16.1 a 3.16.4» — El cliente debe cumplir los requisitos complementarios previstos en los puntos 3.16.1. a 3.16.4.
+   e1 Excepcion «Excepción punto 3.16.3 para personas humanas residentes» — El punto 3.16.3. no es aplicable para clientes que sean personas humanas residentes.
+   OMISIÓN: [relacion_sin_predicado] El punto 3.16.3. sólo será aplicable para clientes que no sean personas humanas residentes. — La excepción exceptúa un requisito específico (punto 3.16.3) de la condición general (puntos 3.16.1 a 3.16.4), pero ese requisito no está extraído como entidad en este chunk; la rel
+-- FALTANTE: {"tipo": "modalidad_perdida", "severidad": "media", "bloqueante": false, "cita_verificada": true}
+   CITA: El punto 3.16.3. sólo será aplicable para clientes que no sean personas humanas residentes.
+   NOTA: la extracción invierte la formulación afirmativa ('sólo será aplicable a...') en una exclusión genérica ('no es aplicable para...'); el fuente restringe positivamente el ámbito de aplicación del 3.16.3 a un subconjunto (no personas humanas residentes), lo que no es exactamente equivalente a una excepción negativa pura
+====================================================================================================
+ext::4.5.3|verificacion|0|0
+[encabezado | punto S4]
+    Sección 4. Otras disposiciones específicas.
+[encabezado | punto 4.5]
+    4.5. Suscripción de bonos BOPREAL por parte de deudores de servicios de no residentes
+[intro | punto 4.5]  <== ABRE LA LISTA
+    prestados o devengados hasta el 12/12/23. Los importadores de servicios podrán suscribir Bonos para la Reconstrucción de una Argentina Libre (BOPREAL) por hasta el monto de la deuda pendiente de pago por sus importaciones de servicios en las que la prestación o devengamiento del servicio por parte del no residente haya tenido lugar hasta el 12/12/23. La entidad que concrete la oferta de suscripción en nombre del cliente deberá contar con la documentación que permite avalar la existencia del servicio, el monto adeudado a la fecha de suscripción y verificar que:
+[cierre | punto 4.5]
+    Adicionalmente, la mencionada entidad deberá realizar un boleto de venta de cambio a nombre del importador por el código de concepto "S33. Registro de importaciones de servicios por adjudicación de bonos BOPREAL"; consignando el valor nominal en moneda extranjera de bonos BOPREAL adjudicado al importador.
+[texto propio | punto 4.5.3]
+    4.5.3. el cliente cumple los requisitos complementarios previstos en los puntos 3.16.1. a 3.16.4. El punto 3.16.3. sólo será aplicable para clientes que no sean personas humanas residentes.
+-- EXTRACCIÓN QUE VIO E3:
+   c1 Condicion «Cumplimiento requisitos complementarios 3.16.1 a 3.16.4» — El cliente debe cumplir los requisitos complementarios establecidos en los puntos 3.16.1 a 3.16.4
+   e1 Excepcion «Excepción punto 3.16.3 para personas humanas residentes» — El punto 3.16.3 no aplica a clientes que sean personas humanas residentes
+   c1 -condicion_de-> e1
+   OMISIÓN: [relacion_sin_predicado] el cliente cumple los requisitos complementarios previstos en los puntos 3.16.1. a 3.16.4 — La condición se vincula a la operación de suscripción de BOPREAL enunciada en el encabezado (punto 4.5), pero esa operación no está extraída en esta unidad (está en la unidad del enca
+-- FALTANTE: {"tipo": "otro", "severidad": "media", "bloqueante": false, "cita_verificada": true}
+   CITA: El punto 3.16.3. sólo será aplicable para clientes que no sean personas humanas residentes.
+   NOTA: el fuente redacta la salvedad como aplicabilidad positiva ('sólo será aplicable para clientes que no sean personas humanas residentes'), pero lo extraído la invierte a una Excepcion de no-aplicación para personas humanas residentes; la relación entre c1 y e1 está modelada como condicion_de cuando el fuente describe que 3.16.3 es un sub-requisito dentro del conjunto 3.16.1-3.16.4 restringido por sujeto, no una condición de la excepción misma
+====================================================================================================
+ext::8.5.17.18|verificacion|0|1
+[encabezado | punto S8]
+    Sección 8. Seguimiento de las negociaciones de divisas por exportaciones de bienes
+[encabezado | punto 8.5]
+    8.5. Otras imputaciones admitidas en el cumplimiento del seguimiento.
+[intro | punto 8.5]
+    La entidad podrá considerar cumplimentado parcial o totalmente el seguimiento de un permiso de embarque cuando cuente con los elementos que le permitan considerar que la operación se encuentra en alguna de las situaciones detalladas a continuación y se verifiquen las condiciones previstas en cada caso. La documentación utilizada para certificar el concepto y monto de las divisas imputado en cada caso deberá quedar archivada en la entidad a disposición del BCRA.
+[encabezado | punto 8.5.17]
+    8.5.17. Operaciones aduaneras exceptuadas del seguimiento.
+[intro | punto 8.5.17]  <== ABRE LA LISTA
+    Por el valor que corresponda a ventajas aduaneras u otras situaciones previstas en el siguiente listado de operaciones:
+[texto propio | punto 8.5.17.18]
+    8.5.17.18. Exportación a consumo de bienes que se encuentran excluidos del Régimen de Equipaje –art. 59 inc. B) del Decreto 1.001/82–: son aquellos bienes (por ejemplo: automotores, motocicletas, motores dentro o fuera de borda, aeronaves, embarcaciones, etc.) que un residente del país exporta con motivo de su radicación en el exterior.
+-- EXTRACCIÓN QUE VIO E3:
+   e1 Definicion «Exportación a consumo — bienes excluidos Equipaje» — Bienes tales como automotores, motocicletas, motores dentro o fuera de borda, aeronaves, embarcaciones, etc., que un residente del país exporta con motivo de su radicación en el exterior, excluidos del Régimen de Equipaje conforme art. 59 inc. B) del Decreto 1.001/82.
+   e2 Operacion «Exportación a consumo — bienes excluidos Equipaje» — Exportación de bienes excluidos del Régimen de Equipaje (automotores, motocicletas, motores, aeronaves, embarcaciones, etc.) realizada por un residente del país con motivo de su radicación en el exterior.
+   e3 Excepcion «Excepción — operaciones aduaneras exceptuadas seguimiento» — Quedan exceptuadas del seguimiento las exportaciones a consumo de bienes excluidos del Régimen de Equipaje, por el valor que corresponda a ventajas aduaneras u otras situaciones previstas.
+   OMISIÓN: [meta_normativo] art. 59 inc. B) del Decreto 1.001/82 — Remisión normativa a norma externa; no es contenido prescriptivo del punto.
+-- FALTANTE: {"tipo": "otro", "severidad": "media", "bloqueante": false, "cita_verificada": true}
+   CITA: 8.5.17. Operaciones aduaneras exceptuadas del seguimiento.
+   NOTA: el nodo Excepcion (e3) agrega sustancia no presente en el fuente ('por el valor que corresponda a ventajas aduaneras u otras situaciones previstas') que no figura en el punto 8.5.17.18 ni en el encabezado heredado; la excepción real es que la propia operación definida queda exceptuada del seguimiento, sin ese calificativo de valor
+====================================================================================================
+ext::8.5.17.21|verificacion|0|0
+[encabezado | punto S8]
+    Sección 8. Seguimiento de las negociaciones de divisas por exportaciones de bienes
+[encabezado | punto 8.5]
+    8.5. Otras imputaciones admitidas en el cumplimiento del seguimiento.
+[intro | punto 8.5]
+    La entidad podrá considerar cumplimentado parcial o totalmente el seguimiento de un permiso de embarque cuando cuente con los elementos que le permitan considerar que la operación se encuentra en alguna de las situaciones detalladas a continuación y se verifiquen las condiciones previstas en cada caso. La documentación utilizada para certificar el concepto y monto de las divisas imputado en cada caso deberá quedar archivada en la entidad a disposición del BCRA.
+[encabezado | punto 8.5.17]
+    8.5.17. Operaciones aduaneras exceptuadas del seguimiento.
+[intro | punto 8.5.17]  <== ABRE LA LISTA
+    Por el valor que corresponda a ventajas aduaneras u otras situaciones previstas en el siguiente listado de operaciones:
+[texto propio | punto 8.5.17.21]
+    8.5.17.21. Destinaciones suspensivas de exportaciones temporarias (artículos 349 a 373 del Código Aduanero).
+-- EXTRACCIÓN QUE VIO E3:
+   e1 Operacion «Destinaciones suspensivas exportaciones temporarias» — Destinaciones suspensivas de exportaciones temporarias conforme a los artículos 349 a 373 del Código Aduanero
+   e2 Excepcion «Excepción seguimiento — destinaciones suspensivas» — Operación exceptuada del seguimiento de permisos de embarque por el valor que corresponda a ventajas aduaneras u otras situaciones previstas
+   e2 -aplica_a-> None
+   OMISIÓN: [meta_normativo] artículos 349 a 373 del Código Aduanero — Remisión a norma externa; no es contenido normativo del TO sino referencia a legislación aduanera
+-- FALTANTE: {"tipo": "otro", "severidad": "baja", "bloqueante": false, "cita_verificada": false}
+   CITA: Excepción seguimiento — destinaciones suspensivas: Operación exceptuada del seguimiento de permisos de embarque por el valor que corresponda a ventajas aduaneras u otras situaciones previstas
+   NOTA: La descripción de la Excepción agrega contenido ('por el valor que corresponda a ventajas aduaneras u otras situaciones previstas') que no figura en el texto fuente, el cual solo identifica la operación aduanera por remisión a los artículos 349 a 373 del Código Aduanero, sin calificar el alcance de la excepción de ese modo. No es un faltante de omisión sino una posible distorsión del alcance; se reporta por exceso de precisión no sustentado en el fuente.
+====================================================================================================
+ext::8.5.17.27|verificacion|0|0
+[encabezado | punto S8]
+    Sección 8. Seguimiento de las negociaciones de divisas por exportaciones de bienes
+[encabezado | punto 8.5]
+    8.5. Otras imputaciones admitidas en el cumplimiento del seguimiento.
+[intro | punto 8.5]
+    La entidad podrá considerar cumplimentado parcial o totalmente el seguimiento de un permiso de embarque cuando cuente con los elementos que le permitan considerar que la operación se encuentra en alguna de las situaciones detalladas a continuación y se verifiquen las condiciones previstas en cada caso. La documentación utilizada para certificar el concepto y monto de las divisas imputado en cada caso deberá quedar archivada en la entidad a disposición del BCRA.
+[encabezado | punto 8.5.17]
+    8.5.17. Operaciones aduaneras exceptuadas del seguimiento.
+[intro | punto 8.5.17]  <== ABRE LA LISTA
+    Por el valor que corresponda a ventajas aduaneras u otras situaciones previstas en el siguiente listado de operaciones:
+[texto propio | punto 8.5.17.27]
+    8.5.17.27. Exportaciones de valores (billetes, monedas, etc.) mediante el régimen EC51.
+-- EXTRACCIÓN QUE VIO E3:
+   e1 Operacion «Exportación de valores mediante régimen EC51» — Exportación de valores (billetes, monedas, etc.) mediante el régimen EC51, operación aduanera exceptuada del seguimiento de permiso de embarque
+   e2 Excepcion «Excepción seguimiento — exportaciones valores EC51» — Operación aduanera exceptuada del seguimiento de permiso de embarque por el valor que corresponda a ventajas aduaneras u otras situaciones previstas
+   OMISIÓN: [relacion_sin_predicado] Exportaciones de valores (billetes, monedas, etc.) mediante el régimen EC51 — Relación entre Excepcion (e2) y Operacion (e1): la excepción exceptúa el seguimiento de la operación, pero no hay predicado directo que conecte una Excepcion con una Operacion. La Excepcion exceptú
+-- FALTANTE: {"tipo": "otro", "severidad": "baja", "bloqueante": false, "cita_verificada": false}
+   CITA: Operación aduanera exceptuada del seguimiento de permiso de embarque por el valor que corresponda a ventajas aduaneras u otras situaciones previstas
+   NOTA: la descripcion de la Excepcion (e2) incluye contenido ('por el valor que corresponda a ventajas aduaneras u otras situaciones previstas') que no aparece en el texto fuente de este punto, que solo dice 'Exportaciones de valores (billetes, monedas, etc.) mediante el régimen EC51.' — no es un faltante de omisión sino una posible inconsistencia, se reporta por prudencia aunque no es amputación respecto del fuente dado
