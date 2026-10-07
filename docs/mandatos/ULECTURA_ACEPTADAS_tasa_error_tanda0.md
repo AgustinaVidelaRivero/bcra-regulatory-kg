@@ -93,3 +93,23 @@ El texto firmado (las 76 líneas anteriores a esta sección, `9502ca4`) no se ed
   instancia antes del sello, se declara en el reporte de L2 con la coincidencia de las dos lecturas y no se reemplaza (la semilla la fija la
   firma y el sorteo no depende de lo que se mire). La adjudicación de la autora sobre las 10 con error y las dudas es el hueco del «seguí» de
   L2; L2 computa los estimadores con ella.
+- **07/10/2026 — revisión del FRENO L2 por la mesa (L2 sin commit al escribir esta nota; L0 y L1 en `6e611d6`).** Reproducido sobre
+  una copia sin enlaces con un script propio, desde `veredictos_l1.jsonl`, `adjudicacion_autora_l2.json` y `sellos_l0.json`: las 48 cifras
+  de `estimadores_l2.json` coinciden a 1e-6 (ítems 6 de 30 [0,0951; 0,3731]; no ítems 4 de 30 [0,0531; 0,2968]; W₁ = 1.003/2.366;
+  ponderada 0,1616 ± 0,0927 = [0,0689; 0,2543], intervalo de Wald sobre el estimador estratificado como dice el §5; conservador
+  [0,0709; 0,3291] = la combinación de los límites de Wilson por estrato; cola de T4 12 de 30 [0,2459; 0,5768]; `remite_a` 0 de 167 en 11
+  unidades; 4 nodos `Comunicacion` en 2 unidades). La adjudicación volcada es exactamente la de las 10 unidades con error de la primera
+  lectura, y agrega la arista A1 de `ext::3.17.3.4` con la razón de la segunda lectura; los 15 elementos están en sus fichas. Dos corridas de
+  `l2_estimadores.py` sobre la copia, iguales salvo la hora; `docs/insumos_escritura.md` §7, ítem 5: 11 líneas agregadas, cifras iguales a
+  las del JSON. El repo no cambió durante la verificación (sha256 antes y después; 2.213 `.pyc`).
+  - **Vigilancia (reporte §8): observación de la mesa para el pre-registro de la tanda 1, no para este mandato.** La regla «LI de Wilson de
+    la tanda por encima del LS de la tanda 0» dispara con 17 de 30 ítems o 14 de 30 no ítems: si la tasa real de una tanda duplicara la
+    línea de base (0,40 y 0,27), la probabilidad de disparar sería 0,05 y 0,29 (binomial exacta). La mesa propone al pre-registro dos
+    niveles por estrato con la misma muestra: atención con el test binomial exacto unilateral contra la tasa de la tanda 0 al 5 %
+    (11 de 30 ítems, 8 de 30 no ítems; potencia 0,71 y 0,96 si la tasa se duplica), que amplía la lectura con 30 unidades más del
+    estrato, y freno con la regla de los intervalos disjuntos o con la atención confirmada sobre las 60; y el mismo test sobre el
+    acumulado de las tandas desde la tanda 2. La ponderada se reporta con el intervalo del §5; el conservador no se usa como umbral,
+    porque es una envolvente de los límites por estrato y no un intervalo de confianza. Cálculo y tabla:
+    `hoja_de_ruta_tanda1_mesa/analisis_vigilancia_lectura_aceptadas_L2_mesa.md` (scratchpad de la mesa). Decide la autora al firmar el
+    pre-registro.
+  - L2 es la última etapa: el commit de L2 cierra la unidad. Commit PENDIENTE de la autora.

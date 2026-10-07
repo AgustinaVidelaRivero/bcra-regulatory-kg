@@ -340,3 +340,14 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      (U-E3-LISTAS: el bloque que abre la lista en el fuente y en las citas de E3, y una NOTA del ítem), y la medición aparte (O3 de esa
      unidad: E3 corregido sobre las 24 unidades afectadas, sin re-sellar) da cuántos reclamos desaparecen y cuántas de las 17
      extracciones finales cambió un reintento infundado, comparadas con su intento 0. PENDIENTE: las cifras de O3.
+  5. **Tasa de error por unidad de las aceptadas de la tanda 0** (U-LECTURA-ACEPTADAS, L2 del 07/10/2026; reporte
+     `data/experiment/lectura_aceptadas/reporte_l2.md`, cifras en `estimadores_l2.json`; L0 y L1 en `6e611d6`). Método: 30
+     unidades por estrato (ítems de lista y no ítems), sorteadas con semilla sellada antes de leer entre las 2.366 aceptadas
+     del grafo evaluado sin la cola (`e22fae1a`), leídas con el criterio de T4 por la instancia y a ciegas por la mesa (el
+     mismo veredicto en las 60) y adjudicadas por la autora. Tres cifras: (i) por unidad, ítems 6 de 30 (Wilson al 95 %
+     [0,095; 0,373]) y no ítems 4 de 30 ([0,053; 0,297]); ponderada con W₁ = 1.003/2.366, la tasa del grafo, 0,162 ± 0,093
+     ([0,069; 0,254]; conservador por los límites de Wilson, [0,071; 0,329]), frente a 12 de 30 en la cola ([0,246; 0,577],
+     `data/experiment/reext_t0/t4/salida/tasas_t4.json`); (ii) `remite_a`: 0 de 167 no sostenidas por cita y destino, en 11
+     unidades; (iii) tipos documentales mal asignados, como observación y no como error: 4 nodos `Comunicacion` en 2
+     unidades (dos puntos del mismo TO y dos leyes). Es la línea de base de la vigilancia por tanda del pre-registro de la
+     tanda 1 (reporte, §8).
