@@ -827,6 +827,15 @@ def mencion_vacia(label: str) -> bool:
     return bool(toks) and all(t in PALABRAS_VACIAS_SUJETO for t in toks)
 
 
+def raiz_del_catalogo(entrada: dict) -> str:
+    """La raíz de la jerarquía de la entrada del esqueleto: la única clase sin padre (las instancias tampoco lo
+    llevan, pero tienen instancia_de). Frena si no hay exactamente una."""
+    raices = sorted(c["id"] for c in entrada["clases"] if c.get("nivel") == "clase" and not c.get("padre"))
+    if len(raices) != 1:
+        raise ValueError(f"la entrada del esqueleto no tiene una única raíz: {raices}")
+    return raices[0]
+
+
 def normalizar_propuestos_r2b(kg: dict, registro: list[dict], renombres: dict[str, dict[str, str]], cat: dict) -> dict:
     """Decisión 1 de T3-bis de U-REEXT-T0 (fase r2b), después del merge cross-TO y antes del esqueleto, que arma
     las aristas padre_sugerido desde la propiedad del propuesto:
@@ -837,6 +846,11 @@ def normalizar_propuestos_r2b(kg: dict, registro: list[dict], renombres: dict[st
        la norma, la unidad, la mención y el tramo, sin asignarles rol. El padre_sugerido hacia un Sujeto de nivel
        instancia se reemplaza por la clase de la instancia (instancia_de; marca padre_sugerido_instancia) o, sin
        clase, se quita con la marca padre_sugerido_descartado (S3);
+    b′. R2-3 de U-RERESOL-CAT (S19; decisión de la autora del 07/10/2026): el propuesto sin padre_sugerido con filas
+       de la parte A de la enmienda 6 a L-ESQ-R2 (en cuarentena, motivo de r1_e4.MOTIVOS_PARTE_A, en un documento
+       sin alcance) recibe como padre la sugerencia guardada del modelo si esas filas traen una sola que está en el
+       catálogo (marca padre_desde_sugerencia_modelo; una instancia pasa a su clase en el paso de b) y, si no, la
+       raíz del catálogo (marca padre_por_defecto_generico). Corre antes del reemplazo de las instancias;
     c. el propuesto sin padre_sugerido recibe el rol de alcance de su TO (rol_por_to del catálogo r2) con la marca
        padre_por_defecto (S19); si sus TOs no dan un único rol, queda sin padre y listado.
     Muta kg y las filas del registro. Devuelve el resumen y las filas de las aristas quitadas."""
@@ -844,7 +858,8 @@ def normalizar_propuestos_r2b(kg: dict, registro: list[dict], renombres: dict[st
     clases = {c["id"]: c for c in entrada["clases"]}
     roles = {r["id"] for r in entrada["roles"]}
     res = {"filas_renombradas": [], "descartados": [], "padre_desde_instancia": [], "padre_descartado": [],
-           "padre_por_defecto": [], "sin_rol_de_alcance": []}
+           "padre_desde_sugerencia_modelo": [], "padre_por_defecto_generico": [], "padre_por_defecto": [],
+           "sin_rol_de_alcance": []}
     for to, ren in sorted(renombres.items()):
         for f in registro:
             if f.get("to") == to and f.get("id_nodo") in ren:
@@ -888,6 +903,32 @@ def normalizar_propuestos_r2b(kg: dict, registro: list[dict], renombres: dict[st
             "aristas_quitadas": sum(1 for x in filas_quitadas if x["propuesto"] == i),
             "filas_del_registro": sum(1 for f in registro if f.get("id_nodo") == i)})
     propuestos = [n for n in propuestos if n["id"] not in descartar]
+    filas_parte_a: dict[str, list[dict]] = {}
+    con_alcance: dict[str, bool] = {}
+    for f in registro:
+        if f.get("estado") != "cuarentena" or not f.get("id_nodo") or f.get("motivo") not in E4.MOTIVOS_PARTE_A:
+            continue
+        if f["to"] not in con_alcance:
+            con_alcance[f["to"]] = C.archivo_de_to(f["to"]) in cat["rol_por_to"]
+        if not con_alcance[f["to"]]:
+            filas_parte_a.setdefault(f["id_nodo"], []).append(f)
+    for n in propuestos:
+        filas = filas_parte_a.get(n["id"])
+        if not filas or n["properties"].get("padre_sugerido"):
+            continue
+        sugeridas = sorted({f["sujeto_id_modelo"] for f in filas if f.get("sujeto_id_modelo")})
+        en_catalogo = [s for s in sugeridas if s in clases or s in roles]
+        fila = {"id": n["id"], "mencion": n["label"], "tos": sorted({f["to"] for f in filas}), "filas": len(filas),
+                "motivos": sorted({f["motivo"] for f in filas})}
+        if len(en_catalogo) == 1:
+            n["properties"]["padre_sugerido"] = en_catalogo[0]
+            n["properties"]["padre_desde_sugerencia_modelo"] = "true"
+            res["padre_desde_sugerencia_modelo"].append({**fila, "padre_sugerido": en_catalogo[0]})
+        else:
+            raiz = raiz_del_catalogo(entrada)
+            n["properties"]["padre_sugerido"] = raiz
+            n["properties"]["padre_por_defecto_generico"] = "true"
+            res["padre_por_defecto_generico"].append({**fila, "sugerencias": sugeridas, "padre_sugerido": raiz})
     for n in propuestos:
         p = n["properties"].get("padre_sugerido")
         if not p or (clases.get(p) or {}).get("nivel") != "instancia":

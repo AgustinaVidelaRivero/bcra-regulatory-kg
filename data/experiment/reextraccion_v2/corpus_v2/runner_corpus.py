@@ -1258,7 +1258,7 @@ def cerrar_e2_r2(to: str, salida: Path, limite: int | None = None) -> dict:
     regs = entrada_r2(to, tdir, chunks, PERFIL, validar)
     versiones = {"catalogo_sha256": cat["catalogo_sha256"], "politica_sha256": pol.sha256,
                  "perfil": "r2", "prefijo_hash": PERFIL.prefijo_hash}
-    res = E4.resolver_relaciones_r2(regs, cat["indice"], cat["rol_por_to"], versiones)
+    res = E4.resolver_relaciones_r2(regs, cat["indice"], cat["rol_por_to"], versiones, parte_a=perfil_forma_r2(PERFIL))
     M = E4.modulo_modelos_r2()
     ens = e2_lib.ensamblar_r2(chunks, regs, cat["labels"], M.SUJETOS_R2_SET, M.firma_r2,
                               M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"], fase="r2b" if perfil_forma_r2(PERFIL) else "r2a")

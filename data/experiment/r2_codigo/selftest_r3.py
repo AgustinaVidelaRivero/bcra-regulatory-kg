@@ -35,6 +35,18 @@ Grupos (casos sintéticos salvo donde se indica):
       la mención verificada sin regla sigue por R4; sin `parte_a`, en un
       documento con alcance y en uno con entrada de dos clases (sin rol), la
       salida de siempre; re-resolución con el alcance nuevo igual a la cadena.
+  T11 R2-3 de U-RERESOL-CAT (S19; decisión de la autora del 07/10/2026): el
+      propuesto de la parte A recibe padre en `normalizar_propuestos_r2b`.
+      Con docvig (crudo r2b guardado de la tanda 0, solo lectura): las 4
+      filas colectivas de `docvig::3.4` dejan el propuesto con la sugerencia
+      guardada (`Sujeto_sujeto_regulado`) y la marca
+      `padre_desde_sugerencia_modelo`; S19 falla antes y pasa después; el
+      esqueleto crea la arista `padre_sugerido` flaggeada. Sintéticos: sin
+      sugerencia, la raíz del catálogo (`Sujeto_sujeto`) con la marca
+      `padre_por_defecto_generico`; una instancia sugerida pasa a su clase;
+      dos sugerencias distintas o una fuera del catálogo, la raíz; en un
+      documento con alcance, un motivo que no es de la parte A o un padre que
+      ya está, la salida de siempre.
 Escribe solo en un directorio temporal (TMPDIR). USD 0.
 
 Uso:
@@ -812,6 +824,140 @@ def t10():
           and destino_rr[2][2] == "no", f"{destino_rr} | {destino_cad}")
 
 
+def t11():
+    print("T11. R2-3: padre del propuesto de la parte A (S19)")
+    sys.path.insert(0, str(REPO / "data" / "experiment" / "tanda0" / "code"))
+    sys.path.insert(0, str(REPO / "scripts"))
+    import comun_e1  # noqa: PLC0415
+    import ensamblar_tanda0 as ET  # noqa: PLC0415
+    import perfil_e1  # noqa: PLC0415
+    import shapes_validator as SV  # noqa: PLC0415
+    M = E4.modulo_modelos_r2()
+    cat = E4.catalogo_r2()
+    e0 = REX / "e0_chunking" / "salida_tanda0_r2b"
+    tdir = REX / "corpus_tanda0" / "salida_r2b" / "docvig"
+    perfil = perfil_e1.perfil("r2b")
+    validar, pol = RC.validador_perfil_r2(perfil)
+    chunks = RC.chunks_con_partes(comun_e1.cargar_chunks(("docvig",), e0_dir=e0), tdir)
+    regs = RC.entrada_r2("docvig", tdir, chunks, perfil, validar)
+    vers = {"catalogo_sha256": cat["catalogo_sha256"], "politica_sha256": pol.sha256, "perfil": "r2",
+            "prefijo_hash": perfil.prefijo_hash}
+    res = E4.resolver_relaciones_r2(regs, cat["indice"], cat["rol_por_to"], vers, parte_a=True)
+    ens = e2_lib.ensamblar_r2(chunks, regs, cat["labels"], M.SUJETOS_R2_SET, M.firma_r2, M.TIPOS_ENTIDAD,
+                              M.PREDICADOS, res["registro"], fase="r2b")
+    kg = {"nodes": ens["nodes"], "edges": ens["edges"]}
+    ids19, defecto = SV.cargar_ids_s19_r2()
+    parte_a = [(f["chunk_id"], f["indice_relacion"], f["motivo"], f["sujeto_id_modelo"], f["id_nodo"])
+               for f in res["registro"] if f["motivo"] in E4.MOTIVOS_PARTE_A]
+    prop = "Sujeto_propuesto_las_entidades"
+    orig = (C.E0_ENM01, C.CATALOGO_PATH, ET.assemble.CATALOGO_PATH)
+    C.E0_ENM01 = e0                     # archivo_de_to lee la E0 r2b, como en la cadena
+    try:
+        antes = SV.shape_s19_catalogo(kg["nodes"], ids19, defecto)
+        r = ET.normalizar_propuestos_r2b(kg, res["registro"], {}, cat)
+        despues = SV.shape_s19_catalogo(kg["nodes"], ids19, defecto)
+        C.CATALOGO_PATH = ET.assemble.CATALOGO_PATH = cat["entrada_esqueleto_path"]
+        esq = ET.inyectar_esqueleto_v3(kg, C.cargar_catalogo())
+    finally:
+        C.E0_ENM01, C.CATALOGO_PATH, ET.assemble.CATALOGO_PATH = orig
+    by = {n["id"]: n for n in kg["nodes"]}
+    check("T11a docvig con la parte A: las 4 filas colectivas de docvig::3.4 al propuesto, con la sugerencia "
+          "guardada; S19 falla antes con 1 propuesto incompleto",
+          parte_a == [("docvig::3.4", i, "colectivo_sin_sujeto_por_defecto", "Sujeto_sujeto_regulado", prop)
+                      for i in (5, 6, 7, 9)]
+          and antes["result"] == "FAIL" and antes["conteos"]["propuestos_incompletos"] == 1, str(parte_a))
+    rs = r["resumen"]
+    check("T11b el propuesto queda con padre_sugerido = Sujeto_sujeto_regulado y la marca (a); sin_rol_de_alcance 0",
+          by[prop]["properties"].get("padre_sugerido") == "Sujeto_sujeto_regulado"
+          and by[prop]["properties"].get("padre_desde_sugerencia_modelo") == "true"
+          and "padre_por_defecto_generico" not in by[prop]["properties"]
+          and (rs["padre_desde_sugerencia_modelo"], rs["padre_por_defecto_generico"], rs["sin_rol_de_alcance"]) == (1, 0, 0)
+          and rs["detalle"]["padre_desde_sugerencia_modelo"][0]["filas"] == 4, json.dumps(rs["detalle"]
+                                                                                       ["padre_desde_sugerencia_modelo"]))
+    check("T11c S19 pasa después", despues["result"] == "PASS", despues["resumen"])
+    arista = [e for e in kg["edges"] if e["source"] == prop and e["relation"] == "padre_sugerido"]
+    check("T11d el esqueleto crea la arista padre_sugerido flaggeada; ningún propuesto sin padre",
+          len(arista) == 1 and arista[0]["target"] == "Sujeto_sujeto_regulado"
+          and arista[0]["rol_fuente"] == "cuarentena_flaggeada"
+          and arista[0]["properties"] == {"flag": "padre_sugerido_no_laudado"} and esq["propuestos_sin_padre"] == []
+          and esq["propuestos_padre_fuera_de_catalogo"] == [], str(arista))
+    check("T11e la raíz del catálogo es Sujeto_sujeto", ET.raiz_del_catalogo(cat["entrada_esqueleto"]) == "Sujeto_sujeto")
+
+    # sintético sin sugerencia, por el camino de la cadena (resolución con la parte A y E2)
+    p = {"to": "docvig", "archivo": "docvig.pdf", "punto": "1.1", "rol_documental": "punto_propio"}
+    rel = {"predicate": "aplica_a", "source": "e1", "target": None, "punto": "1.1", "indice_crudo": 0,
+           "sujeto_mencion": "las entidades", "mencion_verificada": "exacta", "sujeto_id_modelo": None,
+           "padre_sugerido": None, "padre_sugerido_crudo": None, "originales": {}, "provenance": dict(p)}
+    regs_b = [{"chunk_id": "docvig::1.1", "to": "docvig", "archivo": "docvig.pdf", "e0_sha256_completo": "h",
+               "error": None, "validacion": {"entidades": [{"local_id": "e1", "type": "Obligacion", "label": "O",
+                                                            "properties": {"descripcion": "d", "tipo": "otra"},
+                                                            "provenance": dict(p)}],
+                                             "relaciones": [rel], "rechazos": []}}]
+    res_b = E4.resolver_relaciones_r2(regs_b, cat["indice"], cat["rol_por_to"], vers, parte_a=True)
+    ens_b = e2_lib.ensamblar_r2([{"id": "docvig::1.1"}], regs_b, cat["labels"], M.SUJETOS_R2_SET, M.firma_r2,
+                                M.TIPOS_ENTIDAD, M.PREDICADOS, res_b["registro"], fase="r2b")
+    kg_b = {"nodes": ens_b["nodes"], "edges": ens_b["edges"]}
+
+    def suj(i, label, to, **props):
+        pv = {"to": to, "chunk_id": f"{to}::9.1"}
+        return {"id": i, "type": "Sujeto", "label": label, "properties": {"nivel": "propuesto", "cuarentena": "true",
+                                                                          **props}, "provenance": pv, "provenances": [pv]}
+
+    def fila(id_nodo, to, motivo, modelo):
+        return {"to": to, "chunk_id": f"{to}::9.1", "indice_relacion": 0, "id_nodo": id_nodo, "estado": "cuarentena",
+                "motivo": motivo, "sujeto_id_modelo": modelo}
+    kg_c = {"nodes": [suj("Sujeto_propuesto_inst", "el organismo", "docvig"),
+                      suj("Sujeto_propuesto_dos", "los sujetos", "docvig"),
+                      suj("Sujeto_propuesto_fuera", "los terceros intervinientes", "docvig"),
+                      suj("Sujeto_propuesto_sin_match", "los exportadores", "docvig"),
+                      suj("Sujeto_propuesto_con_alcance", "las entidades", "cla"),
+                      suj("Sujeto_propuesto_con_padre", "los fiduciarios", "docvig",
+                          padre_sugerido="Sujeto_entidad_financiera")], "edges": []}
+    reg_c = [fila("Sujeto_propuesto_inst", "docvig", "colectivo_sin_sujeto_por_defecto", "Sujeto_bcra"),
+             fila("Sujeto_propuesto_dos", "docvig", "mencion_no_verificada", "Sujeto_banco"),
+             fila("Sujeto_propuesto_dos", "docvig", "sin_mencion", "Sujeto_entidad_financiera"),
+             fila("Sujeto_propuesto_fuera", "docvig", "sin_mencion", "Sujeto_inexistente"),
+             fila("Sujeto_propuesto_sin_match", "docvig", "sin_match", None),
+             fila("Sujeto_propuesto_con_alcance", "cla", "colectivo_sin_sujeto_por_defecto", "Sujeto_banco"),
+             fila("Sujeto_propuesto_con_padre", "docvig", "sin_mencion", "Sujeto_banco")]
+    C.E0_ENM01 = e0
+    try:
+        r_b = ET.normalizar_propuestos_r2b(kg_b, res_b["registro"], {}, cat)
+        r_c = ET.normalizar_propuestos_r2b(kg_c, reg_c, {}, cat)
+        rol_cla = cat["rol_por_to"][C.archivo_de_to("cla")]["rol_id"]
+    finally:
+        C.E0_ENM01 = orig[0]
+    pb = next(n for n in kg_b["nodes"] if n["properties"].get("nivel") == "propuesto")["properties"]
+    check("T11f sintético sin sugerencia: la raíz del catálogo con la marca (b)",
+          [f["motivo"] for f in res_b["registro"]] == ["colectivo_sin_sujeto_por_defecto"]
+          and res_b["registro"][0]["sujeto_id_modelo"] is None and pb.get("padre_sugerido") == "Sujeto_sujeto"
+          and pb.get("padre_por_defecto_generico") == "true" and "padre_desde_sugerencia_modelo" not in pb
+          and r_b["resumen"]["padre_por_defecto_generico"] == 1, str(pb))
+    pc = {n["id"]: n["properties"] for n in kg_c["nodes"]}
+    check("T11g una instancia sugerida pasa a su clase, con las dos marcas",
+          pc["Sujeto_propuesto_inst"].get("padre_sugerido") == "Sujeto_organismo_publico"
+          and pc["Sujeto_propuesto_inst"].get("padre_sugerido_instancia") == "Sujeto_bcra"
+          and pc["Sujeto_propuesto_inst"].get("padre_desde_sugerencia_modelo") == "true", str(pc["Sujeto_propuesto_inst"]))
+    gen = r_c["resumen"]["detalle"]["padre_por_defecto_generico"]
+    check("T11h dos sugerencias distintas o una fuera del catálogo: la raíz con la marca (b) y las sugerencias listadas",
+          all(pc[i].get("padre_sugerido") == "Sujeto_sujeto" and pc[i].get("padre_por_defecto_generico") == "true"
+              for i in ("Sujeto_propuesto_dos", "Sujeto_propuesto_fuera"))
+          and [(x["id"], x["sugerencias"], x["filas"]) for x in gen]
+          == [("Sujeto_propuesto_dos", ["Sujeto_banco", "Sujeto_entidad_financiera"], 2),
+              ("Sujeto_propuesto_fuera", ["Sujeto_inexistente"], 1)], json.dumps(gen))
+    rc = r_c["resumen"]
+    check("T11i con alcance, motivo fuera de la parte A o padre que ya está: la salida de siempre",
+          pc["Sujeto_propuesto_con_alcance"].get("padre_sugerido") == rol_cla
+          and pc["Sujeto_propuesto_con_alcance"].get("padre_por_defecto") == "true"
+          and "padre_sugerido" not in pc["Sujeto_propuesto_sin_match"]
+          and pc["Sujeto_propuesto_con_padre"] == {"nivel": "propuesto", "cuarentena": "true",
+                                                    "padre_sugerido": "Sujeto_entidad_financiera"}
+          and (rc["padre_desde_sugerencia_modelo"], rc["padre_por_defecto_generico"], rc["padre_por_defecto"],
+               rc["sin_rol_de_alcance"]) == (1, 2, 1, 1)
+          and [x["id"] for x in rc["detalle"]["sin_rol_de_alcance"]] == ["Sujeto_propuesto_sin_match"],
+          json.dumps({k: v for k, v in rc.items() if k != "detalle"}))
+
+
 def main() -> int:
     t1()
     t2()
@@ -822,6 +968,7 @@ def main() -> int:
     t8()
     t9()
     t10()
+    t11()
     ok = sum(1 for _, b, _ in RES if b)
     print(f"SELFTEST R3: {ok}/{len(RES)} {'PASS' if ok == len(RES) else 'FAIL'}")
     return 0 if ok == len(RES) else 1

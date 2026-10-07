@@ -329,3 +329,26 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 105 líneas de arriba y n
   de selftest, sin re-sellar; despacho preparado por la mesa (`despacho_R2-3_URERESOL_CAT_mesa.md`). La tabla de reprocesamiento
   recibió el 07/10/2026 la fila F13c (registro de alcance por tanda) y F13 pasó a «solo código sobre lo guardado» (implementada
   por R2), con el selftest de claves corrido sobre una copia y su JSON regenerado.
+- **07/10/2026 — revisión del FRENO R2-3 por la mesa (R2-3 sin commit al escribir esta nota; R2-2 en `a079275`).** Reproducido sobre una copia
+  sin enlaces, sin API ni Neo4j: diffs +42/−1, +1/−1, +147, +3; la rama b′ (`:906-931`) toma solo filas en cuarentena con motivo de la parte A en
+  documento sin alcance y propuesto sin padre, marca `padre_desde_sugerencia_modelo` con una única sugerencia del catálogo y, si no,
+  `padre_por_defecto_generico` hacia `Sujeto_sujeto` (verificada: la única de 70 clases sin padre; `Sujeto_sujeto_regulado` cuelga de ella);
+  corre antes del paso de las instancias y del paso c. r2b diez `40c54830…` (8.817/27.633) y sin cola diez `8d747e57…` (8.504/26.130): contra
+  los sellados, +1 nodo, 4 `aplica_a` movidas y +1 `padre_sugerido` flaggeada, nada más; resumen (a) 1, (b) 0, `padre_por_defecto` 6,
+  `sin_rol_de_alcance` 0; las otras cuatro cadenas byte a byte; shapes PASA, S19 PASS, 0 bloqueantes en FAIL; `cerrar_e2_r2` sobre docvig con el
+  camino de imports del runner da las 4 filas byte a byte con el ensamblado (HEAD: R4); selftests 133/133, 66/66, 184/184, 55/55, 17/17
+  (`catalogo_unico` solo con `.git`, declarado); suite: seis entradas byte a byte con las 3 regresiones r2b preexistentes; selftest de claves
+  OK en 44 filas con el JSON byte a byte. Repo sin cambios durante la verificación; 2.213 `.pyc`.
+  - **No se sostiene la afirmación sobre las anclas de la tabla** («12 de las 14 corren»): `r2_3_medicion.py anclas` solo trasladó números de
+    línea con difflib; buscando el commit que introdujo cada cita (`git log -S`), 10 de las 14 nacieron en `2a857db` sobre un archivo de 1.299
+    líneas y ya no caían en lo que nombran en HEAD (1.608), y `:955` de F15d no nombraba lo que la fila dice; solo 3 apuntaban bien. La mesa
+    reescribió las 14 contra el árbol con R2-3 (1.649 líneas), por el texto que nombran, con una nota fechada en la tabla; el selftest de claves
+    volvió a dar OK con el JSON igual. Error del freno declarado y corregido en el mismo commit.
+  - **Decisión de la autora, regla general (R2-3 bis):** todo propuesto sin padre del modelo en un documento sin alcance, con cualquier motivo
+    del registro (`sin_match`, `ambiguo`, `id_fuera_de_catalogo`, además de los tres de la parte A), toma la sugerencia del modelo si la hay y
+    está en el catálogo, o la raíz `Sujeto_sujeto`, con su marca; un caso de prueba por motivo; antes de la tanda 1 (ri_oc, ceninf y cirmo3 sin
+    alcance). En diez, el registro trae `sin_match` 147, calificador 128, `mencion_no_verificada` 19 y colectivo 4; los 6 propuestos que hoy
+    reciben el rol por el paso c (9 filas `sin_match`, cap 5 y ext 4) quedarían sin padre sin alcance. Despacho de la mesa:
+    `segui_R2-3bis_URERESOL_CAT_mesa.md`. La enmienda 4 al protocolo quedó en versión para firmar (decisiones al firmar propuestas); la autora
+    la firma después de R2-3 bis.
+  - Commit de R2-3 PENDIENTE de la autora (con las anclas de la tabla, la enmienda 4 para firmar y el registro de los 15 excluidos).

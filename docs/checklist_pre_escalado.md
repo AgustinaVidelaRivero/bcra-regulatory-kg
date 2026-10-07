@@ -204,7 +204,7 @@ tanda 1.
 | Q7 | Inconsistencia B4.2 contra B6.3 (d): instrumento de tripletas «ya validado» con su adjudicación abierta | `:445` | registrado; sin resolver | Sí |
 | Q8 | Unidad de calibración del juez antes de B6.3 | cola 13 | registrado | No |
 | Q9 | Regla de cegado en lecturas humanas y entrada de textos largos del instrumento de lectura | cola 10 y 11 | registrado | No |
-| Q10 | Disjunción del conjunto final con desarrollo y con los diez de ESQ; también con la tanda 0 si se usa la ventana | `:772` (a); `:749` | decidido (30/09): los cinco de la tanda 0 salen del conjunto de B6.3 (a) (X3); el pre-registro de B6.3 lo declara (`:772`) | No |
+| Q10 | Disjunción del conjunto final con desarrollo y con los diez de ESQ; también con la tanda 0 si se usa la ventana | `:776` (a); `:749` | decidido (30/09): los cinco de la tanda 0 salen del conjunto de B6.3 (a) (X3); el pre-registro de B6.3 lo declara (`:776`). **[07/10/2026]** Registrados los 15 (10 de ESQ-2 + 5 de la tanda 0) en `data/experiment/esq/documentos_excluidos_evaluacion_final.json`, que extiende sin editar al sellado `documentos_excluidos_esq.json` (hallazgo c de VERIF-CAP3-COHERENCIA) | No |
 | Q11 | Ciclo de corrección de esquema de la tanda 1, siempre antes del pre-registro de B6.3 | `:765` | decidido (30/09): no hay ciclo de corrección de esquema en la tanda 1; la ventana se usó en B2.11 | No |
 | Q12 | B6.3: definir de antemano quién lee y adjudica (casos a adjudicación del juez, muestra de control, tripletas de B4): modelo con muestra humana de control de tamaño suficiente y declarada, o experto del dominio | esta lista (29/09); antecedente, desvíos declarados en `:746`, `:749` y `:751` | registrado | Sí, con los mentores |
 
