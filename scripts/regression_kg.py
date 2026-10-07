@@ -463,8 +463,12 @@ class Contexto:
                  esqueleto_ref_ruta=None, relaciones_esqueleto=None, indice=None,
                  muestra30=None, archivos_e0=None, e4=None, esqueleto_ref: Grafo | None = None,
                  perfil: str = "existente", registro_dir=None, esqueleto_catalogo=None,
-                 enums_r2=None, marcas_nodo_r2=None, manifiesto=None, tos_bajo_prueba=None):
+                 enums_r2=None, marcas_nodo_r2=None, manifiesto=None, tos_bajo_prueba=None,
+                 generados_resolucion=None):
         self.grafo = grafo
+        # R2 de U-RERESOL-CAT, W3: generados del catálogo de resolución que leyó el ensamblado (LN-6); None = los
+        # del catálogo del request (generados_r2/), como siempre
+        self.generados_resolucion = Path(generados_resolucion) if generados_resolucion else None
         # U-REEXT-T0, T1, punto 4.a: manifiesto del grafo bajo prueba (ruta), o la tabla ya resuelta
         # (fuente, {to: archivo}) para el selftest
         self._manifiesto = manifiesto
@@ -1813,27 +1817,36 @@ def t_ln_6(ctx: Contexto) -> dict:
     (generados_r2/indice_e4_r2.json y rol_por_to_r2.json), deja el registro
     byte a byte igual. El contrafáctico de N1 (3/1/4) con el catálogo ampliado
     de R-CAT es del catálogo v3: el catálogo r2 ya contiene los ids de R-CAT
-    (U-CAT-UNICO), así que no se reproduce acá."""
+    (U-CAT-UNICO), así que no se reproduce acá. Con --generados-resolucion (R2
+    de U-RERESOL-CAT, W3), el índice, el rol_por_to y el sha son los del
+    catálogo de resolución que leyó el ensamblado, cargado con su candado
+    (r1_e4.catalogo_resolucion_r2)."""
     if ctx.perfil != "r2":
         return res("no_aplicable", NOTA_PERFIL_EXISTENTE)
     filas = ctx.registro(REGISTRO_NO_MAPEADOS)
     if filas is None:
         return res("no_aplicable", f"sin {REGISTRO_NO_MAPEADOS} en {ctx.registro_dir}")
     E4 = ctx.e4["r1_e4"]
-    idx = E4.indice_desde_lista(json.loads((GENERADOS_R2 / "indice_e4_r2.json").read_text(encoding="utf-8")))
-    rol_por_archivo = json.loads((GENERADOS_R2 / "rol_por_to_r2.json").read_text(encoding="utf-8"))
+    if ctx.generados_resolucion is None:
+        idx = E4.indice_desde_lista(json.loads((GENERADOS_R2 / "indice_e4_r2.json").read_text(encoding="utf-8")))
+        rol_por_archivo = json.loads((GENERADOS_R2 / "rol_por_to_r2.json").read_text(encoding="utf-8"))
+        sha_cat = sha256_path(CATALOGO_SUJETOS_R2)
+        cual = ""
+    else:
+        cat_res = E4.catalogo_resolucion_r2(ctx.generados_resolucion)
+        idx, rol_por_archivo, sha_cat = cat_res["indice"], cat_res["rol_por_to"], cat_res["catalogo_sha256"]
+        cual = f" de resolución ({ctx.generados_resolucion})"
     archivo_por_to = {}
     for n in ctx.grafo.N:
         for pv in provenances(n):
             if pv.get("to") and pv.get("archivo"):
                 archivo_por_to.setdefault(pv["to"], pv["archivo"])
-    sha_cat = sha256_path(CATALOGO_SUJETOS_R2)
     r = E4.reresolver_registro(filas, idx, rol_por_archivo, archivo_por_to, sha_cat)
     antes = [json.dumps(f, ensure_ascii=False, sort_keys=True) for f in filas]
     despues = [json.dumps(f, ensure_ascii=False, sort_keys=True) for f in r["filas"]]
     igual = antes == despues
     return res("resuelto" if igual and not r["resueltas_ahora"] else "persiste",
-               f"re-resolución con el mismo catálogo (sha {sha_cat[:12]}…): filas {len(filas)}, resueltas ahora {r['resueltas_ahora']}, "
+               f"re-resolución con el mismo catálogo{cual} (sha {sha_cat[:12]}…): filas {len(filas)}, resueltas ahora {r['resueltas_ahora']}, "
                f"registro igual byte a byte: {igual}",
                valores={"filas": len(filas), "resueltas_ahora": r["resueltas_ahora"], "igual": igual})
 
@@ -2551,8 +2564,10 @@ def correr(args) -> tuple:
     cat = Catalogo.desde_ruta(args.catalogo)
     if G.generacion_detectada and G.generacion_detectada != args.generacion:
         raise SystemExit(f"--generacion {args.generacion} no coincide con el formato de provenance detectado (gen {G.generacion_detectada}) en {kg_path}")
+    generados_resolucion = getattr(args, "generados_resolucion", None)
     ctx = Contexto(G, cat, args.generacion, args.politica_cuarentena, esqueleto_ref_ruta=args.esqueleto_referencia,
-                   perfil=args.perfil, registro_dir=args.registro_dir, manifiesto=args.manifiesto)
+                   perfil=args.perfil, registro_dir=args.registro_dir, manifiesto=args.manifiesto,
+                   generados_resolucion=generados_resolucion)
     solo = set(args.solo.split(",")) if args.solo else None
     items = ejecutar(ctx, solo)
     resumen = Counter(it["estado"] for it in items)
@@ -2570,6 +2585,9 @@ def correr(args) -> tuple:
         ("perfil", args.perfil), ("registro_dir", str(ctx.registro_dir) if ctx.registro_dir else None),
         ("tos_bajo_prueba", ctx._tos_bajo_prueba[0] if ctx._tos_bajo_prueba is not None else None),
     ])
+    if generados_resolucion:
+        # W3: solo con la opción, para que sin ella la salida sea byte a byte la de siempre
+        salida["parametros"]["generados_resolucion"] = str(generados_resolucion)
     salida["resumen"] = {"items": len(items), "resuelto": resumen.get("resuelto", 0), "persiste": resumen.get("persiste", 0), "no_aplicable": resumen.get("no_aplicable", 0)}
     salida["ranks_sellados"] = resumen_ranks(items)
     salida["items"] = items
@@ -2628,6 +2646,10 @@ def parser() -> argparse.ArgumentParser:
     ap.add_argument("--registro-dir", default=None, dest="registro_dir",
                     help="directorio con no_mapeados_sujetos.jsonl y resolucion_sujetos.jsonl (default: el del kg.json)")
     ap.add_argument("--sin-censos", action="store_true", dest="sin_censos", help="no computa los censos informativos")
+    ap.add_argument("--generados-resolucion", default=None, dest="generados_resolucion",
+                    help="R2 de U-RERESOL-CAT, W3: directorio con los generados del catálogo de resolución que leyó el "
+                         "ensamblado; LN-6 los lee con su candado (r1_e4.catalogo_resolucion_r2). Sin la opción, LN-6 "
+                         "lee generados_r2/ y la salida es la de siempre")
     ap.add_argument("--manifiesto", default=None,
                     help="manifiesto del grafo bajo prueba (U-REEXT-T0, T1, punto 4.a: TOs de T6 y E4-b); default: el "
                          "manifiesto.path del reporte del ensamblado junto al kg.json, o los cinco TOs de desarrollo")

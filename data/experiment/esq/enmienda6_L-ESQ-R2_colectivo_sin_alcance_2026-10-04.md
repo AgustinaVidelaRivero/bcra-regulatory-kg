@@ -1,6 +1,15 @@
 # Enmienda 6 a L-ESQ-R2 — el sujeto que el texto no identifica: sin alcance, cuarentena; con alcance, el rol del documento
 
-**BORRADOR — PENDIENTE DE FIRMA** · Redactada: 2026-10-04.
+**FIRMADA por la autora el 06/10/2026, en su parte A** (firma por mensaje de la autora; borrador redactado el 2026-10-04). **La parte B no
+se adopta:** su lectura no llegó al piso de B.2 (18 correctas de 30; Wilson al 95 %, 0,42 a 0,76) y la cifra se declara como límite
+medido de la resolución de sujetos. **Decisiones al firmar:** (1) la lista de la regla 1 es la de hoy, sin el singular, la misma que la
+de R3 (la medición de A.2 da las mismas 4 relaciones con y sin el singular; decisión de la autora del 06/10/2026); (2) A.1.5, precisión: cuando un
+documento sin alcance recibe alcance, las filas de la regla 1 se resuelven con la misma regla de decisión que la cadena (gana la
+sugerencia del modelo si su mención verifica, R4; si no, el rol, R3), para que el camino del script y el de la cadena den lo mismo; (3) el
+caso abierto de B.4 queda resuelto como propuso R2-1 (sin derivada; la segunda relación sigue por R4 con su marca de mención), aunque la
+parte B no rija; (4) el rediseño de la parte B (derivar el rol solo cuando la norma no nombra otro sujeto) va al backlog (BKL-0040) con
+una pre-medición en R2-2; (5) la fila sin mención en cuarentena (A.4) queda como condición con disparador, sin implementar. Las
+mediciones que esta firma tenía a la vista están en las tablas de A.2 y B.2 (R2-1 de U-RERESOL-CAT, `data/experiment/reresolucion_catalogo/freno_r2_1.md`).
 
 Enmienda con fecha a L-ESQ-R2 (`data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`, FIRMADA en `4ef7650`;
 sha256 del texto firmado `66c4a1b9…`). L-ESQ-R2 no se edita: esta enmienda vive al lado y se lee junto con
@@ -8,8 +17,8 @@ ella, con sus notas posteriores a la firma y con las enmiendas 2 (`5f9a731`), 3 
 5 (`3a4b980`) y 7 (`44c6e1b`). Por la regla k de CLAUDE.md §4, toda cita de L-ESQ-R2 es del
 texto firmado (`git show 4ef7650:data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`), con su línea.
 
-No rige hasta la firma. La autora la firma con dos mediciones a la vista, las dos sobre el crudo de
-U-REEXT-T0: la de R2 de U-RERESOL-CAT (§A.2) y la lectura de la parte B (§B.2).
+La parte A rige desde la firma del 06/10/2026, con las dos mediciones a la vista, las dos sobre el crudo de
+U-REEXT-T0: la de R2-1 de U-RERESOL-CAT (§A.2) y la lectura de la parte B (§B.2). La parte B no rige.
 
 Tiene dos partes. La parte A, para los documentos sin alcance, rige desde la firma. La parte B, para los
 documentos con alcance, es condicionada: rige solo si su lectura llega al piso.
@@ -106,7 +115,7 @@ identifica.
 6. **Restricción para el crecimiento del catálogo.** Ningún label ni alias puede ser igual a una expresión
    colectiva de la lista, porque R1 se evalúa antes y le ganaría a la regla. Hoy no hay ninguno.
 
-## A.2 La medición de R2 (PENDIENTE)
+## A.2 La medición de R2 (hecha en R2-1, 06/10/2026)
 
 **La lista de expresiones colectivas** de la regla 1 deja afuera el singular.
 
@@ -126,16 +135,18 @@ alcance:
 
 | Qué se mide | Relaciones que pasan de la sugerencia del modelo a cuarentena | Ids que sugería el modelo |
 |---|---|---|
-| Regla 1, con la lista de hoy | PENDIENTE | PENDIENTE |
-| Regla 1, con el singular y con «cada», «esta(s)», «dicha(s)» y «tal(es)» | PENDIENTE | PENDIENTE |
-| Regla 2, relaciones sin mención | PENDIENTE | PENDIENTE |
-| Regla 2, relaciones con una mención que no verifica | PENDIENTE | PENDIENTE |
+| Regla 1, con la lista de hoy | 4 («las entidades», en docvig) | `Sujeto_sujeto_regulado` (4) |
+| Regla 1, con el singular y con «cada», «esta(s)», «dicha(s)» y «tal(es)» | 4 (las mismas) | ídem |
+| Regla 2, relaciones sin mención | 0 | — |
+| Regla 2, relaciones con una mención que no verifica | 0 (docvig: 17 relaciones de sujeto, las 17 con la mención verificada) | — |
 
-De las menciones que no verifican, en todos los documentos: cuántas son una expresión colectiva de la lista
-y cuántas nombran otra cosa, con la lista de las segundas.
+De las menciones que no verifican, en todos los documentos (R2-1, `salidas/r2_1_medicion.json`, `no_verifican`): 257 (238 resueltas
+por el modelo, 19 en cuarentena); expresión colectiva de la lista de hoy, 143 (145 con el singular); nombran otra cosa, 112, y de esas
+51 están en el texto si se quita el artículo inicial («del», «al»: límite de la verificación por tokens, que se corrige por código en
+otra unidad, fila F14b de la tabla de reprocesamiento).
 
-Y, en los documentos con alcance: en cuántas relaciones cambia el resultado de R3 o la marca de desacuerdo si
-la lista se amplía. Ampliar la lista de R3 cambia R3 también ahí.
+Y, en los documentos con alcance (R2-1, `r3_ampliada`): con el singular, R3 alcanzaría 435 relaciones y cambiarían 19 decisiones
+(cuarentena → R3) y 15 marcas de desacuerdo; con los determinantes, 445, 20 y 15. La lista no se amplía (decisión 1 al firmar).
 
 Con esas cifras la autora decide, al firmar, si la lista de la regla 1 incluye el singular y si es la misma
 que la de R3.
@@ -178,7 +189,7 @@ que la de R3.
 
 ---
 
-# Parte B — documentos con alcance (condicionada)
+# Parte B — documentos con alcance (condicionada; NO ADOPTADA el 06/10/2026: su lectura no llegó al piso)
 
 ## B.1 Qué decide
 
@@ -195,7 +206,7 @@ que la de R3.
    - `ejecuta`: el alcance no es el ejecutor por defecto.
 5. **Si esta parte no rige,** en los documentos con alcance queda la regla de hoy: R4.
 
-## B.2 La condición: una lectura posterior a U-REEXT-T0 (PENDIENTE)
+## B.2 La condición: una lectura posterior a U-REEXT-T0 (hecha en R2-1, 06/10/2026: NO LLEGA AL PISO)
 
 - **Población.** Las relaciones que esta parte crearía sobre KG-Tanda0-Diez-r2b. La arma R2-1 de U-RERESOL-CAT
   por simulación, sin implementar la parte B. Incluye las normas cuya relación de sujeto trae una mención que
@@ -213,14 +224,14 @@ que la de R3.
 
 | Qué se mide | Valor |
 |---|---|
-| Normas sin relación de sujeto con mención verificada, en documentos con alcance | PENDIENTE |
-| De esas, con una relación sin mención que el modelo emitió igual | PENDIENTE |
-| De esas, con una relación cuya mención no verifica | PENDIENTE |
-| De esas, con una sugerencia distinta del rol de alcance | PENDIENTE |
-| Correctas en la muestra de 30 | PENDIENTE |
-| De las leídas, las que vienen de una mención que no verifica, y cuántas de esas son correctas | PENDIENTE |
+| Normas sin relación de sujeto con mención verificada, en documentos con alcance | 1.592 de 3.603 normas de unidades aceptadas (71 en la cola) |
+| De esas, con una relación sin mención que el modelo emitió igual | 0 (1.362 sin ninguna `aplica_a`) |
+| De esas, con una relación cuya mención no verifica | 230 |
+| De esas, con una sugerencia distinta del rol de alcance | 29 |
+| Correctas en la muestra de 30 | 18 (5 incorrectas, 7 dudosas; segunda lectura de la mesa: 18/5/7, coincidencia en 28 de 30; adjudicación de la autora: F18 dudosa, F27 correcta); Wilson al 95 %: 0,42 a 0,76 |
+| De las leídas, las que vienen de una mención que no verifica, y cuántas de esas son correctas | 5; 2 correctas, 2 incorrectas, 1 dudosa |
 
-Si no llega al piso, la parte B no rige y la parte A no cambia.
+Si no llega al piso, la parte B no rige y la parte A no cambia. **No llegó: la parte B no rige** (decisión de la autora del 06/10/2026).
 
 ## B.3 Efectos declarados
 
@@ -238,8 +249,8 @@ Si no llega al piso, la parte B no rige y la parte A no cambia.
   tanda 0. Queda fuera de esta parte hasta que se decida.
 - **Excepcion y Operacion** también admiten `aplica_a`, y esta parte no las cubre.
 - **Una norma con una relación de mención verificada y otra sin mención, o con una mención que no verifica.**
-  No recibe la derivada, porque ya tiene sujeto. Qué se hace con la segunda relación queda abierto: R2-1 las
-  cuenta y lo propone.
+  No recibe la derivada, porque ya tiene sujeto. R2-1 contó 5 (lingob 4, ext 1), las 5 con la segunda relación hacia otro destino (un
+  co-sujeto); decisión al firmar (3): la segunda relación sigue como hoy (R4), con su marca de mención; ni cuarentena ni rol.
 
 ## B.5 Implementación, solo si rige
 
@@ -262,5 +273,6 @@ Si no llega al piso, la parte B no rige y la parte A no cambia.
 
 ## Firma
 
-BORRADOR — PENDIENTE DE FIRMA de la autora. Se firma con las dos mediciones: la de R2 de U-RERESOL-CAT (A.2)
-y la lectura de la parte B (B.2).
+FIRMADA por la autora el 06/10/2026, en su parte A, con las dos mediciones a la vista (A.2 y B.2, hechas en R2-1 de U-RERESOL-CAT) y las
+cinco decisiones de la cabecera. La parte B no se adopta; su cifra (18 de 30, Wilson 0,42 a 0,76) se declara como límite. Rige la
+parte A desde esta firma; la implementa R2-2 de U-RERESOL-CAT.

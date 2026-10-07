@@ -247,3 +247,27 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 105 líneas de arriba y n
   verifique la idempotencia contra el catálogo que de verdad usó el ensamblado. Las tres escrituras van después de
   U-SINCOLA-T0, que exige el código del sello intacto. R2 se despacha en dos pasos: R2-1 (script, prueba, medición de la
   enmienda 6 §A.2 y lectura de la parte B), firma de la enmienda 6, R2-2 (las dos reglas), firma de la enmienda 4.
+- **06/10/2026 — revisión del FRENO R2-1 y decisiones de la autora (R2-1 sin commit al escribir esta nota; la nota anterior quedó en
+  0a3ac81).**
+  - La revisión independiente reprodujo R2-1 sobre una copia sin enlaces: los parches de W1 a W3 aplican limpio sobre HEAD (`235a295`);
+    `selftest_reresolver_catalogo` 51/51, `selftest_r3` 116/116, `selftest_regression_kg` 184/184; la suite sobre las seis entradas
+    selladas con el código de HEAD y con el nuevo, byte a byte; las seis cadenas con sus sha (r2a `70d51e42…` y `fa4c1043…`, r2b
+    `a9631a64…` y `6e756043…`, sin cola `e22fae1a…` y `2922b72d…`). La parte B de la enmienda 6, releída a ciegas por la mesa sobre las 30
+    fichas: 18 correctas, 5 incorrectas, 7 dudosas, lo mismo que la instancia, con dos divergencias (F18 `ext::3.17.3.3`, F27
+    `ctacte::8.5.4`).
+  - Decisiones. (1) La enmienda 6 se firma en su parte A; la parte B no se adopta (18 de 30; Wilson al 95 %, 0,42 a 0,76) y su cifra se
+    declara como límite (`data/experiment/esq/enmienda6_L-ESQ-R2_colectivo_sin_alcance_2026-10-04.md`, firmada el 06/10/2026). (2)
+    Adjudicación de las divergencias: F18 dudosa, F27 correcta; el conteo no cambia. (3) El rediseño de la parte B, derivar el rol solo
+    cuando la norma no nombra otro sujeto, va al backlog (`data/backlog/backlog.jsonl`, BKL-0040) con una pre-medición en R2-2: cuántas de
+    las 1.362 normas sin `aplica_a` contienen en su texto un label o alias de otro Sujeto del catálogo. (4) El caso abierto de las 5
+    normas con una relación verificada y otra sin mención o que no verifica: sin derivada; la segunda relación sigue por R4 con su marca
+    de mención. (5) Los tres puntos de R2-2: cuando un documento sin alcance recibe alcance, el script resuelve con la misma regla que la
+    cadena (R4 si la mención verifica, si no R3; precisión a A.1.5, asentada en la firma); el estado de las filas resueltas por
+    calificador se alinea al de la cadena (`resuelto_a_clase`), una línea en `reresolver_registro` con su caso de selftest; la fila sin
+    mención en cuarentena queda como condición con disparador (si una tanda la produce, va sin nodo ni arista, con LN-5 y S28 contándola
+    aparte) y se implementa entonces, fuera de esta unidad. (6) Las 51 menciones que no verifican por el artículo («del», «al»): defecto
+    de normalización de `verificar_tramo` (`data/experiment/pyd_r2/code/validador_r2.py:209-230`, tokens sin contracciones); corrección por
+    código, fila F14b, fuera de esta unidad: entra como ítem de U-OMISIONES-COD (las correcciones en código que salieron de T4), con
+    pre-medición sobre el crudo r2b y vigencia desde la release siguiente.
+  - W1 a W3 se aplican al repo en R2-1 bis («seguí» despachado el 06/10/2026, con SC2 de U-SINCOLA-T0 commiteada en `dde9f44`); el
+    commit de R2-1 y R2-1 bis es de la autora. R2-2 se despacha después de ese commit.

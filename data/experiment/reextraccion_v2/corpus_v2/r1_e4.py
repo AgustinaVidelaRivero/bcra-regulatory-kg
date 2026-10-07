@@ -472,7 +472,9 @@ def reresolver_registro(filas: list[dict], idx: dict, rol_por_archivo: dict, arc
     cambia el sha256 del catálogo. Aplica las reglas sobre la mención guardada
     (sin el modelo: su sugerencia ya se aplicó al resolver); una fila que
     resuelve pasa a `resuelto` con el sha nuevo. Idempotente: re-aplicada con
-    el mismo índice, no cambia nada."""
+    el mismo índice, no cambia nada. El método se escribe como en
+    `resolver_relaciones_r2` (R2 de U-RERESOL-CAT, W2: `R1_` y `R2_` con sus
+    criterios; el calificador y R3, con el nombre de la regla)."""
     prefijos = _prefijos(idx)
     out, cambiadas = [], 0
     for f in filas:
@@ -481,8 +483,9 @@ def reresolver_registro(filas: list[dict], idx: dict, rol_por_archivo: dict, arc
             rol = (rol_por_archivo.get(archivo_por_to.get(f["to"])) or {}).get("rol_id")
             r = resolver_mencion_r2(f["mencion"], f.get("padre_sugerido"), idx, prefijos, rol)
             if r["id"]:
-                g.update(estado="resuelto", resuelto_a=r["id"],
-                         metodo=r["regla"] if r["regla"] != "R2" else "R2_" + "+".join(r["criterios"]),
+                metodo = ("R1_" + "+".join(c for c in r["criterios"] if c in CRITERIOS_R1) if r["regla"] == "R1"
+                          else "R2_" + "+".join(r["criterios"]) if r["regla"] == "R2" else r["regla"])
+                g.update(estado="resuelto", resuelto_a=r["id"], metodo=metodo,
                          calificador=r["calificador"], catalogo_sha256_resolucion=catalogo_sha256)
                 cambiadas += 1
         out.append(g)
@@ -539,3 +542,67 @@ def catalogo_r2() -> dict:
             "labels": datos["labels_e2_r2.json"], "rol_por_to": datos["rol_por_to_r2.json"],
             "entrada_esqueleto": datos["entrada_esqueleto_r2.json"],
             "entrada_esqueleto_path": GENERADOS_R2 / "entrada_esqueleto_r2.json"}
+
+
+# ----------------------------------------------------------------------- #
+# Catálogo de resolución (R2 de U-RERESOL-CAT, W2): el del request más una #
+# lista de ampliaciones que solo agrega. Lo lee el código (E4, E2, merge   #
+# entre TOs, esqueleto, S19 y la suite) y puede crecer entre tandas; el    #
+# request de E1 (bloque, enum y tool schema) sale solo del catálogo del    #
+# request y no lo lee.                                                     #
+# ----------------------------------------------------------------------- #
+FORMATO_RESOLUCION_R2 = "generados_resolucion_r2/1"
+MANIFIESTO_RESOLUCION_R2 = "manifest_generados_resolucion_r2.json"
+ARCHIVOS_RESOLUCION_R2 = ARCHIVOS_CATALOGO_R2 + ("ids_s19_r2.json", "catalogo_suite_r2.json")
+
+
+def catalogo_resolucion_r2(directorio) -> dict:
+    """Generados del catálogo de resolución, con su candado: el manifiesto
+    tiene que derivar del catálogo del request que fija modelos_r2; la lista
+    de ampliaciones, el catálogo compuesto (sin ampliaciones, el compuesto es
+    el del request) y cada generado tienen que dar el sha256 del manifiesto; y
+    los ids del request tienen que estar todos (el catálogo de resolución solo
+    agrega). Devuelve lo mismo que `catalogo_r2()`, con el sha del compuesto,
+    más el conjunto de ids de resolución (reemplaza a SUJETOS_R2_SET en E2 y
+    en el merge entre TOs), las rutas de los ids de S19 y del catálogo de la
+    suite y las tres versiones. Frena ante cualquier diferencia."""
+    import hashlib as _h  # noqa: PLC0415
+    from pathlib import Path as _Path  # noqa: PLC0415
+    M = modulo_modelos_r2()
+    d = _Path(directorio)
+    man = json.loads((d / MANIFIESTO_RESOLUCION_R2).read_text(encoding="utf-8"))
+
+    def sha(p) -> str:
+        return _h.sha256(p.read_bytes()).hexdigest()
+    if man.get("formato") != FORMATO_RESOLUCION_R2:
+        raise RuntimeError(f"candado del catálogo de resolución: formato {man.get('formato')!r}")
+    if man["catalogo_request_sha256"] != M.CATALOGO_R2_SHA256:
+        raise RuntimeError("candado del catálogo de resolución: no deriva del catálogo del request de modelos_r2")
+    if sha(d / man["ampliaciones"]) != man["ampliaciones_sha256"]:
+        raise RuntimeError("candado del catálogo de resolución: la lista de ampliaciones no coincide con su manifiesto")
+    if man["n_ampliaciones"] == 0:
+        if man["catalogo_sha256"] != M.CATALOGO_R2_SHA256:
+            raise RuntimeError("candado del catálogo de resolución: sin ampliaciones, el compuesto es el del request")
+    elif sha(d / man["catalogo"]) != man["catalogo_sha256"]:
+        raise RuntimeError("candado del catálogo de resolución: el catálogo compuesto no coincide con su manifiesto")
+    datos = {}
+    for nombre in ARCHIVOS_RESOLUCION_R2:
+        b = (d / nombre).read_bytes()
+        if _h.sha256(b).hexdigest() != man["archivos"][nombre]:
+            raise RuntimeError(f"candado del catálogo de resolución: {nombre} no coincide con su manifiesto")
+        datos[nombre] = json.loads(b.decode("utf-8"))
+    ids = frozenset(datos["ids_s19_r2.json"])
+    if not M.SUJETOS_R2_SET <= ids:
+        raise RuntimeError("candado del catálogo de resolución: faltan ids del request (el catálogo de resolución "
+                           "solo agrega)")
+    return {"catalogo_sha256": man["catalogo_sha256"],
+            "indice": indice_desde_lista(datos["indice_e4_r2.json"]),
+            "labels": datos["labels_e2_r2.json"], "rol_por_to": datos["rol_por_to_r2.json"],
+            "entrada_esqueleto": datos["entrada_esqueleto_r2.json"],
+            "entrada_esqueleto_path": d / "entrada_esqueleto_r2.json",
+            "sujetos_set": ids, "ids_s19_path": d / "ids_s19_r2.json",
+            "catalogo_suite_path": d / "catalogo_suite_r2.json",
+            "versiones_catalogo": {"catalogo_request_sha256": man["catalogo_request_sha256"],
+                                   "ampliaciones_sha256": man["ampliaciones_sha256"],
+                                   "n_ampliaciones": man["n_ampliaciones"],
+                                   "catalogo_resolucion_sha256": man["catalogo_sha256"]}}

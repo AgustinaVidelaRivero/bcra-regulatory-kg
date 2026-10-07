@@ -579,12 +579,20 @@ def ensamblar_manifiesto(man: MC.Manifiesto, entrada: Path, salida: Path, hasta:
 TIPOS_CONTENIDO_R2 = REF.TIPOS_CONTENIDO_R2
 
 
+def sujetos_de_resolucion(cat: dict, M) -> frozenset:
+    """R2 de U-RERESOL-CAT, W1: el conjunto de ids contra el que E2 y el merge
+    entre TOs aceptan un sujeto. Con el catálogo de resolución
+    (`r1_e4.catalogo_resolucion_r2`), el suyo; sin él, el del request
+    (`modelos_r2.SUJETOS_R2_SET`), como siempre."""
+    return cat["sujetos_set"] if "sujetos_set" in cat else M.SUJETOS_R2_SET
+
+
 def plan_redirecciones_r2(man: MC.Manifiesto, perfil, entrada: Path, salida_r2: Path, cat: dict, M) -> list[tuple]:
     plan = [(m, a, v) for m, a, v in plan_redirecciones(man, perfil, entrada, salida_r2)
             if (m, a) not in ((C, "CATALOGO_PATH"), (assemble, "CATALOGO_PATH"), (INV, "SUJETOS_CATALOGO_SET"))]
     return plan + [(C, "CATALOGO_PATH", cat["entrada_esqueleto_path"]),
                    (assemble, "CATALOGO_PATH", cat["entrada_esqueleto_path"]),
-                   (INV, "SUJETOS_CATALOGO_SET", M.SUJETOS_R2_SET),
+                   (INV, "SUJETOS_CATALOGO_SET", sujetos_de_resolucion(cat, M)),
                    (REF, "TITULOS_TOS", REF.titulos_de_inventario(
                        sorted(t["id"] for t in man.tos), {t["id"]: t["nombres_remision"] for t in man.tos}))]
 
@@ -1176,7 +1184,7 @@ def descartar_cola_r2(regs: list[dict], con_cola: bool) -> tuple[list[dict], lis
 
 
 def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Path | None = None,
-                     fase: str | None = None, con_cola: bool = True) -> dict:
+                     fase: str | None = None, con_cola: bool = True, cat_resolucion: dict | None = None) -> dict:
     """Cadena r2. `w(nombre, obj)` y `wl(nombre, filas)` escriben JSON y JSONL
     en <salida>/r2/ (None = no escriben). `fase`: «r2a» o «r2b»; por defecto,
     la del perfil del crudo (r2b con la forma r2). Pasarla explícita sirve a
@@ -1189,14 +1197,18 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
     en el reporte (s); el plazo sin marcador (m) va por `llenar_umbrales_r2`.
     `con_cola` (U-SINCOLA-T0, enmienda 1, 06/10/2026): con False, los registros
     de la cola humana se descartan después de `entrada_r2`, en ese único punto
-    (`descartar_cola_r2`), y lo que sigue se computa sobre lo que queda."""
+    (`descartar_cola_r2`), y lo que sigue se computa sobre lo que queda.
+    `cat_resolucion` (R2 de U-RERESOL-CAT, W1): el catálogo de resolución de
+    `r1_e4.catalogo_resolucion_r2`; reemplaza al del request en E4, en E2
+    (labels y conjunto de ids) y en la normalización de los propuestos, y el
+    resumen lleva sus tres versiones. Con None (default), la salida de siempre."""
     import runner_corpus as RC          # noqa: PLC0415 — solo con --perfil-r2
     w = w or (lambda *a, **k: None)
     wl = wl or (lambda *a, **k: None)
     M = E4.modulo_modelos_r2()
     V = E4.modulo_validador_r2()
     import reglas_comparacion as RCMP   # noqa: PLC0415 — pyd_r2/code, en el path por modulo_modelos_r2
-    cat = E4.catalogo_r2()
+    cat = cat_resolucion if cat_resolucion is not None else E4.catalogo_r2()
     validar, pol = RC.validador_perfil_r2(perfil)
     fase = fase or ("r2b" if RC.perfil_forma_r2(perfil) else "r2a")
     if fase not in e2_lib.FASES_R2:
@@ -1209,6 +1221,8 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
         resumen["fase"] = fase
     resumen["con_cola"] = con_cola
     resumen["cola_descartada_por_to"] = {}
+    if cat_resolucion is not None:
+        resumen["catalogo_resolucion"] = cat_resolucion["versiones_catalogo"]
     omisiones: list[dict] = []
     paso_por_e3: dict[str, dict] = {}
     chunks_cola: set[str] = set()
@@ -1221,7 +1235,7 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
         regs, descartadas = descartar_cola_r2(regs, con_cola)
         resumen["cola_descartada_por_to"][to] = {"n": len(descartadas), "chunks": descartadas}
         res = E4.resolver_relaciones_r2(regs, cat["indice"], cat["rol_por_to"], versiones)
-        ens = e2_lib.ensamblar_r2(chunks, regs, cat["labels"], M.SUJETOS_R2_SET, M.firma_r2,
+        ens = e2_lib.ensamblar_r2(chunks, regs, cat["labels"], sujetos_de_resolucion(cat, M), M.firma_r2,
                                   M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"], fase=fase)
         grafos[to] = {"nodes": ens["nodes"], "edges": ens["edges"]}
         cola_estados = {r["chunk_id"]: r["estado_e3"] for r in regs if r.get("cola_humana")}
@@ -1423,16 +1437,21 @@ def validar_grafo_r2(kg: dict, M) -> dict:
 
 
 def ensamblar_manifiesto_r2(man: MC.Manifiesto, entrada: Path, salida: Path,
-                            tablas_dir: Path | None = None, con_cola: bool = True) -> dict:
+                            tablas_dir: Path | None = None, con_cola: bool = True,
+                            cat_resolucion: dict | None = None) -> dict:
     """`con_cola` (U-SINCOLA-T0, enmienda 1 al mandato, 06/10/2026): con False,
     las dos corridas de `correr_cadena_r2` descartan los registros de la cola
     humana (`descartar_cola_r2`); el reporte declara `con_cola` y las unidades
-    descartadas por TO. Con True (default), la salida de siempre."""
+    descartadas por TO. Con True (default), la salida de siempre.
+    `cat_resolucion` (R2 de U-RERESOL-CAT, W1): el catálogo de resolución, en
+    las redirecciones (esqueleto y conjunto de ids del merge entre TOs) y en las
+    dos corridas; el reporte lleva sus tres versiones. Con None (default), el
+    catálogo del request, como siempre."""
     perfil = perfil_e1.perfil(man.perfil_e1)
     entrada, salida = Path(entrada), Path(salida)
     salida_r2 = salida / "r2"
     M = E4.modulo_modelos_r2()
-    cat = E4.catalogo_r2()
+    cat = cat_resolucion if cat_resolucion is not None else E4.catalogo_r2()
     plan = plan_redirecciones_r2(man, perfil, entrada, salida_r2, cat, M)
 
     def w(nombre: str, obj) -> None:
@@ -1449,9 +1468,9 @@ def ensamblar_manifiesto_r2(man: MC.Manifiesto, entrada: Path, salida: Path,
 
     with redirigido(plan):
         print("=== cadena r2, corrida 1 ===", flush=True)
-        a = correr_cadena_r2(man, perfil, w, wl, tablas_dir, con_cola=con_cola)
+        a = correr_cadena_r2(man, perfil, w, wl, tablas_dir, con_cola=con_cola, cat_resolucion=cat_resolucion)
         print("=== cadena r2, corrida 2 (sin escribir) ===", flush=True)
-        b = correr_cadena_r2(man, perfil, None, None, tablas_dir, con_cola=con_cola)
+        b = correr_cadena_r2(man, perfil, None, None, tablas_dir, con_cola=con_cola, cat_resolucion=cat_resolucion)
     salida_r2.mkdir(parents=True, exist_ok=True)
     (salida_r2 / "kg.json").write_text(a["kg_json"], encoding="utf-8")
     reporte = {"grafo": f"{man.nombre}/r2", "perfil": "r2",
@@ -1544,6 +1563,10 @@ def main() -> int:
     ap.add_argument("--e0-r2", "--tablas-e0-r2", dest="tablas_e0_r2", type=Path, default=None,
                     help="con --perfil-r2: salida de correr_e0.py --version-e0 e0-r2 (chunks_<to>.json y "
                          "tablas_<to>.json): texto de las remisiones y verificación de umbrales contra las tablas")
+    ap.add_argument("--catalogo-resolucion", dest="catalogo_resolucion", type=Path, default=None,
+                    help="solo en la cadena r2 (R2 de U-RERESOL-CAT, W1): directorio con los generados del catálogo "
+                         "de resolución (r1_e4.catalogo_resolucion_r2, con su candado); sin la opción, el catálogo "
+                         "del request, como siempre")
     args = ap.parse_args()
 
     man = MC.cargar(args.manifiesto)
@@ -1554,12 +1577,17 @@ def main() -> int:
     forma_r2 = esq is not None and getattr(esq, "forma_salida", "v3") == "r2"
     if args.perfil_r2 or forma_r2:
         tablas = args.tablas_e0_r2 if args.tablas_e0_r2 is not None else (man.e0_salida if forma_r2 else None)
-        res = ensamblar_manifiesto_r2(man, args.entrada, args.salida, tablas, con_cola=not args.sin_cola)
+        cat_res = (E4.catalogo_resolucion_r2(args.catalogo_resolucion) if args.catalogo_resolucion is not None
+                   else None)
+        res = ensamblar_manifiesto_r2(man, args.entrada, args.salida, tablas, con_cola=not args.sin_cola,
+                                      cat_resolucion=cat_res)
         print(json.dumps(res, ensure_ascii=False, indent=1))
         if args.resumen_json:
             args.resumen_json.parent.mkdir(parents=True, exist_ok=True)
             args.resumen_json.write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
         return 0 if res["r2"]["doble_corrida_byte_identica"] else 1
+    if args.catalogo_resolucion is not None:
+        ap.error("--catalogo-resolucion es solo de la cadena r2")
     res = ensamblar_manifiesto(man, args.entrada, args.salida, hasta=args.hasta,
                                con_cola=not args.sin_cola, motor=args.motor)
     if args.selftest_dev:
