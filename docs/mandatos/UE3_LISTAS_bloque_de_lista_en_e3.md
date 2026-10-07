@@ -228,3 +228,19 @@ firmar en `9bca986`) y no cambia.
     cliente…», con sus incisos i a vii) está en el texto propio del ítem, no en el bloque que abre la lista, y el extractor lo declaró
     `[meta_normativo]` siendo una facultad con su marco: a juicio de la mesa el reclamo es fundado y no lo cubre el caso resuelto (la lectura
     sellada de O3 lo había descripto como «la norma del encabezado»). Adjudica la autora.
+- **07/10/2026 (noche) — adjudicación de `ext::3.16.2.1` y tope de O5 (decisiones de la autora).**
+  - **`ext::3.16.2.1`: el reclamo B de E3 es fundado.** El tramo reclamado («la entidad también podrá aceptar una declaración jurada del
+    cliente…», con sus incisos i a vii) es una facultad del texto propio del ítem, no la norma del encabezado. La adjudicación corrige la lectura
+    sellada de O3 (`o3/a/lectura_o3.json`, que no se toca), que lo había descripto como «la norma del encabezado».
+  - **Cifra del residuo de O3.** Por la regla sellada persisten 3 reclamos B (`ext::3.6.4.1`, `ext::3.6.4.2` y `ext::3.16.2.1`;
+    `o3/resumen_o3.json`, `a.persisten_por_la_regla`). Los dos que siguen altos y bloqueantes y mandan al reintento son `ext::3.6.4.1` y
+    `ext::3.16.2.1`; con la adjudicación, de esos dos queda **1 falsa alarma bloqueante, `ext::3.6.4.1`**. `ext::3.6.4.2` conserva el mismo
+    reclamo, medio y residual, sin bloquear: la unidad se aceptaría (`o3/a/cifras_a.json`, ficha de la unidad, `camino_con_e3_corregido`).
+    Entre las 13 extracciones finales que son el reintento, las 2 que el E3 corregido no acepta en el intento 0 son `ext::3.6.4.1` (falsa
+    alarma) y `ext::3.16.2.1` (reclamo fundado; `o3/b/b_intento0_vs_final.json`); la cifra «11 de 13» no cambia. Corregido en
+    `docs/insumos_escritura.md`, §7, ítem 4.
+  - **O5:** el caso resuelto cubre `ext::3.6.4.1` y `ext::3.6.4.2`; `ext::3.16.2.1` es el control del otro lado de la frontera: su reclamo
+    tiene que seguir, y el texto de esa unidad no puede entrar al caso resuelto ni a sus ejemplos. **Tope de gasto de O5: USD 0,50**, solo para
+    la re-verificación paga de las 20 unidades de O3 con la NOTA nueva, en una base propia (`data/experiment/e3_listas/cache_o5/`);
+    estimación del orden de USD 0,24 (O3 gastó USD 0,238213 en las mismas 20, `o3/resumen_o3.json`). Despacho preparado por la mesa; el
+    despacho, PENDIENTE de la autora.

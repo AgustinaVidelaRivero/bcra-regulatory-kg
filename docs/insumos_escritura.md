@@ -346,8 +346,11 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      18 y persisten 3 por la regla sellada antes de contar (`o3/criterio_o3.md`), 15 y 6 por la lectura; aparecen 3 nuevos (un C, un B
      y un B2; el C, leído, es el reclamo viejo de `docvig::3.3.2`, que viene del cierre del punto y no de la lista); 11 de las 20
      unidades salen completas y 16 de las 20 se aceptarían sin reintento (14 de las 17 que reintentaron); van al reintento
-     `ext::3.6.4.1` y `ext::3.16.2.1` (reclamos B que, leídos, son falsas alarmas contra la NOTA) y `ext::3.18.1.1` (reclamos de
-     composición fundados), y a la cola `docvig::3.3.2`. (b) De las 17 extracciones finales, 13 son el reintento y las 13 cambiaron
+     `ext::3.6.4.1` (reclamo B que, leído, es una falsa alarma contra la NOTA), `ext::3.16.2.1` (reclamo B fundado: el tramo es una
+     facultad del texto propio del ítem, no la norma del encabezado; adjudicación de la autora del 07/10/2026, que corrige la lectura
+     sellada de O3) y `ext::3.18.1.1` (reclamos de composición fundados), y a la cola `docvig::3.3.2`; residuo de falsas alarmas
+     bloqueantes: 1 (`ext::3.6.4.1`), y `ext::3.6.4.2` conserva el mismo reclamo, medio y sin bloquear.
+     (b) De las 17 extracciones finales, 13 son el reintento y las 13 cambiaron
      respecto del intento 0 (entran 58 entidades y 40 relaciones, salen 26 y 7, cambian de descripción 5); las 4 cuya final es el
      intento 0, control, sin cambios; en 11 de las 13 el E3 corregido acepta el intento 0. (c) La norma del encabezado vuelta a
      emitir en el ítem (conteo por código, D3): 1 de las 20 unidades en el intento 0 y 8 en la final; las 7 nuevas son finales del

@@ -61,6 +61,24 @@ autora sobre las divergencias, como en T4. Se agregan las 5 de U-ESTUDIO-MATRIZ 
   U-OMISIONES-COD, en código y sobre lo guardado, si el diagnóstico U-DIAG-CAP3-GRAFO lo sostiene. Tampoco cambia R6a ni el predicado
   `exceptua_operacion`, que no se crea.
 
+## Decisiones de la autora (07/10/2026, noche)
+
+- **La condición del §2 sigue:** la enmienda se firma solo si la lectura de las 41 da al menos 37 correctas.
+- **Tanda 0: opción (a) del §3.** La enmienda rige desde la tanda 1; la tanda 0 declara las relaciones rechazadas como límite, con la cifra
+  de la lectura. No hay E3 de las unidades afectadas de la tanda 0.
+- **Quién lee y cuándo.** Primera lectura: la instancia de U-DIAG-CAP3-GRAFO, con el criterio sellado antes de generar las fichas
+  (`criterio_41_exceptua_operacion.md`, sha256 `92688681…`, sellado el 07/10/2026 a las 18:39:26; fichas sin veredicto generadas a las
+  18:41). Segunda lectura a ciegas: la mesa, sin abrir la primera. Adjudicación de las divergencias: la autora. La cifra sale después de
+  la adjudicación. Todo esto antes del despacho de U-OMISIONES-COD, que aplica la tupla solo si esta enmienda se firma, y antes de la
+  extracción de la tanda 1.
+- **PENDIENTE de la autora, antes de computar la cifra: el denominador.** Las fichas son 45: las 41 relaciones del crudo r2b y 4 filas de
+  U-ESTUDIO-MATRIZ que no estaban entre ellas (M21, M23, M24 y M25, réplicas en memoria de KG-Tanda0-Desarrollo-r1, `eab2fdd0`; M22 ya está
+  entre las 41). El §2 suma esas filas a la lectura, pero da el umbral solo para 41 decididas; es un error propio de la redacción. Con el
+  piso de Wilson al 95 % sobre las decididas, hacen falta 37 correctas con 41 decididas, 40 con 45, 34 con 38 y 32 con 35. Recomendación
+  de la mesa: computar la cifra sobre las 41 del crudo r2b, que son la población que la enmienda cambia, e informar aparte las 4 de la
+  matriz, que vienen de otro grafo y ya se leyeron en U-ESTUDIO-MATRIZ. El piso se aplica sobre las decididas, como en el protocolo firmado
+  de la matriz, y los no decidibles no pueden pasar de 6. Con las 41 decididas, el umbral es 37, la cifra que fijó la autora.
+
 ## Firma
 
 BORRADOR — PENDIENTE de la lectura del §2 y de la firma de la autora.
