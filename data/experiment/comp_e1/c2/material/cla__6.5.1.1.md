@@ -1,0 +1,60 @@
+# `cla::6.5.1.1` — presente una situación financiera líquida, con bajo nivel y adecuada estructura
+
+Grupos: omisiones. Estado final en la tanda 0: `completo_ok_directo`.
+
+## Texto
+
+> *heredado:* Sección 6. Clasificación de los deudores de la cartera comercial.
+> *heredado:* 6.5. Niveles de clasificación.
+> *heredado:* Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías, las que se definen teniendo en cuenta las condiciones que se detallan en cada caso. Los clientes que no registren asistencia crediticia de la entidad y que posteriormente reciban financiaciones de ésta que no superen el importe resultante de aplicar sobre el saldo de deuda registrado en el sistema financiero, según la última información disponible en la "Central de deudores" a la fecha de su otorgamiento, el porcentaje establecido en el punto 2.2.5. de las normas sobre "Previsiones mínimas por riesgo de incobrabilidad" correspondiente a la peor clasificación asignada, podrán ser clasificados por la entidad teniendo en cuenta únicamente el análisis del flujo de fondos proyectado. Las asistencias así otorgadas no serán consideradas a los fines a que se refiere el punto 6.6. A fin de verificar el cumplimiento de las obligaciones sin recurrir a nueva financiación directa o indirecta o a refinanciaciones, no se considerarán refinanciaciones las facilidades adicionales que se otorguen respecto de los márgenes vigentes acordados, siempre que el nuevo apoyo crediticio implique nuevos desembolsos de fondos y no supere el 10 % del cupo asignado en oportunidad de la última evaluación crediticia del cliente, en la medida en que éstas sean consistentes con el curso normal de los negocios y exista capacidad para atender el resto de las obligaciones financieras, ni las nuevas financiaciones y las refinanciaciones asociadas a una mayor inversión derivada de la expansión de las actividades, y siempre que pueda demostrarse que el flujo de fondos proyectado permitirá afrontar la totalidad de sus obligaciones. Tampoco se considerarán dentro de ese concepto las refinanciaciones otorgadas a los productores agropecuarios cuando ello resulte de la aplicación de disposiciones vinculadas a la Ley de Emergencia Agropecuaria, sin perjuicio de lo cual, a los fines de la clasificación, deberá tenerse en cuenta el flujo de fondos proyectado para el momento en que concluya la vigencia de la emergencia declarada. El tratamiento que se dispense en ese marco no podrá implicar mejoramiento de la clasificación asignada al cliente en función de su situación individual, preexistente a la emergencia, ni su aplicación extenderse más allá de la vigencia fijada para ella.
+> *heredado:* 6.5.1. En situación normal.
+> *heredado:* El análisis del flujo de fondos del cliente demuestra que es capaz de atender adecuadamente todos sus compromisos financieros. Entre los indicadores que pueden reflejar esta situación se destacan que el cliente:
+> *propio:* 6.5.1.1. presente una situación financiera líquida, con bajo nivel y adecuada estructura de endeudamiento en relación con su capacidad de ganancia, y muestre una alta capacidad de pago de las deudas (capital e intereses) en las condiciones pactadas generando fondos -medido a través del análisis de su flujoen grado aceptable. El flujo de fondos no es susceptible de variaciones significativas ante modificaciones importantes en el comportamiento de las variables tanto propias como vinculadas a su sector de actividad. En el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la eventual incidencia que en su capacidad de pago pueda tener la situación en la que se encuentran los demás integrantes del grupo de contrapartes conectadas al cual pertenece.
+
+## Omisiones leídas en T4 (M2)
+
+con_marca:7 [normativa; heredado] «Entre los indicadores que pueden reflejar esta situación se destacan que el cliente:»
+
+## Código A
+
+- **d1 Definicion** «Indicador de situación normal: situación financiera líquida y alta capacidad de pago» — Indicador de la situación normal (cartera comercial): el cliente presenta una situación financiera líquida, con bajo nivel y adecuada estructura de endeudamiento en relación con su capacidad de ganancia, y muestra una alta capacidad de pago de las deudas (capital e intereses) en las condiciones pactadas, generando fondos en grado aceptable, medido a través del análisis de su flujo. El flujo de fon… · props: `{"termino": "situación normal"}` · no definidas: `{"modalidad": "Entre los indicadores que pueden reflejar esta situación se destacan que el cliente:", "modalidad_clasificada": "no_clasificada"}` · tramo [exacta]: «Entre los indicadores que pueden reflejar esta situación se destacan que el cliente: […] presente una situación financiera líquida, con bajo nivel y adecuada estructura de endeudamiento en relación con su capacidad de ganancia, y muestre una alta capacidad de pago de las deudas (capital e intereses) en las condiciones …»
+- **o1 Obligacion** «Considerar incidencia del grupo de contrapartes conectadas» — En el análisis de la capacidad de pago del cliente, de corresponder, se debe tener en cuenta la eventual incidencia de la situación de los demás integrantes del grupo de contrapartes conectadas al que pertenece. · props: `{"tipo": "calculo"}` · tramo [exacta]: «En el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la eventual incidencia que en su capacidad de pago pueda tener la situación en la que se encuentran los demás integrantes del grupo de contrapartes conectadas al cual pertenece.»
+
+### A — omisiones de T4 a clasificar
+
+- con_marca:7 → entidades: d1 Definicion [exacta] solap 1.0 contiene | omisiones: —
+
+## Código H
+
+- **o1 Obligacion** «Indicador situación normal: situación financiera líquida y alta capacidad de pago» — Recomendación y no un deber: entre los indicadores que pueden reflejar la situación normal se destaca que el cliente presente una situación financiera líquida, con bajo nivel y adecuada estructura de endeudamiento en relación con su capacidad de ganancia, y muestre una alta capacidad de pago de las deudas (capital e intereses) en las condiciones pactadas generando fondos, medido a través del análi… · props: `{"tipo": "otra"}` · no definidas: `{"modalidad": "Entre los indicadores que pueden reflejar esta situación se destacan que el cliente:", "modalidad_clasificada": "no_clasificada"}` · tramo [exacta]: «Entre los indicadores que pueden reflejar esta situación se destacan que el cliente: […] presente una situación financiera líquida, con bajo nivel y adecuada estructura de endeudamiento en relación con su capacidad de ganancia, y muestre una alta capacidad de pago de las deudas (capital e intereses) en las condiciones …»
+- **o2 Obligacion** «Considerar incidencia del grupo de contrapartes conectadas» — En el análisis del cliente debe tenerse en cuenta, de corresponder, la eventual incidencia en su capacidad de pago de la situación de los demás integrantes del grupo de contrapartes conectadas al cual pertenece. · props: `{"tipo": "otra"}` · tramo [exacta]: «En el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la eventual incidencia que en su capacidad de pago pueda tener la situación en la que se encuentran los demás integrantes del grupo de contrapartes conectadas al cual pertenece.»
+- R: o1 Obligacion —aplica_a→ Sujeto_cliente (mención «el cliente»)
+
+### H — omisiones de T4 a clasificar
+
+- con_marca:7 → entidades: o1 Obligacion [exacta] solap 1.0 contiene | omisiones: —
+
+## Código K
+
+- **d1 Definicion** «Indicador situación financiera líquida — situación normal» — Entre los indicadores que pueden reflejar la situación normal de un deudor comercial se destaca que el cliente presente una situación financiera líquida, con bajo nivel y adecuada estructura de endeudamiento en relación con su capacidad de ganancia, y muestre alta capacidad de pago de capital e intereses en las condiciones pactadas, generando fondos en grado aceptable medido a través del análisis … · props: `{"termino": "En situación normal"}` · tramo [no]: «Entre los indicadores que pueden reflejar esta situación se destacan que el cliente: […] presente una situación financiera líquida, con bajo nivel y adecuada estructura de endeudamiento en relación con su capacidad de ganancia, y muestre una alta capacidad de pago de las deudas (capital e intereses) en las condiciones …»
+- **d2 Definicion** «Indicador flujo estable — situación normal» — Indicador de situación normal: el flujo de fondos del cliente no es susceptible de variaciones significativas ante modificaciones importantes de variables propias o de su sector de actividad. · props: `{"termino": "En situación normal"}` · tramo [no]: «El flujo de fondos no es susceptible de variaciones significativas ante modificaciones importantes en el comportamiento de las variables tanto propias como vinculadas a su sector de actividad.»
+- **o1 Obligacion** «Considerar grupo de contrapartes conectadas — análisis capacidad de pago» — En el análisis para clasificar al cliente en situación normal deberá tenerse en cuenta, de corresponder, la eventual incidencia en su capacidad de pago de la situación de los demás integrantes del grupo de contrapartes conectadas al que pertenece. · props: `{"tipo": "otra"}` · tramo [exacta]: «En el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la eventual incidencia que en su capacidad de pago pueda tener la situación en la que se encuentran los demás integrantes del grupo de contrapartes conectadas al cual pertenece.»
+- **op1 Operacion** «Clasificación de deudores cartera comercial» — Clasificación de cada cliente de la cartera comercial y sus financiaciones en una de cinco categorías. · props: `{"tipo": "clasificación de deudor"}` · tramo [no]: «Cada cliente, y la totalidad de sus financiaciones comprendidas, se incluirá en una de las siguientes cinco categorías»
+- R: o1 Obligacion —regula→ op1 Operacion
+
+### K — omisiones de T4 a clasificar
+
+- con_marca:7 → entidades: d1 Definicion [no] solap 1.0 contiene | omisiones: —
+
+## Código W
+
+- **d1 Definicion** «Indicador situación normal: liquidez y alta capacidad de pago» — Es uno de los indicadores (no excluyentes) que pueden reflejar la situación normal en la cartera comercial: el cliente presenta una situación financiera líquida, con bajo nivel y adecuada estructura de endeudamiento en relación con su capacidad de ganancia, y muestra una alta capacidad de pago de las deudas (capital e intereses) en las condiciones pactadas generando fondos —medido a través del aná… · props: `{"termino": "En situación normal"}` · tramo [exacta]: «Entre los indicadores que pueden reflejar esta situación se destacan que el cliente: […] presente una situación financiera líquida, con bajo nivel y adecuada estructura»
+- **op1 Operacion** «Análisis para clasificación de deudor cartera comercial» — Análisis de la capacidad de pago del cliente para su clasificación en la cartera comercial · props: `{"tipo": "clasificación de deudores"}` · tramo [exacta]: «En el análisis que se lleve a cabo»
+- **o1 Obligacion** «Considerar incidencia del grupo de contrapartes conectadas» — En el análisis de clasificación deberá tenerse en cuenta, de corresponder, la eventual incidencia en la capacidad de pago del cliente de la situación de los demás integrantes del grupo de contrapartes conectadas al que pertenece. · props: `{"tipo": "otra"}` · tramo [exacta]: «En el análisis que se lleve a cabo deberá tenerse en cuenta, de corresponder, la eventual incidencia que en su capacidad de pago pueda tener la situación en la que se encuentran los demás integrantes del grupo de contrapartes conectadas al cual pertenece.»
+- R: o1 Obligacion —regula→ op1 Operacion
+- R: o1 Obligacion —aplica_a→ Sujeto_rol_obligado_a_clasificar_clasificacion (mención «la entidad»)
+
+### W — omisiones de T4 a clasificar
+
+- con_marca:7 → entidades: d1 Definicion [exacta] solap 1.0 contiene | omisiones: —
+

@@ -176,3 +176,29 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 116 líneas de arriba (`c
 - **07/10/2026 — C1 commiteada en `6e16bb3`; C2 despachada con el «seguí» de la mesa** (fichas cegadas con códigos sellados; M1 y
   M2 por corrida; las 8 relecturas del intento 0 con código). Sigue el FRENO C2: segunda lectura de la mesa y adjudicación de la
   autora sobre las divergencias.
+- **07/10/2026 — revisión del FRENO C2 por la mesa (C2 sin commit al escribir esta nota; C1 en `6e16bb3`).** Reproducido sobre una copia sin
+  enlaces, sin API: cobertura M1 559 = 137 × 4 + 11 y M2 245 = 60 × 4 + 5 desde `lectura_c2.jsonl` (804 líneas; 0 duplicadas, 0 fuera de las
+  bases de T4; 356 fichas); el archivo cerrado de códigos sigue con su sha (`065a272c…`), `fichas_c2.py:136-139` lo verifica y lo carga solo en
+  memoria, ningún script lo imprime y no hay fugas de nombres de brazo en `salida/` ni en `material/`; el resumen por código coincide cifra por
+  cifra con el freno (sumas 137/46/14 por código); doble corrida byte a byte; los 11 sellos de C0 intactos. La corrección del renderizado
+  anterior a toda clasificación: el material no tiene ningún `None` y sus 356 bloques son idénticos a la extracción de las fichas, y la hora
+  de `comun_c2.py` coincide con el sello reescrito (11:07:40 UTC); el orden temporal contra la lectura queda NO VERIFICADO (la lectura no lleva
+  hora). Precisiones al freno: el cambio del mandato durante C2 fue `604640c` (08:24), no `334bdd1`; los tres subtipos de `sin_relacion`
+  están en `tasas_t4.json`, no en `reglas_lectura_c0.md`.
+  - **Reglas de lectura declaradas por la instancia, para la adjudicación de la autora:** (1) una Condicion con `condicion_de` hacia una
+    Operacion cuenta como relación (como en T4); una Excepcion con relación cuenta solo si es cláusula de excepción (`ext::14.5.7`, código K,
+    anotado «a adjudicar»); (2) un supuesto extraído como Restriccion, Obligacion o Definicion sin Condicion es `dentro_de_norma`; (3) en M2,
+    «extraída» exige que el tramo verificado de una entidad cubra el tramo omitido, y lo que está solo en la descripción cuenta como ausente
+    (12 casos, verificados uno por uno; 99 de 99 extraídas con tramo `[exacta]` o `[tokens]`); (4) precedencia de la entidad sobre la omisión
+    para el código N (5 anclas). Decide la autora si las cuatro rigen también para la segunda lectura.
+  - **Cifra complementaria, declarada posterior al resultado:** de las 46 omisiones normativas de T4, 20 tienen su oración en el texto
+    heredado (campo `en` de T4) y 26 en el propio. Extraídas con tramo verificado sobre las 26 del propio: A 16, H 17 (más 2 no verificables),
+    K 16, W 15; sobre las 20 del heredado: A 4, H 5 (más 2), K 3 (más 1), W 5; ausentes en el heredado 15 / 13 / 16 / 15. En M1, T4 marca solo
+    4 de los 137 supuestos con la norma en el heredado (0 con relación en los cuatro códigos): la cifra por texto propio/heredado no se
+    puede separar con lo que T4 guardó, y se declara. La cifra del criterio sellado no cambia (`complementario_heredado_c2.json`, scratchpad).
+  - **Camino crítico:** ningún código llega al criterio en la primera lectura (máximos 96 de 137 en M1 y 22 de 46 en M2, contra 113 y 41;
+    con cuatro corridas, el criterio exige la peor de las dos de cada brazo); la decisión de no cambiar de modelo antes de la tanda 1 no
+    depende de la segunda lectura, que puede mover decenas de clasificaciones pero no 17 en M1 ni 19 en M2 en un mismo código. C2 sale del
+    camino crítico: la segunda lectura a ciegas de la mesa (despacho preparado; material de 87 unidades, 1,5 millones de caracteres) corre
+    después del 08/10/2026 y la autora adjudica las divergencias (estimación: 40 a 80).
+  - Commit de C2 PENDIENTE de la autora.
