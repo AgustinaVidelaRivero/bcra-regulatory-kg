@@ -2,42 +2,58 @@
 """Genera la figura F2 (catálogo de sujetos) del capítulo del esquema, POR
 SCRIPT desde los artefactos sellados — nunca dibujada a mano.
 
-Fuentes (se LEEN, jamás se editan):
-  data/experiment/grafo_v2/esquema_v2_clases.json  — catálogo v2.0: 58 clases
-      + 7 instancias en `clases`, 5 roles de alcance en `roles`.
-  data/experiment/reextraccion_v2/corpus_v2/salida_r1/kg.json — grafo vigente:
-      contra él se verifica que CADA arista dibujada existe (57 subclase_de,
-      7 instancia_de, 17 miembro_de, 1 parte_de) y que el nodo de norma y el
-      del rol existen con las etiquetas que se dibujan.
+Versión 5: el catálogo final y el grafo de la tanda 0 con el perfil final.
 
-Qué muestra la figura (cinco piezas):
+Fuentes (se LEEN, jamás se editan; cada una con candado de sha256, que se
+comprueba sobre los bytes ANTES de interpretar el JSON):
+  data/experiment/catalogo_unico/catalogo_sujetos_r2.json — catálogo r2
+      (commit bd2122d): 110 entradas vigentes (70 clases, 5 instancias y 35
+      roles de alcance) más 5 lápidas, que no se dibujan.
+  data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json —
+      grafo de diez documentos de la tanda 0 con el perfil r2b (commit
+      bbc38dc): contra él se verifica que CADA arista dibujada existe y que
+      las cuatro relaciones de pertenencia (69 subclase_de, 5 instancia_de,
+      51 miembro_de, 1 parte_de) son exactamente las del catálogo.
+
+Qué muestra la figura (cinco piezas, las mismas de la versión 4):
   1. La raíz `Sujetos` con sus 4 hijos directos — es un árbol único.
   2. La rama a profundidad completa que cita la prosa:
      Sujetos → Sujetos regulados → Entidades financieras → Bancos →
-     Bancos comerciales (verificada contra el artefacto: la cadena real es
-     exactamente esa).
+     Bancos comerciales (verificada contra el artefacto).
   3. Ramas hermanas COLAPSADAS: cada rama no expandida es un solo nodo que
-     declara cuántas clases contiene. Dibujadas + colapsadas = 58, asertado.
+     declara cuántas clases contiene. Dibujadas + colapsadas = 70, asertado.
+     Si la rama contiene instancias, el nodo también las declara.
   4. Instancias: `Organismos públicos` con BCRA y SEFyC colgando por
-     `instancia_de`, más un nodo colapsado con las 5 restantes. Forma propia
-     (píldora), distinta de las clases.
+     `instancia_de`, más un nodo colapsado con las demás instancias de esa
+     clase. Forma propia (píldora), distinta de las clases.
   5. La indirección: el rol de alcance «Obligados a clasificar deudores
      (Clasificación)» dibujado FUERA del árbol, con las aristas `miembro_de`
      que entran desde las clases dibujadas que lo componen, y la obligación
-     del punto 1.1 del TO de Clasificación de deudores («Clasificación de
-     clientes según calidad de obligados») apuntándolo con `aplica_a`. El
-     camino norma → rol → clase → subclase se sigue con el dedo.
+     del punto 1.1 del TO de Clasificación de deudores («Clasificar clientes
+     por calidad de obligados») apuntándolo con `aplica_a`. El camino
+     norma → rol → clase → subclase se sigue con el dedo.
 
-Versión 4: el camino resaltado pasa del ejemplo de Protección de usuarios al
-de Clasificación de deudores, el ejemplo que recorre la tesis. El árbol, las
-ramas colapsadas y la leyenda no cambian.
+Cambios de la versión 5 frente a la 4:
+  - Fuentes: el catálogo r2 y el grafo r2b de diez documentos, con candado de
+    sha256; los conteos asertados son los suyos.
+  - Instancias: FMI es instancia de `Organismos internacionales`, una clase
+    que cae dentro del nodo colapsado de `Organismos públicos`; ese nodo la
+    declara («+1 instancia»). El nodo de instancias colapsadas agrupa solo
+    las que son instancia directa de `Organismos públicos`.
+  - Ruteo de `miembro_de` SIN CRUCES: el diente de `Entidades financieras`
+    sube recto desde su borde superior hasta el rol, y los de los otros dos
+    miembros dibujados salen por un canal a la derecha del árbol, por debajo
+    de la última caja de las columnas 3 y 4, suben por fuera de `Bancos
+    comerciales` y se unen al diente de `Entidades financieras` antes de la
+    punta. El script cuenta los cruces sobre los segmentos dibujados y FRENA
+    si hay alguno.
 
 Poda declarada (regla: podar antes que achicar la tipografía): el rol tiene
   6 miembros y se dibujan los 3 que ya son clases dibujadas del árbol; los 3
   restantes (Sociedades de garantía recíproca, Fondos de garantía de carácter
-  público y PSCPP) caen dentro del nodo colapsado «+15 clases» de `Sujetos
-  regulados`. El propio rol lo declara en su caja («6 miembros · 3
-  dibujados»). De las 7 instancias se dibujan 2 y se declaran 5.
+  público y PSCPP) caen dentro del nodo colapsado de `Sujetos regulados`. El
+  propio rol lo declara en su caja («6 miembros · 3 dibujados»). De las 5
+  instancias se dibujan 2 y se declaran 3.
 
 Distinción en blanco y negro (el informe se imprime sin color): las tres
 formas de entrada del catálogo se diferencian por FORMA y TRAZO, no por
@@ -53,8 +69,9 @@ entonces al padre / al rol, como en la generalización UML. En el árbol
 dibujado de izquierda a derecha eso hace que las puntas apunten hacia la
 izquierda; es la dirección del artefacto y así se dibuja.
 
-Salida: figura_catalogo_sujetos.svg. El PNG se exporta aparte con
-rsvg-convert (ver LEEME_figura_catalogo_sujetos.md).
+Salida: figura_catalogo_sujetos.svg, junto al script, o en la ruta que se
+pase con --salida (para regenerar fuera del repositorio). El PDF y el PNG se
+exportan aparte con rsvg-convert (ver LEEME_figura_catalogo_sujetos.md).
 
 Determinístico: sin fechas, sin aleatoriedad, sin rutas absolutas; toda
 iteración sobre conjuntos pasa por sorted() o por listas declaradas. Dos
@@ -63,43 +80,107 @@ corridas producen bytes idénticos.
 
 from __future__ import annotations
 
+import argparse
 import collections
+import hashlib
 import json
 from pathlib import Path
 
 FIG_DIR = Path(__file__).resolve().parent
 REPO = FIG_DIR.parents[2]
 
-CATALOGO = REPO / "data" / "experiment" / "grafo_v2" / "esquema_v2_clases.json"
-KG = (REPO / "data" / "experiment" / "reextraccion_v2" / "corpus_v2"
-      / "salida_r1" / "kg.json")
-SALIDA = FIG_DIR / "figura_catalogo_sujetos.svg"
+CATALOGO = (REPO / "data" / "experiment" / "catalogo_unico"
+            / "catalogo_sujetos_r2.json")
+KG = (REPO / "data" / "experiment" / "reextraccion_v2" / "corpus_tanda0"
+      / "ens_diez_r2b" / "r2" / "kg.json")
+
+_ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+_ap.add_argument("--salida", type=Path,
+                 default=FIG_DIR / "figura_catalogo_sujetos.svg",
+                 help="ruta del SVG de salida (por omisión, junto al script)")
+SALIDA = _ap.parse_args().salida
 
 # ========================================================================== #
 # 1. Carga de los artefactos + candados de versión                           #
 # ========================================================================== #
 
-CAT = json.loads(CATALOGO.read_text(encoding="utf-8"))
-assert CAT["version"] == "2.0", f"catálogo v2.0 esperado, hay {CAT['version']}"
+# Candado de sha256 sobre los bytes de cada fuente: si el archivo cambia, la
+# figura deja de describirlo y esto FRENA antes de leer una sola entrada.
+SHA_CATALOGO = "c3ad15811c7ea5fa2d0f6cbd56dc775c38dcffd0ae8874c22f5f45c1e82d3a83"
+SHA_KG = "a9631a64b422bdae634fb05135373c6f04c6272cdf7acd43a1be9f5b6c1f5f57"
 
-ENTRADAS = {c["id"]: c for c in CAT["clases"]}
-CLASES = [c["id"] for c in CAT["clases"] if c["nivel"] == "clase"]
-INSTANCIAS = [c["id"] for c in CAT["clases"] if c["nivel"] == "instancia"]
-ROLES = {r["id"]: r for r in CAT["roles"]}
 
-assert len(CLASES) == 58, f"58 clases esperadas, hay {len(CLASES)}"
-assert len(INSTANCIAS) == 7, f"7 instancias esperadas, hay {len(INSTANCIAS)}"
-assert len(ROLES) == 5, f"5 roles esperados, hay {len(ROLES)}"
+def leer_con_candado(ruta: Path, sha_esperado: str):
+    datos = ruta.read_bytes()
+    sha = hashlib.sha256(datos).hexdigest()
+    assert sha == sha_esperado, (
+        f"candado de sha256 roto en {ruta.name}: {sha} != {sha_esperado}")
+    return json.loads(datos.decode("utf-8"))
+
+
+CAT = leer_con_candado(CATALOGO, SHA_CATALOGO)
+assert CAT["version"] == "r2", f"catálogo r2 esperado, hay {CAT['version']}"
+
+# Las lápidas (estado distinto de «vigente») son entradas retiradas: quedan en
+# el archivo para que un id viejo no se reutilice, pero no son parte del
+# catálogo vigente y no se dibujan.
+VIGENTES = [s for s in CAT["sujetos"] if s["estado"]["valor"] == "vigente"]
+LAPIDAS = [s for s in CAT["sujetos"] if s["estado"]["valor"] != "vigente"]
+ENTRADAS = {s["id"]: s for s in VIGENTES}
+assert len(ENTRADAS) == len(VIGENTES), "ids repetidos entre las vigentes"
+CLASES = [s["id"] for s in VIGENTES if s["nivel"] == "clase"]
+INSTANCIAS = [s["id"] for s in VIGENTES if s["nivel"] == "instancia"]
+ROLES = {s["id"]: s for s in VIGENTES if s["nivel"] == "rol"}
+N_CLASES = 70
+
+assert len(CLASES) == N_CLASES, f"70 clases esperadas, hay {len(CLASES)}"
+assert len(INSTANCIAS) == 5, f"5 instancias esperadas, hay {len(INSTANCIAS)}"
+assert len(ROLES) == 35, f"35 roles esperados, hay {len(ROLES)}"
+assert len(VIGENTES) == 110, f"110 vigentes esperadas, hay {len(VIGENTES)}"
+assert len(LAPIDAS) == 5, f"5 lápidas esperadas, hay {len(LAPIDAS)}"
 
 HIJOS = collections.defaultdict(list)
 for _cid in CLASES:
     _p = ENTRADAS[_cid].get("padre")
     if _p is not None:
+        assert _p in ENTRADAS, f"{_cid} cuelga de {_p}, que no está vigente"
         HIJOS[_p].append(_cid)          # orden = orden del artefacto
 
 RAICES = [c for c in CLASES if ENTRADAS[c].get("padre") is None]
 assert RAICES == ["Sujeto_sujeto"], f"raíz única esperada, hay {RAICES}"
 RAIZ = RAICES[0]
+
+
+def subarbol(nodo: str) -> int:
+    """Clases del subárbol de `nodo`, el propio nodo incluido."""
+    return 1 + sum(subarbol(h) for h in HIJOS[nodo])
+
+
+# Las cuatro ramas que cuelgan de la raíz, con su tamaño (cada una cuenta su
+# propia clase): 38 + 20 + 6 + 5 = 69, más la raíz, 70.
+RAMAS = {"Sujeto_sujeto_regulado": 38, "Sujeto_contraparte": 20,
+         "Sujeto_organismo_publico": 6, "Sujeto_estructura": 5}
+assert HIJOS[RAIZ] == list(RAMAS), f"ramas de la raíz: {HIJOS[RAIZ]}"
+for _r, _n in RAMAS.items():
+    assert subarbol(_r) == _n, f"rama {_r}: {subarbol(_r)} clases, esperado {_n}"
+assert 1 + sum(RAMAS.values()) == N_CLASES
+
+# Pertenencia declarada en el catálogo: las cuatro relaciones de taxonomía.
+PERTENENCIA_CAT = {
+    "subclase_de": {(c, "subclase_de", ENTRADAS[c]["padre"]) for c in CLASES
+                    if ENTRADAS[c].get("padre") is not None},
+    "instancia_de": {(i, "instancia_de", ENTRADAS[i]["instancia_de"])
+                     for i in INSTANCIAS},
+    "miembro_de": {(m, "miembro_de", r) for r in ROLES
+                   for m in ROLES[r]["rol"]["miembros"]},
+    "parte_de": {(s["id"], "parte_de", s["parte_de"]) for s in VIGENTES
+                 if s.get("parte_de")},
+}
+for _rel, _n in (("subclase_de", 69), ("instancia_de", 5),
+                 ("miembro_de", 51), ("parte_de", 1)):
+    assert len(PERTENENCIA_CAT[_rel]) == _n, (
+        f"catálogo: {_rel} = {len(PERTENENCIA_CAT[_rel])}, esperado {_n}")
+assert all(t in ENTRADAS for _a in PERTENENCIA_CAT.values() for _, _, t in _a)
 
 # ========================================================================== #
 # 2. Qué se dibuja (declarado) y qué se colapsa (derivado)                    #
@@ -116,14 +197,17 @@ for _i, _n in enumerate(CADENA):
         f"{ENTRADAS[_n].get('padre')!r}, esperado {_esperado!r}")
 
 ROL = "Sujeto_rol_obligado_a_clasificar_clasificacion"
-assert len(ROLES[ROL]["miembros"]) == 6
-assert ROLES[ROL]["to"] == "TO_clasificacion_deudores_actual.pdf"
+TO_ROL = "TO_clasificacion_deudores_actual.pdf"
+MIEMBROS_ROL = ROLES[ROL]["rol"]["miembros"]
+assert len(MIEMBROS_ROL) == 6, f"6 miembros esperados, hay {len(MIEMBROS_ROL)}"
+assert ROLES[ROL]["rol_por_to"] == [TO_ROL]
+assert ROLES[ROL]["provenance_esqueleto"]["source_doc"] == TO_ROL
 
 # Norma real del TO de Clasificación de deudores (punto 1.1) que apunta al rol
 # con aplica_a. Su etiqueta y su procedencia se assertan en §3, contra el kg.
 NORMA = ("Obligacion_los_clientes_de_la_entidad_tanto_residentes_en_el_pais_"
-         "de_los_sectores_publico_y_e1946e")
-NORMA_LABEL_ESPERADA = "Clasificación de clientes según calidad de obligados"
+         "de_los_sectores_publico_y_8b3c06")
+NORMA_LABEL_ESPERADA = "Clasificar clientes por calidad de obligados"
 
 CLASES_DIBUJADAS = [
     "Sujeto_sujeto",
@@ -144,7 +228,7 @@ assert len(SET_DIB) == len(CLASES_DIBUJADAS)
 assert SET_DIB <= set(CLASES), "hay un id dibujado que no está en el catálogo"
 
 INSTANCIAS_DIBUJADAS = ["Sujeto_bcra", "Sujeto_sefyc"]
-MIEMBROS_DIBUJADOS = [m for m in ROLES[ROL]["miembros"] if m in SET_DIB]
+MIEMBROS_DIBUJADOS = [m for m in MIEMBROS_ROL if m in SET_DIB]
 
 
 def ancestro_dibujado(nodo: str) -> str:
@@ -161,39 +245,62 @@ for _cid in CLASES:
     if _cid not in SET_DIB:
         GRUPOS[ancestro_dibujado(_cid)].append(_cid)
 
-# Conteo: dibujadas + colapsadas = 58, y los grupos son disjuntos y cubren
+# Conteo: dibujadas + colapsadas = 70, y los grupos son disjuntos y cubren
 # exactamente el complemento de lo dibujado.
 _union = [n for g in GRUPOS.values() for n in g]
 assert len(_union) == len(set(_union)), "los grupos colapsados se solapan"
 assert set(_union) == set(CLASES) - SET_DIB, "los grupos no cubren el resto"
 N_COLAPSADAS = len(_union)
-assert len(CLASES_DIBUJADAS) + N_COLAPSADAS == 58, (
-    f"{len(CLASES_DIBUJADAS)} + {N_COLAPSADAS} != 58")
+assert len(CLASES_DIBUJADAS) + N_COLAPSADAS == N_CLASES, (
+    f"{len(CLASES_DIBUJADAS)} + {N_COLAPSADAS} != {N_CLASES}")
 
-INSTANCIAS_COLAPSADAS = [i for i in INSTANCIAS if i not in INSTANCIAS_DIBUJADAS]
-assert len(INSTANCIAS_DIBUJADAS) + len(INSTANCIAS_COLAPSADAS) == 7
-MIEMBROS_NO_DIBUJADOS = [m for m in ROLES[ROL]["miembros"]
-                         if m not in MIEMBROS_DIBUJADOS]
-assert len(MIEMBROS_DIBUJADOS) + len(MIEMBROS_NO_DIBUJADOS) == len(ROLES[ROL]["miembros"])
+# Instancias. Tres destinos posibles, disjuntos: dibujada; instancia directa
+# de `Organismos públicos` sin dibujar (va al nodo «+N instancias»); o
+# instancia de una clase que cae dentro de un grupo colapsado (la declara el
+# nodo colapsado de ese grupo). Ninguna queda sin contar.
+OP = "Sujeto_organismo_publico"
+assert all(ENTRADAS[i]["instancia_de"] == OP for i in INSTANCIAS_DIBUJADAS)
+INSTANCIAS_COLAPSADAS = [i for i in INSTANCIAS
+                         if i not in INSTANCIAS_DIBUJADAS
+                         and ENTRADAS[i]["instancia_de"] == OP]
+INSTANCIAS_EN_RAMA: dict[str, list[str]] = collections.defaultdict(list)
+for _i in INSTANCIAS:
+    if _i in INSTANCIAS_DIBUJADAS or _i in INSTANCIAS_COLAPSADAS:
+        continue
+    _cls = ENTRADAS[_i]["instancia_de"]
+    assert _cls in set(_union), (
+        f"la instancia {_i} cuelga de {_cls}, que no es dibujada ni colapsada")
+    INSTANCIAS_EN_RAMA[ancestro_dibujado(_cls)].append(_i)
+assert (len(INSTANCIAS_DIBUJADAS) + len(INSTANCIAS_COLAPSADAS)
+        + sum(len(v) for v in INSTANCIAS_EN_RAMA.values()) == len(INSTANCIAS))
+
+MIEMBROS_NO_DIBUJADOS = [m for m in MIEMBROS_ROL if m not in MIEMBROS_DIBUJADOS]
+assert len(MIEMBROS_DIBUJADOS) + len(MIEMBROS_NO_DIBUJADOS) == len(MIEMBROS_ROL)
 # Los miembros no dibujados tienen que estar DENTRO de algún grupo colapsado:
 # la figura no pierde ninguno, los declara.
 assert all(m in set(_union) for m in MIEMBROS_NO_DIBUJADOS)
 
 # ========================================================================== #
-# 3. Verificación contra el grafo vigente                                    #
+# 3. Verificación contra el grafo                                            #
 # ========================================================================== #
 
-_kg = json.loads(KG.read_text(encoding="utf-8"))
+_kg = leer_con_candado(KG, SHA_KG)
 NODOS_KG = {n["id"]: n for n in _kg["nodes"]}
 ARISTAS_KG = {(e["source"], e["relation"], e["target"]) for e in _kg["edges"]}
 _cnt = collections.Counter(e["relation"] for e in _kg["edges"])
-for _rel, _n in (("subclase_de", 57), ("instancia_de", 7),
-                 ("miembro_de", 17), ("parte_de", 1)):
-    assert _cnt[_rel] == _n, f"kg vigente: {_rel} = {_cnt[_rel]}, esperado {_n}"
+for _rel, _n in (("subclase_de", 69), ("instancia_de", 5),
+                 ("miembro_de", 51), ("parte_de", 1)):
+    assert _cnt[_rel] == _n, f"kg: {_rel} = {_cnt[_rel]}, esperado {_n}"
+    # Más fuerte que el conteo: las aristas del grafo son exactamente las que
+    # declara el catálogo, una por una.
+    _kg_rel = {(s, r, t) for s, r, t in ARISTAS_KG if r == _rel}
+    assert _kg_rel == PERTENENCIA_CAT[_rel], (
+        f"kg y catálogo difieren en {_rel}: "
+        f"{sorted(_kg_rel ^ PERTENENCIA_CAT[_rel])[:5]}")
 
 # El rol tiene en el grafo exactamente los miembros que declara el catálogo.
 assert ({s for s, r, t in ARISTAS_KG if r == "miembro_de" and t == ROL}
-        == set(ROLES[ROL]["miembros"])), (
+        == set(MIEMBROS_ROL)), (
     "los miembro_de del rol en el kg no coinciden con el catálogo")
 
 # Aristas EXPLÍCITAS (un trazo dibujado = una arista del grafo).
@@ -211,7 +318,9 @@ ARISTAS_EXPLICITAS.append((NORMA, "aplica_a", ROL))
 
 # Aristas AGREGADAS: el trazo que llega a un nodo colapsado representa las
 # aristas subclase_de (o instancia_de) directas de ese grupo hacia el padre
-# dibujado. Se verifican una por una igual que las explícitas.
+# dibujado. Se verifican una por una igual que las explícitas. Las aristas
+# internas de un grupo (entre dos clases colapsadas, o la instancia_de de una
+# instancia de rama) no tienen trazo: quedan dentro del nodo que las declara.
 ARISTAS_AGREGADAS: dict[str, list[tuple[str, str, str]]] = {}
 for _p, _g in GRUPOS.items():
     ARISTAS_AGREGADAS[_p] = sorted(
@@ -254,23 +363,31 @@ EN_CAMINO = set(CAMINO_NODOS)
 TODAS_LAS_ARISTAS = ARISTAS_EXPLICITAS + [
     a for k in sorted(ARISTAS_AGREGADAS) for a in ARISTAS_AGREGADAS[k]]
 _faltan = [a for a in TODAS_LAS_ARISTAS if a not in ARISTAS_KG]
-assert not _faltan, f"aristas dibujadas ausentes del kg vigente: {_faltan}"
+assert not _faltan, f"aristas dibujadas ausentes del kg: {_faltan}"
+assert len(TODAS_LAS_ARISTAS) == len(set(TODAS_LAS_ARISTAS)), (
+    "una arista quedó representada dos veces")
 
 # Los nodos que no vienen del catálogo (la norma y el rol) existen en el kg
 # y se dibujan con SU etiqueta.
 assert NORMA in NODOS_KG and NODOS_KG[NORMA]["type"] == "Obligacion"
 assert ROL in NODOS_KG and NODOS_KG[ROL]["label"] == ROLES[ROL]["label"]
+for _c in CLASES_DIBUJADAS + INSTANCIAS_DIBUJADAS:
+    assert NODOS_KG[_c]["label"] == ENTRADAS[_c]["label"], (
+        f"etiqueta distinta en el kg y en el catálogo: {_c}")
 
 _pn = NODOS_KG[NORMA]["provenance"]
 NORMA_TIPO = NODOS_KG[NORMA]["type"]
 NORMA_LABEL = NODOS_KG[NORMA]["label"]
 NORMA_PUNTO = _pn["punto"]
 NORMA_PAGS = _pn["paginas"]
-ROL_PUNTO = ROLES[ROL]["provenance"]["location"]
 # La norma es la obligación del punto 1.1 del TO de Clasificación de deudores.
 assert NORMA_LABEL == NORMA_LABEL_ESPERADA, f"etiqueta de la norma: {NORMA_LABEL!r}"
 assert (_pn["to"], _pn["archivo"], NORMA_PUNTO) == (
-    "cla", "TO_clasificacion_deudores_actual.pdf", "1.1"), f"procedencia: {_pn}"
+    "cla", TO_ROL, "1.1"), f"procedencia: {_pn}"
+# Y es la única Obligacion del punto 1.1 de ese TO en el grafo.
+assert [n["id"] for n in _kg["nodes"] if n["type"] == "Obligacion"
+        and n.get("provenance", {}).get("to") == "cla"
+        and n.get("provenance", {}).get("punto") == "1.1"] == [NORMA]
 
 # ========================================================================== #
 # 4. Estilo                                                                  #
@@ -291,7 +408,7 @@ BLANCO = "#ffffff"
 # Tipografía. El piso es duro: ningún texto por debajo de PT_MIN puntos
 # impresos a width=\linewidth. El assert vive en §6, cuando se conoce el
 # ancho final del lienzo.
-LINEWIDTH_MM = 150.0  # a4 con márgenes laterales de 3 cm (main.tex:9)
+LINEWIDTH_MM = 150.0  # a4 con márgenes laterales de 3 cm (docs/tesis/main.tex:13)
 PT_MIN = 8.0
 
 ANCHO_MONO = 0.60    # avance por carácter de la familia monoespaciada
@@ -426,8 +543,11 @@ class Caja:
         self.y = 0.0                  # centro vertical
 
 
+# La norma sube de 300 a 310 px: con 300, «Clasificar clientes por» (300,4
+# px) no entra y la etiqueta se parte en tres líneas, la última de una sola
+# palabra; con 310 queda en dos.
 MAXW = {0: 189, 1: 245, 2: 259, 3: 303, 4: 192,
-        "rol": 400, "norma": 300}
+        "rol": 400, "norma": 310}
 
 CAJAS: dict[str, Caja] = {}
 
@@ -461,13 +581,23 @@ COL_COLAPSADA = {
     "Sujeto_organismo_publico": 2, "Sujeto_estructura": 2,
     "Sujeto_entidad_financiera": 3, "Sujeto_entidad_cambiaria": 3,
 }
+def n_instancias(k: int) -> str:
+    return f"+{k} instancia" + ("" if k == 1 else "s")
+
+
 for _p in CLASES_DIBUJADAS:
     if _p in GRUPOS:
         n = len(GRUPOS[_p])
         # Sin subtítulo: «rama no expandida» ya lo dice la leyenda por la
-        # forma, y el alto que ocupaba se gasta en tipografía.
-        nueva(f"COL:{_p}", "colapsada", f"+{n} clases", [],
-              C_COLAPSADA, COL_COLAPSADA[_p]).colapsa = n
+        # forma, y el alto que ocupaba se gasta en tipografía. La excepción es
+        # la rama que contiene instancias: el subtítulo las declara, para que
+        # la figura no pierda ninguna.
+        _ins = INSTANCIAS_EN_RAMA.get(_p, [])
+        _caja = nueva(f"COL:{_p}", "colapsada", f"+{n} clases",
+                      [n_instancias(len(_ins))] if _ins else [],
+                      C_COLAPSADA, COL_COLAPSADA[_p])
+        _caja.colapsa = n
+        _caja.instancias = len(_ins)
 
 
 def sigla(label: str) -> str:
@@ -489,14 +619,14 @@ for _i in INSTANCIAS_DIBUJADAS:
     _caja = nueva(_i, "instancia", sigla(ENTRADAS[_i]["label"]), [],
                   C_INSTANCIA, 2)
     _caja.label_artefacto = ENTRADAS[_i]["label"]   # queda en el SVG
-nueva("INSTCOL", "colapsada", f"+{len(INSTANCIAS_COLAPSADAS)} instancias",
+nueva("INSTCOL", "colapsada", n_instancias(len(INSTANCIAS_COLAPSADAS)),
       [], C_COLAPSADA, 2).colapsa = len(INSTANCIAS_COLAPSADAS)
 
 # Una sola línea de subtítulo en cada caja de la banda, y estructural: la
 # procedencia completa (documento, punto y páginas) va al epígrafe, que es
 # donde no cuesta alto de figura.
 nueva("ROL", "rol", ROLES[ROL]["label"],
-      [f"{len(ROLES[ROL]['miembros'])} miembros · "
+      [f"{len(MIEMBROS_ROL)} miembros · "
        f"{len(MIEMBROS_DIBUJADOS)} dibujados"],
       C_ROL, "rol")
 # El tipo va como identificador del esquema, sin tilde («Obligacion»), igual
@@ -523,7 +653,7 @@ for _k in range(5):
     X_COL[_k] = _x
     W_COL[_k] = _anchos_col[_k]
     _x += _anchos_col[_k] + (GAPS[_k] if _k < 4 else 0)
-ANCHO_SVG = _x + MARGEN
+X_FIN_ARBOL = _x                 # borde derecho de la última columna
 
 for _cl, _c in CAJAS.items():
     if _c.col not in ("rol", "norma"):
@@ -533,20 +663,30 @@ for _cl, _c in CAJAS.items():
 X_SUB_01 = X_COL[0] + W_COL[0] + 24          # comb de la raíz
 X_SUB_12 = X_COL[1] + W_COL[1] + 24          # combs de nivel 1 → 2
 X_INS_12 = X_COL[1] + W_COL[1] + 50          # instancia_de
-X_MEM_23 = X_COL[2] + W_COL[2] + 18          # miembro_de (hacia el rol)
+X_MEM_23 = X_COL[2] + W_COL[2] + 18          # miembro_de: bajada de los dientes
 X_SUB_23 = X_COL[2] + W_COL[2] + 42          # combs de nivel 2 → 3
 X_SUB_34 = X_COL[3] + W_COL[3] + 24
 
 # Banda superior: norma + rol ---------------------------------------------
 rol, norma = CAJAS["ROL"], CAJAS["NORMA"]
-# El rol cuelga del tronco de miembro_de; la norma se apoya en el margen
-# izquierdo, que el árbol deja libre en esa banda.
-rol.x = X_MEM_23 - rol.w / 2.0
+_ef = CAJAS["Sujeto_entidad_financiera"]
+# El diente de miembro_de de Entidades financieras sube recto desde el centro
+# de su borde superior hasta el borde inferior del rol: es el tramo del camino
+# y no cruza nada, porque encima de esa caja la columna 2 está vacía. El rol
+# se centra sobre esa vertical si la banda lo permite; si no, se corre a la
+# derecha lo justo para que el rótulo de aplica_a entre entre la norma y el
+# rol. La norma se apoya en el margen izquierdo, que el árbol deja libre en
+# esa banda.
+X_EF_MEM = _ef.x + _ef.w / 2.0
 norma.x = float(MARGEN)
 _ancho_rotulo = ANCHO_MONO * FS_REL * len("aplica_a") + 20
+rol.x = max(X_EF_MEM - rol.w / 2.0, norma.x + norma.w + _ancho_rotulo + 24)
 assert rol.x - (norma.x + norma.w) >= _ancho_rotulo, (
     f"el tramo de aplica_a ({f(rol.x - norma.x - norma.w)} px) no alcanza "
     f"para su rótulo ({f(_ancho_rotulo)} px)")
+# La punta entra por el lado plano de abajo del hexágono, no por una esquina.
+assert rol.x + INSET_ROL + 8 <= X_EF_MEM <= rol.x + rol.w - INSET_ROL - 8, (
+    "la vertical de Entidades financieras no cae en el lado inferior del rol")
 Y_BANDA = MARGEN + max(rol.h, norma.h) / 2.0
 rol.y = norma.y = Y_BANDA
 
@@ -567,7 +707,10 @@ FILAS = [
     ["COL:Sujeto_estructura", "Sujeto_estructura"],
 ]
 SEP_FILA = 14
-Y_ARBOL = Y_BANDA + max(rol.h, norma.h) / 2.0 + 42
+# 56 px entre la banda y el árbol (42 en la versión 4): por ese hueco corre el
+# tramo horizontal de miembro_de que une el canal de la derecha con la
+# vertical de Entidades financieras, con aire a los dos lados.
+Y_ARBOL = Y_BANDA + max(rol.h, norma.h) / 2.0 + 56
 
 _y = Y_ARBOL
 Y_FILA = []
@@ -589,12 +732,42 @@ CAJAS["Sujeto_sujeto_regulado"].y = (
 CAJAS["Sujeto_sujeto"].y = (
     CAJAS["Sujeto_sujeto_regulado"].y + CAJAS["Sujeto_estructura"].y) / 2.0
 
+# Ruteo de miembro_de sin cruces -------------------------------------------
+# En la versión 4 los tres dientes confluían en un tronco vertical a la
+# derecha de la columna 2 que subía hasta el rol, y ese tronco cortaba las
+# tres flechas subclase_de que entran por la derecha a Entidades financieras,
+# Entidades cambiarias y Proveedores no financieros de crédito (3 cruces).
+# Ahora:
+#   - Entidades financieras (el miembro más alto, y el del camino) sube recto
+#     desde su borde superior hasta el rol, en X_EF_MEM;
+#   - los demás miembros dibujados sacan su diente por la derecha a X_MEM_23,
+#     bajan hasta Y_MEM_CANAL (el diente del miembro más bajo), y de ahí el
+#     tronco corre a la derecha por debajo de la última caja de las columnas 3
+#     y 4, sube por fuera de Bancos comerciales (X_MEM_CANAL) y vuelve por el
+#     hueco entre la banda y el árbol (Y_MEM_UNION) hasta la vertical de
+#     Entidades financieras, donde se une antes de la punta.
+_otros = [m for m in MIEMBROS_DIBUJADOS if m != "Sujeto_entidad_financiera"]
+assert "Sujeto_entidad_financiera" in MIEMBROS_DIBUJADOS
+assert all(CAJAS[m].col == 2 for m in MIEMBROS_DIBUJADOS)
+assert all(_ef.y < CAJAS[m].y for m in _otros), (
+    "Entidades financieras dejó de ser el miembro más alto: su diente ya no "
+    "puede subir recto hasta el rol")
+Y_MEM_CANAL = max(CAJAS[m].y + OFF_MEM for m in _otros)
+Y_MEM_UNION = (rol.y + rol.h / 2.0 + Y_ARBOL) / 2.0
+_cajas_34 = [c for c in CAJAS.values() if c.col in (3, 4)]
+# El tramo bajo corre por debajo de TODAS las cajas de las columnas 3 y 4.
+assert all(c.y + c.h / 2.0 + 10 < Y_MEM_CANAL for c in _cajas_34), (
+    "el canal de miembro_de pasaría por una caja de las columnas 3 o 4")
+X_MEM_CANAL = max(c.x + c.w for c in _cajas_34) + 18
+ANCHO_SVG = max(X_FIN_ARBOL, X_MEM_CANAL) + MARGEN
+
 # ========================================================================== #
 # 7. Emisión del SVG                                                         #
 # ========================================================================== #
 
 O: list[str] = []
 SEGMENTOS: list = []      # (a, b, grosor, es_leyenda) de cada trazo
+SEG_TRAZOS: list = []     # los del dibujo (no la leyenda), con relación y peine
 ROTULOS: list = []        # solicitudes de rótulo, resueltas al final
 
 
@@ -635,6 +808,8 @@ def dibujar_caja(c: Caja) -> None:
     dat = f' data-nodo="{esc(c.clave)}" data-forma="{c.forma}"'
     if getattr(c, "colapsa", None) is not None:
         dat += f' data-colapsa="{c.colapsa}"'
+    if getattr(c, "instancias", 0):
+        dat += f' data-instancias="{c.instancias}"'
     if getattr(c, "label_artefacto", None):
         dat += f' data-label-artefacto="{esc(c.label_artefacto)}"'
     if en_camino:
@@ -690,9 +865,8 @@ def dibujar_caja(c: Caja) -> None:
 def anotar(hijo_clave, rel, padre_clave):
     """data-* del diente: una arista concreta, o el agregado de un colapsado."""
     if hijo_clave == "INSTCOL":
-        return {"data-rel": rel, "data-dst": ENTRADAS[INSTANCIAS_COLAPSADAS[0]]
-                ["instancia_de"], "data-agrega": len(ARISTAS_AGREGADAS
-                                                    ["__instancias__"])}
+        return {"data-rel": rel, "data-dst": OP,
+                "data-agrega": len(ARISTAS_AGREGADAS["__instancias__"])}
     if hijo_clave.startswith("COL:"):
         padre = hijo_clave[4:]
         return {"data-rel": rel, "data-dst": padre,
@@ -710,12 +884,15 @@ ESTILO_REL = {
 
 
 def polilinea(pts, rel, con_punta=True, datos=None, camino=False,
-              leyenda=False):
+              leyenda=False, grupo=None):
     """Un trazo. `datos` deja en el SVG las anotaciones data-* con las que la
     figura se recuenta sin volver a correr el script (convención de F1).
 
     `camino=True` lo dibuja con la intensidad del camino resaltado y con la
-    punta grande; sin él, el trazo va atenuado."""
+    punta grande; sin él, el trazo va atenuado. `grupo` nombra el peine al
+    que pertenece el trazo: dentro de un peine los trazos se tocan (diente,
+    tronco y punta); entre peines distintos, la guarda de cruces no admite
+    ni cruces ni contactos."""
     color, _, dash, mk = ESTILO_REL[rel]
     if not camino:
         color = mezcla(color, TRAZO_ATENUADO)
@@ -739,6 +916,9 @@ def polilinea(pts, rel, con_punta=True, datos=None, camino=False,
     # grosor, para medir después qué atraviesa.
     for _a, _b in zip(pts, pts[1:]):
         SEGMENTOS.append((_a, _b, an, leyenda))
+        if not leyenda:
+            SEG_TRAZOS.append({"a": _a, "b": _b, "rel": rel, "camino": camino,
+                               "grupo": grupo})
 
 
 SEP_ROTULO = 12.0      # separación mínima entre el rótulo y su tronco
@@ -838,12 +1018,14 @@ def comb(padre_clave, hijos_claves, x_tronco, rel, rotular=False, puerto=0.0,
     y_p = p.y + puerto
     ys = [h.y for h in hs]
     y_lo, y_hi = min(ys + [y_p]), max(ys + [y_p])
+    g = f"{rel}->{padre_clave}"
     for h in hs:
         polilinea([(h.x, h.y), (x_tronco, h.y)], rel, con_punta=False,
-                  datos=anotar(h.clave, rel, padre_clave))
+                  datos=anotar(h.clave, rel, padre_clave), grupo=g)
     if y_hi - y_lo > 0.5:
-        polilinea([(x_tronco, y_lo), (x_tronco, y_hi)], rel, con_punta=False)
-    polilinea([(x_tronco, y_p), (p.x + p.w, y_p)], rel)
+        polilinea([(x_tronco, y_lo), (x_tronco, y_hi)], rel, con_punta=False,
+                  grupo=g)
+    polilinea([(x_tronco, y_p), (p.x + p.w, y_p)], rel, grupo=g)
     if rotular:
         if len(hs) >= 2:
             rotulo(rel, rel, cand_tronco(x_tronco, y_lo, y_hi, hs + [p], lados))
@@ -900,7 +1082,9 @@ PAD_PANEL = 18
 FILA_LEY = 38
 _ultima_der = max(c.y + c.h / 2.0 for c in CAJAS.values()
                   if c.clave not in ("ROL", "NORMA") and c.col in (3, 4))
-Y_PANEL = _ultima_der + 52
+# El panel queda por debajo del tramo bajo del canal de miembro_de, que corre
+# a la altura del diente del miembro dibujado más bajo.
+Y_PANEL = max(_ultima_der + 52, Y_MEM_CANAL + 40)
 ALTO_LINEA_NOTA = FS_LEY + 4
 NOTA_LINEAS = envolver(NOTA_LEY, FS_LEY, W_PANEL - 2 * PAD_PANEL)
 CAMINO_LINEAS = envolver(NOTA_CAMINO, FS_LEY, W_PANEL - 2 * PAD_PANEL)
@@ -987,29 +1171,39 @@ comb("Sujeto_proveedor_no_financiero_de_credito",
 comb("Sujeto_banco", ["Sujeto_banco_comercial"], X_SUB_34, "subclase_de",
      rotular=True)
 
-# miembro_de: los miembros dibujados → tronco → rol
-_c2 = [m for m in MIEMBROS_DIBUJADOS if CAJAS[m].col == 2]
-_c3 = [m for m in MIEMBROS_DIBUJADOS if CAJAS[m].col == 3]
-assert len(_c2) + len(_c3) == len(MIEMBROS_DIBUJADOS)
-for m in _c2:
+# miembro_de: un solo peine hacia el rol, con una sola punta (ruteo en §6).
+_G_MEM = f"miembro_de->{ROL}"
+_Y_ROL_ABAJO = rol.y + rol.h / 2.0
+# Diente de Entidades financieras: recto hacia arriba hasta la unión.
+polilinea([(X_EF_MEM, _ef.y - _ef.h / 2.0), (X_EF_MEM, Y_MEM_UNION)],
+          "miembro_de", con_punta=False, grupo=_G_MEM,
+          datos={"data-rel": "miembro_de", "data-src": "Sujeto_entidad_financiera",
+                 "data-dst": ROL})
+# Dientes de los demás miembros: a la derecha hasta X_MEM_23 y, si no están
+# ya a la altura del canal, abajo hasta él.
+for m in _otros:
     c = CAJAS[m]
-    polilinea([(c.x + c.w, c.y + OFF_MEM), (X_MEM_23, c.y + OFF_MEM)],
-              "miembro_de", con_punta=False,
+    _pts = [(c.x + c.w, c.y + OFF_MEM), (X_MEM_23, c.y + OFF_MEM)]
+    if abs(c.y + OFF_MEM - Y_MEM_CANAL) > 0.5:
+        _pts.append((X_MEM_23, Y_MEM_CANAL))
+    polilinea(_pts, "miembro_de", con_punta=False, grupo=_G_MEM,
               datos={"data-rel": "miembro_de", "data-src": m, "data-dst": ROL})
-for m in _c3:
-    c = CAJAS[m]
-    polilinea([(c.x, c.y + OFF_MEM), (X_MEM_23, c.y + OFF_MEM)],
-              "miembro_de", con_punta=False,
-              datos={"data-rel": "miembro_de", "data-src": m, "data-dst": ROL})
-_y_mem = [CAJAS[m].y + OFF_MEM for m in MIEMBROS_DIBUJADOS]
-polilinea([(X_MEM_23, max(_y_mem)), (X_MEM_23, rol.y + rol.h / 2.0)],
-          "miembro_de")
+# Tronco: por debajo de las columnas 3 y 4, arriba por fuera de Bancos
+# comerciales y de vuelta por el hueco entre la banda y el árbol.
+polilinea([(X_MEM_23, Y_MEM_CANAL), (X_MEM_CANAL, Y_MEM_CANAL),
+           (X_MEM_CANAL, Y_MEM_UNION), (X_EF_MEM, Y_MEM_UNION)],
+          "miembro_de", con_punta=False, grupo=_G_MEM)
+# Tramo común con la punta, de la unión al rol.
+polilinea([(X_EF_MEM, Y_MEM_UNION), (X_EF_MEM, _Y_ROL_ABAJO)], "miembro_de",
+          grupo=_G_MEM)
+# El rótulo, junto a la vertical del camino (a su izquierda, que es lado
+# libre: el tramo de vuelta llega a la unión por la derecha).
 rotulo("miembro_de", "miembro_de",
-       cand_tronco(X_MEM_23, min(_y_mem), rol.y + rol.h / 2.0,
-                   [CAJAS[m] for m in MIEMBROS_DIBUJADOS] + [rol]))
+       cand_tronco(X_EF_MEM, _Y_ROL_ABAJO, _ef.y - _ef.h / 2.0, [_ef, rol]))
 
 # aplica_a: norma → rol
 polilinea([(norma.x + norma.w, rol.y), (rol.x, rol.y)], "aplica_a",
+          grupo=f"aplica_a->{ROL}",
           datos={"data-rel": "aplica_a", "data-src": NORMA, "data-dst": ROL})
 rotulo("aplica_a", "aplica_a",
        cand_tramo(norma.x + norma.w, rol.x, rol.y))
@@ -1020,22 +1214,16 @@ rotulo("aplica_a", "aplica_a",
 # contadas y verificadas— y por eso no lleva anotaciones data-rel: lleva
 # data-camino, que es lo que la distingue.
 _bc, _ba = CAJAS["Sujeto_banco_comercial"], CAJAS["Sujeto_banco"]
-_ef, _no = CAJAS["Sujeto_entidad_financiera"], CAJAS["NORMA"]
+_no = CAJAS["NORMA"]
 polilinea([(_bc.x, _bc.y), (_ba.x + _ba.w, _ba.y)], "subclase_de", camino=True)
 polilinea([(_ba.x, _ba.y), (X_SUB_23, _ba.y), (X_SUB_23, _ef.y),
            (_ef.x + _ef.w, _ef.y)], "subclase_de", camino=True)
-polilinea([(_ef.x + _ef.w, _ef.y + OFF_MEM), (X_MEM_23, _ef.y + OFF_MEM),
-           (X_MEM_23, rol.y + rol.h / 2.0)], "miembro_de", camino=True)
+# miembro_de del camino: el diente de Entidades financieras más el tramo
+# común hasta la punta. El canal de los otros miembros sigue atenuado: el
+# camino no pasa por él.
+polilinea([(X_EF_MEM, _ef.y - _ef.h / 2.0), (X_EF_MEM, _Y_ROL_ABAJO)],
+          "miembro_de", camino=True)
 polilinea([(_no.x + _no.w, rol.y), (rol.x, rol.y)], "aplica_a", camino=True)
-
-# El tramo de tronco que el camino resalta es el que va del rol hasta el
-# diente de Entidades financieras, y solo ese: por debajo de ese punto el
-# tronco sigue atenuado, porque el camino no baja por ahí. Que Entidades
-# financieras sea el miembro más alto es lo que hace que el corte caiga
-# justo en su diente; si dejara de serlo, el resalte cubriría tramo ajeno.
-assert _ef.y + OFF_MEM == min(_y_mem), (
-    "Entidades financieras dejó de ser el miembro más alto: el resalte del "
-    "tronco de miembro_de cubriría tramo que el camino no recorre")
 
 # ---- cajas --------------------------------------------------------------- #
 for _cl in sorted(CAJAS):
@@ -1254,6 +1442,76 @@ for _r in ROTULOS:
             _VIOLA.append(f"el rótulo «{_r['txt']}» pisa la caja {_n}")
 assert not _VIOLA, "trazos o rótulos superpuestos:\n  " + "\n  ".join(_VIOLA)
 
+# GUARDA DE CRUCES (versión 5). Sobre los trazos del dibujo, sin la capa del
+# camino (que repite trazos ya dibujados) ni la leyenda:
+#   - cruce: un tramo horizontal y uno vertical se cortan en un punto
+#     interior a los dos. No se admite ninguno, sea del peine que sea.
+#   - contacto: el extremo de un tramo toca otro tramo de OTRO peine. Dentro
+#     de un peine es la unión de diente, tronco y punta; entre peines se
+#     leería como una unión que el grafo no tiene.
+#   - solape: dos tramos de peines distintos sobre la misma recta.
+TOL = 0.5
+_BASE = [s for s in SEG_TRAZOS if not s["camino"]]
+assert all(s["grupo"] for s in _BASE), "hay un trazo del dibujo sin peine"
+
+
+def _horizontal(s):
+    return abs(s["a"][1] - s["b"][1]) < 0.01
+
+
+def _rango(s):
+    i = 0 if _horizontal(s) else 1
+    return min(s["a"][i], s["b"][i]), max(s["a"][i], s["b"][i])
+
+
+def _fijo(s):
+    return s["a"][1] if _horizontal(s) else s["a"][0]
+
+
+def _en(v, lo, hi, interior):
+    return lo + TOL < v < hi - TOL if interior else lo - TOL <= v <= hi + TOL
+
+
+CRUCES, CONTACTOS, SOLAPES = [], [], []
+for _i in range(len(_BASE)):
+    for _j in range(_i + 1, len(_BASE)):
+        _s, _t = _BASE[_i], _BASE[_j]
+        _mismo = _s["grupo"] == _t["grupo"]
+        if _horizontal(_s) != _horizontal(_t):
+            _h, _v = (_s, _t) if _horizontal(_s) else (_t, _s)
+            _x, _y = _fijo(_v), _fijo(_h)
+            _hlo, _hhi = _rango(_h)
+            _vlo, _vhi = _rango(_v)
+            if _en(_x, _hlo, _hhi, True) and _en(_y, _vlo, _vhi, True):
+                CRUCES.append((round(_x, 1), round(_y, 1), _h["grupo"],
+                               _v["grupo"]))
+            elif (not _mismo and _en(_x, _hlo, _hhi, False)
+                  and _en(_y, _vlo, _vhi, False)):
+                CONTACTOS.append((round(_x, 1), round(_y, 1), _h["grupo"],
+                                  _v["grupo"]))
+        elif not _mismo and abs(_fijo(_s) - _fijo(_t)) < TOL:
+            _lo = max(_rango(_s)[0], _rango(_t)[0])
+            _hi = min(_rango(_s)[1], _rango(_t)[1])
+            if _hi - _lo > -TOL:
+                SOLAPES.append((_s["grupo"], _t["grupo"], round(_fijo(_s), 1)))
+assert not CRUCES, f"{len(CRUCES)} cruces de línea: {CRUCES}"
+assert not CONTACTOS, f"trazos de peines distintos se tocan: {CONTACTOS}"
+assert not SOLAPES, f"trazos de peines distintos se solapan: {SOLAPES}"
+
+# La capa del camino no inventa trazo: cada tramo resaltado cae entero sobre
+# tramos dibujados de la misma relación, en la misma recta.
+for _s in (s for s in SEG_TRAZOS if s["camino"]):
+    _lo, _hi = _rango(_s)
+    _cub = sorted(_rango(t) for t in _BASE
+                  if t["rel"] == _s["rel"] and _horizontal(t) == _horizontal(_s)
+                  and abs(_fijo(t) - _fijo(_s)) < 0.01)
+    _cursor = _lo
+    for _a, _b in _cub:
+        if _a <= _cursor + TOL:
+            _cursor = max(_cursor, _b)
+    assert _cursor >= _hi - TOL, (
+        f"el camino resalta un tramo que no está dibujado: {_s['a']}->{_s['b']}")
+
 add("</svg>")
 
 SALIDA.write_text("\n".join(O) + "\n", encoding="utf-8")
@@ -1262,27 +1520,44 @@ SALIDA.write_text("\n".join(O) + "\n", encoding="utf-8")
 # 8. Reporte de verificación (a stdout, para pegar)                          #
 # ========================================================================== #
 
-print(f"SVG escrito: {SALIDA.relative_to(REPO)}  "
-      f"({f(ANCHO_SVG)} x {f(ALTO_SVG)})")
+try:
+    _salida_txt = SALIDA.resolve().relative_to(REPO).as_posix()
+except ValueError:
+    _salida_txt = SALIDA.name            # fuera del repositorio: solo el nombre
+print(f"SVG escrito: {_salida_txt}  ({f(ANCHO_SVG)} x {f(ALTO_SVG)})")
+print()
+print("FUENTES (candado de sha256 comprobado sobre los bytes)")
+print(f"  catálogo  {CATALOGO.relative_to(REPO).as_posix()}  {SHA_CATALOGO[:16]}…")
+print(f"  grafo     {KG.relative_to(REPO).as_posix()}  {SHA_KG[:16]}…")
+print(f"  catálogo: {len(VIGENTES)} vigentes ({len(CLASES)} clases, "
+      f"{len(INSTANCIAS)} instancias, {len(ROLES)} roles) + {len(LAPIDAS)} lápidas")
+print("  ramas de la raíz (clases, la de la rama incluida): "
+      + ", ".join(f"{ENTRADAS[r]['label']} {subarbol(r)}" for r in RAMAS))
+print("  pertenencia, catálogo = grafo arista por arista: "
+      + ", ".join(f"{r} {len(PERTENENCIA_CAT[r])}" for r in PERTENENCIA_CAT))
 print()
 print("BIYECCIÓN nodo dibujado ↔ entrada del artefacto")
 print(f"  clases dibujadas       : {len(CLASES_DIBUJADAS):2d}")
 for p in CLASES_DIBUJADAS:
     if p in GRUPOS:
+        _ins = INSTANCIAS_EN_RAMA.get(p, [])
         print(f"  colapsada bajo {ENTRADAS[p]['label']:24s}: "
               f"+{len(GRUPOS[p]):2d} clases "
-              f"({len(ARISTAS_AGREGADAS[p])} subclase_de directas)")
+              f"({len(ARISTAS_AGREGADAS[p])} subclase_de directas)"
+              + (f" + {len(_ins)} instancia(s): "
+                 + ", ".join(ENTRADAS[i]["label"] for i in _ins) if _ins else ""))
 print(f"  colapsadas (total)     : {N_COLAPSADAS:2d}")
 print(f"  CONTEO  {len(CLASES_DIBUJADAS)} + {N_COLAPSADAS} = "
       f"{len(CLASES_DIBUJADAS) + N_COLAPSADAS}  (catálogo: {len(CLASES)})")
+_n_rama = sum(len(v) for v in INSTANCIAS_EN_RAMA.values())
 print(f"  instancias  {len(INSTANCIAS_DIBUJADAS)} dibujadas + "
-      f"{len(INSTANCIAS_COLAPSADAS)} declaradas = "
-      f"{len(INSTANCIAS_DIBUJADAS) + len(INSTANCIAS_COLAPSADAS)}  "
+      f"{len(INSTANCIAS_COLAPSADAS)} en el nodo de instancias + "
+      f"{_n_rama} en una rama colapsada = "
+      f"{len(INSTANCIAS_DIBUJADAS) + len(INSTANCIAS_COLAPSADAS) + _n_rama}  "
       f"(catálogo: {len(INSTANCIAS)})")
 print(f"  roles       1 dibujado de {len(ROLES)} del catálogo; "
       f"miembros {len(MIEMBROS_DIBUJADOS)} dibujados + "
-      f"{len(MIEMBROS_NO_DIBUJADOS)} declarados = "
-      f"{len(ROLES[ROL]['miembros'])}")
+      f"{len(MIEMBROS_NO_DIBUJADOS)} declarados = {len(MIEMBROS_ROL)}")
 print("  miembros NO dibujados (y el nodo colapsado que los contiene):")
 for m in MIEMBROS_NO_DIBUJADOS:
     _g = next(p for p in GRUPOS if m in GRUPOS[p])
@@ -1299,6 +1574,15 @@ for _s, _r, _t in CAMINO_ARISTAS:
     print(f"      {_s[:52]:52s} --{_r}--> {_t}")
 print(f"  las 4 son aristas explícitas del dibujo y están en el kg: "
       f"{all(a in ARISTAS_EXPLICITAS and a in ARISTAS_KG for a in CAMINO_ARISTAS)}")
+print(f"  tramos resaltados: {sum(1 for s in SEG_TRAZOS if s['camino'])}, "
+      f"todos sobre tramos dibujados de la misma relación")
+print()
+print("RUTEO DE miembro_de")
+print(f"  vertical de Entidades financieras en x {X_EF_MEM:.1f}, de y "
+      f"{_ef.y - _ef.h / 2.0:.1f} a {_Y_ROL_ABAJO:.1f} (rol de x {rol.x:.1f} "
+      f"a {rol.x + rol.w:.1f})")
+print(f"  canal: bajada en x {X_MEM_23:.1f}, tramo bajo en y {Y_MEM_CANAL:.1f}, "
+      f"subida en x {X_MEM_CANAL:.1f}, unión en y {Y_MEM_UNION:.1f}")
 print()
 print("CAPA DE RÓTULOS (emitida al final, por encima de aristas y cajas)")
 for _r in ROTULOS:
@@ -1310,6 +1594,9 @@ for _r in ROTULOS:
 print(f"  guarda: 0 trazos dentro de una caja (más de {TOL_PENETRACION} px) "
       f"y 0 trazos sobre un rótulo, sobre {len(RECT_CAJAS)} cajas y "
       f"{sum(1 for _s in SEGMENTOS if not _s[3])} segmentos del dibujo")
+print(f"  CRUCES {len(CRUCES)}, contactos entre peines {len(CONTACTOS)}, "
+      f"solapes entre peines {len(SOLAPES)}, sobre {len(_BASE)} tramos de "
+      f"{len({s['grupo'] for s in _BASE})} peines (sin la capa del camino)")
 print()
 print("TIPOGRAFÍA impresa a width=\\linewidth "
       f"({LINEWIDTH_MM:.0f} mm; lienzo {f(ANCHO_SVG)} x {f(ALTO_SVG)} px)")
@@ -1317,13 +1604,14 @@ for _n, _v in _CUERPOS.items():
     print(f"      {_n:20s} {_v} px -> {pt(_v):.2f} pt")
 print(f"  piso exigido {PT_MIN} pt: "
       f"{'CUMPLE' if min(pt(v) for v in _CUERPOS.values()) >= PT_MIN else 'NO'}")
-print(f"  alto impreso: {ALTO_SVG / ANCHO_SVG * LINEWIDTH_MM:.1f} mm")
+print(f"  tamaño impreso: {LINEWIDTH_MM / 10:.1f} x "
+      f"{ALTO_SVG / ANCHO_SVG * LINEWIDTH_MM / 10:.2f} cm")
 print()
 print("INSTANCIAS abreviadas (sigla dibujada / etiqueta del artefacto)")
 for _i in INSTANCIAS_DIBUJADAS:
     print(f"      {sigla(ENTRADAS[_i]['label']):6s} <- {ENTRADAS[_i]['label']}")
 print()
-print("ARISTAS contra el grafo vigente (salida_r1/kg.json)")
+print("ARISTAS contra el grafo (ens_diez_r2b/r2/kg.json)")
 print(f"  conteos globales: subclase_de={_cnt['subclase_de']} "
       f"instancia_de={_cnt['instancia_de']} miembro_de={_cnt['miembro_de']} "
       f"parte_de={_cnt['parte_de']}")
@@ -1333,5 +1621,5 @@ for s, r, t in ARISTAS_EXPLICITAS:
 print(f"  trazos agregados (1 trazo = N aristas hacia el nodo colapsado): "
       f"{len(TODAS_LAS_ARISTAS) - len(ARISTAS_EXPLICITAS)}")
 print(f"  TOTAL aristas representadas: {len(TODAS_LAS_ARISTAS)}  "
-      f"— todas presentes en el kg vigente: "
+      f"— todas presentes en el kg: "
       f"{all(a in ARISTAS_KG for a in TODAS_LAS_ARISTAS)}")
