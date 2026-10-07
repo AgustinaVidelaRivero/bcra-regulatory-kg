@@ -46,19 +46,25 @@ obliga a pagar una unidad solo si mueve alguna de las dos cosas.
   No lleva el id de la unidad, sus páginas, sus sha256, sus conteos ni el detalle de `sub_chunk` o de
   `herencia_recortada` (de este último, solo si está).
 
-**Request de E3** (`prompt_e3.py:357-374`):
+**Request de E3** (`prompt_e3.py:422-439`):
 - modelo, `max_tokens` (4.096) y thinking deshabilitado;
 - el prefijo: instrucciones y calibradores (`:57-145`);
 - el tool schema (`:152-196`);
-- el mensaje (`:317-349`), que lleva:
+- el mensaje (`:384-419`), que lleva:
   - archivo, TO, unidad y título;
-  - las NOTAS: con la forma r2, las de `notas_r2` (`:261-314`), que cubren las tablas confiables, la estructura
-    sin resolver, el encabezado de lista y las omisiones de esquema;
-  - el texto fuente: los encabezados heredados más el texto propio (`comun_e3.py:111-133`);
-  - la salida validada de E1 (`comun_e3.py:140-192`). Con la forma r2, esa salida la traduce `validador_e1`
+  - las NOTAS: con la forma r2, las de `notas_r2` (`:333-381`), que cubren las tablas confiables, la estructura
+    sin resolver, el encabezado de lista, el ítem de lista (U-E3-LISTAS, `:265-323`) y las omisiones de esquema;
+  - el texto fuente: los encabezados heredados más el texto propio (`comun_e3.py:131-160`) y, con la forma r2, en
+    un ítem de lista, el bloque que abre la lista (`comun_e3.py:111-128`);
+  - la salida validada de E1 (`comun_e3.py:167-219`). Con la forma r2, esa salida la traduce `validador_e1`
     (`validador_e1.py:135-183`).
 
-E3 no recibe los bloques de prosa heredados.
+E3 no recibe los bloques de prosa heredados, salvo uno desde U-E3-LISTAS (fila F23b): con la forma r2, en un ítem
+de lista recibe el bloque que abre la lista, con los bloques contiguos del mismo tipo y la misma unidad de origen
+(D2), en el fuente del mensaje y en el de las citas (`ratchet_e3.py:283`). Los cierres que siguen a ese bloque y
+los bloques de prosa de los ancestros siguen sin entrar: para ellos, la frase de las instrucciones de E3 que dice
+que E3 recibe «párrafos introductorios, intersticiales y de cierre» (`prompt_e3.py:57`) no se cumple, y no se
+edita porque es el prefijo de E3 (F10).
 
 **Reintento del ratchet:**
 - el request de E1 del perfil, con el bloque de feedback anexado al mensaje (`ratchet_e3.py:311-374`);
@@ -85,12 +91,13 @@ E3 no recibe los bloques de prosa heredados.
 - Del catálogo r2 (`pyd_r2/code/modelos_r2.py:61-96`) y del manifiesto de sus generados en el ensamblado
   (`corpus_v2/r1_e4.py:522-541`).
 - De la cadena sellada v2 (`esq/code/prompt_congelado.py:156-160`).
-- Del prefijo de E3, desde `924ef4d` (`prompt_e3.py:385-391`).
+- Del prefijo de E3, desde `924ef4d` (`prompt_e3.py:450-456`).
 - De la política r2, en los dos lugares que la leen (`validador_e1.py:102` y `r1_e4.py:499`).
 
 Desde P3c-2 de U-PROMPT-R2 tienen candado: la lista de tablas forzadas (su sha256), las líneas del mensaje de E1 y
 las NOTAS de E3 (el sha256 del mensaje de un conjunto fijo de unidades). Un cambio frena hasta re-sellar (filas F04b,
-F22, F22b y F23).
+F22, F22b y F23). Desde U-E3-LISTAS el conjunto fijo de E3 tiene tres ítems de lista, y frena también un cambio
+del bloque que abre la lista o de la NOTA del ítem (F23b).
 
 ## 2. Las cuatro clases y el principio de cada fila
 
@@ -132,12 +139,12 @@ La enmienda 3 al protocolo quedó firmada el 04/10/2026 (`0cb0c70`; asentado el 
 
 | Fila | Cambio | Dónde entra | Qué obliga a recomputar | Clave E1 | Clave E3 | Clase | Principio | Ancla | Variación del selftest |
 |---|---|---|---|---|---|---|---|---|---|
-| F01 | Texto propio de una unidad de E0, incluidas las correcciones de e0-r2 que cambian texto (números de encabezado corregidos, cola de título estricta, renglones conservados por K) | E0; texto del mensaje de E1 y texto propio del fuente de E3 | E1 y E3 de esa unidad; E2 y ensamblado en código | cambia (esa unidad) | cambia (esa unidad) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:433`; `comun_e3.py:128-132`; `correr_e0.py:86-94` | R01 |
-| F02 | Texto de un bloque heredado de tipo encabezado (título de un ancestro) | E0; herencia del mensaje de E1 y del fuente de E3 de cada unidad que lo hereda | E1 y E3 de todas las unidades que heredan ese encabezado | cambia (las que lo heredan) | cambia (las que lo heredan) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:423-425`; `comun_e3.py:123-127` | R02 |
-| F03 | Texto de un bloque heredado de prosa (intro, cierre, chapeau de sección, intersticial) | E0; mini-chunk del bloque (fila F01) y herencia del mensaje de E1 de los descendientes; no entra al fuente de E3 de los descendientes | E1 del mini-chunk y de los descendientes que lo heredan; E3 de esas unidades porque cambia su salida de E1 | cambia (los descendientes que lo heredan) | no cambia (descendientes, con la salida de E1 fija) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:423-425`; `comun_e3.py:123-125` | R03 |
-| F04 | Marcas de E0 sin cambio de texto: contenido tabular, residual, fórmula y sus evidencias, y los metadatos de las tablas serializadas por e0-r2 (modo, celdas propagadas o con alcance, filas de subtítulo, combinadas sin propagar) | E0; bloque de tablas y marcas del mensaje de E1 y NOTA de E3 | E1 y E3 de las unidades re-marcadas | cambia (las re-marcadas) | cambia (las re-marcadas) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:206-303`; `prompt_e3.py:224-239`, `:274-314` | R04, R04b |
-| F04b | Lista de tablas forzadas a residual (`tablas_residuales_forzadas_r2b.json`): alta o baja de una tabla | al construir el perfil de E1: la lista se lee con su sha256 (candado de U-PROMPT-R2, P3c-2), y el candado del mensaje de E1 la ejercita; re-sellada, el mensaje de E1 y la NOTA de E3 de las unidades que traen la tabla | nada se arma hasta re-sellar la lista y el candado del mensaje; re-sellada, E1 y E3 de las unidades que traen la tabla | frena (candado de la lista) | frena (sin perfil no hay salida validada de E1) | frena; re-sellada, E1 y E3 de las afectadas | 9 | `prompt_r2b.py:180-189` (candado `TABLAS_FORZADAS_SHA256_ESPERADO`), `:464-484`; `prompt_e3.py:274-319` | R32 |
-| F05 | Páginas, id, sha256 y conteos de caracteres de una unidad sin cambio de texto (corrimiento de páginas; ids desambiguados por e0-r2, `BKL-0037`) | E0; procedencia que arma E2 e identidad de los registros persistidos | E2 y ensamblado en código | no cambia | no cambia | solo código sobre lo guardado (difiere del protocolo, `a304b89:82`; lo fija la enmienda 3 al protocolo entre tandas, firmada el 04/10/2026 en `0cb0c70`, §1, punto 1) | 12 | `prompt_r2b.py:395-437` y `prompt_e3.py:322-354` no leen esos campos; `runner_corpus.py:163-175` | R05, R06 |
+| F01 | Texto propio de una unidad de E0, incluidas las correcciones de e0-r2 que cambian texto (números de encabezado corregidos, cola de título estricta, renglones conservados por K) | E0; texto del mensaje de E1 y texto propio del fuente de E3 | E1 y E3 de esa unidad; E2 y ensamblado en código | cambia (esa unidad) | cambia (esa unidad) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:433`; `comun_e3.py:155-159`; `correr_e0.py:86-94` | R01 |
+| F02 | Texto de un bloque heredado de tipo encabezado (título de un ancestro) | E0; herencia del mensaje de E1 y del fuente de E3 de cada unidad que lo hereda | E1 y E3 de todas las unidades que heredan ese encabezado | cambia (las que lo heredan) | cambia (las que lo heredan) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:423-425`; `comun_e3.py:150-154` | R02 |
+| F03 | Texto de un bloque heredado de prosa (intro, cierre, chapeau de sección, intersticial) | E0; mini-chunk del bloque (fila F01) y herencia del mensaje de E1 de los descendientes; no entra al fuente de E3 de los descendientes, salvo el bloque que abre la lista de un ítem, con la forma r2 (F23b) | E1 del mini-chunk y de los descendientes que lo heredan; E3 de esas unidades porque cambia su salida de E1, y el de los ítems cuyo bloque que abre la lista es ese | cambia (los descendientes que lo heredan) | cambia (solo los ítems cuyo bloque que abre la lista es ese, con la forma r2; los demás descendientes, no, con la salida de E1 fija) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:423-425`; `comun_e3.py:150-152`, `:111-128` | R03 |
+| F04 | Marcas de E0 sin cambio de texto: contenido tabular, residual, fórmula y sus evidencias, y los metadatos de las tablas serializadas por e0-r2 (modo, celdas propagadas o con alcance, filas de subtítulo, combinadas sin propagar) | E0; bloque de tablas y marcas del mensaje de E1 y NOTA de E3 | E1 y E3 de las unidades re-marcadas | cambia (las re-marcadas) | cambia (las re-marcadas) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:206-303`; `prompt_e3.py:224-239`, `:333-374` | R04, R04b |
+| F04b | Lista de tablas forzadas a residual (`tablas_residuales_forzadas_r2b.json`): alta o baja de una tabla | al construir el perfil de E1: la lista se lee con su sha256 (candado de U-PROMPT-R2, P3c-2), y el candado del mensaje de E1 la ejercita; re-sellada, el mensaje de E1 y la NOTA de E3 de las unidades que traen la tabla | nada se arma hasta re-sellar la lista y el candado del mensaje; re-sellada, E1 y E3 de las unidades que traen la tabla | frena (candado de la lista) | frena (sin perfil no hay salida validada de E1) | frena; re-sellada, E1 y E3 de las afectadas | 9 | `prompt_r2b.py:180-189` (candado `TABLAS_FORZADAS_SHA256_ESPERADO`), `:464-484`; `prompt_e3.py:333-381` | R32 |
+| F05 | Páginas, id, sha256 y conteos de caracteres de una unidad sin cambio de texto (corrimiento de páginas; ids desambiguados por e0-r2, `BKL-0037`) | E0; procedencia que arma E2 e identidad de los registros persistidos | E2 y ensamblado en código | no cambia | no cambia | solo código sobre lo guardado (difiere del protocolo, `a304b89:82`; lo fija la enmienda 3 al protocolo entre tandas, firmada el 04/10/2026 en `0cb0c70`, §1, punto 1) | 12 | `prompt_r2b.py:395-437` y `prompt_e3.py:384-419` no leen esos campos; `runner_corpus.py:163-175` | R05, R06 |
 | F06 | Prefijo de E1 r2b (texto de sistema: prefijo sellado v3, reemplazos anclados, parche de P3b) | E1; system del request y hash del prefijo en el namespace | E1 de todas las unidades; E3 de todas por la salida nueva de E1; re-sello del perfil (antes frenan los candados: F11b) | cambia (todas, con namespace nuevo) | no cambia (con la salida de E1 fija) | todo | 9 | `prompt_r2b.py:130-159`, `:170-177`; `cliente_e1.py:122-143`; candado `perfil_e1.py:213-218` | R08 |
 | F07 | Tool schema de E1 r2b (`tool_schema_r2.json`) | E1; tools del request y hash del prefijo | igual que F06 | cambia (todas, con namespace nuevo) | no cambia (con la salida de E1 fija) | todo | 9 | `prompt_r2b.py:160`, `:170-172` | R09 |
 | F08 | Modelo o `max_tokens` del request base de E1 (modelo, `max_tokens` de 8.192) | E1; request | E1 de todas; E3 de todas por la salida nueva | cambia (todas) | no cambia (con la salida de E1 fija) | todo | 9 | `runner_corpus.py:91`; `prompt_r2b.py:103`, `:440-450` | R12, R13 |
@@ -147,14 +154,14 @@ La enmienda 3 al protocolo quedó firmada el 04/10/2026 (`0cb0c70`; asentado el 
 | F08e | Temperatura del pedido de E1 del perfil r2b (U-PROMPT-R2, P5): `temperature` 0, fijada en el pedido base, del que salen el primer intento, el reintento por corte, el tercer escalón y el reintento del ratchet | E1; request (`temperature`); no entra al hash del prefijo ni al namespace | E1 de todas; E3 de todas por la salida nueva | cambia (todas) | no cambia (con la salida de E1 fija) | todo | 9 | `prompt_r2b.py:105-110`, `:445`; `cliente_e1.py:441-449`; `ratchet_e3.py:366-368` | R14 |
 | F08f | Reparación acotada de la salida de E1 sin la clave `relations` (U-REEXT-T0, T2-ter; decisión de la autora del 06/10/2026): la forma reparable (dict con `entities` lista y sin la clave `relations`), el momento (agotados los dos reintentos por forma, solo con el perfil r2b) y la condición de aceptación (con `relations = []`, `validador_e1` no rechaza el chunk); la unidad queda marcada (`reparacion_forma`) y contada aparte (`reparadas_forma`) | runner, al cerrar el camino de forma, después de agotar los reintentos; sobre la respuesta guardada, no sobre el request | E3 de las reparadas (reclama las relaciones que falten); E2 de su TO en código | no cambia | cambia (las reparadas: su validación es otra) | E3 de las afectadas | 9 | `runner_corpus.py:542-559`, `:710-720`, `:727-728`, `:816-819` | R18 (la misma variación que F14: la salida validada de E1 alterada en código mueve la clave de E3 y no la de E1); una variación propia de la reparación queda pendiente para la unidad de mantenimiento del runner (checklist, fila P20) |
 | F09 | Versión de código del namespace (`CODE_VER` de E1), con el request idéntico | namespace de la caché | igual que F06, sin cambiar un byte del request | cambia (todas) | no cambia | todo | 9 | `cliente_e1.py:50`, `:139-143` | R15 |
-| F10 | Prompt de E3 (instrucciones, calibradores o tool schema) o su modelo | E3; system, tools y modelo del request, y hash del prefijo en el namespace | E3 de todas las unidades; E1 base sale de la caché; los reintentos de E1 del ratchet cambian donde cambia el feedback | no cambia | cambia (todas, con namespace nuevo si cambia el prefijo; antes frena el candado: F10b) | todo, con E3 de todas (difiere del protocolo, `a304b89:84-85`; lo fija la enmienda 3 al protocolo entre tandas, firmada el 04/10/2026 en `0cb0c70`, §1, punto 2) | 9 | `prompt_e3.py:57-145`, `:152-196`, `:213-217`, `:357-374`; `cliente_e3.py:55-62`; `runner_corpus.py:94` | R16, R17 |
-| F10b | Archivos de datos de los calibradores de E3, con el candado del prefijo de E3 (`924ef4d`) | al importar `prompt_e3` | nada se arma hasta re-sellar el prefijo de E3; re-sellado, F10 | no cambia | frena (candado del prefijo de E3) | frena; re-sellado, todo (F10) | 9 | `prompt_e3.py:385-391`; `calibradores_e3.py:82-84` | R22d |
+| F10 | Prompt de E3 (instrucciones, calibradores o tool schema) o su modelo | E3; system, tools y modelo del request, y hash del prefijo en el namespace | E3 de todas las unidades; E1 base sale de la caché; los reintentos de E1 del ratchet cambian donde cambia el feedback | no cambia | cambia (todas, con namespace nuevo si cambia el prefijo; antes frena el candado: F10b) | todo, con E3 de todas (difiere del protocolo, `a304b89:84-85`; lo fija la enmienda 3 al protocolo entre tandas, firmada el 04/10/2026 en `0cb0c70`, §1, punto 2) | 9 | `prompt_e3.py:57-145`, `:152-196`, `:213-217`, `:422-439`; `cliente_e3.py:55-62`; `runner_corpus.py:94` | R16, R17 |
+| F10b | Archivos de datos de los calibradores de E3, con el candado del prefijo de E3 (`924ef4d`) | al importar `prompt_e3` | nada se arma hasta re-sellar el prefijo de E3; re-sellado, F10 | no cambia | frena (candado del prefijo de E3) | frena; re-sellado, todo (F10) | 9 | `prompt_e3.py:450-456`; `calibradores_e3.py:82-84` | R22d |
 | F11 | Catálogo de sujetos en el bloque del prefijo de E1 o en el enum de `sujeto_id`, incluido un rol de alcance nuevo (sección «Roles de alcance por TO» del bloque) | E1; system y tools | igual que F06; los candados frenan hasta el re-sello (F11b, F13b) | cambia (todas, con namespace nuevo) | no cambia (con la salida de E1 fija) | todo | 9 | `prompt_r2b.py:72`, `:80`, `:137-142`; `modelos_r2.py:692`; `generar_desde_catalogo.py:118`, `:133` | R10, R10b |
 | F11b | Archivos de datos con candado que arman el prefijo o el mensaje de E1 r2b: reemplazos anclados, parche de P3b, bloque de catálogo, tool schema, `rol_por_to_r2.json`, `labels_e2_r2.json` y, por la cadena sellada, `esquema_v2_clases.json` | al construir el perfil de E1 | nada se arma hasta re-sellar; re-sellado, la fila del contenido (F06, F07, F11 o F12) | frena (candado al construir el perfil) | frena (sin perfil no hay salida validada de E1) | frena; re-sellado, la clase de la fila del contenido | 9 | `prompt_r2b.py:77-98`, `:113-118`, `:130-162`; `perfil_e1.py:213-218`; `prompt_congelado.py:156-160` | R21, R22, R22b |
 | F12 | Tabla TO→rol de alcance (`rol_por_to_r2.json`, línea «Alcance de este TO»): una entrada de clase para un TO | E1; mensaje de usuario de las unidades de ese TO; en el ensamblado, el sujeto por defecto de una expresión colectiva | E1 y E3 de las unidades de ese TO; ensamblado en código | cambia (las del TO) | no cambia (con la salida de E1 fija) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:376-392`, `:409`; `r1_e4.py:383`; candado `prompt_r2b.py:81` | R11 |
 | F13 | Catálogo de resolución que lee solo el código, separado del catálogo del request | E4, esqueleto, resolución de sujetos y S19, sobre lo guardado | E4, esqueleto y lo que sigue del ensamblado, en código, cuando la separación exista; hoy no existe (F13b) | no cambia | no cambia | PENDIENTE (R1 de U-RERESOL-CAT) | 12 | `docs/mandatos/URERESOL_CAT_reresolucion_catalogo.md:49-55`; hoy, `r1_e4.py:522-541` | R20 |
 | F13b | Un id nuevo en `catalogo_sujetos_r2.json`, con el código de hoy | candado del catálogo al construir el perfil; re-sellado, el bloque del prefijo y el enum (F11) | nada se arma hasta re-sellar el catálogo y sus generados; re-sellado, E1 y E3 de todas | frena (candado del catálogo) | frena (sin perfil no hay salida validada de E1) | frena; re-sellado, todo (F11) | 9 | `modelos_r2.py:61-96`; `prompt_r2b.py:80`; `r1_e4.py:528-535`; `generar_desde_catalogo.py:118`, `:133`, `:138` | R22c |
-| F14 | Validador de E1 (`validador_e1`), con las correcciones de tipo y predicado que toma de `validador_r2` y su política, la traducción de la forma r2 y el índice del crudo | sobre la salida cruda de E1 guardada, antes de E3: su salida es el mensaje de E3 | validación en código y E3 de las unidades cuya salida validada cambia, porque el ensamblado r2b toma solo lo que vio E3; E1 sale de la caché | no cambia | cambia (las unidades cuya salida validada cambia) | E1 y E3 de las afectadas (difiere del protocolo, `a304b89:79-80`; lo fija la enmienda 3 al protocolo entre tandas, firmada el 04/10/2026 en `0cb0c70`, §1, punto 3, con la regla de cruce del §3, `bd77541`) | 9 | `validador_e1.py:98-118`, `:135-222`, `:388-391`; `comun_e3.py:140-192`; `runner_corpus.py:1188-1195` | R18 |
+| F14 | Validador de E1 (`validador_e1`), con las correcciones de tipo y predicado que toma de `validador_r2` y su política, la traducción de la forma r2 y el índice del crudo | sobre la salida cruda de E1 guardada, antes de E3: su salida es el mensaje de E3 | validación en código y E3 de las unidades cuya salida validada cambia, porque el ensamblado r2b toma solo lo que vio E3; E1 sale de la caché | no cambia | cambia (las unidades cuya salida validada cambia) | E1 y E3 de las afectadas (difiere del protocolo, `a304b89:79-80`; lo fija la enmienda 3 al protocolo entre tandas, firmada el 04/10/2026 en `0cb0c70`, §1, punto 3, con la regla de cruce del §3, `bd77541`) | 9 | `validador_e1.py:98-118`, `:135-222`, `:388-391`; `comun_e3.py:167-219`; `runner_corpus.py:1188-1195` | R18 |
 | F14b | Validador r2 y su política en el ensamblado (`validador_r2.validar` con lo que vio E3) | sobre el crudo guardado del intento que aceptó E3 | entrada r2, E2 y ensamblado en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `validador_r2.py:756`, `:768-769`, `:1084-1086`, `:1301-1303`; `runner_corpus.py:1231-1243`; candados `r1_e4.py:499`, `validador_e1.py:102` | R19 |
 | F15 | E2 r2 y ensamblado (entrada r2, fusión, merge cross-TO, cola humana marcada, omisiones, aristas derivadas que tocan la cola, procedencia, reportes) | después de E3, sobre el crudo guardado y `finales.jsonl` | E2 y ensamblado en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `runner_corpus.py:1151-1206`, `:1246-1296`; `tanda0/code/ensamblar_tanda0.py:917-1076` | R19 |
 | F15b | Umbrales (cuantías, comparador, negación, plazo sin marcador, base) | ensamblado r2 | umbrales y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `ensamblar_tanda0.py:668`, `:1042`; `reglas_comparacion.py:246`, `:502`, `:710` | R19 |
@@ -169,15 +176,18 @@ La enmienda 3 al protocolo quedó firmada el 04/10/2026 (`0cb0c70`; asentado el 
 | F19 | Una unidad agregada o retirada por un cambio de numeración | E0; la unidad nueva y las renumeradas cambian su número, el numeral del texto y la herencia de sus descendientes | E1 y E3 de la unidad nueva, de las hermanas renumeradas y de sus descendientes; una unidad retirada no llama a la API y sale del ensamblado en código | cambia (nueva, renumeradas y descendientes) | cambia (renumeradas y descendientes) | E1 y E3 de las afectadas | 9 | `prompt_r2b.py:402-407`, `:423-425`; `comun_e1.py:63-87` | R24, R07 |
 | F19b | Una unidad agregada o retirada por una regla de segmentación de E0 (release de e0-r2), sin cambio en el PDF | E0 e0-r2: texto, id y herencia de la unidad nueva, y la herencia de las unidades que la citan | E1 y E3 de las unidades nuevas y de las que cambian texto o herencia (F01 a F03); una unidad retirada no llama a la API y sale del ensamblado en código | cambia (nuevas: sin clave previa) | cambia (nuevas) | E1 y E3 de las afectadas | 9 | `correr_e0.py:95-100` (reglas de S0-2), `:327-339` (regla 6), `:576-585` (regla 9), `:1266` (T); `e0_lib.py:352` (regla 8), `:473` (regla 3, ampliación) | R24 (la unidad nueva de la renumeración; sin variación propia: en la tanda 0 no ocurre) |
 | F20 | Partición por corte (perfil r2): una unidad que corta también en el reintento se parte por ítems sin cortar tablas; un cambio del mecanismo (ítems, tope de la herencia de las partes) | runner, con `correr_e0.particionar_por_corte`; partes `::parteK` registradas en `particiones_por_corte.json` | E1 y E3 de las partes; la unidad entera conserva sus claves | cambia (las partes: sin clave previa) | cambia (las partes) | E1 y E3 de las afectadas | 9 | `correr_e0.py:169-229`, `:232-254`; `runner_corpus.py:67-68`, `:473-586`, `:741-750` | R26 |
-| F21 | Recorte de la herencia de e0-r2 (tope U = 13.091 y B = 2.000 caracteres; marca y línea del recorte) | E0 e0-r2: herencia y `herencia_recortada` de las unidades cuya herencia pasa U; línea del recorte en el mensaje de E1 | E1 de esas unidades (en la tanda 0, solo `ric::11.2.3`); su E3 por la salida nueva | cambia (las recortadas) | no cambia (encabezados enteros, con la salida de E1 fija) | E1 y E3 de las afectadas | 9 | `correr_e0.py:77-80`; `e0_lib.py:1808-1883`; `prompt_r2b.py:362-365`, `:421-422` | R27 |
+| F21 | Recorte de la herencia de e0-r2 (tope U = 13.091 y B = 2.000 caracteres; marca y línea del recorte) | E0 e0-r2: herencia y `herencia_recortada` de las unidades cuya herencia pasa U; línea del recorte en el mensaje de E1 | E1 de esas unidades (en la tanda 0, solo `ric::11.2.3`); su E3 por la salida nueva y, con la forma r2, el de los ítems cuyo bloque que abre la lista se recorta | cambia (las recortadas) | cambia (solo los ítems cuyo bloque que abre la lista se recorta, con la forma r2; las demás, no: encabezados enteros, con la salida de E1 fija) | E1 y E3 de las afectadas | 9 | `correr_e0.py:77-80`; `e0_lib.py:1808-1883`; `prompt_r2b.py:362-365`, `:421-422` | R27 |
 | F22 | Plantilla del mensaje de E1 r2b: una línea presente en todo mensaje (cierre, rótulos fijos) | mensaje de usuario; no entra al hash del prefijo ni al namespace; candado del mensaje de E1 (U-PROMPT-R2, P3c-2) al importar `prompt_r2b`: el sha256 del mensaje de las unidades de `candado_mensaje_r2b.json` | nada se arma hasta re-sellar el candado del mensaje; re-sellado, E1 de todas las unidades y E3 de todas por la salida nueva | frena (candado del mensaje de E1) | frena (sin perfil no hay salida validada de E1) | frena; re-sellado, todo | 9 | `prompt_r2b.py:354-361`, `:395-437`; candado `:464-484` | R29b |
 | F22b | Plantilla del mensaje de E1 r2b: una línea condicional (ítem de una lista, mini-chunk a mitad de oración, recorte, rótulos de la herencia, línea de alcance) o la regla que la dispara (`bloque_lista`, `mini_a_mitad`) | mensaje de las unidades que llevan la línea; candado del mensaje de E1 (U-PROMPT-R2, P3c-2), con una unidad de la fixture por rama | nada se arma hasta re-sellar el candado del mensaje; re-sellado, E1 de las unidades que llevan la línea y su E3 | frena (candado del mensaje de E1) | frena (sin perfil no hay salida validada de E1) | frena; re-sellado, E1 y E3 de las afectadas | 9 | `prompt_r2b.py:306-353`, `:376-392`; candado `:464-484` | R29 |
-| F23 | NOTA del mensaje de E3 en la forma r2 (tablas confiables, estructura sin resolver, encabezado de lista, omisiones de esquema) | mensaje de E3; no entra al prefijo de E3 ni a su namespace; candado del mensaje de E3 (U-PROMPT-R2, P3c-2) al importar `prompt_e3`: el sha256 del mensaje de los casos de `candado_mensaje_e3.json` | nada se arma en E3 hasta re-sellar el candado del mensaje de E3; re-sellado, E3 de las unidades que llevan la nota; E1 sale de la caché; los reintentos cambian donde cambia el feedback | no cambia | frena (candado del mensaje de E3) | frena; re-sellado, E1 y E3 de las afectadas | 9 | `prompt_e3.py:246-264`, `:274-319`; candado `:394-428` | R30 |
+| F23 | NOTA del mensaje de E3 en la forma r2 (tablas confiables, estructura sin resolver, encabezado de lista, omisiones de esquema) | mensaje de E3; no entra al prefijo de E3 ni a su namespace; candado del mensaje de E3 (U-PROMPT-R2, P3c-2) al importar `prompt_e3`: el sha256 del mensaje de los casos de `candado_mensaje_e3.json` | nada se arma en E3 hasta re-sellar el candado del mensaje de E3; re-sellado, E3 de las unidades que llevan la nota; E1 sale de la caché; los reintentos cambian donde cambia el feedback | no cambia | frena (candado del mensaje de E3) | frena; re-sellado, E1 y E3 de las afectadas | 9 | `prompt_e3.py:246-264`, `:333-381`; candado `:459-495` | R30 |
 | F24 | Lazo de E3 (ratchet): plantilla del feedback y aviso del reintento, criterio de bloqueantes y guarda estructural (LAUDO B y su enmienda), lectura del veredicto como texto, tope de reintentos | fase E3: decide qué unidades reintentan y arma su request de re-extracción | E1 de reintento de las unidades con faltantes bloqueantes y su re-verificación; el primer intento de E1 y la primera verificación de E3 salen de la caché | cambia (solo los requests de reintento) | no cambia (primera verificación) | E1 y E3 de las afectadas | 9 | `ratchet_e3.py:96-110`, `:230-304`, `:311-374`; `runner_corpus.py:888-894` | R31 |
+| F23b | Bloque que abre la lista y NOTA del ítem en el mensaje de E3, con la forma r2 (U-E3-LISTAS): la regla que elige el bloque (el de `LINEA_ITEM` en E1 y los contiguos del mismo tipo y la misma unidad de origen, D2), que entra al fuente del mensaje y al de las citas, y el texto de la NOTA del ítem | mensaje de E3 de los ítems y verificación de sus citas en el lazo (`ratchet_e3.py:283`); no entra al prefijo de E3 ni a su namespace; candado del mensaje de E3, con tres ítems en su fixture desde U-E3-LISTAS | nada se arma en E3 hasta re-sellar el candado del mensaje de E3; re-sellado, E3 de los ítems (1.054 en la tanda 0, A3r); E1 sale de la caché; cambia qué reclamos tienen cita verificada y, con eso, qué unidades reintentan o van a la cola | no cambia | frena (candado del mensaje de E3) | frena; re-sellado, E3 de las afectadas (los ítems) | 9 | `comun_e3.py:111-128`, `:148-152`, `:255-257`; `prompt_e3.py:265-323`, `:375-378`, `:398`, `:407`; `ratchet_e3.py:283`; candado `prompt_e3.py:459-495` | R33, R33b, A3r |
 
 Notas a filas:
 
-- **F03.** El mini-chunk del bloque cambió su propio texto: para él rige F01.
+- **F03.** El mini-chunk del bloque cambió su propio texto: para él rige F01. Desde U-E3-LISTAS, con la forma r2, el
+  bloque que abre la lista de un ítem entra al fuente de E3 (F23b): cambiar su texto mueve también la clave de E3 de
+  esos ítems, con la salida de E1 fija (R03; en la muestra, `docvig::3.3.1`, `ext::7.1.1.3` y `polcre::2.1.1`).
 - **F04 y F04b.** Con una tabla serializada, la NOTA de E3 depende de la marca de residual, no de la de contenido
   tabular (`prompt_r2b.py:206-208`): R04 invierte las dos. Un alta en la lista de tablas forzadas a residual tiene
   el efecto de F04 sobre las unidades que traen la tabla, como dice la nota del 03/10/2026 al protocolo (§6). El
@@ -276,12 +286,29 @@ Notas a filas:
   (57 archivos byte a byte). Las unidades que cambian texto o herencia por la misma regla van por F01 a F03.
 - **F20.** En la tanda 0, la única unidad grande que se puede partir por ítems es `cap::4.2.1.2` (borrador del
   mandato de U-REEXT-T0, T1). El selftest la parte en 2 partes, cada una con su propia clave en E1 y en E3 (R26).
+- **F21.** Desde U-E3-LISTAS, un recorte que toca el bloque que abre la lista de un ítem cambia también su E3 con la
+  forma r2, aunque la salida de E1 no cambie, porque ese bloque entra al fuente de E3 (R27; en la muestra,
+  `ext::7.1.1.3` y `polcre::2.1.1`).
 - **F22, F22b y F23.** Las líneas fijas del mensaje de E1 y las NOTAS del mensaje de E3 no entran al hash del
   prefijo ni al namespace. Desde P3c-2 de U-PROMPT-R2 tienen candado: el sha256 del mensaje de un conjunto fijo de
   unidades. Un cambio frena hasta re-sellar (R29, R29b y R30). Re-sellado, una línea de todo mensaje hace pagar E1 de
-  todas las unidades, y una línea condicional, solo las unidades que la llevan.
+  todas las unidades, y una línea condicional, solo las unidades que la llevan. La NOTA del ítem de una lista
+  (U-E3-LISTAS) va con el bloque que abre la lista, en la fila F23b.
+- **F23b.** Fila de U-E3-LISTAS (mandato firmado en `d9d8888`; enmienda 1, nota al pie del 06/10/2026; NOTA del
+  ítem, versión 2, nota al pie del 07/10/2026). El bloque que abre la lista y la NOTA del ítem van en el mensaje de
+  E3 solo con la marca de la forma r2, como `notas_r2`: sin la marca, el mensaje es el de siempre, byte a byte.
+  Desde U-E3-LISTAS, la fixture del candado del mensaje de E3 tiene 19 casos: las 6 unidades de P3c-2 con y sin la
+  marca, el sintético, y tres ítems con y sin la marca (`ext::3.5.6.1`, con el bloque intro; `cap::6.8.3.1`, con el
+  bloque encabezado; `pro::2.3.6.1`, con el bloque intro partido en dos fragmentos). Un cambio de la regla o de la
+  NOTA frena hasta re-sellar (R33, R33b); re-sellado, pagan E3 los ítems. A3r lo mide sobre la tanda 0: con el código
+  vigente, las claves de E3 de los no ítems están en la db y las ausentes son exactamente las de los ítems (D5). La
+  verificación de citas recibe la marca de la forma r2 (`ratchet_e3.py:283`, la única línea del ratchet que cambia,
+  D1): una cita al bloque que abre la lista queda verificada (F24).
 - **F24.** El tope es de un reintento por unidad (`ratchet_e3.py:96`). Un cambio en el criterio de bloqueantes
-  cambia qué unidades reintentan, no la clave de las que ya reintentaron con el mismo feedback.
+  cambia qué unidades reintentan, no la clave de las que ya reintentaron con el mismo feedback. Desde U-E3-LISTAS
+  (F23b), con la forma r2 la cita a un bloque que abre la lista verifica (`ratchet_e3.py:283`): cambia qué reclamos
+  tienen cita verificada y, con eso, qué unidades reintentan o van a la cola por veredicto inutilizable, sin mover la
+  clave de la primera verificación.
 
 ### Diferencias con el perfil sellado (`v3_b54`, tanda 0)
 
@@ -296,7 +323,7 @@ selftest, las mismas de `e18d616`):
 - **F13:** el catálogo de E4, del esqueleto y de S19 es `esquema_v3_clases.json`, que el armado no abre (V20): solo
   código.
 - **F14:** solo código, con la re-verificación en E3 opcional, porque no hay índices de lo que vio E3.
-- **Solo r2b:** F04b, F08c, F08d, F08e, F16b, F20, F21, F22, F22b y F23.
+- **Solo r2b:** F04b, F08c, F08d, F08e, F16b, F20, F21, F22, F22b, F23 y F23b.
 
 ## 4. El selftest
 
@@ -320,7 +347,7 @@ Qué hace (detalle en el docstring del script):
   de la autora al firmar el mandato de U-TABLA-REPROC). Se corre de nuevo cuando existan las dbs de U-REEXT-T0.
   **[06/10/2026, T5 de U-REEXT-T0]** Las dbs existen (`corpus_tanda0/salida_r2b/`, extracción en `3d793aa`, `4ab7a0a` y
   `ad99ac7`): corrido con `--salida-r2b`, A1r y A3r dan OK (resultado abajo).
-- **R00 a R32.**
+- **R00 a R33b.**
   - Una entrada por vez, sobre una muestra fija de trece unidades de `salida_tanda0_r2b/` (`MUESTRA_R2B`): las
     diez de M1, dos con tablas serializadas y la única con la herencia recortada.
   - La clave de E3 se arma con una salida sintética mínima de E1 en la forma r2, validada con `validador_e1` y el
@@ -346,7 +373,13 @@ Resultado (salida en `selftest_clave_cache.json`):
   copia y reproducido por la revisión; `data/experiment/reext_t0/t5/comandos_t5.sh`, bloque 5): A1r, 2.449 de 2.449 claves de E1
   presentes en la db r2b (8 en `-rforma1` y 2 en `-rforma2`); A3r, 2.440 pares presentes. Antes de esa salida eran
   NO_VERIFICABLE, con 0 claves en el namespace r2b.
-- R00 a R32: las 41 variaciones dan lo esperado, unidad por unidad.
+- **[07/10/2026, O2 de U-E3-LISTAS]** A3r cambia de regla (D5, enmienda 1 al mandato): recomputa con el código
+  vigente las 2.440 claves de E3 de la tanda 0 y exige las de los no ítems presentes y las de los ítems ausentes,
+  exactamente. Resultado: OK, 1.386 de no ítems presentes y 1.054 ausentes, que son los 1.054 ítems
+  (`prompt_r2b.es_item`), listados en el JSON; ningún no ítem ausente ni ningún ítem presente.
+- R00 a R33b: las 44 variaciones dan lo esperado, unidad por unidad. Hasta U-E3-LISTAS eran 42, R00 a R32 (este
+  texto decía 41, y el JSON de `0a3ac81` tiene 42). U-E3-LISTAS suma R33 y R33b, que frenan (F23b), y R03 y R27
+  esperan el cambio de la clave de E3 en los ítems cuyo bloque que abre la lista tocan (F03 y F21).
 
 **Inventario:**
 - Los procesos hijo sin alteración reproducen las claves del padre, en los dos perfiles.
@@ -354,7 +387,7 @@ Resultado (salida en `selftest_clave_cache.json`):
   requests.
 - `validador_e1` y `validador_r2` se cargan solo al validar la salida de E1.
 
-**Contraste con esta tabla:** OK, en las 42 filas (41 hasta la fila F19b, sumada el 06/10/2026 en S0-2 de U-SEG-OFICIAL; selftest de claves OK sobre copia con la fila).
+**Contraste con esta tabla:** OK, en las 43 filas (41 hasta la fila F19b, sumada el 06/10/2026 en S0-2 de U-SEG-OFICIAL; selftest de claves OK sobre copia con la fila; 43 con la fila F23b de U-E3-LISTAS, O2, 07/10/2026).
 
 ## 5. Costo de referencia por clase
 

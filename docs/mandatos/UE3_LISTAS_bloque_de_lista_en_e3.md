@@ -145,3 +145,33 @@ firmar en `9bca986`) y no cambia.
     prototipo, los 1.054 mensajes generados y la prueba en seco: 0 coincidencias); en la versión 2 las dos palabras van con su espacio.
   - El texto aprobado, la tabla cláusula → regla actualizada (filas C5a, C6, C5b, C5b′ y C7) y el «seguí» de O2 (versión 2: los valores del
     candado de O1 se recomputan con esta NOTA, D2 y el tercer ítem) están en el paquete de la mesa; O2 pone el texto en `prompt_e3.py`.
+- **07/10/2026 — revisión del FRENO O2 por la mesa (O2 sin commit al escribir esta nota; O1 en `5a97e60`).** Reproducido sobre una copia sin
+  enlaces de `6e611d6` más los ocho archivos del árbol: diffs iguales a los parches del paquete (`ratchet_e3.py` solo la línea 283;
+  `prompt_e3.py` con la NOTA v2 en sus dos variantes, byte a byte iguales al texto aprobado, 2.361 y 2.586 caracteres; `INSTRUCCIONES`,
+  calibradores, tool schema y `PREFIJO_HASH` `21a836c7de6d` sin tocar). Los dos valores del candado recomputados en dos procesos con un script
+  propio: fixture `079d2489…` (sha de los bytes de `candado_mensaje_e3.json`, 131.563 bytes) y mensaje `66bc8656…`; 19 casos de 9 unidades.
+  Medición byte a byte igual: cambian los 1.054 ítems; iguales los 1.386 no ítems, las 2.440 / 2.427 / 1.762 unidades sin marca y los 13
+  casos viejos; 1.015 = 982 + 22 + 11; D2 23 ítems, 43 fragmentos, 8.819 caracteres; +2.809.223 caracteres. Selftests sobre la copia:
+  `selftest_e3` 111/111, `selftest_clave_cache` OK (44 variaciones, 43 filas de contraste, A3r con 1.386 presentes y 1.054 ausentes que
+  son exactamente los ítems), `selftest_r2` 18/18, `selftest_r3` 124/124 (la versión de R2-2 que está en el árbol), `selftest_dirigida_tanda0`
+  28/28. Tabla: F23b después de F24 citando R33/R33b/A3r, F03 y F21 con la celda de E3 en «cambia (solo los ítems…)», §4 con 44 variaciones
+  (recontadas), anclas verificadas. Repo sin cambios durante la verificación; 2.213 `.pyc`.
+  - **Costo (corrección de redacción del freno).** Los 918.107 tokens agregados a USD 2 por millón (entrada de `claude-sonnet-5`,
+    `runner_corpus.py:94-95`) son USD 1,84 por corrida; los USD 2,06 salen de otra base: 1.182 llamadas de E3 (1.054 ítems más 128
+    re-verificaciones) × 871,1 tokens × 2 por millón. Las dos cifras son correctas; la frase del freno las mezcla. Contra los USD 1,76 de
+    D4 (FRENO O1, mismo método): la suba son +0,296 por la NOTA v2 (404.263 caracteres más) y +0,0065 por D2 (8.819).
+  - **Check K de `selftest_e3.py` quedó más débil** (hallazgo de la mesa; `trabajo52/out/verif_check_k.txt` en el scratchpad). Antes exigía el
+    mensaje de `pro::2.7.1` entero igual con y sin la marca; ahora compara la cabecera con las NOTAS, lo posterior a «ELEMENTOS EXTRAÍDOS» y
+    solo la CONTENCIÓN del fuente con bloque. Con mensajes manipulados pasan en verde una línea extra tras la cerca, otro rótulo de la
+    sección del fuente y el fuente duplicado, que antes frenaban. Lo cubren el candado M (19 casos, sha del mensaje) y N1/N5, así que ningún
+    cambio en el mensaje pasa inadvertido en conjunto, pero K ya no vale por sí solo. Corrección propuesta, en el primer commit de O3 o en
+    uno propio, USD 0: K compara también la franja del fuente de `m_r2` contra la de `m_v3` con el fuente sustituido, o usa para K un
+    chunk con flags legados que no sea ítem (la comparación entera vuelve a valer). Decide la autora.
+  - **El conteo de D3 no está en el repo:** `ue3_o3_d3_repite_norma.py` quedó solo en el paquete (`6646f7e6…`), con su selftest 5/5
+    reproducido sobre la copia. O3 lo necesita: entra al repo en `data/experiment/e3_listas/` con el commit de O2 (el comando de commit de
+    la mesa lo copia desde el paquete verificando su sha256) o lo copia la instancia de O3 como primer paso.
+  - **Hallazgo lateral, error propio de la mesa en S0-2 de U-SEG-OFICIAL:** `selftest_clave_cache.json` quedó en `26c6502` con 41 filas de
+    contraste mientras la tabla ya tenía 42 (F19b): la verificación de F19b corrió el selftest sobre una copia y dio OK, pero el JSON
+    regenerado no entró al commit. El JSON de O2 (43 filas, con F23b) lo deja al día; la discrepancia no afectó ninguna clave.
+  - Los valores del candado quedan PROPUESTOS hasta la confirmación de la autora; el commit de O2 y el «seguí» de O3 (preparado por la
+    mesa, con los valores y el tope de USD 1) son PENDIENTES de la autora.

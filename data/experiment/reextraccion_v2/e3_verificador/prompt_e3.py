@@ -262,6 +262,65 @@ NOTA_E3_ENCABEZADO_LISTA = (
     "Sí es faltante, si no fue extraído, lo que el encabezado enuncia aparte de la lista: una norma propia, "
     "una excepción a la lista entera, la norma principal cuando los ítems son sus supuestos o condiciones, o la "
     "norma y su excepción cuando los ítems son las condiciones de esa excepción.")
+# U-E3-LISTAS, pieza 2: NOTA del ítem de una lista, en espejo de NOTA_E3_ENCABEZADO_LISTA (solo con la forma r2).
+# Texto aprobado por la autora (versión 2, 07/10/2026; nota al pie del mandato). Cada cláusula corresponde a una regla
+# del prefijo de E1 r2b y no agrega criterios que E1 no tenga (tabla cláusula → regla del FRENO O2 de U-E3-LISTAS):
+# R28, R29, R30 y R16 (e1_extractor/prompt_r2b_reemplazos.json:12, :108, :114, :120) y P3C-b1, b2, b3, c1, c2, d1 y d2
+# (e1_extractor/prompt_r2b_parche_p3c.json:48 a :90). El tipo de lista no lo decide el código (E1 lo decide leyendo);
+# el tipo del bloque sí (R30 distingue la línea de título de un punto, sin unidad propia, del párrafo con unidad propia)
+# y elige las dos partes que cambian: NOTA_E3_ITEM_COMPUESTA y NOTA_E3_ITEM_UNIDAD.
+NOTA_E3_ITEM_LISTA = (
+    "NOTA: esta unidad es un ítem de la lista que abre el bloque [{tipo} | punto {punto}] del texto fuente, que "
+    "termina en «:». En esta extracción la norma del ítem se compone con ese encabezado, según lo que sean los "
+    "ítems:\n"
+    "- contenidos (lo que hay que hacer, informar, incluir o cumplir, o los miembros de una clase que el encabezado "
+    "nombra): el ítem lleva la norma entera, con el sujeto, la modalidad y el cuantificador del encabezado (si se "
+    "exigen todos los ítems o basta cualquiera) y con lo que el encabezado fija para cada ítem (un plazo, un ámbito, "
+    "una condición común a todos);\n"
+    "- supuestos, condiciones o requisitos de una norma que el encabezado enuncia: el ítem es una Condicion por cada "
+    "supuesto;\n"
+    "- lo que queda afuera: el encabezado nombra una clase o un conjunto y anuncia los miembros que se excluyen, y "
+    "cada ítem nombra uno de esos miembros (una clase de operaciones, de sujetos o de bienes): el ítem es una "
+    "Excepcion que dice qué miembro queda afuera y de qué norma; si agrega una salvedad que devuelve a la norma una "
+    "parte de ese miembro, esa parte va en el mismo ítem como la norma que vuelve a regir, con una Condicion por "
+    "condición;\n"
+    "- las condiciones de una sola excepción: el encabezado enuncia la norma y una única salvedad, y cada ítem "
+    "describe un supuesto de esa salvedad, no un miembro: el ítem es una Condicion de esa excepción, con su "
+    "cuantificador (si basta uno o se exigen todos){compuesta}. Si no queda claro si los ítems son miembros que "
+    "quedan afuera o supuestos de una sola salvedad, cualquiera de las dos formas vale y no es faltante.\n"
+    "Lo que el ítem toma del encabezado no es contenido agregado. La norma del encabezado no se emite como entidad "
+    "aparte en el ítem: con contenidos es la norma compuesta; en los demás casos va nombrada en la descripción. "
+    "{unidad_del_bloque} Que esa norma falte aquí como entidad aparte, o que el ítem no tenga relación hacia ella, no "
+    "es faltante.\n"
+    "Sí es faltante lo compuesto que no coincide con el encabezado: otro sujeto, otra modalidad u otro cuantificador; "
+    "lo que el encabezado fija para cada ítem y el ítem no lleva; una Excepcion que no dice qué queda afuera y de qué "
+    "norma; una Condicion que habla de un supuesto en su etiqueta y de otro en su descripción o en sus umbrales.")
+NOTA_E3_ITEM_COMPUESTA = {
+    "propia": "",
+    "linea_de_titulo": ("; como el encabezado es la línea de título, con supuestos alternativos el ítem lleva la "
+                        "excepción compuesta con su supuesto"),
+}
+NOTA_E3_ITEM_UNIDAD = {
+    "propia": ("Ese bloque tiene unidad propia: allí se extrae lo que el encabezado enuncia aparte de la lista (la "
+               "norma principal, la norma y su salvedad, o lo que abarca la clase)."),
+    "linea_de_titulo": ("Ese bloque es la línea de título del punto, sin unidad propia: con supuestos alternativos "
+                        "(basta cualquiera), el ítem lleva la norma compuesta con su supuesto; si se exigen juntos o no "
+                        "queda claro, el ítem es solo una Condicion y esa norma no se extrae en ningún ítem."),
+}
+
+
+def nota_item_lista(chunk: dict) -> str | None:
+    """U-E3-LISTAS, pieza 2: la NOTA del ítem, con el rótulo del bloque que abre la lista (prompt_r2b.bloque_lista, la
+    regla de LINEA_ITEM en E1); None si la unidad no es un ítem. El bloque `encabezado` es la línea de título del
+    punto (sin unidad propia); los demás tienen unidad propia."""
+    import prompt_r2b as R  # noqa: PLC0415 — solo en la forma r2
+    i = R.bloque_lista(chunk)
+    if i is None:
+        return None
+    h = chunk["herencia"][i]
+    clave = "linea_de_titulo" if h["tipo"] == "encabezado" else "propia"
+    return NOTA_E3_ITEM_LISTA.format(tipo=h["tipo"], punto=h["unidad_origen"], compuesta=NOTA_E3_ITEM_COMPUESTA[clave],
+                                     unidad_del_bloque=NOTA_E3_ITEM_UNIDAD[clave])
 CATEGORIAS_NOTA_OMISIONES = ("meta_normativo", "fuera_de_tipos", "relacion_sin_predicado")
 
 
@@ -278,6 +337,7 @@ def notas_r2(chunk: dict, validacion: dict | None = None) -> list[str]:
         tablas con estructura sin resolver y, si hay residual o fórmulas, la NOTA de los flags; sin tabla
         serializada confiable, la NOTA de siempre;
       - encabezado de lista: la unidad no emite nodo por el solo anuncio ni lo que se compone en los ítems;
+      - ítem de lista (U-E3-LISTAS): la NOTA del ítem, con el bloque que abre la lista;
       - omisiones declaradas de las categorías que el esquema deja afuera (P3b, punto i)."""
     import prompt_r2b as R  # noqa: PLC0415 — solo en la forma r2 (e1_extractor en sys.path vía comun_e3)
     notas: list[str] = []
@@ -314,6 +374,8 @@ def notas_r2(chunk: dict, validacion: dict | None = None) -> list[str]:
         notas.append(" ".join(partes))
     if R.es_encabezado_de_lista(chunk):
         notas.append(NOTA_E3_ENCABEZADO_LISTA)
+    elif R.es_item(chunk):
+        notas.append(nota_item_lista(chunk))
     if _declara_omisiones_de_esquema(validacion):
         notas.append(NOTA_E3_OMISIONES)
     return notas
@@ -323,7 +385,9 @@ def build_user_message(chunk: dict, validacion: dict) -> str:
     """Único contenido variable del request: la unidad como DATOS. Función
     pura de (chunk, validación): mismos datos → mismo mensaje byte a byte.
     U-PROMPT-R2: con la marca forma_salida = "r2" en la validación, las NOTAS
-    son las de notas_r2; sin la marca, la NOTA de siempre (byte a byte)."""
+    son las de notas_r2; sin la marca, la NOTA de siempre (byte a byte).
+    U-E3-LISTAS: con la marca, el fuente de un ítem suma el bloque que abre la
+    lista (comun_e3.indices_bloque_lista); sin la marca, el de siempre."""
     partes: list[str] = []
     partes.append(f"Documento fuente: {chunk['archivo']}")
     partes.append(f"TO: {chunk['to']}")
@@ -331,7 +395,8 @@ def build_user_message(chunk: dict, validacion: dict) -> str:
     partes.append("")
 
     flags = chunk.get("flags") or {}
-    notas = (notas_r2(chunk, validacion) if (validacion or {}).get("forma_salida") == "r2"
+    forma_r2 = (validacion or {}).get("forma_salida") == "r2"
+    notas = (notas_r2(chunk, validacion) if forma_r2
              else [n for n in (_nota_flags_e0(flags),) if n])
     for nota in notas:
         partes.append(nota)
@@ -339,7 +404,7 @@ def build_user_message(chunk: dict, validacion: dict) -> str:
 
     partes.append("TEXTO FUENTE ÍNTEGRO DE LA UNIDAD (contexto heredado + punto propio):")
     partes.append("```")
-    partes.append(fuente_integro(chunk))
+    partes.append(fuente_integro(chunk, bloque_de_lista=forma_r2))
     partes.append("```")
     partes.append("")
     partes.append("ELEMENTOS EXTRAÍDOS DE ESTA UNIDAD (post-validación estructural):")
@@ -395,15 +460,17 @@ if PREFIJO_HASH != PREFIJO_HASH_SELLADO:
 # prefijo de E3 ni a su namespace: un cambio en una NOTA movería las claves sin que nada frene. Este candado arma el
 # mensaje de un conjunto fijo de casos (candado_mensaje_e3.json: 6 unidades de salida_tanda0_r2b, elegidas por
 # cobertura en data/experiment/prompt_r2/p3c/candados_p3c.py, cada una con la marca de la forma r2 y sin ella, más
-# un caso sintético para la NOTA de las omisiones) y compara su sha256 con el sellado. Solo compara: el prefijo, su
+# un caso sintético para la NOTA de las omisiones; U-E3-LISTAS suma tres ítems de lista, con el bloque que la abre
+# de tipo intro, encabezado e intro partido en fragmentos, cada uno con la marca y sin ella) y compara su sha256 con
+# el sellado. Solo compara: el prefijo, su
 # candado y las claves no cambian. Corre entero al importar (opción i, decisión de la autora): con la marca r2 las
 # NOTAS importan prompt_r2b, así que importar este módulo importa también prompt_r2b y corre sus candados, aun en el
 # perfil sellado (acoplamiento declarado en el FRENO P3c-2).
 from pathlib import Path as _Path  # noqa: E402 — solo para este candado; el encabezado del módulo no cambia
 
 CANDADO_MENSAJE_E3_JSON = _Path(__file__).resolve().parent / "candado_mensaje_e3.json"
-CANDADO_MENSAJE_E3_JSON_SHA256_ESPERADO = "e8fa5dc47408d5f311d5677886cf9e90ab54e1808c64bd4514f66507d2375a82"
-MENSAJE_E3_SHA256_ESPERADO = "da17c22e6c988c6e2fea12e4369caf96d27fe8cbc98f8861f9470901410c6e01"
+CANDADO_MENSAJE_E3_JSON_SHA256_ESPERADO = "079d2489f37c4485920e932f8cb2bfd60992ecc68bbb80ba504d04e5a5f8065b"
+MENSAJE_E3_SHA256_ESPERADO = "66bc865645e99be13cc284f7733f22080612a1342bb2210add71cb122dd15a13"
 
 
 def sha256_mensajes_e3(casos: list[dict]) -> str:

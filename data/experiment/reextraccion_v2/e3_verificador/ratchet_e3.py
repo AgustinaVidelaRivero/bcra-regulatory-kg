@@ -280,7 +280,7 @@ def evaluar_veredicto(tool_input, chunk: dict,
             continue
         cita = f.get("cita_textual_del_fuente") or ""
         f_ev = dict(f)
-        f_ev["cita_verificada"] = cita_en_fuente(cita, chunk)
+        f_ev["cita_verificada"] = cita_en_fuente(cita, chunk, _forma_r2(validacion))
         f_ev["estructural_no_bloqueante"] = _guardia_estructural(
             f_ev, chunk, unidades_corpus, ampliada)
         # LAUDO A: solo 'alta' bloquea; LAUDO B la exime si es estructural.

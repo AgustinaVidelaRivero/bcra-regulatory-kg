@@ -108,7 +108,27 @@ def pares_de(chunks: list[dict], regs: dict[str, dict]) -> list[tuple[dict, dict
 # Texto fuente íntegro de la unidad                                          #
 # ------------------------------------------------------------------------- #
 
-def fuente_integro(chunk: dict) -> str:
+def indices_bloque_lista(chunk: dict) -> list[int]:
+    """U-E3-LISTAS, pieza 1: índices de los bloques heredados que abren la lista
+    de la que la unidad es un ítem. El bloque es el que elige la regla que arma
+    LINEA_ITEM en el mensaje de E1 (prompt_r2b.bloque_lista), así que E1 y E3
+    ven el mismo encabezado; con él van los bloques contiguos que lo preceden
+    con el mismo tipo y la misma unidad de origen, porque E0 parte a veces un
+    párrafo en varios bloques con el mismo rótulo (decisión D2 de la autora,
+    enmienda 1 al mandato). Vacía si la unidad no es un ítem o es un mini-chunk."""
+    import prompt_r2b  # noqa: PLC0415 — solo en la forma r2 (e1_extractor en sys.path)
+    i = prompt_r2b.bloque_lista(chunk)
+    if i is None:
+        return []
+    her = chunk["herencia"]
+    j = i
+    while (j > 0 and her[j - 1]["tipo"] == her[i]["tipo"]
+           and her[j - 1]["unidad_origen"] == her[i]["unidad_origen"]):
+        j -= 1
+    return list(range(j, i + 1))
+
+
+def fuente_integro(chunk: dict, bloque_de_lista: bool = False) -> str:
     """El texto fuente de la unidad, como DATOS (sin instrucciones).
 
     Enmienda 01 §2.d — el blanco de completitud es el TEXTO PROPIO de la
@@ -118,10 +138,17 @@ def fuente_integro(chunk: dict) -> str:
     prompt del verificador ya excluye títulos como faltante). Los bloques de
     prosa heredados NO entran: cada uno tiene su propio mini-chunk como unidad
     verificada — si su contenido falta, el veredicto cae sobre esa unidad, no
-    sobre el hijo."""
+    sobre el hijo.
+
+    U-E3-LISTAS, pieza 1 (solo con la forma r2: `bloque_de_lista`, que pasa
+    prompt_e3.build_user_message): si la unidad es un ítem de una lista, el
+    fuente suma el bloque heredado que la abre (indices_bloque_lista), con su
+    rótulo, y no los cierres que lo siguen. Sin el parámetro, igual que
+    siempre, byte a byte."""
+    lista = set(indices_bloque_lista(chunk)) if bloque_de_lista else set()
     partes: list[str] = []
-    for h in chunk.get("herencia", []):
-        if h["tipo"] != "encabezado":
+    for k, h in enumerate(chunk.get("herencia", [])):
+        if h["tipo"] != "encabezado" and k not in lista:
             continue
         partes.append(f"[{h['tipo']} | punto {h['unidad_origen']}]")
         partes.append(h["texto"])
@@ -215,25 +242,28 @@ def normalizar_para_cita(texto: str) -> str:
     return t.casefold()
 
 
-def fuente_para_citas(chunk: dict) -> str:
+def fuente_para_citas(chunk: dict, bloque_de_lista: bool = False) -> str:
     """Fuente contra el que se verifican las citas (laudo post-fase B): los
     MISMOS textos que fuente_integro pero SIN los rótulos de bloque. Los
     rótulos ('[bloque intro | punto X]') se insertan entre segmentos que E0
     puede haber cortado a mitad de palabra ('presta-' / 'ciones'): una cita
     fiel que cruza esa frontera jamás matchearía contra el render con rótulos.
     Enmienda 01: mismo alcance que fuente_integro — títulos heredados + texto
-    propio de la unidad."""
-    partes = [h["texto"] for h in chunk.get("herencia", [])
-              if h["tipo"] == "encabezado"]
+    propio de la unidad. U-E3-LISTAS: con `bloque_de_lista` (la forma r2, que
+    pasa ratchet_e3.evaluar_veredicto), el mismo alcance que fuente_integro
+    con el parámetro: suma el bloque que abre la lista."""
+    lista = set(indices_bloque_lista(chunk)) if bloque_de_lista else set()
+    partes = [h["texto"] for k, h in enumerate(chunk.get("herencia", []))
+              if h["tipo"] == "encabezado" or k in lista]
     partes.append(chunk["texto"])
     return "\n".join(partes)
 
 
-def cita_en_fuente(cita: str, chunk: dict) -> bool:
+def cita_en_fuente(cita: str, chunk: dict, bloque_de_lista: bool = False) -> bool:
     """¿La cita textual reportada por el verificador existe en el fuente de la
     unidad? Chequeo determinístico: una cita que no verifica NO se inyecta al
     reintento (una cita fabricada envenenaría la re-extracción). Verifica
     contra el fuente SIN rótulos y con la normalización extendida."""
     if not cita or not cita.strip():
         return False
-    return normalizar_para_cita(cita) in normalizar_para_cita(fuente_para_citas(chunk))
+    return normalizar_para_cita(cita) in normalizar_para_cita(fuente_para_citas(chunk, bloque_de_lista))

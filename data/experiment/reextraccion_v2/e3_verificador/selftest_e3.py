@@ -29,7 +29,10 @@ Verifica:
      todo igual.
   M. U-PROMPT-R2, P3c-2: las NOTAS de los puntos a y b son las del borrador aprobado, y el candado del mensaje de E3
      (F23) compara el de su fixture y frena ante un espacio más en cualquiera de las dos NOTAS; el prefijo de E3 y su
-     candado no cambian.
+     candado no cambian. U-E3-LISTAS: la fixture suma tres ítems de lista (19 casos) y la NOTA del ítem también frena.
+  N. U-E3-LISTAS, O2 (solo con la forma r2): el bloque que abre la lista entra al fuente y a las citas de un ítem
+     con intro, el de un ítem con encabezado no cambia, los fragmentos contiguos de D2 entran, un mini-chunk y una
+     unidad r1 no cambian, la NOTA del ítem va con su variante, y la cita al bloque verifica en el ratchet (D1).
 
 Uso:  python3 selftest_e3.py
 """
@@ -578,8 +581,17 @@ def main() -> int:
     val_flag_r2 = dict(val_flag_v3, forma_salida="r2")
     m_v3 = prompt_e3.build_user_message(flag, val_flag_v3)
     m_r2 = prompt_e3.build_user_message(flag, val_flag_r2)
-    check("K: sin tablas serializadas (E0 legada), la NOTA r2 es la de siempre, byte a byte",
-          m_v3 == m_r2 and "detectados determinísticamente (flag de E0)" in m_v3)
+    # U-E3-LISTAS: pro::2.7.1 es un ítem de lista; con la marca r2 su mensaje suma la NOTA del ítem y el bloque que
+    # abre la lista. La NOTA de los flags sigue siendo la de siempre, byte a byte.
+    nota_item_k = prompt_e3.nota_item_lista(flag)
+    notas_k = lambda m: m.split("TEXTO FUENTE ÍNTEGRO DE LA UNIDAD", 1)[0]  # noqa: E731
+    check("K: sin tablas serializadas (E0 legada), la NOTA r2 es la de siempre, byte a byte (U-E3-LISTAS: en un "
+          "ítem, más la NOTA del ítem y el bloque que abre la lista)",
+          "detectados determinísticamente (flag de E0)" in m_v3
+          and (m_v3 == m_r2 if nota_item_k is None else
+               (notas_k(m_r2) == notas_k(m_v3) + nota_item_k + "\n\n"
+                and m_r2.split("ELEMENTOS EXTRAÍDOS", 1)[1] == m_v3.split("ELEMENTOS EXTRAÍDOS", 1)[1]
+                and f"```\n{fuente_integro(flag, True)}\n```" in m_r2)))
     check("K: E3 congelado — el prefijo sigue intacto con la NOTA r2 y la ampliación",
           prompt_e3.PREFIJO_HASH == resumen_sellado["prefijo_hash_e3"])
 
@@ -689,13 +701,16 @@ def main() -> int:
           prompt_e3.NOTA_E3_ENCABEZADO_LISTA.endswith(MP3C.ENCABEZADO_NUEVO))
     fix = json.loads(prompt_e3.CANDADO_MENSAJE_E3_JSON.read_text(encoding="utf-8"))
     sint = [c for c in fix["casos"] if "sintetico" in c]
-    check("M: la fixture tiene 6 unidades con y sin la marca r2 y un caso sintético (la NOTA de las omisiones)",
-          len(fix["casos"]) == 13 and len(sint) == 1
+    items_fix = sorted({c["chunk"]["id"] for c in fix["casos"] if comun_e3.indices_bloque_lista(c["chunk"])})
+    check("M: la fixture tiene 9 unidades con y sin la marca r2 (las 6 de P3c-2 y 3 ítems de lista, U-E3-LISTAS) y un "
+          "caso sintético (la NOTA de las omisiones)",
+          len(fix["casos"]) == 19 and len(sint) == 1
+          and items_fix == ["cap::6.8.3.1", "ext::3.5.6.1", "pro::2.3.6.1"]
           and prompt_e3.NOTA_E3_OMISIONES in prompt_e3.build_user_message(sint[0]["chunk"], sint[0]["validacion"]))
     check("M: el sha256 de los mensajes de la fixture es el sellado",
           prompt_e3.sha256_mensajes_e3(fix["casos"]) == prompt_e3.MENSAJE_E3_SHA256_ESPERADO)
     frena_e3 = []
-    for nombre in ("NOTA_E3_OMISIONES", "NOTA_E3_ENCABEZADO_LISTA"):
+    for nombre in ("NOTA_E3_OMISIONES", "NOTA_E3_ENCABEZADO_LISTA", "NOTA_E3_ITEM_LISTA"):
         orig = getattr(prompt_e3, nombre)
         try:
             setattr(prompt_e3, nombre, orig + " ")
@@ -707,11 +722,87 @@ def main() -> int:
         finally:
             setattr(prompt_e3, nombre, orig)
     prompt_e3._candado_mensaje_e3()
-    check("M: un espacio más en cualquiera de las dos NOTAS hace frenar el candado; restaurado, pasa",
+    check("M: un espacio más en cualquiera de las tres NOTAS (la del ítem, U-E3-LISTAS) hace frenar el candado; "
+          "restaurado, pasa",
           all(frena_e3), str(frena_e3))
     check("M: el prefijo de E3 y su candado no cambian (21a836c7de6d); importar prompt_e3 importa prompt_r2b "
           "(acoplamiento de la opción i)",
           prompt_e3.PREFIJO_HASH == prompt_e3.PREFIJO_HASH_SELLADO == "21a836c7de6d" and "prompt_r2b" in sys.modules)
+
+    # ---------------- N. U-E3-LISTAS, O2 ----------------------------------- #
+    print("\n[N] U-E3-LISTAS: el bloque que abre la lista y la NOTA del ítem, solo con la forma r2")
+    e0r2b = comun_e3.REEXTRACCION / "e0_chunking" / "salida_tanda0_r2b"
+    ch_r2b = {c["id"]: c for c in cargar_chunks(("ext", "cap", "pro"), e0_dir=e0r2b)}
+    v_r2 = {"forma_salida": "r2", "entidades": [], "relaciones": []}
+    v_v3 = {"entidades": [], "relaciones": []}
+
+    def fuente_msg(m: str) -> str:
+        return m.split("TEXTO FUENTE ÍNTEGRO DE LA UNIDAD", 1)[1].split("ELEMENTOS EXTRAÍDOS DE ESTA UNIDAD", 1)[0]
+    # N1: ítem cuyo bloque que abre la lista es intro, con un chapeau y una intro de un ancestro antes y un cierre después
+    it1 = ch_r2b["ext::3.5.6.1"]
+    abre1 = it1["herencia"][comun_e3.indices_bloque_lista(it1)[0]]
+    otros1 = [h for h in it1["herencia"] if h["tipo"] != "encabezado" and h is not abre1]
+    m1_r2, m1_v3 = prompt_e3.build_user_message(it1, v_r2), prompt_e3.build_user_message(it1, v_v3)
+    check("N1 ítem con intro (ext::3.5.6.1): con la forma r2, el bloque que abre la lista con su rótulo en el fuente y la "
+          "NOTA del ítem de unidad propia",
+          f"[intro | punto 3.5.6]\n{abre1['texto']}" in fuente_msg(m1_r2)
+          and prompt_e3.nota_item_lista(it1) in m1_r2 and prompt_e3.NOTA_E3_ITEM_UNIDAD["propia"] in m1_r2
+          and "[intro | punto 3.5.6]" in prompt_e3.nota_item_lista(it1))
+    check("N1 ítem con intro: el chapeau, la intro del ancestro y el cierre no entran al fuente",
+          [h["tipo"] for h in otros1] == ["chapeau_seccion", "intro", "cierre"]
+          and all(h["texto"] not in fuente_msg(m1_r2) for h in otros1))
+    check("N1 ítem con intro: sin la marca r2, el fuente y las NOTAS de siempre",
+          f"```\n{fuente_integro(it1)}\n```" in m1_v3 and abre1["texto"] not in fuente_msg(m1_v3)
+          and "es un ítem de la lista" not in m1_v3)
+    # N2: ítem cuyo bloque que abre la lista es la línea de título del punto (encabezado)
+    it2 = ch_r2b["cap::6.8.3.1"]
+    m2_r2, m2_v3 = prompt_e3.build_user_message(it2, v_r2), prompt_e3.build_user_message(it2, v_v3)
+    intro_68 = next(h for h in it2["herencia"] if h["tipo"] == "intro")
+    check("N2 ítem con encabezado (cap::6.8.3.1): el fuente es el de siempre (la intro de 6.8, que termina en «:», no "
+          "entra) y la NOTA es la de la línea de título",
+          fuente_msg(m2_r2) == fuente_msg(m2_v3) and intro_68["texto"] not in fuente_msg(m2_r2)
+          and prompt_e3.NOTA_E3_ITEM_UNIDAD["linea_de_titulo"] in m2_r2
+          and prompt_e3.NOTA_E3_ITEM_COMPUESTA["linea_de_titulo"] in m2_r2
+          and "[encabezado | punto 6.8.3]" in m2_r2 and "es un ítem de la lista" not in m2_v3)
+    # N3: D2, el párrafo partido en dos bloques contiguos con el mismo rótulo (pro::2.3.6.1)
+    it3 = ch_r2b["pro::2.3.6.1"]
+    idx3 = comun_e3.indices_bloque_lista(it3)
+    frag3 = [it3["herencia"][k] for k in idx3]
+    m3_r2 = prompt_e3.build_user_message(it3, v_r2)
+    cita_1 = " ".join(frag3[0]["texto"].split()[:8])
+    check("N3 D2 (pro::2.3.6.1): el bloque son dos fragmentos contiguos del mismo tipo y unidad, y los dos entran al fuente",
+          len(idx3) == 2 and idx3[1] == idx3[0] + 1 and frag3[0]["tipo"] == frag3[1]["tipo"] == "intro"
+          and frag3[0]["unidad_origen"] == frag3[1]["unidad_origen"] == "2.3.6"
+          and all(f["texto"] in fuente_msg(m3_r2) for f in frag3))
+    check("N3 D2: una cita del primer fragmento verifica con el bloque en las citas y no sin él",
+          cita_en_fuente(cita_1, it3, True) and not cita_en_fuente(cita_1, it3))
+    # N4: un mini-chunk (la unidad propia del encabezado de la lista de N1): ni bloque ni NOTA del ítem
+    mini4 = {c["id"]: c for c in cargar_chunks(("ext",), e0_dir=e0r2b)}["ext::3.5.6::intro"]
+    m4_r2, m4_v3 = prompt_e3.build_user_message(mini4, v_r2), prompt_e3.build_user_message(mini4, v_v3)
+    check("N4 mini-chunk (ext::3.5.6::intro): la NOTA del encabezado de lista, sin la del ítem, y el fuente de siempre",
+          comun_e3.indices_bloque_lista(mini4) == [] and prompt_e3.NOTA_E3_ENCABEZADO_LISTA in m4_r2
+          and "es un ítem de la lista" not in m4_r2 and fuente_msg(m4_r2) == fuente_msg(m4_v3))
+    # N5: una unidad r1 (E0 de la enmienda 01, corpus_v2), con su validación sin la marca: sin cambio
+    ch5 = {c["id"]: c for c in cargar_chunks(("cla",), e0_dir=comun_e3.E0_SALIDA_ENM01)}["cla::5.1.1.1"]
+    v5 = comun_e3.cargar_extracciones(comun_e3.REEXTRACCION / "corpus_v2" / "salida" / "cla" /
+                                      "extracciones_e1.jsonl")["cla::5.1.1.1"]["validacion"]
+    m5 = prompt_e3.build_user_message(ch5, v5)
+    check("N5 unidad r1 (cla::5.1.1.1, sin la marca r2): es un ítem, pero el mensaje lleva el fuente de siempre y ninguna "
+          "NOTA del ítem",
+          v5.get("forma_salida") is None and comun_e3.indices_bloque_lista(ch5) != []
+          and f"```\n{fuente_integro(ch5)}\n```" in m5 and fuente_integro(ch5, True) != fuente_integro(ch5)
+          and "es un ítem de la lista" not in m5)
+    # N6: D1, la cita al bloque que abre la lista verifica en el ratchet solo con la forma r2 (ratchet_e3.py:283)
+    ti6 = {"veredicto": "faltantes_detectados",
+           "faltantes": [{"tipo": "otro", "cita_textual_del_fuente": " ".join(abre1["texto"].split()[:10]),
+                          "ubicacion": "3.5.6.1", "severidad": "alta", "nota": "faltante del selftest"}]}
+    ev6_r2 = ratchet_e3.evaluar_veredicto(ti6, it1, None, v_r2)
+    ev6_v3 = ratchet_e3.evaluar_veredicto(ti6, it1, None, v_v3)
+    check("N6 D1: con la forma r2 la cita al bloque que abre la lista está verificada y es utilizable; sin la marca, no",
+          ev6_r2["faltantes"][0]["cita_verificada"] and len(ev6_r2["bloqueantes_utilizables"]) == 1
+          and not ev6_v3["faltantes"][0]["cita_verificada"] and not ev6_v3["bloqueantes_utilizables"])
+    check("N: el prefijo de E3 no cambia (21a836c7de6d)",
+          prompt_e3.PREFIJO_HASH == prompt_e3.PREFIJO_HASH_SELLADO == "21a836c7de6d")
 
     # ---------------- H. Estimación reproducible ---------------------------- #
     print("\n[H] estimación reproducible")

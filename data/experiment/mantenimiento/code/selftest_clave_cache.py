@@ -34,7 +34,7 @@ Perfil r2b (U-TABLA-REPROC):
       NO_VERIFICABLE y rige, declarado, el anclaje del perfil sellado
       (decisión 3 de la autora al firmar el mandato de U-TABLA-REPROC): se
       corre de nuevo cuando existan las dbs de U-REEXT-T0.
-  B'. Variaciones R00 a R32 sobre una muestra fija de trece unidades de la E0
+  B'. Variaciones R00 a R33b sobre una muestra fija de trece unidades de la E0
       e0-r2 de la tanda 0 (`salida_tanda0_r2b/`): las diez de M1 más tres con
       tablas serializadas, una de ellas con la herencia recortada. La clave de
       E3 del perfil r2b necesita una salida de E1 en la forma r2, que todavía
@@ -49,7 +49,11 @@ Perfil r2b (U-TABLA-REPROC):
       U-PROMPT-R2, P5 (el pedido del perfil r2b lleva `temperature` 0, y el
       reintento por salida mal formada, 1), R14 varía la temperatura del pedido
       (fila F08e) y R25 arma el reintento con prompt_r2b.kwargs_reintento_forma_r2b
-      (fila F08c).
+      (fila F08c). Con U-E3-LISTAS (fila F23b), R33 y R33b editan la NOTA del ítem
+      de una lista y la regla de los bloques contiguos (D2), y frenan como R30;
+      R03 y R27 esperan el cambio de la clave de E3 en los ítems cuyo bloque que
+      abre la lista tocan, y A3r exige las claves de los no ítems presentes y
+      las de los ítems ausentes, exactamente (D5, enmienda 1 al mandato).
   C. Contraste fila por fila con la tabla de
      data/experiment/mantenimiento/tabla_reprocesamiento.md: cada fila declara
      el comportamiento de la clave de E1 y de E3 del perfil r2b y las
@@ -495,11 +499,26 @@ def bloque_anclaje_r2b(ar: Armado, salida_r2b: Path) -> dict:
                  "claves_segundo_reintento_forma_calculadas": len(calc_forma2),
                  "segundo_reintento_forma_presentes_en_db": len(calc_forma2 & (db1f2 or set()))}
     db3 = claves_db(DB_E3, ar.ns_e3)
-    calc3 = {ar.k_e3(c, v) for c, v in pares}
-    out["e3"] = {"estado": "OK" if db3 is not None and calc3 <= db3 and len(calc3) == len(pares)
-                 else "DISCREPANCIA",
+    # U-E3-LISTAS (D5, enmienda 1 al mandato): con la forma r2, el mensaje de E3 de un ítem de lista lleva el
+    # bloque que abre la lista y la NOTA del ítem, así que su clave ya no es la de la tanda 0. A3r recomputa las
+    # claves con el código vigente y exige que las de los no ítems estén en la db y que las ausentes sean
+    # exactamente las de los ítems (prompt_r2b.es_item); cualquier otra ausencia o presencia es DISCREPANCIA.
+    por_par = [(c["id"], prompt_r2b.es_item(c), ar.k_e3(c, v)) for c, v in pares]
+    calc3 = {k for _, _, k in por_par}
+    en_db = db3 or set()
+    items = sorted(cid for cid, es, _ in por_par if es)
+    ausentes = sorted(cid for cid, _, k in por_par if k not in en_db)
+    no_items_ausentes = sorted(set(ausentes) - set(items))
+    items_presentes = sorted(set(items) - set(ausentes))
+    ok3 = (db3 is not None and len(calc3) == len(pares) and ausentes == items)
+    out["e3"] = {"estado": "OK" if ok3 else "DISCREPANCIA",
+                 "regla": ("U-E3-LISTAS (D5): las claves de E3 de los no ítems, presentes en la db; las de los "
+                           "ítems (prompt_r2b.es_item), ausentes, exactamente"),
                  "pares_aceptados_e1": len(pares), "claves_calculadas": len(calc3),
-                 "calculadas_presentes_en_db": len(calc3 & (db3 or set()))}
+                 "calculadas_presentes_en_db": len(calc3 & en_db),
+                 "no_items": len(pares) - len(items), "items": len(items), "ausentes": len(ausentes),
+                 "no_items_ausentes": no_items_ausentes, "items_presentes": items_presentes,
+                 "ausentes_listadas": ausentes}
     return out
 
 
@@ -602,17 +621,29 @@ VARIACIONES_CHUNK = {
 }
 
 
+def _toca_el_bloque_de_lista(c: dict, c2: dict, v: dict | None) -> bool:
+    """U-E3-LISTAS: con la forma r2, la variación cambia el texto de algún bloque que abre la lista del ítem
+    (comun_e3.indices_bloque_lista), que entra al fuente de E3."""
+    if (v or {}).get("forma_salida") != "r2":
+        return False
+    her, her2 = c.get("herencia") or [], c2.get("herencia") or []
+    return any(k >= len(her2) or her[k]["texto"] != her2[k]["texto"]
+               for k in sys.modules["comun_e3"].indices_bloque_lista(c))
+
+
 def correr_variaciones_chunk(ar: Armado, chunks, vals, base_e1, base_e3,
                              muestra: tuple = MUESTRA, variaciones: dict = VARIACIONES_CHUNK) -> list[dict]:
     res = []
     for vid, (desc, fn, esp1, esp3) in variaciones.items():
-        aplica, cambia1, cambia3 = [], [], []
+        aplica, cambia1, cambia3, esperadas3 = [], [], [], []
         for cid in muestra:
             r = fn(chunks[cid], vals[cid])
             if r is None:
                 continue
             c2, v2 = r
             aplica.append(cid)
+            if esp3 == "bloque_de_lista" and vals[cid] is not None and _toca_el_bloque_de_lista(chunks[cid], c2, v2):
+                esperadas3.append(cid)
             if ar.k_e1(c2) != base_e1[cid]:
                 cambia1.append(cid)
             if vals[cid] is not None and ar.k_e3(c2, v2) != base_e3[cid]:
@@ -620,8 +651,8 @@ def correr_variaciones_chunk(ar: Armado, chunks, vals, base_e1, base_e3,
         con_e3 = [c for c in aplica if vals[c] is not None]
         res.append(_registro(vid, desc, aplica,
                              esperado_e1=aplica if esp1 else [], cambia_e1=cambia1,
-                             esperado_e3=con_e3 if esp3 else [], cambia_e3=cambia3,
-                             universo_e3=con_e3))
+                             esperado_e3=(esperadas3 if esp3 == "bloque_de_lista" else con_e3 if esp3 else []),
+                             cambia_e3=cambia3, universo_e3=con_e3))
     return res
 
 
@@ -947,7 +978,7 @@ VARIACIONES_CHUNK_R2B = {
     "R01": ("texto propio de la unidad", _var_texto, True, True),
     "R02": ("texto de un bloque heredado de tipo encabezado", _var_herencia(False), True, True),
     "R03": ("texto de un bloque heredado de prosa (intro, cierre, chapeau, intersticial)",
-            _var_herencia(True), True, False),
+            _var_herencia(True), True, "bloque_de_lista"),
     "R04": ("marcas de contenido tabular de E0 invertidas (contenido_tabular y, si está, "
             "contenido_tabular_residual), mismo texto", _var_flags_r2, True, True),
     "R04b": ("metadatos de una tabla serializada por e0-r2: una fila de subtítulo más, mismo texto",
@@ -958,7 +989,7 @@ VARIACIONES_CHUNK_R2B = {
     "R18": ("salida validada de E1 alterada como lo haría una política por campo",
             _var_validacion, False, True),
     "R27": ("recorte de la herencia de e0-r2 con un tope menor (U = 1, B = 40); encabezados enteros",
-            _var_recorte, True, False),
+            _var_recorte, True, "bloque_de_lista"),
 }
 
 
@@ -1337,7 +1368,7 @@ def _alterar(variante: str) -> dict[str, str]:
         cl = next(c for c in d["clases"] if c["id"] == "Sujeto_entidad_financiera")
         cl["alias"] = list(cl.get("alias") or []) + ["variación del selftest"]
         return {str(JSON_V2.resolve()): json.dumps(d, ensure_ascii=False, indent=1)}
-    if variante in ("inventario", "inventario_r2b", "R29", "R29b", "R30"):  # R29 a R30: editan una fuente, no un JSON
+    if variante in ("inventario", "inventario_r2b", "R29", "R29b", "R30", "R33", "R33b"):  # editan una fuente, no un JSON
         return {}
     if variante == "R20":          # catálogo de resolución que lee el código: una entrada más en el índice de E4
         d = json.loads(INDICE_E4_R2.read_text(encoding="utf-8"))
@@ -1385,7 +1416,7 @@ def tabla_forzada_r2b() -> str:
 
 
 VARIANTES_HIJO_R2B = ("inventario_r2b", "R20", "R21", "R22", "R22b", "R22c", "R22d", "R28", "R29", "R29b", "R30",
-                      "R32")
+                      "R32", "R33", "R33b")
 # U-PROMPT-R2, P3c-2: R29, R29b y R30 editan un literal del módulo (un espacio al final) en una copia en memoria de su
 # fuente, que el proceso hijo importa en lugar del archivo: el candado del mensaje corre al importar y frena. No escribe.
 EDICIONES_FUENTE_R2B = {
@@ -1395,6 +1426,12 @@ EDICIONES_FUENTE_R2B = {
              '(vacía si no omitiste nada).")', '(vacía si no omitiste nada). ")'),
     "R30": ("prompt_e3", REPO / "data/experiment/reextraccion_v2/e3_verificador/prompt_e3.py",
             '"meta-normativos.")', '"meta-normativos. ")'),
+    # U-E3-LISTAS (fila F23b): la NOTA del ítem de una lista y la regla de los bloques contiguos (D2) del bloque que
+    # abre la lista; con ítems en la fixture del candado del mensaje de E3, frenan.
+    "R33": ("prompt_e3", REPO / "data/experiment/reextraccion_v2/e3_verificador/prompt_e3.py",
+            'o en sus umbrales.")', 'o en sus umbrales. ")'),
+    "R33b": ("comun_e3", REPO / "data/experiment/reextraccion_v2/e3_verificador/comun_e3.py",
+             '    while (j > 0 and her[j - 1]["tipo"]', '    while (False and her[j - 1]["tipo"]'),
 }
 
 
@@ -1608,7 +1645,7 @@ def _lado(esperado, estado: str | None, base: dict, observado: dict | None, univ
 
 
 def variaciones_json_r2b(base_e1, base_e3, vals, chunks) -> tuple[list[dict], dict]:
-    """R00 (control del hijo), R20, R21, R22, R22b, R22c, R22d, R28 y R32."""
+    """R00 (control del hijo), R20, R21, R22, R22b, R22c, R22d, R28, R29, R29b, R30, R32, R33 y R33b."""
     M = list(MUESTRA_R2B)
     con_e3 = [c for c in M if vals[c] is not None]
     tabla = tabla_forzada_r2b()
@@ -1630,6 +1667,10 @@ def variaciones_json_r2b(base_e1, base_e3, vals, chunks) -> tuple[list[dict], di
         ("R30", "NOTA del mensaje de E3 de las omisiones de esquema: un espacio al final (literal del módulo)",
          [], "frena"),
         ("R32", f"lista de tablas forzadas a residual: alta de la tabla {tabla}", "frena", "frena"),
+        ("R33", "NOTA del ítem de una lista en el mensaje de E3: un espacio al final (literal del módulo)", [],
+         "frena"),
+        ("R33b", "bloque que abre la lista en el fuente de E3: sin los bloques contiguos del mismo tipo y unidad "
+                  "de origen (D2; literal de comun_e3)", [], "frena"),
     )
     res, inv = [], None
     for vid, desc, esp1, esp3 in especificaciones:
