@@ -1,0 +1,84 @@
+{
+ "cuando_utc": "2026-10-06T20:18:07+00:00",
+ "precios_por_mtok": {
+  "H": {
+   "in": 1.0,
+   "out": 5.0,
+   "cw": 1.25,
+   "cr": 0.1
+  },
+  "S": {
+   "in": 2.0,
+   "out": 10.0,
+   "cw": 2.5,
+   "cr": 0.2
+  },
+  "O": {
+   "in": 4.0,
+   "out": 20.0,
+   "cw": 5.0,
+   "cr": 0.2
+  }
+ },
+ "formula": "escritura del prefijo × precio de escritura (1 vez por corrida) + lectura del prefijo × precio de lectura (86 veces) + entrada variable × precio base + salida estimada × precio de salida; salida estimada = salida del intento 0 de Haiku × factor del tokenizador medido en la entrada (supuesto: la salida se infla como la entrada); escenario B: la salida de O lleva además un 50 % por el pensamiento con effort low (supuesto, como en P6); techo teórico: cada unidad agota max_tokens 16.384",
+ "supuestos_no_medidos": [
+  "la salida de S y O se infla como la entrada",
+  "el pensamiento de O con effort low no se midió",
+  "cada corrida de 87 unidades entra en la ventana de 5 minutos de la caché de prompts entre llamadas consecutivas (corridas en serie, decisión 4)"
+ ],
+ "por_brazo": {
+  "S": {
+   "modelo": "claude-sonnet-5-5",
+   "unidades_contadas": 87,
+   "prefijo_tokens": 35842,
+   "variable_tokens": 130504,
+   "factor_salida": 1.2695,
+   "salida_estimada_tokens": 226909,
+   "costo_prefijo_por_corrida": 0.7061,
+   "costo_variable_por_corrida": 0.261,
+   "costo_salida_por_corrida": 2.2691,
+   "corrida_escenario_A": 3.2362,
+   "corrida_escenario_B": 3.2362,
+   "corrida_techo_teorico": 15.2212,
+   "corridas": 2,
+   "total_A": 6.4724,
+   "total_B": 6.4724,
+   "total_techo": 30.4424
+  },
+  "O": {
+   "modelo": "claude-opus-5-5",
+   "unidades_contadas": 87,
+   "prefijo_tokens": 35843,
+   "variable_tokens": 130504,
+   "factor_salida": 1.2696,
+   "salida_estimada_tokens": 226927,
+   "costo_prefijo_por_corrida": 0.7957,
+   "costo_variable_por_corrida": 0.522,
+   "costo_salida_por_corrida": 4.5385,
+   "corrida_escenario_A": 5.8563,
+   "corrida_escenario_B": 8.1255,
+   "corrida_techo_teorico": 29.8259,
+   "corridas": 2,
+   "total_A": 11.7125,
+   "total_B": 16.2511,
+   "total_techo": 59.6518
+  }
+ },
+ "cuatro_corridas": {
+  "escenario_A": 18.1849,
+  "escenario_A_con_margen_15": 20.9127,
+  "escenario_B": 22.7235,
+  "escenario_B_con_margen_15": 26.132,
+  "techo_teorico": 90.0941,
+  "tope_decision_3": 35.0,
+  "umbral_escrito_en_C0_b": 25.0,
+  "pasa_tope_35_escenario_B_con_margen": false,
+  "pasa_25_escenario_B_con_margen": true,
+  "estimacion_del_mandato": {
+   "corrida_S": 4.08,
+   "corrida_O": 8.16,
+   "cuatro_corridas": 24.5,
+   "con_margen": 28.2
+  }
+ }
+}

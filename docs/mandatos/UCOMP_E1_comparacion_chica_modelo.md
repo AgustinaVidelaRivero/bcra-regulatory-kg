@@ -123,3 +123,32 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 116 líneas de arriba (`c
   adjudicación de la autora sobre las divergencias, con código entre las demás fichas (lectura cegada). Se hace en C2, junto con las
   fichas de los brazos, para que la línea de base del intento 0 sea igual de sólida que la de T4 en las otras 79. Donde el texto firmado
   dice «la mesa relee», se lee así.
+- **06/10/2026 — revisión del FRENO C0 y decisiones de la autora (C0 sin commit al escribir esta nota).**
+  - La revisión independiente reprodujo (a) y (c) sobre una copia sin enlaces: las 87 unidades (por TO igual al mandato), las claves de
+    E1 en la base 87 de 87 (`claves_c0.json` byte a byte igual), el intento 0 igual al jsonl (`intento0_haiku.jsonl` igual), 78 iguales a
+    la extracción final (8 con reintento y `cap::3.1.1.5` difieren; 6 solo en `marcas_e3`), y los sellos: los 25 sha256 de
+    `sellos_c0.json` iguales a los del FRENO (cambian solo la hora y el HEAD), el mandato `82fac65…` igual a las 116 líneas firmadas más
+    esta sección de notas, y el control cruzado de las fichas de T4 5 de 5. Los archivos del repo que C0 lee, iguales antes y después;
+    2.213 `.pyc`.
+  - **El tope es USD 35.** C0 (b) del texto firmado dice «≤ 25 o freno» (:99), escrito antes de la decisión 3 al firmar; manda la cabecera
+    (tope USD 35 con doble corrida). La estimación de C0 (A 18,18 y B 22,72; con 15 % de margen 20,91 y 26,13) queda bajo el tope: C1
+    sigue. El freno duro del presupuesto (`presupuesto.json`) se crea con 35.
+  - **Pensamiento en los brazos.** Lo que fija el mandato (tabla de BRAZOS): S con `thinking` `between_tools` y O con
+    `output_config.effort` `low`, sin `temperature` y con `tool_choice` `auto`; lo controla el pedido adaptado (`c0/c0b_api.py`,
+    `pedido_adaptado`). Lo que impone la API (referencia de la API de Claude vigente, consultada el 06/10/2026): en `claude-sonnet-5-5` el
+    pensamiento está activo por defecto, `disabled` devuelve 400 y `between_tools` es la forma de apagarlo (solo con `effort` alto o
+    menor, sin otro campo); en `claude-opus-5-5` el pensamiento no se puede apagar (400 con cualquier `effort`) y `effort` es el único
+    control, con `low` como mínimo; en los dos, `tool_choice` forzado devuelve 400 y `temperature` no se admite (Opus) o solo en su valor
+    por defecto (Sonnet). Por eso el pedido adaptado es el único que la API acepta: **S corre sin pensamiento, como Haiku (`think=0`); O
+    corre con el pensamiento mínimo posible.** No existe la opción «todos sin pensamiento». Decisión: se corre como fija el mandato y se
+    declara: la comparación es de «modelo más pedido» (:47); el pensamiento de O se cobra como salida (el escenario B lo supone en +50 %,
+    sin medir) y C1 lo mide en `usage.output_tokens` de la primera corrida; el texto del pensamiento no vuelve (`display` omitido por
+    defecto) y no se guarda nada más que los conteos.
+  - **Los dos intentos 0 de Haiku con marca** (`cap::3.1.14.1`, reintento por corte a 16.384; `ctacte::5.1.2.2`, reintento por forma a
+    temperatura 1, namespace `-rforma1`). Los brazos pasan por mecanismos de la misma clase (regla del pedido, :46: si corta, un reintento
+    a 40.960 con transmisión; si la respuesta no llama a la herramienta o viene mal formada, un solo reintento igual en un namespace
+    aparte), pero no idénticos: el reintento por corte de Haiku fue al segundo escalón (16.384) y el de los brazos va a 40.960; el
+    reintento por forma de Haiku cambió la temperatura y el de los brazos repite el mismo pedido (la API no admite la temperatura). Se
+    declara en las fichas y en M3: las dos unidades llevan la marca «intento 0 de Haiku = reintento (corte / forma)»; cada brazo se compara
+    por unidad con su salida persistida después de su propia regla; los cortes, reintentos y rechazos se cuentan por brazo (M3).
+  - C1 se despacha con el «seguí» de la mesa, con el gasto estimado y el tope.
