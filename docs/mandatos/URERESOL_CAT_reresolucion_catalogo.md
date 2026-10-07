@@ -387,3 +387,4 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 105 líneas de arriba y n
     (§7: la unidad del cableado del registro en `prompt_r2b.py`, después de la firma). U-RERESOL-CAT no tomó dos pases: BKL-0021 (opción c,
     decisión del 06/10) y BKL-0028. Van a la ficha del laudo B2.4. Siguen PENDIENTES de la autora la firma de la enmienda 4 y el cierre de
     la unidad.
+- **07/10/2026 (noche) — nombres de los grafos (nota de equivalencia; protocolo de los dos grafos, §1, FIRMADO el 07/10/2026).** Donde las notas de este mandato dicen «grafo evaluado de la tanda 0» (por ejemplo, la decisión (2) del 07/10/2026 sobre el re-sellado único), léase «grafo sin cola de la tanda 0». «El grafo evaluado» queda para el escalado que se sella antes de B6.3. El texto firmado no cambia.

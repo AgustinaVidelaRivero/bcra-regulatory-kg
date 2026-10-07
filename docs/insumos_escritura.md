@@ -376,3 +376,24 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      unidades; (iii) tipos documentales mal asignados, como observación y no como error: 4 nodos `Comunicacion` en 2
      unidades (dos puntos del mismo TO y dos leyes). Es la línea de base de la vigilancia por tanda del pre-registro de la
      tanda 1 (reporte, §8).
+  6. **Vínculos que faltan en la tanda 0: Excepcion y Condicion sin su regla, por causa, como límite declarado** (U-DIAG-CAP3-GRAFO,
+     `df59e79`; decisiones de la autora del 07/10/2026).
+     - **Cuánto.** En el grafo de diez de la tanda 0 (`a9631a64`) hay 256 Excepcion sin `exceptua` ni `exceptua_obligacion` y 331
+       Condicion sin `condicion_de`; en el sin cola, 252 y 322. Fuente: `reports/u_diag_cap3_grafo/REPORTE_UDIAG_CAP3_GRAFO.md`, tarea
+       a.1, con lectura de 393 casos con criterio escrito antes y una relectura a ciegas que coincide en 22 de 25 en la causa.
+     - **Por causa** (Excepcion + Condicion):
+       - (i) la regla está en otra unidad: 77 + 89, de ellas 49 y 60 en ítems de lista;
+       - (ii) la regla es una Operacion: 48 + 0 (41 relaciones rechazadas por firma antes de E3 y 7 no emitidas);
+       - (iii) emitida, y caída por otro rechazo: 31 + 122;
+       - (iv) nunca emitida, con la regla en la unidad: 49 + 49;
+       - (v) no une a una regla (sobre todo, acotan una definición): 51 + 71.
+     - **Decisiones.**
+       - (i): la unión ítem–encabezado (regla E) no entra antes de la tanda 1, porque su precisión es 18 de 30 (Wilson [0,423; 0,754]),
+         bajo el piso de 0,75. Queda como límite declarado. Una regla más estrecha se fija por escrito y se mide en una unidad propia,
+         en paralelo con el escalado; si pasa, entra antes de sellar el grafo de la evaluación final.
+       - (ii): límite declarado en la tanda 0; desde la tanda 1, según la enmienda 8 a L-ESQ-R2, condicionada a la lectura de las 41.
+       - (iii), (iv) y (v): límite declarado.
+     - **Forma A.** La declarada el 06/10 se sostiene: 60 de 953 Condicion de ítem en (i), del orden de 42 de 715 (con bases distintas,
+       declaradas en el reporte).
+     - **Lo que sí se corrige en código antes del re-sellado único:** la procedencia por tramo (G-r, en U-OMISIONES-COD). Cambia el
+       punto de 22 nodos y solo el rol de 173, con 0 fusiones; 22 de 22 coherentes en la lectura.

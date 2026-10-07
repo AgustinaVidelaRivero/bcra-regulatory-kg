@@ -11,7 +11,7 @@
 | BKL-0005 | calificadores del 7.1 de RegInf | verificado | a | C7 (retest 27/27); suite «resuelto» en r2a (fixture, KG-Tanda0-Diez-r2a) |
 | BKL-0006 | tabla invertida de cap::1.2 | verificado | b | cerrada en KG-Refinado (C2); reaparece en la generación 3 (nota del 30/09). Verifica: tablero de correcciones `:62`, suite BKL-0006, caso fijo cap::1.2 de P4; e0-r2 ya serializa la tabla |
 | BKL-0007 | criterio general 1.1 de Clasificación (cerrada por referencia a 0017) | verificado | c | en r2a el nodo y sus aristas están; persiste solo por alcanzabilidad (2 de 3 consultas en ventana). Destino: búsqueda, A1.8 / U-NAV-DISENO, que no lo nombra |
-| BKL-0008 | alcanzabilidad de tres restricciones de Exterior | triaged | c | plan `:380`: «alcanzabilidad → A1»; laudo de B2.4 pendiente; U-NAV-DISENO no lo nombra. En r2a el contenido está (juegos de azar 1 nodo, criptoactivos 6) |
+| BKL-0008 | alcanzabilidad de tres restricciones de Exterior | triaged | c | plan `:383`: «alcanzabilidad → A1»; laudo de B2.4 pendiente; U-NAV-DISENO no lo nombra. En r2a el contenido está (juegos de azar 1 nodo, criptoactivos 6) |
 | BKL-0009 | sujeto: descenso (CapMin 2.5) | triaged | b | remedio en el prefijo r2b (R15) y en código (R1), diseño de U-PROMPT-R2 §6.2 (`20b7f60`). Verifica el mecanismo: tablero `:65`, LN-3 y LN-4. Sin control por ítem; laudo de B2.4 pendiente (X9) |
 | BKL-0010 | sujeto: descenso (Exterior 14.5) | triaged | b | ídem BKL-0009 |
 | BKL-0011 | sujeto: descenso (RegInf 3.1) | triaged | b | ídem BKL-0009 |
@@ -21,7 +21,7 @@
 | BKL-0015 | sujeto: clase forzada (Exterior 3.17) | triaged | b | ídem BKL-0009 (R15) |
 | BKL-0016 | sujeto: «los clientes» → exportador (Exterior 3.18) | triaged | b | ídem BKL-0009 (R1 en código) |
 | BKL-0017 | criterio general 1.1 de Clasificación restaurado | verificado | c | cerrada en KG-Refinado (C1). En r2a, como BKL-0007: contenido presente, persiste por alcanzabilidad. Destino: A1.8 / U-NAV-DISENO |
-| BKL-0018 | deslinde de régimen 7.2 contra 6.5 de Clasificación | triaged | e | plan `:380`: «anotación de régimen», sin unidad; RT-C5-5 da no_aplicable en la generación 3 |
+| BKL-0018 | deslinde de régimen 7.2 contra 6.5 de Clasificación | triaged | e | plan `:383`: «anotación de régimen», sin unidad; RT-C5-5 da no_aplicable en la generación 3 |
 | BKL-0019 | 8 `subclase_de` desde la cuarentena | verificado | d | cerrada en KG-Refinado (C4). En la generación 3 rige la política de cuarentena (`padre_sugerido`, sin `subclase_de`): la suite lo da «persiste» y así está sellado en la fixture de r2a (1 de 3 presentes, de 8); T7 resuelto. El crecimiento desde la cuarentena queda en U-RERESOL-CAT |
 | BKL-0020 | propuesto «originante» sin padre | triaged | c | en r2a «originante» está en cuarentena (3 filas). Destino: regla de crecimiento del catálogo, R1 de U-RERESOL-CAT |
 | BKL-0021 | propuesto «entidad nominada por el importador» sin padre | triaged | e | 0 filas en el registro de r2a; sin unidad. No reaparece o no se midió |
@@ -77,7 +77,7 @@ Por estado: {"triaged": 26, "verificado": 12, "nuevo": 1}.
 ## Estados del archivo que contradicen lo que pasó
 
 Marcados abiertos y ya resueltos o implementados:
-- BKL-0024 y BKL-0025: `triaged`; resueltos por el pipeline (ya anotado en el plan `:376`, cierre pendiente).
+- BKL-0024 y BKL-0025: `triaged`; resueltos por el pipeline (ya anotado en el plan `:379`, cierre pendiente).
 - BKL-0030: `triaged`; implementado en `26d274d`. Sin evento.
 - BKL-0037: `triaged`; implementado en `924ef4d` y medido en 0. Sin evento.
 - BKL-0038: `nuevo`, nunca pasó a `triaged`; decidido el 30/09 e implementado en `eb277ce`.
@@ -95,5 +95,7 @@ Marcados cerrados y hoy abiertos:
 Documentos desactualizados:
 - `docs/tablero.md:308-319` cuenta 27 entradas (10 verificado, 2 resueltas por v3, 15 triaged). Con su misma
   regla hoy son 39: 12 verificado, 2 resueltas por v3, 24 triaged y 1 nuevo.
-- Plan `:380` (B2.4): «15» con un desglose que suma 16 (ya anotado en `:376`); las entradas de sujeto son
+- Plan `:383` (B2.4): «15» con un desglose que suma 16 (ya anotado en `:379`); las entradas de sujeto son
   ocho, no nueve (diseño de U-PROMPT-R2, §6.2).
+
+**[07/10/2026] Anclas al día (mantenimiento autorizado por la autora con el laudo B2.4):** las citas al plan pasaron de `:380` a `:383` (fila B2.4) y de `:376` a `:379` (pendientes del circuito), porque el plan creció tres líneas antes de esas filas. El contenido de la clasificación no cambia.

@@ -321,7 +321,7 @@ el 04/10/2026; hasta entonces este tablero decía 27 ids: 2, 10 y 15).
 Sin aplicaciones nuevas en el período: la semana se dedicó a la
 re-extracción y a EV2. La priorización de las 15 `triaged` queda pendiente
 de laudo; su tratamiento previsto pasa del parche manual a la corrección en
-el pipeline (§5). **[04/10/2026]** Con 39 entradas, el destino de cada una y el laudo de B2.4, que se firma antes de la tanda 1, están en el plan (`docs/plan_tesis.md:380`). En BKL-0026 y BKL-0027, `verificado` quiere decir defecto confirmado; y BKL-0003, 0004, 0007, 0017, 0019 y 0023, verificados sobre KG-Refinado, persisten en los grafos de la generación 3 según la suite.
+el pipeline (§5). **[04/10/2026]** Con 39 entradas, el destino de cada una y el laudo de B2.4, que se firma antes de la tanda 1, están en el plan (`docs/plan_tesis.md:383`). En BKL-0026 y BKL-0027, `verificado` quiere decir defecto confirmado; y BKL-0003, 0004, 0007, 0017, 0019 y 0023, verificados sobre KG-Refinado, persisten en los grafos de la generación 3 según la suite.
 
 **Intake de la app** (`data/backlog/intake/cola_intake.jsonl`; el archivo es
 un log de eventos por caso, se cuenta por caso y no por línea):
