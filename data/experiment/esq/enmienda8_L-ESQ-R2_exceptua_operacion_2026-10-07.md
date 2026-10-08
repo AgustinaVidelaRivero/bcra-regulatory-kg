@@ -68,7 +68,10 @@ leen con las mismas fichas y se informan aparte, sin entrar a la cifra.
 
 - **La condición del §2 sigue:** la enmienda se firma solo si la lectura de las 41 da al menos 37 correctas.
 - **Tanda 0: opción (a) del §3.** La enmienda rige desde la tanda 1; la tanda 0 declara las relaciones rechazadas como límite, con la cifra
-  de la lectura. No hay E3 de las unidades afectadas de la tanda 0.
+  de la lectura. No hay E3 de las unidades afectadas de la tanda 0. **[08/10/2026, la autora cambia esta decisión (barrido de límites,
+  VAL-03b)]** Si la lectura llega a 37 y la enmienda se firma, las 21 unidades de la tanda 0 con las 41 relaciones rechazadas reciben E3
+  dentro del re-sellado único (etapa R0, USD 0,2306 estimados), por la enmienda 7 al protocolo entre tandas (BORRADOR,
+  `docs/enmienda7_protocolo_entre_tandas_2026-10-08_excepcion_tanda0_en_el_resellado.md`). Si no llega, rige lo de arriba.
 - **Quién lee y cuándo.** Primera lectura: la instancia de U-DIAG-CAP3-GRAFO, con el criterio sellado antes de generar las fichas
   (`criterio_41_exceptua_operacion.md`, sha256 `92688681…`, sellado el 07/10/2026 a las 18:39:26; fichas sin veredicto generadas a las
   18:41). Segunda lectura a ciegas: la mesa, sin abrir la primera. Adjudicación de las divergencias: la autora. La cifra sale después de

@@ -231,7 +231,7 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
 ## 6. Segmentación oficial con e0-r2 de los 152 TOs (U-SEG-OFICIAL) — pendiente
 
 - **Ruta y commit:** NO EXISTE todavía. Mandato firmado por la autora el 05/10/2026,
-  `docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md`; plan, B2.11, unidad 15 (`docs/plan_tesis.md:404`).
+  `docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md`; plan, B2.11, unidad 15 (`docs/plan_tesis.md:409`).
   Se genera después del cierre de U-R2-CODIGO-2 (`9f6361e`), que cambia e0-r2.
 - **Qué va a contener:** la E0 de los 152 TOs con su manifiesto (qué TOs se segmentan por punto y
   cuáles van por la vía de páginas) y las cifras de la segmentación, cada una con su archivo, su
@@ -272,7 +272,7 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      `a2_salida/extracciones_a2.jsonl`. El documento de cifras de esa unidad lo dice
      (`data/experiment/cobertura_bloque_a/cifras_vigentes.md:12-17`): lo escribible es «medido y adjudicado,
      pendiente de ingreso». El ingreso es de U-BLOQUE-A, condición de entrada de la tanda 3
-     (`docs/plan_tesis.md:772`; decisión de la autora), con mandato a redactar después de U-REEXT-T0. Hasta
+     (`docs/plan_tesis.md:777`; decisión de la autora), con mandato a redactar después de U-REEXT-T0. Hasta
      que esa unidad cierre, la frase es un compromiso: se revisa en la versión final de la tesis.
   4. **Lo que cambia en el capítulo 4 con S0 de U-SEG-OFICIAL (05/10/2026).** Son cifras del prototipo de
      S0-1 (`3920323`; `data/experiment/segmentacion_oficial_e0r2/FRENO_S0-1.md`), reproducidas por la
@@ -281,7 +281,7 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      - los documentos no segmentables pasan de 12 a 11, y sus páginas, de 161 a 150 (ri_spi tiene 11);
      - el primer grupo, el de los documentos escritos en puntos, incluye dos con páginas fuera de toda
        unidad: ri_cc (pp. 2 a 47) y ri_tsa (pp. 3 a 61), 105 páginas en total. Entran por la vía de página
-       con la tanda 3 (`docs/plan_tesis.md:772`).
+       con la tanda 3 (`docs/plan_tesis.md:777`).
 
 ## 7. Re-extracción de la tanda 0 con el perfil r2b (U-REEXT-T0) — pendiente
 
@@ -320,8 +320,8 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      son la línea de base de la comparación con otro modelo, y lo que se pueda corregir en código entre tandas se
      declara aparte de lo que queda como límite del modelo.
   3. **El vínculo entre unidades, forma A, como límite declarado** (decisión de la autora del 06/10/2026). En el grafo r2b de
-     la tanda 0 (diez TOs, `a9631a64`), 42 de 715 Condicion de ítem conservan la norma que condicionan en el encabezado de un
-     ancestro, sin arista hacia ella (0,059; Wilson al 95 % [0,044; 0,078]; control 3.e de T3 de U-REEXT-T0,
+     la tanda 0 (diez TOs, `a9631a64`), 42 de 601 Condicion de ítem conservan la norma que condicionan en el encabezado de un
+     ancestro, sin arista hacia ella (0,070; Wilson al 95 % [0,052; 0,093]; en el grafo sin cola, 42 de 575, 0,073 [0,054; 0,097]; corregido el 08/10/2026: decía 42 de 715 y 0,059 [0,044; 0,078], con el denominador contado dos veces, fe de erratas `docs/fe_erratas_forma_A_denominador.md`; control 3.e de T3 de U-REEXT-T0,
      `data/experiment/reext_t0/t3bis/salida/controles_t3bis.json`, `e_forma_A`; referencia con la matriz congelada: 36 de las
      56 sin `condicion_de`, sobre 458). El grafo no deriva esa arista: el enlazador estructural que propuso U-DIAG-PROCESO
      (VU-B) dio en r2a 13 de 23 con predicado tipado y 45 de 76 con `remite_a`, bajo el piso 0,75 (U-DIAG-VINCULO, `b0ee084`);
@@ -375,7 +375,7 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      habría aceptado el intento 0; y la norma del encabezado aparece repetida en el ítem en 8 de las 20 unidades de la extracción final,
      contra 1 en el intento 0. El grafo evaluado de la tanda 0 (`e22fae1a…`) conserva esas extracciones: no se re-verifica ni se re-extrae
      (principio 9, enmienda 5); el límite se declara con estas cifras, y desde la tanda 1 rige el verificador corregido (`7fe848c`). Para la
-     tesis: un reclamo falso del verificador no es inocuo, cambia la extracción (reintento con feedback) y puede duplicar normas.
+     tesis: un reclamo falso del verificador no es inocuo, cambia la extracción (reintento con feedback) y puede duplicar normas. **[08/10/2026, decisión de la autora (barrido de límites, E3-01), sujeta a la firma de la enmienda 7 al protocolo entre tandas, BORRADOR, `docs/enmienda7_protocolo_entre_tandas_2026-10-08_excepcion_tanda0_en_el_resellado.md`]** Las 20 unidades de la lista de O3 se re-verifican con el E3 corregido dentro del re-sellado único (etapa R0, con API y tope), reusando la verificación de O3 donde sirva: con sus veredictos, 16 se aceptan con el intento 0 (11 de las 13 que habían reintentado y 5 de la cola), 3 reintentan y `docvig::3.3.2` sigue en la cola. Es una excepción declarada al §1.4 de la enmienda 5; la cifra de este ítem queda como la medida sobre el grafo sellado antes del re-sellado.
   5. **Tasa de error por unidad de las aceptadas de la tanda 0** (U-LECTURA-ACEPTADAS, L2 del 07/10/2026; reporte
      `data/experiment/lectura_aceptadas/reporte_l2.md`, cifras en `estimadores_l2.json`; L0 y L1 en `6e611d6`). Método: 30
      unidades por estrato (ítems de lista y no ítems), sorteadas con semilla sellada antes de leer entre las 2.366 aceptadas
@@ -402,9 +402,9 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
        - (i): la unión ítem–encabezado (regla E) no entra antes de la tanda 1, porque su precisión es 18 de 30 (Wilson [0,423; 0,754]),
          bajo el piso de 0,75. Queda como límite declarado. Una regla más estrecha se fija por escrito y se mide en una unidad propia,
          en paralelo con el escalado; si pasa, entra antes de sellar el grafo de la evaluación final.
-       - (ii): límite declarado en la tanda 0; desde la tanda 1, según la enmienda 8 a L-ESQ-R2, condicionada a la lectura de las 41.
+       - (ii): límite declarado en la tanda 0; desde la tanda 1, según la enmienda 8 a L-ESQ-R2, condicionada a la lectura de las 41. **[08/10/2026, decisión de la autora (barrido de límites, VAL-03b)]** Si la lectura de las 41 llega a 37 y la enmienda 8 se firma, las 21 unidades de la tanda 0 con esas relaciones reciben E3 dentro del re-sellado único (etapa R0; enmienda 7 al protocolo entre tandas, BORRADOR): cambia la decisión (a) del 07/10/2026.
        - (iii), (iv) y (v): límite declarado.
-     - **Forma A.** La declarada el 06/10 se sostiene: 60 de 953 Condicion de ítem en (i), del orden de 42 de 715 (con bases distintas,
+     - **Forma A.** La declarada el 06/10 se sostiene: 60 de 953 Condicion de ítem en (i), del orden de 42 de 601 (corregido el 08/10/2026: decía 715; fe de erratas `docs/fe_erratas_forma_A_denominador.md`) (con bases distintas,
        declaradas en el reporte).
      - **Lo que sí se corrige en código antes del re-sellado único:** la procedencia por tramo (G-r, en U-OMISIONES-COD). Cambia el
        punto de 22 nodos y solo el rol de 173, con 0 fusiones; 22 de 22 coherentes en la lectura.
@@ -495,7 +495,8 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
 - **(e) Los límites.**
   - La muestra está seleccionada por contener los casos difíciles: no es representativa y sus tasas no se proyectan al grafo.
   - No se midió la precisión de las relaciones que agrega cada modelo: M1 cuenta si el supuesto queda unido a su norma, no si las demás
-    relaciones son correctas (Opus emite 1.055 y 1.029 relaciones contra 844 y 935 de Sonnet; `c1/salida/m4_c1.json`).
+    relaciones son correctas (Opus emite 1.055 y 1.029 relaciones contra 844 y 935 de Sonnet; `c1/salida/m4_c1.json`). La etapa C4, en
+    BORRADOR desde el 08/10/2026 (`docs/mandatos/UCOMP_E1_C4_lectura_pareada.md`), lo mide: sus cifras entran en esta sección.
   - Una sola configuración por modelo (Sonnet sin pensamiento, Opus con esfuerzo bajo), con un pedido adaptado: sin temperatura fija ni
     herramienta forzada.
   - Las omisiones del texto heredado no las pide el prompt: E1 recibe los bloques heredados como contexto, con la instrucción de no

@@ -161,7 +161,7 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 116 líneas de arriba (`c
   M3 recomputado: S 1 de 87, O 4 de 87. M4: `medir_c1.py` dos veces, byte a byte con el repo. Las cuatro bases SQLite (8,1 MB cada una) traen
   el request completo y la respuesta cruda de cada llamada (87 filas por base), sin claves ni rutas absolutas (grep de `sk-ant`, `api_key`,
   `/Users/`: 0): entran al commit (32,5 MB). Selftest 21/21 sin camino a la API. Los 11 sellos de C0 intactos; 2.213 `.pyc`.
-  - **Variabilidad entre corridas** (`trabajo51/out/variabilidad_c1.json`, scratchpad de la mesa): además de las unidades idénticas (S 1, O 4),
+  - **Variabilidad entre corridas** (`trabajo51/out_c1/variabilidad_c1.json`, scratchpad de la mesa; corregido el 08/10/2026, decía `out/`): además de las unidades idénticas (S 1, O 4),
     por unidad la diferencia de relaciones entre las dos corridas es 0 en 39 (S) y 47 (O) de 87, de 1 a 2 en 24 y 21, de 3 a 5 en 17 y 12,
     y más de 5 en 7 y 7; la de entidades es 0 en 54 y 52. Consecuencia para la lectura: el criterio «en la peor de sus dos corridas» es
     conservador por diseño (las dos corridas tienen que pasar); con esta dispersión, C3 reporta las cifras de cada corrida y su diferencia,
@@ -308,3 +308,8 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 116 líneas de arriba (`c
     4. El cambio de modelo es una de las palancas del punto de diagnóstico posterior a A2.2 (plan, fila A2.2).
   - **Gasto de la unidad:** USD 15,836623 de 35 (`presupuesto.json`), todo en C1.
   - **U-COMP-E1 CERRADA** con el commit de C3 (PENDIENTE de la autora).
+- **08/10/2026 (tarde) — etapa C4 en BORRADOR** (decisión de la autora): una lectura pareada a ciegas, USD 0, sobre las salidas guardadas,
+  de una muestra de las 87 unidades con la extracción de Haiku, de Sonnet y de Opus de cada una, recodificadas; unidades con algún error
+  con el criterio de U-LECTURA-ACEPTADAS y precisión de las relaciones. Mide lo que C1 a C3 no midieron. No cambia la decisión de la
+  tanda 1. Documento aparte: `docs/mandatos/UCOMP_E1_C4_lectura_pareada.md`. Corre en paralelo con el escalado, lista antes del punto de
+  diagnóstico posterior a A2.2; sus resultados van a la sección de la comparación de modelos del capítulo 5.

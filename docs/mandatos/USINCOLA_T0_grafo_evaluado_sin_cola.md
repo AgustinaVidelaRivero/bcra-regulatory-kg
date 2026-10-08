@@ -243,3 +243,9 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 135 líneas de arriba (`7
   `2922b72d…`); el ensamblado con la cola adentro y marcada es **«grafo completo de la tanda 0»**. «El grafo evaluado», a secas, queda
   reservado al escalado sellado antes del pre-registro de B6.3 (laudo 3 del 20/09/2026, `docs/plan_tesis.md`, principio 9) y «el grafo
   corregido» a la release posterior a la evaluación (`docs/protocolo_dos_grafos.md`, BORRADOR). El texto firmado no se edita.
+- **08/10/2026 — fe de erratas: la forma A es 42 de 601, no 42 de 715** (decisión de la autora; `docs/fe_erratas_forma_A_denominador.md`).
+  El texto firmado (`:94`) dice «en r2b completo: 42 de 715 Condicion de ítem», y la nota del 06/10/2026 sobre el FRENO SC1-bis (`:189-191`)
+  explica el 715 como `condicion_de_item` (601) más `sin_condicion_de` (114). El segundo contador está contenido en el primero
+  (`data/experiment/sincola_t0/sc1/controles_sc1.py:292-327`): la cifra correcta es 42 de 601 (0,070; [0,052; 0,093]) en el grafo completo
+  y 42 de 575 (0,073; [0,054; 0,097]) en el sin cola. Error de la mesa. El texto firmado no se edita; el control de SC1 y su decisión no
+  cambian.

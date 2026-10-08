@@ -49,3 +49,8 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 39 líneas de arriba (`87
   45 de 76, bajo el piso 0,75, y pide enmienda firmada. La lectura de precisión de los 42 casos (`casos_forma_A`) queda como
   complemento, sin plazo y a USD 0. La vía de lectura es la navegación por la jerarquía de la procedencia (condición 10; vista de
   todos los nodos de un punto, A1.8).
+- **08/10/2026 — fe de erratas: la forma A es 42 de 601, no 42 de 715** (decisión de la autora; `docs/fe_erratas_forma_A_denominador.md`).
+  La nota del 06/10/2026 de arriba dice «42 de 715 Condicion de ítem (0,059; Wilson al 95 % [0,044; 0,078])». El 715 suma dos contadores
+  de `controles_t3bis.json` (`e_forma_A.conteos`: `condicion_de_item` 601 y `sin_condicion_de` 114), y el segundo está contenido en el
+  primero. La cifra correcta es 42 de 601 (0,070; [0,052; 0,093]) en el grafo completo de diez, y 42 de 575 (0,073; [0,054; 0,097]) en el
+  sin cola. Error de la mesa. La decisión de la autora del 06/10/2026 (límite declarado, sin mandato propio antes de la tanda 1) no cambia.

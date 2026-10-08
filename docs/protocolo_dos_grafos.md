@@ -98,3 +98,16 @@ FIRMADO por la autora el 07/10/2026 (BORRADOR en `93bebd2`). Rige desde esta fir
 punto 4: el grafo corregido no se mide sobre el conjunto de test de B6.3, y si se midiera va como análisis exploratorio posterior,
 nunca en la misma tabla; (b) la ubicación en la estructura vigente de la tesis: la medición del grafo evaluado en el capítulo 5 y el
 grafo corregido, como entregable, en el capítulo 6 (F-4 cerrada). Siguen abiertos el §5, puntos 1 y 4.
+
+## Notas posteriores a la firma
+
+- **08/10/2026 — anclas al plan y al checklist corridas** (barrido de límites de la mesa, contradicción 9; corrección autorizada por la
+  autora). El texto firmado no se edita: el plan creció después de la firma, y estas son las líneas que hoy nombran lo mismo, verificadas por
+  contenido contra `ae76f08:docs/plan_tesis.md`. Donde el texto dice `plan:382`, léase `:387` (B2.6, en `:6` y `:67`); `plan:277-283`,
+  `:281-287` (principio 9, en `:13`); `plan:287`, `:288` (laudo 3, en `:14`, `:28`, `:29`, `:32` y `:90`); `plan:773`, `:778` (B6.3, en `:17`,
+  `:55` y `:75`); `plan:741`, `:746` (enmienda del uso de la ventana, en `:21`, `:63` y `:81`); `plan:746`, `:751` (la tanda 0 como validación
+  de diseño, en `:37` y `:80`); `plan:995`, `:1002` (etiqueta de release, en `:52`); `plan:454-456`, `:459-462` (B4.4, en `:62`); `plan:772`,
+  `:777` (U-BLOQUE-A, en `:64`); `plan:299`, `:303` (principio 12, en `:66`); `plan:400`, `:405` (las 74 unidades de la tanda 0, en `:93`).
+  Además, la cita del checklist para W3 (`:217`) es hoy `docs/checklist_pre_escalado.md:233`. Ninguna cambia el sentido del texto.
+- **08/10/2026 — una referencia interna.** El `:62` remite a «la regla de la enmienda 5, §3» para la vuelta de la cola: la regla está en el
+  §1, punto 3, de la enmienda 5; su §3 es «Qué no cambia».

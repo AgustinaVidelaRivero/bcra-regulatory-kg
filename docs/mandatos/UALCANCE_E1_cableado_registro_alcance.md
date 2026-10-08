@@ -120,3 +120,13 @@ final de la tanda 1 (U-SEG-OFICIAL, después de S2).
        mismo en U-UNION-ESTRECHA). Error de la mesa.
     6. **(f) El commit de A1** entra como registro (`data/experiment/alcance_e1/`), sin tocar el código del repo: el parche lo aplica A2,
        una sola vez.
+- **08/10/2026 (tarde) — decisiones de la autora que amplían las escrituras de A2.**
+  1. **Los pasajes de la tabla de reprocesamiento** que la revisión de la mesa encontró viejos además de los cuatro del FRENO A1 quedan
+     aceptados: «R00 a R33b» y «44 variaciones» (`:361`, `:391`) y el pie (`:401`), y el cambio de la columna «Principio» de F13c de 12 a 9,
+     como F12. A2 los pone al día junto con F13c (variante A), R34 y `selftest_clave_cache.json`.
+  2. **`reextraccion_v2/e1_extractor/perfil_e1.py` entra en las escrituras de A2**, para la corrección del manifiesto (decisión (c) de la
+     nota anterior): una línea en `:236`, que compone la tabla de la release con las entradas del derivado, la release primero, y un caso
+     en el selftest. El manifiesto de la tanda 1 se arma después de A2; el de S1 de los 152, ya sellado, queda como registro anterior a A2 o
+     se regenera en U-SEG-OFICIAL si se lo vuelve a cargar.
+  Con esto, las ESCRITURAS de A2 son las del texto firmado, con el derivado en `catalogo_unico/registro_alcance_r2b.json` (decisión (a)),
+  más `selftest_clave_cache.py`, `selftest_clave_cache.json`, los pasajes de la tabla nombrados y `perfil_e1.py` con su caso de selftest.

@@ -653,3 +653,25 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     5. **(e)** La mesa prepara el despacho de la vuelta (S0-4a-ter: la guarda de ri_oc y las dos reglas de ri_ccna, con la batería entera)
        y pone al día la parte 2 del «seguí» (S0-4b) con sdmax, ri_oc, ri_ccna y el parche final de la vuelta.
   - **Ruta:** S0-4a-ter → S0-4b → S1-bis → S2. Suma una vuelta (del orden de un día) a la cadena de segmentación, que sigue siendo la crítica.
+- **08/10/2026 (tarde) — decisiones de la autora: el diseño de S0-4, la vuelta S0-4a-ter y los límites de E0 del barrido.**
+  1. **Decisiones 3, 4 y 5 del §8 del diseño de S0-4a**, que la autora dio a la instancia en el «seguí» de S0-4a-bis: la 3 (el rótulo sin
+     numeración que reinicia abre su sub-documento igual) y la 4 (la lista de verbos de 4a y 4b: la del despacho más debe(n), puede(n),
+     será(n), tendrá(n)), como están diseñadas; la 5, los casos del §7 dentro de los sub-documentos, como límite declarado, salvo ri_ccna,
+     que se corrige en S0-4a-bis (ítems 31 a 40) y en S0-4a-ter (B.3 a B.40 y `D1A3::S2`).
+  2. **S0-4a-ter, despachada el 08/10/2026** en la sesión de S0-4 (la guarda de ri_oc y las dos reglas de ri_ccna), con un agregado de
+     la autora: en la misma vuelta se evalúa el Apartado B de `ri_oc::3.51` (11.427 de sus 12.206 caracteres) y se separa solo si se puede
+     con una forma acotada a ri_oc, con su interruptor, su caso de selftest y la misma batería, sin mover otros TOs. Si no entra, queda
+     declarado con su cifra en el pre-registro de la tanda 1 (E0-04 del barrido).
+  3. **Los límites de sub-documento del censo de S0-4a** (87 en 35 TOs; E0-05 del barrido; cifra del censo de S0-4a, que entra al repo
+     con S0-4b): los de las tandas 2 y 3 (19 en 6 TOs y 37 en 18 TOs, por el criterio de tandas del protocolo, `docs/protocolo_entre_tandas.md:175-182`)
+     pasan a una **release de E0 antes de la tanda 2**, sin re-extraer (un TO que todavía no se extrajo no paga nada; protocolo, §3); los de
+     los 6 TOs de la tanda 1 (17: manori 8, ri_oc 3, ri_rml 3, ri_gerc 1, ri_pgn 1, snp_tr 1) quedan declarados, salvo lo que corrija
+     S0-4a-ter en ri_oc. Son detecciones, no lecturas, con falsos positivos conocidos.
+  4. **El hallazgo 1.16** (E0-06; 118 candidatos en 55 TOs en el censo de S1, `s1/censo_renglones_S1.json`): S1-bis lo mide en su muestra
+     y S2 propone la regla; si es acotada y de bajo riesgo, entra en la release de E0 antes de la tanda en la que cae. En la tanda 1 hay
+     **33 candidatos en 10 TOs** (depaho 8, lingeef 8, ayccef 5, cajasc 4, adrei 2, manori 2, cirmo3 1, efemin 1, ri_rml 1, snp_tr 1;
+     iguales con S0-4a-bis). El resto: tanda 0, 11 en 3 TOs; tanda 2, 68 en 37; tanda 3, 5 en 4; fuera, 1 (ri_spi).
+  5. **`nmaeef::2.9` (E0-02, tanda 2) y la «Sección 1.» de ri_niif (E0-03, tanda 3):** grupo 2, por lista, en la release de E0 antes de la
+     tanda 2. `nmaeef::2.9` es además uno de los 118 candidatos del hallazgo 1.16, y el único leído como error.
+  - **Precisión:** no hay un archivo con la asignación de las tandas 2 y 3; las cifras por tanda de los puntos 3 y 4 salen del criterio
+    del protocolo, que reproduce el reparto 6 / 6 / 18 / 5 de la nota del 07/10/2026 (cálculo de la mesa del 08/10/2026).

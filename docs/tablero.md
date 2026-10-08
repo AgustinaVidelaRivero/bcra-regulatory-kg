@@ -1,6 +1,6 @@
 # Tablero de estado — bcra-regulatory-kg
 
-## 0. Estado vigente al 07/10/2026 (noche)
+## 0. Estado vigente al 07/10/2026 (noche); cola de unidades al 08/10/2026
 
 Actualización de la mesa por decisión de la autora del 07/10/2026; HEAD `0ea2d74`. Desde el 17/08 el estado lo llevan el plan
 (`docs/plan_tesis.md`), el checklist del escalado (`docs/checklist_pre_escalado.md`) y los mandatos (`docs/mandatos/`). Esta sección dice
@@ -25,17 +25,17 @@ actualiza.
   enmienda 4 al protocolo.
 
 **Gobierno.**
-- Protocolo entre tandas FIRMADO (`a304b89`), con sus cinco enmiendas firmadas: cola humana, 2, 3, 4 (`53bbd6f`) y 5 (`ccd8fad`).
+- Protocolo entre tandas FIRMADO (`a304b89`), con sus cinco enmiendas firmadas: cola humana, 2, 3, 4 (`53bbd6f`) y 5 (`ccd8fad`); la 6 (cambio de modelo del extractor) y la 7 (la tanda 0 en el re-sellado único: ítems de lista y firma Excepcion → Operacion), en BORRADOR desde el 08/10/2026.
 - Pre-registro de la evaluación por tripletas, FIRMADO (`4afbe51`).
 - Laudo de la release r2 (`docs/laudo_release_r2_pipeline.md`): BORRADOR v2, con sus sellos «A COMPLETAR». Se firma después del gate
   final y antes del pre-registro de la tanda 1.
 
 **Cola de unidades** (estado en sus mandatos y frenos):
-- **U-SEG-OFICIAL:** S0-4 despachada; después S1-bis y S2, que fijan la lista de la tanda 1.
-- **U-E3-LISTAS:** O5 despachada (tope de USD 0,50).
-- **U-COMP-E1:** la segunda lectura de C2 terminó; falta la adjudicación de las 19 divergencias, y después C3.
-- **U-RERESOL-CAT:** R2 cerrada (R2-3 bis en `dac7d57`).
-- **Mandatos en BORRADOR:** U-OMISIONES-COD (borrador v4 de la mesa, todavía sin mandato en el repo), U-ALCANCE-E1 y U-UNION-ESTRECHA.
+- **U-SEG-OFICIAL:** S0-4a y S0-4a-bis revisadas; S0-4a-ter despachada el 08/10/2026 (guarda de ri_oc, ri_ccna corregida y el Apartado B de ri_oc evaluado); después S0-4b, S1-bis y S2, que fijan la lista de la tanda 1.
+- **U-E3-LISTAS:** CERRADA (`56a7a11`; O5 probada y no adoptada). [Corregido el 08/10/2026: decía «O5 despachada».]
+- **U-COMP-E1:** CERRADA con C3 (`323cef7`): ningún brazo cumple el criterio; el modelo del extractor no cambia antes de la tanda 1. La etapa C4 (lectura pareada a ciegas, USD 0), en BORRADOR.
+- **U-RERESOL-CAT:** R2 cerrada (R2-3 bis en `dac7d57`). **U-ALCANCE-E1** y **U-UNION-ESTRECHA**, FIRMADOS (`21e55a0`): A1 en `ab59034` (A2 espera la lista final); U1 en `57c2123` y U2 (censo de las 29) despachada el 08/10/2026.
+- **Mandatos en BORRADOR:** U-OMISIONES-COD (borrador v5 de la mesa, todavía sin mandato en el repo); C4 de U-COMP-E1 (`UCOMP_E1_C4_lectura_pareada.md`); B′ (`UAPLICA_ROL_ALCANCE_derivada_Bprima.md`) y casi duplicados (`UCASI_DUPLICADOS_fusion_de_forma.md`), grupo 2 del barrido de límites del 08/10/2026. [Corregido el 08/10/2026: U-ALCANCE-E1 y U-UNION-ESTRECHA ya estaban firmados.]
 - **Laudo B2.4:** en BORRADOR.
 - **Segunda lectura a ciegas de la mesa:** las 41 de la enmienda 8, los ocho patrones de B2.4 y las 4 filas de BKL-0021; sesión nueva,
   después del 08/10/2026 a las 18 h.
@@ -354,8 +354,8 @@ registrados en archivos):
 
 ## 3. Backlog de nodos
 
-Fuente: `data/backlog/backlog.jsonl` (92 líneas, 39 ids únicos al 04/10/2026; el
-último commit que tocó el archivo es `0061244`). Regla del estado efectivo por
+Fuente: `data/backlog/backlog.jsonl` (93 líneas, 40 ids únicos al 08/10/2026, con BKL-0040 en `0737497`; decía 92 y 39 al 04/10/2026; el
+último commit que tocó el archivo es `0737497`, antes `0061244`). Regla del estado efectivo por
 id: se recorre el archivo en orden y (i) todo evento con la clave `estado` no
 vacía fija el estado; (ii) la clave `estado_retriage` — propia de los eventos
 `retriage_v3` y DISTINTA de `estado` — fija el estado solo cuando vale

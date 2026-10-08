@@ -79,3 +79,12 @@ El texto firmado son las 71 líneas de arriba (`ccd8fad`, sha256 `84dff0a3e925�
   **«grafo completo de la tanda N»**. «El grafo evaluado» queda reservado al escalado sellado antes del pre-registro de B6.3 (laudo 3 del
   20/09/2026) y «el grafo corregido» a la release posterior a la evaluación (`docs/protocolo_dos_grafos.md`, BORRADOR). Las reglas de esta
   enmienda no cambian.
+- **08/10/2026 — corrección de la mesa** (barrido de límites, contradicción 6; autorizada por la autora). La nota anterior llama BORRADOR al
+  protocolo de los dos grafos (`docs/protocolo_dos_grafos.md`): se firmó el 07/10/2026 (`53bbd6f`). La nota no cambia en lo demás.
+- **08/10/2026 — precisión de la mesa** (barrido de límites, contradicción 11). Las 74 unidades de la cola de la tanda 0 de esta enmienda
+  (§0 y §1.5) son las de r2b (43 `cola_humana_veredicto_inutilizable`, 29 `cola_humana` y 2 `cola_humana_reextraccion_invalida`, en
+  `corpus_tanda0/salida_r2b/*/finales.jsonl`); las 71 de la enmienda de la cola humana (`docs/enmienda_protocolo_entre_tandas_2026-10-04_cola_humana.md:15-17`)
+  son las de r2a (35 y 36, en `corpus_tanda0/salida/*/finales.jsonl`). No se contradicen: al citarlas, se nombra el grafo.
+- **08/10/2026 — la decisión de la autora sobre los ítems de lista de la tanda 0 (E3-01 del barrido de límites) choca con el §1.4** («La
+  tanda 0 queda como está … sin re-sellar»). Va por la enmienda 7 al protocolo entre tandas, en BORRADOR
+  (`docs/enmienda7_protocolo_entre_tandas_2026-10-08_excepcion_tanda0_en_el_resellado.md`); hasta su firma rige el §1.4.
