@@ -164,3 +164,9 @@ U2 pasa, después de U-OMISIONES-COD y antes del armado que precede al sello del
   - **Sigue U3**, después de U-OMISIONES-COD, con el `rol_fuente` cerrado compartido con B3 de U-APLICA-ROL-ALCANCE; y el control en los TOs
     de la tanda 1 antes de sellar el grafo evaluado (punto 4 de la nota del 08/10/2026).
   - El FRENO de U2-b entra a `u2/` como `freno_u2b.md`, igual al de su paquete, junto con el de U2-a.
+- **08/10/2026 (noche) — Decisiones de la autora sobre el FRENO U2 (commiteado en `a91f95f`).**
+  - **El control en los TOs de la tanda 1 (punto 4 de la nota del 08/10/2026), aprobado como lo propuso la mesa (`u2/freno_u2.md`,
+    §5):** con la tanda 1 extraída y ensamblada con U3, se leen 30 uniones de la regla en sus TOs, o el censo si son menos, con el mismo
+    `criterio_u2.md` y sus ocho precisiones; dos lecturas a ciegas y la adjudicación de la autora. Piso: límite inferior de Wilson al
+    95 % ≥ 0,75. El tamaño, la semilla y el piso se sellan antes de leer. Va antes de sellar el grafo evaluado.
+  - **La copia del FRENO de U2-b en `u2/`** (`freno_u2b.md`, igual al de su paquete), aprobada.

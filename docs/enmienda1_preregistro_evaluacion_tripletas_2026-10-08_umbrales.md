@@ -1,9 +1,11 @@
 # Enmienda 1 al pre-registro de la evaluación por tripletas — vía de umbrales: exactitud de los campos de los umbrales
 
-**VERSIÓN PARA FIRMAR (mesa, 08/10/2026)**, con las decisiones D1 a D10 de la autora del 08/10/2026 (§14.1). Redactada en la unidad
-U-MED-UMBRALES (solo diseño, USD 0), sobre HEAD `1f9b262`; los archivos citados no cambian hasta `18d9e05`. Revisión de la mesa sobre una
-copia (08/10/2026): los recuentos del marco, los vacíos, los estratos y el tamaño se reproducen con los scripts de
-`data/experiment/med_umbrales/` (nota del plan, fila B6.3). La firma, PENDIENTE.
+**FIRMADA por la autora el 08/10/2026** (firma por mensaje de la autora; versión para firmar en `97bc53d`), con las decisiones D1 a D10
+del §14.1, tomadas el mismo día. Rige desde esta firma. Redactada en la unidad U-MED-UMBRALES (solo diseño, USD 0), sobre HEAD `1f9b262`;
+los archivos citados no cambian hasta `18d9e05`, y sus anclas siguen valiendo en `a91f95f` (el único cambio en un archivo citado es la
+nota de la fila B6.3, `plan:778`, que no mueve líneas). Revisión de la mesa sobre una copia (08/10/2026): los recuentos del marco, los
+vacíos, los estratos y el tamaño se reproducen con los scripts de `data/experiment/med_umbrales/` (nota del plan, fila B6.3). El texto
+firmado son las líneas anteriores a «## Firma»: no se edita después y recibe notas fechadas debajo de la sección «Firma».
 
 Enmienda con fecha a `docs/preregistro_evaluacion_tripletas.md`, FIRMADO por la autora el 07/10/2026 en `4afbe51` (sha256
 `8ce611ba…`; el archivo de HEAD es idéntico, verificado con `git show 4afbe51:docs/preregistro_evaluacion_tripletas.md | shasum -a 256`).
@@ -384,5 +386,23 @@ la propuesta y el FRENO de la unidad; entraron al repo con esta versión para fi
 
 ## Firma
 
-PENDIENTE de la autora, con las decisiones D1 a D10 del §14.1 (tomadas el 08/10/2026). Al firmar se calculan y se asientan acá las
-semillas de P y de T (D7).
+FIRMADA por la autora el 08/10/2026 (versión para firmar en `97bc53d`), con las decisiones D1 a D10 del §14.1. Rige desde esta firma.
+
+**Semillas (D7), selladas con el commit de la firma.** Texto firmado: las líneas de este archivo anteriores a «## Firma», con sha256
+`c77e92adface7f9fe7286c1019971fdedafc7af6afbafb7b185f87c38bf77e01`.
+
+| etapa | semilla |
+|---|---|
+| P (piloto, §9) | `51fbea50388e7481` |
+| T (medición final, §4.3) | `acda9e847a4d64d0` |
+
+Se reproducen sobre el archivo del commit de la firma (la segunda y la tercera línea toman el sha256 de la primera):
+
+```
+git show <commit de la firma>:docs/enmienda1_preregistro_evaluacion_tripletas_2026-10-08_umbrales.md | sed '/^## Firma$/,$d' | shasum -a 256
+printf 'U-MED-UMBRALES|P|%s' <sha256 del texto firmado> | shasum -a 256 | cut -c1-16
+printf 'U-MED-UMBRALES|T|%s' <sha256 del texto firmado> | shasum -a 256 | cut -c1-16
+```
+
+El sorteo de cada etapa, por estrato: `random.Random(f"{semilla_X}:{estrato}").sample(sorted(ids), n)` (§4.3 y D7). Ninguna muestra
+se sortea antes de este commit. La nota del §14.3 al pie del pre-registro entra con esta firma.

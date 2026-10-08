@@ -290,3 +290,9 @@ python3 -c "import json,glob;L=[len(u.get('texto') or '') for p in glob.glob('da
 
 FIRMADO por la autora el 07/10/2026 (versión para firmar en `865a5b2`). Rige desde esta firma. Decisiones al firmar: las once del §10, con los
 topes de USD 35 (V) y USD 55 (T).
+
+## Notas al pie
+
+- **08/10/2026** — Enmienda 1 (vía de umbrales: exactitud de los campos de los umbrales), FIRMADA por la autora el 08/10/2026 (versión
+  para firmar en `97bc53d`; el commit de la firma es el que agrega esta nota):
+  `docs/enmienda1_preregistro_evaluacion_tripletas_2026-10-08_umbrales.md`. El texto firmado no cambia.
