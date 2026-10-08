@@ -357,6 +357,17 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      reintento con un reclamo B en el intento 0. D1 (el bloque en el fuente de las citas): de los 14 faltantes nuevos, 6 verifican su
      cita solo por D1 y 2 de ellos bloquean, los dos en `ext::3.18.1.1` y de composición, no la norma del encabezado: el riesgo
      declarado de D1 no aparece en las 20.
+     **O5, el caso resuelto en la NOTA del ítem, se probó y no se adoptó** (decisión de la autora del 07/10/2026; USD 0,241 de un tope
+     de 0,50, en las mismas 20 unidades, una corrida por unidad; `data/experiment/e3_listas/freno_o5.md`, cifras en `o5/a/cifras_o5.json`):
+     - Con el criterio sellado, el residuo de O3 desaparece: ningún reclamo cita ya el bloque declarado `[meta_normativo]`, el control
+       `ext::3.16.2.1` conserva su reclamo fundado y en las otras 17 no hay bloqueantes nuevos.
+     - Pero la lectura muestra otro reclamo B bloqueante en `ext::3.6.4.1` (pide la excepción compuesta, contra C5b y C7 de la NOTA), y
+       `ext::3.6.4.2` suma una falsa alarma de polaridad, ajena a la lista.
+     - Los bloqueantes son 5, como en O3, y las falsas alarmas bloqueantes pasan de 2 a 3.
+     - Con una corrida por unidad no se separa del ruido; cuesta unos USD 0,62 más por corrida del tamaño de la tanda 0; y seguir
+       ajustando sería calibrar el verificador contra su propio control.
+     - El mensaje de E3 queda con el candado de O4 (`079d2489…` / `66bc8656…`). El residuo de `ext::3.6.4.1` queda como límite declarado
+       del verificador.
      **Límite declarado de la tanda 0 y hallazgo para la tesis (decisión de la autora del 07/10/2026):** en la tanda 0, el verificador
      reclamó en los ítems de lista normas que están en el encabezado (reclamos P, C, B y B2 que P3C-d1 y d2 no piden extraer en el ítem);
      esos reclamos falsos dispararon reintentos y 13 de las 17 extracciones finales del grupo afectado son el reintento, distinto del

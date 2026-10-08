@@ -244,3 +244,24 @@ firmar en `9bca986`) y no cambia.
     la re-verificación paga de las 20 unidades de O3 con la NOTA nueva, en una base propia (`data/experiment/e3_listas/cache_o5/`);
     estimación del orden de USD 0,24 (O3 gastó USD 0,238213 en las mismas 20, `o3/resumen_o3.json`). Despacho preparado por la mesa; el
     despacho, PENDIENTE de la autora.
+- **07/10/2026 (noche) — FRENO O5, revisión de la mesa y cierre de la unidad.**
+  - **El FRENO** (`data/experiment/e3_listas/freno_o5.md`; USD 0,241453 de 0,50): el criterio se selló a las 20:50:35 (`82f2740e…`),
+    antes de la primera llamada (20:50:57), y la lectura a las 20:57:08 (`933a8e50…`).
+  - **Recomputado por la mesa** desde `o5/a/evaluacion_e3_o5.jsonl` y `respuestas_e3_o5.jsonl`: 20 unidades, 0 errores, 9 faltantes,
+    5 bloqueantes, 15 aceptables y 13 completas.
+    - Bloqueantes de las tres unidades del residuo y del control: un B en `ext::3.6.4.1` (la excepción compuesta); un P en
+      `ext::3.6.4.2` («podrá superar…» contra «no podrá superar»); y el reclamo del control `ext::3.16.2.1`, que se conserva.
+    - Costo: el acumulado registrado da USD 0,241453; la suma por fila da 0,241445, por redondeo.
+  - **Decisión de la autora: no se adopta la NOTA con el caso resuelto.** Con el criterio sellado el residuo de O3 desaparece, pero:
+    - la lectura muestra otro reclamo B bloqueante en `ext::3.6.4.1`;
+    - `ext::3.6.4.2` suma una falsa alarma ajena a la lista;
+    - las falsas alarmas bloqueantes pasan de 2 (O3) a 3, con los mismos 5 bloqueantes;
+    - con una corrida por unidad no se separa del ruido;
+    - cuesta unos USD 0,62 más por corrida del tamaño de la tanda 0;
+    - seguir ajustando sería calibrar el verificador contra su propio control.
+  - **Revertidos por la mesa** los cambios de O5 en `prompt_e3.py`, `selftest_e3.py`, la fila F23b de la tabla de reprocesamiento y
+    `selftest_clave_cache.json`, que vuelven a ser iguales a `6ec2c2b`. El candado del mensaje de E3 queda en `079d2489…` / `66bc8656…`
+    (el de O4). La versión de O5 de esos archivos queda en el paquete del FRENO.
+  - **El residuo de `ext::3.6.4.1`** queda como límite declarado del verificador (`docs/insumos_escritura.md`, §7, ítem 4).
+  - **Registro:** `e3_listas/o5/`, `freno_o5.md` y la base `cache_o5/` entran al repo.
+  - **U-E3-LISTAS queda CERRADA** con el commit de este registro (PENDIENTE de la autora).
