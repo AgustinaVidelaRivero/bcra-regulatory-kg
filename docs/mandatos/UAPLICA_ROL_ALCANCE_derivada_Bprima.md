@@ -1,6 +1,7 @@
 # Mandato U-APLICA-ROL-ALCANCE — `aplica_a` derivada hacia el alcance del documento, solo si la norma no nombra otro sujeto (B′, BKL-0040)
 
-**BORRADOR — PENDIENTE DE FIRMA DE LA AUTORA** (redactado por la mesa el 08/10/2026, por decisión de la autora del mismo día sobre el
+**FIRMADO por la autora el 08/10/2026** (firma por mensaje de la autora; versión para firmar en `08ccdfa`; redactado por la mesa el 08/10/2026,
+por decisión de la autora del mismo día sobre el
 barrido de los límites declarados, fila ENS-07, grupo 2 (paquete de la mesa
 `hoja_de_ruta_tanda1_mesa/barrido_limites_declarados_0810_mesa.md`, §3, fuera del repo); asentada en el plan, fila B6.3, nota del
 08/10/2026). No va antes de la tanda 1 (`BKL-0040`: «No frena la tanda 1»): corre en paralelo con el escalado, como
@@ -157,3 +158,21 @@ DECISIONES DE LA AUTORA AL FIRMAR, con la recomendación de la mesa:
 4. **Control en la tanda 1 antes de sellar el grafo evaluado.** **Recomendación: sí**, como el de U-UNION-ESTRECHA (plan, fila B6.3,
    `docs/plan_tesis.md:783`): una muestra de las derivadas en los TOs de la tanda 1, separada por el origen del alcance (registro o
    release), con el criterio de B2. Tamaño, semilla y piso, sellados antes de leer.
+
+**Decididas al firmar (08/10/2026):**
+1. La regla: **`\b`**; **la raíz del catálogo no cuenta**; **los miembros del rol cuentan como otro sujeto.**
+2. **(a)**: LN-3 de la suite cuenta las derivadas aparte, con su marca.
+3. **(b)**, no la recomendación de la mesa: el código valida `rol_fuente` como valor cerrado, con invariantes para las aristas
+   derivadas. Motivo: los valores cerrados se controlan por código (`docs/registro_reunion_mentores_2026-09-30.md`, puntos técnicos,
+   punto 2), y con dos tipos nuevos de derivadas (esta y la unión de ítems de U-UNION-ESTRECHA) un error en la marca pasaría sin
+   control. **Un solo cambio para B3 y para U3 de U-UNION-ESTRECHA**: lo hace la primera de las dos que llegue a implementar, con los
+   valores de las dos, y la otra lo usa. `pyd_r2/code/modelos_r2.py` (`AristaR2.rol_fuente` como valor cerrado, `:632`, y los
+   invariantes de `:650-659` extendidos a cada derivada) y su selftest entran en las ESCRITURAS de esa etapa; antes de cambiarlo, la
+   etapa mide que ninguna salida guardada (E1, ensamblados r2b de la tanda 0) cambie de validez, con la fila de la tabla de
+   reprocesamiento que corresponda y el selftest de claves sin claves movidas.
+4. **Sí**: control en la tanda 1 antes de sellar el grafo evaluado, separado por el origen del alcance.
+
+## Firma
+
+FIRMADO por la autora el 08/10/2026 (versión para firmar en `08ccdfa`), con sus cuatro decisiones. Rige desde esta firma: B1 puede
+empezar.

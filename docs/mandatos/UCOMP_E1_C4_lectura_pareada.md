@@ -1,6 +1,7 @@
 # Mandato U-COMP-E1, etapa C4 — lectura pareada a ciegas de lo que produce cada modelo
 
-**BORRADOR** (redactado por la mesa el 08/10/2026, por decisión de la autora del mismo día). No rige hasta su firma. Etapa nueva de
+**FIRMADO por la autora el 08/10/2026** (firma por mensaje de la autora; versión para firmar en `08ccdfa`, redactada por la mesa el mismo día
+por decisión de la autora), con sus tres decisiones al firmar. Rige desde esta firma. Etapa nueva de
 U-COMP-E1, que cerró con C3 (`323cef7`; mandato `docs/mandatos/UCOMP_E1_comparacion_chica_modelo.md`, FIRMADO en `cbcb823`). USD 0, sin
 API: solo se leen salidas ya guardadas. No cambia la decisión de la tanda 1 (el modelo del extractor no cambia).
 
@@ -85,6 +86,9 @@ DECISIONES QUE LA AUTORA TOMA AL FIRMAR:
 3. **Quién prepara y quién lee.** Una instancia prepara (C4-0) y otra lee primero (C4-1), como en U2 de U-UNION-ESTRECHA. **Recomendación
    de la mesa:** sí, dos sesiones distintas, y la mesa en segunda lectura.
 
+**Decididas al firmar (08/10/2026):** 1. **(a)**, la corrida 1 de Sonnet y de Opus; 2. **30 unidades**; 3. **sí**: una instancia prepara
+(C4-0), otra sesión distinta lee primero (C4-1) y la mesa hace la segunda lectura a ciegas (C4-2).
+
 ## Firma
 
-PENDIENTE de la autora.
+FIRMADO por la autora el 08/10/2026 (versión para firmar en `08ccdfa`), con sus tres decisiones. Rige desde esta firma.

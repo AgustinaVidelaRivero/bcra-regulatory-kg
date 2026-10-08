@@ -1,6 +1,7 @@
 # Enmienda 6 al protocolo entre tandas — el cambio de modelo del extractor entra por el procedimiento (c), y el grafo sale de un solo modelo
 
-**BORRADOR** (redactado por la mesa el 08/10/2026, sobre la decisión de la autora del mismo día). No rige hasta su firma.
+**FIRMADA por la autora el 08/10/2026** (firma por mensaje de la autora; versión para firmar en `08ccdfa`, redactada por la mesa el mismo día
+sobre la decisión de la autora), con su decisión 1 al firmar. Rige desde esta firma.
 
 Enmienda con fecha al protocolo entre tandas (`docs/protocolo_entre_tandas.md`, FIRMADO en `a304b89`; texto firmado: las primeras 398
 líneas, sha256 `b23d37c5396a…`). El protocolo no se edita: esta enmienda vive al lado y se lee junto con él y con las enmiendas
@@ -73,6 +74,13 @@ del plan (el grafo evaluado se sella y no se corrige). La decisión de no cambia
    límite inferior de Wilson ≥ 0,75 en la peor de dos corridas), o uno escrito para el defecto que señale el diagnóstico. **Recomendación
    de la mesa:** el segundo, escrito antes de correr, con el de U-COMP-E1 informado al lado.
 
+**Decididas al firmar (08/10/2026):**
+1. **El retiro anunciado del modelo entra por esta misma vía: opción (i).** Un retiro de `claude-haiku-4-5` entra por el
+   procedimiento (c) con la misma condición de re-extraer todo, y el reemplazo se elige con la prueba pareada; la vigilancia de la página
+   de deprecaciones va antes de cada tanda y el aviso se registra en el pre-registro de la tanda que lo reciba.
+2. y 3. **PENDIENTES**: no se tomaron al firmar; se deciden si el procedimiento se activa.
+
 ## Firma
 
-PENDIENTE de la autora.
+FIRMADA por la autora el 08/10/2026 (versión para firmar en `08ccdfa`), con la decisión 1 en la opción (i) y las decisiones 2 y 3
+PENDIENTES. Rige desde esta firma.

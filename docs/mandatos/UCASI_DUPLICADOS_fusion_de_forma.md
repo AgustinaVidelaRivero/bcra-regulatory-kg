@@ -1,6 +1,7 @@
 # Mandato U-CASI-DUPLICADOS — casi duplicados del mismo tipo: muestra adjudicada y fusión solo de forma (BKL-0031, pasos 2 y 3)
 
-**BORRADOR — PENDIENTE DE FIRMA DE LA AUTORA** (redactado por la mesa el 08/10/2026, por decisión de la autora del mismo día sobre el
+**FIRMADO por la autora el 08/10/2026** (firma por mensaje de la autora; versión para firmar en `08ccdfa`; redactado por la mesa el 08/10/2026,
+por decisión de la autora del mismo día sobre el
 barrido de los límites declarados, fila ENS-14, grupo 2 (paquete de la mesa
 `hoja_de_ruta_tanda1_mesa/barrido_limites_declarados_0810_mesa.md`, §3, fuera del repo); asentada en el plan, fila B6.3, nota del
 08/10/2026). No va antes de la tanda 1: corre en paralelo con el escalado, como corrección del ensamblado. Si la
@@ -175,3 +176,15 @@ DECISIONES DE LA AUTORA AL FIRMAR, con la recomendación de la mesa:
 6. **Lo pendiente de los nodos con procedencia en más de un punto** (`docs/plan_tesis.md:405`). **Recomendación:** se cierra para r2b con
    la cuenta de D1 (hoy, 0 nodos de contenido), y lo de las operaciones entre puntos sigue en ENS-15. Si D1 encuentra casos, queda
    abierto, con su lista.
+
+**Decididas al firmar (08/10/2026):**
+1. **(a)**: la regla se sella en D1, antes de leer, y su precisión se mide en D2 sobre los pares que funde.
+2. **(a)**: el ámbito es el mismo punto (1.022 pares en `a9631a64`, 281 sin valores).
+3. **Sí** a la guarda de negación, modalidad y excepción.
+4., 5. y 6. **PENDIENTES**: no se tomaron al firmar (el umbral para aplicar, dónde va el código y la fila, y lo pendiente de los nodos
+   con procedencia en más de un punto); el umbral se decide antes de D3-a.
+
+## Firma
+
+FIRMADO por la autora el 08/10/2026 (versión para firmar en `08ccdfa`), con las decisiones 1 a 3 y las 4 a 6 PENDIENTES. Rige desde esta
+firma: D1 puede empezar.

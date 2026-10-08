@@ -1,7 +1,8 @@
 # Enmienda 7 al protocolo entre tandas — la tanda 0 recibe, dentro del re-sellado único, el E3 corregido en dos grupos de unidades
 
-**BORRADOR** (redactado por la mesa el 08/10/2026, sobre las decisiones de la autora del mismo día sobre el barrido de límites declarados,
-filas E3-01 y VAL-03b). No rige hasta su firma; hasta entonces rige el §1.4 de la enmienda 5.
+**FIRMADA por la autora el 08/10/2026** (firma por mensaje de la autora; versión para firmar en `08ccdfa`, redactada por la mesa el mismo día
+sobre las decisiones de la autora sobre el barrido de límites declarados, filas E3-01 y VAL-03b), con sus tres decisiones al firmar.
+Rige desde esta firma: la excepción al §1.4 de la enmienda 5 queda declarada.
 
 Enmienda con fecha al protocolo entre tandas (`docs/protocolo_entre_tandas.md`, FIRMADO en `a304b89`) y a su enmienda 5
 (`docs/enmienda5_protocolo_entre_tandas_2026-10-06_grafo_evaluado_sin_cola.md`, FIRMADA el 06/10/2026, `ccd8fad`). Ninguno de los dos se
@@ -64,6 +65,12 @@ verificador la acepta, nunca por una lectura humana sola.
 3. **Qué pasa si una de las 3 que reintentan vuelve a reintentar o termina en la cola.** **Recomendación de la mesa:** la regla de siempre
    (el ratchet y la cola), declarada con su cifra.
 
+**Decididas al firmar (08/10/2026):**
+1. **El tope de R0: USD 1,50.**
+2. **R0 corre aunque la enmienda 8 no se firme**; entonces corre solo E3-01.
+3. **Si una de las 3 que reintentan vuelve a reintentar o termina en la cola, rige la regla de siempre** (el ratchet y la cola),
+   declarada con su cifra.
+
 ## Firma
 
-PENDIENTE de la autora.
+FIRMADA por la autora el 08/10/2026 (versión para firmar en `08ccdfa`), con sus tres decisiones. Rige desde esta firma.
