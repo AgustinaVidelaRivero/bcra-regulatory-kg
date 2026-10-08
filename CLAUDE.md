@@ -70,6 +70,12 @@ g. PAQUETE DE REVISIÓN: al frenar, armar un directorio `revision_<unidad>/`
    (`com.apple.tmp_cleaner`), y paquetes citados por el repo ya se perdieron
    (inventario de la mesa del 08/10/2026; el resguardo de ese día está en
    la misma carpeta, con su `manifest_sha256_20261008_1207.txt`).
+   RESPALDO DIARIO (08/10/2026, decidido por la autora): un LaunchAgent del
+   usuario (`com.mesa.respaldo-scratchpads-tesis`, a las 23:00) copia cada
+   noche todos los `revision_*` y el paquete de la mesa a la misma carpeta,
+   con control de sha256; log en `fuera_del_repo/respaldo_diario/`. Es una
+   red de seguridad y no reemplaza la copia al frenar: si la máquina está
+   apagada o dormida a esa hora, corre al despertar o no corre.
 h. REPORTE Y ARTEFACTOS: el reporte final de la unidad se redacta para ser
    pegado como texto (conciso, con los verbatims imprescindibles); todo
    artefacto extenso (archivos completos, tablas largas, JSONs) va al
