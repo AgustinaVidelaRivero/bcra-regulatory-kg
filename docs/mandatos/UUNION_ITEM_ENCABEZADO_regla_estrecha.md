@@ -151,3 +151,16 @@ U2 pasa, después de U-OMISIONES-COD y antes del armado que precede al sello del
     valida `rol_fuente` como valor cerrado, con invariantes para las aristas derivadas. Un solo cambio en `pyd_r2/code/modelos_r2.py` para
     U3 de esta unidad y para B3 de U-APLICA-ROL-ALCANCE: lo hace la primera de las dos que llegue a implementar, con los valores de las dos,
     y entra en sus ESCRITURAS. Cierra la pregunta que la nota de U1 dejaba para U3.
+- **08/10/2026 (noche) — FRENO U2-b revisado por la mesa, adjudicación de la autora y FRENO U2: U2 PASA.**
+  - **Revisión de la mesa:** la segunda lectura (`u2/lectura2_u2.json`, `7d7cda3a…`) quedó sellada a las 14:25:18, antes de abrir la primera
+    (14:25:30, declarado en su FRENO; la hoja de divergencias es de las 14:28:26); los sha256 de las fichas, del criterio y de las dos lecturas
+    coinciden con sus sellos. Acuerdo 29 de 29, sin divergencias; kappa no definido, porque las dos lecturas usan una sola categoría.
+  - **Adjudicación de la autora:** U28 y U29 se juzgan por la arista (precisión 1 del criterio), como hicieron las dos lecturas: quedan
+    correctas.
+  - **Cifra (`u2/freno_u2.md`):** 29 correctas de 29, 0 no decidibles; límite inferior de Wilson al 95 % 0,883, sobre el piso de 27 de 29
+    (0,780). **U2 PASA.** La cifra vale para ext, donde están las 29.
+  - **Hallazgo de la extracción, no de la unión:** en U28 (`ext::10.4.2.9`) y U29 (`ext::10.4.2.5`), la Condicion tiene la procedencia mal
+    atribuida: su tramo está en la intro heredada de `ext::10.4.2`, no en el ítem.
+  - **Sigue U3**, después de U-OMISIONES-COD, con el `rol_fuente` cerrado compartido con B3 de U-APLICA-ROL-ALCANCE; y el control en los TOs
+    de la tanda 1 antes de sellar el grafo evaluado (punto 4 de la nota del 08/10/2026).
+  - El FRENO de U2-b entra a `u2/` como `freno_u2b.md`, igual al de su paquete, junto con el de U2-a.
