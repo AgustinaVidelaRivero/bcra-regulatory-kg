@@ -186,7 +186,7 @@ PROHIBIDOS = (re.compile(r"run", re.I), re.compile(r"\bCQ", re.I), re.compile(r"
 W = 760                                               # unidades de lienzo
 ANCHO_FIGURA_CM = proc.ANCHO_TEXTO_CM                 # 15,00
 ANCHO_FIGURA_PT = ANCHO_FIGURA_CM * proc.PT_POR_CM    # 425,2
-DPI = proc.DPI                                        # 300
+DPI = base.DPI                                        # 300
 ANCHO_PNG_PX = round(ANCHO_FIGURA_CM / 2.54 * DPI)    # 1772
 PT_MINIMO = 7.0
 MARGEN_MM = 2.0
@@ -387,7 +387,7 @@ CAJAS = {}        # clave -> caja (x0, y0, x1, y1), con el grosor de su borde
 MARCAS = []       # (nombre, caja): renglones, pliegue, nodos y aristas de los grafos
 TRAZOS = []       # {grupo, nombre, puntos, grosor, punta}
 DIBUJADOS = []    # etiqueta de cada elemento, en el orden del SVG
-MEDIR = None      # métricas reales de Helvetica (proc.medidor)
+MEDIR = None      # métricas reales de Helvetica (base.medidor)
 
 
 def lineas_de(clave):
@@ -929,7 +929,7 @@ def exportar(ruta_svg, ruta_png, ruta_pdf):
     if not rsvg:
         freno("rsvg-convert no está instalado: no se escriben el PNG ni el PDF")
     subprocess.run([rsvg, "-w", str(ANCHO_PNG_PX), "-f", "png", "-o", ruta_png, ruta_svg], check=True)
-    proc.grabar_densidad(ruta_png, DPI)
+    base.grabar_densidad(ruta_png, DPI)
     entorno = dict(os.environ, SOURCE_DATE_EPOCH=SOURCE_DATE_EPOCH)
     subprocess.run([rsvg, "-f", "pdf", "-o", ruta_pdf, ruta_svg], check=True, env=entorno)
 
@@ -968,7 +968,7 @@ def main():
     cotejar_texto(h)
     print("TEXTO: cada número coincide con su fuente; los cortes de línea no cambian el texto")
 
-    MEDIR = proc.medidor()
+    MEDIR = base.medidor()
     if MEDIR is None:
         freno("sin las métricas reales de Helvetica (PIL y la fuente del sistema) no se compone la figura")
     svg, geo = componer()

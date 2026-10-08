@@ -119,12 +119,14 @@ Herramientas de la corrida registrada (02/10/2026): `rsvg-convert` 2.62.3
 (cairo 1.18.4, pango 1.58.2), y en el `.venv` del repo (Python 3.10.13)
 pdfplumber 0.11.10, Pillow 12.3.0 y pypdf 6.10.2. Las métricas reales de
 Helvetica salen de `/System/Library/Fonts/Helvetica.ttc`
-(`generar_figura_proceso_extraccion.py:625`); sin ellas el script frena, porque
+(`generar_figura_norma_a_grafo.py:803`; hasta el 08/10/2026,
+`generar_figura_proceso_extraccion.py:625`, §12); sin ellas el script frena, porque
 los cortes de línea y la posición del resaltado de la omisión dependen de esas
 métricas. Reutiliza por importación `generar_figura_norma_a_grafo.py`
-(tipografía, escape, formato del SVG y la marca `[…]`) y
-`generar_figura_proceso_extraccion.py` (ancho de 15 cm, paleta, exportación a
-300 dpi con la densidad grabada y el medidor), como las figuras hermanas.
+(tipografía, escape, formato del SVG, la marca `[…]` y, desde el 08/10/2026,
+exportación a 300 dpi con la densidad grabada y el medidor, §12) y
+`generar_figura_proceso_extraccion.py` (ancho de 15 cm y paleta), como las
+figuras hermanas.
 
 ## 2. La ficha
 
@@ -405,7 +407,7 @@ omisión. Recuadro de la leyenda blanco, borde `#e2e2e2`, esquinas de 5.
 
 | Archivo | sha256 |
 |---|---|
-| `generar_figura_ficha.py` | `4ea44b37956137f10e5ccdad998446f6b77be8f918f4205d3789b086c4ad4627` |
+| `generar_figura_ficha.py` | `fd1d0cb6f73ea14ceee4980a5907bfff17158604c942e3d7744bb1e31ff17035` (hasta el 08/10/2026, `4ea44b37956137f10e5ccdad998446f6b77be8f918f4205d3789b086c4ad4627`; §12) |
 | `figura_ficha.svg` | `6570ab9bb870ee1fafaa2ca6e348c6de55a55355dd603ba3d7525f9297b5a5d1` |
 | `figura_ficha.png` (1772 × 1615 px, 300 dpi) | `05805500aad93e6426dc2776c06535fd2ccff90c0699d07897d0789eb94e88ca` |
 | `figura_ficha.pdf` (425,2 × 387,5 pt) | `6d49089fc2162c9910fc18d92e97a351de2d50eb361f4174a4b484dd8f6b344d` |
@@ -459,3 +461,32 @@ el SVG, el PNG y el PDF entran por las excepciones `.gitignore:208`, `:187`,
   la deformación; en pantalla se distingue del blanco y del gris de la cadena
   estructural (`#f4f6f8`), y la muestra de la leyenda lleva borde. Impreso:
   NO VERIFICADO.
+
+## 12. Nota del 08/10/2026: el medidor, `DPI` y la densidad, de `generar_figura_norma_a_grafo.py`
+
+Un cambio en el generador, ninguno en la figura:
+
+- **Qué fallaba.** Desde `88bfe89`, `generar_figura_proceso_extraccion.py` ya no
+  tiene `DPI`, `grabar_densidad` ni `medidor`. El generador fallaba al
+  importarse, con `AttributeError` en `DPI = proc.DPI` (:191), antes de llegar a
+  la llamada `proc.medidor()` (:1127): no corría en HEAD.
+- **Qué cambió.** Los tres salen ahora de `generar_figura_norma_a_grafo.py`
+  (sha256 `618789ae…`), que el generador ya importaba como `base`: `base.DPI`
+  (:191; vale 300, como antes), `base.grabar_densidad` (:1076; la función de
+  :1049 de ese archivo, igual a la que tenía
+  `generar_figura_proceso_extraccion.py` en `fbe69d4`) y `base.medidor()`
+  (:1127; la función de :806). El docstring (:70-75) dice de dónde sale cada
+  cosa, y el comentario de `MEDIR` (:555), `base.medidor`. De
+  `generar_figura_proceso_extraccion.py` (sha256 `f4842a6a…`) sigue tomando `W`,
+  `ANCHO_TEXTO_CM`, `PT_POR_CM`, `MODELO`, `DETERMINISTICA` y `TINTA`, con los
+  mismos valores que en `fbe69d4`.
+- **El medidor.** `base.medidor()` difiere del de `fbe69d4` en dos cosas: si
+  faltan PIL o la fuente del sistema, frena en lugar de devolver `None`, así que
+  el freno propio de :1128-1129 ya no se alcanza; y carga la fuente a
+  `int(round(fs * 10))` en lugar de `fs * 10`. Ninguna de las dos cambia esta
+  figura.
+
+El script tiene las mismas líneas (1197) y su sha256 pasó de `4ea44b37…` a
+`fd1d0cb6…` (§9). Sobre una copia del repo, con `PYTHONHASHSEED` 0, 1 y 4242, el
+SVG, el PNG y el PDF salen idénticos byte a byte a los commiteados; registros en
+el paquete de revisión de FIX-MEDIDOR-8.

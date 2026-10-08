@@ -32,9 +32,9 @@ corrí las pruebas de determinismo de §6. Requiere `rsvg-convert` 2.62.3, PIL
 12.3.0 y pypdf 6.10.2 (los del `.venv`) y la Helvetica del sistema
 (`/System/Library/Fonts/Helvetica.ttc`): sin las métricas reales de Helvetica
 no compone la figura. Importa de `generar_figura_proceso_extraccion.py` la
-paleta, la tipografía, la leyenda, el medidor y la densidad del PNG, y de
-`generar_figura_norma_a_grafo.py` el escape y el formato del SVG. No usa red
-ni API.
+paleta, la tipografía y la leyenda, y de `generar_figura_norma_a_grafo.py` el
+escape y el formato del SVG y, desde el 08/10/2026, el medidor y la densidad
+del PNG (§8). No usa red ni API.
 
 ## 2. Fuente de cada cifra
 
@@ -171,7 +171,7 @@ derecha de las medidas y entra a la caja a la altura de esa línea.
 
 | Archivo | sha256 |
 |---|---|
-| `generar_figura_experimento_estrategias.py` | `d68e1d87ba09bdb8faa7904400d042a7674cbd6ae5b8deb11dbfcf8163aa9755` |
+| `generar_figura_experimento_estrategias.py` | `f889c4bfea7d5a6dbec30f7b93e0d61bcaa4046e8e647eb21bca2776ec857881` (hasta el 08/10/2026, `d68e1d87ba09bdb8faa7904400d042a7674cbd6ae5b8deb11dbfcf8163aa9755`; §8) |
 | `figura_experimento_estrategias.svg` (760 × 483) | `734a712e4d89053f8302bd173f7129d77073dac3d6565e1e005a430b6a3bab27` |
 | `figura_experimento_estrategias.png` (1772 × 1126 px, 300 dpi) | `d3e00a7ca44bf0f572124655bbcabaf2d3a74f38476b3b97a0d4f1e546ea5109` |
 | `figura_experimento_estrategias.pdf` (425,2 × 270,1 pt) | `29146d497f63e24d662a3c4331b9cbabd60169abcb7d506cc0fadefac32656ea` |
@@ -212,3 +212,32 @@ hermanos. El generador, el PNG, el SVG y el PDF entran por las excepciones
 3. La revisión de las afirmaciones cambia solo «correctas»: las otras tres
    medidas se calculan antes de la adjudicación (`reporte_final.md:45`). La
    flecha lo muestra; el epígrafe puede decirlo.
+
+## 8. Nota del 08/10/2026: el medidor, `DPI` y la densidad, de `generar_figura_norma_a_grafo.py`
+
+Un cambio en el generador, ninguno en la figura:
+
+- **Qué fallaba.** Desde `88bfe89`, `generar_figura_proceso_extraccion.py` ya no
+  tiene `DPI`, `grabar_densidad` ni `medidor`. El generador fallaba al
+  importarse, con `AttributeError` en `DPI = proc.DPI` (:189), antes de llegar a
+  la llamada `proc.medidor()` (:971): no corría en HEAD.
+- **Qué cambió.** Los tres salen ahora de `generar_figura_norma_a_grafo.py`
+  (sha256 `618789ae…`), que el generador ya importaba como `base`: `base.DPI`
+  (:189; vale 300, como antes), `base.grabar_densidad` (:932; la función de
+  :1049 de ese archivo, igual a la que tenía
+  `generar_figura_proceso_extraccion.py` en `fbe69d4`) y `base.medidor()` (:971;
+  la función de :806). El comentario de `MEDIR` (:390) dice `base.medidor`; el
+  docstring no nombra el medidor. De `generar_figura_proceso_extraccion.py`
+  (sha256 `f4842a6a…`) sigue tomando `ANCHO_TEXTO_CM`, `PT_POR_CM`, `LEYENDA`,
+  `MODELO`, `DETERMINISTICA`, `NEUTRO`, `TINTA`, `TINTA_SUB`, `FLECHA` y
+  `GRIS_ARISTA`, con los mismos valores que en `fbe69d4`.
+- **El medidor.** `base.medidor()` difiere del de `fbe69d4` en dos cosas: si
+  faltan PIL o la fuente del sistema, frena en lugar de devolver `None`, así que
+  el freno propio de :972-973 ya no se alcanza; y carga la fuente a
+  `int(round(fs * 10))` en lugar de `fs * 10`. Ninguna de las dos cambia esta
+  figura.
+
+El script tiene las mismas líneas (1029) y su sha256 pasó de `d68e1d87…` a
+`f889c4bf…` (§6). Sobre una copia del repo, con `PYTHONHASHSEED` 0, 1 y 4242, el
+SVG, el PNG y el PDF salen idénticos byte a byte a los commiteados; registros en
+el paquete de revisión de FIX-MEDIDOR-8.

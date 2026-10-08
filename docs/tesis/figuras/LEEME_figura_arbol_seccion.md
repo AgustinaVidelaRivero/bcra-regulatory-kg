@@ -64,6 +64,14 @@ Pillow 12.3.0 y pypdf 6.10.2. Reutiliza por importación
 `6a91931abeb9927842f76fa50471497e926c69fc56617c62ef7f05ddf6c010d6`), los dos
 del commit `fbe69d4`.
 
+Desde el 08/10/2026 (§8), el generador importa `generar_figura_norma_a_grafo.py`
+en su versión de sha256
+`618789ae333e17e0cb7ba1d9baf0d3d006e3f50745869de8bcffd5b487dde67c`, de la que
+toma también el medidor, `DPI` y la densidad del PNG, y
+`generar_figura_proceso_extraccion.py` en la de sha256
+`f4842a6a45b624d7a123da0c423caea1fcc81c1073254d3b1fef63ab1edc5f8c`; la figura
+sale idéntica.
+
 ## 2. Fuentes
 
 | Fuente | sha256 | Ancla |
@@ -182,7 +190,7 @@ caja. Leyenda en un recuadro gris claro, dentro del margen, en dos columnas.
 
 | Archivo | sha256 |
 |---|---|
-| `generar_figura_arbol_seccion.py` | `9848e106987fe3c22d31b5876ef6efb3d28fac92a2e814126e729bffb6ee3736` |
+| `generar_figura_arbol_seccion.py` | `dbf2408694ef6f24d602abf1970c439f0922e3ecdf89192cf3098e70a8f4478f` (hasta el 08/10/2026, `9848e106987fe3c22d31b5876ef6efb3d28fac92a2e814126e729bffb6ee3736`; §8) |
 | `figura_arbol_seccion.png` (1772 × 1024 px, 300 dpi) | `6c4ec705d93b76dc01942d8e16210010567ac0cba67ce5722cd7e6889d553e13` |
 | `figura_arbol_seccion.pdf` (425,2 × 245,5 pt) | `773016308c50af55af3df30a8fe672573ce046e05ee34331367739abd5670514` |
 | SVG intermedio (no se versiona) | `b880ed64e85c7d3bd5ed6293575906d9ae677e3637c1b7ffca9ec48cdceff063` |
@@ -192,3 +200,30 @@ el PNG y el PDF salieron idénticos byte a byte, y la salida de consola también
 (salvo la ruta del SVG). PDF reproducible con `SOURCE_DATE_EPOCH=0`
 (`/CreationDate` 01/01/1970). Stream de contenido de la página del PDF, sha256
 `f797cf9ca7f90d74babea8cb8ef0c305bba902336331ae2fc17dff52ad47bbee`.
+
+## 8. Nota del 08/10/2026: el medidor, `DPI` y la densidad, de `generar_figura_norma_a_grafo.py`
+
+Un cambio en el generador, ninguno en la figura:
+
+- **Qué fallaba.** Desde `88bfe89`, `generar_figura_proceso_extraccion.py` ya no
+  tiene `DPI`, `grabar_densidad` ni `medidor`. El generador fallaba al
+  importarse, con `AttributeError` en `DPI = proc.DPI` (:105), antes de llegar a
+  la llamada `proc.medidor()` (:498): no corría en HEAD.
+- **Qué cambió.** Los tres salen ahora de `generar_figura_norma_a_grafo.py`
+  (sha256 `618789ae…`), que el generador ya importaba como `base`: `base.DPI`
+  (:105; vale 300, como antes), `base.grabar_densidad` (:604; la función de
+  :1049 de ese archivo, igual a la que tenía
+  `generar_figura_proceso_extraccion.py` en `fbe69d4`) y `base.medidor()` (:498;
+  la función de :806). El docstring (:38-43) dice de dónde sale cada cosa. De
+  `generar_figura_proceso_extraccion.py` (sha256 `f4842a6a…`) sigue tomando `W`,
+  `ANCHO_TEXTO_CM` y `PT_POR_CM`, con los mismos valores que en `fbe69d4`.
+- **El medidor.** `base.medidor()` difiere del de `fbe69d4` en dos cosas: si
+  faltan PIL o la fuente del sistema, frena en lugar de devolver `None`, así que
+  la reserva con la tabla de métricas del script (:499-501) ya no se alcanza; y
+  carga la fuente a `int(round(fs * 10))` en lugar de `fs * 10`. Ninguna de las
+  dos cambia esta figura.
+
+El script tiene las mismas líneas (687) y su sha256 pasó de `9848e106…` a
+`dbf24086…` (§7). Sobre una copia del repo, con `PYTHONHASHSEED` 0, 1 y 4242, el
+PNG y el PDF salen idénticos byte a byte a los commiteados, y el SVG intermedio
+da el sha256 de §7; registros en el paquete de revisión de FIX-MEDIDOR-8.

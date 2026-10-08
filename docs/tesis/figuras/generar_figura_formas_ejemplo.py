@@ -50,10 +50,10 @@ bloque y ningún texto dibujado lleva nombres de archivo, rutas o
 identificadores internos.
 
 Reutiliza por importación, como las figuras hermanas: de
-generar_figura_norma_a_grafo.py, la tipografía, el naranja de la remisión y el
-escape y formato del SVG; de generar_figura_proceso_extraccion.py, el ancho de
-texto de 15 cm, la exportación a PNG a 300 dpi con la densidad grabada y el
-medidor con métricas reales de Helvetica.
+generar_figura_norma_a_grafo.py, la tipografía, el naranja de la remisión, el
+escape y formato del SVG, la exportación a PNG a 300 dpi con la densidad
+grabada y el medidor con métricas reales de Helvetica; de
+generar_figura_proceso_extraccion.py, el ancho de texto de 15 cm.
 
 El SVG es intermedio: se pasa a rsvg-convert por la entrada estándar y no se
 escribe salvo con --svg. Salidas: figura_formas_ejemplo.png y
@@ -175,7 +175,7 @@ NOMBRES_ESQUEMA = ("Comunicacion", "TextoOrdenado", "Operacion", "Restriccion", 
 W = proc.W                                            # 720 unidades de lienzo
 ANCHO_FIGURA_CM = proc.ANCHO_TEXTO_CM                 # 15,00
 ANCHO_FIGURA_PT = ANCHO_FIGURA_CM * proc.PT_POR_CM    # 425,2
-DPI = proc.DPI                                        # 300
+DPI = base.DPI                                        # 300
 ANCHO_PNG_PX = round(ANCHO_FIGURA_CM / 2.54 * DPI)    # 1772
 PT_MINIMO = 7.0
 # Margen a los cuatro bordes (el de generar_figura_formacion_to.py): ningún
@@ -474,7 +474,7 @@ REGISTRO = []   # textos dibujados
 CAJAS = {}      # cajas que contienen texto: clave -> (x0, y0, x1, y1)
 MARCAS = []     # cajas de los trazos, que ningún texto puede tocar: (nombre, caja)
 TRAZOS = []     # segmentos de los trazos: (tramo dueño, nombre, punto, punto)
-MEDIR = None    # métricas reales de Helvetica (proc.medidor)
+MEDIR = None    # métricas reales de Helvetica (base.medidor)
 
 
 def texto(partes, x, y, s, fs, negrita=False, relleno=TINTA, contexto="", dentro=None,
@@ -821,7 +821,7 @@ def exportar(svg):
     datos = svg.encode("utf-8")
     subprocess.run([rsvg, "-w", str(ANCHO_PNG_PX), "-f", "png", "-o", SALIDA_PNG],
                    input=datos, check=True)
-    proc.grabar_densidad(SALIDA_PNG, DPI)
+    base.grabar_densidad(SALIDA_PNG, DPI)
     entorno = dict(os.environ, SOURCE_DATE_EPOCH=SOURCE_DATE_EPOCH)
     subprocess.run([rsvg, "-f", "pdf", "-o", SALIDA_PDF], input=datos, check=True, env=entorno)
 
@@ -867,7 +867,7 @@ def main():
               f"{t['i']}-{t['j']} del bloque (1 aparición), {t['n_pdf']} en la página; {segs}")
         print(f"     subrayado: {t['dibujado']}")
 
-    MEDIR = proc.medidor()
+    MEDIR = base.medidor()
     if MEDIR is None:
         raise SystemExit("sin las métricas reales de Helvetica no se pueden ubicar los subrayados")
     svg, alto_total, guias, puntos_flecha = componer(res)

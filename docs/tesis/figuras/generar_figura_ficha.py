@@ -69,10 +69,10 @@ reales de Helvetica:
 
 Reutiliza por importación, como las figuras hermanas: de
 generar_figura_norma_a_grafo.py, la tipografía, el escape y el formato del
-SVG y la marca de omisión; de generar_figura_proceso_extraccion.py, el ancho
-de 15 cm, la paleta (los pares de colores de su leyenda), la exportación a
-300 dpi con la densidad grabada y el medidor con métricas reales de
-Helvetica.
+SVG, la marca de omisión, la exportación a 300 dpi con la densidad grabada y
+el medidor con métricas reales de Helvetica; de
+generar_figura_proceso_extraccion.py, el ancho de 15 cm y la paleta (los
+pares de colores de su leyenda).
 
 Salidas, byte-reproducibles: figura_ficha.svg, .png (300 dpi, densidad
 grabada) y .pdf (fecha de creación fijada por SOURCE_DATE_EPOCH).
@@ -188,7 +188,7 @@ PROHIBIDOS = (re.compile(r"\bfichas?\b", re.I), re.compile(r"\bayccef\b", re.I),
 W = proc.W                                            # 720 unidades de lienzo
 ANCHO_FIGURA_CM = proc.ANCHO_TEXTO_CM                 # 15,00
 ANCHO_FIGURA_PT = ANCHO_FIGURA_CM * proc.PT_POR_CM    # 425,2
-DPI = proc.DPI                                        # 300
+DPI = base.DPI                                        # 300
 ANCHO_PNG_PX = round(ANCHO_FIGURA_CM / 2.54 * DPI)    # 1772
 PT_MINIMO = 7.0
 MARGEN_MM = 2.0
@@ -552,7 +552,7 @@ REGISTRO = []     # textos
 CAJAS = {}        # clave -> {bb, grosor, fondo}
 TRAZOS = []       # {nombre, puntos, grosor, punta}
 DIBUJADOS = []    # etiqueta de cada elemento, en el orden del SVG
-MEDIR = None      # métricas reales de Helvetica (proc.medidor)
+MEDIR = None      # métricas reales de Helvetica (base.medidor)
 
 
 def texto(partes, x, y, s, fs, negrita, relleno, pieza, dentro=None, fondo=None, junta=" "):
@@ -1073,7 +1073,7 @@ def exportar(ruta_svg, ruta_png, ruta_pdf):
     if not rsvg:
         freno("rsvg-convert no está instalado: no se escriben el PNG ni el PDF")
     subprocess.run([rsvg, "-w", str(ANCHO_PNG_PX), "-f", "png", "-o", ruta_png, ruta_svg], check=True)
-    proc.grabar_densidad(ruta_png, DPI)
+    base.grabar_densidad(ruta_png, DPI)
     entorno = dict(os.environ, SOURCE_DATE_EPOCH=SOURCE_DATE_EPOCH)
     subprocess.run([rsvg, "-f", "pdf", "-o", ruta_pdf, ruta_svg], check=True, env=entorno)
 
@@ -1124,7 +1124,7 @@ def main():
           f"{', '.join(str(RES['geo_lineas'][k]['pagina']) + ':' + str(RES['geo_lineas'][k]['linea']) for k in lo)}); "
           f"ningún texto de la extracción la contiene")
 
-    MEDIR = proc.medidor()
+    MEDIR = base.medidor()
     if MEDIR is None:
         freno("sin las métricas reales de Helvetica (PIL y la fuente del sistema) no se compone la figura")
     svg, T, geo = componer(RES)

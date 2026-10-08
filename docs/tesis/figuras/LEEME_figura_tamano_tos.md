@@ -62,6 +62,14 @@ Herramientas de la corrida registrada (30/09/2026): `rsvg-convert` 2.62.3
 `6a91931abeb9927842f76fa50471497e926c69fc56617c62ef7f05ddf6c010d6`), los dos
 del commit `fbe69d4`.
 
+Desde el 08/10/2026 (§9), el generador importa `generar_figura_norma_a_grafo.py`
+en su versión de sha256
+`618789ae333e17e0cb7ba1d9baf0d3d006e3f50745869de8bcffd5b487dde67c`, de la que
+toma también el medidor, `DPI` y la densidad del PNG, y
+`generar_figura_proceso_extraccion.py` en la de sha256
+`f4842a6a45b624d7a123da0c423caea1fcc81c1073254d3b1fef63ab1edc5f8c`; la figura
+sale idéntica.
+
 ## 2. Fuentes
 
 | Fuente | sha256 | Ancla |
@@ -167,7 +175,7 @@ guía en los grises de la misma guía (`#e1e0d9`, `#c3c2b7`, `#898781`).
 
 | Archivo | sha256 |
 |---|---|
-| `generar_figura_tamano_tos.py` | `1d4ae9fc2ed04390a66735224779aaf3406538eb41889acff081b1c57ac8e81b` |
+| `generar_figura_tamano_tos.py` | `6a08d197d5ee912fce21d5afa7fc84cc546085988bd832809489417d0d5664e9` (hasta el 08/10/2026, `1d4ae9fc2ed04390a66735224779aaf3406538eb41889acff081b1c57ac8e81b`; §9) |
 | `figura_tamano_tos.png` (1772 × 871 px, 300 dpi) | `90a6f406e92c042e6c20479a4550b2d2b0cb22b9eb347533c5aebea77b30e385` |
 | `figura_tamano_tos.pdf` (425,2 × 208,9 pt) | `a4a3c5f1468040277414e3a8cd3824297d2414d7e7513fbb27fa5a279abe4600` |
 | SVG intermedio (no se versiona) | `c614a0ca7fcf8d54c3fc3cc2c48d25ce801ede82ecfeeb6be7fa640954696680` |
@@ -177,3 +185,30 @@ el PNG y el PDF salieron idénticos byte a byte, y la salida de consola también
 (salvo la ruta del SVG). PDF reproducible con `SOURCE_DATE_EPOCH=0`
 (`/CreationDate` 01/01/1970). Stream de contenido de la página del PDF, sha256
 `ad3e9123214cb6573374230c45516ec9706ddcf58bec8ac5358973921554c164`.
+
+## 9. Nota del 08/10/2026: el medidor, `DPI` y la densidad, de `generar_figura_norma_a_grafo.py`
+
+Un cambio en el generador, ninguno en la figura:
+
+- **Qué fallaba.** Desde `88bfe89`, `generar_figura_proceso_extraccion.py` ya no
+  tiene `DPI`, `grabar_densidad` ni `medidor`. El generador fallaba al
+  importarse, con `AttributeError` en `DPI = proc.DPI` (:112), antes de llegar a
+  la llamada `proc.medidor()` (:375): no corría en HEAD.
+- **Qué cambió.** Los tres salen ahora de `generar_figura_norma_a_grafo.py`
+  (sha256 `618789ae…`), que el generador ya importaba como `base`: `base.DPI`
+  (:112; vale 300, como antes), `base.grabar_densidad` (:475; la función de
+  :1049 de ese archivo, igual a la que tenía
+  `generar_figura_proceso_extraccion.py` en `fbe69d4`) y `base.medidor()` (:375;
+  la función de :806). El docstring (:46-50) dice de dónde sale cada cosa. De
+  `generar_figura_proceso_extraccion.py` (sha256 `f4842a6a…`) sigue tomando `W`,
+  `ANCHO_TEXTO_CM` y `PT_POR_CM`, con los mismos valores que en `fbe69d4`.
+- **El medidor.** `base.medidor()` difiere del de `fbe69d4` en dos cosas: si
+  faltan PIL o la fuente del sistema, frena en lugar de devolver `None`, así que
+  la reserva con la tabla de métricas del script (:376-378) ya no se alcanza; y
+  carga la fuente a `int(round(fs * 10))` en lugar de `fs * 10`. Ninguna de las
+  dos cambia esta figura.
+
+El script tiene las mismas líneas (558) y su sha256 pasó de `1d4ae9fc…` a
+`6a08d197…` (§8). Sobre una copia del repo, con `PYTHONHASHSEED` 0, 1 y 4242, el
+PNG y el PDF salen idénticos byte a byte a los commiteados, y el SVG intermedio
+da el sha256 de §8; registros en el paquete de revisión de FIX-MEDIDOR-8.

@@ -44,10 +44,10 @@ un contraste de 2,74:1 con el fondo, por eso la leyenda y los rótulos van en
 tinta y los totales por clase están en el LEEME.
 
 Reutiliza por importación, como la figura de la página del ejemplo: de
-generar_figura_norma_a_grafo.py, la tipografía, el escape y formato del SVG y
-la tabla de métricas; de generar_figura_proceso_extraccion.py, el ancho de
-texto de 15 cm, la exportación a PNG a 300 dpi con la densidad grabada y el
-medidor con métricas reales de Helvetica.
+generar_figura_norma_a_grafo.py, la tipografía, el escape y formato del SVG,
+la tabla de métricas, la exportación a PNG a 300 dpi con la densidad grabada
+y el medidor con métricas reales de Helvetica; de
+generar_figura_proceso_extraccion.py, el ancho de texto de 15 cm.
 
 El SVG es intermedio: se pasa a rsvg-convert por la entrada estándar y no se
 escribe salvo con --svg. Salidas: figura_tamano_tos.png y figura_tamano_tos.pdf,
@@ -109,7 +109,7 @@ ROTULO_MAYOR = "Manual de cuentas (régimen informativo)"
 W = proc.W                                            # 720 unidades de lienzo
 ANCHO_FIGURA_CM = proc.ANCHO_TEXTO_CM                 # 15,00
 ANCHO_FIGURA_PT = ANCHO_FIGURA_CM * proc.PT_POR_CM    # 425,2
-DPI = proc.DPI                                        # 300
+DPI = base.DPI                                        # 300
 ANCHO_PNG_PX = round(ANCHO_FIGURA_CM / 2.54 * DPI)    # 1772
 PT_MINIMO = 7.0
 # Margen a los cuatro bordes: ningún texto ni trazo a menos de MARGEN_MM
@@ -372,7 +372,7 @@ def contiene(c, b):
 
 
 def controlar_geometria(alto_total):
-    medir = proc.medidor()
+    medir = base.medidor()
     fuente = "métricas reales de Helvetica" if medir else "tabla de métricas del script"
     if not medir:
         medir = base.ancho
@@ -472,7 +472,7 @@ def exportar(svg):
     datos = svg.encode("utf-8")
     subprocess.run([rsvg, "-w", str(ANCHO_PNG_PX), "-f", "png", "-o", SALIDA_PNG],
                    input=datos, check=True)
-    proc.grabar_densidad(SALIDA_PNG, DPI)
+    base.grabar_densidad(SALIDA_PNG, DPI)
     entorno = dict(os.environ, SOURCE_DATE_EPOCH=SOURCE_DATE_EPOCH)
     subprocess.run([rsvg, "-f", "pdf", "-o", SALIDA_PDF], input=datos, check=True, env=entorno)
 

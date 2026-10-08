@@ -88,6 +88,14 @@ Pillow 12.3.0 y pypdf 6.10.2. Reutiliza por importación
 `6a91931abeb9927842f76fa50471497e926c69fc56617c62ef7f05ddf6c010d6`), los dos
 del commit `fbe69d4`, como la figura de la página del ejemplo.
 
+Desde el 08/10/2026 (§9), el generador importa `generar_figura_norma_a_grafo.py`
+en su versión de sha256
+`618789ae333e17e0cb7ba1d9baf0d3d006e3f50745869de8bcffd5b487dde67c`, de la que
+toma también el medidor, `DPI` y la densidad del PNG, y
+`generar_figura_proceso_extraccion.py` en la de sha256
+`f4842a6a45b624d7a123da0c423caea1fcc81c1073254d3b1fef63ab1edc5f8c`; la figura
+sale idéntica.
+
 ## 2. Fuentes
 
 | Fuente | sha256 | Ancla |
@@ -243,7 +251,7 @@ gris.
 
 | Archivo | sha256 |
 |---|---|
-| `generar_figura_formacion_to.py` | `e0910b594c647833e3984edf8198a855faad017ef307823a43004fb2d61b211f` |
+| `generar_figura_formacion_to.py` | `de31ceb9fb82b489571b965288553e65432d072aa69d947505c9deffd3fe638f` (hasta el 08/10/2026, `e0910b594c647833e3984edf8198a855faad017ef307823a43004fb2d61b211f`; §9) |
 | `figura_formacion_to.png` (1772 × 1191 px, 300 dpi) | `6af84adad220b071524a3ba7fdae5ef376c3aa6aa8290c04c50987641491ff1e` |
 | `figura_formacion_to.pdf` (425,2 × 285,7 pt) | `1d0dbce1e90380d1a2d3dcb4bbe2c9b993cf50a2ae84bd4e3b7d43a7c29912e1` |
 | SVG intermedio (no se versiona) | `7ff0008c7ac1e7bf49955113bab6b8d06bbbc9aee62ec7e3e3b086f4eda5dff0` |
@@ -272,3 +280,31 @@ La tabla, por lo tanto, no registra todas las comunicaciones que reemplazaron
 una hoja: la hoja de la página 16 la reemplazó una comunicación que la tabla no
 atribuye a ningún punto. La figura no lo muestra; queda anotado por si el texto
 del capítulo afirma lo contrario.
+
+## 9. Nota del 08/10/2026: el medidor, `DPI` y la densidad, de `generar_figura_norma_a_grafo.py`
+
+Un cambio en el generador, ninguno en la figura:
+
+- **Qué fallaba.** Desde `88bfe89`, `generar_figura_proceso_extraccion.py` ya no
+  tiene `DPI`, `grabar_densidad` ni `medidor`. El generador fallaba al
+  importarse, con `AttributeError` en `DPI = proc.DPI` (:106), antes de llegar a
+  la llamada `proc.medidor()` (:770): no corría en HEAD.
+- **Qué cambió.** Los tres salen ahora de `generar_figura_norma_a_grafo.py`
+  (sha256 `618789ae…`), que el generador ya importaba como `base`: `base.DPI`
+  (:106; vale 300, como antes), `base.grabar_densidad` (:870; la función de
+  :1049 de ese archivo, igual a la que tenía
+  `generar_figura_proceso_extraccion.py` en `fbe69d4`) y `base.medidor()` (:770;
+  la función de :806). El docstring (:46-51) dice de dónde sale cada cosa. De
+  `generar_figura_proceso_extraccion.py` (sha256 `f4842a6a…`) sigue tomando `W`,
+  `ANCHO_TEXTO_CM`, `PT_POR_CM` y `FLECHA`, con los mismos valores que en
+  `fbe69d4`.
+- **El medidor.** `base.medidor()` difiere del de `fbe69d4` en dos cosas: si
+  faltan PIL o la fuente del sistema, frena en lugar de devolver `None`, así que
+  la reserva con la tabla de métricas del script (:771-773) ya no se alcanza; y
+  carga la fuente a `int(round(fs * 10))` en lugar de `fs * 10`. Ninguna de las
+  dos cambia esta figura.
+
+El script tiene las mismas líneas (948) y su sha256 pasó de `e0910b59…` a
+`de31ceb9…` (§7). Sobre una copia del repo, con `PYTHONHASHSEED` 0, 1 y 4242, el
+PNG y el PDF salen idénticos byte a byte a los commiteados, y el SVG intermedio
+da el sha256 de §7; registros en el paquete de revisión de FIX-MEDIDOR-8.
