@@ -210,3 +210,32 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 116 líneas de arriba (`c
   segunda lectura se despachó antes de esta nota; la autora le comunicó las cuatro reglas por escrito al despacharla, antes de que estuvieran
   en el mandato. Control de la revisión de esa lectura: su reporte tiene que declarar desde cuándo aplicó las reglas (hora) y, si clasificó
   algo antes de recibirlas, re-clasificar esos ítems con las reglas y contarlos aparte.
+- **07/10/2026 (noche) — revisión de la mesa de la segunda lectura a ciegas de C2, y su entrada al repo.**
+  - **Dónde quedó.** El paquete de la instancia entró a `data/experiment/comp_e1/c2/segunda_lectura/`: 37 archivos, iguales por sha al
+    paquete. Quedaron afuera las dos listas de `.pyc` de los controles, de 1 MB cada una, con rutas absolutas.
+  - **Se reproduce**, sobre una copia y sin escribir en el repo:
+    - **El sello antes de la apertura:** `segunda_lectura_c2.jsonl` tiene sha256 `04406c97…`, rearmado byte a byte desde las fuentes. En
+      la transcripción de la sesión, el sello es de las 20:19:30 y la primera apertura de `lectura_c2.jsonl`, de las 20:19:39.
+    - **La tabla de códigos cerrada:** `065a272c…` igual en `4e9a1fc`, en HEAD y en el paquete; la sesión de la lectura no leyó su
+      contenido.
+    - **La cobertura:** 804 = 559 + 245, sin faltantes ni duplicados.
+    - **El acuerdo:** 549 de 559 en M1 y 243 de 245 en M2; kappa 0,967 (5 clases) y 0,986 (4 clases).
+    - **Las 19 divergencias:** 12 de clase y 7 solo de subtipo.
+    - **Las cinco correcciones propias** son anteriores al sello; con las clases iniciales habría 18 divergencias.
+  - **Precisiones.**
+    1. **La contaminación declarada estaba incompleta.** Antes de leer, la sesión vio también «99 de 99» y «4 de 137 … 0 con relación en
+       los cuatro códigos». Esta última apunta a 16 líneas, y en ellas quedaron 12 de las 19 divergencias: no empujó hacia el acuerdo.
+    2. **Las reglas de lectura llegaron a las 17:56:44,** unos seis minutos después del despacho y en otro mensaje. La nota anterior dice
+       «al despacharse».
+    3. **Las 29 líneas marcadas por tramo cortado:** 28 lo tienen y una no; `lingob::7.1.7` W quedó sin marcar.
+  - **Error del verificador de la mesa (declarado).** Abrió el archivo cerrado de códigos, así que conoce la tabla de qué código
+    corresponde a qué corrida. Ninguna de sus salidas la contiene, y la hoja de adjudicación de las 19 va solo por código. La autora decide
+    si acepta esa hoja o pide que la prepare otra instancia.
+  - **Hoja de adjudicación** (paquete de la mesa, `hoja_adjudicacion_19_divergencias_C2_mesa.md`): las 19 divergencias se resuelven con
+    8 decisiones (a a h). Solo las filas 11 a 15 pueden mover la cifra del criterio. Con cualquier adjudicación, ningún código llega al
+    criterio: los máximos son 96 de 137 en M1 y 22 de 46 en M2, contra 113 y 41.
+  - **Para C3:** la adjudicación de la autora; después, abrir la tabla de códigos, aplicar el criterio tal cual, la tabla por brazo y
+    corrida, el costo real y el FRENO final.
+  - **Contradicción del texto firmado.** El `:76` manda declarar el límite en `docs/insumos_escritura.md` §7, y las ESCRITURAS (`:111`)
+    no incluyen ese archivo. Decisión de la autora, PENDIENTE. Recomendación de la mesa: que la unidad deje el texto del ítem en su FRENO
+    C3 y que la mesa lo asiente en insumos §7, para que la unidad no escriba fuera de sus escrituras firmadas.
