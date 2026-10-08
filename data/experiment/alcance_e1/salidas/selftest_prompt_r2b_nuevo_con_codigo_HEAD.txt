@@ -1,0 +1,85 @@
+[A] candados
+  ok  sha256 del texto y hash canónico congelados
+  ok  tool schema: sha256 esperado
+  ok  rol_por_to_r2: sha256 esperado
+  ok  labels_e2_r2: sha256 esperado
+  ok  bloque de catálogo r2: sha256 esperado
+  ok  reemplazos congelados: sha256 esperado
+  ok  parche de P3b: sha256 esperado
+  ok  parche de P3c: sha256 esperado
+  ok  tablas forzadas a residual: sha256 esperado
+  ok  fixture del candado del mensaje: sha256 esperado
+  ok  bloque de catálogo r2 = el de su manifiesto (LN-8)
+  ok  el sellado v3_b54 sigue intacto
+  ok  re-congelado de P3c-2: 322c5a23e9b7, 59.909 caracteres
+  ok  prefijo de P3b-2, base del parche de P3c: sha esperado (3817de475c93), 55.105 caracteres
+  ok  prefijo de P2: sha esperado (14d6b63b508e)
+
+[B] fuera de los tramos reemplazados, byte a byte el sellado
+  ok  cada texto nuevo del parche de P3c aparece una sola vez (15 reemplazos)
+  ok  revirtiendo el parche de P3c se obtiene el prefijo de P3b-2 byte a byte
+  ok  cada texto nuevo del parche de P3b aparece una sola vez (12 reemplazos)
+  ok  revirtiendo el parche de P3b se obtiene el prefijo de P2 byte a byte
+  ok  el bloque de catálogo r2 aparece una sola vez
+  ok  cada texto nuevo aparece una sola vez (30 reemplazos)
+  ok  revirtiendo reemplazos y bloque se obtiene el sellado v3_b54 byte a byte
+
+[C] el texto congelado es el de los borradores aprobados
+  ok  prefijo_r2_borrador_B.txt == prefijo de P2
+  ok  prefijo_r2b_parche_borrador.txt (P3b-1) == prefijo de P3b-2
+  ok  prefijo_r2b_p3c_borrador.txt (P3c-1, aprobado) == PREFIJO_SISTEMA_R2B
+  ok  los 15 reemplazos congelados == los del borrador de P3c-1
+  ok  la línea de alcance == la del borrador de P3c-1 (punto e)
+  ok  los 12 reemplazos congelados == los del borrador de P3b-1
+  ok  las dos oraciones del FRENO P1 están en el texto (R8 y R14)
+
+[D] request
+  ok  2.434 unidades en la e0-r2 de la tanda 0
+  ok  system: un bloque, cache_control ephemeral al final
+  ok  tools = tool schema r2; tool_choice forzado; max_tokens 8.192
+  ok  prefijo idéntico entre las 2.434 unidades
+  ok  mismo chunk → mismo request (2.434)
+
+[E] mensaje igual a los borradores aprobados
+  ok  con la línea de alcance de P1 y la lista vacía, mensaje == borrador de P3b-1 en las 2.434 unidades
+  ok  P3c: cambia el mensaje de las unidades con línea de alcance (todas menos docvig), solo en esa línea, y el de cap::6.2.2.6 además en sus tablas
+  ok  ítems (g) y mini-chunks a mitad de oración (h): 1.053 + 121 = 1.174
+  ok  fuera de esos 1.174, el mensaje de P3b-2 == borrador de P1 (1.260)
+  ok  ninguna unidad de la e0-r2 de la tanda 0 lleva herencia_recortada, ni la línea del recorte
+  ok  con herencia_recortada, el mensaje lleva la línea del recorte una vez y el prefijo no cambia
+  ok  tabla de alcance r2 == la v3 en los 71 TOs
+
+[F] tablas forzadas a residual
+  ok  la lista versionada trae cap::tabla037 (alta de P3c, punto f), con motivo y fecha
+  ok  con cap::tabla037 en la lista, el mensaje de cap::6.2.2.6 la declara no confiable; sin ella, confiable
+  ok  con la lista, el prefijo no cambia
+  ok  solo cap::6.2.2.6 trae cap::tabla037 en la e0-r2 de la tanda 0
+
+[G] candado del mensaje (F22 y F22b)
+  ok  la fixture: 12 unidades de salida_tanda0_r2b y una sintética (alcance por clase), declarada, en sus 13 primeras
+  ok  el sha256 de sus mensajes es el sellado
+  ok  la rama del alcance por clase está en la fixture (sintética)
+  FAIL U-ALCANCE-E1: la fixture suma cuatro sintéticas declaradas, copias de cap::1.4.1 con otro archivo: una clase, dos clases, rol reutilizado (con entrada en el derivado) y declarado sin alcance (sin ella) 13 unidades; []
+  FAIL U-ALCANCE-E1: una entrada del derivado alterada en memoria (un miembro menos en ri_ccna, un id más en snp_cheq) o una entrada para ri_oc hace frenar el candado del mensaje; restaurado, pasa AttributeError: module 'prompt_r2b' has no attribute 'REGISTRO_ALCANCE_R2B'
+  ok  un espacio más en cualquiera de las seis líneas fijas hace frenar el candado
+  ok  sacar cap::tabla037 de la lista hace frenar el candado del mensaje
+  ok  restaurado, el candado pasa; el candado no entra al pedido (mismas claves del request, con la temperatura de P5)
+
+[H] temperatura (P5)
+  ok  el pedido lleva temperature 0 (TEMPERATURA_E1_R2B, entero) en las 2.434 unidades
+  ok  la temperatura del reintento por salida mal formada es 1 (TEMPERATURA_REINTENTO_FORMA_R2B, entero)
+  ok  fuera de la temperatura, el pedido es el de P3c-2: el prefijo y su hash no cambian
+  ok  kwargs_reintento_forma_r2b: el pedido recibido (con su techo) con temperature 1, sin tocar el recibido
+
+[I] registro de alcance por tanda en el mensaje (U-ALCANCE-E1)
+  FAIL el derivado del registro (catalogo_unico/registro_alcance_r2b.json, fuera de generados_r2/): sha256 esperado, candado del módulo, y es lo que el módulo cargó AttributeError: module 'prompt_r2b' has no attribute 'REGISTRO_ALCANCE_R2B_JSON'
+  FAIL el derivado se regenera byte a byte desde registro_alcance_por_tanda.md con el lector de R2-2 (--tandas 1) AttributeError: module 'prompt_r2b' has no attribute 'REGISTRO_ALCANCE_R2B_JSON'
+  FAIL rama de una clase: ri_ccna.pdf lleva la línea de linea_alcance con su entrada del derivado (Sujeto_caja_de_credito), una vez, y nada más cambia []
+  FAIL rama de dos clases: snp_cheq.pdf lleva la línea con las dos clases («según corresponda»), una vez, y nada más cambia []
+  FAIL rol reutilizado: ri_rml, ri_gerc y ri_pgn llevan la línea del rol de ric (Sujeto_rol_entidad_comprendida_reginf) y snp_tr la de snp_tr_nc, y nada más cambia Alcance de este TO: Sujeto_rol_entidad_comprendida_reginf = {Entidades financieras}. Cuando el texto
+  FAIL declarado sin alcance: ri_oc, ceninf y cirmo3 no tienen entrada en el derivado, alcance_del_documento da None y el mensaje va sin línea AttributeError: module 'prompt_r2b' has no attribute 'REGISTRO_ALCANCE_R2B'
+  FAIL la regla lee primero la tabla de la release: con un derivado en memoria que también trae cla y docvig, cla conserva su línea de la release y docvig toma la del derivado; restaurado, docvig va sin línea AttributeError: module 'prompt_r2b' has no attribute 'REGISTRO_ALCANCE_R2B'
+  FAIL el derivado solo agrega: ningún documento de la tabla de la release; los 9 de la tanda 1 con alcance, con la forma de rol_por_to_r2 (5 de clase, 4 de rol reutilizado iguales a la entrada del rol en la release) AttributeError: module 'prompt_r2b' has no attribute 'REGISTRO_ALCANCE_R2B'
+  FAIL la tanda 0 no cambia: ningún documento de salida_tanda0_r2 ni de salida_tanda0_r2b en el derivado, y los mensajes de las 2.439 unidades de salida_tanda0_r2b son los de la regla de antes (solo la tabla de la release) AttributeError: module 'prompt_r2b' has no attribute 'alcance_del_documento'
+
+RESULTADO: 55 ok, 11 FAIL

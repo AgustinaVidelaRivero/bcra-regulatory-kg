@@ -77,3 +77,46 @@ DECISIONES DE LA AUTORA AL FIRMAR (tomadas el 07/10/2026):
 
 FIRMADO por la autora el 07/10/2026 (versión para firmar en `9e84741`). Rige desde esta firma. A1 puede empezar ya; A2 espera la lista
 final de la tanda 1 (U-SEG-OFICIAL, después de S2).
+
+## Notas posteriores a la firma
+
+- **08/10/2026 — FRENO A1 revisado por la mesa sobre una copia, y decisiones de la autora.**
+  - **Revisión de la mesa.** Copias sin enlaces del árbol de `7788e52`; repo sin cambios fuera de `docs/` (sha256 antes y después), 2.213
+    `.pyc`, USD 0. Se reproduce todo:
+    - el parche `data/experiment/alcance_e1/parche_UALCANCE_E1_A1.diff`: 5 archivos, +657 −13, `git apply --check` limpio; en
+      `prompt_r2b.py` las líneas 1 a 463 cambian solo en 95, 97, 98 y 409, y las 45 anclas de la tabla de reprocesamiento siguen en su línea;
+    - el derivado: dos corridas iguales byte a byte, 9 entradas, sha256 `68ac5c084a17…`, desde el registro `ce402aad7c84…`;
+    - la tanda 0: los mensajes de las 2.439 unidades, por el camino del runner y por un cálculo propio, 0 distintos; sha `48fdec197658…`
+      con HEAD y con el parche, el de R2-2;
+    - `selftest_prompt_r2b`: 55/55 con HEAD y 66/66 con el parche; el selftest nuevo con el código de HEAD da 55 ok y 11 FAIL, los 11
+      nuevos;
+    - `selftest_clave_cache --salida-r2b`: OK; con HEAD, el JSON es el del repo (`923dd900…`); con el parche cambian 6 líneas (dos
+      inventarios y el texto de error de R29 y R29b);
+    - el candado: `6b758517cee0…` y `eeb11b9a3bf6…` en dos procesos; las 13 unidades de P3c-2 siguen en `a9cb702c0d24…`;
+    - la tanda 1 de ejemplo: 3.275 unidades en la partición vigente, 892 cambian, solo en la línea de alcance;
+    - K2: con el derivado en `catalogo_unico/generados_r2/`, `selftest_catalogo_unico` da 59/60 (falla K2); en `catalogo_unico/`, 60/60.
+  - **Decisiones de la autora (08/10/2026):**
+    1. **(a) El derivado va en `catalogo_unico/registro_alcance_r2b.json`**, por la regla d de CLAUDE.md §4, que el mandato exige (mandan los archivos): en
+       `generados_r2/`, la ruta de las ESCRITURAS de este mandato, falla K2. A2 lo escribe ahí.
+    2. **(b) F13c, variante A** («cambia», como F12): el mensaje cambia en las unidades con alcance. A2 queda autorizada a agregar la
+       variación R34 en `selftest_clave_cache.py` y a regenerar `selftest_clave_cache.json`, y a poner al día los pasajes de la tabla que
+       quedan viejos: el inventario del §1 (`:73-80`), «No los abre…» (`:86-88`), la lista de F11b (`:163`) y la nota de F13 (`:253-261`).
+       La revisión de la mesa encontró, por la misma causa, tres más: «R00 a R33b» y «44 variaciones» (`:361`, `:391`) y el pie (`:401`); y
+       la variante A cambia la columna «Principio» de F13c de 12 a 9, como F12. Entran en la misma autorización, salvo que la autora diga
+       otra cosa. Prototipo de la mesa en la copia: R34 como variación en memoria, igual que R11, con una entrada del derivado; da «cambia»
+       solo en `docvig::3.3.1` y «no cambia» en E3, y el contraste da OK con 45 variaciones.
+    3. **(c) El manifiesto dice lo que se le manda al modelo, y se corrige en A2.** Hoy `perfil_e1.py:236` expone `rol_por_to =
+       ROL_POR_TO_R2`, y el manifiesto de la tanda 1 declararía `rol_alcance` null para los 9 documentos aunque el mensaje lleve la línea.
+       Cambio, probado por la mesa en una copia: una línea en `perfil_e1.py:236`, que compone la tabla de la release con las entradas del
+       derivado, la release primero; `manifiesto_corpus.py:162` y `armar_manifiesto_S1.py:55` no se tocan. No cambia ninguna clave de caché
+       (el JSON de `selftest_clave_cache` queda igual al del parche) ni los manifiestos de la tanda 0; los selftests (`selftest_prompt_r2b`,
+       `selftest_manifiesto`, `cablev3`, `catalogo_unico`) pasan. Costo: USD 0, una a dos horas. Requiere sumar `perfil_e1.py` (y un caso en
+       el selftest) a las escrituras de A2. Lo que hay que coordinar: el manifiesto de S1 de los 152, ya sellado (`0957daf5…`,
+       `segmentacion_oficial_e0r2/s1/sellos_S1.txt:32`), declara null para esos 9 y dejaría de cargar con el perfil nuevo
+       (`correr_e0.py:1627`). El manifiesto de la tanda 1 se arma después de A2, con la lista final; los de S1 y S1-bis quedan como
+       registro anterior a A2 o se regeneran y re-sellan en U-SEG-OFICIAL si se los vuelve a cargar (unos 30 minutos).
+    4. **(d) Los dos valores del candado y el sha del derivado quedan PROPUESTOS** hasta A2, con la lista final.
+    5. **(e)** La cita de la firma en las plantillas de despacho de la mesa queda corregida: `21e55a0`, no el commit de los asientos (lo
+       mismo en U-UNION-ESTRECHA). Error de la mesa.
+    6. **(f) El commit de A1** entra como registro (`data/experiment/alcance_e1/`), sin tocar el código del repo: el parche lo aplica A2,
+       una sola vez.
