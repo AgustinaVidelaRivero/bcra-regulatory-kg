@@ -617,3 +617,39 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   - **Discrepancias menores con el FRENO:** ri_mmsef cambia 3 avisos y un campo de la estructura, sin unidades (no «un aviso»); ri_tsa
     figura en el manifiesto de S1 como `reconocido_pleno`, no `parcial_declarado`.
   - **«Seguí»** preparado por la mesa: S0-4a-bis y después S0-4b, en el paquete de la mesa (`segui_S0-4a-bis_y_S0-4b_USEG_OFICIAL_mesa.md`).
+- **08/10/2026 — FRENO S0-4a-bis revisado por la mesa sobre una copia, y decisiones de la autora.**
+  - **Revisión de la mesa.** S0-4a-bis corrió sobre una copia, sin tocar el repo (parche sobre `26c6502`, el código de E0 de HEAD). La mesa
+    lo reprodujo en una copia propia sin enlaces, sin API; repo sin cambios fuera de `docs/` y 2.213 `.pyc`. Se reproduce todo:
+    - el parche final por los dos caminos: `e0_lib.py` `7e56f857…`, `correr_e0.py` `2559b6c2…`, `selftest_e0.py` `a776126d…`; contra el de
+      S0-4a cambia solo la regla sdmax (interruptor en `REGLAS_S0_4`, `correr_e0.py:128`; `e0_lib.py:1387`, `:1738-1742` y `:1784-1787`);
+    - sdmax: ri_ccna de 149 a 159 unidades, 11 eventos (`D1A3::S30` de 2.285 a 350 caracteres; `S31` a `S40` nuevas); los otros cuatro TOs
+      de la lista sin cambios; los 24 códigos del Anexo II de ri_sef siguen rechazados; en los 152, de 9.554 a 9.564 unidades;
+    - los controles duros, con la regla prendida y apagada: tanda 0 57 de 57 (también con el script secuencial); regla apagada = S0-4a y
+      todo apagado = S1, 768 de 768 (y contra `s1/manifest_salida.json`); doble corrida con 0 distintos; selftest de claves con VEREDICTO OK
+      y salida igual a `923dd900…`; `selftest_e0` 137/137, b52 39/39, b581 34/34, b582 59/59, b583 33/33;
+    - la conciliación: contra S0-4a, 1 TO y 11 eventos, todos de sdmax; contra S1, 1.540 = 1.530 + 10, con `nmcief::A4::S1` como única
+      interacción;
+    - las anclas de F19b: `correr_e0.py:95-100` no se mueve, `:327-339 → :353-365`, `:576-585 → :602-611`, `:1266 → :1295`;
+      `e0_lib.py:352 → :360`, `:473 → :552`;
+    - ri_oc, medido sin aplicar: de 128 a 133 unidades, 12 eventos; `ri_oc::3.51` de 19.239 a 12.206 caracteres, con el Apartado B en
+      11.427 de ellos; 5 unidades nuevas y 3 renombres; las unidades de más de 13.944 caracteres (16.384 / 1,175, `:86`) pasan de 29 a 28;
+      la guarda no toca a los cinco TOs de la lista;
+    - los 53 puntos 4a de la tanda 0: 53 de 53 con la oración entera en la herencia de sus 249 unidades hijas; control negativo 52/1;
+    - las dos correcciones a S0-4a: ri_tsa es `reconocido_pleno` (`s1/controles_S1.json`); ri_mmsef cambia 3 avisos y, con precisión, el
+      `text_col` del nodo 2.2 (de null a 76,6), no «un aviso».
+  - **Decisiones de la autora (08/10/2026):**
+    1. **(a) ri_oc: se aplica la variante**, porque ri_oc está en la tanda 1 y la variante saca los anexos de `ri_oc::3.51`, que baja de
+       19.239 a 12.206 caracteres, por debajo del umbral de unidades grandes. La guarda es código nuevo: corre su vuelta de controles sobre
+       una copia, con la misma batería, antes de S0-4b. El Apartado B, que queda dentro de 3.51, es límite declarado.
+    2. **(b) ri_ccna no se declara: se corrige en la misma vuelta**, antes de S0-4b. Las 47 unidades de B.3 a B.40 heredan «B. PRUEBAS
+       SUSTANTIVAS», y `D1A3::S2` se separa en A.3, B.1 y B.2, cada cosa con su caso de selftest y su atribución sola. Si alguna no se puede
+       corregir sin mover otros TOs, la vuelta lo reporta con su cifra y la autora la declara. Reemplaza a la decisión 5 del §8 de S0-4a para
+       lo que quedaba de ri_ccna. Prototipo de la mesa sobre una copia: un sub-documento de «letra», por lista, corrige la herencia de las
+       47 y separa B.1 y B.2 sin mover nada fuera de ri_ccna en los cinco TOs de la lista (159 → 163 unidades); A.3 sigue pegado a A.2.2 y
+       pide otra pieza; sin lista, la misma forma tocaría manori y ri_dsf.
+    3. **(c) La tanda 0 queda excluida de 4a y 4b**, declarada con lo que midió esta etapa: 123 puntos; 53 de la clase 4a, en los que la
+       oración llega entera por la herencia de las unidades hijas, así que E1 la veía; 61 de la 4b, cosméticos; 9 sin regla.
+    4. **(d) Sí a la nota fechada** con las dos correcciones a S0-4a, que S0-4b agrega al copiar el diseño de S0-4a al repo.
+    5. **(e)** La mesa prepara el despacho de la vuelta (S0-4a-ter: la guarda de ri_oc y las dos reglas de ri_ccna, con la batería entera)
+       y pone al día la parte 2 del «seguí» (S0-4b) con sdmax, ri_oc, ri_ccna y el parche final de la vuelta.
+  - **Ruta:** S0-4a-ter → S0-4b → S1-bis → S2. Suma una vuelta (del orden de un día) a la cadena de segmentación, que sigue siendo la crítica.
