@@ -794,3 +794,23 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     decisión que se tome con el tramo b.
   - **Las decisiones del tramo b** (ri_spi, los dos juicios dudosos y `ri2_pm::3.5.3`, la vía de ri2_pm y la vigencia de ri_tar) las toma
     la autora con la instancia, para no frenar la ruta crítica. La mesa prepara el commit de `s1bis/` cuando cierre el tramo b.
+- **08/10/2026 (noche, más tarde) — FRENO S1-bis-b revisado por la mesa sobre una copia; decisión de la autora sobre `ri2_ae`;
+  despacho de la lectura.** USD 0. `s1bis/` sin commit.
+  - **Integridad:** el paquete da 324 de 324 en sus dos lugares; los 12 archivos nuevos de `s1bis/` coinciden con
+    `manifest_salida_S1-bis-b.json` (`649e3d56…`).
+  - **El acta** (`acta_sorteo_S1bis.md`): el texto sellado a las 17:30:31, hasta la nota posterior al sorteo con un salto final, da
+    `fdf6704f…`. Trae las decisiones de la autora sobre el FRENO S1-bis-a y la regla de las 21 intros de la tanda 0.
+  - **El sorteo** (`muestra_cortes_S1bis.json`, `33b24c0b…`, 17:31:16): reproducido por la mesa con código propio desde la población
+    sellada en el tramo a (`ded01f23…`); la misma muestra y el mismo orden en los tres estratos (40, 10 y 40) y en ri_spi (10). El
+    censo del 1.16 trae los 35 candidatos de la tanda 1.
+  - **A ciegas:** las fichas de las 100 unidades no marcan límites declarados, TOs de la tanda 0 ni candidatos del 1.16. Lo que
+    aparece es texto de la norma o un id de punto.
+  - **Decisión de la autora, tomada antes de la lectura:** si en la muestra sale `ri2_ae::3.3` o `ri2_ae::5.3`, vale la misma regla
+    que para las 21 intros: se lee con el mismo criterio, un error de corte cuenta para el piso y la cifra sin contarlo va aparte.
+    Queda en una nota fechada al final del acta, con su hora, sin tocar el texto sellado.
+  - **Quién lee:** una sesión nueva de la mesa, que no sea la de S0-4, ni la de S1-bis, ni la que preparó el despacho, porque las tres
+    conocen las listas de límites.
+    - Lee a ciegas, en dos etapas, cada una sellada: primero las 100 unidades y los juicios, después el censo del 1.16, para que
+      los candidatos no se reconozcan en la muestra.
+    - Después corre las cifras y la lista sobre una copia.
+    - La autora revisa la lista y adjudica.

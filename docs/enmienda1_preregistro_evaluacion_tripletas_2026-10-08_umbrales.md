@@ -406,3 +406,26 @@ printf 'U-MED-UMBRALES|T|%s' <sha256 del texto firmado> | shasum -a 256 | cut -c
 
 El sorteo de cada etapa, por estrato: `random.Random(f"{semilla_X}:{estrato}").sample(sorted(ids), n)` (§4.3 y D7). Ninguna muestra
 se sortea antes de este commit. La nota del §14.3 al pie del pre-registro entra con esta firma.
+
+## Notas al pie
+
+- **08/10/2026 (noche) — FRENO P-a revisado por la mesa sobre una copia, y decisiones de la autora.** `data/experiment/med_umbrales/p/`,
+  sin commit al escribir esta nota.
+  - **Lo que se reproduce:**
+    - el sorteo, con código propio de la mesa sobre una copia de `e22fae1a`: la misma muestra por estrato, los mismos lotes y el
+      mismo orden que el acta (`acta_sorteo_P.json`, `435fc76f…`, sellada a las 17:29:41);
+    - el orden de las horas, en la sesión que corrió P-a: acta 17:29:41, diagnóstico 17:35:06, primera ficha 17:38:38;
+    - las 47 salidas comparables de P-a (diagnóstico, 20 fichas, 22 páginas, formulario y regla v0), byte a byte, sobre un espejo
+      armado por la mesa con los mismos 67 insumos. El acta difiere solo en la hora y en el sha256 de los insumos, porque el espejo
+      de la mesa trae 7 archivos de código más;
+    - el selftest del comparador, 23 de 23;
+    - la regla v0, igual al §2 firmado (líneas 47 a 104 de `a0f9815`);
+    - las fichas, que no muestran ningún campo del umbral.
+  - **Precisiones del diagnóstico:**
+    - la tabla de formas de la familia (ii) suma 142 sobre 120 elementos, porque un elemento puede tener más de una forma; el FRENO no
+      lo declara;
+    - un elemento del lote 2 comparte nodo con otro que el listado del diagnóstico muestra entero. Por eso la autora no abre el listado
+      por elemento antes de cerrar el paso 1 del lote 2.
+  - **Decisiones de la autora (08/10/2026):** acepta las familias (i) (132) y (ii) (120) como candidatas a clase, para confirmar con
+    su lectura. La decisión de si la regla de comparación lee la oración de E0, y no el tramo de E1 o la descripción (108 de los 132
+    de la familia (i)), la toma cuando la lectura confirme la (i).
