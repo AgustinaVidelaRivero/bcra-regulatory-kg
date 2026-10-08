@@ -408,3 +408,105 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
        declaradas en el reporte).
      - **Lo que sí se corrige en código antes del re-sellado único:** la procedencia por tramo (G-r, en U-OMISIONES-COD). Cambia el
        punto de 22 nodos y solo el rol de 173, con 0 fusiones; 22 de 22 coherentes en la lectura.
+  7. **Las dos fallas de E1 son límite del diseño: ningún modelo las lleva al criterio** (U-COMP-E1, C3, 08/10/2026;
+     `data/experiment/comp_e1/c3/salida/cifras_c3.json`; texto del FRENO C3, `data/experiment/comp_e1/freno_c3.md`, asentado por la mesa con
+     las precisiones de su nota al pie del mandato del 08/10/2026). Con el mismo esquema, el mismo prompt y el mismo pedido adaptado
+     (`c0/c0b_api.py`), sobre las 87 unidades leídas en T4, comparé el modelo de la tanda 0 (`claude-haiku-4-5`) con `claude-sonnet-5-5` y
+     `claude-opus-5-5`, dos corridas cada uno, con el criterio sellado antes de correr (C1: Condicion con su relación en al menos 113 de los
+     137 supuestos del grupo c; C2: al menos 41 de las 46 omisiones normativas extraídas con tramo verificado por código; en la peor de las
+     dos corridas). Supuestos con Condicion con su relación: Haiku 43 de 137 en la extracción final que leyó T4 (40 en el intento 0, el
+     mismo pedido), Sonnet 60 y 67, Opus 91 y 95. Omisiones normativas extraídas con tramo verificado: Haiku 0 de 46 en la extracción final,
+     porque son las omisiones que leyó T4 (3 en el intento 0), Sonnet 20 y 22, Opus 19 y 18. Las cifras de Sonnet y Opus salen de la lectura
+     cegada de dos lectores con la adjudicación de la autora; las de Haiku, de la lectura de T4. Ningún brazo cumple: en la peor corrida,
+     Sonnet 60 y 20, Opus 91 y 18, contra 113 y 41. El modelo más grande más que duplica las Condiciones con relación de Haiku, pero queda
+     22 por debajo del umbral; en las omisiones, los dos modelos nuevos quedan entre 18 y 22 de 46 (39 % a 48 %), y de las 20 omisiones cuya
+     oración está en el texto heredado extraen con tramo verificado entre 2 y 5 (13 a 17 ausentes). Declaro las dos fallas (supuestos que no
+     salen como Condicion con relación; omisiones `meta_normativo` con contenido normativo) como límite del diseño de E1 en r2b, que la tesis
+     describe como tal. El modelo del extractor no cambia antes de la tanda 1 (decisión de la autora del 08/10/2026); no se abre la decisión de
+     una release con otro modelo, y B6.4 queda hecho en su parte esencial (mandato firmado, `:76`). La comparación se reporta en el capítulo
+     5 (§8 de este índice). Costo: USD 15,84 de los 35 autorizados.
+
+## 8. Comparación de modelos del extractor (U-COMP-E1) — disponible
+
+- **Ruta y commits:** `data/experiment/comp_e1/`. Mandato `docs/mandatos/UCOMP_E1_comparacion_chica_modelo.md`, FIRMADO en `cbcb823`
+  (las 116 líneas firmadas dan `89ce5508…`), con sus notas al pie. C0 en `25480b9`, C1 en `6e16bb3`, C2 en `4e9a1fc` (primera lectura),
+  `be8d6f2` (segunda lectura) y `cf7d7c5` (adjudicación); C3 y el cierre de la unidad, commit PENDIENTE de la autora. Revisión de la
+  mesa de cada etapa sobre una copia, en las notas al pie del mandato.
+- **Dónde va (propuesta de la mesa, a decidir por la autora).** En el capítulo 5 (Evaluaciones), como sección propia, «Sensibilidad del
+  grafo al modelo del extractor», después de la calidad de la extracción de la tanda 0 (T4 y la tasa de error por unidad de L2, §7, ítems
+  2 y 5) y antes de las comparaciones con el agente (A2.2 y B6.3). Mide el defecto que esas lecturas encontraron, con el criterio de
+  lectura de T4, y no depende del agente. El capítulo 4, donde presenta E1, nombra el modelo y remite a esta sección.
+  - **Tabla** (la que resume): una fila por modelo y corrida (Haiku con dos filas, la extracción final y el intento 0); columnas: M1 de
+    137 con su Wilson, M2 de 46 con su Wilson, M2 del texto propio de 26 (marcada como posterior al resultado), unidades iguales entre
+    corridas de 87, USD por unidad y su cociente contra Haiku; los umbrales (113 y 41) en el pie.
+  - **Figura** (opcional): puntos con el intervalo de Wilson por modelo y corrida, en dos paneles (M1 y M2), con la línea del umbral. Se
+    ve de un vistazo que Opus se separa de Haiku en M1 y que ninguna corrida se acerca al umbral.
+- **(a) La pregunta.** Cuánto del defecto principal del grafo, las condiciones sin su norma y las omisiones normativas, depende del
+  modelo del extractor.
+- **(b) El diseño.**
+  - **La muestra:** 87 unidades de la tanda 0, elegidas por contener los casos difíciles: las 30 del grupo c de T4, con sus 137 supuestos,
+    y las 59 unidades de las 60 omisiones leídas en T4 (`lingob::4.2.1` tiene dos), con 2 unidades en los dos grupos (`cla::6.5.5.9` y
+    `ric::6.1.2`). Las 60 omisiones son 46 normativas (con las 5 remisiones puras) y 14 no normativas. Fuentes:
+    `data/experiment/comp_e1/unidades.json`, mandato `:32-35`, `data/experiment/reext_t0/t4/` (fichas, adjudicación `04cec96` y
+    `c9d4c40`, `t4/salida/tasas_t4.json`). Son 1,78 veces la media de la tanda 0 en largo (2.069 contra 1.165 caracteres; mandato `:89`).
+  - **Los mismos pedidos que Haiku:** en C0, las claves de E1 de las 87 unidades están en la base de la tanda 0 y la entrada contada es
+    igual a la medida, 87 de 87 (`freno_c0.md`, (a) y (b)); en las 4 × 87 llamadas, `messages`, `system` y
+    `tools` son iguales al pedido del intento 0 de Haiku. Cambian el modelo, `max_tokens` (16.384 contra 8.192), la temperatura (sin fijar
+    contra 0), `tool_choice` (automático contra forzado) y el pensamiento (comparación de la mesa sobre las bases de C1 y de E1, 08/10/2026).
+  - **Los modelos:** `claude-sonnet-5-5` sin pensamiento y `claude-opus-5-5` con esfuerzo bajo (su pensamiento no se apaga), dos corridas
+    cada uno (`c0/c0b_api.py:82-93`, `c1/comun_c1.py:100-109`).
+  - **El criterio, sellado antes de correr:** sellos de C0 el 06/10/2026 a las 20:19:18 UTC; primera llamada de C1 el 07/10/2026 a las
+    02:51:39 UTC (`c0/salida/sellos_c0.json`, `c1/salida/cache_usage_c1.jsonl`). Un brazo cambia el cuadro si, en la peor de sus dos
+    corridas, llega a 113 de 137 en M1 o a 41 de 46 en M2 (límite inferior de Wilson al 95 % ≥ 0,75; `c0/criterio_c0.md`).
+  - **La lectura:** doble y a ciegas, con códigos sorteados para cada modelo y corrida (y el intento 0 de Haiku en las 8 unidades con
+    reintento, entre los demás). Acuerdo entre lecturas: 549 de 559 en M1 y 243 de 245 en M2, kappa 0,967 y 0,986
+    (`c2/segunda_lectura/acuerdo_c2.json`, `be8d6f2`). 19 divergencias (12 de clase y 7 de subtipo), adjudicadas por la autora sin conocer
+    los códigos, con una regla declarada y aplicada pareja: primero la relación; sin relación, fusionado, dentro de norma o sin relación con
+    su subtipo; la norma de cada supuesto, la de la ficha de T4 (`cf7d7c5`; nota del mandato del 07/10/2026). Cambian 14 de las 19. La
+    tabla de códigos se abrió en C3, después del control de la lectura adjudicada.
+- **(c) Los resultados** (`c3/salida/cifras_c3.json`, `tabla_c3.md`; `c1/salida/m3_c1.json`; `presupuesto.json`):
+
+  | modelo y corrida | M1, de 137 | M2, de 46 | M2 del texto propio, de 26 | USD por unidad | contra Haiku |
+  |---|---|---|---|---|---|
+  | Haiku, extracción final (T4) | 43 | 0 | — | — | — |
+  | Haiku, intento 0 | 40 | 3 | — | 0,014630 | 1 |
+  | Sonnet, corrida 1 y 2 | 60 y 67 | 20 y 22 | 16 y 17 | 0,033514 y 0,033390 | 2,29 y 2,28 |
+  | Opus, corrida 1 y 2 | 91 y 95 | 19 y 18 | 15 y 16 | 0,058744 y 0,056383 | 4,02 y 3,85 |
+
+  - Wilson inferior de la peor corrida: Sonnet 0,358 y 0,302; Opus 0,582 y 0,264; los umbrales dan 0,753 y 0,770.
+  - **La cifra del texto propio** se declara posterior al resultado y no entra al criterio: de las 46 omisiones normativas, 26 tienen su
+    oración en el texto propio y 20 en el heredado. Ningún brazo llega a 41 ni contando solo el propio (máximo 17 de 26).
+  - **La variabilidad entre corridas** (M3): unidades iguales byte a byte entre las dos corridas, Sonnet 1 de 87 y Opus 4 de 87; 0 cortes,
+    0 salidas mal formadas y 0 rechazos en las cuatro.
+  - **El costo:** USD 15,836623 de 35 en las cuatro corridas (Sonnet 2,915682 y 2,904940; Opus 5,110691 y 4,905310). Haiku, sobre las
+    mismas 87 unidades en la tanda 0: 0,014630 por unidad con el intento 0; 0,015274 con los dos primeros intentos fallidos; 0,016571 con
+    los 8 reintentos del verificador (precios de `salida_r2b/*/resumen_e1.json`; bases de E1 de la tanda 0; recomputado por la mesa el
+    08/10/2026). La tarifa media de E1 en la tanda 0 es 0,010135 por unidad (`data/experiment/reext_t0/reporte_u_reext_t0.md:26`): las 87
+    son unidades largas. No incluye E3.
+- **(d) La interpretación.**
+  - La muestra es la cola difícil, no la tasa general del grafo. En todo el grafo de diez de la tanda 0, las Condicion sin su norma son
+    331 de 1.952 con el perfil r2b (17,0 %; `a9631a64`) contra 884 de 1.383 con el perfil r1 (63,9 %; `dd42d6d9`, la tanda 0 con r1, no
+    KG-Reextraído-r1). Fuente: `docs/tablero_correcciones.md:52` y `:117-126`, recomputado por la mesa sobre los grafos el 08/10/2026.
+    Con la definición literal de r1 (sin excluir `referencia_cruzada`), 639 de 1.383 (46 %, `:129`).
+  - En esa cola, Opus más que duplica las Condiciones con su relación: 91 y 95 contra 43 (2,1 y 2,2 veces; contra 40 del intento 0, 2,3 y
+    2,4). Sonnet sube a 60 y 67.
+  - Ningún modelo cambia el cuadro según el criterio sellado, y en las omisiones los dos quedan en el mismo rango.
+  - El grafo evaluado se extrae con Haiku.
+- **(e) Los límites.**
+  - La muestra está seleccionada por contener los casos difíciles: no es representativa y sus tasas no se proyectan al grafo.
+  - No se midió la precisión de las relaciones que agrega cada modelo: M1 cuenta si el supuesto queda unido a su norma, no si las demás
+    relaciones son correctas (Opus emite 1.055 y 1.029 relaciones contra 844 y 935 de Sonnet; `c1/salida/m4_c1.json`).
+  - Una sola configuración por modelo (Sonnet sin pensamiento, Opus con esfuerzo bajo), con un pedido adaptado: sin temperatura fija ni
+    herramienta forzada.
+  - Las omisiones del texto heredado no las pide el prompt: E1 recibe los bloques heredados como contexto, con la instrucción de no
+    extraer de ellos contenido normativo (`reextraccion_v2/e1_extractor/prompt_r2b.py:346` y `:357`).
+  - La lectura no es simétrica: Sonnet y Opus, con la lectura doble cegada y la adjudicación; Haiku, con la lectura de T4, que no estaba
+    cegada respecto del modelo.
+  - La línea de base de M2 del criterio sellado («Haiku 0 de 46 por definición») vale para la extracción final; en el intento 0 son 3 de
+    46. El veredicto no cambia.
+- **(f) La relación con D15 (B6.4) y con la release del grafo corregido.** D15 (decisión de la autora del 07/10/2026,
+  `docs/checklist_pre_escalado.md`, bloque de decisiones, punto 9): U-COMP-E1 antes de la tanda 1 y B6.4 después del escalado, las dos. Con
+  C3, B6.4 queda hecho en su parte esencial (mandato `:76`); lo que sigue después del escalado es el reporte de escalado (costo, throughput,
+  latencia) y, si se decide, la comparación ampliada. Opus queda como candidato para la release del grafo corregido (decisión de la autora
+  del 08/10/2026), sin abrir hoy la decisión. El cambio de modelo también es una de las palancas del punto de diagnóstico posterior a A2.2
+  (plan, fila A2.2).

@@ -273,3 +273,38 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 116 líneas de arriba (`c
     - 1 de `condicion_con_relacion` a `dentro_de_norma`.
     - Las otras 5 ratifican la primera lectura.
   - C2 queda adjudicada. C3 se despacha con la lectura adjudicada.
+- **08/10/2026 — FRENO C3 (final) revisado por la mesa sobre una copia; decisiones de la autora; U-COMP-E1 CERRADA con el commit de C3.**
+  - **Se reproduce todo** (copia sin enlaces; repo sin cambios fuera de `docs/`, 2.213 `.pyc`; la tabla de códigos se abrió en esta sesión
+    después de la adjudicación, `cf7d7c5`):
+    - el paquete de la instancia (17 sha256) y los 11 sellos de C0; `criterio_c0.md` igual a `:68-78` del texto firmado;
+    - `cifras_c3.py` dos veces: `control_previo_c3.json` igual byte a byte; las otras cuatro salidas, iguales salvo la hora (el «byte a
+      byte» del freno se dio porque sus dos corridas cayeron en el mismo segundo);
+    - con un script propio: la lectura adjudicada es la primera con 19 líneas distintas, las que llevan `adjudicacion`, y 785 iguales; 14
+      cambian y 5 ratifican; la tabla `065a272c…` da A = S1, H = S2, K = O2, W = O1, N = H0; M1 y M2 por corrida, la peor corrida (S 60 y 20,
+      O 91 y 18 contra 113 y 41), los Wilson y la cifra del texto propio (16, 17, 15 y 16 de 26; 4, 5, 4 y 2 de 20 en el heredado).
+  - **Precisiones de la mesa** (ninguna cambia el veredicto):
+    1. Que el control previo vaya antes de la apertura sale del orden del código (`c3/cifras_c3.py:163-168`), no de una marca de tiempo:
+       `control_previo_c3.json` no lleva hora.
+    2. La referencia de Haiku de la tabla del freno (43 / 76 / 7 / 3 / 8) sale de `tasas_t4.json`, anterior a la adjudicación de
+       `ext::4.1.3.2` (`c9d4c40`). La adjudicada es 43 / 77 / 7 / 2 / 8, la de `docs/insumos_escritura.md` §7, ítem 2, y la de `:15`.
+    3. La línea de base del intento 0 de Haiku, la que fija el texto firmado (T4 en 79 unidades y la relectura con código en las 8 con
+       reintento), es 40 de 137 en M1 y **3 de 46 en M2**: en el intento 0, 3 de las 4 omisiones normativas de esas 8 unidades salieron
+       extraídas con tramo verificado. «Haiku: 0 por definición» (`:72`) vale para la extracción final, no para el intento 0.
+    4. La lectura no es simétrica: Sonnet y Opus, con la lectura doble cegada y la adjudicación; Haiku, con la lectura de T4.
+  - **El límite**, asentado por la mesa en `docs/insumos_escritura.md` §7, ítem 7, con el texto del freno y cinco correcciones:
+    1. el título decía «límite del diseño, no del modelo»; dice «límite del diseño: ningún modelo las lleva al criterio», porque Opus más
+       que duplica M1 (91 y 95 contra 43);
+    2. Haiku con sus dos líneas de base: 43 y 0 en la extracción final, 40 y 3 en el intento 0;
+    3. de dónde sale cada cifra: la lectura doble cegada para Sonnet y Opus, la de T4 para Haiku;
+    4. «15 a 17 ausentes» dice «13 a 17» (S2 tiene 13);
+    5. «los tres modelos quedan en el mismo tercio (18 a 22 de 46)» dice «los dos modelos nuevos quedan entre 18 y 22 de 46 (39 % a
+       48 %)»: Haiku tiene 0, y 18 a 22 de 46 no es un tercio.
+  - **Decisiones de la autora (08/10/2026):**
+    1. El modelo del extractor no cambia antes de la tanda 1.
+    2. La comparación de modelos se reporta como experimento del capítulo 5 (Evaluaciones). Lo necesario para escribirla, con sus anclas,
+       está en `docs/insumos_escritura.md` §8, con la propuesta de la mesa de dónde va y qué tabla la resume; en el plan, la fila B6.4.
+    3. Opus queda como candidato para la release del grafo corregido, sin abrir hoy la decisión. La relación con D15: U-COMP-E1 antes de
+       la tanda 1 y B6.4 después del escalado; B6.4 queda hecho en su parte esencial (`:76`).
+    4. El cambio de modelo es una de las palancas del punto de diagnóstico posterior a A2.2 (plan, fila A2.2).
+  - **Gasto de la unidad:** USD 15,836623 de 35 (`presupuesto.json`), todo en C1.
+  - **U-COMP-E1 CERRADA** con el commit de C3 (PENDIENTE de la autora).
