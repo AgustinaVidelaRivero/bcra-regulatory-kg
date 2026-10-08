@@ -1,6 +1,7 @@
 # Mandato U-ALCANCE-E1 — el registro de alcance por tanda entra al mensaje de E1
 
-**BORRADOR — PENDIENTE DE FIRMA DE LA AUTORA** (redactado por la mesa el 07/10/2026, noche). Origen: la enmienda 4 al protocolo entre
+**FIRMADO por la autora el 07/10/2026** (firma por mensaje de la autora; versión para firmar en `9e84741`, redactada por la mesa el
+07/10/2026, noche), con sus dos decisiones al firmar. Origen: la enmienda 4 al protocolo entre
 tandas, FIRMADA el 07/10/2026 (`docs/enmienda4_protocolo_entre_tandas_2026-10-04_crecimiento_del_catalogo_y_alcance.md`), §7, punto 1, y
 su decisión 3 al firmar. Es la condición 11-bis del checklist (`docs/checklist_pre_escalado.md`, línea de las condiciones de la tanda 1).
 USD 0, sin API.
@@ -66,8 +67,13 @@ registro de alcance (solo se lee: lo escribe la autora con la mesa); E3; el ensa
 REQUISITOS: CLAUDE.md §4 (a a l). La corrida en seco importa `prompt_r2b` por el mismo camino que el runner (regla l, último párrafo).
 CONVIVENCIA: después de la firma de la enmienda 4 (hecha). En paralelo con U-OMISIONES-COD, O5 de U-E3-LISTAS y S0-4 de U-SEG-OFICIAL,
 que no tocan estos archivos. A2 espera la lista final. Todo, antes de la extracción de la tanda 1.
-DECISIONES DE LA AUTORA AL FIRMAR:
+DECISIONES DE LA AUTORA AL FIRMAR (tomadas el 07/10/2026):
 1. **El candado del derivado.** Opciones: (a) en el código, como hoy la tabla de la release; (b) en el manifiesto de cada tanda.
-   Recomendación de la mesa: (a). El derivado crece por tanda, con un cambio declarado entre tandas (F13c), y todo lo que entra al mensaje
+   **Decidido: (a).** Era la recomendación de la mesa. El derivado crece por tanda, con un cambio declarado entre tandas (F13c), y todo lo que entra al mensaje
    lleva candado en el módulo.
-2. **Si A2 espera la lista final.** Recomendación: sí, para que el código cambie una sola vez.
+2. **Si A2 espera la lista final.** **Decidido: sí**, para que el código cambie una sola vez.
+
+## Firma
+
+FIRMADO por la autora el 07/10/2026 (versión para firmar en `9e84741`). Rige desde esta firma. A1 puede empezar ya; A2 espera la lista
+final de la tanda 1 (U-SEG-OFICIAL, después de S2).

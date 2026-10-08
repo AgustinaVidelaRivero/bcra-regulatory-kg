@@ -1,7 +1,7 @@
 # Mandato U-UNION-ESTRECHA — una regla más estrecha para unir la Condicion de un ítem con la norma del encabezado de su lista
 
-**BORRADOR — PENDIENTE DE FIRMA DE LA AUTORA** (redactado por la mesa el 07/10/2026, noche, por decisión de la autora del mismo día sobre
-U-DIAG-CAP3-GRAFO, `df59e79`). No va antes de la tanda 1: corre en paralelo con el escalado, como corrección del ensamblado. Si pasa su piso,
+**FIRMADO por la autora el 07/10/2026** (firma por mensaje de la autora; versión para firmar en `9e84741`, redactada por la mesa el
+07/10/2026, noche, por decisión de la autora del mismo día sobre U-DIAG-CAP3-GRAFO, `df59e79`), con sus dos decisiones al firmar. No va antes de la tanda 1: corre en paralelo con el escalado, como corrección del ensamblado. Si pasa su piso,
 se aplica a todas las tandas en el próximo armado, antes de sellar el grafo de la evaluación final (el grafo evaluado de B6.3,
 `docs/protocolo_dos_grafos.md`, §2). USD 0, sin API.
 
@@ -24,7 +24,7 @@ contra el código:
   lista cerrada de tipos destino; la propuesta es Potestad, Operacion, Obligacion o Excepcion;
 - con dos o más candidatos, o sin anuncio, sin unión;
 - arista derivada con `rol_fuente = union_item_encabezado`, sin las marcas de E3, todo al registro.
-La Excepcion queda fuera, salvo que la autora la incluya al aprobar la regla.
+La Excepcion queda fuera (decisión de la autora al firmar).
 
 ETAPAS.
 - **U1. La regla y su pre-medición, sin leer** (sobre una copia).
@@ -37,7 +37,8 @@ ETAPAS.
     de la regla aprobada en `a9631a64`. Lista sellada antes de leer.
   - Fichas sin veredicto, con el texto del ítem y el del bloque que abre la lista.
   - Criterio de «correcta», sellado antes: la Condicion del ítem es condición de esa norma del encabezado según el texto.
-  - Lectura en tres pasos, como en T4: primera lectura de la instancia, segunda a ciegas de la mesa y adjudicación de la autora.
+  - Lectura en tres pasos: primera lectura de una **sesión aparte, que no diseñó la regla** (decisión de la autora al firmar); segunda
+    a ciegas de la mesa; adjudicación de la autora.
   - Piso: al menos 28 correctas de 30 (Wilson inferior ≥ 0,75), con no decidibles declarados.
   - FRENO U2 con la cifra.
 - **U3. Si pasa: la implementación**, en el ensamblado (fila F15, solo código sobre lo guardado).
@@ -69,6 +70,11 @@ CONVIVENCIA:
 - U1 y U2 son de solo lectura sobre lo guardado: pueden correr en cualquier momento después de la firma.
 - U3 va después de U-OMISIONES-COD, que toca el mismo archivo, y antes del armado que precede al sello del grafo de la evaluación final.
 
-DECISIONES DE LA AUTORA AL FIRMAR:
-1. Si la Excepcion queda fuera, como propone la mesa.
-2. Quién hace la primera lectura de U2: la instancia de la unidad, como en T4, o una sesión aparte.
+DECISIONES DE LA AUTORA AL FIRMAR (tomadas el 07/10/2026):
+1. **La Excepcion queda fuera**, como propuso la mesa.
+2. **La primera lectura de U2 la hace una sesión aparte, que no diseñó la regla.**
+
+## Firma
+
+FIRMADO por la autora el 07/10/2026 (versión para firmar en `9e84741`). Rige desde esta firma. Corre en paralelo con el escalado; U3, si
+U2 pasa, después de U-OMISIONES-COD y antes del armado que precede al sello del grafo de la evaluación final.
