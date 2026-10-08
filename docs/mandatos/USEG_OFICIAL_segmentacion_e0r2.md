@@ -719,3 +719,34 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
       `8fa422fd4c31971b0301453f13946833f45dc67110ff39cb3bcc3d018029ae97`, en
       `fuera_del_repo/scratchpads/9638b475-da33-472a-a7fe-837c50201bdd/scratchpad/revision_USEG_OFICIAL_FRENO_S0-3/`.
   - **El «seguí» de S0-4b** queda armado por la mesa con el parche final de S0-4a-ter y la lista de límites puesta al día.
+- **08/10/2026 (noche) — S0-4b, commiteada por la autora en `18d9e05` antes de la revisión, y revisada por la mesa; las semillas de
+  S1-bis.**
+  - **Revisión de la mesa** (directa, sin corridas nuevas de E0: el código es el mismo, por sha256, que la mesa ya corrió en S0-4a-ter):
+    - los tres archivos de E0 de `18d9e05` dan `65a8c3b8…`, `94d35349…` y `ec186071…`, los del parche final de S0-4a-ter, y en
+      `e0_chunking/` el commit cambia solo esos tres (+1.373 −67); el commit trae además la tabla de reprocesamiento (F19b) y 122 archivos
+      de `s0_4/`, nada más;
+    - `s0_4/`: 120 de los 122 son iguales por sha256 a los registros y paquetes revisados de S0-4a, S0-4a-bis y S0-4a-ter, y los dos diseños
+      (`DISENO_S0-4.md` y `bis/DISENO_S0-4a-bis.md`) difieren solo en la nota fechada agregada al final;
+    - los 768 archivos del manifiesto de salida de S0-4b (9.625 unidades) son iguales, 768 de 768, a los de las dos corridas finales de
+      S0-4a-ter que hizo la mesa sobre su copia;
+    - la tanda 0 57 de 57, los selftests (`selftest_e0` 151/151, b52, b581, b582, b583) y el selftest de claves (`923dd900…`) quedan
+      cubiertos por identidad de código con lo que la mesa corrió en S0-4a-ter; no los volví a correr;
+    - las anclas de F19b (`tabla_reprocesamiento.md:181`) apuntan en `18d9e05` a las reglas que nombran.
+  - **Los FRENO de S0-4 quedaron dentro de `s0_4/`** (`s0_4/FRENO_S0-4a.md`, `bis/FRENO_S0-4a-bis.md`, `ter/FRENO_S0-4a-ter.md`), y no en la
+    raíz de `segmentacion_oficial_e0r2/`, donde están los de S0-1 a S1: el «seguí» de S0-4b solo autorizaba esa carpeta. **El FRENO y el
+    reporte de S0-4b no entraron en `18d9e05`**: estaban solo en el paquete y en su copia permanente. La mesa los copió a `s0_4/`
+    (`FRENO_S0-4b.md`, `5561148476ed3488…`, y `REPORTE_S0-4b.md`, `bdf6471c8252ec37…`, iguales al `manifest.txt` del paquete), con su
+    commit PENDIENTE de la autora.
+  - **Las citas de la tabla de reprocesamiento al código de E0 fuera de F19b**, corregidas por decisión de la autora (nota al final de la
+    tabla): son 9 en 6 filas, no 12. Del listado de S0-4b, tres no son código de E0 (`runner_corpus.py:473-586` y `:741-750` en F20,
+    `prompt_r2b.py:421-422` en F21: la tabla las cita detrás de esos archivos, y siguen apuntando a lo que describen) y dos ya estaban bien
+    (F01 y F21, `correr_e0.py:86-94` y `:77-80`). Las tres «no contiguas» pasan a la función entera. El contraste del selftest de claves
+    lee solo las columnas de fila, E1, E3, clase y variaciones, que no cambian (44 filas, 0 errores de columnas).
+  - **Semillas de S1-bis, selladas por este commit** (la regla del sello previo, `:303-308`): la de la muestra de la lectura de cortes,
+    `U-SEG-OFICIAL:cortes:S1-bis`; la de las 20 correctas que revisa la autora, `U-SEG-OFICIAL:cortes:S1-bis:revision`; la de las 5
+    correctas del hallazgo 1.16 que revisa la autora, `U-SEG-OFICIAL:1_16:S1-bis:revision`. El sorteo se hace recién con la población
+    fijada (las decisiones de la autora sobre ri_spi, los juicios dudosos y ri2_pm, que se toman después de la corrida nueva, `:494-495`).
+  - **El hallazgo 1.16 con el código de S0-4** (cálculo de la mesa sobre la salida de S0-4b): la tanda 1 tiene **35 candidatos en 11 TOs**,
+    no 33 en 10 (los 33 conservan id y texto; entran `ri_oc::B.1.28` y `ri_oc::C.11`, que crea apl). La regla del censo de S1 arma el id
+    como `<to>::<numero>` (`s1/scripts/censo_renglones_S1.py:69`) y saltea en silencio las listas de los sub-documentos de S0-4 (19 nuevas);
+    con el prefijo, 121 candidatos en 56 TOs. S1-bis usa el prefijo.
