@@ -130,3 +130,10 @@ final de la tanda 1 (U-SEG-OFICIAL, después de S2).
      se regenera en U-SEG-OFICIAL si se lo vuelve a cargar.
   Con esto, las ESCRITURAS de A2 son las del texto firmado, con el derivado en `catalogo_unico/registro_alcance_r2b.json` (decisión (a)),
   más `selftest_clave_cache.py`, `selftest_clave_cache.json`, los pasajes de la tabla nombrados y `perfil_e1.py` con su caso de selftest.
+- **08/10/2026 (noche) — precisión para A2, de la revisión de S1-bis-a de U-SEG-OFICIAL.** Los manifiestos de los 152 de S1 y de S1-bis
+  (`segmentacion_oficial_e0r2/s1/` y `s1bis/manifiesto/`, `0957daf5…` y `98669cd6…`) declaran `rol_alcance` null para 10 documentos con
+  alcance decidido en el registro: los 9 de la tanda 1 y ri_cc, de la tabla «Tanda 3 (anticipada)».
+  - Con el derivado de A1 (`--tandas 1`: 9 entradas, ri_cc en `filas_de_otras_tandas`; `alcance_e1/salidas/reporte_derivado_tanda1.json`),
+    el perfil nuevo de A2 da rol a esos 9 y deja null a ri_cc. El desacuerdo con los manifiestos de los 152, que la decisión 2 de la
+    nota anterior deja como registro o regenera, es de 9.
+  - ri_cc entra cuando el derivado incluya su tanda.

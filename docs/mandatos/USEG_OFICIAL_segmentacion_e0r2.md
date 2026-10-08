@@ -750,3 +750,47 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     no 33 en 10 (los 33 conservan id y texto; entran `ri_oc::B.1.28` y `ri_oc::C.11`, que crea apl). La regla del censo de S1 arma el id
     como `<to>::<numero>` (`s1/scripts/censo_renglones_S1.py:69`) y saltea en silencio las listas de los sub-documentos de S0-4 (19 nuevas);
     con el prefijo, 121 candidatos en 56 TOs. S1-bis usa el prefijo.
+- **08/10/2026 (noche, más tarde) — FRENO S1-bis-a revisado por la mesa sobre una copia.** USD 0. El repo no cambió: foto sha256 antes y
+  después, 48.154 archivos, ninguno nuevo, borrado ni cambiado.
+  - **Integridad:**
+    - el paquete `revision_USEG_OFICIAL_FRENO_S1-bis-a/` da 35 de 35 por sha256 y bytes, en el scratchpad y en la copia permanente;
+    - `s1bis/` da 792 de 792 contra `manifest_salida.json` (`0dbaa716…`); quedan fuera el FRENO, igual al del paquete (`dcecf45e…`), y el
+      propio `manifest_salida.json`, como se declara.
+  - **Salida de E0:**
+    - los 768 archivos de `s1bis/e0/` son iguales, 768 de 768, al manifiesto de salida de S0-4b (`61ed4bc9…`), con 9.625 unidades;
+    - el tar.gz del paquete da los mismos 768;
+    - la tanda 0 da 25 de 25 contra `e0_chunking/salida_tanda0_r2b/`.
+
+    No volví a correr E0: el código es el de `18d9e05`, el mismo por sha256 que la mesa corrió dos veces en S0-4a-ter.
+  - **Manifiesto** (`98669cd6…`): contra el de S1 (`0957daf5…`) difieren solo `descripcion`, `rutas.e0_salida`, `sellos.commit_codigo_e0` y
+    `sellos.unidad`; las 152 filas son iguales y 66 TOs tienen rol de alcance.
+  - **Censos, herencia, población y controles:** corrí de nuevo los scripts de `s1bis/` sobre la copia, con el caché de renglones
+    regenerado. Salen byte a byte iguales `censo_renglones`, `censo_vigencia`, `explicacion_censo`, `comparacion_censos`, `herencia` y
+    `poblacion_muestra`. `controles` es igual salvo el nombre del archivo de entrada de S0-4b; ahí la segunda corrida fue el tar.gz, así
+    que esa comparación no es independiente.
+  - **Cifras que se reproducen:**
+    - 327 renglones (260 + 67) en 187 páginas de 91 TOs, 22 sin explicación;
+    - el hallazgo 1.16, 121 candidatos en 56 TOs; en la tanda 1, 35 en 11 TOs: adrei 2, ayccef 5, cajasc 4, cirmo3 1, depaho 8, efemin 1,
+      lingeef 8, manori 2, ri_oc 2, ri_rml 1 y snp_tr 1, en 50 páginas. La lista de la tanda 1 es la del ejemplo del §7 del protocolo
+      (`docs/protocolo_entre_tandas.md:282-284`), con ri_pgn en lugar de ri_cc;
+    - la herencia, 35 unidades con recorte en 5 TOs;
+    - la población, 8.034 / 190 / 1.222 (suma 9.446).
+  - **Primera precisión, confirmada:** los documentos con alcance decidido en `catalogo_unico/registro_alcance_por_tanda.md` y
+    `rol_alcance` null en el manifiesto de los 152 son 10: los 9 de la tabla de la tanda 1 y ri_cc, de la tabla «Tanda 3 (anticipada)».
+    - El 9 venía del despacho de S1-bis de la mesa, no del mandato. Era impreciso para el registro.
+    - Para A2 de U-ALCANCE-E1, el desacuerdo con los manifiestos de los 152 es de 9: el derivado de A1 tiene 9 entradas, porque ri_cc queda
+      fuera por `--tandas 1` (`alcance_e1/salidas/reporte_derivado_tanda1.json`; `alcance_e1/freno_a1.md:59`).
+    - Nota al pie del mandato de U-ALCANCE-E1 del mismo día.
+  - **Segunda precisión, confirmada:** las 13 unidades de corte que cita el despacho de S1-bis son `nmaeef::2.9`, las 10 de solo rótulo,
+    `ri_ccna::D1A3L1::S0` y `ri_oc::B.2::intro`, los límites de corte del FRENO S0-4b. Las 13 están en el estrato sin raíz:
+    13 × 40 / 1.222 = 0,43 esperadas.
+  - **Fuera de la lista de la instancia:** los puntos de la tanda 0 que quedaron fuera de 4a y 4b (límite declarado de S0-4b) que están en
+    los 152 son 21, en los cinco TOs nuevos de la tanda 0:
+    - por TO: ctacte 14, pagjub 3, lingob 2 y polcre 2;
+    - por clase: 11 de 4a, 8 de 4b y 2 sin regla.
+
+    Cada uno se ve en su unidad `::intro` (`s0_4/censos/censo_4ab_sobre_S0-3.json`, `tanda0_limite_declarado`). Las 21 están en el
+    estrato vigente, con 21 × 40 / 8.034 = 0,10 esperadas. Si una sale en la muestra, cuenta como límite declarado o como error según la
+    decisión que se tome con el tramo b.
+  - **Las decisiones del tramo b** (ri_spi, los dos juicios dudosos y `ri2_pm::3.5.3`, la vía de ri2_pm y la vigencia de ri_tar) las toma
+    la autora con la instancia, para no frenar la ruta crítica. La mesa prepara el commit de `s1bis/` cuando cierre el tramo b.
