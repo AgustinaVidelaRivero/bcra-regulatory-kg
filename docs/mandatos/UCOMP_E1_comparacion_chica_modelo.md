@@ -313,3 +313,5 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 116 líneas de arriba (`c
   con el criterio de U-LECTURA-ACEPTADAS y precisión de las relaciones. Mide lo que C1 a C3 no midieron. No cambia la decisión de la
   tanda 1. Documento aparte: `docs/mandatos/UCOMP_E1_C4_lectura_pareada.md`. Corre en paralelo con el escalado, lista antes del punto de
   diagnóstico posterior a A2.2; sus resultados van a la sección de la comparación de modelos del capítulo 5.
+- **08/10/2026 (tarde) — C4 FIRMADA** (`docs/mandatos/UCOMP_E1_C4_lectura_pareada.md`), con la corrida 1 de Sonnet y de Opus, 30 unidades
+  y dos sesiones distintas para preparar y para la primera lectura, con la mesa en segunda lectura.

@@ -675,3 +675,47 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
      tanda 2. `nmaeef::2.9` es además uno de los 118 candidatos del hallazgo 1.16, y el único leído como error.
   - **Precisión:** no hay un archivo con la asignación de las tandas 2 y 3; las cifras por tanda de los puntos 3 y 4 salen del criterio
     del protocolo, que reproduce el reparto 6 / 6 / 18 / 5 de la nota del 07/10/2026 (cálculo de la mesa del 08/10/2026).
+- **08/10/2026 (tarde) — FRENO S0-4a-ter revisado por la mesa sobre una copia, decisiones de la autora y el archivo de las salidas.**
+  - **Revisión de la mesa** (copia propia sin enlaces, USD 0; repo sin cambios fuera de lo que edita la mesa; 2.213 `.pyc`). Se reproduce
+    todo:
+    - el parche final por los dos caminos: `e0_lib.py` `65a8c3b8…`, `correr_e0.py` `94d35349…`, `selftest_e0.py` `ec186071…`; contra el de
+      S0-4a-bis entran solo las cinco reglas nuevas, cada una con su interruptor y su lista (sdr1 y apl, solo ri_oc; sdl, sdlh y sdla, solo
+      ri_ccna) y sus casos de selftest;
+    - cada regla sola, en los 152: sdr1, ri_oc 128 → 133 (12 eventos); apl, ri_oc 128 → 179 (53); sdl, ri_ccna 159 → 163 (103); sdlh, 49
+      cambios de herencia; sdla, 159 → 160 (2); ninguna toca otro TO. sdl, sdlh y sdla actúan solo con la regla de sub-documento prendida;
+    - los controles duros: tanda 0 57 de 57 en 16 corridas, cada regla sola incluida; las cinco apagadas = S0-4a-bis y todo apagado = S1, 768
+      de 768 (también contra `s1/manifest_salida.json`); doble corrida con 0 distintos; selftest de claves con VEREDICTO OK y salida igual a
+      `923dd900…`; `selftest_e0` 151/151, b52 39/39, b581 34/34, b582 59/59, b583 33/33;
+    - la conciliación: 168 eventos contra S0-4a-bis, solo en ri_oc y ri_ccna; 1.609 contra S1; de 9.564 a 9.625 unidades; las de más de
+      13.944 caracteres, 28 (sale `ri_oc::3.51`). La interacción de `D1A3L1::SA.3` es la esperada: sdla corta A.3 de la raíz 2, sdl le da
+      el prefijo `L1` y lo cierra en el rótulo B, y sdlh le da la herencia «A. GENERAL»; ninguna regla sola produce ese id;
+    - las anclas de F19b sobre el código final: `correr_e0.py:95-100` no se mueve, `:360-372`, `:609-618`, `:1302`; `e0_lib.py:360` y `:556`;
+    - ri_ccna: las 47 unidades de B.3 a B.40 heredan «B. PRUEBAS SUSTANTIVAS» (47 de 47), y `D1A3::S2` (1.450 caracteres) queda en
+      `D1A3L1::S2` (667), `D1A3L1::SA.3` (211), `D1A3L2::S0` (22), `D1A3L2::S1` (304) y `D1A3L2::S2` (242).
+  - **Corrección de la cifra del Apartado B de ri_oc** (error de la mesa: su verificación de S0-4a-bis reprodujo «11.427» como el Apartado
+    B sin mirar dónde terminaba, y la cifra entró en las notas del 08/10/2026 de arriba). En el `ri_oc::3.51` de S0-4a-bis (12.206
+    caracteres) hay 779 del punto, 4.659 del Apartado B (pp. 16-17) y 6.768 desde el Apartado C hasta el final: 1.380 del C (p. 18) y
+    5.388 de los criterios de validación y las aclaraciones (pp. 19-21). Con el parche final, `3.51` queda con su texto: 778 caracteres.
+    **El Apartado B ya no es un límite:** apl lo separa (37 unidades, 4.262 caracteres), y con él el Apartado C.
+  - **Decisiones de la autora (08/10/2026):**
+    1. **(a) apl separa también el Apartado C:** sí (13 unidades y 6.697 caracteres: el encabezado, C.1 a C.11 y el cierre).
+    2. **(b) Las unidades de solo rótulo, límite declarado con su cifra:** las 3 nuevas (`ri_ccna::D1A3L2::S0` 22 caracteres,
+       `ri_oc::A2::S0` 30, `ri_oc::SA` 34) y las 7 de S0-4a-bis (`nmcief::A1P2::S0` 50, `nmcief::A1P4::S0` 40, `ri_ccna::D2A1P1::S0` 21,
+       `ri_ccna::D2A1P2::S0` 27, `ri_icpipsp::A1C1::S0` 43, `ri_icpipsp::A1C2::S0` 37, `ri_icpipsp::A1C3::S0` 73).
+    3. **(c) Los títulos A.1 y A.2 de ri_ccna dentro de `D1A3L1::S0`** (1.220 caracteres: 550 de «A. GENERAL» y A.1, 670 de A.2 con su
+       introducción; ninguna unidad hereda «A.2. ANALISIS DE VARIACIONES»): límite declarado.
+    4. **(d) Los criterios de validación de ri_oc como cierre del Apartado C**, heredados por C.1 a C.11 (cada una hereda 39 tramos y
+       5.484 caracteres, 5.277 de cierre): límite declarado, como el de las otras unidades con cierre heredado (826 en S0-4a-bis, en 59
+       TOs, con un máximo de 6.588 de cierre; 837 con el parche final).
+  - **Precisiones de la mesa, sin efecto en las decisiones:** los criterios de validación empiezan en la p. 19, no en la 18 (diseño de
+    S0-4a-ter, §3); `ri_oc::B.2::intro` (115 caracteres) es el resto del título de B.2, partido en dos, cosmético y no declarado por el
+    FRENO: va a la lista de límites de S0-4b.
+  - **El archivo de las salidas, fuera del repo** (decisión de la autora; resguardo del 08/10/2026 en
+    `~/INGENIERIA IA/TESIS/fuera_del_repo/`, con `scratchpads/manifest_sha256_20261008_1207.txt`: 535 entradas, 5.561 archivos, 0
+    distintos). Los dos tar.gz de las salidas de E0 de los 152:
+    - S1: `s1_e0_USEG_OFICIAL_26c6502_20261007.tar.gz`, sha256 `3d74ca174078beccd7f8beb8ad4cee949a9dfc9002457bc6f42124eef5639a66`, en
+      `fuera_del_repo/`;
+    - S0-3: `e0_152_salida_final_con_parche_S0-3_corrida1.tar.gz`, sha256
+      `8fa422fd4c31971b0301453f13946833f45dc67110ff39cb3bcc3d018029ae97`, en
+      `fuera_del_repo/scratchpads/9638b475-da33-472a-a7fe-837c50201bdd/scratchpad/revision_USEG_OFICIAL_FRENO_S0-3/`.
+  - **El «seguí» de S0-4b** queda armado por la mesa con el parche final de S0-4a-ter y la lista de límites puesta al día.

@@ -88,3 +88,5 @@ El texto firmado son las 71 líneas de arriba (`ccd8fad`, sha256 `84dff0a3e925�
 - **08/10/2026 — la decisión de la autora sobre los ítems de lista de la tanda 0 (E3-01 del barrido de límites) choca con el §1.4** («La
   tanda 0 queda como está … sin re-sellar»). Va por la enmienda 7 al protocolo entre tandas, en BORRADOR
   (`docs/enmienda7_protocolo_entre_tandas_2026-10-08_excepcion_tanda0_en_el_resellado.md`); hasta su firma rige el §1.4.
+- **08/10/2026 (tarde) — la enmienda 7 al protocolo entre tandas quedó FIRMADA** (con el tope de R0 en USD 1,50): desde su firma rige la
+  excepción declarada al §1.4 para los dos grupos de unidades de la tanda 0 que nombra.

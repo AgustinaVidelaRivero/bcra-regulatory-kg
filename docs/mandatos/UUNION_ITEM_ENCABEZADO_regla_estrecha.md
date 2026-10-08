@@ -123,3 +123,31 @@ U2 pasa, después de U-OMISIONES-COD y antes del armado que precede al sello del
   - **Para U3, no para U1:** `modelos_r2.AristaR2` acepta este `rol_fuente` como texto libre (`modelos_r2.py:632`; los invariantes de
     `:650-659` corren solo para `derivada_de_procedencia`). Si U3 los quiere iguales, toca `modelos_r2.py`, fuera de sus escrituras:
     decisión de la autora cuando llegue U3.
+- **08/10/2026 (tarde) — FRENO U2-a revisado por la mesa sin abrir la primera lectura, y decisiones de la autora.**
+  - **Revisión de la mesa** (copia sin enlaces; de `u2/lectura1_u2.json` y sus copias, solo el sha256; repo sin cambios fuera de lo
+    editado por la mesa; 2.213 `.pyc`). Se reproduce:
+    - la entrada: el commit de U1 (`57c2123`), `regla_u1.md` (`9f5028d1…`) y `salida/marco_u2_diez.json` (`69177a21…`);
+    - las fichas: `u2/fichas_u2.py` dos veces sobre una copia, iguales byte a byte entre sí y a las del repo (`888d0b76…`, `7ab2812e…`):
+      29 fichas, `U01` a `U29` en el orden del marco, con los cuatro bloques del despacho, sin campos de la regla ni veredictos; destinos
+      15 Potestad, 8 Operacion y 6 Excepcion, todos de ext;
+    - el criterio (`u2/criterio_u2.md`, `86c7724c…`): el del mandato (`:39`), con las tres categorías y el tramo por veredicto, más ocho
+      precisiones generales que no nombran casos. La 1 y la 3 ensanchan «correcta» respecto del texto del mandato (se juzga la arista, no
+      la paráfrasis; un ítem redactado como obligación o requisito documental cuenta como condición si el texto lo presenta como algo a
+      cumplir para que la norma se aplique); la 2, la 4 y la 5 la estrechan. Las no decidibles cuentan como no correctas para el piso,
+      aunque el archivo no escribe «27 de 29»;
+    - los sellos: fichas y criterio a las 10:54:03, lectura a las 10:58:04 con sha `8b23d250…`; los sha actuales coinciden, y el orden
+      de las horas (mtimes) cierra: criterio, script, fichas, sello de las fichas, lectura, sello de la lectura;
+    - el FRENO no trae la cifra ni veredictos.
+  - **Desvíos que declara el FRENO, aceptados por la autora:** antes de escribir el criterio, la instancia vio el texto de U01 (sus dos
+    unidades y su nodo destino) y los ids de U02, al inspeccionar el formato para el script; vio los nombres de los campos de la regla y
+    una entrada de su tabla de encabezados de un bloque fuera del marco; de `freno_u1.md` vio los títulos de sus secciones;
+    `comandos_u2a.sh` se escribió después del sello de la lectura (no abre la lectura). Quedan declarados, y la segunda lectura a ciegas
+    los controla.
+  - **Decisiones de la autora (08/10/2026):** (a) la segunda lectura a ciegas la hace una sesión nueva de la mesa, que no sea la de U1, ni
+    la de U2-a, ni la que preparó el despacho, con `u2/lectura1_u2.json`, `u2/freno_u2a.md` y el paquete de U2-a vedados, sellada antes de
+    comparar y con la hoja de las divergencias para la adjudicación de la autora (despacho de U2-b preparado por la mesa); (b) el commit
+    de `u2/` va después de que la segunda lectura esté sellada.
+  - **Para U3: el `rol_fuente` como valor cerrado** (decisión 3 de U-APLICA-ROL-ALCANCE al firmar, opción (b), 08/10/2026): el código
+    valida `rol_fuente` como valor cerrado, con invariantes para las aristas derivadas. Un solo cambio en `pyd_r2/code/modelos_r2.py` para
+    U3 de esta unidad y para B3 de U-APLICA-ROL-ALCANCE: lo hace la primera de las dos que llegue a implementar, con los valores de las dos,
+    y entra en sus ESCRITURAS. Cierra la pregunta que la nota de U1 dejaba para U3.

@@ -29,7 +29,7 @@ gate en T3-bis, `bbc38dc`). El sello final es el que congela esta release.
 | Prefijo de E1 | `e1_extractor/prompt_r2b.py` | hash `322c5a23e9b7` (sha256 `ccffa4e3…`, `66cde30`; parches P3b y P3c) | igual (no cambia antes de la tanda 1) | — |
 | Tool schema de E1 | `pyd_r2/generados/tool_schema_r2.json` | `0c391f2b…` | igual | — |
 | Mensaje de E1 | candado en `prompt_r2b.py:97-98` | `4d69f7f4…` (casos) y `a9cb702c…` (mensaje) | A COMPLETAR | U-ALCANCE-E1 (registro de alcance en el mensaje; condición 11-bis) |
-| Modelos, temperatura y plataforma | `corpus_v2/runner_corpus.py:91-96`; manifiesto r2b | E1 `claude-haiku-4-5`, temperatura 0 (reintento por forma, 1); E3 `claude-sonnet-5`; API de Anthropic | igual | — (C3 de U-COMP-E1 cerró en `323cef7`: ningún brazo cumple y el modelo del extractor no cambia antes de la tanda 1; corregido el 08/10/2026, decía «igual, salvo C3» y «C3 decide»; un cambio de modelo posterior va por la enmienda 6 al protocolo entre tandas, BORRADOR) |
+| Modelos, temperatura y plataforma | `corpus_v2/runner_corpus.py:91-96`; manifiesto r2b | E1 `claude-haiku-4-5`, temperatura 0 (reintento por forma, 1); E3 `claude-sonnet-5`; API de Anthropic | igual | — (C3 de U-COMP-E1 cerró en `323cef7`: ningún brazo cumple y el modelo del extractor no cambia antes de la tanda 1; corregido el 08/10/2026, decía «igual, salvo C3» y «C3 decide»; un cambio de modelo posterior va por la enmienda 6 al protocolo entre tandas, FIRMADA el 08/10/2026) |
 | Namespaces de caché | manifiesto r2b | E1 `e1_extraccion\|cv=e1-extractor-v1-p322c5a23e9b7\|think=0` (reintento `-rforma1`); E3 `e3_verificacion\|cv=e3-verificador-v1-p21a836c7de6d\|think=0` | igual | — |
 | Prefijo de E3 | `e3_verificador/prompt_e3.py` | `21a836c7de6d` | igual | — |
 | Mensaje de E3 (NOTA) | candado en `prompt_e3.py` | manifiesto: `e8fa5dc4…` y `da17c22e…`; código desde O2 (`7fe848c`): `079d2489…` y `66bc8656…` | A COMPLETAR | O5 de U-E3-LISTAS (caso resuelto en la NOTA del ítem) |
@@ -98,7 +98,7 @@ dé la segmentación oficial. Como orden de magnitud, el ejemplo del §7 del pro
 - **Streaming:** la v1 lo descartaba; existe el tercer escalón por `messages.stream` (`plan:390`, fila F08d).
 - **Tarifa:** la v1 decía USD 0,0166 por unidad; rige 0,021115 desde la tanda 1.
 - **`BKL-0031`, pasos 2 y 3** (anexo A, §2, punto 5): salen de r2 (agregado del 08/10/2026, por la decisión de la autora sobre el barrido
-  de límites). Van a U-CASI-DUPLICADOS (`docs/mandatos/UCASI_DUPLICADOS_fusion_de_forma.md`, BORRADOR), en paralelo con el escalado y
+  de límites). Van a U-CASI-DUPLICADOS (`docs/mandatos/UCASI_DUPLICADOS_fusion_de_forma.md`, FIRMADO el 08/10/2026), en paralelo con el escalado y
   antes de sellar el grafo evaluado. El paso 1 (el detector) ya corrió sobre r2b.
 - **Lo que la v1 no menciona y rige:**
   - el perfil r2b, e0-r2, el catálogo r2, los modelos y la plataforma;

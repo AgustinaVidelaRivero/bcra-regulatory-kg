@@ -375,7 +375,7 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      habría aceptado el intento 0; y la norma del encabezado aparece repetida en el ítem en 8 de las 20 unidades de la extracción final,
      contra 1 en el intento 0. El grafo evaluado de la tanda 0 (`e22fae1a…`) conserva esas extracciones: no se re-verifica ni se re-extrae
      (principio 9, enmienda 5); el límite se declara con estas cifras, y desde la tanda 1 rige el verificador corregido (`7fe848c`). Para la
-     tesis: un reclamo falso del verificador no es inocuo, cambia la extracción (reintento con feedback) y puede duplicar normas. **[08/10/2026, decisión de la autora (barrido de límites, E3-01), sujeta a la firma de la enmienda 7 al protocolo entre tandas, BORRADOR, `docs/enmienda7_protocolo_entre_tandas_2026-10-08_excepcion_tanda0_en_el_resellado.md`]** Las 20 unidades de la lista de O3 se re-verifican con el E3 corregido dentro del re-sellado único (etapa R0, con API y tope), reusando la verificación de O3 donde sirva: con sus veredictos, 16 se aceptan con el intento 0 (11 de las 13 que habían reintentado y 5 de la cola), 3 reintentan y `docvig::3.3.2` sigue en la cola. Es una excepción declarada al §1.4 de la enmienda 5; la cifra de este ítem queda como la medida sobre el grafo sellado antes del re-sellado.
+     tesis: un reclamo falso del verificador no es inocuo, cambia la extracción (reintento con feedback) y puede duplicar normas. **[08/10/2026, decisión de la autora (barrido de límites, E3-01), por la enmienda 7 al protocolo entre tandas, FIRMADA el 08/10/2026, `docs/enmienda7_protocolo_entre_tandas_2026-10-08_excepcion_tanda0_en_el_resellado.md`]** Las 20 unidades de la lista de O3 se re-verifican con el E3 corregido dentro del re-sellado único (etapa R0, con API y tope), reusando la verificación de O3 donde sirva: con sus veredictos, 16 se aceptan con el intento 0 (11 de las 13 que habían reintentado y 5 de la cola), 3 reintentan y `docvig::3.3.2` sigue en la cola. Es una excepción declarada al §1.4 de la enmienda 5; la cifra de este ítem queda como la medida sobre el grafo sellado antes del re-sellado.
   5. **Tasa de error por unidad de las aceptadas de la tanda 0** (U-LECTURA-ACEPTADAS, L2 del 07/10/2026; reporte
      `data/experiment/lectura_aceptadas/reporte_l2.md`, cifras en `estimadores_l2.json`; L0 y L1 en `6e611d6`). Método: 30
      unidades por estrato (ítems de lista y no ítems), sorteadas con semilla sellada antes de leer entre las 2.366 aceptadas
@@ -402,7 +402,7 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
        - (i): la unión ítem–encabezado (regla E) no entra antes de la tanda 1, porque su precisión es 18 de 30 (Wilson [0,423; 0,754]),
          bajo el piso de 0,75. Queda como límite declarado. Una regla más estrecha se fija por escrito y se mide en una unidad propia,
          en paralelo con el escalado; si pasa, entra antes de sellar el grafo de la evaluación final.
-       - (ii): límite declarado en la tanda 0; desde la tanda 1, según la enmienda 8 a L-ESQ-R2, condicionada a la lectura de las 41. **[08/10/2026, decisión de la autora (barrido de límites, VAL-03b)]** Si la lectura de las 41 llega a 37 y la enmienda 8 se firma, las 21 unidades de la tanda 0 con esas relaciones reciben E3 dentro del re-sellado único (etapa R0; enmienda 7 al protocolo entre tandas, BORRADOR): cambia la decisión (a) del 07/10/2026.
+       - (ii): límite declarado en la tanda 0; desde la tanda 1, según la enmienda 8 a L-ESQ-R2, condicionada a la lectura de las 41. **[08/10/2026, decisión de la autora (barrido de límites, VAL-03b)]** Si la lectura de las 41 llega a 37 y la enmienda 8 se firma, las 21 unidades de la tanda 0 con esas relaciones reciben E3 dentro del re-sellado único (etapa R0; enmienda 7 al protocolo entre tandas, FIRMADA el 08/10/2026): cambia la decisión (a) del 07/10/2026.
        - (iii), (iv) y (v): límite declarado.
      - **Forma A.** La declarada el 06/10 se sostiene: 60 de 953 Condicion de ítem en (i), del orden de 42 de 601 (corregido el 08/10/2026: decía 715; fe de erratas `docs/fe_erratas_forma_A_denominador.md`) (con bases distintas,
        declaradas en el reporte).
@@ -495,8 +495,8 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
 - **(e) Los límites.**
   - La muestra está seleccionada por contener los casos difíciles: no es representativa y sus tasas no se proyectan al grafo.
   - No se midió la precisión de las relaciones que agrega cada modelo: M1 cuenta si el supuesto queda unido a su norma, no si las demás
-    relaciones son correctas (Opus emite 1.055 y 1.029 relaciones contra 844 y 935 de Sonnet; `c1/salida/m4_c1.json`). La etapa C4, en
-    BORRADOR desde el 08/10/2026 (`docs/mandatos/UCOMP_E1_C4_lectura_pareada.md`), lo mide: sus cifras entran en esta sección.
+    relaciones son correctas (Opus emite 1.055 y 1.029 relaciones contra 844 y 935 de Sonnet; `c1/salida/m4_c1.json`). La etapa C4,
+    FIRMADA el 08/10/2026 (`docs/mandatos/UCOMP_E1_C4_lectura_pareada.md`), lo mide: sus cifras entran en esta sección.
   - Una sola configuración por modelo (Sonnet sin pensamiento, Opus con esfuerzo bajo), con un pedido adaptado: sin temperatura fija ni
     herramienta forzada.
   - Las omisiones del texto heredado no las pide el prompt: E1 recibe los bloques heredados como contexto, con la instrucción de no

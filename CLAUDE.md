@@ -58,6 +58,18 @@ g. PAQUETE DE REVISIÓN: al frenar, armar un directorio `revision_<unidad>/`
    `manifest.txt` con sha256 y una línea de descripción por archivo. Los
    archivos del repo NO se renombran ni se copian dentro del repo: el
    paquete es una copia de cortesía para la revisión, fuera del repo.
+   COPIA PERMANENTE (08/10/2026): al frenar, el paquete se copia también
+   a `~/INGENIERIA IA/TESIS/fuera_del_repo/scratchpads/`, con la misma ruta
+   relativa que tiene bajo la carpeta del proyecto en `/private/tmp/claude-501/`
+   (`<sesión>/scratchpad/revision_<unidad>/`), con `ditto`, y se verifican en
+   la copia los sha256 de su `manifest.txt`. El FRENO dice la ruta de la
+   copia y el resultado de la verificación. Lo que la revisión o el repo
+   necesiten y viva fuera del paquete (bases pagadas, tar.gz de salidas,
+   registros que una etapa posterior copia al repo) va dentro del paquete.
+   Motivo: macOS borra cada noche lo de `/private/tmp` con más de 3 días
+   (`com.apple.tmp_cleaner`), y paquetes citados por el repo ya se perdieron
+   (inventario de la mesa del 08/10/2026; el resguardo de ese día está en
+   la misma carpeta, con su `manifest_sha256_20261008_1207.txt`).
 h. REPORTE Y ARTEFACTOS: el reporte final de la unidad se redacta para ser
    pegado como texto (conciso, con los verbatims imprescindibles); todo
    artefacto extenso (archivos completos, tablas largas, JSONs) va al
