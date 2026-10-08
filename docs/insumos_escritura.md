@@ -151,6 +151,13 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      sobre n = 30, de un solo grafo y sin criterio fijado de antemano, así que se cita como
      dato descriptivo y como fracción cruda.
   4. El costo del llenado por un modelo es una estimación no verificada.
+  5. **Cuántos elementos de umbral tienen contenido** (08/10/2026; U-MED-UMBRALES, recontado por la mesa sobre copias de los grafos;
+     `data/experiment/med_umbrales/salidas/vacios_y_resueltas_salida_UMEDUMBRALES.txt`). En el grafo r2b de diez de la tanda 0
+     (`a9631a64`) hay 1.373 elementos en las listas `umbrales`: 1.059 con contenido y 314 vacíos (los pone el validador, sin valor, sin
+     base y con la comparación `no_determinada`). En el sin cola (`e22fae1a`), 1.306: 1.001 con contenido y 305 vacíos. Toda cifra de
+     «1.373 umbrales» incluye los vacíos (por ejemplo, `data/experiment/reext_t0/t3/salida/lectura_controles_t3.md:28`), y la tesis
+     los separa. Además, la comparación `no_determinada` afecta a 331 de los 1.001 elementos con contenido del sin cola (338 de 1.059
+     en el completo): es lo primero que mira el piloto de U-MED-UMBRALES (enmienda 1 al pre-registro de tripletas, §9).
 
 ## 4. Listas cerradas y lo no mapeable (U-LISTAS-NOMAP) — disponible
 
