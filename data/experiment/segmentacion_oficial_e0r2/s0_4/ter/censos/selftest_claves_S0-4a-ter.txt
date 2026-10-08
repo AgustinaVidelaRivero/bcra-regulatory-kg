@@ -1,0 +1,86 @@
+Selftest de claves de S0-4a-ter (data/experiment/mantenimiento/code/selftest_clave_cache.py --salida-r2b data/experiment/reextraccion_v2/corpus_tanda0/salida_r2b --out <scratchpad>/ter/selftest_clave_cache_ter.json), desde la raíz de la copia (puesta al día con HEAD ae76f08), con las bases de caché y el código final de S0-4a-ter en e0_chunking/ (sha256 en las tres primeras líneas):
+65a8c3b8bb09da4d527fd94e31cfbc52168171bcd1603394aaa8b28c05361de6  data/experiment/reextraccion_v2/e0_chunking/e0_lib.py
+94d353495a585e0ad4799813a22fb1f1670f33b558f67741b9fceb71d2fcc1bc  data/experiment/reextraccion_v2/e0_chunking/correr_e0.py
+ec186071368ca5c415f926bc67960ccab0ede1e9ff35098df5887c2681b38079  data/experiment/reextraccion_v2/e0_chunking/selftest_e0.py
+T claves inicio 11:51:47
+T claves fin 11:51:55 rc=0
+perfil sellado (v3_b54):
+V01   e1=cambia         e3=cambia         OK  texto propio de la unidad
+V02   e1=cambia         e3=cambia         OK  texto de un bloque heredado de tipo encabezado
+V03   e1=cambia         e3=no cambia      OK  texto de un bloque heredado de prosa (intro, cierre, chapeau, intersticial)
+V04   e1=cambia         e3=cambia         OK  marca de contenido tabular de E0 invertida, mismo texto
+V05   e1=no cambia      e3=no cambia      OK  páginas de la unidad y de su herencia, mismo texto
+V06   e1=no cambia      e3=no cambia      OK  id, sha256 y conteos de caracteres de la unidad
+V07   e1=cambia         e3=cambia         OK  número de la unidad (unidad y numeral del texto)
+V08   e1=cambia         e3=no cambia      OK  prefijo de E1: un salto de línea al final del texto de sistema
+V09   e1=cambia         e3=no cambia      OK  tool schema de E1: un espacio al final de la descripción
+V10   e1=cambia         e3=no cambia      OK  catálogo en el bloque del prompt: una línea de sujeto más
+V10b  e1=cambia         e3=no cambia      OK  catálogo en el enum `sujeto_id` del tool schema: un id más
+V11   e1=cambia         e3=no cambia      OK  tabla TO→rol en memoria: un miembro menos en el rol de cla
+V12   e1=cambia         e3=no cambia      OK  modelo de E1
+V13   e1=cambia         e3=no cambia      OK  max_tokens de E1
+V14   e1=cambia         e3=no cambia      OK  temperature agregada al request de E1
+V15   e1=cambia         e3=no cambia      OK  CODE_VER del namespace de E1, mismo request
+V16   e1=no cambia      e3=cambia         OK  prompt de E3: un salto de línea al final del texto de sistema
+V17   e1=no cambia      e3=cambia         OK  modelo de E3
+V18   e1=no cambia      e3=cambia         OK  salida validada de E1 alterada como lo haría una política por campo
+V19   e1=no cambia      e3=no cambia      OK  solo código: perfil sin vocabulario del validador ni labels de E2, y módulos de validación, E2, ensamblado, E4 y esqueleto bloqueados
+V20   e1=no cambia      e3=no cambia      OK  JSON del esqueleto y de E4 (esquema_v3_clases.json): una clase más
+V21   e1=cambia         e3=no cambia      OK  JSON v2 (esquema_v2_clases.json): un miembro menos en el rol de cla
+V22   e1=frena          e3=no aplica      OK  JSON v2 (esquema_v2_clases.json): un alias más en Sujeto_entidad_financiera
+V23   e1=cambia         e3=no aplica      OK  unidad de un TO nuevo (snp_psp::1.3.1.1, partición b584)
+V24   e1=cambia         e3=cambia         OK  punto nuevo antes de pro::2.3: renumeración de los hermanos siguientes y de sus descendientes
+anclaje e1: OK | e3: OK
+inventario: hijo reproduce = True | módulos solo-código cargados = []
+perfil r2b:
+R00   e1=no cambia      e3=no cambia      OK  control: sin alteración, otro proceso arma la misma clave
+R01   e1=cambia         e3=cambia         OK  texto propio de la unidad
+R02   e1=cambia         e3=cambia         OK  texto de un bloque heredado de tipo encabezado
+R03   e1=cambia         e3=cambia         OK  texto de un bloque heredado de prosa (intro, cierre, chapeau, intersticial)
+R04   e1=cambia         e3=cambia         OK  marcas de contenido tabular de E0 invertidas (contenido_tabular y, si está, contenido_tabular_residual), mismo texto
+R04b  e1=cambia         e3=cambia         OK  metadatos de una tabla serializada por e0-r2: una fila de subtítulo más, mismo texto
+R05   e1=no cambia      e3=no cambia      OK  páginas de la unidad y de su herencia, mismo texto
+R06   e1=no cambia      e3=no cambia      OK  id, sha256 y conteos de caracteres de la unidad
+R07   e1=cambia         e3=cambia         OK  número de la unidad (unidad y numeral del texto)
+R08   e1=cambia         e3=no cambia      OK  prefijo de E1 r2b: un salto de línea al final del texto de sistema
+R09   e1=cambia         e3=no cambia      OK  tool schema de E1 r2b: un espacio al final de la descripción
+R10   e1=cambia         e3=no cambia      OK  catálogo en el bloque del prefijo r2b: una línea de sujeto más
+R10b  e1=cambia         e3=no cambia      OK  catálogo en el enum `sujeto_id` del tool schema r2b: un id más
+R11   e1=cambia         e3=no cambia      OK  tabla TO→rol del perfil r2b en memoria: un miembro menos en el rol de cla
+R12   e1=cambia         e3=no cambia      OK  modelo de E1
+R13   e1=cambia         e3=no cambia      OK  max_tokens del primer intento de E1
+R13b  e1=cambia         e3=no cambia      OK  techo del reintento por corte del perfil r2: 16384 → 32768
+R13c  e1=cambia         e3=no cambia      OK  techo del tercer escalón del reintento por corte del perfil r2: 40960 → 40961
+R14   e1=cambia         e3=no cambia      OK  temperatura del pedido de E1 del perfil r2b: 0 → 1
+R15   e1=cambia         e3=no cambia      OK  CODE_VER del namespace de E1, mismo request
+R16   e1=no cambia      e3=cambia         OK  prompt de E3: un salto de línea al final del texto de sistema
+R17   e1=no cambia      e3=cambia         OK  modelo de E3
+R18   e1=no cambia      e3=cambia         OK  salida validada de E1 alterada como lo haría una política por campo
+R19   e1=no cambia      e3=no cambia      OK  solo código: perfil sin vocabulario del validador ni labels de E2, y módulos de validación, E2, ensamblado, umbrales, remisiones, E4 y esqueleto bloqueados
+R20   e1=no cambia      e3=no cambia      OK  catálogo de resolución que lee solo el código (indice_e4_r2.json): una entrada más
+R21   e1=frena          e3=frena          OK  rol_por_to_r2.json: un miembro menos en el rol de cla
+R22   e1=frena          e3=frena          OK  JSON v2 (esquema_v2_clases.json): un alias más en Sujeto_entidad_financiera
+R22b  e1=frena          e3=frena          OK  reemplazos anclados del prefijo r2b (prompt_r2b_reemplazos.json): una clave más
+R22c  e1=frena          e3=frena          OK  catálogo de sujetos r2 (catalogo_sujetos_r2.json): un id más
+R22d  e1=no cambia      e3=frena          OK  calibrador CAL-1 de E3: un espacio al final del texto de ric::7.1 (e0_chunking/salida/chunks_ric.json)
+R23   e1=cambia         e3=no aplica      OK  unidad de un TO nuevo (snp_psp::1.3.1.1, partición b584)
+R24   e1=cambia         e3=cambia         OK  punto nuevo antes de pro::2.3: renumeración de los hermanos siguientes y de sus descendientes
+R25   e1=cambia         e3=no cambia      OK  reintento por salida mal formada: el pedido del primer intento con temperature 1, en el namespace del reintento
+R25b  e1=cambia         e3=no cambia      OK  segundo reintento por salida mal formada: el pedido del reintento en el namespace -rforma2
+R26   e1=cambia         e3=cambia         OK  partición por corte de cap::4.2.1.2 en 2 partes
+R27   e1=cambia         e3=cambia         OK  recorte de la herencia de e0-r2 con un tope menor (U = 1, B = 40); encabezados enteros
+R28   e1=no cambia      e3=no cambia      OK  pies de cap (pies_cap.json de la E0 r2b): otra versión vigente
+R29   e1=frena          e3=frena          OK  mensaje de E1 r2b: un espacio al final de la línea del ítem de una lista (literal del módulo)
+R29b  e1=frena          e3=frena          OK  mensaje de E1 r2b: un espacio al final de la línea de cierre (literal del módulo)
+R30   e1=no cambia      e3=frena          OK  NOTA del mensaje de E3 de las omisiones de esquema: un espacio al final (literal del módulo)
+R31   e1=cambia         e3=no cambia      OK  lazo de E3: un espacio al final del aviso del feedback del reintento
+R32   e1=frena          e3=frena          OK  lista de tablas forzadas a residual: alta de la tabla ric::tabla002
+R33   e1=no cambia      e3=frena          OK  NOTA del ítem de una lista en el mensaje de E3: un espacio al final (literal del módulo)
+R33b  e1=no cambia      e3=frena          OK  bloque que abre la lista en el fuente de E3: sin los bloques contiguos del mismo tipo y unidad de origen (D2; literal de comun_e3)
+anclaje r2b e1: OK | e3: OK | claves r2b en la db de E1: 2449
+inventario r2b: hijo reproduce = True | módulos solo-código cargados al armar = []
+contraste con la tabla: OK
+VEREDICTO: OK
+
+cmp con data/experiment/mantenimiento/selftest_clave_cache.json del repo: iguales byte a byte
+sha256 de la salida: 923dd900a7e7495000bdbcd7a52586cd059530e94838c66795e3b27999861d1f

@@ -1,0 +1,364 @@
+== selftest_e0 inicio 20:49:33
+corriendo el pipeline dos veces bajo <scratchpad>/tmp_selftest/e0_selftest_zux8wise …
+== determinismo (dos corridas → sha idénticos)
+  [PASS] mismos archivos de salida — 20 archivos
+  [PASS] sha256 idénticos archivo por archivo — 20/20 iguales
+== cero pérdida de texto (cobertura por línea + suma de chars)
+  [PASS] cobertura exacta cap — 6311/6311 líneas, 0 duplicadas, 0 huérfanas
+  [PASS] cobertura exacta cla — 1249/1249 líneas, 0 duplicadas, 0 huérfanas
+  [PASS] cobertura exacta ext — 6500/6500 líneas, 0 duplicadas, 0 huérfanas
+  [PASS] cobertura exacta pro — 1052/1052 líneas, 0 duplicadas, 0 huérfanas
+  [PASS] cobertura exacta ric — 1760/1760 líneas, 0 duplicadas, 0 huérfanas
+  [PASS] chars en estructura cap > 0 y serializados — 387,964 chars
+  [PASS] chars en estructura cla > 0 y serializados — 92,471 chars
+  [PASS] chars en estructura ext > 0 y serializados — 439,924 chars
+  [PASS] chars en estructura pro > 0 y serializados — 72,589 chars
+  [PASS] chars en estructura ric > 0 y serializados — 94,603 chars
+== T4(a) ext 3.9 entero
+  [PASS] chunks 3.9.1–3.9.5 presentes — ['3.9.1', '3.9.2', '3.9.3', '3.9.4', '3.9.5']
+  [PASS] 'USD 200' en el texto propio de 3.9.1
+  [PASS] 3.9 no es chunk (es contenedor con herencia)
+  [PASS] herencia de 3.9.1 trae intro y cierre del 3.9
+== T4(b) herencia de chapeau (ext 7.6 y 2.7)
+  [PASS] hay chunks 7.6.x — 8 chunks
+  [PASS] '20 (veinte) días hábiles' del encabezado del 7.6 viaja en la herencia de todos los 7.6.x
+  [PASS] hay chunks 2.7.1–2.7.4
+  [PASS] cierres sin numerar del 2.7 (cómputo a límites + DDJJ) viajan en la herencia de todos los 2.7.x
+== T4(c) cla 1.1, cla 4.5, ext 9.2 (ver docstring: contradicción con el mandato, reportada)
+  [PASS] cla 1.1 existe como chunk real (no cáscara) — 454 chars
+  [PASS] cla 4.5 existe como chunk real (no cáscara) — 285 chars
+  [PASS] ext 9.2 existe como chunk real (no cáscara) — 1500 chars
+  [PASS] ningún chunk vacío fabricado para estos puntos
+== T4(d) ric Sección 3: 3.2 anunciado sin cuerpo; el cuerpo lo rinde 3.1.4
+  [PASS] ric 3.2 en anunciado_sin_cuerpo — ['3.2']
+  [PASS] ric 3.1.4 'Modelo de información' existe como chunk
+== T4(e) tablas flaggeadas
+  [PASS] cap 2.12.2.4 (cuadro de ponderadores/CCF) flag contenido_tabular
+  [PASS] cap 2.13 (cuadro de ponderadores/CCF) flag contenido_tabular
+  [PASS] ric 3.1.4 (cuadro de partidas) flag contenido_tabular
+  [PASS] ric 7.2 (cuadro de partidas) flag contenido_tabular
+== T6(f) regla 1: acápites vii)–x) en el propio de pro 2.3.1.1
+  [PASS] 'vii)' en el texto propio de pro 2.3.1.1
+  [PASS] 'Régimen de Transparencia' en el texto propio de pro 2.3.1.1
+  [PASS] 'x) Los restantes requisitos' en el texto propio de pro 2.3.1.1
+  [PASS] la herencia de 2.3.1.2–2.3.1.4 ya no porta los acápites
+  [PASS] toda reasignación de la regla 1 es pro 2.3.1→2.3.1.1 (caso conocido) — 8 reasignaciones
+== T6(g) regla 2: cero fronteras de segmento intra-palabra
+  [PASS] fronteras intra-palabra cap: 200 → 0 — 263 líneas corridas
+  [PASS] fronteras intra-palabra cla: 10 → 0 — 15 líneas corridas
+  [PASS] fronteras intra-palabra ext: 0 → 0 — 0 líneas corridas
+  [PASS] fronteras intra-palabra pro: 23 → 0 — 26 líneas corridas
+  [PASS] fronteras intra-palabra ric: 37 → 0 — 41 líneas corridas
+== T6(h) ric 4.4: regla 1 no aplica (limitación se mantiene)
+  [PASS] cero reasignaciones en ric
+  [PASS] contenido de 4.4.3/4.4.4 sigue en el propio de ric 4.3.3
+== T7(i) mini-chunks (enmienda 01 §2.a)
+  [PASS] 286 mini-chunks en los 5 TOs (contraste con estimación 284 de la enmienda) — 286 ({'cap': 61, 'cla': 16, 'ext': 190, 'pro': 13, 'ric': 6})
+  [PASS] pro emite 13 mini-chunks (== estimación de la enmienda) — ['pro::2.3.1::intro', 'pro::2.3.6::intro', 'pro::2.3.9::intro', 'pro::2.3.12::intro', 'pro::2.4::intro', 'pro::2.4::cierre', 'pro::2.7::intro', 'pro::2.7::cierre', 'pro::S3::chapeau_seccion', 'pro::3.1.1::intro', 'pro::3.1.1::cierre', 'pro::3.2.3::intro', 'pro::4.2.1::intro']
+  [PASS] ids de mini-chunks únicos
+  [PASS] ids con forma <to>::<unidad>::<rol>[::<n>] — []
+  [PASS] cero mini-chunks de rol encabezado (títulos puros no materializan)
+  [PASS] sha256_propio de cada mini = sha del texto del bloque
+  [PASS] herencia de todo mini: solo tramos encabezado (títulos de la cadena)
+  [PASS] la unidad del mini es su unidad de origen (el id la contiene)
+  [PASS] el bloque de 1.144 chars del 7.6 de ext materializa como intro
+  [PASS] el intro normativo de UNA línea del 2.7 de pro materializa (letra del criterio, no la heurística de escala)
+  [PASS] pro::2.3.1::intro (norma de Caja de ahorros) materializa
+  [PASS] pro::S3::chapeau_seccion materializa
+  [PASS] los 3 intersticiales de ext materializan (uno por segmento) — ['ext::3.16.3::intersticial', 'ext::4.2::intersticial', 'ext::7.9.3::intersticial']
+  [PASS] emisión interleaved: pro::2.3.1::intro antes de pro::2.3.1.1 y pro::2.7::cierre después de pro::2.7.2
+  [PASS] conteos: chunks = terminales + mini_chunks en los 5 TOs — {'cap': (401, 61), 'cla': (127, 16), 'ext': (783, 190), 'pro': (88, 13), 'ric': (78, 6)}
+== j) S0 de U-SEG-OFICIAL: la versión legada no cambia
+  [PASS] parsear_cuerpo: los parámetros de las reglas 1, 2, 4, 7, 8 y 9 apagados por default — {'seccion_variante': False, 'rotulos_r2': False, 'marcador_letra': False, 'reabrir_padre': False, 'no_rotulos': frozenset(), 'rotulos_fila': frozenset()}
+  [PASS] clasificar_paginas: la regla 3 apagada por default
+  [PASS] separar_encabezado_pie: la regla 1 apagada por default
+== k) S0 de U-SEG-OFICIAL: un caso medido por regla (e0-r2 sobre 9 TOs)
+  [PASS] regla 1: garopt abre «Sección 2 –» y sus puntos (garopt::2.1.1) — 55 chunks
+  [PASS] regla 2: ri_dsf no lee como puntos los códigos de actividad de la sección 10 (sin ri_dsf::10.1)
+  [PASS] regla 3: venliq recupera la primera página de cuerpo (venliq::1.1.1, sin chapeau de S1)
+  [PASS] regla 3, ampliación: adfsp p. 3 (una lista entera de la regla 8) es índice: sin adfsp::S6
+  [FAIL] regla 4: ri_spi en 95 unidades por el marcador de letra (ri_spi::A.1.1) — 93 unidades
+  [PASS] regla 7: manori reabre el padre (manori::1.5.2, aviso padre_reabierto_r2); ri_mmsef::2.2.1 sigue
+  [PASS] acompañamiento T: snp_dd funde tablas partidas en intersticiales
+  [PASS] regla 8: manori veta los 10 rótulos de sus listas de sección (pp. 3 y 57) y 1.1.1 encuentra padre — 10 vetos
+  [PASS] regla 9: rdbcra ancla las 119 filas del catálogo (223 renglones) y acepta rdbcra::11.1.1
+  [PASS] regla 9: rdbcra::11.2.7 lleva su fila entera, en el orden del PDF
+  [PASS] cobertura exacta en los nueve TOs
+== l) S0 de U-SEG-OFICIAL: casos sintéticos de las reglas 5, 6 y 8
+  [PASS] regla 5: la lista de las 9 páginas de la cola de título estricta
+  [PASS] regla 5: con la cola estricta, un renglón que no continúa el título es texto de la norma — 'Sección 3. Normas generales. Las entidades deberán informar el saldo diario.' / 'Sección 3. Normas generales.'
+  [PASS] regla 6: constantes (tercer escalón 27.214, partes por renglones 10.886, por ítems 13.091)
+  [PASS] regla 6 en E1: una unidad sin ítems sobre el tercer escalón se parte por renglones (partes de 10.886 o menos) — [10876, 10855, 8647]
+  [PASS] regla 6 en E1: una unidad sin ítems bajo el tercer escalón no se parte (llega entera al tercer escalón) — 20246
+  [PASS] regla 6 en E1: solo se parte por renglones el ítem que pasa el tercer escalón — [502, 10878, 10855, 10855, 7911, 481]
+  [PASS] regla 6 en E0 (e0-r2): una unidad sin ítems sobre el umbral se parte por renglones — [10876, 10855, 8647]
+  [PASS] regla 6 en E0 (legada): la misma unidad queda declarada sin partir
+  [PASS] regla 6 en E0: una unidad con tabla serializada no se parte (declarada)
+  [PASS] regla 8: detecta la lista de la p. 1 (sus tres rótulos)
+  [PASS] regla 8: si los títulos de la reaparición son otros, no es una lista
+  [PASS] regla 3, ampliación: la página que es entera la lista pasa a índice; la de cuerpo, no
+== m) S0 de U-SEG-OFICIAL: doble corrida de e0-r2, byte a byte
+  [PASS] e0-r2 sobre garopt y ri_spi: dos corridas con los mismos sha256 — 16 archivos
+== n) S0-3 de U-SEG-OFICIAL: la versión legada no cambia
+  [PASS] parsear_cuerpo: los mecanismos 1, 2 y 5 apagados por default
+  [PASS] separar_encabezado_pie: las tres formas del mecanismo 5 apagadas por default
+  [PASS] lineas_de_listas_r8: el mecanismo 3 apagado por default; construir_chunks ya no tiene el mecanismo 4
+== o) S0-3 de U-SEG-OFICIAL: casos sintéticos de los cinco mecanismos
+  [PASS] mecanismo 1a: la prosa que sigue al rótulo en su columna es cuerpo del punto (x::1.1.1, x::1.1.2) — ['x::1.1::intro', 'x::1.1.1', 'x::1.1.2']
+  [PASS] mecanismo 1a, guarda: tras una lista de renglones sueltos, la prosa sigue siendo el cierre del padre
+  [PASS] mecanismo 1a, guarda: con sangría colgante, la prosa a la altura del rótulo es del padre (cierre del 2.7)
+  [PASS] mecanismo 1b: un punto con el cuerpo a la izquierda de su rótulo no devuelve prosa al padre
+  [PASS] mecanismo 2: sin las formas, la raíz 1 sola; con a, b y c, las raíces 1 a 4 — ['1'] / ['1', '2', '3', '4']
+  [PASS] mecanismo 2: cada raíz nueva declarada por su forma (aviso raiz_m2)
+  [PASS] mecanismo 3: sin la cuarta forma, la lista de un nivel no se detecta; con ella, sí, y la página es índice
+  [PASS] mecanismo 5a: una segunda línea de sección que no se repite no cierra el encabezado
+  [PASS] mecanismo 5a: después de la sección, un renglón con «B.C.R.A.» que no se repite es texto
+  [PASS] mecanismo 5b: un renglón en la columna del cuerpo, seguido de otro a interlineado, no es cola del título
+  [PASS] mecanismo 5b: la cola real del título sigue siéndolo; un inciso «ii)» no es cola
+  [PASS] mecanismo 5c: con el recuadro en los cinco primeros renglones, la sección del sexto se abre
+== p) S0-3 de U-SEG-OFICIAL: un caso medido por mecanismo (e0-r2 sobre 8 TOs y ri_dcpc)
+  [PASS] mecanismo 1a: ri_dcpc::3.1.1 lleva su cuerpo («A los fines de aplicar…»)
+  [FAIL] mecanismo 1a: nmcief::3.2.1 lleva su cuerpo («El sistema contable constituye…»)
+  [PASS] mecanismo 2a: seggar abre la sección 4 («4.Integración de los aportes.») y el cierre de S3 ya no la lleva
+  [PASS] mecanismo 2c: ri_tar abre los cuadros (ri_tar::2.1.1) y ri_tar::1.1 ya no se lleva el documento
+  [PASS] mecanismo 3: ri2_ae p. 3 es índice y ri2_ae::S1 es la sección 1 del cuerpo
+  [PASS] regla 4a de S0-4 (el caso del mecanismo 4 de S0-3): seguef::2.1.6::intro empieza en su rótulo
+  [PASS] mecanismo 5a: fimipyme::S1 lleva el comienzo de su párrafo («Las entidades financieras que estén…»)
+  [PASS] mecanismo 5b: ri2_ci::1.1.1.4 lleva sus dos renglones («abordando las expectativas…»)
+  [PASS] mecanismo 5c: ri_ai abre la sección 2 (ri_ai::2.1) y ri_ai::1.2.2 ya no la lleva
+  [PASS] cobertura exacta en los nueve TOs
+== q) S0-4 de U-SEG-OFICIAL: la versión legada no cambia; listas de TOs
+  [PASS] parsear_cuerpo: sub-documento, sdg3 y apartados apagados por default
+  [PASS] construir_chunks: 4a y 4b apagadas por default
+  [PASS] listas de S0-4: sub-documento en los cinco TOs del diseño (sin ri_tsa ni ri2_pm), apartados en ri_ai, 4a y 4b fuera de la tanda 0, y el mecanismo 4 de S0-3 fuera de las reglas
+== r) S0-4 de U-SEG-OFICIAL: casos sintéticos
+  [PASS] sub-documento: anexo I con sus partes I y II, anexo II; el anexo repetido, la parte suelta y la serie de letras («ANEXO I» tras «ANEXO H») no abren sub-documento — [('A1', 'anexo'), ('A1P1', 'parte'), ('A1P2', 'parte'), ('A2', 'anexo')]
+  [PASS] sub-documento: régimen por «N - TÍTULO» y por la sigla «(R.I. – P.)»
+  [PASS] sub-documento: formulario por el membrete; la página con «Cont. 2» sigue el formulario anterior
+  [PASS] sub-documento: dos circulares en el mismo anexo abren C1 y C2; una suelta no
+  [PASS] sub-documento: sin la regla, la parte II queda dentro del ítem 2; con ella, cada parte con su espacio de ids — ['x::P1::S0', 'x::P1::S1', 'x::P1::S2', 'x::P2::S0', 'x::P2::S1', 'x::S0']
+  [PASS] sub-documento: la unidad hereda el rótulo de su sub-documento; la raíz «0» no se hereda a sí misma
+  [PASS] sub-documento: cobertura exacta — {'lineas_contenido_parseadas': 9, 'lineas_en_estructura': 9, 'lineas_duplicadas': 0, 'lineas_huerfanas': 0, 'cobertura_exacta': True}
+  [PASS] sdg3: sin la guarda nueva, la raíz 2 (10 pt más adentro) se rechaza; con ella, se abre y se declara
+  [PASS] 4a: la intro de 2.1.6 empieza en su rótulo y el encabezado heredado es solo el número
+  [PASS] 4b: el renglón que completa el título se junta al título y la intro de un renglón no se emite — ['Sección 1. Titulares.', '1.3. Identificación de los titulares de cuentas y de las personas autorizadas a operar en\nellas.']
+  [PASS] 4b: con más intro, la intro sigue sin ese renglón
+  [PASS] 4b, guarda: un renglón con verbo («será transmisible») no se junta; la oración es 4a
+  [PASS] apartados: sin la regla, «1. Posición» se rechaza fuera de la sección 4; con ella, abre el punto 4.1 — ['x::4.1', 'x::4.2']
+== s) S0-4 de U-SEG-OFICIAL: un caso medido por regla (e0-r2 sobre 7 TOs)
+  [PASS] sub-documento, ri_sef (fila 58 de S1): el preámbulo ya no trae la parte I; partes I a III y anexos I a III
+  [PASS] sub-documento, nmcief (fila 71): el Anexo II con su numeración (nmcief::A2::3.2.1) y la herencia desde «Anexo II»
+  [PASS] sdg3, nmcief (fila 71): «4. Periodicidad…» abre su raíz y la 3 ya no la lleva
+  [PASS] sub-documento, ri_ccna (fila 82): los anexos de la segunda norma (D2) y los formularios (D1F2) con su numeración; el Anexo IV ya no lleva los ítems de la declaración jurada
+  [PASS] sub-documento, ri_icpipsp (fila 85): la fila 8 de SINAP ya no lleva el bloque CONAU; el Anexo II aparte
+  [PASS] sub-documento, ri_cc: los tres regímenes (R4, R5 y RIP); R5::S3 es solo la p. 75
+  [PASS] apartados, ri_ai: «1. Posición», «2. Franquicias», «3. Incumplimientos» son 4.1 a 4.3
+  [PASS] 4b, efemin 1.3.1 (uno de los 30 títulos partidos de un renglón): sin intro y con el título entero
+  [PASS] cobertura exacta en los 7 TOs
+
+SELFTEST: 132/134 PASS
+== selftest_e0 rc=1 fin 20:53:33
+== selftest_b52 inicio 20:53:33
+== A. marcador con guiones: formas reales del subset, sin cambios
+  [PASS] RE_MARCA_INDICE matchea '-Índice-'
+  [PASS] RE_MARCA_INDICE matchea '- Indice-'
+  [PASS] RE_MARCA_INDICE matchea '-Índice –'
+  [PASS] RE_MARCA_INDICE matchea '-Índice -'
+== B. marcador sin guiones (nuevo) y su guarda de forma
+  [PASS] SIN_GUIONES matchea 'Índice' (formas medidas: cedin, ri2_ae, ri_transpa)
+  [PASS] SIN_GUIONES matchea 'Indice' (formas medidas: cedin, ri2_ae, ri_transpa)
+  [PASS] SIN_GUIONES rechaza 'para aquellos que sean actualizables por algún índice.' (prosa medida ri_dcpc p.10)
+  [PASS] SIN_GUIONES rechaza 'índice' (línea envuelta en minúscula medida en el cuerpo de cap)
+  [PASS] SIN_GUIONES rechaza 'Índice.' (puntuación final)
+  [PASS] SIN_GUIONES rechaza 'Índice General' (más de una palabra)
+  [PASS] SIN_GUIONES rechaza 'el Índice' (palabra no inicial)
+  [PASS] SIN_GUIONES rechaza 'ÍNDICE DE ACTUALIZACIÓN' (título de otra cosa)
+== C. header de sección con separador [.:]
+  [PASS] RE_SECCION matchea 'Sección 1. Capitales mínimos' → num 1 (punto (subset))
+  [PASS] RE_SECCION matchea 'Sección 10 . Título' → num 10 (punto con espacio (subset))
+  [PASS] RE_SECCION matchea 'Sección 50: Información institucional de entidades financieras' → num 50 (dos puntos (estilo medido de optico p.3))
+  [PASS] RE_SECCION matchea 'Sección 7 : Título' → num 7 (dos puntos con espacio)
+  [PASS] RE_SECCION matchea 'Sección 3:' → num 3 (dos puntos sin título en línea)
+  [PASS] RE_SECCION rechaza 'sección 4: requisitos' (minúscula: remisión en prosa)
+  [PASS] RE_SECCION rechaza 'Sección 5 Título' (sin separador)
+  [PASS] RE_SECCION rechaza 'la Sección 6: aplicable' (no inicia la línea)
+  [PASS] RE_SECCION rechaza 'Sección A. Título' (número no numérico)
+  [PASS] RE_SECCION_EN_LINEA matchea 'B.C.R.A. Sección 7: …'
+== B(cont). guarda posicional y de forma vía clasificar_paginas
+  [PASS] página con 'Índice' en línea 2 → rol indice — ['indice']
+  [PASS] 'Índice' en línea 7 (> POS_MARCA_INDICE=5) NO clasifica índice — ['portada']
+  [PASS] prosa sobre índices de actualización NO clasifica índice — ['portada']
+  [PASS] página de cuerpo con línea envuelta 'índice' (minúscula, caso cap) sigue siendo cuerpo — ['indice', 'cuerpo']
+  [PASS] '-Índice-' fuera de la zona de título sigue clasificando índice (comportamiento vigente intacto) — ['indice']
+== D. integración sintética: sección con ':' se parsea entera
+  [PASS] roles [indice, cuerpo] — ['indice', 'cuerpo']
+  [PASS] una sección parseada, numero '2' — ['2']
+  [PASS] título de la sección capturado tras ':' — 'Título de la sección'
+  [PASS] puntos 2.1 y 2.2 colgados de la sección — ['2.1', '2.2']
+  [PASS] parsear_indice sigue leyendo las entradas de sección del índice — ['2', '3']
+  [PASS] 'Índice' sin guiones en página de índice se salta (no es entrada) — [{'tipo': 'seccion', 'numero': '4', 'titulo': 'Una.', 'pagina': 1}]
+== E. health-check: señales sobre estructuras sintéticas
+  [PASS] MARCA_CID presente en línea corrupta
+  [PASS] MARCA_CID ausente en línea sana
+  [PASS] pro con umbral de banda: sin unidades anómalas — max=4764
+  [PASS] pro: cobertura exacta (señal 4 apagada)
+  [PASS] pro con umbral 100: dispara unidades_anomalas_por_tamano — ['unidades_anomalas_por_tamano']
+  [PASS] las anómalas vienen ordenadas de mayor a menor
+
+SELFTEST B5.2: 39/39 PASS
+== selftest_b52 rc=0 fin 20:53:38
+== selftest_b581 inicio 20:53:38
+== A. garantía estructural de no-cambio
+  [PASS] parsear_cuerpo: modo_sin_raiz default False
+  [PASS] familia a sintética: roles vigentes todo portada (compuerta cerrada) — {'portada'}
+  [PASS] camino vigente sobre familia a: 0 secciones y 0 unidades (sin cambio) — secc=0 chunks=0
+  [PASS] serialización vigente sin claves nuevas (ni modo_lectura ni sintetica)
+  [PASS] digerible sintético: unidades por el camino vigente (no entra al modo) — chunks=2
+== B. roles derivados del modo
+  [PASS] familia a: portada pasa a cuerpo, historial intacto — ['cuerpo', 'historial']
+  [PASS] familia c: con cuerpo vigente los roles se respetan (portada NO se abre) — ['portada', 'indice', 'cuerpo']
+  [PASS] página de ficha (ri2_pm p.50): rol ficha_registro — ['ficha_registro']
+  [PASS] página de plan de cuentas (códigos largos de ri2_pm p.5): ficha_registro — ['ficha_registro']
+  [PASS] mención aislada 'Incluye…' en prosa: la página sigue siendo cuerpo — ['cuerpo']
+== C. raíces explícitas y sus guardas
+  [PASS] ri_bdp sintético: raíces 1-3 de la espina (banner no abre raíz) — ['1', '2', '3']
+  [PASS] banner en zona de título descartado como encabezado (accounting) — 6
+  [PASS] cobertura exacta (cero huérfanas) con el modo activo — {'lineas_contenido_parseadas': 6, 'lineas_en_estructura': 6, 'lineas_duplicadas': 0, 'lineas_huerfanas': 0, 'cobertura_exacta': True}
+  [PASS] unidades S1-S3 emitidas — ['tst::S1', 'tst::S2', 'tst::S3']
+  [PASS] raíz explícita: el texto propio arranca en el label verbatim (sin encabezado 'Sección' fabricado) — 1. Se informará toda persona física o jurídica con la que se
+  [PASS] monotonía G2: '1.'/'2.' tras la raíz 5 no abren raíz (reinicio de lista) — ['raiz_1_no_sucede_a_5', 'raiz_2_no_sucede_a_5']
+  [PASS] los ítems rechazados siguen como prosa de la raíz abierta (cero pérdida)
+  [PASS] guarda G1: '2. de las normas…' (minúscula) no abre raíz — ['raiz_sin_forma_de_titulo']
+  [PASS] guarda G3: candidato a raíz en columna profunda rechazado — ['raiz_en_columna_profunda_130.0_vs_60.0']
+  [PASS] salto de raíz 3→6 aceptado y reportado como salto_raiz — [{'tipo': 'salto_raiz', 'de': 3, 'a': 6, 'pagina': 1}]
+  [PASS] raíz única en mayúsculas ('1. DATOS GENERALES') preservada del descarte; banner repetido no — ['1', '2', '3']
+== D. raíces implícitas
+  [PASS] arranque en profundidad 2: raíz implícita '2' + puntos 2.1/2.2 — [('2', '', True), ('3', '', True)]
+  [PASS] transición 2.x→3.x: raíz implícita '3' + punto 3.1 — [('2', '', True), ('3', '', True)]
+  [PASS] herencia del punto 2.1: encabezado de raíz implícita = '2.' (sin 'Sección' fabricada) — [{'tipo': 'encabezado', 'unidad_origen': 'S2', 'texto': '2.', 'paginas': [1]}]
+  [PASS] '2.1.4. de las normas…' (ri_dsf p.1) NO abre raíz ni punto: todo al preámbulo — ['0']
+  [PASS] la referencia quedó rechazada con registro (nada en silencio) — ['fuera_de_seccion_0']
+  [PASS] profundidad 2 que retrocede (3.x→2.x) no abre raíz implícita — ['fuera_de_seccion_3']
+  [PASS] fecha '1.1.2019.' no abre raíz ni punto — ['1']
+== E. preámbulo sintético
+  [PASS] prosa previa a la primera raíz: unidad S0 'Preámbulo' — ['tst::S0', 'tst::S1']
+  [PASS] S0 conserva la prosa y la cobertura es exacta
+  [PASS] primera línea abre raíz: no queda preámbulo vacío — ['tst::S1']
+== F. integración con healthcheck_e0 (PDFs reales)
+  [PASS] ri_ieccm (objetivo, 1 pág): modo sin_raiz, unidades > 0, sano — unid=3 veredicto=sano
+  [PASS] ri_acsf (sin espina, vía B5.8.3): el modo NO rinde y la señal dispara — veredicto=['paginas_sin_seccion']
+  [PASS] pro (subset dev): modo 'vigente' y veredicto sano (activación jamás entra) — modo=vigente veredicto=sano
+
+SELFTEST B5.8.1: 34/34 PASS
+== selftest_b581 rc=0 fin 20:53:40
+== selftest_b582 inicio 20:53:40
+== A. garantía estructural de no-cambio
+  [PASS] clasificar_paginas: marcadores_b582 default False
+  [PASS] parsear_cuerpo: marcadores_b582 default False
+  [PASS] parsear_indice: marcadores_b582 default False
+  [PASS] separar_encabezado_pie: seccion_b582 default False y banners_texto default None
+  [PASS] sin flag: página con 'INDICE' sostenidas sigue siendo portada — ['portada']
+  [PASS] con flag: la misma página clasifica índice
+  [PASS] digerible sintético: unidades por el camino vigente (el predicado de activación es falso) — chunks=1
+  [PASS] ri_ieccm: health-check byte-idéntico al artefacto sellado de B5.8.1 (la escalera nueva no toca el camino sin_raiz histórico) — modo=sin_raiz
+  [PASS] ri_ieccm: sin clave indice_b582 (roles sin variantes)
+== B. variantes de marcador de índice y sus guardas
+  [PASS] B582 matchea 'INDICE' (sostenidas: nmaeef p.1, ri_dcpc p.1-2, ri_psp p.1)
+  [PASS] B582 matchea 'ÍNDICE' (sostenidas con tilde: ri_msrl p.1)
+  [PASS] B582 matchea 'Índice -' (guion a la derecha: consyr p.2)
+  [PASS] B582 matchea '– Índice –' (guion largo a ambos lados: seguef p.2)
+  [PASS] B582 rechaza '3.7.2. Indice a utilizar' (numeración adelante (ri_dcpc p.24))
+  [PASS] B582 rechaza 'para aquellos que sean actualizables por algún índice.' (prosa medida (ri_dcpc p.10))
+  [PASS] B582 rechaza 'Se utilizará el Índice de Precios al Consumidor Nacional (IPC)' (mención capitalizada no línea-entera (ri_dcpc p.24))
+  [PASS] B582 rechaza 'índice' (minúscula (línea envuelta medida en cap, guarda B5.2))
+  [PASS] B582 rechaza 'ÍNDICE DE ACTUALIZACIÓN' (título de otra cosa)
+  [PASS] B582 rechaza 'INDICE GENERAL' (más de una palabra)
+  [PASS] B582 rechaza 'Índice' (forma sola: ya la toma el vigente B5.2, no esta regla)
+  [PASS] 'INDICE' en línea 7 (> POS_MARCA_INDICE=5) NO clasifica índice ni con el flag
+  [PASS] página tras el índice con dos líneas 'SECCION 1 – …' en zona sigue siendo cuerpo (la continuación de índice queda en la regla vigente) — ['indice', 'cuerpo']
+== C. variantes de encabezado de sección y numeración no numérica
+  [PASS] B582 sección matchea 'SECCION 1 - MARCO CONTABLE' → 1 (caps + arábigo + guion (ri_dcpc índice)) — ('1', 'MARCO CONTABLE')
+  [PASS] B582 sección matchea 'SECCION 1 – MARCO CONTABLE' → 1 (caps + arábigo + guion largo (ri_dcpc p.3)) — ('1', 'MARCO CONTABLE')
+  [PASS] B582 sección matchea 'SECCIÓN I – INSTRUCCIONES GENERALES' → I (caps + romano (ri_psp p.2)) — ('I', 'INSTRUCCIONES GENERALES')
+  [PASS] B582 sección matchea 'SECCIÓN III – APARTADO B: INFORMACIÓN ESTADÍ' → III (caps + romano compuesto (ri_psp p.5)) — ('III', 'APARTADO B: INFORMACIÓN ESTADÍSTICA')
+  [PASS] B582 sección matchea 'Sección A – Introducción' → A (letra + guion largo (reqcac p.3)) — ('A', 'Introducción')
+  [PASS] B582 sección matchea 'Sección B - Controles Generales de Tecnologí' → B (letra + guion (reqcac p.4)) — ('B', 'Controles Generales de Tecnología')
+  [PASS] B582 sección matchea 'Sección C. Controles a los Sistemas de Infor' → C (letra + punto (reqcac índice p.2)) — ('C', 'Controles a los Sistemas de Información')
+  [PASS] B582 sección matchea 'Sección I – Instrucciones generales' → I (romano mixto (ri_psp índice)) — ('I', 'Instrucciones generales')
+  [PASS] B582 sección rechaza 'Sección Punto Párrafo Com. Anexo Punto Párra' (sin separador tras el token (seguef p.19))
+  [PASS] B582 sección rechaza 'la sección 4: requisitos' (remisión en prosa (guarda vigente))
+  [PASS] B582 sección rechaza 'sección C – controles' (minúscula inicial)
+  [PASS] B582 sección rechaza 'Sección C establece los controles aplicables' (sin separador)
+  [PASS] B582 sección rechaza 'SECCION 1. MARCO CONTABLE' (caps con punto: forma no medida)
+  [PASS] B582 sección rechaza 'SECCIONES 2 – DE OTRA COSA' (palabra distinta)
+  [PASS] interpretaciones de 'C': letra 3 y NO romano (fuera del rango 1-39)
+  [PASS] A→B→C avanza por letras (sin salto)
+  [PASS] I→II avanza por romanos
+  [PASS] IV→VI NO sucede (salto reportable, caso ri_psp)
+  [PASS] 3→4 avanza por números
+  [PASS] orden de reporte: I→1, C→3, VI→6, '7'→7 (dígitos = orden histórico) — [1, 3, 6, 7]
+== D. integración sintética con la anatomía de reqcac
+  [PASS] roles: índice vigente + 3 páginas de cuerpo — ['indice', 'cuerpo', 'cuerpo', 'cuerpo']
+  [PASS] secciones A y B por variante, en orden y sin saltos — ['A', 'B']
+  [PASS] cola envuelta desactivada: el título de A queda 'Introducción' (la prosa inmediata NO se pega) — 'Introducción'
+  [PASS] banner de caja mixta descartado en las 3 páginas de cuerpo
+  [PASS] la página de continuación fluye a la sección B abierta (aviso pagina_cuerpo_sin_seccion registrado)
+  [PASS] punto '1.1.' bajo sección con letra: rechazado con registro (fuera_de_seccion_B), sigue como prosa — ['fuera_de_seccion_B']
+  [PASS] unidades SA y SB emitidas — ['tst::SA', 'tst::SB']
+  [PASS] cobertura exacta (cero pérdida) con banner y variantes activos
+  [PASS] el texto de SB contiene la prosa de la página de continuación
+  [PASS] índice extendido: entradas de sección A y B por variante letra+punto — [('A', 'Introducción'), ('B', 'Controles Generales')]
+  [PASS] divergencias con letras: sin crash y sin faltantes en ambas direcciones
+  [PASS] IV→VI abre ambas secciones y reporta salto_seccion — [{'tipo': 'salto_seccion', 'de': 'IV', 'a': 'VI', 'pagina': 3}]
+  [PASS] línea mixta repetida en 2 páginas < MIN_PAGS_BANNER: no se marca banner — set()
+== E. escalera del health-check sobre PDFs reales
+  [PASS] reqcac: modo 'marcadores', 3 unidades (SA/SB/SC), sin clave indice_b582 (sus roles ya eran los vigentes) — modo=marcadores unid=3
+  [PASS] consyr: modo 'sin_raiz' con clave indice_b582 (variante 'Índice -' reclasificó la página) y unidades > 0 — modo=sin_raiz unid=32
+  [PASS] consyr: la página de índice quedó fuera del cuerpo — {'cuerpo': 6, 'historial': 2, 'indice': 1, 'portada': 1, 'tabla_norma_origen': 1}
+  [PASS] pro (subset dev): modo 'vigente', sano y sin claves nuevas — modo=vigente veredicto=sano
+
+SELFTEST B5.8.2: 59/59 PASS
+== selftest_b582 rc=0 fin 20:53:44
+== selftest_b583 inicio 20:53:44
+A. Garantía estructural de no-cambio
+  [PASS] A1 e0_tablas no importa e0_lib
+  [PASS] A2 e0_tablas no importa healthcheck_e0 ni correr_e0
+  [PASS] A3 e0_lib no conoce a e0_tablas (ninguna rama del camino vigente pasa por el parser)
+B. Regla de tabla de contenido (sellada por el censo B5.8.0)
+  [PASS] B1 3x2 en zona media es tabla de contenido (montos capmin p.4)
+  [PASS] B2 banner de 2 filas cae por min_filas (capmin p.4 t0)
+  [PASS] B3 pie de 1 fila cae por min_filas
+  [PASS] B4 3 filas integramente en el 12% superior caen por banner_superior
+  [PASS] B5 3 filas integramente en el 10% inferior caen por pie_inferior
+  [PASS] B6 una columna cae por min_cols
+  [PASS] B7 tabla grande que ARRANCA en zona de banner pero sigue no cae (no esta integramente contenida)
+C. Guarda de alineación (RX-10)
+  [PASS] C1 el colapso de ric p.8 dispara (19 fragmentos numericos, columna vacia) — {'fila': 4, 'columna': 2, 'fragmentos': 19, 'fragmentos_numericos': 19, 'columna_vacia_pct': 0.667}
+  [PASS] C2 'Vigencia:\n01/07/2021' no dispara (2 fragmentos)
+  [PASS] C3 la fusion '3%\n6%' de manual p.256 no dispara (fusion declarada, no rechazo)
+  [PASS] C4 descripcion envuelta no numerica no dispara (ri_laft)
+  [PASS] C5 columna numerica poblada fila a fila no dispara aunque haya una celda multilinea
+D. Encabezado conservador
+  [PASS] D1 titulo en primera columna capturado (ri_laft) — {'titulo': 'TABLA FORMA JURIDICA', 'filas_titulo': 1, 'filas_encabezado': 1, 'columnas': ['Código', 'Descripción'], 'estado': 'determinado'}
+  [PASS] D2 'Factor de ponde-' (ultima columna) NO es titulo y se fusiona envuelto — {'titulo': None, 'filas_titulo': 0, 'filas_encabezado': 4, 'columnas': ['Código', 'Concepto', 'Factor de ponde- ración (en %)'], 'estado': 'determinado'}
+  [PASS] D3 encabezado directo sin titulo (capmin p.4; la fila de unidad de medida integra la zona de encabezado) — {'titulo': None, 'filas_titulo': 0, 'filas_encabezado': 2, 'columnas': ['Bancos -En millones de pesos-', 'Restantes entidades\n(salvo Cajas de Crédito Cooperativas)'], 'estado': 'determinado'}
+  [PASS] D4 sin señales queda no_determinado y nada se recorta
+E. Costura: repeticion verbatim o nada
+  [PASS] E1 titulo y encabezado repetidos verbatim detectados (ri_laft p.5→6)
+  [PASS] E2 sin repeticion verbatim devuelve vacio (candidata, jamas fusion)
+  [PASS] E3 encabezado repetido sin titulo tambien cose (ri_acsf p.2→3)
+F. Casos reales (PDFs del repo)
+  [PASS] F1 TESTIGO RX-10: la tabla de montos de capmin 1.2 se parsea con estructura — [['Bancos', 'Restantes entidades\n(salvo Cajas de Crédito Cooperativas)'], ['-En millones de pesos-', None], ['5.000', '2.500']]
+  [PASS] F2 TESTIGO RX-10: emparejamiento por columna = bancos 5.000 / restantes 2.500
+  [PASS] F3 TESTIGO RX-10: reconstruccion con perdida 0
+  [PASS] F4 ric p.8 (ponderadores) DECLARADA alineacion_no_confiable, no emitida — ['alineacion_no_confiable']
+  [PASS] F5 ric p.20 (planilla con encabezado rotado): perdida 0 por caracteres, diferencia por tokens declarada informativa — 0.0
+  [PASS] F6 ri_acsf rinde por la via tabular (control negativo de B5.8.1) — {'tablas_logicas': 1, 'parseadas': 1, 'declaradas': 0, 'segmentos': 2, 'costuras_aplicadas': 1, 'costuras_candidatas': 0, 'filas_total': 34, 'paginas_con_tabla_contenido': 2, 'notas_pie': 0, 'rinde': True}
+  [PASS] F7 ri_acsf: el encabezado repetido de la continuacion queda marcado, no es dato
+  [PASS] F8 ri_laft: 8 tablas logicas sobre los 43 segmentos fisicos del scoping — {'tablas_logicas': 8, 'parseadas': 8, 'declaradas': 0, 'segmentos': 43, 'costuras_aplicadas': 35, 'costuras_candidatas': 1, 'filas_total': 1209, 'paginas_con_tabla_contenido': 41, 'notas_pie': 0, 'rinde': True}
+  [PASS] F9 ri_laft p.9: geometria sin encabezado repetido queda CANDIDATA sin fusionar
+  [PASS] F10 ...y es en efecto otra tabla (TABLA PROVINCIA, logica propia)
+  [PASS] F11 ri2_pm: la caja de caratula vacia de p.1 se descarta sin_contenido y el TO queda declarado (su material es ficha, no tabla) — {'tablas_logicas': 0, 'parseadas': 0, 'declaradas': 0, 'segmentos': 0, 'costuras_aplicadas': 0, 'costuras_candidatas': 0, 'filas_total': 0, 'paginas_con_tabla_contenido': 0, 'notas_pie': 0, 'rinde': False}
+
+33/33 checks OK
+== selftest_b583 rc=0 fin 20:54:18

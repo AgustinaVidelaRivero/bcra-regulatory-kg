@@ -1,0 +1,1697 @@
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -199,6 +199,13 @@
+     Comunicación, la hoja y la fecha de vigencia que trae el pie de cada
+     página, leído con el mismo criterio con que e0-r2 lo recorta, y la
+     versión vigente del TO.
++
++U-SEG-OFICIAL, S0-4 (solo e0-r2; diseño en data/experiment/segmentacion_oficial_e0r2/s0_4/). Cinco reglas, cada
++una detrás de su parámetro, apagado por default: sub-documento (`limites_subdocumento` y
++`parsear_cuerpo(subdocumentos=…)`), la guarda de columna dentro de un sub-documento (`g3_subdoc`), oración tomada
++como título (`construir_chunks(oracion_titulo_4a=…)`), título envuelto (`titulo_envuelto_4b`) y apartados de una
++sección sin puntos (`apartados_seccion`). El mecanismo 4 de S0-3 (intro desde el rótulo en todo punto cuyo título no
++termina en punto) no está: lo reemplazan 4a y 4b.
+ 
+ Sin llamadas a LLM: código determinístico puro.
+ """
+@@ -371,8 +378,73 @@
+ FRAC_TITULO_LISTA_R8 = 0.8
+ FRAC_CORTE_LISTA_R8 = 0.25
+ BRECHA_REAPARICION_R8 = 3
++
++# --------- U-SEG-OFICIAL, S0-3 (solo e0-r2; con los defaults ninguna rama nueva corre) ---------
++# Mecanismo 2 de S0-3, numeración o título no leído, en la línea que abre una raíz del modo sin raíz. Forma (a): el
++# número pegado al título, «4.Integración de los aportes.» (seggar p. 4); forma (b): número, guion y título en
++# mayúsculas, «1- INTRODUCCIÓN» (ri2_pm pp. 1 y 3). La forma (c), título en mayúsculas sin punto final en una
++# columna más profunda que la de las raíces ya abiertas («2. CUADRO 1 – CANTIDAD DE TARJETAS EMITIDAS», ri_tar p. 2),
++# no tiene expresión propia: levanta la guarda de columna (G3) de `parsear_cuerpo`.
++RE_NUM_PEGADO_M2 = re.compile(r"^(\d{1,2})\.(?=[A-ZÁÉÍÓÚÜÑ\"“(«])")
++RE_NUM_GUION_M2 = re.compile(r"^(\d{1,2})-(?=\s)")
++# Mecanismo 3 de S0-3, cuarta forma de la regla 8: una lista de rótulos de un nivel («1. Designación» a «9.
++# Confidencialidad», el índice del Anexo I de ri2_ae p. 3), con al menos MIN_ROTULOS_LISTA_R8 rótulos, todos de un
++# nivel y consecutivos, con las mismas guardas de la regla 8 (reaparición con el mismo título, renglones en
++# minúscula, brecha entre reapariciones).
++
++
++# --------- U-SEG-OFICIAL, S0-4 (solo e0-r2; con los defaults ninguna rama nueva corre) ---------
++# Regla de sub-documento (`limites_subdocumento`; la lista de TOs donde corre es correr_e0.TOS_SUBDOCUMENTO_S0_4): un
++# rótulo de anexo, de parte o de régimen abre una raíz nueva con su propio espacio de ids (un prefijo por
++# sub-documento) y con herencia desde el rótulo. Tres formas:
++# - anexo: un renglón entero «ANEXO <n>», «Anexo <n>» o «-ANEXO-», o «Anexo <n> – Título», entre los primeros
++#   POS_ZONA_BANNER renglones de una página de cuerpo (el encabezado corrido de cada anexo en nmcief y ri_ccna; el
++#   renglón que abre cada anexo en ri_sef y ri_icpipsp). <n> va en romanos o en arábigos y sucede al anexo anterior;
++#   un anexo 1 (o sin número) después de otro abre un documento nuevo (ri_ccna junta dos normas, cada una con sus
++#   anexos I a IV). Una serie de letras («ANEXO A» a «ANEXO L», los modelos de publicación de ri_cc) no es de
++#   sub-documentos: una letra que sigue a la anterior del alfabeto no se lee como romano («ANEXO I» tras «ANEXO H»);
++# - parte: un renglón de cuerpo «I. Título», «I.- TÍTULO», «I - TÍTULO», «II- TÍTULO» o, sin separador, «I TÍTULO»
++#   en mayúsculas, con el título en mayúscula inicial, dentro de una serie de al menos MIN_PARTES_SD partes
++#   consecutivas desde la I en el mismo anexo (o fuera de todo anexo): las partes I a III de ri_sef, I a IV del
++#   Anexo I de nmcief y I y II del Anexo I de la segunda norma de ri_ccna. Un «I.» suelto (el rubro «I. Bienes
++#   Diversos» de un modelo de balance de ri_cc) no forma serie;
++# - régimen: un renglón «<n> - TÍTULO EN MAYÚSCULAS» o con la sigla «(R.I. – <sigla>)» entre los primeros
++#   POS_ZONA_BANNER renglones de una página de cuerpo (los regímenes 4 y 5 y el R.I. – P. de ri_cc);
++# - formulario: una página de cuerpo con el membrete «BANCO CENTRAL DE LA REPÚBLICA ARGENTINA» entre sus primeros
++#   POS_MEMBRETE_SD renglones y sin rótulo de anexo (las fórmulas de la primera norma de ri_ccna, pp. 31 a 41); una
++#   página que lleva «Cont. <n>» entre sus primeros renglones sigue el formulario de la anterior;
++# - circular: un renglón de cuerpo «Circular <SIGLA> <n>. Título», dentro de una serie de al menos MIN_PARTES_SD en el
++#   mismo anexo (los bloques SINAP, CONAU y RUNOR de la tabla del Anexo I de ri_icpipsp, cuyas filas vuelven a
++#   numerarse desde 1).
++# El prefijo de un sub-documento es la concatenación de R<n> (o RI<sigla>), D<k> (solo si el régimen junta más de un
++# documento), A<n> (A, si el anexo no tiene número) o F<k> (formulario), y P<n> o C<k> (circular): «P1», «A2», «A1P2»,
++# «D2A1P1», «D1F2», «A1C3», «R5», «RIP».
++RE_ANEXO_SD = re.compile(r"^[-–]?\s*(?:ANEXO|Anexo)(?:\s+(?P<n>[IVXL]{1,5}|\d{1,2}|[A-Z]))?"
++                         r"\s*(?:[-–:]\s*(?P<t>\S.*)?)?$")
++RE_PARTE_SD = re.compile(r"^(?P<r>[IVX]{1,4})(?P<sep>\s*\.\s*[-–]|\s*[.\-–])?\s+(?P<t>[A-ZÁÉÍÓÚÑ].*)$")
++RE_REGIMEN_SD = re.compile(r"^(?:B\.C\.R\.A\.\s+)?(?P<n>\d{1,2})\s*[-–]\s*(?P<t>[A-ZÁÉÍÓÚÑ].*)$")
++RE_SIGLA_REGIMEN_SD = re.compile(r"\(R\.\s*I\.\s*[-–]\s*(?P<s>[A-Z][A-Z.\s]*?)\s*\)")
++MIN_PARTES_SD = 2
++RE_MEMBRETE_SD = re.compile(r"BANCO CENTRAL DE LA REP[ÚU]BLICA ARGENTINA")
++RE_CONT_SD = re.compile(r"\bCont\.\s*\d")
++POS_MEMBRETE_SD = 3
++RE_CIRCULAR_SD = re.compile(r"^Circular\s+(?P<s>[A-Z]{3,})\s+\d+\.\s+\S")
++# Regla 4a, oración tomada como título: en un punto con hijos cuyo rótulo es el primer renglón de su texto (el título no
++# termina en punto y la intro sigue en minúscula), la primera oración (el título con los renglones de la intro hasta
++# el primero que termina en punto o en dos puntos) termina en dos puntos o lleva un verbo de RE_VERBO_ORACION_4AB. La
++# intro empieza en el rótulo y el encabezado heredado del punto es solo su número (seguef 2.1.6).
++# Regla 4b, título envuelto: en esos puntos, si el primer renglón de la intro completa el título (termina en punto, o
++# es toda la intro y no termina en dos puntos) y no lleva un verbo de RE_VERBO_ORACION_4AB, el renglón se junta al
++# título y sale de la intro (los títulos partidos «…autorizadas a operar en» / «ellas.»). 4b se evalúa antes que 4a.
++RE_VERBO_ORACION_4AB = re.compile(r"\b(?:deber[áa]n?|deben?|podr[áa]n?|pueden?|corresponde(?:n|r[áa]n?)?|ser[áa]n?"
++                                  r"|tendr[áa]n?|se\s+[a-záéíóúñ]+r[áa]n?)\b", re.IGNORECASE)
+ 
+ 
++def _es_linea_de_recuadro_m5(texto: str) -> bool:
++    """Mecanismo 5 de S0-3 (forma c): renglón del recuadro del encabezado de página, en mayúsculas o con «B.C.R.A.»."""
++    return "B.C.R.A." in texto or _es_titulo_mayusculas(texto)
++
++
+ def _rotulo_lista_r8(linea: "Linea"):
+     t = linea.texto.strip()
+     tok = t.split()[0] if t.split() else ""
+@@ -386,11 +458,12 @@
+ 
+ 
+ def lineas_de_listas_r8(paginas: list[list["Linea"]], roles: list[str], informe: list | None = None,
+-                        renglones: list | None = None) -> frozenset:
++                        renglones: list | None = None, forma4_m3: bool = False) -> frozenset:
+     """(página, top) de los rótulos de las listas de puntos leídas como cuerpo (ver MIN_ROTULOS_LISTA_R8).
+     Con `informe`, agrega una fila por corrida candidata con sus medidas y la guarda que la descarta (censo).
+     Con `renglones`, agrega por cada lista detectada el conjunto (página, top) de todos sus renglones: los
+-    rótulos y los que la corrida admite entre ellos (lo usa el rol de índice de la regla 3, `paginas_indice_r8`)."""
++    rótulos y los que la corrida admite entre ellos (lo usa el rol de índice de la regla 3, `paginas_indice_r8`).
++    `forma4_m3` (mecanismo 3 de S0-3, solo e0-r2): admite además la lista de rótulos de un nivel, consecutivos."""
+     cuerpo = [l for ls, r in zip(paginas, roles) if r == ROL_CUERPO for l in ls]
+     corridas, actual, ult, minus = [], [], None, 0
+     cortes: set = set()
+@@ -432,9 +505,14 @@
+                 "numeros": [n for _, (n, _t) in c], "primera": c[0][0].texto[:70]}
+         if informe is not None and len(c) >= MIN_ROTULOS_LISTA_R8:
+             informe.append(fila)
+-        if prof2 < MIN_ROTULOS_LISTA_R8:
++        nums1 = [int(n) for _, (n, _t) in c if "." not in n]
++        forma4 = (forma4_m3 and prof2 == 0 and len(nums1) >= MIN_ROTULOS_LISTA_R8
++                  and all(b == a + 1 for a, b in zip(nums1, nums1[1:])))
++        if prof2 < MIN_ROTULOS_LISTA_R8 and not forma4:
+             fila["descarte"] = "menos_de_3_rotulos_prof2"
+             continue
++        if forma4:
++            fila["forma"] = "un_nivel_m3"
+         pag = c[-1][0].pagina
+         despues: dict = {}
+         primera_pos: dict = {}
+@@ -482,10 +560,11 @@
+ RE_ROTULO_PEGADO_R3 = re.compile(r"^\d+(?:\.\d+)+\.(?=[A-ZÁÉÍÓÚÑ\"“(«])")
+ 
+ 
+-def paginas_indice_r8(paginas: list[list["Linea"]], roles: list[str]) -> list[str]:
+-    """Roles con las páginas de índice de la ampliación de la regla 3 (ver RE_TABLA_CORRELACIONES_R3)."""
++def paginas_indice_r8(paginas: list[list["Linea"]], roles: list[str], forma4_m3: bool = False) -> list[str]:
++    """Roles con las páginas de índice de la ampliación de la regla 3 (ver RE_TABLA_CORRELACIONES_R3).
++    `forma4_m3`: con la cuarta forma de la regla 8 (mecanismo 3 de S0-3)."""
+     renglones: list = []
+-    lineas_de_listas_r8(paginas, roles, renglones=renglones)
++    lineas_de_listas_r8(paginas, roles, renglones=renglones, forma4_m3=forma4_m3)
+     if not renglones:
+         return roles
+     miembros = frozenset().union(*renglones)
+@@ -545,6 +624,140 @@
+     return (m.group(1), m.group(2).strip()) if m else None
+ 
+ 
++def _valor_romano_sd(t: str) -> int | None:
++    t = t.upper()
++    return _ROMANOS_MAY_SD.get(t)
++
++
++def limites_subdocumento(paginas: list[list["Linea"]], roles: list[str]) -> list[dict]:
++    """U-SEG-OFICIAL, S0-4: los límites de sub-documento de un TO (formas y prefijo en RE_ANEXO_SD y su comentario), en
++    orden documental. Cada límite: página y top del renglón del rótulo, forma (regimen, anexo, formulario, parte o
++    circular), prefijo, título (el renglón del rótulo, tal cual) y prefijo del sub-documento que lo contiene (None si
++    no hay). Un anexo que repite el número del anterior (el encabezado corrido de cada página) no es un límite."""
++    cand: list[tuple] = []          # (página, top, forma, valor, renglón)
++    for pi, (ls, rol) in enumerate(zip(paginas, roles), start=1):
++        if rol != ROL_CUERPO:
++            continue
++        zona = ls[:POS_ZONA_BANNER]
++        for l in zona:
++            t = l.texto.strip()
++            mr = RE_REGIMEN_SD.match(t)
++            if mr and _es_titulo_mayusculas(mr.group("t")):
++                cand.append((pi, l.top, "regimen", f"R{int(mr.group('n'))}", l))
++                break
++            ms = RE_SIGLA_REGIMEN_SD.search(t)
++            if ms:
++                cand.append((pi, l.top, "regimen", "RI" + re.sub(r"[.\s]", "", ms.group("s")), l))
++                break
++        anexo_en_pagina = False
++        for l in zona:
++            ma = RE_ANEXO_SD.match(l.texto.strip())
++            if ma:
++                cand.append((pi, l.top, "anexo", ma.group("n") or "", l))
++                anexo_en_pagina = True
++                break
++        if not anexo_en_pagina:
++            memb = next((l for l in ls[:POS_MEMBRETE_SD] if RE_MEMBRETE_SD.search(l.texto)), None)
++            if memb is not None:
++                cont = any(RE_CONT_SD.search(l.texto) for l in zona)
++                cand.append((pi, memb.top, "formulario", "cont" if cont else "nuevo", memb))
++        for l in ls:
++            t = l.texto.strip()
++            mp = RE_PARTE_SD.match(t)
++            if mp and _valor_romano_sd(mp.group("r")) and (mp.group("sep") or _es_titulo_mayusculas(mp.group("t"))):
++                cand.append((pi, l.top, "parte", _valor_romano_sd(mp.group("r")), l))
++            elif RE_CIRCULAR_SD.match(t):
++                cand.append((pi, l.top, "circular", 0, l))
++    cand.sort(key=lambda c: (c[0], c[1]))
++    # contextos: (régimen, documento, contenedor) con contenedor = ("A", n) anexo, ("F", k) formulario o None
++    eventos: list[dict] = []
++    reg, doc, anexo, cont, nform, crudo_ant = None, 1, None, None, 0, None
++    for pi, top, forma, valor, l in cand:
++        if forma == "regimen":
++            if valor != reg:
++                reg, doc, anexo, cont, nform, crudo_ant = valor, 1, None, None, 0, None
++                eventos.append({"forma": forma, "pagina": pi, "top": top, "linea": l, "ctx": (reg, doc, cont)})
++            continue
++        if forma == "anexo":
++            letra = len(valor) == 1 and valor.isalpha()
++            serie_letras = (letra and crudo_ant is not None and len(crudo_ant) == 1 and crudo_ant.isalpha()
++                            and ord(valor) == ord(crudo_ant) + 1)
++            v = 0 if valor == "" else (int(valor) if valor.isdigit() else _valor_romano_sd(valor))
++            crudo_ant = valor
++            if serie_letras or v is None or (letra and valor not in "IVXL"):
++                continue
++            if anexo is None:
++                if v not in (0, 1):
++                    continue
++            elif v == anexo and cont == ("A", v):
++                continue
++            elif v == anexo + 1:
++                pass
++            elif v in (0, 1):
++                doc, nform = doc + 1, 0
++            else:
++                continue
++            anexo, cont = v, ("A", v)
++            eventos.append({"forma": forma, "pagina": pi, "top": top, "linea": l, "ctx": (reg, doc, cont)})
++            continue
++        if forma == "formulario":
++            if valor == "cont" and cont is not None and cont[0] == "F":
++                continue
++            nform += 1
++            cont = ("F", nform)
++            eventos.append({"forma": forma, "pagina": pi, "top": top, "linea": l, "ctx": (reg, doc, cont)})
++            continue
++        eventos.append({"forma": forma, "pagina": pi, "top": top, "linea": l, "ctx": (reg, doc, cont), "valor": valor})
++    # series de partes (consecutivas desde la I) y de circulares, por contexto, de al menos MIN_PARTES_SD
++    aceptadas: dict[int, int] = {}
++    por_ctx: dict[tuple, list[int]] = {}
++    for i, e in enumerate(eventos):
++        if e["forma"] in ("parte", "circular"):
++            por_ctx.setdefault((e["ctx"], e["forma"]), []).append(i)
++    for (ctx, forma), idx in por_ctx.items():
++        if forma == "circular":
++            serie = list(idx)
++        else:
++            serie, esperado = [], 1
++            for i in idx:
++                if eventos[i]["valor"] == esperado:
++                    serie.append(i)
++                    esperado += 1
++        if len(serie) >= MIN_PARTES_SD:
++            for k, i in enumerate(serie, start=1):
++                aceptadas[i] = k
++    docs_por_reg: dict = {}
++    for e in eventos:
++        docs_por_reg[e["ctx"][0]] = max(docs_por_reg.get(e["ctx"][0], 1), e["ctx"][1])
++
++    def prefijo(ctx: tuple, sub: str | None) -> str:
++        r, d, c = ctx
++        out = r or ""
++        if docs_por_reg.get(r, 1) > 1:
++            out += f"D{d}"
++        if c is not None:
++            out += c[0] + ("" if c[0] == "A" and c[1] == 0 else str(c[1]))
++        return out + (sub or "")
++
++    out: list[dict] = []
++    for i, e in enumerate(eventos):
++        r, d, c = e["ctx"]
++        if e["forma"] in ("parte", "circular"):
++            if i not in aceptadas:
++                continue
++            # el sub-documento que lo contiene: el anexo o el formulario, o el régimen fuera de ellos (un documento
++            # D<k> no es un sub-documento: solo distingue prefijos)
++            sub = ("P" if e["forma"] == "parte" else "C") + str(aceptadas[i])
++            p, padre = prefijo(e["ctx"], sub), (prefijo(e["ctx"], None) if c is not None else r)
++        elif e["forma"] in ("anexo", "formulario"):
++            p, padre = prefijo(e["ctx"], None), r
++        else:
++            p, padre = prefijo(e["ctx"], None), None
++        out.append({"pagina": e["pagina"], "top": e["top"], "forma": e["forma"], "prefijo": p,
++                    "titulo": e["linea"].texto.strip(), "padre": padre})
++    return out
++
++
+ # ------------------------------------------------------------------- líneas
+ 
+ @dataclass
+@@ -776,6 +989,9 @@
+                            cola_titulo_estricta: bool = False,
+                            seccion_variante: bool = False,
+                            seccion_abierta: str | None = None,
++                           cierre_m5: bool = False,
++                           cola_m5: bool = False,
++                           zona6_m5: bool = False,
+                            ) -> tuple[list[Linea], list[Linea], str | None]:
+     """Devuelve (contenido, descartadas, seccion_corrida).
+ 
+@@ -830,7 +1046,20 @@
+     `cola_titulo_estricta` (solo la versión e0-r2, U-R2-CODIGO-2, C2): la
+     cola envuelta del título de sección se acepta solo si continúa el título
+     (`continua_titulo`); un renglón que no lo continúa es texto de la norma.
+-    False deja la regla histórica (renglón inmediato sin numeración)."""
++    False deja la regla histórica (renglón inmediato sin numeración).
++
++    Mecanismo 5 de S0-3 (solo la versión e0-r2; con los tres en False, la regla de antes). `cierre_m5` (forma a):
++    después de la primera línea de sección de la zona, una línea de sección de otro número o con «B.C.R.A.» cierra
++    el encabezado, y una con «B.C.R.A.» se descarta como encabezado, solo si su texto se repite en la zona de título
++    de otra página de cuerpo (`mayusculas_repetidas`): la remisión «Sección 4. de las normas…» de fimipyme p. 4 y
++    los renglones de ri_cc pp. 60 y 62 que nombran al B.C.R.A. son texto de la norma; el título de la misma sección
++    repetido bajo el recuadro (dmrd pp. 6 a 60) sigue cerrándolo. `cola_m5` (forma b, `_no_es_cola_m5`): un
++    renglón no es cola del título si empieza con un inciso («ii)», RE_MARCADOR_ENUM: snp_cheq p. 71), ni si el
++    título no quedó abierto, el renglón no está en la columna de la línea de sección y el que le sigue está en su
++    misma columna, a interlineado de párrafo (ri2_ci p. 5: el texto del punto 1.1.1.4 en la columna del cuerpo).
++    `zona6_m5` (forma
++    c): si los cinco primeros renglones son el recuadro (`_es_linea_de_recuadro_m5`) y el sexto es la línea de
++    sección, la zona es de seis renglones y la sección se abre (ri_ai p. 3)."""
+     descartadas: list[Linea] = []
+     contenido = list(lineas)
+     seccion_corrida: str | None = None
+@@ -848,24 +1077,40 @@
+     # encabezado (desde el principio, zona de 5 líneas)
+     quitadas = 0
+     ultima_top_seccion: float | None = None
++    x0_seccion: float | None = None
+     forzadas = 0
++    zona = 5
++    if zona6_m5 and capturar_seccion and len(contenido) > 5 \
++            and all(_es_linea_de_recuadro_m5(l.texto.strip()) for l in contenido[:5]) \
++            and not any(_match_seccion_r2(l.texto.strip(), seccion_variante, seccion_abierta) for l in contenido[:5]) \
++            and _match_seccion_r2(contenido[5].texto.strip(), seccion_variante, seccion_abierta):
++        zona = 6    # mecanismo 5 de S0-3, forma c
++    rep_m5 = mayusculas_repetidas if mayusculas_repetidas is not None else set()
+     if mayusculas_repetidas is not None:
+         # e0-r2: la línea «B.C.R.A.» o de sección marca el final del
+         # encabezado corrido; lo anterior de la zona es encabezado aunque no se
+         # repita (título partido distinto en esa página). K-a′: después de un
+         # renglón numerado con minúsculas, «B.C.R.A.» es texto de la norma
+         prosa_numerada = False
+-        for i, l in enumerate(contenido[:5]):
++        num_seccion_vista: str | None = None
++        for i, l in enumerate(contenido[:zona]):
+             ti = l.texto.strip()
+             tok = ti.split()[0] if ti.split() else ""
+             if (RE_NUM_TOKEN.match(tok) or RE_NUM_TOKEN_SIN_PUNTO.match(tok)) \
+                     and not _es_titulo_mayusculas(ti):
+                 prosa_numerada = True
+-            if ("B.C.R.A." in ti and not prosa_numerada) or (capturar_seccion and (
+-                    _match_seccion_r2(ti, seccion_variante, seccion_abierta)
+-                    or (seccion_b582 and _match_seccion_b582(ti)))):
++            ms = _match_seccion_r2(ti, seccion_variante, seccion_abierta) if capturar_seccion else None
++            mb = _match_seccion_b582(ti) if capturar_seccion and seccion_b582 and not ms else None
++            num_i = ms.group(1) if ms else (mb[0] if mb else None)
++            cierra = ("B.C.R.A." in ti and not prosa_numerada) or num_i is not None
++            if cierra and cierre_m5 and num_seccion_vista is not None and num_i != num_seccion_vista \
++                    and "".join(ti.split()) not in rep_m5:
++                cierra = False      # mecanismo 5 de S0-3, forma a
++            if cierra:
+                 forzadas = i + 1
+-    while contenido and quitadas < 5:
++            if num_seccion_vista is None and num_i is not None:
++                num_seccion_vista = num_i
++    while contenido and quitadas < zona:
+         t = contenido[0].texto.strip()
+         m = _match_seccion_r2(t, seccion_variante, seccion_abierta)
+         m_en_linea = RE_SECCION_EN_LINEA.search(t) if "B.C.R.A." in t else None
+@@ -877,6 +1122,7 @@
+             # (ric Sección 7), por eso se chequea antes que el descarte genérico
+             seccion_corrida = t
+             ultima_top_seccion = contenido[0].top
++            x0_seccion = contenido[0].x0
+             descartadas.append(contenido.pop(0))
+             quitadas += 1
+         elif m_en_linea and capturar_seccion and seccion_corrida is None:
+@@ -894,7 +1140,8 @@
+         elif quitadas < forzadas:
+             descartadas.append(contenido.pop(0))
+             quitadas += 1
+-        elif "B.C.R.A." in t or (_es_titulo_mayusculas(t)
++        elif ("B.C.R.A." in t and not (cierre_m5 and seccion_corrida is not None
++                                       and "".join(t.split()) not in rep_m5)) or (_es_titulo_mayusculas(t)
+                                  and (mayusculas_repetidas is None
+                                       or "".join(t.split()) in mayusculas_repetidas
+                                       or (labels_preservables is None
+@@ -912,7 +1159,8 @@
+         elif seccion_corrida is not None and ultima_top_seccion is not None \
+                 and contenido[0].top - ultima_top_seccion <= GAP_TOP_TITULO \
+                 and not RE_NUM_TOKEN.match(t.split()[0] if t.split() else "") \
+-                and (not cola_titulo_estricta or continua_titulo(seccion_corrida, t)):
++                and (not cola_titulo_estricta or continua_titulo(seccion_corrida, t)) \
++                and not (cola_m5 and _no_es_cola_m5(contenido, x0_seccion, seccion_corrida)):
+             # cola envuelta del título de sección ('dos.', '(SECOEXPO).'):
+             # renglón inmediato (interlineado de encabezado, no de contenido).
+             # Una línea que arranca con numeración NUNCA es cola de título:
+@@ -924,6 +1172,34 @@
+         else:
+             break
+     return contenido, descartadas, seccion_corrida
++
++
++def _titulo_abierto(titulo: str) -> bool:
++    """El título de sección no terminó: sin punto final, y termina en guion, coma o una palabra de
++    PALABRAS_QUE_CONTINUAN_TITULO (la parte de `continua_titulo` que no mira el renglón siguiente)."""
++    tit = titulo.rstrip()
++    if not tit or tit.endswith("."):
++        return False
++    if tit.endswith(("-", "‐", "–", ",")):
++        return True
++    palabras = re.findall(r"\w+", tit.lower())
++    return bool(palabras) and palabras[-1] in PALABRAS_QUE_CONTINUAN_TITULO
++
++
++def _no_es_cola_m5(contenido: list[Linea], x0_seccion: float | None, seccion_corrida: str) -> bool:
++    """Mecanismo 5 de S0-3, forma b: el primer renglón de `contenido` no es cola del título de sección si empieza con
++    un inciso, o si el título no quedó abierto (`_titulo_abierto`), el renglón no está en la columna de la línea de
++    sección y el que le sigue está en su misma columna a interlineado de párrafo (no más de GAP_TOP_TITULO): es el
++    primer renglón de un párrafo de la norma (ri2_ci p. 5). Un título partido en varios renglones (ctacte pp. 44 a 48,
++    ctavis pp. 30 a 33) queda abierto y su cola se sigue leyendo como antes."""
++    c = contenido[0]
++    if RE_MARCADOR_ENUM.match(c.texto.strip()):
++        return True
++    if x0_seccion is None or abs(c.x0 - x0_seccion) <= TOL_X or len(contenido) < 2 \
++            or _titulo_abierto(seccion_corrida):
++        return False
++    sig = contenido[1]
++    return abs(sig.x0 - c.x0) <= TOL_X and sig.top - c.top <= GAP_TOP_TITULO
+ 
+ 
+ def continua_titulo(titulo: str, renglon: str) -> bool:
+@@ -1058,6 +1334,10 @@
+     # regla 9 de S0 (S0-1 bis): renglones de la fila de catálogo del punto que están antes del renglón de su
+     # número (la descripción empieza más arriba, centrada en la fila); el texto del punto los lleva antes del label
+     lineas_previas: list[Linea] = field(default_factory=list)
++    # U-SEG-OFICIAL, S0-4: prefijo del sub-documento (solo en las raíces; los puntos lo toman de su raíz) y punto
++    # abierto por la regla de apartados de una sección sin puntos
++    prefijo: str | None = None
++    apartado: bool = False
+ 
+     def profundidad(self) -> int:
+         return self.numero.count(".") + 1 if self.tipo == "punto" else 0
+@@ -1078,6 +1358,7 @@
+     reasignaciones_continuidad: list[dict] = field(default_factory=list)
+     correccion_fronteras: dict = field(default_factory=dict)
+     modo_lectura: str = "vigente"   # "sin_raiz" solo cuando parsea el modo B5.8.1
++    subdocumentos: list[dict] = field(default_factory=list)   # U-SEG-OFICIAL, S0-4 (registro de sub-documentos)
+ 
+ 
+ def _componentes(num: str) -> list[int]:
+@@ -1096,7 +1377,13 @@
+                    marcador_letra: bool = False,
+                    reabrir_padre: bool = False,
+                    no_rotulos: frozenset = frozenset(),
+-                   rotulos_fila: frozenset = frozenset()) -> ResultadoParseo:
++                   rotulos_fila: frozenset = frozenset(),
++                   formas_m1: frozenset = frozenset(),
++                   formas_m2: frozenset = frozenset(),
++                   formas_m5: frozenset = frozenset(),
++                   subdocumentos: list[dict] | None = None,
++                   g3_subdoc: bool = False,
++                   apartados_seccion: bool = False) -> ResultadoParseo:
+     """Con `modo_sin_raiz=False` (todos los call sites vigentes) el
+     comportamiento es el histórico. Con True rige además la gramática de
+     raíces sintéticas del modo sin raíz de sección (B5.8.1; ver docstring del
+@@ -1122,7 +1409,34 @@
+     `no_rotulos` (regla 8): (página, top) de los renglones de las listas de puntos leídas como cuerpo
+     (`lineas_de_listas_r8`), que no abren raíz ni se aceptan como punto. `rotulos_fila` (regla 9, parte
+     9a): (página, top) de los renglones con el número de una fila de catálogo, que son rótulo aunque su
+-    resto siga en minúscula."""
++    resto siga en minúscula.
++
++    U-SEG-OFICIAL, S0-3 (solo e0-r2; vacíos, ninguna rama nueva corre). `formas_m1` (mecanismo 1, cuerpo de punto
++    que quedaba como intersticial del padre): «a», la prosa que sigue a un punto que todavía es solo su rótulo y
++    que está en la columna del rótulo es cuerpo del punto, salvo que un hermano anterior tenga el cuerpo más
++    adentro que su rótulo (sangría colgante: en ese documento, la prosa a la altura del rótulo es del padre, como
++    el cierre del 2.7 de ext); «b», un punto cuyo cuerpo corre a la izquierda de su rótulo no devuelve prosa a un
++    ancestro (snp_cheq 7.1.x: las descripciones de campos coinciden por azar con la columna de texto de 7.1).
++    `formas_m2` (mecanismo 2, numeración o título no leído, solo en el modo sin raíz): «a», número pegado al título
++    («4.Integración…»); «b», número con guion y título en mayúsculas («1- INTRODUCCIÓN»); «c», una raíz con título
++    en mayúsculas sin punto final no se rechaza por la columna (G3). En las tres, la raíz sucede exactamente a la
++    anterior (o es la 1): si no, el renglón queda como antes; en las formas a y b, además, el renglón no se repite
++    textualmente en la zona de título de MIN_PAGS_BANNER páginas o más (`detectar_banners_texto`), y la raíz no fija
++    la columna de las raíces. `formas_m5` (mecanismo 5, zona de encabezado):
++    las formas a, b y c de `separar_encabezado_pie`.
++
++    U-SEG-OFICIAL, S0-4 (solo e0-r2; con los defaults ninguna rama nueva corre). `subdocumentos` (regla de
++    sub-documento): los límites de `limites_subdocumento`. En cada uno se cierra la pila, se abre una raíz sintética
++    «0» con el prefijo del sub-documento (su título es el renglón del rótulo; si el rótulo es un renglón de contenido,
++    es su renglón de label) y la numeración de raíces vuelve a empezar (G2 y G3 sin estado); las raíces que se abren
++    después llevan el prefijo. Un rótulo que quedó en la zona de encabezado abre el sub-documento al empezar su página.
++    La raíz «0» que no lleva texto se retira al final, como el preámbulo; el registro de sub-documentos queda en
++    `ResultadoParseo.subdocumentos` (lo usa la herencia). `g3_subdoc`: dentro de un sub-documento, la guarda de
++    columna (G3) no rechaza una raíz con forma de título que sucede exactamente a la anterior («4. Periodicidad…» de
++    nmcief, 9,5 pt más adentro que la 3). `apartados_seccion` (apartados de una sección sin puntos): en una sección
++    de la lectura vigente que no tiene puntos, un rótulo de un nivel «N. Título» con N = 1, 2, 3… consecutivos abre
++    el punto «<sección>.N» (número impreso N), en lugar de rechazarse por estar fuera de la sección (ri_ai, Sección 4:
++    «1. Posición», «2. Franquicias», «3. Incumplimientos»)."""
+     secciones: list[Nodo] = []
+     rechazos: list[dict] = []
+     saltos: list[dict] = []
+@@ -1140,6 +1454,15 @@
+     col_raiz: float | None = None        # columna mínima de raíz explícita aceptada (G3)
+     # estado B5.8.2 (inerte con marcadores_b582=False)
+     banners_texto = detectar_banners_texto(paginas) if marcadores_b582 else None
++    # mecanismo 2 de S0-3: renglones repetidos textualmente en la zona de título (no abren raíz por una forma nueva)
++    banners_m2 = detectar_banners_texto(paginas) if (formas_m2 and modo_sin_raiz) else set()
++    # regla de sub-documento de S0-4 (inerte sin `subdocumentos`)
++    sd_por_pagina: dict[int, list[dict]] = {}
++    for b in subdocumentos or ():
++        sd_por_pagina.setdefault(b["pagina"], []).append(b)
++    sd_por_linea: dict[tuple, dict] = {}
++    subdoc_actual: str | None = None
++    registro_sd: list[dict] = []
+ 
+     def cerrar_hasta(nodo: Nodo | None) -> None:
+         """Deja la pila abierta hasta `nodo` inclusive (None → vacía)."""
+@@ -1201,6 +1524,23 @@
+                        "pagina": linea.pagina, "segmentos_devueltos": len(movidos),
+                        "lineas_devueltas": sum(len(sg) for sg in movidos), "destino": destino.numero})
+ 
++    def abrir_subdocumento(b: dict, linea: Linea | None) -> None:
++        """Regla de sub-documento de S0-4: raíz «0» del sub-documento y numeración de raíces desde cero."""
++        nonlocal ultima_raiz_num, col_raiz, subdoc_actual
++        cerrar_hasta(None)
++        raiz = Nodo(tipo="seccion", numero="0", titulo=b["titulo"], pagina=b["pagina"],
++                    label_x0=linea.x0 if linea is not None else None, linea_label=linea, sintetica=True,
++                    prefijo=b["prefijo"])
++        secciones.append(raiz)
++        pila.append(raiz)
++        ultima_raiz_num = None
++        col_raiz = None
++        subdoc_actual = b["prefijo"]
++        registro_sd.append({"prefijo": b["prefijo"], "forma": b["forma"], "titulo": b["titulo"],
++                            "pagina": b["pagina"], "padre": b["padre"]})
++        avisos.append({"tipo": "subdocumento_sd", "forma": b["forma"], "prefijo": b["prefijo"],
++                       "pagina": b["pagina"], "texto": b["titulo"][:90]})
++
+     for pi, (lineas, rol) in enumerate(zip(paginas, roles), start=1):
+         if rol != ROL_CUERPO:
+             continue
+@@ -1211,13 +1551,23 @@
+             mayusculas_repetidas=mayusculas_repetidas, pie_desde_version=pie_desde_version,
+             cola_titulo_estricta=pi in cola_titulo_estricta, seccion_variante=seccion_variante,
+             seccion_abierta=(next((x.numero for x in reversed(secciones) if x.numero.isdigit()
+-                                   and not x.sintetica), None) if seccion_variante else None))
++                                   and not x.sintetica), None) if seccion_variante else None),
++            cierre_m5="a" in formas_m5, cola_m5="b" in formas_m5, zona6_m5="c" in formas_m5)
+         # regla 1 de S0: en una página cuya sección se leyó por la variante, el modo sin raíz no abre
+         # raíces sintéticas (los ítems «1.», «2.» de la sección no son raíces: dmrd p. 6)
+         pagina_con_variante = bool(seccion_variante and seccion_corrida is not None
+                                    and not RE_SECCION.match(seccion_corrida))
+         for d in descartadas:
+             acc_descartes.append({"pagina": d.pagina, "texto": d.texto})
++        if sd_por_pagina.get(pi):
++            # regla de sub-documento de S0-4: el rótulo que quedó en la zona de encabezado abre el sub-documento al
++            # empezar la página; el que es un renglón de contenido, en ese renglón
++            en_contenido = {(l.pagina, l.top) for l in contenido}
++            for b in sd_por_pagina[pi]:
++                if (b["pagina"], b["top"]) in en_contenido:
++                    sd_por_linea[(b["pagina"], b["top"])] = b
++                else:
++                    abrir_subdocumento(b, None)
+ 
+         if seccion_corrida is None:
+             if not modo_sin_raiz:
+@@ -1238,11 +1588,11 @@
+             actual = pila[0] if pila else None
+             if actual is None or actual.numero != num_sec:
+                 # arranca una sección nueva
+-                if any(s.numero == num_sec for s in secciones):
++                if any(s.numero == num_sec and s.prefijo == subdoc_actual for s in secciones):
+                     avisos.append({"tipo": "seccion_reabierta", "numero": num_sec,
+                                    "pagina": pi})
+                 cerrar_hasta(None)
+-                sec = Nodo(tipo="seccion", numero=num_sec, titulo=titulo_sec, pagina=pi)
++                sec = Nodo(tipo="seccion", numero=num_sec, titulo=titulo_sec, pagina=pi, prefijo=subdoc_actual)
+                 if secciones:
+                     previa_num = secciones[-1].numero
+                     if num_sec.isdigit() and previa_num.isdigit():
+@@ -1273,7 +1623,7 @@
+             # primera raíz ancla en el preámbulo sintético '0'
+             if nodo_preambulo is None:
+                 nodo_preambulo = Nodo(tipo="seccion", numero="0",
+-                                      titulo="Preámbulo", pagina=pi, sintetica=True)
++                                      titulo="Preámbulo", pagina=pi, sintetica=True, prefijo=subdoc_actual)
+                 secciones.insert(0, nodo_preambulo)
+             pila.append(nodo_preambulo)
+ 
+@@ -1287,10 +1637,35 @@
+         for linea in contenido:
+             anterior, previa = previa, linea
+             n_contenido += 1
+-            tokens = linea.texto.split()
++            if sd_por_linea and (linea.pagina, linea.top) in sd_por_linea:
++                # regla de sub-documento de S0-4: el renglón del rótulo es el label de la raíz del sub-documento
++                abrir_subdocumento(sd_por_linea.pop((linea.pagina, linea.top)), linea)
++                seccion = pila[0]
++                ultima_fue_label = False
++                continue
++            texto_l = linea.texto      # texto del rótulo (el mecanismo 2 de S0-3 lo normaliza)
++            tokens = texto_l.split()
+             m_num = RE_NUM_TOKEN.match(tokens[0]) if tokens else None
+             if not m_num and tokens:
+                 m_num = RE_NUM_TOKEN_SIN_PUNTO.match(tokens[0])
++            forma_m2 = None
++            if not m_num and tokens and modo_sin_raiz and formas_m2:
++                # mecanismo 2 de S0-3, formas a y b: el rótulo se lee como «N. Título»
++                t_m2 = linea.texto.strip()
++                mp, mg = RE_NUM_PEGADO_M2.match(t_m2), RE_NUM_GUION_M2.match(t_m2)
++                if mp and "a" in formas_m2:
++                    texto_l, forma_m2 = f"{mp.group(1)}. {t_m2[mp.end():]}", "a"
++                elif mg and "b" in formas_m2 and _es_titulo_mayusculas(t_m2[mg.end():]):
++                    texto_l, forma_m2 = f"{mg.group(1)}. {t_m2[mg.end():].strip()}", "b"
++                if forma_m2 and (int(texto_l.split(".")[0]) != (ultima_raiz_num + 1 if ultima_raiz_num is not None
++                                                              else 1) or t_m2 in banners_m2):
++                    # guardas: la raíz de una forma nueva sucede exactamente a la anterior (o es la 1) y no es un
++                    # título corrido de página; si no, el renglón queda como estaba («26.ANTICIPO DE OPERACIONES»,
++                    # el número del régimen en ri_ao; «3.Deudores del Sistema Financiero.», el de ri_dsf)
++                    texto_l, forma_m2 = linea.texto, None
++                if forma_m2:
++                    tokens = texto_l.split()
++                    m_num = RE_NUM_TOKEN.match(tokens[0])
+             # regla 8 de S0: renglón de una lista de puntos leída como cuerpo (veto; no abre raíces)
+             en_lista = bool(m_num) and (linea.pagina, linea.top) in no_rotulos
+             # regla 9 de S0: el renglón lleva el número de una fila de catálogo (la celda de la tabla es solo ese
+@@ -1303,7 +1678,8 @@
+                 if ma:
+                     cerrar_hasta(None)
+                     raiz = Nodo(tipo="seccion", numero=ma.group(1), titulo=ma.group(2).strip(),
+-                                pagina=linea.pagina, label_x0=linea.x0, linea_label=linea, sintetica=True)
++                                pagina=linea.pagina, label_x0=linea.x0, linea_label=linea, sintetica=True,
++                                prefijo=subdoc_actual)
+                     secciones.append(raiz)
+                     pila.append(raiz)
+                     ultima_fue_label = False
+@@ -1339,7 +1715,7 @@
+                 # ------- regla 2 de S0: rótulos de punto que no lo son. Es un veto: actúa solo
+                 # sobre un rótulo que la validación de siempre aceptaría (más abajo), y no deja
+                 # abrir una raíz implícita; un renglón que ya se rechazaba conserva su motivo -------
+-                resto_2 = linea.texto[len(tokens[0]):].strip()
++                resto_2 = texto_l[len(tokens[0]):].strip()
+                 if resto_2[:1].islower() and RE_REMISION_ENVUELTA_R2.match(resto_2):
+                     motivo_2 = "remision_envuelta_r2"
+                 elif any(len(x) >= 3 for x in m_num.group(1).split(".")):
+@@ -1351,19 +1727,24 @@
+             if m_num and modo_sin_raiz:
+                 # ------- gramática de raíces sintéticas (B5.8.1; docstring) -------
+                 comp_r = _componentes(m_num.group(1))
+-                partes = linea.texto.split(None, 1)
++                partes = texto_l.split(None, 1)
+                 resto_r = partes[1] if len(partes) > 1 else ""
+                 titulo_may_r = bool(RE_TITULO_RAIZ.match(resto_r)) if resto_r else False
+                 if comp_r[0] <= MAX_RAIZ and resto_r and len(comp_r) == 1 and not pagina_con_variante:
+                     # raíz EXPLÍCITA: guardas G0-G3
+                     motivo_raiz = None
+-                    if _clave_banner(linea.texto.strip()) in banners:
++                    if _clave_banner(texto_l.strip()) in banners:
+                         motivo_raiz = "raiz_banner_repetido"
+                     elif not titulo_may_r:
+                         motivo_raiz = "raiz_sin_forma_de_titulo"
+                     elif ultima_raiz_num is not None and comp_r[0] <= ultima_raiz_num:
+                         motivo_raiz = f"raiz_{comp_r[0]}_no_sucede_a_{ultima_raiz_num}"
+-                    elif col_raiz is not None and linea.x0 > col_raiz + TOL_X:
++                    elif col_raiz is not None and linea.x0 > col_raiz + TOL_X \
++                            and not ("c" in formas_m2 and _es_titulo_mayusculas(resto_r)
++                                     and not resto_r.rstrip().endswith(".")
++                                     and comp_r[0] == (ultima_raiz_num or 0) + 1) \
++                            and not (g3_subdoc and subdoc_actual is not None
++                                     and comp_r[0] == (ultima_raiz_num or 0) + 1):
+                         motivo_raiz = (f"raiz_en_columna_profunda_{linea.x0}"
+                                        f"_vs_{col_raiz}")
+                     if motivo_raiz is None and en_lista:
+@@ -1377,12 +1758,26 @@
+                         raiz = Nodo(tipo="seccion", numero=str(comp_r[0]),
+                                     titulo=resto_r, pagina=linea.pagina,
+                                     label_x0=linea.x0, linea_label=linea,
+-                                    sintetica=True)
++                                    sintetica=True, prefijo=subdoc_actual)
+                         secciones.append(raiz)
+                         pila.append(raiz)
++                        profunda = col_raiz is not None and linea.x0 > col_raiz + TOL_X
++                        por_m2c = profunda and "c" in formas_m2 and _es_titulo_mayusculas(resto_r) \
++                            and not resto_r.rstrip().endswith(".")
++                        if forma_m2 or por_m2c:
++                            avisos.append({"tipo": "raiz_m2", "forma": forma_m2 or "c", "numero": str(comp_r[0]),
++                                           "pagina": linea.pagina, "texto": linea.texto[:90]})
++                        elif profunda:
++                            # regla sdg3 de S0-4: la raíz sucede exactamente a la anterior dentro de un sub-documento
++                            avisos.append({"tipo": "raiz_g3_subdocumento_sd", "numero": str(comp_r[0]),
++                                           "prefijo": subdoc_actual, "pagina": linea.pagina,
++                                           "x0": linea.x0, "columna_raices": col_raiz, "texto": linea.texto[:90]})
+                         ultima_raiz_num = comp_r[0]
+-                        col_raiz = (linea.x0 if col_raiz is None
+-                                    else min(col_raiz, linea.x0))
++                        if forma_m2 is None:
++                            # mecanismo 2 de S0-3: una raíz de una forma nueva no fija la columna de las raíces (G3);
++                            # en ri_dsf, «1.Instrucciones generales.» la fijaría más afuera que las raíces 3 a 8
++                            col_raiz = (linea.x0 if col_raiz is None
++                                        else min(col_raiz, linea.x0))
+                         ultima_fue_label = False
+                         continue
+                     rechazos.append({"pagina": linea.pagina, "x0": linea.x0,
+@@ -1413,7 +1808,7 @@
+                                            "a": comp_r[0], "pagina": linea.pagina})
+                         cerrar_hasta(None)
+                         raiz = Nodo(tipo="seccion", numero=str(comp_r[0]),
+-                                    titulo="", pagina=linea.pagina, sintetica=True)
++                                    titulo="", pagina=linea.pagina, sintetica=True, prefijo=subdoc_actual)
+                         secciones.append(raiz)
+                         pila.append(raiz)
+                         ultima_raiz_num = comp_r[0]
+@@ -1427,7 +1822,7 @@
+                     avisos.append({"tipo": "renumerado_por_lista", "pagina": linea.pagina, "impreso": impreso,
+                                    "numero": num, "texto": linea.texto[:90]})
+                 comp = _componentes(num)
+-                resto = linea.texto.split(None, 1)
++                resto = texto_l.split(None, 1)
+                 resto = resto[1] if len(resto) > 1 else ""
+                 # forma del resto: un punto real lleva título/texto en la línea
+                 # del label. Numeración sola ('9.3.13.') = referencia envuelta,
+@@ -1438,6 +1833,22 @@
+                 # columna exactamente compatible, sin fallback de deriva.
+                 titulo_mayuscula = bool(resto) and bool(
+                     re.match(r'^[A-ZÁÉÍÓÚÜÑ"“\'(«]', resto))
++                if apartados_seccion and len(comp) == 1 and titulo_mayuscula and impreso is None \
++                        and not motivo_2 and not en_lista and seccion.tipo == "seccion" and not seccion.sintetica \
++                        and str(comp[0]) != seccion.numero and all(h.apartado for h in seccion.hijos) \
++                        and comp[0] == len(seccion.hijos) + 1:
++                    # regla de apartados de S0-4: «N. Título» en una sección sin puntos abre el punto <sección>.N
++                    num_ap = f"{seccion.numero}.{comp[0]}"
++                    seccion.col_hijos = seccion.col_hijos if seccion.col_hijos is not None else linea.x0
++                    cerrar_hasta(seccion)
++                    nodo = Nodo(tipo="punto", numero=num_ap, titulo=resto, pagina=linea.pagina, label_x0=linea.x0,
++                                linea_label=linea, padre=seccion, numero_impreso=num, apartado=True)
++                    seccion.hijos.append(nodo)
++                    pila.append(nodo)
++                    avisos.append({"tipo": "apartado_de_seccion_ap", "numero": num_ap, "impreso": num,
++                                   "pagina": linea.pagina, "texto": linea.texto[:90]})
++                    ultima_fue_label = True
++                    continue
+                 motivo = None
+                 if comp[0] > MAX_RAIZ:
+                     motivo = "raiz_mayor_a_max"
+@@ -1548,7 +1959,7 @@
+                         saltos.append({"tipo": "salto_hermano", "padre": padre.numero,
+                                        "de": ultimo, "a": comp[-1], "pagina": linea.pagina})
+                     cerrar_hasta(padre)
+-                    titulo = linea.texto[len(tokens[0]):].strip()
++                    titulo = texto_l[len(tokens[0]):].strip()
+                     nodo = Nodo(tipo="punto", numero=num, titulo=titulo,
+                                 pagina=linea.pagina, label_x0=linea.x0,
+                                 linea_label=linea, padre=padre, numero_impreso=impreso)
+@@ -1590,6 +2001,24 @@
+                     if col is not None and abs(linea.x0 - col) <= TOL_X:
+                         ancla = n
+                         break
++            if ancla is not None and "a" in formas_m1 and profundo.tipo == "punto" \
++                    and profundo.text_col is None and not profundo.segmentos and not profundo.hijos \
++                    and profundo.label_x0 is not None and abs(linea.x0 - profundo.label_x0) <= TOL_X \
++                    and not _sangria_colgante_m1(profundo):
++                # mecanismo 1 de S0-3, forma a: el punto es solo su rótulo y la prosa sigue en su columna
++                profundo.text_col = linea.x0
++                anexar(profundo, linea, nuevo_segmento=True)
++                avisos.append({"tipo": "cuerpo_al_rotulo_m1", "forma": "a", "numero": profundo.numero,
++                               "pagina": linea.pagina, "texto": linea.texto[:90]})
++                continue
++            if ancla is not None and "b" in formas_m1 and profundo.tipo == "punto" \
++                    and profundo.text_col is not None and profundo.label_x0 is not None \
++                    and profundo.text_col < profundo.label_x0 - TOL_X \
++                    and abs(linea.x0 - profundo.text_col) > TOL_X:
++                # mecanismo 1 de S0-3, forma b: el cuerpo del punto corre a la izquierda de su rótulo
++                avisos.append({"tipo": "cuerpo_al_rotulo_m1", "forma": "b", "numero": profundo.numero,
++                               "pagina": linea.pagina, "texto": linea.texto[:90]})
++                ancla = None
+             if ancla is not None and (profundo.text_col is None
+                                       or abs(linea.x0 - profundo.text_col) > TOL_X):
+                 cerrar_hasta(ancla)
+@@ -1609,6 +2038,11 @@
+             and not nodo_preambulo.segmentos and not nodo_preambulo.hijos:
+         # el preámbulo se creó pero la primera línea abrió raíz: no materializa
+         secciones.remove(nodo_preambulo)
++    for r in [x for x in secciones if x.prefijo is not None and x.numero == "0" and x.sintetica
++              and x.linea_label is None and not x.segmentos and not x.hijos]:
++        # regla de sub-documento de S0-4: raíz «0» sin texto (el rótulo estaba en la zona de encabezado y la página
++        # empieza con una raíz o una sección); el sub-documento sigue en el registro
++        secciones.remove(r)
+ 
+     accounting = {
+         "lineas_descartadas_encabezado_pie": len(acc_descartes),
+@@ -1621,7 +2055,20 @@
+         lineas_huerfanas=n_huerfanas,
+         modo_lectura=("sin_raiz" if modo_sin_raiz
+                       else "marcadores" if marcadores_b582 else "vigente"),
++        subdocumentos=registro_sd,
+     )
++
++
++def _sangria_colgante_m1(nodo: Nodo) -> bool:
++    """Mecanismo 1 de S0-3, forma a, guarda: algún hermano anterior del punto tiene su cuerpo más adentro que su
++    rótulo (sangría colgante: la prosa a la altura del rótulo es del padre, el cierre del 2.7 de ext), o es un
++    renglón suelto, sin cuerpo ni hijos (una lista de ítems de un renglón: la prosa que sigue al último es el cierre
++    del padre, cap 8.6, ctacte 5.1.1 y ext 11.1.3 en la tanda 0)."""
++    hermanos = nodo.padre.hijos if nodo.padre is not None else []
++    return any(h is not nodo and h.tipo == "punto"
++               and ((h.text_col is not None and h.label_x0 is not None and h.text_col > h.label_x0 + TOL_X)
++                    or (h.text_col is None and not h.segmentos and not h.hijos))
++               for h in hermanos)
+ 
+ 
+ # ------------------------------------- Regla 1: continuidad de enumeración
+@@ -1668,6 +2115,7 @@
+ # ----- numeración de sección no numérica (B5.8.2: letras y romanos) -----
+ 
+ _ROMANOS_MAY = {_romano(n).upper(): n for n in range(1, 40)}
++_ROMANOS_MAY_SD = _ROMANOS_MAY      # U-SEG-OFICIAL, S0-4: romanos de anexos y partes (I a XXXIX)
+ 
+ 
+ def _interpretaciones_seccion(num: str) -> set[tuple[str, int]]:
+@@ -2289,18 +2737,56 @@
+ 
+ def _flags_numeracion(nodo: "Nodo") -> dict:
+     """e0-r2 (U-R2-CODIGO-2, C2, punto f): el número impreso de una unidad
+-    renumerada por lista, y la corrección declarada."""
++    renumerada por lista, y la corrección declarada. U-SEG-OFICIAL, S0-4: el de un apartado de una sección sin
++    puntos (regla de apartados)."""
+     if not nodo.numero_impreso:
+         return {}
++    if nodo.apartado:
++        return {"numero_impreso": nodo.numero_impreso,
++                "correccion_numeracion": f"apartado_de_seccion: el PDF imprime {nodo.numero_impreso}. dentro de la "
++                                         f"Sección {nodo.padre.numero}; E0 lo abre como el punto {nodo.numero}"}
+     return {"numero_impreso": nodo.numero_impreso,
+             "correccion_numeracion": f"renumerado_por_lista: el PDF imprime {nodo.numero_impreso} donde la "
+                                      f"numeración del TO sigue con {nodo.numero}"}
++
++
++def clase_titulo_4ab(nodo: "Nodo") -> tuple[str, "Linea"] | None:
++    """U-SEG-OFICIAL, S0-4, reglas 4a y 4b (ver RE_VERBO_ORACION_4AB). Condición común: un punto con hijos cuyo
++    título no termina en punto (termina en guion de corte, en coma o sin puntuación) y cuya intro empieza en
++    minúscula: el renglón del rótulo es el primero de un texto que sigue en la intro. Devuelve («4b», primer renglón
++    de la intro) si ese renglón completa el título (termina en punto, o es toda la intro y no termina en dos puntos)
++    y no lleva un verbo; («4a», primer renglón) si la primera oración (el título con los renglones del primer segmento
++    de la intro hasta el primero que termina en punto o en dos puntos) termina en dos puntos o lleva un verbo; None si
++    no."""
++    if nodo.tipo != "punto" or not nodo.hijos or nodo.linea_label is None:
++        return None
++    intro = [it["seg"] for it in _rol_segmentos(nodo) if it["rol"] == "intro"]
++    if not intro or not intro[0]:
++        return None
++    t = nodo.titulo.rstrip()
++    l1 = intro[0][0]
++    if not t or t.endswith(".") or not l1.texto.lstrip()[:1].islower():
++        return None
++    r1 = l1.texto.rstrip()
++    toda = len(intro) == 1 and len(intro[0]) == 1
++    if (r1.endswith(".") or (toda and not r1.endswith(":"))) and not RE_VERBO_ORACION_4AB.search(r1):
++        return "4b", l1
++    oracion = [r1]
++    for l in intro[0][1:]:
++        if oracion[-1].endswith((".", ":")):
++            break
++        oracion.append(l.texto.rstrip())
++    if oracion[-1].endswith(":") or RE_VERBO_ORACION_4AB.search(t + " " + " ".join(oracion)):
++        return "4a", l1
++    return None
+ 
+ 
+ def construir_chunks(res: ResultadoParseo,
+                      texto_lineas: Callable[[list[Linea]], str] | None = None,
+                      lineas_por_chunk: list[list[Linea]] | None = None,
+-                     tope_herencia: tuple[int, int] | None = None) -> list[dict]:
++                     tope_herencia: tuple[int, int] | None = None,
++                     oracion_titulo_4a: bool = False,
++                     titulo_envuelto_4b: bool = False) -> list[dict]:
+     """Con los dos argumentos opcionales en None (todos los call sites de la
+     versión legada de E0) el comportamiento es el histórico, byte a byte.
+     Versión e0-r2 (U-R2-CODIGO, R1): `texto_lineas` arma el texto de una
+@@ -2310,9 +2796,64 @@
+     `tope_herencia` = (U, B) (solo e0-r2, U-R2-CODIGO-2, C2, punto h): la
+     herencia de un chunk terminal que pasa U caracteres se recorta con
+     `recortar_herencia` y el chunk lo declara en `herencia_recortada`; el
+-    lado de cada intersticial sale de la línea de su segmento."""
++    lado de cada intersticial sale de la línea de su segmento.
++    U-SEG-OFICIAL, S0-4 (solo e0-r2): `oracion_titulo_4a` (regla 4a, `clase_titulo_4ab`): el encabezado heredado del
++    punto es solo su número y el renglón del rótulo encabeza el bloque de la intro (el mini-chunk y el tramo
++    heredado); `titulo_envuelto_4b` (regla 4b): el primer renglón de la intro se junta al título (en un renglón aparte
++    del encabezado, tal cual está en el PDF) y sale de la intro, que se emite solo si le queda texto. Los ids de las
++    unidades de un sub-documento llevan su prefijo (`<to>::<prefijo>::<unidad>`) y su herencia empieza con los rótulos
++    de la cadena de sub-documentos (ResultadoParseo.subdocumentos), uno por tramo `encabezado`; la raíz «0» de un
++    sub-documento hereda solo los de los sub-documentos que la contienen."""
+     chunks: list[dict] = []
++    sin_titulo = set()                  # regla 4a
++    envuelto: dict[int, Linea] = {}     # regla 4b: el renglón que se junta al título
++    if oracion_titulo_4a or titulo_envuelto_4b:
++        def marcar(n: Nodo) -> None:
++            c = clase_titulo_4ab(n)
++            if c is not None and c[0] == "4a" and oracion_titulo_4a:
++                sin_titulo.add(id(n))
++            elif c is not None and c[0] == "4b" and titulo_envuelto_4b:
++                envuelto[id(n)] = c[1]
++            for h in n.hijos:
++                marcar(h)
++        for s0 in res.secciones:
++            marcar(s0)
++    sd = {d["prefijo"]: d for d in res.subdocumentos}
+ 
++    def _seg_intro(a: Nodo, rol: str, seg: list[Linea], primero: bool) -> list[Linea]:
++        # reglas 4a y 4b de S0-4: el primer segmento de la intro lleva delante el renglón del rótulo (4a) o pierde el
++        # renglón que completa el título (4b)
++        if primero and rol == "intro" and id(a) in sin_titulo:
++            return [a.linea_label] + seg
++        if primero and rol == "intro" and id(a) in envuelto:
++            return seg[1:]
++        return seg
++
++    def _raiz(n: Nodo) -> Nodo:
++        while n.padre is not None:
++            n = n.padre
++        return n
++
++    def _unidad(n: Nodo) -> str:
++        base = n.numero if n.tipo == "punto" else f"S{n.numero}"
++        p = _raiz(n).prefijo
++        return f"{p}::{base}" if p else base
++
++    def _tramos_subdoc(n: Nodo) -> list[dict]:
++        # regla de sub-documento de S0-4: un tramo `encabezado` por cada sub-documento de la cadena del de la unidad
++        r = _raiz(n)
++        if not r.prefijo:
++            return []
++        cadena, q = [], r.prefijo
++        while q is not None:
++            cadena.append(sd[q])
++            q = sd[q]["padre"]
++        cadena.reverse()
++        if n is r and r.numero == "0" and r.sintetica:
++            cadena = cadena[:-1]
++        return [{"tipo": "encabezado", "unidad_origen": d["prefijo"], "texto": d["titulo"], "paginas": [d["pagina"]]}
++                for d in cadena]
++
+     def _texto(lineas: list[Linea]) -> str:
+         return "\n".join(l.texto for l in lineas)
+ 
+@@ -2324,6 +2865,10 @@
+             # el encabezado reproduce el estilo del label real ('17. BASE…'),
+             # la raíz implícita lleva su número solo y el preámbulo su título
+             return a.titulo if a.numero == "0" else f"{a.numero}. {a.titulo}".rstrip()
++        if id(a) in sin_titulo:
++            return f"{a.numero}."     # regla 4a de S0-4
++        if id(a) in envuelto:
++            return f"{a.numero}. {a.titulo}\n{envuelto[id(a)].texto}"     # regla 4b de S0-4
+         return (f"Sección {a.numero}. {a.titulo}" if a.tipo == "seccion"
+                 else f"{a.numero}. {a.titulo}")
+ 
+@@ -2338,22 +2883,27 @@
+             cadena.append(n)
+             n = n.padre
+         cadena.reverse()
+-        tramos: list[dict] = []
+-        lados: list[str | None] = []
++        tramos: list[dict] = _tramos_subdoc(nodo)
++        lados: list[str | None] = [None] * len(tramos)
+         for k, a in enumerate(cadena):
+-            unidad = a.numero if a.tipo == "punto" else f"S{a.numero}"
++            unidad = _unidad(a)
+             tramos.append({"tipo": "encabezado", "unidad_origen": unidad,
+                            "texto": _titulo_linea(a), "paginas": [a.pagina]})
+             lados.append(None)
+             # hijo de `a` en el camino a la unidad: marca la posición de sus intersticiales
+             hijo = cadena[k + 1] if k + 1 < len(cadena) else nodo
+             marca_hijo = (hijo.pagina, hijo.linea_label.top if hijo.linea_label else 0.0)
++            primera_intro = True
+             for item in _rol_segmentos(a):
+                 if item["rol"] == "contenido":
+                     continue  # no ocurre: los ancestros tienen hijos
+                 rol = {"intro": "intro", "cierre": "cierre",
+                        "intersticial": "intersticial"}[item["rol"]]
+-                seg = item["seg"]
++                seg = _seg_intro(a, rol, item["seg"], primera_intro)
++                if rol == "intro":
++                    primera_intro = False
++                if not seg and item["seg"]:
++                    continue    # regla 4b de S0-4: la intro era solo el renglón que completa el título
+                 texto_seg = tx(seg)
+                 if texto_lineas is not None and not texto_seg:
+                     # e0-r2: segmento absorbido entero por el bloque de una
+@@ -2385,10 +2935,10 @@
+             cadena.append(n)
+             n = n.padre
+         cadena.reverse()
+-        return [{"tipo": "encabezado",
+-                 "unidad_origen": a.numero if a.tipo == "punto" else f"S{a.numero}",
+-                 "texto": _titulo_linea(a), "paginas": [a.pagina]}
+-                for a in cadena]
++        return _tramos_subdoc(nodo) + [{"tipo": "encabezado",
++                                        "unidad_origen": _unidad(a),
++                                        "texto": _titulo_linea(a), "paginas": [a.pagina]}
++                                       for a in cadena]
+ 
+     def emitir_mini(nodo: Nodo, rol: str, segs: list[list[Linea]],
+                     n_tramo: int | None) -> None:
+@@ -2401,7 +2951,7 @@
+             texto = texto_lineas([l for s in segs for l in s])
+         if not _materializa_bloque(texto):
+             return
+-        unidad = nodo.numero if nodo.tipo == "punto" else f"S{nodo.numero}"
++        unidad = _unidad(nodo)
+         mini_id = f"{res.to}::{unidad}::{rol}" + (f"::{n_tramo}" if n_tramo else "")
+         lineas = [l for s in segs for l in s]
+         herencia = herencia_titulos(nodo)
+@@ -2414,7 +2964,8 @@
+             "to": res.to,
+             "archivo": res.archivo,
+             "unidad": unidad,
+-            "titulo": f"[bloque {rol}] {nodo.titulo}",
++            "titulo": f"[bloque {rol}] {nodo.titulo}" + (f"\n{envuelto[id(nodo)].texto}" if id(nodo) in envuelto
++                                                         else ""),
+             "tipo": "mini_chunk",
+             "rol_bloque": rol,
+             "paginas": _paginas_de(lineas),
+@@ -2436,7 +2987,7 @@
+             for s in nodo.segmentos:
+                 lineas.extend(s)
+             if nodo.tipo == "seccion":
+-                unidad = f"S{nodo.numero}"
++                unidad = _unidad(nodo)
+                 if nodo.sintetica and nodo.linea_label is not None:
+                     # raíz explícita del modo sin raíz: la línea del label ya
+                     # encabeza `lineas` tal como está en el documento — no se
+@@ -2446,7 +2997,7 @@
+                     encabezado = _titulo_linea(nodo)
+                     texto_propio = "\n".join([encabezado] + ([tx(lineas)] if lineas else []))
+             else:
+-                unidad = nodo.numero
++                unidad = _unidad(nodo)
+                 texto_propio = tx(lineas)
+             herencia, recortada = herencia_de(nodo)
+             texto_herencia = "\n".join(t["texto"] for t in herencia)
+@@ -2499,6 +3050,10 @@
+             contador_inter = 0
+ 
+             if intro_segs:
++                primero = _seg_intro(nodo, "intro", intro_segs[0], True)
++                # regla 4b de S0-4: si la intro era solo el renglón que completa el título, no queda intro
++                intro_segs = ([primero] if primero else []) + intro_segs[1:]
++            if intro_segs:
+                 emitir_mini(nodo, rol_intro, intro_segs, None)
+             for k, h in enumerate(nodo.hijos):
+                 emitir(h)
+@@ -2629,6 +3184,10 @@
+             d["sintetica"] = True   # clave condicional: los artefactos vigentes
+         if n.numero_impreso:        # quedan byte-idénticos (ídem numero_impreso, e0-r2)
+             d["numero_impreso"] = n.numero_impreso
++        if n.prefijo:               # regla de sub-documento de S0-4; ídem
++            d["prefijo"] = n.prefijo
++        if n.apartado:              # regla de apartados de S0-4; ídem
++            d["apartado"] = True
+         if n.lineas_previas:        # regla 9 de S0; ídem
+             d["lineas_previas"] = {"paginas": _paginas_de(n.lineas_previas),
+                                    "chars": len(_texto_segmento(n.lineas_previas)),
+@@ -2647,6 +3206,7 @@
+         "accounting": res.accounting,
+         "reasignaciones_continuidad": res.reasignaciones_continuidad,
+         "correccion_fronteras": res.correccion_fronteras,
++        **({"subdocumentos": res.subdocumentos} if res.subdocumentos else {}),
+     }
+ 
+ 
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -109,6 +109,31 @@
+                            "ri2_ci": frozenset({8, 9, 16, 24}), "snp_cheq": frozenset({80}),
+                            "snp_mep": frozenset({19})}
+ 
++# U-SEG-OFICIAL, S0-3 (tras la lectura de cortes de S1; diseño en data/experiment/segmentacion_oficial_e0r2/s0_3/):
++# mecanismos de E0, solo en e0-r2. 1, cuerpo de punto que quedaba como intersticial del padre (formas a y b); 2,
++# numeración o título no leído en la línea que abre una raíz del modo sin raíz (formas a, b y c); 3, cuarta forma de la
++# regla 8 (lista de rótulos de un nivel); 5, zona de encabezado (formas a, b y c). El mecanismo 4 de S0-3 no está:
++# lo reemplazan las reglas 4a y 4b de S0-4.
++REGLAS_S0_3 = frozenset({"m1a", "m1b", "m2a", "m2b", "m2c", "m3", "m5a", "m5b", "m5c"})
++
++# U-SEG-OFICIAL, S0-4 (diseño en data/experiment/segmentacion_oficial_e0r2/s0_4/): reglas de E0, solo en e0-r2. «sd»,
++# sub-documento (`E0.limites_subdocumento`), solo en los TOs de TOS_SUBDOCUMENTO_S0_4 (lista explícita; ri_tsa y
++# ri2_pm quedan fuera hasta una lectura propia); «sdg3», dentro de un sub-documento la guarda de columna (G3) no
++# rechaza la raíz que sucede exactamente a la anterior; «4a», oración tomada como título, y «4b», título envuelto
++# (`E0.clase_titulo_4ab`), que no corren en los diez TOs de la tanda 0 (TOS_TANDA0_SIN_4AB: sus títulos partidos y
++# sus oraciones tomadas como título quedan como límite declarado de la tanda 0, cuya E0 no cambia); «ap», apartados de
++# una sección sin puntos, solo en los TOs de TOS_APARTADOS_S0_4. La regla «sd» no cambia el modo de lectura de un TO:
++# la escalera elige la etapa sin ella y vuelve a leer esa etapa con los sub-documentos.
++REGLAS_S0_4 = frozenset({"sd", "sdg3", "4a", "4b", "ap"})
++TOS_SUBDOCUMENTO_S0_4 = frozenset({"ri_sef", "nmcief", "ri_ccna", "ri_icpipsp", "ri_cc"})
++TOS_APARTADOS_S0_4 = frozenset({"ri_ai"})
++TOS_TANDA0_SIN_4AB = frozenset({"cap", "cla", "ext", "pro", "ric", "ctacte", "lingob", "polcre", "pagjub", "docvig"})
++
++
++def _formas_s0_3(mecanismo: str) -> frozenset:
++    return frozenset(r[len(mecanismo):] for r in REGLAS_S0_3 if r.startswith(mecanismo) and len(r) > len(mecanismo))
++
++
+ # familias de marcador de ítem, por precedencia de matcheo por línea
+ FAMILIAS_ITEM = [
+     ("num", re.compile(r"^\d+(?:\.\d+)*\.(?:\s|$)")),      # "2.", "1.5.1. …"
+@@ -1260,7 +1285,10 @@
+         if inf["ancladas"]:     # una tabla con forma de catálogo sin ninguna fila anclada no deja rastro
+             res.avisos.append({"tipo": "filas_de_catalogo_r9", **inf})
+     lineas0: list = []
+-    chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0)
++    # reglas 4a y 4b de S0-4 (fuera de la tanda 0)
++    r4 = {"oracion_titulo_4a": "4a" in REGLAS_S0_4 and to not in TOS_TANDA0_SIN_4AB,
++          "titulo_envuelto_4b": "4b" in REGLAS_S0_4 and to not in TOS_TANDA0_SIN_4AB}
++    chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0, **r4)
+     E0.desambiguar_ids(chunks0)
+     asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
+     # acompañamiento T de las reglas 1 y 7 de S0
+@@ -1268,13 +1296,13 @@
+     if fusiones:
+         res.avisos.append({"tipo": "tabla_fundida_en_un_intersticial_r2", "fusiones": fusiones})
+         lineas0 = []
+-        chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0)
++        chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0, **r4)
+         E0.desambiguar_ids(chunks0)
+         asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
+     sustituciones, omitidas = preparar_serializacion(res, lineas0, tablas_to, pdf_path)
+     lineas: list = []
+     chunks = E0.construir_chunks(res, texto_lineas=texto_con_tablas(sustituciones, omitidas),
+-                                 lineas_por_chunk=lineas, tope_herencia=TOPE_HERENCIA_E0_R2)
++                                 lineas_por_chunk=lineas, tope_herencia=TOPE_HERENCIA_E0_R2, **r4)
+     renombres = E0.desambiguar_ids(chunks)
+     tablas_to["ids_desambiguados"] = renombres
+     tablas_to["_dueno_linea"] = {id(l): chunks[i]["id"]
+@@ -1296,15 +1324,25 @@
+     sin raíz (B5.8.1) sobre la clasificación de marcadores. En cada etapa, K
+     (`mayusculas_repetidas` con los roles de esa etapa) y el pie desde la
+     línea «Versión». Devuelve (res, roles, repetidos, modo_lectura,
+-    marcadores)."""
++    marcadores). Reglas de S0-4: la de apartados corre en cada lectura (TOS_APARTADOS_S0_4); la de sub-documento
++    (TOS_SUBDOCUMENTO_S0_4) no cambia la etapa: la etapa se elige sin ella y se vuelve a leer con los sub-documentos."""
++    m3 = "m3" in REGLAS_S0_3     # mecanismo 3 de S0-3 (cuarta forma de la regla 8)
++    sd = "sd" in REGLAS_S0_4 and to in TOS_SUBDOCUMENTO_S0_4     # regla de sub-documento de S0-4
++
+     def indice(roles: list[str]) -> list[str]:
+         # regla 3 de S0, ampliación: páginas de cuerpo que son enteras una lista de la regla 8
+-        return E0.paginas_indice_r8(paginas, roles)
++        return E0.paginas_indice_r8(paginas, roles, forma4_m3=m3)
+ 
+-    def parsear(roles: list[str], **kw):
++    def parsear(roles: list[str], con_sd: bool = False, **kw):
+         rep = E0.titulos_mayusculas_repetidos(paginas, roles)
++        if con_sd:
++            # regla de sub-documento de S0-4, con la guarda de columna dentro del sub-documento (sdg3)
++            kw["subdocumentos"] = E0.limites_subdocumento(paginas, roles)
++            kw["g3_subdoc"] = "sdg3" in REGLAS_S0_4
++        if "ap" in REGLAS_S0_4 and to in TOS_APARTADOS_S0_4:
++            kw["apartados_seccion"] = True     # regla de apartados de S0-4
+         # regla 8 de S0: renglones de listas de puntos leídas como cuerpo, con los roles de esta etapa
+-        kw["no_rotulos"] = E0.lineas_de_listas_r8(paginas, roles)
++        kw["no_rotulos"] = E0.lineas_de_listas_r8(paginas, roles, forma4_m3=m3)
+         if rotulos_fila_r9:
+             kw["rotulos_fila"] = rotulos_fila_r9     # regla 9 de S0, parte 9a
+         # U-R2-CODIGO-2 (C2): cola de título estricta (punto l, ampliada por la regla 5 de S0) y renumeración
+@@ -1314,7 +1352,9 @@
+                                  cola_titulo_estricta=(COLA_TITULO_ESTRICTA_E0_R2.get(to, frozenset())
+                                                        | COLA_TITULO_ESTRICTA_R5.get(to, frozenset())),
+                                  renumeraciones=RENUMERACIONES_E0_R2,
+-                                 seccion_variante=True, rotulos_r2=True, reabrir_padre=True, **kw), rep
++                                 seccion_variante=True, rotulos_r2=True, reabrir_padre=True,
++                                 formas_m1=_formas_s0_3("m1"), formas_m2=_formas_s0_3("m2"),
++                                 formas_m5=_formas_s0_3("m5"), **kw), rep
+ 
+     def con_chunks(res) -> bool:
+         r = copy.deepcopy(res)
+@@ -1326,11 +1366,15 @@
+     roles_v = indice(roles_v0)
+     res, rep = parsear(roles_v)
+     if con_chunks(res):
++        if sd:
++            res, rep = parsear(roles_v, con_sd=True)
+         return res, roles_v, rep, "vigente", False
+     roles_m0 = E0.clasificar_paginas(paginas, marcadores_b582=True, continuacion_con_titulo=True)
+     roles_m = indice(roles_m0)
+     res_m, rep_m = parsear(roles_m, marcadores_b582=True)
+     if con_chunks(res_m):
++        if sd:
++            res_m, rep_m = parsear(roles_m, con_sd=True, marcadores_b582=True)
+         return res_m, roles_m, rep_m, "marcadores", True
+     roles_s = indice(E0.roles_para_modo_sin_raiz(paginas, roles_m0))
+     res_s, rep_s = parsear(roles_s, modo_sin_raiz=True)
+@@ -1342,9 +1386,11 @@
+     r.reasignaciones_continuidad = E0.aplicar_continuidad_enumeracion(r)
+     E0.corregir_fronteras_intra_palabra(r)
+     if apartados >= MIN_APARTADOS_R4 and len(E0.construir_chunks(r)) <= 1:
+-        res_l, rep_l = parsear(roles_s, modo_sin_raiz=True, marcador_letra=True)
++        res_l, rep_l = parsear(roles_s, con_sd=sd, modo_sin_raiz=True, marcador_letra=True)
+         res_l.avisos.append({"tipo": "marcador_letra_r2", "apartados": apartados})
+         return res_l, roles_s, rep_l, "sin_raiz_letra", roles_m0 != roles_v0
++    if sd:
++        res_s, rep_s = parsear(roles_s, con_sd=True, modo_sin_raiz=True)
+     return res_s, roles_s, rep_s, "sin_raiz", roles_m0 != roles_v0
+ 
+ 
+@@ -1357,7 +1403,9 @@
+         if rol != E0.ROL_CUERPO:
+             continue
+         _, viejas, _ = E0.separar_encabezado_pie(lineas)
+-        _, nuevas, _ = E0.separar_encabezado_pie(lineas, mayusculas_repetidas=repetidos)
++        # mecanismo 5 de S0-3, forma a: K conserva también lo que esa forma deja como texto
++        _, nuevas, _ = E0.separar_encabezado_pie(lineas, mayusculas_repetidas=repetidos,
++                                                  cierre_m5="a" in _formas_s0_3("m5"))
+         ids_nuevas = {id(l) for l in nuevas}
+         out.extend(l for l in viejas if id(l) not in ids_nuevas)
+     return out
+--- a/selftest_e0.py
++++ b/selftest_e0.py
+@@ -58,13 +58,40 @@
+   k) un caso medido por regla, corriendo e0-r2 sobre nueve TOs: regla 1
+      (garopt, «Sección N –»), 2 (ri_dsf, códigos de actividad que no son
+      puntos), 3 (venliq, primera página de cuerpo; adfsp p. 3, índice por
+-     lista), 4 (ri_spi, marcador de letra), 7 (ri_mmsef, reapertura del
+-     padre), T (ri_dcpc, tabla fundida), 8 (manori, lista de la sección
++     lista), 4 (ri_spi, marcador de letra), 7 (manori, reapertura del
++     padre), T (snp_dd, tablas fundidas), 8 (manori, lista de la sección
+      vetada), 9 (rdbcra, filas del catálogo) y la cobertura exacta;
+   l) casos sintéticos de las reglas 5 (cola de título en la lista de
+      páginas), 6 (partición por renglones en E0 y en E1, con la capacidad
+      del tercer escalón) y 8 (detección de la lista y sus guardas);
+   m) doble corrida de e0-r2 sobre dos de esos TOs, byte a byte igual.
++Desde S0-3, el caso medido del acompañamiento T es snp_dd y el de la regla 7, manori: con el mecanismo 1 de S0-3
++las tablas de ri_dcpc quedan en el cuerpo de 2.4 y 2.5 y T ya no actúa ahí, y ri_mmsef 2.2 no se cierra, así que
++la regla 7 no tiene que reabrirlo (sus unidades no cambian).
++
++Tests de S0-3 de U-SEG-OFICIAL (solo la versión e0-r2; diseño en
++data/experiment/segmentacion_oficial_e0r2/s0_3/):
++  n) la versión legada no cambia: los parámetros de los mecanismos están apagados por default;
++  o) casos sintéticos de cada forma: 1a (y sus dos guardas), 1b, 2 (a, b y c), 3 y 5 (a, b, la cola real y el
++     inciso, c);
++  p) un caso medido por mecanismo, corriendo e0-r2 sobre nueve TOs: 1a (ri_dcpc, nmcief), 2a (seggar), 2c
++     (ri_tar), 3 (ri2_ae), 4a de S0-4 (seguef, que era el caso del mecanismo 4), 5a (fimipyme), 5b (ri2_ci) y 5c
++     (ri_ai), y la cobertura exacta.
++El mecanismo 4 de S0-3 no está desde S0-4 (lo reemplazan las reglas 4a y 4b).
++
++Tests de S0-4 de U-SEG-OFICIAL (solo la versión e0-r2; diseño en
++data/experiment/segmentacion_oficial_e0r2/s0_4/):
++  q) la versión legada no cambia: los parámetros de las reglas de S0-4 están apagados por default, y las listas de
++     TOs son las del diseño (sub-documento sin ri_tsa ni ri2_pm; 4a y 4b fuera de los diez TOs de la tanda 0);
++  r) casos sintéticos: la detección de sub-documentos (anexo, parte, régimen, formulario y circular, con sus
++     guardas: el anexo repetido, la serie de letras, la parte suelta, la continuación de un formulario y la
++     circular suelta), la lectura con sub-documentos (prefijo, numeración desde cero y herencia del rótulo), la
++     guarda de columna dentro del sub-documento, 4a, 4b (con su guarda del verbo) y los apartados;
++  s) un caso medido por regla, corriendo e0-r2 sobre siete TOs: sub-documento (ri_sef, nmcief, ri_ccna,
++     ri_icpipsp, ri_cc: los cinco casos de prueba del FRENO S0-3), sdg3 (nmcief), 4b (efemin), apartados (ri_ai),
++     y la cobertura exacta.
++Desde S0-4 cambian dos casos medidos de etapas anteriores: el de la regla 4 cuenta 93 unidades de ri_spi (4b retira
++las intros de un renglón de B.1 y B.3) y el de 1a en nmcief lee nmcief::A2::3.2.1 (el punto es del Anexo II).
+ """
+ 
+ from __future__ import annotations
+@@ -297,7 +324,7 @@
+ # ------------------------------------------- S0 de U-SEG-OFICIAL (e0-r2)
+ 
+ PDFS_PARTICION = AQUI.resolve().parents[1] / "escalado_prep" / "pdfs"
+-TOS_S0 = ("garopt", "ri_dsf", "venliq", "adfsp", "ri_spi", "ri_mmsef", "ri_dcpc", "manori", "rdbcra")
++TOS_S0 = ("garopt", "ri_dsf", "venliq", "adfsp", "ri_spi", "ri_mmsef", "snp_dd", "manori", "rdbcra")
+ 
+ 
+ class _ManifiestoParticion:
+@@ -362,13 +389,18 @@
+           "venliq::1.1.1" in ids["venliq"] and "venliq::S1::chapeau_seccion" not in ids["venliq"])
+     check("regla 3, ampliación: adfsp p. 3 (una lista entera de la regla 8) es índice: sin adfsp::S6",
+           "adfsp::S6" not in ids["adfsp"] and "adfsp::6.1" in ids["adfsp"])
+-    check("regla 4: ri_spi en 95 unidades por el marcador de letra (ri_spi::A.1.1)",
+-          len(ids["ri_spi"]) == 95 and "ri_spi::A.1.1" in ids["ri_spi"]
++    # desde S0-4, la regla 4b junta al título el renglón que completa los de B.1 y B.3 y retira sus dos intros de un
++    # renglón: 93 unidades (95 en S0-2 y S0-3)
++    check("regla 4: ri_spi en 93 unidades por el marcador de letra (ri_spi::A.1.1)",
++          len(ids["ri_spi"]) == 93 and "ri_spi::A.1.1" in ids["ri_spi"]
+           and bool(avisos("ri_spi", "marcador_letra_r2")), f"{len(ids['ri_spi'])} unidades")
+-    check("regla 7: ri_mmsef reabre el padre (ri_mmsef::2.2.1, aviso padre_reabierto_r2)",
+-          "ri_mmsef::2.2.1" in ids["ri_mmsef"] and bool(avisos("ri_mmsef", "padre_reabierto_r2")))
+-    check("acompañamiento T: ri_dcpc funde una tabla partida en intersticiales",
+-          bool(avisos("ri_dcpc", "tabla_fundida_en_un_intersticial_r2")))
++    # desde S0-3, el mecanismo 1a no cierra ri_mmsef 2.2 (su cuerpo está en la columna del rótulo) y la regla 7 ya
++    # no actúa ahí; las unidades son las mismas. El caso medido de la reapertura pasa a manori 1.5 (p. 39)
++    check("regla 7: manori reabre el padre (manori::1.5.2, aviso padre_reabierto_r2); ri_mmsef::2.2.1 sigue",
++          "manori::1.5.2" in ids["manori"] and bool(avisos("manori", "padre_reabierto_r2"))
++          and "ri_mmsef::2.2.1" in ids["ri_mmsef"])
++    check("acompañamiento T: snp_dd funde tablas partidas en intersticiales",
++          bool(avisos("snp_dd", "tabla_fundida_en_un_intersticial_r2")))
+     vetos = [r for r in est["manori"]["rechazos_header"] if r["motivo"] == "lista_de_puntos_r8"]
+     check("regla 8: manori veta los 10 rótulos de sus listas de sección (pp. 3 y 57) y 1.1.1 encuentra padre",
+           len(vetos) == 10 and sorted({r["pagina"] for r in vetos}) == [3, 57] and "manori::1.1.1" in ids["manori"],
+@@ -446,8 +478,405 @@
+           E0.lineas_de_listas_r8([p1, otro], roles) == frozenset())
+     check("regla 3, ampliación: la página que es entera la lista pasa a índice; la de cuerpo, no",
+           E0.paginas_indice_r8([p1, cuerpo], roles) == [E0.ROL_INDICE, E0.ROL_CUERPO])
++
++
++TOS_S03 = ("nmcief", "seggar", "ri_tar", "ri2_ae", "fimipyme", "ri2_ci", "ri_ai", "seguef")
++
++
++def test_s03_legada() -> None:
++    import inspect
++    E0 = correr_e0.E0
++    print("== n) S0-3 de U-SEG-OFICIAL: la versión legada no cambia")
++    p = inspect.signature(E0.parsear_cuerpo).parameters
++    check("parsear_cuerpo: los mecanismos 1, 2 y 5 apagados por default",
++          all(p[k].default == frozenset() for k in ("formas_m1", "formas_m2", "formas_m5")))
++    r = inspect.signature(E0.separar_encabezado_pie).parameters
++    check("separar_encabezado_pie: las tres formas del mecanismo 5 apagadas por default",
++          not any(r[k].default for k in ("cierre_m5", "cola_m5", "zona6_m5")))
++    q = inspect.signature(E0.lineas_de_listas_r8).parameters
++    s = inspect.signature(E0.construir_chunks).parameters
++    check("lineas_de_listas_r8: el mecanismo 3 apagado por default; construir_chunks ya no tiene el mecanismo 4",
++          q["forma4_m3"].default is False and "titulo_texto_m4" not in s)
++
++
++def _parse(paginas, **kw):
++    E0 = correr_e0.E0
++    roles = [E0.ROL_CUERPO] * len(paginas)
++    res = E0.parsear_cuerpo("x", "x.pdf", paginas, roles, mayusculas_repetidas=set(), pie_desde_version=True, **kw)
++    return res, E0.construir_chunks(res)
++
++
++def _texto(chunks, uid):
++    return next((c["texto"] for c in chunks if c["id"] == uid), None)
++
++
++def test_s03_sinteticos() -> None:
++    E0 = correr_e0.E0
++    print("== o) S0-3 de U-SEG-OFICIAL: casos sintéticos de los cinco mecanismos")
++    largo = "Texto de la norma que corre en la columna del rótulo y ocupa un renglón entero de prosa."
++    # mecanismo 1, forma a: diseño plano (rótulos y cuerpo en la misma columna)
++    p = [_linea("Sección 1. Criterios generales.", 1, 30.0),
++         _linea("1.1. Criterios de imputación.", 1, 50.0), _linea(largo, 1, 64.0),
++         _linea("1.1.1. Baja en cuentas.", 1, 90.0), _linea(largo, 1, 104.0), _linea(largo, 1, 118.0),
++         _linea("1.1.2. Medición.", 1, 140.0), _linea(largo, 1, 154.0)]
++    _, ch_h = _parse([p])
++    _, ch_a = _parse([p], formas_m1=frozenset({"a"}))
++    check("mecanismo 1a: la prosa que sigue al rótulo en su columna es cuerpo del punto (x::1.1.1, x::1.1.2)",
++          _texto(ch_a, "x::1.1.1") == "1.1.1. Baja en cuentas.\n" + largo + "\n" + largo
++          and _texto(ch_a, "x::1.1.2") == "1.1.2. Medición.\n" + largo
++          and _texto(ch_h, "x::1.1.1") == "1.1.1. Baja en cuentas.",
++          str([c["id"] for c in ch_a]))
++    # guarda: lista de ítems de un renglón; la prosa que sigue al último es el cierre del padre
++    q = [_linea("Sección 1. Aportes.", 1, 30.0), _linea("1.1. Aportes de capital.", 1, 50.0),
++         _linea(largo, 1, 64.0), _linea("1.1.1. títulos valores públicos nacionales;", 1, 90.0),
++         _linea("1.1.2. instrumentos de regulación monetaria;", 1, 104.0),
++         _linea("1.1.3. depósitos de la entidad.", 1, 118.0), _linea(largo, 1, 132.0)]
++    _, ch_q = _parse([q], formas_m1=frozenset({"a"}))
++    check("mecanismo 1a, guarda: tras una lista de renglones sueltos, la prosa sigue siendo el cierre del padre",
++          _texto(ch_q, "x::1.1::cierre") == largo and _texto(ch_q, "x::1.1.3") == "1.1.3. depósitos de la entidad.")
++    # guarda: sangría colgante (el cuerpo de un hermano corre más adentro que su rótulo)
++    g = [_linea("Sección 2. Excepciones.", 1, 30.0), _linea("2.7. Excepción.", 1, 50.0, x0=60.0),
++         _linea(largo, 1, 64.0, x0=80.0),
++         _linea("2.7.1. El ejercicio de la excepción se efectúe dentro del plazo previsto para la", 1, 90.0, x0=80.0),
++         _linea("liquidación de los fondos.", 1, 104.0, x0=100.0),
++         _linea("2.7.2. La utilización de este mecanismo deberá resultar neutral.", 1, 118.0, x0=80.0),
++         _linea(largo, 1, 132.0, x0=80.0)]
++    _, ch_g = _parse([g], formas_m1=frozenset({"a"}))
++    check("mecanismo 1a, guarda: con sangría colgante, la prosa a la altura del rótulo es del padre (cierre del 2.7)",
++          _texto(ch_g, "x::2.7::cierre") == largo)
++    # mecanismo 1, forma b: el cuerpo del punto corre a la izquierda de su rótulo
++    b = [_linea("Sección 7. Diseño de registros.", 1, 30.0), _linea("7.1. Registros.", 1, 50.0, x0=40.0),
++         _linea(largo, 1, 64.0, x0=56.0), _linea("7.1.1. Registro de cabecera.", 1, 90.0, x0=64.0),
++         _linea("Campo 1 2 3", 1, 104.0, x0=48.0), _linea("1. Identificador de registro", 1, 118.0, x0=42.0),
++         _linea(largo, 1, 132.0, x0=57.0)]
++    _, ch_b0 = _parse([b])
++    _, ch_b = _parse([b], formas_m1=frozenset({"b"}))
++    check("mecanismo 1b: un punto con el cuerpo a la izquierda de su rótulo no devuelve prosa al padre",
++          largo in (_texto(ch_b, "x::7.1.1") or "") and largo not in (_texto(ch_b0, "x::7.1.1") or ""))
++    # mecanismo 2 (modo sin raíz): las tres formas de la línea que abre una raíz
++    m2 = [_linea("1. Fideicomiso accionista.", 1, 50.0, x0=70.0), _linea(largo, 1, 64.0, x0=90.0),
++          _linea("2.Integración de los aportes.", 1, 90.0, x0=70.0), _linea(largo, 1, 104.0, x0=90.0),
++          _linea("3- DISPOSICIONES FINALES", 1, 130.0, x0=70.0), _linea(largo, 1, 144.0, x0=90.0),
++          _linea("4. CUADRO 1 – DATOS DE LAS CUENTAS", 1, 170.0, x0=85.0), _linea(largo, 1, 184.0, x0=90.0)]
++    r0, _ = _parse([m2], modo_sin_raiz=True)
++    r2, _ = _parse([m2], modo_sin_raiz=True, formas_m2=frozenset({"a", "b", "c"}))
++    check("mecanismo 2: sin las formas, la raíz 1 sola; con a, b y c, las raíces 1 a 4",
++          [s.numero for s in r0.secciones] == ["1"] and [s.numero for s in r2.secciones] == ["1", "2", "3", "4"],
++          f"{[s.numero for s in r0.secciones]} / {[s.numero for s in r2.secciones]}")
++    check("mecanismo 2: cada raíz nueva declarada por su forma (aviso raiz_m2)",
++          [(a["numero"], a["forma"]) for a in r2.avisos if a["tipo"] == "raiz_m2"] == [("2", "a"), ("3", "b"), ("4", "c")])
++    # mecanismo 3: lista de rótulos de un nivel (índice de un anexo) y su página de cuerpo
++    titulos = ["Designación.", "Condiciones para el ejercicio.", "Exclusión del registro.", "Baja del registro."]
++    p1 = [_linea("DISPOSICIONES GENERALES", 1, 40.0)] + [
++        _linea(f"{i + 1}. {t.rstrip('.')}", 1, 60.0 + 20 * i, x0=76.0, ngaps=1) for i, t in enumerate(titulos)]
++    p2 = []
++    for i, t in enumerate(titulos):
++        p2 += [_linea(f"{i + 1}. {t}", 2, 50.0 + 70 * i, x0=76.0)] + [
++            _linea(largo, 2, 64.0 + 70 * i + 12 * k, x0=90.0) for k in range(4)]
++    roles = [E0.ROL_CUERPO, E0.ROL_CUERPO]
++    check("mecanismo 3: sin la cuarta forma, la lista de un nivel no se detecta; con ella, sí, y la página es índice",
++          E0.lineas_de_listas_r8([p1, p2], roles) == frozenset()
++          and E0.lineas_de_listas_r8([p1, p2], roles, forma4_m3=True) == frozenset((1, 60.0 + 20 * i) for i in range(4))
++          and E0.paginas_indice_r8([p1, p2], roles, forma4_m3=True) == [E0.ROL_INDICE, E0.ROL_CUERPO])
++    # mecanismo 5: la zona de encabezado
++    enc = [_linea("LÍNEA DE FINANCIAMIENTO", 1, 72.0, x0=220.0), _linea("B.C.R.A. PRODUCTIVA", 1, 85.0, x0=83.0),
++           _linea("Sección 1. Entidades alcanzadas.", 1, 98.0, x0=139.0),
++           _linea("Las entidades financieras que estén comprendidas en el Grupo A conforme a lo previsto en la",
++                  1, 124.0, x0=76.0),
++           _linea("Sección 4. de las normas sobre autoridades, para lo cual el indicador del", 1, 137.0, x0=76.0),
++           _linea("punto 4.1. de esas normas deberá computarse.", 1, 150.0, x0=76.0)]
++    c0, _, _ = E0.separar_encabezado_pie(enc, mayusculas_repetidas=set())
++    ca, _, _ = E0.separar_encabezado_pie(enc, mayusculas_repetidas=set(), cierre_m5=True)
++    check("mecanismo 5a: una segunda línea de sección que no se repite no cierra el encabezado",
++          c0[0].texto.startswith("punto 4.1.") and ca[0].texto.startswith("Las entidades financieras"))
++    bc = [_linea("REGIMEN INFORMATIVO", 1, 72.0, x0=259.0), _linea("B.C.R.A. CAJAS DE CRÉDITO", 1, 87.0, x0=91.0),
++          _linea("Sección 3. Capitales Mínimos", 1, 103.0, x0=152.0),
++          _linea("4. Facilidades Otorgadas por el B.C.R.A.", 1, 128.0, x0=76.0),
++          _linea("4.1. Normas de procedimiento", 1, 166.0, x0=90.0)]
++    b0, _, _ = E0.separar_encabezado_pie(bc, mayusculas_repetidas=set())
++    ba, _, _ = E0.separar_encabezado_pie(bc, mayusculas_repetidas=set(), cierre_m5=True)
++    check("mecanismo 5a: después de la sección, un renglón con «B.C.R.A.» que no se repite es texto",
++          b0[0].texto.startswith("4.1.") and ba[0].texto.startswith("4. Facilidades"))
++    cola = [_linea("NORMAS MINIMAS", 1, 76.0, x0=143.0), _linea("B.C.R.A. DE CAMBIO", 1, 89.0, x0=83.0),
++            _linea("Sección 1. Aspectos generales", 1, 102.0, x0=139.0),
++            _linea("abordando las expectativas, las responsabilidades de los indivi-", 1, 116.0, x0=184.0),
++            _linea("duos y grupos, teniendo en cuenta la clasificación y confidenciali-", 1, 130.0, x0=184.0),
++            _linea("dad de la información.", 1, 144.0, x0=184.0)]
++    k0, _, _ = E0.separar_encabezado_pie(cola, mayusculas_repetidas=set())
++    kb, _, _ = E0.separar_encabezado_pie(cola, mayusculas_repetidas=set(), cola_m5=True)
++    check("mecanismo 5b: un renglón en la columna del cuerpo, seguido de otro a interlineado, no es cola del título",
++          k0[0].texto.startswith("dad de") and kb[0].texto.startswith("abordando"))
++    real = [_linea("TEXTO ORDENADO", 1, 76.0, x0=200.0), _linea("B.C.R.A.", 1, 89.0, x0=83.0),
++            _linea("Sección 5. Garantía de los depósitos y Superintendencia de Entidades Financieras y", 1, 102.0,
++                   x0=139.0), _linea("Cambiarias.", 1, 115.0, x0=139.0),
++            _linea("5.1. Depósitos comprendidos.", 1, 140.0, x0=76.0)]
++    _, _, sec_r = E0.separar_encabezado_pie(real, mayusculas_repetidas=set(), cola_m5=True)
++    inc = [_linea("B.C.R.A.", 1, 89.0, x0=83.0), _linea("Sección 7. Diseño de registros", 1, 102.0, x0=139.0),
++           _linea("ii) Cabecera de lote", 1, 115.0, x0=175.0), _linea(largo, 1, 140.0, x0=76.0)]
++    i0, _, _ = E0.separar_encabezado_pie(inc, mayusculas_repetidas=set())
++    ib, _, _ = E0.separar_encabezado_pie(inc, mayusculas_repetidas=set(), cola_m5=True)
++    check("mecanismo 5b: la cola real del título sigue siéndolo; un inciso «ii)» no es cola",
++          sec_r.endswith("Cambiarias.") and i0[0].texto == largo and ib[0].texto == "ii) Cabecera de lote")
++    ai = [_linea("REGIMEN INFORMATIVO CONTABLE MENSUAL", 1, 80.0, x0=242.0),
++          _linea("6. TEXTO ORDENADO DEL REGIMEN INFORMATIVO", 1, 93.0, x0=189.0),
++          _linea("SOBRE LA RELACION PARA LOS ACTIVOS INMOVILIZADOS", 1, 105.0, x0=183.0),
++          _linea("B.C.R.A.", 1, 108.0, x0=98.0), _linea("CONCEPTOS. (R.I. – A.I.)", 1, 118.0, x0=302.0),
++          _linea("Sección 2. Instrucciones generales", 1, 131.0, x0=172.0),
++          _linea("2.1. La información tendrá frecuencia mensual.", 1, 198.0, x0=112.0)]
++    _, _, s0 = E0.separar_encabezado_pie(ai, mayusculas_repetidas=set())
++    zc, _, sc = E0.separar_encabezado_pie(ai, mayusculas_repetidas=set(), zona6_m5=True)
++    check("mecanismo 5c: con el recuadro en los cinco primeros renglones, la sección del sexto se abre",
++          s0 is None and sc == "Sección 2. Instrucciones generales" and zc[0].texto.startswith("2.1."))
+ 
+ 
++def test_s03_casos(d: Path) -> None:
++    print(f"== p) S0-3 de U-SEG-OFICIAL: un caso medido por mecanismo (e0-r2 sobre {len(TOS_S03)} TOs y ri_dcpc)")
++    correr_e0.correr(d, manifiesto=_ManifiestoParticion(TOS_S03 + ("ri_dcpc",)), version_e0="e0-r2")
++    ch = {to: cargar(d, f"chunks_{to}.json") for to in TOS_S03 + ("ri_dcpc",)}
++
++    def txt(to: str, uid: str) -> str:
++        return next((c["texto"] for c in ch[to] if c["id"] == uid), "")
++
++    check("mecanismo 1a: ri_dcpc::3.1.1 lleva su cuerpo («A los fines de aplicar…»)",
++          "A los fines de aplicar las disposiciones de baja" in txt("ri_dcpc", "ri_dcpc::3.1.1"))
++    # desde S0-4, el punto es del Anexo II de nmcief (regla de sub-documento): nmcief::A2::3.2.1
++    check("mecanismo 1a: nmcief::A2::3.2.1 lleva su cuerpo («El sistema contable constituye…»)",
++          "El sistema contable constituye" in txt("nmcief", "nmcief::A2::3.2.1"))
++    check("mecanismo 2a: seggar abre la sección 4 («4.Integración de los aportes.») y el cierre de S3 ya no la lleva",
++          "Los aportes normales" in txt("seggar", "seggar::S4")
++          and "Integración" not in txt("seggar", "seggar::S3::cierre"))
++    check("mecanismo 2c: ri_tar abre los cuadros (ri_tar::2.1.1) y ri_tar::1.1 ya no se lleva el documento",
++          bool(txt("ri_tar", "ri_tar::2.1.1")) and "CUADRO 1" not in txt("ri_tar", "ri_tar::1.1"))
++    pies = cargar(d, "pies_ri2_ae.json")
++    check("mecanismo 3: ri2_ae p. 3 es índice y ri2_ae::S1 es la sección 1 del cuerpo",
++          next(f["rol"] for f in pies["paginas_detalle"] if f["pagina"] == 3) == "indice"
++          and "deberán informar a la Gerencia de Control" in txt("ri2_ae", "ri2_ae::S1"))
++    check("regla 4a de S0-4 (el caso del mecanismo 4 de S0-3): seguef::2.1.6::intro empieza en su rótulo",
++          txt("seguef", "seguef::2.1.6::intro").startswith("2.1.6. Cuando se decida"))
++    check("mecanismo 5a: fimipyme::S1 lleva el comienzo de su párrafo («Las entidades financieras que estén…»)",
++          "Las entidades financieras que estén comprendidas" in txt("fimipyme", "fimipyme::S1"))
++    check("mecanismo 5b: ri2_ci::1.1.1.4 lleva sus dos renglones («abordando las expectativas…»)",
++          "abordando las expectativas" in txt("ri2_ci", "ri2_ci::1.1.1.4"))
++    check("mecanismo 5c: ri_ai abre la sección 2 (ri_ai::2.1) y ri_ai::1.2.2 ya no la lleva",
++          bool(txt("ri_ai", "ri_ai::2.1")) and "Sección 2." not in txt("ri_ai", "ri_ai::1.2.2"))
++    cob = cargar(d, "cobertura.json")
++    check("cobertura exacta en los nueve TOs", all(cob[to]["cobertura_exacta"] for to in TOS_S03 + ("ri_dcpc",)))
++
++
++TOS_S04 = ("ri_sef", "nmcief", "ri_ccna", "ri_icpipsp", "ri_cc", "ri_ai", "efemin")
++TOS_TANDA0 = frozenset({"cap", "cla", "ext", "pro", "ric", "ctacte", "lingob", "polcre", "pagjub", "docvig"})
++
++
++def test_s04_legada() -> None:
++    import inspect
++    E0 = correr_e0.E0
++    print("== q) S0-4 de U-SEG-OFICIAL: la versión legada no cambia; listas de TOs")
++    p = inspect.signature(E0.parsear_cuerpo).parameters
++    check("parsear_cuerpo: sub-documento, sdg3 y apartados apagados por default",
++          p["subdocumentos"].default is None and p["g3_subdoc"].default is False
++          and p["apartados_seccion"].default is False)
++    s = inspect.signature(E0.construir_chunks).parameters
++    check("construir_chunks: 4a y 4b apagadas por default",
++          s["oracion_titulo_4a"].default is False and s["titulo_envuelto_4b"].default is False)
++    check("listas de S0-4: sub-documento en los cinco TOs del diseño (sin ri_tsa ni ri2_pm), apartados en ri_ai, "
++          "4a y 4b fuera de la tanda 0, y el mecanismo 4 de S0-3 fuera de las reglas",
++          correr_e0.TOS_SUBDOCUMENTO_S0_4 == frozenset({"ri_sef", "nmcief", "ri_ccna", "ri_icpipsp", "ri_cc"})
++          and correr_e0.TOS_APARTADOS_S0_4 == frozenset({"ri_ai"})
++          and correr_e0.TOS_TANDA0_SIN_4AB == TOS_TANDA0
++          and "m4" not in correr_e0.REGLAS_S0_3
++          and correr_e0.REGLAS_S0_4 == frozenset({"sd", "sdg3", "4a", "4b", "ap"}))
++
++
++def _enc(pagina: int, *extra):
++    """Zona de encabezado de una página sintética: título del TO, «B.C.R.A.» y los renglones extra."""
++    out = [_linea("NORMAS MINIMAS DE PRUEBA", pagina, 72.0, x0=200.0), _linea("B.C.R.A.", pagina, 85.0, x0=83.0)]
++    for k, t in enumerate(extra):
++        out.append(_linea(t, pagina, 98.0 + 13 * k, x0=140.0))
++    return out
++
++
++def test_s04_sinteticos() -> None:
++    E0 = correr_e0.E0
++    print("== r) S0-4 de U-SEG-OFICIAL: casos sintéticos")
++    largo = "Texto de la norma que corre en la columna del cuerpo y ocupa un renglón entero de prosa."
++    # detección: anexo en el encabezado, partes I y II, anexo repetido, anexo II con una parte suelta, serie de letras
++    pags = [
++        _enc(1, "ANEXO I") + [_linea("I.- CONCEPTOS BÁSICOS", 1, 130.0, x0=76.0),
++                              _linea("1. Control interno.", 1, 150.0), _linea(largo, 1, 164.0, x0=90.0)],
++        _enc(2, "ANEXO I") + [_linea("II.- COMITÉ DE AUDITORÍA", 2, 130.0, x0=76.0),
++                              _linea("1. Integración.", 2, 150.0), _linea(largo, 2, 164.0, x0=90.0)],
++        _enc(3, "Anexo II") + [_linea("I. Bienes diversos", 3, 130.0, x0=76.0), _linea(largo, 3, 150.0, x0=90.0)],
++        _enc(4, "ANEXO H") + [_linea(largo, 4, 130.0, x0=90.0)],
++        _enc(5, "ANEXO I") + [_linea(largo, 5, 130.0, x0=90.0)]]
++    roles = [E0.ROL_CUERPO] * len(pags)
++    lim = E0.limites_subdocumento(pags, roles)
++    check("sub-documento: anexo I con sus partes I y II, anexo II; el anexo repetido, la parte suelta y la serie de "
++          "letras («ANEXO I» tras «ANEXO H») no abren sub-documento",
++          [(d["prefijo"], d["forma"], d["padre"]) for d in lim]
++          == [("A1", "anexo", None), ("A1P1", "parte", "A1"), ("A1P2", "parte", "A1"), ("A2", "anexo", None)],
++          str([(d["prefijo"], d["forma"]) for d in lim]))
++    # régimen, formulario (con su continuación) y circular (y la circular suelta de otro anexo)
++    reg = [_enc(1, "4 - REGULACIONES Y RELACIONES TÉCNICAS") + [_linea(largo, 1, 130.0)],
++           _enc(2, "5– PREVENCION DEL LAVADO DE DINERO") + [_linea(largo, 2, 130.0)],
++           [_linea("RÉGIMEN INFORMATIVO PARA PUBLICACIÓN", 3, 72.0, x0=200.0),
++            _linea("PARA CAJAS DE CRÉDITO (R.I. – P.)", 3, 84.0, x0=258.0), _linea(largo, 3, 130.0)]]
++    check("sub-documento: régimen por «N - TÍTULO» y por la sigla «(R.I. – P.)»",
++          [d["prefijo"] for d in E0.limites_subdocumento(reg, [E0.ROL_CUERPO] * 3)] == ["R4", "R5", "RIP"])
++    form = [_enc(1, "ANEXO I") + [_linea("1. Toma de conocimiento.", 1, 130.0)],
++            [_linea("BANCO CENTRAL DE LA REPÚBLICA ARGENTINA", 2, 72.0), _linea("DECLARACIÓN JURADA", 2, 84.0),
++             _linea("1. No soy socio de la entidad.", 2, 130.0)],
++            [_linea("SOLICITUD Cont. 2", 3, 70.0), _linea("BANCO CENTRAL DE LA REPUBLICA ARGENTINA", 3, 75.0),
++             _linea(largo, 3, 130.0)],
++            [_linea("BANCO CENTRAL DE LA REPÚBLICA ARGENTINA", 4, 72.0), _linea("SOLICITUD DE INSCRIPCIÓN", 4, 84.0),
++             _linea(largo, 4, 130.0)]]
++    check("sub-documento: formulario por el membrete; la página con «Cont. 2» sigue el formulario anterior",
++          [d["prefijo"] for d in E0.limites_subdocumento(form, [E0.ROL_CUERPO] * 4)] == ["A1", "F1", "F2"])
++    circ = [_enc(1, "ANEXO I") + [_linea("Circular SINAP 1. Sistema Nacional de Pagos", 1, 130.0),
++                                  _linea("1. Exclusiones - Corroborar.", 1, 150.0),
++                                  _linea("Circular CONAU 1. Régimen Informativo", 1, 170.0),
++                                  _linea("1. Proveedores de servicios.", 1, 190.0)],
++            _enc(2, "ANEXO II") + [_linea("Circular RUNOR 1. Protección de los usuarios", 2, 130.0)]]
++    check("sub-documento: dos circulares en el mismo anexo abren C1 y C2; una suelta no",
++          [d["prefijo"] for d in E0.limites_subdocumento(circ, [E0.ROL_CUERPO] * 2)] == ["A1", "A1C1", "A1C2", "A2"])
++    # lectura con sub-documentos (modo sin raíz): prefijo, numeración desde cero y herencia del rótulo
++    sd = [[_linea("Preámbulo de la norma con su texto corrido en la columna del cuerpo de la página.", 1, 100.0),
++           _linea("I. Información solicitada", 1, 130.0, x0=76.0), _linea("1. Tipo de trámite.", 1, 150.0, x0=76.0),
++           _linea(largo, 1, 164.0, x0=90.0), _linea("2. Etapa del trámite.", 1, 190.0, x0=76.0),
++           _linea(largo, 1, 204.0, x0=90.0)],
++          [_linea("II. Otras informaciones.", 2, 100.0, x0=76.0),
++           _linea("1. Información adicional.", 2, 130.0, x0=76.0), _linea(largo, 2, 144.0, x0=90.0)]]
++    rs = [E0.ROL_CUERPO] * 2
++    lim_sd = E0.limites_subdocumento(sd, rs)
++    r0 = E0.parsear_cuerpo("x", "x.pdf", sd, rs, modo_sin_raiz=True, mayusculas_repetidas=set())
++    r1 = E0.parsear_cuerpo("x", "x.pdf", sd, rs, modo_sin_raiz=True, mayusculas_repetidas=set(),
++                           subdocumentos=lim_sd)
++    ch0 = {c["id"]: c for c in E0.construir_chunks(r0)}
++    ch1 = {c["id"]: c for c in E0.construir_chunks(r1)}
++    check("sub-documento: sin la regla, la parte II queda dentro del ítem 2; con ella, cada parte con su espacio "
++          "de ids",
++          "x::S2" in ch0 and "II. Otras informaciones." in ch0["x::S2"]["texto"]
++          and set(ch1) == {"x::S0", "x::P1::S0", "x::P1::S1", "x::P1::S2", "x::P2::S0", "x::P2::S1"},
++          str(sorted(ch1)))
++    check("sub-documento: la unidad hereda el rótulo de su sub-documento; la raíz «0» no se hereda a sí misma",
++          ch1["x::P2::S1"]["herencia"][0]["texto"] == "II. Otras informaciones."
++          and ch1["x::P2::S1"]["herencia"][0]["unidad_origen"] == "P2"
++          and ch1["x::P2::S0"]["herencia"] == [] and ch1["x::P2::S0"]["texto"].startswith("II. Otras"))
++    cob = E0.verificar_cobertura(r1)
++    check("sub-documento: cobertura exacta", cob["cobertura_exacta"], str(cob))
++    # sdg3: dentro de un sub-documento, la raíz que sucede exactamente a la anterior y está más adentro
++    g = [[_linea("I. Comité", 1, 100.0, x0=76.0), _linea("1. Integración.", 1, 120.0, x0=76.0),
++          _linea(largo, 1, 134.0, x0=100.0), _linea("2. Periodicidad de las reuniones", 1, 160.0, x0=86.0),
++          _linea(largo, 1, 174.0, x0=100.0)],
++         [_linea("II. Auditoría", 2, 100.0, x0=76.0), _linea(largo, 2, 120.0, x0=100.0)]]
++    lg = E0.limites_subdocumento(g, [E0.ROL_CUERPO] * 2)
++    sin = E0.parsear_cuerpo("x", "x.pdf", g, [E0.ROL_CUERPO] * 2, modo_sin_raiz=True, mayusculas_repetidas=set(),
++                            subdocumentos=lg)
++    con = E0.parsear_cuerpo("x", "x.pdf", g, [E0.ROL_CUERPO] * 2, modo_sin_raiz=True, mayusculas_repetidas=set(),
++                            subdocumentos=lg, g3_subdoc=True)
++    check("sdg3: sin la guarda nueva, la raíz 2 (10 pt más adentro) se rechaza; con ella, se abre y se declara",
++          [s.numero for s in sin.secciones if s.prefijo == "P1"] == ["0", "1"]
++          and [s.numero for s in con.secciones if s.prefijo == "P1"] == ["0", "1", "2"]
++          and any(a["tipo"] == "raiz_g3_subdocumento_sd" for a in con.avisos))
++    # 4a: oración tomada como título (el caso del mecanismo 4)
++    m4 = [_linea("Sección 2. Dispositivos de seguridad.", 1, 30.0),
++          _linea("2.1. Sistema de monitoreo.", 1, 50.0, x0=76.0), _linea(largo, 1, 64.0, x0=98.0),
++          _linea("2.1.6. Cuando se decida contar con video vigilancia remota, deberán complementar su seguri-",
++                 1, 90.0, x0=98.0),
++          _linea("dad con dispositivos que dificulten la accesibilidad al dinero, como ser:", 1, 104.0, x0=129.0),
++          _linea("2.1.6.1. Sistema de alerta (último billete): consiste en la emisión de una alerta.", 1, 130.0,
++                 x0=133.0)]
++    r4, ch4 = _parse([m4])
++    ch4a = E0.construir_chunks(r4, oracion_titulo_4a=True)
++    intro = _texto(ch4a, "x::2.1.6::intro") or ""
++    hoja = next((c for c in ch4a if c["id"] == "x::2.1.6.1"), {})
++    check("4a: la intro de 2.1.6 empieza en su rótulo y el encabezado heredado es solo el número",
++          intro.startswith("2.1.6. Cuando se decida") and (_texto(ch4, "x::2.1.6::intro") or "").startswith("dad con")
++          and any(t["texto"] == "2.1.6." for t in hoja.get("herencia", []))
++          and E0.clase_titulo_4ab(next(n for n in r4.secciones[0].hijos[0].hijos if n.numero == "2.1.6"))[0] == "4a")
++    # 4b: título envuelto, con la intro de un renglón y con una intro más larga; guarda del verbo
++    tb = [_linea("Sección 1. Titulares.", 1, 30.0),
++          _linea("1.3. Identificación de los titulares de cuentas y de las personas autorizadas a operar en", 1, 50.0,
++                 x0=76.0),
++          _linea("ellas.", 1, 64.0, x0=98.0),
++          _linea("1.3.1. Personas humanas.", 1, 90.0, x0=98.0), _linea(largo, 1, 104.0, x0=120.0),
++          _linea("1.4. Reporte de otras circunstancias que modifiquen las obligaciones con el", 1, 130.0, x0=76.0),
++          _linea("exterior del importador.", 1, 144.0, x0=98.0), _linea(largo, 1, 158.0, x0=98.0),
++          _linea("1.4.1. Plazos.", 1, 180.0, x0=98.0), _linea(largo, 1, 194.0, x0=120.0),
++          _linea("1.5. La letra de cambio extendida a favor de una persona determinada, que no posea la", 1, 220.0,
++                 x0=76.0),
++          _linea("cláusula “no a la orden”, será transmisible por endoso.", 1, 234.0, x0=98.0),
++          _linea("1.5.1. Endoso.", 1, 260.0, x0=98.0), _linea(largo, 1, 274.0, x0=120.0)]
++    rb, chb0 = _parse([tb])
++    chb = E0.construir_chunks(rb, titulo_envuelto_4b=True, oracion_titulo_4a=True)
++    ids_b = {c["id"]: c for c in chb}
++    h131 = [t["texto"] for t in ids_b["x::1.3.1"]["herencia"] if t["tipo"] == "encabezado"]
++    check("4b: el renglón que completa el título se junta al título y la intro de un renglón no se emite",
++          "x::1.3::intro" in {c["id"] for c in chb0} and "x::1.3::intro" not in ids_b
++          and h131[-1] == "1.3. Identificación de los titulares de cuentas y de las personas autorizadas a operar "
++                          "en\nellas.", str(h131))
++    check("4b: con más intro, la intro sigue sin ese renglón",
++          ids_b["x::1.4::intro"]["texto"] == largo and _texto(chb0, "x::1.4::intro").startswith("exterior del"))
++    check("4b, guarda: un renglón con verbo («será transmisible») no se junta; la oración es 4a",
++          ids_b["x::1.5::intro"]["texto"].startswith("1.5. La letra de cambio")
++          and any(t["texto"] == "1.5." for t in ids_b["x::1.5.1"]["herencia"]))
++    # apartados de una sección sin puntos (lectura vigente)
++    ap = [_linea("REGIMEN INFORMATIVO", 1, 72.0, x0=226.0), _linea("B.C.R.A.", 1, 85.0, x0=83.0),
++          _linea("Sección 4. Determinación de la relación", 1, 98.0, x0=139.0),
++          _linea("1. Posición", 1, 130.0, x0=76.0),
++          _linea("a) General (sin computar el código 107):", 1, 150.0, x0=90.0),
++          _linea("2. Franquicias", 1, 180.0, x0=76.0), _linea(largo, 1, 194.0, x0=90.0)]
++    a0 = E0.parsear_cuerpo("x", "x.pdf", [ap], [E0.ROL_CUERPO], mayusculas_repetidas=set(), pie_desde_version=True)
++    a1 = E0.parsear_cuerpo("x", "x.pdf", [ap], [E0.ROL_CUERPO], mayusculas_repetidas=set(), pie_desde_version=True,
++                           apartados_seccion=True)
++    cha = {c["id"]: c for c in E0.construir_chunks(a1)}
++    check("apartados: sin la regla, «1. Posición» se rechaza fuera de la sección 4; con ella, abre el punto 4.1",
++          any(r["motivo"] == "fuera_de_seccion_4" for r in a0.rechazos_header)
++          and set(cha) == {"x::4.1", "x::4.2"} and cha["x::4.1"]["flags"].get("numero_impreso") == "1"
++          and cha["x::4.1"]["texto"].startswith("1. Posición"), str(sorted(cha)))
++
++
++def test_s04_casos(d: Path) -> None:
++    print(f"== s) S0-4 de U-SEG-OFICIAL: un caso medido por regla (e0-r2 sobre {len(TOS_S04)} TOs)")
++    correr_e0.correr(d, manifiesto=_ManifiestoParticion(TOS_S04), version_e0="e0-r2")
++    ch = {to: {c["id"]: c for c in cargar(d, f"chunks_{to}.json")} for to in TOS_S04}
++
++    def txt(to: str, uid: str) -> str:
++        return ch[to].get(uid, {}).get("texto", "")
++
++    check("sub-documento, ri_sef (fila 58 de S1): el preámbulo ya no trae la parte I; partes I a III y anexos I a "
++          "III",
++          "Información solicitada" not in txt("ri_sef", "ri_sef::S0") and bool(txt("ri_sef", "ri_sef::P1::S1"))
++          and txt("ri_sef", "ri_sef::P2::S0").startswith("II. Requisitos") and bool(txt("ri_sef", "ri_sef::P3::S1"))
++          and txt("ri_sef", "ri_sef::A3::S0").startswith("Anexo III"))
++    check("sub-documento, nmcief (fila 71): el Anexo II con su numeración (nmcief::A2::3.2.1) y la herencia desde "
++          "«Anexo II»",
++          bool(txt("nmcief", "nmcief::A2::3.2.1"))
++          and ch["nmcief"]["nmcief::A2::3.2.1"]["herencia"][0]["texto"] == "Anexo II")
++    check("sdg3, nmcief (fila 71): «4. Periodicidad…» abre su raíz y la 3 ya no la lleva",
++          txt("nmcief", "nmcief::A1P2::S4").startswith("4. Periodicidad")
++          and "Periodicidad" not in txt("nmcief", "nmcief::A1P2::S3"))
++    check("sub-documento, ri_ccna (fila 82): los anexos de la segunda norma (D2) y los formularios (D1F2) con su "
++          "numeración; el Anexo IV ya no lleva los ítems de la declaración jurada",
++          bool(txt("ri_ccna", "ri_ccna::D2A2::3.4.1")) and txt("ri_ccna", "ri_ccna::D1F2::S1").startswith("1. No soy")
++          and "ri_ccna::D1A4::S5" not in ch["ri_ccna"])
++    check("sub-documento, ri_icpipsp (fila 85): la fila 8 de SINAP ya no lleva el bloque CONAU; el Anexo II aparte",
++          bool(txt("ri_icpipsp", "ri_icpipsp::A1C1::S8"))
++          and "CONAU" not in txt("ri_icpipsp", "ri_icpipsp::A1C1::S8")
++          and txt("ri_icpipsp", "ri_icpipsp::A2::S0").startswith("ANEXO II"))
++    check("sub-documento, ri_cc: los tres regímenes (R4, R5 y RIP); R5::S3 es solo la p. 75",
++          bool(txt("ri_cc", "ri_cc::R4::1.1")) and bool(txt("ri_cc", "ri_cc::R5::2.1"))
++          and ch["ri_cc"]["ri_cc::R5::S3"]["paginas"] == [75] and bool(txt("ri_cc", "ri_cc::RIP::S0")))
++    check("apartados, ri_ai: «1. Posición», «2. Franquicias», «3. Incumplimientos» son 4.1 a 4.3",
++          all(f"ri_ai::4.{k}" in ch["ri_ai"] for k in (1, 2, 3)) and "ri_ai::S4" not in ch["ri_ai"]
++          and ch["ri_ai"]["ri_ai::4.1"]["flags"].get("numero_impreso") == "1")
++    hijo = next(c for i, c in ch["efemin"].items() if i.startswith("efemin::1.3.1.") and c["tipo"] == "punto_terminal")
++    check("4b, efemin 1.3.1 (uno de los 30 títulos partidos de un renglón): sin intro y con el título entero",
++          "efemin::1.3.1::intro" not in ch["efemin"]
++          and any(t["texto"].endswith("abiertas en las cajas de crédito cooperativas.") for t in hijo["herencia"]))
++    cob = cargar(d, "cobertura.json")
++    check(f"cobertura exacta en los {len(TOS_S04)} TOs", all(cob[to]["cobertura_exacta"] for to in TOS_S04))
++
++
+ def test_s0_doble(base: Path) -> None:
+     print("== m) S0 de U-SEG-OFICIAL: doble corrida de e0-r2, byte a byte")
+     for nombre in ("a", "b"):
+@@ -483,6 +912,12 @@
+     test_s0_casos(base_s0 / "casos")
+     test_s0_sinteticos()
+     test_s0_doble(base_s0)
++    test_s03_legada()
++    test_s03_sinteticos()
++    test_s03_casos(base_s0 / "casos_s03")
++    test_s04_legada()
++    test_s04_sinteticos()
++    test_s04_casos(base_s0 / "casos_s04")
+ 
+     total = len(RESULTADOS)
+     ok = sum(1 for _, b, _ in RESULTADOS if b)

@@ -1,0 +1,17 @@
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -128,6 +128,14 @@
+ REGLAS_S0_4 = frozenset({"sd", "sdg3", "sdmax", "4a", "4b", "ap"})
+ TOS_SUBDOCUMENTO_S0_4 = frozenset({"ri_sef", "nmcief", "ri_ccna", "ri_icpipsp", "ri_cc"})
+ TOS_APARTADOS_S0_4 = frozenset({"ri_ai"})
++# Interruptores del prototipo de S0-4 (no van al repo): S0_4_REGLAS, lista separada por comas de las reglas que corren
++# (de REGLAS_S0_3 y de REGLAS_S0_4); sin la variable, o con TODAS, corren todas.
++import os as _os_prototipo
++_sel_prototipo = _os_prototipo.environ.get("S0_4_REGLAS")
++if _sel_prototipo is not None and _sel_prototipo != "TODAS":
++    _sel_prototipo = frozenset(x for x in _sel_prototipo.split(",") if x)
++    REGLAS_S0_3 = REGLAS_S0_3 & _sel_prototipo
++    REGLAS_S0_4 = REGLAS_S0_4 & _sel_prototipo
+ TOS_TANDA0_SIN_4AB = frozenset({"cap", "cla", "ext", "pro", "ric", "ctacte", "lingob", "polcre", "pagjub", "docvig"})
+ 
+ 

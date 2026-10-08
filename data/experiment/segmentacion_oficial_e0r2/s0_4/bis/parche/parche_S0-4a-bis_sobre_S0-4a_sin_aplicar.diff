@@ -1,0 +1,186 @@
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -200,11 +200,12 @@
+     página, leído con el mismo criterio con que e0-r2 lo recorta, y la
+     versión vigente del TO.
+ 
+-U-SEG-OFICIAL, S0-4 (solo e0-r2; diseño en data/experiment/segmentacion_oficial_e0r2/s0_4/). Cinco reglas, cada
++U-SEG-OFICIAL, S0-4 (solo e0-r2; diseño en data/experiment/segmentacion_oficial_e0r2/s0_4/). Seis reglas, cada
+ una detrás de su parámetro, apagado por default: sub-documento (`limites_subdocumento` y
+-`parsear_cuerpo(subdocumentos=…)`), la guarda de columna dentro de un sub-documento (`g3_subdoc`), oración tomada
+-como título (`construir_chunks(oracion_titulo_4a=…)`), título envuelto (`titulo_envuelto_4b`) y apartados de una
+-sección sin puntos (`apartados_seccion`). El mecanismo 4 de S0-3 (intro desde el rótulo en todo punto cuyo título no
++`parsear_cuerpo(subdocumentos=…)`), la guarda de columna dentro de un sub-documento (`g3_subdoc`), la raíz mayor que
++MAX_RAIZ dentro de un sub-documento (`raiz_max_subdoc`, S0-4a-bis), oración tomada como título
++(`construir_chunks(oracion_titulo_4a=…)`), título envuelto (`titulo_envuelto_4b`) y apartados de una sección sin
++puntos (`apartados_seccion`). El mecanismo 4 de S0-3 (intro desde el rótulo en todo punto cuyo título no
+ termina en punto) no está: lo reemplazan 4a y 4b.
+ 
+ Sin llamadas a LLM: código determinístico puro.
+@@ -1383,6 +1384,7 @@
+                    formas_m5: frozenset = frozenset(),
+                    subdocumentos: list[dict] | None = None,
+                    g3_subdoc: bool = False,
++                   raiz_max_subdoc: bool = False,
+                    apartados_seccion: bool = False) -> ResultadoParseo:
+     """Con `modo_sin_raiz=False` (todos los call sites vigentes) el
+     comportamiento es el histórico. Con True rige además la gramática de
+@@ -1433,7 +1435,10 @@
+     La raíz «0» que no lleva texto se retira al final, como el preámbulo; el registro de sub-documentos queda en
+     `ResultadoParseo.subdocumentos` (lo usa la herencia). `g3_subdoc`: dentro de un sub-documento, la guarda de
+     columna (G3) no rechaza una raíz con forma de título que sucede exactamente a la anterior («4. Periodicidad…» de
+-    nmcief, 9,5 pt más adentro que la 3). `apartados_seccion` (apartados de una sección sin puntos): en una sección
++    nmcief, 9,5 pt más adentro que la 3). `raiz_max_subdoc` (S0-4a-bis): dentro de un sub-documento, en el modo sin
++    raíz, una raíz explícita mayor que MAX_RAIZ no se rechaza si sucede exactamente a la anterior (ri_ccna, Anexo III
++    de la primera norma: ítems 31 a 40); las demás guardas rigen igual. `apartados_seccion` (apartados de una sección
++    sin puntos): en una sección
+     de la lectura vigente que no tiene puntos, un rótulo de un nivel «N. Título» con N = 1, 2, 3… consecutivos abre
+     el punto «<sección>.N» (número impreso N), en lugar de rechazarse por estar fuera de la sección (ri_ai, Sección 4:
+     «1. Posición», «2. Franquicias», «3. Incumplimientos»)."""
+@@ -1730,7 +1735,11 @@
+                 partes = texto_l.split(None, 1)
+                 resto_r = partes[1] if len(partes) > 1 else ""
+                 titulo_may_r = bool(RE_TITULO_RAIZ.match(resto_r)) if resto_r else False
+-                if comp_r[0] <= MAX_RAIZ and resto_r and len(comp_r) == 1 and not pagina_con_variante:
++                # regla sdmax de S0-4a-bis: dentro de un sub-documento, la raíz que sucede exactamente a la anterior
++                # no se rechaza por ser mayor que MAX_RAIZ
++                max_sd = raiz_max_subdoc and subdoc_actual is not None and ultima_raiz_num is not None \
++                    and comp_r[0] == ultima_raiz_num + 1
++                if (comp_r[0] <= MAX_RAIZ or max_sd) and resto_r and len(comp_r) == 1 and not pagina_con_variante:
+                     # raíz EXPLÍCITA: guardas G0-G3
+                     motivo_raiz = None
+                     if _clave_banner(texto_l.strip()) in banners:
+@@ -1772,6 +1781,10 @@
+                             avisos.append({"tipo": "raiz_g3_subdocumento_sd", "numero": str(comp_r[0]),
+                                            "prefijo": subdoc_actual, "pagina": linea.pagina,
+                                            "x0": linea.x0, "columna_raices": col_raiz, "texto": linea.texto[:90]})
++                        if comp_r[0] > MAX_RAIZ:
++                            avisos.append({"tipo": "raiz_mayor_a_max_subdocumento_sdmax", "numero": str(comp_r[0]),
++                                           "prefijo": subdoc_actual, "pagina": linea.pagina,
++                                           "texto": linea.texto[:90]})
+                         ultima_raiz_num = comp_r[0]
+                         if forma_m2 is None:
+                             # mecanismo 2 de S0-3: una raíz de una forma nueva no fija la columna de las raíces (G3);
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -117,14 +117,15 @@
+ REGLAS_S0_3 = frozenset({"m1a", "m1b", "m2a", "m2b", "m2c", "m3", "m5a", "m5b", "m5c"})
+ 
+ # U-SEG-OFICIAL, S0-4 (diseño en data/experiment/segmentacion_oficial_e0r2/s0_4/): reglas de E0, solo en e0-r2. «sd»,
+-# sub-documento (`E0.limites_subdocumento`), solo en los TOs de TOS_SUBDOCUMENTO_S0_4 (lista explícita; ri_tsa y
+-# ri2_pm quedan fuera hasta una lectura propia); «sdg3», dentro de un sub-documento la guarda de columna (G3) no
+-# rechaza la raíz que sucede exactamente a la anterior; «4a», oración tomada como título, y «4b», título envuelto
+-# (`E0.clase_titulo_4ab`), que no corren en los diez TOs de la tanda 0 (TOS_TANDA0_SIN_4AB: sus títulos partidos y
+-# sus oraciones tomadas como título quedan como límite declarado de la tanda 0, cuya E0 no cambia); «ap», apartados de
+-# una sección sin puntos, solo en los TOs de TOS_APARTADOS_S0_4. La regla «sd» no cambia el modo de lectura de un TO:
+-# la escalera elige la etapa sin ella y vuelve a leer esa etapa con los sub-documentos.
+-REGLAS_S0_4 = frozenset({"sd", "sdg3", "4a", "4b", "ap"})
++# sub-documento (`E0.limites_subdocumento`), solo en los TOs de TOS_SUBDOCUMENTO_S0_4 (lista explícita; ri_tsa y ri2_pm
++# quedan fuera hasta una lectura propia); «sdg3», dentro de un sub-documento la guarda de columna (G3) no rechaza la
++# raíz que sucede exactamente a la anterior; «sdmax» (S0-4a-bis), dentro de un sub-documento la raíz mayor que MAX_RAIZ
++# que sucede exactamente a la anterior no se rechaza; «4a», oración tomada como título, y «4b», título envuelto
++# (`E0.clase_titulo_4ab`), que no corren en los diez TOs de la tanda 0 (TOS_TANDA0_SIN_4AB: sus títulos partidos y sus
++# oraciones tomadas como título quedan como límite declarado de la tanda 0, cuya E0 no cambia); «ap», apartados de una
++# sección sin puntos, solo en los TOs de TOS_APARTADOS_S0_4. La regla «sd» no cambia el modo de lectura de un TO: la
++# escalera elige la etapa sin ella y vuelve a leer esa etapa con los sub-documentos.
++REGLAS_S0_4 = frozenset({"sd", "sdg3", "sdmax", "4a", "4b", "ap"})
+ TOS_SUBDOCUMENTO_S0_4 = frozenset({"ri_sef", "nmcief", "ri_ccna", "ri_icpipsp", "ri_cc"})
+ TOS_APARTADOS_S0_4 = frozenset({"ri_ai"})
+ TOS_TANDA0_SIN_4AB = frozenset({"cap", "cla", "ext", "pro", "ric", "ctacte", "lingob", "polcre", "pagjub", "docvig"})
+@@ -1336,9 +1337,11 @@
+     def parsear(roles: list[str], con_sd: bool = False, **kw):
+         rep = E0.titulos_mayusculas_repetidos(paginas, roles)
+         if con_sd:
+-            # regla de sub-documento de S0-4, con la guarda de columna dentro del sub-documento (sdg3)
++            # regla de sub-documento de S0-4, con la guarda de columna dentro del sub-documento (sdg3) y la raíz
++            # mayor que MAX_RAIZ que sucede a la anterior (sdmax)
+             kw["subdocumentos"] = E0.limites_subdocumento(paginas, roles)
+             kw["g3_subdoc"] = "sdg3" in REGLAS_S0_4
++            kw["raiz_max_subdoc"] = "sdmax" in REGLAS_S0_4
+         if "ap" in REGLAS_S0_4 and to in TOS_APARTADOS_S0_4:
+             kw["apartados_seccion"] = True     # regla de apartados de S0-4
+         # regla 8 de S0: renglones de listas de puntos leídas como cuerpo, con los roles de esta etapa
+--- a/selftest_e0.py
++++ b/selftest_e0.py
+@@ -86,10 +86,12 @@
+   r) casos sintéticos: la detección de sub-documentos (anexo, parte, régimen, formulario y circular, con sus
+      guardas: el anexo repetido, la serie de letras, la parte suelta, la continuación de un formulario y la
+      circular suelta), la lectura con sub-documentos (prefijo, numeración desde cero y herencia del rótulo), la
+-     guarda de columna dentro del sub-documento, 4a, 4b (con su guarda del verbo) y los apartados;
++     guarda de columna dentro del sub-documento, la raíz mayor que MAX_RAIZ dentro del sub-documento (sdmax, de
++     S0-4a-bis), 4a, 4b (con su guarda del verbo) y los apartados;
+   s) un caso medido por regla, corriendo e0-r2 sobre siete TOs: sub-documento (ri_sef, nmcief, ri_ccna,
+-     ri_icpipsp, ri_cc: los cinco casos de prueba del FRENO S0-3), sdg3 (nmcief), 4b (efemin), apartados (ri_ai),
+-     y la cobertura exacta.
++     ri_icpipsp, ri_cc: los cinco casos de prueba del FRENO S0-3), sdg3 (nmcief), sdmax (ri_ccna, ítems 31 a 40 del
++     Anexo III; y ri_sef, cuyos códigos 101 a 126 no son sucesores), 4b (efemin), apartados (ri_ai), y la cobertura
++     exacta.
+ Desde S0-4 cambian dos casos medidos de etapas anteriores: el de la regla 4 cuenta 93 unidades de ri_spi (4b retira
+ las intros de un renglón de B.1 y B.3) y el de 1a en nmcief lee nmcief::A2::3.2.1 (el punto es del Anexo II).
+ """
+@@ -672,9 +674,9 @@
+     E0 = correr_e0.E0
+     print("== q) S0-4 de U-SEG-OFICIAL: la versión legada no cambia; listas de TOs")
+     p = inspect.signature(E0.parsear_cuerpo).parameters
+-    check("parsear_cuerpo: sub-documento, sdg3 y apartados apagados por default",
++    check("parsear_cuerpo: sub-documento, sdg3, sdmax y apartados apagados por default",
+           p["subdocumentos"].default is None and p["g3_subdoc"].default is False
+-          and p["apartados_seccion"].default is False)
++          and p["raiz_max_subdoc"].default is False and p["apartados_seccion"].default is False)
+     s = inspect.signature(E0.construir_chunks).parameters
+     check("construir_chunks: 4a y 4b apagadas por default",
+           s["oracion_titulo_4a"].default is False and s["titulo_envuelto_4b"].default is False)
+@@ -684,7 +686,7 @@
+           and correr_e0.TOS_APARTADOS_S0_4 == frozenset({"ri_ai"})
+           and correr_e0.TOS_TANDA0_SIN_4AB == TOS_TANDA0
+           and "m4" not in correr_e0.REGLAS_S0_3
+-          and correr_e0.REGLAS_S0_4 == frozenset({"sd", "sdg3", "4a", "4b", "ap"}))
++          and correr_e0.REGLAS_S0_4 == frozenset({"sd", "sdg3", "sdmax", "4a", "4b", "ap"}))
+ 
+ 
+ def _enc(pagina: int, *extra):
+@@ -777,6 +779,26 @@
+           [s.numero for s in sin.secciones if s.prefijo == "P1"] == ["0", "1"]
+           and [s.numero for s in con.secciones if s.prefijo == "P1"] == ["0", "1", "2"]
+           and any(a["tipo"] == "raiz_g3_subdocumento_sd" for a in con.avisos))
++    # sdmax (S0-4a-bis): dentro de un sub-documento, la raíz mayor que MAX_RAIZ que sucede exactamente a la anterior
++    items = [_linea("I. Procedimientos mínimos", 1, 60.0, x0=76.0)]
++    for k in list(range(1, 32)) + [33]:
++        items.append(_linea(f"{k}. Revisión del rubro {k} de los estados contables.", 1, 80.0 + 14 * k, x0=76.0))
++    mx = [items, [_linea("II. Códigos de actividad", 2, 60.0, x0=76.0),
++                  _linea("101. Estación de servicio", 2, 80.0, x0=76.0), _linea(largo, 2, 94.0, x0=90.0)]]
++    lmx = E0.limites_subdocumento(mx, [E0.ROL_CUERPO] * 2)
++    kmx = dict(modo_sin_raiz=True, mayusculas_repetidas=set())
++    sin_mx = E0.parsear_cuerpo("x", "x.pdf", mx, [E0.ROL_CUERPO] * 2, subdocumentos=lmx, **kmx)
++    con_mx = E0.parsear_cuerpo("x", "x.pdf", mx, [E0.ROL_CUERPO] * 2, subdocumentos=lmx, raiz_max_subdoc=True, **kmx)
++    fuera = E0.parsear_cuerpo("x", "x.pdf", mx, [E0.ROL_CUERPO] * 2, raiz_max_subdoc=True, **kmx)
++    raices_p1 = [s.numero for s in con_mx.secciones if s.prefijo == "P1"]
++    rech = [r["texto"].split()[0] for r in con_mx.rechazos_header if r["motivo"] == "raiz_mayor_a_max"]
++    check("sdmax: sin la regla, la raíz 31 se rechaza por MAX_RAIZ; con ella, se abre la 31 (sucede a la 30) y no "
++          "la 33 ni el código 101 de la parte II; fuera de un sub-documento no corre",
++          [s.numero for s in sin_mx.secciones if s.prefijo == "P1"][-1] == "30" and raices_p1[-1] == "31"
++          and len(raices_p1) == 32 and rech == ["33.", "101."]
++          and [a["numero"] for a in con_mx.avisos if a["tipo"] == "raiz_mayor_a_max_subdocumento_sdmax"] == ["31"]
++          and not any(a["tipo"] == "raiz_mayor_a_max_subdocumento_sdmax" for a in fuera.avisos),
++          str((raices_p1[-3:], rech)))
+     # 4a: oración tomada como título (el caso del mecanismo 4)
+     m4 = [_linea("Sección 2. Dispositivos de seguridad.", 1, 30.0),
+           _linea("2.1. Sistema de monitoreo.", 1, 50.0, x0=76.0), _linea(largo, 1, 64.0, x0=98.0),
+@@ -866,6 +888,17 @@
+     check("sub-documento, ri_cc: los tres regímenes (R4, R5 y RIP); R5::S3 es solo la p. 75",
+           bool(txt("ri_cc", "ri_cc::R4::1.1")) and bool(txt("ri_cc", "ri_cc::R5::2.1"))
+           and ch["ri_cc"]["ri_cc::R5::S3"]["paginas"] == [75] and bool(txt("ri_cc", "ri_cc::RIP::S0")))
++    check("sdmax, ri_ccna (Anexo III de la primera norma): los ítems 31 a 40 abren su raíz y la 30 ya no los lleva; "
++          "159 unidades",
++          all(f"ri_ccna::D1A3::S{k}" in ch["ri_ccna"] for k in range(31, 41))
++          and txt("ri_ccna", "ri_ccna::D1A3::S31").startswith("31. Arqueo sorpresivo de los valores")
++          and len(txt("ri_ccna", "ri_ccna::D1A3::S30")) == 350
++          and "31. Arqueo" not in txt("ri_ccna", "ri_ccna::D1A3::S30")
++          and len(ch["ri_ccna"]) == 159)
++    est_sef = cargar(d, "estructura_ri_sef.json")
++    check("sdmax, ri_sef: los códigos 101 a 126 del Anexo II no suceden a la raíz anterior y siguen rechazados",
++          sum(r["motivo"] == "raiz_mayor_a_max" for r in est_sef["rechazos_header"]) == 24
++          and not any(a["tipo"] == "raiz_mayor_a_max_subdocumento_sdmax" for a in est_sef["avisos"]))
+     check("apartados, ri_ai: «1. Posición», «2. Franquicias», «3. Incumplimientos» son 4.1 a 4.3",
+           all(f"ri_ai::4.{k}" in ch["ri_ai"] for k in (1, 2, 3)) and "ri_ai::S4" not in ch["ri_ai"]
+           and ch["ri_ai"]["ri_ai::4.1"]["flags"].get("numero_impreso") == "1")

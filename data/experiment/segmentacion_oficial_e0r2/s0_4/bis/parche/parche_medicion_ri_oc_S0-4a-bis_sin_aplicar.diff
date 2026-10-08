@@ -1,0 +1,41 @@
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -136,6 +136,29 @@
+     _sel_prototipo = frozenset(x for x in _sel_prototipo.split(",") if x)
+     REGLAS_S0_3 = REGLAS_S0_3 & _sel_prototipo
+     REGLAS_S0_4 = REGLAS_S0_4 & _sel_prototipo
++# Variante de medición de S0-4a-bis (no va al repo ni al parche final): S0_4_SD_MEDICION, TOs que se suman a la lista
++# de sub-documento, con una guarda: un régimen en la página 1 es el del propio TO y no abre sub-documento ni prefija ids.
++_med_prototipo = frozenset(x for x in _os_prototipo.environ.get("S0_4_SD_MEDICION", "").split(",") if x)
++TOS_SUBDOCUMENTO_S0_4 = TOS_SUBDOCUMENTO_S0_4 | _med_prototipo
++
++
++def _sin_regimen_pagina_1(lim: list) -> list:
++    reg = next((b["prefijo"] for b in lim if b["forma"] == "regimen" and b["pagina"] == 1), None)
++    if reg is None:
++        return lim
++    out = []
++    for b in lim:
++        if b["forma"] == "regimen" and b["pagina"] == 1:
++            continue
++        b = dict(b)
++        if b["prefijo"].startswith(reg):
++            b["prefijo"] = b["prefijo"][len(reg):]
++        if b["padre"] == reg:
++            b["padre"] = None
++        elif b["padre"] is not None and b["padre"].startswith(reg):
++            b["padre"] = b["padre"][len(reg):]
++        out.append(b)
++    return out
+ TOS_TANDA0_SIN_4AB = frozenset({"cap", "cla", "ext", "pro", "ric", "ctacte", "lingob", "polcre", "pagjub", "docvig"})
+ 
+ 
+@@ -1348,6 +1371,8 @@
+             # regla de sub-documento de S0-4, con la guarda de columna dentro del sub-documento (sdg3) y la raíz
+             # mayor que MAX_RAIZ que sucede a la anterior (sdmax)
+             kw["subdocumentos"] = E0.limites_subdocumento(paginas, roles)
++            if to in _med_prototipo:
++                kw["subdocumentos"] = _sin_regimen_pagina_1(kw["subdocumentos"])
+             kw["g3_subdoc"] = "sdg3" in REGLAS_S0_4
+             kw["raiz_max_subdoc"] = "sdmax" in REGLAS_S0_4
+         if "ap" in REGLAS_S0_4 and to in TOS_APARTADOS_S0_4:

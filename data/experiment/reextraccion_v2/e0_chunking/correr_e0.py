@@ -109,6 +109,39 @@ COLA_TITULO_ESTRICTA_R5 = {"cirmo3": frozenset({19}), "cryl": frozenset({27}), "
                            "ri2_ci": frozenset({8, 9, 16, 24}), "snp_cheq": frozenset({80}),
                            "snp_mep": frozenset({19})}
 
+# U-SEG-OFICIAL, S0-3 (tras la lectura de cortes de S1; diseño en data/experiment/segmentacion_oficial_e0r2/s0_3/):
+# mecanismos de E0, solo en e0-r2. 1, cuerpo de punto que quedaba como intersticial del padre (formas a y b); 2,
+# numeración o título no leído en la línea que abre una raíz del modo sin raíz (formas a, b y c); 3, cuarta forma de la
+# regla 8 (lista de rótulos de un nivel); 5, zona de encabezado (formas a, b y c). El mecanismo 4 de S0-3 no está:
+# lo reemplazan las reglas 4a y 4b de S0-4.
+REGLAS_S0_3 = frozenset({"m1a", "m1b", "m2a", "m2b", "m2c", "m3", "m5a", "m5b", "m5c"})
+
+# U-SEG-OFICIAL, S0-4 (diseño en data/experiment/segmentacion_oficial_e0r2/s0_4/): reglas de E0, solo en e0-r2. «sd»,
+# sub-documento (`E0.limites_subdocumento`), solo en los TOs de TOS_SUBDOCUMENTO_S0_4 (lista explícita; ri_tsa y ri2_pm
+# quedan fuera hasta una lectura propia); «sdg3», dentro de un sub-documento la guarda de columna (G3) no rechaza la
+# raíz que sucede exactamente a la anterior; «sdmax» (S0-4a-bis), dentro de un sub-documento la raíz mayor que MAX_RAIZ
+# que sucede exactamente a la anterior no se rechaza; «4a», oración tomada como título, y «4b», título envuelto
+# (`E0.clase_titulo_4ab`), que no corren en los diez TOs de la tanda 0 (TOS_TANDA0_SIN_4AB: sus títulos partidos y sus
+# oraciones tomadas como título quedan como límite declarado de la tanda 0, cuya E0 no cambia); «ap», apartados de una
+# sección sin puntos, solo en los TOs de TOS_APARTADOS_S0_4. La regla «sd» no cambia el modo de lectura de un TO: la
+# escalera elige la etapa sin ella y vuelve a leer esa etapa con los sub-documentos. S0-4a-ter: «sdr1», el régimen de la
+# página 1 es el del TO y no abre sub-documento (TOS_SUBDOCUMENTO_R1_S0_4, que se leen con sub-documento); «apl»,
+# apartados de letra «APARTADO X: …» con sus rótulos «X.n.» (el marcador de la regla 4 de S0) en la lectura sin raíz de
+# los TOs de TOS_APARTADO_LETRA_S0_4, sin cambiar la etapa; y, en los de TOS_LETRA_S0_4, «sdl», sub-documento de letra
+# («A. TÍTULO», «B. TÍTULO»…), «sdlh», herencia de su rótulo, y «sdla», el rótulo «X.n.» con la letra vigente.
+REGLAS_S0_4 = frozenset({"sd", "sdg3", "sdmax", "sdr1", "apl", "sdl", "sdlh", "sdla", "4a", "4b", "ap"})
+TOS_SUBDOCUMENTO_S0_4 = frozenset({"ri_sef", "nmcief", "ri_ccna", "ri_icpipsp", "ri_cc"})
+TOS_SUBDOCUMENTO_R1_S0_4 = frozenset({"ri_oc"})
+TOS_APARTADO_LETRA_S0_4 = frozenset({"ri_oc"})
+TOS_LETRA_S0_4 = frozenset({"ri_ccna"})
+TOS_APARTADOS_S0_4 = frozenset({"ri_ai"})
+TOS_TANDA0_SIN_4AB = frozenset({"cap", "cla", "ext", "pro", "ric", "ctacte", "lingob", "polcre", "pagjub", "docvig"})
+
+
+def _formas_s0_3(mecanismo: str) -> frozenset:
+    return frozenset(r[len(mecanismo):] for r in REGLAS_S0_3 if r.startswith(mecanismo) and len(r) > len(mecanismo))
+
+
 # familias de marcador de ítem, por precedencia de matcheo por línea
 FAMILIAS_ITEM = [
     ("num", re.compile(r"^\d+(?:\.\d+)*\.(?:\s|$)")),      # "2.", "1.5.1. …"
@@ -1260,7 +1293,10 @@ def procesar_tablas_r2(res: E0.ResultadoParseo, pdf_path: Path, to: str,
         if inf["ancladas"]:     # una tabla con forma de catálogo sin ninguna fila anclada no deja rastro
             res.avisos.append({"tipo": "filas_de_catalogo_r9", **inf})
     lineas0: list = []
-    chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0)
+    # reglas 4a y 4b de S0-4 (fuera de la tanda 0)
+    r4 = {"oracion_titulo_4a": "4a" in REGLAS_S0_4 and to not in TOS_TANDA0_SIN_4AB,
+          "titulo_envuelto_4b": "4b" in REGLAS_S0_4 and to not in TOS_TANDA0_SIN_4AB}
+    chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0, **r4)
     E0.desambiguar_ids(chunks0)
     asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
     # acompañamiento T de las reglas 1 y 7 de S0
@@ -1268,13 +1304,13 @@ def procesar_tablas_r2(res: E0.ResultadoParseo, pdf_path: Path, to: str,
     if fusiones:
         res.avisos.append({"tipo": "tabla_fundida_en_un_intersticial_r2", "fusiones": fusiones})
         lineas0 = []
-        chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0)
+        chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0, **r4)
         E0.desambiguar_ids(chunks0)
         asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
     sustituciones, omitidas = preparar_serializacion(res, lineas0, tablas_to, pdf_path)
     lineas: list = []
     chunks = E0.construir_chunks(res, texto_lineas=texto_con_tablas(sustituciones, omitidas),
-                                 lineas_por_chunk=lineas, tope_herencia=TOPE_HERENCIA_E0_R2)
+                                 lineas_por_chunk=lineas, tope_herencia=TOPE_HERENCIA_E0_R2, **r4)
     renombres = E0.desambiguar_ids(chunks)
     tablas_to["ids_desambiguados"] = renombres
     tablas_to["_dueno_linea"] = {id(l): chunks[i]["id"]
@@ -1296,15 +1332,34 @@ def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str],
     sin raíz (B5.8.1) sobre la clasificación de marcadores. En cada etapa, K
     (`mayusculas_repetidas` con los roles de esa etapa) y el pie desde la
     línea «Versión». Devuelve (res, roles, repetidos, modo_lectura,
-    marcadores)."""
+    marcadores). Reglas de S0-4: la de apartados corre en cada lectura (TOS_APARTADOS_S0_4); la de sub-documento
+    (TOS_SUBDOCUMENTO_S0_4, y con sdr1 TOS_SUBDOCUMENTO_R1_S0_4) no cambia la etapa: la etapa se elige sin ella y se
+    vuelve a leer con los sub-documentos; la de apartados de letra (apl, TOS_APARTADO_LETRA_S0_4) tampoco: si la etapa
+    es la sin raíz, se vuelve a leer con el marcador de letra."""
+    m3 = "m3" in REGLAS_S0_3     # mecanismo 3 de S0-3 (cuarta forma de la regla 8)
+    r1 = "sdr1" in REGLAS_S0_4 and to in TOS_SUBDOCUMENTO_R1_S0_4     # regla sdr1 de S0-4a-ter
+    sd = ("sd" in REGLAS_S0_4 and to in TOS_SUBDOCUMENTO_S0_4) or r1     # regla de sub-documento de S0-4
+    letras = {r: r in REGLAS_S0_4 and to in TOS_LETRA_S0_4 for r in ("sdl", "sdlh", "sdla")}     # S0-4a-ter
+
     def indice(roles: list[str]) -> list[str]:
         # regla 3 de S0, ampliación: páginas de cuerpo que son enteras una lista de la regla 8
-        return E0.paginas_indice_r8(paginas, roles)
+        return E0.paginas_indice_r8(paginas, roles, forma4_m3=m3)
 
-    def parsear(roles: list[str], **kw):
+    def parsear(roles: list[str], con_sd: bool = False, **kw):
         rep = E0.titulos_mayusculas_repetidos(paginas, roles)
+        if con_sd:
+            # regla de sub-documento de S0-4, con la guarda de columna dentro del sub-documento (sdg3) y la raíz
+            # mayor que MAX_RAIZ que sucede a la anterior (sdmax)
+            kw["subdocumentos"] = E0.limites_subdocumento(paginas, roles, letras=any(letras.values()),
+                                                          sin_regimen_pagina_1=r1)
+            kw["g3_subdoc"] = "sdg3" in REGLAS_S0_4
+            kw["raiz_max_subdoc"] = "sdmax" in REGLAS_S0_4
+            # reglas sdl, sdlh y sdla de S0-4a-ter (forma de letra)
+            kw["letra_corte"], kw["letra_herencia"], kw["letra_numero"] = letras["sdl"], letras["sdlh"], letras["sdla"]
+        if "ap" in REGLAS_S0_4 and to in TOS_APARTADOS_S0_4:
+            kw["apartados_seccion"] = True     # regla de apartados de S0-4
         # regla 8 de S0: renglones de listas de puntos leídas como cuerpo, con los roles de esta etapa
-        kw["no_rotulos"] = E0.lineas_de_listas_r8(paginas, roles)
+        kw["no_rotulos"] = E0.lineas_de_listas_r8(paginas, roles, forma4_m3=m3)
         if rotulos_fila_r9:
             kw["rotulos_fila"] = rotulos_fila_r9     # regla 9 de S0, parte 9a
         # U-R2-CODIGO-2 (C2): cola de título estricta (punto l, ampliada por la regla 5 de S0) y renumeración
@@ -1314,7 +1369,9 @@ def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str],
                                  cola_titulo_estricta=(COLA_TITULO_ESTRICTA_E0_R2.get(to, frozenset())
                                                        | COLA_TITULO_ESTRICTA_R5.get(to, frozenset())),
                                  renumeraciones=RENUMERACIONES_E0_R2,
-                                 seccion_variante=True, rotulos_r2=True, reabrir_padre=True, **kw), rep
+                                 seccion_variante=True, rotulos_r2=True, reabrir_padre=True,
+                                 formas_m1=_formas_s0_3("m1"), formas_m2=_formas_s0_3("m2"),
+                                 formas_m5=_formas_s0_3("m5"), **kw), rep
 
     def con_chunks(res) -> bool:
         r = copy.deepcopy(res)
@@ -1326,11 +1383,15 @@ def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str],
     roles_v = indice(roles_v0)
     res, rep = parsear(roles_v)
     if con_chunks(res):
+        if sd:
+            res, rep = parsear(roles_v, con_sd=True)
         return res, roles_v, rep, "vigente", False
     roles_m0 = E0.clasificar_paginas(paginas, marcadores_b582=True, continuacion_con_titulo=True)
     roles_m = indice(roles_m0)
     res_m, rep_m = parsear(roles_m, marcadores_b582=True)
     if con_chunks(res_m):
+        if sd:
+            res_m, rep_m = parsear(roles_m, con_sd=True, marcadores_b582=True)
         return res_m, roles_m, rep_m, "marcadores", True
     roles_s = indice(E0.roles_para_modo_sin_raiz(paginas, roles_m0))
     res_s, rep_s = parsear(roles_s, modo_sin_raiz=True)
@@ -1342,9 +1403,15 @@ def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str],
     r.reasignaciones_continuidad = E0.aplicar_continuidad_enumeracion(r)
     E0.corregir_fronteras_intra_palabra(r)
     if apartados >= MIN_APARTADOS_R4 and len(E0.construir_chunks(r)) <= 1:
-        res_l, rep_l = parsear(roles_s, modo_sin_raiz=True, marcador_letra=True)
+        res_l, rep_l = parsear(roles_s, con_sd=sd, modo_sin_raiz=True, marcador_letra=True)
         res_l.avisos.append({"tipo": "marcador_letra_r2", "apartados": apartados})
         return res_l, roles_s, rep_l, "sin_raiz_letra", roles_m0 != roles_v0
+    if "apl" in REGLAS_S0_4 and to in TOS_APARTADO_LETRA_S0_4 and apartados >= MIN_APARTADOS_R4:
+        # regla apl de S0-4a-ter: la etapa sin raíz se vuelve a leer con el marcador de letra de la regla 4
+        res_s, rep_s = parsear(roles_s, con_sd=sd, modo_sin_raiz=True, marcador_letra=True)
+        res_s.avisos.append({"tipo": "apartado_letra_apl", "apartados": apartados})
+    elif sd:
+        res_s, rep_s = parsear(roles_s, con_sd=True, modo_sin_raiz=True)
     return res_s, roles_s, rep_s, "sin_raiz", roles_m0 != roles_v0
 
 
@@ -1357,7 +1424,9 @@ def lineas_conservadas_k(paginas: list, roles: list[str], repetidos: set[str]) -
         if rol != E0.ROL_CUERPO:
             continue
         _, viejas, _ = E0.separar_encabezado_pie(lineas)
-        _, nuevas, _ = E0.separar_encabezado_pie(lineas, mayusculas_repetidas=repetidos)
+        # mecanismo 5 de S0-3, forma a: K conserva también lo que esa forma deja como texto
+        _, nuevas, _ = E0.separar_encabezado_pie(lineas, mayusculas_repetidas=repetidos,
+                                                  cierre_m5="a" in _formas_s0_3("m5"))
         ids_nuevas = {id(l) for l in nuevas}
         out.extend(l for l in viejas if id(l) not in ids_nuevas)
     return out
