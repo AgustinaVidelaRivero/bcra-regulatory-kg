@@ -54,13 +54,14 @@ alguno de esos cambios moviera una arista de estos puntos, la re-medición poste
     mención en cuarentena.
   - La enmienda fija el catálogo del request, y con él la tabla de roles, por release (§1, punto 4).
   - ctacor no está en la tanda 0 ni en la tanda 1, así que no la afecta.
-- **Decisión: PENDIENTE de la autora.**
+- **Decisión de la autora (07/10/2026, noche): se adopta la recomendación de la mesa.** BKL-0028 se cierra como `verificado` por su
+  condición de cierre, y la adjudicación del miembro de `Sujeto_rol_alcance_ctacor` va a la release siguiente (F12).
 
 ## 4. Qué falta para firmarlo
 
 1. La segunda lectura a ciegas de los 8 puntos, y la adjudicación de la autora sobre sus divergencias con T3.
 2. La lectura de las 4 filas de «entidad(es) encargada(s) del seguimiento».
-3. La decisión sobre BKL-0028 (§3): el camino de BKL-0021 o la recomendación de la mesa.
+3. ~~La decisión sobre BKL-0028.~~ Decidida el 07/10/2026 (noche): la recomendación de la mesa (§3).
 
 Las dos lecturas van en el despacho de la mesa para una sesión nueva después del 08/10/2026 a las 18 h, junto con la segunda lectura de
 las 41 de la enmienda 8.
@@ -84,7 +85,7 @@ que un patrón reaparece, su línea `cambio_estado` se reemplaza por una `nota` 
 {"evento": "cambio_estado", "id": "BKL-0016", "estado": "verificado", "aplicado_en": null, "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: el patrón no reaparece en a9631a64 (ext::3.18), por la lectura de T3 y la segunda lectura a ciegas adjudicada; cambio de verificación declarado", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 {"evento": "nota", "id": "BKL-0018", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: límite declarado junto con BKL-0004, que persiste como falla conocida sellada en la suite r2b (suite_perfil_r2.md:18); no se corrige en esta versión; queda en triaged", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 {"evento": "nota", "id": "BKL-0020", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: cuarentena declarada (1 fila en r2b, «una entidad originante», cap::3.1.3::cierre, por debajo del umbral de la enmienda 4); queda en triaged", "evidencia": "docs/laudo_B2.4_sujetos.md"}
-{"evento": "cambio_estado", "id": "BKL-0028", "estado": "verificado", "aplicado_en": "data/experiment/catalogo_unico/catalogo_sujetos_r2.json (bd2122d)", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4 (si la autora adopta la recomendación de la mesa): la condición de cierre se cumple en el catálogo r2 (0 ids domésticos con alias del exterior; tres ids del exterior separados); la adjudicación del miembro de Sujeto_rol_alcance_ctacor (miembros_ids vacío) va a la release siguiente, fila F12", "evidencia": "docs/laudo_B2.4_sujetos.md"}
+{"evento": "cambio_estado", "id": "BKL-0028", "estado": "verificado", "aplicado_en": "data/experiment/catalogo_unico/catalogo_sujetos_r2.json (bd2122d)", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4 (decisión de la autora del 07/10/2026): la condición de cierre se cumple en el catálogo r2 (0 ids domésticos con alias del exterior; tres ids del exterior separados); la adjudicación del miembro de Sujeto_rol_alcance_ctacor (miembros_ids vacío) va a la release siguiente, fila F12", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 {"evento": "nota", "id": "BKL-0021", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: la mención reaparece en r2b como «la entidad nominada» (control q de T3); cuarentena declarada, con el rol nuevo por el procedimiento de crecimiento de la enmienda 4 al cierre de la tanda 1; reemplaza la decisión (c) del 06/10/2026, que ninguna unidad ejecutó; resultado de la lectura de las 4 filas «entidad(es) encargada(s) del seguimiento»: <RESULTADO>; queda en triaged", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 ```
 
@@ -108,7 +109,7 @@ que un patrón reaparece, su línea `cambio_estado` se reemplaza por una `nota` 
    fila del plan y en el lote de eventos.
 5. **BKL-0021 y BKL-0028 se pasaron a U-RERESOL-CAT, que no los tomó.** BKL-0021 queda resuelta por la decisión de este laudo, que
    reemplaza la (c) del 06/10. **BKL-0028** entra a este laudo (decisión de la autora del 07/10/2026, noche), con la recomendación de la
-   mesa del §3 PENDIENTE de su confirmación.
+   mesa del §3, que la autora adoptó el 07/10/2026 (noche).
 6. **«Re-sellado del grafo evaluado de la tanda 0»** (mandato de U-RERESOL-CAT, nota del 07/10, `:325`) contra los nombres D13, que
    reservan «el grafo evaluado» para el escalado (`docs/protocolo_dos_grafos.md`, §1, FIRMADO el 07/10/2026). Se agrega al pie de ese
    mandato la nota de equivalencia que el protocolo prescribe: donde dice «grafo evaluado de la tanda 0», léase «grafo sin cola de la

@@ -559,3 +559,61 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     (3) **Regla 1b y guardas:** sí. (4) **Apartados de ri_ai S4:** a S0-4. nmaeef 2.9 queda como límite declarado. Despacho de S0-4
     preparado por la mesa (`despacho_S0-4_USEG_OFICIAL_mesa.md`), con el hash del commit de S0-3 como único hueco.
   - Commit de S0-3 PENDIENTE de la autora (registro de la etapa: parche, diseño, censos y freno); el código de E0 del repo no cambia hasta S0-4. **[Corrección del 07/10/2026, noche: commiteado en `2185807`.]**
+- **07/10/2026 (noche) — FRENO S0-4a revisado por la mesa sobre una copia, y decisiones de la autora.** S0-4a no tocó el repo. Su parche,
+  aplicado sobre el código de E0 de HEAD, da los tres sha256 del LEEME; el mecanismo 4 ya no está en el código.
+  - **Controles duros: se reproducen.**
+    - Tanda 0: 57 de 57 con la configuración final, con todo apagado y con cada una de las 14 reglas sola; los 25 de la tanda 0
+      dentro de los 152, iguales.
+    - Todo apagado igual a S1 (768 de 768); solo las reglas de S0-3, igual a S0-3 sin el mecanismo 4 (768 de 768); doble corrida con 0
+      distintos.
+    - Selftests: `selftest_e0` 134/134 y b52, b581, b582 y b583 en verde. Los dos casos corregidos (ri_spi 95 → 93 y
+      `nmcief::A2::3.2.1`) son efectos reales de S0-4.
+    - El selftest de claves da OK.
+  - **Conciliación: se reproduce,** con un script de atribución propio.
+    - 9.409 son las unidades de S0-3 sin el mecanismo 4 y 9.554 las de S0-4. Contra S0-3 hay 54 TOs y 1.095 eventos, cada uno de una
+      sola regla.
+    - Contra S1 hay 64 TOs y 1.530 eventos (+357 −357); volver a 9.554 es coincidencia.
+    - La única interacción, `nmcief::A4::S1`, aparece solo con sd y 2a juntas.
+  - **Proyección: se reproduce.** De los 17 errores del primer grupo de la lectura de cortes de S1, 16 van hacia la corrección;
+    `nmaeef::2.9` no cambia. Salvedad: en ri2_ae las raíces 3 a 8 siguen rechazadas por la guarda de columna.
+  - **Decisiones de la autora:**
+    - (a) **La tanda 0 sigue excluida de 4a y 4b.** Cifra a declarar: 123 puntos (la familia del mecanismo 4), de los que 4a y 4b
+      tocarían 114 (53 por 4a, 61 por 4b, 22 de ellos retirando la intro) y 9 no tienen regla.
+      - Precisión de la mesa: la muestra de 15 de S0-3 (12 sin efecto en el contenido, 3 correcciones chicas) no representa las
+        proporciones del censo (12 de 15 en 4b contra 61 de 123; hipergeométrica P = 0,011).
+      - Por eso «3 correcciones chicas» no se extrapola: la clase 4a tiene 53 puntos y mezcla oraciones con títulos de tres renglones.
+      - El «22 + 3» mezclaba un censo (las intros de un renglón) con un conteo de la muestra.
+    - (b) **Formulario, circular y sdg3, aceptados** (decisiones 1 y 2 del diseño, §8). Cada una tiene su caso sintético y su caso
+      medido, con los eventos esperados:
+      - formulario: 6 límites y 42 unidades nuevas en ri_ccna;
+      - circular: 3 límites y 14 unidades en ri_icpipsp;
+      - sdg3: 1 evento, `nmcief::A1P2::S4`.
+    - (e) **El orden:** la reversión de O5 va antes de S0-4b, para que el selftest de claves corra contra el JSON vigente. Hecha por la
+      mesa; el commit está PENDIENTE de la autora.
+  - **Respuestas de la mesa, para decidir:**
+    - (c) **ri_ccna, ítems 31 a 40.**
+      - Los rechaza la guarda `raiz_mayor_a_max` (`MAX_RAIZ = 30`, `e0_lib.py:1853`).
+      - Un prototipo que acepta, dentro de un sub-documento, solo la raíz que sucede exactamente a la anterior deja 10 unidades más en
+        ri_ccna (149 → 159) y no cambia nada en los otros cuatro TOs de la lista; los códigos 101 a 126 de ri_sef no son sucesores.
+      - Recomendación: corregirlo en una S0-4a-bis antes de S0-4b, porque el código se cambia una sola vez y ri_ccna está en la tanda 1.
+      - B.1 y B.2, y A.3, quedan como límite declarado: 2 unidades y 12 de los 40 ítems de la lista B con el id de otro ítem.
+      - La unidad de 57.922 caracteres de ri_cc (`ri_cc::RIP::S0`) está declarada sin partir (tabla serializada) y queda fuera de la
+        tanda 1: va a la vía de página con la tanda 3. No bloquea S0-4b.
+      - Para la condición 12 de la tanda 1 sí entran `nmcief::A6::S0` (23.071), `manori::1.5.1` (15.949) y `ri_oc::3.51` (19.239). En
+        los 152, las unidades de más de 13.944 caracteres pasan de 34 a 29.
+    - (d) **Los 35 TOs fuera de la lista** con límites de sub-documento (87 límites; censo igual al del FRENO): 6 de la tanda 1, 6 sin
+      tanda (que el criterio del protocolo pone en la 2), 18 sin tanda (criterio: tanda 3) y 5 fuera.
+      - Los de la tanda 1 son manori, ri_gerc, ri_oc, ri_pgn, ri_rml y snp_tr. Solo **ri_oc** pide atención antes de S1-bis:
+        `ri_oc::3.51` (pp. 15-25) se lleva los Anexos I y II y el Apartado B, que es texto de otro punto.
+      - Sumarlo a la lista separaría los anexos pero no el Apartado B, y el régimen de la página 1 prefijaría todos los ids; haría falta
+        una guarda.
+      - Recomendación: medirlo en S0-4a-bis como variante sin aplicar, y decidir con la cifra; si no, límite declarado y condición 12.
+      - Los otros cinco de la tanda 1 no requieren acción por esta regla.
+  - **Siguen PENDIENTES del diseño §8:** la 3 (un rótulo sin numeración que reinicia abre su sub-documento), la 4 (la lista de verbos de
+    4a y 4b, con debe(n), puede(n), será(n) y tendrá(n)) y la 5 (los casos del §7 dentro de los sub-documentos: límite declarado u otra
+    regla).
+    - Recomendación de la mesa: la 3 y la 4 como están diseñadas, porque los controles duros pasan con ellas y 4a y 4b no tocan la
+      tanda 0; la 5 como límite declarado, salvo ri_ccna 31 a 40 (S0-4a-bis).
+  - **Discrepancias menores con el FRENO:** ri_mmsef cambia 3 avisos y un campo de la estructura, sin unidades (no «un aviso»); ri_tsa
+    figura en el manifiesto de S1 como `reconocido_pleno`, no `parcial_declarado`.
+  - **«Seguí»** preparado por la mesa: S0-4a-bis y después S0-4b, en el paquete de la mesa (`segui_S0-4a-bis_y_S0-4b_USEG_OFICIAL_mesa.md`).
