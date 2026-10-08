@@ -239,3 +239,37 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 116 líneas de arriba (`c
   - **Contradicción del texto firmado.** El `:76` manda declarar el límite en `docs/insumos_escritura.md` §7, y las ESCRITURAS (`:111`)
     no incluyen ese archivo. Decisión de la autora, PENDIENTE. Recomendación de la mesa: que la unidad deje el texto del ítem en su FRENO
     C3 y que la mesa lo asiente en insumos §7, para que la unidad no escriba fuera de sus escrituras firmadas.
+- **07/10/2026 (noche, más tarde) — decisiones de la autora sobre la adjudicación de C2 y sobre C3.**
+  1. **La hoja de adjudicación** es la que armó la instancia de la segunda lectura: `c2/segunda_lectura/adjudicacion_c2_worksheet.md`
+     y `.json`, sha256 `32a0c7d8…` y `d6cb9af0…`. La mesa confirmó que es idéntica byte a byte en el paquete de la instancia, en
+     `be8d6f2` y en el árbol.
+  2. **La adjudicación de las 19 la hace la autora**, sin pasar por la sesión de la mesa, porque esa sesión ya conoce la tabla de códigos.
+     La hoja que preparó la mesa no se usa.
+  3. **El límite de C3** (`:76`) lo asienta la mesa en `docs/insumos_escritura.md`, §7, desde el FRENO C3 de la unidad. La unidad no
+     escribe fuera de sus escrituras firmadas (`:111`). Con esto queda resuelta la contradicción de la nota anterior.
+- **07/10/2026 (noche) — adjudicación de la autora de las 19 divergencias de C2**, hecha sobre `c2/segunda_lectura/adjudicacion_c2_worksheet.md`
+  sin conocer la tabla de códigos.
+  - **Regla de adjudicación, declarada y aplicada pareja:**
+    1. Primero la relación: si el supuesto está en una Condicion conectada a su norma, o a la Operacion por la regla 1, cuenta como
+       `condicion_con_relacion` aunque su etiqueta arrastre parte de la norma o su consecuencia; una Excepcion cuenta como con relación
+       solo si es cláusula de excepción (regla 2).
+    2. Sin relación: `fusionado` si el supuesto comparte nodo con otros supuestos o con su norma; `dentro_de_norma` si quedó dentro de un
+       nodo de norma; `sin_relacion`, con su subtipo, si tiene nodo propio sin conexión.
+    3. La norma de cada supuesto es la que define la ficha de T4.
+  - **Veredictos:**
+    - 1, 3, 4, 5, 6, 7 y 8: `sin_relacion` (`norma_en_heredado`);
+    - 2, 9, 10, 16, 17, 18 y 19: `fusionado`;
+    - 11 y 13: `condicion_con_relacion`;
+    - 12: `dentro_de_norma`;
+    - 14 y 15 (M2): `ausente`, con la nota «cobertura parcial 0,58; falta el calificador de proporcionalidad».
+  - **Asentado por la mesa:**
+    - en la hoja (`.md` y `.json`, con la regla);
+    - en la lectura adjudicada `data/experiment/comp_e1/c2/lectura_c2_adjudicada.jsonl`: la primera lectura (`lectura_c2.jsonl`, sin
+      cambios) con los 19 veredictos y, en cada uno, la primera lectura, la segunda y el veredicto, en el campo `adjudicacion`.
+  - **Contra la primera lectura**, 14 de las 19 cambian:
+    - 7 solo de subtipo (de `norma_presente` a `norma_en_heredado`);
+    - 4 de `sin_relacion` a `fusionado`;
+    - 2 de `extraida_tramo_verificado` a `ausente`;
+    - 1 de `condicion_con_relacion` a `dentro_de_norma`.
+    - Las otras 5 ratifican la primera lectura.
+  - C2 queda adjudicada. C3 se despacha con la lectura adjudicada.
