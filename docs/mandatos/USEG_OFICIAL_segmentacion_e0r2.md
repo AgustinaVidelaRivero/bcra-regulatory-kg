@@ -558,4 +558,4 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     quedan fuera de la tanda 0 por lista; los 22 títulos partidos y las 3 oraciones tomadas como título de la tanda 0 se declaran como límite.
     (3) **Regla 1b y guardas:** sí. (4) **Apartados de ri_ai S4:** a S0-4. nmaeef 2.9 queda como límite declarado. Despacho de S0-4
     preparado por la mesa (`despacho_S0-4_USEG_OFICIAL_mesa.md`), con el hash del commit de S0-3 como único hueco.
-  - Commit de S0-3 PENDIENTE de la autora (registro de la etapa: parche, diseño, censos y freno); el código de E0 del repo no cambia hasta S0-4.
+  - Commit de S0-3 PENDIENTE de la autora (registro de la etapa: parche, diseño, censos y freno); el código de E0 del repo no cambia hasta S0-4. **[Corrección del 07/10/2026, noche: commiteado en `2185807`.]**

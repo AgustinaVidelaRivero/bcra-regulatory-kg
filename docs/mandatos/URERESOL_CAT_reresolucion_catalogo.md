@@ -351,7 +351,7 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado son las 105 líneas de arriba y n
     reciben el rol por el paso c (9 filas `sin_match`, cap 5 y ext 4) quedarían sin padre sin alcance. Despacho de la mesa:
     `segui_R2-3bis_URERESOL_CAT_mesa.md`. La enmienda 4 al protocolo quedó en versión para firmar (decisiones al firmar propuestas); la autora
     la firma después de R2-3 bis.
-  - Commit de R2-3 PENDIENTE de la autora (con las anclas de la tabla, la enmienda 4 para firmar y el registro de los 15 excluidos).
+  - Commit de R2-3 PENDIENTE de la autora (con las anclas de la tabla, la enmienda 4 para firmar y el registro de los 15 excluidos). **[Corrección del 07/10/2026, noche: commiteado en `803623a`.]**
 - **07/10/2026 (noche) — R2-3 commiteada en `803623a` y R2-3 bis en `dac7d57`; revisión del FRENO R2-3 bis por la mesa; cierre de R2.**
   Reproducido sobre copias sin enlaces, con el código de `dac7d57` y, como control, con el ensamblador de `803623a`, los dos puestos con
   `git archive` y verificados por sha contra `git show`.

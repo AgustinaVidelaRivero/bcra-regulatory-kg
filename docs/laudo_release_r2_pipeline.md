@@ -1,31 +1,118 @@
-BORRADOR — PENDIENTE DE FIRMA DE LA AUTORA
+BORRADOR v2 — PENDIENTE DEL GATE FINAL Y DE LA FIRMA DE LA AUTORA
 
 # Laudo de la release r2 del pipeline
 
-**Estado:** borrador redactado el 2026-09-28, mientras corre la tanda 0. Se firma
-al cierre de la tanda 0 (reporte de la fase 2a y lectura de la fase 2b), después
-de completar la §4 con los hallazgos de esa lectura.
+**Estado.** BORRADOR v2, reescrito por la mesa el 07/10/2026 (noche) por decisión de la autora del mismo día, sobre la ficha de decisión
+del laudo de la versión.
+- Reemplaza al BORRADOR v1 (`31e0d38`, 30/09/2026), que queda como anexo A por su análisis de los candidatos y de los hallazgos de la
+  tanda 0. Donde la v1 y la v2 difieren, rige la v2 (§5 lista las diferencias).
+- **Se firma al final:** después del gate final sobre el código final (§3) y antes del pre-registro de la tanda 1. Hasta entonces, los
+  sellos marcados «A COMPLETAR» se llenan a medida que cierra cada pieza.
 
-**Qué es r2.** La primera release del pipeline según el protocolo de B2.6: cada
-cambio nace de una entrada de backlog con `capa_pipeline`, se implementa en una
-unidad propia con mandato y freno, pasa un gate de release y produce un grafo
-versionado (KG-Reextraído-r2). Rige el principio 9: los grafos ya evaluados
-(r1 y los ensamblados de la tanda 0) no se corrigen; r2 es una versión
-posterior. La tanda 1 (B6.1) corre con r2 y no arranca sin ella.
+**Qué es r2.** La release con la que corre la tanda 1 (B6.1; condición 2 de la tanda 1, checklist R1 y R26). Comprende:
+- el ciclo B2.11: prompt nuevo de E1, re-extracción de la tanda 0 como r2b, código del ensamblado y de los validadores (`plan:389-403`);
+- las correcciones entre tandas declaradas hasta el gate final.
 
-**Qué no es.** r2 no toca el esquema congelado (laudo `2593d4d`) ni el prefijo
-de E1 (prompt congelado `e69feaaa…` y catálogo v3 `35e88c2dd0a2…`). Todo
-candidato que los toque queda fuera de este laudo y se marca como tal en la §1. **[30/09/2026] Superado por decisión de la autora:** el ciclo B2.11 del plan decide que r2 incluye el cambio de prompt de E1 y la re-extracción de la tanda 0, con la ventana única del §7 del laudo congelado (enmiendas firmadas en `30f106c`: `data/experiment/esq/enmienda_uso_ventana_2026-09-30.md` y `docs/enmienda_preregistro_tanda0_2026-09-30_ventana.md`). Este párrafo, la §1.6 y la §3.2 se reescriben antes de la firma; hasta entonces rigen estas notas.
+Rige el principio 9: los grafos de la tanda 0 ya sellados no se corrigen en el lugar; toda corrección produce una versión posterior,
+declarada (protocolo entre tandas, D3; `docs/protocolo_dos_grafos.md`, §4). Los cambios de esquema, prefijo o formato de salida de E1
+posteriores a B2.11 van a la versión posterior a la evaluación (enmienda del uso de la ventana, `30f106c`), salvo las enmiendas firmadas
+que la autora haga regir desde la tanda 1 (por ejemplo, la enmienda 8 a L-ESQ-R2, si se firma).
 
-**Regla de implementación común a todos los candidatos.** Ningún cambio
-reemplaza el camino actual: entra detrás del perfil o del manifiesto, con el
-camino por defecto byte-idéntico al que produjo r1 y la tanda 0. Precedentes:
-U-CABLE-V3 (perfil `produccion_dev` byte-idéntico por defecto), U-B5.3 (camino
-sin corte byte-idéntico, selftest de manifiesto con 0 misses proyectados) y el
-gate 6 (argumentos con default igual al comportamiento actual). Así r1 y la
-tanda 0 siguen reproducibles con el código de r2.
+## 1. Lo que congela: las piezas y sus sellos
+
+El sello de r2b es el de U-REEXT-T0 (bloque `sellos` de `data/experiment/reextraccion_v2/manifiestos/tanda0_10tos_r2b.json`, T1, `23585e2`;
+gate en T3-bis, `bbc38dc`). El sello final es el que congela esta release.
+
+| pieza | dónde | sello de r2b | sello final | qué falta |
+|---|---|---|---|---|
+| E0 (e0-r2) | `reextraccion_v2/e0_chunking/` | código `9f6361e`; salida de la tanda 0 en `salida_tanda0_r2b/` (57 archivos) | A COMPLETAR | S0-4 de U-SEG-OFICIAL cambia el código una vez; después S1-bis y S2; manifiesto de E0 de la partición de la tanda 1 |
+| Prefijo de E1 | `e1_extractor/prompt_r2b.py` | hash `322c5a23e9b7` (sha256 `ccffa4e3…`, `66cde30`; parches P3b y P3c) | igual (no cambia antes de la tanda 1) | — |
+| Tool schema de E1 | `pyd_r2/generados/tool_schema_r2.json` | `0c391f2b…` | igual | — |
+| Mensaje de E1 | candado en `prompt_r2b.py:97-98` | `4d69f7f4…` (casos) y `a9cb702c…` (mensaje) | A COMPLETAR | U-ALCANCE-E1 (registro de alcance en el mensaje; condición 11-bis) |
+| Modelos, temperatura y plataforma | `corpus_v2/runner_corpus.py:91-96`; manifiesto r2b | E1 `claude-haiku-4-5`, temperatura 0 (reintento por forma, 1); E3 `claude-sonnet-5`; API de Anthropic | igual, salvo C3 de U-COMP-E1 | C3 decide; la decisión de no cambiar de modelo antes de la tanda 1 no depende de la segunda lectura de C2 (`UCOMP_E1:200-201`) |
+| Namespaces de caché | manifiesto r2b | E1 `e1_extraccion\|cv=e1-extractor-v1-p322c5a23e9b7\|think=0` (reintento `-rforma1`); E3 `e3_verificacion\|cv=e3-verificador-v1-p21a836c7de6d\|think=0` | igual | — |
+| Prefijo de E3 | `e3_verificador/prompt_e3.py` | `21a836c7de6d` | igual | — |
+| Mensaje de E3 (NOTA) | candado en `prompt_e3.py` | manifiesto: `e8fa5dc4…` y `da17c22e…`; código desde O2 (`7fe848c`): `079d2489…` y `66bc8656…` | A COMPLETAR | O5 de U-E3-LISTAS (caso resuelto en la NOTA del ítem) |
+| Matriz del validador | `pyd_r2/code/modelos_r2.py` (`AMPLIACION_R2`), `pyd_r2/generados/enums_r2.json` y la política, con candados | la de L-ESQ-R2 con sus enmiendas firmadas | A COMPLETAR | enmienda 8 a L-ESQ-R2 (si se firma tras la lectura de las 41) |
+| Ensamblador y validador r2 | `tanda0/code/ensamblar_tanda0.py`, `pyd_r2/code/validador_r2.py`, `corpus_v2/r1_referencias.py` | código de `dac7d57` | A COMPLETAR | U-OMISIONES-COD (grupos A a D, F a J) |
+| Catálogo del request | `catalogo_unico/catalogo_sujetos_r2.json` y `generados_r2/` | `c3ad1581…` | igual (enmienda 4, §1.4 y §6) | — |
+| Fixture de la suite | `scripts/regression_kg_esperado.json` | la del gate de T3-bis (`f72518b3…`) | A COMPLETAR | la entrada del grafo re-sellado |
+| Grafos r2b de la tanda 0 | `data/experiment/neo4j/grafos.py` | diez `a9631a64…`, desarrollo `6e756043…`; sin cola `e22fae1a…` y `2922b72d…` | A COMPLETAR | re-sellado único, después de U-OMISIONES-COD |
+| Tarifa de referencia | protocolo entre tandas, nota del 07/10/2026 (`:497-511`) | USD 0,021115 por unidad (E1 0,010135; E3 0,010980) | igual, ajustada por O5 si su costo real difiere | — |
+
+**No congela, por diseño:** el catálogo de resolución, que crece por el §1 de la enmienda 4 al cierre de cada tanda, y el registro de
+alcance por tanda, que solo agrega (enmienda 4, §6).
+
+## 2. Qué tiene que estar cerrado antes de firmar, y en qué orden
+
+Cada flecha es «antes de».
+1. **E3:** O5 de U-E3-LISTAS → re-sello del candado del mensaje de E3.
+2. **Alcance:** enmienda 4 (FIRMADA, `53bbd6f`) → U-ALCANCE-E1 (A1) → lista final de la tanda 1 → U-ALCANCE-E1 (A2, sello) → candado
+   del mensaje de E1.
+3. **Matriz y ensamblado:** lectura de las 41 (segunda lectura a ciegas y adjudicación) → enmienda 8 firmada o límite → U-OMISIONES-COD →
+   re-sellado único de la tanda 0 (fija el sorteo de la etapa V de tripletas).
+4. **E0:** S0-4 → S1-bis → S2 → E0 de la partición → lista de TOs de la tanda 1 y censo de unidades grandes (condiciones 5, 7 y 12).
+5. **Modelo de E1:** adjudicación de las 19 divergencias de la segunda lectura de C2 → C3 de U-COMP-E1.
+6. **Fuera de las cadenas:**
+   - la lectura de confirmación de la matriz (`condicion_de` → Operacion y → Potestad), requisito de B6.1 (`plan:407`);
+   - el laudo B2.4 (condición 13);
+   - el tablero, con la re-medición de la columna r2b después del re-sellado (condición 4);
+   - el acta del capítulo 3 (condición 1).
+7. **Después:** este laudo con los sellos completos → gate final (§3) → firma → B2.10 cerrada → pre-registro de la tanda 1 → tanda 1.
+
+## 3. El gate (reemplaza la §3.1 de la v1)
+
+1. **Shapes:** `scripts/shapes_validator.py` con perfil r2, fase r2b, sobre la E0 final. Todos los bloqueantes en PASS (en T3-bis, 18 de 18).
+2. **Suite de regresión,** con la fixture vigente: **0 regresiones no declaradas.**
+   - Una regresión cuenta como declarada solo con la aceptación escrita de la autora y su razón, como en T3-bis.
+   - Declaradas hoy (T3-bis, decisión 3 de la autora; `data/experiment/reext_t0/reporte_u_reext_t0.md:29-38`):
+     - RT-C5-3, por paráfrasis sin cambio de sentido;
+     - RT-C6-1 y RT-C6-2, por desviación de fidelidad del modelo en la descripción, con el tramo fiel.
+3. **Métricas intrínsecas,** con el comando del tablero.
+4. **Reproducibilidad:**
+   - la cadena r2a da `70d51e42…` y `fa4c1043…`;
+   - las cadenas r2b, con el código final, dan los grafos re-sellados byte a byte en dos corridas.
+5. **Selftests de la cadena** en verde, y el selftest de claves OK, sin claves movidas fuera de las filas declaradas de la tabla de
+   reprocesamiento.
+6. **Nunca EV2** (principio 7).
+7. **El gate final** corre sobre el código final, después de U-OMISIONES-COD y del re-sellado único, como último paso antes de la firma.
+   USD 0.
+
+El tablero de correcciones no es parte del gate: es la condición 4 de la tanda 1 (§2, punto 6).
+
+## 4. El costo de la tanda 1
+
+El tope se fija en el pre-registro de la tanda 1, con la tarifa de referencia de USD 0,021115 por unidad y la lista real de unidades que
+dé la segmentación oficial. Como orden de magnitud, el ejemplo del §7 del protocolo (3.292 unidades) cuesta cerca de USD 69,5
+(`protocolo_entre_tandas.md:506`). El «~USD 40» del plan quedó corregido (`plan:407` y `:768`).
+
+## 5. Lo que la v2 cambia de la v1 (anexo A)
+
+- **«Qué no es»**, la §1.6 y la §3.2: superados desde el 30/09 (r2 incluye el prompt nuevo de E1 y la re-extracción). Rigen la §1 y la §3
+  de la v2.
+- **Perfil de shapes:** la v1 pedía `--perfil congelado`; rige perfil r2, fase r2b.
+- **Criterio de la suite:** la v1 pedía la fixture `696f3f94…` con «0 regresiones»; rige «0 regresiones no declaradas» con la fixture
+  vigente.
+- **Reproducibilidad:** la v1 pedía `8e2eadee…` y `0226e947…`; rige la cadena r2a (`70d51e42…`, `fa4c1043…`) y las r2b re-selladas.
+- **Namespace y temperatura de E1:** la v1 decía `p54a111e2175f` y «sin temperatura fijada»; rigen `p322c5a23e9b7` y temperatura 0.
+- **Streaming:** la v1 lo descartaba; existe el tercer escalón por `messages.stream` (`plan:390`, fila F08d).
+- **Tarifa:** la v1 decía USD 0,0166 por unidad; rige 0,021115 desde la tanda 1.
+- **Lo que la v1 no menciona y rige:**
+  - el perfil r2b, e0-r2, el catálogo r2, los modelos y la plataforma;
+  - la cola humana y el grafo sin cola (enmienda 5 al protocolo, `ccd8fad`);
+  - las enmiendas 2 a 8 de L-ESQ-R2, U-E3-LISTAS y U-SEG-OFICIAL;
+  - la enmienda 4 al protocolo (FIRMADA, `53bbd6f`).
+
+## Firma
+
+BORRADOR v2 — PENDIENTE de los sellos «A COMPLETAR», del gate final y de la firma de la autora, antes del pre-registro de la tanda 1.
 
 ---
+
+# Anexo A — BORRADOR v1 (30/09/2026, `31e0d38`)
+
+Texto de la v1 desde su §1, sin cambios, salvo esta nota. Rige donde la v2 no lo reemplaza (§5); su sección «Firma» quedó sustituida por la
+de la v2.
 
 ## §1. Candidatos
 
@@ -359,7 +446,3 @@ la fase 2a (E6); la lectura de la fase 2b.
    celda, EV2 no distingue celdas (tabla pre-adjudicación de E5 de la tanda 0,
    `reports/tanda0/tabla_celdas_E5.json`). Agregado el 29/09/2026 desde el
    checklist previo al escalado.
-
-## Firma
-
-Pendiente.

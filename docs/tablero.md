@@ -1,5 +1,59 @@
 # Tablero de estado — bcra-regulatory-kg
 
+## 0. Estado vigente al 07/10/2026 (noche)
+
+Actualización de la mesa por decisión de la autora del 07/10/2026; HEAD `0ea2d74`. Desde el 17/08 el estado lo llevan el plan
+(`docs/plan_tesis.md`), el checklist del escalado (`docs/checklist_pre_escalado.md`) y los mandatos (`docs/mandatos/`). Esta sección dice
+dónde está cada cosa. Las secciones 1 a 8, más abajo, son el estado al 17/08/2026: valen como historia, salvo donde esta sección las
+actualiza.
+
+**Fase.** El ciclo de corrección posterior a la tanda 0 (B2.11) está cerrado hasta U-REEXT-T0 (`0a3ac81`) y U-SINCOLA-T0 (`dde9f44`, sello
+`235a295`). Está en curso la preparación de la tanda 1 (B6.1), que no arranca sin la release r2 cerrada (B2.10).
+
+**Grafos.**
+- El grafo vigente del circuito de refinamiento sigue siendo KG-Reextraído-r1 (§1; `docs/laudo_promocion_r1_vigente.md`).
+- Grafos sellados de la tanda 0 con el perfil r2b (`data/experiment/neo4j/grafos.py`): diez `a9631a64…` y desarrollo `6e756043…`
+  (`bbc38dc`, `c9540c0`); sin cola, diez `e22fae1a…` y desarrollo `2922b72d…` (`dde9f44`, `235a295`).
+- Nombres: «grafo sin cola / completo de la tanda N» para las tandas; «el grafo evaluado» y «el grafo corregido» para el escalado
+  (`docs/protocolo_dos_grafos.md`, FIRMADO el 07/10/2026).
+- Pendiente: el re-sellado único de los grafos de la tanda 0, después de U-OMISIONES-COD.
+
+**Esquema y catálogo.**
+- L-ESQ-R2 FIRMADA (`4ef7650`), con sus enmiendas 2 a 7 firmadas (la 6, en su parte A; `data/experiment/esq/`). La enmienda 8 está en
+  BORRADOR y espera la lectura de las 41.
+- Catálogo de sujetos r2: `catalogo_unico/catalogo_sujetos_r2.json`, `c3ad1581…`. Crece solo el catálogo de resolución, por la
+  enmienda 4 al protocolo.
+
+**Gobierno.**
+- Protocolo entre tandas FIRMADO (`a304b89`), con sus cinco enmiendas firmadas: cola humana, 2, 3, 4 (`53bbd6f`) y 5 (`ccd8fad`).
+- Pre-registro de la evaluación por tripletas, FIRMADO (`4afbe51`).
+- Laudo de la release r2 (`docs/laudo_release_r2_pipeline.md`): BORRADOR v2, con sus sellos «A COMPLETAR». Se firma después del gate
+  final y antes del pre-registro de la tanda 1.
+
+**Cola de unidades** (estado en sus mandatos y frenos):
+- **U-SEG-OFICIAL:** S0-4 despachada; después S1-bis y S2, que fijan la lista de la tanda 1.
+- **U-E3-LISTAS:** O5 despachada (tope de USD 0,50).
+- **U-COMP-E1:** la segunda lectura de C2 terminó; falta la adjudicación de las 19 divergencias, y después C3.
+- **U-RERESOL-CAT:** R2 cerrada (R2-3 bis en `dac7d57`).
+- **Mandatos en BORRADOR:** U-OMISIONES-COD (borrador v4 de la mesa, todavía sin mandato en el repo), U-ALCANCE-E1 y U-UNION-ESTRECHA.
+- **Laudo B2.4:** en BORRADOR.
+- **Segunda lectura a ciegas de la mesa:** las 41 de la enmienda 8, los ocho patrones de B2.4 y las 4 filas de BKL-0021; sesión nueva,
+  después del 08/10/2026 a las 18 h.
+- **Lectura de confirmación de la matriz:** pendiente.
+- **Re-sellado único de los grafos de la tanda 0.**
+- **Pre-registro de la tanda 1**, y después B6.1.
+- **Sincronización de la tesis desde Overleaf al repo:** la versión validada del capítulo 3 entra en la próxima sincronización, con su
+  commit.
+
+**Condiciones de la tanda 1** (checklist, condiciones 1 a 13 y 11-bis):
+- cumplidas o decididas: 1, 3, 6, 8, 9 y 10;
+- abiertas: 2 (release r2), 4 (tablero de correcciones: falta la re-medición de r2b después del re-sellado), 5, 7 y 12 (segmentación
+  oficial y lista), 11 (alcance de la lista final), 11-bis (U-ALCANCE-E1) y 13 (laudo B2.4).
+
+---
+
+Lo que sigue es el tablero al 17/08/2026.
+
 Actualizado al 17 de agosto de 2026 (semana del 10 al 17 de agosto; incluye
 los dos commits del 08/08 posteriores al tablero anterior) — se actualiza por
 laudo al cierre de cada semana; entre cierres, el estado real es `git log` +

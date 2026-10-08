@@ -1,4 +1,4 @@
-# Laudo B2.4 — asignación de sujeto: los ocho patrones y las entradas BKL-0001, 0002, 0018, 0020 y 0021
+# Laudo B2.4 — asignación de sujeto: los ocho patrones y las entradas BKL-0001, 0002, 0018, 0020, 0021 y 0028
 
 **BORRADOR — PENDIENTE DE DOS LECTURAS Y DE LA FIRMA DE LA AUTORA** · Redactado por la mesa el 07/10/2026 (noche), con las decisiones de la
 autora del mismo día sobre la ficha de decisión de la mesa. Fila B2.4 del plan (`docs/plan_tesis.md:383`); condición 13 de la tanda 1
@@ -32,19 +32,35 @@ alguno de esos cambios moviera una arista de estos puntos, la re-medición poste
 | BKL-0020 | Cuarentena declarada: 1 fila en r2b, «una entidad originante» (`cap::3.1.3::cierre`), por debajo del umbral. | registro de no mapeados del diez r2b |
 | Meta de resueltos (tablero) | Sin meta numérica: dependen del crecimiento del catálogo (enmienda 4). La cuarentena se declara con su cifra: 294 filas en el registro del diez r2b (164 en cuarentena, 128 resueltas a clase, 2 descartadas) y 98 nodos `Sujeto_propuesto_*`. | `docs/tablero_correcciones.md`, fila de la mención del sujeto |
 
-**Cómo queda el estado de las entradas.**
+**Cómo queda el estado de las entradas** (DECIDIDO por la autora el 07/10/2026, noche).
 - La máquina de estados del backlog (`docs/spec_backlog_refinamiento.md`, §2 y §5) no tiene un estado de «límite declarado» ni de
   «cuarentena declarada».
-- Propuesta de la mesa, a confirmar al firmar: BKL-0018, 0020 y 0021 quedan en `triaged`, con un evento `nota` que dice que el laudo las
-  cierra como límite o cuarentena declarados y que no se corrigen en esta versión.
-- La alternativa, `descartado`, diría que la entrada no era un defecto, y no es así.
+- BKL-0018, 0020 y 0021 quedan en `triaged`, con un evento `nota`: son límites o cuarentenas declaradas, no descartes, y no se corrigen en
+  esta versión.
 - BKL-0001, 0002 y 0009 a 0016 pasan a `verificado` (los ocho, si la segunda lectura y la adjudicación no cambian el veredicto).
+
+**BKL-0028** (miembro del rol de alcance de ctacor; sumada por la autora el 07/10/2026, noche).
+- **El defecto.** La entrada nació porque el catálogo v3 enrutaba por alias las variantes «del exterior» a ids domésticos, y por eso
+  U-ESQ-V3 no adjudicó el miembro del rol de ctacor.
+- **Su condición de cierre** («ningún id del bloque de catálogo tiene definición o label doméstico junto a un alias del exterior») ya se
+  cumple en el catálogo r2. Fuente: U-CAT-UNICO C2, `bd2122d`, con 0 ids domésticos con alias del exterior y tres ids del exterior
+  separados; nota del 01/10/2026 en `backlog.jsonl`.
+- **Lo que queda.** En la tabla de la release, `Sujeto_rol_alcance_ctacor` tiene `miembros_ids` vacío, con los rótulos «Entidades
+  financieras del país» y «Casas de cambio (Sección 3)» (`catalogo_unico/generados_r2/rol_por_to_r2.json`).
+- **Propuesta de la autora:** el mismo camino que BKL-0021 (el procedimiento de crecimiento de la enmienda 4 al cierre de la tanda 1).
+- **Recomendación de la mesa, distinta:** cerrar BKL-0028 como `verificado` por su propia condición de cierre, y llevar la adjudicación
+  del miembro del rol de ctacor a la release siguiente, como cambio de la tabla de la release (fila F12). Tres razones:
+  - El §1 de la enmienda 4 hace crecer el catálogo de resolución desde menciones en cuarentena, y la pertenencia a un rol no es una
+    mención en cuarentena.
+  - La enmienda fija el catálogo del request, y con él la tabla de roles, por release (§1, punto 4).
+  - ctacor no está en la tanda 0 ni en la tanda 1, así que no la afecta.
+- **Decisión: PENDIENTE de la autora.**
 
 ## 4. Qué falta para firmarlo
 
 1. La segunda lectura a ciegas de los 8 puntos, y la adjudicación de la autora sobre sus divergencias con T3.
 2. La lectura de las 4 filas de «entidad(es) encargada(s) del seguimiento».
-3. La confirmación de la convención de estado del §3.
+3. La decisión sobre BKL-0028 (§3): el camino de BKL-0021 o la recomendación de la mesa.
 
 Las dos lecturas van en el despacho de la mesa para una sesión nueva después del 08/10/2026 a las 18 h, junto con la segunda lectura de
 las 41 de la enmienda 8.
@@ -68,6 +84,7 @@ que un patrón reaparece, su línea `cambio_estado` se reemplaza por una `nota` 
 {"evento": "cambio_estado", "id": "BKL-0016", "estado": "verificado", "aplicado_en": null, "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: el patrón no reaparece en a9631a64 (ext::3.18), por la lectura de T3 y la segunda lectura a ciegas adjudicada; cambio de verificación declarado", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 {"evento": "nota", "id": "BKL-0018", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: límite declarado junto con BKL-0004, que persiste como falla conocida sellada en la suite r2b (suite_perfil_r2.md:18); no se corrige en esta versión; queda en triaged", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 {"evento": "nota", "id": "BKL-0020", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: cuarentena declarada (1 fila en r2b, «una entidad originante», cap::3.1.3::cierre, por debajo del umbral de la enmienda 4); queda en triaged", "evidencia": "docs/laudo_B2.4_sujetos.md"}
+{"evento": "cambio_estado", "id": "BKL-0028", "estado": "verificado", "aplicado_en": "data/experiment/catalogo_unico/catalogo_sujetos_r2.json (bd2122d)", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4 (si la autora adopta la recomendación de la mesa): la condición de cierre se cumple en el catálogo r2 (0 ids domésticos con alias del exterior; tres ids del exterior separados); la adjudicación del miembro de Sujeto_rol_alcance_ctacor (miembros_ids vacío) va a la release siguiente, fila F12", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 {"evento": "nota", "id": "BKL-0021", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: la mención reaparece en r2b como «la entidad nominada» (control q de T3); cuarentena declarada, con el rol nuevo por el procedimiento de crecimiento de la enmienda 4 al cierre de la tanda 1; reemplaza la decisión (c) del 06/10/2026, que ninguna unidad ejecutó; resultado de la lectura de las 4 filas «entidad(es) encargada(s) del seguimiento»: <RESULTADO>; queda en triaged", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 ```
 
@@ -90,8 +107,8 @@ que un patrón reaparece, su línea `cambio_estado` se reemplaza por una `nota` 
 4. **BKL-0021:** la condición de cierre falló (la mención reaparece), y ni el plan ni el backlog lo registraban. Queda en la nota de la
    fila del plan y en el lote de eventos.
 5. **BKL-0021 y BKL-0028 se pasaron a U-RERESOL-CAT, que no los tomó.** BKL-0021 queda resuelta por la decisión de este laudo, que
-   reemplaza la (c) del 06/10. **BKL-0028** (el miembro del rol de ctacor; nota en `backlog.jsonl` del 01/10/2026) queda sin unidad:
-   PENDIENTE de la autora, anotado en la fila del plan.
+   reemplaza la (c) del 06/10. **BKL-0028** entra a este laudo (decisión de la autora del 07/10/2026, noche), con la recomendación de la
+   mesa del §3 PENDIENTE de su confirmación.
 6. **«Re-sellado del grafo evaluado de la tanda 0»** (mandato de U-RERESOL-CAT, nota del 07/10, `:325`) contra los nombres D13, que
    reservan «el grafo evaluado» para el escalado (`docs/protocolo_dos_grafos.md`, §1, FIRMADO el 07/10/2026). Se agrega al pie de ese
    mandato la nota de equivalencia que el protocolo prescribe: donde dice «grafo evaluado de la tanda 0», léase «grafo sin cola de la
