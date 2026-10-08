@@ -127,9 +127,10 @@ sed -n 61p data/experiment/reextraccion_v2/corpus_tanda0/salida_r2b/cla/extracci
 ## 3. Estilo
 
 Sin cambios respecto de la versión 2: se lee de
-`docs/tesis/figuras/figura_esquema_final.svg` (versión 3, commit `8edd732`,
-sha256 `dfdb16d471bb93c6351aa03b1e609452b75c428baa354c52354ce1dfe9797bb3`).
-Para los tipos de este registro:
+`docs/tesis/figuras/figura_esquema_final.svg` (versión 4, sha256
+`d550719599872f47fc8a7dbee261a6c11e5ab186e0e8fad76f281e3c220eedfa`; hasta el
+08/10/2026, la versión 3, commit `8edd732`, sha256 `dfdb16d4…`, con el mismo
+estilo de cajas, tipos, rótulos y flechas, §12). Para los tipos de este registro:
 
 | Tipo | Relleno | Borde | Grosor |
 |---|---|---|---|
@@ -177,11 +178,13 @@ el mismo lugar, para que se lean una contra otra (su LEEME, §6).
 
 ## 5. Reutilización
 
-Sin cambios: `generar_figura_esquema_final.py` (sha256
-`0d6274fe2d3a870ff8776b29f9d69195867ffbced767355a5a2fa20ee756bb15`) y, de
-`generar_figura_proceso_extraccion.py` (sha256
-`6a91931abeb9927842f76fa50471497e926c69fc56617c62ef7f05ddf6c010d6`), el
-medidor de Helvetica, importados sin modificarlos.
+`generar_figura_esquema_final.py` (versión 4, sha256
+`4ab76a71dae84f29f246b1ee5b27af5b143565a78d62962918335aa3ca1a086d`; hasta el
+08/10/2026, la versión 3, `0d6274fe…`) y, de `generar_figura_norma_a_grafo.py`
+(sha256 `618789ae333e17e0cb7ba1d9baf0d3d006e3f50745869de8bcffd5b487dde67c`,
+`medidor`, :806), el medidor de Helvetica, importados sin modificarlos. Hasta
+el 08/10/2026 el medidor se pedía a `generar_figura_proceso_extraccion.py`
+(sha256 `6a91931a…`), que lo dejó de tener en `88bfe89` (§12).
 
 ## 6. Controles
 
@@ -245,7 +248,7 @@ corrida que escribió en el repo cambió solo los tres archivos de la figura.
 
 | Archivo | sha256 |
 |---|---|
-| `generar_figura_extractor_ejemplo.py` | `1cc39e337a0137e7910f65c6ee109592a3a09d289c7a3b02b7a36f55d6755c2a` |
+| `generar_figura_extractor_ejemplo.py` | `ca7d45568b212998d423e62680edafa6bf61956630b8d3090af666f1ef0dca9d` (hasta el 08/10/2026, `1cc39e337a0137e7910f65c6ee109592a3a09d289c7a3b02b7a36f55d6755c2a`; §12) |
 | `figura_extractor_ejemplo.svg` | `9a393b325cae953f3da697658cb435fdace001cf91cb8eee1ea28980b7dfe64d` |
 | `figura_extractor_ejemplo.png` | `328d55fa6713a0a34d1abecd1a29ce89882333fddada019d3e2f221c828b4e13` |
 | `figura_extractor_ejemplo.pdf` | `ce27d103b75093e582fc0247438043efee26edb7e163d16f9477527742da22b0` |
@@ -282,3 +285,31 @@ LEEME son de este registro.
   regla de inclusión condicionada, no una excepción
   (`corpus_tanda0/salida_r2b/cla/finales.jsonl:61`, `residuales`). La figura
   dibuja la salida del extractor tal como vino y no lo marca.
+
+## 12. Nota del 08/10/2026: estilo de la versión 4 del esquema final y medidor
+
+Dos cambios en el generador, ninguno en la figura:
+
+- **Estilo.** La figura del esquema final pasó a su versión 4
+  (`LEEME_figura_esquema_final.md`, §8.1): sin la fila de la leyenda de lo
+  agregado respecto del esquema de partida y con todos los rótulos de relación
+  en gris. El candado `ESTILO` (:127-128) pasó de `dfdb16d4…` a `d5507195…`,
+  y el docstring (:37) y el comentario de :126 dicen «versión 4». Lo que lee
+  `leer_estilo` (:233-267) es igual en las dos versiones; el comentario de los
+  rótulos (:250-251) dice ahora que desde la versión 4 ningún rótulo va en
+  magenta. De `generar_figura_esquema_final.py` se importan 29 nombres: 28
+  son iguales en las dos versiones (comparados con `ast`), y `W` vale 850 en
+  las dos (su asignación comparte línea con el alto, que pasó de 860 a 852);
+  `rect_texto` mide con los anchos AFM, que en la versión 4 suman «T» y «O».
+- **Medidor.** Desde `88bfe89`, `generar_figura_proceso_extraccion.py` ya no
+  tiene `medidor`, y la llamada `proc.medidor()` (:861) fallaba con
+  `AttributeError`: el generador no corría en HEAD. Ahora importa
+  `generar_figura_norma_a_grafo.py` (:108, en lugar de
+  `generar_figura_proceso_extraccion.py`) y llama a `base.medidor()` (:861),
+  la función de :806 de ese archivo. Si faltan PIL o la fuente del sistema,
+  esa función frena en lugar de devolver `None`.
+
+El script tiene las mismas líneas (944) y su sha256 pasó de `1cc39e33…` a
+`ca7d4556…` (§9). Sobre una copia de las fuentes, la figura sale idéntica byte
+a byte (los SVG, PNG y PDF de §9), y también la del ensamblado, que recompone
+esta; registros en el paquete de revisión de FIG-ESQUEMA-FINAL-SOLO.

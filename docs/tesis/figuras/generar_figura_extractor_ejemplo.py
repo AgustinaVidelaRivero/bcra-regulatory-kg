@@ -34,7 +34,7 @@ Nada del contenido se tipea ni se supone (con candado de sha256):
   ese caso; el identificador interno no se dibuja;
 - el estilo de cada caja (relleno, borde, grosor, esquinas y la discontinua
   del sujeto), la tipografía de tipos y rótulos, el gris y el grosor de las
-  flechas se leen de figura_esquema_final.svg (versión 3); las puntas son las
+  flechas se leen de figura_esquema_final.svg (versión 4); las puntas son las
   de su generador;
 - las etiquetas, los tipos y los nombres de las relaciones se dibujan como los
   devolvió el modelo, envueltos por palabras en el ancho de la caja, sin
@@ -76,7 +76,7 @@ los controles fallan y no se escribe nada.
 Reutiliza por importación, sin modificarlo, generar_figura_esquema_final.py
 (el tamaño de 15 cm sobre 850 unidades, el texto con halo, las puntas, la
 medida de Menlo, la geometría de tramos y textos, el conteo de cruces y la
-exportación) y, de generar_figura_proceso_extraccion.py, el medidor con las
+exportación) y, de generar_figura_norma_a_grafo.py, el medidor con las
 métricas reales de Helvetica para las etiquetas.
 
 Salidas, byte-reproducibles: figura_extractor_ejemplo.svg, .png (300 dpi,
@@ -105,7 +105,7 @@ sys.dont_write_bytecode = True
 AQUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, AQUI)
 import generar_figura_esquema_final as EF            # noqa: E402
-import generar_figura_proceso_extraccion as proc     # noqa: E402
+import generar_figura_norma_a_grafo as base          # noqa: E402
 
 RAIZ = os.path.abspath(os.path.join(AQUI, "..", "..", ".."))
 NOMBRE = "figura_extractor_ejemplo"
@@ -123,9 +123,9 @@ REGISTRO_POR_OMISION = ("data/experiment/reextraccion_v2/corpus_tanda0/salida_r2
 # --sha256-catalogo.
 CATALOGO_POR_OMISION = ("data/experiment/catalogo_unico/catalogo_sujetos_v3.json",
                         "9a2522e41e1086d26bb73a37070efd9913f98ec36e2f957e198b460d21ca6c58")
-# Estilo: la figura del esquema final, versión 3.
+# Estilo: la figura del esquema final, versión 4.
 ESTILO = ("docs/tesis/figuras/figura_esquema_final.svg",
-          "dfdb16d471bb93c6351aa03b1e609452b75c428baa354c52354ce1dfe9797bb3")
+          "d550719599872f47fc8a7dbee261a6c11e5ab186e0e8fad76f281e3c220eedfa")
 UNIDAD = "cla::5.1.1.1"
 SUJETO = "Sujeto"
 
@@ -247,8 +247,8 @@ def leer_estilo():
     textos = list(raiz.iter(NS + "text"))
     nombres = {(t.get("font-family"), t.get("font-size"), t.get("fill")) for t in textos
                if t.get("font-weight") == "bold" and t.text in cajas}
-    # Rótulos: el gris de la figura; el magenta (EF.RESALTE) marca allí las
-    # relaciones agregadas respecto de la partida, y esta figura no marca nada.
+    # Rótulos: el gris de la figura; desde su versión 4 ningún rótulo va en
+    # magenta (EF.RESALTE, que en la versión 3 marcaba dos relaciones).
     rotulos = {(t.get("font-family"), t.get("font-size"), t.get("fill"), t.get("stroke"))
                for t in textos if t.get("stroke") and t.get("fill") != EF.RESALTE}
     lineas = {(p.get("stroke"), p.get("stroke-width")) for p in raiz.iter(NS + "path")}
@@ -858,7 +858,7 @@ def main():
     args = argumentos()
     res = resolver(args)
     E = leer_estilo()
-    MEDIR = proc.medidor()
+    MEDIR = base.medidor()
     if MEDIR is None:
         freno("sin las métricas reales de Helvetica (PIL y la fuente del sistema) no se compone la figura")
     ext = res["ext"]

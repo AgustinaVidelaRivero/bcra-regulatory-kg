@@ -109,7 +109,8 @@ los dos.
 
 El generador recompone la figura del extractor con su generador,
 `generar_figura_extractor_ejemplo.py` (sha256
-`1cc39e337a0137e7910f65c6ee109592a3a09d289c7a3b02b7a36f55d6755c2a`), que lee
+`ca7d45568b212998d423e62680edafa6bf61956630b8d3090af666f1ef0dca9d`; hasta el
+08/10/2026, `1cc39e33…`, §13), que lee
 su registro con su candado (su LEEME, §1). El SVG recompuesto tiene que ser
 byte a byte el registrado en su LEEME §9,
 `9a393b325cae953f3da697658cb435fdace001cf91cb8eee1ea28980b7dfe64d`; si no lo
@@ -184,8 +185,10 @@ Sin cambios respecto de la versión 2: lo que ya estaba, con el estilo de la
 figura del extractor; `remite_a` en `#8a8a8a`, grosor 1,6, discontinuo `7 5`;
 la marca de umbrales (18 × 18, `#3d3d3d`, «≤» blanco); el panel con nombres
 en Menlo y valores en Helvetica de 15 (7,50 pt). Todo leído de
-`figura_esquema_final.svg` (sha256
-`dfdb16d471bb93c6351aa03b1e609452b75c428baa354c52354ce1dfe9797bb3`).
+`figura_esquema_final.svg` (versión 4, sha256
+`d550719599872f47fc8a7dbee261a6c11e5ab186e0e8fad76f281e3c220eedfa`; hasta el
+08/10/2026, la versión 3, `dfdb16d4…`, con el mismo discontinuo y la misma
+marca, §13).
 
 ## 6. Disposición
 
@@ -281,7 +284,7 @@ corrida que escribió en el repo cambió solo los tres archivos de la figura.
 
 | Archivo | sha256 |
 |---|---|
-| `generar_figura_ensamblado_ejemplo.py` | `3d377e81cad060f2265fa0b08914f7adcc26dde1342fd63973566ea44ace808d` |
+| `generar_figura_ensamblado_ejemplo.py` | `98526fc001ab72a575a0416270051a7bb75f5e28e780bbff180920e8801cf9ba` (hasta el 08/10/2026, `3d377e81cad060f2265fa0b08914f7adcc26dde1342fd63973566ea44ace808d`; §13) |
 | `figura_ensamblado_ejemplo.svg` | `992fce81078cbf7162ab36c6f84e926f9726e66e4f24bf55e1f8ff513f5e0b53` |
 | `figura_ensamblado_ejemplo.png` | `b95fe22932ae9c972ca43f9dc75406a51b0d76cf02821861244ccc32456b7773` |
 | `figura_ensamblado_ejemplo.pdf` | `026f11c1b5b6356cbca903404483baf61c612f3d670d9af8ca2e94a53a6bd961` |
@@ -312,3 +315,29 @@ que se declare. Los conteos de este LEEME son de este grafo.
   se controlan sobre la geometría.
 - **Grafo de diez o de desarrollo**: la figura lee el de diez documentos; el
   vecindario es el mismo en el de desarrollo (§1).
+
+## 13. Nota del 08/10/2026: estilo de la versión 4 del esquema final y medidor
+
+Dos cambios en el generador, ninguno en la figura:
+
+- **Estilo.** La figura del esquema final pasó a su versión 4
+  (`LEEME_figura_esquema_final.md`, §8.1). Este generador la lee por el
+  candado de la figura del extractor (`EX.ESTILO`, :282), que pasó de
+  `dfdb16d4…` a `d5507195…` (su LEEME, §12). Lo que lee `leer_estilo_nuevo`
+  (:279-305), el discontinuo de `remite_a` y la marca de umbrales, es igual
+  en las dos versiones, y los 18 nombres que importa de
+  `generar_figura_esquema_final.py` son iguales en las dos (comparados con
+  `ast`). El docstring (:47) dice «versión 4».
+- **Medidor.** Desde `88bfe89`, `generar_figura_proceso_extraccion.py` ya no
+  tiene `medidor`, y la llamada `proc.medidor()` (:867) fallaba con
+  `AttributeError`: el generador no corría en HEAD. Ahora importa
+  `generar_figura_norma_a_grafo.py` (:118, en lugar de
+  `generar_figura_proceso_extraccion.py`) y llama a `base.medidor()` (:867),
+  la función de :806 de ese archivo; el docstring (:89) lo dice.
+
+La figura del extractor que este generador recompone cambió de script
+(`ca7d4556…`, §2) pero no de SVG (`9a393b32…`, `SVG_EXTRACTOR`). El script
+tiene las mismas líneas (978) y su sha256 pasó de `3d377e81…` a `98526fc0…`
+(§10). Sobre una copia de las fuentes, la figura sale idéntica byte a byte
+(los SVG, PNG y PDF de §10); registros en el paquete de revisión de
+FIG-ESQUEMA-FINAL-SOLO.

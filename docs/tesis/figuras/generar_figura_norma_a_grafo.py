@@ -114,9 +114,9 @@ DATOS_V1 = ("docs/tesis/figuras/ejemplo_prestamo_datos.json",
             "25ab7b4c0d76fd735244fe0fecc17ceaba1b0e8bfd2312e7aa3cbd5c849672a2")
 EXTRACTOR_V1 = ("docs/tesis/figuras/extraer_datos_ejemplo_prestamo.py",
                 "4c3a441972d27304b6d58d0664dbc15b893bce7ad3e7d2d49afad947f51eeea7")
-# Figura del esquema final, versión 3: cajas por tipo (data-caja).
+# Figura del esquema final, versión 4: cajas por tipo (data-caja).
 ESTILO = ("docs/tesis/figuras/figura_esquema_final.svg",
-          "dfdb16d471bb93c6351aa03b1e609452b75c428baa354c52354ce1dfe9797bb3")
+          "d550719599872f47fc8a7dbee261a6c11e5ab186e0e8fad76f281e3c220eedfa")
 
 
 def leer_con_candado(rel, esperado):

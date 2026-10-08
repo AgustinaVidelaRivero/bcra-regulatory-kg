@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Figura del esquema final (capítulo 3, sección 3.10), versión 3, POR SCRIPT y nunca a mano.
+"""Figura del esquema final (capítulo 3, sección 3.10), versión 4, POR SCRIPT y nunca a mano.
 
 Qué dibuja: los 9 tipos de entidad más Sujeto; las 13 relaciones que emite el
 extractor, con sus 28 firmas, agrupadas en buses (un tramo común por relación,
 como establecida_en en la figura del esquema de partida); remite_a, la relación
-que deriva el código, una sola vez y en línea discontinua; y una marca en los
-tipos que llevan la propiedad umbrales. Lo que el esquema final agrega
-respecto del esquema de partida va en magenta solo en las cajas de los tipos
-nuevos y en los rótulos de las relaciones nuevas; todas las líneas de relación
-van en el gris de la figura de partida (versión 3).
+que se deriva de las citas del texto, una sola vez y en línea discontinua; y
+una marca en los tipos que llevan la propiedad umbrales. La figura presenta el
+esquema final sin referirse al esquema de partida (versión 4): todas las
+líneas y todos los rótulos de relación van en el gris de la figura de partida,
+y cada caja lleva sus colores de tipo.
 
 Fuentes, cada una con candado de sha256 (FUENTES; si una cambia, el script
 frena antes de dibujar):
@@ -18,8 +18,9 @@ frena antes de dibujar):
     contenido, TextoOrdenado y la función de firma, que se evalúa sobre todos
     los pares de tipos);
   - data/experiment/grafo_v2/code/schema.py: el esquema de partida (6 tipos,
-    12 relaciones, 17 firmas), para saber qué agrega el esquema final; se lee
-    con ast, sin importarlo;
+    12 relaciones, 17 firmas), para comprobar que la figura de partida dibuja
+    sus 6 tipos y sus 17 firmas y para saber qué cajas llevan el color
+    RESALTE; se lee con ast, sin importarlo;
   - figura_esquema_partida.svg: la figura del esquema de partida, de la que se
     heredan el tamaño y el estilo de cajas y grupos, la paleta, la tipografía
     y los trazos que unen cajas que se desplazan juntas.
@@ -42,10 +43,19 @@ Versión 3. Mismas cajas, grupos, trazado y cruces que la versión 2. Todas las
 líneas de relación y sus puntas van en el gris de la partida, también
 condicion_de, las ramas nuevas de aplica_a y establecida_en, y remite_a
 (discontinua). El magenta queda en el borde y el fondo de Potestad, Condicion
-y Definicion y en los rótulos de condicion_de y remite_a (D["relaciones_nuevas"]).
+y Definicion y en los rótulos de condicion_de y remite_a.
 condicion_de lleva un segundo rótulo junto a su tramo vertical, a la derecha
 del grupo de la izquierda. La leyenda muestra una caja y un rótulo de ejemplo
 en magenta.
+
+Versión 4. Mismas cajas (con sus colores de relleno y de borde), grupos,
+trazado, cruces, rótulos y marcas que la versión 3. La figura deja de
+referirse al esquema de partida: sale de la leyenda la fila «tipo o relación
+agregados respecto del esquema de partida» y las dos filas que quedan suben a
+su lugar; los rótulos de condicion_de y remite_a pasan al gris de los demás
+rótulos (las líneas ya iban en gris); la leyenda de remite_a dice que se deriva
+de las citas del texto y que vale entre cualquier par de los 7 tipos de
+contenido o hacia un Texto Ordenado, en tres líneas.
 
 Controles (verificar(); cualquier falla FRENA y no se escribe nada):
   0. grupos: cada caja dentro de su grupo y de ningún otro; Sujeto fuera de
@@ -69,13 +79,17 @@ Controles (verificar(); cualquier falla FRENA y no se escribe nada):
      o menos: ver ROTULOS_NUEVOS), y hay un rótulo por red (dos en
      condicion_de); ningún texto por debajo de 7 pt impresos;
   5. margen: nada a menos de 2 mm del borde del lienzo;
-  6. colores, sobre el SVG que se emitiría: toda línea de relación y toda
-     punta en el gris de la partida; rótulos en magenta solo los de las
-     relaciones nuevas; cajas en magenta solo las de los tipos nuevos.
+  6. colores, sobre el SVG que se emitiría: toda línea de relación, toda
+     punta y todo rótulo de relación en el gris de la partida; cajas con el
+     color RESALTE solo Potestad, Condicion y Definicion (los tipos que no
+     están en el esquema de partida), como en la versión 3.
+Además, la relectura del SVG emitido frena si un texto visible nombra el
+esquema de partida o lo agregado («partida», «agregad»).
 Pruebas negativas (MUTACIONES; corren en cada ejecución, antes de escribir):
 una caja de tipo de contenido fuera de su grupo, una línea de relación que no
-es gris, un rótulo sobre una caja, un tramo diagonal, una firma de más y una
-de menos; cada una tiene que frenar en el control que le corresponde.
+es gris, un rótulo de relación que no es gris, un rótulo sobre una caja, un
+tramo diagonal, una firma de más y una de menos; cada una tiene que frenar en
+el control que le corresponde.
 
 Salidas, byte-reproducibles, a 15 cm de ancho: figura_esquema_final.svg,
 .png (300 dpi, densidad grabada) y .pdf (rsvg-convert con SOURCE_DATE_EPOCH=0).
@@ -238,8 +252,7 @@ def leer_datos() -> dict:
         freno("fuentes", "el esquema de partida no está contenido en el final")
     D.update(tipos_partida=list(tipos_p), firmas_partida=firmas_p,
              firmas_nuevas=firmas - firmas_p,
-             tipos_nuevos=[t for t in tipos if t not in tipos_p],
-             relaciones_nuevas=sorted(set(D["predicados"]) - set(dr_p)) + [D["remite_a"]])
+             tipos_nuevos=[t for t in tipos if t not in tipos_p])
     return D
 
 
@@ -367,20 +380,23 @@ def sobre_tramo(p, a, b, tol: float = 1e-6) -> bool:
 # ========================================================================== #
 # Diseño de la versión 2 (coordenadas en el marco de la figura de partida)   #
 # ========================================================================== #
-# Color de lo agregado: el de la figura del esquema congelado
-# (generar_figuras_esquema.py, RESALTE), ausente de la paleta de tipos.
+# Color de las cajas de Potestad, Condicion y Definicion: el de la figura del
+# esquema congelado (generar_figuras_esquema.py, RESALTE), que esos tipos
+# llevan también en otras figuras de la tesis. Sin cambios respecto de la versión 3.
 RESALTE = "#b5179e"
 GROSOR_RESALTE = 2.6
 MEZCLA_RELLENO_NUEVO = 0.90          # como en la figura del esquema congelado
 COLOR_MARCA = "#3d3d3d"              # marca de umbrales
 DASH = "7 5"                         # el de la caja Sujeto de la figura de partida
 FS_LEYENDA = 15
-# Versión 3: todas las líneas de relación (y sus puntas) van en el gris de la
-# figura de partida; lo agregado se marca solo en las cajas de los tipos nuevos
-# (borde y fondo) y en los rótulos de las relaciones nuevas (D["relaciones_nuevas"]).
+# Versión 4: todas las líneas de relación, sus puntas y sus rótulos van en el
+# gris de la figura de partida; ningún texto ni color de la figura se refiere
+# al esquema de partida.
 ROTULOS_POR_RED = {"condicion_de": 2}      # las demás redes llevan un rótulo
 
-W, H = 850, 860
+# Versión 4: 852 de alto (860 en la versión 3). Sale la fila de 26 px de lo
+# agregado y la fila de remite_a suma una línea de 18 px (LEYENDA_FILAS).
+W, H = 850, 852
 ANCHO_CM = 15.0
 PT_POR_CM = 72.0 / 2.54
 DPI = 300
@@ -481,15 +497,20 @@ MARCA = dict(dx=165, dy=14, lado=18, texto="≤", fs=15)
 # Leyenda: (clave de la muestra, x de la muestra, x del texto, y, líneas).
 # Cada línea es una lista de trozos (texto, monoespaciada). La línea de los
 # tipos de contenido se arma con los nombres del código (ver leyenda()).
+# Versión 4: sin la fila de lo agregado (y = 768 en la versión 3); la fila de
+# remite_a sube a su lugar (794 → 768) y la de umbrales queda a 21 px de la
+# última línea de remite_a, como en la versión 3 (838 − 817 = 830 − 809).
 LEYENDA_FILAS = [
-    ("agregado", 76, 196, 768,
-     [[("tipo o relación agregados respecto del esquema de partida", False)]]),
-    ("derivada", 76, 164, 794, None),
-    ("umbrales", 76, 164, 838, [[("el tipo lleva la propiedad umbrales", False)]]),
+    ("derivada", 76, 164, 768, None),
+    ("umbrales", 76, 164, 830, [[("el tipo lleva la propiedad umbrales", False)]]),
 ]
-LEYENDA_MUESTRA_ROTULO = "relación"     # rótulo de ejemplo, en magenta, junto a la caja de ejemplo
-LEYENDA_MUESTRA_DX = 36                 # de la caja de ejemplo al rótulo de ejemplo
 LEYENDA_INTERLINEA = 18
+# Texto de la leyenda de remite_a, alrededor de los nombres de los tipos de
+# contenido (segunda línea); «un Texto Ordenado» va en letra normal, como
+# documento, no como nombre de tipo.
+LEYENDA_REMITE_ANTES = " se deriva de las citas del texto y vale entre cualquier par de los {n} " \
+                       "tipos de contenido,"
+LEYENDA_REMITE_DESPUES = "o hacia un Texto Ordenado"
 
 # Cruces entre flechas de redes distintas: 6, los mismos 6 de la versión 1 en
 # número. Los 4 primeros son los de la figura de partida trasladados; los 2
@@ -537,9 +558,9 @@ def leyenda(D, M) -> list[dict]:
     for clave, xm, xt, y, lineas in LEYENDA_FILAS:
         if clave == "derivada":
             lineas = [[(D["remite_a"], True),
-                       (f" la deriva el código y vale entre cualquier par de los {len(orden)} "
-                        "tipos de contenido,", False)],
-                      trozos]
+                       (LEYENDA_REMITE_ANTES.format(n=len(orden)), False)],
+                      trozos + [(",", False)],
+                      [(LEYENDA_REMITE_DESPUES, False)]]
         filas.append(dict(clave=clave, xm=xm, xt=xt, y=y, lineas=lineas, tipos=orden))
     return filas
 
@@ -629,6 +650,7 @@ def armar_modelo(D: dict, P: dict) -> dict:
         M["rotulos"].append(dict(texto=texto, x=float(x), y=float(y), anchor=anchor, rot=rot,
                                  pred=texto, origen="nuevo", junto=junto[0] if junto else JUNTO))
     M["color_lineas"] = {}      # relación → color; vacío = todas en gris (lo controla verificar)
+    M["color_rotulos"] = {}     # ídem para los rótulos de relación (versión 4)
     for t in D["umbrales"]:
         c = M["cajas"][t]
         M["marcas"].append(dict(caja=t, x=c["x"] + MARCA["dx"], y=c["y"] + MARCA["dy"],
@@ -851,7 +873,7 @@ _AFM = dict(zip("abcdefghijklmnopqrstuvwxyz",
                 (556, 556, 500, 556, 556, 278, 556, 556, 222, 222, 500, 222, 833, 556, 556,
                  556, 556, 333, 500, 278, 556, 500, 722, 500, 500, 500)))
 _AFM.update({" ": 278, ",": 278, ";": 278, "(": 333, ")": 333, "á": 556, "é": 556,
-             "í": 278, "ó": 556, "ú": 556, "ñ": 556})
+             "í": 278, "ó": 556, "ú": 556, "ñ": 556, "T": 611, "O": 778})
 _AFM.update({str(d): 556 for d in range(10)})
 
 
@@ -977,10 +999,6 @@ def textos_de(M) -> list[dict]:
             y = fila["y"] + 5 + i * LEYENDA_INTERLINEA
             T.append(dict(tipo="leyenda", texto="".join(s for s, _ in trozos), halo=False,
                           fs=FS_LEYENDA, R=rect_linea_leyenda(trozos, fila["xt"], y)))
-        if fila["clave"] == "agregado":
-            T.append(dict(tipo="muestra", texto=LEYENDA_MUESTRA_ROTULO, halo=False, fs=FS_LEYENDA,
-                          R=rect_texto(LEYENDA_MUESTRA_ROTULO, fila["xm"] + LEYENDA_MUESTRA_DX,
-                                       fila["y"] + 5, FS_LEYENDA, "start", 0, True)))
     return T
 
 
@@ -988,7 +1006,7 @@ def graficos_leyenda(M) -> list[tuple]:
     """Rectángulos de las muestras de la leyenda (para márgenes y solapes)."""
     res = []
     for fila in M["leyenda"]:
-        ancho = {"umbrales": MARCA["lado"], "agregado": 26}.get(fila["clave"], 76)
+        ancho = {"umbrales": MARCA["lado"]}.get(fila["clave"], 76)
         res.append((fila["xm"], fila["y"] - 9, fila["xm"] + ancho, fila["y"] + 9))
     return res
 
@@ -1223,8 +1241,9 @@ def verificar(M, D) -> dict:
 
 def controlar_colores(svg: str, M, D) -> dict:
     """Toda línea de relación y toda punta en el gris de la partida, con su
-    grosor; rótulos en magenta solo los de las relaciones nuevas; cajas en
-    magenta solo las de los tipos nuevos."""
+    grosor; todo rótulo de relación en el gris de los rótulos de la partida
+    (versión 4); cajas con el color RESALTE solo las de Potestad, Condicion y
+    Definicion, como en la versión 3."""
     E, ns = M["estilo"], "{http://www.w3.org/2000/svg}"
     raiz = ET.fromstring(svg)
     lineas = [el for el in raiz.iter(ns + "path") if el.get("data-pred")]
@@ -1240,16 +1259,16 @@ def controlar_colores(svg: str, M, D) -> dict:
         freno("colores", f"{len(puntas)} puntas con relación declarada, {len(M['puntas'])} dibujadas")
     rotulos = [el for el in raiz.iter(ns + "text") if el.get("stroke") == "#ffffff"]
     for el in rotulos:
-        esperado = RESALTE if el.text in D["relaciones_nuevas"] else E["gris_rotulo"]
-        if el.get("fill") != esperado:
-            freno("colores", f"el rótulo «{el.text}» va en {el.get('fill')}, no en {esperado}")
+        if el.get("fill") != E["gris_rotulo"]:
+            freno("colores", f"el rótulo «{el.text}» va en {el.get('fill')}, no en {E['gris_rotulo']}")
+    if len(rotulos) != len(M["rotulos"]):
+        freno("colores", f"{len(rotulos)} rótulos con halo en el SVG, {len(M['rotulos'])} en el modelo")
     cajas = [el for el in raiz.iter(ns + "rect") if el.get("data-caja")]
     for el in cajas:
         nueva = el.get("data-caja") in D["tipos_nuevos"]
         if (el.get("stroke") == RESALTE) != nueva:
             freno("colores", f"la caja {el.get('data-caja')} {'no ' if nueva else ''}lleva el magenta")
     return dict(lineas=len(lineas), puntas=len(puntas), rotulos=len(rotulos), cajas=len(cajas),
-                rotulos_magenta=sorted({el.text for el in rotulos if el.get("fill") == RESALTE}),
                 cajas_magenta=sorted(el.get("data-caja") for el in cajas
                                      if el.get("stroke") == RESALTE))
 # ========================================================================== #
@@ -1358,23 +1377,16 @@ def dibujar(M, D, rep) -> str:
     for m in M["marcas"]:
         out.append(marca_svg(m["x"], m["y"], m["caja"], E))
 
-    # Rótulos de relación, con halo blanco, encima de todo.
+    # Rótulos de relación, con halo blanco, encima de todo; todos en gris (versión 4).
     for r in M["rotulos"]:
-        nueva = r["texto"] in D["relaciones_nuevas"]
         out.append(texto_svg(r["texto"], r["x"], r["y"], E["fs_rotulo"], E["mono"],
-                             RESALTE if nueva else E["gris_rotulo"], anchor=r["anchor"],
-                             rot=r["rot"], halo=True))
+                             M["color_rotulos"].get(r["pred"], E["gris_rotulo"]),
+                             anchor=r["anchor"], rot=r["rot"], halo=True))
 
     # Leyenda.
     for fila in M["leyenda"]:
         y, xm = fila["y"], fila["xm"]
-        if fila["clave"] == "agregado":
-            out.append(f'<rect x="{xm}" y="{y - 9}" width="26" height="18" '
-                       f'fill="{hex_mix(RESALTE, MEZCLA_RELLENO_NUEVO)}" stroke="{RESALTE}" '
-                       f'stroke-width="{f(GROSOR_RESALTE)}" rx="4"/>')
-            out.append(texto_svg(LEYENDA_MUESTRA_ROTULO, xm + LEYENDA_MUESTRA_DX, y + 5, FS_LEYENDA,
-                                 E["mono"], RESALTE))
-        elif fila["clave"] == "derivada":
+        if fila["clave"] == "derivada":
             out.append(f'<line x1="{xm}" y1="{y}" x2="{xm + 76}" y2="{y}" stroke="{E["gris_arista"]}" '
                        f'stroke-width="{f(E["grosor_arista"])}" stroke-dasharray="{DASH}"/>')
             out.append(punta_svg(dict(punto=(xm + 76, y), dir="right"), E["gris_arista"]))
@@ -1434,7 +1446,9 @@ def releer_svg(svg: str, D: dict) -> None:
     if marcas != sorted(D["umbrales"]):
         freno("firmas", f"marcas de umbrales en {marcas}, el código dice {sorted(D['umbrales'])}")
     visibles = " ".join("".join(el.itertext()) for el in raiz.iter(ns + "text")).lower()
-    for prohibido in (r"\bsha\b", r"\.py\b", r"\.json\b", r"\br2\b", r"\bcongelado\b"):
+    # Versión 4: ningún texto visible se refiere al esquema de partida ni a lo agregado.
+    for prohibido in (r"\bsha\b", r"\.py\b", r"\.json\b", r"\br2\b", r"\bcongelado\b",
+                      r"\bpartida\b", r"agregad"):
         if re.search(prohibido, visibles):
             freno("textos", f"nombre interno {prohibido!r} en texto visible")
 # ========================================================================== #
@@ -1513,6 +1527,10 @@ def _mut_linea_no_gris(M):
     M["color_lineas"]["condicion_de"] = RESALTE
 
 
+def _mut_rotulo_no_gris(M):
+    M["color_rotulos"]["remite_a"] = RESALTE
+
+
 def _mut_rotulo_sobre_caja(M):
     r = next(r for r in M["rotulos"] if r["texto"] == "limita")
     c = M["cajas"]["Operacion"]
@@ -1541,6 +1559,8 @@ MUTACIONES = {
     "caja_fuera_de_grupo": (_mut_caja_fuera_de_grupo, "grupos",
                             ("la caja Potestad está fuera de su grupo «izquierda»",)),
     "linea_no_gris": (_mut_linea_no_gris, "colores", ("la línea de condicion_de no es gris",)),
+    "rotulo_no_gris": (_mut_rotulo_no_gris, "colores",
+                       ("el rótulo «remite_a» va en #b5179e, no en",)),
     "rotulo_sobre_caja": (_mut_rotulo_sobre_caja, "textos", ("«limita»", "Operacion")),
     "tramo_diagonal": (_mut_tramo_diagonal, "trazado", ("tramo diagonal de establecida_en",)),
     "firma_de_mas": (_mut_firma_de_mas, "firmas",
@@ -1603,8 +1623,6 @@ def main() -> int:
           f"{len(D['firmas'])} firmas = {len(D['congeladas'])} congeladas + {len(D['ampliacion'])} "
           f"de la ampliación; {D['remite_a']}: {len(D['firmas_remite'])} firmas; umbrales en "
           f"{', '.join(D['umbrales'])}")
-    print(f"  relaciones nuevas respecto de la partida (rótulo en magenta): "
-          f"{', '.join(D['relaciones_nuevas'])}")
     print(f"  respecto de la partida: tipos nuevos {', '.join(D['tipos_nuevos'])}; "
           f"{len(D['firmas_nuevas'])} firmas nuevas")
     for p, d, r in sorted(D["firmas_nuevas"]):
@@ -1633,9 +1651,9 @@ def main() -> int:
     print(f"TEXTOS: {len(rep['textos'])}; letra mínima {rep['pt_minimo']:.2f} pt impresos; "
           f"margen mínimo {rep['margen_min_mm']:.2f} mm")
     c = rep["colores"]
-    print(f"COLORES: {c['lineas']} líneas y {c['puntas']} puntas de relación, todas en gris; rótulos "
-          f"en magenta: {', '.join(c['rotulos_magenta'])} (de {c['rotulos']}); cajas en magenta: "
-          f"{', '.join(c['cajas_magenta'])} (de {c['cajas']})")
+    print(f"COLORES: {c['lineas']} líneas, {c['puntas']} puntas y {c['rotulos']} rótulos de relación, "
+          f"todos en gris; cajas con el color {RESALTE}: {', '.join(c['cajas_magenta'])} "
+          f"(de {c['cajas']})")
     print("PRUEBAS NEGATIVAS (cada una frena en su control):")
     for n, msg in negativas.items():
         print(f"      {n:18s} {msg}")

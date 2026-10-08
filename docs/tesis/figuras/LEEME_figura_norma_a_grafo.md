@@ -79,7 +79,7 @@ Cada una con candado de sha256 en el generador
 | textos | `data/experiment/reextraccion_v2/e0_chunking/salida_tanda0_r2b/chunks_cla.json` | `98808886a406d8321c678836a55f92eea983d594d95358dd21ceb537487ac0b1` | único commit `9f6361e` (`git log --format=%h -- <ruta>`) |
 | textos de la versión 1 | `docs/tesis/figuras/ejemplo_prestamo_datos.json` | `25ab7b4c0d76fd735244fe0fecc17ceaba1b0e8bfd2312e7aa3cbd5c849672a2` | `fbe69d4` |
 | composición de los textos | `docs/tesis/figuras/extraer_datos_ejemplo_prestamo.py` | `4c3a441972d27304b6d58d0664dbc15b893bce7ad3e7d2d49afad947f51eeea7` | `fbe69d4`; se importan `texto_de_figura` (:117-124), `PUNTOS_TEXTO`, `INTRO_5_1_1`, `FRASE_5_1_1` y `FRASE_RESALTADA` (:66-70), sin modificarlos |
-| colores de tipo | `docs/tesis/figuras/figura_esquema_final.svg` | `dfdb16d471bb93c6351aa03b1e609452b75c428baa354c52354ce1dfe9797bb3` | `8edd732`; cajas `data-caja` en :110, :112 y :118 |
+| colores de tipo | `docs/tesis/figuras/figura_esquema_final.svg` | `d550719599872f47fc8a7dbee261a6c11e5ab186e0e8fad76f281e3c220eedfa` | versión 4, con las cajas de la versión 3 (`8edd732`, `dfdb16d4…`; §13); cajas `data-caja` en :110, :112 y :118 |
 
 Los dos grafos tienen los mismos ids, tipos, etiquetas, puntos y propiedades
 en los cuatro nodos dibujados, las mismas cuatro aristas con las mismas
@@ -259,7 +259,7 @@ misma salida de texto. El PDF lleva `/CreationDate` fijada por
 
 | Archivo | sha256 |
 |---|---|
-| `generar_figura_norma_a_grafo.py` | `89dfc2a3d85e2abe1a28b3517d3e6817d73af8feb5b4b37ee4fb73978b5e3298` |
+| `generar_figura_norma_a_grafo.py` | `618789ae333e17e0cb7ba1d9baf0d3d006e3f50745869de8bcffd5b487dde67c` (hasta el 08/10/2026, `89dfc2a3d85e2abe1a28b3517d3e6817d73af8feb5b4b37ee4fb73978b5e3298`; §13) |
 | `figura_norma_a_grafo.svg` | `874292f54e3c5d70b036b070b6beb7e8ce4c568a2aa6862fde23d865588f3e9b` |
 | `figura_norma_a_grafo.png` | `8dbfb2da6e528f9b8076cba527ed5ada49c02669a4055f62db60f0799f5c1148` |
 | `figura_norma_a_grafo.pdf` | `c27cfbdee26f2441af770619d5ef237cb25f23423d6238bea35a2dbde9b7054f` |
@@ -276,3 +276,17 @@ misma salida de texto. El PDF lleva `/CreationDate` fijada por
   de `remite_a`.
 - **Impreso**: NO VERIFICADO; la letra y las distancias se controlan sobre la
   geometría.
+
+## 13. Nota del 08/10/2026: el estilo, de la versión 4 del esquema final
+
+La figura del esquema final pasó a su versión 4 (`LEEME_figura_esquema_final.md`,
+§8.1): sin la fila de la leyenda de lo agregado respecto del esquema de
+partida y con todos los rótulos de relación en gris. Sus cajas no cambian:
+mismos colores, en las mismas líneas del SVG (:110, :112 y :118). El candado
+`ESTILO` (:118-119) pasó de `dfdb16d4…` a `d5507195…`, el sha256 de la
+versión 4; el script cambió solo en esa línea y en el comentario de :117, sin
+correr ninguna otra línea, y su sha256 pasó de `89dfc2a3…` a `618789ae…`
+(§11). Sobre una copia de las fuentes, la figura sale idéntica byte a byte
+(los SVG, PNG y PDF de §11), igual que las tres figuras que importan este
+generador (la tripleta, la del proceso de extracción y la de fragmentos contra
+grafo); registros en el paquete de revisión de FIG-ESQUEMA-FINAL-SOLO.

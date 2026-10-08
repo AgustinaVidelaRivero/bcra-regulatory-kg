@@ -83,8 +83,9 @@ Con `--perturbar <caso>` compone la figura con un defecto (§8) y no escribe
 nada.
 
 Del generador de la figura 1.1 (`generar_figura_norma_a_grafo.py`, sha256
-`89dfc2a3d85e2abe1a28b3517d3e6817d73af8feb5b4b37ee4fb73978b5e3298` en
-`88bfe89`) se importan, sin modificarlos: los candados de los dos grafos y del
+`618789ae333e17e0cb7ba1d9baf0d3d006e3f50745869de8bcffd5b487dde67c`; hasta el
+08/10/2026, `89dfc2a3…` en `88bfe89`, que difiere solo en el candado del
+estilo, §11) se importan, sin modificarlos: los candados de los dos grafos y del
 estilo (`GRAFO`, `GRAFO_DIEZ`, `ESTILO`, :105-119) con `leer_con_candado`
 (:122-129); la carga del subgrafo (`cargar_subgrafo`, :398-459, y
 `comparar_grafos`, :462-477); los colores de tipo (`leer_colores_tipo`,
@@ -102,7 +103,7 @@ no coincide, el generador frena.
 |---|---|---|---|
 | grafo dibujado | `data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo_r2b/r2/kg.json` | `6e7560433148cfe0c476cdd61199c32278187c4196d6f90dc0a38976a6d8e9a2` | último commit `bbc38dc`; KG-Tanda0-Desarrollo-r2b, 6.990 nodos y 23.445 aristas (`data/experiment/neo4j/grafos.py:120-133`) |
 | grafo de comprobación | `data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json` | `a9631a64b422bdae634fb05135373c6f04c6272cdf7acd43a1be9f5b6c1f5f57` | último commit `bbc38dc`; KG-Tanda0-Diez-r2b, 8.816 nodos y 27.632 aristas (`grafos.py:134-147`) |
-| colores de tipo | `docs/tesis/figuras/figura_esquema_final.svg` | `dfdb16d471bb93c6351aa03b1e609452b75c428baa354c52354ce1dfe9797bb3` | `8edd732`; cajas `data-caja` en :110 (`Condicion`) y :118 (`Operacion`) |
+| colores de tipo | `docs/tesis/figuras/figura_esquema_final.svg` | `d550719599872f47fc8a7dbee261a6c11e5ab186e0e8fad76f281e3c220eedfa` | versión 4, con las cajas de la versión 3 (`8edd732`, `dfdb16d4…`; §11); cajas `data-caja` en :110 (`Condicion`) y :118 (`Operacion`) |
 | esquema r2 | `data/experiment/pyd_r2/code/modelos_r2.py` | `e67f15ae13dd5419ea0ce1a08dbef63c86cbdf9c269772a0b02a4e27b4c3a2ca` | último commit `4aa92c7`; igual en `bbc38dc`; `PREDICADOS` :106-108, `AMPLIACION_R2` :130-133, `PREDICADOS_DERIVADOS` :165 |
 | figura 1.1 versión 2 | `docs/tesis/figuras/figura_norma_a_grafo.svg` | `874292f54e3c5d70b036b070b6beb7e8ce4c568a2aa6862fde23d865588f3e9b` | `88bfe89`; cajas `condicion_monto` (:33-36) y `operacion` (:41-44) |
 
@@ -314,3 +315,15 @@ usa `exportar`).
   diferencia con su figura 1.1 (`limita`).
 - **Impreso**: NO VERIFICADO; la letra y las distancias se controlan sobre la
   geometría, a 12,75 cm de ancho.
+
+## 11. Nota del 08/10/2026: el estilo, de la versión 4 del esquema final
+
+La figura del esquema final pasó a su versión 4 (`LEEME_figura_esquema_final.md`,
+§8.1), con las cajas de la versión 3: mismos colores, en las mismas líneas del
+SVG (:110 y :118). El candado `ESTILO` que este generador toma de la figura
+1.1 (`generar_figura_tripleta.py:107`) pasó de `dfdb16d4…` a `d5507195…`, en
+`generar_figura_norma_a_grafo.py:119` (su LEEME, §13), y el sha256 de ese
+generador, de `89dfc2a3…` a `618789ae…`; las líneas que cita el §1 no se
+corrieron. `generar_figura_tripleta.py` no cambió (§9). Sobre una copia de las
+fuentes, la figura sale idéntica byte a byte (los SVG, PNG y PDF de §9);
+registros en el paquete de revisión de FIG-ESQUEMA-FINAL-SOLO.

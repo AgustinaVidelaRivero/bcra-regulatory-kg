@@ -44,7 +44,7 @@ Fuentes, con candado de sha256:
   su catálogo con sus candados): tiene que dar byte a byte el SVG registrado en
   su LEEME (SVG_EXTRACTOR). De ahí salen las cajas, las flechas y los rótulos
   de lo que ya estaba;
-- el estilo, de figura_esquema_final.svg (versión 3): el de cajas, tipos,
+- el estilo, de figura_esquema_final.svg (versión 4): el de cajas, tipos,
   rótulos y flechas lo lee el generador de la figura del extractor; el
   discontinuo de remite_a y la marca de umbrales se leen acá;
 - reglas_comparacion.py, cuyo docstring define cada valor de la comparación:
@@ -86,7 +86,7 @@ Reutiliza por importación, sin modificarlos, generar_figura_extractor_ejemplo.p
 (la figura de la que parte, el estilo, la medida y el dibujo de textos y cajas,
 la relectura del inventario y sus controles), generar_figura_esquema_final.py
 (la marca de umbrales, las puntas, el texto con halo, la geometría, el conteo
-de cruces y la exportación) y, de generar_figura_proceso_extraccion.py, el
+de cruces y la exportación) y, de generar_figura_norma_a_grafo.py, el
 medidor con las métricas reales de Helvetica.
 
 Salidas, byte-reproducibles: figura_ensamblado_ejemplo.svg, .png (300 dpi,
@@ -115,7 +115,7 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, AQUI)
 import generar_figura_esquema_final as EF            # noqa: E402
 import generar_figura_extractor_ejemplo as EX        # noqa: E402
-import generar_figura_proceso_extraccion as proc     # noqa: E402
+import generar_figura_norma_a_grafo as base          # noqa: E402
 
 NOMBRE = "figura_ensamblado_ejemplo"
 NS = EX.NS
@@ -864,7 +864,7 @@ def argumentos():
 
 def main():
     args = argumentos()
-    EX.MEDIR = proc.medidor()
+    EX.MEDIR = base.medidor()
     if EX.MEDIR is None:
         freno("sin las métricas reales de Helvetica (PIL y la fuente del sistema) no se compone la figura")
     viejo = figura_vieja()
