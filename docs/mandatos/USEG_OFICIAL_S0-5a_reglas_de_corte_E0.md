@@ -266,3 +266,83 @@ Después (no es de esta sesión):
 - S0-5b, con el parche aplicado una sola vez;
 - S1-ter: tramo a; sorteo con las semillas selladas; lectura a ciegas por una sesión nueva de la mesa, abierta fuera del repo, que no
   abre este mandato, el acta de la adjudicación ni las notas del mandato; la revisión de la autora.
+
+---
+
+**[09/10/2026] Nota de la mesa antes del despacho: control de continuidad de la numeración** (decisión de la autora del 09/10/2026).
+Es un control, no una regla: no cambia ninguna unidad. Se suma a lo que S0-5a corre y entrega.
+
+- **Qué lista.** Sobre los 152, antes y después de las reglas, por TO, cada salto de numeración: un punto cuyo hermano anterior o padre
+  no existe como unidad.
+  - «Existe como unidad» se lee en el árbol de puntos de E0 (`estructura_<to>.json`), por subdocumento: el punto es una unidad o el
+    encabezado que heredan sus unidades.
+  - Esa definición sola no ve `ri_rml::1.2.4`: es el último punto de su lista, ningún hermano lo sigue y no deja hueco. Por eso el
+    control suma la cola: el sucesor del último hijo de un punto, y los que siguen mientras aparezcan, si aparece al principio de un
+    renglón del texto propio de alguna unidad.
+  - Un rótulo pegado al título, sin espacio («2.8.Código 11»), cuenta como rótulo.
+- **La clase de cada salto:**
+  - (i) el PDF salta: el rótulo no aparece al principio de ningún renglón de las páginas del TO con alguna unidad (el índice no cuenta;
+    se marca si aparece solo ahí);
+  - (ii) punto tragado: el rótulo aparece al principio de un renglón dentro del texto propio de otra unidad. Se dan la unidad que lo
+    tiene, el renglón y el final del renglón anterior, con la marca `posible_referencia` si ese renglón termina en «punto» o «puntos»,
+    o si el resto del renglón está vacío o empieza en minúscula;
+  - (iii) otra.
+  - En las tres clases, los descendientes del rótulo que aparecen al principio de un renglón de alguna unidad y no son puntos de E0.
+- **Aceptación:**
+  - antes de las reglas salen como (ii), en la unidad que hoy los tiene:
+    - `ri_rml::1.2.4`, en `ri_rml::1.3`;
+    - en snp_tr, 1.3.4, 1.3.5, 1.3.6, 1.4 y 1.5, en `snp_tr::1.6::intro`, con sus descendientes: 1.3.4.1, 1.3.4.2, 1.3.5.1 a
+      1.3.5.3, 1.3.6.1, 1.3.6.2, 1.4.1 a 1.4.4, 1.5.1, 1.5.2, 1.5.2.1 y 1.5.2.2;
+  - después de las reglas, ninguno es un salto.
+- **Corrección del §0 (mecanismo 5) y de la aceptación de R5-d en snp_tr. Error de la mesa.**
+  - `snp_tr::1.6::intro` se lleva también 1.3.4 a 1.3.6.2, y cinco renglones de 1.3.3: desde «A los efectos de que no se produzcan
+    retrasos…» hasta «El siguiente gráfico presenta el esquema de compensación entre CEC:» (salida de S0-4b,
+    `s1bis/e0/chunks_snp_tr.json`).
+  - La causa: armé la lista del §0 y la aceptación con los puntos de número mayor que 1.3 (1.4 y 1.5, con sus hijos), sin recorrer el
+    texto de la unidad renglón por renglón. Lo encontró el prototipo de este control, que sí lo recorre.
+  - La aceptación de R5-d en snp_tr queda así:
+    - `snp_tr::1.3.3` recupera el renglón de la remisión y los cinco que lo siguen, y termina en «El siguiente gráfico presenta el
+      esquema de compensación entre CEC:», no en «…“Diseño de registros”.»;
+    - existen 1.3.4, 1.3.4.1, 1.3.4.2, 1.3.5, 1.3.5.1 a 1.3.5.3, 1.3.6, 1.3.6.1 y 1.3.6.2, además de los que ya nombra;
+    - lo demás no cambia.
+  - En ri_rml la aceptación está bien: el renglón anterior a «1.2.4.» es «…estadounidenses-.».
+- **Lo que S0-5 no arregla.** Los saltos (ii) y (iii) que quedan después de las reglas van al FRENO, para la decisión de la autora,
+  con el criterio de siempre: en un TO de la tanda 1, regla por lista en S0-5; fuera de la tanda 1, límite declarado y grupo 2. Los (i)
+  van como información, salvo los que tienen descendientes tragados, que se tratan como (ii).
+- **Control fijo de E0.**
+  - En S0-5a vive en `s0_5/scripts/`, con su selftest:
+    - los casos de la aceptación, como (ii);
+    - un (i): pimf, donde el PDF salta de 2.1.3 a 2.1.3.5;
+    - una remisión con `posible_referencia`: 1.3.1.9 de ctacte, en `ctacte::1.5.2.8`.
+  - En S0-5b entra a `reextraccion_v2/e0_chunking/` como script propio, con su selftest, sin cambiar la salida de E0.
+  - Corre en el tramo a de S1-ter y en el E0 de cada tanda, y su lista va al FRENO.
+- **El FRENO de S0-5a** trae, además, la salida del control antes y después de las reglas, la evidencia de su aceptación y la lista para
+  la autora.
+- **El control que ya existía, y por qué no vio estos casos** (pregunta de la autora).
+  - **Uno parcial:** el censo del punto 7 de S0-1 sobre lo que la regla no alcanza (`s0_1/scripts/censo_p7_resto.py:1-2`, en
+    `3920323`). Lista los rótulos con título en mayúscula que E0 rechazó por «padre no abierto», con el padre existente.
+  - **Vio parte de los dos casos.** En `s0_1/censos/censo_p7_resto_base.json` y `_final.json` están 1.2.4 de ri_rml y 1.3.4, 1.3.5 y
+    1.3.6 de snp_tr. El diseño de S0-1 los dejó como límite medido entre los 70 que la regla no alcanzaba, y explicó solo el mecanismo
+    de manori, que eran 58 (`s0_1/DISENO_S0-1.md:271-276`). S0-1 bis resolvió manori: de 70 a 12 (`s0_1bis/DISENO_S0-1bis.md:110-111`,
+    en `d9d2212`). Los otros 12 no se leyeron uno por uno.
+  - **Sobre la salida de S0-4b** el censo sigue dando esos 12 (corrida de la mesa con una copia del script). Cinco son puntos tragados,
+    que este control da como (ii): 1.2.4 de ri_rml, 1.3.4 a 1.3.6 de snp_tr y 1.8.1 de ri_cc. Los otros siete no son saltos:
+    - tres repiten el rótulo de un punto que existe (cirmo3, dos; depaho, uno). Los dos de cirmo3 («1.2.16.1.» y «1.2.18.1.») están
+      en `cirmo3::1.2.13::intro` y `cirmo3::1.2.15::intro`, en las pp. 11 y 13, donde faltan 1.2.13.1 y 1.2.15.1: el PDF los numera
+      mal, y este control los da como (i);
+    - tres son filas de tabla (snp_tr_nc);
+    - uno es un rótulo mal numerado en el PDF («2.2.5.8. Provincia.», dentro de `ri_mmsef::2.5.5.7`; 2.5.5.8 no existe).
+  - **No ve 1.4 ni 1.5 de snp_tr.** Su padre, la sección 1, está abierto: E0 los rechaza porque no siguen al último hermano visto (el
+    1.6 falso ya estaba aceptado), no por «padre no abierto».
+  - **No era un control fijo:** corrió en S0-1 y S0-1 bis, no en S0-2 a S0-4b ni en S1 y S1-bis.
+  - **E0 registra, además, los saltos** entre encabezados aceptados y cada candidato rechazado, con su motivo (`e0_lib.py:21-25`). El
+    de snp_tr está registrado (`salto_hermano`, padre 1, de 3 a 6, p. 11, en `s1bis/e0/estructura_snp_tr.json`). El de ri_rml no es un
+    salto, porque el «1.3.» falso sigue a 1.2.3. Ningún script de U-SEG-OFICIAL lee los saltos.
+- **Prototipo de la mesa.** Es solo de referencia: la cifra que vale es la de S0-5a. Está en el paquete de la mesa
+  (`fuera_del_repo/scratchpads/d0348a29-aaa4-4292-82f3-0c0149e3787e/scratchpad/hoja_de_ruta_tanda1_mesa/S0-5_evidencia_control_continuidad/`,
+  `control_continuidad_numeracion_mesa.py`).
+  - Sobre la salida de S0-4b: 25 saltos en 9 TOs, 12 (i), 13 (ii) y 0 (iii). Uno de los (ii) es la remisión de ctacte.
+  - En la tanda 1: 10 saltos en 5 TOs, 4 (i) y 6 (ii). Los 6 (ii) son los de la aceptación. De los (i), 3.3.6 de snp_cheq tiene un
+    descendiente tragado, 3.3.6.2, en `snp_cheq::3.3.5.1`.
+  - Fuera de la tanda 1: 15 saltos en 4 TOs, 8 (i) y 7 (ii). Cinco de esos (ii) son rótulos pegados al título, en ri_cc y snp_dd,
+    un mecanismo que S0-5 no trata.
