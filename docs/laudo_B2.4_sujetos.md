@@ -1,14 +1,16 @@
 # Laudo B2.4 — asignación de sujeto: los ocho patrones y las entradas BKL-0001, 0002, 0018, 0020, 0021 y 0028
 
-**VERSIÓN PARA FIRMAR (mesa, 09/10/2026)**, con las decisiones de la autora del 09/10/2026 sobre las dos lecturas (§3.1). Redactado por la
+**VERSIÓN PARA FIRMAR (mesa, 09/10/2026; corregida el mismo día con la revisión de la autora)**, con las decisiones de la autora del 09/10/2026 sobre las dos lecturas (§3.1). Redactado por la
 mesa el 07/10/2026 (noche), con las decisiones de la autora del mismo día sobre la ficha de decisión de la mesa. Fila B2.4 del plan (`docs/plan_tesis.md:383`); condición 13 de la tanda 1
 (`docs/checklist_pre_escalado.md`, línea de las condiciones) y fila X9 del checklist: se firma antes de la tanda 1.
 
 ## 1. Qué decide
 
-- Cierra las entradas del backlog que la autora asignó a este laudo el 04/10/2026 (`plan:383`, decisión 1): BKL-0001, 0002, 0018 y 0021.
-- Cierra los ocho patrones de asignación de sujeto, BKL-0009 a BKL-0016, con su lectura sobre el grafo de U-REEXT-T0 (`plan:383`,
-  decisión 3).
+- Resuelve las entradas del backlog que la autora asignó a este laudo el 04/10/2026 (`plan:383`, decisión 1):
+  - BKL-0001 y 0002 se cierran como `verificado`;
+  - BKL-0018 y 0021 quedan en `triaged`, como límite y cuarentena declarados.
+- Resuelve los ocho patrones de asignación de sujeto, BKL-0009 a BKL-0016, con su lectura sobre el grafo de U-REEXT-T0 (`plan:383`,
+  decisión 3): cinco se cierran como `verificado` y tres quedan como límites declarados de la extracción, en `triaged` (§3.1).
 - Suma BKL-0020, del mismo origen que BKL-0021: los sujetos de cuarentena de v3 sin padre (`data/backlog/expediente_retriage_v3.md:182-196`).
 - Fija la meta de los sujetos resueltos del tablero (fila de la mención del sujeto y los sujetos no mapeables).
 - No corrige el grafo: lo que no se corrige se declara.
@@ -25,10 +27,10 @@ alguno de esos cambios moviera una arista de estos puntos, la re-medición poste
 
 | entrada | decisión | evidencia |
 |---|---|---|
-| BKL-0009 a BKL-0016 (los ocho patrones) | Se cierran con la lectura de T3 (control o de U-REEXT-T0, lectura asistida de la instancia), más una **segunda lectura a ciegas de los 8 puntos**. Esa lectura la hace una sesión nueva de la mesa, la misma de la segunda lectura de las 41 de la enmienda 8, después del 08/10/2026 a las 18 h. Las divergencias las adjudica la autora. Se declara el cambio de verificación: lectura asistida y a ciegas, en lugar de chunk contra PDF. | `data/experiment/reext_t0/t3/salida/lectura_controles_t3.md:60-68`; despacho de la mesa |
+| BKL-0009 a BKL-0016 (los ocho patrones) | Se resuelven con la lectura de T3 (control o de U-REEXT-T0, lectura asistida de la instancia), más una **segunda lectura a ciegas de los 8 puntos**, que hizo una sesión nueva de la mesa, la misma de la segunda lectura de las 41 de la enmienda 8, el 08/10/2026 desde las 18 h. Las divergencias las adjudicó la autora. **Resultado (§3.1): cinco se cierran como `verificado`; tres quedan como límites declarados, en `triaged`.** Se declara el cambio de verificación: lectura asistida y a ciegas, en lugar de chunk contra PDF. | `data/experiment/reext_t0/t3/salida/lectura_controles_t3.md:60-68`; despacho de la mesa |
 | BKL-0001 y BKL-0002 | Se cierran con el test por punto de la suite r2b, declarando el cambio de verificación: test de la suite en lugar de chunk contra PDF. | `data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/suite_perfil_r2.md:70-71`: BKL-0001 resuelto (7 nodos anclados en 2.8.3.3, uno con «75 veces SMVM»); BKL-0002 resuelto (35 anclados en 3.5.3, 2 con la ventana de 3 días hábiles) |
 | BKL-0018 | Límite declarado, junto con BKL-0004, que persiste como falla conocida sellada. | `suite_perfil_r2.md:18` |
-| BKL-0021 | Se cierra como **cuarentena declarada**. Los dos propuestos («la entidad nominada», `ext::11.1.1.10` y `ext::3.18.2::intro`; «la entidad nominada por el exportador», `ext::7.3::intro` y `ext::7.3.7`) quedan en cuarentena con sus 4 `aplica_a`. El rol nuevo, si corresponde, entra por el procedimiento de crecimiento de la enmienda 4 al protocolo (FIRMADA el 07/10/2026, §1) al cierre de la tanda 1: la clave llega al umbral de 2 unidades. Antes de firmar, la misma sesión nueva lee si las 4 filas «entidad(es) encargada(s) del seguimiento de la(s) oficialización(es)» (`ext::4.4::intro`, `ext::4.4.2`, `ext::10.8`, `ext::11.1.5::intro`) designan el mismo sujeto; si lo designan, entran a la misma clave. **Esta decisión reemplaza la decisión (c) del 06/10/2026** (un rol nuevo por U-RERESOL-CAT; mandato de U-REEXT-T0, `:585-588`), que ninguna unidad ejecutó. | control q de T3: la mención reaparece como «la entidad nominada» (`lectura_controles_t3.md:73-76`); la condición de cierre del 04/10 («no reaparece») no se cumplió |
+| BKL-0021 | Queda como **cuarentena declarada**, en `triaged`. Los dos propuestos («la entidad nominada», `ext::11.1.1.10` y `ext::3.18.2::intro`; «la entidad nominada por el exportador», `ext::7.3::intro` y `ext::7.3.7`) quedan en cuarentena con sus 4 `aplica_a`. El rol nuevo, si corresponde, entra por el procedimiento de crecimiento de la enmienda 4 al protocolo (FIRMADA el 07/10/2026, §1) al cierre de la tanda 1: la clave llega al umbral de 2 unidades. La misma sesión leyó si las 4 filas «entidad(es) encargada(s) del seguimiento de la(s) oficialización(es)» (`ext::4.4::intro`, `ext::4.4.2`, `ext::10.8`, `ext::11.1.5::intro`) designan el mismo sujeto: lo designan y entran a la clave (§3.1). **Esta decisión reemplaza la decisión (c) del 06/10/2026** (un rol nuevo por U-RERESOL-CAT; mandato de U-REEXT-T0, `:585-588`), que ninguna unidad ejecutó. | control q de T3: la mención reaparece como «la entidad nominada» (`lectura_controles_t3.md:73-76`); la condición de cierre del 04/10 («no reaparece») no se cumplió |
 | BKL-0020 | Cuarentena declarada: 1 fila en r2b, «una entidad originante» (`cap::3.1.3::cierre`), por debajo del umbral. | registro de no mapeados del diez r2b |
 | Meta de resueltos (tablero) | Sin meta numérica: dependen del crecimiento del catálogo (enmienda 4). La cuarentena se declara con su cifra: 294 filas en el registro del diez r2b (164 en cuarentena, 128 resueltas a clase, 2 descartadas) y 98 nodos `Sujeto_propuesto_*`. | `docs/tablero_correcciones.md`, fila de la mención del sujeto |
 
@@ -53,8 +55,13 @@ alguno de esos cambios moviera una arista de estos puntos, la re-medición poste
 
 **BKL-0013, 0014 y 0015 quedan como límites declarados de la extracción.**
 - **La cifra en `a9631a64`:** 3, 2 y 1 aristas.
-- **Vigilancia por tanda:** en el grafo de cada tanda se corren las mismas consultas de la segunda lectura (el universo del colectivo de
-  sujetos y las aristas de los puntos del patrón), y sus aciertos se leen y se informan en el FRENO de la tanda.
+- **Vigilancia por tanda.**
+  - En el grafo de cada tanda se corren las mismas consultas de la segunda lectura: el universo del colectivo de sujetos y las aristas de
+    los puntos del patrón.
+  - **Quién lee:** la sesión de la mesa que revisa el FRENO de la tanda lee cada acierto contra el texto de su unidad, con el criterio de
+    la segunda lectura (`criterio_mesa_L2_patrones_sujeto.md`, sellado el 08/10/2026 a las 18:18:19, en el paquete `fuera_del_repo/scratchpads/3a3e232d-f9a6-4197-ba2e-7a3f30b6d678/scratchpad/revision_segunda_lectura_ciega_41_patrones_filas/`).
+  - **La regla** (decisión 4 de la autora, 09/10/2026): sin umbral. Se informa la cifra en el FRENO de la tanda. Lo que reabre la
+    corrección es una forma de falla nueva, no que la cifra suba.
 - **Por qué la verificación de la mención no las atrapó.** Esa verificación controla solo que la mención esté, literal, en el texto de la
   unidad (`verificar_tramo` sobre `texto_completo`, `pyd_r2/code/validador_r2.py:830`).
   - Las 6 menciones dan `exacta` y están en el texto propio de su unidad, no en la herencia.
@@ -67,11 +74,35 @@ alguno de esos cambios moviera una arista de estos puntos, la re-medición poste
 
   | regla | casos que manda a cuarentena | correctas que pierde (universo) | aristas de sujeto que manda a cuarentena (de 2.616 del diez r2b) |
   |---|---|---:|---:|
-  | (A) exigir la mención en el tramo de la norma | 5 de los 6 y los 3 que repiten el patrón en el universo | 194 de 574 | 1.400 |
-  | (B) mandar a cuarentena la sugerencia del modelo sin respaldo del texto | 3 de los 6 | 396 de 574 | 993 |
+  | (A) exigir la mención en el tramo de la norma | 5 de los 6 (todos menos `…eca5ca`, de BKL-0014); entre ellos están las 3 aristas que repiten el patrón en el universo, que son las 3 de BKL-0013 | 194 de 574 | 1.400 |
+  | (B) mandar a cuarentena la sugerencia del modelo sin respaldo del texto | 3 de los 6: las 2 de `ext::8.5.18.2` (BKL-0013) y la de `ext::7.9.6` (BKL-0015) | 396 de 574 | 993 |
 
   Ninguna entra al grupo 2: las dos pierden muchas aristas correctas. La (A) falla porque el tramo guardado de una norma casi nunca incluye a
   su sujeto («podrán acceder…», sin «Los residentes»).
+
+**El universo de BKL-0013: 646 aristas, 574 correctas y 72 más.** Lo arma el anexo sellado de la segunda lectura
+(`lectura_mesa_L2_anexo_universo_BKL0013.json`, `5d70cc79…`, campo `conteo`). Son las aristas `aplica_a` y `ejecuta` de las normas de ext
+con una mención del colectivo, o hacia entidad financiera o un sujeto más estrecho.
+- **Las 574 correctas:** 493 van al rol, 79 a EF porque el texto nombra a EF, y 2 vienen de normas con aristas a EF y a la clase cambiaria.
+- **Las 72 que no son correctas:**
+
+  | clase de la lectura | aristas | qué son |
+  |---|---:|---|
+  | `repite_patron` | 3 | las 3 de BKL-0013 (`ext::8.5.18.2`, dos, y `ext::14.2.1.6`), que están entre los 6 casos de la tabla de arriba |
+  | `otro_defecto_cuarentena` | 58 | aristas a un `Sujeto_propuesto_*` (método `cuarentena`): el colectivo quedó en cuarentena, con el rol disponible en el catálogo. No es un sujeto equivocado sino una resolución pendiente, y ya cuenta en la cuarentena declarada (§3, meta de resueltos) |
+  | `otro_defecto` | 7 | errores de sujeto fuera de los ocho patrones (detalle abajo) |
+  | `falso_positivo_filtro` | 4 | entraron al universo por el filtro (`ext::3.10`, «personas jurídicas que no sean entidades autorizadas…»), pero no nombran al colectivo como sujeto: no se juzgan |
+
+- **Los 7 errores de sujeto fuera de los ocho patrones** quedan como límite declarado, con su cifra: 7 en el universo de ext, que no es
+  una muestra del grafo. Tienen dos formas:
+  - **La EF del texto cumple otro papel en la norma (5):** cliente apoderado (`ext::5.7.3.3`, dos), prestamista (`ext::3.6.4.1`), referencia
+    del horario de atención (`ext::5.2.2`) y entidad donde están las cuentas, cuando la obligación exceptuada es del exportador
+    (`ext::2.2.2.1`). Dos vienen de `R1_label_exacto` y tres de la
+    sugerencia del modelo.
+  - **Faltan sujetos que la norma nombra junto a EF (2):** `ext::4.1.1` y `ext::4.1.4.6` («las entidades financieras y otras emisoras de
+    tarjetas»), con la arista solo a EF.
+  - **Propuesta de la mesa:** una entrada nueva del backlog (sería BKL-0041; la última es BKL-0040), en `triaged`, con las 7 aristas como
+    evidencia y la vigilancia por tanda de arriba, sin umbral. PENDIENTE de la autora: el lote del §5 no la incluye hasta que la apruebe.
 
 **Las 4 filas de BKL-0021.**
 - **Decisión de la autora:** designan el **mismo sujeto**, porque la herencia es parte del texto que lee E1: la intro de `ext::11.1` dice que
@@ -116,14 +147,14 @@ alguno de esos cambios moviera una arista de estos puntos, la re-medición poste
 2. ~~La lectura de las 4 filas de «entidad(es) encargada(s) del seguimiento».~~ Hecha y decidida: §3.1 (09/10/2026).
 3. ~~La decisión sobre BKL-0028.~~ Decidida el 07/10/2026 (noche): la recomendación de la mesa (§3).
 
-Las dos lecturas van en el despacho de la mesa para una sesión nueva después del 08/10/2026 a las 18 h, junto con la segunda lectura de
-las 41 de la enmienda 8.
+Las dos lecturas las hizo una sesión nueva de la mesa el 08/10/2026, desde las 18 h, junto con la segunda lectura de las 41 de la
+enmienda 8 (§3.1).
 
 ## 5. Lote de eventos del backlog (se agrega a `data/backlog/backlog.jsonl` con el commit de la firma)
 
-El backlog es append-only (`docs/spec_backlog_refinamiento.md`, §5). Los cambios de estado dependen de la firma y de las dos lecturas
-pendientes: el lote se escribe acá y se agrega al archivo con la firma, con la fecha de la firma en `ts`. Si la segunda lectura muestra
-que un patrón reaparece, su línea `cambio_estado` se reemplaza por una `nota` con el resultado, y la entrada queda en `triaged`.
+El backlog es append-only (`docs/spec_backlog_refinamiento.md`, §5). Los cambios de estado dependen de la firma; las dos
+lecturas ya están hechas y adjudicadas (§3.1). El lote se escribe acá y se agrega al archivo con la firma, con la fecha de la firma en
+`ts`. Los tres patrones que reaparecen llevan una `nota` en lugar de `cambio_estado` y quedan en `triaged`.
 
 ```jsonl
 {"evento": "cambio_estado", "id": "BKL-0001", "estado": "verificado", "aplicado_en": null, "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: resuelta en r2b por el test por punto de la suite (7 nodos anclados en 2.8.3.3, uno con «75 veces SMVM»; suite_perfil_r2.md:70); cambio de verificación declarado: test de la suite en lugar de chunk contra PDF", "evidencia": "docs/laudo_B2.4_sujetos.md"}
