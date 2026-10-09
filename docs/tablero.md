@@ -1,6 +1,6 @@
 # Tablero de estado — bcra-regulatory-kg
 
-## 0. Estado vigente al 07/10/2026 (noche); cola de unidades al 08/10/2026
+## 0. Estado vigente al 07/10/2026 (noche); cola de unidades al 09/10/2026
 
 Actualización de la mesa por decisión de la autora del 07/10/2026; HEAD `0ea2d74`. Desde el 17/08 el estado lo llevan el plan
 (`docs/plan_tesis.md`), el checklist del escalado (`docs/checklist_pre_escalado.md`) y los mandatos (`docs/mandatos/`). Esta sección dice
@@ -16,11 +16,15 @@ actualiza.
   (`bbc38dc`, `c9540c0`); sin cola, diez `e22fae1a…` y desarrollo `2922b72d…` (`dde9f44`, `235a295`).
 - Nombres: «grafo sin cola / completo de la tanda N» para las tandas; «el grafo evaluado» y «el grafo corregido» para el escalado
   (`docs/protocolo_dos_grafos.md`, FIRMADO el 07/10/2026).
-- Pendiente: el re-sellado único de los grafos de la tanda 0, después de U-OMISIONES-COD.
+- Pendiente: el re-sellado único de los grafos de la tanda 0, después de U-OMISIONES-COD. Su alcance, y el de S0-5, quedan congelados
+  desde el 09/10/2026 (decisión de la autora; la fuente es la hoja de ruta de la mesa, §29, fuera del repo). El criterio de excepción:
+  que corrija un dato falso de la tanda 1 y sea barato. La única excepción admitida: el retiro de → Potestad, si U-CONF-MATRIZ no la
+  confirma antes del FRENO de O2 (su mandato, §7).
 
 **Esquema y catálogo.**
 - L-ESQ-R2 FIRMADA (`4ef7650`), con sus enmiendas 2 a 7 firmadas (la 6, en su parte A; `data/experiment/esq/`). La enmienda 8 está en
-  BORRADOR y espera la lectura de las 41.
+  NO FIRMADA desde el 09/10/2026: la lectura de las 41 dio 7 de 41 (`0c516af`). [Actualizado el 09/10/2026: decía «en BORRADOR y espera
+  la lectura de las 41».]
 - Catálogo de sujetos r2: `catalogo_unico/catalogo_sujetos_r2.json`, `c3ad1581…`. Crece solo el catálogo de resolución, por la
   enmienda 4 al protocolo.
 
@@ -31,19 +35,30 @@ actualiza.
   final y antes del pre-registro de la tanda 1.
 
 **Cola de unidades** (estado en sus mandatos y frenos):
-- **U-SEG-OFICIAL:** S0-4a y S0-4a-bis revisadas; S0-4a-ter despachada el 08/10/2026 (guarda de ri_oc, ri_ccna corregida y el Apartado B de ri_oc evaluado); después S0-4b, S1-bis y S2, que fijan la lista de la tanda 1.
+- **U-SEG-OFICIAL:**
+  - S0-4b aplicó el código de E0 al repo (`18d9e05`; FRENO en `06d3c28`);
+  - S1-bis no llegó al piso: 85 de 90 sin error de corte, Wilson 0,8765 frente a 0,90 (registro en `a47a2ff`);
+  - S0-5a revisada por la mesa (`32c71ca`), con las decisiones de la autora al pie de su mandato (`84695b8` y la nota siguiente);
+  - S0-5a-bis despachada el 09/10/2026.
+
+  Siguen S0-5b, S1-ter (lectura a ciegas de 30 + 34 fichas con cifra) y S2, que fija la lista de la tanda 1. [Actualizado el 09/10/2026:
+  decía «S0-4a y S0-4a-bis revisadas; S0-4a-ter despachada el 08/10/2026 (…); después S0-4b, S1-bis y S2».]
 - **U-E3-LISTAS:** CERRADA (`56a7a11`; O5 probada y no adoptada). [Corregido el 08/10/2026: decía «O5 despachada».]
 - **U-COMP-E1:** CERRADA con C3 (`323cef7`): ningún brazo cumple el criterio; el modelo del extractor no cambia antes de la tanda 1. La etapa C4 (lectura pareada a ciegas, USD 0), FIRMADA el 08/10/2026.
-- **U-RERESOL-CAT:** R2 cerrada (R2-3 bis en `dac7d57`). **U-ALCANCE-E1** y **U-UNION-ESTRECHA**, FIRMADOS (`21e55a0`): A1 en `ab59034` (A2 espera la lista final); U1 en `57c2123` y U2 (censo de las 29) despachada el 08/10/2026.
-- **U-OMISIONES-COD:** mandato v7 para firmar (`docs/mandatos/UOMISIONES_COD_release_codigo_ensamblado.md`, en el repo desde `39e2994`),
-  completado el 09/10/2026 con el grupo L. [Actualizado el 09/10/2026: decía «Mandatos en BORRADOR: U-OMISIONES-COD (borrador v5 de la
-  mesa, todavía sin mandato en el repo)».]
+- **U-RERESOL-CAT:** R2 cerrada (R2-3 bis en `dac7d57`). **U-ALCANCE-E1** y **U-UNION-ESTRECHA**, FIRMADOS (`21e55a0`): A1 en `ab59034` (A2 espera la lista final); U1 en `57c2123`; U2 PASA, 29 de 29 con Wilson inferior 0,883 (`a91f95f`); U3, después de U-OMISIONES-COD. [Actualizado el 09/10/2026: decía «U2 (censo de las 29) despachada el 08/10/2026».]
+- **U-OMISIONES-COD:** v7 FIRMADA por la autora el 09/10/2026 (`c90d3d9`; `docs/mandatos/UOMISIONES_COD_release_codigo_ensamblado.md`),
+  con la opción (ii) de f′. Antes del despacho de O1 faltan tres decisiones de su §6: el umbral de (e), dónde van las medidas sobre la
+  tanda 0 y el ítem (i). [Actualizado el 09/10/2026: decía «mandato v7 para firmar (…), completado el 09/10/2026 con el grupo L»; antes,
+  «Mandatos en BORRADOR: U-OMISIONES-COD (borrador v5 de la mesa, todavía sin mandato en el repo)».]
 - **FIRMADOS el 08/10/2026:** C4 de U-COMP-E1 (`UCOMP_E1_C4_lectura_pareada.md`); B′ (`UAPLICA_ROL_ALCANCE_derivada_Bprima.md`) y casi duplicados (`UCASI_DUPLICADOS_fusion_de_forma.md`), grupo 2 del barrido de límites. [Corregido el 08/10/2026: U-ALCANCE-E1 y U-UNION-ESTRECHA ya estaban firmados.]
 - **Laudo B2.4:** FIRMADO por la autora el 09/10/2026 (`befe7fd`), con el alta de BKL-0041 y su lote en `backlog.jsonl`.
   [Actualizado el 09/10/2026: decía «en BORRADOR».]
-- **Segunda lectura a ciegas de la mesa:** las 41 de la enmienda 8, los ocho patrones de B2.4 y las 4 filas de BKL-0021; sesión nueva,
-  después del 08/10/2026 a las 18 h.
-- **Lectura de confirmación de la matriz:** pendiente.
+- **Segunda lectura a ciegas de la mesa:** hecha y adjudicada (`0c516af`). Las 41 dan 7 de 41 y la enmienda 8 queda NO FIRMADA; el laudo
+  B2.4, firmado (`befe7fd`). [Actualizado el 09/10/2026: decía «las 41 de la enmienda 8, los ocho patrones de B2.4 y las 4 filas de
+  BKL-0021; sesión nueva, después del 08/10/2026 a las 18 h».]
+- **Lectura de confirmación de la matriz:** U-CONF-MATRIZ, FIRMADO por la autora el 09/10/2026
+  (`docs/mandatos/UCONF_MATRIZ_lectura_confirmacion.md`; versión para firmar en `0c27146`), sobre el grafo sin cola `e22fae1a`. El
+  despacho, PENDIENTE de la autora. [Actualizado el 09/10/2026: decía «pendiente».]
 - **Re-sellado único de los grafos de la tanda 0.**
 - **Pre-registro de la tanda 1**, y después B6.1.
 - **Sincronización de la tesis desde Overleaf al repo:** la versión validada del capítulo 3 entra en la próxima sincronización, con su
