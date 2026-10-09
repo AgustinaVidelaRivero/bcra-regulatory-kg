@@ -430,3 +430,23 @@ S1-ter, y una corrección.**
   - La lectura pasa a 62 fichas con cifra (30 de (a) y 32 de (b)), más los 35 que se releen como prueba de regresión, sin cifra.
   - **PENDIENTE de la autora:** los dos mixtos no están entre las 32. La mesa propone leerlos también en (b), que quedaría en 34, porque
     su corte lo eligió la mesa a mano y nadie lo leyó a ciegas.
+
+---
+
+**[09/10/2026] Nota de la mesa: S1-ter con los dos mixtos, y dos límites medidos de `ri2_ae::14.3`.** La nota anterior (`84695b8`) no se
+reescribe.
+
+- **S1-ter: la población (b) pasa a 34** (decisión de la autora del 09/10/2026).
+  - **Motivo:** el corte de los dos mixtos (`ri_spi::C.1.3` y `ri2_ae::14.3`) se eligió a mano y nadie lo leyó a ciegas.
+  - **Las 34:** las 32 listas de los cierres confirmados y los 2 mixtos, con lo que mueve S0-5a-bis.
+  - Van mezcladas con el resto, sin ninguna marca que las distinga.
+  - **El orden de lectura:** lo fija la misma semilla sellada, `U-SEG-OFICIAL:1_16:S1-ter:R5-a`, aplicada sobre las 64 fichas con cifra
+    (30 de (a) y 34 de (b)).
+  - Se leen además los 35 de regresión, sin cifra.
+  - La regla de la nota anterior vale para las 34: lo que salga mal se revierte por lista antes de S2.
+- **Dos límites medidos en `ri2_ae::14.3`** (decisión de la autora del 09/10/2026). Quedan dentro del ítem porque E0 no abrió esos puntos
+  del Anexo III. Ninguno es de la tanda 1, y van al grupo 2:
+  - «15. Verificación de que no se lleven a cabo operaciones prohibidas para las casas de cambio.», p. 29;
+  - «16. Cotejo de los saldos contables con los listados analíticos y/o registros auxiliares de respaldo.», p. 29.
+  - **Mecanismo, el que registra E0:** los dos están en `rechazos_header` de `estructura_ri2_ae.json` (salida de S0-4b), con el motivo
+    `raiz_en_columna_profunda_111.9_vs_83.7`. Por qué E0 sí abrió 9 a 14 en la misma columna, sin leer.
