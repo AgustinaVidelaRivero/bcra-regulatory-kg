@@ -429,3 +429,14 @@ se sortea antes de este commit. La nota del §14.3 al pie del pre-registro entra
   - **Decisiones de la autora (08/10/2026):** acepta las familias (i) (132) y (ii) (120) como candidatas a clase, para confirmar con
     su lectura. La decisión de si la regla de comparación lee la oración de E0, y no el tramo de E1 o la descripción (108 de los 132
     de la familia (i)), la toma cuando la lectura confirme la (i).
+- **09/10/2026 — El tramo guardado (§1 (c), `:43`).** Por decisión de la autora del 09/10/2026, guardar solo la cuantía fue una decisión
+  de implementación, no del esquema. L-ESQ-R2 §1.3 (a) y (b) dice que cada elemento lleva «el tramo literal» y que «E1 copia el tramo
+  literal» (`4ef7650`).
+  - **Qué cambia:** el ensamblado guardará en `tramo` el tramo de E1 del que sale la cuantía (ítem L de U-OMISIONES-COD v7), dentro del
+    re-sellado único y antes del sello del grafo evaluado.
+  - **Cómo se lee el §1 (c):** donde dice «el tramo guardado, que en los elementos del ensamblado es solo la cuantía, por diseño»,
+    léase «solo la cuantía hasta el re-sellado único; desde entonces, el tramo de E1».
+  - **Qué no cambia:** la vía sigue sin medir el tramo. Ningún campo que compara el paso 2 (§5.3) cambia, ni los estratos (§4.1).
+  - **Las herramientas del piloto:** las que toman `tramo` como la cuantía (`p/code/comun_P.py:343` y `:386`;
+    `p/code/armador_fichas_P.py:75`) se adaptan antes del sello de la regla y el armador (§5.4). Las 20 fichas del lote 1 no cambian.
+  - El texto firmado no cambia.

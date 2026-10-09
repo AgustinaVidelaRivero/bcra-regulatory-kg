@@ -35,7 +35,10 @@ actualiza.
 - **U-E3-LISTAS:** CERRADA (`56a7a11`; O5 probada y no adoptada). [Corregido el 08/10/2026: decía «O5 despachada».]
 - **U-COMP-E1:** CERRADA con C3 (`323cef7`): ningún brazo cumple el criterio; el modelo del extractor no cambia antes de la tanda 1. La etapa C4 (lectura pareada a ciegas, USD 0), FIRMADA el 08/10/2026.
 - **U-RERESOL-CAT:** R2 cerrada (R2-3 bis en `dac7d57`). **U-ALCANCE-E1** y **U-UNION-ESTRECHA**, FIRMADOS (`21e55a0`): A1 en `ab59034` (A2 espera la lista final); U1 en `57c2123` y U2 (censo de las 29) despachada el 08/10/2026.
-- **Mandatos en BORRADOR:** U-OMISIONES-COD (borrador v5 de la mesa, todavía sin mandato en el repo). **FIRMADOS el 08/10/2026:** C4 de U-COMP-E1 (`UCOMP_E1_C4_lectura_pareada.md`); B′ (`UAPLICA_ROL_ALCANCE_derivada_Bprima.md`) y casi duplicados (`UCASI_DUPLICADOS_fusion_de_forma.md`), grupo 2 del barrido de límites. [Corregido el 08/10/2026: U-ALCANCE-E1 y U-UNION-ESTRECHA ya estaban firmados.]
+- **U-OMISIONES-COD:** mandato v7 para firmar (`docs/mandatos/UOMISIONES_COD_release_codigo_ensamblado.md`, en el repo desde `39e2994`),
+  completado el 09/10/2026 con el grupo L. [Actualizado el 09/10/2026: decía «Mandatos en BORRADOR: U-OMISIONES-COD (borrador v5 de la
+  mesa, todavía sin mandato en el repo)».]
+- **FIRMADOS el 08/10/2026:** C4 de U-COMP-E1 (`UCOMP_E1_C4_lectura_pareada.md`); B′ (`UAPLICA_ROL_ALCANCE_derivada_Bprima.md`) y casi duplicados (`UCASI_DUPLICADOS_fusion_de_forma.md`), grupo 2 del barrido de límites. [Corregido el 08/10/2026: U-ALCANCE-E1 y U-UNION-ESTRECHA ya estaban firmados.]
 - **Laudo B2.4:** FIRMADO por la autora el 09/10/2026 (`befe7fd`), con el alta de BKL-0041 y su lote en `backlog.jsonl`.
   [Actualizado el 09/10/2026: decía «en BORRADOR».]
 - **Segunda lectura a ciegas de la mesa:** las 41 de la enmienda 8, los ocho patrones de B2.4 y las 4 filas de BKL-0021; sesión nueva,

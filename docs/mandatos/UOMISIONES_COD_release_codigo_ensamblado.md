@@ -1,12 +1,14 @@
 # Mandato U-OMISIONES-COD — la release de código del ensamblado antes de la tanda 1
 
-**VERSIÓN PARA FIRMAR (v7, mesa, 09/10/2026). Firma PENDIENTE de la autora.** USD 0, sin API.
+**VERSIÓN PARA FIRMAR (v7, mesa, 09/10/2026; completada el mismo día con el grupo L y la opción de f′ en documentos sin alcance).
+Firma PENDIENTE de la autora.** USD 0, sin API.
 
 Reemplaza a los borradores v1 a v6 de la mesa (fuera del repo, en el paquete `hoja_de_ruta_tanda1_mesa/`).
 
 Qué agrega la v7, por las decisiones de la autora del 09/10/2026:
 - en el grupo B, el ítem **f′**: el singular «entidad» en la lista de R3 (decisión 1, con la explicación de las 15 marcas de desacuerdo);
 - el grupo C reescrito como **g, g1, g2 y g3** (decisión 2). La regla «la definición de la misma sección» va al grupo 2 y no entra acá;
+- el grupo **L**, el tramo literal del elemento de umbral (límite 2 del esquema final; decisión 1 de la autora del 09/10/2026, noche);
 - en cada ítem, su alcance, el selftest con casos positivos y negativos, el criterio de aceptación y la **cifra esperada sobre
   `a9631a64`** (KG-Tanda0-Diez-r2b, `data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json`).
 
@@ -14,8 +16,9 @@ Lo que sigue igual que en la v6:
 - el grupo E no entra (07/10/2026, noche), y el F sale porque la enmienda 8 a L-ESQ-R2 quedó NO FIRMADA (09/10/2026);
 - G es G-r, H es `Comunicacion.tipo`, e I, J y K entran.
 
-**El límite 2 del esquema final** (el destino de cada valor de un umbral) no está en esta versión: su decisión es PENDIENTE de la
-autora.
+**El límite 2 del esquema final** (el destino de cada valor de un umbral) entra en parte: el grupo L guarda el tramo de E1 de cada
+valor, que dice a qué se aplica. El enlace del valor con su sujeto o su operación, y los hechos n-arios, quedan como límite declarado
+(C1.7).
 
 ## 0. Qué es
 
@@ -43,6 +46,10 @@ Cadena 3 del laudo de la release r2 (`docs/laudo_release_r2_pipeline.md`, §2 y 
 - O1, el martes 13/10;
 - O2, del miércoles 14 al jueves 15/10;
 - R0 y el re-sellado, el viernes 16/10.
+
+El grupo L suma cerca de medio día a O2, por el código, la adaptación de las dos herramientas del piloto y sus controles (estimación
+NO VERIFICADA). No agrega una etapa: O2 puede correrse al viernes 16/10 y el re-sellado al lunes 19/10, todavía antes del pre-registro
+(martes 20/10). Con eso, la holgura de esta cadena frente a la de E0 baja a medio día, sin volverla crítica.
 
 **Relación con la ruta crítica:** la cadena de E0 (S0-5a → S0-5b → S1-ter → S2 → lista) es la ruta crítica de hoy. Esta unidad corre en
 paralelo, y pasa a ser la crítica si el re-sellado no llega antes del pre-registro de la tanda 1. En ese caso rige la opción III ya
@@ -115,8 +122,18 @@ marca del contador y 390 con el tramo solo en el texto heredado (`data/experimen
       R3: los desacuerdos del reporte pasan de 150 a 165. Ninguna es un destino equivocado (explicación de la mesa del 09/10/2026, en
       el paquete `hoja_de_ruta_tanda1_mesa/R3_singular_15_marcas/`).
     - En los documentos sin alcance con la parte A: 0 filas cambian en diez.
-  - **Efecto a declarar desde la tanda 1:** en un documento sin alcance, «la entidad» queda en cuarentena aunque el modelo sugiera un
-    sujeto. Es la regla de la parte A de la enmienda 6 para las expresiones de R3.
+  - **En los documentos sin alcance: dos opciones, PENDIENTE de la autora al firmar** (decisión 5 del §6).
+    - **(i) Como R3 hoy:** «la entidad» queda en cuarentena aunque el modelo sugiera un sujeto. Es la regla de la parte A de la enmienda
+      6 para las expresiones de R3.
+    - **(ii) El singular, solo en documentos con alcance:** si el TO no tiene rol, «la entidad» no es expresión de R3 (motivo
+      `sin_match`) y sigue la regla de hoy: la sugerencia del modelo, o cuarentena si no la hay.
+    - **Exposición en la tanda 1** (ri_oc, ceninf y cirmo3, los tres documentos del ejemplo sin alcance; salida de E0 de S0-4b,
+      `exposicion_la_entidad_mesa.py`, en el paquete de la mesa): **14 unidades con «la entidad» sin calificador en el texto propio**
+      (ri_oc 3, ceninf 3, cirmo3 8) y 9 más con casos dudosos, de 478 unidades.
+    - **En `a9631a64`, las dos opciones dan lo mismo:** las 19 decisiones y las 15 marcas, porque el único documento sin alcance de
+      diez, docvig, no tiene «la entidad».
+    - **Recomendación de la mesa: (ii).** Sin rol no hay a qué resolver. La parte A se diseñó para las expresiones colectivas en plural
+      del prompt, y la opción (i) descarta sugerencias del modelo que pueden ser correctas en 14 unidades o más.
   - **Selftest:**
     - positivos: `ext::7.9.4` (4 relaciones, al rol de exterior), `cap::6.7.2.2` (al rol de cap) y `ctacte::1.5.2.9` (a
       `Sujeto_banco`);
@@ -258,6 +275,44 @@ Los cuatro ítems van juntos: (g) sin (g1) marcaría como «base no resuelta» 7
 - **Selftest:** una cita a una unidad de la cola en un grafo sin cola; negativo, una cita a un punto inexistente.
 - **Aceptación:** esas cifras, y 0 diferencias en las aristas.
 
+### Grupo L — umbrales: el tramo literal del elemento (límite 2; decisión de la autora del 09/10/2026, noche)
+
+- **La regla:** el elemento de umbral de origen e1 que arma el ensamblado guarda en `tramo` el tramo de E1 del que sale su cuantía, no la
+  cuantía (`ensamblar_tanda0.py:755`: `RCMP.elemento_umbral(c, c.texto, origen)` pasa a recibir el tramo de E1).
+  - Es la letra de L-ESQ-R2 §1.3 (a) y (b) (`4ef7650`): «el tramo literal», «E1 copia el tramo literal».
+  - Los elementos del validador ya guardan el tramo de E1. Los de origen descripción siguen con la cuantía, porque la descripción no es
+    texto literal.
+  - `tramo_verificado` se calcula sobre el tramo nuevo, contra el texto de E0, con `verificar_tramo`.
+  - Todos los demás campos se calculan como hoy, desde la cuantía detectada.
+- **También:** las herramientas del piloto de U-MED-UMBRALES que toman `tramo` como la cuantía (`data/experiment/med_umbrales/p/code/`:
+  `comun_P.py:343` y `:386`, y `armador_fichas_P.py:75`) pasan a tomar la cuantía de las cuantías detectadas en el tramo, por el valor.
+  Se adaptan antes del sello de la regla y el armador (enmienda 1 al pre-registro de tripletas, §5.4, y su nota al pie del 09/10/2026).
+- **Esperado en `a9631a64`** (pre-medición de la mesa, `premedicion_tramo_e1_mesa.py`, con la alineación del piloto):
+  - **cambia `tramo` en 761 elementos** (ensamblado, origen e1);
+  - no cambian los 478 del validador ni los 134 de origen descripción;
+  - 759 de los 761 se alinean con un tramo de E1 que contiene su cuantía literal. Los 2 que no (`cap::1.2`, «5.000» y «2.500», celdas
+    de tabla) se explican en O1; si no se alinean, conservan la cuantía, declarado;
+  - 45 tramos son compartidos: el tramo de E1 tiene más de una cuantía;
+  - lo que ve el agente crece 20 caracteres por elemento en la mediana (máximo 249; 22.119 en todo el grafo). El tramo nuevo tiene una
+    mediana de 34 caracteres y un máximo de 252.
+- **Selftest:**
+  - positivos: un elemento con un tramo de E1 de una sola cuantía (`cap::12.3`, el 17 %: «El 17% en el caso de entidades del grupo
+    B»), y los dos de un tramo compartido (`cla::6.5.4.7`, el 5 % y el 20 %: «entre el 5 % y menos del 20 % del patrimonio», los dos
+    con ese tramo);
+  - negativos: un elemento de origen descripción y uno del validador, que no cambian;
+  - las herramientas del piloto: rearmadas sobre `e22fae1a`, las 20 fichas del lote 1 salen byte a byte iguales a las de
+    `p/lote1/`. Sobre el grafo con el grupo L, también, salvo el texto del «tramo guardado» en el aviso de los no verificados.
+- **Aceptación:**
+  - el diff de `kg.json` solo en `tramo` (y en `tramo_verificado`, si cambia) de esos elementos. Todos los demás campos de todos los
+    elementos quedan byte a byte iguales: `valor`, `unidad`, `moneda`, `dias_tipo`, `comparacion`, `comparacion_asumida`,
+    `regla_comparacion`, `base`, `base_destino`, `base_via`, `base_no_resuelta`, `origen`, `fuera_de_lista`, `originales` y
+    `verificado_en_tabla`;
+  - cada tramo nuevo contiene su cuantía (`detectar_cuantias` da el mismo valor y la misma unidad) y verifica contra E0, con no más
+    elementos `no` que hoy (1);
+  - los tramos compartidos, contados y declarados, y cuánto crece lo que ve el agente (mediana, máximo y suma de caracteres por nodo);
+  - las fichas del lote 1 sin cambios;
+  - la suite con 0 regresiones no declaradas, los shapes en PASS y la doble corrida byte a byte.
+
 ## 3. Etapas
 
 - **O1. Diseño con medición previa** (USD 0, sobre una copia):
@@ -278,7 +333,7 @@ Los cuatro ítems van juntos: (g) sin (g1) marcaría como «base no resuelta» 7
 
 ## 4. Criterios de aceptación de la unidad
 
-- **Qué puede cambiar:** en los grafos sellados, con el código nuevo, `kg.json` cambia solo por f, f′, g a g3, G-r, H y J. Va la lista
+- **Qué puede cambiar:** en los grafos sellados, con el código nuevo, `kg.json` cambia solo por f, f′, g a g3, L, G-r, H y J. Va la lista
   de las diferencias, con su causa. Los grupos A, D, I y K dan 0 diferencias.
 - **Cifras:** cada ítem, con su cifra esperada reproducida o con la diferencia explicada caso por caso.
 - **Límites:** todo límite o residuo, listado caso por caso, con su unidad (regla de la autora del 09/10/2026).
@@ -287,7 +342,8 @@ Los cuatro ítems van juntos: (g) sin (g1) marcaría como «base no resuelta» 7
 ## 5. Escrituras y prohibiciones
 
 **ESCRITURAS:**
-- `data/experiment/tanda0/code/ensamblar_tanda0.py` y su selftest (A, g, g2, g3, G-r);
+- `data/experiment/tanda0/code/ensamblar_tanda0.py` y su selftest (A, g, g2, g3, L, G-r);
+- `data/experiment/med_umbrales/p/code/comun_P.py`, `armador_fichas_P.py` y `selftest_comparador_P.py`, solo la toma de la cuantía (L);
 - `reextraccion_v2/corpus_v2/r1_e4.py`, solo `EXPRESIONES_COLECTIVAS_R3` (f′), y el selftest de la resolución
   (`data/experiment/r2_codigo/selftest_r3.py`);
 - `reextraccion_v2/corpus_v2/r1_referencias.py`, solo la procedencia de las aristas (J), y su selftest;
@@ -304,7 +360,7 @@ Los cuatro ítems van juntos: (g) sin (g1) marcaría como «base no resuelta» 7
 - el prefijo, el tool schema, E1, E3 y `validador_e1`;
 - los grafos sellados y sus registros, la fixture y `grafos.py`;
 - EV2;
-- el código y los datos de U-MED-UMBRALES (`data/experiment/med_umbrales/`);
+- el resto del código y los datos de U-MED-UMBRALES (`data/experiment/med_umbrales/`), incluidas las fichas, el acta y la regla;
 - la API;
 - la regla de destinos de `remite_a`;
 - commitear.
@@ -324,13 +380,15 @@ U-UNION-ESTRECHA, que toca `ensamblar_tanda0.py` después de esta unidad (su man
 - E no entra; G es G-r; H es la `Comunicacion.tipo`; I y J entran (07/10/2026, noche);
 - K entra (08/10/2026);
 - F sale, y el re-sellado lleva solo E3-01 (09/10/2026);
-- f′ entra, y el grupo C es g a g3, con «la misma sección» en el grupo 2 (09/10/2026).
+- f′ entra, y el grupo C es g a g3, con «la misma sección» en el grupo 2 (09/10/2026);
+- el límite 2 entra como el grupo L, dentro del re-sellado. Se adaptan las herramientas del piloto y va la nota fechada a la enmienda 1
+  (09/10/2026, noche).
 
 **PENDIENTES al firmar:**
 1. el umbral de (e), con la propuesta de la mesa de Wilson ≥ 0,75;
 2. si las medidas sobre la tanda 0 van al reporte de U-SINCOLA-T0 o quedan en el FRENO;
 3. si (i) se hace acá o en U-NAV-DISENO;
-4. el límite 2, que no está en esta versión.
+4. f′ en los documentos sin alcance: la opción (i) o la (ii) del grupo B. La mesa recomienda la (ii).
 
 ## Firma
 
