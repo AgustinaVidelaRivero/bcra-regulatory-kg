@@ -1,6 +1,6 @@
 # Enmienda 8 a L-ESQ-R2 — la firma (Excepcion, exceptua, Operacion)
 
-**BORRADOR — PENDIENTE DE LA LECTURA DE SU CONDICIÓN Y DE LA FIRMA DE LA AUTORA** · Redactada: 07/10/2026 (mesa revisora), por el hallazgo a de
+**NO FIRMADA (09/10/2026, decisión de la autora): la lectura de su condición dio 7 de 41, bajo el umbral de 37** · Redactada: 07/10/2026 (mesa revisora), por el hallazgo a de
 VERIF-CAP3-COHERENCIA y la decisión de la autora del 07/10/2026 de redactarla.
 
 Enmienda con fecha a L-ESQ-R2 (`data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md`, FIRMADA en `4ef7650`). L-ESQ-R2 no se edita: esta enmienda
@@ -86,6 +86,30 @@ leen con las mismas fichas y se informan aparte, sin entrar a la cifra.
   matriz, que vienen de otro grafo y ya se leyeron en U-ESTUDIO-MATRIZ. El piso se aplica sobre las decididas, como en el protocolo firmado
   de la matriz, y los no decidibles no pueden pasar de 6. Con las 41 decididas, el umbral es 37, la cifra que fijó la autora.
 
+## Resultado de la lectura de las 41 y decisión de la autora (09/10/2026)
+
+- **Las dos lecturas.**
+  - La primera es la de U-DIAG-CAP3-GRAFO (`reports/u_diag_cap3_grafo/lectura1_41_exceptua_operacion.json`, sha256 `faed869a…`).
+  - La segunda la hizo, a ciegas, una sesión nueva de la mesa, sellada el 08/10/2026 a las 18:16:06 (`ae2e8647…`) antes de abrir la
+    primera (18:30:35). Paquete: `fuera_del_repo/scratchpads/3a3e232d-f9a6-4197-ba2e-7a3f30b6d678/scratchpad/revision_segunda_lectura_ciega_41_patrones_filas/`.
+  - La revisión de la mesa del 09/10/2026, sobre una copia, recontó las dos lecturas con código propio y reproduce lo que sigue.
+- **Coincidencias.** 32 de las 45 fichas: 28 de las 41 del crudo y las 4 de la matriz, que las dos dan correctas.
+- **Las 13 divergencias** (EO19 y EO25 a EO36): la primera lectura dice correcta y la mesa incorrecta. Son un solo caso: la Operacion
+  nombra la clase entera alcanzada por la norma y la Excepcion saca solo una subclase.
+- **Adjudicación de la autora:** las 13, en bloque, incorrectas, por la letra del criterio. Cuando la Operacion nombra toda la clase
+  alcanzada por la norma y la Excepcion saca solo una subclase, lo que se exceptúa es la norma para esa subclase, no la Operacion
+  entera.
+- **La cifra:** 7 de 41 correctas (EO01, EO02 y EO20 a EO24; Wilson al 95 % [0,085; 0,313]); las 4 de la matriz, correctas, aparte. Con
+  las 13 como correctas serían 20 de 41 ([0,343; 0,635]): también bajo el umbral de 37.
+- **Consecuencias:**
+  1. La enmienda queda NO FIRMADA. El rechazo de la matriz de L-ESQ-R2 (§6.1, `4ef7650`) era correcto.
+  2. Las 48 Excepcion de la causa (ii) (41 relaciones rechazadas por firma y 7 no emitidas; `docs/insumos_escritura.md:404`) quedan como
+     límite declarado, en la tanda 0 y desde la tanda 1.
+  3. VAL-03 y VAL-03b pasan al grupo 3 del barrido de límites (límite declarado).
+  4. U-OMISIONES-COD sale sin el grupo F (borrador v6 de la mesa).
+  5. La parte de VAL-03b de la enmienda 7 al protocolo entre tandas no se ejecuta, y R0 sigue solo para E3-01 (nota al pie de la
+     enmienda 7).
+
 ## Firma
 
-BORRADOR — PENDIENTE de la lectura del §2 y de la firma de la autora.
+NO FIRMADA (09/10/2026, decisión de la autora): la lectura del §2 dio 7 de 41 correctas, bajo el umbral de 37.

@@ -1,7 +1,7 @@
 # Laudo B2.4 — asignación de sujeto: los ocho patrones y las entradas BKL-0001, 0002, 0018, 0020, 0021 y 0028
 
-**BORRADOR — PENDIENTE DE DOS LECTURAS Y DE LA FIRMA DE LA AUTORA** · Redactado por la mesa el 07/10/2026 (noche), con las decisiones de la
-autora del mismo día sobre la ficha de decisión de la mesa. Fila B2.4 del plan (`docs/plan_tesis.md:383`); condición 13 de la tanda 1
+**VERSIÓN PARA FIRMAR (mesa, 09/10/2026)**, con las decisiones de la autora del 09/10/2026 sobre las dos lecturas (§3.1). Redactado por la
+mesa el 07/10/2026 (noche), con las decisiones de la autora del mismo día sobre la ficha de decisión de la mesa. Fila B2.4 del plan (`docs/plan_tesis.md:383`); condición 13 de la tanda 1
 (`docs/checklist_pre_escalado.md`, línea de las condiciones) y fila X9 del checklist: se firma antes de la tanda 1.
 
 ## 1. Qué decide
@@ -32,12 +32,64 @@ alguno de esos cambios moviera una arista de estos puntos, la re-medición poste
 | BKL-0020 | Cuarentena declarada: 1 fila en r2b, «una entidad originante» (`cap::3.1.3::cierre`), por debajo del umbral. | registro de no mapeados del diez r2b |
 | Meta de resueltos (tablero) | Sin meta numérica: dependen del crecimiento del catálogo (enmienda 4). La cuarentena se declara con su cifra: 294 filas en el registro del diez r2b (164 en cuarentena, 128 resueltas a clase, 2 descartadas) y 98 nodos `Sujeto_propuesto_*`. | `docs/tablero_correcciones.md`, fila de la mención del sujeto |
 
+### 3.1 Resultado de las dos lecturas y decisiones de la autora (09/10/2026)
+
+**Las lecturas.**
+- La segunda lectura a ciegas, de una sesión nueva de la mesa sobre el diez r2b (`a9631a64…`), quedó sellada antes de compararse con T3
+  (18:30:35 del 08/10/2026):
+  - ocho patrones: 18:28:59 (`4b39868c…`), con sus dos anexos;
+  - cuatro filas: 18:30:23 (`bf1176fc…`).
+- Paquete: `fuera_del_repo/scratchpads/3a3e232d-f9a6-4197-ba2e-7a3f30b6d678/scratchpad/revision_segunda_lectura_ciega_41_patrones_filas/`.
+- La revisión de la mesa del 09/10/2026, sobre una copia, controló los sellos y la tabla de divergencias.
+
+**Los ocho patrones** (adjudicación de las divergencias D2-1 a D2-3 con T3):
+
+| entrada | resultado |
+|---|---|
+| BKL-0009, 0010, 0011, 0012 y 0016 | No reaparecen: se cierran como `verificado`. |
+| BKL-0013 | Reaparece en 3 de las 646 aristas del universo de ext: `ext::8.5.18.2` (2, «La entidad emisora de la mencionada certificación» → entidad financiera) y `ext::14.2.1.6` (1, de frontera). D2-1: la autora acepta el veredicto con las anclas de la segunda lectura. |
+| BKL-0014 | Reaparece: 2 aristas de `ext::14.1.4` a `Sujeto_exportador` («el exportador», en un punto que se aplica al VPU adherido al RIGI). D2-2: cuenta como reaparición. |
+| BKL-0015 | Vale `ext::7.9.6`, donde está hoy la norma del patrón, porque el patrón sigue a la norma y no al número de punto (el «3.17» del triage es hoy `ext::7.9`; contradicción reportada por la lectura, CLAUDE.md §4.d). Reaparece: 1 arista a `Sujeto_persona_humana` («Los residentes»). D2-3. |
+
+**BKL-0013, 0014 y 0015 quedan como límites declarados de la extracción.**
+- **La cifra en `a9631a64`:** 3, 2 y 1 aristas.
+- **Vigilancia por tanda:** en el grafo de cada tanda se corren las mismas consultas de la segunda lectura (el universo del colectivo de
+  sujetos y las aristas de los puntos del patrón), y sus aciertos se leen y se informan en el FRENO de la tanda.
+- **Por qué la verificación de la mención no las atrapó.** Esa verificación controla solo que la mención esté, literal, en el texto de la
+  unidad (`verificar_tramo` sobre `texto_completo`, `pyd_r2/code/validador_r2.py:830`).
+  - Las 6 menciones dan `exacta` y están en el texto propio de su unidad, no en la herencia.
+  - El sujeto lo pone la sugerencia del modelo (`R4_sugerencia_modelo`): fuera de R1, la sugerencia gana a las reglas del texto
+    (`reextraccion_v2/corpus_v2/r1_e4.py:426-427`), y nada controla que la mención designe ese sujeto.
+  - En 3 de las 6 (`ext::8.5.18.2`, dos, y `ext::7.9.6`) ninguna regla del texto resuelve la mención.
+  - En las otras 3 (`ext::14.1.4`, dos, y `ext::14.2.1.6`) la regla del texto da el mismo sujeto: el error es de contexto, no de mención.
+- **Corrección de código, medida sobre lo guardado** (USD 0; medición de la mesa del 09/10/2026, script y salida en el paquete de la mesa).
+  Las dos reglas candidatas, contra las 646 aristas del universo de BKL-0013 clasificadas por la segunda lectura (574 correctas):
+
+  | regla | casos que manda a cuarentena | correctas que pierde (universo) | aristas de sujeto que manda a cuarentena (de 2.616 del diez r2b) |
+  |---|---|---:|---:|
+  | (A) exigir la mención en el tramo de la norma | 5 de los 6 y los 3 que repiten el patrón en el universo | 194 de 574 | 1.400 |
+  | (B) mandar a cuarentena la sugerencia del modelo sin respaldo del texto | 3 de los 6 | 396 de 574 | 993 |
+
+  Ninguna entra al grupo 2: las dos pierden muchas aristas correctas. La (A) falla porque el tramo guardado de una norma casi nunca incluye a
+  su sujeto («podrán acceder…», sin «Los residentes»).
+
+**Las 4 filas de BKL-0021.**
+- **Decisión de la autora:** designan el **mismo sujeto**, porque la herencia es parte del texto que lee E1: la intro de `ext::11.1` dice que
+  la entidad la nomina el importador.
+- **La clave del rol de la entidad nominada por el importador** queda con 5 unidades: `ext::11.1.1.10`, `ext::4.4::intro`, `ext::4.4.2`,
+  `ext::10.8` y `ext::11.1.5::intro`.
+- **La entidad nominada por el exportador es otro sujeto:** `ext::3.18.2::intro`, `ext::7.3::intro` y `ext::7.3.7`.
+- **`Sujeto_propuesto_la_entidad_nominada` junta las dos** (`ext::11.1.1.10` y `ext::3.18.2::intro`). Cuando el rol se cree al cierre de la
+  tanda 1 (enmienda 4, §1), las dos entidades tienen que quedar separadas, cada una con su clave.
+
 **Cómo queda el estado de las entradas** (DECIDIDO por la autora el 07/10/2026, noche).
 - La máquina de estados del backlog (`docs/spec_backlog_refinamiento.md`, §2 y §5) no tiene un estado de «límite declarado» ni de
   «cuarentena declarada».
 - BKL-0018, 0020 y 0021 quedan en `triaged`, con un evento `nota`: son límites o cuarentenas declaradas, no descartes, y no se corrigen en
   esta versión.
 - BKL-0001, 0002 y 0009 a 0016 pasan a `verificado` (los ocho, si la segunda lectura y la adjudicación no cambian el veredicto).
+  **[09/10/2026]** Con las lecturas adjudicadas (§3.1): BKL-0009, 0010, 0011, 0012 y 0016 pasan a `verificado`; BKL-0013, 0014 y 0015
+  quedan en `triaged`, con un evento `nota`, como límites declarados de la extracción.
 
 **BKL-0028** (miembro del rol de alcance de ctacor; sumada por la autora el 07/10/2026, noche).
 - **El defecto.** La entrada nació porque el catálogo v3 enrutaba por alias las variantes «del exterior» a ids domésticos, y por eso
@@ -59,8 +111,9 @@ alguno de esos cambios moviera una arista de estos puntos, la re-medición poste
 
 ## 4. Qué falta para firmarlo
 
-1. La segunda lectura a ciegas de los 8 puntos, y la adjudicación de la autora sobre sus divergencias con T3.
-2. La lectura de las 4 filas de «entidad(es) encargada(s) del seguimiento».
+1. ~~La segunda lectura a ciegas de los 8 puntos, y la adjudicación de la autora sobre sus divergencias con T3.~~ Hechas: §3.1
+   (09/10/2026).
+2. ~~La lectura de las 4 filas de «entidad(es) encargada(s) del seguimiento».~~ Hecha y decidida: §3.1 (09/10/2026).
 3. ~~La decisión sobre BKL-0028.~~ Decidida el 07/10/2026 (noche): la recomendación de la mesa (§3).
 
 Las dos lecturas van en el despacho de la mesa para una sesión nueva después del 08/10/2026 a las 18 h, junto con la segunda lectura de
@@ -79,14 +132,14 @@ que un patrón reaparece, su línea `cambio_estado` se reemplaza por una `nota` 
 {"evento": "cambio_estado", "id": "BKL-0010", "estado": "verificado", "aplicado_en": null, "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: el patrón no reaparece en a9631a64 (ext::14.5), por la lectura de T3 y la segunda lectura a ciegas adjudicada; cambio de verificación declarado", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 {"evento": "cambio_estado", "id": "BKL-0011", "estado": "verificado", "aplicado_en": null, "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: el patrón no reaparece en a9631a64 (ric::3.1), por la lectura de T3 y la segunda lectura a ciegas adjudicada; cambio de verificación declarado", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 {"evento": "cambio_estado", "id": "BKL-0012", "estado": "verificado", "aplicado_en": null, "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: el patrón no reaparece en a9631a64 (ext::13.4), por la lectura de T3 y la segunda lectura a ciegas adjudicada; cambio de verificación declarado", "evidencia": "docs/laudo_B2.4_sujetos.md"}
-{"evento": "cambio_estado", "id": "BKL-0013", "estado": "verificado", "aplicado_en": null, "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: el patrón no reaparece en a9631a64 (colectivo de ext), por la lectura de T3 y la segunda lectura a ciegas adjudicada; cambio de verificación declarado", "evidencia": "docs/laudo_B2.4_sujetos.md"}
-{"evento": "cambio_estado", "id": "BKL-0014", "estado": "verificado", "aplicado_en": null, "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: el patrón no reaparece en a9631a64 (ext::14.1), por la lectura de T3 y la segunda lectura a ciegas adjudicada; cambio de verificación declarado", "evidencia": "docs/laudo_B2.4_sujetos.md"}
-{"evento": "cambio_estado", "id": "BKL-0015", "estado": "verificado", "aplicado_en": null, "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: el patrón no reaparece en a9631a64 (ext::3.17), por la lectura de T3 y la segunda lectura a ciegas adjudicada; cambio de verificación declarado", "evidencia": "docs/laudo_B2.4_sujetos.md"}
+{"evento": "nota", "id": "BKL-0013", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: el patrón reaparece en a9631a64 (3 de las 646 aristas del universo de ext: ext::8.5.18.2, dos, y ext::14.2.1.6, de frontera), por la segunda lectura a ciegas adjudicada (D2-1); límite declarado de la extracción, con su cifra y vigilancia por tanda; ninguna corrección de código entra (medición de la mesa del 09/10/2026); queda en triaged", "evidencia": "docs/laudo_B2.4_sujetos.md"}
+{"evento": "nota", "id": "BKL-0014", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: el patrón reaparece en a9631a64 (2 aristas de ext::14.1.4 a Sujeto_exportador), por la segunda lectura adjudicada (D2-2); límite declarado de la extracción, con su cifra y vigilancia por tanda; queda en triaged", "evidencia": "docs/laudo_B2.4_sujetos.md"}
+{"evento": "nota", "id": "BKL-0015", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: vale ext::7.9.6, donde está hoy la norma del patrón (D2-3); el patrón reaparece en a9631a64 (1 arista a Sujeto_persona_humana, «Los residentes»); límite declarado de la extracción, con su cifra y vigilancia por tanda; queda en triaged", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 {"evento": "cambio_estado", "id": "BKL-0016", "estado": "verificado", "aplicado_en": null, "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: el patrón no reaparece en a9631a64 (ext::3.18), por la lectura de T3 y la segunda lectura a ciegas adjudicada; cambio de verificación declarado", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 {"evento": "nota", "id": "BKL-0018", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: límite declarado junto con BKL-0004, que persiste como falla conocida sellada en la suite r2b (suite_perfil_r2.md:18); no se corrige en esta versión; queda en triaged", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 {"evento": "nota", "id": "BKL-0020", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: cuarentena declarada (1 fila en r2b, «una entidad originante», cap::3.1.3::cierre, por debajo del umbral de la enmienda 4); queda en triaged", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 {"evento": "cambio_estado", "id": "BKL-0028", "estado": "verificado", "aplicado_en": "data/experiment/catalogo_unico/catalogo_sujetos_r2.json (bd2122d)", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4 (decisión de la autora del 07/10/2026): la condición de cierre se cumple en el catálogo r2 (0 ids domésticos con alias del exterior; tres ids del exterior separados); la adjudicación del miembro de Sujeto_rol_alcance_ctacor (miembros_ids vacío) va a la release siguiente, fila F12", "evidencia": "docs/laudo_B2.4_sujetos.md"}
-{"evento": "nota", "id": "BKL-0021", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: la mención reaparece en r2b como «la entidad nominada» (control q de T3); cuarentena declarada, con el rol nuevo por el procedimiento de crecimiento de la enmienda 4 al cierre de la tanda 1; reemplaza la decisión (c) del 06/10/2026, que ninguna unidad ejecutó; resultado de la lectura de las 4 filas «entidad(es) encargada(s) del seguimiento»: <RESULTADO>; queda en triaged", "evidencia": "docs/laudo_B2.4_sujetos.md"}
+{"evento": "nota", "id": "BKL-0021", "ts": "<FECHA_FIRMA>", "nota": "laudo B2.4: la mención reaparece en r2b como «la entidad nominada» (control q de T3); cuarentena declarada, con el rol nuevo por el procedimiento de crecimiento de la enmienda 4 al cierre de la tanda 1; reemplaza la decisión (c) del 06/10/2026, que ninguna unidad ejecutó; las 4 filas «entidad(es) encargada(s) del seguimiento» (ext::4.4::intro, ext::4.4.2, ext::10.8, ext::11.1.5::intro) designan el mismo sujeto que ext::11.1.1.10 y entran en su clave (5 unidades); la entidad nominada por el exportador (ext::3.18.2::intro, ext::7.3::intro, ext::7.3.7) es otro sujeto, y Sujeto_propuesto_la_entidad_nominada, que junta las dos, se separa al crear el rol; queda en triaged", "evidencia": "docs/laudo_B2.4_sujetos.md"}
 ```
 
 ## 6. Contradicciones de la ficha de la mesa, corregidas en este asiento
@@ -117,4 +170,4 @@ que un patrón reaparece, su línea `cambio_estado` se reemplaza por una `nota` 
 
 ## Firma
 
-BORRADOR — PENDIENTE de las dos lecturas del §4 y de la firma de la autora.
+PENDIENTE de la firma de la autora (versión para firmar del 09/10/2026, con las lecturas del §4 hechas y decididas).

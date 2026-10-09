@@ -106,6 +106,21 @@ dé la segmentación oficial. Como orden de magnitud, el ejemplo del §7 del pro
   - las enmiendas 2 a 8 de L-ESQ-R2, U-E3-LISTAS y U-SEG-OFICIAL;
   - la enmienda 4 al protocolo (FIRMADA, `53bbd6f`).
 
+## Notas del 09/10/2026 (decisiones de la autora)
+
+- **Matriz del validador (§1).** La enmienda 8 a L-ESQ-R2 quedó NO FIRMADA: la lectura de las 41 dio 7 de 41, bajo el umbral de 37
+  (`data/experiment/esq/enmienda8_L-ESQ-R2_exceptua_operacion_2026-10-07.md`). La matriz es la de L-ESQ-R2 con sus enmiendas firmadas, sin
+  la firma (Excepcion, exceptua, Operacion). Las 48 Excepcion de la causa (ii) quedan como límite declarado, y VAL-03 y VAL-03b pasan al
+  grupo 3 del barrido.
+- **Ensamblador y validador r2 (§1).** U-OMISIONES-COD lleva los grupos A a D y G a J, sin el F (borrador v6 de la mesa).
+- **Cadena 3 (§2):** lectura de las 41 → enmienda 8 NO FIRMADA → U-OMISIONES-COD sin el grupo F → re-sellado único de la tanda 0, con R0
+  solo para E3-01 (nota al pie de la enmienda 7).
+- **Cadena 4 (§2):** S0-4 (`18d9e05`) → S1-bis → S0-5 → S1-ter → S2 → E0 de la partición → lista de TOs de la tanda 1.
+  - S1-bis no llegó al piso con las marcas de la mesa (85 de 90); la adjudicación de la autora está pendiente.
+  - El hallazgo 1.16 da 8 de 35 candidatos de la tanda 1 con error de corte.
+  - Por eso el código de E0 cambia otra vez, con S0-5, y la fila de E0 del §1 se sella con ese código.
+- **Fuera de las cadenas:** el laudo B2.4 queda en versión para firmar (09/10/2026).
+
 ## Firma
 
 BORRADOR v2 — PENDIENTE de los sellos «A COMPLETAR», del gate final y de la firma de la autora, antes del pre-registro de la tanda 1.

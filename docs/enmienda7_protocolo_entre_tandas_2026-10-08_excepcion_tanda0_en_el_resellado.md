@@ -74,3 +74,10 @@ verificador la acepta, nunca por una lectura humana sola.
 ## Firma
 
 FIRMADA por la autora el 08/10/2026 (versión para firmar en `08ccdfa`), con sus tres decisiones. Rige desde esta firma.
+
+## Notas al pie
+
+- **09/10/2026 — La parte de VAL-03b no se ejecuta.** La enmienda 8 a L-ESQ-R2 quedó NO FIRMADA: la lectura de las 41 dio 7 de 41
+  (`data/experiment/esq/enmienda8_L-ESQ-R2_exceptua_operacion_2026-10-07.md`, sección del resultado). Por la decisión 2 al firmar, R0
+  corre solo E3-01, con el mismo tope de USD 1,50; el E3 de las 21 unidades no corre (USD 0,2306 estimados que no se gastan). El texto
+  firmado no cambia.
