@@ -814,3 +814,43 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
       los candidatos no se reconozcan en la muestra.
     - Después corre las cifras y la lista sobre una copia.
     - La autora revisa la lista y adjudica.
+- **09/10/2026 — Lectura de cortes de S1-bis revisada por la mesa; S0-5 y S1-ter (decisión de la autora); semillas de S1-ter.**
+  - **Revisión de la mesa, sobre una copia:**
+    - el paquete `revision_USEG_OFICIAL_lectura_S1-bis/` da 72 de 72 en sus dos lugares;
+    - los dos sellos (etapa 1 a las 18:40:56, `dd2775af…`; etapa 2 a las 18:45:11, `5969e0ab…`) son anteriores a las cifras (18:47:16);
+    - `cifras_lectura_S1bis.py` y `lista_para_la_autora_S1bis.py`, corridos otra vez, dan las mismas salidas byte a byte;
+    - la lista para la autora tiene 41 casos: 8 errores, 0 juicios dudosos, 20 correctas, 8 del 1.16 y 5 correctos del 1.16.
+  - **Con las marcas de la mesa, no llega al piso:**
+    - 85 de 90 sin error de corte, Wilson 0,8765;
+    - la del corpus, 0,930;
+    - ri_spi, 10 de 10; los juicios, 10 correctos y 1 límite declarado; limpieza, 3 errores;
+    - el censo del 1.16 de la tanda 1, 8 de 35 con error de corte (7 del patrón y 1 de otro mecanismo).
+
+    Por esta nota (`2faff14`, «si no llega al piso, la salida de S1 no se commitea y S2 no se despacha»), `s1bis/` no se commitea y S2
+    no se despacha. La adjudicación de la autora de los 41 casos va aparte, por el criterio, sin mirar el piso.
+  - **Decisión de la autora (09/10/2026):** el 1.16 se corrige antes de la tanda 1, y eso cambia el código de E0. Va S0-5, con una regla
+    para el patrón del 1.16 y una para cada mecanismo de los otros errores de corte:
+    - los bloques intersticiales partidos de snp_dd (la regla vale también para snp_cheq, de la tanda 1);
+    - el título de sección partido de ri2_ae;
+    - el encabezado tomado de una referencia cortada en ri_rml.
+
+    Cada regla lleva su interruptor, va por lista o acotada, y lleva los controles duros de S0-4, con la tanda 0 sin cambios. Después
+    va S1-ter, con semillas nuevas. Diseño de la mesa: `diseno_S0-5_y_S1-ter_USEG_OFICIAL_mesa.md`, en el paquete de la mesa.
+    - Evidencia de la regla del 1.16: medida con las columnas de `pdftotext -layout`, la sangría del cierre coincide con la lectura en
+      33 de los 35 candidatos. De los dos que no coinciden, `cajasc::4.2.2.3` (su párrafo al margen es el segundo del cierre) queda
+      dentro de la regla si se evalúa cada párrafo, y `ri_rml::1.2.3` es otro mecanismo.
+    - Los 35 se usaron para diseñar la regla: en S1-ter se releen como prueba de regresión, y la cifra del 1.16 sale de candidatos
+      que no son de la tanda 1.
+  - **Semillas de S1-ter, selladas por esta nota antes de sortear:**
+    - `U-SEG-OFICIAL:cortes:S1-ter` (muestra de la lectura de cortes);
+    - `U-SEG-OFICIAL:cortes:S1-ter:revision` (20 correctas para la autora);
+    - `U-SEG-OFICIAL:1_16:S1-ter` (muestra del 1.16 fuera de la tanda 1);
+    - `U-SEG-OFICIAL:1_16:S1-ter:revision` (5 correctos del 1.16 para la autora).
+  - **ri_spi, propuesta de la mesa:** reclasificarlo como reconocido pleno para las tandas siguientes (10 de 10 en S1-bis, 9 de 10 en
+    S1, con códigos distintos), con sus residuos cosméticos declarados; sus unidades entrarían al estrato sin raíz de S1-ter. PENDIENTE de
+    la autora.
+  - **Lecturas a ciegas, desde ahora:** la lectora de S1-bis declaró que el mensaje de `2abb346`, que el arnés le cargó en el contexto,
+    nombraba tres unidades límite; ninguna estaba en la muestra.
+    - Los mensajes de commit de la mesa no nombran unidades ni veredictos de una lectura a ciegas pendiente.
+    - El despacho de una lectura a ciegas pide que la sesión corra desde una carpeta fuera del repo, para que el arnés no le cargue la
+      memoria del proyecto ni los mensajes de commit.
