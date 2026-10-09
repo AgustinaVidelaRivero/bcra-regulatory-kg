@@ -424,3 +424,26 @@ FIRMADO por la autora el 09/10/2026 (versión para firmar en `39e2994`, completa
   ```
   git show <commit de la firma>:docs/mandatos/UOMISIONES_COD_release_codigo_ensamblado.md | sed '/^## Firma$/,$d' | shasum -a 256
   ```
+
+---
+
+**[09/10/2026] Nota de la mesa: fe de erratas del §1, la «opción III».** Donde dice «En ese caso rige la opción III ya decidida:
+re-sellar después y declarar la diferencia» (`:55-57`), la decisión es la del 07/10/2026
+(`docs/mandatos/URERESOL_CAT_reresolucion_catalogo.md:325-327`, `604640c`): un solo re-sellado de la tanda 0. Si esta unidad no corre
+antes del pre-registro de la tanda 1, la tanda 0 se re-sella sin sus correcciones (con el código de R2-3) y la corrección rige desde la
+tanda 1, declarada. No es «re-sellar después». Esa decisión habla de la corrección de bases (grupo C). La autora decidió el 09/10/2026
+que valga para todos los grupos de esta unidad. Ninguno necesita volver a extraer para regir desde la tanda 1: todos son código sobre lo
+guardado (§0), y E2, donde actúa G-r, es código sin modelo (`data/experiment/reextraccion_v2/e2_reduce/e2_lib.py:3`). Error de la mesa.
+El texto firmado no cambia.
+
+**[09/10/2026] Nota de la mesa: los tres pendientes del §6, decididos por la autora el 09/10/2026.** El texto firmado no cambia.
+1. **El umbral de (e):**
+   - **Criterio:** límite inferior de Wilson al 95 % de 0,75 o más, sobre 30 detecciones del clasificador en diez. Hacen falta 28 de 30.
+     Si son menos de 30, se leen todas y el umbral se recalcula con el mismo piso (regla de la mesa para el caso borde).
+   - **La muestra:** sorteada fuera de las 64 unidades de copia de nota que leyó T4
+     (`data/experiment/reext_t0/t4/salida/lista_copia_nota_t4.json`), con la semilla sellada en el despacho de O1.
+   - **Quién lee:** una sesión nueva fuera del repo, con sus sellos, después del FRENO de O1 y en paralelo con O2. No la instancia de
+     O1, porque esa instancia arma el código de (e). La mesa prepara su despacho con la revisión del FRENO de O1.
+   - **Después:** la autora revisa las incorrectas solo si pasa. Si no pasa, (e) queda como límite declarado.
+2. **Las medidas sobre la tanda 0:** en el FRENO de O2 y en `data/experiment/omisiones_cod/`.
+3. **El ítem (i)** (la navegación del grupo D): se hace en esta unidad, medido en O1 y en O2.
