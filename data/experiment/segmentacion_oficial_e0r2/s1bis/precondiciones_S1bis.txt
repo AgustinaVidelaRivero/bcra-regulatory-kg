@@ -1,0 +1,32 @@
+$ date
+2026-10-08 16:15:49 -0300
+$ git rev-parse HEAD
+3c3548695002d737fee47aa15d372e8ae9e10a24
+$ git log --oneline -1 18d9e05
+18d9e056 U-SEG-OFICIAL S0-4b (USD 0, sin API): el codigo de E0 de S0-4 aplicado al repo, una sola vez, con el 
+$ git merge-base --is-ancestor 18d9e05 HEAD; echo $?
+0
+$ git log --oneline -S "U-SEG-OFICIAL:cortes:S1-bis" -- docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md
+a757b328 Asientos de la mesa del 08/10/2026 (noche, mas tarde), USD 0: revision de S0-4b y semillas de S1-bis 
+$ git log --oneline -S "U-SEG-OFICIAL:1_16:S1-bis:revision" -- docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md
+a757b328 Asientos de la mesa del 08/10/2026 (noche, mas tarde), USD 0: revision de S0-4b y semillas de S1-bis 
+$ git log --oneline -1 -- data/experiment/reextraccion_v2/e0_chunking
+18d9e056 U-SEG-OFICIAL S0-4b (USD 0, sin API): el codigo de E0 de S0-4 aplicado al repo, una sola vez, con el 
+$ git status --short -- data/experiment/reextraccion_v2/e0_chunking data/experiment/segmentacion_oficial_e0r2
+?? data/experiment/segmentacion_oficial_e0r2/s1/e0/
+$ shasum -a 256 e0_lib.py correr_e0.py selftest_e0.py (repo)
+65a8c3b8bb09da4d527fd94e31cfbc52168171bcd1603394aaa8b28c05361de6  e0_lib.py
+94d353495a585e0ad4799813a22fb1f1670f33b558f67741b9fceb71d2fcc1bc  correr_e0.py
+ec186071368ca5c415f926bc67960ccab0ede1e9ff35098df5887c2681b38079  selftest_e0.py
+ab300a22b41f99e84ae65e8d8cd2bb5799636dffd58cfc1fda6bb3e0433bf53f  e0_tablas.py
+179da6ad42a73e9bbd40b7b452953b49ed16e92de651c0ffc583ccf39cfe6476  healthcheck_e0.py
+$ git show e543cb2:docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md | shasum -a 256
+44cf30ca0d82a4541654932238ef81055073b407e5ed7b50b92a4a6d3f617c24  -
+$ pgrep -fl "correr_e0|correr_152"
+rc=1
+$ ls -la .venv/bin/python
+.venv/bin/python -> python3
+$ find . -name "*.pyc" -not -path "./.venv/*" | wc -l
+    2213
+$ git log --oneline -S "U-SEG-OFICIAL:cortes:S1-bis:revision" -- docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md
+a757b328 Asientos de la mesa del 08/10/2026 (noche, mas tarde), USD 0: revision de S0-4b y semillas de S1-bis 
