@@ -41,7 +41,9 @@ actualiza.
   - S0-5a revisada por la mesa (`32c71ca`), con las decisiones de la autora al pie de su mandato (`84695b8` y la nota siguiente);
   - S0-5a-bis despachada el 09/10/2026.
 
-  Siguen S0-5b, S1-ter (lectura a ciegas de 30 + 34 fichas con cifra) y S2, que fija la lista de la tanda 1. [Actualizado el 09/10/2026:
+  Siguen S0-5b, S1-ter y S2, que fija la lista de la tanda 1. S1-ter lee a ciegas la muestra de cortes de 90 unidades, con el piso, y
+  el 1.16: 30 + 34 fichas con cifra y 35 de regresión sin cifra. [Corregido el 09/10/2026: decía «S1-ter (lectura a ciegas de 30 + 34
+  fichas con cifra)», sin la muestra de cortes.] [Actualizado el 09/10/2026:
   decía «S0-4a y S0-4a-bis revisadas; S0-4a-ter despachada el 08/10/2026 (…); después S0-4b, S1-bis y S2».]
 - **U-E3-LISTAS:** CERRADA (`56a7a11`; O5 probada y no adoptada). [Corregido el 08/10/2026: decía «O5 despachada».]
 - **U-COMP-E1:** CERRADA con C3 (`323cef7`): ningún brazo cumple el criterio; el modelo del extractor no cambia antes de la tanda 1. La etapa C4 (lectura pareada a ciegas, USD 0), FIRMADA el 08/10/2026.
