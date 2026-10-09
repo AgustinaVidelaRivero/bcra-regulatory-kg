@@ -63,7 +63,7 @@ movió desde `d56020e`).
 | «5 grafos» | `data/experiment/run_{1_cookbook,2_papers,3_ppf_core,4_schema_light,5_hybrid}/kg.json`, commits `e4de649` (25/05/2026), `9e363a9`, `58581b6`, `9d27d51` (27/05/2026) y `199649c` (03/06/2026); los cinco evaluados: carpetas de `frozen_run/traces/` y `reporte_final.md:3` («× 5 grafos») | 5 carpetas de trazas |
 | «23 preguntas» | `eval_set_v1.json:21` (`"total": 23`) | 23 preguntas en el archivo, igual al total declarado |
 | «10 de dato directo, 5 de varias normas, 4 de restricción hasta su excepción, 4 sin respuesta» | `eval_set_v1.json:23-26` (`distribucion`); las categorías, en `:16-19` (`factual_directa`, `multi_norma`, `cadena_restriccion_excepcion`, `unanswerable`, en ese orden) | el conteo de `categoria` de las 23 es `distribucion`, y el texto se coteja con ese conteo |
-| «3 operaciones: buscar, abrir, listar vecinos» | `harness.py:242`, `:259`, `:271` (herramientas `buscar_nodos`, `ver_nodo`, `ver_vecinos`), descriptas en `:10-15` | las tres herramientas, en ese orden |
+| «3 herramientas: buscar, abrir, listar vecinos» | `harness.py:242`, `:259`, `:271` (herramientas `buscar_nodos`, `ver_nodo`, `ver_vecinos`), descriptas en `:10-15` | las tres herramientas, en ese orden |
 | «tope de 15 llamadas» | `harness.py:50` (`MAX_TOOL_CALLS = 15`) y `:21`; el control, en `:527-528` | la constante, y que el control sea el de `:527` |
 | «3 respuestas por pregunta y grafo» | `run_frozen.py:829` (`--N`, 3 por defecto) y `:5`; `reporte_final.md:3` («N=3») | `--N` vale 3 y los 115 archivos de trazas (5 × 23) tienen las repeticiones 1, 2 y 3: 345 corridas |
 | «2 pasos: descompone en afirmaciones y las verifica contra la referencia» | `judge.py:95` (paso 1, descomposición sin ver la referencia; instrucciones en `:97`) y `:127` (paso 2, verificación contra la referencia; `:129`) | exactamente dos bloques `# Paso N` |
@@ -171,10 +171,10 @@ derecha de las medidas y entra a la caja a la altura de esa línea.
 
 | Archivo | sha256 |
 |---|---|
-| `generar_figura_experimento_estrategias.py` | `f889c4bfea7d5a6dbec30f7b93e0d61bcaa4046e8e647eb21bca2776ec857881` (hasta el 08/10/2026, `d68e1d87ba09bdb8faa7904400d042a7674cbd6ae5b8deb11dbfcf8163aa9755`; §8) |
-| `figura_experimento_estrategias.svg` (760 × 483) | `734a712e4d89053f8302bd173f7129d77073dac3d6565e1e005a430b6a3bab27` |
-| `figura_experimento_estrategias.png` (1772 × 1126 px, 300 dpi) | `d3e00a7ca44bf0f572124655bbcabaf2d3a74f38476b3b97a0d4f1e546ea5109` |
-| `figura_experimento_estrategias.pdf` (425,2 × 270,1 pt) | `29146d497f63e24d662a3c4331b9cbabd60169abcb7d506cc0fadefac32656ea` |
+| `generar_figura_experimento_estrategias.py` | `71831ab9feab1cb8bd06cd714c4185a4e3d21f1fb02b60a2a69ef6dddd968b6a` (§9; antes, `f889c4bf…`, §8, y hasta el 08/10/2026, `d68e1d87ba09bdb8faa7904400d042a7674cbd6ae5b8deb11dbfcf8163aa9755`) |
+| `figura_experimento_estrategias.svg` (760 × 483) | `cba5166e6c0c7a781094aae4e11dd84b9257ed495776b9233c736fff8c2b476b` (hasta el 08/10/2026, `734a712e4d89053f8302bd173f7129d77073dac3d6565e1e005a430b6a3bab27`; §9) |
+| `figura_experimento_estrategias.png` (1772 × 1126 px, 300 dpi) | `240b12701173e5a51c02690aa54e22ce3894619588e8bbbb7c0d734cef760fca` (hasta el 08/10/2026, `d3e00a7ca44bf0f572124655bbcabaf2d3a74f38476b3b97a0d4f1e546ea5109`; §9) |
+| `figura_experimento_estrategias.pdf` (425,2 × 270,1 pt) | `d93a46561193bb2bc8bf989b3dc37853eeeca583476f9fd7e03e61f1da4f6c68` (hasta el 08/10/2026, `29146d497f63e24d662a3c4331b9cbabd60169abcb7d506cc0fadefac32656ea`; §9) |
 
 Cuatro corridas del generador final: tres sobre el scratchpad de la sesión con
 `--salida`, con `PYTHONHASHSEED` 0, 1 y 42, y la que escribió los archivos del
@@ -183,7 +183,7 @@ byte en las cuatro, y la salida de consola (28 líneas) también, salvo las ruta
 de salida. El PDF es reproducible porque el script fija `SOURCE_DATE_EPOCH=0`
 al llamar a `rsvg-convert`, como las figuras hermanas: `/CreationDate`
 01/01/1970. El stream de contenido de su página tiene sha256
-`55edb90f065c058165e8a348ce9febd8509d91e16d6bc065d443aafd7b5278d2`. Las fuentes
+`2f250f5fa1332f4c70dbc649f738c6f9814d265b587901a6628998465f734a5a` (hasta el 08/10/2026, `55edb90f…`; §9). Las fuentes
 del PDF siguen el patrón de los PDF hermanos: Helvetica y Helvetica-Bold
 embebidas, cada una con su Type 3 de cairo (`pdffonts`).
 
@@ -241,3 +241,37 @@ El script tiene las mismas líneas (1029) y su sha256 pasó de `d68e1d87…` a
 `f889c4bf…` (§6). Sobre una copia del repo, con `PYTHONHASHSEED` 0, 1 y 4242, el
 SVG, el PNG y el PDF salen idénticos byte a byte a los commiteados; registros en
 el paquete de revisión de FIX-MEDIDOR-8.
+
+## 9. Nota del 08/10/2026: «3 herramientas» en la caja del agente
+
+La caja del agente dice «3 herramientas: buscar, abrir, listar vecinos» en lugar
+de «3 operaciones: buscar, abrir, listar vecinos». La figura no tiene otro cambio.
+
+- **Generador.** Cambian el texto (`TEXTO`, :142), su corte de línea (`CORTES`,
+  :159) y el texto que arma el control que lo coteja con el número de
+  herramientas del agente (:369-370). Las dos líneas del docstring que describen
+  esa caja (:10 y :31) dicen «herramientas». La clave `agente_operaciones`, la
+  tupla `OPERACIONES` (:131) y su comentario (:129-130) quedan como estaban: no
+  se dibujan. El script tiene las mismas líneas (1029) y su sha256 pasó de
+  `f889c4bf…` a `71831ab9…` (§6).
+- **SVG.** Cambia una sola línea, la 85: el contenido del `<text>` de la
+  primera línea de la caja (x 92,0, y 318,6, centrado, cuerpo 13), con los mismos
+  atributos. El viewBox sigue en 760 × 483. La línea pasa de 130,8 a 135,9
+  unidades de ancho, medida con el medidor de Helvetica, y cabe en la caja con
+  12,1 unidades de holgura a cada lado.
+- **PNG y PDF.** El PNG mantiene 1772 × 1126 px y la misma densidad; el PDF,
+  425,2 × 270,1 pt, rasterizado a 4 px/pt. En los dos, todos los píxeles
+  distintos caen dentro del rectángulo de ese texto. Las 99 palabras que
+  pdfplumber extrae del PDF son las mismas, salvo «operaciones:» →
+  «herramientas:».
+- **Controles.** La consola del generador da las mismas 28 líneas; solo cambian
+  los sha256 de las salidas. Los controles de §4 dan los mismos valores.
+- **Corridas.** Sobre una copia del repo, con `PYTHONHASHSEED` 0, 1 y 4242, el
+  SVG, el PNG y el PDF salen iguales en las tres corridas (§6). Registros y
+  verificación en el paquete de revisión del ajuste 1 de FIX-MEDIDOR-8.
+- **PENDIENTE: el generador de la figura del proceso.**
+  `generar_figura_proceso.py` tiene un candado de sha256 sobre este generador
+  (`hermana`, :125-126), que sigue en `d68e1d87…`, el sha anterior a §8. Ese
+  generador no corre desde `88bfe89`: frena antes, en sus candados sobre
+  `generar_figura_proceso_extraccion.py` y `generar_figura_norma_a_grafo.py`
+  (:121-124).

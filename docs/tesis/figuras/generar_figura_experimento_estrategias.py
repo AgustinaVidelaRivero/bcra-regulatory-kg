@@ -7,7 +7,7 @@ Diagrama de flujo de izquierda a derecha, en dos filas:
   cinco grafos, uno por estrategia; a la derecha, las 23 preguntas con su
   reparto por tipo;
 - abajo, la evaluación: el agente, al que llegan los grafos y las preguntas,
-  con sus operaciones y su tope de llamadas; las 3 respuestas por pregunta y
+  con sus herramientas y su tope de llamadas; las 3 respuestas por pregunta y
   grafo; el juez, con sus dos pasos; y las 4 medidas. Debajo del juez, en una
   caja discontinua, las afirmaciones que la referencia no decide, revisadas
   contra los Textos Ordenados, con una flecha a la medida «correctas», la única
@@ -28,7 +28,7 @@ respalda, con candado de sha256 (FUENTES; si una fuente cambia, el script
 frena antes de dibujar):
 - 5 Textos Ordenados, 23 preguntas y su reparto 10/5/4/4: metadatos y
   preguntas del conjunto de evaluación de la comparación;
-- 3 operaciones y tope de 15 llamadas: las herramientas y la constante del
+- 3 herramientas y tope de 15 llamadas: las herramientas y la constante del
   agente;
 - 2 pasos: los dos bloques de instrucciones del juez;
 - 3 respuestas por pregunta y grafo y 5 grafos: el número de repeticiones de la
@@ -139,7 +139,7 @@ TEXTO = {
     "preguntas_reparto": ("10 de dato directo, 5 de varias normas, "
                           "4 de restricción hasta su excepción, 4 sin respuesta"),
     "agente_titulo": "Agente",
-    "agente_operaciones": "3 operaciones: buscar, abrir, listar vecinos",
+    "agente_operaciones": "3 herramientas: buscar, abrir, listar vecinos",
     "agente_tope": "tope de 15 llamadas",
     "respuestas": "3 respuestas por pregunta y grafo",
     "juez_titulo": "Juez",
@@ -156,7 +156,7 @@ CORTES = {
     "conjunto_tos": ("5 Textos", "Ordenados"),
     "preguntas_reparto": ("10 de dato directo", "5 de varias normas",
                           "4 de restricción hasta su excepción", "4 sin respuesta"),
-    "agente_operaciones": ("3 operaciones: buscar,", "abrir, listar vecinos"),
+    "agente_operaciones": ("3 herramientas: buscar,", "abrir, listar vecinos"),
     "respuestas": ("3 respuestas", "por pregunta y grafo"),
     "juez_pasos": ("2 pasos: descompone en", "afirmaciones y las verifica", "contra la referencia"),
     "medidas_lista": MEDIDAS,
@@ -366,8 +366,8 @@ def cotejar_texto(h):
     igual("grafos", numero("grafos_encabezado"), h["grafos"])
     igual("preguntas", numero("preguntas_titulo"), h["preguntas"])
     igual("reparto", TEXTO["preguntas_reparto"], ", ".join(f"{n} {r}" for n, r in h["reparto"]))
-    igual("operaciones", TEXTO["agente_operaciones"],
-          f"{len(h['herramientas'])} operaciones: " + ", ".join(o for o, _ in OPERACIONES))
+    igual("herramientas", TEXTO["agente_operaciones"],
+          f"{len(h['herramientas'])} herramientas: " + ", ".join(o for o, _ in OPERACIONES))
     igual("tope", TEXTO["agente_tope"], f"tope de {h['tope']} llamadas")
     igual("respuestas", TEXTO["respuestas"], f"{h['repeticiones']} respuestas por pregunta y grafo")
     igual("pasos del juez", numero("juez_pasos"), len(h["pasos"]))
