@@ -401,3 +401,32 @@ Es un control, no una regla: no cambia ninguna unidad. Se suma a lo que S0-5a co
       cierre no lleve de más ni de menos.
     - **PENDIENTE de la autora:** el tamaño de (b), o un sorteo único de 30 sobre (a) y (b) juntas.
   - Los 35 se siguen releyendo como prueba de regresión, sin cifra.
+
+---
+
+**[09/10/2026] Nota de la mesa: decisiones de la autora del 09/10/2026 sobre los mixtos y la dudosa de R5-a y sobre la población (b) de
+S1-ter, y una corrección.**
+
+- **Corrección de la nota anterior. Error de la mesa.** Su encabezado dice «09/10/2026, noche». La nota es del 09/10/2026 y entró en
+  `32c71ca`, commiteado a las 14:23 de ese día.
+- **R5-a: los dos mixtos y la dudosa** (decisión de la autora del 09/10/2026). De `ri_spi::C.1.3` y `ri2_ae::14.3` entran por lista solo
+  los renglones que la mesa leyó como cierre contra la página. El resto de lo que movía S0-5a en esas dos listas queda como en S0-4b.
+  - `ri_spi::C.1.3`: los 11 renglones de la p. 9, de «Además de los datos detallados precedentemente…» a «…los datos reflejados en el
+    formulario.», pasan al cierre de C.1. Quedan en el ítem el Anexo I (p. 10) y el Anexo II (p. 11).
+  - `ri2_ae::14.3`: los 7 renglones de «La fecha de la manifestación escrita…» (p. 28) a «publicación.» (p. 29) pasan al cierre de 14.
+    Quedan en el ítem los puntos 15 y 16 del Anexo III (p. 29), tragados, y el Anexo IV (pp. 30 a 43).
+  - Lo que queda en esas dos listas es límite medido, caso por caso, y va al grupo 2.
+  - `ri_cc::R5::2.2.1.2` no se toca.
+  - **La lista queda en 43:** los 9 casos, los 32 cierres y los 2 mixtos, solo con el cierre. No se tocan 14. Está en
+    `revision_S0-5a/lista_R5a_por_lista_v2_decision4_mesa.json` del paquete de la mesa, con la página, el top y la columna de cada
+    renglón de los mixtos, y reemplaza a la lista de la nota anterior.
+- **S1-ter: la población (b)** (decisión de la autora del 09/10/2026). Reemplaza la propuesta de 15 de la nota anterior.
+  - Se leen las 32 listas de los cierres confirmados, todas.
+  - La semilla `U-SEG-OFICIAL:1_16:S1-ter:R5-a`, sellada en la nota anterior, ya no sortea, porque se leen todas. La mesa la usa para el
+    orden: las 32 entran a la lectura mezcladas con las 30 de (a), en el orden que fija la semilla, para que la lectora no sepa de qué
+    población viene cada ficha.
+  - **Si alguna sale mal, ese movimiento se revierte por lista antes de S2:** la lista vuelve a como estaba en S0-4b. «Sale mal» es un
+    error de corte en el resultado de S1-ter, después de la adjudicación de la autora, como en S1-bis.
+  - La lectura pasa a 62 fichas con cifra (30 de (a) y 32 de (b)), más los 35 que se releen como prueba de regresión, sin cifra.
+  - **PENDIENTE de la autora:** los dos mixtos no están entre las 32. La mesa propone leerlos también en (b), que quedaría en 34, porque
+    su corte lo eligió la mesa a mano y nadie lo leyó a ciegas.
