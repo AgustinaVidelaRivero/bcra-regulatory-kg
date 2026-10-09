@@ -1,0 +1,27 @@
+$ date
+2026-10-09 11:15:45 -0300
+$ git rev-parse HEAD
+b60e2fc9c1f2dc6ca87cc87eb92191c6ba1d5d1b
+$ git log --oneline -1 b60e2fc9 (mandato de S0-5a con la nota del control de continuidad)
+b60e2fc9 U-SEG-OFICIAL: nota antes del despacho de S0-5a
+es ancestro de HEAD: rc=0
+$ git log --oneline -S "09/10/2026 (mediodía) — Decisiones de la autora" -- docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md
+bbcfb457 U-SEG-OFICIAL: mandato de S0-5a listo para despachar y asientos del 09/10/2026
+$ git show b60e2fc9:docs/mandatos/USEG_OFICIAL_S0-5a_reglas_de_corte_E0.md | shasum -a 256
+4f4ca6c954252100aacb92b1b4c9a035ac55ce7bf419b88ce082902dc2ac3aa4  -
+$ git log --oneline -S "control de continuidad de la numeración" -- docs/mandatos/USEG_OFICIAL_S0-5a_reglas_de_corte_E0.md
+b60e2fc9 U-SEG-OFICIAL: nota antes del despacho de S0-5a
+$ git log --oneline -1 -- data/experiment/reextraccion_v2/e0_chunking
+18d9e056 U-SEG-OFICIAL S0-4b (USD 0, sin API): el codigo de E0 de S0-4 aplicado al repo, una sola ve
+$ git status --short -- data/experiment/reextraccion_v2/e0_chunking data/experiment/segmentacion_oficial_e0r2
+?? data/experiment/segmentacion_oficial_e0r2/s1/e0/
+?? data/experiment/segmentacion_oficial_e0r2/s1bis/e0/
+$ shasum -a 256 (e0_chunking del repo)
+65a8c3b8bb09da4d527fd94e31cfbc52168171bcd1603394aaa8b28c05361de6  e0_lib.py
+94d353495a585e0ad4799813a22fb1f1670f33b558f67741b9fceb71d2fcc1bc  correr_e0.py
+ec186071368ca5c415f926bc67960ccab0ede1e9ff35098df5887c2681b38079  selftest_e0.py
+ab300a22b41f99e84ae65e8d8cd2bb5799636dffd58cfc1fda6bb3e0433bf53f  e0_tablas.py
+$ ls s0_5
+ls: data/experiment/segmentacion_oficial_e0r2/s0_5: No such file or directory
+$ pgrep -fl "correr_e0|correr_152"
+rc=1
