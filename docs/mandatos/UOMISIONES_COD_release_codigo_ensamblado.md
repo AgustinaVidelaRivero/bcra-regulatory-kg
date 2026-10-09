@@ -1,14 +1,15 @@
 # Mandato U-OMISIONES-COD — la release de código del ensamblado antes de la tanda 1
 
-**VERSIÓN PARA FIRMAR (v7, mesa, 09/10/2026; completada el mismo día con el grupo L y la opción de f′ en documentos sin alcance).
-Firma PENDIENTE de la autora.** USD 0, sin API.
+**FIRMADO por la autora el 09/10/2026 (v7; versión para firmar en `39e2994`, completada en `aea5afc`), con la opción (ii) de f′ en los
+documentos sin alcance.** Rige desde esta firma. USD 0, sin API. El texto firmado son las líneas anteriores a «## Firma»: no se edita
+después y recibe notas fechadas debajo de la sección «Firma».
 
 Reemplaza a los borradores v1 a v6 de la mesa (fuera del repo, en el paquete `hoja_de_ruta_tanda1_mesa/`).
 
 Qué agrega la v7, por las decisiones de la autora del 09/10/2026:
 - en el grupo B, el ítem **f′**: el singular «entidad» en la lista de R3 (decisión 1, con la explicación de las 15 marcas de desacuerdo);
 - el grupo C reescrito como **g, g1, g2 y g3** (decisión 2). La regla «la definición de la misma sección» va al grupo 2 y no entra acá;
-- el grupo **L**, el tramo literal del elemento de umbral (límite 2 del esquema final; decisión 1 de la autora del 09/10/2026, noche);
+- el grupo **L**, el tramo literal del elemento de umbral (límite 2 del esquema final; decisión 1 de la autora del 09/10/2026);
 - en cada ítem, su alcance, el selftest con casos positivos y negativos, el criterio de aceptación y la **cifra esperada sobre
   `a9631a64`** (KG-Tanda0-Diez-r2b, `data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json`).
 
@@ -108,9 +109,12 @@ marca del contador y 390 con el tramo solo en el texto heredado (`data/experimen
   - **Aceptación:** la pre-medición en O1, y 0 cambios fuera de las menciones afectadas.
 - **f′. El singular «entidad» en la lista de R3** (decisión 1 de la autora del 09/10/2026). Ejecuta la ampliación que L-ESQ-R2 decidió
   el 30/09 (`4ef7650`: «se amplía en código con las menciones de r2b»).
-  - **Alcance:** solo agregar «entidad» a `EXPRESIONES_COLECTIVAS_R3` (`reextraccion_v2/corpus_v2/r1_e4.py:306`). R3 compara la mención
+  - **Alcance:** agregar «entidad» a `EXPRESIONES_COLECTIVAS_R3` (`reextraccion_v2/corpus_v2/r1_e4.py:306`). R3 compara la mención
     entera sin el artículo, así que una mención con calificador no es «entidad». `_sin_articulo` no cambia, y los determinantes («esta
     entidad», «la mencionada entidad») no entran.
+    - **Por la opción (ii), elegida en la firma:** en un TO sin rol, el singular no es expresión de R3 y da `sin_match`, no
+      `colectivo_sin_sujeto_por_defecto` (`r1_e4.py:373-378`), así que la parte A no lo manda a cuarentena. Las expresiones en plural
+      no cambian. Cómo se escribe, lo fija O1.
   - **Esperado en `a9631a64`** (pre-medición de la mesa, igual a la de R2-1, `freno_r2_1.md:147-150`):
     - R3 alcanza 435 relaciones. En 401, la sugerencia del modelo ya daba el rol y no cambian.
     - Cambian **19 decisiones**, de cuarentena a R3: ext 14 (→ `Sujeto_rol_entidad_autorizada_exterior`), cap 4
@@ -122,10 +126,10 @@ marca del contador y 390 con el tramo solo en el texto heredado (`data/experimen
       R3: los desacuerdos del reporte pasan de 150 a 165. Ninguna es un destino equivocado (explicación de la mesa del 09/10/2026, en
       el paquete `hoja_de_ruta_tanda1_mesa/R3_singular_15_marcas/`).
     - En los documentos sin alcance con la parte A: 0 filas cambian en diez.
-  - **En los documentos sin alcance: dos opciones, PENDIENTE de la autora al firmar** (decisión 5 del §6).
-    - **(i) Como R3 hoy:** «la entidad» queda en cuarentena aunque el modelo sugiera un sujeto. Es la regla de la parte A de la enmienda
-      6 para las expresiones de R3.
-    - **(ii) El singular, solo en documentos con alcance:** si el TO no tiene rol, «la entidad» no es expresión de R3 (motivo
+  - **En los documentos sin alcance: la opción (ii), elegida por la autora en la firma** (§6).
+    - **(i) Como R3 hoy (no elegida):** «la entidad» queda en cuarentena aunque el modelo sugiera un sujeto. Es la regla de la parte A
+      de la enmienda 6 para las expresiones de R3.
+    - **(ii) El singular, solo en documentos con alcance (ELEGIDA):** si el TO no tiene rol, «la entidad» no es expresión de R3 (motivo
       `sin_match`) y sigue la regla de hoy: la sugerencia del modelo, o cuarentena si no la hay.
     - **Exposición en la tanda 1** (ri_oc, ceninf y cirmo3, los tres documentos del ejemplo sin alcance; salida de E0 de S0-4b,
       `exposicion_la_entidad_mesa.py`, en el paquete de la mesa): **14 unidades con «la entidad» sin calificador en el texto propio**
@@ -140,7 +144,9 @@ marca del contador y 390 con el tramo solo en el texto heredado (`data/experimen
     - negativos, que no cambian (los tres de la autora): `ext::4.4.2` («la/s entidad/es encargada/s del seguimiento…»),
       `ext::11.1.1.10` («la entidad nominada») y `ext::7.3.7` («la entidad nominada por el exportador»), y además «la entidad
       financiera», sintético (R1, sin cambio), y «esta entidad», sintético (sin cambio);
-    - uno sintético de un documento sin alcance: «la entidad» con sugerencia del modelo va a cuarentena.
+    - sintéticos de un documento sin alcance, por la opción (ii): «la entidad» con sugerencia del modelo sigue la sugerencia (R4), y sin
+      sugerencia queda en cuarentena con motivo `sin_match`; negativo, «las entidades» en el mismo documento sigue en cuarentena por la
+      parte A.
   - **Aceptación:** las cifras de arriba, con la lista de las 19 y de las 15. Una diferencia con la pre-medición se explica caso por
     caso.
 
@@ -275,7 +281,7 @@ Los cuatro ítems van juntos: (g) sin (g1) marcaría como «base no resuelta» 7
 - **Selftest:** una cita a una unidad de la cola en un grafo sin cola; negativo, una cita a un punto inexistente.
 - **Aceptación:** esas cifras, y 0 diferencias en las aristas.
 
-### Grupo L — umbrales: el tramo literal del elemento (límite 2; decisión de la autora del 09/10/2026, noche)
+### Grupo L — umbrales: el tramo literal del elemento (límite 2; decisión de la autora del 09/10/2026)
 
 - **La regla:** el elemento de umbral de origen e1 que arma el ensamblado guarda en `tramo` el tramo de E1 del que sale su cuantía, no la
   cuantía (`ensamblar_tanda0.py:755`: `RCMP.elemento_umbral(c, c.texto, origen)` pasa a recibir el tramo de E1).
@@ -344,7 +350,8 @@ Los cuatro ítems van juntos: (g) sin (g1) marcaría como «base no resuelta» 7
 **ESCRITURAS:**
 - `data/experiment/tanda0/code/ensamblar_tanda0.py` y su selftest (A, g, g2, g3, L, G-r);
 - `data/experiment/med_umbrales/p/code/comun_P.py`, `armador_fichas_P.py` y `selftest_comparador_P.py`, solo la toma de la cuantía (L);
-- `reextraccion_v2/corpus_v2/r1_e4.py`, solo `EXPRESIONES_COLECTIVAS_R3` (f′), y el selftest de la resolución
+- `reextraccion_v2/corpus_v2/r1_e4.py`, solo `EXPRESIONES_COLECTIVAS_R3` y la rama del singular en un TO sin rol (f′, opción (ii)),
+  y el selftest de la resolución
   (`data/experiment/r2_codigo/selftest_r3.py`);
 - `reextraccion_v2/corpus_v2/r1_referencias.py`, solo la procedencia de las aristas (J), y su selftest;
 - la derivación del `tipo` de la Comunicacion y su marca (H, donde viva hoy esa derivación);
@@ -382,14 +389,38 @@ U-UNION-ESTRECHA, que toca `ensamblar_tanda0.py` después de esta unidad (su man
 - F sale, y el re-sellado lleva solo E3-01 (09/10/2026);
 - f′ entra, y el grupo C es g a g3, con «la misma sección» en el grupo 2 (09/10/2026);
 - el límite 2 entra como el grupo L, dentro del re-sellado. Se adaptan las herramientas del piloto y va la nota fechada a la enmienda 1
-  (09/10/2026, noche).
+  (09/10/2026);
+- f′ en los documentos sin alcance va por la opción (ii) del grupo B (09/10/2026, en la firma).
 
-**PENDIENTES al firmar:**
+**PENDIENTES de la autora:**
 1. el umbral de (e), con la propuesta de la mesa de Wilson ≥ 0,75;
 2. si las medidas sobre la tanda 0 van al reporte de U-SINCOLA-T0 o quedan en el FRENO;
-3. si (i) se hace acá o en U-NAV-DISENO;
-4. f′ en los documentos sin alcance: la opción (i) o la (ii) del grupo B. La mesa recomienda la (ii).
+3. si (i) se hace acá o en U-NAV-DISENO.
+
+No se decidieron en la firma: siguen PENDIENTES de la autora (sección «Firma»).
 
 ## Firma
 
-PENDIENTE de la firma de la autora (versión para firmar del 09/10/2026, v7).
+FIRMADO por la autora el 09/10/2026 (versión para firmar en `39e2994`, completada en `aea5afc`). Rige desde esta firma.
+
+- **La decisión de la firma:** f′ en los documentos sin alcance va por la opción (ii). El singular «entidad» es expresión de R3 solo en
+  los TOs con rol; en uno sin rol sigue la regla de hoy, la sugerencia del modelo, o cuarentena si no la hay.
+- **Qué cambió del texto de `aea5afc` al asentar la firma:**
+  - la cabecera;
+  - en f′, el alcance, la marca de la opción elegida y los casos sintéticos del selftest, que siguen la (ii). La referencia a la
+    «decisión 5 del §6» pasa a «§6», porque esa decisión era la 4 (error de la mesa);
+  - en el §5, la escritura de `r1_e4.py`, por la (ii);
+  - en el §6, la decisión de f′ pasa a las tomadas;
+  - tres fechas decían «09/10/2026, noche». Las decisiones son del 09/10/2026 y entraron en `aea5afc`, commiteado a las 14:23 de ese
+    día (error de la mesa).
+- **No se decidieron en la firma y siguen PENDIENTES de la autora** (§6):
+  1. el umbral de (e): antes del despacho de O1, que lo mide;
+  2. dónde van las medidas sobre la tanda 0: antes del FRENO O2;
+  3. si (i) se hace acá o en U-NAV-DISENO: antes del despacho de O1.
+- **Texto firmado:** las líneas de este archivo anteriores a «## Firma», con sha256
+  `6c8914a015d9a9e7838a3a793bf2479dd03f901898d0543e5927209ed580efee`.
+  Se reproduce sobre el archivo del commit de la firma:
+
+  ```
+  git show <commit de la firma>:docs/mandatos/UOMISIONES_COD_release_codigo_ensamblado.md | sed '/^## Firma$/,$d' | shasum -a 256
+  ```
