@@ -211,3 +211,9 @@ nueva, en `triaged`, en la última línea (decisión de la autora del 09/10/2026
 FIRMADO por la autora el 09/10/2026, por mensaje: la versión para firmar de `8839bd0`, corregida el mismo día con su revisión,
 más el alta de BKL-0041 (§1, §3.1 y §5). Rige desde esta firma. El lote del §5, con `ts` 2026-10-09, se agrega a
 `data/backlog/backlog.jsonl` en el commit que registra esta firma, PENDIENTE de la autora.
+
+## Notas posteriores a la firma
+
+- **[09/10/2026] El ancla del plan.** Donde este laudo dice `plan:383` (encabezado y §1, dos veces), la fila B2.4 está hoy en
+  `docs/plan_tesis.md:385`: se corrió dos renglones en `ae76f08`. La corrección del §6, punto 2 («`plan:380` pasa a `:383`»), valía
+  en esa fecha. El texto firmado no cambia.

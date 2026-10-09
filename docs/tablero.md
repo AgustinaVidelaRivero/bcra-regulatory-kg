@@ -36,7 +36,8 @@ actualiza.
 - **U-COMP-E1:** CERRADA con C3 (`323cef7`): ningún brazo cumple el criterio; el modelo del extractor no cambia antes de la tanda 1. La etapa C4 (lectura pareada a ciegas, USD 0), FIRMADA el 08/10/2026.
 - **U-RERESOL-CAT:** R2 cerrada (R2-3 bis en `dac7d57`). **U-ALCANCE-E1** y **U-UNION-ESTRECHA**, FIRMADOS (`21e55a0`): A1 en `ab59034` (A2 espera la lista final); U1 en `57c2123` y U2 (censo de las 29) despachada el 08/10/2026.
 - **Mandatos en BORRADOR:** U-OMISIONES-COD (borrador v5 de la mesa, todavía sin mandato en el repo). **FIRMADOS el 08/10/2026:** C4 de U-COMP-E1 (`UCOMP_E1_C4_lectura_pareada.md`); B′ (`UAPLICA_ROL_ALCANCE_derivada_Bprima.md`) y casi duplicados (`UCASI_DUPLICADOS_fusion_de_forma.md`), grupo 2 del barrido de límites. [Corregido el 08/10/2026: U-ALCANCE-E1 y U-UNION-ESTRECHA ya estaban firmados.]
-- **Laudo B2.4:** en BORRADOR.
+- **Laudo B2.4:** FIRMADO por la autora el 09/10/2026 (`befe7fd`), con el alta de BKL-0041 y su lote en `backlog.jsonl`.
+  [Actualizado el 09/10/2026: decía «en BORRADOR».]
 - **Segunda lectura a ciegas de la mesa:** las 41 de la enmienda 8, los ocho patrones de B2.4 y las 4 filas de BKL-0021; sesión nueva,
   después del 08/10/2026 a las 18 h.
 - **Lectura de confirmación de la matriz:** pendiente.
@@ -46,9 +47,10 @@ actualiza.
   commit.
 
 **Condiciones de la tanda 1** (checklist, condiciones 1 a 13 y 11-bis):
-- cumplidas o decididas: 1, 3, 6, 8, 9 y 10;
+- cumplidas o decididas: 1, 3, 6, 8, 9, 10 y 13 (laudo B2.4, firmado el 09/10/2026);
 - abiertas: 2 (release r2), 4 (tablero de correcciones: falta la re-medición de r2b después del re-sellado), 5, 7 y 12 (segmentación
-  oficial y lista), 11 (alcance de la lista final), 11-bis (U-ALCANCE-E1) y 13 (laudo B2.4).
+  oficial y lista), 11 (alcance de la lista final) y 11-bis (U-ALCANCE-E1).
+  [Actualizado el 09/10/2026: la 13 pasó de abierta a cumplida.]
 
 ---
 
