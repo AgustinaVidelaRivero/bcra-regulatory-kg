@@ -18,6 +18,11 @@ Corpus: 5 Textos Ordenados del BCRA (`data/experiment/subset/`, read-only).
 - Los documentos sellados por commit son LA fuente de verdad: ante cualquier
   conflicto con memoria de sesión, resúmenes o herramientas externas, mandan
   los archivos commiteados.
+- La tesis es la excepción (08/10/2026): la versión vigente está en Overleaf,
+  donde la autora la edita con los mentores. `docs/tesis/main.tex` del repo
+  puede estar desactualizado hasta la próxima sincronización. Ninguna instancia
+  lo usa como fuente de lo que dice la tesis sin declararlo; si una tarea
+  necesita el texto vigente, lo pide.
 
 ## 3. Zonas selladas — NUNCA editar, mover ni borrar
 
