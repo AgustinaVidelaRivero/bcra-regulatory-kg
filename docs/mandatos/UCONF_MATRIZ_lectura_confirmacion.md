@@ -1,7 +1,8 @@
 # Mandato U-CONF-MATRIZ — lectura de confirmación de la matriz ampliada (`condicion_de` → Operacion y → Potestad)
 
-**VERSIÓN PARA FIRMAR (mesa, 09/10/2026),** con dos decisiones de la autora del 09/10/2026: el grafo (§1) y qué pasa si → Operacion no
-confirma (§7). **Firma y despacho PENDIENTES de la autora.** USD 0, sin API.
+**FIRMADO por la autora el 09/10/2026** (versión para firmar en `0c27146`), con las decisiones del §9. Rige desde esta firma. El
+despacho, PENDIENTE de la autora. USD 0, sin API. El texto firmado son las líneas anteriores a «## Firma»: no se edita después y recibe
+notas fechadas debajo de la sección «Firma».
 
 ## 0. Qué confirma y por qué
 
@@ -28,10 +29,12 @@ sin cola de la tanda 0, que es el que entra en la cadena de la evaluación. **De
   `poblacion_conf_matriz_salida.txt`.
 - **Como referencia:** en el grafo completo (`a9631a64`) son 676 y 273; en desarrollo sin cola (`2922b72d`), 546 y 237.
 
-**El re-sellado.** Ningún ítem de U-OMISIONES-COD v7 cambia aristas `condicion_de`.
+**El re-sellado.** Ningún ítem de U-OMISIONES-COD v7 cambia aristas `condicion_de`. Si → Potestad no confirma y el resultado llega antes
+del FRENO de O2, el re-sellado saca sus aristas (§7).
 - R0 (E3-01) re-verifica 20 unidades de la tanda 0 y puede cambiar lo que E3 acepta en ellas.
-- **Control después del re-sellado:** las 60 aristas leídas siguen en el grafo re-sellado, con los mismos extremos. Las que cambien se
-  listan y se declaran. La cifra no se recalcula salvo que cambie el resultado del criterio.
+- **Control después del re-sellado:** las 60 aristas leídas siguen en el grafo re-sellado, con los mismos extremos, salvo las 30 de
+  → Potestad si su retiro entró. Las que cambien se listan y se declaran. La cifra no se recalcula salvo que cambie el resultado del
+  criterio.
 
 **Solapamiento.** La etapa V del pre-registro de tripletas sortea en el grafo de desarrollo sin cola (`2922b72d`), cuyos TOs están en
 diez. Si una arista leída acá cae también en la muestra de V, se declara el solapamiento; no se excluye (pre-registro, `:42`).
@@ -50,7 +53,8 @@ sección «Protocolo, tal como está asentado»). Su sha256 en ese commit va al 
 
 ## 3. Muestra
 
-- **30 aristas por par,** por muestreo simple sobre la lista de aristas ordenada por (origen, destino).
+- **30 aristas por par,** por muestreo simple sobre la lista de aristas ordenada por (origen, destino):
+  `random.Random(semilla).sample(lista, 30)`.
 - **Semillas, fijadas por la firma:** `int(sha256("U-CONF-MATRIZ|Operacion|<sha256 del texto firmado>")[:16], 16)` y la misma con
   «Potestad». El texto firmado son las líneas de este archivo anteriores a «## Firma», en el commit de la firma.
 - **El acta:** la población (sus dos sha256), la hora, la muestra y su sha256, el sha256 del criterio y el del grafo. Se sella antes de
@@ -72,9 +76,12 @@ sección «Protocolo, tal como está asentado»). Su sha256 en ese commit va al 
   - **Dónde corre:** abierta fuera del repo, con la cláusula de lecturas a ciegas de la plantilla de la mesa, porque la memoria del
     proyecto y los commits citan las cifras del estudio original.
   - **Qué hace:** lee las 60 fichas, marca cada una y sella la planilla (sha256 y hora) antes de calcular ninguna cifra.
-- **La revisión:** la autora revisa todas las incorrectas y no decidibles, y 5 correctas por par, sorteadas con
-  `sha256("U-CONF-MATRIZ|revision|…")`. Adjudica las que no comparta.
-  - Alternativa: revisar las 60, como en el estudio original. PENDIENTE de la autora al firmar.
+- **La revisión** (decisión de la autora del 09/10/2026): la autora revisa todas las incorrectas y no decidibles, y 5 correctas por par.
+  Adjudica las que no comparta.
+  - **Las 5 correctas se sortean en C3,** entre las correctas del par ordenadas por (origen, destino), con
+    `random.Random(semilla).sample(lista, 5)`; si son menos de 5, van todas.
+  - **Semilla de revisión de cada par:** `int(sha256("U-CONF-MATRIZ|revision|Operacion|<sha256 del texto firmado>")[:16], 16)` y la
+    misma con «Potestad». Queda sellada con la firma, antes de que exista ningún resultado.
 
 ## 6. Etapas
 
@@ -92,19 +99,28 @@ Lo que sigue lo fija la autora el 09/10/2026, antes de la lectura.
   - Queda en el grafo, con su cifra declarada.
   - Los errores se clasifican. Las clases salen de las notas de C2: la sesión lectora las propone en C3 y la autora las adjudica en C4.
   - Una clase sistemática que se pueda corregir con código va al grupo 2.
-- **→ Potestad no confirma: rige L-ESQ-R2 §6.3** (`4ef7650`): se retira en el validador, en código, sin re-extraer. Toca:
-  - la matriz del validador r2 (`AMPLIACION_R2`);
-  - S3 de los shapes;
-  - la fila de la matriz en el laudo de la release r2;
-  - y, si entra al re-sellado, saca del grafo de la tanda 0 las 264 aristas del sin cola (273 en el completo).
-  - **Cuándo entra.** Desde el 09/10/2026 el alcance del re-sellado está congelado (decisión de la autora): no entra nada más, salvo que
-    corrija un dato falso de la tanda 1 y sea barato. El retiro es código del validador, sin re-extraer. Si cabe en la excepción lo
-    decide la autora con el resultado, PENDIENTE (§9):
-    - o entra al re-sellado de la tanda 0 por esa excepción;
-    - o rige la opción III ya decidida: desde la tanda 1, con el re-sellado después, declarado.
-  - **En la tanda 1, en los dos casos,** el prefijo de E1 (congelado en la release r2) sigue pidiendo esas relaciones y el validador las
-    rechaza: quedan en el registro de rechazos, declaradas. Ninguna clave de caché de E1 se mueve.
-- **Ninguno se decide** (más de 6 no decidibles): una muestra complementaria de 30 del par, con otra semilla sellada. Suma un día.
+- **→ Potestad no confirma con el criterio del §2: rige L-ESQ-R2 §6.3** (`4ef7650`): se retira en el validador, en código, sin
+  re-extraer. Cuándo, lo fija la autora el 09/10/2026, antes de la lectura:
+  - **Si el resultado está antes del FRENO de O2 de U-OMISIONES-COD,** el retiro entra al re-sellado único de la tanda 0, como única
+    excepción al alcance congelado (hoja de ruta de la mesa, §29). Toca:
+    - la matriz del validador r2 (`AMPLIACION_R2`);
+    - S3 de los shapes;
+    - la fila de la matriz en el laudo de la release r2;
+    - y saca del grafo de la tanda 0 las 264 aristas del sin cola (273 en el completo).
+
+    Rige también desde la tanda 1: el prefijo de E1 (congelado en la release r2) sigue pidiendo esas relaciones y el validador las
+    rechaza. Quedan en el registro de rechazos, declaradas, y ninguna clave de caché de E1 se mueve.
+  - **Si llega después,** el retiro va al grupo 2 del barrido de límites: antes de sellar el grafo evaluado, en paralelo con el escalado
+    (`docs/plan_tesis.md:778`). Hasta entonces, las aristas → Potestad quedan en el grafo de la tanda 0 y en el de la tanda 1, con la
+    cifra de esta lectura declarada.
+  - **«El resultado»** es la cifra final de C4, después de la adjudicación de la autora.
+  - **Condición de ejecución, no decisión:** el retiro toca archivos que la v7 firmada no autoriza (`validador_r2.py` fuera de f y g1, y
+    los shapes) y cambia `kg.json` fuera de los grupos de su §4. Si se dispara antes del FRENO de O2, necesita su autorización de
+    escritura: una nota fechada debajo de la sección «Firma» de la v7, o el mandato de la etapa del re-sellado. La elige la autora en
+    ese momento.
+- **Un par no se decide** (más de 6 no decidibles): una muestra complementaria de 30 del par, entre las aristas que no salieron, con la
+  semilla `int(sha256("U-CONF-MATRIZ|complementaria|<par>|<sha256 del texto firmado>")[:16], 16)`, sellada con la firma. Suma un día,
+  y «el resultado» de ese par es el de la muestra complementaria.
 - **Calendario estimado** (NO VERIFICADO): despacho lun 12/10, C1 y C2 mar 13, C3 mié 14 y la revisión de la autora mié 14/10. Llega
   antes de O2.
 
@@ -130,16 +146,44 @@ Lo que sigue lo fija la autora el 09/10/2026, antes de la lectura.
 
 ## 9. Decisiones
 
-**Ya tomadas por la autora (09/10/2026):**
+**Tomadas por la autora el 09/10/2026, antes de la lectura:**
 - el grafo: el sin cola, `e22fae1a` (§1);
 - si → Operacion no confirma, la relación no se retira: queda con su cifra declarada, los errores se clasifican, y una clase sistemática
-  que se pueda corregir con código va al grupo 2 (§7). Para → Potestad rige L-ESQ-R2 §6.3.
+  que se pueda corregir con código va al grupo 2 (§7);
+- si → Potestad no confirma, rige L-ESQ-R2 §6.3: con el resultado antes del FRENO de O2, el retiro entra al re-sellado como única
+  excepción al alcance congelado; después, va al grupo 2 (§7);
+- la revisión: las no correctas más 5 correctas por par, con la semilla de revisión sellada con la firma (§5).
 
-**PENDIENTES de la autora:**
-1. al firmar, la revisión: las no correctas más 5 correctas por par (recomendación de la mesa), o las 60 (§5);
-2. con el resultado, si → Potestad no confirma: si su retiro entra al re-sellado de la tanda 0 por la excepción del alcance congelado, o
-   rige desde la tanda 1 por la opción III (§7).
+No queda ninguna decisión pendiente para leer.
 
 ## Firma
 
-PENDIENTE de la firma de la autora (versión para firmar del 09/10/2026).
+FIRMADO por la autora el 09/10/2026 (versión para firmar en `0c27146`). Rige desde esta firma.
+
+- **Qué cambió de `0c27146` al asentar la firma:**
+  - la cabecera;
+  - el §1, por el retiro de → Potestad en el re-sellado;
+  - en el §3, la llamada del sorteo;
+  - el §5, con la revisión decidida y su semilla;
+  - el §7, con cuándo se retira → Potestad y la semilla de la muestra complementaria. Sale la mención a la «opción III», que no aplica
+    a esta lectura;
+  - el §9.
+- **Semillas, selladas con este commit.** Texto firmado (las líneas anteriores a «## Firma»): sha256
+  `1d92fbd6ccfd9404aa3417df96b3fab2ffda1d61aca74074446ea5d6b9366d7d`.
+
+  - muestra de → Operacion: `16560617781465913851` (cadena `U-CONF-MATRIZ|Operacion|` más el sha256 del texto firmado);
+  - muestra de → Potestad: `10236682513526931005` (cadena `U-CONF-MATRIZ|Potestad|` más el sha256 del texto firmado);
+  - revisión de → Operacion: `3317428300167781795` (cadena `U-CONF-MATRIZ|revision|Operacion|` más el sha256 del texto firmado);
+  - revisión de → Potestad: `9868107349525416484` (cadena `U-CONF-MATRIZ|revision|Potestad|` más el sha256 del texto firmado);
+  - complementaria de → Operacion: `1949760007166469060` (cadena `U-CONF-MATRIZ|complementaria|Operacion|` más el sha256 del texto firmado);
+  - complementaria de → Potestad: `1922576108924699355` (cadena `U-CONF-MATRIZ|complementaria|Potestad|` más el sha256 del texto firmado).
+
+  Se reproducen sobre el archivo del commit de la firma (la segunda línea toma el sha256 de la primera; `<uso>` es lo que va entre
+  `U-CONF-MATRIZ|` y el sha256, por ejemplo `Operacion` o `revision|Potestad`):
+
+  ```
+  git show <commit de la firma>:docs/mandatos/UCONF_MATRIZ_lectura_confirmacion.md | sed '/^## Firma$/,$d' | shasum -a 256
+  python3 -c "import hashlib,sys; print(int(hashlib.sha256(('U-CONF-MATRIZ|'+sys.argv[1]+'|'+sys.argv[2]).encode()).hexdigest()[:16],16))" '<uso>' <sha256 del texto firmado>
+  ```
+
+  Ninguna muestra se sortea antes de este commit.
