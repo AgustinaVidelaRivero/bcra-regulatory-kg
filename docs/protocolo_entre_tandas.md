@@ -509,3 +509,7 @@ El texto firmado no se edita; estas notas se leen junto con él.
   tablas del §5 (`:177-187`). El pre-registro de la tanda 1 toma esta referencia (A7) y la ajusta si O3 de U-E3-LISTAS (costo
   real por ítem con la NOTA) da un agregado distinto del medido en seco; la desviación real contra el estimado sigue el punto 4
   del §1 y P9.
+- **09/10/2026 — referencia vieja en el §6, procedimiento (c), punto 3 (`:239-240`).** Donde dice «registrados en
+  `documentos_excluidos_esq.json`», ese archivo está sellado. El registro vigente es
+  `data/experiment/esq/documentos_excluidos_evaluacion_final.json`, que lo extiende (su `:3`) y es el que cita el pre-registro de B6.3
+  (`docs/checklist_pre_escalado.md`, Q10). El texto firmado no cambia.
