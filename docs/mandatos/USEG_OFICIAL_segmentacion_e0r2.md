@@ -854,3 +854,71 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     - Los mensajes de commit de la mesa no nombran unidades ni veredictos de una lectura a ciegas pendiente.
     - El despacho de una lectura a ciegas pide que la sesión corra desde una carpeta fuera del repo, para que el arnés no le cargue la
       memoria del proyecto ni los mensajes de commit.
+- **09/10/2026 (mañana) — Adjudicación de la autora de la lectura de cortes de S1-bis, asentada; decisiones; mandato de S0-5a.**
+  - **La adjudicación.** La autora confirmó las 41 marcas de la mesa tal cual, con su clase y subclase: 16 errores y 25 correctas.
+    - **Acta:** `s1bis/lectura_cortes/acta_adjudicacion_S1bis.md`, `478c4540…`, sellada a las 09:49:31 en `sello_adjudicacion_S1bis.txt`.
+    - **Control de la mesa:** las 41 filas son iguales a las dos planillas selladas (`dd2775af…` y `5969e0ab…`), 0 distintas.
+    - **El resultado queda como se calculó:** 85 de 90 sin error de corte (Wilson 0,8765), no llega al piso. La autora vuelve a S0
+      (S0-5).
+    - **Dos precisiones de criterio del acta:**
+      - la letra suelta de un rótulo vertical es corte, no limpieza, porque es contenido del formulario siguiente, y el criterio no tiene
+        tolerancia para restos de un carácter;
+      - cuando el contenido no decide, decide la sangría.
+  - **Corrección de la mesa (error propio, con su causa).** La nota del 09/10/2026 decía que, sin piso, «`s1bis/` no se commitea». El
+    precedente de S1 (`ee7c07c`, «registro de la medición que NO llegó al piso») es otro: no entra la salida de E0 (`s1/e0/`, en un tar.gz
+    fuera del repo), y sí el registro, con la lectura de cortes. Lo mismo vale para S1-bis: entra `s1bis/` sin `e0/`, que está en el
+    tar.gz del paquete de S1-bis-a.
+    - Ese es el lugar de los resultados de una lectura que no pasa: `s1bis/lectura_cortes/`, con el acta sellada.
+    - La causa: apliqué el texto de la nota de `2faff14` sin mirar cómo se había aplicado en S1.
+  - **Decisiones de la autora (09/10/2026):**
+    1. Las 41 marcas, confirmadas.
+    2. Los tres patrones de sujeto quedan como límites declarados, y ninguna corrección entra al grupo 2. El laudo B2.4 lo firma después de
+       leerlo.
+    3. La letra suelta del rótulo vertical se corrige en S0-5, con una regla por lista acotada a ese documento. Un límite declarado no la
+       vuelve correcta, y cuenta para el piso.
+    4. Los 3 errores de limpieza: si su documento está en la tanda 1, regla por lista en S0-5; si no, límite declarado ahora y corrección
+       antes de sellar el grafo evaluado (grupo 2). Ninguno de los tres documentos está en la tanda 1: los tres quedan como límite
+       declarado, en el grupo 2.
+    5. ri_spi se reclasifica como reconocido pleno para las tandas siguientes, con la condición de que S0-5 corrija el título partido de su
+       apartado C.
+    6. El acta y el mensaje de la autora no entran en el material de S1-ter. Los mensajes de commit no nombran unidades, documentos ni
+       mecanismos.
+  - **Respuestas de la mesa, con evidencia** (detalle en el mandato de S0-5a, §0 y §2):
+    - **b1:** el «cierre heredado de ri_oc» que declaró S0-4 es el bloque de validaciones de las pp. 19-21 como `ri_oc::SC::cierre`,
+      heredado por C.1 a C.11, más los dos títulos al final de `ri_oc::C.11` (FRENO de S0-4a-ter, `:31`; FRENO de S0-4b, `:36`). No es el
+      cierre de B.1 que está dentro de `ri_oc::B.1.28`: la marca sigue siendo error.
+    - **b2:** el detector de S1-bis (`s1bis/scripts/censo_renglones_S1bis.py:57-95`) no veía las listas cuyo ítem tiene un título sin
+      punto final (`ri_oc::B.2.4` y `ri_oc::B.3.4`, con su cierre en el texto propio) ni los campos numerados leídos como secciones. En
+      ri_secoexpo, el párrafo que sigue al ítem 17 quedó en `ri_secoexpo::S17`, junto con el bloque A.2.
+      - Con la corrección de la mesa, el detector pasa de 121 a 317 candidatos sobre la salida de S0-4b: 196 nuevos, 70 de la tanda 1.
+      - La cifra del censo de S1-bis (8 de 35) se declara con esa salvedad.
+      - Los 30 candidatos de S1-ter salen del detector corregido.
+    - **c1:** como estaba escrita, la regla del cierre mandaba los dos títulos de `ri_oc::C.11` al cierre de C, junto con el cuerpo del
+      bloque. Eso arreglaba C.11 y dejaba una unidad equivocada. El mandato de S0-5a los manda con el bloque que encabezan (R5-a′).
+    - **c2:** el título de sección de dos renglones aparece en 9 de 13 candidatos del censo. La regla como estaba escrita dejaba afuera 3
+      (entre ellos, los dos de ri_spi) y unía mal 3 chapeaux de verdad; la corregida cubre los 9 y no toca los 4 chapeaux de verdad.
+    - **c3:** la intro de 2.2 de ri_mmsef es una sola unidad; solo su herencia la muestra en tramos. No es un error de corte.
+    - **c4:** los dos renglones de `ri_rml::1.2.3` abrieron una unidad fantasma que se lleva también el punto 1.2.4 y el 1.3 verdadero.
+      De 66 renglones con número que E0 tomó como encabezado después de una palabra de referencia, 2 son remisiones: la de `ri_rml` y una
+      de `snp_tr`. Sin guarda de columna, la regla suprimía también 2 encabezados de verdad. El mandato de S0-5a lleva la guarda.
+  - **Mandato de S0-5a:** `docs/mandatos/USEG_OFICIAL_S0-5a_reglas_de_corte_E0.md`, listo para despachar; despacho PENDIENTE de la
+    autora.
+- **09/10/2026 (mediodía) — Decisiones de la autora sobre el FRENO de la mesa, y corrección de la nota del 09/10/2026.** Antes de cualquier
+  sorteo de S1-ter.
+  1. **ri_secoexpo:** límite declarado y grupo 2, porque no está en la tanda 1. Si una de sus unidades sale en el sorteo de S1-ter, cuenta
+     como error.
+  2. **El censo del 1.16 en S1-ter:** los 30 candidatos se sortean entre los del detector corregido sobre la salida de S0-5b, **incluida la
+     tanda 1**, menos los 35 ya leídos y los casos usados para diseñar las reglas (`adfsp::1.1.10`, `ri_oc::B.2.4` y `ri_oc::B.3.4`). La
+     semilla sellada, `U-SEG-OFICIAL:1_16:S1-ter`, no cambia.
+     - **Corrección:** la nota del 09/10/2026 (asientos de la mesa, `1548843`) decía que la cifra del 1.16 sale «de candidatos que no son
+       de la tanda 1» y describía esa semilla como «muestra del 1.16 fuera de la tanda 1». Esas dos frases quedan reemplazadas por este
+       punto; el texto de esa nota no se edita.
+  3. **Los 27 candidatos de R5-a′:** S0-5a los lista con su página y su lectura. Cuáles entran por lista lo decide la autora en la
+     revisión del FRENO de S0-5a, y se aplican en S0-5b.
+
+  El mandato de S0-5a quedó corregido con estas decisiones y con las correcciones de la revisión de la autora:
+  - R5-b, con las condiciones nuevas;
+  - las claves;
+  - la tolerancia de R5-a;
+  - la herencia de C.1 a C.11;
+  - snp_tr en la aceptación de R5-d, donde el renglón de la remisión se lleva también los puntos 1.4 y 1.5.

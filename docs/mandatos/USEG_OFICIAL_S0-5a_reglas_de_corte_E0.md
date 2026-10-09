@@ -1,0 +1,268 @@
+# Mandato de S0-5a de U-SEG-OFICIAL: reglas de corte de E0 antes de la tanda 1
+
+**LISTO PARA DESPACHAR (mesa, 09/10/2026; corregido el mismo día con la revisión de la autora). Despacho PENDIENTE de la autora.** Etapa del mandato FIRMADO de U-SEG-OFICIAL
+(`docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md`, `e543cb2`), por la decisión de la autora del 09/10/2026: el código de E0 cambia una
+vez más antes de la tanda 1 (nota al pie del mandato del 09/10/2026). Para la sesión de S0-4 y S1-bis. USD 0, sin API. **Este archivo
+nombra unidades con error de corte: ninguna lectura a ciegas lo abre.**
+
+## 0. De dónde sale
+
+- **La lectura de cortes de S1-bis, adjudicada por la autora:**
+  - acta `s1bis/lectura_cortes/acta_adjudicacion_S1bis.md`, sellada en `sello_adjudicacion_S1bis.txt`;
+  - las 41 marcas de la mesa, confirmadas: 16 errores y 25 correctas;
+  - el piso no se cumple: 85 de 90 sin error de corte, Wilson 0,8765;
+  - el censo del hallazgo 1.16 da 8 de 35 en la tanda 1.
+- **Los errores de corte y su mecanismo** (evidencia de la mesa del 09/10/2026, con los scripts en su paquete):
+  1. **El cierre de una lista absorbido por el último ítem (1.16).** Casos:
+     - `adfsp::1.1.10`, `cajasc::11.4.4`, `cajasc::4.2.2.3`, `depaho::3.11.5.5`, `manori::1.4.1.3`, `manori::3.4.1.3` y
+       `ri_oc::B.1.28`;
+     - sin leer, `ri_oc::B.2.4` y `ri_oc::B.3.4`: su cierre está en el texto propio del ítem, porque el detector de S1-bis no lo vio
+       (§2.6).
+  2. **El título de un bloque siguiente absorbido por el último ítem.** `ri_oc::C.11` termina con «Criterios de validación» y «Validación
+     del Apartado A – Operaciones de cambios», los títulos del bloque de validaciones de las pp. 19-21. El cuerpo de ese bloque es hoy
+     `ri_oc::SC::cierre` (5.313 caracteres), que heredan C.1 a C.11. Es el límite declarado (d) de S0-4a-ter: el FRENO de S0-4a-ter,
+     `:31`, y el de S0-4b, `:36`.
+  3. **Bloques intersticiales partidos.**
+     - `snp_dd::S7::intersticial::13` y `::14`: la fila R95 de la tabla de códigos.
+     - `::7`, `::8` y `::9`: la fila R02.
+     - `::17` y `::18`: el rótulo de un campo y su descripción.
+  4. **Título de sección de dos renglones,** cuyo segundo renglón queda como chapeau. `ri2_ae::S2::chapeau_seccion` es solo
+     «de Auditores":», y los de ri_spi, `SB` y `SC`, son el segundo renglón del título.
+  5. **Una remisión al principio de un renglón leída como encabezado.** `ri_rml::1.2.3` se corta en «…descripto en el punto» y el
+     renglón que sigue, «1.3. “Integración” de las presentes normas…», abre una unidad fantasma, `ri_rml::1.3` (pp. 6-10, 12.345
+     caracteres). Esa unidad se lleva esos dos renglones, el punto 1.2.4 entero (no existe `ri_rml::1.2.4`) y el 1.3 verdadero
+     («1.3. Integración del período»).
+
+     Lo mismo en `snp_tr` (tanda 1). El renglón «1.6. “Transacciones” y 1.7. “Diseño de registros”.», que sigue a «…definidos en los
+     puntos», es hoy el encabezado del 1.6, y `snp_tr::1.3.3` queda cortada. `snp_tr::1.6::intro` (pp. 11-18, 14.563 caracteres) se
+     lleva los puntos 1.4 a 1.4.4, 1.5 a 1.5.2.2 y el encabezado del 1.6 verdadero («1.6. Transacciones.»).
+  6. **Las letras de un rótulo vertical.** La «C» al final de `ri_ccna::D1F3::S0` es la primera letra del rótulo vertical «CODIGO» del
+     formulario siguiente; las otras letras quedan intercaladas en `ri_ccna::D1F4::S0`. Es corte, no limpieza (decisión de la autora).
+
+## 1. Escrituras y prohibiciones
+
+- **Escrituras:**
+  - `data/experiment/segmentacion_oficial_e0r2/s0_5/` (se crea);
+  - el scratchpad;
+  - el código de E0, solo en una copia: el parche se aplica al repo en S0-5b, una sola vez, después de la revisión.
+- **PROHIBIDO:**
+  - la API;
+  - el repo fuera de `s0_5/`;
+  - la salida sellada de la tanda 0;
+  - las planillas, el acta y la población del censo ya leído de S1-bis;
+  - cambiar el criterio de la lectura de cortes;
+  - commitear.
+- **Reglas:** CLAUDE.md §4 (a a l).
+
+## 2. Las reglas
+
+Cada regla lleva su interruptor, su caso positivo y sus casos negativos en `selftest_e0`, y vale solo dentro de su alcance. Para cada una,
+el FRENO trae el censo de las unidades que cambian en los 152, por TO, con el antes y el después.
+
+**R5-a `cierre_al_margen` (mecanismo 1).**
+- **Alcance:** las listas que marca el detector corregido del §2.6.
+- **La regla:** después del último ítem, cada párrafo cuyo primer renglón está más cerca de la columna de los rótulos de los ítems que de
+  la del texto del ítem pasa al cierre del padre (`<padre>::cierre`). Se evalúa **cada párrafo**, no solo el primero: en
+  `cajasc::4.2.2.3` el párrafo al margen es el segundo. Usa las coordenadas de `e0_lib.extraer_lineas`.
+- **Tolerancia de columna:**
+  - se fija antes de correr el censo;
+  - es una sola para los 152;
+  - va en el FRENO;
+  - no se ajusta después.
+- **Evidencia de la mesa:** con las columnas de `pdftotext -layout`, la regla coincide con la lectura en 33 de los 35 candidatos de la
+  tanda 1. Los dos que no:
+  - `cajasc::4.2.2.3`, que entra si se evalúa cada párrafo;
+  - `ri_rml::1.2.3`, que es el mecanismo 5.
+- **Aceptación:**
+  - los 9 casos del mecanismo 1 quedan con el cierre fuera del ítem;
+  - **ninguno de los 27 candidatos marcados correctos cambia**.
+
+**R5-a′ `titulo_de_bloque` (mecanismo 2).**
+- **La regla:** si lo que sigue al último ítem empieza con un renglón con forma de título de bloque (corto, sin puntuación final y seguido
+  de cuerpo), no va al cierre del padre: abre una unidad nueva con el bloque que encabeza, hasta el próximo encabezado de igual o mayor
+  nivel.
+- **Alcance:**
+  - **Por lista, ri_oc** (tanda 1): el bloque de validaciones de las pp. 19-21 pasa a ser una unidad propia, con sus dos títulos, y ya no
+    lo heredan C.1 a C.11. El límite declarado (d) de S0-4a-ter deja de serlo para ri_oc, y se declara.
+  - **El resto** (decisión 3 de la autora, 09/10/2026). La mesa encontró 27 candidatos con un renglón así después del primer párrafo
+    del último ítem (heurística, con falsos positivos, como filas de tabla o fórmulas).
+    - S0-5a los lista con su página y su lectura: si el renglón es el título de un bloque y adónde iría con la regla.
+    - S0-5a no aplica R5-a′ fuera de ri_oc.
+    - Cuáles entran por lista lo decide la autora en la revisión del FRENO de S0-5a, y se aplican en S0-5b.
+- **Aceptación:**
+  - el FRENO muestra adónde va cada renglón de `ri_oc::C.11` y del bloque de validaciones, y no quedan como cierre de C;
+  - **C.1 a C.11 ya no heredan el bloque de validaciones:** ninguna de sus herencias tiene tramos de ese bloque.
+
+**R5-b `intersticial_continuado` (mecanismo 3).**
+- **Alcance:** por lista, snp_dd y snp_cheq; son los dos únicos TOs con unidades intersticiales, 110 en los 152. snp_cheq está en la
+  tanda 1.
+- **Cómo están hoy** (texto propio en la salida de S0-4b; el FRENO lo muestra igual):
+  - `snp_dd::S7::intersticial::13`: «R95 Reversión de En- Este código podrá ser utilizado por el banco originante en caso que la entidad
+    receptora presente una». Es un solo renglón con las tres columnas de la fila: el «En-» está a mitad del renglón, en la columna de la
+    descripción, y la unidad termina en «presente una».
+  - `::14`: «tidad receptora reversión de banco receptor fuera del término» / «presentada fuera» / «de término».
+
+  Por eso la versión anterior de la condición, la palabra partida al final de la primera unidad, no los unía.
+- **La regla:** dos intersticiales consecutivas de la misma página se unen si se cumple alguna de estas condiciones, y las uniones se
+  encadenan:
+  - (i) la segunda empieza con minúscula y la primera no termina en «.», «:» ni «;», porque continúa una celda o una oración;
+  - (i′) la segunda es solo un código de la tabla (una letra y dos dígitos, como «R02») y la primera no termina en «.», «:» ni «;»;
+  - (ii) la primera es un solo renglón de rótulo numerado («N. Texto.») y la segunda no empieza con otro rótulo numerado.
+- **Evidencia de la mesa** (censo de los pares sobre las 110 intersticiales; `r5b_pares_mesa.py`, en el paquete de la mesa):
+  - (i) une 13+14 y 8+9;
+  - (i′) une 7+8, la fila R02 de la p. 45 («Cuenta cerrada… recae la transacción» / «R02» / «se encuentre cerrada o suspendida.»); con
+    (i), queda 7+8+9;
+  - (ii) une 19 pares de rótulo y descripción: 15 en snp_dd, 17+18 entre ellos, y 4 en snp_cheq;
+  - no une ningún otro par.
+- **Declarado:** esas filas (pp. 45 y 49) son de la tabla de códigos que `e0_tablas` no detectó; las de las pp. 46 a 49 sí quedaron como
+  tabla. R5-b las deja en una unidad por fila, no como tabla serializada.
+- **Aceptación:**
+  - quedan unidas 13+14, 7+8+9 y los 19 pares de rótulo y descripción;
+  - la lista de uniones del FRENO es la del censo de la mesa, o cada diferencia, explicada;
+  - ninguna otra intersticial se une.
+
+**R5-c `titulo_seccion_envuelto` (mecanismo 4), corregida.**
+- **La regla:** el chapeau de un solo renglón es la continuación del título si se da al menos una de estas condiciones:
+  - (a) el título termina en una palabra partida con guion;
+  - (b) el título termina en una palabra funcional (artículo, preposición o conjunción);
+  - (c) el título deja abierta una comilla o un paréntesis;
+  - (d) el chapeau empieza con minúscula.
+
+  No une un chapeau que es una oración completa con mayúscula inicial después de un título completo.
+- **Evidencia de la mesa** (censo de los chapeaux de un renglón con encabezado sin puntuación final): 13 candidatos.
+  - **9 son títulos de dos renglones:**
+    - `manual::S2`, `ri2_ae::S2`;
+    - en ri_ccna, `D1A1::S2`, `D1A3L2::S26`, `D1A3L2::S29`, `D1F2::S3` y `D1F6::S3`;
+    - en ri_spi, `SB` y `SC`.
+  - **4 son chapeaux de verdad:** `inspag::S3`, `pfmipyme::S3`, `ri_cr::S3` y `snp_psp::S3`.
+  - La versión anterior de la regla (el chapeau cierra una comilla o un paréntesis, o termina en «:») unía bien 6, dejaba afuera 3 (`manual::S2`
+    y los dos de ri_spi) y unía mal 3 chapeaux de verdad.
+  - Las condiciones (a) a (d) cubren los 9 y no tocan los 4.
+  - El censo no ve los títulos cuyo segundo renglón quedó en otra parte, que no sea un chapeau de un renglón: se declara.
+- **Aceptación:**
+  - los 9 títulos quedan enteros en la herencia y sin chapeau;
+  - los 4 chapeaux de verdad no cambian;
+  - el título de C de ri_spi queda entero. Es la condición de la reclasificación de ri_spi como reconocido pleno (decisión de la autora,
+    punto 5).
+
+**R5-d `numero_en_referencia` (mecanismo 5), con guarda de columna.**
+- **La regla:** un renglón que empieza con un número de punto no es encabezado si se cumplen las dos condiciones:
+  - el renglón anterior termina en una palabra de referencia («punto», «puntos», «sección», «capítulo», «apartado», «inciso», «numeral»,
+    «anexo», «artículo», «ley», «comunicación», «nº», o un artículo o una preposición), y no en una conjunción («y», «o»);
+  - el renglón empieza en la columna del cuerpo del texto, no en la de los rótulos de sus hermanos, y sin huecos de columna
+    (`ngaps` = 0).
+- **Evidencia de la mesa** (censo sobre los renglones de los 152): 263 renglones empiezan con un número de punto después de un renglón que
+  termina en una palabra de referencia, y E0 tomó 66 como encabezado.
+  - 41 de esos 66 siguen a «y» u «o»: son enumeraciones de verdad.
+  - 19 son filas de tabla, con `ngaps` mayor que 0.
+  - Quedan 6, leídos en su página:
+    - remisiones: `ri_rml` p. 6 («…el punto» / «1.3. “Integración”…») y `snp_tr` p. 11 («…los puntos» / «1.6. “Transacciones” y
+      1.7. …»);
+    - encabezados de verdad: `gerc` p. 19 (2.4.2), `rdbcra` p. 41 (11.12), `ordcom` p. 7 (1.6.2) y `pimf` p. 2 (4.18).
+  - La regla como estaba escrita (solo «punto» o «puntos», sin guarda) suprimía también gerc 2.4.2 y rdbcra 11.12, que son
+    encabezados. Con la guarda de columna, suprime solo las dos remisiones.
+- **Aceptación** (a mostrar en el FRENO con la salida):
+  - los dos renglones vuelven a `ri_rml::1.2.3`, que termina en «…estadounidenses-.»;
+  - existen `ri_rml::1.2.4` y el 1.3 verdadero;
+  - **ninguna unidad queda formada solo por esos renglones**;
+  - en `snp_tr`, lo mismo:
+    - la unidad que perdió el renglón, `snp_tr::1.3.3`, lo recupera y termina en «…definidos en los puntos 1.6. “Transacciones” y 1.7.
+      “Diseño de registros”.»;
+    - **ninguna unidad queda formada solo por ese renglón**;
+    - existen 1.4, 1.4.1 a 1.4.4, 1.5, 1.5.1, 1.5.2, 1.5.2.1 y 1.5.2.2;
+    - el 1.6 abre en «1.6. Transacciones.»;
+  - los 4 encabezados de verdad no cambian.
+
+**R5-e `rotulo_vertical` (mecanismo 6), por lista: los formularios de ri_ccna** (decisión de la autora, punto 3).
+- **La regla:** los renglones de una sola letra mayúscula que forman, en la misma columna, un rótulo vertical se juntan en la palabra y van
+  al formulario de la página en que están. No quedan en el anterior ni intercalados.
+- **Aceptación:** `ri_ccna::D1F3::S0` termina en «Fórm. 4368 C (II-2006)», sin la «C» suelta, y `D1F4::S0` no tiene letras sueltas.
+
+**2.6 El detector del 1.16, corregido antes de S1-ter** (pregunta b2 de la autora).
+- **El de S1-bis** (`s1bis/scripts/censo_renglones_S1bis.py:57-95`): una lista es un nodo con dos o más puntos hijos, todos hojas. Es
+  candidata si el último ítem tiene un corte de párrafo (renglón con mayúscula después de uno que termina en «.» o «:») y ninguno de los
+  anteriores lo tiene. Así no ve:
+  - las listas cuyos ítems tienen un título sin punto final. En `ri_oc::B.2.4` y `ri_oc::B.3.4` el cierre sigue al título
+    («…de moneda extranjera» / «La información solicitada en los puntos…»);
+  - los campos numerados leídos como secciones. En ri_secoexpo, el párrafo que sigue al ítem 17 está en la columna de los rótulos
+    (columna 0), explica el campo 16 y quedó en el texto propio de `ri_secoexpo::S17`, junto con todo el bloque A.2 que sigue
+    (5.271 caracteres, pp. 3-8).
+- **Corrección** (`detector_116_corregido_mesa.py`, en el paquete de la mesa):
+  - (i) el renglón del título del ítem cuenta como párrafo propio, y la lista es candidata si el último ítem tiene más párrafos que
+    cualquiera de los anteriores;
+  - (ii) se recorren también como lista las secciones sin puntos consecutivas cuyo texto empieza con «N.»;
+  - el detector final es la **unión** con el de S1-bis, porque la corrección sola pierde un candidato original.
+- **Sobre la salida de S0-4b:** 121 candidatos con el de S1-bis, 316 con la corrección y 317 con la unión. Son 196 nuevos, 70 de la tanda
+  1, y entre ellos `ri_oc::B.2.4` y `ri_oc::B.3.4`.
+- **ri_secoexpo** queda fuera también con la corrección: su lista de secciones termina en `S19`. Su problema es otro: la numeración
+  vuelve a empezar en el bloque A.2. Queda como límite declarado y va al grupo 2, porque no está en la tanda 1 (decisión 1 de la autora,
+  09/10/2026). Si una de sus unidades sale en el sorteo de S1-ter, cuenta como error.
+- **La cifra del censo de S1-bis** (8 de 35) se declara con esa salvedad: el detector no veía 70 candidatos de la tanda 1, que no se
+  leyeron.
+- **Para S1-ter:**
+  - el detector corregido corre sobre la salida de S0-5b;
+  - los 30 candidatos del 1.16 se sortean entre los del detector corregido sobre la salida de S0-5b (decisión 2 de la autora,
+    09/10/2026):
+    - incluida la tanda 1;
+    - menos los 35 ya leídos y los casos usados para diseñar las reglas (`adfsp::1.1.10`, `ri_oc::B.2.4` y `ri_oc::B.3.4`);
+    - con la semilla `U-SEG-OFICIAL:1_16:S1-ter`, sellada en la nota del 09/10/2026, que no cambia;
+  - los 35 se releen como prueba de regresión, sin cifra.
+
+## 3. Lo que queda como límite declarado (criterio del punto 4 de la autora: tanda 1, regla por lista en S0-5; si no, límite y grupo 2)
+
+- **Limpieza de documentos que no están en la tanda 1, en el grupo 2:**
+  - el tercer renglón del recuadro de encabezado leído como texto del preámbulo, en `ri_iepsp::S0` y `ri_ieccm::S0`;
+  - los encabezados de columna repetidos dentro de `ri_icpipsp::A1C3::S2`.
+- **ri_secoexpo:** la numeración que vuelve a empezar en el bloque A.2 (§2.6). Grupo 2; si sale en el sorteo de S1-ter, cuenta como error.
+- **La intro de 2.2 de ri_mmsef no es un error de corte.** `ri_mmsef::2.2::intro` es una sola unidad de 465 caracteres. La herencia de sus
+  descendientes la muestra en cuatro tramos `intro`, partidos a mitad de oración, pero unidos dan su texto propio. No cambia nada.
+
+## 4. Controles duros (los de S0-4)
+
+- **Por regla, antes de aplicar:** el censo de los 152, con su interruptor apagado y prendido.
+- **La tanda 0, fuera:** 57 de 57 archivos byte a byte iguales a `salida_tanda0_r2b/`, con el script secuencial.
+- **Los 152 dos veces,** iguales entre sí; y la diferencia contra la salida de S0-4b (`61ed4bc9…`), explicada unidad por unidad por las
+  reglas.
+- **Selftests:**
+  - `selftest_e0` y los de las reglas anteriores (b52, b581, b582 y b583);
+  - un caso positivo por regla, tomado de la lectura;
+  - casos negativos: los 27 candidatos correctos del 1.16, los 4 chapeaux de verdad y los 4 encabezados de verdad de R5-d.
+- **Claves.** R5-a, R5-a′, R5-b, R5-c y R5-d crean, quitan o unen unidades. Lo que pasa con las claves:
+  - las de las unidades que ninguna regla toca no cambian;
+  - una unión conserva la clave de la primera unidad y no renumera las siguientes (`::13`+`::14` queda como `::13`, y `::15` sigue
+    siendo `::15`);
+  - las claves nuevas siguen la convención de E0: `<to>::<numero>`, `::intro`, `::cierre`, con el prefijo de sub-documento donde lo
+    haya;
+  - el FRENO lista toda clave creada, quitada o cambiada, con la regla que la causa;
+  - el selftest de claves compara contra esa lista y da OK solo si los cambios son exactamente esos.
+- **Tabla de reprocesamiento:** una fila nueva (cambio del código de E0 antes de la tanda 1).
+- **Repo:** sha256 antes y después; solo cambia `s0_5/`.
+- **Convenciones:** 2.213 `.pyc` y grep de convenciones.
+
+## 5. FRENO S0-5a
+
+Lleva:
+- el diseño aplicado, con lo que cambió de este mandato y por qué;
+- el parche;
+- los censos por regla;
+- los controles, con sus salidas;
+- la evidencia de cada aceptación del §2;
+- la lista de los 27 candidatos de R5-a′, con su página y su lectura, para la decisión de la autora;
+- la lista de las claves creadas, quitadas o cambiadas, con su regla;
+- la tolerancia de columna de R5-a.
+- los límites declarados del §3, con su cifra.
+
+Cierre:
+- paquete `revision_USEG_OFICIAL_FRENO_S0-5a/` con `manifest.txt`, copiado con `ditto` a
+  `~/INGENIERIA IA/TESIS/fuera_del_repo/scratchpads/<sesión>/scratchpad/revision_USEG_OFICIAL_FRENO_S0-5a/` y verificado contra su
+  `manifest.txt` (CLAUDE.md §4.g);
+- el mensaje de commit PREPARADO, sin nombres de unidades, documentos ni mecanismos;
+- nada commiteado.
+
+FRENO.
+
+Después (no es de esta sesión):
+- la revisión de la mesa;
+- S0-5b, con el parche aplicado una sola vez;
+- S1-ter: tramo a; sorteo con las semillas selladas; lectura a ciegas por una sesión nueva de la mesa, abierta fuera del repo, que no
+  abre este mandato, el acta de la adjudicación ni las notas del mandato; la revisión de la autora.
