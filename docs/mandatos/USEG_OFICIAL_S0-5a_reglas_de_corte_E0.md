@@ -346,3 +346,58 @@ Es un control, no una regla: no cambia ninguna unidad. Se suma a lo que S0-5a co
     descendiente tragado, 3.3.6.2, en `snp_cheq::3.3.5.1`.
   - Fuera de la tanda 1: 15 saltos en 4 TOs, 8 (i) y 7 (ii). Cinco de esos (ii) son rótulos pegados al título, en ri_cc y snp_dd,
     un mecanismo que S0-5 no trata.
+
+---
+
+**[09/10/2026, noche] Nota de la mesa: revisión del FRENO de S0-5a, decisiones de la autora para S0-5a-bis, y S1-ter.**
+
+- **La revisión de la mesa, sobre copias.** El paquete `fuera_del_repo/scratchpads/0c0c6584-…/scratchpad/revision_USEG_OFICIAL_FRENO_S0-5a/`
+  da 82 de 82 en sus dos lugares. Se reproducen:
+  - el parche, con los tres sha256 finales;
+  - los 152 con el código final, 2.361 archivos iguales byte a byte a la salida del paquete;
+  - la tanda 0, 57 de 57;
+  - los selftests de E0 (169, 39, 34, 59 y 33);
+  - el control de claves, OK con 75, 35 y 343;
+  - la aceptación, byte a byte;
+  - y la de R5-d de la nota anterior, vista sobre la salida.
+
+  Las 343 claves cambiadas son unidades que conservan su id y cambian algún campo: 250 solo lo heredado, 9 lo heredado y su recorte,
+  y 84 su texto propio. Ninguna es de la tanda 0. Detalle en el paquete de la mesa, `hoja_de_ruta_tanda1_mesa/revision_S0-5a/`.
+- **Corrección del §2, R5-b. Error de la mesa.** Donde dice «19 pares de rótulo y descripción: 15 en snp_dd», son **18: 14 en snp_dd y 4
+  en snp_cheq**, como da el censo de la mesa que el mandato cita. La salida de S0-5a está bien.
+- **Decisiones de la autora del 09/10/2026, para S0-5a-bis:**
+  1. **R5-a, por lista.** Entran **41 listas:** los 9 casos y 32 cierres que la mesa confirmó contra la página. La lista, con la página
+     de cada caso, está en `revision_S0-5a/lista_R5a_por_lista_mesa.json` del paquete de la mesa.
+     - Son: `adfsp::1.2.2.2`, `adfsp::2.6.3.2`, `apnf::1.3.1.2`, `cedin::7.1.3.2`, `consyr::3.4.4`, `cryl::4.2.2`, `ctacor::1.3.2`,
+       `ctavis::8.2.1.4`, `depinv::1.7.2.2`, `depinv::1.9.2`, `efemin::2.3.2`, `evacre::2.1.2`, `fimipyme::4.3.3`, `fimipyme::5.1.2`,
+       `finsec::5.1.2`, `finsec::5.2.5`, `garant::1.2.8.2`, `garant::1.2.9.4`, `gracre::6.7.2`, `manori::1.1.6.5`, `ratio::5.2.1.5`,
+       `ri2_pm::1.6`, `ri_rml::1.4.2`, `seguef::2.1.6.2`, `seguef::2.9.2`, `snp_cec::9.1.3.3`, `snp_mep::3.1.1.2`, `snp_mep::3.1.2.2`,
+       `snp_mep::4.6.2`, `snp_psp::1.3.2.2`, `snp_tr_nc::5.2.3.2` y `tasint::3.3.2`.
+     - En `ri_rml::1.4.2` el cierre de 1.4 empieza en «Para el punto 1.4.1.», un párrafo antes de lo que movía S0-5a.
+     - `seggar::5.3.5` no entra: su texto es el de «6. Instrumentación.», un encabezado que E0 no abrió. Es límite declarado y va al
+       grupo 2, PENDIENTE de la autora.
+     - `ri_cc::R5::2.2.1.2` es dudosa y la adjudica la autora. Hasta entonces, no entra.
+     - Las demás listas no se tocan.
+  2. **R5-a no toca filas de tabla.** Excluye los renglones que serializa `e0_tablas`, y las 468 tablas siguen serializándose.
+  3. **R5-a′ sigue solo para ri_oc, con la clave `ri_oc::Sbloque1`** (aceptada).
+     - `ri_rml::1.2.3` no es un caso real: «Plazos residuales» es un subtítulo dentro de 1.2.3 (p. 3). No entra.
+     - Los otros 23 candidatos de afuera quedan declarados, y van al grupo 2 si se confirman.
+  4. **Los saltos de la tanda 1, por lista:**
+     - ri_ccna: los rótulos pegados de D1A1 (2.1.1 a 2.1.8, 5.1 y 8.1) y de D1A2 (5.1) abren su punto;
+     - snp_cheq: «3.3.6.2. Instrucciones operativas.» (p. 38) abre como unidad colgada de 3.3, porque el PDF salta 3.3.6 y 3.3.6.1.
+       El salto se declara.
+  6. **Toda heurística de un censo de la mesa** queda en el paquete con su script. Los 27 candidatos de R5-a′ de la mesa no se
+     reprodujeron por eso: error de la mesa.
+- **Decisión 5, S1-ter.** La lectura del 1.16 tiene que poder ver los errores de R5-a, así que su sorteo cubre también las listas que R5-a
+  modificó. Dos poblaciones:
+  - **(a) Las candidatas que quedan:** el detector corregido sobre la salida de S0-5b, incluida la tanda 1, menos los 35 ya leídos y los
+    tres casos de diseño (`adfsp::1.1.10`, `ri_oc::B.2.4` y `ri_oc::B.3.4`). Son 30, con la semilla `U-SEG-OFICIAL:1_16:S1-ter`, ya
+    sellada, como estaba.
+  - **(b) Las listas que R5-a modificó por lista en S0-5b,** menos los tres casos de diseño y los 6 de los 35: los 32 cierres
+    confirmados.
+    - **Propuesta de la mesa:** 15 sorteadas, con su propia cifra.
+    - **Semilla, sellada por esta nota antes de sortear:** `U-SEG-OFICIAL:1_16:S1-ter:R5-a`.
+    - **La pregunta, la misma del 1.16:** si la unidad empieza y termina donde empieza y termina su punto, lo que en (b) incluye que el
+      cierre no lleve de más ni de menos.
+    - **PENDIENTE de la autora:** el tamaño de (b), o un sorteo único de 30 sobre (a) y (b) juntas.
+  - Los 35 se siguen releyendo como prueba de regresión, sin cifra.
