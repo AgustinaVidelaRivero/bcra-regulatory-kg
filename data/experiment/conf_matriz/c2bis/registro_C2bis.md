@@ -53,3 +53,23 @@ propuesta es de la mesa, a partir de las notas; las clases las adjudica la autor
 
 La incorrecta de → Potestad (F57, `cla::3.3.3`) es la cláusula «cuenten o no con garantías preferidas», que el texto declara
 indiferente.
+
+**[10/10/2026] Nota de la mesa: dónde se abrió la sesión lectora y dónde quedó `volcar_planilla.py`.**
+
+Fuente: la transcripción de la sesión lectora (sesión `e399f1e1…` del directorio de proyecto de `fuera_del_repo/`; sha256
+`3e1d4dbf76eb515ef2b17d31a35d847567b89f7aa459b2a1ef8435f66c1e2493`, 86 llamadas). Las llamadas, con los resultados de las que salen de
+la carpeta, están en el paquete de la mesa (`hoja_de_ruta_tanda1_mesa/conf_matriz_C2bis/sesion_lectora/llamadas_sesion_e399f1e1.txt`).
+
+- **La sesión lectora se abrió en `fuera_del_repo/`,** no en `lecturas_ciegas/lectura_aristas_condicion/`. Fuera del repo, como pedía
+  el mandato, pero con más carpetas a la vista que las de la lectura.
+  - De sus 86 llamadas, 2 salieron de la carpeta de la lectura, las dos al principio (00:06:27 y 00:06:31 del 10/10/2026): un `ls` de
+    `fuera_del_repo/`, y un `find` de dos nombres de archivo con un `ls` de `lectura_lote1/` y de `lecturas_ciegas/`. Vio nombres; no
+    abrió ningún archivo de afuera.
+  - Las otras 84 trabajaron en la carpeta de la lectura o en el scratchpad de la sesión.
+  - La memoria de ese directorio de proyecto está vacía: la sesión no cargó la memoria del proyecto de la tesis.
+- **`volcar_planilla.py` sí existe:** la sesión lo escribió en su scratchpad, no en la carpeta del lector, junto con su registro de
+  marcas (`marcas.tsv`). Pasó de las marcas a `planilla.jsonl` y después selló con `sellar_planilla.py`. Lo que el registro declaraba
+  como ausente queda explicado. Copias en el paquete de la mesa (`hoja_de_ruta_tanda1_mesa/conf_matriz_C2bis/sesion_lectora/`):
+  `volcar_planilla.py` (sha256 `c2fee42e3665a29f…`) y `marcas.tsv` (sha256 `65fbb0cb7ad0e9e3…`).
+- **Efecto sobre la lectura:** ninguno que se pueda medir. Los nombres que vio no dicen qué se mide, ni el umbral, ni que es una
+  repetición.
