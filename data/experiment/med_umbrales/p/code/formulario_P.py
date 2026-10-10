@@ -6,6 +6,10 @@ Formato de cada bloque:
     ## L<k>-<nn> · `<id del elemento>`
     - <campo> [<valores admitidos>]: ______
 Se llena reemplazando «______» por el valor. Un campo que queda en «______» o vacío se lee como no llenado.
+
+Desde el lote 2 rige el instrumento v1 (regla v1, §5, y nota del 10/10/2026 al pie de la enmienda 1): la cabecera del bloque lleva
+el id opaco de la ficha en lugar del id del elemento (C25); el paso 1 no lleva la pertinencia, que se juzga primero en el paso 2
+(C7 y C23); y los formularios de los dos pasos llevan nota (C26). Las funciones del lote 1 (v0) no cambian.
 """
 from __future__ import annotations
 
@@ -60,6 +64,48 @@ def formulario(titulo: str, bloques: list[tuple[str, str, bool]]) -> str:
            "del grafo. Se llena reemplazando «______». La regla de calificación es la v0 (`regla_calificacion_v0.md`, el "
            "§2 firmado). Un campo que no se puede decidir va en `no_decidible`, con su motivo.", ""]
     return "\n".join(cab) + "\n" + "\n".join(bloque(*b) for b in bloques)
+
+
+# ------------------------------------------------------------------------------------------- instrumento v1 (lote 2)
+# Paso 1 sin la pertinencia (C7 y C23). Opciones de la v1: «no nombra» en la moneda (C14); remisión genérica y destino
+# múltiple en el destino (C18).
+CAMPOS_V1 = (
+    ("valor", "número con punto decimal y sin separador de miles («1.25», «5000000000»), o «sin valor»"),
+    ("unidad", " | ".join(UNIDADES + UNIDADES_FUERA) + " | sin unidad | otra: <cuál>"),
+    ("moneda", "ARS | USD | EUR | no nombra | no aplica"),
+    ("tipo_de_dias", "habiles | corridos | sin tipo | no aplica"),
+    ("comparacion", " | ".join(COMPARACIONES)),
+    ("palabras_de_la_comparacion", "las palabras de la norma que fijan el sentido, literales, o «ninguna»"),
+    ("base", "el tramo exacto de la base, o «sin base»"),
+    ("destino_de_la_base", "<to>::<punto> | definicion: <término> | remision generica | destino multiple: <uno>; <otro> | "
+                           "no remite | no aplica"),
+    ("no_decidible", "no | sí: <motivo>"),
+    ("nota", "libre"),
+    ("hora_inicio", "hh:mm"),
+    ("hora_fin", "hh:mm"),
+)
+PERTINENCIAS = ("pertinente", "no pertinente", "inexistente", "duplicado")
+CAMPOS_PERTINENCIA = (("pertinencia", " | ".join(PERTINENCIAS)), ("nota", "libre"))
+
+
+def bloque_v1(etiqueta: str, opaco: str, vacio: bool, informada_por: str | None = None) -> str:
+    lin = [f"## {etiqueta} · `{opaco}`", ""]
+    if informada_por:
+        lin.append(f"Misma unidad de E0 que la ficha {informada_por}, leída antes: esta lectura queda informada por aquella (C27).")
+    if vacio:
+        lin.append("Pregunta única del §2.5: ¿la letra fija acá una cuantía, un sentido o una base?")
+    for c, v in (CAMPOS_VACIO if vacio else CAMPOS_V1):
+        lin.append(f"- {c} [{v}]: {VACIO}")
+    return "\n".join(lin) + "\n"
+
+
+def formulario_v1(titulo: str, bloques: list[tuple[str, str, bool, str | None]]) -> str:
+    cab = [f"# {titulo}", "",
+           "Paso 1 (regla v1, §5): se responde desde la norma, con la ficha del mismo número, sin ver los campos del grafo. Se "
+           "califican los campos de la cuantía resaltada; la pertinencia no va en este paso, porque se juzga primero en el paso 2 "
+           "(C7). Se llena reemplazando «______». La regla de calificación es la v1 (`regla_calificacion_v1.md`). Un campo que no se puede decidir va en "
+           "`no_decidible`, con su motivo; la nota es libre (C26).", ""]
+    return "\n".join(cab) + "\n" + "\n".join(bloque_v1(*b) for b in bloques)
 
 
 def leer(texto: str) -> dict[str, dict]:
