@@ -1,0 +1,187 @@
+  OK   adaptador gen2: anclas desde location «Punto 1.2.» + additional_provenance — {('TO_capitales_minimos_actual.pdf', '1.2'), ('TO_clasificacion_deudores_actual.pdf', '6.5.2')}
+  OK   adaptador gen3: anclas desde provenances[].archivo/punto — {('TO_capitales_minimos_actual.pdf', '1.2')}
+  OK   adaptador: formato detectado gen2 / gen3
+  OK   adaptador: provenances() nunca usa solo provenance[0]
+  OK   adaptador: cuarentena booleana True → True
+  OK   adaptador: cuarentena cadena "true" → True
+  OK   adaptador: cuarentena "false" / None / False → False
+  OK   adaptador: detectar_generacion
+  OK   F1 pasa: nodo presente por (archivo, punto, tipo, cadena)
+  OK   F1 contraejemplo: cadena ausente → sin nodo
+  OK   F1 contraejemplo: tipo distinto → sin nodo
+  OK   F1: no_contiene excluye
+  OK   F1: acentos y mayúsculas normalizados
+  OK   F2 pasa: ancla (archivo, punto) presente en cualquier provenance
+  OK   F2 pasa: prefijo_punto acepta 6.5.2 para 6.5
+  OK   F2 contraejemplo: punto ausente
+  OK   F2 contraejemplo: 1.2 no es prefijo de 1.25
+  OK   F3 pasa: umbral 5.000 → resuelto
+  OK   F3 contraejemplo: umbral 2.500 → persiste
+  OK   F3: sin umbral → no_aplicable (no PASS vacuo)
+  OK   F3: sin nodo → no_aplicable
+  OK   F4 pasa: arista por id destino
+  OK   F4 pasa: arista por tipo destino
+  OK   F4 contraejemplo: relación ausente
+  OK   F4 contraejemplo: destino de otro tipo
+  OK   F5 pasa: rank 1-based del primer id objetivo
+  OK   F5 contraejemplo: objetivo fuera de la ventana pedida → None
+  OK   F5: el limite declarado ≥ rank esperado lo hace visible (bancos 13)
+  OK   F5: tope 50 del harness
+  OK   F5: coincide_sellado con rank numérico
+  OK   F5: limite 13 declarado → en ventana y coincide
+  OK   F5: esperado None = fuera del top-10 → coincide si ausente
+  OK   F5 contraejemplo: esperado None pero rank 2 → no coincide
+  OK   F5: alcanzabilidad cuenta solo objetivos con rank sellado numérico
+  OK   F5 contraejemplo: objetivo fuera de ventana → alcanzabilidad falla
+  OK   T7 laudada: subclase_de desde propuesto a catálogo → pasa — []
+  OK   T7 flaggeada: subclase_de desde propuesto → falla
+  OK   T7 flaggeada: padre_sugerido a catálogo → pasa (41/41 en r1)
+  OK   T7: cuarentena cadena "true" (gen 3) → pasa
+  OK   T7: cuarentena booleana True (gen 2) → pasa (sin los 11 falsos FAIL)
+  OK   T7 contraejemplo: cuarentena "false" → «sin cuarentena=true»
+  OK   T7 contraejemplo: padre_sugerido fuera de catálogo + Sujeto fuera de catálogo
+  OK   T7 laudada contraejemplo: subclase_de a id fuera de catálogo → falla
+  OK   T7: sin Sujetos → no_aplicable (vacuo)
+  OK   BKL-0019 laudada: subclase_de presente en todos los presentes → resuelto
+  OK   BKL-0019 flaggeada: sin padre_sugerido → persiste
+  OK   BKL-0019: ninguno de los 8 presente → no_aplicable
+  OK   T4: la referencia excluye cuarentena_laudada (4 relaciones de esqueleto → 3 triplas)
+  OK   T4: la referencia pasa contra sí misma (KG-Refinado 90 → 82)
+  OK   T4: grafo sin la laudada pasa igual (r1: 82)
+  OK   T4 contraejemplo: falta una tripla de esqueleto → falla
+  OK   T4 contraejemplo: tripla de esqueleto de más (no laudada) → falla por conteo
+  OK   T4 contraejemplo: falta un nodo de esqueleto
+  OK   T4 (R-T4) vía Contexto: esqueleto igual al del catálogo → resuelto
+  OK   T4 (R-T4): la laudada se excluye del grafo bajo prueba (KG-Refinado)
+  OK   T4 (R-T4) contraejemplo: falta una tripla del catálogo → falla
+  OK   T4 (R-T4) contraejemplo: tripla de esqueleto de más → falla (sobran)
+  OK   T4 (R-T4) contraejemplo: falta un nodo del catálogo
+  OK   T4: grafo sin ninguna arista de esqueleto → no_aplicable
+  OK   T5 (R-T5) pasa: referencia por anclas, destino, tipo y número de punto
+  OK   T5 (R-T5) pasa con otra evidencia que nombra el mismo punto (no verbatim)
+  OK   T5 (R-T5) lee remite_a (perfil r2) con la función de remisiones
+  OK   T5 (R-T5) contraejemplo: evidencia sin el número de punto → persiste
+  OK   T5 (R-T5) contraejemplo: destino distinto → persiste
+  OK   T5 (R-T5) contraejemplo: destino de otro tipo → persiste, presente sin tipo
+  OK   T5 (R-T5): una referencia sin rol_fuente referencia_cruzada no es remisión
+  OK   T5: sin remisiones con evidencia → no_aplicable
+  OK   I3 contraejemplo: ids y triplas duplicados → persiste
+  OK   I3 pasa
+  OK   I4 pasa
+  OK   I4 contraejemplo: arista colgante → persiste
+  OK   I5 pasa (gen 2 con solo `provenance`, gen 3 con `provenances`)
+  OK   I5 contraejemplo: nodo sin provenance → persiste
+  OK   E4-a6 pasa: alias_resueltos re-resuelve a su portador; propuesto ambiguo sigue en cuarentena
+  OK   E4-a6 contraejemplo: alias resuelto que re-resuelve ambiguo → persiste
+  OK   E4-a1 contraejemplo: propuesto resoluble por label_exacto no resuelto → persiste
+  OK   E4-a1 pasa: sin propuestos resolubles
+  OK   E4-a1: sin propuestos → no_aplicable
+  OK   regresión: estado medido ≠ esperado cuenta como regresión
+  OK   regresión: «persiste» esperado no es fallo; null = NO VERIFICADA no computa
+  OK   regresión: código de salida 1 con regresión, 0 sin ella
+  OK   regresión: ranks sellados esperados que no coinciden → regresión RANKS_SELLADOS
+  OK   partición declarada 46 = 19 / 23 / 4, 15 retriever, grupos 12/12/12/10; ítems del perfil r2 aparte
+  OK   los 4 no convertibles tienen estado fijo no_aplicable
+  OK   los cinco verificado sin evento de aplicación llevan la nota
+  OK   todo test declara forma, direccionamiento y evidencia con path
+  OK   end-to-end: regresión contra fixture sintética → código de salida 1 — rc=1
+  OK   end-to-end: --out escribe .md y .json
+  OK   end-to-end: la salida registra la regresión I4 y la NO VERIFICADA I5
+  OK   end-to-end: sin --esperado no computa regresión → 0
+  OK   end-to-end: fixture coincidente → 0
+  OK   end-to-end: entrada de línea de base observada no computa regresión → 0
+  OK   end-to-end: parámetros distintos de la fixture → no computa, código 2
+  OK   end-to-end: --generacion contradice el formato detectado → SystemExit
+  OK   RT-C6-5: N1 sin la cláusula → persiste
+  OK   RT-C6-5: N1 con la cláusula → resuelto
+  OK   RT-C6-5: sin N1 → no_aplicable
+  OK   RT-C6-5 es ítem del perfil r2, fuera de la partición del inventario
+  OK   remisiones: reconoce las dos formas
+  OK   remisiones: referencia TextoOrdenado→Comunicacion (sin rol_fuente) no es remisión
+  OK   remisiones: firma de remite_a (7 tipos de contenido; destino también TextoOrdenado)
+  OK   remisiones: alcance esperado (to_entero / interna / externa)
+  OK   E4-a8 (R-E4a8): sin e4_propuestos.json junto al kg.json → no_aplicable
+  OK   E4-a8 (R-E4a8): la tabla del propio ensamblado → resuelto
+  OK   E4-a8 (R-E4a8) contraejemplo: alias no registrado en el id resuelto → persiste
+  OK   BKL-0028: tres ids esperados en el catálogo, sin alias del exterior y presentes → resuelto; no cuenta el banco central
+  OK   BKL-0028 contraejemplo: falta uno de los tres (el del banco central no lo reemplaza) → persiste
+  OK   BKL-0023 (lista): valor normalizado 5000000000 ARS → resuelto
+  OK   BKL-0023 (lista) contraejemplo: 2500000000 → persiste
+  OK   BKL-0006 (lista): bancos 5.000 / restantes 2.500 desde el valor normalizado → resuelto
+  OK   BKL-0006 (lista) contraejemplo: tabla invertida → persiste
+  OK   BKL-0006 (r2): sin «exigencia básica», por punto y monto: bancos 5.000 / restantes 2.500 → resuelto — tabla=True; sin Excepcion de cajas en cap 1.2 (sub-check no aplicable); Restriccion:Rb clase=bancos montos=['5.000'] umb
+  OK   BKL-0006 (r2) contraejemplo: tabla invertida (prueba r2 de desarrollo) → persiste
+  OK   BKL-0006 (existente) sobre el mismo grafo: sigue pidiendo «exigencia básica» → no_aplicable
+  OK   BKL-0006 y BKL-0023 (r2): una Restriccion del 1.2 sin monto de la tabla no se direcciona → no_aplicable
+  OK   BKL-0023 (r2): la oración es una Obligacion sin monto; vale el de la Restriccion de bancos: 5.000 → resuelto — Restriccion de bancos (remisión de la oración de compañías financieras): n=1 ['Rb'] umbrales=[['5000000000 moneda ARS']]
+  OK   BKL-0023 (r2) contraejemplo: bancos 2.500 (prueba r2 de desarrollo) → persiste
+  OK   BKL-0023 (r2): con Restriccion propia de compañías financieras, vale la suya (5.000 → resuelto)
+  OK   EJ-cla-5.1.1.1 (r2a): dos condicion_de + remite_a a cla::3.7 → resuelto; (iii) informativo; no verificadas por E3 declaradas
+  OK   EJ-cla-5.1.1.1: en un grafo r2 la referencia no alcanza para (ii) → persiste
+  OK   EJ-cla-5.1.1.1: en los perfiles existentes, la forma de origen (referencia) → resuelto
+  OK   EJ-cla-5.1.1.1 (estructura de r1): dos limita + referencia → resuelto
+  OK   EJ-cla-5.1.1.1 (desarrollo r1): Condicion aisladas y sin remisión → persiste
+  OK   EJ-cla-5.1.1.1: sin nodos del punto → no_aplicable
+  OK   LN-*: con --perfil existente → no_aplicable
+  OK   LN-1 pasa: valores en la lista
+  OK   LN-1 contraejemplo: frecuencia fuera de lista sin marca → persiste
+  OK   LN-1: fuera de lista con la marca → resuelto (contado)
+  OK   LN-1 contraejemplo: unidad del elemento de umbral fuera de lista sin marca → persiste
+  OK   LN-2 pasa: claves definidas y marcas de nodo
+  OK   LN-2 contraejemplo: clave fuera de la definición en properties → persiste
+  OK   LN-3 / LN-4 pasan: mención, verificación y método
+  OK   LN-3 / LN-4 contraejemplos: sin mención (r2a) y sin método → persiste
+  OK   LN-3: la arista de esqueleto no cuenta
+  OK   LN-5 pasa: registro y grafo coinciden
+  OK   LN-5 contraejemplo: fila en cuarentena sin nodo → persiste
+  OK   LN-5: sin registro → no_aplicable
+  OK   LN-6 pasa: re-resolución idempotente (stub de r1_e4)
+  OK   LN-6 contraejemplo: la re-resolución cambia el registro → persiste
+  OK   LN-7: sin registro de omisiones (r2a) → no_aplicable
+  OK   LN-7 contraejemplo: omisión con categoría fuera del enum y sin marca → persiste
+  OK   LN-8: el bloque del prompt y el JSON único del repo no difieren
+  OK   LN-8: lectura de las líneas del bloque (alias, instancia, rol)
+  OK   censo igual descripción: misma descripción salvo espacios, mayúsculas y acentos
+  OK   censo igual descripción: cuenta la arista entre dos nodos de igual descripción, sin regla de retiro
+  OK   censo igual descripción, control: sobre las 105 relaciones de la lectura marca C22, M50 y M56 a M59; M50 es correcta — {'relaciones': 105, 'marcadas': ['M50', 'M56', 'M57', 'M58', 'M59', 'C22'], 'correctas_en_la_lectura_entre_las_marcadas': ['M50']}
+  OK   censo de remisiones: las dos formas, por firma y por alcance (regla aplicada a la referencia)
+  OK   T6 (4.a): con --manifiesto, un TextoOrdenado por TO del manifiesto (2 de 2) → resuelto
+  OK   E4-b (4.a): archivos del manifiesto → resuelto
+  OK   T6 y E4-b (4.a) contraejemplo: un TextoOrdenado fuera del manifiesto → persiste
+  OK   T6 (4.a): sin --manifiesto, el manifiesto.path del reporte del ensamblado junto al kg.json → resuelto
+  OK   T6 (4.a): sin manifiesto ni reporte, los cinco TOs de desarrollo de E0, como antes → resuelto
+  OK   T6 (4.a): sin manifiesto, un sexto TextoOrdenado sigue dando persiste (comportamiento anterior)
+  OK   BKL-0001 (4.f): «75» y «salario mínimo» anclados en cap 2.8.3.3 → resuelto
+  OK   BKL-0001 (4.f) contraejemplo: el contenido anclado en 2.10 (RX-03) → persiste
+  OK   BKL-0001 (4.f) contraejemplo: «175» no es «75» → persiste
+  OK   BKL-0001 (4.f): sin nodos de Capitales Mínimos → no_aplicable
+  OK   BKL-0002 (4.f): la ventana de 3 días hábiles anclada en ext 3.5.3 → resuelto
+  OK   BKL-0002 (4.f): también anclada en un sub-punto (3.5.3.1) → resuelto
+  OK   BKL-0002 (4.f) contraejemplo: anclada en 3.17 (RX-03) → persiste
+  OK   BKL-0002 (4.f) contraejemplo: «5 (cinco) días hábiles» → persiste
+  OK   BKL-0001 y BKL-0002 son ítems fuera de la partición, del grupo ii, de U-REEXT-T0
+  OK   FIRMAS-condicion_de (4.c): las dos firmas en la matriz de enums_r2.json y 0 no verificadas → resuelto
+  OK   FIRMAS-condicion_de (4.c) contraejemplo: una relación con no_verificada_e3 (como r2a) → persiste
+  OK   FIRMAS-condicion_de (4.c) contraejemplo: la matriz sin Condicion → Potestad → persiste
+  OK   FIRMAS-condicion_de (4.c): perfil existente → no_aplicable
+  OK   SIN-VERIF-E3 (4.e): r2b con todos los conteos en 0; la marca en una remite_a (derivada) no cuenta; la cola aparte → resuelto — {'aristas_e1_con_no_verificada_e3': 0, 'nodos_sin_procedencia_de_unidad': 0, 'registro_entidades_sin_verificar': 0, 'registro_relaciones_sin_verificar': 0, 'rep
+  OK   SIN-VERIF-E3 (4.e) contraejemplo: el registro trae 1 relación sin verificar → persiste
+  OK   SIN-VERIF-E3 (4.e) contraejemplo: una arista de E1 con no_verificada_e3 → persiste
+  OK   SIN-VERIF-E3 (4.e) contraejemplo: un nodo de los nueve tipos sin procedencia de unidad (chunk_id) → persiste
+  OK   SIN-VERIF-E3 (4.e) contraejemplo: el reporte r2b sin el conteo de paso por E3 → persiste (nunca PASS vacuo)
+  OK   SIN-VERIF-E3 (4.e): reporte de r2a (sin fase) → no_aplicable
+  OK   SIN-VERIF-E3 (4.e): sin reporte del ensamblado → no_aplicable; perfil existente → no_aplicable
+  OK   ID-directorio (4.d): la Obligacion de lingob 2.3.2 con aplica_a al Directorio y el padre en el esqueleto → resuelto — BKL-0034: a_en_el_catalogo True; b_padre_en_el_esqueleto True; c_menciones_al_id True; d_lingob_2.3.2 True; aristas con la mención 1
+  OK   ID-directorio (4.d) contraejemplo: la misma norma también con aplica_a a Sujeto_entidad_financiera (BKL-0034) → persiste
+  OK   ID-directorio (4.d) contraejemplo: una mención igual a un alias del id llega a otro id → persiste
+  OK   ID-directorio (4.d): un grafo sin nodos de contenido del TO del ancla (el Sujeto del esqueleto con procedencia de lingob no cuenta) → no_aplicable
+  OK   BKL-0001 (4.f): un Sujeto del esqueleto con procedencia de cap no es cobertura del TO → no_aplicable
+  OK   ID-directorio (4.d) contraejemplo: el TO está pero el ancla no tiene ninguna norma → persiste
+  OK   ID-entidad_financiera_del_exterior (4.d): sin menciones ni anclas, catálogo sin alias del exterior en el doméstico → resuelto
+  OK   ID-entidad_financiera_del_exterior (4.d) contraejemplo: el doméstico con un alias del exterior (BKL-0028) → persiste
+  OK   ID-titular (4.d): miembro del rol de convca en el esqueleto y residuo sin colectivo_operativo_sin_id → resuelto
+  OK   ID-titular (4.d) contraejemplo: sin la arista miembro_de (BKL-0029) → persiste
+  OK   ID-* (4.d): ocho entradas, una por id nuevo, de perfil r2 (existente → no_aplicable)
+
+selftest_regression_kg: 184/184 casos OK
+rc=0

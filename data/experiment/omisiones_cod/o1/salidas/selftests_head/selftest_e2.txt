@@ -1,0 +1,44 @@
+[01] ok    paridad ids e2_lib vs assemble_v3.py (AST) — 447 casos comparados (10 borde + entidades reales de pro)
+[02] ok    colisión exacta dedupea en 1 nodo con 2 provenances — 2 Obligacion, provenances del dedupeado: ['9.1', '9.2']
+[03] ok    contenido distinto NO se fusiona (solo colisiones idénticas)
+[04] ok    arista repetida dedupea con provenances acumuladas
+[05] ok    sujeto de catálogo materializado con label del catálogo
+[06] ok    ref rota ⇒ rechazo registrado, sin arista y sin excepción — condiciona: source='e1' target='no_existe'
+[07] ok    firma inválida re-validada contra la matriz ⇒ rechazo E2 — TextoOrdenado --condiciona--> Obligacion
+[08] ok    fan-in detecta ausente y bloquea (apto=False)
+[09] ok    chunk_id duplicado detectado y bloquea (precedente RX-01)
+[10] ok    chunk inesperado detectado y bloquea
+[11] ok    rechazado contabilizado NO bloquea (apto=True)
+[12] ok    reducir() aborta ante set parcial sin flag
+[13] ok    con --permitir-parcial ensambla y marca parcial=true
+[14] ok    sujeto propuesto ⇒ nodo en cuarentena + registro
+[15] ok    determinismo fixture: doble corrida ⇒ bytes idénticos
+[16] ok    determinismo pro: orden de llegada barajado ⇒ grafo idéntico — 358 nodos, 725 aristas
+[17] ok    censo: unidad sin nodos listada como ausencia con diagnóstico fan-in — chunk rechazado en fan-in E1 (entities_o_relations_invalidos)
+[18] ok    censo: la ausencia NO se inventa (0 nodos anclados a 9.2)
+[19] ok    registro de limitaciones E0 contiene ric 4.4 con cita ex ante
+[20] ok    censo ric (grafo vacío): 4.4 listada citando la explicación ex ante
+[21] ok    censo ric: limitaciones conocidas aplicadas incluyen 4.4
+[22] ok    fan-in: mini-chunk ausente bloquea (unidad esperada del mapa)
+[23] ok    aporte del mini: elemento bloque_intro cuenta como contenido propio
+[24] ok    censo: mini con contenido propio cubierto
+[25] ok    censo: mini solo-meta es ausencia con diagnóstico propio aunque su punto esté cubierto por el chunk del punto — mini-chunk aceptado sin nodos de contenido propios: el extractor no encontró contenido normativo extraíble en el bloque (candidato a E3 / bloque no normativo)
+[26] ok    fan-in pro: 88 esperados = 87 aceptados + 1 rechazado, 0 ausentes — rechazado: [{'chunk_id': 'pro::3.1.1.2', 'motivo': 'entities_o_relations_invalidos'}]
+[27] ok    entradas del ensamblado == aceptadas por E1 (resumen_faseB) — 437 entidades, 729 relaciones
+[28] ok    re-validación E2 sin rechazos nuevos (E1 ya validó firmas y refs) — 0 rechazos
+[29] ok    conservación de nodos: entidades_in = nodos de contenido + merges (+ sujetos aparte) — 358 nodos = 349 de extracción + 9 sujetos
+[30] ok    conservación de aristas: relaciones_in = aristas + prov acumuladas + repetidas exactas + rechazos — 729 = 725 + 1 + 3 + 0
+[31] ok    ids únicos y grafo sin refs rotas
+[32] ok    censo pro: la unidad del chunk rechazado figura como ausencia diagnosticada por fan-in
+[33] ok    censo pro: ausencia por anclaje solo-herencia diagnosticada (pro::3.2.3.8 → chapeau 3.2.3)
+[34] ok    censo pro: ausencias por extracción solo-meta diagnosticadas (enumeración de sujetos 1.1.2.x)
+[35] ok    determinismo end-to-end: doble reducir() ⇒ mismo sha256 del grafo — 113bafd32bb7fb01
+[36] ok    r2b: fase r2a por defecto, igual byte a byte; sin stats p3b ni la clave en la arista
+[37] ok    r2a: las tres Operacion con la misma etiqueta se unen aunque sean de puntos distintos
+[38] ok    r2b: la Operacion se une solo dentro de su punto (la del punto 1 de dos unidades sigue unida)
+[39] ok    r2b: las properties_no_definidas de la relación pasan a la arista
+[40] ok    r2b: stats p3b cuenta las claves nuevas del nodo, la arista y las marcas de E3 de la unidad — {'nodos_con_clave': {'modalidad': 1, 'consecuencia': 0, 'modalidad_clasificada': 1, 'copia_nota_e3': 0}, 'modalidad_clasificada': {'recomendacion': 1}, 'aristas_con_properties_no_definidas': 1, 'unidades_con_marca_e3': {'copia_nota_e3': 1}}
+[41] ok    fase desconocida: error
+
+selftest E2: 41/41
+rc=0

@@ -1,0 +1,39 @@
+--- copia/scripts/metricas_intrinsecas.py	2026-09-27 11:41:28
++++ copia_o2/scripts/metricas_intrinsecas.py	2026-10-09 17:55:51
+@@ -852,6 +852,28 @@
+     return ent
+ 
+ 
++def condiciones_sin_regla(kg: dict) -> dict[str, Any]:
++    """U-OMISIONES-COD, grupo I: «Condicion sin ninguna arista de contenido», ninguna arista, entrante o saliente,
++    fuera de `establecida_en` y de la remisión (`remite_a`, o `referencia` con rol_fuente referencia_cruzada en un
++    grafo r1), con la variante «sin `condicion_de` saliente». Va junto a M9 (grado 0), que no cambia: M9 es de la
++    spec sellada."""
++    def rf(e):
++        return e.get("rol_fuente") or (e.get("properties") or {}).get("rol_fuente")
++    tipo = {n["id"]: n["type"] for n in kg["nodes"]}
++    con_contenido, con_condicion_de = set(), set()
++    for e in kg["edges"]:
++        if not (e["relation"] in ("establecida_en", "remite_a")
++                or (e["relation"] == "referencia" and rf(e) == "referencia_cruzada")):
++            con_contenido |= {e["source"], e["target"]}
++        if e["relation"] == "condicion_de":
++            con_condicion_de.add(e["source"])
++    cond = sorted(i for i, t in tipo.items() if t == "Condicion")
++    sin = [i for i in cond if i not in con_contenido]
++    return {"condicion": len(cond), "sin_arista_de_contenido": len(sin),
++            "sin_condicion_de_saliente": sum(1 for i in cond if i not in con_condicion_de),
++            "nodos_sin_arista_de_contenido": sin}
++
++
+ def medir_grafo_gen3(nombre: str, kg_path: Path, chunks: dict[str, dict],
+                      roles: dict[str, Any] | None, atr: dict[str, Any],
+                      e0_dir: Path, manifiesto: Path | None, tos: list[dict]) -> dict[str, Any]:
+@@ -970,6 +992,7 @@
+                            "se registra para el laudo de la autora, no sustituye a M3"}},
+         "M7": m7_decl,
+         "M10": m10_decl,
++        "condiciones_sin_regla": condiciones_sin_regla(json.loads(Path(kg_path).read_text(encoding="utf-8"))),
+     }
+     return rep
+ 

@@ -1,0 +1,103 @@
+{
+ "total": 17,
+ "ok": 17,
+ "grupos": {
+  "A": [
+   {
+    "caso": "la fila del TO renombrado pasa al id nuevo y la del primer TO no cambia",
+    "ok": true,
+    "detalle": "[{\"to\": \"ext\", \"chunk_id\": \"ext::2.1\", \"indice_relacion\": 3, \"id_anterior\": \"Sujeto_propuesto_la_entidad\", \"id_nodo\": \"Sujeto_propuesto_la_entidad__ext\"}]"
+   }
+  ],
+  "B": [
+   {
+    "caso": "«se» y «cada una» salen del grafo con sus aristas; «Los casos» y «las partes» quedan",
+    "ok": true,
+    "detalle": ""
+   },
+   {
+    "caso": "sus filas quedan descartadas con la marca y las aristas quitadas, listadas con norma, unidad, mención y tramo",
+    "ok": true,
+    "detalle": "[{\"propuesto\": \"Sujeto_propuesto_se\", \"mencion\": \"se\", \"marca\": \"mencion_pronombre_o_palabra_vacia\", \"relacion\": \"aplica_a\", \"source\": \"Obligacion_12_3\", \"target\": \"Sujeto_propuesto_se\", \"to\": \"cap\", \"archivo\": \"TO_capitales_minimos_actual.pdf\", \"chunk_id\": \"cap::12.3\", \"punto\": \"12.3\", \"sujeto_mencion\": \"se\", \"mencion_verificada\": \"exacta\", \"indice_relacion\": 12, \"extremo\": \"Obligacion_12_3\", \"extremo_tipo\": \"Obligacion\", \"extremo_label\": \"Obligacion_12_3\", \"tramo_del_extremo\": \"se considerará la última calificación\"}, {\"propuesto\": \"Sujeto_propuesto_cada_una\", \"mencion\": \"cada una\", \"marca\":"
+   },
+   {
+    "caso": "mencion_vacia: solo palabras de la lista cerrada",
+    "ok": true,
+    "detalle": ""
+   }
+  ],
+  "C": [
+   {
+    "caso": "padre hacia una instancia → su clase, con la marca de la instancia",
+    "ok": true,
+    "detalle": ""
+   },
+   {
+    "caso": "instancia sin clase → padre quitado con la marca padre_sugerido_descartado; luego recibe el rol por defecto",
+    "ok": true,
+    "detalle": ""
+   }
+  ],
+  "D": [
+   {
+    "caso": "sin padre → rol de alcance de su TO con la marca padre_por_defecto",
+    "ok": true,
+    "detalle": ""
+   },
+   {
+    "caso": "un padre que ya está no se toca",
+    "ok": true,
+    "detalle": ""
+   },
+   {
+    "caso": "TOs con roles distintos → sin padre y listado",
+    "ok": true,
+    "detalle": ""
+   },
+   {
+    "caso": "TO sin rol de alcance en el catálogo → sin padre y listado",
+    "ok": true,
+    "detalle": ""
+   }
+  ],
+  "E": [
+   {
+    "caso": "la celda «5.000» con rótulo «-En millones de pesos-» gana 5000000000 moneda ARS, con el tramo igual",
+    "ok": true,
+    "detalle": "{\"tramo\": \"5.000\", \"valor\": \"5000000000\", \"unidad\": \"moneda\", \"moneda\": \"ARS\", \"comparacion\": \"no_determinada\", \"regla_comparacion\": \"sin_marcador\", \"origen\": \"e1\", \"tramo_verificado\": \"exacta\", \"originales\": {\"regla_comparacion\": \"limite_relativo:sin_marcador\", \"unidad_desde_rotulo\": \"-En millones de pesos-\", \"tabla\": \"tst::tabla000\", \"chunk_id\": \"tst::1.2\"}}"
+   },
+   {
+    "caso": "sin rótulo, con valor, con un tramo que no es celda o con otra comparación: no cambia",
+    "ok": true,
+    "detalle": ""
+   },
+   {
+    "caso": "integrado (cap::1.2, E0 r2b): r2b gana el valor y lo cuenta por TO y por nodo",
+    "ok": true,
+    "detalle": "[[{\"tramo\": \"5.000\", \"valor\": \"5000000000\", \"unidad\": \"moneda\", \"moneda\": \"ARS\", \"comparacion\": \"no_determinada\", \"regla_comparacion\": \"sin_marcador\", \"origen\": \"e1\", \"tramo_verificado\": \"exacta\", \"originales\": {\"regla_comparacion\": \"limite_relativo:sin_marcador\", \"unidad_desde_rotulo\": \"-En millones de pesos-\", \"tabla\": \"cap::tabla000\", \"chunk_id\": \"cap::1.2\"}}], {\"elementos\": 1, \"por_to\": {\"cap\": 1}, \"nodos\": [{\"id\": \"Restriccion_sintetica\", \"to\": \"cap\", \"tramo\": \"5.000\", \"valor\": \"5000000000\", \"unidad\": \"moneda\", \"moneda\": \"ARS\", \"tabla\": \"cap::tabla000\", \"rotulo\": \"-En millones de pesos-\"}"
+   },
+   {
+    "caso": "integrado: r2a no cambia (sin valor, sin la clave del resumen)",
+    "ok": true,
+    "detalle": "[{\"tramo\": \"5.000\", \"comparacion\": \"no_determinada\", \"regla_comparacion\": \"limite_relativo:sin_marcador\", \"origen\": \"e1\", \"tramo_verificado\": \"exacta\"}]"
+   }
+  ],
+  "F": [
+   {
+    "caso": "sin cuantía (aunque haya celdas sin cuantía) → marca con «sin cuantía detectable» y el sha del detector",
+    "ok": true,
+    "detalle": ""
+   },
+   {
+    "caso": "cuantías solo en cap::tabla037 (forzada a residual) → motivo propio y sha256 de la lista",
+    "ok": true,
+    "detalle": ""
+   },
+   {
+    "caso": "cuantías en otra tabla o en la descripción → sin marca, listadas; con lista → no se evalúa",
+    "ok": true,
+    "detalle": "{\"marcados\": 2, \"por_motivo\": {\"cuantías solo en tabla residual forzada\": 1, \"sin cuantía detectable\": 1}, \"por_to\": {\"cap\": 2}, \"sin_marca_con_cuantia\": [\"R_desc\", \"R_otra_tabla\"], \"detector_sha256\": \"69c48d24387bcb788925cd1513496e015b7594f0469124f45f5082f3465b9d79\", \"tablas_forzadas_sha256\": \"98cc96b2fec4cd7febb1fba71df8490ea420c0c0419711a122daaf4f12c2bc67\"}"
+   }
+  ]
+ }
+}
