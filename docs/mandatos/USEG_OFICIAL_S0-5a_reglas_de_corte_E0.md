@@ -479,3 +479,29 @@ reescribe.
   - **Si la corrección sale mal,** se revierte por lista antes de S2, como las demás de (b).
 - **Las dos lecturas de la mesa sobre S1-ter, aceptadas por la autora:** las 5 correctas para su revisión se sortean entre las fichas
   con cifra del 1.16 (ahora 66), y los 35 de regresión van en un bloque aparte, al final.
+
+---
+
+**[10/10/2026] Nota de la mesa: revisión del FRENO de S0-5a-bis, y una corrección.**
+
+- **La revisión, sobre copias:**
+  - el paquete de la sesión da 85 de 85, y los 43 archivos de `s0_5/bis/` son iguales a sus copias del paquete;
+  - el parche `421ee913…` aplica sobre el código de S0-4b y da los tres archivos finales (`bd2190ad…`, `68bd74b5…` y `789630b5…`);
+  - la corrida completa de los 152 con el código final da 768 archivos y 9.665 unidades, con 0 distintos contra la salida de la segunda
+    vuelta y su manifiesto `176cbdc0…`;
+  - la tanda 0 da 57 de 57.
+- **El interruptor de medición** es un archivo aparte (`parche/interruptor_prototipo_S0-5a-bis.diff`). No está dentro del parche que
+  aplica S0-5b: sus nombres no aparecen ni en el parche ni en los tres archivos finales, y la salida sin él es la de la segunda vuelta,
+  byte a byte. El archivo entra al repo con el registro, pero no se aplica.
+- **Una diferencia sin efecto:** el manifiesto `176cbdc0…` declara `selftest_e0.py` `789630b5…`, y la segunda vuelta corrió con
+  `9921eae1…`. `correr_e0` no importa `selftest_e0`, y la corrida con `789630b5…` da los mismos bytes.
+- **Continuidad, 104 → 88, caso por caso:**
+  - R5-f cierra 11, todos de ri_ccna: D1A1 2.1.1 a 2.1.8, 5.1 y 8.1, y D1A2 5.1;
+  - R5-d cierra 6: ri_rml 1.2.4, y snp_tr 1.3.4, 1.3.5, 1.3.6, 1.4 y 1.5, con 15 descendientes tragados;
+  - aparece uno: snp_cheq 3.3.6.1, de clase (i).
+
+  104 − 11 − 6 + 1 = 88. La lista, en el paquete de la mesa (`revision_S0-5a-bis/lista_saltos_104_a_88.md`).
+- **snp_cheq 3.3.6.1 queda aceptado** como el salto del PDF que declaró la nota del 09/10/2026 (decisión de la autora, condicionada a
+  esta revisión). En todo el PDF, «3.3.6» aparece una sola vez: «3.3.6.2. Instrucciones operativas.» (p. 38). Faltan 3.3.6 y 3.3.6.1.
+- **Corrección, error de la mesa:** en la nota de `32c71ca`, donde dice «Los otros 23 candidatos de afuera», son **22**. El 23 contaba
+  `ri_rml::1.2.3`, que la misma nota descarta porque no es un caso real. La cuenta de 22 es la de `s0_5/bis/censos/limites_S0-5a-bis.md`.

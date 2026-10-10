@@ -224,3 +224,14 @@ cambia.
     `random.Random(semilla).sample(lista, 5)` sobre las correctas del par ordenadas por (origen, destino).
   - Reemplazan a las de revisión de la sección «Firma».
 - **Calendario:** C4 antes del FRENO de O2 de U-OMISIONES-COD.
+
+**[10/10/2026] Nota de la mesa: dos precisiones a la nota de C2-bis** (decisiones de la autora del 10/10/2026). El texto firmado no cambia.
+
+- **C4 incluye además todas las fichas que la lectura nueva marque `no_decidible`,** como decía el §5.
+- **La línea del protocolo del 28/09 que respalda que el juicio no necesita el tipo del destino** (`c671b52`,
+  `reports/u_estudio_matriz/lectura/resultado_lectura_matriz.md`, «Protocolo, tal como está asentado»):
+
+  > Correcta: el texto del fragmento sostiene que el origen es condición (o excepción, o se aplica a, según el predicado) del destino;
+  > si el nodo parece mal tipado pero la relación es cierta, cuenta como correcta y se anota.
+
+  La marca depende de lo que sostiene el texto, y un nodo mal tipado con la relación cierta cuenta como correcta: el tipo no decide.

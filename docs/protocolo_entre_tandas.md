@@ -513,3 +513,11 @@ El texto firmado no se edita; estas notas se leen junto con él.
   `documentos_excluidos_esq.json`», ese archivo está sellado. El registro vigente es
   `data/experiment/esq/documentos_excluidos_evaluacion_final.json`, que lo extiende (su `:3`) y es el que cita el pre-registro de B6.3
   (`docs/checklist_pre_escalado.md`, Q10). El texto firmado no cambia.
+- **10/10/2026 — anclas al laudo de la release r2 y el ejemplo del §7 (decisiones de la autora del 10/10/2026).** El texto firmado no
+  cambia.
+  - **Anclas corridas** (`:21`, `:50-51`, `:134-135`). Citan `docs/laudo_release_r2_pipeline.md:243-283`, `:264-277` y `:253-263`,
+    que eran líneas de la v1. En la v2 del laudo esas líneas son el anexo A (§1.3 y §1.4). El gate vigente es el §3 de la v2 (`:63-81`,
+    «reemplaza la §3.1 de la v1»), y la §3.1 de la v1 está en `:348-388`.
+  - **El ejemplo del §7** (`:285`). Donde dice «10 de ellos digeribles y 10 "necesita reglas"», el recuento da 8 y 12
+    (`docs/plan_tesis.md:409`; `docs/checklist_pre_escalado.md`, condición 5). La fe de erratas va también en el pre-registro de la
+    tanda 1.

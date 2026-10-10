@@ -447,3 +447,63 @@ El texto firmado no cambia.
    - **Después:** la autora revisa las incorrectas solo si pasa. Si no pasa, (e) queda como límite declarado.
 2. **Las medidas sobre la tanda 0:** en el FRENO de O2 y en `data/experiment/omisiones_cod/`.
 3. **El ítem (i)** (la navegación del grupo D): se hace en esta unidad, medido en O1 y en O2.
+
+**[10/10/2026] Nota de la mesa: revisión del FRENO O1 (`data/experiment/omisiones_cod/o1/`), fe de erratas y decisiones de la autora
+del 10/10/2026.** El texto firmado no cambia.
+
+- **La revisión, sobre copias:**
+  - el paquete de la sesión da 123 de 123, y los 115 archivos de `o1/` son iguales a sus copias;
+  - se reproducen las cifras de abajo, G-r aislado, las dos definiciones de (i), los 6 de L y el sello de (e).
+  - **La línea de base:** el código de HEAD da `40c54830` y `8d747e57`, no `a9631a64` y `e22fae1a`, por R2-3 (`803623a`), que no se
+    re-selló.
+- **Fe de erratas (error de la mesa):**
+  - **f′, los desacuerdos:** donde dice «los desacuerdos del reporte pasan de 150 a 165», son **430 → 445**. 150 es la cifra de un
+    documento, no el total. Con f y f′ juntos, 447.
+  - **(a):** las 390 son de todas las categorías de omisión (317 `meta_normativo`, 50 `relacion_sin_predicado` y 23 `fuera_de_tipos`),
+    no de las 1.137 `meta_normativo`.
+  - **f:** pasan **47** (257 → 210 sin verificar), no «hasta 51». El 51 era otra medida de R2-1: de esas 51 pasan 42, y pasan 5 que
+    no estaban. Las 17 que siguen sin verificar quedan como límite, caso por caso (`o1/limites_O1.md`).
+- **Decisiones de la autora:**
+  1. **H manda sobre P3b (l):** O2 reescribe los dos casos de `pyd_r2/code/selftest_pyd_r2.py` (`:1180` y `:1341`), con una nota de que
+     H los reemplaza.
+  2. **I queda junto a M9,** sin reemplazarla, en `adaptador_gen3`, como lo dejó la ejecutora.
+  3. **Escrituras que el §5 no cubría,** autorizadas por esta nota:
+     - en `data/experiment/tanda0/code/ensamblar_tanda0.py`: (h) en el reporte, K y la línea que activa J. Como precisión, g1 también va
+       ahí, como permite el grupo C («o en el ensamblado antes de (g), donde lo fije O1»);
+     - los selftests nuevos, en `data/experiment/omisiones_cod/`: el del ensamblado (A, C, G-r, L, K y h) y el de la métrica I. El
+       caso sintético de J va en `selftest_r3.py`, que ya cubre `remite_a`.
+     - **K reescribe la `causa` en el registro de remisiones del grafo sin cola:** el diff de O2 lo declara.
+  4. **L:** en los 6 elementos cuyo tramo de E1 no verifica se conserva la cuantía. Quedan como límite, caso por caso:
+     - `ext::3.5.3::intro` (p. 23): E0 corta el texto en «…a los 3»;
+     - `ext::7.8.5.2` (p. 94): «promedia» donde el texto dice «promedio»;
+     - `pro::2.3.5.1` (pp. 15-16): E1 une el «dentro de:» del encabezado con el segundo guion;
+     - `cap::3.2.4` (pp. 61-62): la fórmula intercala «fondo» y el literal pierde el «%»;
+     - `ext::4.2::cierre` (p. 58): «podrá» donde el texto dice «podrán»;
+     - `cap::5.3.2.1` (pp. 106-107): E1 omite palabras.
+  5. **(e):** fuera de las 64 unidades de T4 hay 16 detecciones, en 15 unidades. Se leen las 16, con el mismo piso (límite inferior de
+     Wilson ≥ 0,75, que con 16 exige 16 de 16). Queda decidido antes de leer. Si no llega, (e) queda como límite declarado.
+     - La semilla sellada como compromiso (`fa52b44d…`) queda sin usar, y se registra así.
+     - La lectura es de una sesión nueva fuera del repo, en paralelo con O2, sobre una carpeta sin la clase del clasificador.
+     - **PENDIENTE de la autora, antes de leer:** cómo cuenta una «dudosa». La mesa recomienda excluirla y recalcular el umbral con el
+       mismo piso, como las no decidibles de la lectura de la matriz. Con 15 decididas, 15 de 15 pasa; con 11 o menos, no puede pasar.
+  6. **Las medidas sobre la tanda 0** van en el FRENO de O2 y en `data/experiment/omisiones_cod/` (decidido en la nota anterior).
+  7. **La lectura del script de U-DIAG-LIMITES** que hizo la ejecutora queda aceptada: estaba declarada y era necesaria para g1.
+- **PENDIENTES de la autora, con la recomendación de la mesa:**
+  - **El ítem (i):**
+    - lo que ve el agente es la ventana por dirección: `ver_vecinos(limite=40)` corta 40 por dirección (`evaluacion/harness.py:230-235`;
+      el runner de EV2, `neo4j_index.py:226-273`);
+    - con esa definición son 49 nodos con `remite_a` y 20 sin ella, en `a9631a64` y con el código nuevo;
+    - la de la v6 (43 y 22) suma entrantes y salientes, y su 43 cuenta solo `remite_a`.
+    - **Recomendación:** rige la ventana real, con la otra como referencia.
+  - **G-r y `remite_a`** (+145 / −137, 282 aristas, todas cambios reales):
+    - 33 entran y 36 salen por la regla de destinos, y son correctas si el punto de G-r lo es;
+    - 34 entran y 25 salen por el texto del punto nuevo o viejo, coherentes con la regla de origen;
+    - 76 salen por la reatribución al nodo que entra a `ctacte::1.5.3`, coherentes y más precisas;
+    - **78 entran por reagrupamiento:** G-r cambia solo el rol de algunos nodos, eso parte grupos que leen el mismo texto, y la cita se
+      atribuye a todo el grupo aunque otro nodo del mismo punto ya la nombra. Son peores.
+    - **Recomendación:** que la atribución de `remite_a` agrupe sin el rol, conservando la corrección de rol de G-r (los 173 de la v7).
+      Toca `corpus_v2/r1_referencias.py` más allá de la procedencia (J), y necesita esta autorización. O2 mide su efecto sobre todas las
+      `remite_a` y explica caso por caso toda arista que cambie fuera de las 78.
+    - **Lectura de confirmación, opcional y no bloqueante:** la mesa lee en la revisión de O2 los 18 pares cita–origen de las 179
+      aristas de las otras clases.
+- **El despacho de O2** va con estas notas en el log, con el ítem (i) y G-r decididos, y su FRENO después de la C4 de U-CONF-MATRIZ.

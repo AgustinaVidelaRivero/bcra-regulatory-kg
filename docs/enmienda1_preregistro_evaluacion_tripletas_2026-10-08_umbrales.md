@@ -440,3 +440,14 @@ se sortea antes de este commit. La nota del §14.3 al pie del pre-registro entra
   - **Las herramientas del piloto:** las que toman `tramo` como la cuantía (`p/code/comun_P.py:343` y `:386`;
     `p/code/armador_fichas_P.py:75`) se adaptan antes del sello de la regla y el armador (§5.4). Las 20 fichas del lote 1 no cambian.
   - El texto firmado no cambia.
+- **10/10/2026 — Lote 1 del piloto, paso 1 (§5.2), sellado por la autora.** Se registra solo el sello, sin el contenido.
+  - **Formulario:** `formulario_paso1_lote1_v2.md`, fuera del repo, en `fuera_del_repo/lectura_lote1/`, de solo lectura.
+  - **sha256:** `58a56fb5386a334a28d9b911e90b4fb44c003f75b581311d0a4017244ba21f92`.
+  - **Hora del sello:** 09/10/2026 17:57:54 (−03).
+  - **Se reproduce con:** `shasum -a 256 "$HOME/INGENIERIA IA/TESIS/fuera_del_repo/lectura_lote1/formulario_paso1_lote1_v2.md"`. La mesa lo
+    recomputó el 10/10/2026 y da lo mismo.
+  - **Sigue el paso 2 del lote 1 (§5.3):** el comparador (`p/code/comparador_paso2_P.py`) compara el formulario con los campos del grafo,
+    y solo las diferencias vuelven a la lectora, con el valor del grafo a la vista. Después, el FRENO del lote 1, que ajusta la regla y la
+    ficha con la lista de clases de error, y recién entonces el lote 2 (§9.3).
+  - El acta del sorteo y el diagnóstico por elemento siguen vedados hasta cerrar el paso 1 del lote 2.
+  - El texto firmado no cambia.
