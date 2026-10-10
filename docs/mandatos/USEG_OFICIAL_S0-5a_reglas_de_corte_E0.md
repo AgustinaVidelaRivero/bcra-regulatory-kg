@@ -505,3 +505,28 @@ reescribe.
   esta revisión). En todo el PDF, «3.3.6» aparece una sola vez: «3.3.6.2. Instrucciones operativas.» (p. 38). Faltan 3.3.6 y 3.3.6.1.
 - **Corrección, error de la mesa:** en la nota de `32c71ca`, donde dice «Los otros 23 candidatos de afuera», son **22**. El 23 contaba
   `ri_rml::1.2.3`, que la misma nota descarta porque no es un caso real. La cuenta de 22 es la de `s0_5/bis/censos/limites_S0-5a-bis.md`.
+
+---
+
+**[10/10/2026] Nota de la mesa: el plan B de S1-ter, decidido por la autora el 10/10/2026 antes de que corra.** La autora aceptó la
+propuesta de la mesa tal cual y decidió también su última rama.
+
+- **Si S1-ter llega al piso** (a lo sumo 3 errores de corte en las 90; `USEG_OFICIAL_segmentacion_e0r2.md:315`): siguen las reversiones
+  por lista de (b) que hagan falta, y S2.
+- **Si no llega:**
+  1. **Se clasifica cada error,** como en S1-bis, por mecanismo y por documento (de la tanda 1 o no).
+  2. **Qué se revierte:**
+     - una lista de (b) con error: por lista, como ya está decidido;
+     - un error de una regla de R5-b a R5-g en la muestra: esa regla, por lista, en la unidad afectada. Si la misma regla da 2 o más
+       errores en la muestra, se revierte la regla entera al comportamiento de S0-4b;
+     - un error nuevo en un documento de la tanda 1 que cumpla el criterio del §29 de la hoja de ruta de la mesa: una regla por lista
+       (S0-5c);
+     - un error fuera de la tanda 1: límite medido, para la versión de E0 previa a su tanda.
+  3. **Qué se vuelve a medir:** S1-quater, una muestra nueva de 90 con los mismos estratos (40 / 10 / 40) y el mismo piso, leída a
+     ciegas desde fuera del repo, sobre la salida corregida. Solo la muestra de cortes: el 1.16 no se vuelve a leer, salvo lo que se
+     corrija.
+     - **Semillas, selladas por esta nota antes de sortear:** `U-SEG-OFICIAL:cortes:S1-quater` (la muestra) y
+       `U-SEG-OFICIAL:cortes:S1-quater:revision` (las correctas para la autora).
+  4. **Si S1-quater tampoco llega al piso,** no hay otra vuelta antes de la tanda 1: la tanda 1 sale con la lista de S2, reemplazando
+     cada documento con un error de corte confirmado por el siguiente de su estrato (criterio del §7 de `docs/protocolo_entre_tandas.md`),
+     y se declara.

@@ -507,3 +507,24 @@ del 10/10/2026.** El texto firmado no cambia.
     - **Lectura de confirmación, opcional y no bloqueante:** la mesa lee en la revisión de O2 los 18 pares cita–origen de las 179
       aristas de las otras clases.
 - **El despacho de O2** va con estas notas en el log, con el ítem (i) y G-r decididos, y su FRENO después de la C4 de U-CONF-MATRIZ.
+
+**[10/10/2026] Nota de la mesa: el ítem (i), G-r y las «dudosas» de (e), decididos por la autora el 10/10/2026.** El texto firmado no
+cambia. Cierra los tres pendientes de la nota anterior.
+
+1. **El ítem (i)** se mide con la ventana real del agente: `ver_vecinos` corta 40 por dirección (`evaluacion/harness.py:230-235`). Son
+   49 nodos con `remite_a` y 20 sin ella. Los 43 y 22 de la v6 quedan como referencia.
+2. **G-r y `remite_a`:** queda autorizado el cambio en `data/experiment/reextraccion_v2/corpus_v2/r1_referencias.py` para que la
+   atribución de `remite_a` agrupe sin el rol, conservando la corrección de rol de G-r (los 173 de la v7).
+   - Es la consecuencia de un ítem de la v7, así que entra dentro del congelamiento (§29 de la hoja de ruta de la mesa).
+   - Es una escritura más de O2, además de las de la nota anterior.
+   - O2 mide su efecto sobre todas las `remite_a` y explica caso por caso toda arista que cambie fuera de las 78 del reagrupamiento.
+   - La lectura de los 18 pares cita–origen de las 179 aristas de las otras clases va en la revisión de O2, y no la bloquea.
+3. **Las «dudosas» de (e)** se excluyen, y el piso se mantiene: límite inferior de Wilson al 95 % de 0,75 o más sobre las decididas.
+   - Con 12 decididas, 12 de 12 da 0,7575 y pasa; con 11, 11 de 11 da 0,7412 y no pasa. Exige, entonces, al menos 12 decididas, todas
+     correctas: con 16 o menos, una incorrecta basta para no pasar (15 de 16 da 0,7167).
+   - Es el tratamiento de las no decidibles de la lectura de la matriz: excluidas del cálculo y reportadas, con el umbral recalculado
+     para el n de decididas (`docs/mandatos/UCONF_MATRIZ_lectura_confirmacion.md`, §2).
+   - Quedó decidido antes de leer: la autora lo decidió el 10/10/2026, antes de despachar la lectura. Esta nota se escribió en el árbol
+     de trabajo a las 00:58:37 del 10/10/2026, y la planilla del lector se selló a las 01:01:26 (fechas de modificación de los dos
+     archivos; copia y `stat` en el paquete de la mesa, `hoja_de_ruta_tanda1_mesa/lectura_e/orden_de_la_regla/`). El commit de esta
+     nota es posterior al sello. La mesa no abre la planilla hasta que esta nota esté en el log.

@@ -235,3 +235,17 @@ cambia.
   > si el nodo parece mal tipado pero la relación es cierta, cuenta como correcta y se anota.
 
   La marca depende de lo que sostiene el texto, y un nodo mal tipado con la relación cierta cuenta como correcta: el tipo no decide.
+
+**[10/10/2026] Nota de la mesa: C3 de C2-bis, la C4 y las clases de → Operacion** (decisiones de la autora del 10/10/2026). El texto
+firmado no cambia.
+
+- **C3** (`data/experiment/conf_matriz/c2bis/registro_C2bis.md`): → Operacion, 26 correctas, 4 incorrectas y 0 no decidibles, límite
+  inferior de Wilson 0,7032; → Potestad, 29, 1 y 0, 0,8333. Son cifras de C3: la final es la de C4.
+- **La C4 la hace la autora** con la lista de la mesa (`c2bis/lista_C4_C2bis.md`, 15 fichas), antes del jueves 15/10/2026. Sigue
+  valiendo que va antes del FRENO de O2 (nota de C2-bis).
+- **Las clases de los errores de → Operacion** (§7), sobre la propuesta de la mesa en `registro_C2bis.md`, quedan aceptadas:
+  - **«tramos contenidos entre los extremos»** (F27, F34 y F45 en C3): va al grupo 2 después de medir su precisión sobre la población
+    de la arista;
+  - **«condición de otro elemento del punto»** (F15): no se puede detectar con código y queda como error clasificado.
+  - Si la C4 deja una incorrecta que no entra en ninguna de las dos, su clase queda PENDIENTE de la autora.
+- **→ Operacion no se retira** (decisión del 09/10/2026, §7): queda en el grafo con su cifra declarada, la de C4.
