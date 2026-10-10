@@ -464,3 +464,35 @@ se sortea antes de este commit. La nota del §14.3 al pie del pre-registro entra
     la lista de clases de error y lo que decide la autora. Sigue la v1 de la regla, sellada antes del lote 2 (§9.3).
   - El acta del sorteo y el diagnóstico por elemento siguen vedados para la autora hasta cerrar el paso 1 del lote 2.
   - El texto firmado no cambia.
+- **10/10/2026 — La regla v1 del piloto, sellada, y los cambios que hace al §5.** Por decisión de la autora del 10/10/2026, que autorizó
+  esta nota.
+  - **La v1:** `data/experiment/med_umbrales/p/regla_calificacion_v1.md`, sha256
+    `70b8dcce5ad0f75eb0befffb3724d278679abd7780b03b352bb46a64fb7dc893`. La mesa la selló tal cual el 10/10/2026 a las 14:32:01 (−03),
+    antes del paso 1 del lote 2 (`p/sello_regla_calificacion_v1.txt`).
+    - Es la v0 (`p/regla_calificacion_v0.md`, que reproduce el §2) con los cambios C1 a C30, listados al pie de la v1.
+    - Rige desde el lote 2 (§9.3). La v0 no se edita, y la regla del §5.4 se sigue sellando al cerrar el piloto.
+  - **Por qué entra por nota:** el piloto fija la regla y la ficha (§9.1 y §9.3), pero los cambios C7 y C23 a C27 de la v1 tocan el
+    procedimiento del §5, que fija el texto firmado. Desde el lote 2 rige lo que sigue:
+    - **§5.1, la ficha:**
+      - no muestra ningún campo del grafo: ni el tramo de E1, ni el tipo, ni la etiqueta, ni la descripción del nodo, ni el id del
+        elemento (C23);
+      - resalta solo la cuantía, ubicada con el tramo del elemento, sin mostrar la extensión del tramo (C24);
+      - lleva un id opaco derivado de una semilla, con el mapa sellado aparte y reproducible (C25).
+    - **§5.2, el paso 1:** califica los campos de la cuantía resaltada, sin la pertinencia (C7 y C23).
+    - **§5.3, el paso 2:**
+      - empieza por la pertinencia (C7), que se decide viendo solo la etiqueta, el tramo y los otros elementos del nodo, antes de ver
+        los valores del grafo para los demás campos;
+      - después, el código compara y devuelve las diferencias, como dice el §5.3.
+    - **Los formularios** de los dos pasos llevan una nota por fila (C26).
+    - **Dos elementos de la misma unidad de E0** (C27): si el sorteo los da, no se vuelve a sortear. La segunda ficha se declara y se
+      lee sabiendo que la primera la informa.
+  - **La ficha del paso 1 cuando no hay cuantía que ubicar con el tramo** (decisión de la autora del 10/10/2026). Son dos casos que el
+    §5.1 cubre y la v1 no trata:
+    - en los elementos del validador, la ficha resalta el tramo de E1 del elemento, como dice el §5.1. Es una excepción declarada a C24;
+    - si el elemento no se ubica en el texto o su tramo no está verificado, la ficha lo dice y muestra solo la cuantía guardada, sin
+      tramos.
+  - **Qué no cambia:**
+    - las igualdades del §5.3, el plegado de la base y el id del destino;
+    - el registro de las correcciones del paso 1;
+    - el sello del §5.4 antes del sorteo de T.
+  - El texto firmado no cambia.
