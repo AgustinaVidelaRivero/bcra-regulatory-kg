@@ -1,0 +1,220 @@
+corriendo el pipeline dos veces bajo <scratchpad>/s05b/tmp_selftest/e0_selftest_phz7hdal …
+== determinismo (dos corridas → sha idénticos)
+  [PASS] mismos archivos de salida — 20 archivos
+  [PASS] sha256 idénticos archivo por archivo — 20/20 iguales
+== cero pérdida de texto (cobertura por línea + suma de chars)
+  [PASS] cobertura exacta cap — 6311/6311 líneas, 0 duplicadas, 0 huérfanas
+  [PASS] cobertura exacta cla — 1249/1249 líneas, 0 duplicadas, 0 huérfanas
+  [PASS] cobertura exacta ext — 6500/6500 líneas, 0 duplicadas, 0 huérfanas
+  [PASS] cobertura exacta pro — 1052/1052 líneas, 0 duplicadas, 0 huérfanas
+  [PASS] cobertura exacta ric — 1760/1760 líneas, 0 duplicadas, 0 huérfanas
+  [PASS] chars en estructura cap > 0 y serializados — 387,964 chars
+  [PASS] chars en estructura cla > 0 y serializados — 92,471 chars
+  [PASS] chars en estructura ext > 0 y serializados — 439,924 chars
+  [PASS] chars en estructura pro > 0 y serializados — 72,589 chars
+  [PASS] chars en estructura ric > 0 y serializados — 94,603 chars
+== T4(a) ext 3.9 entero
+  [PASS] chunks 3.9.1–3.9.5 presentes — ['3.9.1', '3.9.2', '3.9.3', '3.9.4', '3.9.5']
+  [PASS] 'USD 200' en el texto propio de 3.9.1
+  [PASS] 3.9 no es chunk (es contenedor con herencia)
+  [PASS] herencia de 3.9.1 trae intro y cierre del 3.9
+== T4(b) herencia de chapeau (ext 7.6 y 2.7)
+  [PASS] hay chunks 7.6.x — 8 chunks
+  [PASS] '20 (veinte) días hábiles' del encabezado del 7.6 viaja en la herencia de todos los 7.6.x
+  [PASS] hay chunks 2.7.1–2.7.4
+  [PASS] cierres sin numerar del 2.7 (cómputo a límites + DDJJ) viajan en la herencia de todos los 2.7.x
+== T4(c) cla 1.1, cla 4.5, ext 9.2 (ver docstring: contradicción con el mandato, reportada)
+  [PASS] cla 1.1 existe como chunk real (no cáscara) — 454 chars
+  [PASS] cla 4.5 existe como chunk real (no cáscara) — 285 chars
+  [PASS] ext 9.2 existe como chunk real (no cáscara) — 1500 chars
+  [PASS] ningún chunk vacío fabricado para estos puntos
+== T4(d) ric Sección 3: 3.2 anunciado sin cuerpo; el cuerpo lo rinde 3.1.4
+  [PASS] ric 3.2 en anunciado_sin_cuerpo — ['3.2']
+  [PASS] ric 3.1.4 'Modelo de información' existe como chunk
+== T4(e) tablas flaggeadas
+  [PASS] cap 2.12.2.4 (cuadro de ponderadores/CCF) flag contenido_tabular
+  [PASS] cap 2.13 (cuadro de ponderadores/CCF) flag contenido_tabular
+  [PASS] ric 3.1.4 (cuadro de partidas) flag contenido_tabular
+  [PASS] ric 7.2 (cuadro de partidas) flag contenido_tabular
+== T6(f) regla 1: acápites vii)–x) en el propio de pro 2.3.1.1
+  [PASS] 'vii)' en el texto propio de pro 2.3.1.1
+  [PASS] 'Régimen de Transparencia' en el texto propio de pro 2.3.1.1
+  [PASS] 'x) Los restantes requisitos' en el texto propio de pro 2.3.1.1
+  [PASS] la herencia de 2.3.1.2–2.3.1.4 ya no porta los acápites
+  [PASS] toda reasignación de la regla 1 es pro 2.3.1→2.3.1.1 (caso conocido) — 8 reasignaciones
+== T6(g) regla 2: cero fronteras de segmento intra-palabra
+  [PASS] fronteras intra-palabra cap: 200 → 0 — 263 líneas corridas
+  [PASS] fronteras intra-palabra cla: 10 → 0 — 15 líneas corridas
+  [PASS] fronteras intra-palabra ext: 0 → 0 — 0 líneas corridas
+  [PASS] fronteras intra-palabra pro: 23 → 0 — 26 líneas corridas
+  [PASS] fronteras intra-palabra ric: 37 → 0 — 41 líneas corridas
+== T6(h) ric 4.4: regla 1 no aplica (limitación se mantiene)
+  [PASS] cero reasignaciones en ric
+  [PASS] contenido de 4.4.3/4.4.4 sigue en el propio de ric 4.3.3
+== T7(i) mini-chunks (enmienda 01 §2.a)
+  [PASS] 286 mini-chunks en los 5 TOs (contraste con estimación 284 de la enmienda) — 286 ({'cap': 61, 'cla': 16, 'ext': 190, 'pro': 13, 'ric': 6})
+  [PASS] pro emite 13 mini-chunks (== estimación de la enmienda) — ['pro::2.3.1::intro', 'pro::2.3.6::intro', 'pro::2.3.9::intro', 'pro::2.3.12::intro', 'pro::2.4::intro', 'pro::2.4::cierre', 'pro::2.7::intro', 'pro::2.7::cierre', 'pro::S3::chapeau_seccion', 'pro::3.1.1::intro', 'pro::3.1.1::cierre', 'pro::3.2.3::intro', 'pro::4.2.1::intro']
+  [PASS] ids de mini-chunks únicos
+  [PASS] ids con forma <to>::<unidad>::<rol>[::<n>] — []
+  [PASS] cero mini-chunks de rol encabezado (títulos puros no materializan)
+  [PASS] sha256_propio de cada mini = sha del texto del bloque
+  [PASS] herencia de todo mini: solo tramos encabezado (títulos de la cadena)
+  [PASS] la unidad del mini es su unidad de origen (el id la contiene)
+  [PASS] el bloque de 1.144 chars del 7.6 de ext materializa como intro
+  [PASS] el intro normativo de UNA línea del 2.7 de pro materializa (letra del criterio, no la heurística de escala)
+  [PASS] pro::2.3.1::intro (norma de Caja de ahorros) materializa
+  [PASS] pro::S3::chapeau_seccion materializa
+  [PASS] los 3 intersticiales de ext materializan (uno por segmento) — ['ext::3.16.3::intersticial', 'ext::4.2::intersticial', 'ext::7.9.3::intersticial']
+  [PASS] emisión interleaved: pro::2.3.1::intro antes de pro::2.3.1.1 y pro::2.7::cierre después de pro::2.7.2
+  [PASS] conteos: chunks = terminales + mini_chunks en los 5 TOs — {'cap': (401, 61), 'cla': (127, 16), 'ext': (783, 190), 'pro': (88, 13), 'ric': (78, 6)}
+== j) S0 de U-SEG-OFICIAL: la versión legada no cambia
+  [PASS] parsear_cuerpo: los parámetros de las reglas 1, 2, 4, 7, 8 y 9 apagados por default — {'seccion_variante': False, 'rotulos_r2': False, 'marcador_letra': False, 'reabrir_padre': False, 'no_rotulos': frozenset(), 'rotulos_fila': frozenset()}
+  [PASS] clasificar_paginas: la regla 3 apagada por default
+  [PASS] separar_encabezado_pie: la regla 1 apagada por default
+== k) S0 de U-SEG-OFICIAL: un caso medido por regla (e0-r2 sobre 9 TOs)
+  [PASS] regla 1: garopt abre «Sección 2 –» y sus puntos (garopt::2.1.1) — 55 chunks
+  [PASS] regla 2: ri_dsf no lee como puntos los códigos de actividad de la sección 10 (sin ri_dsf::10.1)
+  [PASS] regla 3: venliq recupera la primera página de cuerpo (venliq::1.1.1, sin chapeau de S1)
+  [PASS] regla 3, ampliación: adfsp p. 3 (una lista entera de la regla 8) es índice: sin adfsp::S6
+  [PASS] regla 4: ri_spi en 92 unidades por el marcador de letra (ri_spi::A.1.1) — 92 unidades
+  [PASS] regla 7: manori reabre el padre (manori::1.5.2, aviso padre_reabierto_r2); ri_mmsef::2.2.1 sigue
+  [PASS] acompañamiento T: snp_dd funde tablas partidas en intersticiales
+  [PASS] regla 8: manori veta los 10 rótulos de sus listas de sección (pp. 3 y 57) y 1.1.1 encuentra padre — 10 vetos
+  [PASS] regla 9: rdbcra ancla las 119 filas del catálogo (223 renglones) y acepta rdbcra::11.1.1
+  [PASS] regla 9: rdbcra::11.2.7 lleva su fila entera, en el orden del PDF
+  [PASS] cobertura exacta en los nueve TOs
+== l) S0 de U-SEG-OFICIAL: casos sintéticos de las reglas 5, 6 y 8
+  [PASS] regla 5: la lista de las 9 páginas de la cola de título estricta
+  [PASS] regla 5: con la cola estricta, un renglón que no continúa el título es texto de la norma — 'Sección 3. Normas generales. Las entidades deberán informar el saldo diario.' / 'Sección 3. Normas generales.'
+  [PASS] regla 6: constantes (tercer escalón 27.214, partes por renglones 10.886, por ítems 13.091)
+  [PASS] regla 6 en E1: una unidad sin ítems sobre el tercer escalón se parte por renglones (partes de 10.886 o menos) — [10876, 10855, 8647]
+  [PASS] regla 6 en E1: una unidad sin ítems bajo el tercer escalón no se parte (llega entera al tercer escalón) — 20246
+  [PASS] regla 6 en E1: solo se parte por renglones el ítem que pasa el tercer escalón — [502, 10878, 10855, 10855, 7911, 481]
+  [PASS] regla 6 en E0 (e0-r2): una unidad sin ítems sobre el umbral se parte por renglones — [10876, 10855, 8647]
+  [PASS] regla 6 en E0 (legada): la misma unidad queda declarada sin partir
+  [PASS] regla 6 en E0: una unidad con tabla serializada no se parte (declarada)
+  [PASS] regla 8: detecta la lista de la p. 1 (sus tres rótulos)
+  [PASS] regla 8: si los títulos de la reaparición son otros, no es una lista
+  [PASS] regla 3, ampliación: la página que es entera la lista pasa a índice; la de cuerpo, no
+== m) S0 de U-SEG-OFICIAL: doble corrida de e0-r2, byte a byte
+  [PASS] e0-r2 sobre garopt y ri_spi: dos corridas con los mismos sha256 — 16 archivos
+== n) S0-3 de U-SEG-OFICIAL: la versión legada no cambia
+  [PASS] parsear_cuerpo: los mecanismos 1, 2 y 5 apagados por default
+  [PASS] separar_encabezado_pie: las tres formas del mecanismo 5 apagadas por default
+  [PASS] lineas_de_listas_r8: el mecanismo 3 apagado por default; construir_chunks ya no tiene el mecanismo 4
+== o) S0-3 de U-SEG-OFICIAL: casos sintéticos de los cinco mecanismos
+  [PASS] mecanismo 1a: la prosa que sigue al rótulo en su columna es cuerpo del punto (x::1.1.1, x::1.1.2) — ['x::1.1::intro', 'x::1.1.1', 'x::1.1.2']
+  [PASS] mecanismo 1a, guarda: tras una lista de renglones sueltos, la prosa sigue siendo el cierre del padre
+  [PASS] mecanismo 1a, guarda: con sangría colgante, la prosa a la altura del rótulo es del padre (cierre del 2.7)
+  [PASS] mecanismo 1b: un punto con el cuerpo a la izquierda de su rótulo no devuelve prosa al padre
+  [PASS] mecanismo 2: sin las formas, la raíz 1 sola; con a, b y c, las raíces 1 a 4 — ['1'] / ['1', '2', '3', '4']
+  [PASS] mecanismo 2: cada raíz nueva declarada por su forma (aviso raiz_m2)
+  [PASS] mecanismo 3: sin la cuarta forma, la lista de un nivel no se detecta; con ella, sí, y la página es índice
+  [PASS] mecanismo 5a: una segunda línea de sección que no se repite no cierra el encabezado
+  [PASS] mecanismo 5a: después de la sección, un renglón con «B.C.R.A.» que no se repite es texto
+  [PASS] mecanismo 5b: un renglón en la columna del cuerpo, seguido de otro a interlineado, no es cola del título
+  [PASS] mecanismo 5b: la cola real del título sigue siéndolo; un inciso «ii)» no es cola
+  [PASS] mecanismo 5c: con el recuadro en los cinco primeros renglones, la sección del sexto se abre
+== p) S0-3 de U-SEG-OFICIAL: un caso medido por mecanismo (e0-r2 sobre 8 TOs y ri_dcpc)
+  [PASS] mecanismo 1a: ri_dcpc::3.1.1 lleva su cuerpo («A los fines de aplicar…»)
+  [PASS] mecanismo 1a: nmcief::A2::3.2.1 lleva su cuerpo («El sistema contable constituye…»)
+  [PASS] mecanismo 2a: seggar abre la sección 4 («4.Integración de los aportes.») y el cierre de S3 ya no la lleva
+  [PASS] mecanismo 2c: ri_tar abre los cuadros (ri_tar::2.1.1) y ri_tar::1.1 ya no se lleva el documento
+  [PASS] mecanismo 3: ri2_ae p. 3 es índice y ri2_ae::S1 es la sección 1 del cuerpo
+  [PASS] regla 4a de S0-4 (el caso del mecanismo 4 de S0-3): seguef::2.1.6::intro empieza en su rótulo
+  [PASS] mecanismo 5a: fimipyme::S1 lleva el comienzo de su párrafo («Las entidades financieras que estén…»)
+  [PASS] mecanismo 5b: ri2_ci::1.1.1.4 lleva sus dos renglones («abordando las expectativas…»)
+  [PASS] mecanismo 5c: ri_ai abre la sección 2 (ri_ai::2.1) y ri_ai::1.2.2 ya no la lleva
+  [PASS] cobertura exacta en los nueve TOs
+== q) S0-4 de U-SEG-OFICIAL: la versión legada no cambia; listas de TOs
+  [PASS] parsear_cuerpo: sub-documento, sdg3, sdmax, las reglas de letra y apartados apagados por default
+  [PASS] limites_subdocumento: forma de letra y régimen de la página 1 apagados por default
+  [PASS] construir_chunks: 4a y 4b apagadas por default
+  [PASS] listas de S0-4: sub-documento en los cinco TOs del diseño (sin ri_tsa ni ri2_pm), apartados en ri_ai, 4a y 4b fuera de la tanda 0, y el mecanismo 4 de S0-3 fuera de las reglas
+== r) S0-4 de U-SEG-OFICIAL: casos sintéticos
+  [PASS] sub-documento: anexo I con sus partes I y II, anexo II; el anexo repetido, la parte suelta y la serie de letras («ANEXO I» tras «ANEXO H») no abren sub-documento — [('A1', 'anexo'), ('A1P1', 'parte'), ('A1P2', 'parte'), ('A2', 'anexo')]
+  [PASS] sub-documento: régimen por «N - TÍTULO» y por la sigla «(R.I. – P.)»
+  [PASS] sub-documento: formulario por el membrete; la página con «Cont. 2» sigue el formulario anterior
+  [PASS] sub-documento: dos circulares en el mismo anexo abren C1 y C2; una suelta no
+  [PASS] sub-documento: sin la regla, la parte II queda dentro del ítem 2; con ella, cada parte con su espacio de ids — ['x::P1::S0', 'x::P1::S1', 'x::P1::S2', 'x::P2::S0', 'x::P2::S1', 'x::S0']
+  [PASS] sub-documento: la unidad hereda el rótulo de su sub-documento; la raíz «0» no se hereda a sí misma
+  [PASS] sub-documento: cobertura exacta — {'lineas_contenido_parseadas': 9, 'lineas_en_estructura': 9, 'lineas_duplicadas': 0, 'lineas_huerfanas': 0, 'cobertura_exacta': True}
+  [PASS] sdg3: sin la guarda nueva, la raíz 2 (10 pt más adentro) se rechaza; con ella, se abre y se declara
+  [PASS] sdmax: sin la regla, la raíz 31 se rechaza por MAX_RAIZ; con ella, se abre la 31 (sucede a la 30) y no la 33 ni el código 101 de la parte II; fuera de un sub-documento no corre — (['29', '30', '31'], ['33.', '101.'])
+  [PASS] sdr1: sin la regla, el régimen de la página 1 prefija el anexo (R10, R10A1); con ella, solo el anexo, sin padre — ([{'pagina': 1, 'top': 98.0, 'forma': 'regimen', 'prefijo': 'R10', 'titulo': '10 – OPERACIONES DE CAMBIOS', 'padre': None}, {'pagina': 3, 'top': 111.0, 'forma': 'anexo', 'prefijo': 'R10A1', 'titulo': 'ANEXO I: Códigos de instrumentos', 'padre': 'R10'}], [{'pagina': 3, 'top': 111.0, 'forma': 'anexo', 'prefijo': 'A1', 'titulo': 'ANEXO I: Códigos de instrumentos', 'padre': None}])
+  [PASS] apl: sin el marcador, el Apartado B queda dentro del punto 1.1; con él, «APARTADO B:» cierra la raíz 1 y B.1.1 y B.1.2 son puntos de B, con la raíz 1 y su 1.1 como estaban — ['x::1.1', 'x::B.1.1', 'x::B.1.2', 'x::S1::chapeau_seccion', 'x::SA']
+  [PASS] sdl: la forma de letra da A1L1 y A1L2 dentro del anexo, con su letra; «C. Datos…» (sin mayúsculas) no — [{'pagina': 1, 'top': 98.0, 'forma': 'anexo', 'prefijo': 'A1', 'titulo': 'ANEXO I', 'padre': None}, {'pagina': 1, 'top': 120.0, 'forma': 'letra', 'prefijo': 'A1L1', 'titulo': 'A. GENERAL', 'padre': 'A1', 'letra': 'A'}, {'pagina': 1, 'top': 240.0, 'forma': 'letra', 'prefijo': 'A1L2', 'titulo': 'B. PRUEBAS SUSTANTIVAS', 'padre': 'A1', 'letra': 'B'}]
+  [PASS] sdl, guarda: una serie que no empieza en la A no abre sub-documento de letra
+  [PASS] sdl: sin la regla, B.1 y B.2 se rechazan (la numeración no reinicia) y quedan en el ítem 2 de A; con ella, B abre su sub-documento y B.1 a B.3 son sus raíces, sin heredar su rótulo — ['x::A1::S0', 'x::A1L1::S0', 'x::A1L1::S1', 'x::A1L1::S2', 'x::A1L2::S0', 'x::A1L2::S1', 'x::A1L2::S2', 'x::A1L2::S3']
+  [PASS] sdlh: sin sdl, las raíces abiertas después del rótulo heredan la letra vigente (A1::S1 «A. GENERAL», A1::S3 «B. PRUEBAS SUSTANTIVAS»), sin otro cambio; con sdl, las del sub-documento de letra heredan su rótulo
+  [PASS] sdla: «A.3.» con la letra vigente y más afuera que la raíz 2 abre la raíz A.3 (sin sdl, A1::SA.3; con sdl, A1L1::SA.3), y la raíz 2 ya no la lleva — ['x::A1::S0', 'x::A1L1::S0', 'x::A1L1::S1', 'x::A1L1::S2', 'x::A1L1::SA.3', 'x::A1L2::S0', 'x::A1L2::S1', 'x::A1L2::S2', 'x::A1L2::S3']
+  [PASS] reglas de letra: cobertura exacta — {'lineas_contenido_parseadas': 13, 'lineas_en_estructura': 13, 'lineas_duplicadas': 0, 'lineas_huerfanas': 0, 'cobertura_exacta': True}
+  [PASS] 4a: la intro de 2.1.6 empieza en su rótulo y el encabezado heredado es solo el número
+  [PASS] 4b: el renglón que completa el título se junta al título y la intro de un renglón no se emite — ['Sección 1. Titulares.', '1.3. Identificación de los titulares de cuentas y de las personas autorizadas a operar en\nellas.']
+  [PASS] 4b: con más intro, la intro sigue sin ese renglón
+  [PASS] 4b, guarda: un renglón con verbo («será transmisible») no se junta; la oración es 4a
+  [PASS] apartados: sin la regla, «1. Posición» se rechaza fuera de la sección 4; con ella, abre el punto 4.1 — ['x::4.1', 'x::4.2']
+== s) S0-4 de U-SEG-OFICIAL: un caso medido por regla (e0-r2 sobre 8 TOs)
+  [PASS] sub-documento, ri_sef (fila 58 de S1): el preámbulo ya no trae la parte I; partes I a III y anexos I a III
+  [PASS] sub-documento, nmcief (fila 71): el Anexo II con su numeración (nmcief::A2::3.2.1) y la herencia desde «Anexo II»
+  [PASS] sdg3, nmcief (fila 71): «4. Periodicidad…» abre su raíz y la 3 ya no la lleva
+  [PASS] sub-documento, ri_ccna (fila 82): los anexos de la segunda norma (D2) y los formularios (D1F2) con su numeración; el Anexo IV ya no lleva los ítems de la declaración jurada
+  [PASS] sub-documento, ri_icpipsp (fila 85): la fila 8 de SINAP ya no lleva el bloque CONAU; el Anexo II aparte
+  [PASS] sub-documento, ri_cc: los tres regímenes (R4, R5 y RIP); R5::S3 es solo la p. 75
+  [PASS] sdmax, ri_ccna (Anexo III de la primera norma): los ítems 31 a 40 abren su raíz y la 30 ya no los lleva (desde S0-4a-ter, en el sub-documento de letra D1A3L2)
+  [PASS] sdl, ri_ccna (Anexo III): «A. GENERAL» y «B. PRUEBAS SUSTANTIVAS» abren D1A3L1 y D1A3L2; B.1 y B.2 son las raíces 1 y 2 de D1A3L2; 169 unidades (164 en S0-4; R5-c de S0-5a quita cinco chapeaux; R5-f de S0-5a-bis abre 11 puntos de D1A1 y D1A2 y quita el chapeau de D1A1::S5)
+  [PASS] sdlh, ri_ccna (Anexo III): las 47 unidades de la lista B (B.1 a B.40, con los sub-ítems de 26 y 29; desde S0-5a sin los chapeaux de 26 y 29) heredan «B. PRUEBAS SUSTANTIVAS», y las de A.2 y A.3, «A. GENERAL» — 47
+  [PASS] sdla, ri_ccna (Anexo III): A.3 es su propia unidad (D1A3L1::SA.3) y el ítem 2 de A.2 queda solo (667 caracteres)
+  [PASS] sdr1, ri_oc: los Anexos I y II son sub-documentos sin el prefijo del régimen de la página 1
+  [PASS] apl, ri_oc: «APARTADO B» y «APARTADO C» abren sus raíces, B.1.1 a B.3.4 y C.1 a C.11 son puntos, y 3.51 queda con su texto (p. 15); 187 unidades (184 en S0-4; desde S0-5a, B.1.1 hereda el cierre de B.1 que abre R5-a)
+  [PASS] sdmax, ri_sef: los códigos 101 a 126 del Anexo II no suceden a la raíz anterior y siguen rechazados
+  [PASS] apartados, ri_ai: «1. Posición», «2. Franquicias», «3. Incumplimientos» son 4.1 a 4.3
+  [PASS] 4b, efemin 1.3.1 (uno de los 30 títulos partidos de un renglón): sin intro y con el título entero
+  [PASS] cobertura exacta en los 8 TOs
+== t) S0-5a de U-SEG-OFICIAL: la versión legada no cambia; listas de TOs
+  [PASS] parsear_cuerpo (R5-d), construir_chunks (R5-b, R5-c) y aplicar_cierre_al_margen (R5-a, R5-a′) apagados por default
+  [PASS] listas de S0-5a: R5-a′ en ri_oc, R5-b en snp_dd y snp_cheq, R5-e en ri_ccna; ninguna regla en la tanda 0; la tolerancia de R5-a es la de E0
+== u) S0-5a de U-SEG-OFICIAL: casos sintéticos de las seis reglas
+  [PASS] R5-a: sin la regla el cierre queda en el último ítem; con ella pasa a x::1.1::cierre y el ítem conserva su cuerpo — ['x::1.1.1', 'x::1.1.2', 'x::1.1.3', 'x::1.1::cierre']
+  [PASS] R5-a, caso negativo: el párrafo en la columna del texto se queda en el ítem
+  [PASS] R5-a′: «Criterios de validación» y el cierre de la sección abren x::Sbloque1, después de la sección; la sección queda sin cierre y el ítem con su texto — ['x::S2::chapeau_seccion', 'x::2.1', 'x::2.2', 'x::Sbloque1']
+  [PASS] R5-b: (i) 1+2, (i′) y (i) 3+4+5, (ii) 6+7 y 9+10; 8 y 9 no (la segunda es otro rótulo); 10 y 11 no (otra página); las uniones conservan el número de la primera y las siguientes no se renumeran — ['x::S7::intersticial::1', 'x::S7::intersticial::3', 'x::S7::intersticial::6', 'x::S7::intersticial::8', 'x::S7::intersticial::9', 'x::S7::intersticial::11']
+  [PASS] R5-c: (b), (a) y (c)+(d) juntan el chapeau al título y no lo emiten; el chapeau que es una oración completa después de un título completo queda — Sección 1. Registro de auditores y
+permanencia en el registro
+  [PASS] R5-d: «…en el punto» / «1.3. “Integración”…» sigue como prosa de 1.2.1; tras «y» el 1.2.2 es encabezado; «1.3. Integración del período.», en la columna de sus hermanos, abre el 1.3 — [('x::1.1', '1.1. Alcance.\nTexto de la norm'), ('x::1.2.1', '1.2.1. Primer punto.\nSe comput'), ('x::1.2.2', '1.2.2. Segundo punto, que se i'), ('x::1.2.3', '1.2.3. Tercer punto.\nRige lo p'), ('x::1.3', '1.3. Integración del período.')]
+  [PASS] R5-e: «C», «O», «D», «I», «G», «O» se juntan en «CODIGO», en la unidad de la página que tiene la última letra; la cobertura sigue exacta — {'lineas_contenido_parseadas': 6, 'lineas_en_estructura': 6, 'lineas_duplicadas': 0, 'lineas_huerfanas': 0, 'cobertura_exacta': True}
+== v) S0-5a de U-SEG-OFICIAL: un caso medido por regla (e0-r2 sobre 25 TOs)
+  [PASS] R5-a: los 9 casos del mecanismo 1 quedan con el cierre en el del padre, fuera del ítem — [True, True, True, True, True, True, True, True, True]
+  [PASS] R5-a, casos negativos: los 27 candidatos del 1.16 marcados correctos en S1-bis no cambian — []
+  [PASS] R5-a′, ri_oc: el bloque de validaciones es ri_oc::Sbloque1, con sus dos títulos; C.11 termina en su texto; ri_oc::SC::cierre no existe y ninguna herencia de C.1 a C.11 tiene tramos del bloque
+  [PASS] R5-b: en snp_dd se unen 13+14, 7+8+9 y 14 pares de rótulo y descripción; en snp_cheq, 4 pares; la unión conserva el número de la primera
+  [PASS] R5-c: los 8 títulos de dos renglones medidos acá (el noveno es manual, fuera de esta corrida) quedan sin chapeau; los 4 chapeaux de verdad quedan; el título de C de ri_spi, entero en la herencia
+  [PASS] R5-d: ri_rml::1.2.3 termina en «estadounidenses-.», existen 1.2.4 y el 1.3 verdadero; snp_tr::1.3.3 termina en «…entre CEC:», existen 1.3.4 a 1.5.2.2 y el 1.6 abre en «1.6. Transacciones.»; ninguna unidad es solo el renglón de la remisión
+  [PASS] R5-d, casos negativos: gerc 2.4.2, rdbcra 11.12, ordcom 1.6.2 y pimf 4.18 siguen siendo encabezados
+  [PASS] R5-e: ri_ccna::D1F3::S0 termina en «Fórm. 4368 C (II-2006)», sin la «C» suelta, y D1F4::S0 lleva «CODIGO» y ninguna letra suelta
+  [PASS] cobertura exacta en los 25 TOs
+== t′) S0-5a-bis de U-SEG-OFICIAL: parámetros nuevos apagados; listas
+  [PASS] parsear_cuerpo (R5-f, R5-g) y aplicar_cierre_al_margen (R5-a por lista, sin tablas) apagados por default
+  [PASS] R5-a por lista: 43 listas, 3 con un rango de renglones (ri_rml 1.4.2 y los dos mixtos); ninguna de la tanda 0 ni de las 14 que no se tocan — 43, ['ri2_ae::14.3', 'ri_rml::1.4.2', 'ri_spi::C.1.3']
+  [PASS] R5-f por lista: ri_ccna 11 rótulos y snp_cheq 1 (3.3.6.2, colgado de 3.3)
+  [PASS] R5-g por lista: solo ri_oc, «3. Aclaraciones» (p. 6)
+== w) S0-5a-bis de U-SEG-OFICIAL: casos sintéticos
+  [PASS] R5-a por lista: solo la lista dada (1.2) pasa su cierre al del padre; la otra (1.1) queda como en S0-4b — ['x::1.1.1', 'x::1.1.2', 'x::1.2.1', 'x::1.2.2', 'x::1.2::cierre']
+  [PASS] R5-a por lista con un rango: exactamente los renglones del rango pasan al cierre (aunque el primero esté en la columna del texto) — [('x::1.1.1', '1.1.1. Primer requisito.\nTexto'), ('x::1.1.2', '1.1.2. Segundo requisito.'), ('x::1.1::cierre', 'Texto de la norma que corre en'), ('x::1.2.1', '1.2.1. Primer caso.\nTexto de l'), ('x::1.2.2', '1.2.2. Segundo caso.\nTexto de ')]
+  [PASS] R5-a sin tablas: el párrafo con un renglón de tabla no se mueve, y queda registrado — [{'tipo': 'r5a_no_mueve_tabla', 'lista': '1.1', 'item': '1.1.2', 'prefijo': None, 'pagina': 1, 'renglones': 1, 'texto': 'Las entidades deberán observar lo dispuesto en los puntos anteriores durante todo el plazo'}]
+  [PASS] R5-f: «2.1.1.no sean…» y «2.1.2.no se…» abren sus puntos (pegados y en minúscula) y «2.2.2.1.» abre colgado de 2.2, su padre dado; el texto de los renglones no cambia; sin la lista, no abren — ['x::2.1.1', 'x::2.1.2', 'x::2.2::intro', 'x::2.2.2.1']
+  [PASS] R5-g: «3. Aclaraciones», más adentro que la columna de las raíces, se rechaza sin la lista y queda al final de la sección 2; con la lista abre la raíz 3 con su título, que hereda 3.1 — [('x::1.1', '1.1. Texto del punto uno.'), ('x::2.1', '2.1. Texto del punto dos.'), ('x::3.1', '3.1. Texto del punto tres')]
+== w′) S0-5a-bis de U-SEG-OFICIAL: casos medidos (e0-r2 sobre 22 TOs)
+  [PASS] ri_rml 1.4.2: el cierre de 1.4 empieza en «Para el punto 1.4.1.» y termina en «…671000/M-TP.»; el ítem queda con su rótulo y sus dos fórmulas — 19 renglones
+  [PASS] ri_spi::C.1.3: el cierre (ri_spi::C.1::cierre) es, renglón por renglón, el de la lista v2, y el resto del ítem es el de S0-4b
+  [PASS] ri2_ae::14.3: el cierre (ri2_ae::S14::cierre) es, renglón por renglón, el de la lista v2, y el resto del ítem es el de S0-4b
+  [PASS] R5-f, ri_ccna: 2.1.1 a 2.1.8 de D1A1 abren («2.1.1.no sean socios…»), y 5.1 de D1A1 y de D1A2 y 8.1 de D1A1; el chapeau de la sección 5 de D1A1 ya no lleva «5.1.»
+  [PASS] R5-f, snp_cheq: 3.3.6.2 abre como unidad propia, colgada de 3.3 (sin 3.3.6 en la herencia)
+  [PASS] R5-g, ri_oc: «3. Aclaraciones» sale de ri_oc::S2 y abre la sección 3; las 51 unidades de 3.1 a 3.51 heredan «3. Aclaraciones» — 51 unidades
+  [PASS] R5-g, caso negativo: los 87 rechazos por columna profunda de los 7 documentos fuera de la tanda 1 quedan como en S0-4b — 87, 2e9f86598f7483d8
+  [PASS] las 14 listas que no se tocan: el último ítem y el cierre del padre, con el texto propio de S0-4b — []
+  [PASS] tablas: gerc::tabla005, manori::tabla014 y tabla015 y ri_spi::tabla001 siguen serializadas, como en S0-4b — []
+  [PASS] cobertura exacta en los 22 TOs
+
+SELFTEST: 188/188 PASS
+rc=0

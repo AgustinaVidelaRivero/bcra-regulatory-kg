@@ -1,0 +1,19 @@
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -203,6 +203,16 @@
+ # «3. Aclaraciones» (p. 6, x0 85,0): la p. 6 es de otra versión de la norma que la p. 5, con otro margen, y la guarda lo
+ # rechazaba por estar más adentro que la columna de las raíces (76,6).
+ RAICES_POR_LISTA_S0_5 = {"ri_oc": ((6, 117.4, "3"),)}
++
++# Interruptor del prototipo de S0-5a-bis (no va al repo): S0_5_REGLAS, lista separada por comas de las reglas de
++# REGLAS_S0_5 que corren; NINGUNA, ninguna; sin la variable, o con TODAS, todas.
++import os as _os_prototipo
++_sel_prototipo = _os_prototipo.environ.get("S0_5_REGLAS")
++if _sel_prototipo is not None and _sel_prototipo != "TODAS":
++    REGLAS_S0_5 = REGLAS_S0_5 & frozenset(x for x in _sel_prototipo.split(",") if x)
++# Medición de la tanda 0 (no va al repo): S0_5_TANDA0=1 deja correr las reglas también en la tanda 0
++if _os_prototipo.environ.get("S0_5_TANDA0") == "1":
++    TOS_TANDA0_SIN_S0_5 = frozenset()
+ 
+ 
+ def _r5(regla: str, to: str, lista: frozenset | None = None) -> bool:

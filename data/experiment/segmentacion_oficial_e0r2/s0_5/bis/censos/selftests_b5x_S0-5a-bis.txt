@@ -1,0 +1,204 @@
+== selftest_b52 inicio 17:20:33
+== A. marcador con guiones: formas reales del subset, sin cambios
+  [PASS] RE_MARCA_INDICE matchea '-Índice-'
+  [PASS] RE_MARCA_INDICE matchea '- Indice-'
+  [PASS] RE_MARCA_INDICE matchea '-Índice –'
+  [PASS] RE_MARCA_INDICE matchea '-Índice -'
+== B. marcador sin guiones (nuevo) y su guarda de forma
+  [PASS] SIN_GUIONES matchea 'Índice' (formas medidas: cedin, ri2_ae, ri_transpa)
+  [PASS] SIN_GUIONES matchea 'Indice' (formas medidas: cedin, ri2_ae, ri_transpa)
+  [PASS] SIN_GUIONES rechaza 'para aquellos que sean actualizables por algún índice.' (prosa medida ri_dcpc p.10)
+  [PASS] SIN_GUIONES rechaza 'índice' (línea envuelta en minúscula medida en el cuerpo de cap)
+  [PASS] SIN_GUIONES rechaza 'Índice.' (puntuación final)
+  [PASS] SIN_GUIONES rechaza 'Índice General' (más de una palabra)
+  [PASS] SIN_GUIONES rechaza 'el Índice' (palabra no inicial)
+  [PASS] SIN_GUIONES rechaza 'ÍNDICE DE ACTUALIZACIÓN' (título de otra cosa)
+== C. header de sección con separador [.:]
+  [PASS] RE_SECCION matchea 'Sección 1. Capitales mínimos' → num 1 (punto (subset))
+  [PASS] RE_SECCION matchea 'Sección 10 . Título' → num 10 (punto con espacio (subset))
+  [PASS] RE_SECCION matchea 'Sección 50: Información institucional de entidades financieras' → num 50 (dos puntos (estilo medido de optico p.3))
+  [PASS] RE_SECCION matchea 'Sección 7 : Título' → num 7 (dos puntos con espacio)
+  [PASS] RE_SECCION matchea 'Sección 3:' → num 3 (dos puntos sin título en línea)
+  [PASS] RE_SECCION rechaza 'sección 4: requisitos' (minúscula: remisión en prosa)
+  [PASS] RE_SECCION rechaza 'Sección 5 Título' (sin separador)
+  [PASS] RE_SECCION rechaza 'la Sección 6: aplicable' (no inicia la línea)
+  [PASS] RE_SECCION rechaza 'Sección A. Título' (número no numérico)
+  [PASS] RE_SECCION_EN_LINEA matchea 'B.C.R.A. Sección 7: …'
+== B(cont). guarda posicional y de forma vía clasificar_paginas
+  [PASS] página con 'Índice' en línea 2 → rol indice — ['indice']
+  [PASS] 'Índice' en línea 7 (> POS_MARCA_INDICE=5) NO clasifica índice — ['portada']
+  [PASS] prosa sobre índices de actualización NO clasifica índice — ['portada']
+  [PASS] página de cuerpo con línea envuelta 'índice' (minúscula, caso cap) sigue siendo cuerpo — ['indice', 'cuerpo']
+  [PASS] '-Índice-' fuera de la zona de título sigue clasificando índice (comportamiento vigente intacto) — ['indice']
+== D. integración sintética: sección con ':' se parsea entera
+  [PASS] roles [indice, cuerpo] — ['indice', 'cuerpo']
+  [PASS] una sección parseada, numero '2' — ['2']
+  [PASS] título de la sección capturado tras ':' — 'Título de la sección'
+  [PASS] puntos 2.1 y 2.2 colgados de la sección — ['2.1', '2.2']
+  [PASS] parsear_indice sigue leyendo las entradas de sección del índice — ['2', '3']
+  [PASS] 'Índice' sin guiones en página de índice se salta (no es entrada) — [{'tipo': 'seccion', 'numero': '4', 'titulo': 'Una.', 'pagina': 1}]
+== E. health-check: señales sobre estructuras sintéticas
+  [PASS] MARCA_CID presente en línea corrupta
+  [PASS] MARCA_CID ausente en línea sana
+  [PASS] pro con umbral de banda: sin unidades anómalas — max=4764
+  [PASS] pro: cobertura exacta (señal 4 apagada)
+  [PASS] pro con umbral 100: dispara unidades_anomalas_por_tamano — ['unidades_anomalas_por_tamano']
+  [PASS] las anómalas vienen ordenadas de mayor a menor
+
+SELFTEST B5.2: 39/39 PASS
+== selftest_b52 rc=0 fin 17:20:39
+== selftest_b581 inicio 17:20:39
+== A. garantía estructural de no-cambio
+  [PASS] parsear_cuerpo: modo_sin_raiz default False
+  [PASS] familia a sintética: roles vigentes todo portada (compuerta cerrada) — {'portada'}
+  [PASS] camino vigente sobre familia a: 0 secciones y 0 unidades (sin cambio) — secc=0 chunks=0
+  [PASS] serialización vigente sin claves nuevas (ni modo_lectura ni sintetica)
+  [PASS] digerible sintético: unidades por el camino vigente (no entra al modo) — chunks=2
+== B. roles derivados del modo
+  [PASS] familia a: portada pasa a cuerpo, historial intacto — ['cuerpo', 'historial']
+  [PASS] familia c: con cuerpo vigente los roles se respetan (portada NO se abre) — ['portada', 'indice', 'cuerpo']
+  [PASS] página de ficha (ri2_pm p.50): rol ficha_registro — ['ficha_registro']
+  [PASS] página de plan de cuentas (códigos largos de ri2_pm p.5): ficha_registro — ['ficha_registro']
+  [PASS] mención aislada 'Incluye…' en prosa: la página sigue siendo cuerpo — ['cuerpo']
+== C. raíces explícitas y sus guardas
+  [PASS] ri_bdp sintético: raíces 1-3 de la espina (banner no abre raíz) — ['1', '2', '3']
+  [PASS] banner en zona de título descartado como encabezado (accounting) — 6
+  [PASS] cobertura exacta (cero huérfanas) con el modo activo — {'lineas_contenido_parseadas': 6, 'lineas_en_estructura': 6, 'lineas_duplicadas': 0, 'lineas_huerfanas': 0, 'cobertura_exacta': True}
+  [PASS] unidades S1-S3 emitidas — ['tst::S1', 'tst::S2', 'tst::S3']
+  [PASS] raíz explícita: el texto propio arranca en el label verbatim (sin encabezado 'Sección' fabricado) — 1. Se informará toda persona física o jurídica con la que se
+  [PASS] monotonía G2: '1.'/'2.' tras la raíz 5 no abren raíz (reinicio de lista) — ['raiz_1_no_sucede_a_5', 'raiz_2_no_sucede_a_5']
+  [PASS] los ítems rechazados siguen como prosa de la raíz abierta (cero pérdida)
+  [PASS] guarda G1: '2. de las normas…' (minúscula) no abre raíz — ['raiz_sin_forma_de_titulo']
+  [PASS] guarda G3: candidato a raíz en columna profunda rechazado — ['raiz_en_columna_profunda_130.0_vs_60.0']
+  [PASS] salto de raíz 3→6 aceptado y reportado como salto_raiz — [{'tipo': 'salto_raiz', 'de': 3, 'a': 6, 'pagina': 1}]
+  [PASS] raíz única en mayúsculas ('1. DATOS GENERALES') preservada del descarte; banner repetido no — ['1', '2', '3']
+== D. raíces implícitas
+  [PASS] arranque en profundidad 2: raíz implícita '2' + puntos 2.1/2.2 — [('2', '', True), ('3', '', True)]
+  [PASS] transición 2.x→3.x: raíz implícita '3' + punto 3.1 — [('2', '', True), ('3', '', True)]
+  [PASS] herencia del punto 2.1: encabezado de raíz implícita = '2.' (sin 'Sección' fabricada) — [{'tipo': 'encabezado', 'unidad_origen': 'S2', 'texto': '2.', 'paginas': [1]}]
+  [PASS] '2.1.4. de las normas…' (ri_dsf p.1) NO abre raíz ni punto: todo al preámbulo — ['0']
+  [PASS] la referencia quedó rechazada con registro (nada en silencio) — ['fuera_de_seccion_0']
+  [PASS] profundidad 2 que retrocede (3.x→2.x) no abre raíz implícita — ['fuera_de_seccion_3']
+  [PASS] fecha '1.1.2019.' no abre raíz ni punto — ['1']
+== E. preámbulo sintético
+  [PASS] prosa previa a la primera raíz: unidad S0 'Preámbulo' — ['tst::S0', 'tst::S1']
+  [PASS] S0 conserva la prosa y la cobertura es exacta
+  [PASS] primera línea abre raíz: no queda preámbulo vacío — ['tst::S1']
+== F. integración con healthcheck_e0 (PDFs reales)
+  [PASS] ri_ieccm (objetivo, 1 pág): modo sin_raiz, unidades > 0, sano — unid=3 veredicto=sano
+  [PASS] ri_acsf (sin espina, vía B5.8.3): el modo NO rinde y la señal dispara — veredicto=['paginas_sin_seccion']
+  [PASS] pro (subset dev): modo 'vigente' y veredicto sano (activación jamás entra) — modo=vigente veredicto=sano
+
+SELFTEST B5.8.1: 34/34 PASS
+== selftest_b581 rc=0 fin 17:20:42
+== selftest_b582 inicio 17:20:42
+== A. garantía estructural de no-cambio
+  [PASS] clasificar_paginas: marcadores_b582 default False
+  [PASS] parsear_cuerpo: marcadores_b582 default False
+  [PASS] parsear_indice: marcadores_b582 default False
+  [PASS] separar_encabezado_pie: seccion_b582 default False y banners_texto default None
+  [PASS] sin flag: página con 'INDICE' sostenidas sigue siendo portada — ['portada']
+  [PASS] con flag: la misma página clasifica índice
+  [PASS] digerible sintético: unidades por el camino vigente (el predicado de activación es falso) — chunks=1
+  [PASS] ri_ieccm: health-check byte-idéntico al artefacto sellado de B5.8.1 (la escalera nueva no toca el camino sin_raiz histórico) — modo=sin_raiz
+  [PASS] ri_ieccm: sin clave indice_b582 (roles sin variantes)
+== B. variantes de marcador de índice y sus guardas
+  [PASS] B582 matchea 'INDICE' (sostenidas: nmaeef p.1, ri_dcpc p.1-2, ri_psp p.1)
+  [PASS] B582 matchea 'ÍNDICE' (sostenidas con tilde: ri_msrl p.1)
+  [PASS] B582 matchea 'Índice -' (guion a la derecha: consyr p.2)
+  [PASS] B582 matchea '– Índice –' (guion largo a ambos lados: seguef p.2)
+  [PASS] B582 rechaza '3.7.2. Indice a utilizar' (numeración adelante (ri_dcpc p.24))
+  [PASS] B582 rechaza 'para aquellos que sean actualizables por algún índice.' (prosa medida (ri_dcpc p.10))
+  [PASS] B582 rechaza 'Se utilizará el Índice de Precios al Consumidor Nacional (IPC)' (mención capitalizada no línea-entera (ri_dcpc p.24))
+  [PASS] B582 rechaza 'índice' (minúscula (línea envuelta medida en cap, guarda B5.2))
+  [PASS] B582 rechaza 'ÍNDICE DE ACTUALIZACIÓN' (título de otra cosa)
+  [PASS] B582 rechaza 'INDICE GENERAL' (más de una palabra)
+  [PASS] B582 rechaza 'Índice' (forma sola: ya la toma el vigente B5.2, no esta regla)
+  [PASS] 'INDICE' en línea 7 (> POS_MARCA_INDICE=5) NO clasifica índice ni con el flag
+  [PASS] página tras el índice con dos líneas 'SECCION 1 – …' en zona sigue siendo cuerpo (la continuación de índice queda en la regla vigente) — ['indice', 'cuerpo']
+== C. variantes de encabezado de sección y numeración no numérica
+  [PASS] B582 sección matchea 'SECCION 1 - MARCO CONTABLE' → 1 (caps + arábigo + guion (ri_dcpc índice)) — ('1', 'MARCO CONTABLE')
+  [PASS] B582 sección matchea 'SECCION 1 – MARCO CONTABLE' → 1 (caps + arábigo + guion largo (ri_dcpc p.3)) — ('1', 'MARCO CONTABLE')
+  [PASS] B582 sección matchea 'SECCIÓN I – INSTRUCCIONES GENERALES' → I (caps + romano (ri_psp p.2)) — ('I', 'INSTRUCCIONES GENERALES')
+  [PASS] B582 sección matchea 'SECCIÓN III – APARTADO B: INFORMACIÓN ESTADÍ' → III (caps + romano compuesto (ri_psp p.5)) — ('III', 'APARTADO B: INFORMACIÓN ESTADÍSTICA')
+  [PASS] B582 sección matchea 'Sección A – Introducción' → A (letra + guion largo (reqcac p.3)) — ('A', 'Introducción')
+  [PASS] B582 sección matchea 'Sección B - Controles Generales de Tecnologí' → B (letra + guion (reqcac p.4)) — ('B', 'Controles Generales de Tecnología')
+  [PASS] B582 sección matchea 'Sección C. Controles a los Sistemas de Infor' → C (letra + punto (reqcac índice p.2)) — ('C', 'Controles a los Sistemas de Información')
+  [PASS] B582 sección matchea 'Sección I – Instrucciones generales' → I (romano mixto (ri_psp índice)) — ('I', 'Instrucciones generales')
+  [PASS] B582 sección rechaza 'Sección Punto Párrafo Com. Anexo Punto Párra' (sin separador tras el token (seguef p.19))
+  [PASS] B582 sección rechaza 'la sección 4: requisitos' (remisión en prosa (guarda vigente))
+  [PASS] B582 sección rechaza 'sección C – controles' (minúscula inicial)
+  [PASS] B582 sección rechaza 'Sección C establece los controles aplicables' (sin separador)
+  [PASS] B582 sección rechaza 'SECCION 1. MARCO CONTABLE' (caps con punto: forma no medida)
+  [PASS] B582 sección rechaza 'SECCIONES 2 – DE OTRA COSA' (palabra distinta)
+  [PASS] interpretaciones de 'C': letra 3 y NO romano (fuera del rango 1-39)
+  [PASS] A→B→C avanza por letras (sin salto)
+  [PASS] I→II avanza por romanos
+  [PASS] IV→VI NO sucede (salto reportable, caso ri_psp)
+  [PASS] 3→4 avanza por números
+  [PASS] orden de reporte: I→1, C→3, VI→6, '7'→7 (dígitos = orden histórico) — [1, 3, 6, 7]
+== D. integración sintética con la anatomía de reqcac
+  [PASS] roles: índice vigente + 3 páginas de cuerpo — ['indice', 'cuerpo', 'cuerpo', 'cuerpo']
+  [PASS] secciones A y B por variante, en orden y sin saltos — ['A', 'B']
+  [PASS] cola envuelta desactivada: el título de A queda 'Introducción' (la prosa inmediata NO se pega) — 'Introducción'
+  [PASS] banner de caja mixta descartado en las 3 páginas de cuerpo
+  [PASS] la página de continuación fluye a la sección B abierta (aviso pagina_cuerpo_sin_seccion registrado)
+  [PASS] punto '1.1.' bajo sección con letra: rechazado con registro (fuera_de_seccion_B), sigue como prosa — ['fuera_de_seccion_B']
+  [PASS] unidades SA y SB emitidas — ['tst::SA', 'tst::SB']
+  [PASS] cobertura exacta (cero pérdida) con banner y variantes activos
+  [PASS] el texto de SB contiene la prosa de la página de continuación
+  [PASS] índice extendido: entradas de sección A y B por variante letra+punto — [('A', 'Introducción'), ('B', 'Controles Generales')]
+  [PASS] divergencias con letras: sin crash y sin faltantes en ambas direcciones
+  [PASS] IV→VI abre ambas secciones y reporta salto_seccion — [{'tipo': 'salto_seccion', 'de': 'IV', 'a': 'VI', 'pagina': 3}]
+  [PASS] línea mixta repetida en 2 páginas < MIN_PAGS_BANNER: no se marca banner — set()
+== E. escalera del health-check sobre PDFs reales
+  [PASS] reqcac: modo 'marcadores', 3 unidades (SA/SB/SC), sin clave indice_b582 (sus roles ya eran los vigentes) — modo=marcadores unid=3
+  [PASS] consyr: modo 'sin_raiz' con clave indice_b582 (variante 'Índice -' reclasificó la página) y unidades > 0 — modo=sin_raiz unid=32
+  [PASS] consyr: la página de índice quedó fuera del cuerpo — {'cuerpo': 6, 'historial': 2, 'indice': 1, 'portada': 1, 'tabla_norma_origen': 1}
+  [PASS] pro (subset dev): modo 'vigente', sano y sin claves nuevas — modo=vigente veredicto=sano
+
+SELFTEST B5.8.2: 59/59 PASS
+== selftest_b582 rc=0 fin 17:20:46
+== selftest_b583 inicio 17:20:46
+A. Garantía estructural de no-cambio
+  [PASS] A1 e0_tablas no importa e0_lib
+  [PASS] A2 e0_tablas no importa healthcheck_e0 ni correr_e0
+  [PASS] A3 e0_lib no conoce a e0_tablas (ninguna rama del camino vigente pasa por el parser)
+B. Regla de tabla de contenido (sellada por el censo B5.8.0)
+  [PASS] B1 3x2 en zona media es tabla de contenido (montos capmin p.4)
+  [PASS] B2 banner de 2 filas cae por min_filas (capmin p.4 t0)
+  [PASS] B3 pie de 1 fila cae por min_filas
+  [PASS] B4 3 filas integramente en el 12% superior caen por banner_superior
+  [PASS] B5 3 filas integramente en el 10% inferior caen por pie_inferior
+  [PASS] B6 una columna cae por min_cols
+  [PASS] B7 tabla grande que ARRANCA en zona de banner pero sigue no cae (no esta integramente contenida)
+C. Guarda de alineación (RX-10)
+  [PASS] C1 el colapso de ric p.8 dispara (19 fragmentos numericos, columna vacia) — {'fila': 4, 'columna': 2, 'fragmentos': 19, 'fragmentos_numericos': 19, 'columna_vacia_pct': 0.667}
+  [PASS] C2 'Vigencia:\n01/07/2021' no dispara (2 fragmentos)
+  [PASS] C3 la fusion '3%\n6%' de manual p.256 no dispara (fusion declarada, no rechazo)
+  [PASS] C4 descripcion envuelta no numerica no dispara (ri_laft)
+  [PASS] C5 columna numerica poblada fila a fila no dispara aunque haya una celda multilinea
+D. Encabezado conservador
+  [PASS] D1 titulo en primera columna capturado (ri_laft) — {'titulo': 'TABLA FORMA JURIDICA', 'filas_titulo': 1, 'filas_encabezado': 1, 'columnas': ['Código', 'Descripción'], 'estado': 'determinado'}
+  [PASS] D2 'Factor de ponde-' (ultima columna) NO es titulo y se fusiona envuelto — {'titulo': None, 'filas_titulo': 0, 'filas_encabezado': 4, 'columnas': ['Código', 'Concepto', 'Factor de ponde- ración (en %)'], 'estado': 'determinado'}
+  [PASS] D3 encabezado directo sin titulo (capmin p.4; la fila de unidad de medida integra la zona de encabezado) — {'titulo': None, 'filas_titulo': 0, 'filas_encabezado': 2, 'columnas': ['Bancos -En millones de pesos-', 'Restantes entidades\n(salvo Cajas de Crédito Cooperativas)'], 'estado': 'determinado'}
+  [PASS] D4 sin señales queda no_determinado y nada se recorta
+E. Costura: repeticion verbatim o nada
+  [PASS] E1 titulo y encabezado repetidos verbatim detectados (ri_laft p.5→6)
+  [PASS] E2 sin repeticion verbatim devuelve vacio (candidata, jamas fusion)
+  [PASS] E3 encabezado repetido sin titulo tambien cose (ri_acsf p.2→3)
+F. Casos reales (PDFs del repo)
+  [PASS] F1 TESTIGO RX-10: la tabla de montos de capmin 1.2 se parsea con estructura — [['Bancos', 'Restantes entidades\n(salvo Cajas de Crédito Cooperativas)'], ['-En millones de pesos-', None], ['5.000', '2.500']]
+  [PASS] F2 TESTIGO RX-10: emparejamiento por columna = bancos 5.000 / restantes 2.500
+  [PASS] F3 TESTIGO RX-10: reconstruccion con perdida 0
+  [PASS] F4 ric p.8 (ponderadores) DECLARADA alineacion_no_confiable, no emitida — ['alineacion_no_confiable']
+  [PASS] F5 ric p.20 (planilla con encabezado rotado): perdida 0 por caracteres, diferencia por tokens declarada informativa — 0.0
+  [PASS] F6 ri_acsf rinde por la via tabular (control negativo de B5.8.1) — {'tablas_logicas': 1, 'parseadas': 1, 'declaradas': 0, 'segmentos': 2, 'costuras_aplicadas': 1, 'costuras_candidatas': 0, 'filas_total': 34, 'paginas_con_tabla_contenido': 2, 'notas_pie': 0, 'rinde': True}
+  [PASS] F7 ri_acsf: el encabezado repetido de la continuacion queda marcado, no es dato
+  [PASS] F8 ri_laft: 8 tablas logicas sobre los 43 segmentos fisicos del scoping — {'tablas_logicas': 8, 'parseadas': 8, 'declaradas': 0, 'segmentos': 43, 'costuras_aplicadas': 35, 'costuras_candidatas': 1, 'filas_total': 1209, 'paginas_con_tabla_contenido': 41, 'notas_pie': 0, 'rinde': True}
+  [PASS] F9 ri_laft p.9: geometria sin encabezado repetido queda CANDIDATA sin fusionar
+  [PASS] F10 ...y es en efecto otra tabla (TABLA PROVINCIA, logica propia)
+  [PASS] F11 ri2_pm: la caja de caratula vacia de p.1 se descarta sin_contenido y el TO queda declarado (su material es ficha, no tabla) — {'tablas_logicas': 0, 'parseadas': 0, 'declaradas': 0, 'segmentos': 0, 'costuras_aplicadas': 0, 'costuras_candidatas': 0, 'filas_total': 0, 'paginas_con_tabla_contenido': 0, 'notas_pie': 0, 'rinde': False}
+
+33/33 checks OK
+== selftest_b583 rc=0 fin 17:21:53
