@@ -1,0 +1,116 @@
+--- c2_o2/data/experiment/tanda0/code/ensamblar_tanda0.py	2026-10-10 07:59:07
++++ c2_e/data/experiment/tanda0/code/ensamblar_tanda0.py	2026-10-10 08:07:35
+@@ -1551,6 +1551,86 @@
+         else:
+             c["extraccion"] += 1
+     return c
++
++
++# U-OMISIONES-COD, grupo A, ítem e (pieza aparte): el clasificador determinístico de la copia de la nota de E3,
++# diseñado en O1 (`omisiones_cod/o1/diseno_O1.md`, variante «ventana3+flexion»). Entra solo si la lectura de su
++# precisión llega al piso (notas del 10/10/2026 al pie de la v7). Marca; no rechaza ni corrige; no toca kg.json.
++VENTANA_COPIA_NOTA_CLASIFICADOR = 3
++ESTADO_COPIA_NOTA = "aceptado_tras_reintento"
++
++
++def _ventanas(toks: list[str], n: int) -> set[tuple[str, ...]]:
++    return {tuple(toks[i:i + n]) for i in range(len(toks) - n + 1)}
++
++
++def _flexion_en(t: str, toks_unidad: set) -> bool:
++    raiz = t[:max(4, len(t) - 3)]
++    return any(u != t and u.startswith(raiz) and abs(len(u) - len(t)) <= 4 for u in toks_unidad)
++
++
++def clasificar_campo_copia_nota(texto: str, ctx: dict, V, vacias, metalenguaje) -> dict | None:
++    """Las ventanas de VENTANA_COPIA_NOTA_CLASIFICADOR tokens del campo que están en una nota del feedback y no en el
++    texto de la unidad ni en las citas; sobre sus palabras, clase 1 (metalenguaje del verificador) o clase 3 (palabra
++    de contenido ausente de la unidad que no es una flexión de una palabra de la unidad). None si no hay detección."""
++    n = VENTANA_COPIA_NOTA_CLASIFICADOR
++    ws = (_ventanas(V.norm_tokens(texto), n) & ctx["ventanas_notas"]) - ctx["ventanas_unidad"] - ctx["ventanas_citas"]
++    toks = {t for w in ws for t in w}
++    fuera = ctx["toks_unidad"] | ctx["toks_citas"]
++    meta = sorted(t for t in toks if t in metalenguaje and t not in fuera)
++    contenido = sorted(t for t in toks if t not in fuera and t not in vacias and t not in metalenguaje
++                       and not t.isdigit() and not _flexion_en(t, ctx["toks_unidad"]))
++    if not meta and not contenido:
++        return None
++    return {"clase": 1 if meta else 3, "metalenguaje": meta, "palabras_de_la_nota": contenido,
++            "ventanas": sorted(" ".join(w) for w in ws)[:5]}
++
++
++def clasificar_copias_nota_r2b(regs: list[dict], chunks: dict[str, dict], tdir: Path, V) -> list[dict]:
++    """(e): las entidades de la extracción final de las unidades aceptadas tras un reintento de E3 (las únicas del grafo
++    escritas después de leer la nota; la cola entra con el primer intento), campo por campo (descripción y etiqueta),
++    contra las notas de los faltantes de la verificación anterior al último reintento (`veredictos.jsonl`). Las listas
++    VACIAS y METALENGUAJE son las de la regla de lectura de P3b-2 (`prompt_r2/p3b2/lista_copia_nota.py`)."""
++    import runner_corpus as RC  # noqa: PLC0415
++    p3b2 = str(REPO / "data" / "experiment" / "prompt_r2" / "p3b2")
++    if p3b2 not in sys.path:
++        sys.path.insert(0, p3b2)
++    import lista_copia_nota as L0  # noqa: PLC0415
++    fin = RC.cargar_jsonl_last_wins(Path(tdir) / "finales.jsonl")
++    ver: dict[str, list[dict]] = {}
++    p = Path(tdir) / "veredictos.jsonl"
++    if p.exists():
++        for x in p.read_text(encoding="utf-8").splitlines():
++            if x.strip():
++                v = json.loads(x)
++                ver.setdefault(v["chunk_id"], []).append(v)
++    out = []
++    for r in regs:
++        f = fin.get(r["chunk_id"])
++        if not f or f.get("estado") != ESTADO_COPIA_NOTA or not r.get("validacion"):
++            continue
++        n = f.get("n_reintentos") or 0
++        previa = [v for v in ver.get(r["chunk_id"], []) if v.get("intento") == n - 1][-1:]
++        notas = [x.get("nota") or "" for v in previa for x in (v.get("faltantes") or [])]
++        citas = [x.get("cita_textual_del_fuente") or "" for v in previa for x in (v.get("faltantes") or [])]
++        ch = chunks[r["chunk_id"]]
++        unidad = V.norm_tokens(V.texto_completo(ch))
++        nt = [V.norm_tokens(x) for x in notas]
++        ct = V.norm_tokens(" \n ".join(citas))
++        ctx = {"toks_unidad": set(unidad), "toks_citas": {t for x in citas for t in V.norm_tokens(x)},
++               "ventanas_notas": set().union(*(_ventanas(x, VENTANA_COPIA_NOTA_CLASIFICADOR) for x in nt)) if nt else set(),
++               "ventanas_unidad": _ventanas(unidad, VENTANA_COPIA_NOTA_CLASIFICADOR),
++               "ventanas_citas": _ventanas(ct, VENTANA_COPIA_NOTA_CLASIFICADOR)}
++        for e in r["validacion"].get("entidades", []):
++            props = e.get("properties") if isinstance(e.get("properties"), dict) else {}
++            for campo, texto in (("descripcion", props.get("descripcion")), ("label", e.get("label"))):
++                if not isinstance(texto, str) or not texto:
++                    continue
++                c = clasificar_campo_copia_nota(texto, ctx, V, L0.VACIAS, L0.METALENGUAJE)
++                if c is not None:
++                    out.append({"chunk_id": r["chunk_id"], "to": r.get("to"), "local_id": e.get("local_id"),
++                                "type": e.get("type"), "campo": campo, "texto": texto, **c})
++    return out
+ 
+ 
+ CAUSA_UNIDAD_EXCLUIDA = "destino_en_unidad_excluida"
+@@ -1640,6 +1720,7 @@
+     conflictos_intra: list[dict] = []
+     procedencia_g_r: list[dict] = []
+     supuestos: list[dict] = []
++    copias_nota: list[dict] = []
+     resumen["e2_por_to"] = {}
+     for to in C.TOS_ORDEN:
+         chunks = _chunks_r2(to)
+@@ -1663,6 +1744,7 @@
+                                          V, pol.holgura)
+                           for r in regs for o in (r.get("validacion") or {}).get("omisiones", [])]
+             supuestos += supuestos_en_norma(regs, to, V)
++            copias_nota += clasificar_copias_nota_r2b(regs, {c["id"]: c for c in chunks}, C.SALIDA / to, V)
+             paso_por_e3[to] = RC.conteo_paso_por_e3(regs)
+             chunks_cola |= set(cola_estados)
+         r_cola = e2_lib.flaggear_cola_r2(grafos[to], cola_estados)
+@@ -1766,6 +1848,10 @@
+             "es_item": sum(1 for o in ent if o["texto_propio_entero"]["es_item"]),
+             "con_extraccion": sum(1 for o in ent if o["texto_propio_entero"]["con_extraccion"])}
+         wl("supuestos_en_norma.jsonl", supuestos)
++        wl("copias_nota_clasificadas.jsonl", copias_nota)
++        resumen["copias_nota_clasificadas"] = {"detecciones": len(copias_nota), "unidades": len({x["chunk_id"] for x in copias_nota}),
++                                               "por_clase": C.conteo([{"c": str(x["clase"])} for x in copias_nota], "c"),
++                                               "por_to": C.conteo(copias_nota, "to")}
+         resumen["supuestos_en_norma"] = {"entidades": len(supuestos), "unidades": len({x["chunk_id"] for x in supuestos}),
+                                          "por_tipo": C.conteo(supuestos, "type"), "por_to": C.conteo(supuestos, "to")}
+         w("procedencia_g_r.json", procedencia_g_r)

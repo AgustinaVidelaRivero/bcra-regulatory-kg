@@ -1,0 +1,139 @@
+--- a/data/experiment/r2_codigo/selftest_r3.py
++++ b/data/experiment/r2_codigo/selftest_r3.py
+@@ -55,6 +55,12 @@
+       del catálogo, `mencion_no_verificada`, `sin_mencion`), con S19 sobre su
+       grafo (falla antes, pasa después); control: el mismo propuesto en un
+       documento con alcance sigue por el paso c.
++  T13 U-OMISIONES-COD (v7 firmada en c90d3d9 y notas del 10/10/2026 al pie): f′, el singular «entidad» en la lista
++      de R3 con la opción (ii) (R3 solo en un TO con rol; sin rol, `sin_match`; los calificadores y los
++      determinantes no son «entidad»; con la sugerencia del modelo, R4 y la marca de desacuerdo); J, cada
++      `remite_a` con la procedencia de su propio origen y la cita heredada con la marca sin tramo; y el
++      agrupamiento sin el rol de la atribución de `remite_a` (los roles heredados distintos de un mismo punto no
++      parten el grupo).
+ Escribe solo en un directorio temporal (TMPDIR). USD 0.
+ 
+ Uso:
+@@ -1022,6 +1028,115 @@
+           and "padre_desde_sugerencia_modelo" not in pr and "padre_por_defecto_generico" not in pr
+           and (rs["padre_desde_sugerencia_modelo"], rs["padre_por_defecto_generico"], rs["padre_por_defecto"],
+                rs["sin_rol_de_alcance"]) == (0, 0, 1, 0) and despues["result"] == "PASS", f"{pr} | rol {rol}")
++
++
++def t13():
++    print("T13. U-OMISIONES-COD: f′ (R3 en singular), J (procedencia propia) y agrupamiento sin rol")
++    idx = {("label_exacto", "entidad financiera"): "Sujeto_entidad_financiera"}
++    pref = E4._prefijos(idx)
++    r = E4.resolver_mencion_r2("la entidad", None, idx, pref, "Sujeto_rol_x")
++    check("T13a f′+ «la entidad» en un TO con rol → R3, el rol", r["regla"] == "R3" and r["id"] == "Sujeto_rol_x", str(r))
++    for men, regla, motivo in (("la entidad financiera", "R1", None), ("la entidad nominada", None, "sin_match"),
++                               ("esta entidad", None, "sin_match"), ("la mencionada entidad", None, "sin_match"),
++                               ("la/s entidad/es encargada/s del seguimiento", None, "sin_match")):
++        r = E4.resolver_mencion_r2(men, None, idx, pref, "Sujeto_rol_x")
++        check(f"T13b f′- «{men}» no es «entidad» → {regla or motivo}", r["regla"] == regla and r["motivo"] == motivo,
++              str(r))
++    r = E4.resolver_mencion_r2("la entidad", None, idx, pref, None)
++    check("T13c f′ opción (ii): «la entidad» en un TO sin rol → sin_match (no colectivo_sin_sujeto_por_defecto)",
++          r["regla"] is None and r["motivo"] == "sin_match", str(r))
++    r = E4.resolver_mencion_r2("las entidades", None, idx, pref, None)
++    check("T13c f′ opción (ii)-: «las entidades» en un TO sin rol sigue en colectivo_sin_sujeto_por_defecto",
++          r["motivo"] == "colectivo_sin_sujeto_por_defecto", str(r))
++
++    def reg(archivo, men, modelo):
++        return {"chunk_id": "syn::1", "to": "syn", "archivo": archivo, "validacion": {
++            "entidades": [{"local_id": "e1", "type": "Obligacion", "label": "x"}],
++            "relaciones": [{"predicate": "aplica_a", "source": "e1", "target": None, "punto": "1", "indice_crudo": 0,
++                            "sujeto_mencion": men, "mencion_verificada": "exacta", "sujeto_id_modelo": modelo}]}}
++    rol = {"CON_ROL.pdf": {"rol_id": "Sujeto_rol_x"}}
++    for archivo, men, modelo, esperado in (
++            ("SIN_ROL.pdf", "la entidad", "Sujeto_banco", ("R4_sugerencia_modelo", "Sujeto_banco", None, False)),
++            ("SIN_ROL.pdf", "la entidad", None, ("cuarentena", None, "sin_match", False)),
++            ("SIN_ROL.pdf", "las entidades", "Sujeto_banco", ("cuarentena", None, "colectivo_sin_sujeto_por_defecto", False)),
++            ("CON_ROL.pdf", "la entidad", None, ("R3", "Sujeto_rol_x", None, False)),
++            ("CON_ROL.pdf", "la entidad", "Sujeto_entidad_financiera",
++             ("R4_sugerencia_modelo", "Sujeto_entidad_financiera", None, True))):
++        res = E4.resolver_relaciones_r2([reg(archivo, men, modelo)], idx, rol, {"catalogo_sha256": "x"}, parte_a=True)
++        f = res["resolucion"][0]
++        got = (f["metodo_resolucion"], f["resuelto_a"], res["registro"][0]["motivo"] if res["registro"] else None,
++               f["desacuerdo_regla_modelo"])
++        check(f"T13d f′ en la cadena: {archivo}, «{men}», sugerencia {modelo} → {esperado}", got == esperado, str(got))
++
++    # J y el agrupamiento sin rol (sintéticos, E0 de un TO «syn»)
++    def prov(punto, rol, cid, tramo):
++        return {"to": "syn", "archivo": "syn.pdf", "punto": punto, "rol_documental": rol, "chunk_id": cid, "tramo": tramo,
++                "tramo_verificado": "exacta"}
++
++    def nodo_p(nid, tipo, desc, *provs):
++        return {"id": nid, "type": tipo, "label": nid, "properties": {"descripcion": desc},
++                "provenance": dict(provs[0]), "provenances": [dict(x) for x in provs]}
++    destino = chunk("syn::2.1", "2.1", "2.1. Cuerpo.\nTexto de cuerpo.")
++    origen = chunk("syn::1.1", "1.1", "Las entidades observarán el punto 2.1. Y también el punto 2.1. en su caso.")
++    kg_j = {"nodes": [nodo_p("Obligacion_a", "Obligacion", "cumplir el punto 2.1.",
++                             prov("1.1", "punto_propio", "syn::1.1", "Las entidades observarán el punto 2.1.")),
++                      nodo_p("Obligacion_b", "Obligacion", "lo del punto 2.1. en su caso",
++                             prov("1.1", "punto_propio", "syn::1.1", "Y también el punto 2.1. en su caso")),
++                      nodo_p("Restriccion_d", "Restriccion", "x", prov("2.1", "punto_propio", "syn::2.1", "Cuerpo"))],
++            "edges": []}
++    with e0_sintetico([origen, destino]):
++        sin = REF.detectar_y_resolver(json.loads(json.dumps(kg_j)), perfil="r2")
++        con = REF.detectar_y_resolver(json.loads(json.dumps(kg_j)), perfil="r2", procedencia_propia=True,
++                                      agrupar_sin_rol=True)
++    tr = lambda r: {e["source"]: e["provenance"].get("tramo") for e in r["nuevas"]}  # noqa: E731
++    check("T13e J+ dos orígenes del mismo punto con tramos distintos: cada arista con el tramo de su origen",
++          tr(con) == {"Obligacion_a": "Las entidades observarán el punto 2.1.",
++                      "Obligacion_b": "Y también el punto 2.1. en su caso"}, str(tr(con)))
++    check("T13e J- sin la opción, las dos llevan la procedencia del primer nodo del punto (la salida de siempre)",
++          set(tr(sin).values()) == {"Las entidades observarán el punto 2.1."}, str(tr(sin)))
++    check("T13e J: mismas aristas, destino y evidencia con y sin la opción",
++          sorted((e["source"], e["target"], json.dumps(e["properties"], sort_keys=True)) for e in sin["nuevas"])
++          == sorted((e["source"], e["target"], json.dumps(e["properties"], sort_keys=True)) for e in con["nuevas"]))
++    hijo = chunk("syn::5.1.2", "5.1.2", "5.1.2. Texto propio sin citas.")
++    hijo["herencia"] = [{"unidad_origen": "5.1", "tipo": "encabezado", "texto": "5.1. Operaciones."},
++                        {"unidad_origen": "5.1", "tipo": "intro", "texto": "Las comprendidas en el punto 3.2. de estas normas."}]
++    otro = chunk("syn::5.1.3", "5.1.3", "5.1.3. Cumplirán lo previsto en el punto 3.2.")
++    otro["herencia"] = [{"unidad_origen": "4.1", "tipo": "encabezado", "texto": "4.1. Antecedentes del punto 3.2."}]
++    d32 = chunk("syn::3.2", "3.2", "3.2. Cuerpo.\nTexto.")
++    kg_g = {"nodes": [nodo_p("Obligacion_nombra", "Obligacion", "las operaciones del punto 3.2.",
++                             prov("5.1", "herencia_encabezado", "syn::5.1.2", "5.1. Operaciones.")),
++                      nodo_p("Obligacion_otra", "Obligacion", "otra cosa sin número",
++                             prov("5.1", "herencia_intro", "syn::5.1.2", "Las comprendidas")),
++                      nodo_p("Obligacion_h", "Obligacion", "lo del punto 3.2. de estas normas",
++                             prov("5.1.3", "punto_propio", "syn::5.1.3", "Cumplirán lo previsto en el punto 3.2.")),
++                      nodo_p("Restriccion_32", "Restriccion", "x", prov("3.2", "punto_propio", "syn::3.2", "Cuerpo"))],
++            "edges": []}
++    with e0_sintetico([hijo, otro, d32]):
++        partido = REF.detectar_y_resolver(json.loads(json.dumps(kg_g)), perfil="r2", procedencia_propia=True)
++        agrupado = REF.detectar_y_resolver(json.loads(json.dumps(kg_g)), perfil="r2", procedencia_propia=True,
++                                           agrupar_sin_rol=True)
++    fuentes = lambda r: sorted(e["source"] for e in r["nuevas"] if e["target"] == "Restriccion_32")  # noqa: E731
++    check("T13f agrupamiento sin rol+: la cita del bloque heredado va solo al nodo del punto que la nombra",
++          fuentes(agrupado) == ["Obligacion_h", "Obligacion_nombra"], str(fuentes(agrupado)))
++    check("T13f agrupamiento sin rol-: con el grupo partido por el rol, el nodo que no la nombra también la recibe",
++          fuentes(partido) == ["Obligacion_h", "Obligacion_nombra", "Obligacion_otra"], str(fuentes(partido)))
++    e_n = next((e for e in agrupado["nuevas"] if e["source"] == "Obligacion_nombra"), {})
++    check("T13f J con el agrupamiento: la arista lleva la procedencia propia del nodo (su rol y su tramo)",
++          e_n.get("provenance", {}).get("rol_documental") == "herencia_encabezado"
++          and e_n["provenance"].get("tramo") == "5.1. Operaciones.", json.dumps(e_n.get("provenance")))
++    with e0_sintetico([chunk("syn::5.1.2", "5.1.2", "5.1.2. Texto propio sin citas.") | {"herencia": [
++            {"unidad_origen": "5.1", "tipo": "encabezado", "texto": "5.1. Operaciones.\nLas comprendidas en los puntos 3.1. a 3.3."}]}]
++            + [chunk(f"syn::3.{k}", f"3.{k}", f"3.{k}. Cuerpo.\nTexto.") for k in (1, 2, 3)]):
++        kg_i = {"nodes": [nodo_p("Obligacion_nombra", "Obligacion", "operaciones del punto 3.2.",
++                                 prov("5.1.2", "punto_propio", "syn::5.1.2", "Texto propio sin citas"))]
++                + [nodo_p(f"Restriccion_3{k}", "Restriccion", "x", prov(f"3.{k}", "punto_propio", f"syn::3.{k}", "Cuerpo"))
++                   for k in (1, 2, 3)], "edges": []}
++        ri = REF.detectar_y_resolver(json.loads(json.dumps(kg_i)), perfil="r2", procedencia_propia=True,
++                                     agrupar_sin_rol=True)
++    e_i = next((e for e in ri["nuevas"] if e["target"] == "Restriccion_32"), {})
++    check("T13g J: la cita del texto heredado lleva la procedencia de su unidad con la marca sin tramo",
++          e_i.get("provenance", {}).get("punto") == "5.1" and e_i["provenance"].get("tramo") is None
++          and e_i["provenance"].get("tramo_verificado") == "ausente", json.dumps(e_i.get("provenance")))
+ 
+ 
+ def main() -> int:
+@@ -1036,6 +1151,7 @@
+     t10()
+     t11()
+     t12()
++    t13()
+     ok = sum(1 for _, b, _ in RES if b)
+     print(f"SELFTEST R3: {ok}/{len(RES)} {'PASS' if ok == len(RES) else 'FAIL'}")
+     return 0 if ok == len(RES) else 1

@@ -1,0 +1,303 @@
+"""U-OMISIONES-COD — selftest de los cambios del ensamblado (`tanda0/code/ensamblar_tanda0.py`): grupo A (a a d),
+grupo C (g, g1, g2, g3), grupo L, G-r, K y (h). Mandato firmado en c90d3d9 (v7) y notas del 10/10/2026 al pie.
+
+  S  casos sintéticos de cada función, con un positivo y un negativo (siempre);
+  R  los casos de la v7 sobre la salida `r2/` de la cadena r2b de diez con el código nuevo (y la sin cola, para K):
+     ext::5.8.2.2 y ctacte::2.1.1.4 (c), ext::10.5.5.2 (d), ext::3.8, ext::14.2.2 y ext::3.18.3 (g), «04/07/24»,
+     «una vez al año», «"AA"» y «fecha de entrega…» (g1), cap::2.3.1 y las 4 de cla::3.7 (g2), las dos «APR» de
+     cap::8.3.2.12 y las tres Definicion únicas (g3), cap::12.3 y cla::6.5.4.7 (L), ctacte::2.1.1.4 y ext::3.16.3.4
+     (G-r), y la causa propia de K en la sin cola. Solo con --salida-r2 (y --salida-r2-sincola).
+
+Corre desde la raíz de una COPIA del repo o del repo; no escribe nada. USD 0, sin API.
+Uso: PYTHONDONTWRITEBYTECODE=1 <repo>/.venv/bin/python -B data/experiment/omisiones_cod/selftest_ensamblado_omisiones.py
+     [--salida-r2 DIR] [--salida-r2-sincola DIR]
+"""
+from __future__ import annotations
+
+import argparse
+import contextlib
+import json
+import sys
+import tempfile
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(REPO / "data" / "experiment" / "tanda0" / "code"))
+import ensamblar_tanda0 as ENS  # noqa: E402
+
+V = ENS.E4.modulo_validador_r2()
+M = ENS.E4.modulo_modelos_r2()
+import reglas_comparacion as RCMP  # noqa: E402  (pyd_r2/code, en el path por modulo_modelos_r2)
+
+C, REF = ENS.C, ENS.REF
+RES: list[tuple[str, str, bool, str]] = []
+
+
+def check(grupo: str, nombre: str, ok: bool, detalle: str = "") -> None:
+    RES.append((grupo, nombre, bool(ok), str(detalle)[:240]))
+
+
+def jl(p: Path) -> list[dict]:
+    return [json.loads(x) for x in Path(p).read_text(encoding="utf-8").splitlines() if x.strip()]
+
+
+# --------------------------------------------------------------------------------------------------- sintéticos
+def chunk(cid, unidad, texto, herencia=(), **extra):
+    return {"id": cid, "to": "syn", "archivo": "syn.pdf", "unidad": unidad, "texto": texto, "herencia": list(herencia),
+            "paginas": [1], "tipo": "punto_terminal", "titulo": "", **extra}
+
+
+def s_grupo_A() -> None:
+    g = "S A"
+    ch = chunk("syn::1.2.3", "1.2.3", "1.2.3. Las entidades deberán informar el saldo.",
+               [{"unidad_origen": "1.2", "tipo": "encabezado", "texto": "1.2. Régimen informativo de los saldos del mes."}])
+    om = lambda t, cat="meta_normativo": {"chunk_id": "syn::1.2.3", "to": "syn", "categoria": cat, "tramo": t}  # noqa: E731
+    o = ENS.marcar_omision(om("Régimen informativo de los saldos del mes"), ch, False, V, 2)
+    check(g, "(a)+ tramo solo en el heredado → tramo_en_heredado", o.get("tramo_en_heredado") is True)
+    o = ENS.marcar_omision(om("deberán informar el saldo"), ch, True, V, 2)
+    check(g, "(a)- tramo en el texto propio → sin la marca", "tramo_en_heredado" not in o)
+    check(g, "(b)+ marca del contador (deber) → revisar con su motivo", o.get("revisar") == ["contador:deber"],
+          o.get("revisar"))
+    o = ENS.marcar_omision(om("Es deseable que el saldo se informe"), chunk("syn::9", "9", "Es deseable que el saldo se "
+                                                                          "informe en término."), False, V, 2)
+    check(g, "(b)+ recomendación («es deseable») → revisar, con el motivo de recomendación",
+          "recomendacion:copula_deseable" in (o.get("revisar") or []), o.get("revisar"))
+    o = ENS.marcar_omision(om("el saldo"), ch, True, V, 2)
+    check(g, "(b)- sin marca del contador ni recomendación → sin revisar", "revisar" not in o)
+    o = ENS.marcar_omision(om("el saldo", "fuera_de_tipos"), ch, True, V, 2)
+    check(g, "(b)- fuera de meta_normativo no se marca revisar", "revisar" not in o)
+    o = ENS.marcar_omision(om("1.2.3. Las entidades deberán informar el saldo."), ch, True, V, 2)
+    check(g, "(c)+ el tramo cubre todo el texto propio (sin la numeración) → texto_propio_entero",
+          o.get("texto_propio_entero") == {"es_item": bool(V._es_item(ch)), "con_extraccion": True},
+          o.get("texto_propio_entero"))
+    o = ENS.marcar_omision(om("Las entidades deberán informar"), ch, True, V, 2)
+    check(g, "(c)- una omisión entre nodos extraídos (cobertura parcial) → sin la marca", "texto_propio_entero" not in o)
+    regs = [{"chunk_id": "syn::1", "validacion": {"entidades": [
+        {"local_id": "e1", "type": "Obligacion", "label": "a", "properties": {"descripcion": "Cuando el cliente lo pida, informar"}},
+        {"local_id": "e2", "type": "Condicion", "label": "b", "properties": {"descripcion": "cuando el cliente lo pida"}},
+        {"local_id": "e3", "type": "Restriccion", "label": "c", "properties": {"descripcion": "no exceder el límite"},
+         "provenance": {"tramo": "si bien no se exige, no podrá exceder"}},
+        {"local_id": "e4", "type": "Potestad", "label": "d", "properties": {"descripcion": "podrá operar"},
+         "provenance": {"tramo": "podrá operar siempre que cuente con la autorización"}}]}}]
+    s = {x["local_id"]: x["marcadores"] for x in ENS.supuestos_en_norma(regs, "syn", V)}
+    check(g, "(d)+ norma con un conector condicional en la descripción o el tramo → supuesto_en_norma",
+          s.get("e1") == ["cuando"] and s.get("e4") == ["siempre_que"], s)
+    check(g, "(d)- la Condicion no se marca, y «si bien» no es un supuesto", "e2" not in s and "e3" not in s, s)
+
+
+@contextlib.contextmanager
+def e0_sintetico(chunks: list[dict]):
+    with tempfile.TemporaryDirectory() as d:
+        Path(d, "chunks_syn.json").write_text(json.dumps(chunks, ensure_ascii=False), encoding="utf-8")
+        Path(d, "estructura_syn.json").write_text(json.dumps({"secciones": []}), encoding="utf-8")
+        orig = (C.E0_ENM01, C.TOS_ORDEN, REF.INVENTARIO_TOS, REF.TITULOS_TOS)
+        C.E0_ENM01, C.TOS_ORDEN, REF.INVENTARIO_TOS = Path(d), ("syn",), {"syn": ("sintetico",)}
+        REF.TITULOS_TOS = {"syn": "sintetico"}
+        try:
+            yield
+        finally:
+            C.E0_ENM01, C.TOS_ORDEN, REF.INVENTARIO_TOS, REF.TITULOS_TOS = orig
+
+
+def s_grupo_C() -> None:
+    g = "S C"
+    for base, clase, vacia in (("04/07/24", "fecha", True), ("una vez al año", "periodicidad", True),
+                               ('"AA"', "cantidad_no_detectada", True),
+                               ("fecha de entrega de la primera chequera", "evento_o_plazo", True),
+                               ("alcanzar el total del monto de la financiación", "recorte_empieza_mal", False),
+                               ("monto admitido para el uso de efectivo en los puntos 3.8.", None, False)):
+        check(g, f"g1: «{base}» → {clase}, base {'vacía' if vacia else 'conservada'}",
+              ENS.clase_de_base_relativa(base) == (clase, vacia), ENS.clase_de_base_relativa(base))
+    otros = ENS.puntos_citados_de_otra_norma(["el importe de la previsión –puntos 6.5.1. y 7.2.1. del TO sobre "
+                                              "Clasificación de Deudores–"])
+    check(g, "g2+ «puntos 6.5.1. y 7.2.1. del TO sobre» → los dos puntos son de otra norma", otros == {"6.5.1", "7.2.1"}, otros)
+    otros = ENS.puntos_citados_de_otra_norma(["según el punto 3.7. Ver también el punto 1.1.3.4. de las normas sobre "
+                                              "“Gestión crediticia”."])
+    check(g, "g2- la cita a otra norma de la misma oración no alcanza al punto 3.7", otros == {"1.1.3.4"}, otros)
+    chunks = [chunk("syn::3.8", "3.8", "3.8. Monto admitido.\nTexto."), chunk("syn::6.5.1", "6.5.1", "6.5.1. Previsión.\nTexto.")]
+    with e0_sintetico(chunks):
+        kg_def = {("syn", C.norm("APR")): "Definicion_apr_1"}
+        b = ENS.resolver_base("monto admitido en los puntos 3.8.", "syn", kg_def, detector_r2=True,
+                              textos_unidad=["El monto admitido en los puntos 3.8. de estas normas."])
+        check(g, "g+ la base con remisión resuelve a su punto", b["base_destino"] == "syn::3.8" and b["via"] == "remision", b)
+        b = ENS.resolver_base("previsión (puntos 6.5.1", "syn", kg_def, detector_r2=True,
+                              textos_unidad=["la previsión –puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores–"])
+        check(g, "g2+ la remisión a un punto de otra norma no resuelve: marcada, con su motivo",
+              b["base_destino"] is None and b["marca"] == "base_no_resuelta" and b.get("motivo") == "cita_a_otra_norma", b)
+        b = ENS.resolver_base("previsión (puntos 6.5.1", "syn", kg_def, detector_r2=False,
+                              textos_unidad=["–puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores–"])
+        check(g, "g2- sin el detector r2 (r2a), la salida de siempre (sin guarda)", b.get("motivo") is None, b)
+        b = ENS.resolver_base("APR", "syn", kg_def, detector_r2=True, homonimos={("syn", C.norm("APR"))})
+        check(g, "g3+ Definicion con homónimas en el TO → marcada, con su motivo",
+              b["base_destino"] is None and b.get("motivo") == "definicion_homonima", b)
+        b = ENS.resolver_base("APR", "syn", kg_def, detector_r2=True, homonimos=set())
+        check(g, "g3- una sola Definicion → resuelve", b["base_destino"] == "Definicion_apr_1" and b["via"] == "definicion", b)
+        cont = {"base_del_validador": {"elementos_con_base": 0, "vaciadas_g1": {}, "resueltas": {}, "marcadas": 0},
+                "base_no_resuelta_por_motivo": {}}
+        rel = {"tramo": "no podrá exceder el saldo al 04/07/24", "comparacion": "maximo_inclusivo", "base": "04/07/24",
+               "regla_comparacion": "limite_relativo:marcador", "origen": "e1"}
+        x = ENS._base_del_validador(rel, "syn", kg_def, set(), [], cont, M)
+        check(g, "g1+ en el elemento del validador: la base que no es base queda vacía, sin marca",
+              "base" not in x and not x.get("base_no_resuelta") and cont["base_del_validador"]["vaciadas_g1"] == {"fecha": 1}, x)
+        rel2 = dict(rel, base="monto admitido en los puntos 3.8.")
+        x = ENS._base_del_validador(rel2, "syn", kg_def, set(), [("syn::9", "monto admitido en los puntos 3.8.")], cont, M)
+        check(g, "g+ en el elemento del validador: la base resuelve y lleva destino y vía",
+              x.get("base_destino") == "syn::3.8" and x.get("base_via") == "remision", x)
+        ens_el = {"tramo": "5 %", "valor": "5", "unidad": "porcentaje", "comparacion": "maximo_inclusivo", "base": "monto",
+                  "regla_comparacion": "maximo", "origen": "e1"}
+        check(g, "g- un elemento del ensamblado (no del validador) vuelve tal cual",
+              ENS._base_del_validador(ens_el, "syn", kg_def, set(), [], cont, M) is ens_el)
+
+
+def s_grupo_L() -> None:
+    g = "S L"
+    pol = type("P", (), {"holgura": 2})()
+    tramo = "El 17% en el caso de entidades del grupo B"
+    cs = RCMP.analizar(tramo)
+    el = M.ElementoUmbral.model_validate(RCMP.elemento_umbral(cs[0], cs[0].texto, "e1") | {"tramo_verificado": "exacta"}
+                                         ).model_dump(mode="json", exclude_defaults=True)
+    nuevo, estado = ENS.tramo_de_e1(el, tramo, [("c", "Exigencia. El 17% en el caso de entidades del grupo B.")], V, RCMP, pol, M)
+    check(g, "L+ tramo de E1 literal → el tramo, verificado «exacta»; los demás campos, iguales",
+          estado == "exacta" and nuevo["tramo"] == tramo and {k: v for k, v in nuevo.items() if k != "tramo"}
+          == {k: v for k, v in el.items() if k != "tramo"}, (estado, nuevo))
+    nuevo, estado = ENS.tramo_de_e1(el, "El 17 por ciento en el caso del grupo B", [("c", "El 17% en el caso de entidades "
+                                                                                       "del grupo B.")], V, RCMP, pol, M)
+    check(g, "L- tramo de E1 que no verifica → conserva la cuantía", estado == "conserva_la_cuantia" and nuevo == el,
+          (estado, nuevo))
+    comp = "entre el 5 % y menos del 20 % del patrimonio"
+    cs = RCMP.analizar(comp)
+    for c in cs:
+        e = M.ElementoUmbral.model_validate(RCMP.elemento_umbral(c, c.texto, "e1")).model_dump(mode="json", exclude_defaults=True)
+        nuevo, estado = ENS.tramo_de_e1(e, comp, [("c", f"Las financiaciones {comp}.")], V, RCMP, pol, M)
+        check(g, f"L+ tramo compartido: el {c.valor} guarda el tramo entero", estado == "exacta" and nuevo["tramo"] == comp)
+
+
+def s_grupo_G_r() -> None:
+    g = "S G-r"
+    pol = 2
+    ch = chunk("syn::5.1.2", "5.1.2", "5.1.2. Las boletas deben incluir lugar y fecha.",
+               [{"unidad_origen": "5.1", "tipo": "encabezado", "texto": "5.1. Boletas de depósito."},
+                {"unidad_origen": "5.1", "tipo": "intro", "texto": "Las boletas deben contener los siguientes datos:"}])
+    def reg(punto, rol, tramo, lid="e1", tipo="Obligacion"):
+        return {"chunk_id": "syn::5.1.2", "validacion": {"entidades": [
+            {"local_id": lid, "type": tipo, "label": "x", "punto": punto,
+             "provenance": {"to": "syn", "punto": punto, "rol_documental": rol, "tramo": tramo}}]}}
+    casos = [("ancestro con el tramo en el texto propio → la unidad", reg("5.1", "herencia_encabezado",
+              "Las boletas deben incluir lugar y fecha"), ("5.1.2", "punto_propio")),
+             ("ancestro con el tramo compuesto y el ítem en el texto propio → la unidad",
+              reg("5.1", "herencia_encabezado", "Las boletas deben contener los siguientes datos: […] lugar y fecha"),
+              ("5.1.2", "punto_propio")),
+             ("ancestro con el tramo en el párrafo del ancestro → el rol de ese bloque",
+              reg("5.1", "herencia_encabezado", "Las boletas deben contener los siguientes datos"), ("5.1", "herencia_intro")),
+             ("el punto ya es la unidad → sin cambio", reg("5.1.2", "punto_propio", "Las boletas deben contener los "
+                                                                                     "siguientes datos"), None),
+             ("tramo que no se ubica → sin cambio", reg("5.1", "herencia_encabezado", "otra cosa que no está"), None),
+             ("Comunicacion (fuera de los tipos de contenido) → sin cambio",
+              reg("5.1", "herencia_encabezado", "Las boletas deben incluir lugar y fecha", tipo="Comunicacion"), None)]
+    for nombre, r, esperado in casos:
+        res = ENS.corregir_procedencia_g_r([r], {"syn::5.1.2": ch}, V, pol)
+        e = r["validacion"]["entidades"][0]
+        obtenido = (e["provenance"]["punto"], e["provenance"]["rol_documental"]) if res["cambios"] else None
+        check(g, nombre, obtenido == esperado and (esperado is None or e["punto"] == esperado[0]), (obtenido, res["cambios"]))
+
+
+def s_K_h() -> None:
+    g = "S K y h"
+    registro = [{"chunk_id": "syn::1", "procedencia": {}, "evidencia": "punto 3.2.", "irresolubles": [
+                    {"destino": "syn::3.2", "causa": "punto_sin_nodos"}]},
+                {"chunk_id": "syn::1", "procedencia": {}, "evidencia": "punto 9.9.", "irresolubles": [
+                    {"destino": "syn::9.9", "causa": "punto inexistente en E0"}]},
+                {"chunk_id": "syn::2", "procedencia": {}, "evidencia": "punto 4.1.", "irresolubles": [
+                    {"destino": "syn::4.1", "causa": "punto_sin_nodos"}]}]
+    por = ENS.irresolubles_en_unidad_excluida(registro, ["syn::3.2::intro"])
+    check(g, "K+ la cita a una unidad excluida (o que la contiene) toma la causa propia; K- las demás conservan la suya",
+          por == {"destino_en_unidad_excluida": 1, "punto inexistente en E0": 1, "punto_sin_nodos": 1}
+          and registro[0]["irresolubles"][0]["causa"] == ENS.CAUSA_UNIDAD_EXCLUIDA, por)
+    kg = {"edges": [{"source": "a", "relation": "aplica_a", "target": "b"},
+                    {"source": "a", "relation": "remite_a", "target": "c"},
+                    {"source": "a", "relation": "establecida_en", "target": "t", "rol_fuente": "derivada_de_procedencia"},
+                    {"source": "a", "relation": "establecida_en", "target": "t2"},
+                    {"source": "t", "relation": "referencia", "target": "x"},
+                    {"source": "t", "relation": "contiene", "target": "s", "rol_fuente": "esqueleto"}]}
+    check(g, "h: una arista de cada clase (la establecida_en sin derivar es de extracción)",
+          ENS.aristas_por_origen(kg) == {"extraccion": 2, "remite_a": 1, "establecida_en_derivada": 1,
+                                         "referencia_texto_ordenado_comunicacion": 1, "esqueleto": 1}, ENS.aristas_por_origen(kg))
+
+
+# --------------------------------------------------------------------------------------- casos de la v7 (salida)
+def r_casos(d: Path, sincola: Path | None) -> None:
+    g = "R v7"
+    kg = json.loads((d / "kg.json").read_text(encoding="utf-8"))
+    nodos = {n["id"]: n for n in kg["nodes"]}
+    om = jl(d / "omisiones.jsonl")
+    for cid in ("ext::5.8.2.2", "ctacte::2.1.1.4"):
+        check(g, f"(c)+ {cid}: texto propio entero", any(o.get("texto_propio_entero") for o in om if o["chunk_id"] == cid))
+    check(g, "(c)- pro::1.1.1: una omisión entre nodos extraídos, sin la marca",
+          any(o["chunk_id"] == "pro::1.1.1" and not o.get("texto_propio_entero") for o in om))
+    sup = jl(d / "supuestos_en_norma.jsonl")
+    check(g, "(d)+ ext::10.5.5.2 e7 Obligacion marcada; (d)- e2 Condicion, no",
+          any(x["chunk_id"] == "ext::10.5.5.2" and x["local_id"] == "e7" for x in sup)
+          and not any(x["chunk_id"] == "ext::10.5.5.2" and x["local_id"] == "e2" for x in sup))
+
+    def elems(cid):
+        return [el for n in nodos.values() if (n.get("provenance") or {}).get("chunk_id") == cid
+                for el in (n.get("properties") or {}).get("umbrales") or []]
+    for cid, dest in (("ext::3.14.4", "ext::3.8"), ("ext::14.2.3", "ext::14.2.2"), ("ext::3.18.2.4", "ext::3.18.3")):
+        check(g, f"g+ {cid} → {dest}", any(el.get("base_destino") == dest for el in elems(cid)))
+    neg = [el for el in elems("cla::6.5::intro") if el.get("base")]
+    check(g, "g- cla::6.5::intro: marcada, sin destino", neg and all(el.get("base_no_resuelta") and not el.get("base_destino")
+                                                                   for el in neg))
+    for cid in ("ext::3.3.3.4", "pro::3.2.1.3", "polcre::5.2", "docvig::3.5"):
+        check(g, f"g1+ {cid}: un elemento del validador sin base ni marca",
+              any(str(el.get("regla_comparacion")).startswith("limite_relativo:") and not el.get("base")
+                  and not el.get("base_no_resuelta") for el in elems(cid)))
+    for cid in ("ext::8.4.4", "cla::6.5::intro"):
+        check(g, f"g1- {cid}: conserva la base", any(el.get("base") for el in elems(cid)))
+    g2 = [el for el in elems("cap::2.3.1") if el.get("base")]
+    check(g, "g2+ cap::2.3.1: marcada, sin destino", g2 and all(el.get("base_no_resuelta") and not el.get("base_destino")
+                                                              for el in g2))
+    cla37 = [el for n in nodos.values() for el in (n.get("properties") or {}).get("umbrales") or []
+             if el.get("base_destino") == "cla::3.7"]
+    check(g, "g2- las 4 de cla::3.7 siguen resueltas", len(cla37) == 4, len(cla37))
+    apr = [el for el in elems("cap::8.3.2.12") if el.get("base") == "APR"]
+    check(g, "g3+ las dos «APR» de cap::8.3.2.12, marcadas", len(apr) == 2 and all(el.get("base_no_resuelta") for el in apr))
+    for cid in ("cap::4.2.1.2::parte1", "cap::3.2.1.1", "polcre::2.1.9"):
+        check(g, f"g3- {cid}: resuelta a su Definicion",
+              any(str(el.get("base_destino") or "").startswith("Definicion_") for el in elems(cid)))
+    check(g, "L+ cap::12.3: el 17 % con «El 17% en el caso de entidades del grupo B»",
+          any(el.get("valor") == "17" and "grupo B" in el["tramo"] for el in elems("cap::12.3")))
+    l65 = [el for el in elems("cla::6.5.4.7") if el.get("tramo") == "entre el 5 % y menos del 20 % del patrimonio"]
+    check(g, "L+ cla::6.5.4.7: el 5 % y el 20 % con el mismo tramo", sorted(el.get("valor") for el in l65) == ["20", "5"])
+    gr = json.loads((d / "procedencia_g_r.json").read_text(encoding="utf-8"))
+    for cid, pto in (("ctacte::2.1.1.4", "2.1.1.4"), ("ext::3.16.3.4", "3.16.3.4")):
+        check(g, f"G-r+ {cid}: el punto pasa a {pto}", any(x["chunk_id"] == cid and x["punto_g_r"] == pto for x in gr))
+    check(g, "G-r- la Excepcion de ctacte::2.1.1.6 con punto en su unidad no cambia",
+          not any(x["chunk_id"] == "ctacte::2.1.1.6" and x["type"] == "Excepcion" for x in gr))
+    if sincola is not None:
+        reg = json.loads((sincola / "remisiones_registro.json").read_text(encoding="utf-8"))
+        causas = [x["causa"] for c in reg for x in c["irresolubles"]]
+        check(g, "K+ en la sin cola, la causa propia aparece; K- «punto inexistente en E0» se conserva",
+              ENS.CAUSA_UNIDAD_EXCLUIDA in causas and "punto inexistente en E0" in causas)
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--salida-r2", type=Path, default=None)
+    ap.add_argument("--salida-r2-sincola", type=Path, default=None)
+    a = ap.parse_args()
+    s_grupo_A()
+    s_grupo_C()
+    s_grupo_L()
+    s_grupo_G_r()
+    s_K_h()
+    if a.salida_r2 is not None:
+        r_casos(a.salida_r2, a.salida_r2_sincola)
+    for grupo, nombre, ok, det in RES:
+        print(f"  [{'PASS' if ok else 'FAIL'}] {grupo} | {nombre}" + ("" if ok else f" — {det}"))
+    ok = sum(1 for x in RES if x[2])
+    print(f"SELFTEST ENSAMBLADO U-OMISIONES-COD: {ok}/{len(RES)} {'PASS' if ok == len(RES) else 'FAIL'}")
+    return 0 if ok == len(RES) else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

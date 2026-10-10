@@ -1,0 +1,67 @@
+PASS  I1    catalogo_sujetos_v3.json se reconstruye byte a byte desde los artefactos fuente
+PASS  I2    generar_todo es determinístico (dos llamadas en el mismo proceso)
+PASS  I3    generados_v3/ en disco = generación en memoria (9 archivos, ni uno más)
+PASS  I4    el manifiesto declara el sha256 del catálogo (9a2522e41e10…)
+PASS  I5    vigentes 102 = 62 clases + 5 instancias + 35 roles (catalogo_sujetos_v3.md:33-34): {'clase': 62, 'instancia': 5, 'rol': 35}
+PASS  I6    lápidas = los cinco retiros de F1.5
+PASS  I7    cada lápida lleva evidencia, fecha y laudo
+PASS  I8    cada vigente lleva su alta
+PASS  I9    toda procedencia apunta a una clave de `fuentes`
+PASS  I10   30 definiciones = 24 dirigidas + 6 posicionales (catalogo_sujetos_v3.md:37-39)
+PASS  I11   marcas de revisión = MARCADOS_REVISION_R2, sin cambios (decisión 4)
+PASS  I12   la 6/5 literal de L-ESQ-R2 §7.1 coincide con la medida (bloque 102 vs JSON 101)
+PASS  A1    bloque generado = BLOQUE_CATALOGO_V3 byte a byte (prompt_v3_b54.py:396)
+PASS  A2    prefijo v3 recompuesto con el bloque generado: sha256 35e88c2dd0a2… = PREFIJO_SHA256_V3
+PASS  A3    hash canónico system+tools con bloque y enums generados = 54a111e2175f (namespace de caché v3)
+PASS  B1    enum sujeto_id = sujetos_catalogo_v3() en contenido y orden (prompt_v3_b54.py:402)
+PASS  B2    los dos enums = los de TOOL_SCHEMA_V3
+PASS  B3    conjunto del enum = sujetos_catalogo_set del perfil v3_b54 (perfil_e1.py:166)
+PASS  C1    ROL_POR_TO generado = ROL_POR_TO_V3 en contenido y orden (71 entradas; prompt_v3_b54.py:453)
+PASS  C2    71 entradas = 35 rol + 36 clase; = rol_por_to del perfil v3_b54
+PASS  D1    labels de E2 = labels_catalogo del perfil v3_b54 en contenido y orden (perfil_e1.py:101, :179)
+PASS  F1    ids de la entrada del esqueleto vs esquema_v3_clases.json: solo generada 6 (la 6), solo JSON 5 (la 5)
+PASS  F2    96 entradas comunes idénticas campo a campo y en orden de claves; distintas: []
+PASS  F3    orden relativo de las entradas comunes = esquema_v3_clases.json (clases y roles)
+PASS  F4    excepciones_s15 y version idénticas a esquema_v3_clases.json
+PASS  F5    claves de nivel superior: solo difieren los metadatos deriva_de y notas_de_construccion (no los lee ningún consumidor)
+PASS  F6    build_skeleton (assemble.py:118): nodos 102 vs 101; los 96 comunes idénticos
+PASS  F7    build_skeleton: aristas 118 vs 117; solo generada 6, solo JSON 5, todas tocan la 6/5; 112 comunes idénticas
+PASS  E1    índice generado = r1_e4.indice_catalogo sobre la entrada generada (r1_e4.py:74)
+PASS  E2    sin la 6/5, el índice generado y el de esquema_v3_clases.json son idénticos
+PASS  E3    índice 329 vs 318 claves: solo generado 26 (→ la 6), solo JSON 15 (→ la 5), valor distinto 0 []
+PASS  G1    ids de S19 = los 102 vigentes
+PASS  G2    S19 hoy (shapes_validator.py:227 sobre esquema_v3_clases.json) lee 101; diferencia = la 6/5
+PASS  G3    con la entrada generada como --excepciones, S19 lee los 102
+PASS  G4    S15 lee la misma lista de excepciones de la entrada generada que de esquema_v3_clases.json
+PASS  H1    regression_kg.Catalogo (:306): 102 ids generados vs 101 hoy; diferencia = la 6/5
+PASS  H2    versión, miembros de los 35 roles y clases comunes idénticos a esquema_v3_clases.json
+PASS  H3    el índice de E4 que arma la suite (regression_kg.py:454) = indice_e4_v3.json
+PASS  K1    catalogo_sujetos_r2.json se re-deriva byte a byte desde el v3 (derivar_catalogo_r2.py)
+PASS  K2    generados_r2/ en disco = generación determinística en memoria (9 archivos, ni uno más)
+PASS  K3    el manifiesto r2 declara el sha256 del catálogo r2 (c3ad15811c7e…)
+PASS  K4    vigentes 110 = 102 del v3 + 8 altas al final ({'clase': 70, 'instancia': 5, 'rol': 35}); las 5 lápidas sin cambios
+PASS  K5    operaciones registradas 13 = {'alta': 8, 'cambio_alias': 3, 'cambio_miembro_rol': 1, 'cambio_residuo_rol': 1}; cada una apunta desde la procedencia de un campo
+PASS  K6    103 entradas del v3 no tocadas idénticas; en las 3 domésticas cambian solo los alias «del exterior»; en convca, solo miembros y el residuo (campo retirado, remedio y anidación al estado r2)
+PASS  K7    mismo esquema que el v3: claves, presentación, políticas y fuentes v3 intactas; version r2, esquema de clases 3.1
+PASS  K8    8 ids nuevos × 4 campos: 25 con ancla, 4 NO ENCONTRADO, 3 sin alias; 36 extractos releídos contra su chunk de E0 (sha del archivo incluido)
+PASS  K9    NO ENCONTRADO sin inventar: definiciones nulas donde no hay ancla; alias sin ancla solo si viene del v3 (banco_del_exterior.definicion, entidad_cambiaria_del_exterior.alias, entidad_cambiaria_del_exterior.definicion, instancia_de_gobierno_societario.definicion)
+PASS  K10   diff del bloque v3→r2: −3/+16 líneas = 3 líneas de alias reemplazadas + 8 ids nuevos + 5 definiciones; nada más
+PASS  K11   enums r2 = los 102 del v3 en su orden + 8 al final (110)
+PASS  K12   ROL_POR_TO r2 = v3 byte a byte (ninguna operación lo toca)
+PASS  K13   labels de E2 r2 = los del v3 + 8 (110)
+PASS  K14   entrada del esqueleto r2: +8 clases con los padres declarados; cambian solo 4 entradas (alias de las 3 domésticas, miembro y residuo de convca); excepciones_s15 idéntica; version 3.1
+PASS  K15   build_skeleton r2: 110 nodos / 126 aristas (v3 102 / 118); +8 subclase_de, miembro_de de convca de EF a titulares; cambian solo los alias de 3 nodos
+PASS  K16   índice de E4 r2 (352 claves vs 329): sin las entradas tocadas y nuevas, idéntico al v3; +26 / −3 claves, 3 reasignadas [['alias_exacto', 'banco del exterior', 'Sujeto_banco_del_exterior'], ['alias_exacto', 'compania cambista del exterior', 'Sujeto_entidad_cambiaria_del_exterior'], ['alias_exacto', 'entidad financiera del exterior', 'Sujeto_entidad_financiera_del_exterior']]
+PASS  K17   S19: 110 ids (102 + 8), también como --excepciones; S15 lee la misma lista que en v3
+PASS  K18   suite: catálogo 3.1 con 110 ids; t_bkl_0028 (regression_kg.py:781) aplica y su parte de catálogo se cumple: 0 ids domésticos con alias «del exterior», los 3 ids separados presentes
+PASS  K19   BKL-0028: barrido de esq_v3_miembros/code/barrido_domestico_exterior.py: v3 3 (= residuo_catalogo_domestico_exterior.json), r2 0
+PASS  K20   BKL-0029: miembro del rol de convca = Sujeto_titular_de_cuenta_corriente_en_el_bcra; residuo sin colectivo_operativo_sin_id y con remedio y anidación en estado r2 (lo que afirma estado_r2 se cumple: el id no tiene subclases ni arista subclase_de con EF); candidato de t_bkl_0029 (regression_kg.py:812) = el id nuevo
+PASS  K21   re-resolución idempotente; con v3 reproduce la tabla guardada; con r2 ningún resuelto se pierde ni cambia
+PASS  K22   control permanente: con el índice r2, ['órgano de gobierno', 'órganos de gobierno', 'Órgano de gobierno de la sociedad'] no resuelven a Sujeto_instancia_de_gobierno_societario ni a sus hijos ({'órgano de gobierno': None, 'órganos de gobierno': None, 'Órgano de gobierno de la sociedad': None}); el label y su singular no aparecen en los 157 TOs ({'instancia de gobierno societario': 0, 'instancias de gobierno societario': 0})
+INFO  t_bkl_0028 sobre el catálogo r2 sin grafo: estado persiste (la parte de grafo exige r2b); ids separados que cuenta: ['Sujeto_banco_del_exterior', 'Sujeto_entidad_cambiaria_del_exterior', 'Sujeto_entidad_financiera_del_exterior']
+INFO  barrido r2, ids con extranjería en su propio label (contraste, no afectados): ['Sujeto_banco_central_del_exterior', 'Sujeto_banco_del_exterior', 'Sujeto_entidad_cambiaria_del_exterior', 'Sujeto_entidad_financiera_del_exterior', 'Sujeto_fmi']
+INFO  BKL-0034: Sujeto_instancia_de_gobierno_societario y bajo ella Directorio, Alta Gerencia y Comité de auditoría están en el catálogo; la arista lingob::2.3.2::intro → Sujeto_directorio exige un grafo: PENDIENTE (r2b)
+INFO  re-resolución (reresolver_tanda0.py), diez: 34 propuestos, v3 4, r2 5; con r2 y no con v3: 1 [('Alta Gerencia', 'Sujeto_alta_gerencia')]
+
+selftest U-CAT-UNICO: 60/60 PASS
+rc=0

@@ -72,7 +72,7 @@ def ficha(etiqueta: str, pos: int, total: int, eid: str, n: dict, i: int, el: di
     txt, ch = textos.get(cid, ("", {}))
     spans = list(u["spans"])
     if spans and not validador:
-        spans = [T.ajustar_cuantia(txt, s, el.get("tramo") or "", C.plegar) for s in spans]
+        spans = [T.ajustar_cuantia(txt, s, C.cuantia_del_elemento(el), C.plegar) for s in spans]
     to = n["provenance"].get("to")
     archivo = n["provenance"].get("archivo")
     L = [f"# Ficha {etiqueta} (lote {lote}, {pos} de {total})", "",

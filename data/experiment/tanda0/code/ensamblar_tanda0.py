@@ -645,18 +645,49 @@ def _rangos_unidad_repetida(texto: str, cs: list) -> list[str]:
     return out
 
 
-def resolver_base(base: str | None, to: str, kg_def: dict[tuple[str, str], str], detector_r2: bool = False) -> dict:
+# U-OMISIONES-COD, grupo C, g2: la cita «punto(s) N» del texto de E0 de la unidad que, después de su enumeración
+# («N. y M.», «N., M.»), sigue inmediatamente con el nombre de otra norma. Sobre el texto plegado (minúsculas, sin
+# tildes, espacios unidos).
+_NUM_PUNTO = r"\d+(?:\.\d+)*\.?"
+RE_CITA_A_OTRA_NORMA = re.compile(
+    r"\bpuntos?\s+(" + _NUM_PUNTO + r"(?:\s*(?:,|y|e|o|a|al)\s*" + _NUM_PUNTO + r")*)\s*"
+    r"(?:del to sobre|de las normas sobre|del texto ordenado|de la ley|del decreto|de la comunicacion)\b")
+
+
+def _plegar_texto(s: str) -> str:
+    import unicodedata  # noqa: PLC0415
+    s = unicodedata.normalize("NFD", s or "")
+    return " ".join("".join(c for c in s if not unicodedata.combining(c)).lower().split())
+
+
+def puntos_citados_de_otra_norma(textos: list[str]) -> set[str]:
+    """g2: los N de las citas «punto(s) N … <otra norma>» de los textos, sin el punto final."""
+    out = set()
+    for t in textos:
+        for m in RE_CITA_A_OTRA_NORMA.finditer(_plegar_texto(t)):
+            out |= {x.rstrip(".") for x in re.findall(_NUM_PUNTO, m.group(1))}
+    return out
+
+
+def resolver_base(base: str | None, to: str, kg_def: dict[tuple[str, str], str], detector_r2: bool = False,
+                  textos_unidad: list[str] | None = None, homonimos: set[tuple[str, str]] | None = None) -> dict:
     """L-ESQ-R2 §1.3 (c): la base literal se resuelve a su punto por el
     mecanismo de remisiones (detectar_menciones sobre la base) o a una
     Definicion del mismo TO cuyo `termino` normalizado es la base; si no
     resuelve, se marca. Con `detector_r2` (fase r2b; U-R2-CODIGO-2, C2,
     punto r), las menciones salen del mismo detector que `remite_a`
     (`REF.menciones_por_tramo`, que normaliza el texto y aplica
-    `detectar_menciones_r2` con las reglas de REF.REGLAS_R2)."""
+    `detectar_menciones_r2` con las reglas de REF.REGLAS_R2).
+    U-OMISIONES-COD, grupo C (solo con `detector_r2`): g2, una remisión a un
+    punto N no resuelve si el texto de E0 de la unidad (`textos_unidad`) cita
+    ese N como punto de otra norma (`puntos_citados_de_otra_norma`); y g3, una
+    Definicion con dos o más homónimas en el TO (`homonimos`) no resuelve. En
+    los dos casos, la base queda marcada (`marca` con su motivo en `motivo`)."""
     if not base:
         return {"base_destino": None, "via": None, "marca": None}
     menciones = (REF.menciones_por_tramo([base], to, REF.REGLAS_R2) if detector_r2
                  else REF.detectar_menciones(base, to))
+    otra_norma = puntos_citados_de_otra_norma(textos_unidad or []) if detector_r2 else set()
     for men in menciones:
         td = men["to_destino"]
         if td is None or td not in C.TOS_ORDEN:
@@ -664,13 +695,93 @@ def resolver_base(base: str | None, to: str, kg_def: dict[tuple[str, str], str],
         unidades = REF.unidades_e0(td)
         for d in men["puntos"] + [f"S{s}" for s in men["secciones"]]:
             if d in unidades:
+                if d in otra_norma:
+                    return {"base_destino": None, "via": None, "marca": "base_no_resuelta",
+                            "motivo": "cita_a_otra_norma", "destino_descartado": f"{td}::{d}"}
                 return {"base_destino": f"{td}::{d}", "via": "remision", "marca": None}
         if not men["puntos"] and not men["secciones"] and men["clase"] != "interna":
             return {"base_destino": f"{td}::TO", "via": "remision", "marca": None}
     nid = kg_def.get((to, C.norm(base)))
     if nid:
+        if detector_r2 and homonimos and (to, C.norm(base)) in homonimos:
+            return {"base_destino": None, "via": None, "marca": "base_no_resuelta", "motivo": "definicion_homonima",
+                    "destino_descartado": nid}
         return {"base_destino": nid, "via": "definicion", "marca": None}
     return {"base_destino": None, "via": None, "marca": "base_no_resuelta"}
+
+
+# U-OMISIONES-COD, grupo C, g1: las reglas cerradas de U-DIAG-LIMITES (límite 1), en su orden, sobre la base plegada
+# (minúsculas, sin tildes); gana la primera que aplica. Con fecha, periodicidad, cantidad o evento/plazo la «base» no
+# es una base y queda vacía, sin marca; el recorte que empieza mal (antes que evento/plazo) la conserva.
+_NUM_BASE = r"(\d+|un|una|uno|dos|tres|cuatro|cinco|seis|doble|triple|cuarta|tercera|mitad|tercio|otras? (dos|tres))"
+REGLAS_BASE_RELATIVA = (
+    ("fecha", re.compile(r"^\d{1,2}[/.]\d{1,2}[/.]\d{2,4}\b"), True),
+    ("periodicidad", re.compile(r"^(trimestral|semestral|mensual|anual|con periodicidad|una vez al ano)"), True),
+    ("cantidad_no_detectada", re.compile(r"^(" + _NUM_BASE + r"\b|\"|“|que \d)"), True),
+    ("recorte_empieza_mal", re.compile(r"^(que |tanto |en la |asignado |alcanzar |dar |previsto )"), False),
+    ("evento_o_plazo", re.compile(r"^(fecha|dia|plazos?|mes|vencimiento)\b"), True),
+)
+
+
+def clase_de_base_relativa(base: str | None) -> tuple[str | None, bool]:
+    """g1: (clase de la primera regla que aplica o None, si la base queda vacía)."""
+    import unicodedata  # noqa: PLC0415
+    b = unicodedata.normalize("NFD", base or "")
+    b = "".join(c for c in b if not unicodedata.combining(c)).lower().strip()
+    for nombre, rx, vacia in REGLAS_BASE_RELATIVA:
+        if rx.search(b):
+            return nombre, vacia
+    return None, False
+
+
+def tramo_de_e1(el: dict, tramo_e1: str, textos: list, V, RCMP, pol, M) -> tuple[dict, str]:
+    """U-OMISIONES-COD, grupo L (solo r2b): el elemento de origen e1 armado por el ensamblado guarda el tramo de E1
+    del que sale su cuantía (L-ESQ-R2 §1.3: «el tramo literal»), verificado contra el texto de E0 del nodo. Con
+    «exacta», el tramo de E1; con «tokens», el literal mínimo del texto, si conserva la cuantía (mismo valor y misma
+    unidad); si no verifica, o el literal pierde la cuantía, el elemento conserva la cuantía y su verificación, y se
+    cuenta. Los demás campos no cambian. Devuelve (elemento, estado)."""
+    mejor, literal = "no", None
+    for _, t in textos:
+        nivel, lit = V.verificar_tramo(tramo_e1, t, pol.holgura)
+        if nivel == "exacta":
+            mejor, literal = "exacta", None
+            break
+        if nivel == "tokens" and mejor == "no":
+            mejor, literal = "tokens", lit
+    nuevo_tramo = tramo_e1 if mejor == "exacta" else literal
+    if nuevo_tramo is None or not any(c.valor == el.get("valor") and c.unidad == el.get("unidad")
+                                      for c in RCMP.detectar_cuantias(nuevo_tramo)):
+        return el, "conserva_la_cuantia"
+    nuevo = dict(el, tramo=nuevo_tramo, tramo_verificado=mejor)
+    return M.ElementoUmbral.model_validate(nuevo).model_dump(mode="json", exclude_defaults=True), mejor
+
+
+def _base_del_validador(el: dict, to: str, kg_def: dict, homonimos: set, textos: list, cont: dict, M) -> dict:
+    """U-OMISIONES-COD, grupo C (solo r2b): el elemento del límite relativo que dejó validador_r2 (punto o) y tiene
+    base sin destino ni marca. g1: si la base no es una base (`clase_de_base_relativa`), queda vacía, sin marca; si
+    no, g: `resolver_base` con el detector de `remite_a` y las guardas g2 y g3 escribe el destino y la vía, o la
+    marca. Los demás elementos vuelven tal cual."""
+    if (not str(el.get("regla_comparacion") or "").startswith("limite_relativo:") or not el.get("base")
+            or el.get("base_destino") or el.get("base_no_resuelta")):
+        return el
+    bv = cont["base_del_validador"]
+    bv["elementos_con_base"] += 1
+    clase, vacia = clase_de_base_relativa(el["base"])
+    nuevo = dict(el)
+    if vacia:
+        nuevo.pop("base")
+        bv["vaciadas_g1"][clase] = bv["vaciadas_g1"].get(clase, 0) + 1
+    else:
+        b = resolver_base(el["base"], to, kg_def, detector_r2=True, textos_unidad=[t for _, t in textos],
+                          homonimos=homonimos)
+        nuevo.update(base_destino=b["base_destino"], base_via=b["via"], base_no_resuelta=b["marca"] == "base_no_resuelta")
+        if b["base_destino"]:
+            bv["resueltas"][b["via"]] = bv["resueltas"].get(b["via"], 0) + 1
+        else:
+            bv["marcadas"] += 1
+            if b.get("motivo"):
+                cont["base_no_resuelta_por_motivo"][b["motivo"]] = cont["base_no_resuelta_por_motivo"].get(b["motivo"], 0) + 1
+    return M.ElementoUmbral.model_validate(nuevo).model_dump(mode="json", exclude_defaults=True)
 
 
 def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[str, list[str]], M, V, RCMP,
@@ -693,11 +804,14 @@ def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[s
     r2b = fase == "r2b"
     plazo_sin_marcador = "no_determinada" if r2b else "maximo_asumido"
     chunks = {c["id"]: c for to in C.TOS_ORDEN for c in _chunks_r2(to)}
-    kg_def = {}
+    kg_def, def_por_clave = {}, {}
     for n in kg["nodes"]:
         if n["type"] == "Definicion" and isinstance(n["properties"].get("termino"), str):
             for p in n["provenances"]:
                 kg_def.setdefault((p.get("to"), C.norm(n["properties"]["termino"])), n["id"])
+                def_por_clave.setdefault((p.get("to"), C.norm(n["properties"]["termino"])), set()).add(n["id"])
+    # U-OMISIONES-COD, grupo C, g3: términos con dos o más Definicion en el TO (solo r2b)
+    homonimos = {k for k, ids in def_por_clave.items() if len(ids) > 1} if r2b else set()
     rangos = []
     cont = {"nodos": 0, "nodos_con_lista": 0, "elementos": 0, "por_origen": {}, "por_comparacion": {},
             "comparacion_asumida": 0, "no_determinada": 0, "tramo_verificado": {}, "verificado_en_tabla": {},
@@ -706,6 +820,11 @@ def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[s
     if r2b:
         cont["elementos_previos_conservados"] = 0
         cont["unidad_desde_rotulo"] = {"elementos": 0, "por_to": {}, "nodos": []}
+        # U-OMISIONES-COD: la base de los elementos del validador (grupo C) y el tramo de E1 (grupo L)
+        cont["base_del_validador"] = {"elementos_con_base": 0, "vaciadas_g1": {}, "resueltas": {}, "marcadas": 0}
+        cont["base_no_resuelta_por_motivo"] = {}
+        cont["base_por_origen"] = {}
+        cont["tramo_de_e1"] = {"elementos": 0, "tramo_verificado": {}, "tramos_compartidos": 0}
 
     def suma(d, k):
         cont[d][k] = cont[d].get(k, 0) + 1
@@ -743,7 +862,7 @@ def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[s
                 fuentes.append((v, "campo_v3"))
         textos = _texto_e0_nodo(n, chunks, V)
         celdas = "\n".join(t for cid, _ in textos for t in tablas.get(cid, []))
-        elementos, vistos = [], set()
+        elementos, vistos, tramos_l = [], set(), []
         for texto, origen in fuentes:
             cs = RCMP.analizar(texto, desc, titulo, plazo_sin_marcador)
             rangos += [{"id": n["id"], "tramo": r} for r in _rangos_unidad_repetida(texto, cs)]
@@ -758,10 +877,15 @@ def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[s
                                           "tokens" if "tokens" in niveles else "no")
                 en_tabla = (None if not celdas else
                             V.verificar_tramo(c.texto, celdas, pol.holgura)[0] in ("exacta", "tokens"))
-                b = resolver_base(c.base, to, kg_def, detector_r2=r2b)
+                b = resolver_base(c.base, to, kg_def, detector_r2=r2b, textos_unidad=[t for _, t in textos],
+                                  homonimos=homonimos)
                 el.update(base_destino=b["base_destino"], base_via=b["via"],
                           base_no_resuelta=b["marca"] == "base_no_resuelta", verificado_en_tabla=en_tabla)
                 elementos.append(M.ElementoUmbral.model_validate(el).model_dump(mode="json", exclude_defaults=True))
+                # grupo L: el tramo de E1 del que sale la cuantía (solo r2b y origen e1); se pone después del rótulo
+                tramos_l.append((texto, sum(1 for _ in cs)) if r2b and origen == "e1" else None)
+                if r2b and b.get("motivo"):
+                    suma("base_no_resuelta_por_motivo", b["motivo"])
                 cont["elementos"] += 1
                 suma("por_origen", origen)
                 suma("por_comparacion", c.comparacion)
@@ -771,8 +895,10 @@ def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[s
                 cont["no_determinada"] += c.comparacion == "no_determinada"
                 cont["base_resuelta"] += b["base_destino"] is not None
                 cont["base_no_resuelta"] += b["marca"] == "base_no_resuelta"
+        desde_e1 = 0
         if elementos and r2b and props.get("umbrales"):
             cont["elementos_previos_conservados"] += len(props["umbrales"])
+            desde_e1 = len(props["umbrales"])
             props["umbrales"] = list(props["umbrales"]) + elementos
             cont["nodos_con_lista"] += 1
         elif elementos:
@@ -796,6 +922,29 @@ def llenar_umbrales_r2(kg: dict, tramos_e1: dict[str, list[str]], tablas: dict[s
                                            "tabla": h["originales"]["tabla"],
                                            "rotulo": h["originales"]["unidad_desde_rotulo"]})
                 props["umbrales"] = nuevos
+        if r2b and props.get("umbrales"):
+            props["umbrales"] = [_base_del_validador(el, to, kg_def, homonimos, textos, cont, M)
+                                 for el in props["umbrales"]]
+            for j, x in enumerate(tramos_l):
+                if x is None:
+                    continue
+                el, estado = tramo_de_e1(props["umbrales"][desde_e1 + j], x[0], textos, V, RCMP, pol, M)
+                props["umbrales"][desde_e1 + j] = el
+                tl = cont["tramo_de_e1"]
+                tl["elementos"] += 1
+                tl["tramo_verificado"][estado] = tl["tramo_verificado"].get(estado, 0) + 1
+                tl["tramos_compartidos"] += x[1] > 1 and estado != "conserva_la_cuantia"
+                if estado == "conserva_la_cuantia":
+                    tl.setdefault("conservan_la_cuantia", []).append({"id": n["id"], "cuantia": el["tramo"],
+                                                                      "tramo_e1": x[0]})
+            for el in props["umbrales"]:
+                if el.get("base"):
+                    estado = ("resuelta" if el.get("base_destino") else "marcada" if el.get("base_no_resuelta")
+                              else "sin_destino_ni_marca")
+                    o = "validador" if str(el.get("regla_comparacion") or "").startswith("limite_relativo:") else \
+                        str(el.get("origen"))
+                    d = cont["base_por_origen"].setdefault(o, {})
+                    d[estado] = d.get(estado, 0) + 1
     cont["rangos_con_unidad_repetida"] = len(rangos)
     return {"resumen": cont, "rangos": rangos}
 
@@ -1209,6 +1358,226 @@ def sumar_paso_por_e3(conteos: list[dict]) -> dict:
             for k, v in total.items()}
 
 
+# U-OMISIONES-COD, grupo G (variante G-r de U-DIAG-CAP3-GRAFO): procedencia por tramo, solo para las entidades de
+# contenido cuyo `punto` es un ancestro de su unidad.
+TIPOS_G_R = ("Operacion", "Restriccion", "Excepcion", "Obligacion", "Potestad", "Condicion", "Definicion")
+_SEP_TRAMO_G_R = re.compile(r"\s*\[\s*(?:…|\.\.\.)\s*\]\s*")
+
+
+def ubicar_tramo_g_r(tramo: str | None, ch: dict, V, holgura) -> tuple[str, str | None, str | None]:
+    """Dónde está el tramo de la entidad, con `V.verificar_tramo` («exacta» o «tokens»): en el texto propio de la
+    unidad (de un tramo compuesto «encabezado […] ítem», su segundo segmento); si no, en el bloque heredado de un
+    ancestro, del más cercano al más lejano (párrafo, título o el cruce de los dos; en el cruce, el tipo del
+    párrafo). Devuelve (lugar, ancestro, tipo de bloque). La regla de U-DIAG-CAP3-GRAFO
+    (`udiag_b_procedencia.ubicar`), con la función del validador en lugar de su copia por AST."""
+    import comun_e1  # noqa: PLC0415 — e1_extractor, en el sys.path de este módulo
+    def ok(aguja, texto):
+        return V.verificar_tramo(aguja, texto or "", holgura)[0] in ("exacta", "tokens")
+    if not tramo:
+        return "sin_tramo", None, None
+    segs = _SEP_TRAMO_G_R.split(tramo)
+    compuesto = len(segs) == 2
+    aguja = segs[-1] if compuesto else tramo
+    if ok(aguja, ch.get("texto")):
+        return ("compuesto_item_en_texto_propio" if compuesto else "texto_propio"), ch["unidad"], None
+    if compuesto:
+        aguja = tramo.replace("[…]", " ").replace("[...]", " ")
+    mini = comun_e1.es_mini_chunk(ch)
+    orden = []
+    for h in ch.get("herencia", []):
+        if h["unidad_origen"] not in orden:
+            orden.append(h["unidad_origen"])
+    if mini:
+        propios = [h["texto"] for h in ch.get("herencia", []) if h["unidad_origen"] == ch["unidad"]]
+        if propios and ok(aguja, "\n".join(propios + [ch.get("texto") or ""])):
+            return "texto_propio", ch["unidad"], None
+    for q in reversed(orden):
+        if mini and q == ch["unidad"]:
+            continue
+        bloques = [h for h in ch["herencia"] if h["unidad_origen"] == q]
+        par = [h for h in bloques if h["tipo"] != "encabezado"]
+        for h in par:
+            if ok(aguja, h["texto"]):
+                return "parrafo", q, h["tipo"]
+        for h in bloques:
+            if h["tipo"] == "encabezado" and ok(aguja, h["texto"]):
+                return "titulo", q, "encabezado"
+        if ok(aguja, "\n".join(h["texto"] for h in bloques)):
+            return "cruza_titulo_y_parrafo", q, (par[0]["tipo"] if par else "encabezado")
+    return "no_ubicado", None, None
+
+
+def corregir_procedencia_g_r(regs: list[dict], chunks: dict[str, dict], V, holgura) -> dict:
+    """G-r, sobre los registros de `entrada_r2`, antes de la resolución y de E2 (solo r2b): en una entidad de
+    contenido con `punto` en un ancestro de su unidad, el punto pasa a la unidad si su texto propio contiene el tramo
+    (o el segmento del ítem del tramo compuesto), o al ancestro cuyo bloque heredado lo contiene, con el
+    `rol_documental` de ese bloque. Si el tramo no se ubica, nada cambia. Muta las entidades y devuelve el detalle."""
+    import comun_e1  # noqa: PLC0415
+    cambios = []
+    for r in regs:
+        ch = chunks.get(r["chunk_id"])
+        for e in (r.get("validacion") or {}).get("entidades", []):
+            p = e.get("provenance") or {}
+            if ch is None or e.get("type") not in TIPOS_G_R or p.get("punto") == ch["unidad"]:
+                continue
+            lugar, q, tipo = ubicar_tramo_g_r(p.get("tramo"), ch, V, holgura)
+            if lugar in ("texto_propio", "compuesto_item_en_texto_propio"):
+                nuevo = (ch["unidad"], f"bloque_{ch['rol_bloque']}" if comun_e1.es_mini_chunk(ch) else "punto_propio")
+            elif lugar in ("parrafo", "titulo", "cruza_titulo_y_parrafo"):
+                nuevo = (q, f"herencia_{tipo}")
+            else:
+                continue
+            if nuevo == (p.get("punto"), p.get("rol_documental")):
+                continue
+            cambios.append({"chunk_id": r["chunk_id"], "local_id": e.get("local_id"), "type": e.get("type"),
+                            "label": e.get("label"), "punto": p.get("punto"), "punto_g_r": nuevo[0],
+                            "rol": p.get("rol_documental"), "rol_g_r": nuevo[1], "lugar": lugar})
+            p["punto"], p["rol_documental"] = nuevo
+            e["punto"] = nuevo[0]
+    return {"entidades_que_cambian": len(cambios),
+            "cambia_el_punto": sum(1 for c in cambios if c["punto"] != c["punto_g_r"]),
+            "solo_el_rol": sum(1 for c in cambios if c["punto"] == c["punto_g_r"]),
+            "cambios": cambios}
+
+
+# U-OMISIONES-COD, grupo A: marcas del registro de omisiones y de los supuestos dentro de una norma (solo r2b). No
+# tocan kg.json: van a omisiones.jsonl, a supuestos_en_norma.jsonl y al reporte.
+_COPULA_REC = r"(es|son|sea|sean|sera|seran|seria|serian|resulta|resultan|resulte|resulten|resultaria|resultarian)"
+RECOMENDACION_OMISION = {
+    "copula_deseable": re.compile(r"\b" + _COPULA_REC + r"( (muy|altamente|particularmente))? "
+                                  r"(deseables?|convenientes?|recomendables?|aconsejables?)\b"),
+    "se_recomienda": re.compile(r"\bse (recomienda|recomiendan|recomendara|aconseja|aconsejan|sugiere|sugieren)\b"),
+    "deberia": re.compile(r"\b(deberia|deberian)\b"),
+    "buena_practica": re.compile(r"\bbuenas? practicas?\b"),
+}
+CONECTORES_SUPUESTO = {
+    "cuando": re.compile(r"\bcuando\b"),
+    "siempre_que": re.compile(r"\bsiempre (y cuando|que)\b"),
+    "en_tanto": re.compile(r"\ben tanto\b"),
+    "mientras": re.compile(r"\bmientras\b"),
+    "en_la_medida": re.compile(r"\ben la medida (en )?que\b"),
+    "en_caso": re.compile(r"\ben (el )?casos? (de|en que|que)\b|\ben los casos (en )?que\b"),
+    "a_condicion": re.compile(r"\b(a|con la) condicion de\b"),
+    "de_no": re.compile(r"\bde no\b"),
+    "si": re.compile(r"\bsi\b(?! bien\b)"),
+}
+TIPOS_SUPUESTO_EN_NORMA = ("Obligacion", "Restriccion", "Potestad", "Excepcion", "Operacion", "Definicion")
+TIPOS_SIN_CONTENIDO_A = ("TextoOrdenado", "Sujeto", "Comunicacion")
+
+
+def _sin_numeracion(toks: list[str]) -> list[str]:
+    i = 0
+    while i < len(toks) and toks[i].isdigit():
+        i += 1
+    return toks[i:]
+
+
+def donde_tramo_omision(tramo: str, chunk: dict, V, holgura) -> str:
+    """La ubicación que `V.verificar_tramo_omision` cuenta en su registro, sin el registro: propio, heredado,
+    orden_de_lectura o no."""
+    if V.verificar_tramo(tramo, chunk.get("texto") or "", holgura)[0] != "no":
+        return "propio"
+    donde, nivel = "no", V.verificar_tramo(tramo, V.texto_completo(chunk), holgura)[0]
+    if nivel != "no":
+        donde = "heredado"
+    if nivel != "exacta" and V._mini_a_mitad(chunk):
+        if V._ORDEN_NIVEL[V.verificar_tramo(tramo, V.texto_en_orden_de_lectura(chunk), holgura)[0]] > V._ORDEN_NIVEL[nivel]:
+            donde = "orden_de_lectura"
+    return donde
+
+
+def marcar_omision(o: dict, chunk: dict, con_extraccion: bool, V, holgura) -> dict:
+    """(a) `tramo_en_heredado`: el tramo (el que recibió el validador) se ubica solo en el texto heredado; la
+    omisión cuenta fuera de la pérdida propia de la unidad. (b) `revisar`, en `meta_normativo`: con marca del
+    contador (`V.marcas_meta_normativo`) o con una recomendación (RECOMENDACION_OMISION; decisión 3 de la autora
+    sobre el FRENO T4), con sus motivos. (c) `texto_propio_entero`: el tramo cubre todo el texto propio de la unidad
+    sin la numeración inicial, con `es_item` y `con_extraccion` como atributos descriptivos."""
+    t = o.get("tramo_modelo") or o.get("tramo")
+    out = dict(o)
+    if not t:
+        return out
+    donde = donde_tramo_omision(t, chunk, V, holgura)
+    if donde == "heredado":
+        out["tramo_en_heredado"] = True
+    if o.get("categoria") == "meta_normativo":
+        tn = " ".join(V.norm_tokens(t))
+        motivos = [f"contador:{c}" for c in V.marcas_meta_normativo(t)] + [
+            f"recomendacion:{k}" for k, rx in RECOMENDACION_OMISION.items() if rx.search(tn)]
+        if motivos:
+            out["revisar"] = motivos
+    if donde == "propio":
+        propio = _sin_numeracion(V.norm_tokens(chunk.get("texto") or ""))
+        tt = _sin_numeracion(V.norm_tokens(o.get("tramo") or ""))
+        if propio and tt and len(tt) == len(propio) and tt == propio:
+            out["texto_propio_entero"] = {"es_item": bool(V._es_item(chunk)), "con_extraccion": con_extraccion}
+    return out
+
+
+def supuestos_en_norma(regs: list[dict], to: str, V) -> list[dict]:
+    """(d) `supuesto_en_norma`: la entidad de contenido (no Condicion) cuya descripción o tramo lleva un supuesto,
+    por un conector condicional de la lista cerrada CONECTORES_SUPUESTO. Mide y no corrige."""
+    out = []
+    for r in regs:
+        for e in (r.get("validacion") or {}).get("entidades", []):
+            if e.get("type") not in TIPOS_SUPUESTO_EN_NORMA:
+                continue
+            props = e.get("properties") if isinstance(e.get("properties"), dict) else {}
+            textos = [x for x in (props.get("descripcion"), (e.get("provenance") or {}).get("tramo"))
+                      if isinstance(x, str) and x]
+            tn = " ".join(" ".join(V.norm_tokens(x)) for x in textos)
+            marcadores = [k for k, rx in CONECTORES_SUPUESTO.items() if rx.search(tn)]
+            if marcadores:
+                out.append({"chunk_id": r["chunk_id"], "to": to, "local_id": e.get("local_id"), "type": e.get("type"),
+                            "label": e.get("label"), "marcadores": marcadores})
+    return out
+
+
+def aristas_por_origen(kg: dict) -> dict:
+    """U-OMISIONES-COD, grupo D, ítem h: las aristas de extracción separadas de las derivadas, con la clasificación
+    de la observación 10 del tablero (`reext_t0/t3/medicion_tablero_r2b.py`, `obs10`)."""
+    def rf(e):
+        return e.get("rol_fuente") or (e.get("properties") or {}).get("rol_fuente")
+    c = {"extraccion": 0, "remite_a": 0, "establecida_en_derivada": 0, "referencia_texto_ordenado_comunicacion": 0,
+         "esqueleto": 0}
+    for e in kg["edges"]:
+        if e["relation"] == "remite_a" or (e["relation"] == "referencia" and rf(e) == "referencia_cruzada"):
+            c["remite_a"] += 1
+        elif e["relation"] == "referencia":
+            c["referencia_texto_ordenado_comunicacion"] += 1
+        elif rf(e) == "esqueleto":
+            c["esqueleto"] += 1
+        elif e["relation"] == "establecida_en" and rf(e) == "derivada_de_procedencia":
+            c["establecida_en_derivada"] += 1
+        else:
+            c["extraccion"] += 1
+    return c
+
+
+CAUSA_UNIDAD_EXCLUIDA = "destino_en_unidad_excluida"
+
+
+def irresolubles_en_unidad_excluida(registro: list[dict], excluidas: list[str]) -> dict:
+    """U-OMISIONES-COD, grupo K (ENS-05): sin la cola, la cita irresoluble por «punto_sin_nodos» cuyo destino es una
+    unidad excluida (o la contiene: `c == destino` o `c` empieza por `destino::`; la regla de
+    `sincola_t0/registro_vista_r2b_sincola.py`) pasa a su causa propia. No cambia aristas. Devuelve las citas por
+    causa con la unidad de cita del detector (chunk de origen, tramo, unidad citada)."""
+    def excluido(dest):
+        return bool(dest) and any(c == dest or c.startswith(dest + "::") for c in excluidas)
+    for c in registro:
+        for x in c["irresolubles"]:
+            if x["causa"] == "punto_sin_nodos" and excluido(x.get("destino")):
+                x["causa"] = CAUSA_UNIDAD_EXCLUIDA
+    citas: dict[tuple, str] = {}
+    for c in registro:
+        for x in c["irresolubles"]:
+            citas.setdefault((c.get("chunk_id") or C.prov_key(c["procedencia"]), c["evidencia"], x["destino"]),
+                             x["causa"])
+    por_causa: dict[str, int] = {}
+    for v in citas.values():
+        por_causa[v] = por_causa.get(v, 0) + 1
+    return dict(sorted(por_causa.items()))
+
+
 def descartar_cola_r2(regs: list[dict], con_cola: bool) -> tuple[list[dict], list[str]]:
     """U-SINCOLA-T0, enmienda 1 al mandato (06/10/2026), punto 3.c: con
     `con_cola` False, los registros de la cola humana que devuelve
@@ -1269,12 +1638,17 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
     chunks_cola: set[str] = set()
     grafos, registro_total, resolucion_total, tramos_e1 = {}, [], [], {}
     conflictos_intra: list[dict] = []
+    procedencia_g_r: list[dict] = []
+    supuestos: list[dict] = []
     resumen["e2_por_to"] = {}
     for to in C.TOS_ORDEN:
         chunks = _chunks_r2(to)
         regs = RC.entrada_r2(to, C.SALIDA / to, chunks, perfil, validar)
         regs, descartadas = descartar_cola_r2(regs, con_cola)
         resumen["cola_descartada_por_to"][to] = {"n": len(descartadas), "chunks": descartadas}
+        if r2b:
+            g_r = corregir_procedencia_g_r(regs, {c["id"]: c for c in chunks}, V, pol.holgura)
+            procedencia_g_r += [{**c, "to": to} for c in g_r["cambios"]]
         res = E4.resolver_relaciones_r2(regs, cat["indice"], cat["rol_por_to"], versiones, parte_a=r2b)
         ens = e2_lib.ensamblar_r2(chunks, regs, cat["labels"], sujetos_de_resolucion(cat, M), M.firma_r2,
                                   M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"], fase=fase)
@@ -1282,8 +1656,13 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
         cola_estados = {r["chunk_id"]: r["estado_e3"] for r in regs if r.get("cola_humana")}
         if r2b:
             # puntos p y s: el registro de omisiones (lo lee LN-7) y el conteo de elementos sin verificar por E3
-            omisiones += [{"chunk_id": r["chunk_id"], "to": to, **o} for r in regs
-                          for o in (r.get("validacion") or {}).get("omisiones", [])]
+            chunk_de = {c["id"]: c for c in chunks}
+            omisiones += [marcar_omision({"chunk_id": r["chunk_id"], "to": to, **o}, chunk_de[r["chunk_id"]],
+                                         any(e.get("type") not in TIPOS_SIN_CONTENIDO_A
+                                             for e in (r.get("validacion") or {}).get("entidades", [])),
+                                         V, pol.holgura)
+                          for r in regs for o in (r.get("validacion") or {}).get("omisiones", [])]
+            supuestos += supuestos_en_norma(regs, to, V)
             paso_por_e3[to] = RC.conteo_paso_por_e3(regs)
             chunks_cola |= set(cola_estados)
         r_cola = e2_lib.flaggear_cola_r2(grafos[to], cola_estados)
@@ -1347,8 +1726,12 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
 
     partes = {c["id"]: c for to in C.TOS_ORDEN for c in _chunks_r2(to) if "sub_chunk" in c}
     r_ref = REF.detectar_y_resolver(kg, perfil="r2", chunks_e0_r2=_chunks_e0_r2(tablas_dir),
-                                    chunks_partes=partes or None)
+                                    chunks_partes=partes or None, procedencia_propia=r2b, agrupar_sin_rol=r2b)
     resumen["remite_a"] = r_ref["resumen"]
+    if r2b and not con_cola:
+        # grupo K: la causa propia de la cita a una unidad excluida, en el registro y en el reporte
+        excluidas = [c for x in resumen["cola_descartada_por_to"].values() for c in x["chunks"]]
+        resumen["remite_a"]["irresolubles_por_causa"] = irresolubles_en_unidad_excluida(r_ref["registro"], excluidas)
     tipo_de = {n["id"]: n["type"] for n in kg["nodes"]}
     resumen["referencia_con_origen_distinto_de_texto_ordenado"] = sum(
         1 for e in kg["edges"] if e["relation"] == "referencia" and tipo_de[e["source"]] != "TextoOrdenado")
@@ -1364,6 +1747,33 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
         w("aristas_derivadas_cola_humana.json", r_der["filas"])
         wl("omisiones.jsonl", omisiones)
         resumen["omisiones"] = {"filas": len(omisiones), "por_categoria": C.conteo(omisiones, "categoria")}
+        # grupo A: (a) a (c) en el registro de omisiones, (d) en su propio registro
+        resumen["omisiones"]["tramo_en_heredado"] = {
+            "filas": sum(1 for o in omisiones if o.get("tramo_en_heredado")),
+            "por_categoria": C.conteo([o for o in omisiones if o.get("tramo_en_heredado")], "categoria")}
+        resumen["omisiones"]["perdida_propia_por_categoria"] = C.conteo(
+            [o for o in omisiones if not o.get("tramo_en_heredado")], "categoria")
+        rev = [o for o in omisiones if o.get("revisar")]
+        resumen["omisiones"]["revisar"] = {
+            "filas": len(rev), "con_marca_del_contador": sum(1 for o in rev if any(
+                m.startswith("contador:") for m in o["revisar"])),
+            "de_recomendacion": sum(1 for o in rev if any(m.startswith("recomendacion:") for m in o["revisar"])),
+            "de_recomendacion_sin_marca_del_contador": sum(1 for o in rev if not any(
+                m.startswith("contador:") for m in o["revisar"]))}
+        ent = [o for o in omisiones if o.get("texto_propio_entero")]
+        resumen["omisiones"]["texto_propio_entero"] = {
+            "filas": len(ent), "por_categoria": C.conteo(ent, "categoria"),
+            "es_item": sum(1 for o in ent if o["texto_propio_entero"]["es_item"]),
+            "con_extraccion": sum(1 for o in ent if o["texto_propio_entero"]["con_extraccion"])}
+        wl("supuestos_en_norma.jsonl", supuestos)
+        resumen["supuestos_en_norma"] = {"entidades": len(supuestos), "unidades": len({x["chunk_id"] for x in supuestos}),
+                                         "por_tipo": C.conteo(supuestos, "type"), "por_to": C.conteo(supuestos, "to")}
+        w("procedencia_g_r.json", procedencia_g_r)
+        resumen["procedencia_g_r"] = {"entidades_que_cambian": len(procedencia_g_r),
+                                      "cambia_el_punto": sum(1 for c in procedencia_g_r if c["punto"] != c["punto_g_r"]),
+                                      "solo_el_rol": sum(1 for c in procedencia_g_r if c["punto"] == c["punto_g_r"]),
+                                      "cambia_el_punto_por_tipo": C.conteo([c for c in procedencia_g_r
+                                                                            if c["punto"] != c["punto_g_r"]], "type")}
         resumen["paso_por_e3"] = {"por_to": paso_por_e3, "total": sumar_paso_por_e3(list(paso_por_e3.values()))}
 
     r_umb = llenar_umbrales_r2(kg, tramos_e1, _celdas_por_chunk(tablas_dir), M, V, RCMP, pol, fase)
@@ -1403,6 +1813,8 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
         "por_firma": C.conteo([{"f": f"{tipo[e['source']]}-{e['relation']}-{tipo[e['target']]}"}
                                for e in kg["edges"] if e.get("no_verificada_e3")], "f")}
     resumen["validacion_modelos_r2"] = validar_grafo_r2(kg, M)
+    if r2b:
+        resumen["aristas_por_origen"] = aristas_por_origen(kg)
     kg_json = C.dumps_kg(kg)
     return {"kg": kg, "kg_json": kg_json, "sha256": C.sha256_bytes(kg_json.encode("utf-8")), "resumen": resumen}
 

@@ -1,0 +1,22 @@
+U-OMISIONES-COD, grupo A, ítem e — la pieza aparte: el clasificador de la copia de la nota de E3 en el ensamblado.
+NO está aplicada al repo. Entra solo si la lectura a ciegas de sus 16 detecciones fuera de las 64 unidades de T4 llega al piso
+(límite inferior de Wilson al 95 % de 0,75 o más sobre las decididas, sin las dudosas; notas del 10/10/2026 al pie de la v7).
+
+parche_pieza_e_sobre_O2.diff (sha256 652655447ef7c65b1dac5bc2cd9de97569c65d13ebeb3ce98800e8792638619c)
+  86 líneas nuevas, en cuatro bloques y sin ninguna quitada, en data/experiment/tanda0/code/ensamblar_tanda0.py, sobre el
+  código de O2 (el del repo). Se aplica desde la raíz con: patch -p1 < parche_pieza_e_sobre_O2.diff (las cabeceras dicen
+  c2_o2/ y c2_e/, las dos copias del scratchpad).
+  Con el parche, ensamblar_tanda0.py da sha256 e7fb7785fad1de38….
+  Es la variante «ventana3+flexion» de O1 (o1/diseno_O1.md): marca; no rechaza ni corrige; no toca kg.json. Escribe
+  copias_nota_clasificadas.jsonl y la clave copias_nota_clasificadas del reporte, solo en r2b.
+
+selftest_pieza_e.py (sha256 a059301decef1f8c25b30cbd99598b9fe24833e1dd51a6f4e0cc52a562ac8b15)
+  Corre desde la raíz de una copia con la pieza aplicada; sin ella sale con 2.
+  Sintéticos: clase 3 y clase 1, positivos; las palabras en la unidad, la flexión y lo que está en la cita del faltante,
+  negativos. R: con --salida-r2 y --lista-sellada, el registro de la cadena de diez reproduce, fila por fila, las 57 filas de
+  la lista sellada en O1 (o1/salidas/e_lista_sellada/detecciones_e_copia_nota_diez.json, sha256 4c385529…).
+  consola_selftest_pieza_e_con_la_pieza.txt: 6/6 PASS. consola_selftest_pieza_e_sin_la_pieza.txt: rc=2.
+
+La cadena r2b de diez con la pieza (copia c2_e = c2_o2 + este parche, y nada más): kg.json igual al de O2 (710664e9…); fuera de
+kg.json cambian solo el registro nuevo (57 filas, sha256 0f44d883cb476b48…) y la clave nueva del reporte. Ni el registro ni esa
+clave se copian acá ni al paquete, porque la lectura a ciegas está pendiente.

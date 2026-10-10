@@ -1176,12 +1176,17 @@ def g13_forma_r2(ch):
             ent("b", "Comunicacion", "Ley de Entidades", pi, {"codigo": "Ley 21.526"}, tramo="x"),
             ent("c", "Comunicacion", "Com. B 1.234", pi, {"codigo": "Comunicación B 1.234"}, tramo="x")])
     p = {e["local_id"]: e for e in r["entidades"]}
-    # P3b-2, punto l: con la forma r2 el tipo sale del tramo verificado, no del código (los casos con tramo, en G14).
-    chequear(g, "Comunicacion con tramo sin verificar: con la forma r2 no se deriva del código ni del label (P3b, l)",
-             [p[x]["properties"] for x in "abc"] == [{"codigo": "A 7825"}, {"codigo": "Ley 21.526"},
-                                                     {"codigo": "Comunicación B 1.234"}]
+    # U-OMISIONES-COD, grupo H (v7 firmada en c90d3d9; decisión 1 de la nota del 10/10/2026 al pie): reemplaza al caso de
+    # P3b-2, punto l, que afirmaba que con la forma r2 el tipo no se deriva del código. El tramo verificado sigue
+    # primero (los casos con tramo, en G14); si no da el tipo, sale del código o de la etiqueta.
+    chequear(g, "Comunicacion con tramo sin verificar: el tipo sale del código (H reemplaza a P3b, l): A, externa y B, "
+                "con el número del código",
+             [p[x]["properties"] for x in "abc"] == [{"codigo": "A 7825", "tipo": "A", "numero": 7825},
+                                                     {"codigo": "Ley 21.526", "tipo": "externa"},
+                                                     {"codigo": "Comunicación B 1.234", "tipo": "B", "numero": 1234}]
              and cont(r, "Comunicacion.tramo", "tramo_no_verificado") == 3
-             and cont(r, "Comunicacion.tipo", "sin_valor_del_modelo_no_derivado") == 3)
+             and cont(r, "Comunicacion.tipo", "derivado_del_codigo_sin_tramo:sin_valor_del_modelo") == 2
+             and cont(r, "Comunicacion.tipo", "externa_por_codigo_sin_tramo:sin_valor_del_modelo") == 1)
     chequear(g, "Comunicacion sin derivar: sin originales ni marcas",
              not any(p[x]["originales"] or p[x]["fuera_de_lista"] for x in "abc"))
     # Decisión 21: límite relativo.
@@ -1338,9 +1343,12 @@ def g14_p3b(ch):
              and cont(r, "Comunicacion.numero", "tramo_coincide") == 1)
     r = r2([ent("s", "Comunicacion", "Com. A 5831", "12.1.1", {"codigo": "A 5831"},
                 tramo="las posiciones entre marzo y diciembre")], c12)
-    chequear(g, "l: tramo verificado sin norma → no se deriva, contado",
-             r["entidades"][0]["properties"] == {"codigo": "A 5831"}
-             and cont(r, "Comunicacion.tramo", "tramo_sin_norma") == 1)
+    # U-OMISIONES-COD, grupo H (decisión 1 de la nota del 10/10/2026 al pie de la v7): reemplaza al caso de P3b (l) «tramo
+    # verificado sin norma → no se deriva»: el tramo no da el tipo y el tipo sale del código.
+    chequear(g, "l y H: tramo verificado sin norma → el tipo sale del código, contado",
+             r["entidades"][0]["properties"] == {"codigo": "A 5831", "tipo": "A", "numero": 5831}
+             and cont(r, "Comunicacion.tramo", "tramo_sin_norma") == 1
+             and cont(r, "Comunicacion.tipo", "derivado_del_codigo_sin_tramo:sin_valor_del_modelo") == 1)
     # La modalidad copiada, clasificada en código.
     chequear(g, "modalidad: lista cerrada (recomendación, consecuencia, no clasificada)",
              V.clasificar_modalidad("modalidad", "se recomienda") == "recomendacion"
@@ -1607,6 +1615,77 @@ def g15_c2():
              M.ElementoUmbral.model_validate(el) is not None and el["comparacion_asumida"] is False)
 
 
+def g17_omisiones_cod(ch):
+    """U-OMISIONES-COD (v7 firmada en c90d3d9), grupo B, ítem f, y grupo H: la mención de sujeto con las contracciones
+    y el tipo de la Comunicacion desde el código, con la marca `tipo_no_derivable`."""
+    g = "G17 U-OMISIONES-COD (f y H)"
+    c = ch["cla::5.1.1.1"]
+    pt = "5.1.1.1"
+    # f: «del» → «de el» y «al» → «a el», solo con contracciones (la llamada de la mención de sujeto).
+    for men, texto in (("el cuentacorrentista", "Obligaciones del cuentacorrentista."),
+                       ("el Comité de auditoría", "Las funciones del Comité de auditoría son las siguientes."),
+                       ("el cliente", "Se requerirá al cliente la documentación.")):
+        chequear(g, f"f: «{men}» contra «{texto}» → exacta con contracciones; sin ellas, como antes",
+                 V.verificar_tramo(men, texto, 2, contracciones=True)[0] == "exacta"
+                 and V.verificar_tramo(men, texto, 2)[0] != "exacta")
+    chequear(g, "f: una mención ausente del texto sigue en «no» con contracciones",
+             V.verificar_tramo("el directorio", "Obligaciones del cuentacorrentista.", 2, contracciones=True)[0] == "no")
+    chequear(g, "f: la expansión conserva el span de la contracción (literal del nivel «tokens»)",
+             V.verificar_tramo("cuentacorrentista el obligaciones", "Obligaciones del cuentacorrentista.", None,
+                               contracciones=True)[1] == "Obligaciones del cuentacorrentista")
+    sint = dict(c, texto="Obligaciones del cuentacorrentista.", herencia=[])
+    to = ent("to", "TextoOrdenado", "Clasificación de deudores", pt)
+    ob = ent("e1", "Obligacion", "Informar", pt, {"descripcion": "x", "tipo": "otra"})
+    r = V.validar({"entities": [to, ob], "relations": [rel("aplica_a", pt, source="e1",
+                                                           sujeto_mencion="el cuentacorrentista")]}, sint, forma="r2")
+    x = r["relaciones"][0] if r["relaciones"] else {}
+    chequear(g, "f: la mención de sujeto «el cuentacorrentista» verifica contra «Obligaciones del cuentacorrentista»",
+             x.get("mencion_verificada") == "exacta" and x.get("sujeto_mencion") == "el cuentacorrentista",
+             str(x.get("mencion_verificada")))
+    ob_t = ent("e1", "Obligacion", "Informar", pt, {"descripcion": "x", "tipo": "otra"}, tramo="el cuentacorrentista")
+    r = V.validar({"entities": [to, ob_t], "relations": []}, sint, forma="r2")
+    pe = next((e["provenance"] for e in r["entidades"] if e["local_id"] == "e1"), {})
+    chequear(g, "f: el tramo de una entidad no usa las contracciones (solo la mención)", pe.get("tramo_verificado") != "exacta",
+             str(pe.get("tramo_verificado")))
+    # H: el tipo desde el código cuando el tramo no lo da, y la marca en el resto.
+    def r2(ents, c_=c):
+        return V.validar({"entities": list(ents), "relations": [], "omisiones": []}, c_, forma="r2")
+    r = r2([ent("x1", "Comunicacion", "Decreto 28/23", pt, {"codigo": "Decreto 28/23"}, tramo="x"),
+            ent("x2", "Comunicacion", "Dec. 386 del 10.7.03", pt, {"codigo": "Dec. 386 del 10.7.03"}, tramo="x"),
+            ent("x3", "Comunicacion", "Código Civil y Comercial de la Nación",
+                pt, {"codigo": "Código Civil y Comercial de la Nación"}, tramo="x"),
+            ent("x4", "Comunicacion", "Decisión Mercosur", pt, {"codigo": "Decisión Mercosur"}, tramo="x"),
+            ent("x5", "Comunicacion", "Disposición N° 6/19", pt, {"codigo": "Disposición N° 6/19"}, tramo="x"),
+            ent("x6", "Comunicacion", "Comunicación A-7000", pt, {"codigo": "A-7000"}, tramo="x")])
+    p = {e["local_id"]: e for e in r["entidades"]}
+    chequear(g, "H: normas externas por el código (léxico de la política más dec, código, decisión y disposición) y "
+                "«A-7000» → A con su número",
+             all(p[f"x{i}"]["properties"].get("tipo") == "externa" for i in range(1, 6))
+             and p["x6"]["properties"] == {"codigo": "A-7000", "tipo": "A", "numero": 7000}
+             and cont(r, "Comunicacion.tipo", "externa_por_codigo_sin_tramo:sin_valor_del_modelo") == 5,
+             str([p[f"x{i}"]["properties"] for i in range(1, 7)]))
+    r = r2([ent("y1", "Comunicacion", "Punto 3.1", pt, {"codigo": "punto 3.1"}, tramo="x"),
+            ent("y2", "Comunicacion", "Capitales mínimos", pt, {"codigo": "Capitales mínimos de las entidades financieras"},
+                tramo="x")])
+    p = {e["local_id"]: e for e in r["entidades"]}
+    chequear(g, "H: remisión a un punto y nombre de un TO → sin tipo, con la marca tipo_no_derivable, contada",
+             all(p[y]["properties"].get("tipo") is None and (p[y].get("properties_no_definidas") or {}).get(
+                 "tipo_no_derivable") is True for y in ("y1", "y2"))
+             and cont(r, "Comunicacion.tipo", "tipo_no_derivable") == 2)
+    r = r2([ent("z", "Comunicacion", "Com. A 7825", pt, {"codigo": "A 7825", "tipo_no_derivable": True}, tramo="x")])
+    z = r["entidades"][0]
+    chequear(g, "H: la marca tipo_no_derivable es del código: si la escribe el modelo va a campos no definidos",
+             "properties_no_definidas.tipo_no_derivable" in z.get("campos_no_definidos", {})
+             and z["properties"].get("tipo") == "A", str(z.get("campos_no_definidos")))
+    sint_com = dict(c, texto="Según lo previsto en la Comunicación “B” 5831.", herencia=[])
+    r = r2([ent("t", "Comunicacion", "Com. A 1111", pt, {"codigo": "A 1111"}, tramo="Comunicación “B” 5831")], sint_com)
+    chequear(g, "H, negativo: con el tramo verificado que nombra la Comunicación, el tramo manda y no el código",
+             r["entidades"][0]["properties"].get("tipo") == "B"
+             and cont(r, "Comunicacion.tipo", "derivado_del_tramo:sin_valor_del_modelo") == 1
+             and cont(r, "Comunicacion.tipo", "derivado_del_codigo_sin_tramo:sin_valor_del_modelo") == 0,
+             str(r["entidades"][0]["properties"]))
+
+
 def main() -> int:
     ch = cargar_chunks()
     g1_listas()
@@ -1625,6 +1704,7 @@ def main() -> int:
     g14_p3b(ch)
     g15_c2()
     g16_p3c(ch)
+    g17_omisiones_cod(ch)
     total = ok = 0
     print(f"política: {V.POLITICA.relative_to(REPO)}  sha256 {V.politica_default().sha256}")
     for grupo, filas in RES.items():

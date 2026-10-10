@@ -1,0 +1,154 @@
+T1. remite_a y variantes ::rep
+  [PASS] T1a variante de índice: la cita se resuelve al canónico (solo sus nodos) — {('Obligacion_a', 'Restriccion_b')}
+  [PASS] T1b arista remite_a: alcance interna, destino syn::2.1, evidencia literal, sin rol_fuente
+  [PASS] T1c la cita a una unidad con variantes se cuenta
+  [PASS] T1d dos variantes con texto de cuerpo: destino ambiguo, sin arista, contado — {"destino ambiguo": 1}
+  [PASS] T1e criterio: línea de índice sin cuerpo
+  [PASS] T1f criterio: rótulo con cola de título partido, sin cuerpo
+  [PASS] T1g criterio: varias líneas de índice seguidas, sin cuerpo
+  [PASS] T1h criterio: rótulo y texto, con cuerpo
+  [PASS] T1i sin perfil r2 las opciones r2 no se aceptan
+T2. texto de E0, alcance y Comunicaciones
+  [PASS] T2a corte de palabra unido y salto a espacio — puntos 6.5.1. y 7.2.1. de las normas sobre “Clasificación de deudores”
+  [PASS] T2b la evidencia es un tramo literal del original — 'puntos 6.5.1. y 7.2.1. de las nor-\nmas sobre “Clasificación de deudores”'
+  [PASS] T2c con el texto unido, la cita nombra la norma (no es interna)
+  [PASS] T2g evidencia extendida al límite de palabra en los dos extremos, literal — 'equivalente a dos veces el importe de\nreferencia establecido en el punto 3.7. y cuyo repago'
+  [PASS] T2h el corte de palabra al final de línea y los números con puntos cuentan como una palabra — 'nor-\nmas sobre x, puntos 3.6.1.3. a 3.6.1.5'
+  [PASS] T2i texto del punto de un mini-chunk: su encabezado heredado y su texto, sin los puntos superiores
+  [PASS] T2j procedencia de herencia: todos los tramos de la unidad, no solo el del rol, y no el texto del hijo
+  [PASS] T2d alcance: interna, externa y to_entero
+  [PASS] T2e citas a Comunicaciones: 4 citas, 2 chunks, 4 Comunicaciones — {"citas": 4, "chunks": 2, "comunicaciones_distintas": 4, "citas_en_pie_no_recortado": 1}
+  [PASS] T2f el pie de página no recortado se declara aparte
+T3. resolución de sujetos por relación (índice r2 real)
+  [PASS] T3 «Entidades financieras» → R1 Sujeto_entidad_financiera — R1 Sujeto_entidad_financiera
+  [PASS] T3 «las entidades financieras» → R1 Sujeto_entidad_financiera — R1 Sujeto_entidad_financiera
+  [PASS] T3 «entidad financiera» → R2 Sujeto_entidad_financiera — R2 Sujeto_entidad_financiera
+  [PASS] T3 «Entidades financieras del exterior» → R1 Sujeto_entidad_financiera_del_exterior — R1 Sujeto_entidad_financiera_del_exterior
+  [PASS] T3 «Entidades financieras comprendidas en el Grupo A» → R2_calificador Sujeto_entidad_financiera — R2_calificador Sujeto_entidad_financiera
+  [PASS] T3 «las entidades» → R3 Sujeto_rol_obligado_a_clasificar_clasificacion — R3 Sujeto_rol_obligado_a_clasificar_clasificacion
+  [PASS] T3 «administradores de las carteras crediticias» → None None — None None
+  [PASS] T3 el calificador se guarda — comprendidas en el grupo a
+  [PASS] T3 decisión, caso 0 — ('R1_label_exacto', 'Sujeto_entidad_financiera', True) vs ('R1_label_exacto', 'Sujeto_entidad_financiera', True)
+  [PASS] T3 decisión, caso 1 — ('R4_sugerencia_modelo', 'Sujeto_banco', True) vs ('R4_sugerencia_modelo', 'Sujeto_banco', True)
+  [PASS] T3 decisión, caso 2 — ('R2_id_slug+label_singularizado', 'Sujeto_entidad_financiera', False) vs ('R2_id_slug+label_singularizado', 'Sujeto_entidad_financiera', False)
+  [PASS] T3 decisión, caso 3 — ('R4_sugerencia_modelo', 'Sujeto_banco', False) vs ('R4_sugerencia_modelo', 'Sujeto_banco', False)
+  [PASS] T3 decisión, caso 4 — ('cuarentena', None, False) vs ('cuarentena', None, False)
+  [PASS] T3 decisión, caso 5 — ('R4_sugerencia_modelo', 'Sujeto_banco', False) vs ('R4_sugerencia_modelo', 'Sujeto_banco', False)
+  [PASS] T3 decisión, caso 6 — ('R2_calificador', 'Sujeto_entidad_financiera', False) vs ('R2_calificador', 'Sujeto_entidad_financiera', False)
+  [PASS] T3 decisión, caso 7 — ('cuarentena', None, False) vs ('cuarentena', None, False)
+  [PASS] T3 decisión, caso 8 — ('cuarentena', None, False) vs ('cuarentena', None, False)
+  [PASS] T3 registro: calificador como candidato, no verificada, sin match e id fuera de catálogo — {(8, 'cuarentena', 'id_fuera_de_catalogo'), (4, 'cuarentena', 'mencion_no_verificada'), (7, 'cuarentena', 'sin_match'), (6, 'resuelto_a_clase', 'calificador')}
+  [PASS] T3 la relación sin resolver apunta a su fila
+T4. re-resolución del registro
+  [PASS] T4a con el mismo índice no resuelve nada
+  [PASS] T4b con un id nuevo resuelve la fila, con el sha nuevo
+  [PASS] T4c idempotente
+T5. E2 r2 y establecida_en derivada
+  [PASS] T5a Sujeto_propuesto desde el registro, con el id del nodo en su fila
+  [PASS] T5b procedencia con chunk_id
+  [PASS] T5c la arista guarda método, mención y sugerencia del modelo
+  [PASS] T5d nodos y aristas válidos con NodoR2 y AristaR2
+  [PASS] T5f el calificador llega a la arista de sujeto — comprendidas en el grupo a
+  [PASS] T5g la cola humana queda marcada en el nodo y en la arista, válida con NodoR2
+  [PASS] T5e establecida_en derivada solo donde falta, con su procedencia
+T6. runner: entrada r2 y claves de los reintentos
+  [PASS] T6a con reintento aceptado, el crudo del reintento (archivo compañero)
+  [PASS] T6b cola humana: el primer intento, marcado
+  [PASS] T6c rechazado en E1: queda rechazado
+  [PASS] T6d claves de los reintentos de cla (tanda 0 dirigida): runner = lector de R2 — 13 claves
+T7. reglas (a) a (i) del detector r2
+  [PASS] T7.0 sin reglas, el detector r2 da las menciones de la cadena r1
+  [PASS] T7a+ (a) línea suelta de dos caracteres entre «punto» y el número
+  [PASS] T7a+ (a) la evidencia conserva la línea suelta (tramo literal) — 'observando los criterios establecidos en el punto\nn1\n8.3.5.\nA los conceptos citados'
+  [PASS] T7a- (a) una línea de tres caracteres no se tolera
+  [PASS] T7c+ (c) paréntesis dentro de un rango — ['3.6.1.3', '3.6.1.4', '3.6.1.5']
+  [PASS] T7c- (c) el número dentro del paréntesis no entra en la lista — ['1.1', '1.2']
+  [PASS] T7d+ (d) el punto más lejano no se atribuye a la norma
+  [PASS] T7d- (d) una lista inmediata a la norma sigue siendo de la norma
+  [PASS] T7e+ (e) «de las citadas normas» resuelve a la última norma nombrada antes
+  [PASS] T7e- (e) sin norma antes en el punto: irresoluble, nunca interna
+  [PASS] T7e- «Superintendencia» no es norma: no hay mención externa y la anáfora no tiene antecedente
+  [PASS] T7e- (e) la norma nombrada antes está fuera del inventario: irresoluble con esa causa
+  [PASS] T7e+ (e) cla::3.3.8 vigente (sintético): «del citado TO» resuelve a la norma nombrada antes — [{'clase': 'externa_anaforica', 'norma_nombrada': 'dicho ordenamiento', 'to_destino': 'gescre', 'puntos': ['1.3.5'], 'secciones': [], 'evidencia': 'TO sobre Gestión Crediticia, debiendo dejar constancia –en cada caso– de su utilización de acuerdo con el punto 1.3.5. del citado TO.', 'forma_anafora': 'del citado to.'}]
+  [PASS] T7e+ (e) las siete formas de la lista son anáfora y, sin norma antes, irresolubles y nunca internas
+  [PASS] T7e+ (e) «del presente régimen» es el propio TO: interna aunque después se nombre otra norma
+  [PASS] T7e+ (e) la anáfora toma también la sección de su ventana — [{'clase': 'externa_anaforica', 'norma_nombrada': 'dicho ordenamiento', 'to_destino': 'gescre', 'puntos': [], 'secciones': ['4'], 'evidencia': 'según la Ley 1. y el TO sobre “Gestión crediticia”; lo establecido en la Sección 4. de dichas normas', 'forma_anafora': 'de dichas normas'}]
+  [PASS] T7e+ (e) «de las presentes normas» y «de las presentes disposiciones» también
+  [PASS] T7f+ (f) «apartado» con número de punto es forma de cita
+  [PASS] T7f- (f) «apartado» sin número de punto e «inciso» no son citas
+  [PASS] T7g+ (g) paso 1, igualdad: con comillas, el nombre igual a un nombre del TO
+  [PASS] T7g+ (g) paso 2, prefijo: sin comillas seguida de coma o de texto corrido; título con coma
+  [PASS] T7g+ (g) paso 2: si calzan varios títulos, gana el más largo
+  [PASS] T7g+ (g) paso 3, comienzo: nombre de dos palabras o más que empieza un único título
+  [PASS] T7g- (g) «Incumplimientos de capitales mínimos…» no resuelve a cap; una palabra sola que solo empieza un título no basta; «Superintendencia» no es norma
+  [PASS] T7g+ «TO sobre <título>» y «texto ordenado sobre <título>» nombran la norma como «normas sobre»
+  [PASS] T7g+ (g) «texto ordenado de las normas sobre “X”» es una cita a X
+  [PASS] T7g+ (g) nombres_remision del manifiesto: el nombre completo entre comillas, con paréntesis y de más de 90 caracteres, resuelve por igualdad (pagjub::2.2) — [{'clase': 'externa', 'norma_nombrada': 'Pago de beneficios de la seguridad social por cuenta de la Administración Nacional de la Seguridad Social (ANSES)', 'to_destino': 'pagjub', 'puntos': [], 'secciones': [], 'evidencia': 'normas sobre “Pago de beneficios de la seguridad social por cuenta de la Administración Nacional de la S', 'via_norma': 'igualdad'}, {'clase': 'interna', 'norma_nombrada': None, 'to_destino': 'pagjub', 'puntos': ['2.1'], 'secciones': [], 'evidencia': 'la Administración Nacional de la Seguridad Social (ANSES)” (punto 2.1.)'}]
+  [PASS] T7g+ (g) la captura no se corta en el punto dentro del título: resuelve al TO de incumplimientos, no a cap — [{'clase': 'externa', 'norma_nombrada': 'Incumplimientos de Capitales Mínimos y Relaciones Técnicas', 'to_destino': 'incuca', 'puntos': [], 'secciones': ['2'], 'evidencia': 'Sección 2. del TO sobre Incumplimientos de Capitales Mínimos y Relaciones Técnicas', 'via_norma': 'prefijo'}]
+  [PASS] T7e+ (C) «de estas normas» es el propio TO: el 1.4 queda interno (cap::8.5::cierre) — [{'clase': 'externa', 'norma_nombrada': 'Incumplimientos de capitales mínimos y relaciones técnicas', 'to_destino': None, 'puntos': [], 'secciones': ['1'], 'evidencia': 'Sección 1. de las normas sobre “Incumplimientos de capitales mínimos y relaciones técnicas'}, {'clase': 'interna', 'norma_nombrada': None, 'to_destino': 'cap', 'puntos': ['1.4'], 'secciones': [], 'evidencia': 'correspondiendo la aplicación de lo previsto por el punto 1.4. de estas normas y l', 'marca_propio_to': 'de estas normas'}]
+  [PASS] T7e+ (C) «de esta norma» tras una sección: la sección queda interna; también «de estas disposiciones» y «de este régimen»
+  [PASS] T7e+ (C) «de este ordenamiento» es el propio TO: el 3.2 queda interno aunque antes se nombre otra norma — [{'clase': 'externa', 'norma_nombrada': 'Gestión crediticia', 'to_destino': 'gescre', 'puntos': [], 'secciones': [], 'evidencia': 'normas sobre “Gestión crediticia', 'via_norma': 'igualdad'}, {'clase': 'interna', 'norma_nombrada': None, 'to_destino': 'cla', 'puntos': ['3.2'], 'secciones': [], 'evidencia': 'según las normas sobre “Gestión crediticia”, y el punto 3.2. de este ordenamient', 'marca_propio_to': 'de este ordenamiento'}]
+  [PASS] T7e+ (C) las formas «de este/del presente ordenamiento» y «de este/del presente texto ordenado» son el propio TO: interna, con la marca, y ninguna es anáfora — [[('interna', 'de este ordenamiento')], [('interna', 'del presente ordenamiento')], [('interna', 'de este texto ordenado')], [('interna', 'del presente texto ordenado')], [('interna', 'de este texto ordenado')], [('interna', 'del presente texto ordenado')]]
+  [PASS] T7e- (C) «de dicho/ese ordenamiento» y «de dicho texto ordenado» siguen siendo anáfora
+  [PASS] T7e+ (C) ri_niif::2.1: «del presente texto ordenado de:» no es una norma nombrada; la Sección 4. es interna — [{'clase': 'interna', 'norma_nombrada': None, 'to_destino': 'ri_niif', 'puntos': [], 'secciones': ['4'], 'evidencia': 's Financieros, deberán observar los modelos incluidos en la Sección 4. del presente texto', 'marca_propio_to': '. del presente texto ordenado'}]
+  [PASS] T7A+ la evidencia de cada cita es subcadena de un único tramo (no cruza la unión) — ['14.2.1. En el marco de lo dispuesto en los puntos 3.3., 3.5. y 10.3.2., según', 'En el caso de que las entidades informen el punto 4.1.']
+  [PASS] T7A+ (e) la norma nombrada en un tramo anterior del mismo punto es antecedente de la anáfora
+  [PASS] T7A- sin reglas, la concatenación de los tramos, como en R3 (la evidencia puede cruzar la unión)
+  [PASS] T7h+ (h) «este punto» sin número queda registrado como anáfora sin número, sin remisión
+  [PASS] T7h- (h) «este punto» con número no es anáfora sin número
+  [PASS] T7b+ (b) con el texto de e0-r2, la cita que la tabla linealizada cortaba
+  [PASS] T7b- (b) sin la regla o sin la salida de e0-r2, el texto de E0 legado (sin la cita)
+  [PASS] T7i+ (i) el nodo que nombra la unidad recibe la arista de la cita heredada, solo a esa unidad — [('Obligacion_nombra', 'Restriccion_32')]
+  [PASS] T7i+ (i) evidencia literal del tramo heredado y procedencia del bloque heredado — {"to": "syn", "archivo": "syn.pdf", "punto": "5.1", "rol_documental": "herencia_encabezado", "chunk_id": "syn::5.1.2", "paginas": [], "ancestros": []}
+  [PASS] T7i- (i) los nodos que no nombran la unidad (ni «3.2.1» por «3.2») no la reciben; sin la regla, nada
+T8. U-R2-CODIGO-2, C2: regla (j) del punto a y contador del punto d
+  [PASS] T8a+ patrón 1 «de la NIIF 9»: externa, norma fuera del inventario (no interna al 5.5 del TO) — [('externa', None, ['5.5'], '1', None)]
+  [PASS] T8a+ patrón 1 con título intermedio: «“Deterioro de Valor” de la Norma Internacional de Información Financiera (NIIF) 9»
+  [PASS] T8a+ patrón 1 que nombra un TO del corpus: externa a ese TO (regla g) — [('externa', 'ctacte', ['9.2.1.1'], '1', None)]
+  [PASS] T8a+ patrón 2: irresoluble con la causa propia, sin destino — [('comunicacion_anexo', None, ['10.3.6'], '2', 'punto del Anexo de una Comunicación')]
+  [PASS] T8a- patrón 3 (sin norma nombrada): sigue interna — [('interna', 'ric', ['4.4.1'], None, None)]
+  [PASS] T8a- un nombre que empieza como división del documento no es otra norma: el 7.2 sigue interno — [('interna', 'ri_dcpc', ['7.2'], None, None), ('interna', 'ri_dcpc', [], None, None)]
+  [PASS] T8a- sin la regla (j), la mención es interna (como en r2a) — [('interna', 'cap', ['5.5'], None, None)]
+  [PASS] T8a+ la mención con marca de propio TO sigue interna; la otra, externa — [('interna', 'cap', ['1.2'], None, None), ('externa', None, ['5.5'], '1', None)]
+  [PASS] T8a+ patrón 2 en el ensamblado: sin arista a 10.3.6, irresoluble con la causa propia
+  [PASS] T8a+ patrón 2 en el registro de Comunicaciones (citas_a_puntos_de_anexo) — [{'to': 'syn', 'chunk_id': 'syn::10.4.4', 'comunicacion': 'Comunicación A 7914', 'puntos': ['10.3.6'], 'tramo': 'punto 10.3.6. del Anexo de la Comunicación “A” 7914'}]
+  [PASS] T8a- sin la regla (j), la cita crea la remite_a interna falsa (como en r2a) y no hay citas de Anexo
+  [PASS] T8d+ (d) la línea «Sección 10.» del encabezado heredado es autocita: se cuenta aparte y no va al registro — {"menciones": 0, "con_nodos_que_nombran_la_unidad": 0, "sin_nodos_que_nombran_la_unidad": 0, "autocitas_de_encabezado": 1}
+  [PASS] T8d- es_autocita_de_encabezado: una cita a otra sección, o con puntos, no es autocita
+T9. U-SINCOLA-T0, enmienda 1: con_cola en la cadena r2 (descartar_cola_r2 antes de E2)
+  [PASS] T9a con con_cola=True nada se descarta
+  [PASS] T9b con con_cola=False se descarta la unidad en cola y solo ella
+  [PASS] T9c con la cola (la salida de hoy): un nodo con dos procedencias, la Condicion y su condicion_de — 1 ['cla::1.1::parte1', 'cla::1.1::parte2'] rechazos_e2=0
+  [PASS] T9d sin la cola, la unidad en cola no aporta nodos ni aristas
+  [PASS] T9e sin la cola, el nodo compartido queda solo con la otra procedencia, con el mismo id
+  [PASS] T9f sin la cola, el registro de omisiones no lleva las suyas
+  [PASS] T9g sin la cola, 0 marcas y aristas_derivadas_de_cola en 0; con la cola, la marca de hoy — sin {'chunks_de_cola': [], 'nodos_marcados': 0, 'aristas_marcadas': 0} | con {'chunks_de_cola': ['cla::1.1::parte2'], 'nodos_marcados': 2, 'aristas_marcadas': 1}
+T10. enmienda 6, parte A (documento sin alcance)
+  [PASS] T10 docvig no tiene entrada en rol_por_to
+  [PASS] T10a con parte_a: colectivo, sin mención y no verificada a cuarentena; R1 primero; sin_match sigue por R4 — [('cuarentena', None), ('cuarentena', None), ('cuarentena', None), ('R1_label_exacto', 'Sujeto_entidad_financiera'), ('R4_sugerencia_modelo', 'Sujeto_sujeto_regulado')]
+  [PASS] T10b las tres filas guardan el motivo, la sugerencia y la mención — {0: ('colectivo_sin_sujeto_por_defecto', 'Sujeto_sujeto_regulado', 'las entidades'), 1: ('sin_mencion', 'Sujeto_sujeto_regulado', None), 2: ('mencion_no_verificada', 'Sujeto_sujeto_regulado', 'los obligados del punto')}
+  [PASS] T10c sin parte_a, la salida de siempre (las tres por R4)
+  [PASS] T10d en un documento con alcance, parte_a no cambia nada
+  [PASS] T10e con entrada de dos clases (sin rol) el documento tiene alcance: la parte A no lo toca
+  [PASS] T10f sin alcance, la re-resolución deja las tres en cuarentena
+  [PASS] T10g con el alcance nuevo, las tres resuelven por R4 con la sugerencia, como la cadena; la no verificada conserva su marca — {0: ('Sujeto_sujeto_regulado', 'R4_sugerencia_modelo', 'exacta'), 1: ('Sujeto_sujeto_regulado', 'R4_sugerencia_modelo', 'ausente'), 2: ('Sujeto_sujeto_regulado', 'R4_sugerencia_modelo', 'no')} | {0: ('Sujeto_sujeto_regulado', 'R4_sugerencia_modelo'), 1: ('Sujeto_sujeto_regulado', 'R4_sugerencia_modelo'), 2: ('Sujeto_sujeto_regulado', 'R4_sugerencia_modelo'), 3: ('Sujeto_entidad_financiera', 'R1_label_exacto'), 4: ('Sujeto_sujeto_regulado', 'R4_sugerencia_modelo')}
+T11. R2-3: padre del propuesto de la parte A (S19)
+  [PASS] T11a docvig con la parte A: las 4 filas colectivas de docvig::3.4 al propuesto, con la sugerencia guardada; S19 falla antes con 1 propuesto incompleto — [('docvig::3.4', 5, 'colectivo_sin_sujeto_por_defecto', 'Sujeto_sujeto_regulado', 'Sujeto_propuesto_las_entidades'), ('docvig::3.4', 6, 'colectivo_sin_sujeto_por_defecto', 'Sujeto_sujeto_regulado', 'Sujeto_propuesto_las_entidades'), ('docvig::3.4', 7, 'colectivo_sin_sujeto_por_defecto', 'Sujeto_sujeto_regulado', 'Sujeto_propuesto_las_entidades'), ('docvig::3.4', 9, 'colectivo_sin_sujeto_por_defecto', 'Sujeto_sujeto_regulado', 'Sujeto_propuesto_las_entidades')]
+  [PASS] T11b el propuesto queda con padre_sugerido = Sujeto_sujeto_regulado y la marca (a); sin_rol_de_alcance 0 — [{"id": "Sujeto_propuesto_las_entidades", "mencion": "Las entidades", "tos": ["docvig"], "filas": 4, "motivos": ["colectivo_sin_sujeto_por_defecto"], "padre_sugerido": "Sujeto_sujeto_regulado"}]
+  [PASS] T11c S19 pasa después — 7 Sujetos ({'clase': 5, 'propuesto': 2}); catálogo de 110 ids; 0 fuera del catálogo, 0 con nivel inválido, 0 propuestos incompletos.
+  [PASS] T11d el esqueleto crea la arista padre_sugerido flaggeada; ningún propuesto sin padre — [{'source': 'Sujeto_propuesto_las_entidades', 'target': 'Sujeto_sujeto_regulado', 'relation': 'padre_sugerido', 'provenance': {'to': 'docvig', 'archivo': 'docvig.pdf', 'punto': '3.4', 'rol_documental': 'punto_propio', 'chunk_id': 'docvig::3.4'}, 'provenances': [{'to': 'docvig', 'archivo': 'docvig.pdf', 'punto': '3.4', 'rol_documental': 'punto_propio', 'chunk_id': 'docvig::3.4'}], 'rol_fuente': 'cuarentena_flaggeada', 'properties': {'flag': 'padre_sugerido_no_laudado'}}]
+  [PASS] T11e la raíz del catálogo es Sujeto_sujeto
+  [PASS] T11f sintético sin sugerencia: la raíz del catálogo con la marca (b) — {'nivel': 'propuesto', 'cuarentena': 'true', 'padre_sugerido': 'Sujeto_sujeto', 'padre_por_defecto_generico': 'true'}
+  [PASS] T11g una instancia sugerida pasa a su clase, con las dos marcas — {'nivel': 'propuesto', 'cuarentena': 'true', 'padre_sugerido': 'Sujeto_organismo_publico', 'padre_desde_sugerencia_modelo': 'true', 'padre_sugerido_instancia': 'Sujeto_bcra'}
+  [PASS] T11h dos sugerencias distintas o una fuera del catálogo: la raíz con la marca (b) y las sugerencias listadas — [{"id": "Sujeto_propuesto_dos", "mencion": "los sujetos", "tos": ["docvig"], "filas": 2, "motivos": ["mencion_no_verificada", "sin_mencion"], "sugerencias": ["Sujeto_banco", "Sujeto_entidad_financiera"], "padre_sugerido": "Sujeto_sujeto"}, {"id": "Sujeto_propuesto_fuera", "mencion": "los terceros intervinientes", "tos": ["docvig"], "filas": 1, "motivos": ["sin_mencion"], "sugerencias": ["Sujeto_inexistente"], "padre_sugerido": "Sujeto_sujeto"}, {"id": "Sujeto_propuesto_sin_match", "mencion": "los exportadores", "tos": ["docvig"], "filas": 1, "motivos": ["sin_match"], "sugerencias": [], "padre_sugerido": "Sujeto_sujeto"}]
+  [PASS] T11i con alcance o padre que ya está, la salida de siempre; sin_match sin alcance, la raíz (R2-3 bis) — {"filas_renombradas": 0, "descartados": 0, "padre_desde_instancia": 1, "padre_descartado": 0, "padre_desde_sugerencia_modelo": 1, "padre_por_defecto_generico": 3, "padre_por_defecto": 1, "sin_rol_de_alcance": 0, "aristas_quitadas": 0}
+T12. R2-3 bis: regla general en un documento sin alcance, un caso por motivo (S19)
+  [PASS] T12a sin_match con sugerencia del catálogo: la sugerencia, marca (a); S19 falla antes y pasa después — {'nivel': 'propuesto', 'cuarentena': 'true', 'padre_sugerido': 'Sujeto_entidad_financiera', 'padre_desde_sugerencia_modelo': 'true'} | 1 Sujetos ({'propuesto': 1}); catálogo de 110 ids; 0 fuera del catálogo, 0 con nivel inválido, 0 propuestos incompletos.
+  [PASS] T12b sin_match sin sugerencia: la raíz, marca (b); S19 falla antes y pasa después — {'nivel': 'propuesto', 'cuarentena': 'true', 'padre_sugerido': 'Sujeto_sujeto', 'padre_por_defecto_generico': 'true'} | 1 Sujetos ({'propuesto': 1}); catálogo de 110 ids; 0 fuera del catálogo, 0 con nivel inválido, 0 propuestos incompletos.
+  [PASS] T12c ambiguo con dos sugerencias distintas: la raíz, marca (b); S19 falla antes y pasa después — {'nivel': 'propuesto', 'cuarentena': 'true', 'padre_sugerido': 'Sujeto_sujeto', 'padre_por_defecto_generico': 'true'} | 1 Sujetos ({'propuesto': 1}); catálogo de 110 ids; 0 fuera del catálogo, 0 con nivel inválido, 0 propuestos incompletos.
+  [PASS] T12d id_fuera_de_catalogo con sugerencia fuera del catálogo: la raíz, marca (b); S19 falla antes y pasa después — {'nivel': 'propuesto', 'cuarentena': 'true', 'padre_sugerido': 'Sujeto_sujeto', 'padre_por_defecto_generico': 'true'} | 1 Sujetos ({'propuesto': 1}); catálogo de 110 ids; 0 fuera del catálogo, 0 con nivel inválido, 0 propuestos incompletos.
+  [PASS] T12e mencion_no_verificada con sugerencia del catálogo: la sugerencia, marca (a); S19 falla antes y pasa después — {'nivel': 'propuesto', 'cuarentena': 'true', 'padre_sugerido': 'Sujeto_sujeto_regulado', 'padre_desde_sugerencia_modelo': 'true'} | 1 Sujetos ({'propuesto': 1}); catálogo de 110 ids; 0 fuera del catálogo, 0 con nivel inválido, 0 propuestos incompletos.
+  [PASS] T12f sin_mencion sin sugerencia: la raíz, marca (b); S19 falla antes y pasa después — {'nivel': 'propuesto', 'cuarentena': 'true', 'padre_sugerido': 'Sujeto_sujeto', 'padre_por_defecto_generico': 'true'} | 1 Sujetos ({'propuesto': 1}); catálogo de 110 ids; 0 fuera del catálogo, 0 con nivel inválido, 0 propuestos incompletos.
+  [PASS] T12g control: el mismo propuesto en un documento con alcance sigue por el paso c (rol del TO, padre_por_defecto) — {'nivel': 'propuesto', 'cuarentena': 'true', 'padre_sugerido': 'Sujeto_rol_obligado_a_clasificar_clasificacion', 'padre_por_defecto': 'true'} | rol Sujeto_rol_obligado_a_clasificar_clasificacion
+SELFTEST R3: 140/140 PASS
+rc=0

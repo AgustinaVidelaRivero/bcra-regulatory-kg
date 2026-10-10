@@ -303,7 +303,11 @@ CRITERIOS_R2 = ("id_slug", "label_singularizado", "alias_en_parentesis")
 # R3, lista inicial cerrada de expresiones colectivas, tomada de la redacción
 # del prompt (prompt_e1.py:110: «las entidades», «los sujetos obligados»);
 # se compara la mención normalizada, sin el artículo inicial.
-EXPRESIONES_COLECTIVAS_R3 = ("entidades", "sujetos obligados")
+EXPRESIONES_COLECTIVAS_R3 = ("entidades", "sujetos obligados", "entidad")
+# U-OMISIONES-COD, grupo B, ítem f′ (opción (ii), elegida en la firma de la v7): el singular «entidad» es expresión de
+# R3 solo en un TO con rol. En un TO sin rol no es expresión de R3: da `sin_match` y sigue la regla de siempre (la
+# sugerencia del modelo, o cuarentena si no la hay); la parte A de la enmienda 6 no lo alcanza.
+EXPRESIONES_SINGULARES_R3 = ("entidad",)
 ARTICULOS = ("el", "la", "los", "las")
 
 
@@ -374,8 +378,9 @@ def resolver_mencion_r2(mencion: str, padre: str | None, idx: dict, prefijos: li
         if rol_del_to:
             out.update(regla="R3", id=rol_del_to)
             return out
-        out["motivo"] = "colectivo_sin_sujeto_por_defecto"
-        return out
+        if _sin_articulo(mencion) not in EXPRESIONES_SINGULARES_R3:
+            out["motivo"] = "colectivo_sin_sujeto_por_defecto"
+            return out
     out["motivo"] = "sin_match"
     return out
 

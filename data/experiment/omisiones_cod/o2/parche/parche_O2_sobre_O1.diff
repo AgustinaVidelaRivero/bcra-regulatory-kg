@@ -1,0 +1,779 @@
+--- a/data/experiment/pyd_r2/code/selftest_pyd_r2.py
++++ b/data/experiment/pyd_r2/code/selftest_pyd_r2.py
+@@ -1176,12 +1176,17 @@
+             ent("b", "Comunicacion", "Ley de Entidades", pi, {"codigo": "Ley 21.526"}, tramo="x"),
+             ent("c", "Comunicacion", "Com. B 1.234", pi, {"codigo": "Comunicación B 1.234"}, tramo="x")])
+     p = {e["local_id"]: e for e in r["entidades"]}
+-    # P3b-2, punto l: con la forma r2 el tipo sale del tramo verificado, no del código (los casos con tramo, en G14).
+-    chequear(g, "Comunicacion con tramo sin verificar: con la forma r2 no se deriva del código ni del label (P3b, l)",
+-             [p[x]["properties"] for x in "abc"] == [{"codigo": "A 7825"}, {"codigo": "Ley 21.526"},
+-                                                     {"codigo": "Comunicación B 1.234"}]
++    # U-OMISIONES-COD, grupo H (v7 firmada en c90d3d9; decisión 1 de la nota del 10/10/2026 al pie): reemplaza al caso de
++    # P3b-2, punto l, que afirmaba que con la forma r2 el tipo no se deriva del código. El tramo verificado sigue
++    # primero (los casos con tramo, en G14); si no da el tipo, sale del código o de la etiqueta.
++    chequear(g, "Comunicacion con tramo sin verificar: el tipo sale del código (H reemplaza a P3b, l): A, externa y B, "
++                "con el número del código",
++             [p[x]["properties"] for x in "abc"] == [{"codigo": "A 7825", "tipo": "A", "numero": 7825},
++                                                     {"codigo": "Ley 21.526", "tipo": "externa"},
++                                                     {"codigo": "Comunicación B 1.234", "tipo": "B", "numero": 1234}]
+              and cont(r, "Comunicacion.tramo", "tramo_no_verificado") == 3
+-             and cont(r, "Comunicacion.tipo", "sin_valor_del_modelo_no_derivado") == 3)
++             and cont(r, "Comunicacion.tipo", "derivado_del_codigo_sin_tramo:sin_valor_del_modelo") == 2
++             and cont(r, "Comunicacion.tipo", "externa_por_codigo_sin_tramo:sin_valor_del_modelo") == 1)
+     chequear(g, "Comunicacion sin derivar: sin originales ni marcas",
+              not any(p[x]["originales"] or p[x]["fuera_de_lista"] for x in "abc"))
+     # Decisión 21: límite relativo.
+@@ -1338,9 +1343,12 @@
+              and cont(r, "Comunicacion.numero", "tramo_coincide") == 1)
+     r = r2([ent("s", "Comunicacion", "Com. A 5831", "12.1.1", {"codigo": "A 5831"},
+                 tramo="las posiciones entre marzo y diciembre")], c12)
+-    chequear(g, "l: tramo verificado sin norma → no se deriva, contado",
+-             r["entidades"][0]["properties"] == {"codigo": "A 5831"}
+-             and cont(r, "Comunicacion.tramo", "tramo_sin_norma") == 1)
++    # U-OMISIONES-COD, grupo H (decisión 1 de la nota del 10/10/2026 al pie de la v7): reemplaza al caso de P3b (l) «tramo
++    # verificado sin norma → no se deriva»: el tramo no da el tipo y el tipo sale del código.
++    chequear(g, "l y H: tramo verificado sin norma → el tipo sale del código, contado",
++             r["entidades"][0]["properties"] == {"codigo": "A 5831", "tipo": "A", "numero": 5831}
++             and cont(r, "Comunicacion.tramo", "tramo_sin_norma") == 1
++             and cont(r, "Comunicacion.tipo", "derivado_del_codigo_sin_tramo:sin_valor_del_modelo") == 1)
+     # La modalidad copiada, clasificada en código.
+     chequear(g, "modalidad: lista cerrada (recomendación, consecuencia, no clasificada)",
+              V.clasificar_modalidad("modalidad", "se recomienda") == "recomendacion"
+@@ -1605,6 +1613,77 @@
+     el = RC.elemento_umbral(una("en un plazo de 30 días"), "30 días")
+     chequear(g, "m el elemento valida con ElementoUmbral (comparacion_asumida en False)",
+              M.ElementoUmbral.model_validate(el) is not None and el["comparacion_asumida"] is False)
++
++
++def g17_omisiones_cod(ch):
++    """U-OMISIONES-COD (v7 firmada en c90d3d9), grupo B, ítem f, y grupo H: la mención de sujeto con las contracciones
++    y el tipo de la Comunicacion desde el código, con la marca `tipo_no_derivable`."""
++    g = "G17 U-OMISIONES-COD (f y H)"
++    c = ch["cla::5.1.1.1"]
++    pt = "5.1.1.1"
++    # f: «del» → «de el» y «al» → «a el», solo con contracciones (la llamada de la mención de sujeto).
++    for men, texto in (("el cuentacorrentista", "Obligaciones del cuentacorrentista."),
++                       ("el Comité de auditoría", "Las funciones del Comité de auditoría son las siguientes."),
++                       ("el cliente", "Se requerirá al cliente la documentación.")):
++        chequear(g, f"f: «{men}» contra «{texto}» → exacta con contracciones; sin ellas, como antes",
++                 V.verificar_tramo(men, texto, 2, contracciones=True)[0] == "exacta"
++                 and V.verificar_tramo(men, texto, 2)[0] != "exacta")
++    chequear(g, "f: una mención ausente del texto sigue en «no» con contracciones",
++             V.verificar_tramo("el directorio", "Obligaciones del cuentacorrentista.", 2, contracciones=True)[0] == "no")
++    chequear(g, "f: la expansión conserva el span de la contracción (literal del nivel «tokens»)",
++             V.verificar_tramo("cuentacorrentista el obligaciones", "Obligaciones del cuentacorrentista.", None,
++                               contracciones=True)[1] == "Obligaciones del cuentacorrentista")
++    sint = dict(c, texto="Obligaciones del cuentacorrentista.", herencia=[])
++    to = ent("to", "TextoOrdenado", "Clasificación de deudores", pt)
++    ob = ent("e1", "Obligacion", "Informar", pt, {"descripcion": "x", "tipo": "otra"})
++    r = V.validar({"entities": [to, ob], "relations": [rel("aplica_a", pt, source="e1",
++                                                           sujeto_mencion="el cuentacorrentista")]}, sint, forma="r2")
++    x = r["relaciones"][0] if r["relaciones"] else {}
++    chequear(g, "f: la mención de sujeto «el cuentacorrentista» verifica contra «Obligaciones del cuentacorrentista»",
++             x.get("mencion_verificada") == "exacta" and x.get("sujeto_mencion") == "el cuentacorrentista",
++             str(x.get("mencion_verificada")))
++    ob_t = ent("e1", "Obligacion", "Informar", pt, {"descripcion": "x", "tipo": "otra"}, tramo="el cuentacorrentista")
++    r = V.validar({"entities": [to, ob_t], "relations": []}, sint, forma="r2")
++    pe = next((e["provenance"] for e in r["entidades"] if e["local_id"] == "e1"), {})
++    chequear(g, "f: el tramo de una entidad no usa las contracciones (solo la mención)", pe.get("tramo_verificado") != "exacta",
++             str(pe.get("tramo_verificado")))
++    # H: el tipo desde el código cuando el tramo no lo da, y la marca en el resto.
++    def r2(ents, c_=c):
++        return V.validar({"entities": list(ents), "relations": [], "omisiones": []}, c_, forma="r2")
++    r = r2([ent("x1", "Comunicacion", "Decreto 28/23", pt, {"codigo": "Decreto 28/23"}, tramo="x"),
++            ent("x2", "Comunicacion", "Dec. 386 del 10.7.03", pt, {"codigo": "Dec. 386 del 10.7.03"}, tramo="x"),
++            ent("x3", "Comunicacion", "Código Civil y Comercial de la Nación",
++                pt, {"codigo": "Código Civil y Comercial de la Nación"}, tramo="x"),
++            ent("x4", "Comunicacion", "Decisión Mercosur", pt, {"codigo": "Decisión Mercosur"}, tramo="x"),
++            ent("x5", "Comunicacion", "Disposición N° 6/19", pt, {"codigo": "Disposición N° 6/19"}, tramo="x"),
++            ent("x6", "Comunicacion", "Comunicación A-7000", pt, {"codigo": "A-7000"}, tramo="x")])
++    p = {e["local_id"]: e for e in r["entidades"]}
++    chequear(g, "H: normas externas por el código (léxico de la política más dec, código, decisión y disposición) y "
++                "«A-7000» → A con su número",
++             all(p[f"x{i}"]["properties"].get("tipo") == "externa" for i in range(1, 6))
++             and p["x6"]["properties"] == {"codigo": "A-7000", "tipo": "A", "numero": 7000}
++             and cont(r, "Comunicacion.tipo", "externa_por_codigo_sin_tramo:sin_valor_del_modelo") == 5,
++             str([p[f"x{i}"]["properties"] for i in range(1, 7)]))
++    r = r2([ent("y1", "Comunicacion", "Punto 3.1", pt, {"codigo": "punto 3.1"}, tramo="x"),
++            ent("y2", "Comunicacion", "Capitales mínimos", pt, {"codigo": "Capitales mínimos de las entidades financieras"},
++                tramo="x")])
++    p = {e["local_id"]: e for e in r["entidades"]}
++    chequear(g, "H: remisión a un punto y nombre de un TO → sin tipo, con la marca tipo_no_derivable, contada",
++             all(p[y]["properties"].get("tipo") is None and (p[y].get("properties_no_definidas") or {}).get(
++                 "tipo_no_derivable") is True for y in ("y1", "y2"))
++             and cont(r, "Comunicacion.tipo", "tipo_no_derivable") == 2)
++    r = r2([ent("z", "Comunicacion", "Com. A 7825", pt, {"codigo": "A 7825", "tipo_no_derivable": True}, tramo="x")])
++    z = r["entidades"][0]
++    chequear(g, "H: la marca tipo_no_derivable es del código: si la escribe el modelo va a campos no definidos",
++             "properties_no_definidas.tipo_no_derivable" in z.get("campos_no_definidos", {})
++             and z["properties"].get("tipo") == "A", str(z.get("campos_no_definidos")))
++    sint_com = dict(c, texto="Según lo previsto en la Comunicación “B” 5831.", herencia=[])
++    r = r2([ent("t", "Comunicacion", "Com. A 1111", pt, {"codigo": "A 1111"}, tramo="Comunicación “B” 5831")], sint_com)
++    chequear(g, "H, negativo: con el tramo verificado que nombra la Comunicación, el tramo manda y no el código",
++             r["entidades"][0]["properties"].get("tipo") == "B"
++             and cont(r, "Comunicacion.tipo", "derivado_del_tramo:sin_valor_del_modelo") == 1
++             and cont(r, "Comunicacion.tipo", "derivado_del_codigo_sin_tramo:sin_valor_del_modelo") == 0,
++             str(r["entidades"][0]["properties"]))
+ 
+ 
+ def main() -> int:
+@@ -1625,6 +1704,7 @@
+     g14_p3b(ch)
+     g15_c2()
+     g16_p3c(ch)
++    g17_omisiones_cod(ch)
+     total = ok = 0
+     print(f"política: {V.POLITICA.relative_to(REPO)}  sha256 {V.politica_default().sha256}")
+     for grupo, filas in RES.items():
+--- a/data/experiment/reextraccion_v2/corpus_v2/r1_referencias.py
++++ b/data/experiment/reextraccion_v2/corpus_v2/r1_referencias.py
+@@ -1030,7 +1030,7 @@
+                            predicado: str = PREDICADO_R2, reglas: frozenset = REGLAS_R2,
+                            chunks_e0_r2: dict[str, dict] | None = None,
+                            chunks_partes: dict[str, dict] | None = None,
+-                           procedencia_propia: bool = False) -> dict:
++                           procedencia_propia: bool = False, agrupar_sin_rol: bool = False) -> dict:
+     """Remisiones del perfil r2. Por defecto, la regla firmada: detección sobre
+     el texto de E0 del punto de origen (por chunk_id), desde cada procedencia
+     de los siete tipos de contenido, con atribución D1, `alcance`, `destino` y
+@@ -1100,12 +1100,17 @@
+     # lleva la procedencia de su propio origen, la de la misma clave (to, punto, rol, chunk) con su tramo, y no la del
+     # primer nodo del punto. La cita del texto heredado lleva la procedencia del bloque heredado, sin tramo, con la
+     # marca explícita `tramo_verificado = ausente`. La detección, la atribución D1 y los destinos no cambian.
++    # U-OMISIONES-COD, nota del 10/10/2026 al pie de la v7 (G-r y `remite_a`; con `agrupar_sin_rol`, que el ensamblado
++    # pasa en r2b): los orígenes de una cita se agrupan por (to, punto, chunk), sin el rol. Las procedencias heredadas de
++    # un mismo punto y chunk leen los mismos bloques de E0 (`_tramos_e0_de` usa el rol solo para sumar el texto propio),
++    # y la corrección de rol de G-r no debe partir el grupo: la cita se atribuye una vez, con la regla D1, a todo el punto.
++    clave_grupo = (("to", "punto", "chunk_id") if agrupar_sin_rol else ("to", "punto", "rol_documental", "chunk_id"))
+     prov_del_nodo: dict[tuple[str, str], dict] = {}
+ 
+     def de_su_origen(o: str, procedencia: dict) -> dict:
+         if not procedencia_propia:
+             return procedencia
+-        k = C.prov_key({kk: procedencia.get(kk) for kk in ("to", "punto", "rol_documental", "chunk_id")})
++        k = C.prov_key({kk: procedencia.get(kk) for kk in clave_grupo})
+         propia = prov_del_nodo.get((k, o))
+         if propia is not None:
+             return propia
+@@ -1218,7 +1223,7 @@
+                 prov_canonica = dict(p)
+                 if cid and not p.get("chunk_id"):
+                     prov_canonica = {**p, "chunk_id": cid}
+-                k = C.prov_key({kk: prov_canonica.get(kk) for kk in ("to", "punto", "rol_documental", "chunk_id")})
++                k = C.prov_key({kk: prov_canonica.get(kk) for kk in clave_grupo})
+                 prov_del_nodo.setdefault((k, n["id"]), prov_canonica)
+                 if k not in por_proc:
+                     por_proc[k] = (prov_canonica, [])
+--- a/data/experiment/r2_codigo/selftest_r3.py
++++ b/data/experiment/r2_codigo/selftest_r3.py
+@@ -55,6 +55,12 @@
+       del catálogo, `mencion_no_verificada`, `sin_mencion`), con S19 sobre su
+       grafo (falla antes, pasa después); control: el mismo propuesto en un
+       documento con alcance sigue por el paso c.
++  T13 U-OMISIONES-COD (v7 firmada en c90d3d9 y notas del 10/10/2026 al pie): f′, el singular «entidad» en la lista
++      de R3 con la opción (ii) (R3 solo en un TO con rol; sin rol, `sin_match`; los calificadores y los
++      determinantes no son «entidad»; con la sugerencia del modelo, R4 y la marca de desacuerdo); J, cada
++      `remite_a` con la procedencia de su propio origen y la cita heredada con la marca sin tramo; y el
++      agrupamiento sin el rol de la atribución de `remite_a` (los roles heredados distintos de un mismo punto no
++      parten el grupo).
+ Escribe solo en un directorio temporal (TMPDIR). USD 0.
+ 
+ Uso:
+@@ -1022,6 +1028,115 @@
+           and "padre_desde_sugerencia_modelo" not in pr and "padre_por_defecto_generico" not in pr
+           and (rs["padre_desde_sugerencia_modelo"], rs["padre_por_defecto_generico"], rs["padre_por_defecto"],
+                rs["sin_rol_de_alcance"]) == (0, 0, 1, 0) and despues["result"] == "PASS", f"{pr} | rol {rol}")
++
++
++def t13():
++    print("T13. U-OMISIONES-COD: f′ (R3 en singular), J (procedencia propia) y agrupamiento sin rol")
++    idx = {("label_exacto", "entidad financiera"): "Sujeto_entidad_financiera"}
++    pref = E4._prefijos(idx)
++    r = E4.resolver_mencion_r2("la entidad", None, idx, pref, "Sujeto_rol_x")
++    check("T13a f′+ «la entidad» en un TO con rol → R3, el rol", r["regla"] == "R3" and r["id"] == "Sujeto_rol_x", str(r))
++    for men, regla, motivo in (("la entidad financiera", "R1", None), ("la entidad nominada", None, "sin_match"),
++                               ("esta entidad", None, "sin_match"), ("la mencionada entidad", None, "sin_match"),
++                               ("la/s entidad/es encargada/s del seguimiento", None, "sin_match")):
++        r = E4.resolver_mencion_r2(men, None, idx, pref, "Sujeto_rol_x")
++        check(f"T13b f′- «{men}» no es «entidad» → {regla or motivo}", r["regla"] == regla and r["motivo"] == motivo,
++              str(r))
++    r = E4.resolver_mencion_r2("la entidad", None, idx, pref, None)
++    check("T13c f′ opción (ii): «la entidad» en un TO sin rol → sin_match (no colectivo_sin_sujeto_por_defecto)",
++          r["regla"] is None and r["motivo"] == "sin_match", str(r))
++    r = E4.resolver_mencion_r2("las entidades", None, idx, pref, None)
++    check("T13c f′ opción (ii)-: «las entidades» en un TO sin rol sigue en colectivo_sin_sujeto_por_defecto",
++          r["motivo"] == "colectivo_sin_sujeto_por_defecto", str(r))
++
++    def reg(archivo, men, modelo):
++        return {"chunk_id": "syn::1", "to": "syn", "archivo": archivo, "validacion": {
++            "entidades": [{"local_id": "e1", "type": "Obligacion", "label": "x"}],
++            "relaciones": [{"predicate": "aplica_a", "source": "e1", "target": None, "punto": "1", "indice_crudo": 0,
++                            "sujeto_mencion": men, "mencion_verificada": "exacta", "sujeto_id_modelo": modelo}]}}
++    rol = {"CON_ROL.pdf": {"rol_id": "Sujeto_rol_x"}}
++    for archivo, men, modelo, esperado in (
++            ("SIN_ROL.pdf", "la entidad", "Sujeto_banco", ("R4_sugerencia_modelo", "Sujeto_banco", None, False)),
++            ("SIN_ROL.pdf", "la entidad", None, ("cuarentena", None, "sin_match", False)),
++            ("SIN_ROL.pdf", "las entidades", "Sujeto_banco", ("cuarentena", None, "colectivo_sin_sujeto_por_defecto", False)),
++            ("CON_ROL.pdf", "la entidad", None, ("R3", "Sujeto_rol_x", None, False)),
++            ("CON_ROL.pdf", "la entidad", "Sujeto_entidad_financiera",
++             ("R4_sugerencia_modelo", "Sujeto_entidad_financiera", None, True))):
++        res = E4.resolver_relaciones_r2([reg(archivo, men, modelo)], idx, rol, {"catalogo_sha256": "x"}, parte_a=True)
++        f = res["resolucion"][0]
++        got = (f["metodo_resolucion"], f["resuelto_a"], res["registro"][0]["motivo"] if res["registro"] else None,
++               f["desacuerdo_regla_modelo"])
++        check(f"T13d f′ en la cadena: {archivo}, «{men}», sugerencia {modelo} → {esperado}", got == esperado, str(got))
++
++    # J y el agrupamiento sin rol (sintéticos, E0 de un TO «syn»)
++    def prov(punto, rol, cid, tramo):
++        return {"to": "syn", "archivo": "syn.pdf", "punto": punto, "rol_documental": rol, "chunk_id": cid, "tramo": tramo,
++                "tramo_verificado": "exacta"}
++
++    def nodo_p(nid, tipo, desc, *provs):
++        return {"id": nid, "type": tipo, "label": nid, "properties": {"descripcion": desc},
++                "provenance": dict(provs[0]), "provenances": [dict(x) for x in provs]}
++    destino = chunk("syn::2.1", "2.1", "2.1. Cuerpo.\nTexto de cuerpo.")
++    origen = chunk("syn::1.1", "1.1", "Las entidades observarán el punto 2.1. Y también el punto 2.1. en su caso.")
++    kg_j = {"nodes": [nodo_p("Obligacion_a", "Obligacion", "cumplir el punto 2.1.",
++                             prov("1.1", "punto_propio", "syn::1.1", "Las entidades observarán el punto 2.1.")),
++                      nodo_p("Obligacion_b", "Obligacion", "lo del punto 2.1. en su caso",
++                             prov("1.1", "punto_propio", "syn::1.1", "Y también el punto 2.1. en su caso")),
++                      nodo_p("Restriccion_d", "Restriccion", "x", prov("2.1", "punto_propio", "syn::2.1", "Cuerpo"))],
++            "edges": []}
++    with e0_sintetico([origen, destino]):
++        sin = REF.detectar_y_resolver(json.loads(json.dumps(kg_j)), perfil="r2")
++        con = REF.detectar_y_resolver(json.loads(json.dumps(kg_j)), perfil="r2", procedencia_propia=True,
++                                      agrupar_sin_rol=True)
++    tr = lambda r: {e["source"]: e["provenance"].get("tramo") for e in r["nuevas"]}  # noqa: E731
++    check("T13e J+ dos orígenes del mismo punto con tramos distintos: cada arista con el tramo de su origen",
++          tr(con) == {"Obligacion_a": "Las entidades observarán el punto 2.1.",
++                      "Obligacion_b": "Y también el punto 2.1. en su caso"}, str(tr(con)))
++    check("T13e J- sin la opción, las dos llevan la procedencia del primer nodo del punto (la salida de siempre)",
++          set(tr(sin).values()) == {"Las entidades observarán el punto 2.1."}, str(tr(sin)))
++    check("T13e J: mismas aristas, destino y evidencia con y sin la opción",
++          sorted((e["source"], e["target"], json.dumps(e["properties"], sort_keys=True)) for e in sin["nuevas"])
++          == sorted((e["source"], e["target"], json.dumps(e["properties"], sort_keys=True)) for e in con["nuevas"]))
++    hijo = chunk("syn::5.1.2", "5.1.2", "5.1.2. Texto propio sin citas.")
++    hijo["herencia"] = [{"unidad_origen": "5.1", "tipo": "encabezado", "texto": "5.1. Operaciones."},
++                        {"unidad_origen": "5.1", "tipo": "intro", "texto": "Las comprendidas en el punto 3.2. de estas normas."}]
++    otro = chunk("syn::5.1.3", "5.1.3", "5.1.3. Cumplirán lo previsto en el punto 3.2.")
++    otro["herencia"] = [{"unidad_origen": "4.1", "tipo": "encabezado", "texto": "4.1. Antecedentes del punto 3.2."}]
++    d32 = chunk("syn::3.2", "3.2", "3.2. Cuerpo.\nTexto.")
++    kg_g = {"nodes": [nodo_p("Obligacion_nombra", "Obligacion", "las operaciones del punto 3.2.",
++                             prov("5.1", "herencia_encabezado", "syn::5.1.2", "5.1. Operaciones.")),
++                      nodo_p("Obligacion_otra", "Obligacion", "otra cosa sin número",
++                             prov("5.1", "herencia_intro", "syn::5.1.2", "Las comprendidas")),
++                      nodo_p("Obligacion_h", "Obligacion", "lo del punto 3.2. de estas normas",
++                             prov("5.1.3", "punto_propio", "syn::5.1.3", "Cumplirán lo previsto en el punto 3.2.")),
++                      nodo_p("Restriccion_32", "Restriccion", "x", prov("3.2", "punto_propio", "syn::3.2", "Cuerpo"))],
++            "edges": []}
++    with e0_sintetico([hijo, otro, d32]):
++        partido = REF.detectar_y_resolver(json.loads(json.dumps(kg_g)), perfil="r2", procedencia_propia=True)
++        agrupado = REF.detectar_y_resolver(json.loads(json.dumps(kg_g)), perfil="r2", procedencia_propia=True,
++                                           agrupar_sin_rol=True)
++    fuentes = lambda r: sorted(e["source"] for e in r["nuevas"] if e["target"] == "Restriccion_32")  # noqa: E731
++    check("T13f agrupamiento sin rol+: la cita del bloque heredado va solo al nodo del punto que la nombra",
++          fuentes(agrupado) == ["Obligacion_h", "Obligacion_nombra"], str(fuentes(agrupado)))
++    check("T13f agrupamiento sin rol-: con el grupo partido por el rol, el nodo que no la nombra también la recibe",
++          fuentes(partido) == ["Obligacion_h", "Obligacion_nombra", "Obligacion_otra"], str(fuentes(partido)))
++    e_n = next((e for e in agrupado["nuevas"] if e["source"] == "Obligacion_nombra"), {})
++    check("T13f J con el agrupamiento: la arista lleva la procedencia propia del nodo (su rol y su tramo)",
++          e_n.get("provenance", {}).get("rol_documental") == "herencia_encabezado"
++          and e_n["provenance"].get("tramo") == "5.1. Operaciones.", json.dumps(e_n.get("provenance")))
++    with e0_sintetico([chunk("syn::5.1.2", "5.1.2", "5.1.2. Texto propio sin citas.") | {"herencia": [
++            {"unidad_origen": "5.1", "tipo": "encabezado", "texto": "5.1. Operaciones.\nLas comprendidas en los puntos 3.1. a 3.3."}]}]
++            + [chunk(f"syn::3.{k}", f"3.{k}", f"3.{k}. Cuerpo.\nTexto.") for k in (1, 2, 3)]):
++        kg_i = {"nodes": [nodo_p("Obligacion_nombra", "Obligacion", "operaciones del punto 3.2.",
++                                 prov("5.1.2", "punto_propio", "syn::5.1.2", "Texto propio sin citas"))]
++                + [nodo_p(f"Restriccion_3{k}", "Restriccion", "x", prov(f"3.{k}", "punto_propio", f"syn::3.{k}", "Cuerpo"))
++                   for k in (1, 2, 3)], "edges": []}
++        ri = REF.detectar_y_resolver(json.loads(json.dumps(kg_i)), perfil="r2", procedencia_propia=True,
++                                     agrupar_sin_rol=True)
++    e_i = next((e for e in ri["nuevas"] if e["target"] == "Restriccion_32"), {})
++    check("T13g J: la cita del texto heredado lleva la procedencia de su unidad con la marca sin tramo",
++          e_i.get("provenance", {}).get("punto") == "5.1" and e_i["provenance"].get("tramo") is None
++          and e_i["provenance"].get("tramo_verificado") == "ausente", json.dumps(e_i.get("provenance")))
+ 
+ 
+ def main() -> int:
+@@ -1036,6 +1151,7 @@
+     t10()
+     t11()
+     t12()
++    t13()
+     ok = sum(1 for _, b, _ in RES if b)
+     print(f"SELFTEST R3: {ok}/{len(RES)} {'PASS' if ok == len(RES) else 'FAIL'}")
+     return 0 if ok == len(RES) else 1
+--- a/data/experiment/tanda0/code/ensamblar_tanda0.py
++++ b/data/experiment/tanda0/code/ensamblar_tanda0.py
+@@ -1726,7 +1726,7 @@
+ 
+     partes = {c["id"]: c for to in C.TOS_ORDEN for c in _chunks_r2(to) if "sub_chunk" in c}
+     r_ref = REF.detectar_y_resolver(kg, perfil="r2", chunks_e0_r2=_chunks_e0_r2(tablas_dir),
+-                                    chunks_partes=partes or None, procedencia_propia=r2b)
++                                    chunks_partes=partes or None, procedencia_propia=r2b, agrupar_sin_rol=r2b)
+     resumen["remite_a"] = r_ref["resumen"]
+     if r2b and not con_cola:
+         # grupo K: la causa propia de la cita a una unidad excluida, en el registro y en el reporte
+--- a/data/experiment/med_umbrales/p/code/selftest_comparador_P.py
++++ b/data/experiment/med_umbrales/p/code/selftest_comparador_P.py
+@@ -102,6 +102,28 @@
+               len(leido) == 2 and all(v is None for b in leido.values() for v in b["campos"].values())
+               and set(leido[ID_INVENTADO]["campos"]) == {c for c, _ in F.CAMPOS}
+               and set(leido[ID_INVENTADO.replace("u0", "u1")]["campos"]) == {c for c, _ in F.CAMPOS_VACIO}, None, None))
++    # U-OMISIONES-COD, grupo L (v7 firmada en c90d3d9): con el tramo de E1 en `tramo`, la cuantía del elemento sale de
++    # las cuantías detectadas en el tramo, por el valor y la unidad (comun_P.cuantia_del_elemento).
++    import comun_P as CP  # noqa: PLC0415
++    R = CP.rcmp()
++
++    def el_de(tramo, k, **extra):
++        c = R.detectar_cuantias(tramo)[k]
++        return {"tramo": tramo, "valor": c.valor, "unidad": c.unidad, "origen": "e1", "regla_comparacion": "maximo", **extra}
++    comp = "entre el 5 % y menos del 20 % del patrimonio"
++    casos_l = [("L: elemento anterior al grupo L (el tramo es la cuantía) → la misma cuantía", el_de("5 %", 0), "5 %"),
++               ("L: tramo de E1 con una cuantía → la cuantía", el_de("El 17% en el caso de entidades del grupo B", 0), "17%"),
++               ("L: tramo compartido, el primer elemento → su cuantía por el valor", el_de(comp, 0), "5 %"),
++               ("L: tramo compartido, el segundo elemento → su cuantía por el valor", el_de(comp, 1), "20 %"),
++               ("L: elemento del validador → su tramo",
++                {"tramo": "no podrá exceder el nivel alcanzado", "comparacion": "maximo", "origen": "e1",
++                 "regla_comparacion": "limite_relativo:marcador"}, "no podrá exceder el nivel alcanzado"),
++               ("L: tramo sin una cuantía de ese valor (la celda con la unidad del rótulo) → su tramo",
++                {"tramo": "5.000", "valor": "5000000000", "unidad": "moneda", "origen": "e1", "regla_comparacion": "maximo"},
++                "5.000")]
++    for nombre, el, esperado in casos_l:
++        ob = CP.cuantia_del_elemento(el)
++        C.append((nombre, ob == esperado, ob, None))
+     malos = 0
+     for nombre, ok, ob, _ in C:
+         print(("PASS" if ok else "FAIL"), "|", nombre, "|", ob if ob is not None else "")
+--- a/data/experiment/mantenimiento/tabla_reprocesamiento.md
++++ b/data/experiment/mantenimiento/tabla_reprocesamiento.md
+@@ -166,14 +166,14 @@
+ | F13b | Un id nuevo en `catalogo_sujetos_r2.json`, el catálogo del request (cambio de release; entre tandas, un id o un alias nuevo va al catálogo de resolución, F13, sin tocar el request) | candado del catálogo al construir el perfil; re-sellado, el bloque del prefijo y el enum (F11) | nada se arma hasta re-sellar el catálogo y sus generados; re-sellado, E1 y E3 de todas | frena (candado del catálogo) | frena (sin perfil no hay salida validada de E1) | frena; re-sellado, todo (F11) | 9 | `modelos_r2.py:61-96`; `prompt_r2b.py:80`; `r1_e4.py:528-535`; `generar_desde_catalogo.py:118`, `:133`, `:138` | R22c |
+ | F13c | Registro de alcance por tanda (`catalogo_unico/registro_alcance_por_tanda.md`, legible por código desde R2-2 de U-RERESOL-CAT): una entrada de clase o de rol reutilizado para un documento nuevo, o un documento declarado sin alcance | en el ensamblado, el `rol_por_to` del catálogo de resolución: la resolución por relación (R4 o R3 si el documento recibe alcance; cuarentena por la parte A de la enmienda 6 a L-ESQ-R2 si no lo tiene, solo en r2b); en E1, la línea de alcance del mensaje solo cuando el registro esté cableado en `prompt_r2b.py` (condición 11-bis del checklist, después de la firma de la enmienda 4; hoy el mensaje no lo lee: R2-2 lo midió idéntico en las 2.439 unidades y en los 13 casos del candado) | hoy: resolución, E2 y ensamblado en código; con el registro cableado en E1: además E1 y E3 de las unidades del documento que recibe alcance, como F12, y el candado del mensaje de E1 se re-sella | no cambia (hoy; con el registro cableado, cambia en las unidades del documento que recibe alcance, como F12) | no cambia (con la salida de E1 fija) | solo código sobre lo guardado (hoy); con el registro cableado, E1 y E3 de las afectadas (F12) | 12 | `r1_e4.py:417-423` (parte A), `:593-642`; `reresolucion_catalogo/reresolver_catalogo.py` (`--registro-alcance`); `reresolucion_catalogo/salidas/r2_2_registro_alcance_por_tanda.json`; enmienda 4 al protocolo §2 (BORRADOR) | R20 |
+ | F14 | Validador de E1 (`validador_e1`), con las correcciones de tipo y predicado que toma de `validador_r2` y su política, la traducción de la forma r2 y el índice del crudo | sobre la salida cruda de E1 guardada, antes de E3: su salida es el mensaje de E3 | validación en código y E3 de las unidades cuya salida validada cambia, porque el ensamblado r2b toma solo lo que vio E3; E1 sale de la caché | no cambia | cambia (las unidades cuya salida validada cambia) | E1 y E3 de las afectadas (difiere del protocolo, `a304b89:79-80`; lo fija la enmienda 3 al protocolo entre tandas, firmada el 04/10/2026 en `0cb0c70`, §1, punto 3, con la regla de cruce del §3, `bd77541`) | 9 | `validador_e1.py:98-118`, `:135-222`, `:388-391`; `comun_e3.py:167-219`; `runner_corpus.py:1188-1195` | R18 |
+-| F14b | Validador r2 y su política en el ensamblado (`validador_r2.validar` con lo que vio E3) | sobre el crudo guardado del intento que aceptó E3 | entrada r2, E2 y ensamblado en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `validador_r2.py:756`, `:768-769`, `:1084-1086`, `:1301-1303`; `runner_corpus.py:1231-1243`; candados `r1_e4.py:536`, `validador_e1.py:102` | R19 |
+-| F15 | E2 r2 y ensamblado (entrada r2, fusión, merge cross-TO, cola humana marcada, omisiones, aristas derivadas que tocan la cola, procedencia, reportes) | después de E3, sobre el crudo guardado y `finales.jsonl` | E2 y ensamblado en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `runner_corpus.py:1151-1206`, `:1246-1296`; `tanda0/code/ensamblar_tanda0.py:1227-1407` | R19 |
+-| F15b | Umbrales (cuantías, comparador, negación, plazo sin marcador, base) | ensamblado r2 | umbrales y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `ensamblar_tanda0.py:676`, `:1369`; `reglas_comparacion.py:246`, `:502`, `:710` | R19 |
+-| F15c | `remite_a` (detector de citas: reglas (a) a (i), citas a otra norma y a anexos de Comunicaciones) | ensamblado r2, sobre el texto de la E0 e0-r2 | remisiones y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `r1_referencias.py:702`, `:1027`; `ensamblar_tanda0.py:1349` | R19 |
+-| F15d | Sujetos por relación (reglas R1 a R4, registro de no mapeados y, solo en r2b, la parte A de la enmienda 6 a L-ESQ-R2: cuarentena en los documentos sin alcance, R2-2) | ensamblado r2 | resolución, E2 y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `r1_e4.py:306`, `:383`, `:417-423`; `ensamblar_tanda0.py:839` (normalizar_propuestos_r2b), `:906-931` (padre del propuesto sin padre del modelo en un documento sin alcance, con cualquier motivo: R2-3 para la parte A, R2-3 bis `dac7d57` para el resto), `:1278` | R19 |
++| F14b | Validador r2 y su política en el ensamblado (`validador_r2.validar` con lo que vio E3) | sobre el crudo guardado del intento que aceptó E3 | entrada r2, E2 y ensamblado en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `validador_r2.py:781`, `:793-794`, `:1119-1121`, `:1336-1338`; `runner_corpus.py:1231-1243`; candados `r1_e4.py:541`, `validador_e1.py:102`; U-OMISIONES-COD: la mención con contracciones (`validador_r2.py:212`, `:219`, `:1285`) y el tipo de la Comunicacion desde el código (`:543`, `:1047`, `:1052`) | R19 |
++| F15 | E2 r2 y ensamblado (entrada r2, fusión, merge cross-TO, cola humana marcada, omisiones, aristas derivadas que tocan la cola, procedencia, reportes) | después de E3, sobre el crudo guardado y `finales.jsonl` | E2 y ensamblado en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `runner_corpus.py:1151-1206`, `:1246-1296`; `tanda0/code/ensamblar_tanda0.py:1596-1819`; U-OMISIONES-COD: G-r (`ensamblar_tanda0.py:1367`, `:1410`, `:1650`), las marcas del registro de omisiones y los supuestos dentro de una norma (`:1489`, `:1516`, `:1660`), las aristas por origen (`:1535`) y la causa de la unidad excluida (`:1559`, `:1734`) | R19 |
++| F15b | Umbrales (cuantías, comparador, negación, plazo sin marcador, base) | ensamblado r2 | umbrales y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `ensamblar_tanda0.py:787`, `:1779`; `reglas_comparacion.py:246`, `:502`, `:710`; U-OMISIONES-COD: la base (`ensamblar_tanda0.py:663`, `:672`, `:726`, `:759`) y el tramo de E1 (`:737`) | R19 |
++| F15c | `remite_a` (detector de citas: reglas (a) a (i), citas a otra norma y a anexos de Comunicaciones) | ensamblado r2, sobre el texto de la E0 e0-r2 | remisiones y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `r1_referencias.py:702`, `:1027`; `ensamblar_tanda0.py:1728`; U-OMISIONES-COD: la procedencia de cada origen y el agrupamiento sin el rol (`r1_referencias.py:1107`, `:1110`; `ensamblar_tanda0.py:1729`) | R19 |
++| F15d | Sujetos por relación (reglas R1 a R4, registro de no mapeados y, solo en r2b, la parte A de la enmienda 6 a L-ESQ-R2: cuarentena en los documentos sin alcance, R2-2) | ensamblado r2 | resolución, E2 y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `r1_e4.py:306`, `:388`, `:422-428`; `ensamblar_tanda0.py:988` (normalizar_propuestos_r2b), `:1055-1080` (padre del propuesto sin padre del modelo en un documento sin alcance, con cualquier motivo: R2-3 para la parte A, R2-3 bis `dac7d57` para el resto), `:1652`; U-OMISIONES-COD: el singular «entidad» de R3 con la opción (ii) (`r1_e4.py:310`, `:381`) | R19 |
+ | F15e | Unión de las operaciones por punto (fase r2b) | E2 r2 | E2 y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `e2_lib.py:845-871`, `:869-870` | R19 |
+-| F16 | E4 y esqueleto (TextoOrdenado canónico, esqueleto del catálogo r2, `establecida_en` derivada) | después del merge | E4, esqueleto y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `ensamblar_tanda0.py:1325`, `:1343`, `:600`, `:1359` | R19 |
+-| F16b | Metadato de los pies (`pies_<to>.json`): versión vigente y carátula del TextoOrdenado | E0 e0-r2 escribe el archivo; lo lee el ensamblado, no el armado de los requests | versión y materia del TextoOrdenado y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `correr_e0.py:1688-1689`; `e0_lib.py:1391-1421`; `ensamblar_tanda0.py:1134` | R28 |
++| F16 | E4 y esqueleto (TextoOrdenado canónico, esqueleto del catálogo r2, `establecida_en` derivada) | después del merge | E4, esqueleto y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `ensamblar_tanda0.py:1704`, `:1722`, `:600`, `:1742` | R19 |
++| F16b | Metadato de los pies (`pies_<to>.json`): versión vigente y carátula del TextoOrdenado | E0 e0-r2 escribe el archivo; lo lee el ensamblado, no el armado de los requests | versión y materia del TextoOrdenado y lo que sigue, en código | no cambia | no cambia | solo código sobre lo guardado | 12 | `correr_e0.py:1688-1689`; `e0_lib.py:1391-1421`; `ensamblar_tanda0.py:1283` | R28 |
+ | F17 | Un TO nuevo | E0 e0-r2 sobre su PDF; E1 y E3 de sus unidades; ensamblado | E0, E1 y E3 de todas sus unidades; los demás TOs salen de la caché. Más F12 si recibe una entrada de clase; si necesita un rol nuevo, entra sin línea de alcance, declarado; su alcance se lee antes de extraer y entra por el registro por tanda (F13c) | cambia (todas las del TO nuevo: sin clave previa) | cambia (todas las del TO nuevo; no verificable en el selftest: no hay salida de E1 previa) | E1 y E3 de las afectadas | 9 | `runner_corpus.py:616-623`; `prompt_r2b.py:383-385`; `docs/mandatos/URERESOL_CAT_reresolucion_catalogo.md:165-171` | R23 |
+ | F18a | Un TO modificado en el sitio, con el cambio solo en páginas que E0 no convierte en unidades (portada, índice, tabla de origen, historial) | E0 e0-r2 sobre el PDF nuevo, dentro de una release declarada | ninguna llamada si E0 devuelve las mismas unidades byte a byte; se re-sella el sha del PDF; si cambia el pie de alguna página, F16b | no cambia (unidades idénticas) | no cambia (unidades idénticas) | nada; solo código si cambia la versión del pie (F16b) | 9 | `e0_chunking/e0_lib.py:925-979`, `:1718-1719` | A1, A3, A1r, A3r, R00 |
+ | F18b | Un TO modificado en el sitio, con cambio en páginas de cuerpo | E0 e0-r2 sobre el PDF nuevo, dentro de una release declarada | E1 y E3 de las unidades cuyo request cambia (filas F01 a F04, F19 y F21); el resto sale de la caché; F16b por el pie | cambia (las unidades cuyo request cambia) | cambia (las unidades cuyo request cambia) | E1 y E3 de las afectadas | 9 | `e0_lib.py:1718-1719`; `prompt_r2b.py:395-437` | R01, R02, R04, R07 |
+@@ -194,6 +194,21 @@
+   venían corridas desde `2a857db` (el archivo tenía 1.299 líneas) y que `:955` de F15d no nombraba lo que la fila dice: todas se
+   reescribieron contra el árbol con R2-3, por el texto que nombran (`def` o llamada), y se verifican con `grep -n` antes de cada edición.
+ 
++- **[10/10/2026, U-OMISIONES-COD, O2] La release de código del ensamblado** (mandato firmado en `c90d3d9`, con las notas del
++  10/10/2026 al pie). Todos sus cambios son solo código sobre lo guardado (principio 12) y caen en filas que ya existen, sin filas
++  nuevas:
++  - f y H en F14b: la mención de sujeto con contracciones y el tipo de la Comunicacion desde el código, en `validador_r2`;
++  - las marcas del grupo A, G-r, (h) y K en F15;
++  - g a g3 (la base) y L (el tramo de E1) en F15b;
++  - J (la procedencia de cada origen) y el agrupamiento sin el rol de la atribución de `remite_a` en F15c;
++  - f′ (el singular «entidad» de R3) en F15d.
++
++  Ninguna clave de E1 ni de E3 cambia: con el código nuevo, `selftest_clave_cache` da OK y su JSON es igual al del repo. Re-anclé
++  F14b, F15, F15b, F15c, F15d, F16 y F16b por el texto que nombran (`data/experiment/omisiones_cod/o2/scripts/anclas_tabla.py`, que
++  da la línea de cada texto en HEAD y en el código nuevo); en F16b solo cambia el ancla de `ensamblar_tanda0.py`, y las de
++  `correr_e0.py` y `e0_lib.py` quedan como las corrigió la nota sobre el parche de S0-5a-bis, más abajo. La pieza (e), el
++  clasificador de la copia de la nota de E3, no está aplicada: entra solo si su lectura llega al piso.
++
+ - **F03.** El mini-chunk del bloque cambió su propio texto: para él rige F01. Desde U-E3-LISTAS, con la forma r2, el
+   bloque que abre la lista de un ítem entra al fuente de E3 (F23b): cambiar su texto mueve también la clave de E3 de
+   esos ítems, con la salida de E1 fija (R03; en la muestra, `docvig::3.3.1`, `ext::7.1.1.3` y `polcre::2.1.1`).
+--- a/docs/tablero_correcciones.md
++++ b/docs/tablero_correcciones.md
+@@ -46,7 +46,7 @@
+ 
+ | Síntoma | Métrica y cómo se calcula | Valor en r1 | Valor en la tanda 0 | Meta | Corrección que lo ataca | Cómo se re-mide y costo | Después de r2: r2a (solo código) | Después de r2: r2b (prompt y re-extracción) | Tanda 1 |
+ |---|---|---|---|---|---|---|---|---|---|
+-| **Observación (10):** extracción más magra | Aristas de extracción por unidad, solo las que emite el extractor: (total − `referencia` − `rol_fuente` esqueleto − `establecida_en` derivadas por el ensamblado) / unidades del `kg.json` [c1]. Las `establecida_en` derivadas (si esa corrección entra en r2) se identifican por el `rol_fuente` propio que declare la unidad que las derive; hoy no existen y los valores no cambian. Como en el pre-registro, la resta incluye las `cuarentena_flaggeada` (`padre_sugerido` de E5): 41 en r1, 18 en desarrollo, 11 en cinco y 29 en diez. **Decisión de la autora del 29/09/2026:** el tablero usa la resta del pre-registro, por comparabilidad con las bandas y la línea de base; la variante estricta, sin las `cuarentena_flaggeada`, queda como dato secundario (valores en [c1]) | 6,81 (12.010 / 1.763) | desarrollo 6,03 (10.634 / 1.763); cinco 4,99 (3.345 / 671); diez 5,74 (13.979 / 2.434) | Sin meta numérica (decisión de la autora del 07/10/2026, opción B: límite declarado). La densidad no mide calidad; la calidad de r2 la mide la precisión por unidad de las aceptadas (U-LECTURA-ACEPTADAS L2, `86324cc`: 0,162 [0,069; 0,254]). Se declara la cifra con sus causas, y la misma cuenta [c1] se vigila por tanda, como descriptivo y sin umbral. Referencia: las bandas pre-registradas, 6,81 a 8,0 en desarrollo y 5,0 a 8,0 en cinco (predicciones, no metas). La propuesta de volver a 6,81 en desarrollo, que estaba a confirmar con los mentores, se retiró y pasó a los desvíos para ellos | Matriz congelada (checklist X1, X11; plan `:749`); `establecida_en` derivada (laudo §4, nodos aislados); cambios de prompt (X4, X5; en el ciclo B2.11 desde el 30/09) | Matriz y `establecida_en`: revalidación desde el crudo y re-ensamblado, USD 0 (re-verificar en E3, cota del orden de USD 4, plan `:749`). Prompt: re-extracción (referencia: E2 de la tanda 0, USD 40,35) | **[03/10/2026, U-MED-R2A M2]** diez 6,09 (14.820 / 2.434); desarrollo 6,46 (11.383 / 1.763) [c26]. Se restan además las `remite_a` (14.000 y 12.833) y las `establecida_en` derivadas (536 y 372); quedan las `cuarentena_flaggeada` como en el pre-registro (24 y 15; sin ellas, 6,08 y 6,45) y las relaciones de la matriz ampliada no verificadas por E3 (697 y 627; sin ellas, 5,80 y 6,10). Control: la misma cuenta sobre los sellados da 13.979 y 10.634, los valores de la tanda 0 (`data/experiment/medicion_r2a/m2/m2_medicion.json`, `<grafo>.f49_obs10` y `f49_control_sellado_c1`) | **[06/10/2026, U-REEXT-T0 T3-bis]** diez 5,45 (13.301 / 2.439); desarrollo 5,86 (10.354 / 1.768) [c26], sobre las unidades de la E0 r2b. Se restan las `remite_a` (13.380 y 12.318) y las `establecida_en` derivadas (746 y 593); sin las `cuarentena_flaggeada` (98 y 68), 5,41 y 5,82; 0 relaciones sin verificar por E3. Control: sobre los sellados, 13.979 y 10.634 (`data/experiment/reext_t0/t3bis/salida/medicion_tablero_r2b.json`, `<grafo>.f49_obs10` y `f49_control_sellado_c1`) | |
++| **Observación (10):** extracción más magra | Aristas de extracción por unidad, solo las que emite el extractor: (total − `referencia` − `rol_fuente` esqueleto − `establecida_en` derivadas por el ensamblado) / unidades del `kg.json` [c1]. Las `establecida_en` derivadas (si esa corrección entra en r2) se identifican por el `rol_fuente` propio que declare la unidad que las derive; hoy no existen y los valores no cambian. Como en el pre-registro, la resta incluye las `cuarentena_flaggeada` (`padre_sugerido` de E5): 41 en r1, 18 en desarrollo, 11 en cinco y 29 en diez. **Decisión de la autora del 29/09/2026:** el tablero usa la resta del pre-registro, por comparabilidad con las bandas y la línea de base; la variante estricta, sin las `cuarentena_flaggeada`, queda como dato secundario (valores en [c1]) | 6,81 (12.010 / 1.763) | desarrollo 6,03 (10.634 / 1.763); cinco 4,99 (3.345 / 671); diez 5,74 (13.979 / 2.434) | Sin meta numérica (decisión de la autora del 07/10/2026, opción B: límite declarado). La densidad no mide calidad; la calidad de r2 la mide la precisión por unidad de las aceptadas (U-LECTURA-ACEPTADAS L2, `86324cc`: 0,162 [0,069; 0,254]). Se declara la cifra con sus causas, y la misma cuenta [c1] se vigila por tanda, como descriptivo y sin umbral. Referencia: las bandas pre-registradas, 6,81 a 8,0 en desarrollo y 5,0 a 8,0 en cinco (predicciones, no metas). La propuesta de volver a 6,81 en desarrollo, que estaba a confirmar con los mentores, se retiró y pasó a los desvíos para ellos | Matriz congelada (checklist X1, X11; plan `:749`); `establecida_en` derivada (laudo §4, nodos aislados); cambios de prompt (X4, X5; en el ciclo B2.11 desde el 30/09) | Matriz y `establecida_en`: revalidación desde el crudo y re-ensamblado, USD 0 (re-verificar en E3, cota del orden de USD 4, plan `:749`). Prompt: re-extracción (referencia: E2 de la tanda 0, USD 40,35) | **[03/10/2026, U-MED-R2A M2]** diez 6,09 (14.820 / 2.434); desarrollo 6,46 (11.383 / 1.763) [c26]. Se restan además las `remite_a` (14.000 y 12.833) y las `establecida_en` derivadas (536 y 372); quedan las `cuarentena_flaggeada` como en el pre-registro (24 y 15; sin ellas, 6,08 y 6,45) y las relaciones de la matriz ampliada no verificadas por E3 (697 y 627; sin ellas, 5,80 y 6,10). Control: la misma cuenta sobre los sellados da 13.979 y 10.634, los valores de la tanda 0 (`data/experiment/medicion_r2a/m2/m2_medicion.json`, `<grafo>.f49_obs10` y `f49_control_sellado_c1`) | **[06/10/2026, U-REEXT-T0 T3-bis]** diez 5,45 (13.301 / 2.439); desarrollo 5,86 (10.354 / 1.768) [c26], sobre las unidades de la E0 r2b. Se restan las `remite_a` (13.380 y 12.318) y las `establecida_en` derivadas (746 y 593); sin las `cuarentena_flaggeada` (98 y 68), 5,41 y 5,82; 0 relaciones sin verificar por E3. Control: sobre los sellados, 13.979 y 10.634 (`data/experiment/reext_t0/t3bis/salida/medicion_tablero_r2b.json`, `<grafo>.f49_obs10` y `f49_control_sellado_c1`) **[10/10/2026, U-OMISIONES-COD O2]** El reporte del ensamblado separa las tres clases (`aristas_por_origen`, con la regla de [c26]). Sobre `a9631a64` la misma cuenta da 13.301 de extracción, 13.380 `remite_a` y 746 `establecida_en` derivadas. Con el código de la release y sin re-sellar: diez 13.296, 13.310 y 746; desarrollo 10.349, 12.316 y 593. Las diferencias son de f, f′ y G-r, declaradas por campo en `data/experiment/omisiones_cod/o2/`; el re-sellado único las recuenta. | |
+ | **Observación (11):** menos remisiones entre documentos | `aristas_cross_to` del reporte de ensamblado, y menciones [c2] | 188 (1.089 menciones) | desarrollo 124 (783); cinco 3 (169); diez 186 (952) | Meta en precisión (decisión de la autora del 07/10/2026, opción A): toda `remite_a` sostenida por cita y destino; cumplida en la lectura de las aceptadas (L2: 0 de 167 no sostenidas, en 11 unidades). La cifra de r1 (188) y las de la tanda 0 no son comparables con el conteo de r2 (por chunk, tramo y unidad citada), y se declara así; la meta en precisión reemplaza a la referencia anterior (desarrollo 188 ± 20; diez mayor que 188, predicciones) y a la propuesta de volver a 188 en desarrollo, que estaba a confirmar con los mentores: se retiró y pasó a los desvíos para ellos (decisión de la autora del 07/10/2026, noche). La re-medición posterior al re-sellado único explica la baja de 969 a 698 `remite_a` entre documentos en diez, entre r2a y r2b | H1 y H4, remisiones por paráfrasis y procedencia de las remisiones (laudo §4) | Re-ensamblado, USD 0 | **[03/10/2026, U-MED-R2A M2]** diez 969 aristas `remite_a` entre documentos (externa 949, to_entero 20); desarrollo 781 (775 y 6) [c27]. Citas resueltas: 1.547 en diez y 1.382 en desarrollo (menciones detectadas 1.566 y 1.350); la cadena r2 cuenta por chunk, tramo y unidad citada, no por nodo, y esas cifras no se comparan con las 952 y 783 menciones de la paráfrasis. Control: sobre los sellados, 186 y 124 aristas y 952 y 783 menciones (`data/experiment/medicion_r2a/m2/m2_medicion.json`, `f50_obs11` y `f50_control_sellado`) | **[06/10/2026, U-REEXT-T0 T3-bis]** diez 698 aristas `remite_a` entre documentos (externa 671, to_entero 27); desarrollo 497 (externa 491, to_entero 6) [c27]. Citas resueltas: 1.476 y 1.300 (menciones detectadas 1.515 y 1.295). Control: sobre los sellados, 186 y 124 aristas (`data/experiment/reext_t0/t3bis/salida/medicion_tablero_r2b.json`, `f50_obs11`) | |
+ | **Aristas `referencia` por tipo de origen:** ninguna sale de Condicion, Potestad ni Definicion | Aristas `referencia` cuyo origen es de esos tres tipos [c3] | 0 (r1 no tiene nodos Condicion) | 0 en desarrollo, cinco y diez | Laudo §4, H1 y H4: re-ensamblar el desarrollo da +3.687 aristas, 0 perdidas, y la remisión de `cla::5.1.1.1` al `cla::3.7` | H1 y H4 (laudo §4) **[02/10/2026]** Con el perfil r2 la remisión se emite y se mide como `remite_a` (enmienda 2 de L-ESQ-R2, `data/experiment/esq/enmienda2_L-ESQ-R2_remite_a_2026-10-02.md`; plan, B2.11, unidad 8); en los grafos sellados sigue siendo `referencia` con `rol_fuente = referencia_cruzada`. **[02/10/2026, prueba de R3 de U-R2-CODIGO, `91fe4b9`]** Sobre KG-Tanda0-Desarrollo-r1 la simulación de H1 y H4 se reproduce: con los siete tipos de origen, +3.687 pares y 0 perdidos. Con la regla firmada (texto de E0, cada procedencia y atribución D1) son 1.093 citas resueltas y 11.667 aristas `remite_a` (10.834 interna, 824 externa y 9 to_entero), 4.775 de ellas con origen en Condicion, Definicion o Potestad. Contra las 4.242 remisiones selladas: 3.963 pares comunes, 7.704 agregados y 279 perdidos. En diez, 1.249 citas y 12.813 aristas (4.523 comunes, 8.290 agregados y 296 perdidos) [c23]. El desglose de los pares perdidos lo entrega R4. **[02/10/2026, fe de erratas tras R5 de U-R2-CODIGO, `92b45d6`]** Las cifras de la prueba de R3 de esta celda (1.093 citas, 11.667 aristas, 4.775 con origen en los tres tipos nuevos, 279 y 296 perdidos) quedan REEMPLAZADAS por las de las reglas finales (evidencia por tramo, regla (g) en tres pasos, «de estas normas» como propio TO y la corrección de `_texto_e0_de`): la regla firmada sobre KG-Tanda0-Desarrollo-r1 da 1.297 citas resueltas y 12.547 aristas `remite_a` (11.763 interna, 775 externa y 9 to_entero), 5.229 de ellas con origen en Condicion, Definicion o Potestad; contra las 4.242 remisiones selladas, 4.133 pares comunes, 8.414 agregados y 109 perdidos. En diez, 1.460 citas y 13.709 aristas (12.730, 949 y 30; 4.697 comunes, 9.012 agregados y 122 perdidos); en r1, 1.276 citas y 12.948 aristas (12.241, 694 y 13; 5.574, 7.374 y 71). El grafo r2 de prueba de desarrollo (`93a7af72…`, fuera del repo) tiene 1.382 citas resueltas y 12.833 aristas (12.049, 775 y 9); el de diez, 1.547 y 14.000 (13.021, 949 y 30) (`data/experiment/r2_codigo/r5_freno.md`, §A y §R5). Reproducción: `data/experiment/r2_codigo/r3d_remisiones.py --out <json> --e0-r2 <salida de correr_e0.py --version-e0 e0-r2>` con el código de `92b45d6` (el `r3d_remisiones.json` del repo es el del código final desde `e1c9456`; corrida de la mesa del 02/10/2026 idéntica a la del paquete de revisión de R5). | Re-ensamblado, USD 0 | **[03/10/2026, U-MED-R2A M2]** Salen de Condicion, Definicion o Potestad 5.652 aristas `remite_a` en diez (3.231, 1.372 y 1.049) y 5.395 en desarrollo (3.089, 1.325 y 981) [c28]; `referencia` con origen distinto de TextoOrdenado: 0 en los dos. La remisión de `cla::5.1.1.1` a `cla::3.7` existe en los dos grafos (2 aristas; ítem `EJ-cla-5.1.1.1` de [c29]). Control: sobre los sellados, 0 desde esos tres tipos (`data/experiment/medicion_r2a/m2/m2_medicion.json`, `f51_remisiones_por_origen` y `f51_control_sellado`) | **[06/10/2026, U-REEXT-T0 T3-bis]** Salen de Condicion, Definicion o Potestad 5.080 aristas `remite_a` en diez (Condicion 3.575, Definicion 802, Potestad 703) y 4.827 en desarrollo [c28]; `referencia` con origen distinto de TextoOrdenado: 0 en los dos. La remisión de `cla::5.1.1.1` a `cla::3.7` existe (2 aristas en cada grafo; control b, `data/experiment/reext_t0/t3bis/salida/controles_t3bis.json`) (`data/experiment/reext_t0/t3bis/salida/medicion_tablero_r2b.json`, `f51_remisiones_por_origen`) | |
+ | **Condiciones sin regla** (antes «Condiciones aisladas»; redefinida por decisión de la autora del 07/10/2026) | Nodos Condicion sin ninguna arista de contenido: no se cuentan `establecida_en` ni la remisión (`remite_a`; en los grafos del perfil r1, `referencia` con `rol_fuente = referencia_cruzada`). Con la matriz vigente es lo mismo que «sin `condicion_de` saliente». Al lado, aislados por tipo, de grado 0 [c3] | No aplica: 0 Condicion; aislados 105 | desarrollo 783 de 1.178 (aislados 94, de ellos 35 Condicion); cinco 101 de 205 (38; 7); diez 884 de 1.383 (120; 42) | Laudo de r2 §4: cero nodos de contenido sin `establecida_en` (cumplida); el resto, declarado por causa (U-DIAG-CAP3-GRAFO, tarea a; límites con sus cifras en `docs/insumos_escritura.md`, §7, ítem 6) | `establecida_en` derivada de la procedencia (laudo §4, decisión abierta); matriz, rango de `condicion_de` (X1, X11); la regla E de unión ítem–encabezado no entra antes de la tanda 1 (límite declarado; una regla más estrecha, en unidad propia, en paralelo con el escalado) | Re-ensamblado, USD 0; la matriz, como en la observación (10) | **[07/10/2026, U-DIAG-CAP3-GRAFO, definición nueva]** 232 de 1.409 en diez y 199 de 1.203 en desarrollo (`reports/u_diag_cap3_grafo/salidas/tabla_e.md`). Con la definición anterior: **[03/10/2026, U-MED-R2A M2]** 0 Condicion aisladas, de 1.409 en diez y de 1.203 en desarrollo; ningún nodo de contenido queda aislado: los aislados son 16 en diez (11 Sujeto, 5 Comunicacion) y 15 en desarrollo (12 Sujeto, 3 Comunicacion) [c3] (`data/experiment/medicion_r2a/m2/m2_medicion.json`, `f52_aislados`). Nodos de contenido sin `establecida_en`: 0 (`reporte_ensamblado_r2.json`, `establecida_en_derivada`). La causa de cada Sujeto y Comunicacion aislados no está desglosada en esta medición. Control: sobre los sellados, 42 de 1.383 (120) y 35 de 1.178 (94) | **[07/10/2026, U-DIAG-CAP3-GRAFO, definición nueva]** 331 de 1.952 en diez y 300 de 1.668 en desarrollo; sin cola, 322 de 1.868 y 292 de 1.588. Con la definición anterior: **[06/10/2026, U-REEXT-T0 T3-bis]** 0 Condicion aisladas, de 1.952 en diez y de 1.668 en desarrollo; los aislados son 18 en diez (Comunicacion 8, Sujeto 10) y 19 en desarrollo (Comunicacion 7, Sujeto 12): ningún nodo de contenido aislado [c3] (`data/experiment/reext_t0/t3bis/salida/medicion_tablero_r2b.json`, `f52_aislados`) | |
+--- a/data/experiment/omisiones_cod/selftest_ensamblado_omisiones.py
++++ b/data/experiment/omisiones_cod/selftest_ensamblado_omisiones.py
+@@ -0,0 +1,303 @@
++"""U-OMISIONES-COD — selftest de los cambios del ensamblado (`tanda0/code/ensamblar_tanda0.py`): grupo A (a a d),
++grupo C (g, g1, g2, g3), grupo L, G-r, K y (h). Mandato firmado en c90d3d9 (v7) y notas del 10/10/2026 al pie.
++
++  S  casos sintéticos de cada función, con un positivo y un negativo (siempre);
++  R  los casos de la v7 sobre la salida `r2/` de la cadena r2b de diez con el código nuevo (y la sin cola, para K):
++     ext::5.8.2.2 y ctacte::2.1.1.4 (c), ext::10.5.5.2 (d), ext::3.8, ext::14.2.2 y ext::3.18.3 (g), «04/07/24»,
++     «una vez al año», «"AA"» y «fecha de entrega…» (g1), cap::2.3.1 y las 4 de cla::3.7 (g2), las dos «APR» de
++     cap::8.3.2.12 y las tres Definicion únicas (g3), cap::12.3 y cla::6.5.4.7 (L), ctacte::2.1.1.4 y ext::3.16.3.4
++     (G-r), y la causa propia de K en la sin cola. Solo con --salida-r2 (y --salida-r2-sincola).
++
++Corre desde la raíz de una COPIA del repo o del repo; no escribe nada. USD 0, sin API.
++Uso: PYTHONDONTWRITEBYTECODE=1 <repo>/.venv/bin/python -B data/experiment/omisiones_cod/selftest_ensamblado_omisiones.py
++     [--salida-r2 DIR] [--salida-r2-sincola DIR]
++"""
++from __future__ import annotations
++
++import argparse
++import contextlib
++import json
++import sys
++import tempfile
++from pathlib import Path
++
++REPO = Path(__file__).resolve().parents[3]
++sys.path.insert(0, str(REPO / "data" / "experiment" / "tanda0" / "code"))
++import ensamblar_tanda0 as ENS  # noqa: E402
++
++V = ENS.E4.modulo_validador_r2()
++M = ENS.E4.modulo_modelos_r2()
++import reglas_comparacion as RCMP  # noqa: E402  (pyd_r2/code, en el path por modulo_modelos_r2)
++
++C, REF = ENS.C, ENS.REF
++RES: list[tuple[str, str, bool, str]] = []
++
++
++def check(grupo: str, nombre: str, ok: bool, detalle: str = "") -> None:
++    RES.append((grupo, nombre, bool(ok), str(detalle)[:240]))
++
++
++def jl(p: Path) -> list[dict]:
++    return [json.loads(x) for x in Path(p).read_text(encoding="utf-8").splitlines() if x.strip()]
++
++
++# --------------------------------------------------------------------------------------------------- sintéticos
++def chunk(cid, unidad, texto, herencia=(), **extra):
++    return {"id": cid, "to": "syn", "archivo": "syn.pdf", "unidad": unidad, "texto": texto, "herencia": list(herencia),
++            "paginas": [1], "tipo": "punto_terminal", "titulo": "", **extra}
++
++
++def s_grupo_A() -> None:
++    g = "S A"
++    ch = chunk("syn::1.2.3", "1.2.3", "1.2.3. Las entidades deberán informar el saldo.",
++               [{"unidad_origen": "1.2", "tipo": "encabezado", "texto": "1.2. Régimen informativo de los saldos del mes."}])
++    om = lambda t, cat="meta_normativo": {"chunk_id": "syn::1.2.3", "to": "syn", "categoria": cat, "tramo": t}  # noqa: E731
++    o = ENS.marcar_omision(om("Régimen informativo de los saldos del mes"), ch, False, V, 2)
++    check(g, "(a)+ tramo solo en el heredado → tramo_en_heredado", o.get("tramo_en_heredado") is True)
++    o = ENS.marcar_omision(om("deberán informar el saldo"), ch, True, V, 2)
++    check(g, "(a)- tramo en el texto propio → sin la marca", "tramo_en_heredado" not in o)
++    check(g, "(b)+ marca del contador (deber) → revisar con su motivo", o.get("revisar") == ["contador:deber"],
++          o.get("revisar"))
++    o = ENS.marcar_omision(om("Es deseable que el saldo se informe"), chunk("syn::9", "9", "Es deseable que el saldo se "
++                                                                          "informe en término."), False, V, 2)
++    check(g, "(b)+ recomendación («es deseable») → revisar, con el motivo de recomendación",
++          "recomendacion:copula_deseable" in (o.get("revisar") or []), o.get("revisar"))
++    o = ENS.marcar_omision(om("el saldo"), ch, True, V, 2)
++    check(g, "(b)- sin marca del contador ni recomendación → sin revisar", "revisar" not in o)
++    o = ENS.marcar_omision(om("el saldo", "fuera_de_tipos"), ch, True, V, 2)
++    check(g, "(b)- fuera de meta_normativo no se marca revisar", "revisar" not in o)
++    o = ENS.marcar_omision(om("1.2.3. Las entidades deberán informar el saldo."), ch, True, V, 2)
++    check(g, "(c)+ el tramo cubre todo el texto propio (sin la numeración) → texto_propio_entero",
++          o.get("texto_propio_entero") == {"es_item": bool(V._es_item(ch)), "con_extraccion": True},
++          o.get("texto_propio_entero"))
++    o = ENS.marcar_omision(om("Las entidades deberán informar"), ch, True, V, 2)
++    check(g, "(c)- una omisión entre nodos extraídos (cobertura parcial) → sin la marca", "texto_propio_entero" not in o)
++    regs = [{"chunk_id": "syn::1", "validacion": {"entidades": [
++        {"local_id": "e1", "type": "Obligacion", "label": "a", "properties": {"descripcion": "Cuando el cliente lo pida, informar"}},
++        {"local_id": "e2", "type": "Condicion", "label": "b", "properties": {"descripcion": "cuando el cliente lo pida"}},
++        {"local_id": "e3", "type": "Restriccion", "label": "c", "properties": {"descripcion": "no exceder el límite"},
++         "provenance": {"tramo": "si bien no se exige, no podrá exceder"}},
++        {"local_id": "e4", "type": "Potestad", "label": "d", "properties": {"descripcion": "podrá operar"},
++         "provenance": {"tramo": "podrá operar siempre que cuente con la autorización"}}]}}]
++    s = {x["local_id"]: x["marcadores"] for x in ENS.supuestos_en_norma(regs, "syn", V)}
++    check(g, "(d)+ norma con un conector condicional en la descripción o el tramo → supuesto_en_norma",
++          s.get("e1") == ["cuando"] and s.get("e4") == ["siempre_que"], s)
++    check(g, "(d)- la Condicion no se marca, y «si bien» no es un supuesto", "e2" not in s and "e3" not in s, s)
++
++
++@contextlib.contextmanager
++def e0_sintetico(chunks: list[dict]):
++    with tempfile.TemporaryDirectory() as d:
++        Path(d, "chunks_syn.json").write_text(json.dumps(chunks, ensure_ascii=False), encoding="utf-8")
++        Path(d, "estructura_syn.json").write_text(json.dumps({"secciones": []}), encoding="utf-8")
++        orig = (C.E0_ENM01, C.TOS_ORDEN, REF.INVENTARIO_TOS, REF.TITULOS_TOS)
++        C.E0_ENM01, C.TOS_ORDEN, REF.INVENTARIO_TOS = Path(d), ("syn",), {"syn": ("sintetico",)}
++        REF.TITULOS_TOS = {"syn": "sintetico"}
++        try:
++            yield
++        finally:
++            C.E0_ENM01, C.TOS_ORDEN, REF.INVENTARIO_TOS, REF.TITULOS_TOS = orig
++
++
++def s_grupo_C() -> None:
++    g = "S C"
++    for base, clase, vacia in (("04/07/24", "fecha", True), ("una vez al año", "periodicidad", True),
++                               ('"AA"', "cantidad_no_detectada", True),
++                               ("fecha de entrega de la primera chequera", "evento_o_plazo", True),
++                               ("alcanzar el total del monto de la financiación", "recorte_empieza_mal", False),
++                               ("monto admitido para el uso de efectivo en los puntos 3.8.", None, False)):
++        check(g, f"g1: «{base}» → {clase}, base {'vacía' if vacia else 'conservada'}",
++              ENS.clase_de_base_relativa(base) == (clase, vacia), ENS.clase_de_base_relativa(base))
++    otros = ENS.puntos_citados_de_otra_norma(["el importe de la previsión –puntos 6.5.1. y 7.2.1. del TO sobre "
++                                              "Clasificación de Deudores–"])
++    check(g, "g2+ «puntos 6.5.1. y 7.2.1. del TO sobre» → los dos puntos son de otra norma", otros == {"6.5.1", "7.2.1"}, otros)
++    otros = ENS.puntos_citados_de_otra_norma(["según el punto 3.7. Ver también el punto 1.1.3.4. de las normas sobre "
++                                              "“Gestión crediticia”."])
++    check(g, "g2- la cita a otra norma de la misma oración no alcanza al punto 3.7", otros == {"1.1.3.4"}, otros)
++    chunks = [chunk("syn::3.8", "3.8", "3.8. Monto admitido.\nTexto."), chunk("syn::6.5.1", "6.5.1", "6.5.1. Previsión.\nTexto.")]
++    with e0_sintetico(chunks):
++        kg_def = {("syn", C.norm("APR")): "Definicion_apr_1"}
++        b = ENS.resolver_base("monto admitido en los puntos 3.8.", "syn", kg_def, detector_r2=True,
++                              textos_unidad=["El monto admitido en los puntos 3.8. de estas normas."])
++        check(g, "g+ la base con remisión resuelve a su punto", b["base_destino"] == "syn::3.8" and b["via"] == "remision", b)
++        b = ENS.resolver_base("previsión (puntos 6.5.1", "syn", kg_def, detector_r2=True,
++                              textos_unidad=["la previsión –puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores–"])
++        check(g, "g2+ la remisión a un punto de otra norma no resuelve: marcada, con su motivo",
++              b["base_destino"] is None and b["marca"] == "base_no_resuelta" and b.get("motivo") == "cita_a_otra_norma", b)
++        b = ENS.resolver_base("previsión (puntos 6.5.1", "syn", kg_def, detector_r2=False,
++                              textos_unidad=["–puntos 6.5.1. y 7.2.1. del TO sobre Clasificación de Deudores–"])
++        check(g, "g2- sin el detector r2 (r2a), la salida de siempre (sin guarda)", b.get("motivo") is None, b)
++        b = ENS.resolver_base("APR", "syn", kg_def, detector_r2=True, homonimos={("syn", C.norm("APR"))})
++        check(g, "g3+ Definicion con homónimas en el TO → marcada, con su motivo",
++              b["base_destino"] is None and b.get("motivo") == "definicion_homonima", b)
++        b = ENS.resolver_base("APR", "syn", kg_def, detector_r2=True, homonimos=set())
++        check(g, "g3- una sola Definicion → resuelve", b["base_destino"] == "Definicion_apr_1" and b["via"] == "definicion", b)
++        cont = {"base_del_validador": {"elementos_con_base": 0, "vaciadas_g1": {}, "resueltas": {}, "marcadas": 0},
++                "base_no_resuelta_por_motivo": {}}
++        rel = {"tramo": "no podrá exceder el saldo al 04/07/24", "comparacion": "maximo_inclusivo", "base": "04/07/24",
++               "regla_comparacion": "limite_relativo:marcador", "origen": "e1"}
++        x = ENS._base_del_validador(rel, "syn", kg_def, set(), [], cont, M)
++        check(g, "g1+ en el elemento del validador: la base que no es base queda vacía, sin marca",
++              "base" not in x and not x.get("base_no_resuelta") and cont["base_del_validador"]["vaciadas_g1"] == {"fecha": 1}, x)
++        rel2 = dict(rel, base="monto admitido en los puntos 3.8.")
++        x = ENS._base_del_validador(rel2, "syn", kg_def, set(), [("syn::9", "monto admitido en los puntos 3.8.")], cont, M)
++        check(g, "g+ en el elemento del validador: la base resuelve y lleva destino y vía",
++              x.get("base_destino") == "syn::3.8" and x.get("base_via") == "remision", x)
++        ens_el = {"tramo": "5 %", "valor": "5", "unidad": "porcentaje", "comparacion": "maximo_inclusivo", "base": "monto",
++                  "regla_comparacion": "maximo", "origen": "e1"}
++        check(g, "g- un elemento del ensamblado (no del validador) vuelve tal cual",
++              ENS._base_del_validador(ens_el, "syn", kg_def, set(), [], cont, M) is ens_el)
++
++
++def s_grupo_L() -> None:
++    g = "S L"
++    pol = type("P", (), {"holgura": 2})()
++    tramo = "El 17% en el caso de entidades del grupo B"
++    cs = RCMP.analizar(tramo)
++    el = M.ElementoUmbral.model_validate(RCMP.elemento_umbral(cs[0], cs[0].texto, "e1") | {"tramo_verificado": "exacta"}
++                                         ).model_dump(mode="json", exclude_defaults=True)
++    nuevo, estado = ENS.tramo_de_e1(el, tramo, [("c", "Exigencia. El 17% en el caso de entidades del grupo B.")], V, RCMP, pol, M)
++    check(g, "L+ tramo de E1 literal → el tramo, verificado «exacta»; los demás campos, iguales",
++          estado == "exacta" and nuevo["tramo"] == tramo and {k: v for k, v in nuevo.items() if k != "tramo"}
++          == {k: v for k, v in el.items() if k != "tramo"}, (estado, nuevo))
++    nuevo, estado = ENS.tramo_de_e1(el, "El 17 por ciento en el caso del grupo B", [("c", "El 17% en el caso de entidades "
++                                                                                       "del grupo B.")], V, RCMP, pol, M)
++    check(g, "L- tramo de E1 que no verifica → conserva la cuantía", estado == "conserva_la_cuantia" and nuevo == el,
++          (estado, nuevo))
++    comp = "entre el 5 % y menos del 20 % del patrimonio"
++    cs = RCMP.analizar(comp)
++    for c in cs:
++        e = M.ElementoUmbral.model_validate(RCMP.elemento_umbral(c, c.texto, "e1")).model_dump(mode="json", exclude_defaults=True)
++        nuevo, estado = ENS.tramo_de_e1(e, comp, [("c", f"Las financiaciones {comp}.")], V, RCMP, pol, M)
++        check(g, f"L+ tramo compartido: el {c.valor} guarda el tramo entero", estado == "exacta" and nuevo["tramo"] == comp)
++
++
++def s_grupo_G_r() -> None:
++    g = "S G-r"
++    pol = 2
++    ch = chunk("syn::5.1.2", "5.1.2", "5.1.2. Las boletas deben incluir lugar y fecha.",
++               [{"unidad_origen": "5.1", "tipo": "encabezado", "texto": "5.1. Boletas de depósito."},
++                {"unidad_origen": "5.1", "tipo": "intro", "texto": "Las boletas deben contener los siguientes datos:"}])
++    def reg(punto, rol, tramo, lid="e1", tipo="Obligacion"):
++        return {"chunk_id": "syn::5.1.2", "validacion": {"entidades": [
++            {"local_id": lid, "type": tipo, "label": "x", "punto": punto,
++             "provenance": {"to": "syn", "punto": punto, "rol_documental": rol, "tramo": tramo}}]}}
++    casos = [("ancestro con el tramo en el texto propio → la unidad", reg("5.1", "herencia_encabezado",
++              "Las boletas deben incluir lugar y fecha"), ("5.1.2", "punto_propio")),
++             ("ancestro con el tramo compuesto y el ítem en el texto propio → la unidad",
++              reg("5.1", "herencia_encabezado", "Las boletas deben contener los siguientes datos: […] lugar y fecha"),
++              ("5.1.2", "punto_propio")),
++             ("ancestro con el tramo en el párrafo del ancestro → el rol de ese bloque",
++              reg("5.1", "herencia_encabezado", "Las boletas deben contener los siguientes datos"), ("5.1", "herencia_intro")),
++             ("el punto ya es la unidad → sin cambio", reg("5.1.2", "punto_propio", "Las boletas deben contener los "
++                                                                                     "siguientes datos"), None),
++             ("tramo que no se ubica → sin cambio", reg("5.1", "herencia_encabezado", "otra cosa que no está"), None),
++             ("Comunicacion (fuera de los tipos de contenido) → sin cambio",
++              reg("5.1", "herencia_encabezado", "Las boletas deben incluir lugar y fecha", tipo="Comunicacion"), None)]
++    for nombre, r, esperado in casos:
++        res = ENS.corregir_procedencia_g_r([r], {"syn::5.1.2": ch}, V, pol)
++        e = r["validacion"]["entidades"][0]
++        obtenido = (e["provenance"]["punto"], e["provenance"]["rol_documental"]) if res["cambios"] else None
++        check(g, nombre, obtenido == esperado and (esperado is None or e["punto"] == esperado[0]), (obtenido, res["cambios"]))
++
++
++def s_K_h() -> None:
++    g = "S K y h"
++    registro = [{"chunk_id": "syn::1", "procedencia": {}, "evidencia": "punto 3.2.", "irresolubles": [
++                    {"destino": "syn::3.2", "causa": "punto_sin_nodos"}]},
++                {"chunk_id": "syn::1", "procedencia": {}, "evidencia": "punto 9.9.", "irresolubles": [
++                    {"destino": "syn::9.9", "causa": "punto inexistente en E0"}]},
++                {"chunk_id": "syn::2", "procedencia": {}, "evidencia": "punto 4.1.", "irresolubles": [
++                    {"destino": "syn::4.1", "causa": "punto_sin_nodos"}]}]
++    por = ENS.irresolubles_en_unidad_excluida(registro, ["syn::3.2::intro"])
++    check(g, "K+ la cita a una unidad excluida (o que la contiene) toma la causa propia; K- las demás conservan la suya",
++          por == {"destino_en_unidad_excluida": 1, "punto inexistente en E0": 1, "punto_sin_nodos": 1}
++          and registro[0]["irresolubles"][0]["causa"] == ENS.CAUSA_UNIDAD_EXCLUIDA, por)
++    kg = {"edges": [{"source": "a", "relation": "aplica_a", "target": "b"},
++                    {"source": "a", "relation": "remite_a", "target": "c"},
++                    {"source": "a", "relation": "establecida_en", "target": "t", "rol_fuente": "derivada_de_procedencia"},
++                    {"source": "a", "relation": "establecida_en", "target": "t2"},
++                    {"source": "t", "relation": "referencia", "target": "x"},
++                    {"source": "t", "relation": "contiene", "target": "s", "rol_fuente": "esqueleto"}]}
++    check(g, "h: una arista de cada clase (la establecida_en sin derivar es de extracción)",
++          ENS.aristas_por_origen(kg) == {"extraccion": 2, "remite_a": 1, "establecida_en_derivada": 1,
++                                         "referencia_texto_ordenado_comunicacion": 1, "esqueleto": 1}, ENS.aristas_por_origen(kg))
++
++
++# --------------------------------------------------------------------------------------- casos de la v7 (salida)
++def r_casos(d: Path, sincola: Path | None) -> None:
++    g = "R v7"
++    kg = json.loads((d / "kg.json").read_text(encoding="utf-8"))
++    nodos = {n["id"]: n for n in kg["nodes"]}
++    om = jl(d / "omisiones.jsonl")
++    for cid in ("ext::5.8.2.2", "ctacte::2.1.1.4"):
++        check(g, f"(c)+ {cid}: texto propio entero", any(o.get("texto_propio_entero") for o in om if o["chunk_id"] == cid))
++    check(g, "(c)- pro::1.1.1: una omisión entre nodos extraídos, sin la marca",
++          any(o["chunk_id"] == "pro::1.1.1" and not o.get("texto_propio_entero") for o in om))
++    sup = jl(d / "supuestos_en_norma.jsonl")
++    check(g, "(d)+ ext::10.5.5.2 e7 Obligacion marcada; (d)- e2 Condicion, no",
++          any(x["chunk_id"] == "ext::10.5.5.2" and x["local_id"] == "e7" for x in sup)
++          and not any(x["chunk_id"] == "ext::10.5.5.2" and x["local_id"] == "e2" for x in sup))
++
++    def elems(cid):
++        return [el for n in nodos.values() if (n.get("provenance") or {}).get("chunk_id") == cid
++                for el in (n.get("properties") or {}).get("umbrales") or []]
++    for cid, dest in (("ext::3.14.4", "ext::3.8"), ("ext::14.2.3", "ext::14.2.2"), ("ext::3.18.2.4", "ext::3.18.3")):
++        check(g, f"g+ {cid} → {dest}", any(el.get("base_destino") == dest for el in elems(cid)))
++    neg = [el for el in elems("cla::6.5::intro") if el.get("base")]
++    check(g, "g- cla::6.5::intro: marcada, sin destino", neg and all(el.get("base_no_resuelta") and not el.get("base_destino")
++                                                                   for el in neg))
++    for cid in ("ext::3.3.3.4", "pro::3.2.1.3", "polcre::5.2", "docvig::3.5"):
++        check(g, f"g1+ {cid}: un elemento del validador sin base ni marca",
++              any(str(el.get("regla_comparacion")).startswith("limite_relativo:") and not el.get("base")
++                  and not el.get("base_no_resuelta") for el in elems(cid)))
++    for cid in ("ext::8.4.4", "cla::6.5::intro"):
++        check(g, f"g1- {cid}: conserva la base", any(el.get("base") for el in elems(cid)))
++    g2 = [el for el in elems("cap::2.3.1") if el.get("base")]
++    check(g, "g2+ cap::2.3.1: marcada, sin destino", g2 and all(el.get("base_no_resuelta") and not el.get("base_destino")
++                                                              for el in g2))
++    cla37 = [el for n in nodos.values() for el in (n.get("properties") or {}).get("umbrales") or []
++             if el.get("base_destino") == "cla::3.7"]
++    check(g, "g2- las 4 de cla::3.7 siguen resueltas", len(cla37) == 4, len(cla37))
++    apr = [el for el in elems("cap::8.3.2.12") if el.get("base") == "APR"]
++    check(g, "g3+ las dos «APR» de cap::8.3.2.12, marcadas", len(apr) == 2 and all(el.get("base_no_resuelta") for el in apr))
++    for cid in ("cap::4.2.1.2::parte1", "cap::3.2.1.1", "polcre::2.1.9"):
++        check(g, f"g3- {cid}: resuelta a su Definicion",
++              any(str(el.get("base_destino") or "").startswith("Definicion_") for el in elems(cid)))
++    check(g, "L+ cap::12.3: el 17 % con «El 17% en el caso de entidades del grupo B»",
++          any(el.get("valor") == "17" and "grupo B" in el["tramo"] for el in elems("cap::12.3")))
++    l65 = [el for el in elems("cla::6.5.4.7") if el.get("tramo") == "entre el 5 % y menos del 20 % del patrimonio"]
++    check(g, "L+ cla::6.5.4.7: el 5 % y el 20 % con el mismo tramo", sorted(el.get("valor") for el in l65) == ["20", "5"])
++    gr = json.loads((d / "procedencia_g_r.json").read_text(encoding="utf-8"))
++    for cid, pto in (("ctacte::2.1.1.4", "2.1.1.4"), ("ext::3.16.3.4", "3.16.3.4")):
++        check(g, f"G-r+ {cid}: el punto pasa a {pto}", any(x["chunk_id"] == cid and x["punto_g_r"] == pto for x in gr))
++    check(g, "G-r- la Excepcion de ctacte::2.1.1.6 con punto en su unidad no cambia",
++          not any(x["chunk_id"] == "ctacte::2.1.1.6" and x["type"] == "Excepcion" for x in gr))
++    if sincola is not None:
++        reg = json.loads((sincola / "remisiones_registro.json").read_text(encoding="utf-8"))
++        causas = [x["causa"] for c in reg for x in c["irresolubles"]]
++        check(g, "K+ en la sin cola, la causa propia aparece; K- «punto inexistente en E0» se conserva",
++              ENS.CAUSA_UNIDAD_EXCLUIDA in causas and "punto inexistente en E0" in causas)
++
++
++def main() -> int:
++    ap = argparse.ArgumentParser()
++    ap.add_argument("--salida-r2", type=Path, default=None)
++    ap.add_argument("--salida-r2-sincola", type=Path, default=None)
++    a = ap.parse_args()
++    s_grupo_A()
++    s_grupo_C()
++    s_grupo_L()
++    s_grupo_G_r()
++    s_K_h()
++    if a.salida_r2 is not None:
++        r_casos(a.salida_r2, a.salida_r2_sincola)
++    for grupo, nombre, ok, det in RES:
++        print(f"  [{'PASS' if ok else 'FAIL'}] {grupo} | {nombre}" + ("" if ok else f" — {det}"))
++    ok = sum(1 for x in RES if x[2])
++    print(f"SELFTEST ENSAMBLADO U-OMISIONES-COD: {ok}/{len(RES)} {'PASS' if ok == len(RES) else 'FAIL'}")
++    return 0 if ok == len(RES) else 1
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+--- a/data/experiment/omisiones_cod/selftest_metrica_condiciones.py
++++ b/data/experiment/omisiones_cod/selftest_metrica_condiciones.py
+@@ -0,0 +1,66 @@
++"""U-OMISIONES-COD, grupo I — selftest de «Condiciones sin regla» (`scripts/metricas_intrinsecas.condiciones_sin_regla`),
++que va en `adaptador_gen3`, junto a M9 y sin reemplazarla (decisión 2 de la nota del 10/10/2026 al pie de la v7).
++
++  S  casos sintéticos: una Condicion con solo `establecida_en` cuenta; una con `condicion_de` no; una con solo
++     `remite_a` cuenta; en un grafo r1, la `referencia` con rol_fuente referencia_cruzada es remisión y cuenta; una
++     Condicion destino de otra arista de contenido no cuenta; M9 (grado 0) no cambia;
++  R  con --kg-a9631a64: la cifra de la v7 sobre KG-Tanda0-Diez-r2b (331 de 1.952; solo lectura).
++
++Corre desde la raíz de una COPIA del repo o del repo; no escribe nada. USD 0.
++Uso: PYTHONDONTWRITEBYTECODE=1 <repo>/.venv/bin/python -B data/experiment/omisiones_cod/selftest_metrica_condiciones.py
++     [--kg-a9631a64 data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json]
++"""
++from __future__ import annotations
++
++import argparse
++import hashlib
++import json
++import sys
++from pathlib import Path
++
++REPO = Path(__file__).resolve().parents[3]
++sys.path.insert(0, str(REPO / "scripts"))
++import metricas_intrinsecas as MI  # noqa: E402
++
++RES: list[tuple[str, bool, str]] = []
++
++
++def check(nombre: str, ok: bool, detalle: str = "") -> None:
++    RES.append((nombre, bool(ok), str(detalle)[:200]))
++
++
++def main() -> int:
++    ap = argparse.ArgumentParser()
++    ap.add_argument("--kg-a9631a64", dest="kg", type=Path, default=None)
++    a = ap.parse_args()
++    nodos = [{"id": i, "type": t} for i, t in (("c1", "Condicion"), ("c2", "Condicion"), ("c3", "Condicion"),
++                                               ("c4", "Condicion"), ("c5", "Condicion"), ("o", "Obligacion"),
++                                               ("t", "TextoOrdenado"), ("s", "Sujeto"))]
++    aristas = [{"source": "c1", "relation": "establecida_en", "target": "t"},
++               {"source": "c2", "relation": "condicion_de", "target": "o"},
++               {"source": "c3", "relation": "remite_a", "target": "o"},
++               {"source": "c4", "relation": "referencia", "target": "o", "rol_fuente": "referencia_cruzada"},
++               {"source": "o", "relation": "condicion_de", "target": "c5"}]
++    m = MI.condiciones_sin_regla({"nodes": nodos, "edges": aristas})
++    check("I: solo establecida_en, solo remite_a y la remisión r1 cuentan; condicion_de saliente no; destino de otra "
++          "arista de contenido, no", m["nodos_sin_arista_de_contenido"] == ["c1", "c3", "c4"] and m["condicion"] == 5, m)
++    check("I: la variante «sin condicion_de saliente» cuenta las que no la tienen",
++          m["sin_condicion_de_saliente"] == 4, m["sin_condicion_de_saliente"])
++    est = MI.estructura(nodos, aristas)
++    check("I no toca M9: el grado 0 de la spec sigue contando solo los nodos sin aristas", est["aislados"] == 1, est["aislados"])
++    if a.kg is not None:
++        b = (REPO / a.kg if not a.kg.is_absolute() else a.kg).read_bytes()
++        m = MI.condiciones_sin_regla(json.loads(b))
++        check("I sobre a9631a64: 331 de 1.952 (la cifra de la v7), las dos variantes iguales",
++              hashlib.sha256(b).hexdigest().startswith("a9631a64") and m["condicion"] == 1952
++              and m["sin_arista_de_contenido"] == 331 and m["sin_condicion_de_saliente"] == 331,
++              {k: v for k, v in m.items() if k != "nodos_sin_arista_de_contenido"})
++    for nombre, ok, det in RES:
++        print(f"  [{'PASS' if ok else 'FAIL'}] {nombre}" + ("" if ok else f" — {det}"))
++    ok = sum(1 for x in RES if x[1])
++    print(f"SELFTEST METRICA I: {ok}/{len(RES)} {'PASS' if ok == len(RES) else 'FAIL'}")
++    return 0 if ok == len(RES) else 1
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())

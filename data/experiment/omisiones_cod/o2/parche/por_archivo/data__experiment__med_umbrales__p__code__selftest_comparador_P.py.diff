@@ -1,0 +1,31 @@
+--- a/data/experiment/med_umbrales/p/code/selftest_comparador_P.py
++++ b/data/experiment/med_umbrales/p/code/selftest_comparador_P.py
+@@ -102,6 +102,28 @@
+               len(leido) == 2 and all(v is None for b in leido.values() for v in b["campos"].values())
+               and set(leido[ID_INVENTADO]["campos"]) == {c for c, _ in F.CAMPOS}
+               and set(leido[ID_INVENTADO.replace("u0", "u1")]["campos"]) == {c for c, _ in F.CAMPOS_VACIO}, None, None))
++    # U-OMISIONES-COD, grupo L (v7 firmada en c90d3d9): con el tramo de E1 en `tramo`, la cuantía del elemento sale de
++    # las cuantías detectadas en el tramo, por el valor y la unidad (comun_P.cuantia_del_elemento).
++    import comun_P as CP  # noqa: PLC0415
++    R = CP.rcmp()
++
++    def el_de(tramo, k, **extra):
++        c = R.detectar_cuantias(tramo)[k]
++        return {"tramo": tramo, "valor": c.valor, "unidad": c.unidad, "origen": "e1", "regla_comparacion": "maximo", **extra}
++    comp = "entre el 5 % y menos del 20 % del patrimonio"
++    casos_l = [("L: elemento anterior al grupo L (el tramo es la cuantía) → la misma cuantía", el_de("5 %", 0), "5 %"),
++               ("L: tramo de E1 con una cuantía → la cuantía", el_de("El 17% en el caso de entidades del grupo B", 0), "17%"),
++               ("L: tramo compartido, el primer elemento → su cuantía por el valor", el_de(comp, 0), "5 %"),
++               ("L: tramo compartido, el segundo elemento → su cuantía por el valor", el_de(comp, 1), "20 %"),
++               ("L: elemento del validador → su tramo",
++                {"tramo": "no podrá exceder el nivel alcanzado", "comparacion": "maximo", "origen": "e1",
++                 "regla_comparacion": "limite_relativo:marcador"}, "no podrá exceder el nivel alcanzado"),
++               ("L: tramo sin una cuantía de ese valor (la celda con la unidad del rótulo) → su tramo",
++                {"tramo": "5.000", "valor": "5000000000", "unidad": "moneda", "origen": "e1", "regla_comparacion": "maximo"},
++                "5.000")]
++    for nombre, el, esperado in casos_l:
++        ob = CP.cuantia_del_elemento(el)
++        C.append((nombre, ob == esperado, ob, None))
+     malos = 0
+     for nombre, ok, ob, _ in C:
+         print(("PASS" if ok else "FAIL"), "|", nombre, "|", ob if ob is not None else "")

@@ -1,0 +1,46 @@
+--- a/data/experiment/med_umbrales/p/code/comun_P.py
++++ b/data/experiment/med_umbrales/p/code/comun_P.py
+@@ -324,6 +324,25 @@
+     return " ".join(plegar(s).split())
+ 
+ 
++def cuantia_del_elemento(el: dict) -> str:
++    """U-OMISIONES-COD, grupo L: la cuantía del elemento, que ya no es su `tramo` (el ensamblado guarda ahí el tramo de
++    E1 del que sale). Se toma de las cuantías que `reglas_comparacion.detectar_cuantias` encuentra en el tramo, por el
++    valor y la unidad del elemento (y, si ninguna coincide en los dos, por el valor). En un grafo anterior al grupo L
++    el tramo es la cuantía y devuelve lo mismo; un elemento del validador, o uno cuyo tramo no tiene una cuantía con
++    ese valor, devuelve el tramo."""
++    t = el.get("tramo") or ""
++    if es_validador(el):
++        return t
++    cs = rcmp().detectar_cuantias(t)
++    for c in cs:
++        if c.valor == el.get("valor") and c.unidad == el.get("unidad"):
++            return c.texto
++    for c in cs:
++        if el.get("valor") is not None and c.valor == el.get("valor"):
++            return c.texto
++    return t
++
++
+ def _alinear_e1(n: dict, kg_elementos: list[dict], tramos: list[tuple[str, str]]) -> dict[int, tuple[int, int]]:
+     """Índice del elemento → (índice del tramo de E1, ocurrencia de su cuantía dentro del tramo). El ensamblado arma
+     los elementos de origen e1 recorriendo los tramos en orden y, en cada uno, las cuantías de
+@@ -340,7 +359,7 @@
+     for i, el in enumerate(kg_elementos):
+         if es_validador(el) or el.get("origen") != "e1":
+             continue
+-        k = _norm(el.get("tramo") or "")
++        k = _norm(cuantia_del_elemento(el))
+         for q in range(pos, len(secuencia)):
+             if secuencia[q][0] == k:
+                 out[i] = (secuencia[q][1], secuencia[q][2])
+@@ -383,7 +402,7 @@
+             out["nota"] = f"{len(segs) - len(out['spans'])} de {len(segs)} segmentos del tramo no se ubican en E0"
+         return out
+ 
+-    cuantia = el.get("tramo") or ""
++    cuantia = cuantia_del_elemento(el)
+     if el.get("origen") == "e1" and info["tramos"]:
+         lst = (n.get("properties") or {}).get("umbrales") or []
+         al = _alinear_e1(n, lst, info["tramos"]).get(i)

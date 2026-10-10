@@ -206,16 +206,33 @@ def _ventana_minima(texto_toks: list[str], necesarios: set[str]) -> Optional[tup
     return mejor
 
 
-def verificar_tramo(aguja: str, texto: str, holgura: Optional[int]) -> tuple[str, Optional[str]]:
+# U-OMISIONES-COD, grupo B, ítem f: en la verificación de la mención de sujeto, «del» se lee «de el» y «al», «a el»,
+# en la mención y en el texto («el cuentacorrentista» contra «Obligaciones del cuentacorrentista»). Solo ahí: las
+# demás verificaciones (tramos, omisiones, umbrales, términos) no cambian.
+CONTRACCIONES = {"del": ("de", "el"), "al": ("a", "el")}
+
+
+def _expandir_contracciones(toks: list[tuple[str, int, int]]) -> list[tuple[str, int, int]]:
+    return [(x, i, f) for t, i, f in toks for x in CONTRACCIONES.get(t, (t,))]
+
+
+def verificar_tramo(aguja: str, texto: str, holgura: Optional[int],
+                    contracciones: bool = False) -> tuple[str, Optional[str]]:
     """Nivel 1 («exacta»): la secuencia de tokens de la aguja aparece contigua
     en el texto (equivale a la subcadena normalizada entre límites de palabra
     de R-NORM). Nivel 2 («tokens»): todos sus tokens distintos aparecen en una
     ventana contigua de a lo sumo len(distintos) + holgura tokens (holgura
-    None = sin tope); devuelve el tramo literal mínimo del texto. Si no, «no»."""
+    None = sin tope); devuelve el tramo literal mínimo del texto. Si no, «no».
+    Con `contracciones`, «del» y «al» se expanden en la aguja y en el texto
+    (CONTRACCIONES); cada parte conserva el span de la contracción."""
     at = norm_tokens(aguja)
+    if contracciones:
+        at = [x for t in at for x in CONTRACCIONES.get(t, (t,))]
     if not at:
         return "no", None
     tt = tokens_con_spans(texto)
+    if contracciones:
+        tt = _expandir_contracciones(tt)
     tt_s = [t for t, _, _ in tt]
     n = len(at)
     for i in range(len(tt_s) - n + 1):
@@ -516,6 +533,14 @@ def derivar_comunicacion(codigo: Any, label: Any) -> Optional[str]:
 
 def nombra_norma_externa(s: Any, lexico: frozenset) -> bool:
     return isinstance(s, str) and any(t in lexico for t in norm_tokens(s))
+
+
+# U-OMISIONES-COD, grupo H: con la forma r2, si el tramo verificado no da el tipo (sin tramo, tramo no verificado o
+# tramo sin norma), el tipo se deriva del código o de la etiqueta que escribió el modelo: A, B o C con
+# `derivar_comunicacion`; «externa» con el léxico de la política más LEXICO_EXTERNA_CODIGO (abreviaturas y normas que
+# el léxico de la política no cubre; la lista vive acá porque `politica_campos_r2.json` está sellada por su sha). Lo
+# que tampoco se deriva así lleva la marca `tipo_no_derivable` en `properties_no_definidas`. El tramo sigue primero.
+LEXICO_EXTERNA_CODIGO = frozenset(("dec", "codigo", "decision", "disposicion"))
 
 
 # P3b, l: la mención de una Comunicación en el tramo, también en una enumeración («A 5867, 5926 y 5970»); la regla
@@ -947,7 +972,7 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
                 reg.cuenta("claves", "otras_propiedades_no_objeto_a_campos_no_definidos", tipo)
         if r2:
             # P3b: las claves que pone el código no se toman del modelo.
-            for k in ("modalidad_clasificada", "copia_nota_e3"):
+            for k in ("modalidad_clasificada", "copia_nota_e3", "tipo_no_derivable"):
                 if k in no_def:
                     campos_nd[f"properties_no_definidas.{k}"] = no_def.pop(k)
                     reg.cuenta("claves", "clave_del_codigo_escrita_por_el_modelo_a_campos_no_definidos", k)
@@ -1015,6 +1040,16 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
                                        or nombra_norma_externa(label, pol.lexico_externa)):
                             resuelto, trat_c = "externa", "externa_por_codigo_o_label"
                             break
+                if r2 and resuelto is None and derivado:
+                    der_c = derivar_comunicacion(props.get("codigo"), label)
+                    lex = pol.lexico_externa | LEXICO_EXTERNA_CODIGO
+                    if der_c is not None:
+                        resuelto, trat_c = der_c, "derivado_del_codigo_sin_tramo"
+                    elif nombra_norma_externa(props.get("codigo"), lex) or nombra_norma_externa(label, lex):
+                        resuelto, trat_c = "externa", "externa_por_codigo_sin_tramo"
+                    else:
+                        no_def["tipo_no_derivable"] = True
+                        reg.cuenta("Comunicacion.tipo", "tipo_no_derivable")
                 if not derivado:
                     originales.setdefault("tipo", original)
                 if resuelto is not None:
@@ -1247,7 +1282,7 @@ def validar(tool_input: Any, chunk: dict, politica: Optional[Politica] = None,
             if mencion is None:
                 nivel, literal = "ausente", None
             else:
-                nivel, literal = verificar_tramo(mencion, texto_mencion, pol.holgura)
+                nivel, literal = verificar_tramo(mencion, texto_mencion, pol.holgura, contracciones=True)
             reg.cuenta("sujeto_mencion", nivel)
             mencion_final, mencion_modelo = mencion, None
             if nivel == "tokens" and literal is not None:

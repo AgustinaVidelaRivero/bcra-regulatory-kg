@@ -1029,7 +1029,8 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                            por_procedencia: bool = True, propios: str = "procedencia",
                            predicado: str = PREDICADO_R2, reglas: frozenset = REGLAS_R2,
                            chunks_e0_r2: dict[str, dict] | None = None,
-                           chunks_partes: dict[str, dict] | None = None) -> dict:
+                           chunks_partes: dict[str, dict] | None = None,
+                           procedencia_propia: bool = False, agrupar_sin_rol: bool = False) -> dict:
     """Remisiones del perfil r2. Por defecto, la regla firmada: detección sobre
     el texto de E0 del punto de origen (por chunk_id), desde cada procedencia
     de los siete tipos de contenido, con atribución D1, `alcance`, `destino` y
@@ -1095,7 +1096,30 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                                  "sin_nodos_que_nombran_la_unidad": 0, "autocitas_de_encabezado": 0},
               "d1_con_limite_estricto_distinto": {"menciones": 0, "ejemplos": []}}
 
+    # U-OMISIONES-COD, grupo J (TRAMO-REMITE-A; con `procedencia_propia`, que el ensamblado pasa en r2b): cada arista
+    # lleva la procedencia de su propio origen, la de la misma clave (to, punto, rol, chunk) con su tramo, y no la del
+    # primer nodo del punto. La cita del texto heredado lleva la procedencia del bloque heredado, sin tramo, con la
+    # marca explícita `tramo_verificado = ausente`. La detección, la atribución D1 y los destinos no cambian.
+    # U-OMISIONES-COD, nota del 10/10/2026 al pie de la v7 (G-r y `remite_a`; con `agrupar_sin_rol`, que el ensamblado
+    # pasa en r2b): los orígenes de una cita se agrupan por (to, punto, chunk), sin el rol. Las procedencias heredadas de
+    # un mismo punto y chunk leen los mismos bloques de E0 (`_tramos_e0_de` usa el rol solo para sumar el texto propio),
+    # y la corrección de rol de G-r no debe partir el grupo: la cita se atribuye una vez, con la regla D1, a todo el punto.
+    clave_grupo = (("to", "punto", "chunk_id") if agrupar_sin_rol else ("to", "punto", "rol_documental", "chunk_id"))
+    prov_del_nodo: dict[tuple[str, str], dict] = {}
+
+    def de_su_origen(o: str, procedencia: dict) -> dict:
+        if not procedencia_propia:
+            return procedencia
+        k = C.prov_key({kk: procedencia.get(kk) for kk in clave_grupo})
+        propia = prov_del_nodo.get((k, o))
+        if propia is not None:
+            return propia
+        if procedencia.get("tramo") is None and "tramo_verificado" not in procedencia:
+            return {**procedencia, "tramo_verificado": "ausente"}
+        return procedencia
+
     def agregar(src: str, tgt: str, procedencia: dict, men: dict, destino: str, alcance: str) -> bool:
+        procedencia = de_su_origen(src, procedencia)
         k = (src, predicado, tgt)
         if tgt == src:
             return False
@@ -1199,7 +1223,8 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                 prov_canonica = dict(p)
                 if cid and not p.get("chunk_id"):
                     prov_canonica = {**p, "chunk_id": cid}
-                k = C.prov_key({kk: prov_canonica.get(kk) for kk in ("to", "punto", "rol_documental", "chunk_id")})
+                k = C.prov_key({kk: prov_canonica.get(kk) for kk in clave_grupo})
+                prov_del_nodo.setdefault((k, n["id"]), prov_canonica)
                 if k not in por_proc:
                     por_proc[k] = (prov_canonica, [])
                 if n["id"] not in por_proc[k][1]:

@@ -1,0 +1,66 @@
+"""U-OMISIONES-COD, grupo I — selftest de «Condiciones sin regla» (`scripts/metricas_intrinsecas.condiciones_sin_regla`),
+que va en `adaptador_gen3`, junto a M9 y sin reemplazarla (decisión 2 de la nota del 10/10/2026 al pie de la v7).
+
+  S  casos sintéticos: una Condicion con solo `establecida_en` cuenta; una con `condicion_de` no; una con solo
+     `remite_a` cuenta; en un grafo r1, la `referencia` con rol_fuente referencia_cruzada es remisión y cuenta; una
+     Condicion destino de otra arista de contenido no cuenta; M9 (grado 0) no cambia;
+  R  con --kg-a9631a64: la cifra de la v7 sobre KG-Tanda0-Diez-r2b (331 de 1.952; solo lectura).
+
+Corre desde la raíz de una COPIA del repo o del repo; no escribe nada. USD 0.
+Uso: PYTHONDONTWRITEBYTECODE=1 <repo>/.venv/bin/python -B data/experiment/omisiones_cod/selftest_metrica_condiciones.py
+     [--kg-a9631a64 data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json]
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(REPO / "scripts"))
+import metricas_intrinsecas as MI  # noqa: E402
+
+RES: list[tuple[str, bool, str]] = []
+
+
+def check(nombre: str, ok: bool, detalle: str = "") -> None:
+    RES.append((nombre, bool(ok), str(detalle)[:200]))
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--kg-a9631a64", dest="kg", type=Path, default=None)
+    a = ap.parse_args()
+    nodos = [{"id": i, "type": t} for i, t in (("c1", "Condicion"), ("c2", "Condicion"), ("c3", "Condicion"),
+                                               ("c4", "Condicion"), ("c5", "Condicion"), ("o", "Obligacion"),
+                                               ("t", "TextoOrdenado"), ("s", "Sujeto"))]
+    aristas = [{"source": "c1", "relation": "establecida_en", "target": "t"},
+               {"source": "c2", "relation": "condicion_de", "target": "o"},
+               {"source": "c3", "relation": "remite_a", "target": "o"},
+               {"source": "c4", "relation": "referencia", "target": "o", "rol_fuente": "referencia_cruzada"},
+               {"source": "o", "relation": "condicion_de", "target": "c5"}]
+    m = MI.condiciones_sin_regla({"nodes": nodos, "edges": aristas})
+    check("I: solo establecida_en, solo remite_a y la remisión r1 cuentan; condicion_de saliente no; destino de otra "
+          "arista de contenido, no", m["nodos_sin_arista_de_contenido"] == ["c1", "c3", "c4"] and m["condicion"] == 5, m)
+    check("I: la variante «sin condicion_de saliente» cuenta las que no la tienen",
+          m["sin_condicion_de_saliente"] == 4, m["sin_condicion_de_saliente"])
+    est = MI.estructura(nodos, aristas)
+    check("I no toca M9: el grado 0 de la spec sigue contando solo los nodos sin aristas", est["aislados"] == 1, est["aislados"])
+    if a.kg is not None:
+        b = (REPO / a.kg if not a.kg.is_absolute() else a.kg).read_bytes()
+        m = MI.condiciones_sin_regla(json.loads(b))
+        check("I sobre a9631a64: 331 de 1.952 (la cifra de la v7), las dos variantes iguales",
+              hashlib.sha256(b).hexdigest().startswith("a9631a64") and m["condicion"] == 1952
+              and m["sin_arista_de_contenido"] == 331 and m["sin_condicion_de_saliente"] == 331,
+              {k: v for k, v in m.items() if k != "nodos_sin_arista_de_contenido"})
+    for nombre, ok, det in RES:
+        print(f"  [{'PASS' if ok else 'FAIL'}] {nombre}" + ("" if ok else f" — {det}"))
+    ok = sum(1 for x in RES if x[1])
+    print(f"SELFTEST METRICA I: {ok}/{len(RES)} {'PASS' if ok == len(RES) else 'FAIL'}")
+    return 0 if ok == len(RES) else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
