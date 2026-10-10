@@ -1,0 +1,33 @@
+Parche s0_5/bis/parche/parche_e0_S0-5a-bis.diff (421ee913…), aplicado una sola vez desde data/experiment/reextraccion_v2/e0_chunking/
+
+== prueba en seco: patch -p1 --dry-run < …/parche_e0_S0-5a-bis.diff (después de la foto de las 00:53:39 y antes de la aplicación)
+patching file e0_lib.py
+patching file correr_e0.py
+patching file selftest_e0.py
+rc=0
+
+== aplicación: patch -p1 < …/parche_e0_S0-5a-bis.diff
+2026-10-10 00:54:01
+patching file e0_lib.py
+patching file correr_e0.py
+patching file selftest_e0.py
+rc=0
+archivos .orig o .rej en e0_chunking/: 0
+
+== sha256 después (esperado bd2190ad…, 68bd74b5…, 789630b5…)
+bd2190ad50515ee900448c25dc8e663b3b7d7c52b9e4d8e874f7442b3bec7a51  e0_lib.py
+68bd74b501af7023e97ac837d40390e0732e167dba1f0a5c73f39fc859c2787d  correr_e0.py
+789630b5c0995075392b6590730d5105c39765c611ad840914f606b67b9ce3c0  selftest_e0.py
+
+== git diff --stat -- data/experiment/reextraccion_v2/e0_chunking (el mismo resultado que dio git diff --stat del repo
+   entero a las 00:54, recién aplicado: solo estos tres archivos)
+ .../reextraccion_v2/e0_chunking/correr_e0.py       | 108 +++-
+ .../reextraccion_v2/e0_chunking/e0_lib.py          | 548 ++++++++++++++++++++-
+ .../reextraccion_v2/e0_chunking/selftest_e0.py     | 534 +++++++++++++++++++-
+ 3 files changed, 1167 insertions(+), 23 deletions(-)
+
+== nombres del interruptor del prototipo (S0_5_REGLAS, S0_5_TANDA0) en los tres archivos del repo: grep -c
+selftest_e0.py:0
+correr_e0.py:0
+e0_lib.py:0
+interruptor_prototipo_S0-5a-bis.diff: no se aplicó

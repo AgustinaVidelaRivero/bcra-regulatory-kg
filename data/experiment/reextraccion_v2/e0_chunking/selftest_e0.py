@@ -97,6 +97,36 @@ data/experiment/segmentacion_oficial_e0r2/s0_4/):
 Desde S0-4 cambian dos casos medidos de etapas anteriores: el de la regla 4 cuenta 93 unidades de ri_spi (4b retira
 las intros de un renglón de B.1 y B.3) y el de 1a en nmcief lee nmcief::A2::3.2.1 (el punto es del Anexo II). Desde
 S0-4a-ter, el caso medido de sdmax lee los ítems 31 a 40 en el sub-documento de letra (ri_ccna::D1A3L2::S31…).
+Desde S0-5a cambian cuatro casos medidos de etapas anteriores: ri_spi cuenta 92 unidades (R5-c quita los chapeaux de
+SB y SC, que eran la segunda línea de su título, y R5-a abre ri_spi::C.1::cierre); ri_ccna, 159 (R5-c quita cinco
+chapeaux), y su lista B, 47 unidades (sin los chapeaux de S26 y S29); ri_oc, 187 (R5-a abre los cierres de B.1, B.2 y
+B.3, que heredan sus ítems, y R5-a′ abre ri_oc::Sbloque1 en lugar de ri_oc::SC::cierre).
+
+Tests de S0-5a de U-SEG-OFICIAL (solo la versión e0-r2; diseño en data/experiment/segmentacion_oficial_e0r2/s0_5/):
+  t) la versión legada no cambia: los parámetros de las seis reglas están apagados por default, y las listas de TOs
+     son las del mandato (R5-a′ en ri_oc, R5-b en snp_dd y snp_cheq, R5-e en ri_ccna, ninguna en la tanda 0);
+  u) casos sintéticos: R5-a (el cierre al margen y su caso negativo), R5-a′ (el bloque nuevo), R5-b (las tres
+     condiciones, la cadena, el rótulo seguido de otro, la otra página y el número de la unión), R5-c (las condiciones
+     a a d y el chapeau de verdad), R5-d (la remisión, la enumeración con «y» y el encabezado en la columna de sus
+     hermanos) y R5-e (las letras repartidas entre dos unidades, y la cobertura);
+  v) un caso medido por regla, corriendo e0-r2 sobre 25 TOs: los 9 casos del mecanismo 1 y los 27 correctos del 1.16
+     (R5-a), el bloque de validaciones de ri_oc (R5-a′), las uniones de snp_dd y snp_cheq (R5-b), 8 de los 9 títulos
+     de dos renglones y los 4 chapeaux de verdad (R5-c; manual queda fuera de esta corrida por su tamaño), ri_rml y
+     snp_tr con los 4 encabezados de verdad (R5-d), el rótulo vertical de ri_ccna (R5-e), y la cobertura exacta.
+
+Tests de S0-5a-bis de U-SEG-OFICIAL (solo e0-r2; diseño en data/experiment/segmentacion_oficial_e0r2/s0_5/bis/):
+  t) además: los parámetros nuevos (`listas`, `excluir`, `rotulos_por_lista`) apagados por default, y las listas de
+     R5-a por lista (43: 40 con los párrafos de S0-5a y 3 con un rango de renglones), de R5-f (ri_ccna 11, snp_cheq 1) y
+     de R5-g (ri_oc, «3. Aclaraciones»);
+  w) casos sintéticos (R5-a por lista: solo la lista dada; el rango exacto; el párrafo con un renglón de tabla no se
+     mueve; R5-f: el rótulo pegado al texto en minúscula abre su punto, y el colgado de un padre dado; R5-g: la raíz
+     más adentro que la columna de las raíces abre solo si está en la lista) y medidos, corriendo e0-r2 sobre 22 TOs:
+     ri_rml 1.4.2 desde «Para el punto 1.4.1.»; los dos mixtos con el cierre igual, renglón por renglón, a la lista v2
+     y el resto del ítem igual a S0-4b; ri_ccna 2.1.1 y 5.1; snp_cheq 3.3.6.2; ri_oc, la sección 3 con su título y S2
+     sin ese renglón; las 14 listas que no se tocan, con el texto propio de S0-4b; los 87 rechazos por columna profunda
+     de los 7 documentos fuera de la tanda 1, como en S0-4b; y cuatro tablas serializadas como en S0-4b.
+Desde S0-5a-bis cambia un caso medido de etapas anteriores: ri_ccna cuenta 169 unidades (R5-f abre 11 puntos, 2.1.1
+a 2.1.8, 5.1 y 8.1 de D1A1 y 5.1 de D1A2, y quita el chapeau de D1A1::S5, que era el texto de 5.1).
 """
 
 from __future__ import annotations
@@ -395,9 +425,10 @@ def test_s0_casos(d: Path) -> None:
     check("regla 3, ampliación: adfsp p. 3 (una lista entera de la regla 8) es índice: sin adfsp::S6",
           "adfsp::S6" not in ids["adfsp"] and "adfsp::6.1" in ids["adfsp"])
     # desde S0-4, la regla 4b junta al título el renglón que completa los de B.1 y B.3 y retira sus dos intros de un
-    # renglón: 93 unidades (95 en S0-2 y S0-3)
-    check("regla 4: ri_spi en 93 unidades por el marcador de letra (ri_spi::A.1.1)",
-          len(ids["ri_spi"]) == 93 and "ri_spi::A.1.1" in ids["ri_spi"]
+    # renglón: 93 unidades (95 en S0-2 y S0-3); desde S0-5a, R5-c quita los chapeaux de SB y SC y R5-a abre
+    # ri_spi::C.1::cierre: 92
+    check("regla 4: ri_spi en 92 unidades por el marcador de letra (ri_spi::A.1.1)",
+          len(ids["ri_spi"]) == 92 and "ri_spi::A.1.1" in ids["ri_spi"]
           and bool(avisos("ri_spi", "marcador_letra_r2")), f"{len(ids['ri_spi'])} unidades")
     # desde S0-3, el mecanismo 1a no cierra ri_mmsef 2.2 (su cuerpo está en la columna del rótulo) y la regla 7 ya
     # no actúa ahí; las unidades son las mismas. El caso medido de la reapertura pasa a manori 1.5 (p. 39)
@@ -991,15 +1022,16 @@ def test_s04_casos(d: Path) -> None:
           and "31. Arqueo" not in txt("ri_ccna", "ri_ccna::D1A3L2::S30"))
     l2 = [i for i in ch["ri_ccna"] if i.startswith("ri_ccna::D1A3L2::") and i != "ri_ccna::D1A3L2::S0"]
     check("sdl, ri_ccna (Anexo III): «A. GENERAL» y «B. PRUEBAS SUSTANTIVAS» abren D1A3L1 y D1A3L2; B.1 y B.2 son "
-          "las raíces 1 y 2 de D1A3L2; 164 unidades",
+          "las raíces 1 y 2 de D1A3L2; 169 unidades (164 en S0-4; R5-c de S0-5a quita cinco chapeaux; R5-f de "
+          "S0-5a-bis abre 11 puntos de D1A1 y D1A2 y quita el chapeau de D1A1::S5)",
           txt("ri_ccna", "ri_ccna::D1A3L1::S0").startswith("A. GENERAL")
           and txt("ri_ccna", "ri_ccna::D1A3L2::S0") == "B. PRUEBAS SUSTANTIVAS"
           and txt("ri_ccna", "ri_ccna::D1A3L2::S1").startswith("1. Arqueo sorpresivo de las existencias")
           and txt("ri_ccna", "ri_ccna::D1A3L2::S2").startswith("2. Obtención de confirmaciones")
-          and "ri_ccna::D1A3::S2" not in ch["ri_ccna"] and len(ch["ri_ccna"]) == 164)
-    check("sdlh, ri_ccna (Anexo III): las 49 unidades de la lista B (B.1 a B.40, con los sub-ítems de 26 y 29) "
-          "heredan «B. PRUEBAS SUSTANTIVAS», y las de A.2 y A.3, «A. GENERAL»",
-          len(l2) == 49
+          and "ri_ccna::D1A3::S2" not in ch["ri_ccna"] and len(ch["ri_ccna"]) == 169)
+    check("sdlh, ri_ccna (Anexo III): las 47 unidades de la lista B (B.1 a B.40, con los sub-ítems de 26 y 29; desde "
+          "S0-5a sin los chapeaux de 26 y 29) heredan «B. PRUEBAS SUSTANTIVAS», y las de A.2 y A.3, «A. GENERAL»",
+          len(l2) == 47
           and all(any(h["texto"] == "B. PRUEBAS SUSTANTIVAS" for h in ch["ri_ccna"][i]["herencia"]) for i in l2)
           and all(any(h["texto"] == "A. GENERAL" for h in ch["ri_ccna"][i]["herencia"])
                   for i in ("ri_ccna::D1A3L1::S1", "ri_ccna::D1A3L1::S2", "ri_ccna::D1A3L1::SA.3")), str(len(l2)))
@@ -1012,10 +1044,11 @@ def test_s04_casos(d: Path) -> None:
           bool(txt("ri_oc", "ri_oc::A1::S0")) and all(f"ri_oc::A2::S{k}" in oc for k in range(1, 7))
           and not any("R10" in i for i in oc))
     check("apl, ri_oc: «APARTADO B» y «APARTADO C» abren sus raíces, B.1.1 a B.3.4 y C.1 a C.11 son puntos, y "
-          "3.51 queda con su texto (p. 15)",
+          "3.51 queda con su texto (p. 15); 187 unidades (184 en S0-4; desde S0-5a, B.1.1 hereda el cierre de B.1 que abre "
+          "R5-a)",
           all(f"ri_oc::B.1.{k}" in oc for k in range(1, 29)) and "ri_oc::B.3.4" in oc and "ri_oc::C.11" in oc
           and oc["ri_oc::3.51"]["paginas"] == [15] and "APARTADO B" not in txt("ri_oc", "ri_oc::3.51")
-          and [h["unidad_origen"] for h in oc["ri_oc::B.1.1"]["herencia"]] == ["SB", "B.1"] and len(oc) == 184)
+          and [h["unidad_origen"] for h in oc["ri_oc::B.1.1"]["herencia"]] == ["SB", "B.1", "B.1"] and len(oc) == 187)
     est_sef = cargar(d, "estructura_ri_sef.json")
     check("sdmax, ri_sef: los códigos 101 a 126 del Anexo II no suceden a la raíz anterior y siguen rechazados",
           sum(r["motivo"] == "raiz_mayor_a_max" for r in est_sef["rechazos_header"]) == 24
@@ -1029,6 +1062,481 @@ def test_s04_casos(d: Path) -> None:
           and any(t["texto"].endswith("abiertas en las cajas de crédito cooperativas.") for t in hijo["herencia"]))
     cob = cargar(d, "cobertura.json")
     check(f"cobertura exacta en los {len(TOS_S04)} TOs", all(cob[to]["cobertura_exacta"] for to in TOS_S04))
+
+
+# ------------------------------------------------------------------ S0-5a de U-SEG-OFICIAL
+TOS_S05 = ("ri_rml", "snp_tr", "ri_oc", "snp_dd", "snp_cheq", "ri_ccna", "adfsp", "cajasc", "depaho", "manori",
+           "ri2_ae", "ri_spi", "gerc", "rdbcra", "ordcom", "pimf", "inspag", "pfmipyme", "ri_cr", "snp_psp", "adrei",
+           "ayccef", "cirmo3", "efemin", "lingeef")
+# los 27 candidatos del hallazgo 1.16 de la tanda 1 que la lectura de S1-bis marcó correctos: el sha256 de su texto
+# propio en la salida de S0-4b (s1bis/e0), que S0-5a no cambia (caso negativo de R5-a)
+CORRECTOS_116 = {
+    "adrei::2.2.2.2": "bd6c46a527e5a377", "adrei::4.2.1.4": "0edfda329c31c139",
+    "ayccef::2.3.2.2": "29605e048abc9231", "ayccef::2.9.4.2": "3a8d9f9e4b4fe8a2",
+    "ayccef::3.6.2.2": "869dafbd6b3ccad0", "ayccef::4.4.5": "ce7a2b7ade345961",
+    "ayccef::5.2.5.2": "55f382adfd6b67ac", "cajasc::11.1.2": "29a2640fce87483b",
+    "cajasc::6.2.1.3": "904f2433090a71dd", "cirmo3::8.9.4": "d503b7ffab47fed2",
+    "depaho::1.12.2": "fc95f4416a1124af", "depaho::1.5.5": "56580bb43c1c7995",
+    "depaho::3.1.6.4": "918914aac8038c46", "depaho::3.4.10.2": "a36de14e4d6774b5",
+    "depaho::3.4.4.5": "d3e64d5864bd96b0", "depaho::3.6.2.4": "3025ab5828628ecb",
+    "depaho::3.8.6.4": "8d43d58dd7e20dd2", "efemin::3.2.2": "651990d6f23bc8f5",
+    "lingeef::10.3.2": "76eb53fc79b08318", "lingeef::12.8.2": "ceade401db3af6aa",
+    "lingeef::3.3.1.8": "0624c4f7cb9c873c", "lingeef::5.1.1.3": "1836a453ac950182",
+    "lingeef::5.3.4.5": "32378fa47c38a089", "lingeef::5.4.3.3": "2120f6c8653dbe4b",
+    "lingeef::6.2.1.9": "418c3a38b5817a9a", "lingeef::7.3.2.2": "f524b0b4e1ebb7d0",
+    "snp_tr::4.2": "8068ac542d7a2e7d"}
+# los 9 casos del mecanismo 1 (R5-a): el cierre del padre y su primer renglón
+CIERRES_R5A = {
+    "adfsp::1.1.10": ("adfsp::1.1::cierre", "En caso de que alguna entidad financiera deje de reunir los"),
+    "cajasc::11.4.4": ("cajasc::11.4::cierre", "Ello, sin perjuicio de lo que se haya establecido en forma"),
+    "cajasc::4.2.2.3": ("cajasc::4.2.2::cierre", "Los préstamos a que se refieren los puntos 4.2.2.1. y 4.2.2.3."),
+    "depaho::3.11.5.5": ("depaho::3.11.5::cierre", "Los movimientos –cualquiera sea su naturaleza– no podrán"),
+    "manori::1.4.1.3": ("manori::1.4.1::cierre", "La entidad financiera deberá desarrollar documentación"),
+    "manori::3.4.1.3": ("manori::3.4.1::cierre", "La entidad financiera deberá desarrollar documentación"),
+    "ri_oc::B.1.28": ("ri_oc::B.1::cierre", "En el punto B.1.24 deben informarse:"),
+    "ri_oc::B.2.4": ("ri_oc::B.2::cierre", "La información solicitada en los puntos B.2.1. y B.2.3."),
+    "ri_oc::B.3.4": ("ri_oc::B.3::cierre", "La información solicitada en los puntos B.3.1. y B.3.3.")}
+
+
+def test_s05_legada() -> None:
+    import inspect
+    E0 = correr_e0.E0
+    print("== t) S0-5a de U-SEG-OFICIAL: la versión legada no cambia; listas de TOs")
+    p = inspect.signature(E0.parsear_cuerpo).parameters
+    s = inspect.signature(E0.construir_chunks).parameters
+    a = inspect.signature(E0.aplicar_cierre_al_margen).parameters
+    check("parsear_cuerpo (R5-d), construir_chunks (R5-b, R5-c) y aplicar_cierre_al_margen (R5-a, R5-a′) apagados por "
+          "default",
+          p["numero_en_referencia"].default is False and s["intersticial_continuado"].default is False
+          and s["titulo_seccion_envuelto"].default is False and a["cierre"].default is False
+          and a["titulo_bloque"].default is False)
+    check("listas de S0-5a: R5-a′ en ri_oc, R5-b en snp_dd y snp_cheq, R5-e en ri_ccna; ninguna regla en la tanda 0; "
+          "la tolerancia de R5-a es la de E0",
+          correr_e0.REGLAS_S0_5 == frozenset({"r5a", "r5a2", "r5b", "r5c", "r5d", "r5e", "r5f", "r5g"})
+          and correr_e0.TOS_TITULO_BLOQUE_S0_5 == frozenset({"ri_oc"})
+          and correr_e0.TOS_INTERSTICIAL_S0_5 == frozenset({"snp_dd", "snp_cheq"})
+          and correr_e0.TOS_ROTULO_VERTICAL_S0_5 == frozenset({"ri_ccna"})
+          and correr_e0.TOS_TANDA0_SIN_S0_5 == TOS_TANDA0 and E0.TOL_COL_R5A == E0.TOL_X)
+
+
+def test_s05bis_legada() -> None:
+    import inspect
+    E0 = correr_e0.E0
+    print("== t′) S0-5a-bis de U-SEG-OFICIAL: parámetros nuevos apagados; listas")
+    p = inspect.signature(E0.parsear_cuerpo).parameters
+    a = inspect.signature(E0.aplicar_cierre_al_margen).parameters
+    check("parsear_cuerpo (R5-f, R5-g) y aplicar_cierre_al_margen (R5-a por lista, sin tablas) apagados por default",
+          p["rotulos_por_lista"].default == () and p["raices_por_lista"].default == ()
+          and a["listas"].default is None and a["excluir"].default is None)
+    L = correr_e0.LISTAS_R5A_S0_5
+    n = sum(len(v) for v in L.values())
+    rangos = sorted(f"{to}::{k}" for to, v in L.items() for k, x in v.items() if x is not None)
+    check("R5-a por lista: 43 listas, 3 con un rango de renglones (ri_rml 1.4.2 y los dos mixtos); ninguna de la tanda 0 "
+          "ni de las 14 que no se tocan",
+          n == 43 and rangos == ["ri2_ae::14.3", "ri_rml::1.4.2", "ri_spi::C.1.3"]
+          and not set(L) & TOS_TANDA0
+          and not {f"{to}::{k}" for to, v in L.items() for k in v} & set(NO_SE_TOCAN_S05BIS), f"{n}, {rangos}")
+    R = correr_e0.ROTULOS_POR_LISTA_S0_5
+    check("R5-f por lista: ri_ccna 11 rótulos y snp_cheq 1 (3.3.6.2, colgado de 3.3)",
+          sorted(R) == ["ri_ccna", "snp_cheq"] and len(R["ri_ccna"]) == 11
+          and R["snp_cheq"] == ((38, 218.2, "3.3.6.2", "3.3"),))
+    check("R5-g por lista: solo ri_oc, «3. Aclaraciones» (p. 6)",
+          correr_e0.RAICES_POR_LISTA_S0_5 == {"ri_oc": ((6, 117.4, "3"),)})
+
+
+def _res_sintetico(secciones, n_lineas: int):
+    E0 = correr_e0.E0
+    return E0.ResultadoParseo(to="x", archivo="x.pdf", secciones=secciones, rechazos_header=[], saltos_numeracion=[],
+                              avisos=[], accounting={"lineas_descartadas_encabezado_pie": 0, "detalle_descartes": []},
+                              lineas_contenido=n_lineas, paginas_cuerpo=1)
+
+
+def test_s05_sinteticos() -> None:
+    E0 = correr_e0.E0
+    print("== u) S0-5a de U-SEG-OFICIAL: casos sintéticos de las seis reglas")
+    cuerpo = "Texto de la norma que corre en la columna del cuerpo del ítem y termina en punto final."
+    cierre = "Las entidades deberán observar lo dispuesto en los puntos anteriores durante todo el plazo."
+    # R5-a: lista con sangría colgante (rótulos en 110, texto en 150); el cierre al margen queda en el último ítem
+    def lista(x_cierre: float):
+        return [_linea("Sección 1. Requisitos.", 1, 30.0), _linea("1.1. Condiciones generales.", 1, 50.0, x0=76.0),
+                _linea("1.1.1. Primer requisito.", 1, 70.0, x0=110.0), _linea(cuerpo, 1, 84.0, x0=150.0),
+                _linea("1.1.2. Segundo requisito.", 1, 110.0, x0=110.0), _linea(cuerpo, 1, 124.0, x0=150.0),
+                _linea("1.1.3. Tercer requisito.", 1, 150.0, x0=110.0), _linea(cuerpo, 1, 164.0, x0=150.0),
+                _linea(cierre, 1, 190.0, x0=x_cierre)]
+    res, ch0 = _parse([lista(110.0)])
+    ev = E0.aplicar_cierre_al_margen(res, cierre=True)
+    ch = E0.construir_chunks(res)
+    check("R5-a: sin la regla el cierre queda en el último ítem; con ella pasa a x::1.1::cierre y el ítem conserva su "
+          "cuerpo",
+          (_texto(ch0, "x::1.1.3") or "").endswith(cierre) and _texto(ch, "x::1.1::cierre") == cierre
+          and _texto(ch, "x::1.1.3") == "1.1.3. Tercer requisito.\n" + cuerpo
+          and [e["tipo"] for e in ev] == ["cierre_al_margen_r5a"], str([c["id"] for c in ch]))
+    res, _ = _parse([lista(150.0)])
+    check("R5-a, caso negativo: el párrafo en la columna del texto se queda en el ítem",
+          E0.aplicar_cierre_al_margen(res, cierre=True) == [])
+    # R5-a′: el título de bloque y el cierre de la sección abren una sección nueva
+    tb = [_linea("Sección 2. Composición.", 1, 30.0), _linea(cierre, 1, 56.0, x0=76.0),
+          _linea("2.1. Primer concepto.", 1, 70.0, x0=76.0), _linea(cuerpo, 1, 84.0, x0=110.0),
+          _linea("2.2. Segundo concepto.", 1, 110.0, x0=76.0), _linea(cuerpo, 1, 124.0, x0=110.0),
+          _linea("Criterios de validación", 1, 150.0, x0=76.0), _linea(cierre, 1, 164.0, x0=76.0)]
+    res, ch0 = _parse([tb])
+    ev = E0.aplicar_cierre_al_margen(res, titulo_bloque=True)
+    ch = E0.construir_chunks(res)
+    check("R5-a′: «Criterios de validación» y el cierre de la sección abren x::Sbloque1, después de la sección; la sección "
+          "queda sin cierre y el ítem con su texto",
+          _texto(ch0, "x::S2::cierre") == cierre and "x::S2::cierre" not in {c["id"] for c in ch}
+          and _texto(ch, "x::Sbloque1") == "Criterios de validación\n" + cierre
+          and _texto(ch, "x::2.2") == "2.2. Segundo concepto.\n" + cuerpo
+          and [c["id"] for c in ch][-1] == "x::Sbloque1" and [e["tipo"] for e in ev] == ["titulo_de_bloque_r5a2"],
+          str([c["id"] for c in ch]))
+    # R5-b: intersticiales de una sección entre dos hijos
+    def lin(t, top, pagina=1):
+        return _linea(t, pagina, top, x0=90.0)
+    sec = E0.Nodo(tipo="seccion", numero="7", titulo="Campos.", pagina=1)
+    h1 = E0.Nodo(tipo="punto", numero="7.1", titulo="Registro.", pagina=1, label_x0=60.0,
+                 linea_label=_linea("7.1. Registro.", 1, 40.0), padre=sec)
+    h2 = E0.Nodo(tipo="punto", numero="7.2", titulo="Otro.", pagina=2, label_x0=60.0,
+                 linea_label=_linea("7.2. Otro.", 2, 100.0), padre=sec)
+    sec.hijos = [h1, h2]
+    sec.segmentos = [[lin("R95 Reversión de En- Este código podrá ser utilizado por el banco", 60.0)],
+                     [lin("tidad receptora reversión de banco", 80.0), lin("presentada fuera", 92.0)],
+                     [lin("Cuenta cerrada o suspendida en la que recae la transacción", 120.0)],
+                     [lin("R02", 135.0)], [lin("se encuentre cerrada o suspendida.", 150.0)],
+                     [lin("5. Reservado.", 180.0)], [lin("Este campo queda reservado para usos futuros.", 195.0)],
+                     [lin("6. Cuenta a debitar.", 220.0)], [lin("7. Contador de registro.", 240.0)],
+                     [lin("Este campo lleva el contador sin punto final", 260.0)],
+                     [lin("sigue en la página siguiente", 30.0, pagina=2)]]
+    res = _res_sintetico([sec], 15)
+    ids0 = [c["id"] for c in E0.construir_chunks(res) if "intersticial" in c["id"]]
+    chb = E0.construir_chunks(res, intersticial_continuado=True)
+    idsb = [c["id"] for c in chb if "intersticial" in c["id"]]
+    check("R5-b: (i) 1+2, (i′) y (i) 3+4+5, (ii) 6+7 y 9+10; 8 y 9 no (la segunda es otro rótulo); 10 y 11 no (otra "
+          "página); las uniones conservan el número de la primera y las siguientes no se renumeran",
+          ids0 == [f"x::S7::intersticial::{k}" for k in range(1, 12)]
+          and idsb == [f"x::S7::intersticial::{k}" for k in (1, 3, 6, 8, 9, 11)]
+          and _texto(chb, "x::S7::intersticial::3") == "Cuenta cerrada o suspendida en la que recae la transacción\nR02\n"
+                                                        "se encuentre cerrada o suspendida.", str(idsb))
+    # R5-c: chapeaux de un renglón
+    def seccion(num, titulo, chapeau, top):
+        s = E0.Nodo(tipo="seccion", numero=num, titulo=titulo, pagina=1)
+        h = E0.Nodo(tipo="punto", numero=f"{num}.1", titulo="Punto.", pagina=1, label_x0=60.0,
+                    linea_label=_linea(f"{num}.1. Punto.", 1, top + 20.0), padre=s)
+        s.hijos = [h]
+        s.segmentos = [[_linea(chapeau, 1, top)]]
+        h.segmentos = [[_linea(cuerpo, 1, top + 30.0, x0=90.0)]]
+        return s
+    secs = [seccion("1", "Registro de auditores y", "permanencia en el registro", 100.0),
+            seccion("2", "Seguimiento de pagos realizados con ANTE-", "RIORIDAD AL REGISTRO DEL BIEN", 200.0),
+            seccion("3", 'Inscripción en el "Registro', 'de Auditores":', 300.0),
+            seccion("4", "Presentación de solicitudes", "Metodología que deberán cumplimentar las entidades.", 400.0)]
+    chc = E0.construir_chunks(_res_sintetico(secs, 16), titulo_seccion_envuelto=True)
+    idsc = {c["id"] for c in chc}
+    her = next(c for c in chc if c["id"] == "x::1.1")["herencia"][0]["texto"]
+    check("R5-c: (b), (a) y (c)+(d) juntan el chapeau al título y no lo emiten; el chapeau que es una oración completa "
+          "después de un título completo queda",
+          not idsc & {"x::S1::chapeau_seccion", "x::S2::chapeau_seccion", "x::S3::chapeau_seccion"}
+          and "x::S4::chapeau_seccion" in idsc
+          and her == "Sección 1. Registro de auditores y\npermanencia en el registro", her)
+    # R5-d: número de punto que continúa una remisión
+    rd = [_linea("Sección 1. Normas.", 1, 30.0), _linea("1.1. Alcance.", 1, 50.0, x0=76.0),
+          _linea(cuerpo, 1, 64.0, x0=100.0), _linea("1.2. Integración.", 1, 90.0, x0=76.0),
+          _linea("1.2.1. Primer punto.", 1, 110.0, x0=100.0),
+          _linea("Se computa de acuerdo con el procedimiento descripto en el punto", 1, 124.0, x0=120.0),
+          _linea("1.3. “Integración” de las presentes normas, en la parte pertinente.", 1, 138.0, x0=120.0),
+          _linea("Las entidades informarán los conceptos y montos previstos en los puntos 1.1. y", 1, 152.0, x0=120.0),
+          _linea("1.2.2. Segundo punto, que se incluye en la lista.", 1, 166.0, x0=120.0),
+          _linea("1.2.3. Tercer punto.", 1, 190.0, x0=100.0),
+          _linea("Rige lo previsto en el punto", 1, 204.0, x0=120.0),
+          _linea("1.3. Integración del período.", 1, 230.0, x0=76.0)]
+    _, ch0 = _parse([rd])
+    resd, chd = _parse([rd], numero_en_referencia=True)
+    check("R5-d: «…en el punto» / «1.3. “Integración”…» sigue como prosa de 1.2.1; tras «y» el 1.2.2 es encabezado; "
+          "«1.3. Integración del período.», en la columna de sus hermanos, abre el 1.3",
+          "x::1.3" in {c["id"] for c in ch0} and (_texto(ch0, "x::1.2.1") or "").count("\n") == 1
+          and "1.3. “Integración”" in (_texto(chd, "x::1.2.1") or "")
+          and (_texto(chd, "x::1.3") or "").startswith("1.3. Integración del período.")
+          and "x::1.2.2" in {c["id"] for c in chd} and "x::1.2.3" in {c["id"] for c in chd}
+          and [r["motivo"] for r in resd.rechazos_header] == ["numero_en_referencia_r5d"],
+          str([(c["id"], c["texto"][:30]) for c in chd]))
+    # R5-e: rótulo vertical repartido entre dos unidades
+    s1 = E0.Nodo(tipo="seccion", numero="1", titulo="Formulario 3.", pagina=1, linea_label=_linea("Formulario 3.", 1, 10.0),
+                 sintetica=True)
+    s1.segmentos = [[_linea(cuerpo, 1, 30.0), _linea("C", 1, 68.0, x0=380.0)]]
+    s2 = E0.Nodo(tipo="seccion", numero="2", titulo="Formulario 4.", pagina=1, linea_label=_linea("Formulario 4.", 1, 73.0),
+                 sintetica=True)
+    s2.segmentos = [[_linea("O", 1, 78.5, x0=380.0), _linea("MEMBRETE DEL FORMULARIO", 1, 82.0),
+                     _linea("D", 1, 89.0, x0=380.0), _linea("I", 1, 99.0, x0=381.5), _linea("G", 1, 109.5, x0=380.0),
+                     _linea("O", 1, 120.0, x0=380.0), _linea(cuerpo, 1, 131.0)]]
+    rese = _res_sintetico([s1, s2], 11)
+    eve = E0.juntar_rotulo_vertical(rese)
+    che = E0.construir_chunks(rese)
+    cob = E0.verificar_cobertura(rese)
+    check("R5-e: «C», «O», «D», «I», «G», «O» se juntan en «CODIGO», en la unidad de la página que tiene la última letra; "
+          "la cobertura sigue exacta",
+          _texto(che, "x::S1") == "Formulario 3.\n" + cuerpo
+          and _texto(che, "x::S2") == f"Formulario 4.\nMEMBRETE DEL FORMULARIO\nCODIGO\n{cuerpo}"
+          and len(eve) == 1 and cob["cobertura_exacta"], str(cob))
+
+
+def test_s05_casos(d: Path) -> None:
+    print(f"== v) S0-5a de U-SEG-OFICIAL: un caso medido por regla (e0-r2 sobre {len(TOS_S05)} TOs)")
+    correr_e0.correr(d, manifiesto=_ManifiestoParticion(TOS_S05), version_e0="e0-r2")
+    ch = {to: {c["id"]: c for c in cargar(d, f"chunks_{to}.json")} for to in TOS_S05}
+
+    def txt(uid: str) -> str:
+        return ch[uid.split("::")[0]].get(uid, {}).get("texto", "")
+
+    ok_a = []
+    for item, (cid, primero) in CIERRES_R5A.items():
+        ok_a.append(txt(cid).startswith(primero) and primero not in txt(item))
+    check("R5-a: los 9 casos del mecanismo 1 quedan con el cierre en el del padre, fuera del ítem", all(ok_a), str(ok_a))
+    malos = [i for i, h in CORRECTOS_116.items() if ch[i.split("::")[0]].get(i, {}).get("sha256_propio", "")[:16] != h]
+    check("R5-a, casos negativos: los 27 candidatos del 1.16 marcados correctos en S1-bis no cambian", not malos, str(malos))
+    oc = ch["ri_oc"]
+    check("R5-a′, ri_oc: el bloque de validaciones es ri_oc::Sbloque1, con sus dos títulos; C.11 termina en su texto; "
+          "ri_oc::SC::cierre no existe y ninguna herencia de C.1 a C.11 tiene tramos del bloque",
+          txt("ri_oc::Sbloque1").startswith("Criterios de validación\nValidación del Apartado A – Operaciones de cambios")
+          and txt("ri_oc::C.11").endswith("para el último día de cada mes).") and "ri_oc::SC::cierre" not in oc
+          and not any("Criterios de validación" in t["texto"] or "Se considerará no validada" in t["texto"]
+                      for k in range(1, 12) for t in oc[f"ri_oc::C.{k}"]["herencia"]))
+    quitadas_dd = {f"snp_dd::S7::intersticial::{k}" for k in (8, 9, 14, 18, 20, 24, 30, 32, 34, 36, 38, 40, 42, 44, 49,
+                                                              53, 55)}
+    quitadas_cheq = {f"snp_cheq::7.1::intersticial::{k}" for k in (12, 14, 17, 19)}
+    check("R5-b: en snp_dd se unen 13+14, 7+8+9 y 14 pares de rótulo y descripción; en snp_cheq, 4 pares; la unión "
+          "conserva el número de la primera",
+          not quitadas_dd & set(ch["snp_dd"]) and not quitadas_cheq & set(ch["snp_cheq"])
+          and "snp_dd::S7::intersticial::15" in ch["snp_dd"]
+          and "tidad receptora" in txt("snp_dd::S7::intersticial::13")
+          and "R02" in txt("snp_dd::S7::intersticial::7") and "se encuentre cerrada" in txt("snp_dd::S7::intersticial::7"))
+    sin = ["ri2_ae::S2::chapeau_seccion", "ri_ccna::D1A1::S2::chapeau_seccion", "ri_ccna::D1A3L2::S26::chapeau_seccion",
+           "ri_ccna::D1A3L2::S29::chapeau_seccion", "ri_ccna::D1F2::S3::chapeau_seccion",
+           "ri_ccna::D1F6::S3::chapeau_seccion", "ri_spi::SB::chapeau_seccion", "ri_spi::SC::chapeau_seccion"]
+    con = ["inspag::S3::chapeau_seccion", "pfmipyme::S3::chapeau_seccion", "ri_cr::S3::chapeau_seccion",
+           "snp_psp::S3::chapeau_seccion"]
+    hijo_c = next(c for i, c in ch["ri_spi"].items() if i.startswith("ri_spi::C.") and c["tipo"] != "mini_chunk")
+    check("R5-c: los 8 títulos de dos renglones medidos acá (el noveno es manual, fuera de esta corrida) quedan sin "
+          "chapeau; los 4 chapeaux de verdad quedan; el título de C de ri_spi, entero en la herencia",
+          not any(i in ch[i.split("::")[0]] for i in sin) and all(i in ch[i.split("::")[0]] for i in con)
+          and any(t["texto"].endswith("APARTADO B") for t in hijo_c["herencia"]))
+    tr = ch["snp_tr"]
+    check("R5-d: ri_rml::1.2.3 termina en «estadounidenses-.», existen 1.2.4 y el 1.3 verdadero; snp_tr::1.3.3 termina "
+          "en «…entre CEC:», existen 1.3.4 a 1.5.2.2 y el 1.6 abre en «1.6. Transacciones.»; ninguna unidad es solo "
+          "el renglón de la remisión",
+          txt("ri_rml::1.2.3").endswith("estadounidenses-.") and "ri_rml::1.2.4" in ch["ri_rml"]
+          and txt("ri_rml::1.3").startswith("1.3. Integración del período")
+          and txt("snp_tr::1.3.3").endswith("el esquema de compensación entre CEC:")
+          and all(f"snp_tr::{k}" in tr for k in ("1.3.4.1", "1.3.4.2", "1.3.5.1", "1.3.5.2", "1.3.5.3", "1.3.6.1",
+                                                 "1.3.6.2", "1.4.1", "1.4.2", "1.4.3", "1.4.4", "1.5.1",
+                                                 "1.5.2.1", "1.5.2.2"))
+          and any(t["texto"] == "1.6. Transacciones." for t in tr["snp_tr::1.6.1"]["herencia"])
+          and "snp_tr::1.6::intro" not in tr)
+    check("R5-d, casos negativos: gerc 2.4.2, rdbcra 11.12, ordcom 1.6.2 y pimf 4.18 siguen siendo encabezados",
+          "gerc::2.4.2" in ch["gerc"] and any(i.startswith("rdbcra::11.12") for i in ch["rdbcra"])
+          and "ordcom::1.6.2" in ch["ordcom"] and "pimf::4.18::intro" in ch["pimf"] and "pimf::4.18.1" in ch["pimf"])
+    f4 = txt("ri_ccna::D1F4::S0")
+    check("R5-e: ri_ccna::D1F3::S0 termina en «Fórm. 4368 C (II-2006)», sin la «C» suelta, y D1F4::S0 lleva «CODIGO» "
+          "y ninguna letra suelta",
+          txt("ri_ccna::D1F3::S0").endswith("Fórm. 4368 C (II-2006)") and "\nCODIGO\n" in f4
+          and not any(len(r.strip()) == 1 and r.strip().isupper() for r in f4.split("\n")))
+    cob = cargar(d, "cobertura.json")
+    check(f"cobertura exacta en los {len(TOS_S05)} TOs", all(cob[to]["cobertura_exacta"] for to in TOS_S05))
+
+
+# ------------------------------------------------------------------ S0-5a-bis de U-SEG-OFICIAL
+TOS_S05BIS = ("ri_rml", "ri_spi", "ri2_ae", "ri_ccna", "snp_cheq", "apnf", "cirmo3", "cryl", "gerc", "gescre",
+              "inspag", "manori", "ri_ot", "ri_pnp", "seggar", "manual", "ri_cc", "ri_oc", "nmaeef", "ri_saofe",
+              "ri2_cs", "ri_laft")
+# los 87 rechazos por columna profunda (raíz más adentro que la columna de las raíces) de los 7 documentos fuera de la
+# tanda 1, que R5-g no toca: por documento, y el sha256 de la lista ordenada «to|página|texto|motivo» en S0-4b
+RECHAZOS_G3_S05BIS = ({"manual": 23, "nmaeef": 24, "ri2_ae": 15, "ri2_cs": 7, "ri_laft": 2, "ri_saofe": 15, "seggar": 1},
+                      "2e9f86598f7483d8")
+# las 14 listas que no se tocan: el sha256 del texto propio del último ítem en la salida de S0-4b (unido, si se parte)
+# y el cierre del padre, con el sha256 de su texto si existía
+NO_SE_TOCAN_S05BIS = {
+    "apnf::1.3.2.5": ("78369ee7eb369ccd", "apnf::1.3.2::cierre", "e0a9c91eff80facf"),
+    "cirmo3::1.2.11.3": ("1c3d74a3cff055b0", "cirmo3::1.2.11::cierre", None),
+    "cirmo3::1.2.23.3": ("10ab8c34dad0919c", "cirmo3::1.2.23::cierre", None),
+    "cryl::12.2": ("9d303f55a2f7094a", "cryl::S12::cierre", None),
+    "gerc::2.4.3": ("1937c9e6b7cffbad", "gerc::2.4::cierre", None),
+    "gescre::1.2.8.2": ("7f5887bfd4dab4f5", "gescre::1.2.8::cierre", None),
+    "inspag::3.3.2": ("2e048de30b1524f7", "inspag::3.3::cierre", None),
+    "manori::3.5.2": ("6514f904a7fa799a", "manori::3.5::cierre", None),
+    "ri2_ae::3.3": ("2e458be65f2e4294", "ri2_ae::S3::cierre", None),
+    "ri_ot::13.4": ("005c8cd4e4666b05", "ri_ot::S13::cierre", None),
+    "ri_pnp::5.7": ("ab26d8716ce3c6e0", "ri_pnp::S5::cierre", None),
+    "seggar::5.3.5": ("dc2ebf1a8922ac99", "seggar::5.3::cierre", None),
+    "manual::2.3.2": ("bf0d789ed10b00b6", "manual::2.3::cierre", None),
+    "ri_cc::R5::2.2.1.2": ("80ce0925d5804a66", "ri_cc::R5::2.2.1::cierre", None)}
+# los renglones del cierre de los dos mixtos (lista v2 de la revisión de S0-5a) y el sha256 del resto del ítem en S0-4b
+MIXTOS_S05BIS = {
+    "ri_spi::C.1.3": ("ri_spi::C.1::cierre", (
+        "Además de los datos detallados precedentemente, el formulario permitirá visualizar la si-",
+        "guiente información:", "- Código Único de Identificación Tributaria (C.U.I.T) del responsable del pago",
+        "- Número de Boleto", "- Concepto de Liquidación", "- Moneda", "- Fecha de Vencimiento", "- Importe pendiente",
+        "La entidad informante es la responsable final por la totalidad de los datos que estén incluidos",
+        "en la denuncia, debiendo realizar los ajustes necesarios en caso de no estar de acuerdo con",
+        "los datos reflejados en el formulario."), "b42412e80d009cb5"),
+    "ri2_ae::14.3": ("ri2_ae::S14::cierre", (
+        "La fecha de la manifestación escrita deberá coincidir con la fecha del",
+        "informe del auditor sobre los estados financieros de publicación.",
+        "En caso de que la manifestación escrita señalada no haya sido puesta a",
+        "disposición, o la misma no sea consistente con la evidencia de auditoría",
+        "obtenida, el auditor deberá evaluar el impacto de dicha situación al",
+        "momento de emitir su opinión sobre los estados financieros de", "publicación."), "cce522c30ce724f0")}
+# tablas que se serializan: la unidad y el sha256 del bloque en S0-4b (gerc::tabla005; y las tres que el R5-a de S0-5a,
+# sin la guarda de tablas, dejaba de serializar)
+TABLAS_S05BIS = {
+    "gerc::tabla005": ("gerc::4.3.2", "f12c2a7af01b108d"),
+    "manori::tabla014": ("manori::3.5.2", "53ea3f953d5fe35a"),
+    "manori::tabla015": ("manori::3.5.2", "3df76823a2134c2d"),
+    "ri_spi::tabla001": ("ri_spi::C.1.3", "17a05588e249b12c")}
+
+
+def _sha16(t: str) -> str:
+    import hashlib
+    return hashlib.sha256(t.encode("utf-8")).hexdigest()[:16]
+
+
+def test_s05bis_sinteticos() -> None:
+    E0 = correr_e0.E0
+    print("== w) S0-5a-bis de U-SEG-OFICIAL: casos sintéticos")
+    cuerpo = "Texto de la norma que corre en la columna del cuerpo del ítem y termina en punto final."
+    cierre = "Las entidades deberán observar lo dispuesto en los puntos anteriores durante todo el plazo."
+
+    def dos_listas():
+        return [_linea("Sección 1. Requisitos.", 1, 30.0), _linea("1.1. Condiciones generales.", 1, 50.0, x0=76.0),
+                _linea("1.1.1. Primer requisito.", 1, 70.0, x0=110.0), _linea(cuerpo, 1, 84.0, x0=150.0),
+                _linea("1.1.2. Segundo requisito.", 1, 110.0, x0=110.0), _linea(cuerpo, 1, 124.0, x0=150.0),
+                _linea(cierre, 1, 150.0, x0=110.0),
+                _linea("1.2. Otras condiciones.", 1, 180.0, x0=76.0),
+                _linea("1.2.1. Primer caso.", 1, 200.0, x0=110.0), _linea(cuerpo, 1, 214.0, x0=150.0),
+                _linea("1.2.2. Segundo caso.", 1, 240.0, x0=110.0), _linea(cuerpo, 1, 254.0, x0=150.0),
+                _linea("Ello, sin perjuicio de lo previsto en otras secciones de estas normas.", 1, 280.0, x0=110.0)]
+    res, _ = _parse([dos_listas()])
+    ev = E0.aplicar_cierre_al_margen(res, cierre=True, listas={"1.2.2": None})
+    ch = E0.construir_chunks(res)
+    check("R5-a por lista: solo la lista dada (1.2) pasa su cierre al del padre; la otra (1.1) queda como en S0-4b",
+          "x::1.2::cierre" in {c["id"] for c in ch} and "x::1.1::cierre" not in {c["id"] for c in ch}
+          and (_texto(ch, "x::1.1.2") or "").endswith(cierre) and [e["item"] for e in ev] == ["1.2.2"],
+          str([c["id"] for c in ch]))
+    res, _ = _parse([dos_listas()])
+    ev = E0.aplicar_cierre_al_margen(res, cierre=True, listas={"1.1.2": ("rango", (1, 124.0, "Texto de la norma"),
+                                                                         (1, 150.0, "Las entidades"))})
+    ch = E0.construir_chunks(res)
+    check("R5-a por lista con un rango: exactamente los renglones del rango pasan al cierre (aunque el primero esté en "
+          "la columna del texto)",
+          _texto(ch, "x::1.1::cierre") == cuerpo + "\n" + cierre and _texto(ch, "x::1.1.2") == "1.1.2. Segundo requisito."
+          and ev and ev[0]["modo"] == "rango", str([(c["id"], c["texto"][:30]) for c in ch]))
+    res, _ = _parse([dos_listas()])
+    ev = E0.aplicar_cierre_al_margen(res, cierre=True, listas={"1.1.2": None},
+                                     excluir=lambda l: l.pagina == 1 and 145.0 <= l.top <= 155.0)
+    ch = E0.construir_chunks(res)
+    check("R5-a sin tablas: el párrafo con un renglón de tabla no se mueve, y queda registrado",
+          "x::1.1::cierre" not in {c["id"] for c in ch} and (_texto(ch, "x::1.1.2") or "").endswith(cierre)
+          and [e["tipo"] for e in ev] == ["r5a_no_mueve_tabla"], str(ev))
+    pag = [_linea("Sección 2. Auditores.", 1, 30.0), _linea("2.1. Podrán prestar servicios quienes:", 1, 50.0, x0=76.0),
+           _linea("2.1.1.no sean socios de la entidad auditada, o de", 1, 70.0, x0=110.0),
+           _linea("empresas vinculadas a ella;", 1, 84.0, x0=150.0),
+           _linea("2.1.2.no se desempeñen en relación de dependencia;", 1, 110.0, x0=110.0),
+           _linea("2.2. Inscripción.", 1, 140.0, x0=76.0), _linea("Texto de la inscripción.", 1, 154.0, x0=110.0),
+           _linea("2.2.2.1. Instrucciones operativas.", 1, 180.0, x0=146.0),
+           _linea("Texto de las instrucciones.", 1, 194.0, x0=180.0)]
+    _, ch0 = _parse([pag])
+    rot = ((1, 70.0, "2.1.1", None), (1, 110.0, "2.1.2", None), (1, 180.0, "2.2.2.1", "2.2"))
+    res, ch = _parse([pag], rotulos_por_lista=rot)
+    ids = [c["id"] for c in ch]
+    check("R5-f: «2.1.1.no sean…» y «2.1.2.no se…» abren sus puntos (pegados y en minúscula) y «2.2.2.1.» abre colgado "
+          "de 2.2, su padre dado; el texto de los renglones no cambia; sin la lista, no abren",
+          "x::2.1.1" not in {c["id"] for c in ch0} and "x::2.2.2.1" not in {c["id"] for c in ch0}
+          and "x::2.1.1" in ids and "x::2.1.2" in ids and "x::2.2.2.1" in ids
+          and _texto(ch, "x::2.1.1") == "2.1.1.no sean socios de la entidad auditada, o de\nempresas vinculadas a ella;"
+          and [t["unidad_origen"] for t in next(c for c in ch if c["id"] == "x::2.2.2.1")["herencia"]
+               if t["tipo"] == "encabezado"][-1] == "2.2"
+          and sum(1 for a in res.avisos if a["tipo"] == "rotulo_por_lista_r5f") == 3, str(ids))
+    raices = [_linea("1. Alcance", 1, 30.0, x0=60.0), _linea("1.1. Texto del punto uno.", 1, 50.0, x0=80.0),
+              _linea("2. Anulaciones", 1, 80.0, x0=60.0), _linea("2.1. Texto del punto dos.", 1, 100.0, x0=80.0),
+              _linea("3. Aclaraciones", 1, 130.0, x0=70.0), _linea("3.1. Texto del punto tres.", 1, 150.0, x0=88.0)]
+    res0, ch0 = _parse([raices], modo_sin_raiz=True)
+    res, ch = _parse([raices], modo_sin_raiz=True, raices_por_lista=((1, 130.0, "3"),))
+    her = next((c for c in ch if c["id"] == "x::3.1"), {}).get("herencia", [])
+    check("R5-g: «3. Aclaraciones», más adentro que la columna de las raíces, se rechaza sin la lista y queda al final de "
+          "la sección 2; con la lista abre la raíz 3 con su título, que hereda 3.1",
+          any(r["motivo"].startswith("raiz_en_columna_profunda") for r in res0.rechazos_header)
+          and "3. Aclaraciones" in (_texto(ch0, "x::2.1") or "") + (_texto(ch0, "x::S2") or "")
+          and not any(r["motivo"].startswith("raiz_en_columna_profunda") for r in res.rechazos_header)
+          and "3. Aclaraciones" not in (_texto(ch, "x::2.1") or "") + (_texto(ch, "x::S2") or "")
+          and [t["texto"] for t in her if t["tipo"] == "encabezado"][:1] == ["3. Aclaraciones"]
+          and [a["tipo"] for a in res.avisos if a["tipo"] == "raiz_por_lista_r5g"] == ["raiz_por_lista_r5g"],
+          str([(c["id"], c["texto"][:25]) for c in ch]))
+
+
+def test_s05bis_casos(d: Path) -> None:
+    print(f"== w′) S0-5a-bis de U-SEG-OFICIAL: casos medidos (e0-r2 sobre {len(TOS_S05BIS)} TOs)")
+    correr_e0.correr(d, manifiesto=_ManifiestoParticion(TOS_S05BIS), version_e0="e0-r2")
+    ch = {to: {c["id"]: c for c in cargar(d, f"chunks_{to}.json")} for to in TOS_S05BIS}
+
+    def txt(uid: str):
+        c = ch[uid.split("::")[0]]
+        if uid in c:
+            return c[uid]["texto"]
+        ps = sorted((i for i in c if i.startswith(uid + "::parte")), key=lambda i: int(i.rsplit("parte", 1)[1]))
+        return "\n".join(c[i]["texto"] for i in ps) if ps else None
+
+    cie = (txt("ri_rml::1.4::cierre") or "").split("\n")
+    check("ri_rml 1.4.2: el cierre de 1.4 empieza en «Para el punto 1.4.1.» y termina en «…671000/M-TP.»; el ítem queda "
+          "con su rótulo y sus dos fórmulas",
+          bool(cie) and cie[0].startswith("Para el punto 1.4.1.") and cie[-1].endswith("671000/M-TP.") and len(cie) == 19
+          and len((txt("ri_rml::1.4.2") or "").split("\n")) == 3, f"{len(cie)} renglones")
+    for item, (cid, ren, sha_resto) in MIXTOS_S05BIS.items():
+        check(f"{item}: el cierre ({cid}) es, renglón por renglón, el de la lista v2, y el resto del ítem es el de S0-4b",
+              (txt(cid) or "").split("\n") == list(ren) and _sha16(txt(item) or "") == sha_resto)
+    a1 = ch["ri_ccna"]
+    check("R5-f, ri_ccna: 2.1.1 a 2.1.8 de D1A1 abren («2.1.1.no sean socios…»), y 5.1 de D1A1 y de D1A2 y 8.1 de D1A1; "
+          "el chapeau de la sección 5 de D1A1 ya no lleva «5.1.»",
+          all(f"ri_ccna::D1A1::2.1.{k}" in a1 for k in range(1, 9))
+          and (txt("ri_ccna::D1A1::2.1.1") or "").startswith("2.1.1.no sean socios")
+          and (txt("ri_ccna::D1A1::5.1") or "").startswith("5.1.Designación.")
+          and "ri_ccna::D1A1::8.1" in a1 and (txt("ri_ccna::D1A2::5.1") or "").startswith("5.1.Perfil")
+          and "5.1." not in (txt("ri_ccna::D1A1::S5::chapeau_seccion") or ""))
+    u = ch["snp_cheq"].get("snp_cheq::3.3.6.2")
+    check("R5-f, snp_cheq: 3.3.6.2 abre como unidad propia, colgada de 3.3 (sin 3.3.6 en la herencia)",
+          u is not None and u["texto"].startswith("3.3.6.2. Instrucciones operativas.")
+          and [t["unidad_origen"] for t in u["herencia"] if t["tipo"] == "encabezado"][-1] == "3.3"
+          and not any(t["unidad_origen"] == "3.3.6" for t in u["herencia"]))
+    oc = ch["ri_oc"]
+    tres = [i for i in oc if i.startswith("ri_oc::3.")]
+    check("R5-g, ri_oc: «3. Aclaraciones» sale de ri_oc::S2 y abre la sección 3; las 51 unidades de 3.1 a 3.51 heredan "
+          "«3. Aclaraciones»",
+          not (txt("ri_oc::S2") or "").endswith("3. Aclaraciones") and len(tres) == 51
+          and all([t["texto"] for t in oc[i]["herencia"] if t["unidad_origen"] == "S3"] == ["3. Aclaraciones"]
+                  for i in tres), f"{len(tres)} unidades")
+    import hashlib
+    filas_g3 = []
+    for to in RECHAZOS_G3_S05BIS[0]:
+        e = cargar(d, f"estructura_{to}.json")
+        filas_g3 += [(to, f"{to}|{r['pagina']}|{r['texto']}|{r['motivo']}") for r in e["rechazos_header"]
+                     if r["motivo"].startswith("raiz_en_columna_profunda")]
+    por_to = {to: sum(1 for t, _ in filas_g3 if t == to) for to in RECHAZOS_G3_S05BIS[0]}
+    huella = hashlib.sha256("\n".join(sorted(f for _, f in filas_g3)).encode("utf-8")).hexdigest()[:16]
+    check("R5-g, caso negativo: los 87 rechazos por columna profunda de los 7 documentos fuera de la tanda 1 quedan como "
+          "en S0-4b", por_to == RECHAZOS_G3_S05BIS[0] and huella == RECHAZOS_G3_S05BIS[1], f"{len(filas_g3)}, {huella}")
+    malos = []
+    for item, (sha_item, cid, sha_cierre) in NO_SE_TOCAN_S05BIS.items():
+        tc = txt(cid)
+        if _sha16(txt(item) or "") != sha_item or (None if tc is None else _sha16(tc)) != sha_cierre:
+            malos.append(item)
+    check("las 14 listas que no se tocan: el último ítem y el cierre del padre, con el texto propio de S0-4b", not malos,
+          str(malos))
+    import re
+    malas = []
+    for tid, (uid, sha) in TABLAS_S05BIS.items():
+        m = re.search(r"\[TABLA (" + re.escape(tid) + r") \|.*?\[FIN TABLA \1\]", txt(uid) or "", re.S)
+        if not m or _sha16(m.group(0)) != sha:
+            malas.append(tid)
+    check("tablas: gerc::tabla005, manori::tabla014 y tabla015 y ri_spi::tabla001 siguen serializadas, como en S0-4b",
+          not malas, str(malas))
+    cob = cargar(d, "cobertura.json")
+    check(f"cobertura exacta en los {len(TOS_S05BIS)} TOs", all(cob[to]["cobertura_exacta"] for to in TOS_S05BIS))
 
 
 def test_s0_doble(base: Path) -> None:
@@ -1072,6 +1580,12 @@ def main() -> int:
     test_s04_legada()
     test_s04_sinteticos()
     test_s04_casos(base_s0 / "casos_s04")
+    test_s05_legada()
+    test_s05_sinteticos()
+    test_s05_casos(base_s0 / "casos_s05")
+    test_s05bis_legada()
+    test_s05bis_sinteticos()
+    test_s05bis_casos(base_s0 / "casos_s05bis")
 
     total = len(RESULTADOS)
     ok = sum(1 for _, b, _ in RESULTADOS if b)

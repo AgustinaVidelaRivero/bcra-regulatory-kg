@@ -208,6 +208,23 @@ MAX_RAIZ dentro de un sub-documento (`raiz_max_subdoc`, S0-4a-bis), oración tom
 puntos (`apartados_seccion`). El mecanismo 4 de S0-3 (intro desde el rótulo en todo punto cuyo título no
 termina en punto) no está: lo reemplazan 4a y 4b.
 
+U-SEG-OFICIAL, S0-5a (solo e0-r2; diseño en data/experiment/segmentacion_oficial_e0r2/s0_5/). Seis reglas de corte,
+cada una detrás de su parámetro, apagado por default: el cierre al margen del último ítem de una lista
+(`aplicar_cierre_al_margen(cierre=…)`, R5-a) y el título de bloque que sigue al último ítem (`titulo_bloque`, R5-a′),
+sobre las listas del detector del hallazgo 1.16 (`listas_116`); las intersticiales que continúan la anterior
+(`construir_chunks(intersticial_continuado=…)`, R5-b); el título de sección de dos renglones
+(`titulo_seccion_envuelto`, R5-c); el número de punto que sigue a una palabra de referencia
+(`parsear_cuerpo(numero_en_referencia=…)`, R5-d), y las letras de un rótulo vertical (`juntar_rotulo_vertical`, R5-e,
+sobre el árbol).
+
+U-SEG-OFICIAL, S0-5a-bis (solo e0-r2; diseño en data/experiment/segmentacion_oficial_e0r2/s0_5/bis/). R5-a por lista
+(`aplicar_cierre_al_margen(listas=…)`): solo los últimos ítems de las listas dadas, sin el detector como alcance, con
+el criterio de párrafos de S0-5a o con un rango explícito de renglones; R5-a no mueve renglones de tablas
+(`excluir=…`). Y los rótulos de punto por lista (`parsear_cuerpo(rotulos_por_lista=…)`, R5-f): un renglón dado por su
+página y su altura abre su punto aunque el número esté pegado al texto, empiece en minúscula o su padre no esté abierto.
+Y la raíz por lista (`parsear_cuerpo(raices_por_lista=…)`, R5-g, en el modo sin raíz): un renglón dado por su página y su
+altura abre su raíz aunque esté más adentro que la columna de las raíces (guarda G3).
+
 Sin llamadas a LLM: código determinístico puro.
 """
 
@@ -443,6 +460,75 @@ RE_LETRA_SD = re.compile(r"^(?P<l>[A-Z])\.\s+(?P<t>\S.*)$")
 # título y sale de la intro (los títulos partidos «…autorizadas a operar en» / «ellas.»). 4b se evalúa antes que 4a.
 RE_VERBO_ORACION_4AB = re.compile(r"\b(?:deber[áa]n?|deben?|podr[áa]n?|pueden?|corresponde(?:n|r[áa]n?)?|ser[áa]n?"
                                   r"|tendr[áa]n?|se\s+[a-záéíóúñ]+r[áa]n?)\b", re.IGNORECASE)
+
+# --------- U-SEG-OFICIAL, S0-5a (solo e0-r2; con los defaults ninguna rama nueva corre) ---------
+# Detector del hallazgo 1.16 (`listas_116`, el de S1-bis unido con su corrección): una lista es un nodo con dos o más
+# puntos hijos, todos sin hijos. Es candidata si el último ítem tiene un corte de párrafo (renglón con mayúscula inicial
+# después de uno que termina en «.» o «:») y ninguno de los anteriores lo tiene, o si el último ítem tiene más párrafos
+# que cualquiera de los anteriores, contando el renglón del rótulo como párrafo propio (el segundo renglón abre párrafo
+# si empieza con mayúscula, aunque el título no termine en punto).
+# R5-a, cierre al margen (`aplicar_cierre_al_margen(cierre=True)`): en una lista candidata, cada párrafo del último ítem
+# desde el segundo pasa al cierre del padre si no está en la columna del texto de los ítems (a más de TOL_COL_R5A de
+# ella) y está más cerca de la columna de sus rótulos. La columna de los rótulos es la mediana de los de la lista; la
+# del texto, la mediana de las columnas de texto de los ítems anteriores al último, porque la del último puede ser la
+# del propio cierre (cajasc 11.4.4). Si ningún ítem anterior tiene texto, pasa el párrafo que no corre más adentro que
+# los rótulos (ri_oc B.2.4). Se evalúa cada párrafo, no solo el primero (cajasc 4.2.2.3).
+TOL_COL_R5A = TOL_X     # tolerancia de columna de R5-a, fijada antes del censo de S0-5a: la de las columnas de E0
+RE_MAYUSCULA_R5A = re.compile(r"^[A-ZÁÉÍÓÚÜÑ]")
+# R5-a′, título de bloque (`aplicar_cierre_al_margen(titulo_bloque=True)`, por lista en correr_e0): en una lista
+# candidata cuyo padre es una sección, el primer párrafo del último ítem, desde el segundo, que empieza con un renglón
+# con forma de título de bloque (MAX_CHARS_TITULO_BLOQUE caracteres o menos, mayúscula inicial, sin puntuación final ni
+# número de punto, sin huecos de columna) y al que sigue más texto abre una sección nueva, después de la del padre,
+# con ese renglón como rótulo, el resto del ítem y el cierre del padre: el bloque llega hasta el encabezado siguiente
+# de igual o mayor nivel. Su número es «bloque<k>» (k-ésimo bloque del TO): la clave es `<to>::Sbloque<k>`.
+MAX_CHARS_TITULO_BLOQUE = 60
+# R5-d, número en referencia (`parsear_cuerpo(numero_en_referencia=True)`): un renglón que empieza con un número de
+# punto de dos o más componentes no es encabezado si el renglón anterior (de la misma página) termina en una palabra de
+# PALABRAS_REFERENCIA_R5D y el renglón, sin huecos de columna, empieza en la columna del anterior (la del cuerpo del
+# texto) y no en la de los rótulos de sus hermanos (la del último hermano abierto; sin hermanos, la de los hijos del
+# padre). Sigue como prosa.
+PALABRAS_REFERENCIA_R5D = frozenset({
+    "punto", "puntos", "sección", "capítulo", "apartado", "inciso", "numeral", "anexo", "artículo", "ley",
+    "comunicación", "nº", "n°",
+    # artículos
+    "el", "la", "los", "las", "lo", "un", "una", "unos", "unas", "al", "del",
+    # preposiciones
+    "a", "ante", "bajo", "con", "contra", "de", "desde", "durante", "en", "entre", "hacia", "hasta", "mediante",
+    "para", "por", "según", "sin", "sobre", "tras"})
+# R5-b, intersticial continuada (`construir_chunks(intersticial_continuado=True)`): dos intersticiales consecutivas del
+# mismo hueco y de la misma página se unen si (i) la segunda empieza con minúscula y la primera no termina en «.», «:»
+# ni «;»; (i′) la segunda es solo un código de tabla (RE_CODIGO_R5B) y la primera no termina en «.», «:» ni «;»; o
+# (ii) la primera es un solo renglón de rótulo numerado (RE_ROTULO_R5B) y la segunda no empieza con otro. Las uniones
+# se encadenan; la unidad unida conserva el número de la primera y las siguientes no se renumeran.
+RE_CODIGO_R5B = re.compile(r"^[A-Z]\d{2}$")
+RE_ROTULO_R5B = re.compile(r"^\d{1,2}\.\s+\S.*\.$")
+RE_ROTULO_INICIO_R5B = re.compile(r"^\d{1,2}\.\s")
+# R5-c, título de sección envuelto (`construir_chunks(titulo_seccion_envuelto=True)`): el chapeau de una sección que es
+# un solo renglón, con un título sin puntuación final, es la continuación del título si (a) el título termina en una
+# palabra partida con guion, (b) en una palabra de PALABRAS_FUNCIONALES_R5C, (c) deja abierta una comilla o un
+# paréntesis, o (d) el chapeau empieza con minúscula. El renglón se junta al título (en un renglón aparte del
+# encabezado, como en el PDF) y la sección queda sin chapeau.
+PALABRAS_FUNCIONALES_R5C = frozenset({
+    "el", "la", "los", "las", "lo", "un", "una", "unos", "unas", "al", "del",
+    "a", "ante", "bajo", "con", "contra", "de", "desde", "durante", "en", "entre", "hacia", "hasta", "mediante",
+    "para", "por", "según", "sin", "sobre", "tras",
+    "y", "e", "o", "u", "ni", "que", "pero", "sino"})
+# R5-e, rótulo vertical (`juntar_rotulo_vertical`, por lista en correr_e0, sobre el árbol): MIN_LETRAS_VERTICAL o más
+# renglones de una sola letra mayúscula en la misma columna (TOL_X) y a no más de MAX_SALTO_VERTICAL pt uno del
+# siguiente forman un rótulo vertical: se juntan en un renglón con la palabra, en el lugar de la última letra, y así van
+# con el contenido de la página en que están (la «C» de «CODIGO» quedaba al final del formulario anterior de ri_ccna).
+MIN_LETRAS_VERTICAL = 3
+MAX_SALTO_VERTICAL = 15.0
+# S0-5a-bis. R5-a por lista (`aplicar_cierre_al_margen(listas=…)`): la clave de una lista es la del último ítem
+# (`<numero>`, o `<prefijo>::<numero>` dentro de un sub-documento); su valor, None (los párrafos del último ítem que R5-a
+# mueve por columna, como en S0-5a) o ("rango", (página, top, comienzo del texto), (página, top, comienzo del texto)):
+# exactamente los renglones del último ítem desde el primero hasta el segundo, inclusive. Un renglón del rango se
+# reconoce por su página, su top (a TOL_TOP_POR_LISTA pt o menos) y el comienzo de su texto. R5-f, rótulo por lista
+# (`parsear_cuerpo(rotulos_por_lista=…)`): (página, top, número sin el punto final, padre o None) de cada renglón que
+# abre su punto; el renglón empieza con el número seguido de un punto. R5-g, raíz por lista
+# (`parsear_cuerpo(raices_por_lista=…)`): (página, top, número de la raíz) de cada renglón que abre su raíz sin la guarda
+# de columna G3; las otras guardas de la raíz explícita siguen.
+TOL_TOP_POR_LISTA = 0.5
 
 
 def _es_linea_de_recuadro_m5(texto: str) -> bool:
@@ -1387,6 +1473,30 @@ def _componentes(num: str) -> list[int]:
     return [int(x) for x in num.split(".")]
 
 
+def _termina_en_referencia_r5d(texto: str) -> bool:
+    """R5-d de S0-5a: el renglón termina en una palabra de PALABRAS_REFERENCIA_R5D (sin comillas ni paréntesis)."""
+    toks = texto.strip().split()
+    return bool(toks) and toks[-1].strip("«»“”\"'()").lower() in PALABRAS_REFERENCIA_R5D
+
+
+def _columna_hermanos_r5d(pila: list["Nodo"], num: str) -> float | None:
+    """R5-d de S0-5a: la columna de los rótulos de los hermanos del punto `num`: la del último hermano abierto en su
+    padre (abierto en la pila) o, si no tiene hermanos, la de los hijos del padre; None si no hay columna."""
+    comp = num.split(".")
+    padre_num = ".".join(comp[:-1])
+    padre = None
+    for n in pila:
+        if (n.tipo == "seccion" and len(comp) == 2) or (n.tipo == "punto" and n.numero == padre_num):
+            padre = n
+            break
+    if padre is None:
+        return None
+    hermanos = [h for h in padre.hijos if h.tipo == "punto"]
+    if hermanos and hermanos[-1].label_x0 is not None:
+        return hermanos[-1].label_x0
+    return padre.col_hijos
+
+
 def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                    roles: list[str], modo_sin_raiz: bool = False,
                    marcadores_b582: bool = False,
@@ -1409,7 +1519,10 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                    letra_corte: bool = False,
                    letra_herencia: bool = False,
                    letra_numero: bool = False,
-                   apartados_seccion: bool = False) -> ResultadoParseo:
+                   apartados_seccion: bool = False,
+                   numero_en_referencia: bool = False,
+                   rotulos_por_lista: tuple = (),
+                   raices_por_lista: tuple = ()) -> ResultadoParseo:
     """Con `modo_sin_raiz=False` (todos los call sites vigentes) el
     comportamiento es el histórico. Con True rige además la gramática de
     raíces sintéticas del modo sin raíz de sección (B5.8.1; ver docstring del
@@ -1471,7 +1584,22 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
     sin puntos): en una sección
     de la lectura vigente que no tiene puntos, un rótulo de un nivel «N. Título» con N = 1, 2, 3… consecutivos abre
     el punto «<sección>.N» (número impreso N), en lugar de rechazarse por estar fuera de la sección (ri_ai, Sección 4:
-    «1. Posición», «2. Franquicias», «3. Incumplimientos»)."""
+    «1. Posición», «2. Franquicias», «3. Incumplimientos»).
+
+    U-SEG-OFICIAL, S0-5a (solo e0-r2; con el default no corre). `numero_en_referencia` (R5-d, ver
+    PALABRAS_REFERENCIA_R5D): un renglón que empieza con un número de punto y continúa una remisión del renglón
+    anterior (que termina en una palabra de referencia), en la columna de ese renglón y no en la de los rótulos de sus
+    hermanos, sigue como prosa («…descripto en el punto» / «1.3. “Integración” de las presentes normas…» en ri_rml).
+
+    U-SEG-OFICIAL, S0-5a-bis (solo e0-r2; con el default no corre). `rotulos_por_lista` (R5-f, ver TOL_TOP_POR_LISTA):
+    el renglón de cada (página, top, número, padre) abre el punto `número`, hijo del padre dado o, si es None, del que
+    indica el número (la sección, con un número de dos componentes), si ese padre está abierto; sin las validaciones de
+    siempre (número pegado al texto, texto en minúscula, hermano anterior, padre no abierto). El texto del renglón no
+    cambia: el título del punto es lo que sigue al número.
+
+    `raices_por_lista` (R5-g de S0-5a-bis, modo sin raíz; con el default no corre): el renglón de cada (página, top,
+    número) abre la raíz explícita `número` aunque esté más adentro que la columna de las raíces (guarda G3); las otras
+    guardas (banner, forma de título, sucesión, regla 8) siguen. La columna de las raíces no cambia."""
     secciones: list[Nodo] = []
     rechazos: list[dict] = []
     saltos: list[dict] = []
@@ -1715,11 +1843,51 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                 if forma_m2:
                     tokens = texto_l.split()
                     m_num = RE_NUM_TOKEN.match(tokens[0])
+            if rotulos_por_lista and tokens:
+                # ------- R5-f de S0-5a-bis: rótulo de punto por lista -------
+                rf = next((r for r in rotulos_por_lista if r[0] == linea.pagina
+                           and abs(r[1] - linea.top) <= TOL_TOP_POR_LISTA
+                           and linea.texto.strip().startswith(r[2] + ".")), None)
+                if rf is not None:
+                    num_f = rf[2]
+                    padre_f = rf[3] or ".".join(num_f.split(".")[:-1])
+                    padre_n = None
+                    for n in pila:
+                        if (n.tipo == "seccion" and "." not in padre_f and n.numero == padre_f) or \
+                                (n.tipo == "punto" and n.numero == padre_f):
+                            padre_n = n
+                            break
+                    if padre_n is not None:
+                        resto_f = linea.texto.strip()[len(num_f):].lstrip(".").strip()
+                        padre_n.col_hijos = padre_n.col_hijos if padre_n.col_hijos is not None else linea.x0
+                        cerrar_hasta(padre_n)
+                        nodo = Nodo(tipo="punto", numero=num_f, titulo=resto_f, pagina=linea.pagina,
+                                    label_x0=linea.x0, linea_label=linea, padre=padre_n)
+                        padre_n.hijos.append(nodo)
+                        pila.append(nodo)
+                        avisos.append({"tipo": "rotulo_por_lista_r5f", "numero": num_f, "padre": padre_n.numero,
+                                       "prefijo": subdoc_actual, "pagina": linea.pagina, "texto": linea.texto[:90]})
+                        ultima_fue_label = True
+                        continue
+                    avisos.append({"tipo": "rotulo_por_lista_r5f_sin_padre", "numero": num_f, "padre": padre_f,
+                                   "prefijo": subdoc_actual, "pagina": linea.pagina, "texto": linea.texto[:90]})
             # regla 8 de S0: renglón de una lista de puntos leída como cuerpo (veto; no abre raíces)
             en_lista = bool(m_num) and (linea.pagina, linea.top) in no_rotulos
             # regla 9 de S0: el renglón lleva el número de una fila de catálogo (la celda de la tabla es solo ese
             # número); el resto en minúscula es la descripción de la fila, no una referencia envuelta
             fila_r9 = bool(m_num) and (linea.pagina, linea.top) in rotulos_fila
+            # R5-d de S0-5a: número de punto que continúa una remisión del renglón anterior. Es un veto, como el de la
+            # regla 2: actúa solo sobre un rótulo que la validación de siempre aceptaría (más abajo) y no deja abrir una
+            # raíz implícita; un renglón que ya se rechazaba conserva su motivo
+            veto_5d = None
+            if numero_en_referencia and m_num and "." in m_num.group(1) and anterior is not None and pila \
+                    and linea.ngaps == 0 and abs(linea.x0 - anterior.x0) <= TOL_X \
+                    and _termina_en_referencia_r5d(anterior.texto):
+                col_d = _columna_hermanos_r5d(pila, m_num.group(1))
+                if col_d is not None and abs(linea.x0 - col_d) > TOL_X:
+                    veto_5d = {"tipo": "numero_en_referencia_r5d", "pagina": linea.pagina,
+                               "numero": m_num.group(1), "x0": linea.x0, "columna_hermanos": col_d,
+                               "anterior": anterior.texto[-60:], "texto": linea.texto[:90]}
 
             if letra_numero and modo_sin_raiz and tokens and letra_vigente is not None and pila \
                     and pila[0].sintetica and pila[0].numero.isdigit() and pila[0].numero != "0" \
@@ -1805,6 +1973,9 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                 if (comp_r[0] <= MAX_RAIZ or max_sd) and resto_r and len(comp_r) == 1 and not pagina_con_variante:
                     # raíz EXPLÍCITA: guardas G0-G3
                     motivo_raiz = None
+                    # R5-g de S0-5a-bis: la raíz por lista no pasa por la guarda de columna G3
+                    raiz_forzada = any(r[0] == linea.pagina and abs(r[1] - linea.top) <= TOL_TOP_POR_LISTA
+                                       and r[2] == str(comp_r[0]) for r in raices_por_lista)
                     if _clave_banner(texto_l.strip()) in banners:
                         motivo_raiz = "raiz_banner_repetido"
                     elif not titulo_may_r:
@@ -1816,7 +1987,8 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                                      and not resto_r.rstrip().endswith(".")
                                      and comp_r[0] == (ultima_raiz_num or 0) + 1) \
                             and not (g3_subdoc and subdoc_actual is not None
-                                     and comp_r[0] == (ultima_raiz_num or 0) + 1):
+                                     and comp_r[0] == (ultima_raiz_num or 0) + 1) \
+                            and not raiz_forzada:
                         motivo_raiz = (f"raiz_en_columna_profunda_{linea.x0}"
                                        f"_vs_{col_raiz}")
                     if motivo_raiz is None and en_lista:
@@ -1836,7 +2008,11 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                         profunda = col_raiz is not None and linea.x0 > col_raiz + TOL_X
                         por_m2c = profunda and "c" in formas_m2 and _es_titulo_mayusculas(resto_r) \
                             and not resto_r.rstrip().endswith(".")
-                        if forma_m2 or por_m2c:
+                        if raiz_forzada:
+                            avisos.append({"tipo": "raiz_por_lista_r5g", "numero": str(comp_r[0]),
+                                           "prefijo": subdoc_actual, "pagina": linea.pagina, "x0": linea.x0,
+                                           "columna_raices": col_raiz, "texto": linea.texto[:90]})
+                        elif forma_m2 or por_m2c:
                             avisos.append({"tipo": "raiz_m2", "forma": forma_m2 or "c", "numero": str(comp_r[0]),
                                            "pagina": linea.pagina, "texto": linea.texto[:90]})
                         elif profunda:
@@ -1860,7 +2036,7 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                                      "texto": linea.texto[:120],
                                      "motivo": motivo_raiz})
                     m_num = None    # sigue como prosa (registro único del rechazo)
-                elif comp_r[0] <= MAX_RAIZ and resto_r and len(comp_r) == 2 and not motivo_2 \
+                elif comp_r[0] <= MAX_RAIZ and resto_r and len(comp_r) == 2 and not motivo_2 and not veto_5d \
                         and not pagina_con_variante \
                         and str(comp_r[0]) != pila[0].numero and titulo_may_r \
                         and (ultima_raiz_num is None or comp_r[0] > ultima_raiz_num):
@@ -2025,6 +2201,9 @@ def parsear_cuerpo(to: str, archivo: str, paginas: list[list[Linea]],
                                               f"{linea.x0}_incompatible_{detalle}")
                 if motivo is None and motivo_2:
                     motivo = motivo_2   # veto de la regla 2 de S0
+                if motivo is None and veto_5d:
+                    motivo = "numero_en_referencia_r5d"     # veto de R5-d de S0-5a
+                    avisos.append(veto_5d)
                 if motivo is None and en_lista:
                     motivo = "lista_de_puntos_r8"   # veto de la regla 8 de S0
                 if motivo is None and len(comp) > 1 and reapertura:
@@ -2325,6 +2504,302 @@ def aplicar_continuidad_enumeracion(res: ResultadoParseo) -> list[dict]:
     for s in res.secciones:
         visitar(s)
     return reasignaciones
+
+
+# --------------------------------- U-SEG-OFICIAL, S0-5a: R5-a y R5-a′ (sobre el árbol, después de las reglas 1 y 2)
+
+def _mediana(xs: list[float]) -> float:
+    s = sorted(xs)
+    n = len(s)
+    return s[n // 2] if n % 2 else (s[n // 2 - 1] + s[n // 2]) / 2
+
+
+def _lineas_item_116(n: Nodo) -> list[Linea]:
+    """Los renglones del texto propio de un ítem, en el orden en que los escribe `construir_chunks`."""
+    return list(n.lineas_previas) + ([n.linea_label] if n.linea_label is not None else []) + \
+        [l for s in n.segmentos for l in s]
+
+
+def _cortes_116(lineas: list[Linea]) -> list[int]:
+    """Cortes de párrafo del detector de S1-bis: renglón con mayúscula inicial después de uno terminado en «.» o «:»."""
+    return [i for i in range(1, len(lineas)) if RE_MAYUSCULA_R5A.match(lineas[i].texto.strip())
+            and lineas[i - 1].texto.rstrip().endswith((".", ":"))]
+
+
+def _inicios_parrafo_116(lineas: list[Linea], con_rotulo: bool) -> list[int]:
+    """Índices de los renglones que abren párrafo, con el renglón del rótulo como párrafo propio (corrección del
+    detector): el segundo renglón abre párrafo si empieza con mayúscula, aunque el título no termine en punto."""
+    return [0] + [i for i in range(1, len(lineas)) if RE_MAYUSCULA_R5A.match(lineas[i].texto.strip())
+                  and (lineas[i - 1].texto.rstrip().endswith((".", ":")) or (i == 1 and con_rotulo))]
+
+
+def _con_rotulo_116(n: Nodo, lineas: list[Linea]) -> bool:
+    return bool(lineas) and n.linea_label is not None and lineas[0] is n.linea_label
+
+
+def listas_116(res: ResultadoParseo) -> list[tuple[Nodo, list[Nodo], str]]:
+    """Detector del hallazgo 1.16 (ver el comentario de TOL_COL_R5A): (padre, ítems, criterio) de cada lista candidata,
+    en orden documental; criterio «original», «corregido» o «ambos»."""
+    out: list[tuple[Nodo, list[Nodo], str]] = []
+
+    def visitar(n: Nodo) -> None:
+        hijos = [h for h in n.hijos if h.tipo == "punto"]
+        if len(hijos) >= 2 and all(not h.hijos for h in hijos):
+            ls = [_lineas_item_116(h) for h in hijos]
+            orig = bool(_cortes_116(ls[-1])) and not any(_cortes_116(x) for x in ls[:-1])
+            np_ = [len(_inicios_parrafo_116(x, _con_rotulo_116(h, x))) for x, h in zip(ls, hijos)]
+            corr = np_[-1] > max(np_[:-1])
+            if orig or corr:
+                out.append((n, hijos, "ambos" if orig and corr else "original" if orig else "corregido"))
+        for h in n.hijos:
+            visitar(h)
+
+    for s in res.secciones:
+        visitar(s)
+    return out
+
+
+def _es_titulo_bloque(linea: Linea) -> bool:
+    t = linea.texto.strip()
+    tok = t.split()[0] if t.split() else ""
+    return (0 < len(t) <= MAX_CHARS_TITULO_BLOQUE and bool(RE_MAYUSCULA_R5A.match(t))
+            and not t.endswith((".", ",", ";", ":")) and linea.ngaps == 0
+            and not (RE_NUM_TOKEN.match(tok) or RE_NUM_TOKEN_SIN_PUNTO.match(tok)))
+
+
+def _sacar_lineas(n: Nodo, quitar: set[int]) -> None:
+    """Saca de los segmentos de `n` las líneas de `quitar` (ids de objeto), sin cambiar el corte de los que quedan."""
+    nuevos: list[list[Linea]] = []
+    for s in n.segmentos:
+        actual: list[Linea] = []
+        for l in s:
+            if id(l) in quitar:
+                if actual:
+                    nuevos.append(actual)
+                    actual = []
+            else:
+                actual.append(l)
+        if actual:
+            nuevos.append(actual)
+    n.segmentos = nuevos
+
+
+def _corridas(lineas: list[Linea], ids: set[int]) -> list[list[Linea]]:
+    """Las corridas consecutivas de `lineas` cuyos ids están en `ids`, en orden."""
+    out: list[list[Linea]] = []
+    actual: list[Linea] = []
+    for l in lineas:
+        if id(l) in ids:
+            actual.append(l)
+        elif actual:
+            out.append(actual)
+            actual = []
+    if actual:
+        out.append(actual)
+    return out
+
+
+def _clave_r5a(n: Nodo) -> str:
+    """S0-5a-bis: la clave de una lista para R5-a por lista, la de su último ítem (ver TOL_TOP_POR_LISTA)."""
+    r = n
+    while r.padre is not None:
+        r = r.padre
+    return f"{r.prefijo}::{n.numero}" if r.prefijo else n.numero
+
+
+def _indice_renglon_r5a(lineas: list[Linea], ref: tuple) -> int | None:
+    """S0-5a-bis: el índice del renglón (página, top, comienzo del texto) en `lineas`, o None."""
+    for i, l in enumerate(lineas):
+        if l.pagina == ref[0] and abs(l.top - ref[1]) <= TOL_TOP_POR_LISTA and l.texto.strip().startswith(ref[2]):
+            return i
+    return None
+
+
+def aplicar_cierre_al_margen(res: ResultadoParseo, cierre: bool = False, titulo_bloque: bool = False,
+                             listas: dict | None = None, excluir=None) -> list[dict]:
+    """U-SEG-OFICIAL, S0-5a: R5-a (`cierre`) y R5-a′ (`titulo_bloque`) sobre las listas de `listas_116` (ver el
+    comentario de TOL_COL_R5A y MAX_CHARS_TITULO_BLOQUE). R5-a′ se evalúa primero: lo que abre la sección nueva ya no
+    pasa por R5-a. Devuelve un evento por cada párrafo movido y por cada bloque abierto.
+
+    S0-5a-bis: con `listas` (ver TOL_TOP_POR_LISTA), R5-a actúa solo sobre las listas dadas, encontradas en el árbol
+    por la clave de su último ítem y no por el detector; con None, sobre las de `listas_116`, como en S0-5a. Con
+    `excluir` (un predicado de renglón: los de las tablas que se serializan), R5-a no mueve un párrafo ni un rango que
+    tenga algún renglón que lo cumpla, y lo registra."""
+    eventos: list[dict] = []
+    if not (cierre or titulo_bloque):
+        return eventos
+    nbloque = 0
+
+    def _pos(l: Linea) -> tuple:
+        return (l.pagina, l.top)
+
+    def _raiz(n: Nodo) -> Nodo:
+        while n.padre is not None:
+            n = n.padre
+        return n
+
+    pares = listas_116(res)
+    if listas is not None:
+        # S0-5a-bis: las listas dadas que el detector no marca también entran a R5-a
+        vistos = {id(pa) for pa, _, _ in pares}
+        extra: list[tuple[Nodo, list[Nodo], str]] = []
+
+        def visitar(n: Nodo) -> None:
+            hijos = [h for h in n.hijos if h.tipo == "punto"]
+            if hijos and id(n) not in vistos and _clave_r5a(hijos[-1]) in listas:
+                extra.append((n, hijos, "por_lista"))
+            for h in n.hijos:
+                visitar(h)
+        for s0 in res.secciones:
+            visitar(s0)
+        pares = pares + extra
+    for padre, items, criterio in pares:
+        ult = items[-1]
+        lineas = _lineas_item_116(ult)
+        ini = _inicios_parrafo_116(lineas, _con_rotulo_116(ult, lineas))
+        propias = {id(l) for s in ult.segmentos for l in s}     # solo se mueven líneas de los segmentos del ítem
+        parrafos = [(a, b) for a, b in zip(ini, ini[1:] + [len(lineas)])][1:]
+        parrafos = [(a, b) for a, b in parrafos if all(id(l) in propias for l in lineas[a:b])]
+        clave = _clave_r5a(ult)
+        con_r5a = cierre and (listas is None or clave in listas)
+        spec = listas.get(clave) if listas is not None else None
+        if spec is not None:
+            # S0-5a-bis: un rango explícito de renglones reemplaza a los párrafos
+            i_a, i_b = _indice_renglon_r5a(lineas, spec[1]), _indice_renglon_r5a(lineas, spec[2])
+            if i_a is None or i_b is None or i_b < i_a or not all(id(l) in propias for l in lineas[i_a:i_b + 1]):
+                eventos.append({"tipo": "r5a_por_lista_sin_rango", "item": ult.numero, "prefijo": _raiz(ult).prefijo,
+                                "desde": list(spec[1]), "hasta": list(spec[2])})
+                con_r5a = False
+                parrafos = []
+            else:
+                parrafos = [(i_a, i_b + 1)]
+        if not parrafos:
+            continue
+        unidad_padre = padre.numero if padre.tipo == "punto" else f"S{padre.numero}"
+        corte_bloque = None
+        if titulo_bloque and padre.tipo == "seccion" and padre.padre is None and criterio != "por_lista":
+            for a, b in parrafos:
+                if _es_titulo_bloque(lineas[a]):
+                    resto = lineas[a + 1:] + [l for it in _rol_segmentos(padre) if it["rol"] == "cierre"
+                                              for l in it["seg"]]
+                    if resto:
+                        corte_bloque = a
+                    break
+        mover: set[int] = set()
+        if con_r5a:
+            col_rot = _mediana([h.label_x0 for h in items if h.label_x0 is not None]) \
+                if any(h.label_x0 is not None for h in items) else None
+            prev_tc = [h.text_col for h in items[:-1] if h.text_col is not None]
+            col_txt = _mediana(prev_tc) if prev_tc else None
+            for a, b in parrafos:
+                if corte_bloque is not None and a >= corte_bloque:
+                    break
+                x = lineas[a].x0
+                if spec is not None:
+                    al_margen = True
+                elif col_rot is None:
+                    continue
+                elif col_txt is not None:
+                    al_margen = abs(x - col_txt) > TOL_COL_R5A and abs(x - col_rot) < abs(x - col_txt)
+                else:
+                    al_margen = x <= col_rot + TOL_COL_R5A
+                if al_margen and excluir is not None and any(excluir(l) for l in lineas[a:b]):
+                    eventos.append({"tipo": "r5a_no_mueve_tabla", "lista": unidad_padre, "item": ult.numero,
+                                    "prefijo": _raiz(ult).prefijo, "pagina": lineas[a].pagina,
+                                    "renglones": b - a, "texto": lineas[a].texto[:90]})
+                    continue
+                if al_margen:
+                    mover.update(id(l) for l in lineas[a:b])
+                    eventos.append({"tipo": "cierre_al_margen_r5a", "lista": unidad_padre, "item": ult.numero,
+                                    "prefijo": _raiz(ult).prefijo, "criterio_116": criterio,
+                                    "modo": "rango" if spec is not None else "parrafo",
+                                    "pagina": lineas[a].pagina, "renglones": b - a, "x0": round(x, 1),
+                                    "columna_rotulos": round(col_rot, 1) if col_rot is not None else None,
+                                    "columna_texto": round(col_txt, 1) if col_txt is not None else None,
+                                    "texto": lineas[a].texto[:90]})
+        bloque: list[Linea] = []
+        if corte_bloque is not None:
+            bloque = lineas[corte_bloque:]
+            mover_bloque = {id(l) for l in bloque}
+            cierres = [it["seg"] for it in _rol_segmentos(padre) if it["rol"] == "cierre"]
+            _sacar_lineas(ult, mover_bloque)
+            padre.segmentos = [s for s in padre.segmentos if not any(s is c for c in cierres)]
+            nbloque += 1
+            rotulo = bloque[0]
+            nueva = Nodo(tipo="seccion", numero=f"bloque{nbloque}", titulo=rotulo.texto.strip(), pagina=rotulo.pagina,
+                         label_x0=rotulo.x0, linea_label=rotulo, sintetica=True, prefijo=padre.prefijo)
+            cuerpo = bloque[1:] + [l for c in cierres for l in c]
+            if cuerpo:
+                nueva.segmentos = [cuerpo]
+            res.secciones.insert(res.secciones.index(padre) + 1, nueva)
+            eventos.append({"tipo": "titulo_de_bloque_r5a2", "lista": unidad_padre, "item": ult.numero,
+                            "prefijo": padre.prefijo, "seccion_nueva": f"Sbloque{nbloque}",
+                            "pagina": rotulo.pagina, "rotulo": rotulo.texto[:90],
+                            "renglones_del_item": len(bloque), "renglones_del_cierre": sum(len(c) for c in cierres)})
+        if mover:
+            corr = _corridas(lineas, mover)
+            _sacar_lineas(ult, mover)
+            padre.segmentos = sorted(padre.segmentos + corr, key=lambda s: _pos(s[0]))
+    return eventos
+
+
+def juntar_rotulo_vertical(res: ResultadoParseo) -> list[dict]:
+    """U-SEG-OFICIAL, S0-5a, R5-e (ver MIN_LETRAS_VERTICAL), sobre el árbol ya parseado (la lectura de la página no
+    cambia: una letra suelta al principio de la página corta la zona de encabezado, y sacarla antes del parseo hacía
+    descartar el membrete del formulario). Cada rótulo vertical (renglones de una sola letra mayúscula en la misma
+    columna, uno debajo del otro, en segmentos de prosa) se junta en un renglón con la palabra, en el lugar de la
+    última letra y en la unidad que la tiene, y las otras letras salen de sus unidades. El rótulo juntado cuenta como
+    un renglón en `lineas_contenido` (la cobertura sigue exacta). Devuelve un evento por rótulo."""
+    eventos: list[dict] = []
+    ubic: dict[int, tuple[Nodo, list[Linea]]] = {}
+
+    def rec(n: Nodo) -> None:
+        for sg in n.segmentos:
+            for l in sg:
+                if len(l.texto.strip()) == 1 and RE_MAYUSCULA_R5A.match(l.texto.strip()):
+                    ubic[id(l)] = (n, sg)
+        for h in n.hijos:
+            rec(h)
+    for s0 in res.secciones:
+        rec(s0)
+    letras = sorted((sg[[id(x) for x in sg].index(i)] for i, (n, sg) in ubic.items()),
+                    key=lambda l: (l.pagina, l.top))
+    grupos: list[list[Linea]] = []
+    for l in letras:
+        for g in grupos:
+            if g[0].pagina == l.pagina and abs(l.x0 - g[0].x0) <= TOL_X and 0 < l.top - g[-1].top <= MAX_SALTO_VERTICAL:
+                g.append(l)
+                break
+        else:
+            grupos.append([l])
+    for g in (g for g in grupos if len(g) >= MIN_LETRAS_VERTICAL):
+        palabra = "".join(x.texto.strip() for x in g)
+        dueno, sg_dueno = ubic[id(g[-1])]
+        unida = Linea(pagina=g[-1].pagina, top=g[-1].top, x0=min(x.x0 for x in g), texto=palabra, ngaps=0,
+                      ultimo_numerico=False, primer_codigo=False)
+        sg_dueno[[id(x) for x in sg_dueno].index(id(g[-1]))] = unida
+        quitar = {id(x) for x in g[:-1]}
+        for n in {id(ubic[id(x)][0]): ubic[id(x)][0] for x in g[:-1]}.values():
+            n.segmentos = [[l for l in sg if id(l) not in quitar] for sg in n.segmentos]
+            n.segmentos = [sg for sg in n.segmentos if sg]
+        res.lineas_contenido -= len(g) - 1
+        eventos.append({"tipo": "rotulo_vertical_r5e", "pagina": unida.pagina, "texto": palabra,
+                        "x0": round(unida.x0, 1), "tops": [round(x.top, 1) for x in g],
+                        "unidades_de_las_letras": sorted({_nombre_r5e(ubic[id(x)][0]) for x in g}),
+                        "unidad_destino": _nombre_r5e(dueno)})
+    return eventos
+
+
+def _raiz_nodo(n: Nodo) -> Nodo:
+    while n.padre is not None:
+        n = n.padre
+    return n
+
+
+def _nombre_r5e(n: Nodo) -> str:
+    base = n.numero if n.tipo == "punto" else f"S{n.numero}"
+    p = _raiz_nodo(n).prefijo
+    return f"{p}::{base}" if p else base
 
 
 # --------------------------------- Regla 2: cero cortes intra-palabra
@@ -2858,12 +3333,40 @@ def clase_titulo_4ab(nodo: "Nodo") -> tuple[str, "Linea"] | None:
     return None
 
 
+def _continua_titulo_r5c(titulo: str, chapeau: str) -> bool:
+    """R5-c de S0-5a (ver PALABRAS_FUNCIONALES_R5C): el renglón `chapeau` continúa `titulo`."""
+    t, c = titulo.rstrip(), chapeau.strip()
+    if not t or not c or t.endswith((".", ":", ";")):
+        return False
+    ult = t.split()[-1].strip("«»“”\"'()").lower()
+    abierta = (t.count("“") > t.count("”") or t.count("«") > t.count("»") or t.count("(") > t.count(")")
+               or t.count('"') % 2 == 1)
+    return bool(RE_GUION_FINAL.search(t)) or ult in PALABRAS_FUNCIONALES_R5C or abierta or c[:1].islower()
+
+
+def _continua_intersticial_r5b(previos: list[list[Linea]], s: list[Linea]) -> bool:
+    """R5-b de S0-5a (ver RE_CODIGO_R5B): la intersticial `s` continúa la unión `previos` del mismo hueco."""
+    ult = previos[-1]
+    if not ult or not s or ult[-1].pagina != s[0].pagina:
+        return False
+    t1, t2 = ult[-1].texto.rstrip(), s[0].texto.strip()
+    abierta = not t1.endswith((".", ":", ";"))
+    if abierta and t2[:1].islower():
+        return True     # (i)
+    if abierta and RE_CODIGO_R5B.match(" ".join(l.texto.strip() for l in s)):
+        return True     # (i′)
+    return (len(previos) == 1 and len(ult) == 1 and bool(RE_ROTULO_R5B.match(ult[0].texto.strip()))
+            and not RE_ROTULO_INICIO_R5B.match(t2))     # (ii)
+
+
 def construir_chunks(res: ResultadoParseo,
                      texto_lineas: Callable[[list[Linea]], str] | None = None,
                      lineas_por_chunk: list[list[Linea]] | None = None,
                      tope_herencia: tuple[int, int] | None = None,
                      oracion_titulo_4a: bool = False,
-                     titulo_envuelto_4b: bool = False) -> list[dict]:
+                     titulo_envuelto_4b: bool = False,
+                     intersticial_continuado: bool = False,
+                     titulo_seccion_envuelto: bool = False) -> list[dict]:
     """Con los dos argumentos opcionales en None (todos los call sites de la
     versión legada de E0) el comportamiento es el histórico, byte a byte.
     Versión e0-r2 (U-R2-CODIGO, R1): `texto_lineas` arma el texto de una
@@ -2880,7 +3383,11 @@ def construir_chunks(res: ResultadoParseo,
     del encabezado, tal cual está en el PDF) y sale de la intro, que se emite solo si le queda texto. Los ids de las
     unidades de un sub-documento llevan su prefijo (`<to>::<prefijo>::<unidad>`) y su herencia empieza con los rótulos
     de la cadena de sub-documentos (ResultadoParseo.subdocumentos), uno por tramo `encabezado`; la raíz «0» de un
-    sub-documento hereda solo los de los sub-documentos que la contienen."""
+    sub-documento hereda solo los de los sub-documentos que la contienen.
+    U-SEG-OFICIAL, S0-5a (solo e0-r2): `intersticial_continuado` (R5-b, ver RE_CODIGO_R5B): las intersticiales que
+    continúan la anterior del mismo hueco se emiten en una sola unidad, con el número de la primera, sin renumerar las
+    siguientes; `titulo_seccion_envuelto` (R5-c, ver PALABRAS_FUNCIONALES_R5C): el chapeau de un renglón que continúa el
+    título de la sección se junta al título (en un renglón aparte del encabezado) y no se emite."""
     chunks: list[dict] = []
     sin_titulo = set()                  # regla 4a
     envuelto: dict[int, Linea] = {}     # regla 4b: el renglón que se junta al título
@@ -2895,6 +3402,13 @@ def construir_chunks(res: ResultadoParseo,
                 marcar(h)
         for s0 in res.secciones:
             marcar(s0)
+    envuelto_sec: dict[int, Linea] = {}     # R5-c de S0-5a: el chapeau que continúa el título de la sección
+    if titulo_seccion_envuelto:
+        for s0 in res.secciones:
+            if s0.tipo == "seccion" and s0.hijos:
+                intro0 = [it["seg"] for it in _rol_segmentos(s0) if it["rol"] == "intro"]
+                if len(intro0) == 1 and len(intro0[0]) == 1 and _continua_titulo_r5c(s0.titulo, intro0[0][0].texto):
+                    envuelto_sec[id(s0)] = intro0[0][0]
     sd = {d["prefijo"]: d for d in res.subdocumentos}
 
     def _seg_intro(a: Nodo, rol: str, seg: list[Linea], primero: bool) -> list[Linea]:
@@ -2902,7 +3416,7 @@ def construir_chunks(res: ResultadoParseo,
         # renglón que completa el título (4b)
         if primero and rol == "intro" and id(a) in sin_titulo:
             return [a.linea_label] + seg
-        if primero and rol == "intro" and id(a) in envuelto:
+        if primero and rol == "intro" and (id(a) in envuelto or id(a) in envuelto_sec):
             return seg[1:]
         return seg
 
@@ -2952,11 +3466,14 @@ def construir_chunks(res: ResultadoParseo,
             # raíz del modo sin raíz (B5.8.1): el documento no dice 'Sección';
             # el encabezado reproduce el estilo del label real ('17. BASE…'),
             # la raíz implícita lleva su número solo y el preámbulo su título
-            return a.titulo if a.numero == "0" else f"{a.numero}. {a.titulo}".rstrip()
+            base = a.titulo if a.numero == "0" else f"{a.numero}. {a.titulo}".rstrip()
+            return base + (f"\n{envuelto_sec[id(a)].texto}" if id(a) in envuelto_sec else "")     # R5-c de S0-5a
         if id(a) in sin_titulo:
             return f"{a.numero}."     # regla 4a de S0-4
         if id(a) in envuelto:
             return f"{a.numero}. {a.titulo}\n{envuelto[id(a)].texto}"     # regla 4b de S0-4
+        if id(a) in envuelto_sec:
+            return f"Sección {a.numero}. {a.titulo}\n{envuelto_sec[id(a)].texto}"     # R5-c de S0-5a
         return (f"Sección {a.numero}. {a.titulo}" if a.tipo == "seccion"
                 else f"{a.numero}. {a.titulo}")
 
@@ -3053,7 +3570,8 @@ def construir_chunks(res: ResultadoParseo,
             "archivo": res.archivo,
             "unidad": unidad,
             "titulo": f"[bloque {rol}] {nodo.titulo}" + (f"\n{envuelto[id(nodo)].texto}" if id(nodo) in envuelto
-                                                         else ""),
+                                                         else f"\n{envuelto_sec[id(nodo)].texto}"
+                                                         if id(nodo) in envuelto_sec else ""),
             "tipo": "mini_chunk",
             "rol_bloque": rol,
             "paginas": _paginas_de(lineas),
@@ -3145,10 +3663,16 @@ def construir_chunks(res: ResultadoParseo,
                 emitir_mini(nodo, rol_intro, intro_segs, None)
             for k, h in enumerate(nodo.hijos):
                 emitir(h)
+                grupos: list[tuple[int, list[list[Linea]]]] = []     # (número de la primera, segmentos)
                 for s in por_hueco.get(k, []):
                     contador_inter += 1
-                    emitir_mini(nodo, "intersticial", [s],
-                                contador_inter if n_inter > 1 else None)
+                    if intersticial_continuado and grupos and _continua_intersticial_r5b(grupos[-1][1], s):
+                        grupos[-1][1].append(s)     # R5-b de S0-5a: la unión conserva el número de la primera
+                    else:
+                        grupos.append((contador_inter, [s]))
+                for num_g, segs_g in grupos:
+                    emitir_mini(nodo, "intersticial", segs_g,
+                                num_g if n_inter > 1 else None)
             if cierre_segs:
                 emitir_mini(nodo, "cierre", cierre_segs, None)
 

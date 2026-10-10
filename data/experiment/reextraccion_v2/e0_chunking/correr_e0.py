@@ -137,6 +137,78 @@ TOS_LETRA_S0_4 = frozenset({"ri_ccna"})
 TOS_APARTADOS_S0_4 = frozenset({"ri_ai"})
 TOS_TANDA0_SIN_4AB = frozenset({"cap", "cla", "ext", "pro", "ric", "ctacte", "lingob", "polcre", "pagjub", "docvig"})
 
+# U-SEG-OFICIAL, S0-5a (diseño en data/experiment/segmentacion_oficial_e0r2/s0_5/): reglas de corte de E0, solo en e0-r2 y
+# fuera de los diez TOs de la tanda 0 (TOS_TANDA0_SIN_S0_5: su E0 no cambia; lo que las reglas cambiarían ahí queda como
+# límite declarado de la tanda 0). «r5a», cierre al margen del último ítem de una lista del detector del hallazgo 1.16
+# (`E0.aplicar_cierre_al_margen`); «r5a2», título de bloque después del último ítem, solo en TOS_TITULO_BLOQUE_S0_5;
+# «r5b», intersticiales que continúan la anterior, solo en TOS_INTERSTICIAL_S0_5; «r5c», título de sección de dos
+# renglones; «r5d», número de punto que continúa una remisión del renglón anterior; «r5e», rótulo vertical, solo en
+# TOS_ROTULO_VERTICAL_S0_5.
+# S0-5a-bis (diseño en data/experiment/segmentacion_oficial_e0r2/s0_5/bis/): «r5a» pasa a ser por lista, solo en las
+# listas de LISTAS_R5A_S0_5 (las 43 de la lista v2 de la revisión de S0-5a: 41 con los párrafos de S0-5a y 3 con un
+# rango de renglones), y no mueve renglones de las tablas que se serializan (`_excluir_tablas_r5a`); «r5f», rótulos de
+# punto por lista (los saltos de la tanda 1 que el control de continuidad lista), solo en ROTULOS_POR_LISTA_S0_5; «r5g»,
+# raíz por lista sin la guarda de columna G3, solo en RAICES_POR_LISTA_S0_5.
+REGLAS_S0_5 = frozenset({"r5a", "r5a2", "r5b", "r5c", "r5d", "r5e", "r5f", "r5g"})
+TOS_TITULO_BLOQUE_S0_5 = frozenset({"ri_oc"})
+TOS_INTERSTICIAL_S0_5 = frozenset({"snp_dd", "snp_cheq"})
+TOS_ROTULO_VERTICAL_S0_5 = frozenset({"ri_ccna"})
+TOS_TANDA0_SIN_S0_5 = frozenset({"cap", "cla", "ext", "pro", "ric", "ctacte", "lingob", "polcre", "pagjub", "docvig"})
+# R5-a por lista (S0-5a-bis): por TO, la clave del último ítem de cada lista y None (párrafos al margen, como en S0-5a) o
+# un rango de renglones (página, top, comienzo del texto): en ri_rml 1.4.2 el cierre de 1.4 empieza en «Para el punto
+# 1.4.1.» (p. 11), un párrafo antes del que mueve el criterio de S0-5a; en ri_spi C.1.3 y ri2_ae 14.3 solo los renglones
+# del cierre (pp. 9, y 28 a 29), sin los anexos que siguen.
+LISTAS_R5A_S0_5 = {
+    "adfsp": {"1.1.10": None, "1.2.2.2": None, "2.6.3.2": None},
+    "apnf": {"1.3.1.2": None},
+    "cajasc": {"11.4.4": None, "4.2.2.3": None},
+    "cedin": {"7.1.3.2": None},
+    "consyr": {"3.4.4": None},
+    "cryl": {"4.2.2": None},
+    "ctacor": {"1.3.2": None},
+    "ctavis": {"8.2.1.4": None},
+    "depaho": {"3.11.5.5": None},
+    "depinv": {"1.7.2.2": None, "1.9.2": None},
+    "efemin": {"2.3.2": None},
+    "evacre": {"2.1.2": None},
+    "fimipyme": {"4.3.3": None, "5.1.2": None},
+    "finsec": {"5.1.2": None, "5.2.5": None},
+    "garant": {"1.2.8.2": None, "1.2.9.4": None},
+    "gracre": {"6.7.2": None},
+    "manori": {"1.1.6.5": None, "1.4.1.3": None, "3.4.1.3": None},
+    "ratio": {"5.2.1.5": None},
+    "ri2_ae": {"14.3": ("rango", (28, 664.2, 'La fecha de la manifestación escrita deb'), (29, 126.0, 'publicación.'))},
+    "ri2_pm": {"1.6": None},
+    "ri_oc": {"B.1.28": None, "B.2.4": None, "B.3.4": None},
+    "ri_rml": {"1.4.2": ("rango", (11, 409.0, 'Para el punto 1.4.1.'), (11, 698.8, 'los códigos 651000/M-TP, 661000/M-TP y 671000/M-TP.'))},
+    "ri_spi": {"C.1.3": ("rango", (9, 284.8, 'Además de los datos detallados precedent'), (9, 471.0, 'los datos reflejados en el formulario.'))},
+    "seguef": {"2.1.6.2": None, "2.9.2": None},
+    "snp_cec": {"9.1.3.3": None},
+    "snp_mep": {"3.1.1.2": None, "3.1.2.2": None, "4.6.2": None},
+    "snp_psp": {"1.3.2.2": None},
+    "snp_tr_nc": {"5.2.3.2": None},
+    "tasint": {"3.3.2": None},
+}
+# R5-f (S0-5a-bis): (página, top, número, padre o None) de cada rótulo que abre su punto. En ri_ccna, los rótulos pegados
+# a su texto de D1A1 (2.1.1 a 2.1.8, pp. 3 y 4; 5.1, p. 6; 8.1, p. 8) y de D1A2 (5.1, p. 10); en snp_cheq, 3.3.6.2 (p.
+# 38), colgado de 3.3 porque el PDF salta 3.3.6 y 3.3.6.1.
+ROTULOS_POR_LISTA_S0_5 = {
+    "ri_ccna": ((3, 401.8, "2.1.1", None), (3, 441.7, "2.1.2", None), (3, 481.6, "2.1.3", None),
+                (3, 521.5, "2.1.4", None), (3, 574.2, "2.1.5", None), (3, 614.2, "2.1.6", None),
+                (3, 704.6, "2.1.7", None), (4, 119.4, "2.1.8", None), (6, 506.3, "5.1", None),
+                (8, 601.2, "8.1", None), (10, 496.9, "5.1", None)),
+    "snp_cheq": ((38, 218.2, "3.3.6.2", "3.3"),),
+}
+# R5-g (S0-5a-bis): (página, top, número de la raíz) de cada título de raíz que abre sin la guarda de columna G3. En ri_oc,
+# «3. Aclaraciones» (p. 6, x0 85,0): la p. 6 es de otra versión de la norma que la p. 5, con otro margen, y la guarda lo
+# rechazaba por estar más adentro que la columna de las raíces (76,6).
+RAICES_POR_LISTA_S0_5 = {"ri_oc": ((6, 117.4, "3"),)}
+
+
+def _r5(regla: str, to: str, lista: frozenset | None = None) -> bool:
+    """Una regla de S0-5a corre en `to` (fuera de la tanda 0 y, si tiene lista, dentro de ella)."""
+    return regla in REGLAS_S0_5 and to not in TOS_TANDA0_SIN_S0_5 and (lista is None or to in lista)
+
 
 def _formas_s0_3(mecanismo: str) -> frozenset:
     return frozenset(r[len(mecanismo):] for r in REGLAS_S0_3 if r.startswith(mecanismo) and len(r) > len(mecanismo))
@@ -718,6 +790,22 @@ def anclar_filas_de_catalogo_r9(res: E0.ResultadoParseo, tablas_to: dict, filas:
             "renglones_movidos": len(movidas), "detalle": informe}
 
 
+def _excluir_tablas_r5a(tablas_to: dict):
+    """S0-5a-bis: el predicado de renglón de las tablas que se serializan (las que no son recuadro de prosa), con la
+    asignación geométrica de `asignar_lineas_a_tablas`: la página del segmento y el top en su bbox, menos TOL_TOP_TABLA.
+    R5-a no mueve esos renglones."""
+    zonas: dict[int, list[tuple[float, float]]] = {}
+    for t in tablas_to["tablas"]:
+        if t["recuadro_prosa"]["es_recuadro"]:
+            continue
+        for sg in t["segmentos"]:
+            zonas.setdefault(sg["pagina"], []).append((sg["bbox"][1] - TOL_TOP_TABLA, sg["bbox"][3] - TOL_TOP_TABLA))
+
+    def excluir(l) -> bool:
+        return any(y0 <= l.top <= y1 for y0, y1 in zonas.get(l.pagina, ()))
+    return excluir
+
+
 def tablas_de_to_r2(pdf_path: Path, to: str) -> dict:
     """Tablas lógicas de un TO para la versión e0-r2: las de e0_tablas y las
     de R-TC2, cada una con su origen y la guarda G-RECUADRO aplicada."""
@@ -1295,7 +1383,10 @@ def procesar_tablas_r2(res: E0.ResultadoParseo, pdf_path: Path, to: str,
     lineas0: list = []
     # reglas 4a y 4b de S0-4 (fuera de la tanda 0)
     r4 = {"oracion_titulo_4a": "4a" in REGLAS_S0_4 and to not in TOS_TANDA0_SIN_4AB,
-          "titulo_envuelto_4b": "4b" in REGLAS_S0_4 and to not in TOS_TANDA0_SIN_4AB}
+          "titulo_envuelto_4b": "4b" in REGLAS_S0_4 and to not in TOS_TANDA0_SIN_4AB,
+          # R5-b y R5-c de S0-5a
+          "intersticial_continuado": _r5("r5b", to, TOS_INTERSTICIAL_S0_5),
+          "titulo_seccion_envuelto": _r5("r5c", to)}
     chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0, **r4)
     E0.desambiguar_ids(chunks0)
     asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
@@ -1358,6 +1449,12 @@ def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str],
             kw["letra_corte"], kw["letra_herencia"], kw["letra_numero"] = letras["sdl"], letras["sdlh"], letras["sdla"]
         if "ap" in REGLAS_S0_4 and to in TOS_APARTADOS_S0_4:
             kw["apartados_seccion"] = True     # regla de apartados de S0-4
+        if _r5("r5d", to):
+            kw["numero_en_referencia"] = True     # R5-d de S0-5a
+        if _r5("r5f", to, frozenset(ROTULOS_POR_LISTA_S0_5)):
+            kw["rotulos_por_lista"] = ROTULOS_POR_LISTA_S0_5[to]     # R5-f de S0-5a-bis
+        if _r5("r5g", to, frozenset(RAICES_POR_LISTA_S0_5)):
+            kw["raices_por_lista"] = RAICES_POR_LISTA_S0_5[to]     # R5-g de S0-5a-bis
         # regla 8 de S0: renglones de listas de puntos leídas como cuerpo, con los roles de esta etapa
         kw["no_rotulos"] = E0.lineas_de_listas_r8(paginas, roles, forma4_m3=m3)
         if rotulos_fila_r9:
@@ -1531,6 +1628,15 @@ def correr(salida: Path, manifiesto=None,
             "despues": fronteras_despues["n_intra_palabra"],
             **regla2,
         }
+        if r2 and (_r5("r5a", to, frozenset(LISTAS_R5A_S0_5)) or _r5("r5a2", to, TOS_TITULO_BLOQUE_S0_5)):
+            # R5-a y R5-a′ de S0-5a, sobre el árbol corregido por las reglas 1 y 2; R5-a, por lista y sin tablas
+            # (S0-5a-bis)
+            res.avisos.extend(E0.aplicar_cierre_al_margen(
+                res, cierre=_r5("r5a", to, frozenset(LISTAS_R5A_S0_5)),
+                titulo_bloque=_r5("r5a2", to, TOS_TITULO_BLOQUE_S0_5),
+                listas=LISTAS_R5A_S0_5.get(to, {}), excluir=_excluir_tablas_r5a(tablas_r9)))
+        if r2 and _r5("r5e", to, TOS_ROTULO_VERTICAL_S0_5):
+            res.avisos.extend(E0.juntar_rotulo_vertical(res))     # R5-e de S0-5a, sobre el árbol
         correcciones[to] = {
             "reasignaciones_continuidad": res.reasignaciones_continuidad,
             "fronteras_intra_palabra": {
