@@ -450,3 +450,32 @@ reescribe.
   - «16. Cotejo de los saldos contables con los listados analíticos y/o registros auxiliares de respaldo.», p. 29.
   - **Mecanismo, el que registra E0:** los dos están en `rechazos_header` de `estructura_ri2_ae.json` (salida de S0-4b), con el motivo
     `raiz_en_columna_profunda_111.9_vs_83.7`. Por qué E0 sí abrió 9 a 14 en la misma columna, sin leer.
+
+---
+
+**[09/10/2026] Nota de la mesa: la sección 3 de ri_oc, admitida por el §29, y su lectura en S1-ter** (decisiones de la autora del
+09/10/2026).
+
+- **La corrección:** `ri_oc`, «3. Aclaraciones» (p. 6), es el título de la sección 3. E0 lo rechaza como encabezado, con el motivo
+  `raiz_en_columna_profunda_85.0_vs_76.6`, porque la p. 6 es de otra versión de la norma que la p. 5, con otro margen.
+  - Hoy el renglón queda al final del texto propio de `ri_oc::S2`, y las 51 unidades de `ri_oc::3.1` a `ri_oc::3.51` heredan solo «3.».
+  - Va en S0-5a-bis como regla por lista: el renglón abre la sección 3 como título, sale de `ri_oc::S2` y las 51 unidades heredan
+    «3. Aclaraciones».
+  - **Motivo:** cumple el criterio de excepción del congelamiento (§29 de la hoja de ruta de la mesa): corrige un dato falso de la
+    tanda 1 y es barato. El agregado ya está despachado a S0-5a-bis.
+- **Los otros 87 rechazos con el mismo motivo,** en 7 documentos fuera de la tanda 1, no se tocan ahora.
+  - Tienen que quedar resueltos en la versión de E0 previa a la tanda de cada documento, antes de extraerlo, de preferencia con una regla
+    general y no por lista, porque una corrección por lista saca al documento del sorteo de B6.3 (a) (`docs/plan_tesis.md:782`, (4)).
+  - La lista, con página por caso: `rechazos_columna_profunda/lista_88_rechazos_columna_profunda_mesa.json` del paquete de la mesa.
+- **S1-ter lee también esta corrección, a ciegas,** mezclada y sin marca, como los mixtos. Son dos fichas más en la población (b), que
+  pasa de 34 a 36:
+  - el final de `ri_oc::S2`;
+  - una de las 51 unidades de la sección 3, sorteada con `random.Random("U-SEG-OFICIAL:1_16:S1-ter:ri_oc").choice(sorted(ids))`.
+    Esa semilla queda sellada por esta nota.
+  - **El criterio es el de la lectura de cortes, sin pregunta aparte.** Una nota de la lectora sobre la herencia de esa unidad cuenta
+    como falla de la corrección.
+  - **El orden:** la semilla sellada `U-SEG-OFICIAL:1_16:S1-ter:R5-a` se aplica sobre las 66 fichas con cifra (30 de (a) y 36 de (b)).
+    Los 35 de regresión van en un bloque aparte, al final.
+  - **Si la corrección sale mal,** se revierte por lista antes de S2, como las demás de (b).
+- **Las dos lecturas de la mesa sobre S1-ter, aceptadas por la autora:** las 5 correctas para su revisión se sortean entre las fichas
+  con cifra del 1.16 (ahora 66), y los 35 de regresión van en un bloque aparte, al final.
