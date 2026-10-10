@@ -187,3 +187,40 @@ FIRMADO por la autora el 09/10/2026 (versión para firmar en `0c27146`). Rige de
   ```
 
   Ninguna muestra se sortea antes de este commit.
+
+---
+
+**[09/10/2026] Nota de la mesa: C2 contaminada y su repetición, C2-bis (decisiones de la autora del 09/10/2026).** El texto firmado no
+cambia.
+
+- **Por qué la primera C2 no se usa para decidir** (revisión de la autora de su FRENO):
+  - lo que vio el lector traía la cifra anterior de → Potestad y el umbral (§0);
+  - el §3 (el lector no ve el par) y el §4 (la ficha trae el tipo del destino) se contradicen, y el lector siguió el §4;
+  - la sesión se abrió dentro del repo y cargó la memoria del proyecto y los últimos mensajes de commit;
+  - el lector declaró un cambio de marcas antes del sello, hecho conociendo el par y el umbral.
+
+  La primera lectura queda registrada como contaminada en `data/experiment/conf_matriz/` y no se usa para decidir. La mesa no conoce
+  sus cifras ni sus marcas.
+- **C2-bis: una lectura nueva, con un lector nuevo,** sobre las mismas 60 fichas selladas en C1 (`c1/fichas_c1.jsonl`, `ebe7dd72…`).
+  - **Dónde:** una sesión nueva abierta desde una carpeta fuera del repo. Trabaja solo con una copia de las fichas y sus páginas, sin
+    acceso al repo, a la memoria ni a la primera lectura.
+  - **Lo que ve el lector:** las fichas, sus páginas y las instrucciones. Ninguna cifra previa, ni el umbral, ni el criterio de
+    aceptación, ni las consecuencias, ni que es una repetición.
+  - **El criterio de las marcas:** el del protocolo del 28/09 (`c671b52`), sin agregar ninguno, con incorrecta y no decidible como en
+    el §2.
+  - **El §3 y el §4:** el tipo del destino no hace falta para juzgar la arista, porque el criterio pregunta si el texto sostiene que el
+    origen es condición del destino, y muestra el par. Se saca, junto con los ids de los dos nodos (el del destino empieza con su tipo).
+    Declarado: la anotación de «mal tipado» del protocolo queda solo para el origen.
+  - **La carpeta del lector:** la arma la mesa desde las fichas selladas, con `armar_paquete_lector_C2bis_mesa.py`, en el paquete de
+    la mesa (`hoja_de_ruta_tanda1_mesa/conf_matriz_C2bis/`). Su `manifest.txt` empieza con `d6647440bb4b3b81`. Control: 0 fichas con el
+    tipo del destino o con ids.
+  - **El sello:** la planilla se sella (sha256 y hora) antes de cualquier cálculo. El lector no calcula.
+  - **C3:** lo calcula la mesa después del sello, con `c3_C2bis_mesa.py`. El par de cada ficha sale del acta sellada de C1, y el
+    criterio es el del §2.
+- **Decide la lectura nueva, cualquiera sea el resultado.** «El resultado» del §7 es la cifra final de C4 de esta lectura.
+- **C4:** la autora revisa las incorrectas de la lectura nueva, 5 correctas por par y toda ficha en la que las dos lecturas no
+  coinciden.
+  - **Semillas de las 5 correctas, selladas por esta nota:** Operacion `4532495010434239514` y Potestad `2215609819628898327`, con
+    `random.Random(semilla).sample(lista, 5)` sobre las correctas del par ordenadas por (origen, destino).
+  - Reemplazan a las de revisión de la sección «Firma».
+- **Calendario:** C4 antes del FRENO de O2 de U-OMISIONES-COD.
