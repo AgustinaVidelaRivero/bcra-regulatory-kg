@@ -256,3 +256,32 @@ propongo excepciones al §29.
   de su manifiesto van en el reporte de cierre, porque este archivo entra al manifiesto.
 
 **FRENO O2.**
+
+---
+
+**[10/10/2026] Nota de la mesa: tres aclaraciones de la revisión del FRENO O2.** El texto de arriba no cambia. La revisión de la mesa
+reprodujo este FRENO sobre copias; su evidencia está en el paquete de la mesa (`hoja_de_ruta_tanda1_mesa/revision_O2/`, con
+`revision_O2_analisis_remite_a_preguntas_3_4_5_r2b_diez.json`).
+
+1. **Las 76 `remite_a` que salen en `ctacte::1.5.3` las saca G-r**, aunque la sección de `remite_a` las liste aparte de las clases «con
+   id de G-r».
+   - G-r corre sobre toda entidad cuyo punto no es su unidad (`ensamblar_tanda0.py:1421`, `:1650`). Pasa a 1.5.3 la Obligacion que nombra
+     la unidad citada, que en HEAD estaba en `(1.5, herencia_encabezado)`.
+   - Con eso, la regla D1 (`r1_referencias.py:1261-1280`) atribuye la cita a ella sola («contiene_la_unidad»). Antes la atribuía a los 4
+     nodos de 1.5.3 («todos_los_nodos_del_punto»), cada uno hacia los 19 destinos anclados en la unidad citada: salen 4 × 19 = 76.
+   - En `salidas/remite_a_caso_por_caso_r2b_diez.json` esas 76 tienen la clase «sin cambio de id en los extremos», porque ninguno de sus
+     extremos cambia de id.
+   - Las 19 que entran van de la Obligacion movida, con su id nuevo, a los mismos 19 destinos. Cuentan en la clase «origen con id de
+     G-r» (34 entran).
+   - Ninguna línea del parche nombra ese documento ni ese punto: es la regla general.
+2. **La diferencia de 24 en J es 23 + 1.** J aislado cambia la procedencia de 10.139 `remite_a`, y el diff combinado le da 9.681 + 434
+   = 10.115.
+   - 23 son `remite_a` que entran en O2 (clase «destino con id de G-r») y cuya procedencia cambia J: no existen en HEAD, así que no
+     están entre las que siguen.
+   - 1 sigue y no aparece en el diff, porque G-r la cambia y J la deshace (la Operacion de polcre 2.1.7 hacia el TextoOrdenado de
+     clasificación de deudores).
+   - En los otros grafos: 20 = 19 + 1, 16 = 16 + 0 y 12 = 12 + 0 (`salidas/j_descomposicion_*.json`).
+3. **El control del destino redefinido (error propio 2) controla coherencia, no corrección.** Usa la misma definición que el código
+   (`anclados`, `r1_referencias.py:1069-1083`, usada en `:1178`): mide que el registro y el grafo digan lo mismo, no que la cita vaya
+   al destino correcto. La corrección de G-r sobre `remite_a` la mide la lectura a ciegas de los 74 pares cita–origen (mandato
+   U-PARES-REMITE-A, para firmar).

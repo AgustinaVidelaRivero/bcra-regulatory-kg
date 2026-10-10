@@ -513,3 +513,6 @@ Salida: `0.461274 {'e1': 0.1898, 'e3': 0.2096, 'reint': 0.0618} ['cap::3.1.14.1'
   cada cita con el nombre de su constante para poder volver a encontrarla si el código se corre: `correr_e0.py:119-138` (S0-4, de
   `REGLAS_S0_4` a `TOS_TANDA0_SIN_4AB`), `:140-210` (S0-5, de `REGLAS_S0_5` a `_r5`) y `e0_lib.py:203-226` (el docstring del módulo, de
   «U-SEG-OFICIAL, S0-4» a «S0-5a-bis»). Los rangos son del código de E0 de S0-5b (`e0_lib.py` `bd2190ad…`, `correr_e0.py` `68bd74b5…`).
+- **El resultado de (e) (10/10/2026, mesa).** La lectura a ciegas de la pieza (e) no llegó al piso (registro en
+  `data/experiment/omisiones_cod/lectura_e/`): la pieza no se aplica, y lo que la nota de U-OMISIONES-COD dice que «entra solo si su
+  lectura llega al piso» no entra.

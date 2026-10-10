@@ -479,3 +479,6 @@ La ventana real: `ver_vecinos(limite=40)` corta 40 por dirección (`evaluacion/h
 | `TextoOrdenado_to_exterior_cambios_actual_pdf` | TextoOrdenado | 27 | 3086 | 0 | 3 |
 | `TextoOrdenado_to_proteccion_usuarios_servicios_financieros_actual_pdf` | TextoOrdenado | 8 | 376 | 0 | 2 |
 | `TextoOrdenado_to_regimen_informativo_contable_mensual_actual_pdf` | TextoOrdenado | 6 | 548 | 0 | 0 |
+
+**[10/10/2026] Nota de la mesa: el resultado de (e).** La lectura a ciegas de las 16 detecciones no llegó al piso (registro en
+`data/experiment/omisiones_cod/lectura_e/`). La pieza de `pieza_e/` no se aplica y (e) queda como límite declarado.
