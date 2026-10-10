@@ -451,3 +451,16 @@ se sortea antes de este commit. La nota del §14.3 al pie del pre-registro entra
     ficha con la lista de clases de error, y recién entonces el lote 2 (§9.3).
   - El acta del sorteo y el diagnóstico por elemento siguen vedados hasta cerrar el paso 1 del lote 2.
   - El texto firmado no cambia.
+- **10/10/2026 — Lote 1 del piloto: paso 2 (§5.3) sellado por la autora, y FRENO del lote 1.** Se registran los sellos, sin el
+  contenido.
+  - **Lecturas provisionales de la v0,** fijadas antes de abrir las diferencias: `lecturas_provisionales_v0_paso2_lote1.md`, sha256
+    `e389b9119f2b2972aa2c337d4c5867416e8ee69d50d590816c98ecdfba98c6dd`, sellada el 10/10/2026 a las 12:00:02 (−03). El paso 2 aplicó la
+    regla v0 con esas lecturas, que son la propuesta de la autora para la v1.
+  - **Paso 2:** `diferencias_paso2_lote1_autora.md` (sha256 `dc5ea3edd9ebd5402f000148e34344ba3036e79d77693e79fb45251a48064e20`) y
+    `notas_paso2_lote1.md` (sha256 `d3f2b4c8cd00af7dc0d7f8ff6a45c37d9e5e0dd390a30304a77bae2a3124fcec`), sellados el 10/10/2026 a las
+    14:00:10 (−03).
+  - Los tres están fuera del repo, en `fuera_del_repo/lectura_lote1_paso2/`, de solo lectura, y se reproducen con `shasum -a 256`.
+  - **FRENO del lote 1:** `data/experiment/med_umbrales/p/lote1/freno/FRENO_lote1.md`, con las cifras de validación de diseño (§9.1),
+    la lista de clases de error y lo que decide la autora. Sigue la v1 de la regla, sellada antes del lote 2 (§9.3).
+  - El acta del sorteo y el diagnóstico por elemento siguen vedados para la autora hasta cerrar el paso 1 del lote 2.
+  - El texto firmado no cambia.
