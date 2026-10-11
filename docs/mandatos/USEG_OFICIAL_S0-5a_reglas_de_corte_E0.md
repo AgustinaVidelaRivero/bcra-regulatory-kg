@@ -553,3 +553,26 @@ ruta (§62) con la hora en que recibió la decisión, 09:26:15. La nota anterior
   1. si las reglas generales reemplazan también las reversiones del punto 2 de la nota anterior: la de una lista de (b) y la de una
      regla de R5-b a R5-g, que se aplican por lista, en la unidad afectada;
   2. el último paso de la nota anterior habla de «un error de corte confirmado», y la decisión de hoy, de «un error confirmado».
+
+---
+
+**[11/10/2026] Nota de la mesa: los dos puntos abiertos de la nota anterior y las cuatro elecciones del diseño de S1-quater, por decisión
+de la autora del 11/10/2026.** La mesa la registró en su hoja de ruta (§63) con la hora en que la recibió, 10:03:12. Las notas anteriores
+no se editan.
+
+- **Las reversiones fijadas antes de leer** (la de una lista de (b) y la de una regla de R5-b a R5-g, punto 2 de la nota del 10/10/2026)
+  siguen vigentes como punto de partida. Si al ver los errores confirmados una regla general corrige mejor ese mecanismo, la reemplaza.
+  Lo decide la autora y se declara.
+- **El último paso del plan B** es el de la nota del 10/10/2026: cada documento con un error de corte confirmado se reemplaza por el
+  siguiente de su estrato, y se declara. Donde la nota anterior (`e95413bb`) dice «un error confirmado», se lee «un error de corte
+  confirmado».
+- **El diseño de S1-quater** (sellado a las 09:47:16 del 11/10/2026 y commiteado en `3a52987f`, en
+  `data/experiment/segmentacion_oficial_e0r2/s1quater/diseno/`) queda confirmado en sus cuatro elecciones:
+  - la regresión la lee la lectora, en la etapa 2, sin entrar en la cifra;
+  - la adjudicación es la de S1-ter en su versión final: dos pasadas; todas las fichas de la etapa 1 en la pasada 1; la regla a–d de la
+    pasada 2; ningún modelo le propone marcas a la autora; y la cifra que decide es la de las dudosas como error;
+  - en la etapa 2 de S1-ter, cuentan como leídas también las unidades calificadas y la unidad que sigue;
+  - el umbral de alineación es del 95 %. Si el script frena, lo decide la autora.
+- **El paquete de la mesa.** Al empezar cada ronda, la mesa controla su paquete de trabajo contra el manifest de la copia permanente
+  (`fuera_del_repo/scratchpads/`). Si falta algo, lo restaura desde ella antes de escribir nada. La regla viene del limpiador de
+  `/private/tmp`, que el 11/10/2026 borró archivos viejos del paquete.
