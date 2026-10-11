@@ -530,3 +530,26 @@ propuesta de la mesa tal cual y decidió también su última rama.
   4. **Si S1-quater tampoco llega al piso,** no hay otra vuelta antes de la tanda 1: la tanda 1 sale con la lista de S2, reemplazando
      cada documento con un error de corte confirmado por el siguiente de su estrato (criterio del §7 de `docs/protocolo_entre_tandas.md`),
      y se declara.
+
+---
+
+**[11/10/2026] Nota de la mesa: el plan B de S1-ter cambia, por decisión de la autora del 11/10/2026.** La autora lo decidió después de
+ver sus propias marcas provisionales de la pasada 1 de S1-ter y sin haber visto nada de la lectora. La mesa lo registró en su hoja de
+ruta (§62) con la hora en que recibió la decisión, 09:26:15. La nota anterior no se edita: esta la cambia en lo que sigue.
+
+- **Cómo se corrige.** Los errores confirmados en la adjudicación de S1-ter se corrigen con reglas generales de E0, pase o no pase el
+  piso. No se corrige nada para un documento en particular. Las reglas se diseñan después de la pasada 2, sobre la lista de errores
+  confirmados, y las decide la autora.
+- **La medición de la E0 actual no cambia:** el piso, la regla de las dudosas y los scripts siguen igual, y su cifra se informa como la
+  de E0 antes de la corrección.
+- **La E0 corregida se mide con S1-quater:** 90 unidades nuevas que no estén entre las leídas en S1-ter, con los mismos estratos, el
+  mismo piso y la misma regla de las dudosas, a ciegas y con semillas selladas antes de la lectura. Las unidades con error de S1-ter se
+  controlan aparte con la E0 corregida, como regresión, sin entrar en la cifra.
+- **Si S1-quater no llega al piso,** rige el último paso del plan B: cada documento con un error confirmado se reemplaza por el
+  siguiente de su estrato, y se declara.
+- **Las semillas** de S1-quater son las de la nota anterior. El diseño de S1-quater se sella aparte, antes de que exista la E0 corregida,
+  en `data/experiment/segmentacion_oficial_e0r2/s1quater/diseno/`.
+- **Dos puntos que esta nota no resuelve** (PENDIENTES de la autora):
+  1. si las reglas generales reemplazan también las reversiones del punto 2 de la nota anterior: la de una lista de (b) y la de una
+     regla de R5-b a R5-g, que se aplican por lista, en la unidad afectada;
+  2. el último paso de la nota anterior habla de «un error de corte confirmado», y la decisión de hoy, de «un error confirmado».
