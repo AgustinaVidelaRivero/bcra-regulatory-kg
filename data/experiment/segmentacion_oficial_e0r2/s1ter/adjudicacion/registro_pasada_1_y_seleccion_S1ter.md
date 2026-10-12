@@ -285,3 +285,30 @@ van tal cual, con el sha256 de cada archivo y su renglón:
 - **Punto 7:** el §8, con D3 y con el control de la adenda 3.
 - **NO VERIFICADO por la mesa:** que la autora participó y aprobó las decisiones del asistente, y qué vio el otro asistente. Es
   declaración de la autora.
+
+## 10. Unidades de documentos de la tanda 0 leídas en S1-ter (declaración, 12/10/2026)
+
+- **Decisión de la autora del 12/10/2026:** si alguna de las 90 fichas de la etapa 1 es de un documento de la tanda 0, se declara en
+  este registro. La cifra de S1-ter no se recalcula.
+- **Con qué E0 se leyeron.** La tanda 0 quedó fuera de las reglas de S0-4 (4a y 4b) y de S0-5 por lista
+  (`reextraccion_v2/e0_chunking/correr_e0.py:138` y `:156`).
+  - Sus cinco documentos que están entre los 152 (ctacte, lingob, polcre, pagjub y docvig) se leyeron en S1-ter con la E0 de
+    `salida_tanda0_r2b/`, sin esas reglas.
+  - S0-5b controla esa E0 byte a byte: los 25 archivos de la tanda 0 dentro de los 152 dan 25 de 25.
+- **Etapa 1:** 5 de las 90 fichas son de esos documentos, todas del estrato `vigente`:
+  - E1-013, de docvig;
+  - E1-021 y E1-048, de ctacte;
+  - E1-038, de lingob;
+  - E1-045, de polcre.
+- **Etapa 2:** E2-025, de ctacte, y E2-055, de polcre. Las dos son de c116_a, y se leyeron con su unidad que sigue.
+- **La cifra de S1-ter no se recalcula.** El cálculo ya informa aparte los errores de corte en documentos de la tanda 0
+  (`scripts/cifras_lectura_S1ter.py:164-165`).
+- **Lo que sigue** (decisiones de la autora del 12/10/2026, adenda 2 a su nota de decisiones de la corrección de E0,
+  `1a25529306e6118bfa9696e1b6e7512e7190356c038f977f57c64770a119d9f1`):
+  - la tanda 0 sigue fuera de la corrección de E0 de S0-6a;
+  - sus unidades no entran en la población de S1-quater (adenda 1 al diseño de S1-quater).
+- **Cómo lo controlé.** Usé el orden sellado de S1-ter (`tramo_b/orden_lectura_S1ter.json`, `acd57e37…`) y la E0 que leyó S1-ter,
+  controlada contra `manifest_salida.json`.
+  - Para las unidades de la etapa 2 usé `E0.partes` y `E0.siguiente` del diseño sellado de S1-quater.
+  - El script es `fichas_tanda0_S1ter_mesa.py` (`ea88a1fc…`, en el paquete de la mesa).
+  - Da 9 unidades, las mismas que `comun_S1quater.mostradas_S1ter` cuenta en esos documentos.
