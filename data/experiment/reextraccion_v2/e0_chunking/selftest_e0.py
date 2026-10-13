@@ -127,6 +127,32 @@ Tests de S0-5a-bis de U-SEG-OFICIAL (solo e0-r2; diseño en data/experiment/segm
      de los 7 documentos fuera de la tanda 1, como en S0-4b; y cuatro tablas serializadas como en S0-4b.
 Desde S0-5a-bis cambia un caso medido de etapas anteriores: ri_ccna cuenta 169 unidades (R5-f abre 11 puntos, 2.1.1
 a 2.1.8, 5.1 y 8.1 de D1A1 y 5.1 de D1A2, y quita el chapeau de D1A1::S5, que era el texto de 5.1).
+
+Tests de S0-6a de U-SEG-OFICIAL (solo e0-r2; diseño en data/experiment/segmentacion_oficial_e0r2/s0_6/). Las pruebas de
+etapas anteriores (j a w) corren con las reglas de S0-6a apagadas (`_sin_s06`): prueban sus reglas, y las reglas por
+lista que S0-6a reemplaza vuelven a correr; por eso ningún caso medido de etapas anteriores cambia.
+  x) la versión legada: los parámetros de A a K apagados por default; las once reglas, la tanda 0 fuera por la misma
+     lista de diez TOs y los reemplazos (C de R5-a, A de R5-a′, E de R5-g, H de R5-f en ri_ccna); A a K no corren en
+     ningún TO de la tanda 0, y con S0-6a apagada las listas vuelven a correr;
+  y) casos sintéticos de cada regla y lo que la nota dice que no hace (A: el renglón entre la madre y sus hijos
+     numerados, la fila de tabla; B: el título que entra en un renglón; C: el párrafo en la columna del texto del ítem
+     o más adentro; E: la raíz que no sucede y la fila con huecos; G: sin el renglón de los puntos; H: el que no
+     continúa la numeración; I: sin recuadro de dos columnas; K: el código que no es el último renglón de la página);
+  z) un caso positivo por regla, de las 40 filas, corriendo e0-r2 sobre los TOs de TOS_S06; los reemplazos (E da el
+     resultado de R5-g, H abre los rótulos de R5-f en ri_ccna, A el de R5-a′); la aceptación de R5-e actualizada por K;
+     los negativos del §4 (NEGATIVOS_LEIDAS_S06: las unidades leídas en S1-ter de esos TOs, de corte y herencia
+     correctos, conservan su corte y su herencia, cada una con su ficha de origen); la cobertura exacta; y la fila de la
+     tanda 0 (E2-055, polcre) con la exclusión apagada solo ahí, sin tocar el camino de la salida.
+Tests de S0-6a-bis (diseño en data/experiment/segmentacion_oficial_e0r2/s0_6/bis/):
+  x) además: los parámetros de L (`indice_l`), M (`raiz0_solo_titulo_m`) y de las listas fijas de C, apagados por default;
+     las trece reglas; R5-a por lista que queda con C (LISTAS_R5A_S0_6, ocho listas de LISTAS_R5A_S0_5); M no corre
+     donde los sub-documentos son de S0-4;
+  y′) casos sintéticos: C no saca un grupo si un párrafo no comparte columna ni el párrafo al que sigue una tabla, y mide
+     el párrafo por su segundo renglón; A no abre divisiones en la carátula; L veta los rótulos de un índice cuyos
+     títulos reaparecen, y el cuerpo vuelve a empezar en 1;
+  z) además: L en el Anexo IV de nmaeef (E1-008), M en el Anexo III de ri2_ae (E2-002), R5-a por lista en ri_oc B.1 y
+     ri_spi C.1 (E2-098, E2-058), A sin divisiones en la carátula de ri_ii_31_12_19, y los negativos del §4 de esta etapa
+     (las leídas correctas de los TOs de TOS_S06, entre ellos los de los grupos que empeoraban en S0-6a).
 """
 
 from __future__ import annotations
@@ -1539,6 +1565,667 @@ def test_s05bis_casos(d: Path) -> None:
     check(f"cobertura exacta en los {len(TOS_S05BIS)} TOs", all(cob[to]["cobertura_exacta"] for to in TOS_S05BIS))
 
 
+# ------------------------------------------------------------------ S0-6a de U-SEG-OFICIAL
+import contextlib
+
+
+@contextlib.contextmanager
+def _sin_s06():
+    """Las pruebas de etapas anteriores prueban sus reglas: corren con las reglas de S0-6a apagadas (también las reglas
+    por lista que S0-6a reemplaza, que vuelven a correr)."""
+    previas = correr_e0.REGLAS_S0_6
+    correr_e0.REGLAS_S0_6 = frozenset()
+    try:
+        yield
+    finally:
+        correr_e0.REGLAS_S0_6 = previas
+
+
+@contextlib.contextmanager
+def _tanda0_sin_exclusion():
+    """Solo en el selftest: la exclusión de la tanda 0 apagada, para correr las filas de la tanda 0 como casos positivos.
+    No toca el camino de `correr_e0` que produce la salida."""
+    previa = correr_e0.TOS_TANDA0_SIN_S0_6
+    correr_e0.TOS_TANDA0_SIN_S0_6 = frozenset()
+    try:
+        yield
+    finally:
+        correr_e0.TOS_TANDA0_SIN_S0_6 = previa
+
+
+def test_s06_legada() -> None:
+    import inspect
+    E0 = correr_e0.E0
+    print("== x) S0-6a de U-SEG-OFICIAL: parámetros apagados por default; listas; A a K fuera de la tanda 0")
+    p = inspect.signature(E0.parsear_cuerpo).parameters
+    nuevos = ("raiz_sucesora_e", "numero_partido_g", "numero_pegado_h", "pie_formulario_k", "caratula_j",
+              "encabezado_tabla_f", "recuadro_i", "banda_a")
+    q = inspect.signature(E0.construir_chunks).parameters
+    check("parsear_cuerpo, construir_chunks, separar_encabezado_pie y limites_subdocumento: los parámetros de A a K "
+          "apagados por default; Linea.palabras vacío por default",
+          all(p[k].default is False for k in nuevos) and q["encabezado_b"].default is False
+          and q["rotulo_impreso_d"].default is False
+          and inspect.signature(E0.separar_encabezado_pie).parameters["pie_formulario_k"].default is False
+          and inspect.signature(E0.limites_subdocumento).parameters["solo_anexo"].default is False
+          and _linea("x", 1, 1.0).palabras == ())
+    check("S0-6a-bis: los parámetros de L, M y de las listas fijas de C, apagados por default",
+          p["indice_l"].default == frozenset() and q["raiz0_solo_titulo_m"].default is False
+          and inspect.signature(E0.asignar_por_columna_c).parameters["listas_fijas"].default == frozenset())
+    l6 = correr_e0.LISTAS_R5A_S0_6
+    check("S0-6a-bis: R5-a por lista que queda con C, ocho listas tomadas de LISTAS_R5A_S0_5 con su forma; M no corre donde "
+          "los sub-documentos son de S0-4",
+          sum(len(v) for v in l6.values()) == 8
+          and all(correr_e0.LISTAS_R5A_S0_5[to][k] == v for to, d in l6.items() for k, v in d.items())
+          and correr_e0._sd_s04("ri_ccna") and not correr_e0._sd_s04("ri2_ae"))
+    check("listas de S0-6a: las trece reglas (once de S0-6a y L y M de S0-6a-bis); la tanda 0 fuera por la misma lista de "
+          "diez TOs; los reemplazos (C de R5-a, A de R5-a′, E de R5-g, H de R5-f en ri_ccna); la tolerancia de C es TOL_X",
+          correr_e0.REGLAS_S0_6 == frozenset("abcdefghijklm") and correr_e0.TOS_TANDA0_SIN_S0_6 == TOS_TANDA0
+          and correr_e0.REEMPLAZOS_S0_6 == {"r5a": ("c", None), "r5a2": ("a", None), "r5g": ("e", None),
+                                             "r5f": ("h", frozenset({"ri_ccna"}))}
+          and E0.TOL_COL_C == E0.TOL_X)
+    check("A a M no corren en ningún TO de la tanda 0; las reglas por lista reemplazadas no corren donde corre su "
+          "reemplazo (R5-f sigue en snp_cheq)",
+          not any(correr_e0._r6(r, to) for r in "abcdefghijklm" for to in TOS_TANDA0)
+          and not correr_e0._r5("r5a", "cryl", frozenset({"cryl"}))
+          and not correr_e0._r5("r5a2", "ri_oc", frozenset({"ri_oc"}))
+          and not correr_e0._r5("r5g", "ri_oc", frozenset({"ri_oc"}))
+          and not correr_e0._r5("r5f", "ri_ccna", frozenset({"ri_ccna"}))
+          and correr_e0._r5("r5f", "snp_cheq", frozenset({"snp_cheq"})))
+    with _sin_s06():
+        check("con las reglas de S0-6a apagadas, las reglas por lista vuelven a correr",
+              correr_e0._r5("r5a", "cryl", frozenset({"cryl"})) and correr_e0._r5("r5g", "ri_oc", frozenset({"ri_oc"})))
+
+
+def _lp(partes, pagina: int, top: float):
+    """Renglón con las posiciones de sus palabras (para I): `partes` es [(x0, texto)], una por columna."""
+    pals = []
+    for x0, t in partes:
+        x = x0
+        for w in t.split():
+            pals.append((x, x + 5.0 * len(w), w))
+            x += 5.0 * len(w) + 3.0
+    return correr_e0.E0.Linea(pagina=pagina, top=top, x0=partes[0][0], texto=" ".join(t for _, t in partes),
+                              ngaps=len(partes) - 1, ultimo_numerico=False, primer_codigo=False, palabras=tuple(pals))
+
+
+def test_s06_sinteticos() -> None:
+    E0 = correr_e0.E0
+    print("== y) S0-6a de U-SEG-OFICIAL: casos sintéticos (lo que cada regla hace y lo que la nota dice que no hace)")
+    cuerpo = "Texto de la norma que corre en la columna del cuerpo del ítem y termina en punto final."
+    cierre = "Las entidades deberán observar lo dispuesto en los puntos anteriores durante todo el plazo."
+    # A: título que encabeza solo su bloque; D18; fila de tabla
+    pa = [_linea("Sección 3. Criterios.", 1, 30.0), _linea("3.1. Primer criterio.", 1, 50.0, x0=76.0),
+          _linea(cuerpo, 1, 64.0, x0=100.0), _linea("3.2. Segundo criterio.", 1, 90.0, x0=76.0),
+          _linea(cuerpo, 1, 104.0, x0=100.0), _linea("TABLA DE CORRESPONDENCIA DE PARTIDAS", 2, 40.0, x0=76.0),
+          _linea("Partida Cuenta", 2, 56.0, x0=76.0, ngaps=1), _linea("Resultado monetario 131145", 2, 70.0, x0=76.0,
+                                                                     ngaps=1)]
+    res, _ = _parse([pa])
+    ev = E0.dividir_a(res, sin_raiz=False)
+    ch = E0.construir_chunks(res)
+    check("A: «TABLA DE CORRESPONDENCIA…» abre x::Sbloque1, que cuelga de la sección real; 3.2 termina en su texto",
+          _texto(ch, "x::3.2") == "3.2. Segundo criterio.\n" + cuerpo
+          and (_texto(ch, "x::Sbloque1") or "").startswith("TABLA DE CORRESPONDENCIA DE PARTIDAS\nPartida Cuenta")
+          and [e["forma"] for e in ev if e["tipo"] == "division_a"] == ["titulo"], str([c["id"] for c in ch]))
+    res, _ = _parse([pa])
+    check("A, caso negativo: una fila de tabla serializada no abre división",
+          E0.dividir_a(res, sin_raiz=False, fila_tabla=lambda l: l.texto.startswith("TABLA")) == [])
+    pd = [_linea("Sección 4. Normas.", 1, 30.0), _linea(cierre, 1, 50.0, x0=76.0),
+          _linea("Instrucciones generales", 1, 76.0, x0=76.0), _linea("4.1. Primera instrucción.", 1, 96.0, x0=76.0),
+          _linea(cuerpo, 1, 110.0, x0=100.0)]
+    res, _ = _parse([pd])
+    check("A, caso negativo (D18): el renglón entre la madre y sus hijos numerados no abre división",
+          E0.dividir_a(res, sin_raiz=False) == [])
+    # B
+    pb = [_linea("Sección 1. Reglas.", 1, 30.0),
+          _linea("1.1. Las entidades deberán observar las siguientes condiciones durante todo el plazo de la", 1, 50.0,
+                 x0=76.0),
+          _linea("operación y hasta su cancelación total:", 1, 64.0, x0=100.0),
+          _linea("1.1.1. Primera condición.", 1, 90.0, x0=100.0), _linea("1.1.2. Segunda condición.", 1, 110.0, x0=100.0)]
+    res, _ = _parse([pb])
+    h0 = next(c for c in E0.construir_chunks(res) if c["id"] == "x::1.1.1")["herencia"]
+    h = next(c for c in E0.construir_chunks(res, encabezado_b=True) if c["id"] == "x::1.1.1")["herencia"]
+    check("B (B2): el número seguido de un párrafo no fabrica encabezado; la intro lleva el texto entero con su número",
+          [t["tipo"] for t in h if t["unidad_origen"] == "1.1"] == ["intro"]
+          and next(t for t in h if t["unidad_origen"] == "1.1")["texto"].startswith("1.1. Las entidades deberán")
+          and [t["tipo"] for t in h0 if t["unidad_origen"] == "1.1"] == ["encabezado", "intro"], str(h))
+    pt = [_linea("Sección 2. Dispositivos.", 1, 30.0),
+          _linea("2.13. Promoción de servicios en dispositivos móviles e identificación de clientes con Documento", 1,
+                 50.0, x0=76.0),
+          _linea("Nacional de Identidad digital en formato credencial virtual.", 1, 64.0, x0=104.0),
+          _linea("Bajo la supervisión de personas autorizadas, se podrán utilizar dispositivos en estos casos:", 1,
+                 90.0, x0=104.0),
+          _linea("2.13.1. para promocionar aplicaciones; y", 1, 116.0, x0=104.0),
+          _linea("2.13.2. para identificar clientes.", 1, 136.0, x0=104.0),
+          _linea("2.14. Recinto para operaciones importantes.", 1, 170.0, x0=76.0), _linea(cuerpo, 1, 184.0, x0=104.0),
+          _linea("2.14.1. Primer recinto.", 1, 200.0, x0=104.0)]
+    res, _ = _parse([pt])
+    ch0, ch = E0.construir_chunks(res), E0.construir_chunks(res, encabezado_b=True)
+    enc = [t["texto"] for t in next(c for c in ch if c["id"] == "x::2.13.1")["herencia"]
+           if t["tipo"] == "encabezado" and t["unidad_origen"] == "2.13"]
+    check("B (B1): el título de dos renglones va entero en la entrada de encabezado y la intro empieza en «Bajo la "
+          "supervisión»",
+          enc == ["2.13. Promoción de servicios en dispositivos móviles e identificación de clientes con Documento\n"
+                  "Nacional de Identidad digital en formato credencial virtual."]
+          and (_texto(ch, "x::2.13::intro") or "").startswith("Bajo la supervisión"), str(enc))
+    h14 = lambda cs: [t for t in next(c for c in cs if c["id"] == "x::2.14.1")["herencia"] if t["unidad_origen"] == "2.14"]
+    check("B, caso negativo: la entrada que sale entera cuando el título entra en un renglón no cambia",
+          h14(ch) == h14(ch0))
+    # C
+    def lista_c(x):
+        return [_linea("Sección 1. Requisitos.", 1, 30.0), _linea("1.1. Condiciones generales.", 1, 50.0, x0=76.0),
+                _linea("1.1.1. Primer requisito.", 1, 70.0, x0=110.0), _linea(cuerpo, 1, 84.0, x0=150.0),
+                _linea("1.1.2. Segundo requisito.", 1, 110.0, x0=110.0), _linea(cuerpo, 1, 124.0, x0=150.0),
+                _linea(cierre, 1, 150.0, x0=x)]
+    res_c = {}
+    for x in (110.0, 76.0, 150.0, 175.0):
+        res, _ = _parse([lista_c(x)])
+        E0.asignar_por_columna_c(res)
+        res_c[x] = E0.construir_chunks(res)
+    check("C: el párrafo sangrado hacia afuera pasa al nivel de la columna más cercana (110 → cierre de 1.1; 76 → cierre "
+          "de la sección)",
+          _texto(res_c[110.0], "x::1.1::cierre") == cierre and _texto(res_c[76.0], "x::S1::cierre") == cierre)
+    check("C, casos negativos: el párrafo en la columna del texto del ítem, o más adentro, es del ítem",
+          (_texto(res_c[150.0], "x::1.1.2") or "").endswith(cierre) and (_texto(res_c[175.0], "x::1.1.2") or "").endswith(cierre))
+    # D
+    pdl = [_linea("APARTADO C: DENUNCIAS POR INCUMPLIMIENTOS", 1, 50.0, x0=76.0), _linea("C.1. Información.", 1, 70.0, x0=76.0),
+           _linea(cuerpo, 1, 84.0, x0=100.0), _linea("C.2. Otros datos.", 1, 110.0, x0=76.0)]
+    r, _ = _parse([pdl], modo_sin_raiz=True, marcador_letra=True)
+    hd = lambda **kw: [t["texto"] for t in next(c for c in E0.construir_chunks(r, **kw) if c["id"] == "x::C.1")["herencia"]
+                       if t["tipo"] == "encabezado"][0]
+    check("D: el rótulo heredado es el impreso («APARTADO C: …»), no el normalizado («C. …»)",
+          hd(rotulo_impreso_d=True) == "APARTADO C: DENUNCIAS POR INCUMPLIMIENTOS"
+          and hd() == "C. DENUNCIAS POR INCUMPLIMIENTOS")
+    # E
+    pe = [_linea("1. Uno.", 1, 50.0, x0=76.0), _linea(cuerpo, 1, 64.0, x0=90.0), _linea("2. Dos.", 1, 90.0, x0=76.0),
+          _linea(cuerpo, 1, 104.0, x0=90.0), _linea("3. Tres.", 1, 130.0, x0=95.0), _linea(cuerpo, 1, 144.0, x0=110.0),
+          _linea("5. Cinco.", 1, 170.0, x0=95.0), _linea(cuerpo, 1, 184.0, x0=110.0),
+          _linea("4. Cuatro 10 20", 1, 200.0, x0=95.0, ngaps=1)]
+    r0, _ = _parse([pe], modo_sin_raiz=True)
+    r1, _ = _parse([pe], modo_sin_raiz=True, raiz_sucesora_e=True)
+    check("E: la raíz rechazada por la columna que continúa la numeración abre (3); la que no sucede (5) y la fila con "
+          "huecos (4) no",
+          [s.numero for s in r0.secciones] == ["1", "2"] and [s.numero for s in r1.secciones] == ["1", "2", "3"],
+          str([s.numero for s in r1.secciones]))
+    # F1
+    enc1 = ["Tasas en %", "Grupo A", "Concepto"]
+    p1 = [_linea("Sección 1. Exigencia.", 1, 30.0)] + [_linea(t, 1, 50.0 + 10 * i, x0=400.0) for i, t in enumerate(enc1)] \
+        + [_linea("1.1. Depósitos. 45 20", 1, 100.0, x0=76.0, ngaps=2)]
+    p2 = [_linea("Sección 1. Exigencia.", 2, 30.0)] \
+        + [_linea(t, 2, 50.0 + 10 * i, x0=400.0) for i, t in enumerate(["Grupo A", "Tasas en %", "Concepto"])] \
+        + [_linea("1.2. Inversiones. 30 10", 2, 100.0, x0=76.0, ngaps=2)]
+    r0, _ = _parse([p1, p2])
+    r1, ch1 = _parse([p1, p2], encabezado_tabla_f=True)
+    check("F1: el encabezado de columnas que se repite al tope de la página siguiente sale del texto; la primera "
+          "aparición queda",
+          r0.lineas_contenido - r1.lineas_contenido == 3
+          and [a["pagina"] for a in r1.avisos if a["tipo"] == "encabezado_de_tabla_repetido_f"] == [2]
+          and "Tasas en %" in "\n".join(c["texto"] for c in ch1))
+    # G
+    pg = [_linea("Sección 6. Gestión.", 1, 30.0), _linea("6.1. Directorio.", 1, 50.0, x0=76.0),
+          _linea("6.1.1. Aprobar el plan.", 1, 70.0, x0=100.0),
+          _linea("6 1 2. Supervisar regularmente la eficacia.", 1, 90.0, x0=100.0), _linea(". .", 1, 93.0, x0=105.0)]
+    _, chg = _parse([pg], numero_partido_g=True)
+    _, chg0 = _parse([pg[:-1]], numero_partido_g=True)
+    check("G: los dígitos sueltos y sus puntos se unen en el número («6.1.2.») y abren el punto; sin el renglón de los "
+          "puntos, no",
+          _texto(chg, "x::6.1.2") == "6.1.2. Supervisar regularmente la eficacia." and "x::6.1.2" not in
+          {c["id"] for c in chg0})
+    # H
+    ph = [_linea("Sección 1. Efectivo.", 1, 30.0), _linea("1.2. Exigencia.", 1, 50.0, x0=76.0),
+          _linea("1.2.1. Los importes.", 1, 70.0, x0=100.0), _linea("1.2.2. En el caso.", 1, 90.0, x0=100.0),
+          _linea("1.2.3.Conceptos comprendidos", 1, 110.0, x0=100.0), _linea(cuerpo, 1, 124.0, x0=120.0),
+          _linea("1.2.5.Otros conceptos", 1, 150.0, x0=100.0)]
+    _, chh = _parse([ph], numero_pegado_h=True)
+    check("H: el rótulo pegado al título que continúa la numeración abre su punto (1.2.3); el que no la continúa (1.2.5), "
+          "no",
+          "x::1.2.3" in {c["id"] for c in chh} and "x::1.2.5" not in {c["id"] for c in chh}
+          and (_texto(chh, "x::1.2.3") or "").startswith("1.2.3.Conceptos comprendidos"))
+    # I
+    box = [_linea("BANCO CENTRAL DE LA REPÚBLICA ARGENTINA", 1, 72.9, x0=95.8),
+           _lp([(122.1, "SUPERINTENDENCIA DE ENTIDADES"), (330.0, "DECLARACIÓN JURADA DEL SOCIO")], 1, 83.2),
+           _lp([(139.0, "FINANCIERAS Y CAMBIARIAS"), (360.0, "RESPONSABLE")], 1, 93.5),
+           _linea("Gerencia de Control de Auditores", 1, 104.0, x0=135.2),
+           _linea("Declaro bajo juramento que:", 1, 127.7, x0=119.2)]
+    cont, rec, tit, evi = E0.leer_recuadro_por_columna_i(box, box)
+    check("I: el recuadro de dos columnas se lee por columna (izquierda, después derecha), y el rótulo del formulario es "
+          "la columna derecha: el membrete institucional nunca es madre",
+          tit == "DECLARACIÓN JURADA DEL SOCIO RESPONSABLE"
+          and [l.texto for l in cont][:6] == ["BANCO CENTRAL DE LA REPÚBLICA ARGENTINA", "SUPERINTENDENCIA DE ENTIDADES",
+                                              "FINANCIERAS Y CAMBIARIAS", "Gerencia de Control de Auditores",
+                                              "DECLARACIÓN JURADA DEL SOCIO", "RESPONSABLE"]
+          and cont[-1].texto == "Declaro bajo juramento que:", str([l.texto for l in cont]))
+    sin = [_linea("BANCO CENTRAL DE LA REPÚBLICA ARGENTINA", 1, 72.9, x0=95.8), _linea(cuerpo, 1, 100.0, x0=76.0)]
+    check("I, caso negativo: sin recuadro de dos columnas el contenido no cambia",
+          E0.leer_recuadro_por_columna_i(sin, sin)[3] is None)
+    # J
+    car = [_linea("CENTRALES DE INFORMACIÓN", 1, 370.6, x0=169.6),
+           _linea("-Última comunicación incorporada: “A” 8393-", 1, 450.7, x0=170.5),
+           _linea("Texto ordenado al", 1, 557.8, x0=182.8), _linea("28/01/2026", 1, 561.1, x0=360.6)]
+    p2j = [_linea("CENTRALES DE INFORMACIÓN", 2, 70.0, x0=170.0), _linea("1. Primero.", 2, 100.0, x0=76.0),
+           _linea(cuerpo, 2, 114.0, x0=90.0)]
+    roles = [E0.ROL_CUERPO] * 2
+    rep = {"CENTRALESDEINFORMACIÓN"}
+    sj0 = E0.construir_chunks(E0.parsear_cuerpo("x", "x.pdf", [car, p2j], roles, modo_sin_raiz=True,
+                                                mayusculas_repetidas=rep, pie_desde_version=True))
+    sj = E0.construir_chunks(E0.parsear_cuerpo("x", "x.pdf", [car, p2j], roles, modo_sin_raiz=True,
+                                               mayusculas_repetidas=rep, pie_desde_version=True, caratula_j=True))
+    check("J: la carátula conserva el título y la fecha y el preámbulo no lleva «Preámbulo»; sin J, los pierde",
+          _texto(sj, "x::S0") == "CENTRALES DE INFORMACIÓN\n-Última comunicación incorporada: “A” 8393-\n"
+                                 "Texto ordenado al\n28/01/2026"
+          and (_texto(sj0, "x::S0") or "").startswith("Preámbulo") and "28/01/2026" not in (_texto(sj0, "x::S0") or ""),
+          repr(_texto(sj, "x::S0")))
+    # K
+    pk = [_linea("Sección 1. Declaración.", 1, 30.0), _linea(cuerpo, 1, 50.0), _linea("Fórm. 4421 C (II-2006)", 1, 700.0)]
+    _, chk0 = _parse([pk])
+    _, chk = _parse([pk], pie_formulario_k=True)
+    pk2 = [_linea("Sección 1. Declaración.", 1, 30.0), _linea("Fórm. 4421 C (II-2006)", 1, 50.0), _linea(cuerpo, 1, 70.0)]
+    _, chk2 = _parse([pk2], pie_formulario_k=True)
+    check("K: el código de formulario al pie de la página es pie; el que no es el último renglón queda",
+          "Fórm. 4421" in (_texto(chk0, "x::S1") or "") and "Fórm. 4421" not in (_texto(chk, "x::S1") or "")
+          and "Fórm. 4421" in (_texto(chk2, "x::S1") or ""))
+
+
+def test_s06bis_sinteticos() -> None:
+    E0 = correr_e0.E0
+    print("== y′) S0-6a-bis de U-SEG-OFICIAL: casos sintéticos (C, A y L ajustadas o nuevas)")
+    cuerpo = "Texto de la norma que corre en la columna del cuerpo del ítem y termina en punto final."
+    cierre = "Las entidades deberán observar lo dispuesto en los puntos anteriores durante todo el plazo."
+
+    def lista(cola):
+        return [_linea("Sección 1. Requisitos.", 1, 30.0), _linea("1.1. Condiciones generales.", 1, 50.0, x0=76.0),
+                _linea("1.1.1. Primer requisito.", 1, 70.0, x0=110.0), _linea(cuerpo, 1, 84.0, x0=150.0),
+                _linea("1.1.2. Segundo requisito.", 1, 110.0, x0=110.0), _linea(cuerpo, 1, 124.0, x0=150.0)] + cola
+
+    def correr(cola, excluir=None):
+        res, _ = _parse([lista(cola)])
+        ev = E0.asignar_por_columna_c(res, excluir=excluir)
+        return E0.construir_chunks(res), ev
+    ch, ev = correr([_linea(cierre, 1, 150.0, x0=76.0)])
+    check("C, control: el cierre en la columna de la sección, solo, sale (a la Sección 1)", _texto(ch, "x::S1::cierre") == cierre)
+    ch, ev = correr([_linea(cierre, 1, 150.0, x0=76.0), _linea("Datos del formulario:", 1, 170.0, x0=76.0),
+                     _linea("nombre y apellido del titular", 1, 184.0, x0=200.0),
+                     _linea("domicilio del titular de la cuenta", 1, 198.0, x0=90.0)])
+    check("C (D21, regla 3): si un párrafo del grupo que saldría no comparte columna, no sale ninguno",
+          _texto(ch, "x::S1::cierre") is None and any(e["tipo"] == "grupo_sin_columna_comun_c" for e in ev)
+          and (_texto(ch, "x::1.1.2") or "").endswith("domicilio del titular de la cuenta"))
+    ch, ev = correr([_linea("Nota: el plazo se cuenta desde la", 1, 150.0, x0=76.0),
+                     _linea("fecha de la solicitud y vence a los treinta días.", 1, 164.0, x0=150.0)])
+    check("C: el párrafo se mide por la columna que comparten sus renglones (el segundo, 150), no por el más a la "
+          "izquierda (76): queda en el ítem",
+          (_texto(ch, "x::1.1.2") or "").endswith("vence a los treinta días.") and _texto(ch, "x::S1::cierre") is None)
+    fila = _linea("Código Concepto Importe", 1, 170.0, x0=76.0, ngaps=2)
+    ch, ev = correr([_linea(cierre, 1, 150.0, x0=76.0), fila], excluir=lambda l: l is fila)
+    check("C: el párrafo al que sigue una tabla de su texto no sale (la tabla es parte del bloque)",
+          _texto(ch, "x::S1::cierre") is None and any(e["tipo"] == "grupo_sin_columna_comun_c" for e in ev))
+    # A: carátula
+    car = [_linea("REGIMEN INFORMATIVO CONTABLE MENSUAL", 1, 360.0, x0=90.0),
+           _linea("INFORMACION INSTITUCIONAL DE ENTIDADES", 1, 425.0, x0=102.0),
+           _linea("FINANCIERAS Y CAMBIARIAS", 1, 444.0, x0=184.0), _linea("Vigente a partir del 31/12/19", 1, 508.0, x0=201.0)]
+    p2 = [_linea("Las entidades deberán remitir a esta Institución la información.", 2, 147.0, x0=76.0),
+          _linea("1. Datos de la entidad.", 2, 170.0, x0=76.0), _linea(cuerpo, 2, 184.0, x0=90.0),
+          _linea("2. Datos de los directivos.", 2, 210.0, x0=76.0), _linea(cuerpo, 2, 224.0, x0=90.0)]
+    r, _ = _parse([car, p2], modo_sin_raiz=True)
+    ev = E0.dividir_a(r, sin_raiz=True)
+    larga = car + [_linea(cuerpo, 1, 520.0 + 12 * k, x0=76.0) for k in range(5)]
+    r2, _ = _parse([larga, p2], modo_sin_raiz=True)
+    check("A: la página 1 leída como cuerpo con a lo sumo 8 renglones es carátula y no abre divisiones; con más, no es "
+          "carátula", r.paginas_caratula_a == {1} and not any(e.get("pagina") == 1 for e in ev)
+          and r2.paginas_caratula_a == set())
+    # L: índice con un título partido en dos renglones
+    idx = [_linea("INFORMES", 1, 60.0, x0=290.0), _linea("1. Informe anual sobre los estados financieros.", 1, 80.0, x0=90.0),
+           _linea("2. Informe de revisión de estados financieros de períodos intermedios con los", 1, 100.0, x0=90.0),
+           _linea("las revisiones limitadas de los estados financieros de la entidad al cierre de cada", 1, 112.0, x0=108.0),
+           _linea("3. Memorando sobre el sistema de control interno.", 1, 132.0, x0=90.0)]
+    cpo = []
+    for k, t in enumerate(["1. Informe anual sobre los estados financieros.",
+                           "2. Informe de revisión de estados financieros de períodos intermedios con los",
+                           "3. Memorando sobre el sistema de control interno."]):
+        cpo.append(_linea(t, 2, 60.0 + 100 * k, x0=90.0))
+        cpo += [_linea(cuerpo, 2, 74.0 + 100 * k + 14 * j, x0=110.0) for j in range(4)]
+    roles = [E0.ROL_CUERPO] * 2
+    il = E0.lineas_de_indice_l([idx, cpo], roles)
+    sin_idx = E0.lineas_de_indice_l([idx[:3] + [_linea("3. Otro título que no reaparece.", 1, 132.0, x0=90.0)], cpo[:5]],
+                                    roles)
+    r0, _ = _parse([idx, cpo], modo_sin_raiz=True)
+    r1, _ = _parse([idx, cpo], modo_sin_raiz=True, indice_l=il)
+    check("L: el índice (sus títulos reaparecen después) no abre raíces y el cuerpo que vuelve a empezar en 1 sí; una "
+          "lista cuyos títulos no reaparecen no es índice",
+          il == {(1, 80.0), (1, 100.0), (1, 132.0)} and sin_idx == frozenset()
+          and [s.pagina for s in r1.secciones if s.numero in ("1", "2", "3")] == [2, 2, 2]
+          and [s.pagina for s in r0.secciones if s.numero in ("1", "2", "3")] == [1, 1, 1]
+          and sum(1 for x in r1.rechazos_header if x["motivo"] == "indice_l") == 3, str(il))
+
+
+TOS_S06 = ("nmaeef", "ri_dcpc", "ceninf", "seguef", "snp_cheq", "ri2_ae", "ri_cc", "ri_ccna", "ri_oc", "manori",
+           "snp_psp", "ctavis", "cedin", "cryl", "ribspc", "garant", "snp_spd", "efemin", "ri_psprca", "ri_spi",
+           "seggar", "gerc", "lingeef",
+           # negativos del §4 (sus leídas motivaron ajustes de C y de A: DISENO_S0-6a.md, §3)
+           "fimipyme", "cajasc", "ri_rml", "ri_msrl", "dmrd", "gracre",
+           # S0-6a-bis: los de los grupos que empeoraban en S0-6a (G5, G10, G11) y los de las listas que quedan en R5-a
+           "ri_ii_31_12_19", "depaho", "apnf", "ayccef", "snp_dd", "snp_tr", "expaef", "tasint", "snp_mep")
+# Negativos del §4 de S0-6a (s0_6/scripts/negativos_leidas_S0-6a.py), regenerados en S0-6a-bis con los TOs agregados a
+# TOS_S06 (s0_6/bis/scripts/negativos_al_selftest_S0-6a-bis.py): las unidades leídas en S1-ter de los TOs de TOS_S06, de
+# corte (y herencia, si se juzgó y no cambia) correctos, que la E0 corregida conserva. Por id: su origen (ficha y
+# pregunta de S1-ter), lo que se fija («corte»: sha256 propio y páginas; «corte y herencia»: además la herencia) y los 16
+# primeros hex del sha256 de esos campos en la E0 que leyó S1-ter, iguales en la corregida.
+NEGATIVOS_LEIDAS_S06: dict[str, tuple[str, str, str]] = {
+    "apnf::1.3.1.2": ("E2-019 la_unidad, E2-019 la_herencia", "corte y herencia", "59fc301b0570ce97"),
+    "apnf::1.3.1::cierre": ("E2-019 la_que_sigue", "corte y herencia", "eca8ea35f35d9fd5"),
+    "ayccef::2.3.2.2": ("E2-069 la_unidad, E2-069 la_herencia", "corte y herencia", "00738fee343fd4d9"),
+    "ayccef::2.3.3": ("E2-069 la_que_sigue", "corte y herencia", "479dc6829e3d3279"),
+    "ayccef::2.9.4.2": ("E2-070 la_unidad, E2-070 la_herencia", "corte y herencia", "a85e7a7f6fa6e201"),
+    "ayccef::2.9.5": ("E2-070 la_que_sigue", "corte y herencia", "4cb3fd6530a5c87b"),
+    "ayccef::3.6.2.2": ("E2-071 la_unidad, E2-071 la_herencia", "corte y herencia", "6f21c563a8f5e815"),
+    "ayccef::3.6.3": ("E2-071 la_que_sigue", "corte y herencia", "52a9c29f1c6d335e"),
+    "ayccef::4.4.5": ("E2-072 la_unidad, E2-072 la_herencia", "corte y herencia", "98c4702363f408be"),
+    "ayccef::4.5": ("E2-072 la_que_sigue", "corte y herencia", "14f0e8024512460d"),
+    "ayccef::5.2.5.2": ("E2-073 la_unidad, E2-073 la_herencia", "corte y herencia", "5bff5481c0f12a38"),
+    "ayccef::5.3.1": ("E2-073 la_que_sigue", "corte y herencia", "a06fcd60f8b9d8fe"),
+    "cajasc::11.1.2": ("E2-074 la_unidad, E2-074 la_herencia", "corte y herencia", "e9aab9ba19451ee1"),
+    "cajasc::11.2": ("E2-074 la_que_sigue", "corte y herencia", "433b69efea50defb"),
+    "cajasc::11.4.4": ("E2-075 la_unidad, E2-075 la_herencia", "corte y herencia", "1eb511789254819d"),
+    "cajasc::11.4::cierre": ("E2-075 la_que_sigue", "corte y herencia", "a01b594fc12e3d7b"),
+    "cajasc::4.2.2.3": ("E2-076 la_unidad, E2-076 la_herencia", "corte y herencia", "cc0672ade7d5432f"),
+    "cajasc::4.2.2::cierre": ("E2-076 la_que_sigue", "corte y herencia", "afab42aca1315c34"),
+    "cajasc::6.2.1.3": ("E2-077 la_unidad, E2-077 la_herencia", "corte y herencia", "664696892c6978a4"),
+    "cajasc::6.2.2": ("E2-077 la_que_sigue", "corte y herencia", "5ce16c85558e7e47"),
+    "cedin::11.2": ("E2-042 la_unidad, E2-042 la_herencia", "corte y herencia", "6513ff46062bf057"),
+    "cedin::13.2::cierre": ("E1-050 la_unidad", "corte", "e6e5f1a121dc1e90"),
+    "cedin::2.1.4": ("E1-001 la_unidad", "corte y herencia", "023a4f7d659f8789"),
+    "cedin::7.1.3::cierre": ("E2-028 la_que_sigue", "corte", "dd0405a0ee8cccd8"),
+    "cedin::S12::chapeau_seccion": ("E1-002 la_unidad, E2-042 la_que_sigue", "corte y herencia", "64d5f58679ed07f7"),
+    "ceninf::S4::chapeau_seccion": ("E1-075 la_unidad", "corte y herencia", "08c440f8551e13bb"),
+    "cryl::4.2.2": ("E2-033 la_unidad, E2-033 la_herencia", "corte", "d273d781bd720172"),
+    "ctavis::4.1.2::cierre": ("E2-016 la_que_sigue", "corte", "945b9e30dc320fe8"),
+    "ctavis::5.3.7": ("E2-040 la_que_sigue", "corte y herencia", "bd2a46d60f4aff88"),
+    "ctavis::7.7": ("E1-082 la_unidad", "corte y herencia", "bd5576ff589ec640"),
+    "ctavis::8.1.3": ("E1-043 la_unidad", "corte y herencia", "415ad5feaba37a68"),
+    "ctavis::8.2.1.4": ("E2-036 la_unidad, E2-036 la_herencia", "corte y herencia", "96910c570561f378"),
+    "ctavis::8.2.1::cierre": ("E2-036 la_que_sigue", "corte y herencia", "d2763246bcdfa87b"),
+    "depaho::1.12.2": ("E2-079 la_unidad, E2-079 la_herencia", "corte y herencia", "e9d08a5afbbb58f9"),
+    "depaho::1.12::cierre": ("E2-079 la_que_sigue", "corte y herencia", "0774a4b235451602"),
+    "depaho::1.5.5": ("E2-080 la_unidad, E2-080 la_herencia", "corte y herencia", "5f2f9a60352203b6"),
+    "depaho::1.6.1::intro": ("E2-080 la_que_sigue", "corte y herencia", "6cb763b03009f04e"),
+    "depaho::1.7.5": ("E1-061 la_unidad", "corte y herencia", "cc952d5ebc08a4a5"),
+    "depaho::3.1.6.4": ("E2-081 la_unidad, E2-081 la_herencia", "corte y herencia", "cde2a51fd2663c9a"),
+    "depaho::3.1.7.1": ("E2-081 la_que_sigue", "corte y herencia", "44934258a415ab69"),
+    "depaho::3.11.5.5": ("E2-082 la_unidad, E2-082 la_herencia", "corte y herencia", "3a48dd66f0b5fca2"),
+    "depaho::3.11.5::cierre": ("E2-082 la_que_sigue", "corte y herencia", "dbc1b110a346e5b9"),
+    "depaho::3.4.10.2": ("E2-083 la_unidad, E2-083 la_herencia", "corte y herencia", "38822da995e4596b"),
+    "depaho::3.4.10::cierre": ("E2-083 la_que_sigue", "corte y herencia", "ed5bcacea800c9ea"),
+    "depaho::3.4.4.5": ("E2-084 la_unidad, E2-084 la_herencia", "corte y herencia", "c21904521b56bcc4"),
+    "depaho::3.4.5.1": ("E2-084 la_que_sigue", "corte y herencia", "879ff88696878bdf"),
+    "depaho::3.6.2.4": ("E1-083 la_unidad, E2-085 la_unidad, E2-085 la_herencia", "corte y herencia", "c8bb10ed476ec201"),
+    "depaho::3.6.3": ("E2-085 la_que_sigue", "corte y herencia", "e2413e045e041f6d"),
+    "depaho::3.8.6.4": ("E2-086 la_unidad, E2-086 la_herencia", "corte y herencia", "793b20e5dbfc1b0f"),
+    "depaho::3.8.7": ("E2-086 la_que_sigue", "corte y herencia", "94f4365ff17d1657"),
+    "dmrd::S14": ("E1-007 la_unidad", "corte y herencia", "89cd209763efb098"),
+    "efemin::1.3.8": ("E2-046 la_que_sigue", "corte", "a35f2ec92a7fe40a"),
+    "efemin::2.3.2": ("E2-015 la_unidad, E2-015 la_herencia", "corte y herencia", "dd8a7c820a8d3346"),
+    "efemin::2.3::cierre": ("E2-015 la_que_sigue", "corte y herencia", "282586c1d22421d0"),
+    "efemin::3.1.4": ("E1-020 la_unidad", "corte y herencia", "58df1750a28758b0"),
+    "efemin::3.2.2": ("E2-087 la_unidad, E2-087 la_herencia", "corte y herencia", "a4e13cb9defddc08"),
+    "efemin::3.2::cierre": ("E2-087 la_que_sigue", "corte y herencia", "6ad8611f4d3ad4d0"),
+    "expaef::1.9": ("E1-035 la_unidad", "corte y herencia", "4ba65e9f3215a6c7"),
+    "fimipyme::4.3.3": ("E2-024 la_unidad, E2-024 la_herencia", "corte y herencia", "fdb0103581f62add"),
+    "fimipyme::4.3::cierre": ("E2-024 la_que_sigue", "corte y herencia", "20b55fc1e1c2230f"),
+    "fimipyme::5.1.2": ("E2-004 la_unidad, E2-004 la_herencia", "corte y herencia", "fd318a5a54b643ce"),
+    "fimipyme::5.1::cierre": ("E2-004 la_que_sigue", "corte y herencia", "b34defb58bc33742"),
+    "garant::1.2.8.2": ("E2-052 la_unidad, E2-052 la_herencia", "corte y herencia", "f61d9d13b1e732f6"),
+    "garant::1.2.8::cierre": ("E2-052 la_que_sigue", "corte y herencia", "5a557c9000683865"),
+    "garant::1.2.9::cierre": ("E2-043 la_que_sigue", "corte", "2c8bd63b79c1c534"),
+    "gerc::6.2": ("E2-027 la_unidad, E2-027 la_herencia", "corte y herencia", "f5ff9b80d3bc7dba"),
+    "gracre::6.5.2": ("E2-054 la_unidad, E2-054 la_herencia", "corte y herencia", "79d0ed00c6504e2f"),
+    "gracre::6.6": ("E2-054 la_que_sigue", "corte y herencia", "0e750d1a614b860c"),
+    "gracre::6.7.2": ("E2-021 la_unidad, E2-021 la_herencia", "corte y herencia", "cd47cf5a1b6147d1"),
+    "gracre::6.7::cierre": ("E2-021 la_que_sigue", "corte y herencia", "97e5aea6229bbadd"),
+    "lingeef::10.3.2": ("E2-088 la_unidad, E2-088 la_herencia", "corte y herencia", "c4de1eea00969e4b"),
+    "lingeef::10.4::intro": ("E2-088 la_que_sigue", "corte y herencia", "777ac6f969d625b9"),
+    "lingeef::12.8.2": ("E2-089 la_unidad, E2-089 la_herencia", "corte y herencia", "46807b483635d6e1"),
+    "lingeef::3.3.1.8": ("E2-090 la_unidad, E2-090 la_herencia", "corte y herencia", "ddcaaf0480340e20"),
+    "lingeef::3.3.2::intro": ("E2-090 la_que_sigue", "corte y herencia", "bb3ed4bb3db91ab8"),
+    "lingeef::3.3.8": ("E1-031 la_unidad", "corte y herencia", "e10761a045d2e5dd"),
+    "lingeef::4.3.3.6": ("E2-020 la_unidad, E2-020 la_herencia", "corte y herencia", "8ea0ffb85f3799cb"),
+    "lingeef::4.3.4::intro": ("E2-020 la_que_sigue", "corte y herencia", "8e3fd04c53ea5c96"),
+    "lingeef::5.1.1.3": ("E2-091 la_unidad, E2-091 la_herencia", "corte y herencia", "1cf4320e12533af2"),
+    "lingeef::5.1.1::cierre": ("E2-091 la_que_sigue", "corte y herencia", "fe89cbecb02b9f5f"),
+    "lingeef::5.3.4.5": ("E2-092 la_unidad, E2-092 la_herencia", "corte y herencia", "e32b98a0e9e97765"),
+    "lingeef::5.3.4::cierre": ("E2-092 la_que_sigue", "corte y herencia", "d87c06c4576f062b"),
+    "lingeef::5.4.2.3": ("E2-023 la_unidad, E2-023 la_herencia", "corte y herencia", "6da59c792019150a"),
+    "lingeef::5.4.3.3": ("E2-093 la_unidad, E2-093 la_herencia", "corte y herencia", "4639094a2a036098"),
+    "lingeef::5.4.3::intro": ("E2-023 la_que_sigue", "corte y herencia", "f32beb653b96a4f3"),
+    "lingeef::5.4.4::intro": ("E2-093 la_que_sigue", "corte y herencia", "e78710ce9624aa53"),
+    "lingeef::7.3.2.2": ("E2-095 la_unidad, E2-095 la_herencia", "corte y herencia", "fa97162895c38302"),
+    "lingeef::7.3.3::intro": ("E2-095 la_que_sigue", "corte y herencia", "b4a35d7dc94f3dbb"),
+    "manori::1.1.4.1": ("E1-027 la_unidad", "corte", "3b67aa482ec6a0eb"),
+    "manori::1.1.6::cierre": ("E2-008 la_que_sigue", "corte y herencia", "51a4360b7da8533d"),
+    "manori::1.4.1::cierre": ("E2-096 la_que_sigue", "corte y herencia", "8ce5dbf768f138ce"),
+    "manori::3.4.1::cierre": ("E2-097 la_que_sigue", "corte y herencia", "f9c0b10256e653a1"),
+    "ri_cc::R4::1.3": ("E2-005 la_que_sigue", "corte y herencia", "24e20420b491eb0e"),
+    "ri_ccna::D1A3L2::26.4": ("E1-019 la_unidad", "corte y herencia", "c058432e26c788b4"),
+    "ri_ccna::D1A3L2::S34": ("E1-018 la_unidad", "corte y herencia", "2f0cc9ca7818e6a7"),
+    "ri_ccna::D1A3L2::S4": ("E1-089 la_unidad", "corte y herencia", "0f5304e624639ad4"),
+    "ri_ccna::D1A3L2::S40": ("E1-065 la_unidad", "corte y herencia", "d2c332b3d8cc270b"),
+    "ri_ccna::D2A2::S3::chapeau_seccion": ("E2-057 la_que_sigue", "corte y herencia", "12fe0492f1223a09"),
+    "ri_ccna::D2A3::S0": ("E1-006 la_unidad", "corte y herencia", "778c6ad53e242475"),
+    "ri_dcpc::2.4": ("E1-034 la_unidad", "corte y herencia", "d6ef1ee351769d4c"),
+    "ri_dcpc::3.7.1": ("E1-057 la_unidad", "corte y herencia", "d6b3191f82baab29"),
+    "ri_ii_31_12_19::2.5": ("E1-067 la_unidad", "corte y herencia", "9e84763fe980e636"),
+    "ri_ii_31_12_19::6.3": ("E1-052 la_unidad", "corte", "bc55567e47c4ae84"),
+    "ri_msrl::7.2": ("E1-078 la_unidad", "corte y herencia", "71505a7c88f4e95c"),
+    "ri_oc::1.2.4": ("E1-056 la_unidad", "corte", "11f17a53dc9e00c2"),
+    "ri_oc::1.4.3": ("E1-044 la_unidad", "corte", "d8bc8949eb8822e6"),
+    "ri_oc::3.1": ("E2-007 la_que_sigue", "corte", "ad615523b7cb6c8f"),
+    "ri_oc::3.16": ("E1-014 la_unidad", "corte", "5565ee0ee9a98dab"),
+    "ri_oc::3.38": ("E1-011 la_unidad", "corte", "3cf1af5c61f48cc4"),
+    "ri_oc::3.45": ("E2-044 la_unidad, E2-044 la_herencia", "corte", "99d4067397255045"),
+    "ri_oc::3.46": ("E2-044 la_que_sigue", "corte", "ebe59b98e83b28c6"),
+    "ri_oc::B.1.5": ("E1-015 la_unidad", "corte", "2d152d6da34df92c"),
+    "ri_oc::B.1::cierre": ("E2-098 la_que_sigue", "corte", "d4a374695787ff63"),
+    "ri_psprca::4.1": ("E1-005 la_unidad", "corte", "facccab4e27ec3d8"),
+    "ri_rml::1.2.3": ("E2-100 la_unidad, E2-100 la_herencia", "corte y herencia", "352adc75e5080399"),
+    "ri_rml::1.2.4": ("E2-100 la_que_sigue", "corte y herencia", "7f7a7e081df1081f"),
+    "ri_rml::1.4.2": ("E2-062 la_unidad, E2-062 la_herencia", "corte y herencia", "5555f612378b02ef"),
+    "ri_rml::1.4::cierre": ("E2-062 la_que_sigue", "corte y herencia", "b7bc643d08334459"),
+    "ri_spi::A.1.4": ("E1-069 la_unidad", "corte", "1ee96c2458487e81"),
+    "ri_spi::A.1.6": ("E1-026 la_unidad", "corte", "6f32dc9600033bc8"),
+    "ri_spi::B.2.9": ("E1-030 la_unidad", "corte", "f62ae29b4c9b3955"),
+    "ri_spi::B.3.6": ("E1-085 la_unidad", "corte", "fa8207664c39ab1d"),
+    "ri_spi::B.5.15": ("E1-066 la_unidad", "corte", "6f036b1f83440284"),
+    "ri_spi::B.5.16": ("E1-062 la_unidad", "corte", "6db38525e3dfeb51"),
+    "ri_spi::C.1::cierre": ("E2-058 la_que_sigue", "corte", "6ef455c87c30ac92"),
+    "seggar::5.2.4": ("E1-088 la_unidad", "corte", "6bbbfb0de528498e"),
+    "seggar::S3::chapeau_seccion": ("E1-012 la_unidad", "corte y herencia", "820c858841de977c"),
+    "seggar::S7::chapeau_seccion": ("E2-065 la_que_sigue", "corte y herencia", "e85b29ae1f6e8fc4"),
+    "seguef::2.1.6::cierre": ("E2-034 la_que_sigue", "corte", "e3589e353e03c3e6"),
+    "seguef::2.15": ("E1-077 la_unidad", "corte y herencia", "056074f99933be10"),
+    "seguef::2.3.1.2": ("E1-086 la_unidad", "corte y herencia", "5a891dec00f0096d"),
+    "seguef::2.9.2": ("E2-059 la_unidad, E2-059 la_herencia", "corte y herencia", "0fbe3bcb18cb09ce"),
+    "seguef::2.9::cierre": ("E2-059 la_que_sigue", "corte y herencia", "3a32edd4a7071537"),
+    "seguef::3.7": ("E1-084 la_unidad", "corte y herencia", "b44ac03c2bf95356"),
+    "seguef::6.3.2": ("E1-060 la_unidad", "corte y herencia", "8dd08ba4c6a2bad6"),
+    "seguef::6.3::intro": ("E1-025 la_unidad", "corte y herencia", "931d98bd311c40af"),
+    "snp_cheq::8.1.3": ("E1-080 la_unidad", "corte y herencia", "4f35f5e112488b68"),
+    "snp_cheq::8.8": ("E1-046 la_unidad", "corte y herencia", "4fcc2e1c36feeb76"),
+    "snp_dd::2.2.2.1": ("E1-070 la_unidad", "corte y herencia", "621f9f311b4b6d49"),
+    "snp_mep::3.1.1.2": ("E2-018 la_unidad, E2-018 la_herencia", "corte y herencia", "4d022f1a41907494"),
+    "snp_mep::3.1.1::cierre": ("E2-018 la_que_sigue", "corte y herencia", "2303ca7ba3f353f3"),
+    "snp_mep::3.1.2.2": ("E2-022 la_unidad, E2-022 la_herencia", "corte y herencia", "6dded9b8ca9c3cfe"),
+    "snp_mep::3.1.2::cierre": ("E2-022 la_que_sigue", "corte y herencia", "7c352211f25005a2"),
+    "snp_mep::3.2.3::intro": ("E1-032 la_unidad", "corte y herencia", "2d189ead602d387d"),
+    "snp_mep::4.6.2": ("E2-053 la_unidad, E2-053 la_herencia", "corte y herencia", "f4aac510c683102d"),
+    "snp_mep::4.6::cierre": ("E2-053 la_que_sigue", "corte y herencia", "b50317d444c30711"),
+    "snp_psp::1.3.2::cierre": ("E2-011 la_que_sigue", "corte", "e9911188d972335b"),
+    "snp_spd::1.1::intro": ("E1-076 la_unidad", "corte y herencia", "e2010a8dca494023"),
+    "snp_tr::1.3.1.3": ("E1-039 la_unidad", "corte y herencia", "0156648f9eb0572a"),
+    "snp_tr::1.6.2.1": ("E1-068 la_unidad", "corte y herencia", "748b01674738ab44"),
+    "snp_tr::4.2": ("E2-101 la_unidad, E2-101 la_herencia", "corte y herencia", "30cf50a764153418"),
+    "tasint::1.7": ("E1-073 la_unidad", "corte y herencia", "2a985e7b815367a5"),
+    "tasint::3.3.2": ("E2-032 la_unidad, E2-032 la_herencia", "corte y herencia", "fde47c3355b9d2fd"),
+    "tasint::3.3::cierre": ("E2-032 la_que_sigue", "corte y herencia", "814d952435db3962"),
+}
+
+
+def _sha16_campos(c: dict, campos: tuple) -> str:
+    return _sha16(json.dumps([c[k] for k in campos], ensure_ascii=False, sort_keys=True))
+
+
+def test_s06_casos(d: Path) -> None:
+    print(f"== z) S0-6a de U-SEG-OFICIAL: un caso positivo por regla, de las 40 filas (e0-r2 sobre {len(TOS_S06)} TOs)")
+    correr_e0.correr(d, manifiesto=_ManifiestoParticion(TOS_S06), version_e0="e0-r2")
+    ch = {to: {c["id"]: c for c in cargar(d, f"chunks_{to}.json")} for to in TOS_S06}
+
+    def u(uid: str) -> dict:
+        return ch[uid.split("::")[0]].get(uid) or {}
+
+    def txt(uid: str) -> str:
+        return u(uid).get("texto", "")
+
+    def her(uid: str) -> list:
+        return [(t["tipo"], t["unidad_origen"], t["texto"]) for t in u(uid).get("herencia", [])]
+
+    def sigue(uid: str) -> str:
+        ids = list(ch[uid.split("::")[0]])
+        return ids[ids.index(uid) + 1] if uid in ids and ids.index(uid) + 1 < len(ids) else ""
+
+    check("A (E1-010): ri_dcpc::3.7.6 termina en la p. 26; la tabla de correspondencia es una división de la Sección 3",
+          u("ri_dcpc::3.7.6").get("paginas") == [26]
+          and any(c["texto"].startswith("TABLA DE CORRESPONDENCIA PARA REEXPRESION DE PARTIDAS") and
+                  c["herencia"][0]["texto"].startswith("Sección 3.") for c in ch["ri_dcpc"].values()))
+    check("A (E2-039): ribspc::S4 termina en la p. 1 y hereda «NORMAS DE PROCEDIMIENTO» e «Instrucciones generales»",
+          u("ribspc::S4").get("paginas") == [1]
+          and [t[2] for t in her("ribspc::S4")] == ["NORMAS DE PROCEDIMIENTO", "Instrucciones generales"])
+    hs10 = her("ri_psprca::S10")
+    check("A (E2-056): ri_psprca::S10 es un renglón y hereda la banda «SECCION II – …», «Apartado A: …» y «Datos "
+          "solicitados:»",
+          txt("ri_psprca::S10") == "10. Moneda total en moneda de origen."
+          and hs10[0][2] == "SECCION II – INSTRUCCIONES PARTICULARES" and hs10[1][2] == "Apartado A: ATMs en Argentina"
+          and hs10[2][2].endswith("Datos solicitados:"), str(hs10))
+    check("A y D (E2-007): ri_oc::S2 hereda «APARTADO A: OPERACIONES DE CAMBIOS»",
+          her("ri_oc::S2")[0][2] == "APARTADO A: OPERACIONES DE CAMBIOS")
+    check("A (E2-099): la unidad que sigue a ri_oc::C.11 es el bloque «Validación del Apartado A – …» y termina antes de "
+          "«Validación del Apartado B»",
+          txt(sigue("ri_oc::C.11")).startswith("Validación del Apartado A – Operaciones de cambios")
+          and "Validación del Apartado B" not in txt(sigue("ri_oc::C.11")))
+    h57 = [t[2] for t in her("ri_ccna::D2A2::S2")]
+    check("A (E2-057): ri_ccna::D2A2::S2 hereda «ANEXO II», el título del anexo y su introducción",
+          len(h57) >= 3 and h57[0] == "ANEXO II" and h57[1].startswith("METODOLOGÍA PARA LA EVALUACIÓN DEL CONTROL")
+          and h57[2].startswith("La evaluación de la estructura de control"), str([t[:40] for t in h57]))
+    check("A (E2-002): ri2_ae 14.3 (en el sub-documento del Anexo III) son dos renglones y hereda «ANEXO III»",
+          txt("ri2_ae::A3::14.3").count("\n") == 1 and her("ri2_ae::A3::14.3")[0][2] == "ANEXO III")
+    check("B (E1-081): el título de 2.13 de seguef va entero en el encabezado y la intro empieza en «Bajo la supervisión»",
+          txt("seguef::2.13::intro").startswith("Bajo la supervisión")
+          and any(t[2].endswith("en formato credencial virtual.") for t in her("seguef::2.13.1") if t[0] == "encabezado"))
+    check("B (E1-090): el título de 8.4.4 de snp_cheq, tres renglones, va entero en el encabezado; no queda intro",
+          "snp_cheq::8.4.4::intro" not in ch["snp_cheq"]
+          and any(t[2].count("\n") == 2 and t[1] == "8.4.4" for t in her("snp_cheq::8.4.4.1")))
+    sin_num = {"snp_psp::1.3.2.2": "1.3.2", "ctavis::4.1.2.3": "4.1.2", "cedin::7.1.3.2": "7.1",
+               "seguef::2.1.6.2": "2.1.6", "ctavis::5.3.6.3": "5.3.6", "garant::1.2.9.4": "1.2.9",
+               "snp_spd::5.5.2.4": "5.5.2", "efemin::1.3.7.2": "1.3.7"}
+    malos = [k for k, n in sin_num.items() if any(t[0] == "encabezado" and t[1] == n for t in her(k))
+             or not any(t[0] == "intro" and t[1] == n and t[2].startswith(n + ".") for t in her(k))]
+    check("B (E2-011, E2-016, E2-028, E2-034, E2-040, E2-043, E2-045, E2-046): sin encabezado fabricado; la intro "
+          "lleva el texto entero con su número", not malos, str(malos))
+    check("C (E2-033): la que sigue a cryl::4.2.2 es cryl::S4::cierre", sigue("cryl::4.2.2") == "cryl::S4::cierre")
+    check("C (E2-045): la que sigue a snp_spd::5.5.3 es la intersticial del 5.5; 5.5.3 termina en su texto",
+          sigue("snp_spd::5.5.3") == "snp_spd::5.5::intersticial" and "Las actividades" not in txt("snp_spd::5.5.3"))
+    contaminadas = [k for k in ("manori::1.1.6.5", "manori::1.4.1.3", "manori::3.4.1.3")
+                    if any(t[1] in ("S1", "S3") and t[0] in ("intersticial", "cierre") for t in her(k))]
+    check("C (E2-008, E2-096, E2-097): manori 1.1.6.5, 1.4.1.3 y 3.4.1.3 no heredan intersticiales ni cierres de su "
+          "sección (el cierre del 1.2 y del 3.2, y los formularios)", not contaminadas, str(contaminadas))
+    check("C, A y K (E2-006): ri_ccna::D1F6::S8 termina en «…normas reglamentarias.», sin el cierre de la declaración, "
+          "los rótulos de firma ni el código del formulario",
+          txt("ri_ccna::D1F6::S8").endswith("Nº 21.526 y normas reglamentarias.")
+          and "Asimismo" not in txt("ri_ccna::D1F6::S8") and "Fórm." not in txt("ri_ccna::D1F6::S8"))
+    check("I y A (E2-006): ri_ccna::D1F6::S8 hereda el título del formulario y su introducción, no el membrete",
+          [t[2] for t in her("ri_ccna::D1F6::S8")][:2]
+          == ["DECLARACIÓN JURADA DEL SOCIO RESPONSABLE",
+              "Declaro bajo juramento, como Socio Responsable por la labor del auditor externo de la Entidad que:"])
+    check("D (E2-058, E2-098, E2-099): los apartados heredados con su texto impreso (el de ri_spi, con el renglón que le "
+          "junta R5-c, que sigue como está)",
+          her("ri_spi::C.1.3")[0][2] == "APARTADO C: DENUNCIAS POR INCUMPLIMIENTOS RELACIONADOS CON EL\nAPARTADO B"
+          and her("ri_oc::B.1.28")[0][2].startswith("APARTADO B: POSICIÓN GENERAL DE CAMBIOS")
+          and her("ri_oc::C.11")[0][2].startswith("APARTADO C: COMPOSICIÓN"))
+    check("E (E2-065): seggar::5.3.5 termina en «…cobro indebido de la garantía.» y la Sección 6 es seggar::S6",
+          txt("seggar::5.3.5").endswith("cobro indebido de la garantía.")
+          and txt("seggar::S6").startswith("6. Instrumentación."))
+    check("F (E2-046): efemin::1.3.7.2 es un renglón (el encabezado de columnas reimpreso sale del texto) y su herencia "
+          "no lleva celdas de ese encabezado",
+          txt("efemin::1.3.7.2") == "1.3.7.2. En moneda extranjera. 15 15"
+          and not any(t[2] in ("Tasas en %", "Grupo A", "Concepto") for t in her("efemin::1.3.7.2")))
+    check("F (E2-066): gerc::2.3.1.4 no hereda «Exposiciones Límite» como intro del 2.3.1",
+          not any(t[1] == "2.3.1" and t[0] == "intro" for t in her("gerc::2.3.1.4"))
+          and "gerc::2.3.1::intro" not in ch["gerc"])
+    check("G (E2-094): lingeef::6.2.1.10 abre y sigue a 6.2.1.9; 6.2.1::cierre no existe; 6.2.1.9 no hereda los "
+          "fragmentos del número",
+          sigue("lingeef::6.2.1.9") == "lingeef::6.2.1.10" and "lingeef::6.2.1::cierre" not in ch["lingeef"]
+          and not any(t[2].strip(". ") == "" for t in her("lingeef::6.2.1.9")))
+    check("H (E2-005): ri_cc::R4::1.2.3 abre («1.2.3.Conceptos…») y 1.2.2 son cinco renglones",
+          txt("ri_cc::R4::1.2.3").startswith("1.2.3.Conceptos comprendidos") and txt("ri_cc::R4::1.2.2").count("\n") == 4)
+    check("J (E1-047): ceninf::S0 lleva el título y la fecha de la carátula, sin «Preámbulo»",
+          txt("ceninf::S0") == "CENTRALES DE INFORMACIÓN\n-Última comunicación incorporada: “A” 8393-\n"
+                               "Texto ordenado al\n28/01/2026")
+    f3 = [c["texto"] for i, c in ch["ri_ccna"].items() if i.startswith("ri_ccna::D1F3::")]
+    f4 = "\n".join(c["texto"] for i, c in ch["ri_ccna"].items() if i.startswith("ri_ccna::D1F4::"))
+    check("K, aceptación de R5-e actualizada (las unidades del formulario, que A divide en bloques): el código de "
+          "formulario del pie de D1F3 ya no está en el texto (es pie), ninguna unidad de D1F3 termina en la «C» suelta; "
+          "D1F4 sigue sin letras sueltas y con su «CODIGO»",
+          bool(f3) and not any("Fórm. 4368" in t for t in f3) and not any(t.endswith("\nC") for t in f3)
+          and "CODIGO" in f4 and not any(len(r.strip()) == 1 and r.strip().isupper() for r in f4.split("\n")))
+    oc = ch["ri_oc"]
+    tres = [i for i in oc if i.startswith("ri_oc::3.")]
+    check("E reemplaza a R5-g: «3. Aclaraciones» sale de ri_oc::S2 y las 51 unidades de 3.1 a 3.51 lo heredan",
+          not txt("ri_oc::S2").endswith("3. Aclaraciones") and len(tres) == 51
+          and all(any(t["texto"] == "3. Aclaraciones" for t in oc[i]["herencia"]) for i in tres), str(len(tres)))
+    check("H reemplaza a R5-f en ri_ccna: abren 2.1.1 a 2.1.8, 5.1 y 8.1 de D1A1 y 5.1 de D1A2",
+          all(f"ri_ccna::D1A1::2.1.{k}" in ch["ri_ccna"] for k in range(1, 9)) and "ri_ccna::D1A1::5.1" in ch["ri_ccna"]
+          and "ri_ccna::D1A1::8.1" in ch["ri_ccna"] and "ri_ccna::D1A2::5.1" in ch["ri_ccna"])
+    check("A reemplaza a R5-a′: ri_oc::C.11 conserva sus dos renglones y ninguna herencia de C.1 a C.11 tiene el bloque "
+          "de validaciones",
+          txt("ri_oc::C.11").endswith("para el último día de cada mes).") and txt("ri_oc::C.11").count("\n") == 1
+          and not any("Criterios de validación" in t["texto"] or "Se considerará no validada" in t["texto"]
+                      for k in range(1, 12) for t in oc[f"ri_oc::C.{k}"]["herencia"]))
+    rech36 = [x for x in cargar(d, "estructura_nmaeef.json")["rechazos_header"] if x["pagina"] == 36]
+    ids_n = list(ch["nmaeef"])
+    check("L (E1-008): los rótulos del índice del Anexo IV de nmaeef (p. 36) no abren raíz (L o la regla 8); el cuerpo "
+          "abre, y 4.4.2 termina antes de 4.5.1",
+          sum(1 for x in rech36 if x["motivo"] == "indice_l") == 4
+          and all(x["motivo"] in ("indice_l", "lista_de_puntos_r8") for x in rech36)
+          and "nmaeef::A4::4.4.2" in ch["nmaeef"]
+          and ids_n[ids_n.index("nmaeef::A4::4.4.2") + 1] == "nmaeef::A4::4.5.1", str([x["motivo"] for x in rech36]))
+    h143 = her("ri2_ae::A3::14.3")
+    check("M (E2-002): de la raíz 0 del Anexo III de ri2_ae se hereda solo su título",
+          [t[2] for t in h143 if t[1] == "A3::S0"] == ["PROCEDIMIENTOS MINIMOS DE AUDITORÍA"], str(h143))
+    check("R5-a por lista que queda (E2-098, E2-058): ri_oc::B.1.28 hereda el cierre de B.1, y ri_spi::C.1::cierre está",
+          any(t[0] == "cierre" and t[1] == "B.1" and t[2].startswith("En el punto B.1.24") for t in her("ri_oc::B.1.28"))
+          and "ri_spi::C.1::cierre" in ch["ri_spi"])
+    check("A en la carátula (G5): ri_ii_31_12_19 no abre divisiones en la p. 1",
+          not any(a.get("tipo") == "division_a" and a.get("pagina") == 1
+                  for a in cargar(d, "estructura_ri_ii_31_12_19.json")["avisos"]))
+    malos = []
+    for uid, (origen, fija, sha16) in NEGATIVOS_LEIDAS_S06.items():
+        c = u(uid)
+        campos = ("sha256_propio", "paginas") + (("herencia",) if fija == "corte y herencia" else ())
+        if not c or _sha16_campos(c, campos) != sha16:
+            malos.append(f"{uid} ({origen})")
+    check(f"negativos del §4: las {len(NEGATIVOS_LEIDAS_S06)} leídas en S1-ter, correctas, de estos TOs conservan su corte "
+          f"({sum(1 for v in NEGATIVOS_LEIDAS_S06.values() if v[1] == 'corte y herencia')} también su herencia)",
+          bool(NEGATIVOS_LEIDAS_S06) and not malos, str(malos))
+    cob = cargar(d, "cobertura.json")
+    check(f"cobertura exacta en los {len(TOS_S06)} TOs", all(cob[to]["cobertura_exacta"] for to in TOS_S06),
+          str([to for to in TOS_S06 if not cob[to]["cobertura_exacta"]]))
+    # la fila de la tanda 0, solo acá, con la exclusión apagada
+    with _tanda0_sin_exclusion():
+        correr_e0.correr(d / "tanda0_sin_exclusion", manifiesto=_ManifiestoParticion(("polcre",)), version_e0="e0-r2")
+    pc = {c["id"]: c for c in cargar(d / "tanda0_sin_exclusion", "chunks_polcre.json")}
+    h611 = [(t["tipo"], t["texto"]) for t in pc["polcre::6.1.1.3"]["herencia"] if t["unidad_origen"] == "6.1.1"]
+    check("B (E2-055, tanda 0, solo en el selftest y con la exclusión apagada acá): polcre 6.1.1 no se parte en encabezado "
+          "e intro: el párrafo va entero, con su número, en la intro",
+          len(h611) == 1 and h611[0][0] == "intro" and h611[0][1].startswith("6.1.1. Las operaciones")
+          and "Coe-\nficiente" in h611[0][1], str(h611))
+    check("la exclusión de la tanda 0 vuelve a regir después del caso", correr_e0.TOS_TANDA0_SIN_S0_6 == TOS_TANDA0)
+
+
 def test_s0_doble(base: Path) -> None:
     print("== m) S0 de U-SEG-OFICIAL: doble corrida de e0-r2, byte a byte")
     for nombre in ("a", "b"):
@@ -1570,22 +2257,28 @@ def main() -> int:
     test_correcciones(dir_a)
     test_minichunks(dir_a)
     base_s0 = Path(tempfile.mkdtemp(prefix="e0_selftest_s0_"))
-    test_s0_legada()
-    test_s0_casos(base_s0 / "casos")
-    test_s0_sinteticos()
+    # las pruebas de etapas anteriores corren con las reglas de S0-6a apagadas: prueban sus reglas (S0-6a)
+    with _sin_s06():
+        test_s0_legada()
+        test_s0_casos(base_s0 / "casos")
+        test_s0_sinteticos()
+        test_s03_legada()
+        test_s03_sinteticos()
+        test_s03_casos(base_s0 / "casos_s03")
+        test_s04_legada()
+        test_s04_sinteticos()
+        test_s04_casos(base_s0 / "casos_s04")
+        test_s05_legada()
+        test_s05_sinteticos()
+        test_s05_casos(base_s0 / "casos_s05")
+        test_s05bis_legada()
+        test_s05bis_sinteticos()
+        test_s05bis_casos(base_s0 / "casos_s05bis")
     test_s0_doble(base_s0)
-    test_s03_legada()
-    test_s03_sinteticos()
-    test_s03_casos(base_s0 / "casos_s03")
-    test_s04_legada()
-    test_s04_sinteticos()
-    test_s04_casos(base_s0 / "casos_s04")
-    test_s05_legada()
-    test_s05_sinteticos()
-    test_s05_casos(base_s0 / "casos_s05")
-    test_s05bis_legada()
-    test_s05bis_sinteticos()
-    test_s05bis_casos(base_s0 / "casos_s05bis")
+    test_s06_legada()
+    test_s06_sinteticos()
+    test_s06bis_sinteticos()
+    test_s06_casos(base_s0 / "casos_s06")
 
     total = len(RESULTADOS)
     ok = sum(1 for _, b, _ in RESULTADOS if b)

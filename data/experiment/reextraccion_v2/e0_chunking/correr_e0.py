@@ -204,9 +204,51 @@ ROTULOS_POR_LISTA_S0_5 = {
 # rechazaba por estar más adentro que la columna de las raíces (76,6).
 RAICES_POR_LISTA_S0_5 = {"ri_oc": ((6, 117.4, "3"),)}
 
+# U-SEG-OFICIAL, S0-6a (diseño en data/experiment/segmentacion_oficial_e0r2/s0_6/): reglas generales de E0, solo en e0-r2 y
+# fuera de los diez TOs de la tanda 0 (TOS_TANDA0_SIN_S0_6: su E0 no cambia; es el único lugar donde estas reglas nombran
+# documentos). «a», títulos sin número (división por rótulo de anexo o apartado, por cambio de la banda de encabezado o por
+# un título que encabeza solo su bloque); «b», encabezado de un punto con hijos; «c», párrafo sin número asignado por su
+# columna; «d», rótulo heredado tal como está impreso; «e», número que E0 rechazaba por la columna; «f», encabezado de
+# columnas de una tabla; «g», número partido por el extractor; «h», número sin espacio; «i», recuadro de encabezado de dos
+# columnas; «j», carátula; «k», pie de formulario. Reemplazos de reglas por lista: «c» reemplaza a R5-a por lista, «a» a
+# R5-a′, «e» a R5-g y «h» a R5-f en ri_ccna (`_r5`).
+# S0-6a-bis (diseño en data/experiment/segmentacion_oficial_e0r2/s0_6/bis/): «l», un índice leído como cuerpo no corta la
+# sucesión de números (`E0.lineas_de_indice_l`); «m», la raíz 0 de un sub-documento que abre A aporta a la herencia solo
+# su título. Con «c», R5-a sigue por lista solo en LISTAS_R5A_S0_6, y C no toca esas listas.
+REGLAS_S0_6 = frozenset({"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"})
+TOS_TANDA0_SIN_S0_6 = frozenset({"cap", "cla", "ext", "pro", "ric", "ctacte", "lingob", "polcre", "pagjub", "docvig"})
+REEMPLAZOS_S0_6 = {"r5a": ("c", None), "r5a2": ("a", None), "r5g": ("e", None), "r5f": ("h", frozenset({"ri_ccna"}))}
+# R5-a por lista que queda con C (S0-6a-bis, decisión 3): las listas de LISTAS_R5A_S0_5 donde C no coincide con la
+# página (comparadas con el criterio de S1-ter) y la de ri_oc B.1.28 (E2-098), tomadas de LISTAS_R5A_S0_5: seis de las
+# trece donde C daba otra cosa en S0-6a (en adfsp, la que no es de las leídas; las tres de ri_oc; las de ri_rml y ri_spi)
+# y dos donde C coincidía en S0-6a y C ajustada deja de coincidir (snp_mep 4.6.2 y tasint 3.3.2).
+LISTAS_R5A_S0_6 = {
+    "adfsp": {k: v for k, v in LISTAS_R5A_S0_5["adfsp"].items() if k not in ("1.2.2.2", "2.6.3.2")},
+    "ri_oc": dict(LISTAS_R5A_S0_5["ri_oc"]),
+    "ri_rml": dict(LISTAS_R5A_S0_5["ri_rml"]),
+    "ri_spi": dict(LISTAS_R5A_S0_5["ri_spi"]),
+    "snp_mep": {k: v for k, v in LISTAS_R5A_S0_5["snp_mep"].items() if k == "4.6.2"},
+    "tasint": dict(LISTAS_R5A_S0_5["tasint"]),
+}
+
+
+def _r6(regla: str, to: str) -> bool:
+    """Una regla de S0-6a corre en `to` (fuera de la tanda 0)."""
+    return regla in REGLAS_S0_6 and to not in TOS_TANDA0_SIN_S0_6
+
+
+def _sd_s04(to: str) -> bool:
+    """La regla de sub-documento de S0-4 corre en `to` (los sub-documentos no los abre A)."""
+    return ("sd" in REGLAS_S0_4 and to in TOS_SUBDOCUMENTO_S0_4) or \
+        ("sdr1" in REGLAS_S0_4 and to in TOS_SUBDOCUMENTO_R1_S0_4)
+
 
 def _r5(regla: str, to: str, lista: frozenset | None = None) -> bool:
-    """Una regla de S0-5a corre en `to` (fuera de la tanda 0 y, si tiene lista, dentro de ella)."""
+    """Una regla de S0-5a corre en `to` (fuera de la tanda 0 y, si tiene lista, dentro de ella), salvo que la reemplace una
+    regla general de S0-6a que corre en `to` (REEMPLAZOS_S0_6)."""
+    reemplazo = REEMPLAZOS_S0_6.get(regla)
+    if reemplazo is not None and _r6(reemplazo[0], to) and (reemplazo[1] is None or to in reemplazo[1]):
+        return False
     return regla in REGLAS_S0_5 and to not in TOS_TANDA0_SIN_S0_5 and (lista is None or to in lista)
 
 
@@ -806,6 +848,18 @@ def _excluir_tablas_r5a(tablas_to: dict):
     return excluir
 
 
+def _filas_tabla_a(tablas_to: dict):
+    """A de S0-6a: el predicado de renglón de las filas de las tablas que se serializan (las de `_excluir_tablas_r5a`),
+    salvo el renglón del título de la tabla, que sí puede abrir división."""
+    excluir = _excluir_tablas_r5a(tablas_to)
+    titulos = {(t.get("encabezado") or {}).get("titulo") or "" for t in tablas_to["tablas"]}
+    titulos = {" ".join(x.split("\n")[0].split()) for x in titulos if x}
+
+    def fila(l) -> bool:
+        return excluir(l) and " ".join(l.texto.split()) not in titulos
+    return fila
+
+
 def tablas_de_to_r2(pdf_path: Path, to: str) -> dict:
     """Tablas lógicas de un TO para la versión e0-r2: las de e0_tablas y las
     de R-TC2, cada una con su origen y la guarda G-RECUADRO aplicada."""
@@ -1386,7 +1440,12 @@ def procesar_tablas_r2(res: E0.ResultadoParseo, pdf_path: Path, to: str,
           "titulo_envuelto_4b": "4b" in REGLAS_S0_4 and to not in TOS_TANDA0_SIN_4AB,
           # R5-b y R5-c de S0-5a
           "intersticial_continuado": _r5("r5b", to, TOS_INTERSTICIAL_S0_5),
-          "titulo_seccion_envuelto": _r5("r5c", to)}
+          "titulo_seccion_envuelto": _r5("r5c", to),
+          # B y D de S0-6a
+          "encabezado_b": _r6("b", to),
+          "rotulo_impreso_d": _r6("d", to),
+          # M de S0-6a-bis: solo en los sub-documentos que abre A
+          "raiz0_solo_titulo_m": _r6("m", to) and not _sd_s04(to)}
     chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0, **r4)
     E0.desambiguar_ids(chunks0)
     asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
@@ -1430,6 +1489,7 @@ def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str],
     m3 = "m3" in REGLAS_S0_3     # mecanismo 3 de S0-3 (cuarta forma de la regla 8)
     r1 = "sdr1" in REGLAS_S0_4 and to in TOS_SUBDOCUMENTO_R1_S0_4     # regla sdr1 de S0-4a-ter
     sd = ("sd" in REGLAS_S0_4 and to in TOS_SUBDOCUMENTO_S0_4) or r1     # regla de sub-documento de S0-4
+    sd_a = _r6("a", to) and not sd     # A de S0-6a: los sub-documentos de anexo, en todos los TOs
     letras = {r: r in REGLAS_S0_4 and to in TOS_LETRA_S0_4 for r in ("sdl", "sdlh", "sdla")}     # S0-4a-ter
 
     def indice(roles: list[str]) -> list[str]:
@@ -1442,7 +1502,7 @@ def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str],
             # regla de sub-documento de S0-4, con la guarda de columna dentro del sub-documento (sdg3) y la raíz
             # mayor que MAX_RAIZ que sucede a la anterior (sdmax)
             kw["subdocumentos"] = E0.limites_subdocumento(paginas, roles, letras=any(letras.values()),
-                                                          sin_regimen_pagina_1=r1)
+                                                          sin_regimen_pagina_1=r1, solo_anexo=sd_a)
             kw["g3_subdoc"] = "sdg3" in REGLAS_S0_4
             kw["raiz_max_subdoc"] = "sdmax" in REGLAS_S0_4
             # reglas sdl, sdlh y sdla de S0-4a-ter (forma de letra)
@@ -1455,8 +1515,14 @@ def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str],
             kw["rotulos_por_lista"] = ROTULOS_POR_LISTA_S0_5[to]     # R5-f de S0-5a-bis
         if _r5("r5g", to, frozenset(RAICES_POR_LISTA_S0_5)):
             kw["raices_por_lista"] = RAICES_POR_LISTA_S0_5[to]     # R5-g de S0-5a-bis
+        # A (banda), E, F1, G, H, I, J y K de S0-6a
+        kw.update({"banda_a": _r6("a", to), "raiz_sucesora_e": _r6("e", to), "encabezado_tabla_f": _r6("f", to),
+                   "numero_partido_g": _r6("g", to), "numero_pegado_h": _r6("h", to), "recuadro_i": _r6("i", to),
+                   "caratula_j": _r6("j", to), "pie_formulario_k": _r6("k", to)})
         # regla 8 de S0: renglones de listas de puntos leídas como cuerpo, con los roles de esta etapa
         kw["no_rotulos"] = E0.lineas_de_listas_r8(paginas, roles, forma4_m3=m3)
+        if _r6("l", to):
+            kw["indice_l"] = E0.lineas_de_indice_l(paginas, roles)     # L de S0-6a-bis
         if rotulos_fila_r9:
             kw["rotulos_fila"] = rotulos_fila_r9     # regla 9 de S0, parte 9a
         # U-R2-CODIGO-2 (C2): cola de título estricta (punto l, ampliada por la regla 5 de S0) y renumeración
@@ -1480,14 +1546,14 @@ def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str],
     roles_v = indice(roles_v0)
     res, rep = parsear(roles_v)
     if con_chunks(res):
-        if sd:
+        if sd or sd_a:
             res, rep = parsear(roles_v, con_sd=True)
         return res, roles_v, rep, "vigente", False
     roles_m0 = E0.clasificar_paginas(paginas, marcadores_b582=True, continuacion_con_titulo=True)
     roles_m = indice(roles_m0)
     res_m, rep_m = parsear(roles_m, marcadores_b582=True)
     if con_chunks(res_m):
-        if sd:
+        if sd or sd_a:
             res_m, rep_m = parsear(roles_m, con_sd=True, marcadores_b582=True)
         return res_m, roles_m, rep_m, "marcadores", True
     roles_s = indice(E0.roles_para_modo_sin_raiz(paginas, roles_m0))
@@ -1500,14 +1566,14 @@ def escalera_e0_r2(to: str, archivo: str, paginas: list, roles_v: list[str],
     r.reasignaciones_continuidad = E0.aplicar_continuidad_enumeracion(r)
     E0.corregir_fronteras_intra_palabra(r)
     if apartados >= MIN_APARTADOS_R4 and len(E0.construir_chunks(r)) <= 1:
-        res_l, rep_l = parsear(roles_s, con_sd=sd, modo_sin_raiz=True, marcador_letra=True)
+        res_l, rep_l = parsear(roles_s, con_sd=sd or sd_a, modo_sin_raiz=True, marcador_letra=True)
         res_l.avisos.append({"tipo": "marcador_letra_r2", "apartados": apartados})
         return res_l, roles_s, rep_l, "sin_raiz_letra", roles_m0 != roles_v0
     if "apl" in REGLAS_S0_4 and to in TOS_APARTADO_LETRA_S0_4 and apartados >= MIN_APARTADOS_R4:
         # regla apl de S0-4a-ter: la etapa sin raíz se vuelve a leer con el marcador de letra de la regla 4
-        res_s, rep_s = parsear(roles_s, con_sd=sd, modo_sin_raiz=True, marcador_letra=True)
+        res_s, rep_s = parsear(roles_s, con_sd=sd or sd_a, modo_sin_raiz=True, marcador_letra=True)
         res_s.avisos.append({"tipo": "apartado_letra_apl", "apartados": apartados})
-    elif sd:
+    elif sd or sd_a:
         res_s, rep_s = parsear(roles_s, con_sd=True, modo_sin_raiz=True)
     return res_s, roles_s, rep_s, "sin_raiz", roles_m0 != roles_v0
 
@@ -1628,15 +1694,28 @@ def correr(salida: Path, manifiesto=None,
             "despues": fronteras_despues["n_intra_palabra"],
             **regla2,
         }
-        if r2 and (_r5("r5a", to, frozenset(LISTAS_R5A_S0_5)) or _r5("r5a2", to, TOS_TITULO_BLOQUE_S0_5)):
+        # R5-a por lista: la de S0-5a-bis, o con C la que queda (S0-6a-bis, LISTAS_R5A_S0_6)
+        listas_r5a = (LISTAS_R5A_S0_6.get(to, {}) if _r6("c", to)
+                      else LISTAS_R5A_S0_5.get(to, {}) if _r5("r5a", to, frozenset(LISTAS_R5A_S0_5)) else {})
+        if r2 and (listas_r5a or _r5("r5a2", to, TOS_TITULO_BLOQUE_S0_5)):
             # R5-a y R5-a′ de S0-5a, sobre el árbol corregido por las reglas 1 y 2; R5-a, por lista y sin tablas
             # (S0-5a-bis)
             res.avisos.extend(E0.aplicar_cierre_al_margen(
-                res, cierre=_r5("r5a", to, frozenset(LISTAS_R5A_S0_5)),
+                res, cierre=bool(listas_r5a),
                 titulo_bloque=_r5("r5a2", to, TOS_TITULO_BLOQUE_S0_5),
-                listas=LISTAS_R5A_S0_5.get(to, {}), excluir=_excluir_tablas_r5a(tablas_r9)))
+                listas=listas_r5a, excluir=_excluir_tablas_r5a(tablas_r9)))
         if r2 and _r5("r5e", to, TOS_ROTULO_VERTICAL_S0_5):
             res.avisos.extend(E0.juntar_rotulo_vertical(res))     # R5-e de S0-5a, sobre el árbol
+        if r2 and _r6("a", to):
+            # A de S0-6a, sobre el árbol y antes de C: divisiones por títulos sin número y adopción
+            res.avisos.extend(E0.dividir_a(res, sin_raiz=modo_lectura.startswith("sin_raiz"),
+                                           fila_tabla=_filas_tabla_a(tablas_r9)))
+        if r2 and _r6("c", to):
+            # C de S0-6a, sobre el árbol (reemplaza a R5-a por lista); como R5-a, no mueve renglones de tablas
+            res.avisos.extend(E0.asignar_por_columna_c(res, excluir=_excluir_tablas_r5a(tablas_r9),
+                                                       listas_fijas=frozenset(LISTAS_R5A_S0_6.get(to, {}))))
+        if r2 and _r6("f", to):
+            res.avisos.extend(E0.mover_encabezado_tabla_f(res))     # F2 de S0-6a, sobre el árbol
         correcciones[to] = {
             "reasignaciones_continuidad": res.reasignaciones_continuidad,
             "fronteras_intra_palabra": {
