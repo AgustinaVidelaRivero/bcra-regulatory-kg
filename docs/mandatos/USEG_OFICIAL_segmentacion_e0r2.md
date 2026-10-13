@@ -922,3 +922,28 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   - la tolerancia de R5-a;
   - la herencia de C.1 a C.11;
   - snp_tr en la aceptación de R5-d, donde el renglón de la remisión se lleva también los puntos 1.4 y 1.5.
+- **13/10/2026 — S1-quater: qué documentos entran en la tanda 1 y qué pasa si no llega al piso (decisiones de la autora del
+  13/10/2026, antes de su pasada 1 de la adjudicación de S1-quater).** La mesa las registró en su hoja de ruta (§92 y §93) con la hora
+  en que las recibió, 15:48:44 y 16:09:56. Las notas anteriores no se editan.
+  - **Qué concilia:**
+    - la nota del 05/10/2026 de este mandato dice que, sin piso, la salida de S1 no se commitea y S2 no se despacha (`:325-326`);
+    - el plan B dice que, si S1-quater tampoco llega, la tanda 1 sale con la lista de S2, con reemplazos y sin otra vuelta. Está en las
+      notas del 10 y del 11/10/2026 al mandato de S0-5a (`docs/mandatos/USEG_OFICIAL_S0-5a_reglas_de_corte_E0.md:530-532`, `:548-549` y
+      `:566-568`; `e95413bb` y `a120bde9`).
+  - **Qué documentos entran en la tanda 1, llegue o no la cifra al piso:**
+    - un documento con un error de corte confirmado en S1-quater no entra en la tanda 1;
+    - se reemplaza por el siguiente candidato de su estrato que no esté en la lista, con el criterio del §7 de
+      `docs/protocolo_entre_tandas.md` (`:253-280`). Como un documento con un error de corte confirmado en S1-quater no entra, ese sucesor
+      tampoco puede tenerlo; si lo tiene, se toma el siguiente;
+    - cada reemplazo se declara, con el comando que lo reproduce;
+    - el piso decide qué se declara, no qué documentos entran.
+  - **Un documento reemplazado** no entra en ninguna tanda siguiente hasta que su error se corrija con una regla general del grupo 2 y
+    esa corrección se mida.
+  - **Si S1-quater no llega al piso,** rige el plan B tal como la autora lo decidió el 10 y el 11/10/2026:
+    - su salida se commitea con su cifra, declarada debajo del piso, y S2 se despacha igual;
+    - la condición 7 del checklist queda declarada, no cumplida (agregado del mismo día en `docs/checklist_pre_escalado.md:81`);
+    - no hay otra vuelta a S0 antes de la tanda 1.
+  - **Si llega,** su salida se commitea con su cifra, S2 se despacha con la decisión 6 tomada, y la condición 7 queda cumplida.
+  - **Para S1-quater, esta nota reemplaza** lo que dice `:325-326` sobre el caso sin piso, y extiende el reemplazo del plan B al caso en
+    que llega. Para S1, S1-bis y S1-ter queda lo ya registrado.
+  - **El pre-registro de la tanda 1** (borrador de la mesa, fuera del repo) lleva estas reglas en las dos ramas.
