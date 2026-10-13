@@ -1,8 +1,10 @@
 # Tablero de estado — bcra-regulatory-kg
 
-## 0. Estado vigente al 07/10/2026 (noche); cola de unidades al 09/10/2026
+## 0. Estado vigente al 13/10/2026; cola de unidades al 13/10/2026
 
-Actualización de la mesa por decisión de la autora del 07/10/2026; HEAD `0ea2d74`. Desde el 17/08 el estado lo llevan el plan
+Actualización de la mesa por decisión de la autora del 13/10/2026; HEAD al redactarla, `cbc6986`. [Actualizado el 13/10/2026: decía «al
+07/10/2026 (noche); cola de unidades al 09/10/2026» y «por decisión de la autora del 07/10/2026; HEAD `0ea2d74`».]
+Desde el 17/08 el estado lo llevan el plan
 (`docs/plan_tesis.md`), el checklist del escalado (`docs/checklist_pre_escalado.md`) y los mandatos (`docs/mandatos/`). Esta sección dice
 dónde está cada cosa. Las secciones 1 a 8, más abajo, son el estado al 17/08/2026: valen como historia, salvo donde esta sección las
 actualiza.
@@ -20,6 +22,9 @@ actualiza.
   desde el 09/10/2026 (decisión de la autora; la fuente es la hoja de ruta de la mesa, §29, fuera del repo). El criterio de excepción:
   que corrija un dato falso de la tanda 1 y sea barato. La única excepción admitida: el retiro de → Potestad, si U-CONF-MATRIZ no la
   confirma antes del FRENO de O2 (su mandato, §7).
+  [Actualizado el 13/10/2026: U-OMISIONES-COD cerró su código en O2 (`ded41d5`). → Potestad confirma en la C4 de U-CONF-MATRIZ
+  (`d2f24cb`), así que esa excepción no se usa. Antes del re-sellado va R0 (enmienda 7, solo E3-01, tope de USD 1,50): el gasto lo
+  autorizó la autora el 13/10/2026, y el despacho, preparado por la mesa, está PENDIENTE de la autora.]
 
 **Esquema y catálogo.**
 - L-ESQ-R2 FIRMADA (`4ef7650`), con sus enmiendas 2 a 7 firmadas (la 6, en su parte A; `data/experiment/esq/`). La enmienda 8 está en
@@ -32,25 +37,41 @@ actualiza.
 - Protocolo entre tandas FIRMADO (`a304b89`), con sus cinco enmiendas firmadas: cola humana, 2, 3, 4 (`53bbd6f`) y 5 (`ccd8fad`); la 6 (cambio de modelo del extractor) y la 7 (la tanda 0 en el re-sellado único: ítems de lista y firma Excepcion → Operacion), FIRMADAS el 08/10/2026.
 - Pre-registro de la evaluación por tripletas, FIRMADO (`4afbe51`).
 - Laudo de la release r2 (`docs/laudo_release_r2_pipeline.md`): BORRADOR v2, con sus sellos «A COMPLETAR». Se firma después del gate
-  final y antes del pre-registro de la tanda 1.
+  final y antes del pre-registro de la tanda 1. Sus notas del 13/10/2026 dicen qué sellos ya se pueden cerrar y ponen al día las cadenas
+  3, 4 y 5.
 
 **Cola de unidades** (estado en sus mandatos y frenos):
 - **U-SEG-OFICIAL:**
   - S0-4b aplicó el código de E0 al repo (`18d9e05`; FRENO en `06d3c28`);
   - S1-bis no llegó al piso: 85 de 90 sin error de corte, Wilson 0,8765 frente a 0,90 (registro en `a47a2ff`);
   - S0-5a revisada por la mesa (`32c71ca`), con las decisiones de la autora al pie de su mandato (`84695b8` y la nota siguiente);
-  - S0-5a-bis despachada el 09/10/2026.
+  - S0-5a-bis registrada (`97a54a5`); S0-5b aplicó el código de E0 (`af7ffdd`);
+  - S1-ter: corrida y sorteo (`818c3a4`), adjudicada en dos pasadas (`13616dc`, `f715be7`);
+  - el plan B cambió y quedó confirmado (`e95413b`, `a120bde`), con el diseño de la lectura de la E0 corregida (S1-quater) sellado
+    (`3a52987`) y cuatro adendas (`bf84214`, `d093d0e`, `55d8681`, `a1ad151`);
+  - la corrección de E0 con reglas generales: mandato (`85569a5`), dos FRENOs (`d32f6db`, `cf9b7e2`), decisiones (`b487f5c`) y el
+    código aplicado (`2374968`);
+  - S1-quater: sorteo (`cc60a4b`), fichas (`9716cc0`) y las dos etapas de la lectura, selladas y controladas (`b5aa9a3`, `cbc6986`).
+    La adjudicación es de la autora, PENDIENTE. Antes de su pasada 1, la autora decide qué pasa si no llega al piso (la nota que
+    concilia `docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md:325-326` con el plan B), PENDIENTE.
+  [Actualizado el 13/10/2026: decía «S0-5a-bis despachada el 09/10/2026».]
 
-  Siguen S0-5b, S1-ter y S2, que fija la lista de la tanda 1. S1-ter lee a ciegas la muestra de cortes de 90 unidades, con el piso, y
+  Sigue S2, que fija la lista de la tanda 1, con su decisión 6 abierta. [Actualizado el 13/10/2026: decía «Siguen S0-5b, S1-ter y S2,
+  que fija la lista de la tanda 1», y lo que sigue en este párrafo describe S1-ter.]
+  S1-ter lee a ciegas la muestra de cortes de 90 unidades, con el piso, y
   el 1.16: 30 + 34 fichas con cifra y 35 de regresión sin cifra. [Corregido el 09/10/2026: decía «S1-ter (lectura a ciegas de 30 + 34
   fichas con cifra)», sin la muestra de cortes.] [Actualizado el 09/10/2026:
   decía «S0-4a y S0-4a-bis revisadas; S0-4a-ter despachada el 08/10/2026 (…); después S0-4b, S1-bis y S2».]
 - **U-E3-LISTAS:** CERRADA (`56a7a11`; O5 probada y no adoptada). [Corregido el 08/10/2026: decía «O5 despachada».]
 - **U-COMP-E1:** CERRADA con C3 (`323cef7`): ningún brazo cumple el criterio; el modelo del extractor no cambia antes de la tanda 1. La etapa C4 (lectura pareada a ciegas, USD 0), FIRMADA el 08/10/2026.
-- **U-RERESOL-CAT:** R2 cerrada (R2-3 bis en `dac7d57`). **U-ALCANCE-E1** y **U-UNION-ESTRECHA**, FIRMADOS (`21e55a0`): A1 en `ab59034` (A2 espera la lista final); U1 en `57c2123`; U2 PASA, 29 de 29 con Wilson inferior 0,883 (`a91f95f`); U3, después de U-OMISIONES-COD. [Actualizado el 09/10/2026: decía «U2 (censo de las 29) despachada el 08/10/2026».]
+- **U-RERESOL-CAT:** R2 cerrada (R2-3 bis en `dac7d57`). **U-ALCANCE-E1** y **U-UNION-ESTRECHA**, FIRMADOS (`21e55a0`): A1 en `ab59034` (A2 espera la lista final); U1 en `57c2123`; U2 PASA, 29 de 29 con Wilson inferior 0,883 (`a91f95f`); U3, después de U-OMISIONES-COD. [Actualizado el 09/10/2026: decía «U2 (censo de las 29) despachada el 08/10/2026».] [Actualizado el
+  13/10/2026: U-OMISIONES-COD ya cerró su código (`ded41d5`); U3 va antes del armado que precede al sello del grafo evaluado (su mandato,
+  `:71`), fuera del alcance congelado del re-sellado.]
 - **U-OMISIONES-COD:** v7 FIRMADA por la autora el 09/10/2026 (`c90d3d9`; `docs/mandatos/UOMISIONES_COD_release_codigo_ensamblado.md`),
-  con la opción (ii) de f′. Antes del despacho de O1 faltan tres decisiones de su §6: el umbral de (e), dónde van las medidas sobre la
-  tanda 0 y el ítem (i). [Actualizado el 09/10/2026: decía «mandato v7 para firmar (…), completado el 09/10/2026 con el grupo L»; antes,
+  con la opción (ii) de f′. O1 registrado (`f318de4`) y O2, la release de código del ensamblado (`ded41d5`); los grafos de esa cadena se
+  sellan en el re-sellado único. [Actualizado el 13/10/2026: decía «Antes del despacho de O1 faltan tres decisiones de su §6: el umbral
+  de (e), dónde van las medidas sobre la tanda 0 y el ítem (i)».]
+  [Actualizado el 09/10/2026: decía «mandato v7 para firmar (…), completado el 09/10/2026 con el grupo L»; antes,
   «Mandatos en BORRADOR: U-OMISIONES-COD (borrador v5 de la mesa, todavía sin mandato en el repo)».]
 - **FIRMADOS el 08/10/2026:** C4 de U-COMP-E1 (`UCOMP_E1_C4_lectura_pareada.md`); B′ (`UAPLICA_ROL_ALCANCE_derivada_Bprima.md`) y casi duplicados (`UCASI_DUPLICADOS_fusion_de_forma.md`), grupo 2 del barrido de límites. [Corregido el 08/10/2026: U-ALCANCE-E1 y U-UNION-ESTRECHA ya estaban firmados.]
 - **Laudo B2.4:** FIRMADO por la autora el 09/10/2026 (`befe7fd`), con el alta de BKL-0041 y su lote en `backlog.jsonl`.
@@ -59,9 +80,18 @@ actualiza.
   B2.4, firmado (`befe7fd`). [Actualizado el 09/10/2026: decía «las 41 de la enmienda 8, los ocho patrones de B2.4 y las 4 filas de
   BKL-0021; sesión nueva, después del 08/10/2026 a las 18 h».]
 - **Lectura de confirmación de la matriz:** U-CONF-MATRIZ, FIRMADO por la autora el 09/10/2026
-  (`docs/mandatos/UCONF_MATRIZ_lectura_confirmacion.md`; versión para firmar en `0c27146`), sobre el grafo sin cola `e22fae1a`. El
-  despacho, PENDIENTE de la autora. [Actualizado el 09/10/2026: decía «pendiente».]
-- **Re-sellado único de los grafos de la tanda 0.**
+  (`docs/mandatos/UCONF_MATRIZ_lectura_confirmacion.md`; versión para firmar en `0c27146`), sobre el grafo sin cola `e22fae1a`. Corrida,
+  repetida y cerrada con la C4 (`17223c7` a `d2f24cb`): → Potestad confirma; → Operacion no confirma y no se retira (§7 de su mandato).
+  [Actualizado el 09/10/2026: decía «pendiente».] [Actualizado el 13/10/2026: decía «El despacho, PENDIENTE de la autora».]
+- **Piloto de umbrales (U-MED-UMBRALES):** FRENO del primer lote (`ed0fcd0`), regla del segundo lote (`785cca7`), su instrumento
+  (`4311c94`) y la salida del selftest del comparador (`79ca194`). [Agregado el 13/10/2026.]
+- **U-PARES-REMITE-A:** mandato para firmar (`c080914`), USD 0; no bloquea ni el re-sellado ni la tanda 1, y su despacho lo decide la
+  autora. [Agregado el 13/10/2026.]
+- **Backlog:** cuatro verificados, uno declarado y dos observaciones nuevas (`b57650b`). [Agregado el 13/10/2026.]
+- **R0** (enmienda 7, solo E3-01, tope de USD 1,50): gasto autorizado por la autora el 13/10/2026; el despacho, preparado por la mesa,
+  PENDIENTE de la autora. [Agregado el 13/10/2026.]
+- **Re-sellado único de los grafos de la tanda 0.** Después de R0. Su mandato, rehecho sobre el código de O2, está en borrador de la
+  mesa, PENDIENTE de la autora. [Agregado el 13/10/2026.]
 - **Pre-registro de la tanda 1**, y después B6.1.
 - **Sincronización de la tesis desde Overleaf al repo:** la versión validada del capítulo 3 entra en la próxima sincronización, con su
   commit.
@@ -70,7 +100,8 @@ actualiza.
 - cumplidas o decididas: 1, 3, 6, 8, 9, 10 y 13 (laudo B2.4, firmado el 09/10/2026);
 - abiertas: 2 (release r2), 4 (tablero de correcciones: falta la re-medición de r2b después del re-sellado), 5, 7 y 12 (segmentación
   oficial y lista), 11 (alcance de la lista final) y 11-bis (U-ALCANCE-E1).
-  [Actualizado el 09/10/2026: la 13 pasó de abierta a cumplida.]
+  [Actualizado el 09/10/2026: la 13 pasó de abierta a cumplida.] [13/10/2026: la 7 espera la adjudicación de S1-quater y la decisión
+  de la autora sobre qué pasa si no llega al piso.]
 
 ---
 

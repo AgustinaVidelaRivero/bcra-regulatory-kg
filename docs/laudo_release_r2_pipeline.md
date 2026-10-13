@@ -121,6 +121,43 @@ dé la segmentación oficial. Como orden de magnitud, el ejemplo del §7 del pro
   - Por eso el código de E0 cambia otra vez, con S0-5, y la fila de E0 del §1 se sella con ese código.
 - **Fuera de las cadenas:** el laudo B2.4 queda en versión para firmar (09/10/2026).
 
+## Notas del 13/10/2026 (mesa; sin decisiones nuevas de la autora sobre este laudo)
+
+- **Los sellos del §1 que ya se pueden cerrar.** Van a la tabla al firmar; la mesa no la edita antes.
+  - **Mensaje de E3 (NOTA):** fixture `079d2489…` y mensaje `66bc8656…` (`reextraccion_v2/e3_verificador/prompt_e3.py:472-473`, sin
+    cambios desde `7fe848c`). U-E3-LISTAS cerró en `56a7a11` con O5 probada y no adoptada, y el candado quedó en esos dos valores. La
+    cadena 1 del §2 está cerrada.
+  - **Ensamblador y validador r2:** el código de U-OMISIONES-COD (`ded41d5`); `ensamblar_tanda0.py`, `validador_r2.py` y
+    `r1_referencias.py` no cambian después.
+    - Lo que todavía podría cambiarlo: U3 de U-UNION-ESTRECHA, que toca `ensamblar_tanda0.py` y va antes del sello del grafo evaluado
+      (su mandato, `:71` y `:79-80`), y la opción (b) o (c) de U-PARES-REMITE-A, en versión para firmar (`c080914`, §7), que tocaría
+      `remite_a` antes del re-sellado. Las dos quedan fuera del alcance congelado del re-sellado salvo decisión de la autora (§0 del
+      tablero).
+  - **Matriz del validador:** la de L-ESQ-R2 con sus enmiendas firmadas, sin la enmienda 8 (nota del 09/10/2026). `modelos_r2.py` no
+    cambia desde `4aa92c7` y `pyd_r2/generados/enums_r2.json` desde `eb277ce`. La lectura de confirmación cerró en C4
+    (`conf_matriz/c2bis/c4_C2bis.json`, `d2f24cb`): → Potestad confirma, así que su retiro no entra al re-sellado; → Operacion no
+    confirma y no se retira (decisión del 09/10/2026, §7 de su mandato), con su cifra declarada.
+  - **E0, la parte del código:** `2374968` (la corrección de E0 con reglas generales, S0-6b de U-SEG-OFICIAL). El manifiesto de E0 de
+    la partición de la tanda 1 depende de S2.
+- **Lo que sigue dependiendo de otra pieza:**
+  - el mensaje de E1: A2 de U-ALCANCE-E1, después de la lista de la tanda 1;
+  - la fixture de la suite y los grafos r2b: el re-sellado único, después de R0;
+  - el gate final (§3);
+  - la condición 4: la re-medición r2b, después del re-sellado.
+- **Cadena 3 (§2), puesta al día:** U-OMISIONES-COD (`ded41d5`) → R0, solo E3-01, con el tope de USD 1,50 de la enmienda 7 (gasto
+  autorizado por la autora el 13/10/2026; despacho PENDIENTE de la autora) → re-sellado único de la tanda 0 → re-medición r2b
+  (condición 4).
+- **Cadena 4 (§2), puesta al día;** reemplaza a la de la nota del 09/10/2026, que queda como historia:
+  - S0-4 (`18d9e05`) → S1-bis → S0-5b (`af7ffdd`) → S1-ter, adjudicada (`13616dc`, `f715be7`) → plan B cambiado (`e95413b`, `a120bde`);
+  - → la corrección de E0 con reglas generales: S0-6a, S0-6a-bis y S0-6b (`2374968`);
+  - → S1-quater, la lectura a ciegas de la E0 corregida: diseño en `3a52987`; sorteo, fichas y lectura en `cc60a4b`, `9716cc0`,
+    `b5aa9a3` y `cbc6986`; la adjudicación de la autora, PENDIENTE;
+  - → si no llega al piso, rige la nota que concilia el mandato de la segmentación oficial (`:325-326`) con el plan B, que la autora
+    decide y sella antes de su pasada 1 (PENDIENTE);
+  - → S2 → E0 de la partición → lista de TOs de la tanda 1.
+- **Cadena 5 (§2), cerrada:** C3 de U-COMP-E1 (`323cef7`).
+- **Fuera de las cadenas:** el laudo B2.4 está FIRMADO (`befe7fd`); la nota del 09/10/2026 lo da todavía «en versión para firmar».
+
 ## Firma
 
 BORRADOR v2 — PENDIENTE de los sellos «A COMPLETAR», del gate final y de la firma de la autora, antes del pre-registro de la tanda 1.
