@@ -1,0 +1,727 @@
+--- a/e0_lib.py
++++ b/e0_lib.py
+@@ -235,6 +235,13 @@
+ recuadro de dos columnas (`recuadro_i`, I), la carátula (`caratula_j`, J) y el pie de formulario
+ (`separar_encabezado_pie(pie_formulario_k=…)`, K). Cada regla está descrita en el comentario de su constante.
+ 
++U-SEG-OFICIAL, S0-6a-bis (solo e0-r2; diseño en data/experiment/segmentacion_oficial_e0r2/s0_6/bis/). Dos reglas más,
++también detrás de su parámetro: el índice leído como cuerpo, que no corta la sucesión de números (`lineas_de_indice_l` y
++`parsear_cuerpo(indice_l=…)`, L), y la raíz 0 de un sub-documento que abre A, que aporta a la herencia solo su título
++(`construir_chunks(raiz0_solo_titulo_m=…)`, M). Y dos ajustes: C no mueve un párrafo cuyos renglones no comparten
++columna, mide el párrafo por la columna que comparten y no toca las listas que siguen en R5-a
++(`asignar_por_columna_c(listas_fijas=…)`); A no abre divisiones en la carátula (`ResultadoParseo.paginas_caratula_a`).
++
+ Sin llamadas a LLM: código determinístico puro.
+ """
+ 
+@@ -756,6 +763,22 @@
+     return frozenset(out)
+ 
+ 
++# L de S0-6a-bis, índice (`lineas_de_indice_l`, `parsear_cuerpo(indice_l=…)`; D15: un índice no es texto de ninguna
++# unidad): un índice leído como cuerpo es una corrida de rótulos en una página que empieza en «1.», sin números
++# repetidos, en la que entre un rótulo y el siguiente solo hay renglones que continúan su título (a la altura de su
++# rótulo o más adentro, a lo sumo MAX_RENGLONES_TITULO_L) y que termina en el primer renglón más a la izquierda que no es
++# un rótulo, en un número repetido (el cuerpo que vuelve a empezar) o al final de la página; tiene al menos
++# MIN_ROTULOS_LISTA_R8 rótulos, cada número reaparece como rótulo después de la corrida, con el mismo título en al menos
++# FRAC_TITULO_LISTA_R8 de ellos, y no en forma de lista (como la regla 8: la mediana de los renglones entre
++# reapariciones pasa BRECHA_REAPARICION_R8). Sus rótulos no abren raíz ni punto: el índice no corta la sucesión de
++# números, y el cuerpo que vuelve a empezar en «1.» no se rechaza por ella. Es la regla 8 con los títulos partidos en
++# varios renglones, que la regla 8 no admite.
++MAX_RENGLONES_TITULO_L = 4
++# M de S0-6a-bis (`construir_chunks(raiz0_solo_titulo_m=True)`): la raíz «0» de un sub-documento que abre A aporta a la
++# herencia solo su título: los renglones con forma de título de bloque (`_es_titulo_bloque`) con que empieza su primer
++# segmento. Su índice y sus bloques de cuerpo dejan de heredarse.
++
++
+ # Regla 3 de S0, ampliación (S0-2; nota del 05/10/2026 sobre el FRENO S0-1 bis al pie del mandato de U-SEG-OFICIAL):
+ # una página de cuerpo cuyo contenido, quitados el encabezado, el pie, las líneas «Sección N.» y «Tabla de
+ # correlaciones.», es entero una lista de la regla 8 es índice, siga o no a otra página de índice. Además de los
+@@ -766,6 +789,66 @@
+ # anterior no se reclasifica (ceninf p. 1 sigue siendo cuerpo, no portada).
+ RE_TABLA_CORRELACIONES_R3 = re.compile(r"^Tabla\s+de\s+correlaciones\.?$", re.IGNORECASE)
+ RE_ROTULO_PEGADO_R3 = re.compile(r"^\d+(?:\.\d+)+\.(?=[A-ZÁÉÍÓÚÑ\"“(«])")
++
++
++def lineas_de_indice_l(paginas: list[list["Linea"]], roles: list[str], informe: list | None = None) -> frozenset:
++    """L de S0-6a-bis (ver MAX_RENGLONES_TITULO_L): (página, top) de los rótulos de los índices leídos como cuerpo. Con
++    `informe`, una fila por corrida candidata con su descarte."""
++    cuerpo = [l for ls, r in zip(paginas, roles) if r == ROL_CUERPO for l in ls]
++    out: set = set()
++    i = 0
++    while i < len(cuerpo):
++        l0 = cuerpo[i]
++        r0 = _rotulo_lista_r8(l0)
++        if r0 is None or r0[0] != "1":
++            i += 1
++            continue
++        corrida, vistos, ult, cont, j = [(i, l0, r0)], {"1"}, l0, 0, i + 1
++        while j < len(cuerpo) and cuerpo[j].pagina == l0.pagina:
++            l = cuerpo[j]
++            r = _rotulo_lista_r8(l)
++            if r is not None:
++                if r[0] in vistos:
++                    break     # el cuerpo vuelve a empezar
++                corrida.append((j, l, r))
++                vistos.add(r[0])
++                ult, cont = l, 0
++            elif l.x0 >= ult.x0 - TOL_X and cont < MAX_RENGLONES_TITULO_L:
++                cont += 1     # continúa el título del último rótulo
++            else:
++                break
++            j += 1
++        fin = corrida[-1][0]
++        fila = {"pagina": l0.pagina, "rotulos": len(corrida), "numeros": [r[0] for _, _, r in corrida]}
++        despues: dict = {}
++        primera_pos: dict = {}
++        for k in range(fin + 1, len(cuerpo)):
++            r = _rotulo_lista_r8(cuerpo[k])
++            if r is not None:
++                despues.setdefault(r[0], set()).add(r[1])
++                primera_pos.setdefault(r[0], k)
++
++        def igual(t1: str, t2: str) -> bool:
++            return bool(t1 and t2) and (t1.startswith(t2) or t2.startswith(t1))
++        if len(corrida) < MIN_ROTULOS_LISTA_R8:
++            fila["descarte"] = "menos_de_3_rotulos"
++        elif not all(r[0] in despues for _, _, r in corrida):
++            fila["descarte"] = "no_reaparecen_todos"
++        elif sum(1 for _, _, r in corrida if any(igual(r[1], t2) for t2 in despues[r[0]])) \
++                < FRAC_TITULO_LISTA_R8 * len(corrida):
++            fila["descarte"] = "titulos_distintos"
++        else:
++            pos = [primera_pos[r[0]] for _, _, r in corrida]
++            brechas = sorted(b - a for a, b in zip(pos, pos[1:]))
++            if (brechas[len(brechas) // 2] if brechas else 0) <= BRECHA_REAPARICION_R8:
++                fila["descarte"] = "reaparicion_en_forma_de_lista"
++            else:
++                fila["descarte"] = None
++                out.update((l.pagina, l.top) for _, l, _ in corrida)
++        if informe is not None:
++            informe.append(fila)
++        i = fin + 1
++    return frozenset(out)
+ 
+ 
+ def paginas_indice_r8(paginas: list[list["Linea"]], roles: list[str], forma4_m3: bool = False) -> list[str]:
+@@ -1599,6 +1682,7 @@
+     rotulos_letra: list[dict] = field(default_factory=list)   # S0-4a-ter, regla sdlh sin sdl (rótulos de letra)
+     bandas_a: dict = field(default_factory=dict)      # S0-6a, A: renglones de la banda de encabezado de cada página de cuerpo
+     recuadro_i: set = field(default_factory=set)      # S0-6a, I: ids de los renglones del recuadro de un formulario
++    paginas_caratula_a: set = field(default_factory=set)   # S0-6a-bis, A: la página 1 leída como cuerpo, si es carátula
+ 
+ 
+ def _componentes(num: str) -> list[int]:
+@@ -1757,6 +1841,7 @@
+                    marcador_letra: bool = False,
+                    reabrir_padre: bool = False,
+                    no_rotulos: frozenset = frozenset(),
++                   indice_l: frozenset = frozenset(),
+                    rotulos_fila: frozenset = frozenset(),
+                    formas_m1: frozenset = frozenset(),
+                    formas_m2: frozenset = frozenset(),
+@@ -1979,10 +2064,13 @@
+         avisos.append({"tipo": "subdocumento_sd", "forma": b["forma"], "prefijo": b["prefijo"],
+                        "pagina": b["pagina"], "texto": b["titulo"][:90]})
+ 
++    paginas_caratula_a: set = set()
+     for pi, (lineas, rol) in enumerate(zip(paginas, roles), start=1):
+         if rol != ROL_CUERPO:
+             continue
+         n_paginas_cuerpo += 1
++        if pi == 1 and len(lineas) <= MAX_RENGLONES_CARATULA_J:
++            paginas_caratula_a.add(pi)     # S0-6a-bis: carátula para A (el tope de renglones de J)
+         contenido, descartadas, seccion_corrida = separar_encabezado_pie(
+             lineas, labels_preservables=banners if modo_sin_raiz else None,
+             seccion_b582=marcadores_b582, banners_texto=banners_texto,
+@@ -2182,6 +2270,8 @@
+                                    "prefijo": subdoc_actual, "pagina": linea.pagina, "texto": linea.texto[:90]})
+             # regla 8 de S0: renglón de una lista de puntos leída como cuerpo (veto; no abre raíces)
+             en_lista = bool(m_num) and (linea.pagina, linea.top) in no_rotulos
++            en_indice_l = bool(m_num) and not en_lista and (linea.pagina, linea.top) in indice_l     # L de S0-6a-bis
++            en_lista = en_lista or en_indice_l
+             # regla 9 de S0: el renglón lleva el número de una fila de catálogo (la celda de la tabla es solo ese
+             # número); el resto en minúscula es la descripción de la fila, no una referencia envuelta
+             fila_r9 = bool(m_num) and (linea.pagina, linea.top) in rotulos_fila
+@@ -2306,7 +2396,7 @@
+                             motivo_raiz = (f"raiz_en_columna_profunda_{linea.x0}"
+                                            f"_vs_{col_raiz}")
+                     if motivo_raiz is None and en_lista:
+-                        motivo_raiz = "lista_de_puntos_r8"   # veto de la regla 8 de S0
++                        motivo_raiz = "indice_l" if en_indice_l else "lista_de_puntos_r8"   # veto de la regla 8 de S0 o de L
+                     if motivo_raiz is None:
+                         if ultima_raiz_num is not None \
+                                 and comp_r[0] != ultima_raiz_num + 1:
+@@ -2528,7 +2618,7 @@
+                     motivo = "numero_en_referencia_r5d"     # veto de R5-d de S0-5a
+                     avisos.append(veto_5d)
+                 if motivo is None and en_lista:
+-                    motivo = "lista_de_puntos_r8"   # veto de la regla 8 de S0
++                    motivo = "indice_l" if en_indice_l else "lista_de_puntos_r8"   # veto de la regla 8 de S0 o de L
+                 if motivo is None and len(comp) > 1 and reapertura:
+                     reabrir(reapertura, num, linea)
+                 if motivo is None:
+@@ -2638,7 +2728,7 @@
+                       else "marcadores" if marcadores_b582 else "vigente"),
+         subdocumentos=registro_sd,
+         rotulos_letra=(rotulos_letra if letra_herencia and not letra_corte else []),
+-        bandas_a=bandas, recuadro_i=recuadro_ids,
++        bandas_a=bandas, recuadro_i=recuadro_ids, paginas_caratula_a=paginas_caratula_a,
+     )
+ 
+ 
+@@ -3095,10 +3185,10 @@
+     fórmula centrada). (1) Si el primer párrafo (el del rótulo, que siempre es suyo) tiene renglones de continuación, el
+     x0 menor de esos renglones. (2) Si es un solo renglón, la columna no se puede medir sin ambigüedad, y vale la menor
+     de las medidas que hay (la menor: ante la duda, el párrafo no sale, porque la columna no discrimina): la `text_col`
+-    de E0 si el renglón del rótulo es un título (no termina en «.», «:» ni «;»: su texto sigue abajo) y ese texto corre
+-    más adentro que el rótulo (en la columna del rótulo no se distingue de la de los hermanos); el x0 menor de
+-    los renglones de prosa, fuera del rótulo, de los otros puntos sin hijos de la misma madre (la columna del texto de
+-    los ítems de la lista); el comienzo de la primera palabra después del rótulo. Sin medidas, la `text_col` de E0."""
++    de E0 si el renglón del rótulo es un título (no termina en «.», «:» ni «;»: su texto sigue abajo, aunque corra en la
++    columna del rótulo; S0-6a-bis); el x0 menor de los renglones de prosa, fuera del rótulo, de los otros puntos sin hijos
++    de la misma madre (la columna del texto de los ítems de la lista); el comienzo de la primera palabra después del
++    rótulo. Sin medidas, la `text_col` de E0."""
+     lineas = _lineas_item_116(t)
+     if not lineas:
+         return t.text_col
+@@ -3108,8 +3198,7 @@
+     if cont:
+         return min(l.x0 for l in cont)
+     medidas = []
+-    if con and t.text_col is not None and not lineas[0].texto.rstrip().endswith((".", ":", ";")) \
+-            and t.label_x0 is not None and t.text_col > t.label_x0 + TOL_X:
++    if con and t.text_col is not None and not lineas[0].texto.rstrip().endswith((".", ":", ";")):
+         medidas.append(t.text_col)
+     if t.padre is not None:
+         for h in t.padre.hijos:
+@@ -3121,8 +3210,26 @@
+     if con and len(pal) >= 2 and pal[0][2].rstrip(".)") == t.numero:
+         medidas.append(pal[1][0])
+     return min(medidas) if medidas else t.text_col
++
++
++def _comparte_columna_c(ps: list[Linea]) -> bool:
++    """C de S0-6a-bis (D21, regla 3): los renglones de un párrafo comparten columna si todos, salvo el primero (sangría de
++    primera línea o rótulo colgante), están a TOL_COL_C o menos del x0 del segundo. Un párrafo de un renglón la comparte."""
++    return len(ps) < 3 or all(abs(l.x0 - ps[1].x0) <= TOL_COL_C for l in ps[2:])
++
++
++def _col_parrafo_c(ps: list[Linea]) -> float:
++    """C de S0-6a-bis: la columna de un párrafo, la que comparten sus renglones (el x0 del segundo), o la de su único
++    renglón; no la de su renglón más a la izquierda."""
++    return ps[1].x0 if len(ps) > 1 else ps[0].x0
+ 
+ 
++def _parrafos_c(lineas: list[Linea]) -> list[list[Linea]]:
++    """Los párrafos de un segmento (sin renglón de rótulo), con el criterio de C."""
++    ini = _inicios_parrafo_116(lineas, False)
++    return [lineas[a:b] for a, b in zip(ini, ini[1:] + [len(lineas)])]
++
++
+ def _elegir_c(niveles: list[Nodo], x: float, col_propia: float | None, pagina: int | None = None) -> int | None:
+     """C de S0-6a: el índice del nivel de la columna más cercana a `x` (empate dentro de TOL_COL_C: el más interno, el de
+     índice mayor), o None si no discrimina (en el empate está la columna del texto propio, o ningún nivel tiene
+@@ -3144,10 +3251,17 @@
+     return f"{p}::{base}" if p else base
+ 
+ 
+-def asignar_por_columna_c(res: ResultadoParseo, excluir=None) -> list[dict]:
+-    """C de S0-6a (ver TOL_COL_C). Devuelve un evento por párrafo o segmento movido."""
++def asignar_por_columna_c(res: ResultadoParseo, excluir=None, listas_fijas: frozenset = frozenset()) -> list[dict]:
++    """C de S0-6a (ver TOL_COL_C). Devuelve un evento por párrafo o segmento movido. S0-6a-bis: un párrafo se mide por la
++    columna que comparten sus renglones (`_col_parrafo_c`); no se mueve un párrafo cuyos renglones no comparten columna
++    (`_comparte_columna_c`), ni el grupo que arrastra; y no se tocan las listas de `listas_fijas` (claves de su último
++    ítem, las de R5-a por lista que quedan: ni la madre ni sus ítems)."""
+     eventos: list[dict] = []
+ 
++    def fija(n: Nodo) -> bool:
++        items = [h for h in n.hijos if h.tipo == "punto"]
++        return bool(items) and _clave_r5a(items[-1]) in listas_fijas
++
+     def _pos(l: Linea) -> tuple:
+         return (l.pagina, l.top)
+ 
+@@ -3165,13 +3279,17 @@
+         destino = None
+         col = _col_propia_c(t)
+         mover: dict[int, list[list[Linea]]] = {}
++        grupo: list[list[Linea]] = []
++        ev: list[dict] = []
++        con_tabla = False
+         for a, b in parrafos:
+             ps = lineas[a:b]
+             if not all(id(l) in propias for l in ps) or tabla(ps):
+                 if destino is None:
+                     continue
++                con_tabla = all(id(l) in propias for l in ps) and tabla(ps)
+                 break
+-            x = min(l.x0 for l in ps)
++            x = _col_parrafo_c(ps)
+             if destino is None:
+                 if col is not None and x >= col - TOL_COL_C:
+                     continue     # en la columna de su texto o más adentro: es suyo
+@@ -3184,8 +3302,16 @@
+                 if i is not None and i < destino:
+                     destino = i
+             mover.setdefault(destino, []).append(ps)
+-            eventos.append({"tipo": "parrafo_por_columna_c", "de": _nombre_c(t), "a": _nombre_c(ancestros[destino]),
+-                            "pagina": ps[0].pagina, "renglones": len(ps), "x0": round(x, 1), "texto": ps[0].texto[:90]})
++            grupo.append(ps)
++            ev.append({"tipo": "parrafo_por_columna_c", "de": _nombre_c(t), "a": _nombre_c(ancestros[destino]),
++                       "pagina": ps[0].pagina, "renglones": len(ps), "x0": round(x, 1), "texto": ps[0].texto[:90]})
++        if grupo and (con_tabla or not all(_comparte_columna_c(ps) for ps in grupo)):
++            # (con_tabla: la tabla que sigue en el texto de la hoja es parte del bloque, y sus filas no comparten columna)
++            # S0-6a-bis: un párrafo del grupo no comparte columna (D21, regla 3: decide el contenido): no sale ninguno
++            eventos.append({"tipo": "grupo_sin_columna_comun_c", "de": _nombre_c(t), "pagina": grupo[0][0].pagina,
++                            "parrafos": len(grupo), "renglones": sum(len(ps) for ps in grupo)})
++            return
++        eventos.extend(ev)
+         if mover:
+             quitar = {id(l) for grupos in mover.values() for ps in grupos for l in ps}
+             _sacar_lineas(t, quitar)
+@@ -3197,7 +3323,7 @@
+         for h in list(n.hijos):
+             if h.hijos:
+                 visitar(h, ancestros + [n])
+-            else:
++            elif not (h.tipo == "punto" and fija(n)):
+                 terminal(h, ancestros + [n])
+ 
+     for s0 in res.secciones:
+@@ -3207,13 +3333,16 @@
+     def segmentos(n: Nodo, ancestros: list[Nodo]) -> None:
+         for h in list(n.hijos):
+             segmentos(h, ancestros + [n])
+-        if not n.hijos:
++        if not n.hijos or fija(n):
+             return
+         primero = _pos_c(n.hijos[0])
+         for s in [s for s in n.segmentos if s and _pos(s[0]) > primero]:
+             if tabla(s):
+                 continue
+-            x = min(l.x0 for l in s)
++            pars = _parrafos_c(s)
++            if not all(_comparte_columna_c(ps) for ps in pars):
++                continue     # S0-6a-bis: un párrafo del segmento no comparte columna: decide el contenido
++            x = _col_parrafo_c(pars[0])
+             abiertos, m = ancestros + [n], n
+             while m.hijos:
+                 prev = [h for h in m.hijos if _pos_c(h) < _pos(s[0])]
+@@ -3379,7 +3508,7 @@
+             if not dist:
+                 continue
+             titulo_banda = " / ".join(dist)
+-            if p != primera_pagina and dist != anterior and p not in paginas_sd \
++            if p != primera_pagina and dist != anterior and p not in paginas_sd and p not in res.paginas_caratula_a \
+                     and (_es_titulo_mayusculas(titulo_banda) or RE_ANEXO_SD.match(dist[0])
+                          or RE_APARTADO_A.match(dist[0]) or RE_SECCION_B582_CAPS.match(dist[0])):
+                 eventos_banda.append((p, titulo_banda))
+@@ -3389,8 +3518,8 @@
+     filas, dueno = indice()
+     cand: list[tuple] = []
+     for i, (l, n, es_rotulo) in enumerate(filas):
+-        if es_rotulo:
+-            continue
++        if es_rotulo or l.pagina in res.paginas_caratula_a:
++            continue     # S0-6a-bis: en la carátula no se abre ninguna división
+         t = l.texto.strip()
+         primero_sin_rotulo = n.linea_label is None and next((s[0] for s in n.segmentos if s), None) is l
+         if primero_sin_rotulo or (fila_tabla is not None and fila_tabla(l)) or id(l) in res.recuadro_i:
+@@ -4262,6 +4391,7 @@
+                      intersticial_continuado: bool = False,
+                      titulo_seccion_envuelto: bool = False,
+                      encabezado_b: bool = False,
++                     raiz0_solo_titulo_m: bool = False,
+                      rotulo_impreso_d: bool = False) -> list[dict]:
+     """Con los dos argumentos opcionales en None (todos los call sites de la
+     versión legada de E0) el comportamiento es el histórico, byte a byte.
+@@ -4439,9 +4569,25 @@
+             hijo = cadena[k + 1] if k + 1 < len(cadena) else nodo
+             marca_hijo = _marca_hijo(hijo)
+             primera_intro = True
++            solo_titulo = raiz0_solo_titulo_m and _es_raiz_subdoc(a)     # M de S0-6a-bis
+             for item in _rol_segmentos(a):
+                 if item["rol"] == "contenido":
+                     continue  # no ocurre: los ancestros tienen hijos
++                if solo_titulo:
++                    # M de S0-6a-bis: de la raíz 0 de un sub-documento, solo su título (los renglones con forma de
++                    # título con que empieza su primer segmento); su índice y sus bloques de cuerpo no se heredan
++                    if item["rol"] == "intro" and primera_intro:
++                        primera_intro = False
++                        tit = []
++                        for l in item["seg"]:
++                            if not _es_titulo_bloque(l):
++                                break
++                            tit.append(l)
++                        if tit:
++                            tramos.append({"tipo": "chapeau_seccion", "unidad_origen": unidad, "texto": tx(tit),
++                                           "paginas": _paginas_de(tit)})
++                            lados.append("final")
++                    continue
+                 rol = {"intro": "intro", "cierre": "cierre",
+                        "intersticial": "intersticial"}[item["rol"]]
+                 seg = _seg_intro(a, rol, item["seg"], primera_intro)
+--- a/correr_e0.py
++++ b/correr_e0.py
+@@ -212,9 +212,24 @@
+ # columnas de una tabla; «g», número partido por el extractor; «h», número sin espacio; «i», recuadro de encabezado de dos
+ # columnas; «j», carátula; «k», pie de formulario. Reemplazos de reglas por lista: «c» reemplaza a R5-a por lista, «a» a
+ # R5-a′, «e» a R5-g y «h» a R5-f en ri_ccna (`_r5`).
+-REGLAS_S0_6 = frozenset({"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"})
++# S0-6a-bis (diseño en data/experiment/segmentacion_oficial_e0r2/s0_6/bis/): «l», un índice leído como cuerpo no corta la
++# sucesión de números (`E0.lineas_de_indice_l`); «m», la raíz 0 de un sub-documento que abre A aporta a la herencia solo
++# su título. Con «c», R5-a sigue por lista solo en LISTAS_R5A_S0_6, y C no toca esas listas.
++REGLAS_S0_6 = frozenset({"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"})
+ TOS_TANDA0_SIN_S0_6 = frozenset({"cap", "cla", "ext", "pro", "ric", "ctacte", "lingob", "polcre", "pagjub", "docvig"})
+ REEMPLAZOS_S0_6 = {"r5a": ("c", None), "r5a2": ("a", None), "r5g": ("e", None), "r5f": ("h", frozenset({"ri_ccna"}))}
++# R5-a por lista que queda con C (S0-6a-bis, decisión 3): las listas de LISTAS_R5A_S0_5 donde C no coincide con la
++# página (comparadas con el criterio de S1-ter) y la de ri_oc B.1.28 (E2-098), tomadas de LISTAS_R5A_S0_5: seis de las
++# trece donde C daba otra cosa en S0-6a (en adfsp, la que no es de las leídas; las tres de ri_oc; las de ri_rml y ri_spi)
++# y dos donde C coincidía en S0-6a y C ajustada deja de coincidir (snp_mep 4.6.2 y tasint 3.3.2).
++LISTAS_R5A_S0_6 = {
++    "adfsp": {k: v for k, v in LISTAS_R5A_S0_5["adfsp"].items() if k not in ("1.2.2.2", "2.6.3.2")},
++    "ri_oc": dict(LISTAS_R5A_S0_5["ri_oc"]),
++    "ri_rml": dict(LISTAS_R5A_S0_5["ri_rml"]),
++    "ri_spi": dict(LISTAS_R5A_S0_5["ri_spi"]),
++    "snp_mep": {k: v for k, v in LISTAS_R5A_S0_5["snp_mep"].items() if k == "4.6.2"},
++    "tasint": dict(LISTAS_R5A_S0_5["tasint"]),
++}
+ 
+ 
+ def _r6(regla: str, to: str) -> bool:
+@@ -222,6 +237,12 @@
+     return regla in REGLAS_S0_6 and to not in TOS_TANDA0_SIN_S0_6
+ 
+ 
++def _sd_s04(to: str) -> bool:
++    """La regla de sub-documento de S0-4 corre en `to` (los sub-documentos no los abre A)."""
++    return ("sd" in REGLAS_S0_4 and to in TOS_SUBDOCUMENTO_S0_4) or \
++        ("sdr1" in REGLAS_S0_4 and to in TOS_SUBDOCUMENTO_R1_S0_4)
++
++
+ def _r5(regla: str, to: str, lista: frozenset | None = None) -> bool:
+     """Una regla de S0-5a corre en `to` (fuera de la tanda 0 y, si tiene lista, dentro de ella), salvo que la reemplace una
+     regla general de S0-6a que corre en `to` (REEMPLAZOS_S0_6)."""
+@@ -1422,7 +1443,9 @@
+           "titulo_seccion_envuelto": _r5("r5c", to),
+           # B y D de S0-6a
+           "encabezado_b": _r6("b", to),
+-          "rotulo_impreso_d": _r6("d", to)}
++          "rotulo_impreso_d": _r6("d", to),
++          # M de S0-6a-bis: solo en los sub-documentos que abre A
++          "raiz0_solo_titulo_m": _r6("m", to) and not _sd_s04(to)}
+     chunks0 = E0.construir_chunks(res, lineas_por_chunk=lineas0, **r4)
+     E0.desambiguar_ids(chunks0)
+     asignar_tablas_a_chunks(chunks0, lineas0, tablas_to)
+@@ -1498,6 +1521,8 @@
+                    "caratula_j": _r6("j", to), "pie_formulario_k": _r6("k", to)})
+         # regla 8 de S0: renglones de listas de puntos leídas como cuerpo, con los roles de esta etapa
+         kw["no_rotulos"] = E0.lineas_de_listas_r8(paginas, roles, forma4_m3=m3)
++        if _r6("l", to):
++            kw["indice_l"] = E0.lineas_de_indice_l(paginas, roles)     # L de S0-6a-bis
+         if rotulos_fila_r9:
+             kw["rotulos_fila"] = rotulos_fila_r9     # regla 9 de S0, parte 9a
+         # U-R2-CODIGO-2 (C2): cola de título estricta (punto l, ampliada por la regla 5 de S0) y renumeración
+@@ -1669,13 +1694,16 @@
+             "despues": fronteras_despues["n_intra_palabra"],
+             **regla2,
+         }
+-        if r2 and (_r5("r5a", to, frozenset(LISTAS_R5A_S0_5)) or _r5("r5a2", to, TOS_TITULO_BLOQUE_S0_5)):
++        # R5-a por lista: la de S0-5a-bis, o con C la que queda (S0-6a-bis, LISTAS_R5A_S0_6)
++        listas_r5a = (LISTAS_R5A_S0_6.get(to, {}) if _r6("c", to)
++                      else LISTAS_R5A_S0_5.get(to, {}) if _r5("r5a", to, frozenset(LISTAS_R5A_S0_5)) else {})
++        if r2 and (listas_r5a or _r5("r5a2", to, TOS_TITULO_BLOQUE_S0_5)):
+             # R5-a y R5-a′ de S0-5a, sobre el árbol corregido por las reglas 1 y 2; R5-a, por lista y sin tablas
+             # (S0-5a-bis)
+             res.avisos.extend(E0.aplicar_cierre_al_margen(
+-                res, cierre=_r5("r5a", to, frozenset(LISTAS_R5A_S0_5)),
++                res, cierre=bool(listas_r5a),
+                 titulo_bloque=_r5("r5a2", to, TOS_TITULO_BLOQUE_S0_5),
+-                listas=LISTAS_R5A_S0_5.get(to, {}), excluir=_excluir_tablas_r5a(tablas_r9)))
++                listas=listas_r5a, excluir=_excluir_tablas_r5a(tablas_r9)))
+         if r2 and _r5("r5e", to, TOS_ROTULO_VERTICAL_S0_5):
+             res.avisos.extend(E0.juntar_rotulo_vertical(res))     # R5-e de S0-5a, sobre el árbol
+         if r2 and _r6("a", to):
+@@ -1684,7 +1712,8 @@
+                                            fila_tabla=_filas_tabla_a(tablas_r9)))
+         if r2 and _r6("c", to):
+             # C de S0-6a, sobre el árbol (reemplaza a R5-a por lista); como R5-a, no mueve renglones de tablas
+-            res.avisos.extend(E0.asignar_por_columna_c(res, excluir=_excluir_tablas_r5a(tablas_r9)))
++            res.avisos.extend(E0.asignar_por_columna_c(res, excluir=_excluir_tablas_r5a(tablas_r9),
++                                                       listas_fijas=frozenset(LISTAS_R5A_S0_6.get(to, {}))))
+         if r2 and _r6("f", to):
+             res.avisos.extend(E0.mover_encabezado_tabla_f(res))     # F2 de S0-6a, sobre el árbol
+         correcciones[to] = {
+--- a/selftest_e0.py
++++ b/selftest_e0.py
+@@ -143,6 +143,16 @@
+      los negativos del §4 (NEGATIVOS_LEIDAS_S06: las unidades leídas en S1-ter de esos TOs, de corte y herencia
+      correctos, conservan su corte y su herencia, cada una con su ficha de origen); la cobertura exacta; y la fila de la
+      tanda 0 (E2-055, polcre) con la exclusión apagada solo ahí, sin tocar el camino de la salida.
++Tests de S0-6a-bis (diseño en data/experiment/segmentacion_oficial_e0r2/s0_6/bis/):
++  x) además: los parámetros de L (`indice_l`), M (`raiz0_solo_titulo_m`) y de las listas fijas de C, apagados por default;
++     las trece reglas; R5-a por lista que queda con C (LISTAS_R5A_S0_6, ocho listas de LISTAS_R5A_S0_5); M no corre
++     donde los sub-documentos son de S0-4;
++  y′) casos sintéticos: C no saca un grupo si un párrafo no comparte columna ni el párrafo al que sigue una tabla, y mide
++     el párrafo por su segundo renglón; A no abre divisiones en la carátula; L veta los rótulos de un índice cuyos
++     títulos reaparecen, y el cuerpo vuelve a empezar en 1;
++  z) además: L en el Anexo IV de nmaeef (E1-008), M en el Anexo III de ri2_ae (E2-002), R5-a por lista en ri_oc B.1 y
++     ri_spi C.1 (E2-098, E2-058), A sin divisiones en la carátula de ri_ii_31_12_19, y los negativos del §4 de esta etapa
++     (las leídas correctas de los TOs de TOS_S06, entre ellos los de los grupos que empeoraban en S0-6a).
+ """
+ 
+ from __future__ import annotations
+@@ -1598,15 +1608,24 @@
+           and inspect.signature(E0.separar_encabezado_pie).parameters["pie_formulario_k"].default is False
+           and inspect.signature(E0.limites_subdocumento).parameters["solo_anexo"].default is False
+           and _linea("x", 1, 1.0).palabras == ())
+-    check("listas de S0-6a: las once reglas; la tanda 0 fuera por la misma lista de diez TOs; los reemplazos (C de R5-a, A "
+-          "de R5-a′, E de R5-g, H de R5-f en ri_ccna); la tolerancia de C es TOL_X",
+-          correr_e0.REGLAS_S0_6 == frozenset("abcdefghijk") and correr_e0.TOS_TANDA0_SIN_S0_6 == TOS_TANDA0
++    check("S0-6a-bis: los parámetros de L, M y de las listas fijas de C, apagados por default",
++          p["indice_l"].default == frozenset() and q["raiz0_solo_titulo_m"].default is False
++          and inspect.signature(E0.asignar_por_columna_c).parameters["listas_fijas"].default == frozenset())
++    l6 = correr_e0.LISTAS_R5A_S0_6
++    check("S0-6a-bis: R5-a por lista que queda con C, ocho listas tomadas de LISTAS_R5A_S0_5 con su forma; M no corre donde "
++          "los sub-documentos son de S0-4",
++          sum(len(v) for v in l6.values()) == 8
++          and all(correr_e0.LISTAS_R5A_S0_5[to][k] == v for to, d in l6.items() for k, v in d.items())
++          and correr_e0._sd_s04("ri_ccna") and not correr_e0._sd_s04("ri2_ae"))
++    check("listas de S0-6a: las trece reglas (once de S0-6a y L y M de S0-6a-bis); la tanda 0 fuera por la misma lista de "
++          "diez TOs; los reemplazos (C de R5-a, A de R5-a′, E de R5-g, H de R5-f en ri_ccna); la tolerancia de C es TOL_X",
++          correr_e0.REGLAS_S0_6 == frozenset("abcdefghijklm") and correr_e0.TOS_TANDA0_SIN_S0_6 == TOS_TANDA0
+           and correr_e0.REEMPLAZOS_S0_6 == {"r5a": ("c", None), "r5a2": ("a", None), "r5g": ("e", None),
+                                              "r5f": ("h", frozenset({"ri_ccna"}))}
+           and E0.TOL_COL_C == E0.TOL_X)
+-    check("A a K no corren en ningún TO de la tanda 0; las reglas por lista reemplazadas no corren donde corre su "
++    check("A a M no corren en ningún TO de la tanda 0; las reglas por lista reemplazadas no corren donde corre su "
+           "reemplazo (R5-f sigue en snp_cheq)",
+-          not any(correr_e0._r6(r, to) for r in "abcdefghijk" for to in TOS_TANDA0)
++          not any(correr_e0._r6(r, to) for r in "abcdefghijklm" for to in TOS_TANDA0)
+           and not correr_e0._r5("r5a", "cryl", frozenset({"cryl"}))
+           and not correr_e0._r5("r5a2", "ri_oc", frozenset({"ri_oc"}))
+           and not correr_e0._r5("r5g", "ri_oc", frozenset({"ri_oc"}))
+@@ -1804,18 +1823,104 @@
+     check("K: el código de formulario al pie de la página es pie; el que no es el último renglón queda",
+           "Fórm. 4421" in (_texto(chk0, "x::S1") or "") and "Fórm. 4421" not in (_texto(chk, "x::S1") or "")
+           and "Fórm. 4421" in (_texto(chk2, "x::S1") or ""))
++
++
++def test_s06bis_sinteticos() -> None:
++    E0 = correr_e0.E0
++    print("== y′) S0-6a-bis de U-SEG-OFICIAL: casos sintéticos (C, A y L ajustadas o nuevas)")
++    cuerpo = "Texto de la norma que corre en la columna del cuerpo del ítem y termina en punto final."
++    cierre = "Las entidades deberán observar lo dispuesto en los puntos anteriores durante todo el plazo."
++
++    def lista(cola):
++        return [_linea("Sección 1. Requisitos.", 1, 30.0), _linea("1.1. Condiciones generales.", 1, 50.0, x0=76.0),
++                _linea("1.1.1. Primer requisito.", 1, 70.0, x0=110.0), _linea(cuerpo, 1, 84.0, x0=150.0),
++                _linea("1.1.2. Segundo requisito.", 1, 110.0, x0=110.0), _linea(cuerpo, 1, 124.0, x0=150.0)] + cola
++
++    def correr(cola, excluir=None):
++        res, _ = _parse([lista(cola)])
++        ev = E0.asignar_por_columna_c(res, excluir=excluir)
++        return E0.construir_chunks(res), ev
++    ch, ev = correr([_linea(cierre, 1, 150.0, x0=76.0)])
++    check("C, control: el cierre en la columna de la sección, solo, sale (a la Sección 1)", _texto(ch, "x::S1::cierre") == cierre)
++    ch, ev = correr([_linea(cierre, 1, 150.0, x0=76.0), _linea("Datos del formulario:", 1, 170.0, x0=76.0),
++                     _linea("nombre y apellido del titular", 1, 184.0, x0=200.0),
++                     _linea("domicilio del titular de la cuenta", 1, 198.0, x0=90.0)])
++    check("C (D21, regla 3): si un párrafo del grupo que saldría no comparte columna, no sale ninguno",
++          _texto(ch, "x::S1::cierre") is None and any(e["tipo"] == "grupo_sin_columna_comun_c" for e in ev)
++          and (_texto(ch, "x::1.1.2") or "").endswith("domicilio del titular de la cuenta"))
++    ch, ev = correr([_linea("Nota: el plazo se cuenta desde la", 1, 150.0, x0=76.0),
++                     _linea("fecha de la solicitud y vence a los treinta días.", 1, 164.0, x0=150.0)])
++    check("C: el párrafo se mide por la columna que comparten sus renglones (el segundo, 150), no por el más a la "
++          "izquierda (76): queda en el ítem",
++          (_texto(ch, "x::1.1.2") or "").endswith("vence a los treinta días.") and _texto(ch, "x::S1::cierre") is None)
++    fila = _linea("Código Concepto Importe", 1, 170.0, x0=76.0, ngaps=2)
++    ch, ev = correr([_linea(cierre, 1, 150.0, x0=76.0), fila], excluir=lambda l: l is fila)
++    check("C: el párrafo al que sigue una tabla de su texto no sale (la tabla es parte del bloque)",
++          _texto(ch, "x::S1::cierre") is None and any(e["tipo"] == "grupo_sin_columna_comun_c" for e in ev))
++    # A: carátula
++    car = [_linea("REGIMEN INFORMATIVO CONTABLE MENSUAL", 1, 360.0, x0=90.0),
++           _linea("INFORMACION INSTITUCIONAL DE ENTIDADES", 1, 425.0, x0=102.0),
++           _linea("FINANCIERAS Y CAMBIARIAS", 1, 444.0, x0=184.0), _linea("Vigente a partir del 31/12/19", 1, 508.0, x0=201.0)]
++    p2 = [_linea("Las entidades deberán remitir a esta Institución la información.", 2, 147.0, x0=76.0),
++          _linea("1. Datos de la entidad.", 2, 170.0, x0=76.0), _linea(cuerpo, 2, 184.0, x0=90.0),
++          _linea("2. Datos de los directivos.", 2, 210.0, x0=76.0), _linea(cuerpo, 2, 224.0, x0=90.0)]
++    r, _ = _parse([car, p2], modo_sin_raiz=True)
++    ev = E0.dividir_a(r, sin_raiz=True)
++    larga = car + [_linea(cuerpo, 1, 520.0 + 12 * k, x0=76.0) for k in range(5)]
++    r2, _ = _parse([larga, p2], modo_sin_raiz=True)
++    check("A: la página 1 leída como cuerpo con a lo sumo 8 renglones es carátula y no abre divisiones; con más, no es "
++          "carátula", r.paginas_caratula_a == {1} and not any(e.get("pagina") == 1 for e in ev)
++          and r2.paginas_caratula_a == set())
++    # L: índice con un título partido en dos renglones
++    idx = [_linea("INFORMES", 1, 60.0, x0=290.0), _linea("1. Informe anual sobre los estados financieros.", 1, 80.0, x0=90.0),
++           _linea("2. Informe de revisión de estados financieros de períodos intermedios con los", 1, 100.0, x0=90.0),
++           _linea("las revisiones limitadas de los estados financieros de la entidad al cierre de cada", 1, 112.0, x0=108.0),
++           _linea("3. Memorando sobre el sistema de control interno.", 1, 132.0, x0=90.0)]
++    cpo = []
++    for k, t in enumerate(["1. Informe anual sobre los estados financieros.",
++                           "2. Informe de revisión de estados financieros de períodos intermedios con los",
++                           "3. Memorando sobre el sistema de control interno."]):
++        cpo.append(_linea(t, 2, 60.0 + 100 * k, x0=90.0))
++        cpo += [_linea(cuerpo, 2, 74.0 + 100 * k + 14 * j, x0=110.0) for j in range(4)]
++    roles = [E0.ROL_CUERPO] * 2
++    il = E0.lineas_de_indice_l([idx, cpo], roles)
++    sin_idx = E0.lineas_de_indice_l([idx[:3] + [_linea("3. Otro título que no reaparece.", 1, 132.0, x0=90.0)], cpo[:5]],
++                                    roles)
++    r0, _ = _parse([idx, cpo], modo_sin_raiz=True)
++    r1, _ = _parse([idx, cpo], modo_sin_raiz=True, indice_l=il)
++    check("L: el índice (sus títulos reaparecen después) no abre raíces y el cuerpo que vuelve a empezar en 1 sí; una "
++          "lista cuyos títulos no reaparecen no es índice",
++          il == {(1, 80.0), (1, 100.0), (1, 132.0)} and sin_idx == frozenset()
++          and [s.pagina for s in r1.secciones if s.numero in ("1", "2", "3")] == [2, 2, 2]
++          and [s.pagina for s in r0.secciones if s.numero in ("1", "2", "3")] == [1, 1, 1]
++          and sum(1 for x in r1.rechazos_header if x["motivo"] == "indice_l") == 3, str(il))
+ 
+ 
+ TOS_S06 = ("nmaeef", "ri_dcpc", "ceninf", "seguef", "snp_cheq", "ri2_ae", "ri_cc", "ri_ccna", "ri_oc", "manori",
+            "snp_psp", "ctavis", "cedin", "cryl", "ribspc", "garant", "snp_spd", "efemin", "ri_psprca", "ri_spi",
+            "seggar", "gerc", "lingeef",
+            # negativos del §4 (sus leídas motivaron ajustes de C y de A: DISENO_S0-6a.md, §3)
+-           "fimipyme", "cajasc", "ri_rml", "ri_msrl", "dmrd", "gracre")
+-# Negativos del §4 de S0-6a (s0_6/scripts/negativos_leidas_S0-6a.py): las unidades leídas en S1-ter de los TOs de
+-# TOS_S06, de corte (y herencia, si se juzgó y no cambia) correctos, que la E0 corregida conserva. Por id: su origen
+-# (ficha y pregunta de S1-ter), lo que se fija («corte»: sha256 propio y páginas; «corte y herencia»: además la herencia)
+-# y los 16 primeros hex del sha256 de esos campos en la E0 de S0-5b.
++           "fimipyme", "cajasc", "ri_rml", "ri_msrl", "dmrd", "gracre",
++           # S0-6a-bis: los de los grupos que empeoraban en S0-6a (G5, G10, G11) y los de las listas que quedan en R5-a
++           "ri_ii_31_12_19", "depaho", "apnf", "ayccef", "snp_dd", "snp_tr", "expaef", "tasint", "snp_mep")
++# Negativos del §4 de S0-6a (s0_6/scripts/negativos_leidas_S0-6a.py), regenerados en S0-6a-bis con los TOs agregados a
++# TOS_S06 (s0_6/bis/scripts/negativos_al_selftest_S0-6a-bis.py): las unidades leídas en S1-ter de los TOs de TOS_S06, de
++# corte (y herencia, si se juzgó y no cambia) correctos, que la E0 corregida conserva. Por id: su origen (ficha y
++# pregunta de S1-ter), lo que se fija («corte»: sha256 propio y páginas; «corte y herencia»: además la herencia) y los 16
++# primeros hex del sha256 de esos campos en la E0 que leyó S1-ter, iguales en la corregida.
+ NEGATIVOS_LEIDAS_S06: dict[str, tuple[str, str, str]] = {
++    "apnf::1.3.1.2": ("E2-019 la_unidad, E2-019 la_herencia", "corte y herencia", "59fc301b0570ce97"),
++    "apnf::1.3.1::cierre": ("E2-019 la_que_sigue", "corte y herencia", "eca8ea35f35d9fd5"),
++    "ayccef::2.3.2.2": ("E2-069 la_unidad, E2-069 la_herencia", "corte y herencia", "00738fee343fd4d9"),
++    "ayccef::2.3.3": ("E2-069 la_que_sigue", "corte y herencia", "479dc6829e3d3279"),
++    "ayccef::2.9.4.2": ("E2-070 la_unidad, E2-070 la_herencia", "corte y herencia", "a85e7a7f6fa6e201"),
++    "ayccef::2.9.5": ("E2-070 la_que_sigue", "corte y herencia", "4cb3fd6530a5c87b"),
++    "ayccef::3.6.2.2": ("E2-071 la_unidad, E2-071 la_herencia", "corte y herencia", "6f21c563a8f5e815"),
++    "ayccef::3.6.3": ("E2-071 la_que_sigue", "corte y herencia", "52a9c29f1c6d335e"),
++    "ayccef::4.4.5": ("E2-072 la_unidad, E2-072 la_herencia", "corte y herencia", "98c4702363f408be"),
++    "ayccef::4.5": ("E2-072 la_que_sigue", "corte y herencia", "14f0e8024512460d"),
++    "ayccef::5.2.5.2": ("E2-073 la_unidad, E2-073 la_herencia", "corte y herencia", "5bff5481c0f12a38"),
++    "ayccef::5.3.1": ("E2-073 la_que_sigue", "corte y herencia", "a06fcd60f8b9d8fe"),
+     "cajasc::11.1.2": ("E2-074 la_unidad, E2-074 la_herencia", "corte y herencia", "e9aab9ba19451ee1"),
+     "cajasc::11.2": ("E2-074 la_que_sigue", "corte y herencia", "433b69efea50defb"),
+     "cajasc::11.4.4": ("E2-075 la_unidad, E2-075 la_herencia", "corte y herencia", "1eb511789254819d"),
+@@ -1837,6 +1942,23 @@
+     "ctavis::8.1.3": ("E1-043 la_unidad", "corte y herencia", "415ad5feaba37a68"),
+     "ctavis::8.2.1.4": ("E2-036 la_unidad, E2-036 la_herencia", "corte y herencia", "96910c570561f378"),
+     "ctavis::8.2.1::cierre": ("E2-036 la_que_sigue", "corte y herencia", "d2763246bcdfa87b"),
++    "depaho::1.12.2": ("E2-079 la_unidad, E2-079 la_herencia", "corte y herencia", "e9d08a5afbbb58f9"),
++    "depaho::1.12::cierre": ("E2-079 la_que_sigue", "corte y herencia", "0774a4b235451602"),
++    "depaho::1.5.5": ("E2-080 la_unidad, E2-080 la_herencia", "corte y herencia", "5f2f9a60352203b6"),
++    "depaho::1.6.1::intro": ("E2-080 la_que_sigue", "corte y herencia", "6cb763b03009f04e"),
++    "depaho::1.7.5": ("E1-061 la_unidad", "corte y herencia", "cc952d5ebc08a4a5"),
++    "depaho::3.1.6.4": ("E2-081 la_unidad, E2-081 la_herencia", "corte y herencia", "cde2a51fd2663c9a"),
++    "depaho::3.1.7.1": ("E2-081 la_que_sigue", "corte y herencia", "44934258a415ab69"),
++    "depaho::3.11.5.5": ("E2-082 la_unidad, E2-082 la_herencia", "corte y herencia", "3a48dd66f0b5fca2"),
++    "depaho::3.11.5::cierre": ("E2-082 la_que_sigue", "corte y herencia", "dbc1b110a346e5b9"),
++    "depaho::3.4.10.2": ("E2-083 la_unidad, E2-083 la_herencia", "corte y herencia", "38822da995e4596b"),
++    "depaho::3.4.10::cierre": ("E2-083 la_que_sigue", "corte y herencia", "ed5bcacea800c9ea"),
++    "depaho::3.4.4.5": ("E2-084 la_unidad, E2-084 la_herencia", "corte y herencia", "c21904521b56bcc4"),
++    "depaho::3.4.5.1": ("E2-084 la_que_sigue", "corte y herencia", "879ff88696878bdf"),
++    "depaho::3.6.2.4": ("E1-083 la_unidad, E2-085 la_unidad, E2-085 la_herencia", "corte y herencia", "c8bb10ed476ec201"),
++    "depaho::3.6.3": ("E2-085 la_que_sigue", "corte y herencia", "e2413e045e041f6d"),
++    "depaho::3.8.6.4": ("E2-086 la_unidad, E2-086 la_herencia", "corte y herencia", "793b20e5dbfc1b0f"),
++    "depaho::3.8.7": ("E2-086 la_que_sigue", "corte y herencia", "94f4365ff17d1657"),
+     "dmrd::S14": ("E1-007 la_unidad", "corte y herencia", "89cd209763efb098"),
+     "efemin::1.3.8": ("E2-046 la_que_sigue", "corte", "a35f2ec92a7fe40a"),
+     "efemin::2.3.2": ("E2-015 la_unidad, E2-015 la_herencia", "corte y herencia", "dd8a7c820a8d3346"),
+@@ -1844,6 +1966,7 @@
+     "efemin::3.1.4": ("E1-020 la_unidad", "corte y herencia", "58df1750a28758b0"),
+     "efemin::3.2.2": ("E2-087 la_unidad, E2-087 la_herencia", "corte y herencia", "a4e13cb9defddc08"),
+     "efemin::3.2::cierre": ("E2-087 la_que_sigue", "corte y herencia", "6ad8611f4d3ad4d0"),
++    "expaef::1.9": ("E1-035 la_unidad", "corte y herencia", "4ba65e9f3215a6c7"),
+     "fimipyme::4.3.3": ("E2-024 la_unidad, E2-024 la_herencia", "corte y herencia", "fdb0103581f62add"),
+     "fimipyme::4.3::cierre": ("E2-024 la_que_sigue", "corte y herencia", "20b55fc1e1c2230f"),
+     "fimipyme::5.1.2": ("E2-004 la_unidad, E2-004 la_herencia", "corte y herencia", "fd318a5a54b643ce"),
+@@ -1886,7 +2009,9 @@
+     "ri_ccna::D2A2::S3::chapeau_seccion": ("E2-057 la_que_sigue", "corte y herencia", "12fe0492f1223a09"),
+     "ri_ccna::D2A3::S0": ("E1-006 la_unidad", "corte y herencia", "778c6ad53e242475"),
+     "ri_dcpc::2.4": ("E1-034 la_unidad", "corte y herencia", "d6ef1ee351769d4c"),
+-    "ri_dcpc::3.7.1": ("E1-057 la_unidad", "corte", "8f025b615db3f57b"),
++    "ri_dcpc::3.7.1": ("E1-057 la_unidad", "corte y herencia", "d6b3191f82baab29"),
++    "ri_ii_31_12_19::2.5": ("E1-067 la_unidad", "corte y herencia", "9e84763fe980e636"),
++    "ri_ii_31_12_19::6.3": ("E1-052 la_unidad", "corte", "bc55567e47c4ae84"),
+     "ri_msrl::7.2": ("E1-078 la_unidad", "corte y herencia", "71505a7c88f4e95c"),
+     "ri_oc::1.2.4": ("E1-056 la_unidad", "corte", "11f17a53dc9e00c2"),
+     "ri_oc::1.4.3": ("E1-044 la_unidad", "corte", "d8bc8949eb8822e6"),
+@@ -1896,9 +2021,12 @@
+     "ri_oc::3.45": ("E2-044 la_unidad, E2-044 la_herencia", "corte", "99d4067397255045"),
+     "ri_oc::3.46": ("E2-044 la_que_sigue", "corte", "ebe59b98e83b28c6"),
+     "ri_oc::B.1.5": ("E1-015 la_unidad", "corte", "2d152d6da34df92c"),
++    "ri_oc::B.1::cierre": ("E2-098 la_que_sigue", "corte", "d4a374695787ff63"),
+     "ri_psprca::4.1": ("E1-005 la_unidad", "corte", "facccab4e27ec3d8"),
+-    "ri_rml::1.2.3": ("E2-100 la_unidad, E2-100 la_herencia", "corte", "dc6c98c48414f201"),
+-    "ri_rml::1.2.4": ("E2-100 la_que_sigue", "corte", "1ca0fa9993267d0c"),
++    "ri_rml::1.2.3": ("E2-100 la_unidad, E2-100 la_herencia", "corte y herencia", "352adc75e5080399"),
++    "ri_rml::1.2.4": ("E2-100 la_que_sigue", "corte y herencia", "7f7a7e081df1081f"),
++    "ri_rml::1.4.2": ("E2-062 la_unidad, E2-062 la_herencia", "corte y herencia", "5555f612378b02ef"),
++    "ri_rml::1.4::cierre": ("E2-062 la_que_sigue", "corte y herencia", "b7bc643d08334459"),
+     "ri_spi::A.1.4": ("E1-069 la_unidad", "corte", "1ee96c2458487e81"),
+     "ri_spi::A.1.6": ("E1-026 la_unidad", "corte", "6f32dc9600033bc8"),
+     "ri_spi::B.2.9": ("E1-030 la_unidad", "corte", "f62ae29b4c9b3955"),
+@@ -1919,8 +2047,22 @@
+     "seguef::6.3::intro": ("E1-025 la_unidad", "corte y herencia", "931d98bd311c40af"),
+     "snp_cheq::8.1.3": ("E1-080 la_unidad", "corte y herencia", "4f35f5e112488b68"),
+     "snp_cheq::8.8": ("E1-046 la_unidad", "corte y herencia", "4fcc2e1c36feeb76"),
++    "snp_dd::2.2.2.1": ("E1-070 la_unidad", "corte y herencia", "621f9f311b4b6d49"),
++    "snp_mep::3.1.1.2": ("E2-018 la_unidad, E2-018 la_herencia", "corte y herencia", "4d022f1a41907494"),
++    "snp_mep::3.1.1::cierre": ("E2-018 la_que_sigue", "corte y herencia", "2303ca7ba3f353f3"),
++    "snp_mep::3.1.2.2": ("E2-022 la_unidad, E2-022 la_herencia", "corte y herencia", "6dded9b8ca9c3cfe"),
++    "snp_mep::3.1.2::cierre": ("E2-022 la_que_sigue", "corte y herencia", "7c352211f25005a2"),
++    "snp_mep::3.2.3::intro": ("E1-032 la_unidad", "corte y herencia", "2d189ead602d387d"),
++    "snp_mep::4.6.2": ("E2-053 la_unidad, E2-053 la_herencia", "corte y herencia", "f4aac510c683102d"),
++    "snp_mep::4.6::cierre": ("E2-053 la_que_sigue", "corte y herencia", "b50317d444c30711"),
+     "snp_psp::1.3.2::cierre": ("E2-011 la_que_sigue", "corte", "e9911188d972335b"),
+     "snp_spd::1.1::intro": ("E1-076 la_unidad", "corte y herencia", "e2010a8dca494023"),
++    "snp_tr::1.3.1.3": ("E1-039 la_unidad", "corte y herencia", "0156648f9eb0572a"),
++    "snp_tr::1.6.2.1": ("E1-068 la_unidad", "corte y herencia", "748b01674738ab44"),
++    "snp_tr::4.2": ("E2-101 la_unidad, E2-101 la_herencia", "corte y herencia", "30cf50a764153418"),
++    "tasint::1.7": ("E1-073 la_unidad", "corte y herencia", "2a985e7b815367a5"),
++    "tasint::3.3.2": ("E2-032 la_unidad, E2-032 la_herencia", "corte y herencia", "fde47c3355b9d2fd"),
++    "tasint::3.3::cierre": ("E2-032 la_que_sigue", "corte y herencia", "814d952435db3962"),
+ }
+ 
+ 
+@@ -2043,6 +2185,23 @@
+           txt("ri_oc::C.11").endswith("para el último día de cada mes).") and txt("ri_oc::C.11").count("\n") == 1
+           and not any("Criterios de validación" in t["texto"] or "Se considerará no validada" in t["texto"]
+                       for k in range(1, 12) for t in oc[f"ri_oc::C.{k}"]["herencia"]))
++    rech36 = [x for x in cargar(d, "estructura_nmaeef.json")["rechazos_header"] if x["pagina"] == 36]
++    ids_n = list(ch["nmaeef"])
++    check("L (E1-008): los rótulos del índice del Anexo IV de nmaeef (p. 36) no abren raíz (L o la regla 8); el cuerpo "
++          "abre, y 4.4.2 termina antes de 4.5.1",
++          sum(1 for x in rech36 if x["motivo"] == "indice_l") == 4
++          and all(x["motivo"] in ("indice_l", "lista_de_puntos_r8") for x in rech36)
++          and "nmaeef::A4::4.4.2" in ch["nmaeef"]
++          and ids_n[ids_n.index("nmaeef::A4::4.4.2") + 1] == "nmaeef::A4::4.5.1", str([x["motivo"] for x in rech36]))
++    h143 = her("ri2_ae::A3::14.3")
++    check("M (E2-002): de la raíz 0 del Anexo III de ri2_ae se hereda solo su título",
++          [t[2] for t in h143 if t[1] == "A3::S0"] == ["PROCEDIMIENTOS MINIMOS DE AUDITORÍA"], str(h143))
++    check("R5-a por lista que queda (E2-098, E2-058): ri_oc::B.1.28 hereda el cierre de B.1, y ri_spi::C.1::cierre está",
++          any(t[0] == "cierre" and t[1] == "B.1" and t[2].startswith("En el punto B.1.24") for t in her("ri_oc::B.1.28"))
++          and "ri_spi::C.1::cierre" in ch["ri_spi"])
++    check("A en la carátula (G5): ri_ii_31_12_19 no abre divisiones en la p. 1",
++          not any(a.get("tipo") == "division_a" and a.get("pagina") == 1
++                  for a in cargar(d, "estructura_ri_ii_31_12_19.json")["avisos"]))
+     malos = []
+     for uid, (origen, fija, sha16) in NEGATIVOS_LEIDAS_S06.items():
+         c = u(uid)
+@@ -2118,6 +2277,7 @@
+     test_s0_doble(base_s0)
+     test_s06_legada()
+     test_s06_sinteticos()
++    test_s06bis_sinteticos()
+     test_s06_casos(base_s0 / "casos_s06")
+ 
+     total = len(RESULTADOS)
