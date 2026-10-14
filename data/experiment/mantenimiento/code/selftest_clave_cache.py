@@ -53,7 +53,11 @@ Perfil r2b (U-TABLA-REPROC):
       de una lista y la regla de los bloques contiguos (D2), y frenan como R30;
       R03 y R27 esperan el cambio de la clave de E3 en los ítems cuyo bloque que
       abre la lista tocan, y A3r exige las claves de los no ítems presentes y
-      las de los ítems ausentes, exactamente (D5, enmienda 1 al mandato).
+      las de los ítems ausentes, exactamente (D5, enmienda 1 al mandato). Desde
+      R0 (enmienda 7 al protocolo entre tandas, §1.5), A3r exige ausentes,
+      exactamente, los ítems que no son de R0, y presentes los no ítems y las 20
+      claves de verificación de r0/esperados_r0.json (controlado por su sha256),
+      con dos variaciones de control que tienen que dar DISCREPANCIA.
   C. Contraste fila por fila con la tabla de
      data/experiment/mantenimiento/tabla_reprocesamiento.md: cada fila declara
      el comportamiento de la clave de E1 y de E3 del perfil r2b y las
@@ -425,6 +429,38 @@ def _jsonl_last_wins(p: Path) -> dict[str, dict]:
     return out
 
 
+# R0 (enmienda 7 al protocolo entre tandas, §1.5): las 20 unidades de E3-01 recibieron en R0 su primera verificación con
+# el E3 corregido (las filas de O3, sembradas en la db de E3). Sus claves salen de r0/esperados_r0.json, controlado por
+# su sha256.
+ESPERADOS_R0 = REX / "r0" / "esperados_r0.json"
+ESPERADOS_R0_SHA256 = "81598c9704a1e66b53c501c7fff34ce1d9b71d20ae0b5a91548ecbf4aba8bfa6"
+
+
+def claves_verificacion_r0() -> tuple[set[str], str | None]:
+    """Las claves de `verificacion` de r0/esperados_r0.json y el sha256 del archivo (vacías y None si no está)."""
+    if not ESPERADOS_R0.exists():
+        return set(), None
+    b = ESPERADOS_R0.read_bytes()
+    return {v["clave"] for v in json.loads(b)["verificacion"].values()}, hashlib.sha256(b).hexdigest()
+
+
+def regla_a3r(por_par: list[tuple[str, bool, str]], en_db: set[str], claves_r0: set[str]) -> dict:
+    """La regla de A3r desde R0, sobre (unidad, es ítem, clave de E3) de cada par y las claves de la db: las 20 claves
+    de R0 son de ítems de la tanda 0 y están en la db; las ausentes son, exactamente, los ítems que no son de R0.
+    Cualquier otra ausencia o presencia es DISCREPANCIA."""
+    items = sorted(cid for cid, es, _ in por_par if es)
+    r0 = sorted(cid for cid, _, k in por_par if k in claves_r0)
+    ausentes = sorted(cid for cid, _, k in por_par if k not in en_db)
+    items_no_r0 = sorted(set(items) - set(r0))
+    ok = (len(claves_r0) == 20 and len(r0) == 20 and set(r0) <= set(items) and claves_r0 <= en_db
+          and ausentes == items_no_r0)
+    return {"ok": ok, "items": items, "unidades_r0": r0, "ausentes": ausentes, "items_no_r0": items_no_r0,
+            "no_items_ausentes": sorted(set(ausentes) - set(items)),
+            "items_presentes": sorted(set(items) - set(ausentes)),
+            "r0_ausentes": sorted(set(r0) & set(ausentes)),
+            "items_no_r0_presentes": sorted(set(items_no_r0) - set(ausentes))}
+
+
 def bloque_anclaje_r2b(ar: Armado, salida_r2b: Path) -> dict:
     """A1r y A3r. E1: la clave de cada unidad de la E0 r2b (con las partes por
     corte de la salida, si las hay) más las de los reintentos por corte, en el
@@ -503,22 +539,42 @@ def bloque_anclaje_r2b(ar: Armado, salida_r2b: Path) -> dict:
     # bloque que abre la lista y la NOTA del ítem, así que su clave ya no es la de la tanda 0. A3r recomputa las
     # claves con el código vigente y exige que las de los no ítems estén en la db y que las ausentes sean
     # exactamente las de los ítems (prompt_r2b.es_item); cualquier otra ausencia o presencia es DISCREPANCIA.
+    # R0 (enmienda 7 al protocolo entre tandas, §1.5): las 20 claves de R0 pasan a presentes (regla_a3r). Dos
+    # variaciones de control sobre el conjunto de claves de la db tienen que dar DISCREPANCIA: una de las 20 ausente y
+    # un ítem que no es de R0 presente (el primero de cada lista, en orden).
     por_par = [(c["id"], prompt_r2b.es_item(c), ar.k_e3(c, v)) for c, v in pares]
     calc3 = {k for _, _, k in por_par}
     en_db = db3 or set()
-    items = sorted(cid for cid, es, _ in por_par if es)
-    ausentes = sorted(cid for cid, _, k in por_par if k not in en_db)
-    no_items_ausentes = sorted(set(ausentes) - set(items))
-    items_presentes = sorted(set(items) - set(ausentes))
-    ok3 = (db3 is not None and len(calc3) == len(pares) and ausentes == items)
+    claves_r0, sha_r0 = claves_verificacion_r0()
+    a3r = regla_a3r(por_par, en_db, claves_r0)
+    clave_de = {cid: k for cid, _, k in por_par}
+    variaciones_a3r = []
+    for vid, desc, cid, alterar in (
+            ("A3r_v1", "una de las 20 claves de R0 ausente de la db", (a3r["unidades_r0"] or [None])[0],
+             lambda db, k: db - {k}),
+            ("A3r_v2", "la clave de un ítem que no es de R0 presente en la db", (a3r["items_no_r0"] or [None])[0],
+             lambda db, k: db | {k})):
+        obs = None if cid is None else ("OK" if regla_a3r(por_par, alterar(en_db, clave_de[cid]), claves_r0)["ok"]
+                                        else "DISCREPANCIA")
+        variaciones_a3r.append({"id": vid, "descripcion": desc, "unidad": cid, "esperado": "DISCREPANCIA",
+                                "observado": obs, "ok": obs == "DISCREPANCIA"})
+    ok3 = (db3 is not None and len(calc3) == len(pares) and sha_r0 == ESPERADOS_R0_SHA256 and a3r["ok"]
+           and all(v["ok"] for v in variaciones_a3r))
     out["e3"] = {"estado": "OK" if ok3 else "DISCREPANCIA",
-                 "regla": ("U-E3-LISTAS (D5): las claves de E3 de los no ítems, presentes en la db; las de los "
-                           "ítems (prompt_r2b.es_item), ausentes, exactamente"),
+                 "regla": ("R0 (enmienda 7 al protocolo entre tandas, §1.5): presentes en la db las claves de E3 de "
+                           "los no ítems y las 20 de R0 (verificacion de r0/esperados_r0.json); ausentes, exactamente, "
+                           "las de los ítems (prompt_r2b.es_item) que no son de R0. Antes de R0, la de U-E3-LISTAS "
+                           "(D5): ausentes, exactamente, los ítems"),
                  "pares_aceptados_e1": len(pares), "claves_calculadas": len(calc3),
                  "calculadas_presentes_en_db": len(calc3 & en_db),
-                 "no_items": len(pares) - len(items), "items": len(items), "ausentes": len(ausentes),
-                 "no_items_ausentes": no_items_ausentes, "items_presentes": items_presentes,
-                 "ausentes_listadas": ausentes}
+                 "no_items": len(pares) - len(a3r["items"]), "items": len(a3r["items"]),
+                 "esperados_r0": _rel(ESPERADOS_R0), "esperados_r0_sha256": sha_r0,
+                 "esperados_r0_sha256_ok": sha_r0 == ESPERADOS_R0_SHA256,
+                 "unidades_r0": a3r["unidades_r0"], "items_no_r0": len(a3r["items_no_r0"]),
+                 "ausentes": len(a3r["ausentes"]), "no_items_ausentes": a3r["no_items_ausentes"],
+                 "items_presentes": a3r["items_presentes"], "r0_ausentes": a3r["r0_ausentes"],
+                 "items_no_r0_presentes": a3r["items_no_r0_presentes"],
+                 "ausentes_listadas": a3r["ausentes"], "variaciones_de_control": variaciones_a3r}
     return out
 
 

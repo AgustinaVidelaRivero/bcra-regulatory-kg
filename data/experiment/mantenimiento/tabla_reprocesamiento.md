@@ -404,6 +404,18 @@ Resultado (salida en `selftest_clave_cache.json`):
   vigente las 2.440 claves de E3 de la tanda 0 y exige las de los no ítems presentes y las de los ítems ausentes,
   exactamente. Resultado: OK, 1.386 de no ítems presentes y 1.054 ausentes, que son los 1.054 ítems
   (`prompt_r2b.es_item`), listados en el JSON; ningún no ítem ausente ni ningún ítem presente.
+- **[14/10/2026, R0 de E3-01]** A3r cambia de regla (enmienda 7 al protocolo entre tandas, §1.5). R0 dejó en la db de E3
+  la primera verificación con el E3 corregido de las 20 unidades de E3-01: las filas de O3, sembradas. Sus claves son las
+  de `verificacion` en `reextraccion_v2/r0/esperados_r0.json` (`81598c97…`), que el selftest lee controlando su sha256.
+  - La regla: presentes las claves de los no ítems y las 20 de R0; ausentes, exactamente, las de los ítems que no son de
+    R0. Cualquier otra ausencia o presencia es DISCREPANCIA.
+  - Dos variaciones de control tienen que dar DISCREPANCIA: A3r_v1 (una de las 20, ausente) y A3r_v2 (la clave de un
+    ítem que no es de R0, presente).
+  - Resultado: OK. Están presentes las 1.386 de no ítems y las 20 de R0, y faltan 1.034, que son los ítems que no son
+    de R0. A3r_v1 y A3r_v2 dan DISCREPANCIA.
+  - Con la regla anterior, sobre la misma copia, A3r daba DISCREPANCIA solo por las 20 presentes.
+  - En el perfil sellado, A3 sigue OK (2.430 de 2.430), y el namespace de E3 pasa de 7.698 claves a 7.721: las 20
+    sembradas y las 3 re-verificaciones de R0.
 - R00 a R33b: las 44 variaciones dan lo esperado, unidad por unidad. Hasta U-E3-LISTAS eran 42, R00 a R32 (este
   texto decía 41, y el JSON de `0a3ac81` tiene 42). U-E3-LISTAS suma R33 y R33b, que frenan (F23b), y R03 y R27
   esperan el cambio de la clave de E3 en los ítems cuyo bloque que abre la lista tocan (F03 y F21).
