@@ -195,3 +195,28 @@ el paquete de la mesa: `decisiones_103_mesa/potencia/propuesta_preguntas_rama_de
 - **El re-censo de la release de E0 (§4):** no demora la tanda 1, y va en S2 como tramo 3 (nota del 15/10/2026 al pie de
   `docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md`).
 - Las secciones anteriores no se editan.
+
+## 6. B6.3 y el carril de la evaluación (agregado del 15/10/2026)
+
+Las decisiones llegaron en el mensaje recibido a las 14:42:39 (hoja de ruta de la mesa, §105).
+
+- **El reparto en la rama de caída: la lectura 3, tal cual:** «Cuando una clase llega a sus topes, lo que le falta pasa a las otras
+  clases, en proporción a sus partes, y el N se conserva. El total baja solo cuando todas las clases llegaron a sus topes. Las
+  proporciones que no se cumplan se declaran.»
+  - Resuelve lo que la regla de la §5 no decía.
+- **A2.1, tal cual:** «A2.1 arranca ya. Redactá su mandato, sin demorar nada del camino a la tanda 1.»
+  - El mandato lo redacta la mesa, y la autora lo firma.
+- **A2.2, tal cual:** «buscá en el registro del 07/10 por qué D1 la pone después de la tanda 1. Si no depende de nada de la tanda 1,
+  corre apenas se selle A2.1. Si depende, decime de qué y decido.»
+  - **Lo que encontró la mesa:**
+    - el registro del 07/10/2026 da la razón de que vaya antes de las ablaciones de A1.8: «para que lo que muestre entre como insumo de
+      la navegación» (`docs/plan_tesis.md:331`). No da ninguna para que vaya después de la tanda 1;
+    - el grafo del brazo del grafo de A2 es el de desarrollo r2b (D5, `:339`);
+    - la restricción ligada a la tanda 1 es la de A1.8: el agente queda fijo durante la tanda 1 (decisión del 01/10/2026, `:331`). A2.2
+      no cambia el agente.
+  - **Con eso, A2.2 corre apenas se selle A2.1.** Depende de qué versión del grafo de desarrollo fije el mandato de A2.1. Con la
+    re-sellada, depende también del re-sellado único de la tanda 0.
+- **La aprobación de las preguntas, tal cual:** «Sí a empezar la aprobación de las preguntas antes del N, con un orden sorteado y
+  sellado antes de aprobar ninguna, que sirva para las dos formas de repartir el N (más documentos o más preguntas por documento).»
+  - El diseño lo propone la mesa, y la autora lo decide antes de sortear.
+- Las secciones anteriores no se editan.
