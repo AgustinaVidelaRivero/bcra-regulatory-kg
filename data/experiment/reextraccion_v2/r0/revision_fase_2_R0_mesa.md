@@ -108,3 +108,12 @@ La línea de base de la cola tiene dos cifras, como manda la enmienda 7, §1.5:
 - 69 de 2.439 (2,8 %), para el grafo re-sellado, cuyo ensamblado todavía no corrió.
 
 La línea va en el borrador del pre-registro, PENDIENTE de la autora.
+
+## Aprobación de la autora (15/10/2026)
+
+Recibida a las 11:18:20 (hoja de ruta de la mesa, §100), tal cual: «de la revisión de R0: el punto a se declara, sin corregir los dos
+archivos; los puntos b a e, como los dejaste».
+- **a.** Queda declarado. `corrida/estado_corpus.json` y `corrida/docvig/resumen_e3.json` no se corrigen. El gasto real de la fase 2 es
+  USD 0,157948, todo de ext.
+- **b a e:** quedan como están arriba.
+- **El pre-registro de la tanda 1:** la autora aprobó la v7 del borrador, con la línea de base de la cola: 74 y 69 de 2.439.

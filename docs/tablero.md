@@ -24,7 +24,8 @@ actualiza.
   confirma antes del FRENO de O2 (su mandato, §7).
   [Actualizado el 13/10/2026: U-OMISIONES-COD cerró su código en O2 (`ded41d5`). → Potestad confirma en la C4 de U-CONF-MATRIZ
   (`d2f24cb`), así que esa excepción no se usa. Antes del re-sellado va R0 (enmienda 7, solo E3-01, tope de USD 1,50): el gasto lo
-  autorizó la autora el 13/10/2026, y el despacho, preparado por la mesa, está PENDIENTE de la autora.]
+  autorizó la autora el 13/10/2026, y el despacho, preparado por la mesa, está PENDIENTE de la autora.] [15/10/2026: R0 cerró en sus
+  dos fases (`1d690df3`, `2d0f5277`), con USD 0,157948 de 1,50, y la cola de la tanda 0 pasó de 74 a 69.]
 
 **Esquema y catálogo.**
 - L-ESQ-R2 FIRMADA (`4ef7650`), con sus enmiendas 2 a 7 firmadas (la 6, en su parte A; `data/experiment/esq/`). La enmienda 8 está en
@@ -52,8 +53,12 @@ actualiza.
   - la corrección de E0 con reglas generales: mandato (`85569a5`), dos FRENOs (`d32f6db`, `cf9b7e2`), decisiones (`b487f5c`) y el
     código aplicado (`2374968`);
   - S1-quater: sorteo (`cc60a4b`), fichas (`9716cc0`) y las dos etapas de la lectura, selladas y controladas (`b5aa9a3`, `cbc6986`).
-    La adjudicación es de la autora, PENDIENTE. Antes de su pasada 1, la autora decide qué pasa si no llega al piso (la nota que
-    concilia `docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md:325-326` con el plan B), PENDIENTE.
+    La autora cerró su adjudicación el 15/10/2026 (registro en `s1quater/adjudicacion/cierre/`). Quedó en 85 de 90 sin error de
+    corte, con Wilson 0,8765, debajo del piso de 0,90.
+    Rige el plan B (nota del 13/10/2026 al mandato): S2 se despacha igual y la condición 7 queda declarada. De la lista de
+    trabajo de la tanda 1 sale ri_oc, y S2 fija su reemplazo.
+    [Actualizado el 15/10/2026: decía «La adjudicación es de la autora, PENDIENTE», y que antes de su pasada 1 la autora decidía qué
+    pasaba si no llegaba al piso. Esa decisión quedó en la nota del 13/10/2026 al mandato.]
   [Actualizado el 13/10/2026: decía «S0-5a-bis despachada el 09/10/2026».]
 
   Sigue S2, que fija la lista de la tanda 1, con su decisión 6 abierta. [Actualizado el 13/10/2026: decía «Siguen S0-5b, S1-ter y S2,
@@ -89,7 +94,8 @@ actualiza.
   autora. [Agregado el 13/10/2026.]
 - **Backlog:** cuatro verificados, uno declarado y dos observaciones nuevas (`b57650b`). [Agregado el 13/10/2026.]
 - **R0** (enmienda 7, solo E3-01, tope de USD 1,50): gasto autorizado por la autora el 13/10/2026; el despacho, preparado por la mesa,
-  PENDIENTE de la autora. [Agregado el 13/10/2026.]
+  PENDIENTE de la autora. [Agregado el 13/10/2026.] [15/10/2026: corrida y revisada en dos fases, `1d690df3` y `2d0f5277`; la
+  autora aprobó la revisión el 15/10/2026.]
 - **Re-sellado único de los grafos de la tanda 0.** Después de R0. Su mandato, rehecho sobre el código de O2, está en borrador de la
   mesa, PENDIENTE de la autora. [Agregado el 13/10/2026.]
 - **Pre-registro de la tanda 1**, y después B6.1.
@@ -101,7 +107,7 @@ actualiza.
 - abiertas: 2 (release r2), 4 (tablero de correcciones: falta la re-medición de r2b después del re-sellado), 5, 7 y 12 (segmentación
   oficial y lista), 11 (alcance de la lista final) y 11-bis (U-ALCANCE-E1).
   [Actualizado el 09/10/2026: la 13 pasó de abierta a cumplida.] [13/10/2026: la 7 espera la adjudicación de S1-quater y la decisión
-  de la autora sobre qué pasa si no llega al piso.]
+  de la autora sobre qué pasa si no llega al piso.] [15/10/2026: la 7 queda declarada, no cumplida: S1-quater no llegó al piso.]
 
 ---
 

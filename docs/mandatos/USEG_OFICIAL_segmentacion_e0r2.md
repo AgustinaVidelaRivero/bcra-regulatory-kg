@@ -947,3 +947,18 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   - **Para S1-quater, esta nota reemplaza** lo que dice `:325-326` sobre el caso sin piso, y extiende el reemplazo del plan B al caso en
     que llega. Para S1, S1-bis y S1-ter queda lo ya registrado.
   - **El pre-registro de la tanda 1** (borrador de la mesa, fuera del repo) lleva estas reglas en las dos ramas.
+- **15/10/2026 — S1-quater: la adjudicación, cerrada; la cifra no llega al piso.** Registro de la mesa en
+  `data/experiment/segmentacion_oficial_e0r2/s1quater/adjudicacion/cierre/registro_cierre_adjudicacion_S1quater_mesa.md` (hoja de ruta de la mesa, §100). Las notas anteriores no se editan.
+  - **La cifra del piso:** 85 de 90 sin error de corte, sin dudosas; el límite inferior de Wilson al 95 % es 0,8765, debajo de 0,90.
+    La cifra del corpus es 0,9855 [0,9057; 0,9979]. La de control, sin las 26 fichas cuyo texto vio un modelo en la pasada 1, da 62 de
+    64 (0,8930) y no decide.
+  - **Rige la rama 2 de la nota del 13/10/2026:**
+    - la salida de S1-quater se commitea con su cifra, declarada debajo del piso;
+    - S2 se despacha igual;
+    - la condición 7 del checklist queda declarada, no cumplida;
+    - no hay otra vuelta a S0 antes de la tanda 1.
+  - **Los documentos con un error de corte confirmado** no entran en la tanda 1 ni pueden ser sucesores (registro, §6).
+    - De la lista de trabajo de la tanda 1 sale ri_oc, y S2 fija su reemplazo, con el comando que lo reproduce.
+    - Si también cuentan los errores en la unidad que sigue y las herencias, lo decide la autora (PENDIENTE).
+  - **La pasada 2:** la autora declaró que una sesión de Claude Code cargó en sus planillas lo que ella le dictaba, aunque su decisión
+    sellada del 14/10/2026 era no usar ningún modelo. Por decisión suya, esa sesión no se midió, y la cifra de control no la cubre.
