@@ -968,3 +968,11 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     gerc y ri_spi, por la unidad que sigue.
   - De la lista de trabajo de la tanda 1 sigue saliendo solo ri_oc. Ninguno de los seis puede ser sucesor.
   - Las notas anteriores no se editan.
+- **15/10/2026 — S1-quater: la regla de los documentos con error alcanza a todos, no solo al reemplazado** (enmienda 8 al protocolo
+  entre tandas, decisión 1 al firmar, 13:00:14; `docs/enmienda8_protocolo_entre_tandas_2026-10-15_calendario_hacia_B6.3.md`).
+  - La nota del 13/10/2026 (`:940-941`) habla del documento reemplazado, y el checklist (`docs/checklist_pre_escalado.md:81`), de todo
+    documento con un error de corte confirmado.
+  - Rige la lectura amplia: ri_oc, ri_icpipsp, ri_pnp, ri_psprca, gerc y ri_spi no entran en ninguna tanda hasta que su error se corrija
+    con una regla general medida.
+  - La autora la fijó después de ver qué documentos toca, y se registra.
+  - Las notas anteriores no se editan.

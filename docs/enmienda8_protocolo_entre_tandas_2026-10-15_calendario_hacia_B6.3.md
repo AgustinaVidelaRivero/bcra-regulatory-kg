@@ -1,9 +1,11 @@
 # Enmienda 8 al protocolo entre tandas — el calendario hacia B6.3: tanda final fusionada, re-aplicación única del código, corte del grupo 2 y regla de caída
 
-**VERSIÓN PARA FIRMAR** (mesa, 15/10/2026). La redacté sobre las decisiones de la autora del 15/10/2026, recibidas a las 12:16:27 (hoja
-de ruta de la mesa, §101), que aprueban los cambios R1 a R6 del plan de la mesa hacia el 28/10/2026 (§100,
-`decisiones_100_mesa/plan/plan_hacia_atras_desde_el_28_10_mesa.md`, §7) con sus condiciones. Rige desde la firma de la autora. La firma
-es PENDIENTE.
+**FIRMADA por la autora el 15/10/2026 a las 13:00:14** (firma por mensaje de la autora; hoja de ruta de la mesa, §102), con sus cuatro
+decisiones al firmar. La versión para firmar está en `b3d4d780`. Rige desde esta firma.
+
+La redactó la mesa sobre las decisiones de la autora del 15/10/2026, recibidas a las 12:16:27 (hoja §101), que aprueban los cambios R1 a
+R6 del plan de la mesa hacia el 28/10/2026 (§100, `decisiones_100_mesa/plan/plan_hacia_atras_desde_el_28_10_mesa.md`, §7) con sus
+condiciones.
 
 La excepción es la regla de caída (§7 de esta enmienda): la autora pidió sellarla el mismo día, y la mesa la selló a las 12:22:06
 (`docs/regla_de_caida_grafo_evaluado_2026-10-15.md`, `96aec3237d546ebeca733102decfff520ac80063d93c96bb48869dee80008033`).
@@ -30,8 +32,11 @@ Es una enmienda con fecha al protocolo entre tandas (`docs/protocolo_entre_tanda
   - los de fuera (§5);
   - ri2_pm, que queda fuera del grafo evaluado (nota del 15/10/2026 al pie de
     `docs/enmiendas_adendas_1_y_2_laudo_B5.5_2026-10-04.md`);
-  - los documentos que una corrección de E0 pendiente deja fuera mientras no esté medida. Cuáles son lo deciden las decisiones 1 y 2 de
-    la autora al firmar (abajo).
+  - los documentos que una corrección de E0 pendiente deja fuera mientras no esté medida, por las decisiones 1 y 2 al firmar (abajo):
+    - por la decisión 1: ri_icpipsp, ri_pnp, ri_psprca, gerc y ri_spi. ri_oc ya salió de la tanda 1;
+    - por la decisión 2: dmrd, ri2_cs, ri_cc, ri_ccpnp, ri_niif, nmaeef, ri_saofe y ri2_ae. La decisión nombra también a ri_con, que
+      es un no segmentable declarado (§5) y no estaba en la tanda final;
+    - en total, 13 TOs y 958 unidades de la tanda final (ri_pnp está en los dos grupos).
 - **Condición de la autora:** la revisión entre tandas después de la tanda 1 se hace completa, como manda el §4, antes de despachar la
   tanda final. Va con atención especial a los documentos del estrato sin_raiz, donde estuvieron los errores de S1-quater.
 - **Las lecturas de la tanda final:** un solo juego, con los tamaños por tanda del protocolo y de su pre-registro, estratificado por
@@ -79,8 +84,8 @@ Es una enmienda con fecha al protocolo entre tandas (`docs/protocolo_entre_tanda
   en paralelo. No usa hilos, `asyncio` ni workers.
   - El runner es código de la release (`docs/laudo_release_r2_pipeline.md:219`).
   - R2 pide un cambio de código, con su mandato, sus pruebas, su prueba en seco y el gate.
-- **PENDIENTE de la autora** (hoja §101): cómo sigue R2.
-- Mientras tanto, la extracción va en secuencia (`docs/decisiones_caching_extraccion.md`, decisión 4).
+- **Decisión 3 de la autora al firmar:** sin R2. Toda la extracción va en secuencia (`docs/decisiones_caching_extraccion.md`, decisión
+  4), a unas 304 unidades por hora (la tanda 0, `data/experiment/reext_t0/freno_t2.md:3`).
 
 ## 7. La regla de caída
 
@@ -93,11 +98,11 @@ Es una enmienda con fecha al protocolo entre tandas (`docs/protocolo_entre_tanda
 - **Lo aprobado por la autora:** hasta USD 341 en total, con los topes por paso del plan. Cada gasto va con su mandato y su tope.
 - **Los topes por paso:**
   - tanda 1, 1,45 × U × 0,021115 (unos 102,9 con la lista de trabajo);
-  - tanda final, ídem (unos 193,9);
+  - tanda final, ídem: unos 163,4, con la decisión 2 (100 TOs y 5.337 unidades);
   - tripletas, V 35 y T 55;
   - A2.2, la calibración del juez y B6.3, a fijar en sus mandatos.
-- **Los topes suman más que el total:** unos 470 contra 341. PROPUESTA de la mesa (decisión 4 al firmar): rige el total, y si el gasto
-  acumulado llega a USD 341 antes de terminar, se frena y decide la autora.
+- **Decisión 4 de la autora al firmar:** rige el total de USD 341, y cada paso conserva su tope. Si el gasto acumulado llega a 341 antes
+  de terminar, la mesa frena y decide la autora. Los topes por paso suman más que el total, unos 436 con el de la tanda final de arriba.
 
 ## 9. Lo que no cambia
 
@@ -106,10 +111,23 @@ Es una enmienda con fecha al protocolo entre tandas (`docs/protocolo_entre_tanda
 - el prompt, el esquema y los modelos;
 - las revisiones entre tandas, las verificaciones, los controles y las pruebas en seco.
 
-## Decisiones de la autora al firmar (PENDIENTES)
+## Decisiones de la autora al firmar (15/10/2026, 13:00:14)
 
-Los números son del manifiesto de la E0 corregida (`unidades_por_to`), sobre la tanda final de 113 TOs y 6.295 unidades, sin ri2_pm
-(hoja de la mesa, §101, con el inventario de lo pendiente que afecta la calidad).
+Tal cual, del mensaje de la firma:
+- a. «Decisión 1: la lectura amplia. Todo documento con un error de corte confirmado en S1-quater (ri_icpipsp, ri_pnp, ri_psprca, gerc y
+  ri_spi, además de ri_oc) no entra en ninguna tanda hasta que su error se corrija con una regla general medida. Registrá que la fijé
+  después de ver qué documentos toca.»
+- b. «Decisión 2: los documentos que bloquean BKL-0044, los rechazos raiz_en_columna_profunda que quedan y la decisión 1 quedan fuera de
+  la tanda final y del grafo evaluado, declarados, y van al grafo corregido del cap. 6.»
+- c. «Decisión 3: sin R2. Todo en secuencia.»
+- d. «Decisión 4: rige el total de USD 341, y cada paso conserva su tope. Si el gasto acumulado llega a 341 antes de terminar, frenás y
+  decido yo.»
+
+Se registra, por pedido de la autora, que fijó la decisión 1 después de ver qué documentos toca.
+
+Lo que sigue es el texto de la versión para firmar (`b3d4d780`), con las opciones y los números que la autora tuvo a la vista. Los
+números son del manifiesto de la E0 corregida (`unidades_por_to`), sobre la tanda final de 113 TOs y 6.295 unidades, sin ri2_pm (hoja de
+la mesa, §101, con el inventario de lo pendiente que afecta la calidad).
 1. **El alcance de la regla del 13/10/2026 sobre los documentos con error.** Las fuentes no dicen lo mismo:
    - `docs/checklist_pre_escalado.md:81`: todo documento con un error de corte confirmado en S1-quater «no entra en ninguna tanda
      siguiente» hasta que su error se corrija con una regla general medida;
@@ -123,6 +141,9 @@ Los números son del manifiesto de la E0 corregida (`unidades_por_to`), sobre la
    - los rechazos `raiz_en_columna_profunda` que quedan (nmaeef, ri_saofe, ri2_cs y ri2_ae; decisión del 09/10/2026).
    - En la tanda final son 9 TOs y 700 unidades. Con los de la decisión 1, 13 TOs y 958 unidades, de las que 586 son de régimen
      informativo: la mitad de las 1.158 de esa clase.
+   - [Aclaración de la mesa al firmar: los dos grupos nombran 10 documentos. El décimo, ri_con, es uno de los 12 no segmentables
+     declarados (`docs/protocolo_entre_tandas.md:163-166`) y no estaba en la tanda final; tampoco está en la lista de trabajo de la
+     tanda 1. La E0 corregida le da 34 unidades.]
    - **PROPUESTA de la mesa:** quedan fuera de la tanda final y del grafo evaluado, declarados, y van al grafo corregido del cap. 6. Una
      corrección de E0 pide diseñarla y medirla a ciegas, y el comparable (S0-6a hasta el cierre de S1-quater) llevó unos 3,6 días.
    - **Las alternativas:**
@@ -136,4 +157,5 @@ Los números son del manifiesto de la E0 corregida (`unidades_por_to`), sobre la
 
 ## Firma
 
-PENDIENTE de la autora.
+FIRMADA por la autora el 15/10/2026 a las 13:00:14 (por mensaje; hoja de ruta de la mesa, §102), con sus cuatro decisiones. Rige desde
+esta firma.

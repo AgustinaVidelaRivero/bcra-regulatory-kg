@@ -18,6 +18,9 @@ terminada, el 31/10/2026. El plan hacia atrás es de la mesa (fuera del repo, ho
 - Ningún atajo saca una revisión entre tandas, una lectura a ciegas, una verificación, un control ni una prueba en seco.
 - Sus cambios van en la enmienda 8 al protocolo (para firmar, `docs/enmienda8_protocolo_entre_tandas_2026-10-15_calendario_hacia_B6.3.md`)
   y en la regla de caída, sellada (`docs/regla_de_caida_grafo_evaluado_2026-10-15.md`).
+- [15/10/2026, 13:00:14: la autora firmó la enmienda 8, con cuatro decisiones (los documentos con error fuera de toda tanda hasta su
+  regla medida, los bloqueados por correcciones de E0 fuera del grafo evaluado, sin R2 y el total de USD 341). Las decisiones de calidad
+  y de evaluación del mismo día están en `docs/registro_decisiones_calidad_y_evaluacion_2026-10-15.md`.]
 
 **Grafos.**
 - El grafo vigente del circuito de refinamiento sigue siendo KG-Reextraído-r1 (§1; `docs/laudo_promocion_r1_vigente.md`).
