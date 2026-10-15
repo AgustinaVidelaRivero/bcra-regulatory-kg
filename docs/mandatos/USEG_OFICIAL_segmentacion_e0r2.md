@@ -996,3 +996,22 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
        - Los 2 parciales van en una fila aparte.
        - Al lado va el control por la estructura: los documentos sin unidades `S<n>`.
   - Con esto se cumple la precondición de S2. Las notas anteriores no se editan.
+- **15/10/2026 — S2: el sucesor de ri_oc, ri_pgn, el piso en 4.f y el re-censo de la release de E0** (decisión de la autora recibida a
+  las 14:15:41; hoja de ruta de la mesa, §104). Tal cual:
+  - «D-1: tu propuesta, con un tope. El sucesor de ri_oc es el candidato elegible con modo sin_raiz en la E0 corregida y más unidades de
+    extracción, con desempate por id, siempre que no supere en más de 600 unidades a ri_oc (unas 2 h más de corrida). Si el de más
+    unidades lo supera, va el siguiente de la lista ordenada que no lo supere.»
+  - «D-2: tu propuesta. ri_pgn queda, por mi decisión del 07/10, y se declara que el orden del §7 no se recomputó.»
+  - «En 4.f, el piso de S1-quater y su declaración van marcados como procedimiento interno, no para la tesis. La cifra medida sí puede
+    ir.»
+  - «El re-censo de la release de E0: decime en una línea por qué va en un despacho aparte. Si no hay una razón que demore la tanda 1,
+    sumalo a S2 como tramo 3, después del tramo 2.»
+    - No la hay: la lista de la tanda 1 y U salen del tramo 1, y el re-censo toca solo la tanda final.
+    - Va como tramo 3, sobre la misma E0 corregida: los límites de sub-documento y los candidatos del hallazgo 1.16 de los TOs de la
+      tanda final (puntos 3 y 4 de la release, `:665-677`). nmaeef y ri_niif (punto 5) quedaron fuera por la decisión 2 de la enmienda 8,
+      y solo se declaran.
+  - **Las propuestas a las que remiten D-1 y D-2:**
+    - D-1: entre los elegibles con el modo de ri_oc en la E0 corregida (`sin_raiz`), el de más unidades de extracción, con desempate
+      por id. Conserva el par de la escalera del §7, con ri_dcpc, que en la partición legada está en `marcadores`;
+    - D-2: ri_pgn queda (`data/experiment/catalogo_unico/registro_alcance_por_tanda.md:37`), y S2 no reconstruye el orden del §7.
+  - Las notas anteriores no se editan.

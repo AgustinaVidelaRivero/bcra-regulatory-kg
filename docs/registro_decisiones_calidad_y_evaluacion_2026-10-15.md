@@ -164,3 +164,34 @@ Las decisiones, tal cual en lo esencial:
 - **El re-censo de la release de E0:** se suma a S2 solo si no demora la tanda 1. Si la demora, va en un despacho aparte, después.
 - **L-02, L-04 y la etapa P de U-MED-UMBRALES:** según su regla.
 - **La cola humana, la cuarentena y las formas A y B:** sin cambios.
+
+## 5. B6.3: el N de la rama principal y el reparto en la rama de caída (agregado del 15/10/2026)
+
+Las decisiones llegaron en el mensaje recibido a las 14:15:41 (hoja de ruta de la mesa, §104). La propuesta sobre la que decidió está en
+el paquete de la mesa: `decisiones_103_mesa/potencia/propuesta_preguntas_rama_de_caida_mesa.md`, con su script y su salida.
+
+- **El N de la rama principal, tal cual:** «El N de la rama principal sale de Q5, con las tasas de A2.2, para una potencia de 0,80, y no
+  de las 4 preguntas por documento. Cuando lo propongas:
+  - compará repartirlo en más documentos, con las proporciones de O2, contra hacer más preguntas por documento, con su efecto de diseño;
+  - decime cuántas horas mías suma, entre aprobar las preguntas y adjudicar.
+
+  Si ese N no entra en el calendario, frenás y decido, y lo que se use se declara con la potencia que alcanza.»
+  - Las tasas son las de los pares discordantes que mide A2.2 (`docs/plan_tesis.md:340`, registro del 07/10/2026, D1). A2.2 corre
+    después de la tanda 1 y necesita el pre-registro sellado de A2.1 (`:339`).
+- **La rama de caída, la opción A, tal cual:** «Mantiene el N de la rama principal, con las proporciones de O2 por clase, dentro de cada
+  clase en proporción a las unidades, con un piso de 4 y el tope de la mitad de las unidades. Si los topes no alcanzan para el N, el
+  total baja a la suma de los topes. La pérdida por el agrupamiento se declara con su efecto de diseño, y los resultados por clase se
+  informan como casos.»
+  - **Los elegibles** son los 6 de la §1, más el sucesor de ri_oc si es elegible. Las unidades son las de la E0 corregida.
+  - **Desde qué N llegan los topes** (`data/experiment/esq/elegibles_B63_O2_2026-10-15/reparto_rama_caida_mesa.py`, con su salida en
+    `reparto_rama_caida.txt`): con los 6, régimen informativo llega a la suma de sus topes, 54 preguntas, con N > 108. Las otras dos
+    clases llegan con N > 1.224 y con N > 280. Con el sucesor, el script se corre con `--sumar <id>`.
+  - **Lo que la regla no dice** (PENDIENTE de la autora, antes de cualquier lectura): qué pasa cuando una clase llega a sus topes y las
+    otras no. Con N = 125, uno de los N de la salida, hay tres lecturas:
+    1. esa clase queda en sus topes y las otras siguen con su parte: el total baja a 116,5;
+    2. el total baja hasta conservar 50 / 25 / 25: a 108;
+    3. lo que falta pasa a las otras clases y el N se conserva: 125, con régimen informativo por debajo del 50 %.
+  - El redondeo de las preguntas por documento se fija con la propuesta del N.
+- **El re-censo de la release de E0 (§4):** no demora la tanda 1, y va en S2 como tramo 3 (nota del 15/10/2026 al pie de
+  `docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md`).
+- Las secciones anteriores no se editan.
