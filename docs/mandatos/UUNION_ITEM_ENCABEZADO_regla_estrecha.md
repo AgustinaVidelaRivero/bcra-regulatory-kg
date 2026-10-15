@@ -170,3 +170,12 @@ U2 pasa, después de U-OMISIONES-COD y antes del armado que precede al sello del
     `criterio_u2.md` y sus ocho precisiones; dos lecturas a ciegas y la adjudicación de la autora. Piso: límite inferior de Wilson al
     95 % ≥ 0,75. El tamaño, la semilla y el piso se sellan antes de leer. Va antes de sellar el grafo evaluado.
   - **La copia del FRENO de U2-b en `u2/`** (`freno_u2b.md`, igual al de su paquete), aprobada.
+- **15/10/2026 — el control de las uniones en los TOs de la tanda 1: sus parámetros y qué pasa si no llega** (decisiones de la autora;
+  hoja de ruta de la mesa, §102 y §103). Los dos se sellaron antes de leer, en `data/experiment/union_estrecha/control_tanda1/`.
+  - **Los parámetros** (`parametros_control_uniones_tanda1_2026-10-15.md`, sellado a las 13:08:23, `c5aec07a…`):
+    - 30 uniones, o el censo si son 30 o menos;
+    - la semilla `20261015`;
+    - el piso de U2, con las no decidibles como no correctas.
+  - **La regla si no llega** (`regla_si_el_control_de_uniones_no_llega_2026-10-15.md`, sellada a las 14:01:30, `44629866…`): si el control
+    no llega al piso, U3 no entra en el grafo evaluado, va al grafo corregido del cap. 6 y se declara con su cifra. Pasa lo mismo si la
+    regla da menos de 12 uniones.

@@ -976,3 +976,23 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     con una regla general medida.
   - La autora la fijó después de ver qué documentos toca, y se registra.
   - Las notas anteriores no se editan.
+- **15/10/2026 — La decisión 6, tomada** (decisión de la autora recibida a las 13:55:26; hoja de ruta de la mesa, §103).
+  - **La fuente:** la autora fijó las tres definiciones del punto 4 de S2 contra el texto vigente del capítulo 4. Son pasajes del
+    `main.tex` de Overleaf del 15/10/2026, que la mesa guardó tal cual, fuera del repo (sha256 `81924e21…` y `67be8c99…`). El sha256 del
+    `main.tex`, `e165eae9…`, lo dio la autora y la mesa no lo vio: NO VERIFICADO.
+  - **Las definiciones:**
+    1. **Los conjuntos (4.a), los del texto:**
+       - desarrollo: cap, cla, ext, pro y ric, fuera de los 152;
+       - validación: los 10 de la primera lista del sorteo con semilla 20260827, los de origen ESQ-2 en
+         `data/experiment/esq/documentos_excluidos_evaluacion_final.json`;
+       - universo a escalar: los 152, con la validación y la lista reservada adentro;
+       - los conjuntos se solapan.
+    2. **La clase de documento (4.b):** normativa general y régimen informativo, sobre los 157 (103 y 54).
+       - Reemplaza la propuesta de la nota del 05/10/2026 (`:255-258`). Los tres grupos siguen como grupos en 4.e.
+       - S2 da además los puntos de la estructura y el porcentaje de terminales por clase, sobre la E0 corregida y sobre la partición
+         legada, porque las cifras que hoy cita la tesis no tienen artefacto en el repo.
+    3. **El «primer nivel como sección» (4.c):** los documentos sin encabezados de sección cuyo primer nivel de numeración hace de sección,
+       que son los que la E0 lee sin raíz menos los no segmentables.
+       - Los 2 parciales van en una fila aparte.
+       - Al lado va el control por la estructura: los documentos sin unidades `S<n>`.
+  - Con esto se cumple la precondición de S2. Las notas anteriores no se editan.
