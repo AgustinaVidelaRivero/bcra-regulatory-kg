@@ -521,3 +521,8 @@ El texto firmado no se edita; estas notas se leen junto con él.
   - **El ejemplo del §7** (`:285`). Donde dice «10 de ellos digeribles y 10 "necesita reglas"», el recuento da 8 y 12
     (`docs/plan_tesis.md:409`; `docs/checklist_pre_escalado.md`, condición 5). La fe de erratas va también en el pre-registro de la
     tanda 1.
+- **15/10/2026 — ri2_pm queda fuera del grafo evaluado (decisión de la autora; hoja de ruta de la mesa, §101).** La nota del
+  04/10/2026 al §5 (`:431-438`) cuenta, entre lo que entra con la tanda 3, «las 25 unidades por punto de ri2_pm». La autora decidió que
+  no entran en el grafo evaluado: van con el bloque B, en la release posterior, declaradas. Coincide con el acta de S1-bis
+  (`data/experiment/segmentacion_oficial_e0r2/s1bis/acta_sorteo_S1bis.md:22-24`) y con la fila B6.2b (`docs/plan_tesis.md:777`). El
+  texto firmado no cambia.

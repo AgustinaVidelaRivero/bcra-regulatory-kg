@@ -143,3 +143,10 @@ con él.
   Parte II, punto 2 («si antes cierra su unidad de E0»), se lee como el cierre de esa etapa (FRENO S0-2).
   La otra unidad de la Parte IV, el ingreso del bloque A con procedencia por página, sigue con mandato
   propio, a redactar.
+
+- **15/10/2026 — la parte por punto de ri2_pm no entra en el grafo evaluado (decisión de la autora; hoja de ruta de la mesa, §101).**
+  La Parte II, punto 3 (`:57`), dice que sus 25 unidades por punto «entran con la tanda 3». La autora decidió que quedan fuera del grafo
+  evaluado y van con el bloque B, en la release posterior, declaradas. El acta de S1-bis la sacó entera de esa lectura y dejó su vía por
+  punto pendiente de una lectura propia «antes de la release que lo incluya»
+  (`data/experiment/segmentacion_oficial_e0r2/s1bis/acta_sorteo_S1bis.md:22-24`), y esa lectura no entra en el calendario hacia B6.3. La
+  E0 corregida le da 37 unidades a ri2_pm (manifiesto de S0-6b, `unidades_por_to`). El texto firmado no cambia.

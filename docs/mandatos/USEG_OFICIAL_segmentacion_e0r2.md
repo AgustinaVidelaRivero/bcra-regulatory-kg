@@ -962,3 +962,9 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     - Si también cuentan los errores en la unidad que sigue y las herencias, lo decide la autora (PENDIENTE).
   - **La pasada 2:** la autora declaró que una sesión de Claude Code cargó en sus planillas lo que ella le dictaba, aunque su decisión
     sellada del 14/10/2026 era no usar ningún modelo. Por decisión suya, esa sesión no se midió, y la cifra de control no la cubre.
+- **15/10/2026 — S1-quater: la unidad que sigue cuenta; la herencia no** (decisión de la autora, recibida a las 12:16:27; hoja de ruta de
+  la mesa, §101). Tal cual: «cuenta el error de corte en la unidad que sigue, porque lo confirmé como de corte; la herencia no cuenta. Es la lectura literal de mi regla del 58 v2, y se registra que la fijé después de ver qué documentos toca.»
+  - Los documentos con un error de corte confirmado en S1-quater son ri_icpipsp, ri_pnp, ri_psprca y ri_oc, por la marca de la fila; y
+    gerc y ri_spi, por la unidad que sigue.
+  - De la lista de trabajo de la tanda 1 sigue saliendo solo ri_oc. Ninguno de los seis puede ser sucesor.
+  - Las notas anteriores no se editan.

@@ -12,6 +12,13 @@ actualiza.
 **Fase.** El ciclo de corrección posterior a la tanda 0 (B2.11) está cerrado hasta U-REEXT-T0 (`0a3ac81`) y U-SINCOLA-T0 (`dde9f44`, sello
 `235a295`). Está en curso la preparación de la tanda 1 (B6.1), que no arranca sin la release r2 cerrada (B2.10).
 
+**Plazo (15/10/2026, decisión de la autora).** Los resultados finales de las tandas y de la evaluación van el 28/10/2026, y la tesis
+terminada, el 31/10/2026. El plan hacia atrás es de la mesa (fuera del repo, hoja de ruta, §100).
+- Las fechas son el límite, no el objetivo.
+- Ningún atajo saca una revisión entre tandas, una lectura a ciegas, una verificación, un control ni una prueba en seco.
+- Sus cambios van en la enmienda 8 al protocolo (para firmar, `docs/enmienda8_protocolo_entre_tandas_2026-10-15_calendario_hacia_B6.3.md`)
+  y en la regla de caída, sellada (`docs/regla_de_caida_grafo_evaluado_2026-10-15.md`).
+
 **Grafos.**
 - El grafo vigente del circuito de refinamiento sigue siendo KG-Reextraído-r1 (§1; `docs/laudo_promocion_r1_vigente.md`).
 - Grafos sellados de la tanda 0 con el perfil r2b (`data/experiment/neo4j/grafos.py`): diez `a9631a64…` y desarrollo `6e756043…`

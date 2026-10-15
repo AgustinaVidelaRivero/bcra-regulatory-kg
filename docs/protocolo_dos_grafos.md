@@ -111,3 +111,7 @@ grafo corregido, como entregable, en el capítulo 6 (F-4 cerrada). Siguen abiert
   Además, la cita del checklist para W3 (`:217`) es hoy `docs/checklist_pre_escalado.md:233`. Ninguna cambia el sentido del texto.
 - **08/10/2026 — una referencia interna.** El `:62` remite a «la regla de la enmienda 5, §3» para la vuelta de la cola: la regla está en el
   §1, punto 3, de la enmienda 5; su §3 es «Qué no cambia».
+- **15/10/2026 — la regla de caída por calendario (decisión de la autora).** Fija cuándo el grafo evaluado se sella «por calendario»
+  (`:64`): si la tanda final no está despachada el 21/10/2026 a las 18:00, o no está sellada el 23/10/2026 a las 18:00, se sella el
+  24/10/2026 con las tandas 0 y 1. Está en `docs/regla_de_caida_grafo_evaluado_2026-10-15.md`, sellada por la mesa el 15/10/2026 a las
+  12:22:06 (`96aec323…`). El texto firmado no cambia.

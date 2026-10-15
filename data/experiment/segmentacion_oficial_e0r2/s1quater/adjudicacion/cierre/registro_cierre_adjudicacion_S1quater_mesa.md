@@ -172,3 +172,13 @@ correctas y 4 con error de corte, sin dudosas ni errores de limpieza. Las leí e
   - las nueve salidas (`salida/`);
   - el sello de las salidas.
 - `lectura_de_la_mesa/`: la regresión error por error y los cambios de la pasada 2, cada uno con su script. No cambian ninguna salida.
+
+## Nota del 15/10/2026: la decisión de la autora sobre el §6
+
+Recibida a las 12:16:27 (hoja de ruta de la mesa, §101), tal cual: «cuenta el error de corte en la unidad que sigue, porque lo confirmé como de corte; la herencia no cuenta. Es la lectura literal de mi regla del 58 v2, y se registra que la fijé después de ver qué documentos toca.»
+- **Cuentan:**
+  - la marca `error` de corte de la fila: ri_icpipsp, ri_pnp, ri_psprca y ri_oc;
+  - el error de corte confirmado en la unidad que sigue, que suma gerc y ri_spi.
+- **No cuenta** la herencia con error, que no tiene clase. Se declara.
+- Se registra que la autora fijó la regla después de ver qué documentos toca.
+- Con la lista de trabajo de la tanda 1 sale solo ri_oc. No pueden ser sucesores ri_icpipsp, ri_pnp, ri_psprca, gerc ni ri_spi.

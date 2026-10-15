@@ -326,3 +326,12 @@ Después (no es de esta sesión):
 - S1-quater, en el orden de su diseño (§9), con su adenda 1: la población deja fuera a la tanda 0;
 - la tanda 0 del grafo principal queda en su E0, y se declara. Si pasa a la E0 final, y cuándo, lo decide la autora después del
   despacho de la tanda 1 (la adenda 2, §2, punto 6).
+
+## Nota al pie del 15/10/2026
+
+- **La tanda 0 queda en su E0 en el grafo evaluado (decisión de la autora; hoja de ruta de la mesa, §101).** El último punto de arriba
+  (`:327-328`) dejaba para después del despacho de la tanda 1 si la tanda 0 pasa a la E0 final. La autora lo decidió antes, el
+  15/10/2026, con el plan hacia el 28/10:
+  - la tanda 0 queda con su segmentación actual en el grafo evaluado, declarada;
+  - su paso a la E0 final va al grafo corregido del cap. 6;
+  - está también en la enmienda 8 al protocolo entre tandas, §3, que está para firmar.
