@@ -351,3 +351,46 @@ Decisiones de la autora recibidas a las 18:34:38 (hoja de ruta de la mesa, §111
   - Tal cual, a las 18:34:38: «tu respuesta va a la mesa de escritura y vuelve como versión final para que la selle. La cláusula de
     cegamiento va en el v8 y en el despacho de la tanda 1 aunque llegue a sellar el diseño antes.»
 - Las secciones anteriores no se editan.
+
+## 11. El alcance por sección en el v8, el piso de espacio de la tanda 1 y lo que dejó abierto el re-sellado (agregado del 15/10/2026)
+
+Decisiones de la autora recibidas a las 19:02:53, 19:27:15 y 19:33:19 (hoja de ruta de la mesa, §112 y §113).
+
+- **Las cifras del v8, en el repo** (19:02:53, tal cual): «Las cifras de depaho y de snp_tr que van al v8 tienen que tener artefacto en el
+  repo: medir_por_seccion_Bprima_mesa.py y sus dos JSON entran con el commit del v8, y el v8 los cita desde ahí, no desde el paquete.» Van
+  a `data/experiment/controles_tanda1/`, al lado del conteo fijado.
+- **El piso de espacio de la tanda 1** (19:02:53, tal cual): «El despacho de la tanda 1 controla en su paso 0 el espacio libre, con un piso
+  que fijás con tu estimación y un margen, y frena si no llega.» El piso es de 30 GB libres: los 14 GB del máximo de la estimación, que es
+  NO VERIFICADA, más un margen de 16. Se controla con `df -k` en el paso 0 y antes de la corrida real.
+- **snp_tr en el v8** (19:27:15, tal cual): «snp_tr: queda con su rol por decisión de la autora del 15/10/2026, como depaho. Su rol viene
+  del registro de alcance, no de la release. Queda porque es correcto en la sección 1, que tiene la mitad de sus unidades, y sacarlo deja
+  a E1 sin sugerencia también ahí. Se corrige con el mismo alcance por sección en el grafo corregido.» La sección 1 tiene 51 de sus 103
+  unidades (50 y un bloque que hereda su título).
+- **cirmo3 en el v8** (19:27:15): la autora pidió decidirlo con la evidencia. La mesa lo decidió así: su pasaje no da un alcance correcto
+  para ninguna sección entera, y esa es la diferencia con depaho y snp_tr.
+  - **El pasaje** (`data/experiment/catalogo_unico/registro_alcance_por_tanda.md:28`; `cirmo3::4.1::intro`, p. 30) nombra tres clases
+    (entidades financieras, agencias de cambio y casas de cambio) y el rol de otro documento (las transportadoras de valores,
+    `Sujeto_rol_alcance_traval`).
+  - **Por qué no alcanza:** el registro admite una o dos clases, y un rol reutilizado solo entre secciones de un mismo régimen
+    (`registro_alcance_por_tanda.md:6-12`). Además, el pasaje es del punto 4.1, y la sección 4 tiene también el 4.2.
+  - **Las otras secciones abren con otros conjuntos:** los bancos y el BCRA en la 1 y la 6; los bancos y los clientes en la 3; las
+    entidades financieras con las transportadoras de valores en la 5 (`cirmo3::5.1.1`, p. 33); el BCRA en la 7; y ninguno en la 2 y la 8.
+  - **depaho y snp_tr,** en cambio, tienen un rol del catálogo correcto en su sección 1 entera.
+- **Las filas de alcance de la tanda final** (19:27:15, tal cual): «Cuando armes las filas de alcance de la tanda final, controlás en cada
+  documento lo mismo que en la §111 (las aperturas de cada sección contra el pasaje del alcance) y lo declarás como depaho y snp_tr, sin
+  cambiar nada.»
+- **Lo que dejó abierto el re-sellado** (19:33:19, tal cual):
+  1. «F49: la cifra de U-CONF-MATRIZ no se recalcula. Se declara que se midió sobre el grafo sellado, que en el re-sellado 59 de las 60
+     aristas leídas siguen con los mismos extremos, y que F49 cambió porque su unidad se re-extrajo en R0.» La nota va al pie del mandato de
+     U-CONF-MATRIZ.
+  2. «R2-3 como tercera causa del diff contra los sellados queda declarada como la declaró la ejecutora, si tu revisión confirma que son
+     las mismas 11 filas que dejó O1 de ese paso.»
+     - La revisión lo confirma en los dos grafos de diez: las 10 filas que entran o salen son las de
+       `data/experiment/omisiones_cod/o1/salidas/diff_a9631a64_vs_head_diez.json`, y el nodo que cambia cambia los mismos 5 campos de
+       procedencia.
+  3. «Los nombres de la suite con -rs1 quedan como están.»
+  4. «Las rutas con el nombre de la cuenta en los reportes de los generadores quedan como salieron, sin editarlas a mano, y se declaran.»
+  5. «La nota de insumos_escritura.md §7, que no estaba en las escrituras de la ejecutora, la agregás vos en el commit de las notas, con
+     el formato de las otras.»
+  6. «Los cuatro sha nuevos van al «A COMPLETAR» del laudo de la release cuando me lo pases para firmar.» PENDIENTE: va con el laudo.
+- Las secciones anteriores no se editan.
