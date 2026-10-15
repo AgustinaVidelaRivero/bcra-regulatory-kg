@@ -566,3 +566,7 @@ financieras` tan a la izquierda como lo permite el rótulo de `aplica_a`
 (`:680-689`). El camino se recorre de arriba a la izquierda hacia abajo y a
 la derecha: `aplica_a` de la norma al rol, `miembro_de` del rol a `Entidades
 financieras`, `subclase_de` a `Bancos` y a `Bancos comerciales`.
+
+## Nota del 15/10/2026: el re-sellado único de la tanda 0
+
+El grafo de esta figura tiene una versión posterior, del re-sellado único (`docs/mandatos/URESELLADO_T0_resellado_unico_grafos_r2b.md`; FRENO en `data/experiment/resellado_t0/FRENO_resellado_T0.md`): `a9631a64…` (KG-Tanda0-Diez-r2b) → `fda6c07d…` (KG-Tanda0-Diez-r2b-rs1, 8.788 nodos y 27.430 aristas). **La figura no cambia.** El generador (`generar_figura_catalogo_sujetos.py`), corrido sobre una copia del repo con la ruta y el candado del grafo cambiados solo en la copia, da el SVG byte a byte iguales a los de este directorio, igual que con los sellados (`data/experiment/resellado_t0/salidas/figuras_rs1.json`). La salida idéntica, con las comprobaciones del generador en verde, muestra que lo que el re-sellado cambia (el código de U-OMISIONES-COD y las 20 unidades de R0, de ext y docvig) no toca lo que la figura dibuja. Las fuentes y los sha256 de arriba quedan como están: son los de la figura registrada.

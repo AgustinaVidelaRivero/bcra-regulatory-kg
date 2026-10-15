@@ -327,3 +327,7 @@ generador, de `89dfc2a3…` a `618789ae…`; las líneas que cita el §1 no se
 corrieron. `generar_figura_tripleta.py` no cambió (§9). Sobre una copia de las
 fuentes, la figura sale idéntica byte a byte (los SVG, PNG y PDF de §9);
 registros en el paquete de revisión de FIG-ESQUEMA-FINAL-SOLO.
+
+## Nota del 15/10/2026: el re-sellado único de la tanda 0
+
+El grafo de esta figura tiene una versión posterior, del re-sellado único (`docs/mandatos/URESELLADO_T0_resellado_unico_grafos_r2b.md`; FRENO en `data/experiment/resellado_t0/FRENO_resellado_T0.md`): `a9631a64…` (KG-Tanda0-Diez-r2b) → `fda6c07d…` (KG-Tanda0-Diez-r2b-rs1, 8.788 nodos y 27.430 aristas); `6e756043…` (KG-Tanda0-Desarrollo-r2b) → `acb26dca…` (KG-Tanda0-Desarrollo-r2b-rs1, 6.962 nodos y 23.311 aristas). **La figura no cambia.** El generador (`generar_figura_tripleta.py`), corrido sobre una copia del repo que toma GRAFO y GRAFO_DIEZ de generar_figura_norma_a_grafo.py, cambiados solo en la copia, da el SVG, el PNG y el PDF byte a byte iguales a los de este directorio, igual que con los sellados (`data/experiment/resellado_t0/salidas/figuras_rs1.json`). La salida idéntica, con las comprobaciones del generador en verde, muestra que lo que el re-sellado cambia (el código de U-OMISIONES-COD y las 20 unidades de R0, de ext y docvig) no toca lo que la figura dibuja. Las fuentes y los sha256 de arriba quedan como están: son los de la figura registrada.

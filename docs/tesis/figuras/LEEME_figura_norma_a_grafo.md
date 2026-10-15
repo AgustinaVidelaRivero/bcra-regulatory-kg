@@ -290,3 +290,7 @@ correr ninguna otra línea, y su sha256 pasó de `89dfc2a3…` a `618789ae…`
 (los SVG, PNG y PDF de §11), igual que las tres figuras que importan este
 generador (la tripleta, la del proceso de extracción y la de fragmentos contra
 grafo); registros en el paquete de revisión de FIG-ESQUEMA-FINAL-SOLO.
+
+## Nota del 15/10/2026: el re-sellado único de la tanda 0
+
+El grafo de esta figura tiene una versión posterior, del re-sellado único (`docs/mandatos/URESELLADO_T0_resellado_unico_grafos_r2b.md`; FRENO en `data/experiment/resellado_t0/FRENO_resellado_T0.md`): `a9631a64…` (KG-Tanda0-Diez-r2b) → `fda6c07d…` (KG-Tanda0-Diez-r2b-rs1, 8.788 nodos y 27.430 aristas); `6e756043…` (KG-Tanda0-Desarrollo-r2b) → `acb26dca…` (KG-Tanda0-Desarrollo-r2b-rs1, 6.962 nodos y 23.311 aristas). **La figura no cambia.** El generador (`generar_figura_norma_a_grafo.py`), corrido sobre una copia del repo con las rutas y los candados de GRAFO y GRAFO_DIEZ cambiados solo en la copia, da el SVG, el PNG y el PDF byte a byte iguales a los de este directorio, igual que con los sellados (`data/experiment/resellado_t0/salidas/figuras_rs1.json`). La salida idéntica, con las comprobaciones del generador en verde, muestra que lo que el re-sellado cambia (el código de U-OMISIONES-COD y las 20 unidades de R0, de ext y docvig) no toca lo que la figura dibuja. Las fuentes y los sha256 de arriba quedan como están: son los de la figura registrada.

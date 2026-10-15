@@ -249,3 +249,5 @@ desde esta firma.
   - **si el ajuste no está antes de la firma:** A2.2 corre con el juez de EV2, y el ajustado se verifica después sobre las mismas 20
     respuestas.
   - El texto firmado no cambia.
+
+- **15/10/2026 — el re-sellado único de los grafos r2b de la tanda 0.** Los grafos sellados que cita este documento tienen una versión posterior, del re-sellado único (`docs/mandatos/URESELLADO_T0_resellado_unico_grafos_r2b.md`, firmado; FRENO en `data/experiment/resellado_t0/FRENO_resellado_T0.md`): `6e756043…` (KG-Tanda0-Desarrollo-r2b) → `acb26dca…` (KG-Tanda0-Desarrollo-r2b-rs1, 6.962 nodos y 23.311 aristas). Cambian por el código de U-OMISIONES-COD (`ded41d50`) y por las salidas de R0 (`1d690df3` y `2d0f5277`). El diff por campo y por causa está en `data/experiment/resellado_t0/salidas/`. Los sellados siguen sellados (principio 9); el commit del sello de los nuevos queda en `commit_sellado` de `data/experiment/neo4j/grafos.py`. Por D-A, el grafo de desarrollo re-sellado es `acb26dca…` (KG-Tanda0-Desarrollo-r2b-rs1), la versión posterior de `6e756043…`: es el brazo del grafo de A2.2 si está sellado al despachar el tramo 3. El texto firmado no cambia.

@@ -434,6 +434,14 @@ le dice qué insumo usar, de dónde sale y con qué salvedades.
      describe como tal. El modelo del extractor no cambia antes de la tanda 1 (decisión de la autora del 08/10/2026); no se abre la decisión de
      una release con otro modelo, y B6.4 queda hecho en su parte esencial (mandato firmado, `:76`). La comparación se reporta en el capítulo
      5 (§8 de este índice). Costo: USD 15,84 de los 35 autorizados.
+- **[15/10/2026, re-sellado único de la tanda 0; `docs/mandatos/URESELLADO_T0_resellado_unico_grafos_r2b.md`, firmado; FRENO en
+  `data/experiment/resellado_t0/FRENO_resellado_T0.md`]** Los grafos sellados que cita este §7 tienen una versión posterior:
+  `a9631a64…` (KG-Tanda0-Diez-r2b) → `fda6c07d…` (KG-Tanda0-Diez-r2b-rs1); `e22fae1a…` (KG-Tanda0-Diez-r2b-sincola) → `61dd1b69…`
+  (KG-Tanda0-Diez-r2b-sincola-rs1); `6e756043…` (KG-Tanda0-Desarrollo-r2b) → `acb26dca…` (KG-Tanda0-Desarrollo-r2b-rs1); y `2922b72d…`
+  (KG-Tanda0-Desarrollo-r2b-sincola) → `66e745f5…` (KG-Tanda0-Desarrollo-r2b-sincola-rs1). Cambian por el código de U-OMISIONES-COD
+  (`ded41d50`) y por las salidas de R0 (`1d690df3` y `2d0f5277`); los de diez, además, por R2-3 (`803623a`). Para los ítems 4 a 6: la
+  cola pasa de 74 a 69 de 2.439 unidades (salen 5 y no entra ninguna), y la población de U-LECTURA-ACEPTADAS, de 2.366 a 2.371 (1.008
+  ítems y 1.363 no ítems) (`data/experiment/resellado_t0/salidas/cola_y_poblacion_rs1.json`). Los sellados siguen sellados.
 
 ## 8. Comparación de modelos del extractor (U-COMP-E1) — disponible
 
