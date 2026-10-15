@@ -69,3 +69,17 @@ frase de alcance, se verifica en la lectura de la tanda de cada uno.
 | **FUERA DE LA REGLA** (ídem) | ri_dsf, ri_esd | `Sujeto_deudor`: el deudor es el objeto informado; informan las entidades financieras |
 
 Suma: 19 candidatos (14 con una clase, 5 con dos), 3 dudosos, 5 fuera de la regla = 27.
+
+## Tanda 1 — agregado del 15/10/2026: ri_mmsef, el sucesor de ri_oc
+
+Decisión de la autora recibida a las 17:07:44 (hoja de ruta de la mesa, §110).
+- ri_mmsef entra a la tanda 1 como sucesor de ri_oc (D-1 de S2 de U-SEG-OFICIAL; `data/experiment/segmentacion_oficial_e0r2/s2/lista_tanda1_S2.json`).
+- Los otros 7 documentos de la tanda 1 sin fila (ayccef, expaef, opefci, lingeef, cajasc, adrei y efemin) quedan como están en el
+  catálogo (`generados_r2/rol_por_to_r2.json`).
+- depaho también queda como está, hasta que la autora decida sobre su rol.
+- Esta tabla va al final para no correr los renglones de arriba, que otros documentos citan por número. El lector
+  (`reresolucion_catalogo/reresolver_catalogo.py`, `leer_registro_alcance`) junta sus filas con las de la otra tabla de la tanda 1.
+
+| TO | título (inventario) | decisión | id(s) del catálogo | base | pasaje (chunk de la E0 corregida, página) |
+|---|---|---|---|---|---|
+| ri_mmsef | RI Cont. Mensual - Medidas mínimas de seguridad en entidades financieras | rol reutilizado | `Sujeto_rol_entidad_comprendida_reginf` | sección del mismo régimen (§2.8), con la precedencia del rol sobre la clase que nombra el pasaje (07/10/2026), como ri_pgn | `ri_mmsef::S1`, p. 1: «Las entidades financieras deberán integrar los datos solicitados en el presente requerimiento…» |
