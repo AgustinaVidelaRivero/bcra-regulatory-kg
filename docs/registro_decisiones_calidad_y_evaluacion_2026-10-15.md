@@ -220,3 +220,24 @@ Las decisiones llegaron en el mensaje recibido a las 14:42:39 (hoja de ruta de l
   sellado antes de aprobar ninguna, que sirva para las dos formas de repartir el N (más documentos o más preguntas por documento).»
   - El diseño lo propone la mesa, y la autora lo decide antes de sortear.
 - Las secciones anteriores no se editan.
+
+## 7. El orden de las preguntas y el grafo corregido (agregado del 15/10/2026)
+
+Las decisiones llegaron en el mensaje recibido a las 15:16:05 (hoja de ruta de la mesa, §106).
+
+- **El orden para aprobar las preguntas, tal cual:** «sí a los puntos 1 a 5, tal como los proponés. Para el 6, proponeme la regla de qué
+  unidad puede ser ancla, por escrito, con cuántas unidades deja afuera por clase. No sortees hasta que la decida.»
+  - **Los cinco puntos,** del diseño de la mesa (en su paquete: `decisiones_105_mesa/preguntas/diseno_orden_aprobacion_preguntas_B63_mesa.md`,
+    sha256 `79b82c3b…`):
+    1. dos sorteos con semilla: los documentos por clase y las unidades por documento, como en EV2;
+    2. el de documentos, estratificado por tanda, con los de la tanda 1 primero, como pide la regla de caída (punto 2);
+    3. un orden aparte por tipo de pregunta, mientras las cuotas sigan abiertas;
+    4. un núcleo de 64 preguntas, con las 4 primeras de cada uno de los 16 documentos de O2, y después olas alternadas de 16 (más
+       documentos, o más preguntas por documento);
+    5. las reglas de rechazo (la unidad siguiente del orden) y de documento agotado (lo que falta pasa al siguiente de su clase).
+  - El punto 6 lo decide la autora antes de sortear.
+- **El grafo corregido, tal cual:** «ri2_pm y las planillas de los nueve van ahí. L-01 va ahí si no entra al grafo evaluado, y eso lo
+  decido al leer su mandato.»
+  - Va también rdbcra, por su cobertura no exacta en la E0 corregida (nota del 15/10/2026 al pie de
+    `docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md`).
+- Las secciones anteriores no se editan.
