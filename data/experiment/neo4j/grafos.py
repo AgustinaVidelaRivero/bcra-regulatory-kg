@@ -179,6 +179,68 @@ GRAFOS = {
         "vista_runtime": "comun_ev2.cargar_runtime('tanda0_ens_diez_r2b_sincola') tras importar sincola_t0/registro_vista_r2b_sincola (registro en memoria, patrón comun_tanda0); grafo evaluado de la tanda 0 sin la cola humana; r2b no se evalúa con EV2",
         "indice_fulltext": "nodos_fulltext_kg_tanda0_diez_r2b_sincola",
     },
+    # Tanda 0, re-sellado único de los cuatro r2b (mandato firmado el 15/10/2026, 67fe5b14; decisión 1 de su §8: los
+    # nombres de U-SINCOLA-T0 con el sufijo _rs1): las versiones posteriores de los cuatro grafos de arriba, que
+    # siguen sellados, ensambladas con el código de U-OMISIONES-COD (ded41d50) sobre las salidas de E1 y E3 de la
+    # tanda 0 tal como las deja R0 (1d690df3 y 2d0f5277). Su vista runtime la registra en memoria
+    # data/experiment/resellado_t0/registro_vista_r2b_rs1.py (patrón de sincola_t0/registro_vista_r2b_sincola.py).
+    # commit_sellado: "PENDIENTE" hasta el segundo commit del sello de la autora (como en c9540c0 y 235a295).
+    "KG_Tanda0_Desarrollo_r2b_rs1": {
+        "nombre_canonico": "KG-Tanda0-Desarrollo-r2b-rs1",
+        "label": "KG_Tanda0_Desarrollo_r2b_rs1",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_tanda0" / "ens_desarrollo_r2b_rs1" / "r2" / "kg.json",
+        "sha256": "acb26dca0885e9ea83ab02637f15c1dac57885f0cf017c5fb16173ac7dfcac31",
+        "commit_sellado": "PENDIENTE",
+        "n_nodos": 6962,
+        "n_aristas": 23311,
+        "ev2_key": "tanda0_ens_desarrollo_r2b_rs1",
+        "requiere_registro_dir": EXPERIMENT_DIR / "resellado_t0",
+        "requiere_registro_modulo": "registro_vista_r2b_rs1",
+        "vista_runtime": "comun_ev2.cargar_runtime('tanda0_ens_desarrollo_r2b_rs1') tras importar resellado_t0/registro_vista_r2b_rs1 (registro en memoria, patrón comun_tanda0); re-sellado único de la tanda 0; r2b no se evalúa con EV2",
+        "indice_fulltext": "nodos_fulltext_kg_tanda0_desarrollo_r2b_rs1",
+    },
+    "KG_Tanda0_Diez_r2b_rs1": {
+        "nombre_canonico": "KG-Tanda0-Diez-r2b-rs1",
+        "label": "KG_Tanda0_Diez_r2b_rs1",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_tanda0" / "ens_diez_r2b_rs1" / "r2" / "kg.json",
+        "sha256": "fda6c07dbb95602f5992f7e1ad9bf148ff1c2a72b9f69ff2ebbce891c15740ea",
+        "commit_sellado": "PENDIENTE",
+        "n_nodos": 8788,
+        "n_aristas": 27430,
+        "ev2_key": "tanda0_ens_diez_r2b_rs1",
+        "requiere_registro_dir": EXPERIMENT_DIR / "resellado_t0",
+        "requiere_registro_modulo": "registro_vista_r2b_rs1",
+        "vista_runtime": "comun_ev2.cargar_runtime('tanda0_ens_diez_r2b_rs1') tras importar resellado_t0/registro_vista_r2b_rs1 (registro en memoria, patrón comun_tanda0); re-sellado único de la tanda 0; r2b no se evalúa con EV2",
+        "indice_fulltext": "nodos_fulltext_kg_tanda0_diez_r2b_rs1",
+    },
+    "KG_Tanda0_Desarrollo_r2b_sincola_rs1": {
+        "nombre_canonico": "KG-Tanda0-Desarrollo-r2b-sincola-rs1",
+        "label": "KG_Tanda0_Desarrollo_r2b_sincola_rs1",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_tanda0" / "ens_desarrollo_r2b_sincola_rs1" / "r2" / "kg.json",
+        "sha256": "66e745f57397ab754cde09eb641e9f0d9ef6259ea7e6445d086ecbf1c36dcc6c",
+        "commit_sellado": "PENDIENTE",
+        "n_nodos": 6711,
+        "n_aristas": 21996,
+        "ev2_key": "tanda0_ens_desarrollo_r2b_sincola_rs1",
+        "requiere_registro_dir": EXPERIMENT_DIR / "resellado_t0",
+        "requiere_registro_modulo": "registro_vista_r2b_rs1",
+        "vista_runtime": "comun_ev2.cargar_runtime('tanda0_ens_desarrollo_r2b_sincola_rs1') tras importar resellado_t0/registro_vista_r2b_rs1 (registro en memoria, patrón comun_tanda0); re-sellado único de la tanda 0; grafo evaluado de la tanda 0 sin la cola humana; r2b no se evalúa con EV2",
+        "indice_fulltext": "nodos_fulltext_kg_tanda0_desarrollo_r2b_sincola_rs1",
+    },
+    "KG_Tanda0_Diez_r2b_sincola_rs1": {
+        "nombre_canonico": "KG-Tanda0-Diez-r2b-sincola-rs1",
+        "label": "KG_Tanda0_Diez_r2b_sincola_rs1",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_tanda0" / "ens_diez_r2b_sincola_rs1" / "r2" / "kg.json",
+        "sha256": "61dd1b69ba03e40499845c40a6a8bec4c22d892ebe95823c7d5a569110f08738",
+        "commit_sellado": "PENDIENTE",
+        "n_nodos": 8491,
+        "n_aristas": 25976,
+        "ev2_key": "tanda0_ens_diez_r2b_sincola_rs1",
+        "requiere_registro_dir": EXPERIMENT_DIR / "resellado_t0",
+        "requiere_registro_modulo": "registro_vista_r2b_rs1",
+        "vista_runtime": "comun_ev2.cargar_runtime('tanda0_ens_diez_r2b_sincola_rs1') tras importar resellado_t0/registro_vista_r2b_rs1 (registro en memoria, patrón comun_tanda0); re-sellado único de la tanda 0; grafo evaluado de la tanda 0 sin la cola humana; r2b no se evalúa con EV2",
+        "indice_fulltext": "nodos_fulltext_kg_tanda0_diez_r2b_sincola_rs1",
+    },
 }
 CLAVES = list(GRAFOS.keys())
 GRAFO_DEFAULT = "KG_Refinado"   # el grafo vigente (docs/tablero.md); compatibilidad con c26cb9b

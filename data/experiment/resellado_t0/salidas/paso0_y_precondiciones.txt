@@ -1,0 +1,70 @@
+## texto firmado del mandato (líneas 1-254, antes de «## Firma»), en el commit de la firma y en el árbol
+9ba837df727beae806a66018984be22ffdc9e4409e7557e1622b82011e44499b  -
+9ba837df727beae806a66018984be22ffdc9e4409e7557e1622b82011e44499b  -
+## paso 0
+$ pwd
+$HOME/INGENIERIA IA/TESIS/bcra-regulatory-kg
+$ git rev-parse --abbrev-ref HEAD
+main
+$ git log --oneline -3
+96d7d1ab Segmentacion oficial: la segunda parte de la etapa siguiente, revisada, con las cifras y lo abierto decidido
+5f02ace4 Alcance de la primera tanda: el sucesor entra con el rol reutilizado de su regimen
+67fe5b14 Grafos de la tanda 0: el mandato del re-sellado unico, firmado
+$ git log --format=%s -5
+Segmentacion oficial: la segunda parte de la etapa siguiente, revisada, con las cifras y lo abierto decidido
+Alcance de la primera tanda: el sucesor entra con el rol reutilizado de su regimen
+Grafos de la tanda 0: el mandato del re-sellado unico, firmado
+Evaluacion final: la cuota de preguntas de varios puntos, el gold del juez en dos mitades y el orden de las ejecutoras
+Evaluacion final: el mandato de la comparacion con fragmentos firmado, y las reglas de las preguntas y del juez
+$ git status --porcelain -- data/experiment/segmentacion_oficial_e0r2/s2
+(vacío si no hay renglones arriba)
+$ git status --short -- data/experiment/tanda0 data/experiment/reextraccion_v2/corpus_v2 scripts data/experiment/neo4j
+(vacío si no hay renglones arriba)
+## a. el código
+ded41d50 en la historia: ded41d50 U-OMISIONES-COD: la release de codigo del ensamblado
+1d690df3 en la historia: 1d690df3 Reextraccion: la primera fase de la etapa con API de la tanda 0, revisada
+2d0f5277 en la historia: 2d0f5277 Reextraccion: la segunda fase de la etapa con API de la tanda 0, revisada
+$ git diff --stat ded41d50 HEAD -- <las ocho rutas del §1.a>
+(vacío si no hay renglones arriba)
+## b. la E0 de la tanda 0
+git diff --quiet 9f6361e HEAD: rc=0
+archivos rastreados: 57
+## c. los grafos sellados, intactos
+a9631a64b422bdae634fb05135373c6f04c6272cdf7acd43a1be9f5b6c1f5f57  data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json
+6e7560433148cfe0c476cdd61199c32278187c4196d6f90dc0a38976a6d8e9a2  data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo_r2b/r2/kg.json
+e22fae1afc3cf37fbe5b49ee0b220d51d0ec5febc13abeb6ebf7b74226da34fb  data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b_sincola/r2/kg.json
+2922b72dca2c2bcb204a04f53fc89f265ac2c57e83e6aaab2ce1af8b82d413e4  data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo_r2b_sincola/r2/kg.json
+bbc38dc:data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json a9631a64b422bdae634fb05135373c6f04c6272cdf7acd43a1be9f5b6c1f5f57
+bbc38dc:data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo_r2b/r2/kg.json 6e7560433148cfe0c476cdd61199c32278187c4196d6f90dc0a38976a6d8e9a2
+dde9f44:data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b_sincola/r2/kg.json e22fae1afc3cf37fbe5b49ee0b220d51d0ec5febc13abeb6ebf7b74226da34fb
+dde9f44:data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo_r2b_sincola/r2/kg.json 2922b72dca2c2bcb204a04f53fc89f265ac2c57e83e6aaab2ce1af8b82d413e4
+a9631a64: grafos.py 1, fixture 1
+6e756043: grafos.py 1, fixture 1
+e22fae1a: grafos.py 1, fixture 1
+2922b72d: grafos.py 1, fixture 1
+## d. las salidas de R0: los sha256 de salida_r2b/{ext,docvig}/*.jsonl, contra 2d0f5277 y contra lo declarado (r0/corrida/anexo_r0.json)
+ext/cola_humana.jsonl: 82aeeea17ba149bd | igual a 2d0f5277: True | declarado: True
+ext/copias_nota_e3.jsonl: 93c4bf4fb7fc7074 | igual a 2d0f5277: True | declarado: True
+ext/extracciones_e1.jsonl: 6b4ceff5905a0c25 | igual a 2d0f5277: True | declarado: -
+ext/extracciones_e1_compact.jsonl: 6b4ceff5905a0c25 | igual a 2d0f5277: True | declarado: -
+ext/extracciones_finales_ext.jsonl: 4c92637b71d52b47 | igual a 2d0f5277: True | declarado: -
+ext/extracciones_finales_r2_ext.jsonl: 469651b1eab090c6 | igual a 2d0f5277: True | declarado: -
+ext/finales.jsonl: 922a91fa092b0d96 | igual a 2d0f5277: True | declarado: True
+ext/no_mapeados_sujetos.jsonl: 0283984ee0136ff6 | igual a 2d0f5277: True | declarado: -
+ext/omisiones.jsonl: f62b9e69a45f0e0f | igual a 2d0f5277: True | declarado: -
+ext/reintentos_e3.jsonl: 1de0994820ba9744 | igual a 2d0f5277: True | declarado: True
+ext/resolucion_sujetos.jsonl: 3909d0394ed00d70 | igual a 2d0f5277: True | declarado: -
+ext/veredictos.jsonl: d38e9d5bd7d23c50 | igual a 2d0f5277: True | declarado: True
+docvig/cola_humana.jsonl: de4f1c40c65a3ae4 | igual a 2d0f5277: True | declarado: True
+docvig/extracciones_e1.jsonl: 424a91b8df77331d | igual a 2d0f5277: True | declarado: -
+docvig/extracciones_e1_compact.jsonl: 424a91b8df77331d | igual a 2d0f5277: True | declarado: -
+docvig/extracciones_finales_docvig.jsonl: 92ba2bd235babce4 | igual a 2d0f5277: True | declarado: -
+docvig/extracciones_finales_r2_docvig.jsonl: c00bc2bc45f25ba0 | igual a 2d0f5277: True | declarado: -
+docvig/finales.jsonl: 08db166c98e47b01 | igual a 2d0f5277: True | declarado: True
+docvig/no_mapeados_sujetos.jsonl: 00b0f624377ef3b1 | igual a 2d0f5277: True | declarado: -
+docvig/omisiones.jsonl: 133129778e8a6121 | igual a 2d0f5277: True | declarado: -
+docvig/reintentos_e3.jsonl: 282b7be6acf60aa2 | igual a 2d0f5277: True | declarado: -
+docvig/resolucion_sujetos.jsonl: 01807e2b2425a82d | igual a 2d0f5277: True | declarado: -
+docvig/veredictos.jsonl: 5cc66dc1fe5bf91a | igual a 2d0f5277: True | declarado: True
+23 de 23 OK; los 8 del anexo, iguales a lo declarado: 8 de 8
+## e. git status --short en tanda0/, corpus_v2/, scripts/ y neo4j/: arriba, en el paso 0

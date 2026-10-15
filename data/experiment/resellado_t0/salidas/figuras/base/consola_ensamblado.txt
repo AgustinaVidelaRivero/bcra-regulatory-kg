@@ -1,0 +1,85 @@
+FUENTES (sha256 comprobado):
+  grafo              data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json   a9631a64b422bdae634fb05135373c6f04c6272cdf7acd43a1be9f5b6c1f5f57
+  figura extractor   recompuesta con su generador, SVG 9a393b325cae953f3da697658cb435fdace001cf91cb8eee1ea28980b7dfe64d
+  estilo             docs/tesis/figuras/figura_esquema_final.svg   d550719599872f47fc8a7dbee261a6c11e5ab186e0e8fad76f281e3c220eedfa
+  comparación        data/experiment/pyd_r2/code/reglas_comparacion.py   69c48d24387bcb788925cd1513496e015b7594f0469124f45f5082f3465b9d79
+GRAFO: 8816 nodos y 27632 aristas; vecindario de cla::5.1.1.1: 6 nodos y 8 aristas, 0 de ellas excluidas a propósito ({'relation': 'establecida_en', 'rol_fuente': 'derivada_de_procedencia'})
+  nodo e1           Operacion 'Inclusión en cartera comercial — créditos consumo/vivienda'  (1 procedencia(s), solo de la unidad)
+  nodo e2           Excepcion 'Excepción cartera comercial — créditos consumo/vivienda'  (1 procedencia(s), solo de la unidad)
+  nodo e3           Condicion 'Superar dos veces importe referencia punto 3.7'  (1 procedencia(s), solo de la unidad)
+  nodo e4           Condicion 'Repago vinculado a actividad productiva/comercial'  (1 procedencia(s), solo de la unidad)
+  nodo nodo_3.7     Definicion 'Importe de referencia — nivel máximo de ventas anuales'  (1 procedencia(s))
+  nodo to           TextoOrdenado 'Texto Ordenado Clasificación de Deudores'  (143 procedencia(s))
+  arista conservada ('e4', 'condicion_de', 'e1')  {}
+  arista conservada ('e4', 'establecida_en', 'to')  {}
+  arista conservada ('e3', 'condicion_de', 'e1')  {}
+  arista conservada ('e3', 'establecida_en', 'to')  {}
+  arista nueva      ('e3', 'remite_a', 'nodo_3.7')  {'properties': {'alcance': 'interna', 'destino': 'cla::3.7', 'evidencia': 'equivalente a dos veces el importe de\nreferencia establecido en el punto 3.7. y cuyo repago no se'}}
+  arista conservada ('e2', 'establecida_en', 'to')  {}
+  arista conservada ('e1', 'establecida_en', 'to')  {}
+  arista nueva      ('e1', 'remite_a', 'nodo_3.7')  {'properties': {'alcance': 'interna', 'destino': 'cla::3.7', 'evidencia': 'equivalente a dos veces el importe de\nreferencia establecido en el punto 3.7. y cuyo repago no se'}}
+CAMBIOS respecto de la figura del extractor: 1
+  {'tipo': 'retirada', 'relacion': ('e2', 'exceptua', 'e1')}
+UMBRAL de e3: {'tramo': 'dos veces', 'valor': '2', 'unidad': 'veces', 'comparacion': 'minimo_estricto', 'base': 'importe de referencia establecido en el punto 3.7', 'regla_comparacion': 'simple:raiz_super', 'origen': 'e1', 'tramo_verificado': 'exacta', 'base_destino': 'cla::3.7', 'base_via': 'remision'}
+  comparación 'minimo_estricto' -> 'mayor que' (LECTURA_COMPARACION: minimo_estricto -> mayor que; maximo_estricto -> menor que; minimo_inclusivo -> mayor o igual que; maximo_inclusivo -> menor o igual que; igual -> igual a; coeficiente -> coeficiente; no_determinada -> no determinada)
+ESTILO nuevo (de la figura del esquema final): remite_a #8a8a8a de 1.6, discontinua 7 5; marca {'lado': 18.0, 'rx': '3', 'fill': '#3d3d3d', 'texto': '≤', 'tinta': '#ffffff', 'fs': 15, 'peso': 'bold'}
+PRUEBAS NEGATIVAS: 10 de 10 hacen fallar su control
+  relacion_de_mas -> inventario: relación de la figura que no está en el grafo o está excluida: (('Excepcion', 'Excepción cartera comercial — créditos consumo/vivienda'), 'regula', ('Condicion', 'Repago vinculado a actividad productiva/comercial')) (fallan también: textos)
+  entidad_de_menos -> inventario: flecha de (60.0, 282.0) a (60.0, 90.0): 1 caja(s) de origen y 0 de destino (fallan también: contenido, flechas)
+  rotulo_sobre_caja -> textos: 'establecida_en': se superpone con la caja de to (fallan también: conservacion, inventario)
+  tramo_diagonal -> trazos: tramo diagonal de (244, 320) a (606, 350) (fallan también: conservacion, inventario, textos)
+  cruce_de_flechas -> cruces: 1 cruce(s) entre flechas, declarados 0: [(('e1', 'establecida_en', 'to'), ('e4', 'condicion_de', 'e1'))] en (330.0, 320.0) (fallan también: conservacion)
+  remite_continua -> remisiones: camino 8 (M 310 164 L 277 164 L 277 52 L 244 52): discontinuo None, rótulo ['remite_a']
+  umbral_campo_de_menos -> umbral: campos del panel [['valor', '2'], ['comparación', 'mayor que'], ['base', 'importe de referencia establecido en el punto 3.7']] ≠ del grafo [['valor', '2'], ['unidad', 'veces'], ['comparación', 'mayor que'], ['base', 'importe de referencia establecido en el punto 3.7']] (fallan también: contenido)
+  umbral_lejos -> umbral: el panel no está junto a su caja: debajo de su centro [], esperada ('Condicion', 'Superar dos veces importe referencia punto 3.7') a 40 o menos (fallan también: margen, textos)
+  caja_movida -> conservacion: elemento de la figura del extractor que no está (bajado 134): rect '' {'fill': '#f8e8f5', 'height': '76', 'rx': '6', 'stroke': '#b5179e', 'stroke-width': '2.6', 'width': '230', 'x': '310', 'y': '148'} (fallan también: flechas, inventario)
+  retirada_dibujada -> inventario: relación de la figura que no está en el grafo o está excluida: (('Excepcion', 'Excepción cartera comercial — créditos consumo/vivienda'), 'exceptua', ('Operacion', 'Inclusión en cartera comercial — créditos consumo/vivienda')) (fallan también: conservacion)
+DISPOSICIÓN: lo que ya estaba baja 134; cajas de 230 x 76
+  caja e1           (14, 282)
+  caja e2           (14, 416)
+  caja e3           (310, 148)
+  caja e4           (310, 416)
+  caja nodo_3.7     (14, 14)
+  caja to           (606, 282)
+  flecha ('e1', 'establecida_en', 'to'): [(244.0, 320.0), (606.0, 320.0)]
+  flecha ('e2', 'establecida_en', 'to'): [(129.0, 492.0), (129.0, 516.0), (721.0, 516.0), (721.0, 358.0)]
+  flecha ('e3', 'establecida_en', 'to'): [(540.0, 186.0), (721.0, 186.0), (721.0, 282.0)]
+  flecha ('e4', 'establecida_en', 'to'): [(520.0, 416.0), (520.0, 340.0), (606.0, 340.0)]
+  flecha ('e3', 'condicion_de', 'e1'): [(310.0, 186.0), (129.0, 186.0), (129.0, 282.0)]
+  flecha ('e4', 'condicion_de', 'e1'): [(330.0, 416.0), (330.0, 340.0), (244.0, 340.0)]
+  flecha ('e1', 'remite_a', 'nodo_3.7'): [(60.0, 282.0), (60.0, 90.0)] discontinua
+  flecha ('e3', 'remite_a', 'nodo_3.7'): [(310.0, 164.0), (277.0, 164.0), (277.0, 52.0), (244.0, 52.0)] discontinua
+INVENTARIO (releído del SVG): 6 cajas y 8 relaciones contra 6 y 8 del vecindario (8 aristas, 0 excluidas a propósito); fallas: 0
+  caja     Operacion | Inclusión en cartera comercial — créditos consumo/vivienda
+  caja     Excepcion | Excepción cartera comercial — créditos consumo/vivienda
+  caja     Condicion | Superar dos veces importe referencia punto 3.7
+  caja     Condicion | Repago vinculado a actividad productiva/comercial
+  caja     Definicion | Importe de referencia — nivel máximo de ventas anuales
+  caja     TextoOrdenado | Texto Ordenado Clasificación de Deudores
+  relación Operacion «Inclusión en cartera comercial — créditos consumo/vivienda» --establecida_en--> TextoOrdenado «Texto Ordenado Clasificación de Deudores»
+  relación Excepcion «Excepción cartera comercial — créditos consumo/vivienda» --establecida_en--> TextoOrdenado «Texto Ordenado Clasificación de Deudores»
+  relación Condicion «Superar dos veces importe referencia punto 3.7» --establecida_en--> TextoOrdenado «Texto Ordenado Clasificación de Deudores»
+  relación Condicion «Repago vinculado a actividad productiva/comercial» --establecida_en--> TextoOrdenado «Texto Ordenado Clasificación de Deudores»
+  relación Condicion «Superar dos veces importe referencia punto 3.7» --condicion_de--> Operacion «Inclusión en cartera comercial — créditos consumo/vivienda»
+  relación Condicion «Repago vinculado a actividad productiva/comercial» --condicion_de--> Operacion «Inclusión en cartera comercial — créditos consumo/vivienda»
+  relación Operacion «Inclusión en cartera comercial — créditos consumo/vivienda» --remite_a--> Definicion «Importe de referencia — nivel máximo de ventas anuales»
+  relación Condicion «Superar dos veces importe referencia punto 3.7» --remite_a--> Definicion «Importe de referencia — nivel máximo de ventas anuales»
+CONTENIDO: 36 textos, 29 piezas; fallas: 0
+TEXTOS: 36 textos contra 6 cajas y 8 flechas; distancias mínimas texto-texto 3.0; rótulo-su flecha 4.0; rótulo-otra flecha 39.8; texto-borde de su caja 9.0; fallas: 0
+CAJAS: 6 cajas; fallas: 0
+TRAZOS: 16 tramos en el SVG; fallas: 0
+FLECHAS: 8 flechas; fallas: 0
+CRUCES: 0 cruce(s) entre flechas, declarados 0; fallas: 0
+MARGEN: 50 elementos y la marca del umbral; mínimo a cada borde izquierdo 12.7 u = 2.24 mm, superior 12.7 u = 2.24 mm, derecho 13.0 u = 2.29 mm, inferior 14.0 u = 2.47 mm; marca 27.0 u; exigido 2.0 mm (11.3 u); fallas: 0
+CONSERVACION: 38 de 41 elementos de la figura del extractor iguales (bajados 134); cambios declarados 1; fallas: 0
+REMISIONES: 2 flechas discontinuas; fallas: 0
+UMBRAL: campos [['valor', '2'], ['unidad', 'veces'], ['comparación', 'mayor que'], ['base', 'importe de referencia establecido en el punto 3.7']]; a 31.7 de su caja; a 33.7 de la flecha más cercana; fallas: 0
+REGISTRO: 49 elementos de primer nivel del SVG; fallas: 0
+LETRA 15 unidades -> 7.50 pt impresos a 15 cm
+LETRA 19 unidades -> 9.50 pt impresos a 15 cm
+ALTO: lienzo 850 x 530, impreso a 15.00 x 9.35 cm
+SVG: <SCRATCHPAD>/rs/salidas/figuras/base/ensamblado/figura_ensamblado_ejemplo.svg   sha256 992fce81078cbf7162ab36c6f84e926f9726e66e4f24bf55e1f8ff513f5e0b53
+PNG: <SCRATCHPAD>/rs/salidas/figuras/base/ensamblado/figura_ensamblado_ejemplo.png   sha256 b95fe22932ae9c972ca43f9dc75406a51b0d76cf02821861244ccc32456b7773
+PDF: <SCRATCHPAD>/rs/salidas/figuras/base/ensamblado/figura_ensamblado_ejemplo.pdf   sha256 026f11c1b5b6356cbca903404483baf61c612f3d670d9af8ca2e94a53a6bd961
+     PNG (1772, 1105) px; PDF 425.2 x 265.1 pt; /CreationDate "19700101000000+00'00'" (SOURCE_DATE_EPOCH=0); stream de contenido sha256 0055289af3d09128adf527acd6421fd69122c82f38bcb1a0bce7c0f9c8b0f816
+rc=0

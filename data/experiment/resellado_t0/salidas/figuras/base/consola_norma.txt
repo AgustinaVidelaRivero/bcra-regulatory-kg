@@ -1,0 +1,69 @@
+FUENTES (sha256 comprobado):
+  grafo         data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo_r2b/r2/kg.json   6e7560433148cfe0c476cdd61199c32278187c4196d6f90dc0a38976a6d8e9a2
+  grafo diez    data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json   a9631a64b422bdae634fb05135373c6f04c6272cdf7acd43a1be9f5b6c1f5f57
+  chunks_cla    data/experiment/reextraccion_v2/e0_chunking/salida_tanda0_r2b/chunks_cla.json   98808886a406d8321c678836a55f92eea983d594d95358dd21ceb537487ac0b1
+  datos v1      docs/tesis/figuras/ejemplo_prestamo_datos.json   25ab7b4c0d76fd735244fe0fecc17ceaba1b0e8bfd2312e7aa3cbd5c849672a2
+  extractor v1  docs/tesis/figuras/extraer_datos_ejemplo_prestamo.py   4c3a441972d27304b6d58d0664dbc15b893bce7ad3e7d2d49afad947f51eeea7
+  estilo        docs/tesis/figuras/figura_esquema_final.svg   d550719599872f47fc8a7dbee261a6c11e5ab186e0e8fad76f281e3c220eedfa
+TEXTOS (iguales a los de la versión 1):
+  cla::5.1.1    '5.1.1. Cartera comercial. Abarca todas las financiaciones comprendidas, con excepción de las siguientes:'
+  cla::5.1.1.1  '5.1.1.1. Los créditos para consumo o vivienda. Los créditos de esta clase que superen el equivalente a dos veces el importe de referencia establecido en el punto 3.7. y cuyo repago no se encuentre vinculado a ingresos fijos o periódicos del cliente sino a la evolución de su actividad productiva o comercial se incluirán dentro de la cartera comercial.'   palabras reunidas ['pro-ductiva → productiva']
+  cla::3.7      '3.7. Importe de referencia. El importe a considerar será el nivel máximo del valor de ventas totales anuales para la categoría “Micro” correspondiente al sector “Comercio” que determine la autoridad de aplicación de la Ley 24.467 (y sus modificatorias).'
+  frase resaltada 'dos veces el importe de referencia establecido en el punto 3.7.'
+GRAFO: data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo_r2b/r2/kg.json   sha256 6e7560433148cfe0c476cdd61199c32278187c4196d6f90dc0a38976a6d8e9a2   (6990 nodos, 23445 aristas)
+  igual en data/experiment/reextraccion_v2/corpus_tanda0/ens_diez_r2b/r2/kg.json   sha256 a9631a64b422bdae634fb05135373c6f04c6272cdf7acd43a1be9f5b6c1f5f57   (8816 nodos, 27632 aristas): mismos nodos, propiedades y aristas dibujadas
+  nodo condicion_monto   Condicion  punto 5.1.1.1  'Superar dos veces importe referencia punto 3.7'
+       id Condicion_superar_dos_veces_importe_referencia_punto_3_7__el_credito_debe_superar_el_equiv_22a312   (en diez: True)
+  nodo operacion         Operacion  punto 5.1.1.1  'Inclusión en cartera comercial — créditos consumo/vivienda'
+       id Operacion_inclusion_en_cartera_comercial_creditos_consumo_vivienda__cla_5_1_1_1_8f5956   (en diez: True)
+  nodo condicion_repago  Condicion  punto 5.1.1.1  'Repago vinculado a actividad productiva/comercial'
+       id Condicion_repago_vinculado_a_actividad_productiva_comercial__el_repago_del_credito_no_debe_0856b5   (en diez: True)
+  nodo definicion_3_7    Definicion punto 3.7      'Importe de referencia — nivel máximo de ventas anuales'
+       id Definicion_importe_de_referencia_nivel_maximo_de_ventas_anuales__el_nivel_maximo_del_valor__a855af   (en diez: True)
+  arista kg['edges'][5542] (diez [6181]) condicion_monto --remite_a--> definicion_3_7   procedencia ['cla::5.1.1.1']   properties {"alcance": "interna", "destino": "cla::3.7", "evidencia": "equivalente a dos veces el importe de\nreferencia establecido en el punto 3.7. y cuyo repago no se"}
+  arista kg['edges'][5540] (diez [6179]) condicion_monto --condicion_de--> operacion   procedencia ['cla::5.1.1.1']   properties {}
+  arista kg['edges'][5161] (diez [5771]) condicion_repago --condicion_de--> operacion   procedencia ['cla::5.1.1.1']   properties {}
+  arista kg['edges'][17765] (diez [21013]) operacion --remite_a--> definicion_3_7   procedencia ['cla::5.1.1.1']   properties {"alcance": "interna", "destino": "cla::3.7", "evidencia": "equivalente a dos veces el importe de\nreferencia establecido en el punto 3.7. y cuyo repago no se"}
+  NO DIBUJADO, aristas de los nodos dibujados hacia fuera del dibujo (nodo, sentido, relación, tipo del otro extremo):
+    ('condicion_monto', 'sale', 'establecida_en', 'TextoOrdenado'): 1
+    ('condicion_repago', 'sale', 'establecida_en', 'TextoOrdenado'): 1
+    ('definicion_3_7', 'entra', 'remite_a', 'Condicion'): 12
+    ('definicion_3_7', 'entra', 'remite_a', 'Definicion'): 1
+    ('definicion_3_7', 'entra', 'remite_a', 'Excepcion'): 2
+    ('definicion_3_7', 'entra', 'remite_a', 'Obligacion'): 7
+    ('definicion_3_7', 'entra', 'remite_a', 'Operacion'): 6
+    ('definicion_3_7', 'entra', 'remite_a', 'Potestad'): 2
+    ('definicion_3_7', 'entra', 'remite_a', 'Restriccion'): 2
+    ('definicion_3_7', 'sale', 'establecida_en', 'TextoOrdenado'): 1
+    ('operacion', 'sale', 'establecida_en', 'TextoOrdenado'): 1
+  NO DIBUJADO, nodos de la unidad y sus aristas:
+    ('Excepcion', 'Excepción cartera comercial — créditos consumo/vivienda'): [('sale', 'establecida_en', 'TextoOrdenado')]
+  NO DIBUJADO, umbrales de condicion_monto: [{"tramo": "dos veces", "valor": "2", "unidad": "veces", "comparacion": "minimo_estricto", "base": "importe de referencia establecido en el punto 3.7", "regla_comparacion": "simple:raiz_super", "origen": "e1", "tramo_verificado": "exacta", "base_destino": "cla::3.7", "base_via": "remision"}]
+COLORES DE TIPO (de la figura del esquema final):
+  Condicion  {'relleno': '#f8e8f5', 'borde': '#b5179e', 'grosor': '2.6'}
+  Definicion {'relleno': '#f8e8f5', 'borde': '#b5179e', 'grosor': '2.6'}
+  Operacion  {'relleno': '#eaefee', 'borde': '#52796f', 'grosor': '2'}
+PRUEBAS NEGATIVAS: 4 de 4 hacen fallar su control
+  arista_de_mas -> inventario: arista de la figura que no está en el grafo: (('Condicion', '5.1.1.1', 'Repago vinculado a actividad productiva/comercial'), 'remite_a', ('Operacion', '5.1.1.1', 'Inclusión en cartera comercial — créditos consumo/vivienda')) (fallan también: geometria)
+  etiqueta_distinta -> inventario: nodo de la figura que no está en el grafo: ('Operacion', '5.1.1.1', 'Inclusión en cartera comercial — créditos de consumo o vivienda')
+  cruce -> geometria: 2 cruce(s) entre trazos, declarados 0: [('1', '4'), ('2', '4')] (fallan también: inventario)
+  rotulo_sobre_caja -> geometria: texto sobre la caja operacion: 'limita' (fallan también: inventario)
+INVENTARIO (releído del SVG): 4 nodos y 4 aristas; fallas: 0
+  nodo   ('Condicion', '5.1.1.1', 'Superar dos veces importe referencia punto 3.7')
+  nodo   ('Definicion', '3.7', 'Importe de referencia — nivel máximo de ventas anuales')
+  nodo   ('Operacion', '5.1.1.1', 'Inclusión en cartera comercial — créditos consumo/vivienda')
+  nodo   ('Condicion', '5.1.1.1', 'Repago vinculado a actividad productiva/comercial')
+  arista Condicion 5.1.1.1 --remite_a--> Definicion 3.7
+  arista Condicion 5.1.1.1 --condicion_de--> Operacion 5.1.1.1
+  arista Condicion 5.1.1.1 --condicion_de--> Operacion 5.1.1.1
+  arista Operacion 5.1.1.1 --remite_a--> Definicion 3.7
+GEOMETRÍA: 31 textos, 4 cajas, 6 trazos con flecha; cruces 0; fallas: 0
+TAMAÑO: lienzo 860 x 937.0, impreso a 15.00 x 16.34 cm
+  letra 13 unidades -> 6.43 pt
+  letra 15 unidades -> 7.42 pt
+  letra 17 unidades -> 8.41 pt
+SVG: ../rs/salidas/figuras/base/norma/figura_norma_a_grafo.svg   sha256 874292f54e3c5d70b036b070b6beb7e8ce4c568a2aa6862fde23d865588f3e9b
+PNG: ../rs/salidas/figuras/base/norma/figura_norma_a_grafo.png   sha256 8dbfb2da6e528f9b8076cba527ed5ada49c02669a4055f62db60f0799f5c1148
+PDF: ../rs/salidas/figuras/base/norma/figura_norma_a_grafo.pdf   sha256 c27cfbdee26f2441af770619d5ef237cb25f23423d6238bea35a2dbde9b7054f
+  PNG (1772, 1931) px a 300 dpi; rsvg-convert version 2.62.3
+rc=0
