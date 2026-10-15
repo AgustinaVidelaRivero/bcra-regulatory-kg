@@ -306,3 +306,48 @@ Las decisiones llegaron en el mensaje recibido a las 16:17:35 (hoja de ruta de l
   documentos firmados van en un commit propio, inmediatamente después de los dos del sello.»
   - El mandato, en su versión para firmar, está en el paquete de la mesa (`decisiones_108_mesa/resellado/`).
 - Las secciones anteriores no se editan.
+
+## 10. El alcance de dos documentos de la tanda 1, el conteo fijado, el S2-b y U-MED-VERIF (agregado del 15/10/2026)
+
+Decisiones de la autora recibidas a las 18:34:38 (hoja de ruta de la mesa, §111), y las de U-MED-VERIF recibidas a las 17:45:44 (§110).
+
+- **depaho, tal cual:** «tu (i) más tu (ii). El rol queda como está en la tanda 1, declarado en el v8. B1 mide, al lado de la regla
+  firmada, la variante que deriva solo dentro de la sección del pasaje del alcance, y lo decido en B2 con la cifra. El alcance por
+  sección entra a la lista del grafo corregido como corrección general para todos los roles, no solo para depaho.»
+  - **Por qué:** el rol de depaho sale de las entidades intervinientes de la sección 1 (`depaho::1.1.1` a `::1.1.4`, p. 5). Las
+    secciones 2 y 3 nombran otros conjuntos (`depaho::2.1`, p. 14; las aperturas de la sección 3, como `depaho::3.1.1`, p. 21).
+    Las cifras por sección están en el paquete de la mesa (`decisiones_110_mesa/depaho/` y `decisiones_111_mesa/depaho/`).
+  - **Cambiarlo ahora demoraba la tanda 1:** el registro no alcanza, porque E1 lee primero la tabla de la release y el lector saltea
+    las filas sin alcance.
+  - **Al grafo corregido:** el alcance por sección, como corrección general de todos los roles de alcance. Hoy no tiene formato en el
+    registro ni en la tabla de la release.
+  - **La nota al mandato de B′** (`docs/mandatos/UAPLICA_ROL_ALCANCE_derivada_Bprima.md`) con la variante que mide B1 va después del
+    commit de las notas del re-sellado, que también anota ese mandato.
+- **Otro documento con el mismo caso** (pedido de la autora, tal cual: «Si hay alguno, va al v8 como depaho, sin cambiar nada»): snp_tr.
+  - Su rol sale de «Entidades alcanzadas por el servicio» (`snp_tr::1.1.3`, p. 5), en la sección 1, de transferencias en lote.
+  - Las secciones 2 y 3 son otros servicios, con sus propios participantes (`snp_tr::2.3.1`, p. 50; `snp_tr::3.2.2.1`, p. 53).
+  - En los otros 16 documentos de la tanda 1 con alcance, el pasaje vale para todo el documento o el rol es el del régimen informativo
+    (regla §2.8 del registro de alcance). Las aperturas de cada sección, contadas, están en el paquete de la mesa
+    (`decisiones_111_mesa/secciones/`).
+- **El conteo fijado antes de la tanda 1, tal cual:** «Fijá ahora, antes de la tanda 1, un conteo por script para después de la tanda
+  1: cuántas normas de depaho, por sección, salen con aplica_a hacia Sujeto_rol_alcance_depaho. Es una cuenta de aristas, no una
+  lectura. El v8 cita el script sellado.»
+  - El script: `data/experiment/controles_tanda1/conteo_aplica_a_rol_por_seccion.py` (sha256 `d8c1e06a3762579c502e8f303e13ba065e2f85f66d9e12bd2d5afd63cca79f34`).
+  - Su selftest, sintético: 9 de 9 (`selftest_conteo_aplica_a_rol_por_seccion.py`, con su salida al lado). Un mutante que cuenta
+    las operaciones como normas falla 5 de los 9.
+  - Corre sobre el `kg.json` del grafo de la tanda 1 sellado, con los pares `depaho:Sujeto_rol_alcance_depaho` y
+    `snp_tr:Sujeto_rol_alcance_snp_tr_nc`. No imprime texto, y no separa las unidades por su estado en E3.
+- **La fila de ri_oc, tal cual:** «La fila de ri_oc queda en el registro de alcance como está.» El lector saltea las filas «sin alcance
+  declarado», así que no tiene efecto.
+- **El S2-b, tal cual:** «El S2-b queda aceptado. En el tramo 3, censo_sd_152_S2b.json se controla por su JSON con las claves
+  ordenadas, como propusiste, y eso queda declarado en el repo con el commit del tramo 3.»
+- **U-MED-VERIF**, la medición de lo que cambia cuando el verificador pide una nueva extracción y la acepta. Su diseño todavía no está
+  sellado y no está en el repo.
+  - Tal cual, a las 17:45:44:
+    - «Va a la hoja de ruta, pero no puede demorar el despacho de la tanda 1. Si algo de esto compite con la tanda 1, gana la tanda 1, y
+      me lo decís.»
+    - «Hasta que yo selle el diseño, nadie mira las re-extracciones de la tanda 1, ni sus conteos ni sus marcas de copia. Eso incluye
+      tus revisiones de los FRENOs de la tanda 1 y los informes de su ejecutora.»
+  - Tal cual, a las 18:34:38: «tu respuesta va a la mesa de escritura y vuelve como versión final para que la selle. La cláusula de
+    cegamiento va en el v8 y en el despacho de la tanda 1 aunque llegue a sellar el diseño antes.»
+- Las secciones anteriores no se editan.
