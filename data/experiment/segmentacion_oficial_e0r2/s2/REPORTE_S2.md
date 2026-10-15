@@ -178,3 +178,74 @@ La lista corrió dos veces sobre la misma E0, la segunda con `PYTHONHASHSEED=7`:
   (rastreado). No lo abrí: la copia lo excluye y la foto lo registra por tamaño y fecha.
 - **`.pyc`:** 2.213 fuera de `.venv/` antes (243 fuera de `.venv/` y `.venv-app/`; con los `__pycache__`, 286 entradas).
 - **Grep de convenciones:** `controles/grep_convenciones_S2a.txt`.
+
+## Tramo 2 (15/10/2026): los puntos 1 a 4 del mandato
+
+Con el «seguí» de los tramos 2 y 3 (siete agregados). En la sesión pregunté si al terminar el tramo 2 freno o sigo con el tramo
+3: la autora contestó «Frenás en S2-b». Todo sobre copias hechas con el `rsync` de la cláusula más `--exclude='NO_ABRIR_*'`
+(agregado 7; 0 `.env` y 0 `NO_ABRIR_` en cada una). Las cifras, con su archivo, su clave y su comando, están en
+`cifras_segmentacion_oficial.md`; los JSON, en `cifras/`; los scripts, en `scripts/`. Acá va el procedimiento.
+
+### 2.1. Paso 0 y fuentes
+
+- Paso 0 de nuevo: el último commit es el del tramo 1 (`2fcc8fb3`), `s2/` está en git (10 archivos, sin diferencias con HEAD), los
+  sha256 del código de E0 son los de `2374968a` y solo están los tres `e0/` sin rastrear. La salida, en el FRENO S2-b.
+- Fuentes nuevas: `docs/enmiendas_adendas_1_y_2_laudo_B5.5_2026-10-04.md`, leída en `e82e22f` y, para la nota del 15/10/2026 sobre
+  ri2_pm, en HEAD (`:147-152`); `docs/registro_decisiones_calidad_y_evaluacion_2026-10-15.md:161` (U-BLOQUE-A al grafo corregido);
+  el registro del cierre de S1-quater y sus salidas; los reportes legados `reports/u_insumos_cap/` (`ded3494`) y
+  `reports/u_cap3_datos/` (fuera de git), solo leídos.
+- Leí los insumos con cuatro subagentes de solo lectura (control de R5; reporte legado; S1-quater y censos; marcas de 4.g), con las
+  carpetas vedadas, los `NO_ABRIR_` y los `.env` excluidos y sin imprimir texto de unidades.
+
+### 2.2. Corridas
+
+| corrida | qué | horas | resultado |
+|---|---|---|---|
+| health-check de los 20 | `healthcheck_e0.py` de la raíz mínima | 16:15:33 a 16:16:52 | rc 0 |
+| E0 de los 152 con el código de `92b45d6`, `e1c9456` y `9f6361e6` | `lote_e0_historicas_S2b.sh` | 16:26:06 a 16:43:35 | 152 TOs cada una, 0 con error |
+| ablación de B5.8.2 | `ablacion_b582_S2.py`, 7 TOs × 4 | 16:32:36 a 16:34:10 | la base reproduce la E0 corregida en los 7 |
+| tres controles de R5, caché de renglones, censo de renglones, detector 1.16, censo de sub-documentos | `lote_tramo2_S2b.sh` | 16:43:44 a 16:55:29 | rc 0 en cada paso |
+
+El código de cada commit (sha256 de `e0_lib.py`, `correr_e0.py` y `e0_tablas.py`, de `git show`): `92b45d6` `0373a0c0…`,
+`95ccf565…`, `ab300a22…`; `e1c9456` `964b417f…`, `95ccf565…`, `ab300a22…`; `9f6361e6` `9e049e58…`, `095720c2…`, `ab300a22…`. Las
+corridas en secuencia: `manual` pide unos 5 GB por lectura.
+
+### 2.3. Lo que resolví y cómo
+
+- **Health-check** (agregado 5): ningún TO de la tanda 1 con cobertura no exacta ni ids repetidos, así que no hay freno. Las otras
+  señales se registran y no excluyen (decisión de la autora, nota del 15/10/2026 al pie del mandato, `:1036-1043`, `c2b6cb60`). El
+  health-check corre la escalera de `e0_lib` sin el driver de e0-r2 y da otras unidades en 15 de los 20. Las declaro, y al lado van
+  dos señales medidas sobre la E0 corregida con la misma definición.
+- **Punto 1:** el control de R5 sin editar deja 2.787 diferencias de ids y 424 chunks en «otra», porque su `--atribuir` no conoce S0.
+  Los atribuí por historia con las E0 de `e1c9456` (el cierre, 0 en «otra») y de `9f6361e6`. Entre el cierre y la E0 corregida solo
+  cambiaron C2 y S0 (`git log`). Resultado: 2.663 ids y 424 chunks de S0; 47 ids ya estaban en el cierre (10 de K, 37 de la
+  partición por tabla); 0 de C2. **«Otra» en 0.**
+- **Punto 2:** se reproducen las dos corridas, con las mismas cifras: con `92b45d6` las del FRENO R5 y con `e1c9456` las del
+  cierre. `e1c9456` reproduce el cierre, no la corrida de R5. K-a′+K-b cambia 4 TOs. El punto (f) da 0 en los 152 (solo ric).
+- **Punto 3 y 4:** las definiciones legadas se aplican sin adaptar y reproducen las cifras del reporte legado (control en 4.a).
+  Las adaptaciones a e0-r2, declaradas en cada script: 3B en dos lecturas, criterios de tablas con los nombres de e0-r2, índice
+  variante por ablación.
+- **4.f:** el piso y su declaración, marcados como procedimiento interno. Censo de renglones con el script de S1-bis sin editar:
+  corre igual.
+- **Detecciones de la tanda 1** (agregado 3): censo de S0-4a y censo de renglones, con el código de la E0 corregida; ri_mmsef, 0 y 0.
+- **ri_spi y ri_con** (agregado 4): por su razón vigente, con la nota ¹ en cada aparición del documento de cifras; la autora confirmó
+  la regla en la misma nota.
+- **Dos commits de la autora durante el tramo** (`6d9a6427` y `c2b6cb60`, 16:17): solo `docs/`; ver el FRENO S2-b.
+- **rdbcra** (agregado 1): no lo investigo; queda para la tanda final del tramo 3.
+- **Cobertura e ids de la tanda final** (agregado 2): van en el tramo 3, que es donde se define la tanda final (agregado 6).
+
+### 2.4. Error propio, con su causa
+
+Al revisar la unidad grande de ri_rml (`ri_rml::Sbloque14`), imprimí en la sesión el dict `flags` entero de ese chunk. Trae
+`evidencia_tabular` y `evidencia_formula`, tres fragmentos cortos de fórmula cada uno, de una unidad que no es de diseño. La causa:
+filtré por la unidad y no por los campos. Desde ahí, solo imprimo claves y cuentas. S1-quater ya está adjudicada; si esa unidad
+importa para alguna lectura a ciegas posterior, lo decide la autora.
+
+Antes de pasar los archivos al repo cacé y corregí en el scratchpad tres defectos de forma de mis scripts: un reemplazo de comas
+que rompía los separadores de miles, f-strings con barras invertidas (Python 3.10) y la nota ¹ que faltaba en algunas listas.
+Ninguno llegó al repo.
+
+### 2.5. Reproducción
+
+`lote_cifras_S2b.sh`, corrido desde una copia nueva del repo con `s2/` adentro, rehace el health-check, la ablación, los 13 JSON de
+`cifras/` y `cifras_segmentacion_oficial.md` desde las salidas crudas: de 17:05:39 a 17:07:35 (la segunda vez, con la nota del mandato ya en el documento; la primera, de 17:00:40 a 17:02:35), rc 0, **los 13 JSON y el documento, iguales byte a byte** a los de `s2/` (`cmp`). Las salidas crudas (las E0 de los tres commits, los tres controles de R5 y los censos) son las de las corridas de §2.2; los controles de R5 de `92b45d6` y `e1c9456` reproducen las cifras de sus FRENOs (§3 del documento).

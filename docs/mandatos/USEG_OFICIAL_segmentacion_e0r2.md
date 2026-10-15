@@ -1041,3 +1041,32 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
   - **ri_spi y ri_con:** «confirmo la regla». Se cuentan una sola vez, por las decisiones 1 y 2 de la enmienda 8, con la nota de que en la
     partición legada eran no segmentables. Vale para las cifras de S2.
   - Las notas anteriores no se editan.
+- **15/10/2026 — El FRENO S2-b, revisado, y lo que dejó abierto** (decisiones de la autora recibidas a las 17:16:02; hoja de ruta de
+  la mesa, §110).
+  - **La revisión de la mesa:** reprodujo el tramo 2 de punta a punta sobre una copia nueva, con los lotes de `s2/scripts/` sin editar.
+    - Corrió la E0 corregida (768 de 768 archivos contra el manifiesto de S0-6b), las tres E0 históricas, los controles de R5, los
+      censos y las cifras. Las cuatro E0 salen iguales, archivo por archivo, a las de S2.
+    - Las cifras salen iguales. De los 13 JSON de `s2/cifras/` y `cifras_segmentacion_oficial.md`, 12 salen iguales byte a byte.
+      Los otros dos difieren en un solo dato: el sha256 de una salida cruda, `censo_sd_152_S2b.json`
+      (`censos_S2b.json`, `fuentes`, y su renglón en el documento).
+      - Ese archivo lo escriben procesos en paralelo (`s0_4/scripts/censo_sd_152.py:53`), y el orden de sus claves cambia de una corrida
+        a otra.
+      - Su contenido es el mismo: el JSON con las claves ordenadas da `899db5d198d1…` en las dos.
+      - Con las salidas crudas de S2, los 14 salen iguales byte a byte.
+    - El repo no cambió durante la corrida (sha256 antes y después), y los 34 archivos de `s2/` son los del paquete de S2.
+  - **Las cinco decisiones sobre lo abierto, tal cual:**
+    - a. «El 1.16 en el v8: van las dos cifras. El censo como principal, porque es comparable con las de antes (27 en 8 TOs), y el
+      detector corregido de S0-5a al lado (92 en 16). Las dos se declaran como detecciones, no como lecturas.»
+    - b. «M1 no es de S2. Pasale a la mesa de escritura el dato de los 12 no segmentables y que, con la E0 corregida, ri_spi queda leído
+      por puntos. Probablemente es «el último» del párrafo, y lo confirma ella con el texto.»
+    - c. «M2: el script no se adapta ahora. Los 12 roles de página que cambiaron en 9 TOs se declaran, y el recuento con un script
+      adaptado queda para después de la tanda 1, si la mesa de escritura lo necesita.» Son 12 páginas en 9 TOs
+      (`s2/cifras/roles_pagina_S2b.json`).
+    - d. «3B: acepto la segunda lectura de S2 como control, declarada como interpretación.»
+    - e. «Las reglas de S0 sin rastro en la salida se declaran. La ablación por regla queda para después de la tanda 1, solo si la tabla
+      del apéndice la necesita.»
+  - **Para el pre-registro v8, tal cual:** «Sumá al v8 que el health-check corre con e0_lib sin el driver de e0-r2 y no reproduce
+    correr_e0 en 15 de los 20, que la cobertura y los ids se controlaron sobre la E0 corregida, y que las otras señales se registran.»
+  - **Las salidas crudas, tal cual:** «Las salidas crudas de S2 están en /private/tmp, y macOS las borra a los 3 días. Si el tramo 3 no
+    corre antes del domingo, que su «seguí» diga que primero las regenere con los lotes.»
+  - Las notas anteriores no se editan.
