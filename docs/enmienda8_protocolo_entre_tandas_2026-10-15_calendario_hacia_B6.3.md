@@ -159,3 +159,22 @@ la mesa, §101, con el inventario de lo pendiente que afecta la calidad).
 
 FIRMADA por la autora el 15/10/2026 a las 13:00:14 (por mensaje; hoja de ruta de la mesa, §102), con sus cuatro decisiones. Rige desde
 esta firma.
+
+## Notas posteriores a la firma
+
+- **15/10/2026 — ri_spi y ri_con se cuentan una sola vez, por su razón vigente con la E0 corregida** (decisión de la autora recibida a las
+  15:54:12; hoja de ruta de la mesa, §106 y §107).
+  - Van por las decisiones 1 y 2. En la partición legada eran no segmentables (`docs/protocolo_entre_tandas.md:163-166`).
+  - **Con esa regla, cambian el texto para firmar (punto 2) y el §1:**
+    - la tanda final antes de las decisiones pasa de 113 TOs y 6.295 unidades a 114 y 6.329;
+    - los documentos de BKL-0044 y de los rechazos de raíz, de 9 TOs y 700 unidades a 10 y 734;
+    - con los de la decisión 1, de 13 TOs y 958 unidades a 14 y 992, de las que 620 son de régimen informativo, de 1.192 (antes, 586 de
+      1.158);
+    - la tanda final queda igual: 100 TOs y 5.337 unidades.
+  - **Otras dos decisiones del mismo día cambian la tanda final y los topes del §8** (notas del 15/10/2026 al pie de
+    `docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md`): ri_mmsef entra a la tanda 1 en lugar de ri_oc, y rdbcra queda fuera de la tanda
+    final.
+    - La tanda 1 tiene U = 3.290 y un tope de USD 100,73 (`data/experiment/segmentacion_oficial_e0r2/s2/lista_tanda1_S2.json`).
+    - La tanda final queda en 98 TOs y 4.951 unidades, con un tope de unos USD 151,6. Es un cálculo de la mesa (hoja §106), que S2 rehace
+      en su tramo 3.
+  - Las cifras son del manifiesto de la E0 corregida (`unidades_por_to`). El texto firmado no cambia.

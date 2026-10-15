@@ -526,3 +526,7 @@ El texto firmado no se edita; estas notas se leen junto con él.
   no entran en el grafo evaluado: van con el bloque B, en la release posterior, declaradas. Coincide con el acta de S1-bis
   (`data/experiment/segmentacion_oficial_e0r2/s1bis/acta_sorteo_S1bis.md:22-24`) y con la fila B6.2b (`docs/plan_tesis.md:777`). El
   texto firmado no cambia.
+- **15/10/2026 — ri_spi y ri_con, con la E0 corregida (decisión de la autora recibida a las 15:54:12; hoja de ruta de la mesa, §106 y
+  §107).** La E0 corregida los segmenta por numeración: 96 y 34 unidades (manifiesto de S0-6b, `unidades_por_to`). Se cuentan una sola
+  vez, por las decisiones 1 y 2 de la enmienda 8. La fila «fuera, 14» del §5 (`:163-166`) queda como la cifra de la partición legada, en
+  la que eran no segmentables. El texto firmado no cambia.

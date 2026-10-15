@@ -296,3 +296,10 @@ topes de USD 35 (V) y USD 55 (T).
 - **08/10/2026** — Enmienda 1 (vía de umbrales: exactitud de los campos de los umbrales), FIRMADA por la autora el 08/10/2026 (versión
   para firmar en `97bc53d`; el commit de la firma es el que agrega esta nota):
   `docs/enmienda1_preregistro_evaluacion_tripletas_2026-10-08_umbrales.md`. El texto firmado no cambia.
+- **15/10/2026** — Quién adjudica (§6.4). La autora lo decidió para B6.3 con lo acordado con los mentores en las reuniones del 18 y el
+  19/08, y pidió aplicar el mismo criterio a lo que este pre-registro deja abierto (decisión recibida a las 15:59:03; hoja de ruta de la
+  mesa, §107; registro de decisiones del 15/10/2026, §8):
+  - el juez hace el grueso, calibrado contra el gold de la autora (§1);
+  - la autora adjudica lo que el juez manda a adjudicación, y una muestra de control de tamaño fijado antes;
+  - sin experto del dominio: las tripletas que lo necesitan se marcan y se declaran como no decidibles (§6.3).
+  - El texto firmado no cambia.

@@ -241,3 +241,37 @@ Las decisiones llegaron en el mensaje recibido a las 15:16:05 (hoja de ruta de l
   - Va también rdbcra, por su cobertura no exacta en la E0 corregida (nota del 15/10/2026 al pie de
     `docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md`).
 - Las secciones anteriores no se editan.
+
+## 8. La tanda 1, la regla del ancla, Q4, Q12 y el conteo de ri_spi y ri_con (agregado del 15/10/2026)
+
+Las decisiones llegaron en dos mensajes, recibidos a las 15:54:12 y a las 15:59:03 (hoja de ruta de la mesa, §107).
+
+- **El health-check de E0 de la tanda 1 (15:54:12), tal cual, decidido antes de ver el FRENO S2-b:** «las señales que no son cobertura ni
+  ids repetidos (cid, páginas sin sección, unidades grandes) se registran y se declaran por TO, como en la tanda 0, y no excluyen. La
+  cobertura no exacta y los ids repetidos frenan, como dice el «seguí».»
+  - El precedente de la tanda 0 está en `docs/preregistro_tanda0.md:212-216`.
+- **La regla del ancla (15:54:12), tal cual:** «sin mini_chunk y con al menos 60 caracteres de texto propio. Las tabulares y las de fórmula
+  quedan, declaradas.»
+  - Con esto queda decidido el punto 6, y con él el diseño del orden entero (§7).
+- **Q4 y Q12 (15:59:03):** «Q4 y Q12 los decido yo, con lo que acordamos con los mentores al diseñar la evaluación (reuniones del 18 y el
+  19/08). No los consulto ahora.»
+  - **Q4, tal cual:** «preguntas de varios puntos, con una cuota por clase según lo que permita cada una, fijada antes de generar ninguna
+    pregunta y con su regla escrita. Se informan aparte de las de dato directo. Sin preguntas de abstención: se declara como límite.»
+    - La cuota de cada clase la decide la autora con los datos, antes de sortear.
+  - **Q12, tal cual:** «el juez hace el grueso. Yo armo primero un gold propio, a ciegas, sin ver ninguna sugerencia de un modelo, y el juez
+    se calibra contra ese gold antes de usarlo. Después leo lo que el juez deja dudoso y una muestra de control de tamaño fijado antes. Sin
+    experto del dominio: lo que necesite uno se marca y se declara. En las tripletas rige su pre-registro firmado; si deja abierto quién
+    adjudica algo, aplicá este mismo criterio.»
+    - Los tamaños del gold y de la muestra los decide la autora.
+    - Lo que el pre-registro de las tripletas deja abierto sobre quién adjudica (§6.4) va en una nota al pie de ese pre-registro.
+- **ri_spi y ri_con (15:54:12), tal cual:** «confirmo la regla.»
+  - La regla es la que propuso la autora: se cuentan una sola vez, por su razón vigente con la E0 corregida (las decisiones 1 y 2 de la
+    enmienda 8), con una nota que dice que en la partición legada eran no segmentables.
+  - Van notas al pie de la enmienda 8 y del protocolo entre tandas.
+  - En la §1 de este registro, la capa «los no segmentables» son los otros 10. Sus cifras no cambian.
+- **A2.1 (15:54:12), tal cual:** «Firmo el mandato de A2.1 (b311859c…) tal como está.» Está en
+  `docs/mandatos/A2_1_sistema_por_fragmentos_preregistro_A2_2.md`.
+- **Las ejecutoras en el repo (15:54:12), tal cual:** «S2, el re-sellado, A2.1 y B1 de B′ escriben en el repo. Armá el orden para que
+  corra una sola por vez, con los commits entre una y otra».
+  - El orden lo propone la mesa.
+- Las secciones anteriores no se editan.

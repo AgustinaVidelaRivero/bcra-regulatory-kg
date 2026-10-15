@@ -1033,3 +1033,11 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
     Sus detecciones de la release de E0 (límites de sub-documento y candidatos del 1.16) se miden en el tramo 2, para que el v8 las
     declare.»
   - Las notas anteriores no se editan.
+- **15/10/2026 — El health-check de la tanda 1 y el conteo de ri_spi y ri_con** (decisiones de la autora recibidas a las 15:54:12; hoja de
+  ruta de la mesa, §107).
+  - **El health-check, tal cual, decidido antes de ver el FRENO S2-b:** «las señales que no son cobertura ni ids repetidos (cid, páginas
+    sin sección, unidades grandes) se registran y se declaran por TO, como en la tanda 0, y no excluyen. La cobertura no exacta y los ids
+    repetidos frenan, como dice el «seguí».»
+  - **ri_spi y ri_con:** «confirmo la regla». Se cuentan una sola vez, por las decisiones 1 y 2 de la enmienda 8, con la nota de que en la
+    partición legada eran no segmentables. Vale para las cifras de S2.
+  - Las notas anteriores no se editan.
