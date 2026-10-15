@@ -275,3 +275,34 @@ Las decisiones llegaron en dos mensajes, recibidos a las 15:54:12 y a las 15:59:
   corra una sola por vez, con los commits entre una y otra».
   - El orden lo propone la mesa.
 - Las secciones anteriores no se editan.
+
+## 9. Q4, Q12, el orden de las ejecutoras y el re-sellado (agregado del 15/10/2026)
+
+Las decisiones llegaron en el mensaje recibido a las 16:17:35 (hoja de ruta de la mesa, §108).
+
+- **El orden de las ejecutoras, tal cual:** «aprobado, con B1 después de la tanda 1. Una condición: nada demora el despacho de la tanda 1.
+  Si cuando estén firmados el laudo y el v8 todavía corren el tramo 3 de S2 o A2.1, la tanda 1 va primero y ellos siguen después.»
+  - El orden, en el paquete de la mesa: `decisiones_108_mesa/orden/orden_ejecutoras_en_el_repo_v2_mesa.md`.
+- **Q4, la cuota, tal cual:** «la cuota que proponés (10 %, 15 % y 15 %, dentro del N), que sigue la proporción real de unidades con
+  remisión de cada clase. Las de varios puntos se informan aparte, como análisis descriptivo. Si los documentos sorteados de una clase no
+  tienen candidatas suficientes, lo que falta va como preguntas de dato directo de esos mismos documentos, y se declara.»
+  - **La regla de la cuota:** la proporción de unidades ancla de la clase con al menos una remisión interna resoluble, redondeada hacia
+    abajo a un múltiplo de 5 %.
+  - **De dónde sale:** el detector de B1.3 (`data/experiment/reextraccion_v2/corpus_v2/r1_referencias.py`, `detectar_menciones`), sobre la
+    E0 corregida. Da 39 de 372 en régimen informativo, 296 de 1.920 en «digerible» y 93 de 535 en «necesita reglas» (paquete de la mesa,
+    `decisiones_107_mesa/preguntas/`).
+- **Q12, tal cual:**
+  - «El gold: 40 respuestas, en dos mitades. Las 20 para ajustar el juez salen de respuestas de EV2 que ya existen, y las leo este fin de
+    semana. Las 20 para verificarlo salen de las respuestas de A2.2 y sirven también como su muestra simétrica. Las leo a ciegas, antes de
+    ver cualquier veredicto.»
+  - «El criterio de aceptación, como lo proponés: en la mitad de verificación, Wilson inferior de al menos 0,85 por criterio y al menos 18
+    de 20 por respuesta. Si no se cumple, frenás y decido.»
+  - «Lo dudoso de B6.3, todo para mí. La muestra de control: 36 respuestas, 12 por brazo, estratificadas por clase, con semilla fijada
+    antes.»
+  - **Cómo se puede** (mesa): el juez se congela antes de firmar el pre-registro de A2.2, y ese pre-registro toma como su muestra
+    simétrica las 20 de verificación. Va en una nota al pie de `docs/mandatos/A2_1_sistema_por_fragmentos_preregistro_A2_2.md`.
+- **El re-sellado, tal cual:** «tomo las cuatro decisiones del §8 del v3. 1. Los nombres: los de U-SINCOLA-T0 con el sufijo _rs1. 2. Se
+  re-sellan los cuatro grafos, completos y sin cola. 3. Si el diff contra O2 trae algo que no viene de R0, frena. 4. Las notas a los
+  documentos firmados van en un commit propio, inmediatamente después de los dos del sello.»
+  - El mandato, en su versión para firmar, está en el paquete de la mesa (`decisiones_108_mesa/resellado/`).
+- Las secciones anteriores no se editan.

@@ -233,3 +233,19 @@ FIRMADO por la autora el 15/10/2026 a las 15:54:12 (por mensaje: «Firmo el mand
 la mesa, §107). El texto firmado es el de arriba, hasta antes de esta sección, y su sha256 es
 `b311859c0cf90ad6581cd4e639b37a7498bd8daad0ac8475e83ce604ddf7076d` (la versión para firmar de la mesa, `decisiones_106_mesa/a21/`). Rige
 desde esta firma.
+
+## Notas posteriores a la firma
+
+- **15/10/2026 — El juez y la muestra simétrica de A2.2** (decisión de la autora sobre Q12, recibida a las 16:17:35; registro de
+  decisiones del 15/10/2026, §9). El pre-registro de A2.2 que arma el tramo 3 (§5) lleva además:
+  - **el juez, congelado antes de su firma:**
+    - el de EV2 tal cual (`data/experiment/ev2_juez/juez.py`, prompt `fd446f8e…`), o el ajustado con la mitad de ajuste del gold de la
+      autora (20 respuestas de EV2), con su sha;
+    - A2.2 y B6.3 usan el mismo;
+  - **su muestra simétrica:** 20 de sus 120 respuestas (7, 7 y 6 por brazo), estratificadas también por el veredicto del juez, como la
+    de EV2. La autora las lee a ciegas, sin ver ningún veredicto. Es la mitad de verificación del gold;
+  - **el criterio de aceptación del juez,** sobre esa mitad: Wilson inferior de al menos 0,85 por criterio y al menos 18 de 20 por
+    respuesta. Si no se cumple, se frena y decide la autora;
+  - **si el ajuste no está antes de la firma:** A2.2 corre con el juez de EV2, y el ajustado se verifica después sobre las mismas 20
+    respuestas.
+  - El texto firmado no cambia.
