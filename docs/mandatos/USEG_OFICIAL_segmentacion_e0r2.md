@@ -1015,3 +1015,21 @@ NOTAS POSTERIORES A LA FIRMA. El texto firmado no se edita; estas notas se leen 
       por id. Conserva el par de la escalera del §7, con ri_dcpc, que en la partición legada está en `marcadores`;
     - D-2: ri_pgn queda (`data/experiment/catalogo_unico/registro_alcance_por_tanda.md:37`), y S2 no reconstruye el orden del §7.
   - Las notas anteriores no se editan.
+- **15/10/2026 — El FRENO S2-a, revisado; rdbcra y ri_mmsef** (decisiones de la autora recibidas a las 15:16:05; hoja de ruta de la
+  mesa, §106).
+  - **La revisión de la mesa:** reprodujo el tramo 1 sobre una copia, con el lote de S2 (`s2/scripts/lote_tramo1_S2.sh`).
+    - El control de la E0 da 768 de 768 archivos y 10.478 unidades, y la lista sale igual byte a byte.
+    - Los 10 archivos de `s2/` son los del paquete de S2.
+  - **rdbcra, tal cual:** «rdbcra no tiene cobertura exacta en la E0 corregida (6 líneas duplicadas), y en la partición legada sí la
+    tenía. Queda fuera de la tanda final mientras no se corrija, y va a la lista del grafo corregido.»
+    - **La causa,** medida por la mesa sobre la copia:
+      - la regla F de la corrección de E0 pasa 6 renglones del catálogo de la sección 11 a las `lineas_previas` del primer hijo de 11.5,
+        11.14, 11.15 y 11.24 (`data/experiment/reextraccion_v2/e0_chunking/e0_lib.py:3700`);
+      - la regla 9 de S0-2 los vuelve a agregar al mismo nodo, porque solo saltea los renglones que ya están en sus segmentos
+        (`correr_e0.py:807` y `:828`).
+    - **El alcance:** en la E0 corregida, la regla 9 ancla filas solo en rdbcra, y la F actúa en cajasc, efemin, gerc y rdbcra. Los otros
+      151 tienen cobertura exacta, y ningún TO de los 152 tiene ids de chunk repetidos.
+  - **ri_mmsef, tal cual:** «ri_mmsef entra a la tanda 1 sin alcance decidido: va con A2 de U-ALCANCE-E1, junto con los 2 o 3 sin fila.
+    Sus detecciones de la release de E0 (límites de sub-documento y candidatos del 1.16) se miden en el tramo 2, para que el v8 las
+    declare.»
+  - Las notas anteriores no se editan.
