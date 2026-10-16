@@ -249,3 +249,53 @@ Ninguno llegó al repo.
 
 `lote_cifras_S2b.sh`, corrido desde una copia nueva del repo con `s2/` adentro, rehace el health-check, la ablación, los 13 JSON de
 `cifras/` y `cifras_segmentacion_oficial.md` desde las salidas crudas: de 17:05:39 a 17:07:35 (la segunda vez, con la nota del mandato ya en el documento; la primera, de 17:00:40 a 17:02:35), rc 0, **los 13 JSON y el documento, iguales byte a byte** a los de `s2/` (`cmp`). Las salidas crudas (las E0 de los tres commits, los tres controles de R5 y los censos) son las de las corridas de §2.2; los controles de R5 de `92b45d6` y `e1c9456` reproducen las cifras de sus FRENOs (§3 del documento).
+
+## Tramo 3 (15/10/2026): el re-censo de la release de E0 antes de la tanda final
+
+Con el «seguí» del tramo 3 y sus cinco puntos. La sesión siguió en un scratchpad nuevo; las salidas crudas de los tramos 1 y 2
+quedaron en el anterior, y las usé después de controlarlas (abajo). Las cifras, con su archivo, su clave y su comando, están en el
+§7 de `cifras_segmentacion_oficial.md`; los JSON nuevos, en `cifras/` (`tanda_final_S2c.json`,
+`resumen_healthcheck_tanda_final_S2c.json`); los scripts nuevos, en `scripts/` (`tanda_final_S2.py`, `lote_tramo3_S2c.sh`, y
+`generar_cifras_S2.py` ampliado con el §7, que solo aparece si están los JSON del tramo 3).
+
+### 3.1. Paso 0, fecha y salidas crudas
+
+- Paso 0: los tres títulos pedidos, en orden (83, 82 y el de A2); `s2/` en git, 43 archivos, sin diferencias con HEAD. El tramo 2
+  entró en `96d7d1ab`, igual a lo que entregué en el FRENO S2-b.
+- Fecha: jueves 15/10/2026, 23:25, antes del domingo 18/10. No regeneré nada: controlé que las salidas sigan ahí.
+  - La E0 corregida da los 768 archivos del manifiesto de S0-6b con su sha256 y 10.478 unidades (23:26:49,
+    `control_e0_contra_manifiesto_S2.py`).
+  - Los tres censos crudos del tramo 2 dan los sha256 de `censos_S2b.json`, `fuentes`; el de sub-documentos, con las claves
+    ordenadas, da `899db5d1…`.
+- Las copias (punto 1): cada una, con el `rsync` de la cláusula, y los cinco controles por nombre en 0 antes de correr nada
+  (`.env`, `.env.*`, `*.env`, `NO_ABRIR_*` y enlaces simbólicos); también la raíz mínima, y al terminar, la copia, la raíz y la
+  salida de la reproducción. No corrí `lote_tramo1_S2.sh` ni `lote_tramo2_S2b.sh`: sus salidas estaban y se controlaron.
+
+### 3.2. La tanda final
+
+La de la enmienda 8, §1, con la tanda 1 del tramo 1 y sin rdbcra, en cascada disjunta sobre los 152: tanda 0 (5), tanda 1 (20),
+los de fuera del §5 sin razón vigente propia (12: los 10 no segmentables que siguen siéndolo, manual y ri2_pm), ri_ao (1, nota del
+04/10/2026 al protocolo, `:432-438`), los 15 de la enmienda 8 (con ri_spi y ri_con por su razón vigente) y rdbcra (1).
+**Quedan 98 TOs y 4.951 unidades: igual a la cuenta de la mesa** (nota del 15/10/2026 a la enmienda 8, `:178`). La suma cierra:
+671 + 3.290 + 106 + 13 + 1.189 + 258 + 4.951 = 10.478.
+
+### 3.3. Cobertura, ids y health-check
+
+- Cobertura exacta e ids sin repetir en los 98, en la E0 corregida: no hay freno. Una fila por TO en el §7.
+- Health-check de los 98 (23:28:28 a 23:30:13, rc 0): no reproduce `correr_e0` en 57; su propio parseo da cobertura exacta en los
+  98. Las otras señales se registran y no excluyen.
+
+### 3.4. El re-censo
+
+- Límites de sub-documento: 33 como detección en 18 TOs, 11 de ellos en una página donde la regla A ya abre una división; 6 en
+  ri_sef, que está en la lista de la regla y los aplica.
+- Hallazgo 1.16: el censo de renglones, la principal, 51 en 31 TOs; el detector corregido, al lado, 134 en 60.
+- No propongo una regla para el 1.16: sin leer los casos no puedo decir que una regla acotada sea de bajo riesgo (§7).
+- `nmaeef::2.9` y la «Sección 1.» de ri_niif: fuera por la decisión 2 de la enmienda 8; solo se declaran.
+
+### 3.5. Reproducción
+
+`lote_tramo3_S2c.sh`, desde una copia nueva del repo con `s2/` adentro y controlada con los cinco patrones, de 23:32:11 a 23:35:54,
+rc 0: los 15 JSON de `cifras/` y `cifras_segmentacion_oficial.md`, **16 de 16 iguales byte a byte**. Al terminar, la copia, la raíz
+mínima y la salida dan 0 en los cinco controles. Sin los JSON del tramo 3, el generador ampliado da el documento de `96d7d1ab`
+byte a byte.

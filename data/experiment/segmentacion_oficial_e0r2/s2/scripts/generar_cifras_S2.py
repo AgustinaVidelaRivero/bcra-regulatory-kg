@@ -121,6 +121,14 @@ def main() -> None:
                             f"sub-documentos) y `{PY} {SC}/resumen_censos_S2.py --lote <dir> --e0 <E0> --raiz <copia> --out <json>`"),
         ("s1quater_S2b.json", f"`{PY} {SC}/cifras_s1quater_S2.py --raiz <copia> --out <json>`"),
     ]
+    tramo3 = (a.cifras / "tanda_final_S2c.json").exists()
+    if tramo3:
+        cmds += [
+            ("resumen_healthcheck_tanda_final_S2c.json",
+             f"`zsh {SC}/lote_tramo3_S2c.sh …` (`healthcheck_e0.py` de la raíz sobre los 98 PDFs) y `{PY} {SC}/resumen_healthcheck_S2.py "
+             "--hc <hc.json> --e0 <E0> --manifiesto <manifest S0-6b> --out <json>`"),
+            ("tanda_final_S2c.json", f"`{PY} {SC}/tanda_final_S2.py --e0 <E0> --raiz <copia> --censos <lote> --hc <resumen> --out <json>`"),
+        ]
     for f, c in cmds:
         A(f"| `{f}` | `{sha(f)}…` | {c} |")
     A("")
@@ -133,6 +141,11 @@ def main() -> None:
       "(el health-check, la ablación, todos los resúmenes y este documento). Las salidas crudas de los dos primeros traen texto "
       "del PDF y quedan fuera del repo.")
     A("")
+    if tramo3:
+        A(f"El tramo 3 (§7) se suma con `zsh {SC}/lote_tramo3_S2c.sh <repo> <copia> <raíz> <E0> <historicas> <lote> <trabajo>`, que corre "
+          "`lote_cifras_S2b.sh` y después el health-check de la tanda final, su resumen, `tanda_final_S2.py` y este documento. Sin los "
+          "JSON del tramo 3, el generador da la versión del tramo 2 (`96d7d1ab`).")
+        A("")
 
     secciones(J, A)
     a.out.write_text("\n".join(L) + "\n", encoding="utf-8")
@@ -185,6 +198,8 @@ def secciones(J, A) -> None:
     seccion_punto3(J, A)
     seccion_punto4(J, A)
     seccion_detecciones(J, A)
+    if J("tanda_final_S2c.json"):
+        seccion_tramo3(J, A)
 
 
 def seccion_punto1(J, A) -> None:
@@ -621,6 +636,96 @@ def seccion_detecciones(J, A) -> None:
         A("")
         return
     A(c["texto_md_tanda1"])
+    A("")
+
+
+def seccion_tramo3(J, A) -> None:
+    tf = J("tanda_final_S2c.json")
+    A("## 7. Tramo 3: el re-censo de la release de E0 antes de la tanda final")
+    A("")
+    A("Archivo: `tanda_final_S2c.json` (y `resumen_healthcheck_tanda_final_S2c.json`). Sobre la E0 corregida. La release de E0 "
+      "antes de la tanda final sigue igual, sin re-extraer (mandato, `:665-677`; enmienda 8, §1). Los censos de sub-documentos y "
+      "de renglones son los del tramo 2 (`censos_S2b.json`), con el código de la E0 corregida; acá se cuentan sobre la tanda final. "
+      "Son detecciones, no lecturas, con falsos positivos conocidos (mandato, `:670`).")
+    A("")
+    t = tf["tanda_final"]
+    A("**La tanda final** (`tanda_final`, `cascada_disjunta_sobre_los_152`): los candidatos del §5 del protocolo que quedan después "
+      "de la tanda 1 del tramo 1, sin los de fuera, sin ri2_pm, sin los 15 de las decisiones 1 y 2 de la enmienda 8 y sin rdbcra "
+      "(enmienda 8, §1; agregados 1 y 6). Cada TO cuenta en el primer motivo que lo saca:")
+    A("")
+    A("| motivo | TOs | unidades | quedan |")
+    A("|---|--:|--:|--:|")
+    A("| los 152 | — | 10.478 | 152 |")
+    for c in tf["cascada_disjunta_sobre_los_152"]:
+        A(f"| {c['motivo']} | {c['excluidos']} | {n(c['unidades'])} | {c['quedan']} |")
+    A(f"| **tanda final** | **{t['tos']}** | **{n(t['unidades'])}** | |")
+    A("")
+    A(f"- **{t['tos']} TOs y {n(t['unidades'])} unidades** (`unidades_por_to` del manifiesto de S0-6b). La mesa contaba "
+      f"{tf['mesa']['tos']} y {n(tf['mesa']['unidades'])} (nota del 15/10/2026 a la enmienda 8, `{tf['mesa']['fuente']}`): "
+      f"{'igual' if tf['igual_a_la_mesa'] else 'DISTINTO'}.")
+    pc = t["por_categoria"]
+    A(f"- Por clase: normativa general {pc['normativa_general']['tos']} TOs y {n(pc['normativa_general']['unidades'])} unidades; "
+      f"régimen informativo {pc['regimen_informativo']['tos']} y {n(pc['regimen_informativo']['unidades'])}. Por modo de lectura: "
+      + ", ".join(f"`{k}` {v}" for k, v in sorted(t["por_modo"].items())) + ".")
+    A(f"- ri_ao sale por la nota del 04/10/2026 al protocolo (`docs/protocolo_entre_tandas.md:432-438`: «ri_ao, derogado, que sale "
+      "de la tanda 3»), que el §5 arrastra a los candidatos. ri_spi¹ y ri_con¹ salen en la fila de la enmienda 8. ri_oc sale ahí "
+      "también: dejó la tanda 1 por la decisión 1.")
+    A("")
+    fr = tf["frena"]
+    A(f"**Cobertura exacta e ids de chunk repetidos, en la E0 corregida** (agregado 2; `frena`): cobertura no exacta en "
+      f"{lista(fr['cobertura_no_exacta'])}; ids repetidos en {lista(fr['ids_repetidos'])}. **Ninguno: no hay freno.** La fila de cada TO, abajo.")
+    A("")
+    hc = tf.get("healthcheck")
+    if hc:
+        A(f"**El health-check de la tanda final** (agregado 5; `healthcheck`): corre como en el tramo 2, con `healthcheck_e0.py` de la "
+          f"raíz mínima sobre los {hc['tos']} PDFs. No reproduce `correr_e0` en **{len(hc['no_reproduce_correr_e0'])} de {hc['tos']}** "
+          "(da otras unidades que `unidades_por_to`; corre la escalera de `e0_lib` sin el driver de e0-r2). La cobertura no exacta "
+          f"según su propio parseo: {lista(hc['cobertura_no_exacta_hc'])}; no frena, porque la cobertura y los ids se controlan sobre la "
+          "E0 corregida (agregado 4 del «seguí» del tramo 3). Las otras señales se registran por TO y no excluyen (mandato, nota del "
+          "15/10/2026, `:1036-1043`). Veredictos: " + ", ".join(f"{k} {v}" for k, v in sorted(hc["veredictos"].items())) + ".")
+        A("")
+    sd = tf["subdocumento"]
+    d = sd["detecciones"]
+    an = sd["antes"]
+    A(f"**Los límites de sub-documento** (punto 3 de la release; E0-05; `subdocumento`, del censo de S0-4a, "
+      f"`s0_4/scripts/censo_sd_152.py`, sobre la E0 corregida): **{d['limites']} límites en {d['tos']} TOs** quedan como detección ("
+      + ", ".join(f"{k} {v}" for k, v in d["por_forma"].items()) + f"); {d['en_pagina_donde_A_ya_abre']} de ellos están en una página "
+      f"donde la regla A de S0-6a ya abre una división. Por TO: {lista(f'{k} {v}' for k, v in d['por_to'].items())}. En la lista de la "
+      f"regla de sub-documento, que los aplica: {sd['en_la_lista_de_la_regla']['limites']} en {lista(sd['en_la_lista_de_la_regla']['tos'])}. "
+      f"Antes (`{an['fuente']}`): {an['tanda_2'][0]} en {an['tanda_2'][1]} TOs de la tanda 2 y {an['tanda_3'][0]} en {an['tanda_3'][1]} de "
+      "la tanda 3, con otra E0 y otra tanda 1.")
+    A("")
+    h = tf["hallazgo_1_16"]
+    an = h["antes"]
+    A(f"**Los candidatos del hallazgo 1.16** (punto 4; E0-06; `hallazgo_1_16`), con las dos cifras que decidió la autora para el v8 "
+      f"(mandato, nota del 15/10/2026, decisión a): **el censo de renglones, la principal: {h['censo']['casos']} en {h['censo']['tos']} "
+      f"TOs**; al lado, el detector corregido de S0-5a: {h['detector']['casos']} en {h['detector']['tos']} TOs. Antes, con el censo de S1 "
+      f"(`{an['fuente']}`): {an['tanda_2'][0]} en {an['tanda_2'][1]} TOs de la tanda 2 y {an['tanda_3'][0]} en {an['tanda_3'][1]} de la "
+      "tanda 3. Las listas, con ids y páginas, en `hallazgo_1_16.censo.lista` y `hallazgo_1_16.detector.lista`.")
+    A("")
+    A("**Una regla para el 1.16: no propongo ninguna.** La regla general que ya corre es C de S0-6a (el párrafo sin número asignado "
+      "por su columna, aviso `parrafo_por_columna_c`; `REGLAS_S0_6`, `correr_e0.py:218`), que reemplazó a R5-a por lista "
+      "(`REEMPLAZOS_S0_6`, `correr_e0.py:220`); R5-a sigue por lista solo en `LISTAS_R5A_S0_6` (`:225`). Lo que queda son detecciones "
+      "con falsos positivos conocidos: una regla acotada, como otra lista de cierres, pide leer cada caso para saber que es un error, y "
+      "medir que no rompe otros; sin esa lectura no puedo decir que sea de bajo riesgo. S2 cuenta detecciones; si se leen los casos, y "
+      "cuándo, lo decide la autora.")
+    A("")
+    A("**`nmaeef::2.9` y la «Sección 1.» de ri_niif** (punto 5 de la release): sus dos documentos quedaron fuera de la tanda final y del "
+      "grafo evaluado por la decisión 2 de la enmienda 8. Solo lo declaro.")
+    A("")
+    A("**Una fila por TO de la tanda final** (`filas`; hc: health-check; sd: límites de sub-documento como detección; 1.16: censo / "
+      "detector):")
+    A("")
+    A("| TO | clase | modo | unidades | cobertura exacta | ids repetidos | hc: veredicto | hc: unidades | sd | 1.16 |")
+    A("|---|---|---|--:|---|--:|---|--:|--:|---|")
+    for to, f in tf["filas"].items():
+        hcf = f.get("healthcheck") or {}
+        v = hcf.get("veredicto_hc")
+        v = "—" if v is None else ("sano" if v == "sano" else ", ".join(v))
+        sdl = f["subdocumento"]["limites"] if not f["subdocumento"]["en_la_lista_de_la_regla"] else f"{f['subdocumento']['limites']} (en la lista)"
+        A(f"| {to} | {'NG' if f['categoria'] == 'normativa_general' else 'RI'} | `{f['modo_lectura']}` | {n(f['unidades'])} | "
+          f"{'sí' if f['cobertura_exacta'] else 'no'} | {f['ids_chunk_repetidos']} | {v} | {n(hcf['unidades_hc']) if hcf else '—'} | {sdl} | "
+          f"{f['hallazgo_1_16_censo']} / {f['hallazgo_1_16_detector']} |")
     A("")
 
 

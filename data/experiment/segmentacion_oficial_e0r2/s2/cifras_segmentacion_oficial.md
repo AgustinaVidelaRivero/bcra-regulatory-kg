@@ -25,10 +25,14 @@ Convenciones:
 | `roles_pagina_S2b.json` | `d94460b3…` | `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B data/experiment/segmentacion_oficial_e0r2/s2/scripts/roles_pagina_S2.py --e0 <E0> --raiz <copia> --out <json>` |
 | `censos_S2b.json` | `4313a42c…` | `zsh data/experiment/segmentacion_oficial_e0r2/s2/scripts/lote_tramo2_S2b.sh …` (caché de renglones, censo de renglones, detector 1.16, censo de sub-documentos) y `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B data/experiment/segmentacion_oficial_e0r2/s2/scripts/resumen_censos_S2.py --lote <dir> --e0 <E0> --raiz <copia> --out <json>` |
 | `s1quater_S2b.json` | `df66fe28…` | `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B data/experiment/segmentacion_oficial_e0r2/s2/scripts/cifras_s1quater_S2.py --raiz <copia> --out <json>` |
+| `resumen_healthcheck_tanda_final_S2c.json` | `16843464…` | `zsh data/experiment/segmentacion_oficial_e0r2/s2/scripts/lote_tramo3_S2c.sh …` (`healthcheck_e0.py` de la raíz sobre los 98 PDFs) y `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B data/experiment/segmentacion_oficial_e0r2/s2/scripts/resumen_healthcheck_S2.py --hc <hc.json> --e0 <E0> --manifiesto <manifest S0-6b> --out <json>` |
+| `tanda_final_S2c.json` | `ee86fc42…` | `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B data/experiment/segmentacion_oficial_e0r2/s2/scripts/tanda_final_S2.py --e0 <E0> --raiz <copia> --censos <lote> --hc <resumen> --out <json>` |
 
 `<E0>` es la salida de los 152 de la E0 corregida; `<raíz>`, la raíz mínima de `s0_4/scripts/raiz_minima.sh`; `<copia>`, una copia del repo hecha con el `rsync` de la cláusula de los despachos más `--exclude='NO_ABRIR_*'`.
 
 En orden: `zsh data/experiment/segmentacion_oficial_e0r2/s2/scripts/lote_e0_historicas_S2b.sh <repo> <raíz> <historicas> 92b45d6 e1c9456 9f6361e6` (la E0 de los 152 con el código de cada commit), `zsh data/experiment/segmentacion_oficial_e0r2/s2/scripts/lote_tramo2_S2b.sh <repo> <copia> <raíz> <E0> <historicas> <lote>` (los tres controles de R5 y los censos) y `zsh data/experiment/segmentacion_oficial_e0r2/s2/scripts/lote_cifras_S2b.sh <repo> <copia> <raíz> <E0> <historicas> <lote> <trabajo>` (el health-check, la ablación, todos los resúmenes y este documento). Las salidas crudas de los dos primeros traen texto del PDF y quedan fuera del repo.
+
+El tramo 3 (§7) se suma con `zsh data/experiment/segmentacion_oficial_e0r2/s2/scripts/lote_tramo3_S2c.sh <repo> <copia> <raíz> <E0> <historicas> <lote> <trabajo>`, que corre `lote_cifras_S2b.sh` y después el health-check de la tanda final, su resumen, `tanda_final_S2.py` y este documento. Sin los JSON del tramo 3, el generador da la versión del tramo 2 (`96d7d1ab`).
 
 ## 1. Health-check de E0 de los 20 de la tanda 1 (agregado 5 del «seguí»)
 
@@ -463,4 +467,140 @@ Con el código de la E0 corregida, sobre su salida (`censos_S2b.json`). Son dete
 - **Límites de sub-documento** (`subdocumentos`, de `s0_4/scripts/censo_sd_152.py`): en la tanda 1, 40 en 7 TOs; fuera de la lista de la regla, que son los que quedan como detección, 14 en 5 TOs. Antes: 17 en 6 TOs, todos fuera de la lista. En los 152: 128 límites en 40 TOs; fuera de la lista, 87 en 35 (anexo 18, parte 42, regimen 26, formulario 1), 17 de ellos en una página donde la regla A de S0-6a ya abre una división. cruce_g3 del censo se calcula contra s0_3/censos/g3_raices_sucesoras_rechazadas.json, de S0-3, anterior a la regla E de S0-6a: no lo uso.
 - **Candidatos del hallazgo 1.16** con el criterio del censo de renglones (`hallazgo_1_16`, el original): en la tanda 1, 27 en 8 TOs; antes, 33 en 10. En los 152: 99 en 47 TOs. Con el detector corregido de S0-5a (`detector_116`, el que usó S1-ter): 92 en 16 TOs de la tanda 1; en los 152, original 99, corregido 282, union 283.
 - **ri_mmsef, el sucesor:** 0 límites de sub-documento y 0 candidatos del 1.16 por el censo (0 por el detector corregido). Las listas, con ids y páginas, en `hallazgo_1_16.tanda1_lista`, `detector_116.tanda1_lista` y `subdocumentos.tanda1`.
+
+## 7. Tramo 3: el re-censo de la release de E0 antes de la tanda final
+
+Archivo: `tanda_final_S2c.json` (y `resumen_healthcheck_tanda_final_S2c.json`). Sobre la E0 corregida. La release de E0 antes de la tanda final sigue igual, sin re-extraer (mandato, `:665-677`; enmienda 8, §1). Los censos de sub-documentos y de renglones son los del tramo 2 (`censos_S2b.json`), con el código de la E0 corregida; acá se cuentan sobre la tanda final. Son detecciones, no lecturas, con falsos positivos conocidos (mandato, `:670`).
+
+**La tanda final** (`tanda_final`, `cascada_disjunta_sobre_los_152`): los candidatos del §5 del protocolo que quedan después de la tanda 1 del tramo 1, sin los de fuera, sin ri2_pm, sin los 15 de las decisiones 1 y 2 de la enmienda 8 y sin rdbcra (enmienda 8, §1; agregados 1 y 6). Cada TO cuenta en el primer motivo que lo saca:
+
+| motivo | TOs | unidades | quedan |
+|---|--:|--:|--:|
+| los 152 | — | 10.478 | 152 |
+| tanda 0 | 5 | 671 | 147 |
+| tanda 1 (tramo 1) | 20 | 3.290 | 127 |
+| de fuera del §5 sin razón vigente propia (10 no segmentables, manual y ri2_pm) | 12 | 106 | 115 |
+| ri_ao, derogado (nota del 04/10/2026 al protocolo, :432-438) | 1 | 13 | 114 |
+| los 15 de la enmienda 8, decisiones 1 y 2 (ri_spi y ri_con por su razón vigente) | 15 | 1.189 | 99 |
+| rdbcra, cobertura no exacta (agregado 1) | 1 | 258 | 98 |
+| **tanda final** | **98** | **4.951** | |
+
+- **98 TOs y 4.951 unidades** (`unidades_por_to` del manifiesto de S0-6b). La mesa contaba 98 y 4.951 (nota del 15/10/2026 a la enmienda 8, `docs/enmienda8_protocolo_entre_tandas_2026-10-15_calendario_hacia_B6.3.md:178`): igual.
+- Por clase: normativa general 74 TOs y 4.507 unidades; régimen informativo 24 y 444. Por modo de lectura: `marcadores` 4, `sin_raiz` 26, `vigente` 68.
+- ri_ao sale por la nota del 04/10/2026 al protocolo (`docs/protocolo_entre_tandas.md:432-438`: «ri_ao, derogado, que sale de la tanda 3»), que el §5 arrastra a los candidatos. ri_spi¹ y ri_con¹ salen en la fila de la enmienda 8. ri_oc sale ahí también: dejó la tanda 1 por la decisión 1.
+
+**Cobertura exacta e ids de chunk repetidos, en la E0 corregida** (agregado 2; `frena`): cobertura no exacta en —; ids repetidos en —. **Ninguno: no hay freno.** La fila de cada TO, abajo.
+
+**El health-check de la tanda final** (agregado 5; `healthcheck`): corre como en el tramo 2, con `healthcheck_e0.py` de la raíz mínima sobre los 98 PDFs. No reproduce `correr_e0` en **57 de 98** (da otras unidades que `unidades_por_to`; corre la escalera de `e0_lib` sin el driver de e0-r2). La cobertura no exacta según su propio parseo: —; no frena, porque la cobertura y los ids se controlan sobre la E0 corregida (agregado 4 del «seguí» del tramo 3). Las otras señales se registran por TO y no excluyen (mandato, nota del 15/10/2026, `:1036-1043`). Veredictos: cid 15, cid+paginas_sin_seccion 1, paginas_sin_seccion 7, paginas_sin_seccion+unidades_anomalas_por_tamano 1, sano 71, unidades_anomalas_por_tamano 3.
+
+**Los límites de sub-documento** (punto 3 de la release; E0-05; `subdocumento`, del censo de S0-4a, `s0_4/scripts/censo_sd_152.py`, sobre la E0 corregida): **33 límites en 18 TOs** quedan como detección (anexo 5, parte 14, regimen 13, formulario 1); 11 de ellos están en una página donde la regla A de S0-6a ya abre una división. Por TO: adfsp 1, cateloc 6, ri_acsf 3, ri_ai 1, ri_bdp 1, ri_esd 1, ri_iepsp 2, ri_iesinap 2, ri_ii_31_12_19 3, ri_msrl 1, ri_nge 3, ri_ot 1, ri_psp 3, ri_tar 1, ri_transpa 1, ri_tsa 1, ribspc 1, seggar 1. En la lista de la regla de sub-documento, que los aplica: 6 en ri_sef. Antes (`docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md:665-669`): 19 en 6 TOs de la tanda 2 y 37 en 18 de la tanda 3, con otra E0 y otra tanda 1.
+
+**Los candidatos del hallazgo 1.16** (punto 4; E0-06; `hallazgo_1_16`), con las dos cifras que decidió la autora para el v8 (mandato, nota del 15/10/2026, decisión a): **el censo de renglones, la principal: 51 en 31 TOs**; al lado, el detector corregido de S0-5a: 134 en 60 TOs. Antes, con el censo de S1 (`docs/mandatos/USEG_OFICIAL_segmentacion_e0r2.md:670-672`): 68 en 37 TOs de la tanda 2 y 5 en 4 de la tanda 3. Las listas, con ids y páginas, en `hallazgo_1_16.censo.lista` y `hallazgo_1_16.detector.lista`.
+
+**Una regla para el 1.16: no propongo ninguna.** La regla general que ya corre es C de S0-6a (el párrafo sin número asignado por su columna, aviso `parrafo_por_columna_c`; `REGLAS_S0_6`, `correr_e0.py:218`), que reemplazó a R5-a por lista (`REEMPLAZOS_S0_6`, `correr_e0.py:220`); R5-a sigue por lista solo en `LISTAS_R5A_S0_6` (`:225`). Lo que queda son detecciones con falsos positivos conocidos: una regla acotada, como otra lista de cierres, pide leer cada caso para saber que es un error, y medir que no rompe otros; sin esa lectura no puedo decir que sea de bajo riesgo. S2 cuenta detecciones; si se leen los casos, y cuándo, lo decide la autora.
+
+**`nmaeef::2.9` y la «Sección 1.» de ri_niif** (punto 5 de la release): sus dos documentos quedaron fuera de la tanda final y del grafo evaluado por la decisión 2 de la enmienda 8. Solo lo declaro.
+
+**Una fila por TO de la tanda final** (`filas`; hc: health-check; sd: límites de sub-documento como detección; 1.16: censo / detector):
+
+| TO | clase | modo | unidades | cobertura exacta | ids repetidos | hc: veredicto | hc: unidades | sd | 1.16 |
+|---|---|---|--:|---|--:|---|--:|--:|---|
+| actgar | NG | `vigente` | 60 | sí | 0 | cid | 60 | 0 | 0 / 2 |
+| adfsp | NG | `vigente` | 101 | sí | 0 | cid | 101 | 1 | 2 / 2 |
+| afiltr | NG | `vigente` | 72 | sí | 0 | cid | 70 | 0 | 0 / 3 |
+| apnf | NG | `vigente` | 34 | sí | 0 | sano | 27 | 0 | 1 / 2 |
+| asomut | NG | `sin_raiz` | 8 | sí | 0 | sano | 8 | 0 | 0 / 0 |
+| autenf | NG | `vigente` | 75 | sí | 0 | sano | 75 | 0 | 0 / 1 |
+| cateloc | NG | `vigente` | 11 | sí | 0 | unidades_anomalas_por_tamano | 2 | 6 | 0 / 0 |
+| ccbcra | NG | `vigente` | 32 | sí | 0 | sano | 32 | 0 | 0 / 2 |
+| cedin | NG | `sin_raiz` | 66 | sí | 0 | sano | 65 | 0 | 3 / 4 |
+| cescar | NG | `vigente` | 21 | sí | 0 | sano | 21 | 0 | 0 / 1 |
+| coltit | NG | `vigente` | 39 | sí | 0 | cid | 39 | 0 | 0 / 1 |
+| consyr | NG | `sin_raiz` | 34 | sí | 0 | cid | 32 | 0 | 0 / 0 |
+| convca | NG | `vigente` | 12 | sí | 0 | sano | 13 | 0 | 0 / 1 |
+| cryl | NG | `vigente` | 68 | sí | 0 | sano | 64 | 0 | 0 / 3 |
+| ctacor | NG | `vigente` | 21 | sí | 0 | cid | 21 | 0 | 0 / 0 |
+| ctavis | NG | `vigente` | 271 | sí | 0 | sano | 275 | 0 | 2 / 7 |
+| depinv | NG | `vigente` | 203 | sí | 0 | sano | 202 | 0 | 0 / 7 |
+| disres | NG | `vigente` | 38 | sí | 0 | cid | 38 | 0 | 0 / 2 |
+| evacre | NG | `vigente` | 19 | sí | 0 | cid | 18 | 0 | 0 / 1 |
+| fabcra | NG | `vigente` | 42 | sí | 0 | sano | 42 | 0 | 1 / 1 |
+| fclef | NG | `vigente` | 28 | sí | 0 | sano | 28 | 0 | 0 / 0 |
+| fgarcp | NG | `vigente` | 22 | sí | 0 | sano | 21 | 0 | 0 / 0 |
+| fimipyme | NG | `vigente` | 55 | sí | 0 | sano | 51 | 0 | 1 / 1 |
+| finsec | NG | `vigente` | 134 | sí | 0 | sano | 131 | 0 | 2 / 5 |
+| garant | NG | `vigente` | 106 | sí | 0 | cid | 104 | 0 | 0 / 1 |
+| garopt | NG | `vigente` | 55 | sí | 0 | paginas_sin_seccion | 41 | 0 | 0 / 0 |
+| gescre | NG | `vigente` | 61 | sí | 0 | sano | 59 | 0 | 0 / 0 |
+| gracre | NG | `vigente` | 67 | sí | 0 | sano | 67 | 0 | 4 / 4 |
+| graloc | NG | `vigente` | 100 | sí | 0 | sano | 100 | 0 | 1 / 5 |
+| horari | NG | `vigente` | 13 | sí | 0 | sano | 13 | 0 | 0 / 0 |
+| icmecma | NG | `vigente` | 48 | sí | 0 | sano | 47 | 0 | 0 / 0 |
+| incuca | NG | `vigente` | 23 | sí | 0 | cid | 23 | 0 | 1 / 1 |
+| inspag | NG | `vigente` | 93 | sí | 0 | paginas_sin_seccion | 71 | 0 | 2 / 2 |
+| jafip | NG | `vigente` | 91 | sí | 0 | sano | 91 | 0 | 2 / 3 |
+| lavdin | NG | `vigente` | 29 | sí | 0 | cid | 29 | 0 | 0 / 1 |
+| micemp | NG | `sin_raiz` | 8 | sí | 0 | cid | 7 | 0 | 0 / 0 |
+| opecam | NG | `vigente` | 65 | sí | 0 | paginas_sin_seccion | 56 | 0 | 2 / 2 |
+| ordcom | NG | `vigente` | 65 | sí | 0 | sano | 65 | 0 | 1 / 1 |
+| osapsa | NG | `vigente` | 13 | sí | 0 | sano | 12 | 0 | 0 / 0 |
+| pfmipyme | NG | `vigente` | 52 | sí | 0 | sano | 52 | 0 | 0 / 0 |
+| pimf | NG | `vigente` | 165 | sí | 0 | sano | 165 | 0 | 0 / 0 |
+| pognme | NG | `vigente` | 17 | sí | 0 | sano | 17 | 0 | 0 / 1 |
+| prevmi | NG | `vigente` | 52 | sí | 0 | sano | 52 | 0 | 0 / 3 |
+| pscpp | NG | `vigente` | 22 | sí | 0 | sano | 22 | 0 | 0 / 0 |
+| raapal | NG | `vigente` | 40 | sí | 0 | sano | 40 | 0 | 2 / 3 |
+| ratio | NG | `vigente` | 133 | sí | 0 | sano | 132 | 0 | 0 / 4 |
+| ratiofn | NG | `vigente` | 133 | sí | 0 | sano | 133 | 0 | 0 / 2 |
+| regpri | NG | `vigente` | 20 | sí | 0 | sano | 19 | 0 | 0 / 0 |
+| relact | NG | `vigente` | 38 | sí | 0 | sano | 38 | 0 | 1 / 2 |
+| repefe | NG | `vigente` | 87 | sí | 0 | cid | 87 | 0 | 1 / 5 |
+| reqcac | NG | `marcadores` | 3 | sí | 0 | paginas_sin_seccion | 3 | 0 | 0 / 0 |
+| retype | NG | `vigente` | 41 | sí | 0 | cid | 40 | 0 | 1 / 2 |
+| ri2_ci | NG | `vigente` | 45 | sí | 0 | sano | 45 | 0 | 0 / 2 |
+| ri_acsf | RI | `sin_raiz` | 6 | sí | 0 | paginas_sin_seccion | 1 | 3 | 0 / 0 |
+| ri_ai | RI | `vigente` | 15 | sí | 0 | paginas_sin_seccion | 11 | 1 | 2 / 2 |
+| ri_bdp | RI | `sin_raiz` | 3 | sí | 0 | sano | 3 | 1 | 0 / 1 |
+| ri_cr | RI | `sin_raiz` | 6 | sí | 0 | sano | 6 | 0 | 0 / 0 |
+| ri_dsf | RI | `sin_raiz` | 28 | sí | 0 | sano | 51 | 0 | 1 / 2 |
+| ri_esd | RI | `sin_raiz` | 5 | sí | 0 | sano | 3 | 1 | 0 / 0 |
+| ri_ieccm | RI | `sin_raiz` | 4 | sí | 0 | sano | 3 | 0 | 0 / 0 |
+| ri_iepsp | RI | `sin_raiz` | 13 | sí | 0 | sano | 6 | 2 | 0 / 1 |
+| ri_iesinap | RI | `sin_raiz` | 12 | sí | 0 | sano | 6 | 2 | 0 / 1 |
+| ri_ii_31_12_19 | RI | `sin_raiz` | 91 | sí | 0 | sano | 86 | 3 | 0 / 1 |
+| ri_laft | RI | `sin_raiz` | 26 | sí | 0 | sano | 7 | 0 | 0 / 0 |
+| ri_msrl | RI | `marcadores` | 12 | sí | 0 | sano | 11 | 1 | 0 / 0 |
+| ri_nge | RI | `sin_raiz` | 30 | sí | 0 | sano | 30 | 3 | 0 / 0 |
+| ri_ot | RI | `sin_raiz` | 32 | sí | 0 | sano | 30 | 1 | 1 / 1 |
+| ri_psp | RI | `marcadores` | 9 | sí | 0 | sano | 5 | 3 | 0 / 0 |
+| ri_pspapt | RI | `sin_raiz` | 16 | sí | 0 | sano | 13 | 0 | 0 / 1 |
+| ri_rcl | RI | `sin_raiz` | 4 | sí | 0 | sano | 3 | 0 | 0 / 0 |
+| ri_secoexpo | RI | `sin_raiz` | 35 | sí | 0 | sano | 20 | 0 | 0 / 1 |
+| ri_sef | RI | `sin_raiz` | 38 | sí | 0 | sano | 27 | 6 (en la lista) | 0 / 0 |
+| ri_tar | RI | `sin_raiz` | 18 | sí | 0 | sano | 2 | 1 | 0 / 0 |
+| ri_transpa | RI | `sin_raiz` | 11 | sí | 0 | unidades_anomalas_por_tamano | 1 | 1 | 0 / 0 |
+| ri_tsa | RI | `vigente` | 17 | sí | 0 | paginas_sin_seccion | 15 | 1 | 0 / 0 |
+| ri_tvf | RI | `sin_raiz` | 6 | sí | 0 | sano | 2 | 0 | 0 / 0 |
+| ribspc | RI | `sin_raiz` | 7 | sí | 0 | sano | 5 | 1 | 0 / 0 |
+| rmgcti | NG | `vigente` | 81 | sí | 0 | sano | 81 | 0 | 0 / 4 |
+| rmrtsd | NG | `vigente` | 31 | sí | 0 | sano | 31 | 0 | 0 / 2 |
+| rrci | NG | `vigente` | 77 | sí | 0 | sano | 77 | 0 | 3 / 3 |
+| secfin | NG | `vigente` | 22 | sí | 0 | sano | 22 | 0 | 0 / 0 |
+| seggar | NG | `sin_raiz` | 36 | sí | 0 | sano | 33 | 1 | 0 / 2 |
+| seguef | NG | `marcadores` | 101 | sí | 0 | sano | 98 | 0 | 0 / 0 |
+| servco | NG | `vigente` | 40 | sí | 0 | sano | 40 | 0 | 0 / 0 |
+| snp_atm | NG | `vigente` | 16 | sí | 0 | sano | 16 | 0 | 1 / 1 |
+| snp_cec | NG | `vigente` | 122 | sí | 0 | sano | 121 | 0 | 1 / 1 |
+| snp_dd | NG | `vigente` | 131 | sí | 0 | paginas_sin_seccion, unidades_anomalas_por_tamano | 53 | 0 | 0 / 2 |
+| snp_debin | NG | `vigente` | 71 | sí | 0 | sano | 70 | 0 | 1 / 1 |
+| snp_mep | NG | `vigente` | 62 | sí | 0 | unidades_anomalas_por_tamano | 46 | 0 | 1 / 1 |
+| snp_psp | NG | `vigente` | 89 | sí | 0 | sano | 88 | 0 | 0 / 1 |
+| snp_spd | NG | `vigente` | 130 | sí | 0 | sano | 129 | 0 | 4 / 5 |
+| snp_tr_nc | NG | `vigente` | 136 | sí | 0 | sano | 136 | 0 | 3 / 3 |
+| socgar | NG | `vigente` | 12 | sí | 0 | sano | 12 | 0 | 0 / 0 |
+| supcon | NG | `vigente` | 67 | sí | 0 | sano | 67 | 0 | 1 / 3 |
+| tasint | NG | `vigente` | 69 | sí | 0 | cid | 67 | 0 | 1 / 3 |
+| traval | NG | `vigente` | 35 | sí | 0 | sano | 28 | 0 | 1 / 1 |
+| venliq | NG | `vigente` | 23 | sí | 0 | cid, paginas_sin_seccion | 16 | 0 | 0 / 0 |
+| verac | NG | `sin_raiz` | 5 | sí | 0 | sano | 3 | 0 | 0 / 0 |
 
