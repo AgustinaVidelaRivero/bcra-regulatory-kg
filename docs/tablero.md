@@ -118,6 +118,8 @@ terminada, el 31/10/2026. El plan hacia atrás es de la mesa (fuera del repo, ho
   oficial y lista), 11 (alcance de la lista final) y 11-bis (U-ALCANCE-E1).
   [Actualizado el 09/10/2026: la 13 pasó de abierta a cumplida.] [13/10/2026: la 7 espera la adjudicación de S1-quater y la decisión
   de la autora sobre qué pasa si no llega al piso.] [15/10/2026: la 7 queda declarada, no cumplida: S1-quater no llegó al piso.]
+  [16/10/2026: con la firma del laudo de la release r2 y del pre-registro de la tanda 1 (v8): cumplidas 2, 4, 5, 11 y 11-bis; la 7,
+  declarada, no cumplida; la 12 la cumple T1 del despacho, antes de T2. El estado de cada una, en el pre-registro, §8.]
 
 ---
 

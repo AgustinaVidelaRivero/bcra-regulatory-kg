@@ -1,6 +1,6 @@
 # Pre-registro — B6.1 tanda 1: primera tanda del escalado con la release r2
 
-**TERCERA VERSIÓN PARA FIRMAR del v8 (mesa, 16/10/2026), sobre la segunda (`d5181748…`), que la autora revisó y no firmó; la segunda se apoya en la primera (`b8364c49…`) y la v8, en la v7 APROBADA por la autora el 15/10/2026 (mesa, 14/10/2026; v2 a v6 del 13/10/2026, v1 del 09/10/2026). No firmado: lo firma la autora. Después de la firma, todo cambio va como enmienda fechada.**
+**FIRMADO por la autora el 16/10/2026** (sobre la tercera versión para firmar del v8, sha256 `33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059`, el commit anterior a este). Después de la firma, todo cambio va como enmienda fechada.
 
 **Qué cambia en la tercera versión para firmar (hoja de ruta de la mesa, §124; pedido de la autora del 16/10/2026, recibido a las
 11:53:36).** Tres cambios y nada más, cada uno marcado «[v8c]» en su lugar:
@@ -999,8 +999,68 @@ como historia.
 
 ## 9. Firma
 
-TERCERA VERSIÓN PARA FIRMAR del v8 (16/10/2026). Lo firma la autora, después del laudo de la release r2 firmado. Después de la firma, toda
-modificación va como enmienda fechada y nunca como ajuste silencioso, como en `docs/preregistro_tanda0.md:909-911`.
+**FIRMADO por la autora el 16/10/2026**, sobre la tercera versión para firmar del v8 (sha256 `33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059`, commit `3b61f154`). Sus
+palabras: «Firmo la tercera versión para firmar del pre-registro de la tanda 1 (33a3c34b…) tal como está.» Rige desde esta firma.
+
+**La propuesta de la mesa confirmada con la firma** (§5.4 bis, punto 2), con las palabras de la autora: «Con la firma confirmo la
+PROPUESTA DE LA MESA del §5.4 bis, punto 2: si una clase entera no llega a su cuota, lo que falta se reparte entre las dos celdas de la
+otra clase en proporción a sus cuotas, con el redondeo a favor de la de cuota mayor, y cada celda sortea con su propia cadena.»
+- **Desde cuándo rige:** desde esta firma.
+- **No queda ninguna otra PROPUESTA DE LA MESA abierta:**
+  - en el texto firmado, el marcador aparece solo en la convención del encabezado, en esta propuesta y en la del §7, que la autora decidió
+    el 16/10/2026;
+  - las otras propuestas de la mesa que nombra el texto también están decididas: la del §2, el 10/10/2026, y la de la observación (12),
+    adoptada en el §5.4 bis, punto 2;
+  - la propuesta de L-04 que cita el §6.7 quedó cerrada: sus puntos 2, 3, 5 y 6, aceptados; el 4 y el 7, cerrados el 15/10/2026; y el 1 y
+    el 8 son la regla del propio §6.7.
+
+Toda modificación va como enmienda fechada y nunca como ajuste silencioso, como en `docs/preregistro_tanda0.md:909-911`.
+
+**Las semillas de T4, con la firma** (§5.4). La base es `33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059`, el sha256 de la tercera versión para firmar en el commit anterior a este.
+Las cadenas, una por celda (32), y las de la ampliación de las aceptadas (8), que usan también las 30 RI más de la atención de RI:
+
+```
+tanda1:cola:RI:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:cola:RI:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:cola:NG:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:cola:NG:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:items:RI:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:items:RI:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:items:NG:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:items:NG:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:no_items:RI:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:no_items:RI:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:no_items:NG:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:no_items:NG:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:1:RI:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:1:RI:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:1:NG:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:1:NG:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:2:RI:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:2:RI:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:2:NG:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:2:NG:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:3:RI:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:3:RI:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:3:NG:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:3:NG:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:7:RI:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:7:RI:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:7:NG:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:vigilancia:7:NG:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:observacion:12:RI:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:observacion:12:RI:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:observacion:12:NG:sin_raiz:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:observacion:12:NG:resto:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:items:RI:sin_raiz:ampliacion:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:items:RI:resto:ampliacion:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:items:NG:sin_raiz:ampliacion:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:items:NG:resto:ampliacion:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:no_items:RI:sin_raiz:ampliacion:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:no_items:RI:resto:ampliacion:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:no_items:NG:sin_raiz:ampliacion:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+tanda1:aceptadas:no_items:NG:resto:ampliacion:33a3c34b897f59881860c10642084536929931f3fe94ded25f1e382693832059
+```
 
 **La v7 decía:** PENDIENTE. Este borrador no está firmado ni commiteado. Lo firma la autora cuando los pendientes del §8 estén resueltos o declarados.
 Después de la firma, toda modificación va como enmienda fechada y nunca como ajuste silencioso, como en
