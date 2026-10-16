@@ -1,4 +1,4 @@
-VERSIÓN PARA FIRMAR (mesa, 16/10/2026) — PENDIENTE DE LA FIRMA DE LA AUTORA
+FIRMADO por la autora el 16/10/2026, sobre la versión para firmar (sha256 `907b9a5aa6d90402…`, el commit anterior a la firma)
 
 # Laudo de la release r2 del pipeline
 
@@ -194,8 +194,8 @@ copias, sin turno en el repo (decisión de la autora del 15/10/2026, `docs/regis
 
 ## Firma
 
-VERSIÓN PARA FIRMAR (16/10/2026): los sellos del §1, completos; el gate final (§3), en verde; PENDIENTE de la firma de la autora,
-antes del pre-registro de la tanda 1.
+**FIRMADO por la autora el 16/10/2026**, sobre la versión para firmar (sha256 `907b9a5aa6d9040280057f8a8a78ee16e3c77f5b924c41e451e15efc4d351463`): los sellos del §1,
+completos, y el gate final (§3), en verde. Con la firma, B2.10 queda cerrada (§2, punto 7) y sigue el pre-registro de la tanda 1.
 
 ---
 
