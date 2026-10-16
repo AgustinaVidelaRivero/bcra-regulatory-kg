@@ -606,3 +606,37 @@ Decisiones de la autora recibidas el 16/10/2026 a las 11:14:51 (hoja de ruta de 
   redondeo a favor de la de cuota mayor, y cada celda sortea con su propia cadena.»
   - Rige desde la firma. No queda ninguna otra PROPUESTA DE LA MESA abierta en el pre-registro (sección de la firma).
 - Las secciones anteriores no se editan.
+
+## 18. El despacho de la tanda 1, su corrida en seco y lo que decide la autora antes de la extracción (agregado del 16/10/2026)
+
+Decisiones de la autora recibidas el 16/10/2026 a las 12:59:19 (hoja de ruta de la mesa, §127), a las 13:28:14 (§128) y a las 14:31:32
+(§130).
+
+- **El despacho de T1** (12:59:19; tal cual):
+  - «Los tres valores quedan como los fijaste: el orden de menor a mayor por unidades, margen_unidad_usd = 0,35 y checkpoint_cada = 150 en
+    lingeef y depaho.»
+  - «La consulta de deprecaciones va dos veces: la ejecutora en T1, como está en el punto 2.1, y vos otra vez al revisar el FRENO T1, antes
+    del «seguí» de T2.»
+  - T2 queda preparada como un solo lanzador, que recorre los 20 TOs con la misma salida y corre el freno por id de modelo antes del primer
+    TO y después de cada uno; y el FRENO T1 da el sha256 del manifiesto y de la E0 de los 20 para que el «seguí» de T2 los controle antes de
+    gastar. Lo hizo T1: `data/experiment/tanda1/t2/lanzar_t2.py` y `data/experiment/tanda1/t1/sha256_para_T2.txt` (108 renglones).
+- **Quién lanza T2** (13:28:14; tal cual): «la ejecutora, en segundo plano desde su sesión, como en la tanda 0. Si el lanzador se corta, lo
+  relanzo yo desde mi terminal con el mismo comando. Ponelo así en el «seguí» de T2.»
+- **Lo que el FRENO T1 deja para la autora** (14:31:32; tal cual; `data/experiment/tanda1/t1/FRENO_T1.md`, §12):
+  - «el estimado por TO queda con 6 decimales, como está»;
+  - «la diferencia de 2 tokens de la tabla de A2 se declara y no se toca». Es la de `data/experiment/alcance_e1/a2/freno_a2.md:68-80`: por
+    documento suma 190.843 tokens y USD 0,190843, contra el total de 190.841 y USD 0,190841, porque cada documento redondea sus tokens;
+  - «la interrupción manual del lanzador no se prueba en vivo antes de T2: se declara». El camino está en el código
+    (`lanzar_t2.py:172-182`, `:194-196`).
+- **Los `nombres_remision` de la tanda 1** (14:31:32): en el manifiesto de la tanda 1 quedaron vacíos, y en la tanda 0 están armados a mano,
+  desde el título de portada más una variante corta (`docs/plan_tesis.md:765`, decisión 4). El ensamblado los usa para reconocer las
+  remisiones a otros documentos: no cambian T2, pero sí el grafo. La mesa propone cómo fijarlos antes de T3, y la autora lo decide antes de
+  T3. Las condiciones de la autora, tal cual:
+  - «con una regla general, derivada del inventario y no a mano, diseñada y medida sobre las listas de la tanda 0»;
+  - «en el manifiesto del ensamblado, sin tocar el de extracción, que el lanzador controla por su sha256»;
+  - «con lo que cambia en cada tanda, la tanda 0 incluida».
+- **La consulta de deprecaciones de la mesa** (16/10/2026, entre las 14:34:00 y las 14:34:26; `data/experiment/controles_tanda1/consulta_deprecaciones_mesa_161026.txt`):
+  `claude-haiku-4-5-20251001` y `claude-sonnet-5` activos, sin fecha de deprecación y sin entradas en el historial; el aviso llega con al
+  menos 60 días. Da lo mismo que la de la ejecutora (`data/experiment/tanda1/t1/consulta_deprecaciones_t1.txt`, 13:30:08). No hay retiro
+  anunciado: no corresponde el freno del §4.2 del pre-registro.
+- Las secciones anteriores no se editan.
