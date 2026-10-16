@@ -508,3 +508,101 @@ Decisiones de la autora recibidas el 16/10/2026 a las 08:15:55 (hoja de ruta de 
   - si el índice viejo no da `12d284d5…`, A2.1 frena sin probar otras versiones;
   - su FRENO declara el `pip freeze` y el intérprete de cada script, también los del tramo 2.
 - Las secciones anteriores no se editan.
+
+## 16. La semilla de sub-documento, las ruedas del servidor vectorial, lo que vive fuera de /private/tmp, las seis decisiones de A2.1 y su etapa corta (agregado del 16/10/2026)
+
+Decisiones de la autora recibidas el 16/10/2026 a las 08:47:38 (hoja de ruta de la mesa, §120) y a las 10:37:59 (§122). Las de las
+10:37:59 responden a la revisión del FRENO A2.1-a (paquete de la mesa, `decisiones_121_mesa/`).
+
+- **La semilla de sub-documento de la tanda final** (tal cual): «La semilla del orden de sub-documento de la tanda final queda como la
+  sellaste (a5aa3008…).» Cierra lo que la §15 dejaba abierto: el orden sellado a las 08:20:10 rige tal como está.
+- **Las ruedas del servidor vectorial** (tal cual): «Las ruedas y el pip freeze del venv nuevo: cuando frene A2.1, copialos a
+  ~/INGENIERIA IA/TESIS/venvs/ruedas_banco_vector_py312/ con su sha256_ruedas.txt, verificá la copia contra esos sha256 y no borres nada
+  del scratchpad de A2.1.»
+  - Lo hizo la mesa el 16/10/2026 a las 09:51:45: las 62 ruedas, `sha256_ruedas.txt` y el `pip freeze`. La copia da 62 de 62 contra
+    `sha256_ruedas.txt` (paquete de la mesa, `decisiones_121_mesa/revision/`).
+- **Lo que vive fuera de /private/tmp** (tal cual): «La regla queda aprobada: lo que una etapa necesita después de su sesión va al repo,
+  al paquete permanente o a ~/INGENIERIA IA/TESIS/, nunca a /private/tmp. Va en todos los despachos que vienen.»
+- **Las seis decisiones abiertas de A2.1** (tal cual): «Las seis decisiones de la §14 de A2.1 quedan como están, como recomendaste. En la
+  4 cambio mi inclinación: el plan quiere el BM25 como el rival más fuerte en lo literal (plan_tesis.md:339), y la Q2 permite declarar la
+  diferencia. La asimetría con el grafo se declara en el pre-registro de A2.2, con tus cifras.»
+  - **Las seis, como quedan** (FRENO A2.1-a, `data/experiment/banco_mcp/a2_1/FRENO_A2_1_a.md`, §2, §4 y §13):
+    1. el servidor MCP se llama `fragmentos` en los dos brazos;
+    2. la descripción de la tool nombra la medida;
+    3. `limite` dice «(def. 5, máx. 5)»;
+    4. la consulta del BM25 pasa por el mismo analizador que los documentos, sin la pre-tokenización del brazo del grafo;
+    5. la norma de largo está cuantizada como en Lucene;
+    6. el stream de init del aislamiento queda fuera del repo.
+  - **Las cifras de la 4:** `data/experiment/controles_a2_2/consulta_pre_tokenizada_bm25_mesa.json`, de
+    `medir_consulta_pre_tokenizada_bm25_mesa.py`, en la misma carpeta. Corren sobre el índice BM25 `6b5da8b0…`, fuera de git, que el
+    script controla. Con la pre-tokenización del grafo:
+    - 1.846 de los 8.378 términos del índice no saldrían de ninguna consulta: 111 llevan tilde o eñe y 1.735 son números con separador;
+    - 1.763 de los 1.768 pasajes tienen al menos uno.
+- **La etapa corta de A2.1** (tal cual): «La etapa corta de A2.1 va, a USD 0: que el test escriba sus logs con un nombre propio por corrida,
+  que explique cómo corrió su copia final sin los logs viejos y que lleve a su paquete las siete salidas del aislamiento que faltan. Va
+  el domingo 18 después de T5, antes del «seguí» del tramo 2. Armame su «seguí» para leerlo antes de pegarlo, y sumá al del tramo 2 tu
+  nota sobre H-B2.»
+- **Los índices en A2.2** (tal cual): «El despacho de A2.2 controla al empezar los sha de los índices de mcp_vector/indice/.»
+  - Los dos índices nuevos quedan en el repo, fuera de git, como el viejo (`data/experiment/banco_mcp/.gitignore:10`).
+  - Los dos logs de los tests del tramo 1 también quedan fuera de git (`:7`); el JSON de los tests guarda su sha256. El commit del
+    tramo 1 (`5f0f29b5`) no los lleva.
+- Las secciones anteriores no se editan.
+
+## 17. El laudo de la release y el pre-registro de la tanda 1, firmados (agregado del 16/10/2026)
+
+Decisiones de la autora recibidas el 16/10/2026 a las 11:14:51 (hoja de ruta de la mesa, §123), a las 11:53:36 (§124) y a las 12:05:12
+(§125).
+
+- **El laudo de la release r2** (tal cual): «Firmo el laudo de la release r2 (907b9a5a…) tal como está.» La firma está en el commit
+  `94087a7f`, sobre la versión para firmar de `639f0498`.
+- **El pre-registro de la tanda 1** no se firma todavía. La autora pidió una segunda versión para firmar del v8 «con estos cambios y nada
+  más»:
+  1. **El código del despacho** (tal cual): «Sellá la lista: las rutas del código de la cadena (E0, E1 a E3, el runner, el ensamblado,
+     los validadores, los perfiles, shapes y la suite), con el sha256 de cada una en 47c9f1b3, calculado con git show, en un archivo que
+     entre al repo con el pre-registro. El v8 lo cita y el despacho lo usa en su paso 0.»
+     - Quedó en `data/experiment/controles_tanda1/codigo_de_la_cadena_47c9f1b3_mesa.json`: 78 rutas, iguales en HEAD.
+  2. **Sub-documento en la tanda 1** (tal cual): «si confirmo un error de corte en uno de los 14 límites de la tanda 1, ese documento sale
+     del grafo evaluado al sellarlo, declarado. El grafo de la tanda 1 se sella como corrió (D3). Es el mismo criterio que con ri_oc y con
+     la tanda final. Si sale un documento con preguntas de B6.3, rige la regla de reemplazo.»
+  3. **Las muestras de T4** (tal cual): «en cada muestra de 30: RI, 10 sin_raiz y 5 del resto; NG, 5 sin_raiz y 10 del resto; en las
+     aceptadas, lo mismo en cada estrato (ítems y no ítems): 30 por estrato, 30 RI y 30 NG en total; si una celda tiene menos unidades que
+     su cuota, entran todas y lo que falta sale de la otra celda de la misma clase, declarado; cada celda tiene su propia semilla; las
+     tasas se ponderan por las unidades de cada celda, no solo por clase.»
+     - La atención, el freno y el intervalo con este reparto, calculados por script:
+       `data/experiment/controles_tanda1/umbrales_t4_por_celdas_mesa.json`.
+  4. **La semilla** (tal cual): «Que la base sea el sha256 de la versión para firmar que entra con su commit. La versión firmada lo nombra
+     y deja anotadas las cadenas de semilla de cada celda, como en U-CONF-MATRIZ.»
+  5. **Las tablas forzadas a residual** (tal cual): «La PROPUESTA DE LA MESA del §7 (ninguna alta a la lista de tablas forzadas a residual
+     durante la tanda): la adopto. Que quede como decisión mía del 16/10/2026.»
+- **Además pidió,** y van en la misma versión:
+  - la línea del §6.7 que cierra el pendiente 27;
+  - el sha256 vigente del registro de alcance en el §1.4 (`06b8267a…`, desde `5f02ace4`);
+  - el control por script de cada ruta y cada sha256 que cita el pre-registro
+    (`data/experiment/controles_tanda1/control_citas_preregistro_tanda1_mesa.json`).
+- **La tercera versión para firmar** (11:53:36). La autora revisó la segunda con la mesa de apoyo, no la firmó y pidió estos cambios y
+  nada más:
+  1. **T4, la opción b con un ajuste** (tal cual): «Además de la atención sobre la tasa ponderada de cada estrato, RI tiene su propia
+     atención: junta los dos estratos: sus 30 unidades leídas (15 de ítems y 15 de no ítems), ponderadas por las unidades de sus celdas en
+     cada estrato; es un test exacto unilateral al 5 % contra la tanda 0; bajo la hipótesis nula, cada celda tiene la tasa de la tanda 0
+     de su estrato; si salta, se leen 30 unidades RI más (15 por estrato, con las cuotas de RI y las cadenas de la ampliación); NG no lleva
+     atención propia: con NG resto en el 83 %, repetiría la atención general; las 94 sin_raiz de NG (ceninf y nmcief) se informan con su
+     cifra por celda, sin umbral, declarado.»
+     - Con los pesos proyectados (`umbrales_t4_por_celdas_mesa.json`, bloque `atencion_RI`):
+       - la atención de RI salta desde una tasa ponderada de 0,278;
+       - la probabilidad de que salte al menos una atención con todas las celdas en la tasa de la tanda 0 es 0,136;
+       - la potencia de la atención de RI con su tasa duplicada es 0,694.
+  2. **La celda de un elemento que no es una unidad** (tal cual): «adopto tu propuesta de la (12) y la extiendo a las vigilancias (1), (3)
+     y (7). Un nodo va a la celda de su unidad (la de su procedencia primaria) y una arista, a la de su nodo de origen. Si la (3) cuenta
+     grupos de nodos, la celda es la del nodo de id menor.»
+  3. **Las clases y las poblaciones chicas** (tal cual): «Si una clase entera tiene menos elementos que su cuota, entran todos y lo que
+     falta sale de la otra clase, declarado. Si la población tiene 30 o menos, se lee entera, sin celdas, como la cola.»
+  4. **La base de las semillas** pasa a ser el sha256 de la tercera versión para firmar, la que entra con su commit.
+- **La firma del pre-registro de la tanda 1** (12:05:12; tal cual): «Firmo la tercera versión para firmar del pre-registro de la tanda 1
+  (33a3c34b…) tal como está.»
+  - La tercera versión para firmar entró con `3b61f154`. La versión firmada entra con el commit del pre-registro firmado, que va antes
+    del de este registro, y cambia solo la cabecera y la sección de la firma.
+- **La propuesta de la mesa confirmada con la firma** (tal cual): «Con la firma confirmo la PROPUESTA DE LA MESA del §5.4 bis, punto 2: si
+  una clase entera no llega a su cuota, lo que falta se reparte entre las dos celdas de la otra clase en proporción a sus cuotas, con el
+  redondeo a favor de la de cuota mayor, y cada celda sortea con su propia cadena.»
+  - Rige desde la firma. No queda ninguna otra PROPUESTA DE LA MESA abierta en el pre-registro (sección de la firma).
+- Las secciones anteriores no se editan.
