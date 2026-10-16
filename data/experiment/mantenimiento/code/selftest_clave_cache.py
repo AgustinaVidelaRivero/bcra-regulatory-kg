@@ -34,7 +34,7 @@ Perfil r2b (U-TABLA-REPROC):
       NO_VERIFICABLE y rige, declarado, el anclaje del perfil sellado
       (decisión 3 de la autora al firmar el mandato de U-TABLA-REPROC): se
       corre de nuevo cuando existan las dbs de U-REEXT-T0.
-  B'. Variaciones R00 a R33b sobre una muestra fija de trece unidades de la E0
+  B'. Variaciones R00 a R34 sobre una muestra fija de trece unidades de la E0
       e0-r2 de la tanda 0 (`salida_tanda0_r2b/`): las diez de M1 más tres con
       tablas serializadas, una de ellas con la herencia recortada. La clave de
       E3 del perfil r2b necesita una salida de E1 en la forma r2, que todavía
@@ -57,7 +57,10 @@ Perfil r2b (U-TABLA-REPROC):
       R0 (enmienda 7 al protocolo entre tandas, §1.5), A3r exige ausentes,
       exactamente, los ítems que no son de R0, y presentes los no ítems y las 20
       claves de verificación de r0/esperados_r0.json (controlado por su sha256),
-      con dos variaciones de control que tienen que dar DISCREPANCIA.
+      con dos variaciones de control que tienen que dar DISCREPANCIA. Con
+      U-ALCANCE-E1 (fila F13c), R34 da en memoria una entrada del derivado del
+      registro de alcance por tanda a docvig, que no tiene entrada en la tabla
+      de la release: cambia la clave de E1 de sus unidades, como R11 (F12).
   C. Contraste fila por fila con la tabla de
      data/experiment/mantenimiento/tabla_reprocesamiento.md: cada fila declara
      el comportamiento de la clave de E1 y de E3 del perfil r2b y las
@@ -165,6 +168,10 @@ CATALOGO_R2 = EXP / "catalogo_unico" / "catalogo_sujetos_r2.json"
 CHUNKS_CALIBRADOR = REX / "e0_chunking" / "salida" / "chunks_ric.json"
 PIES_R2B = E0_TANDA0_R2B / "pies_cap.json"
 ARCHIVO_TO_ROL_VARIADO = "TO_clasificacion_deudores_actual.pdf"
+# R34 (U-ALCANCE-E1): el documento de la muestra sin entrada en la tabla de la release recibe, en memoria, una entrada
+# del derivado del registro de alcance por tanda (la de una clase).
+ARCHIVO_SIN_ROL_R34 = "docvig.pdf"
+ENTRADA_DERIVADO_R34 = "ri_ccna.pdf"
 # Además de los de M1: el validador r2 y su política, las reglas de las
 # cuantías y el runner. validador_e1 toma de validador_r2 las correcciones de
 # tipo y predicado al VALIDAR la salida de E1, no al armar los requests.
@@ -1051,11 +1058,11 @@ VARIACIONES_CHUNK_R2B = {
 
 def variaciones_request_r2b(ar: Armado, chunks, vals, base_e1, base_e3) -> list[dict]:
     """Variaciones del request completo con el perfil r2b: prefijo, tool
-    schema, catálogo en el bloque y en el enum, tabla TO→rol en memoria,
-    modelo y parámetros, techo del reintento por corte, versión de código del
-    namespace, prompt y modelo de E3, solo código, reintento por forma,
-    plantilla del mensaje de E1, NOTA del mensaje de E3 y aviso del reintento
-    del ratchet."""
+    schema, catálogo en el bloque y en el enum, tabla TO→rol y derivado del
+    registro de alcance por tanda en memoria, modelo y parámetros, techo del
+    reintento por corte, versión de código del namespace, prompt y modelo de
+    E3, solo código, reintento por forma, plantilla del mensaje de E1, NOTA del
+    mensaje de E3 y aviso del reintento del ratchet."""
     res = []
     M = MUESTRA_R2B
     todas = list(M)
@@ -1126,6 +1133,26 @@ def variaciones_request_r2b(ar: Armado, chunks, vals, base_e1, base_e3) -> list[
     res.append(_registro("R11", f"tabla TO→rol del perfil r2b en memoria: un miembro menos en el rol de "
                                 f"{TO_ROL_VARIADO}", todas, esperado_e1=esperadas, cambia_e1=c11,
                          esperado_e3=[], cambia_e3=c11_e3, universo_e3=con_e3))
+
+    # R34 derivado del registro de alcance por tanda (U-ALCANCE-E1, fila F13c; registro_alcance_r2b.json ya cargado), en
+    # memoria y sin pasar por su candado: una entrada para el documento de la muestra que no tiene entrada en la tabla
+    # de la release (docvig) le da la línea de alcance al mensaje de E1 de sus unidades, como F12.
+    archivo34 = ARCHIVO_SIN_ROL_R34
+    guardado34 = R.REGISTRO_ALCANCE_R2B
+    sin_entrada = archivo34 not in R.ROL_POR_TO_R2 and archivo34 not in guardado34
+    try:
+        R.REGISTRO_ALCANCE_R2B = {**guardado34, archivo34: copy.deepcopy(guardado34[ENTRADA_DERIVADO_R34])}
+        c34 = [cid for cid in M if ar.k_e1(chunks[cid]) != base_e1[cid]]
+        c34_e3 = [cid for cid in con_e3 if ar.k_e3(chunks[cid], vals[cid]) != base_e3[cid]]
+    finally:
+        R.REGISTRO_ALCANCE_R2B = guardado34
+    reg = _registro("R34", f"derivado del registro de alcance por tanda en memoria: una entrada (la de "
+                           f"{ENTRADA_DERIVADO_R34}) para {archivo34}, sin entrada en la tabla de la release", todas,
+                    esperado_e1=[c for c in M if chunks[c]["archivo"] == archivo34], cambia_e1=c34,
+                    esperado_e3=[], cambia_e3=c34_e3, universo_e3=con_e3,
+                    extra={"sin_entrada_en_la_release_ni_en_el_derivado": sin_entrada})
+    reg["ok"] = reg["ok"] and sin_entrada
+    res.append(reg)
 
     # R12 modelo de E1; R13 max_tokens del primer intento.
     for vid, desc, mod in (

@@ -92,10 +92,10 @@ PREFIJO_HASH_R2B_P3B = "3817de475c93"
 PARCHE_P3C_SHA256_ESPERADO = "5e3761c16d13a83d2071cb05494aea04a2c862259d39c7333e40db490f11c678"
 PREFIJO_SHA256_R2B_ESPERADO = "ccffa4e36ba26a4b63b5760a7657d4bb5f5357ccd2392fe2b67584e4c2efb775"
 PREFIJO_HASH_R2B_ESPERADO = "322c5a23e9b7"
-# Candados de P3c-2 (U-TABLA-REPROC, filas F04b, F22, F22b y F23): sellados después del ajuste del texto.
+# Candados de P3c-2 (U-TABLA-REPROC, filas F04b, F22, F22b y F23); los dos del mensaje, recalculados en U-ALCANCE-E1.
 TABLAS_FORZADAS_SHA256_ESPERADO = "98cc96b2fec4cd7febb1fba71df8490ea420c0c0419711a122daaf4f12c2bc67"
-CANDADO_MENSAJE_JSON_SHA256_ESPERADO = "4d69f7f4c8a542bf09d25c1bcc4343a06a70226240eb595e3d4285a516e0fa6d"
-MENSAJE_R2B_SHA256_ESPERADO = "a9cb702c0d243582d27345b78d2595b44e6cf0f4d9a2560fdd262aaa92955a56"
+CANDADO_MENSAJE_JSON_SHA256_ESPERADO = "6b758517cee0f2e36c26c54f0f6738b3d49d11d0cf3141c26cff166ce6820325"
+MENSAJE_R2B_SHA256_ESPERADO = "eeb11b9a3bf699d5535fcf2bbe79541ba746ae7bdae3341af962840990a97362"
 
 ANCLA_INICIO_BLOQUE = "## Sujetos regulados"
 ANCLA_FIN_BLOQUE = "\n# PROVENANCE OBLIGATORIA POR ELEMENTO"
@@ -406,7 +406,7 @@ def build_user_message_r2b(chunk: dict) -> str:
         partes.append(f"Punto del chunk: {chunk['unidad']} — {chunk['titulo']}")
     partes.append("Puntos admitidos para `punto`: " + ", ".join(puntos_admitidos(chunk)))
     partes.append("")
-    partes.extend(linea_alcance(ROL_POR_TO_R2.get(chunk["archivo"])))
+    partes.extend(linea_alcance(alcance_del_documento(chunk["archivo"])))
     herencia = chunk.get("herencia", [])
     if herencia:
         i = bloque_lista(chunk)
@@ -461,12 +461,40 @@ def labels_catalogo_r2() -> dict[str, dict]:
     return {sid: {"label": x["label"], "nivel": x["nivel"]} for sid, x in LABELS_E2_R2.items()}
 
 
+# Registro de alcance por tanda en el mensaje (U-ALCANCE-E1; mandato docs/mandatos/UALCANCE_E1_cableado_registro_alcance.md,
+# firmado el 07/10/2026; enmienda 4 al protocolo entre tandas, §7, punto 1). La línea «Alcance de este TO» de
+# build_user_message_r2b sale de la tabla de la release (rol_por_to_r2.json) y, si el documento no tiene entrada ahí, del
+# derivado del registro de alcance por tanda: catalogo_unico/registro_alcance_r2b.json, que escribe
+# catalogo_unico/code/derivar_registro_alcance_r2b.py desde registro_alcance_por_tanda.md con el lector de R2-2 de
+# U-RERESOL-CAT (fuera de generados_r2/, cuyo contenido cierra K2 de selftest_catalogo_unico). El derivado se lee al importar,
+# con su candado (decisión 1 de la autora al firmar), antes del candado del mensaje. No cambia el prefijo, el tool schema ni
+# el namespace; cambian el mensaje, y la clave de E1, solo las unidades de los documentos con entrada en el derivado.
+# A2 (15/10/2026): el derivado sale de `--tandas 1` sobre el registro final de la tanda 1 (06b8267a3004…; 10 entradas, con
+# ri_mmsef); en A1 había salido de ce402aad7c84… (9 entradas). Los dos valores del candado del mensaje cubren la fixture
+# de 17 unidades (los de P3c-2, con 13, eran 4d69f7f4c8a5… y a9cb702c0d24…). Un cambio del registro entre tandas regenera
+# el derivado y su sha (fila F13c de la tabla de reprocesamiento).
+REGISTRO_ALCANCE_R2B_JSON = _CAT_R2.parent / "registro_alcance_r2b.json"
+REGISTRO_ALCANCE_R2B_SHA256_ESPERADO = "e06933e77a1ae819229d5f2a4b5886f71f6129c809032e1e557932fb8cb69ff4"
+REGISTRO_ALCANCE_R2B = json.loads(_leer_con_candado(REGISTRO_ALCANCE_R2B_JSON, REGISTRO_ALCANCE_R2B_SHA256_ESPERADO))
+
+
+def alcance_del_documento(archivo: str) -> dict | None:
+    """La entrada de alcance de un documento: primero la tabla de la release (ROL_POR_TO_R2); si el documento no tiene
+    entrada ahí, el derivado del registro de alcance por tanda (REGISTRO_ALCANCE_R2B); si no figura en ninguno, o el
+    registro lo declara sin alcance (sin entrada en el derivado), None: el mensaje va sin línea de alcance."""
+    if archivo in ROL_POR_TO_R2:
+        return ROL_POR_TO_R2[archivo]
+    return REGISTRO_ALCANCE_R2B.get(archivo)
+
+
 # Candado del mensaje de E1 (P3c-2; U-TABLA-REPROC, filas F22 y F22b). El mensaje no entra al hash del prefijo ni al
 # namespace: un cambio en una línea fija o condicional, o en la regla que la dispara, movería las claves sin que nada
 # frene. El candado arma el mensaje de un conjunto fijo de unidades que ejercita cada rama de build_user_message_r2b y
 # de bloque_flags (candado_mensaje_r2b.json: 12 unidades de salida_tanda0_r2b, elegidas por cobertura en
-# data/experiment/prompt_r2/p3c/candados_p3c.py, más una copia sintética para la rama del alcance por clase) y compara
-# su sha256 con el sellado. Solo compara: no entra al pedido ni cambia ninguna clave. Va al final del módulo.
+# data/experiment/prompt_r2/p3c/candados_p3c.py, más una copia sintética para la rama del alcance por clase y, desde
+# U-ALCANCE-E1, cuatro copias sintéticas con documentos del registro de alcance: una clase, dos clases, un rol reutilizado
+# y uno declarado sin alcance) y compara su sha256 con el sellado. Solo compara: no entra al pedido ni cambia ninguna
+# clave. Va al final del módulo.
 def sha256_mensajes(chunks: list[dict]) -> str:
     """sha256 de los mensajes de E1 de `chunks`, unidos por un salto, el separador de registro (U+001E) y otro salto."""
     return hashlib.sha256("\n\x1e\n".join(build_user_message_r2b(c) for c in chunks).encode("utf-8")).hexdigest()
@@ -485,7 +513,8 @@ _candado_mensaje()
 
 
 __all__ = [
-    "PREFIJO_SISTEMA_R2B", "TOOL_SCHEMA_R2B", "ROL_POR_TO_R2", "REEMPLAZOS_R2B", "TABLAS_RESIDUALES_FORZADAS",
+    "PREFIJO_SISTEMA_R2B", "TOOL_SCHEMA_R2B", "ROL_POR_TO_R2", "REGISTRO_ALCANCE_R2B", "REEMPLAZOS_R2B",
+    "TABLAS_RESIDUALES_FORZADAS", "alcance_del_documento",
     "PREFIJO_HASH_R2B", "PREFIJO_SHA256_R2B", "PREFIJO_CANONICO_R2B", "MAX_OUTPUT_TOKENS", "NOMBRE_TOOL",
     "TEMPERATURA_E1_R2B", "TEMPERATURA_REINTENTO_FORMA_R2B",
     "bloques_sistema_r2b", "build_user_message_r2b", "build_request_kwargs_r2b", "kwargs_reintento_forma_r2b",

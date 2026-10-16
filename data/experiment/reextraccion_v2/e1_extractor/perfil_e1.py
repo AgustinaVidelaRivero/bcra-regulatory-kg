@@ -233,7 +233,7 @@ def _perfil_r2b() -> PerfilE1:
         prefijo_hash_para_namespace=r2b.PREFIJO_HASH_R2B,
         build_request_kwargs=r2b.build_request_kwargs_r2b,
         build_user_message=r2b.build_user_message_r2b,
-        rol_por_to=r2b.ROL_POR_TO_R2,
+        rol_por_to={a: r2b.alcance_del_documento(a) for a in {**r2b.ROL_POR_TO_R2, **r2b.REGISTRO_ALCANCE_R2B}},
         esquema=esquema,
         labels_catalogo=r2b.labels_catalogo_r2(),
     )

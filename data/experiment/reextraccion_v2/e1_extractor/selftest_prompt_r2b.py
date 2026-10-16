@@ -27,6 +27,16 @@ llamadas a la API.
   H. P5: el pedido lleva `temperature` 0 (TEMPERATURA_E1_R2B) en las 2.434 unidades, sin cambiar el prefijo; la
      temperatura del reintento por salida mal formada es 1 (TEMPERATURA_REINTENTO_FORMA_R2B). El camino del runner
      (reintento por corte, tercer escalón, ratchet y reintento por forma) lo prueba selftest_ub53.py, P8.
+  I. U-ALCANCE-E1: el registro de alcance por tanda entra al mensaje por su derivado
+     (catalogo_unico/registro_alcance_r2b.json), con su candado; el derivado se regenera byte a byte desde el registro con
+     el lector de R2-2; la regla lee primero la tabla de la release; un caso por rama (una clase, dos clases, rol
+     reutilizado, documento declarado sin alcance); la tanda 0 no cambia. En G, la fixture del candado suma cuatro
+     sintéticas con documentos del registro, y una entrada del derivado alterada en memoria hace frenar el candado; las
+     dos comprobaciones de la fixture de P3c-2 miran sus 13 primeras unidades. Los casos de U-ALCANCE-E1 se evalúan
+     protegidos (check_protegido): con el código de HEAD, que no tiene el derivado, dan FAIL sin cortar el selftest
+     (control negativo de los FRENOs A1 y A2). Desde A2, el derivado sale del registro final de la tanda 1 (10
+     entradas, con ri_mmsef), y el perfil r2b (perfil_e1, la tabla que valida el manifiesto) da a cada documento la
+     entrada de la misma regla que arma el mensaje.
 
 Uso (desde la raíz del repo):
   PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B data/experiment/reextraccion_v2/e1_extractor/selftest_prompt_r2b.py
@@ -35,6 +45,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -67,6 +79,26 @@ def check(nombre: str, cond: bool, detalle: str = "") -> None:
     else:
         FAIL += 1
         print(f"  FAIL {nombre} {detalle}")
+
+
+def check_protegido(nombre: str, fn) -> None:
+    """Un caso de U-ALCANCE-E1: `fn` devuelve (condición, detalle). Si usa algo que el módulo no tiene (el código de HEAD,
+    sin el derivado), cuenta FAIL con el error, sin cortar el selftest."""
+    try:
+        cond, detalle = fn()
+    except Exception as e:  # noqa: BLE001
+        cond, detalle = False, f"{type(e).__name__}: {e}"
+    check(nombre, cond, detalle)
+
+
+# U-ALCANCE-E1: el derivado del registro de alcance por tanda, su generador y las tandas con que se genera.
+DERIVADO_REGISTRO = REPO / "data" / "experiment" / "catalogo_unico" / "registro_alcance_r2b.json"
+GENERADOR_DERIVADO = REPO / "data" / "experiment" / "catalogo_unico" / "code" / "derivar_registro_alcance_r2b.py"
+TANDAS_DEL_DERIVADO = "1"
+CON_ALCANCE_TANDA1 = ("ri_ccna.pdf", "ri_rml.pdf", "ri_gerc.pdf", "ri_pgn.pdf", "ri_dcpc.pdf", "snp_cheq.pdf",
+                      "snp_tr.pdf", "manori.pdf", "nmcief.pdf", "ri_mmsef.pdf")
+SIN_ALCANCE_TANDA1 = ("ri_oc.pdf", "ceninf.pdf", "cirmo3.pdf")
+ARCHIVO_RIC = "TO_regimen_informativo_contable_mensual_actual.pdf"
 
 
 def main() -> int:
@@ -229,12 +261,55 @@ def main() -> int:
 
     print("\n[G] candado del mensaje (F22 y F22b)")
     fix = json.loads(P.CANDADO_MENSAJE_JSON.read_text(encoding="utf-8"))
-    check("la fixture: 12 unidades de salida_tanda0_r2b y una sintética (alcance por clase), declarada",
-          len(fix["chunks"]) == 13 and fix["sinteticos"] == [fix["chunks"][-1]["id"]]
-          and "sintetico" in fix["chunks"][-1] and P.ROL_POR_TO_R2[fix["chunks"][-1]["archivo"]]["rol_id"] is None)
+    # U-ALCANCE-E1: las dos comprobaciones de la fixture de P3c-2 miran sus 13 primeras unidades (después vienen las
+    # cuatro sintéticas del registro de alcance).
+    check("la fixture: 12 unidades de salida_tanda0_r2b y una sintética (alcance por clase), declarada, en sus 13 "
+          "primeras",
+          len(fix["chunks"]) >= 13 and fix["sinteticos"][:1] == [fix["chunks"][12]["id"]]
+          and "sintetico" in fix["chunks"][12] and not any("sintetico" in c for c in fix["chunks"][:12])
+          and P.ROL_POR_TO_R2[fix["chunks"][12]["archivo"]]["rol_id"] is None)
     check("el sha256 de sus mensajes es el sellado", P.sha256_mensajes(fix["chunks"]) == P.MENSAJE_R2B_SHA256_ESPERADO)
     check("la rama del alcance por clase está en la fixture (sintética)",
-          "según corresponda" in P.build_user_message_r2b(fix["chunks"][-1]))
+          "según corresponda" in P.build_user_message_r2b(fix["chunks"][12]))
+
+    def fixture_suma_registro():
+        base = next(c for c in fix["chunks"] if c["id"] == "cap::1.4.1")
+        nuevas = fix["chunks"][13:]
+        archivos = [c["archivo"] for c in nuevas]
+        copias = all({k: v for k, v in c.items() if k not in ("id", "archivo", "sintetico")}
+                     == {k: v for k, v in base.items() if k not in ("id", "archivo")} for c in nuevas)
+        ok = (len(fix["chunks"]) == 17 and fix["sinteticos"][1:] == [c["id"] for c in nuevas]
+              and archivos == ["ri_ccna.pdf", "snp_cheq.pdf", "ri_rml.pdf", "ri_oc.pdf"] and copias
+              and all(a in P.REGISTRO_ALCANCE_R2B for a in archivos[:3]) and archivos[3] not in P.REGISTRO_ALCANCE_R2B
+              and not any(a in P.ROL_POR_TO_R2 for a in archivos))
+        return ok, f"{len(fix['chunks'])} unidades; {archivos}"
+    check_protegido("U-ALCANCE-E1: la fixture suma cuatro sintéticas declaradas, copias de cap::1.4.1 con otro archivo: "
+                    "una clase, dos clases, rol reutilizado (con entrada en el derivado) y declarado sin alcance (sin "
+                    "ella)", fixture_suma_registro)
+
+    def derivado_alterado_frena():
+        import copy  # noqa: PLC0415
+        orig = P.REGISTRO_ALCANCE_R2B
+        frenos = []
+        alteraciones = (("ri_ccna.pdf", lambda d: d["ri_ccna.pdf"]["miembros_labels"].pop()),
+                        ("snp_cheq.pdf", lambda d: d["snp_cheq.pdf"]["clase_ids"].append("Sujeto_banco")),
+                        ("ri_oc.pdf", lambda d: d.__setitem__("ri_oc.pdf", copy.deepcopy(d["ri_ccna.pdf"]))))
+        try:
+            for nombre, alterar in alteraciones:
+                P.REGISTRO_ALCANCE_R2B = copy.deepcopy(orig)
+                alterar(P.REGISTRO_ALCANCE_R2B)
+                try:
+                    P._candado_mensaje()
+                    frenos.append((nombre, False))
+                except RuntimeError:
+                    frenos.append((nombre, True))
+        finally:
+            P.REGISTRO_ALCANCE_R2B = orig
+        P._candado_mensaje()
+        return all(f for _, f in frenos) and P.REGISTRO_ALCANCE_R2B is orig, str(frenos)
+    check_protegido("U-ALCANCE-E1: una entrada del derivado alterada en memoria (un miembro menos en ri_ccna, un id más "
+                    "en snp_cheq) o una entrada para ri_oc hace frenar el candado del mensaje; restaurado, pasa",
+                    derivado_alterado_frena)
     frena = []
     for nombre in ("LINEA_CIERRE", "LINEA_ITEM", "LINEA_ALCANCE", "LINEA_MINI_MITAD", "LINEA_HERENCIA_PUNTO",
                    "LINEA_TITULOS_MINI"):
@@ -283,6 +358,150 @@ def main() -> int:
           rf["temperature"] == 1 and con_techo["temperature"] == 0 and rf["max_tokens"] == 16384
           and {k: v for k, v in rf.items() if k != "temperature"}
           == {k: v for k, v in con_techo.items() if k != "temperature"})
+
+    print("\n[I] registro de alcance por tanda en el mensaje (U-ALCANCE-E1)")
+    # El derivado se lee del archivo, no del módulo, para las líneas esperadas: con el código de HEAD, los casos por rama
+    # fallan por el mensaje (no lleva la línea), no por un atributo que falta.
+    der = json.loads(DERIVADO_REGISTRO.read_text(encoding="utf-8"))
+    base = next(c for c in fix["chunks"] if c["id"] == "cap::1.4.1")
+
+    def con_archivo(archivo: str) -> dict:
+        c = json.loads(json.dumps(base))
+        c["archivo"] = archivo
+        return c
+
+    def lineas_alcance(m: str) -> list[str]:
+        return [x for x in m.split("\n") if x.startswith("Alcance de este TO")]
+
+    def solo_cambia_la_linea(archivo: str, linea: str) -> bool:
+        """El mensaje del documento, sin su línea de alcance, es el de un documento sin alcance (ri_oc) con su nombre."""
+        m = P.build_user_message_r2b(con_archivo(archivo))
+        sin = P.build_user_message_r2b(con_archivo("ri_oc.pdf")).replace("Documento fuente: ri_oc.pdf",
+                                                                        f"Documento fuente: {archivo}")
+        return m.count(linea + "\n\n") == 1 and m.replace(linea + "\n\n", "") == sin
+
+    def candado_del_derivado():
+        b = P.REGISTRO_ALCANCE_R2B_JSON.read_bytes()
+        return (hashlib.sha256(b).hexdigest() == P.REGISTRO_ALCANCE_R2B_SHA256_ESPERADO
+                and P.REGISTRO_ALCANCE_R2B == json.loads(b.decode("utf-8"))
+                and P.REGISTRO_ALCANCE_R2B_JSON.resolve() == DERIVADO_REGISTRO.resolve()
+                and P.REGISTRO_ALCANCE_R2B_JSON.parent.name == "catalogo_unico"), \
+            P.REGISTRO_ALCANCE_R2B_SHA256_ESPERADO[:12]
+    check_protegido("el derivado del registro (catalogo_unico/registro_alcance_r2b.json, fuera de generados_r2/): sha256 "
+                    "esperado, candado del módulo, y es lo que el módulo cargó", candado_del_derivado)
+
+    def regenera():
+        r = subprocess.run([sys.executable, "-B", str(GENERADOR_DERIVADO), "--tandas", TANDAS_DEL_DERIVADO,
+                            "--salida", "-"], capture_output=True, cwd=REPO,
+                           env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"})
+        return (r.returncode == 0 and r.stdout == P.REGISTRO_ALCANCE_R2B_JSON.read_bytes()), \
+            f"rc={r.returncode} {r.stderr.decode('utf-8', 'replace')[-300:]}"
+    check_protegido(f"el derivado se regenera byte a byte desde registro_alcance_por_tanda.md con el lector de R2-2 "
+                    f"(--tandas {TANDAS_DEL_DERIVADO})", regenera)
+
+    def rama_clase():
+        e = der["ri_ccna.pdf"]
+        linea = P.linea_alcance(e)[0]
+        m = P.build_user_message_r2b(con_archivo("ri_ccna.pdf"))
+        return (e["rol_id"] == "Sujeto_caja_de_credito" and e["clase_ids"] == ["Sujeto_caja_de_credito"]
+                and lineas_alcance(m) == [linea] and "sugerí Sujeto_caja_de_credito en `sujeto_id`" in linea
+                and solo_cambia_la_linea("ri_ccna.pdf", linea)), str(lineas_alcance(m))[:160]
+    check_protegido("rama de una clase: ri_ccna.pdf lleva la línea de linea_alcance con su entrada del derivado "
+                    "(Sujeto_caja_de_credito), una vez, y nada más cambia", rama_clase)
+
+    def rama_dos_clases():
+        e = der["snp_cheq.pdf"]
+        linea = P.linea_alcance(e)[0]
+        m = P.build_user_message_r2b(con_archivo("snp_cheq.pdf"))
+        return (e["rol_id"] is None and len(e["clase_ids"]) == 2 and lineas_alcance(m) == [linea]
+                and "sugerí Sujeto_entidad_financiera o Sujeto_camara_electronica_de_compensacion en `sujeto_id`, "
+                    "según corresponda" in linea
+                and solo_cambia_la_linea("snp_cheq.pdf", linea)), str(lineas_alcance(m))[:160]
+    check_protegido("rama de dos clases: snp_cheq.pdf lleva la línea con las dos clases («según corresponda»), una vez, y "
+                    "nada más cambia", rama_dos_clases)
+
+    def rama_rol():
+        linea_ric = P.linea_alcance(P.ROL_POR_TO_R2[ARCHIVO_RIC])[0]
+        linea_snp = P.linea_alcance(P.ROL_POR_TO_R2["snp_tr_nc.pdf"])[0]
+        ok = all(lineas_alcance(P.build_user_message_r2b(con_archivo(a))) == [linea_ric]
+                 and solo_cambia_la_linea(a, linea_ric)
+                 for a in ("ri_rml.pdf", "ri_gerc.pdf", "ri_pgn.pdf", "ri_mmsef.pdf"))
+        ok = ok and lineas_alcance(P.build_user_message_r2b(con_archivo("snp_tr.pdf"))) == [linea_snp]
+        return ok, linea_ric[:100]
+    check_protegido("rol reutilizado: ri_rml, ri_gerc, ri_pgn y ri_mmsef llevan la línea del rol de ric "
+                    "(Sujeto_rol_entidad_comprendida_reginf) y snp_tr la de snp_tr_nc, y nada más cambia", rama_rol)
+
+    def rama_sin_alcance():
+        ok = all(a not in P.REGISTRO_ALCANCE_R2B and a not in P.ROL_POR_TO_R2 and P.alcance_del_documento(a) is None
+                 and not lineas_alcance(P.build_user_message_r2b(con_archivo(a))) for a in SIN_ALCANCE_TANDA1)
+        return ok, str(SIN_ALCANCE_TANDA1)
+    check_protegido("declarado sin alcance: ri_oc, ceninf y cirmo3 no tienen entrada en el derivado, "
+                    "alcance_del_documento da None y el mensaje va sin línea", rama_sin_alcance)
+
+    def primero_la_release():
+        orig = P.REGISTRO_ALCANCE_R2B
+        archivo_cla = "TO_clasificacion_deudores_actual.pdf"
+        c_cla = next(c for c in chunks if c["archivo"] == archivo_cla)
+        c_doc = next(c for c in chunks if c["archivo"] == "docvig.pdf")
+        linea_cla = P.linea_alcance(P.ROL_POR_TO_R2[archivo_cla])[0]
+        linea_reg = P.linea_alcance(der["ri_ccna.pdf"])[0]
+        try:
+            P.REGISTRO_ALCANCE_R2B = {**orig, archivo_cla: der["ri_ccna.pdf"], "docvig.pdf": der["ri_ccna.pdf"]}
+            ok = (lineas_alcance(P.build_user_message_r2b(c_cla)) == [linea_cla]
+                  and lineas_alcance(P.build_user_message_r2b(c_doc)) == [linea_reg])
+        finally:
+            P.REGISTRO_ALCANCE_R2B = orig
+        return ok and not lineas_alcance(P.build_user_message_r2b(c_doc)), ""
+    check_protegido("la regla lee primero la tabla de la release: con un derivado en memoria que también trae cla y "
+                    "docvig, cla conserva su línea de la release y docvig toma la del derivado; restaurado, docvig va "
+                    "sin línea", primero_la_release)
+
+    def solo_agrega():
+        roles = {e["rol_id"]: e for e in P.ROL_POR_TO_R2.values() if e.get("rol_id")}
+        formas = {("rol_id", "clase_ids", "label", "miembros_ids", "miembros_labels"),
+                  ("rol_id", "label", "miembros_ids", "miembros_labels")}
+        reutilizados = [e for e in P.REGISTRO_ALCANCE_R2B.values() if "clase_ids" not in e]
+        ok = (not set(P.REGISTRO_ALCANCE_R2B) & set(P.ROL_POR_TO_R2)
+              and list(P.REGISTRO_ALCANCE_R2B) == list(CON_ALCANCE_TANDA1)
+              and all(tuple(e) in formas for e in P.REGISTRO_ALCANCE_R2B.values())
+              and all(roles.get(e["rol_id"]) == e for e in reutilizados) and len(reutilizados) == 5)
+        return ok, str(list(P.REGISTRO_ALCANCE_R2B))
+    check_protegido("el derivado solo agrega: ningún documento de la tabla de la release; los 10 de la tanda 1 con "
+                    "alcance, con la forma de rol_por_to_r2 (5 de clase, 5 de rol reutilizado iguales a la entrada del "
+                    "rol en la release)", solo_agrega)
+
+    def perfil_con_el_derivado():
+        import perfil_e1  # noqa: PLC0415 — el perfil que carga el runner (runner_corpus.configurar)
+        pf = perfil_e1.perfil("r2b")
+        rpt = pf.rol_por_to
+        orden = list(P.ROL_POR_TO_R2) + [a for a in der if a not in P.ROL_POR_TO_R2]
+        ok = (list(rpt) == orden
+              and all(rpt[a] is P.ROL_POR_TO_R2[a] for a in P.ROL_POR_TO_R2)
+              and all(rpt[a] == der[a] for a in CON_ALCANCE_TANDA1)
+              and all(rpt[a] == P.alcance_del_documento(a) for a in orden)
+              and not any(a in rpt for a in SIN_ALCANCE_TANDA1)
+              and pf.build_user_message is P.build_user_message_r2b)
+        return ok, f"{len(rpt)} entradas; {len(P.ROL_POR_TO_R2)} de la release"
+    check_protegido("el perfil r2b (perfil_e1, la tabla que valida el manifiesto) es la tabla de la release seguida de "
+                    "las entradas del derivado, con la entrada de alcance_del_documento: la de los 10 de la tanda 1 con "
+                    "alcance, y ninguna para los declarados sin alcance", perfil_con_el_derivado)
+
+    def tanda0_igual():
+        regla_previa = P.alcance_del_documento
+        e0r2b = REPO / "data" / "experiment" / "reextraccion_v2" / "e0_chunking" / "salida_tanda0_r2b"
+        chunks_b = comun_e1.cargar_chunks(tos, e0_dir=e0r2b)
+        archivos = {c["archivo"] for c in chunks + chunks_b}
+        ahora = [P.build_user_message_r2b(c) for c in chunks_b]
+        try:
+            P.alcance_del_documento = lambda a: P.ROL_POR_TO_R2.get(a)
+            antes = [P.build_user_message_r2b(c) for c in chunks_b]
+        finally:
+            P.alcance_del_documento = regla_previa
+        return (len(chunks_b) == 2439 and not archivos & set(P.REGISTRO_ALCANCE_R2B) and ahora == antes), \
+            f"{len(chunks_b)} unidades; {sum(a != b for a, b in zip(ahora, antes))} distintas"
+    check_protegido("la tanda 0 no cambia: ningún documento de salida_tanda0_r2 ni de salida_tanda0_r2b en el derivado, "
+                    "y los mensajes de las 2.439 unidades de salida_tanda0_r2b son los de la regla de antes (solo la "
+                    "tabla de la release)", tanda0_igual)
 
     print(f"\nRESULTADO: {OK} ok, {FAIL} FAIL")
     return 0 if FAIL == 0 else 1

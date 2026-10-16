@@ -1,0 +1,49 @@
+[ 1] ok    B1 sha del prefijo v3 recomputado == sello U-B5.4
+[ 2] ok    B1 hash canónico (system+tools) v3 == sello
+[ 3] ok    B1 el perfil FRENA (RuntimeError) ante un sha que no reproduce el sello
+[ 4] ok    B1 restaurado, el perfil vuelve a construirse con el hash sellado
+[ 5] ok    B1 perfil desconocido → ValueError
+[ 6] ok    B2 chunk dev: mensaje v3 BYTE-IDÉNTICO al de producción
+[ 7] ok    B2 chunk dev: system v3 en bloque único con cache_control (D1) y texto == prefijo v3 sellado
+[ 8] ok    B2 chunk dev: tools == [TOOL_SCHEMA_V3] (enum de 102)
+[ 9] ok    B2 TO con rol nuevo (traval): línea de alcance con el rol
+[10] ok    B2 TO con rol nuevo: guarda de ejecuta presente
+[11] ok    B2 mapeo a clase (ayccef): el id de CLASE como sujeto por defecto del TO (decisión 2)
+[12] ok    B2 ri2_ci (dos clases): variante declarada de la línea
+[13] ok    B2 hueco (docvig): SIN línea de alcance (válvula abierta)
+[14] ok    B3 catálogo v3 POR EXTENSIÓN: los 102 sujetos aceptados (102/102 recomputado) — 102/102
+[15] ok    B3 tipos congelados POR EXTENSIÓN: 9/9 aceptados uno a uno — 9/9
+[16] ok    B3 predicados congelados POR EXTENSIÓN: 13/13 aceptados con firma válida (condicion_de incluido) — 13/13
+[17] ok    B3 rechazos: 5 retirados + rol viejo de snp_cec (6/6, motivo sujeto_id_fuera_de_catalogo) — 6/6
+[18] ok    B3 type fuera del vocabulario congelado rechazado
+[19] ok    B3 predicate fuera del vocabulario congelado rechazado
+[20] ok    B3 resol.2: valor del enum pasa tal cual, contadores en 0
+[21] ok    B3 resol.2: fuera de enum → 'otra', contado y con advertencia (registro, no rechazo)
+[22] ok    B3 resol.2: requisito_de_estructura → 'otra' con contador SEPARADO (vigilancia (5))
+[23] ok    B3 resol.2: default (esquema None): properties.tipo queda tal cual y SIN claves de contadores
+[24] ok    B3 default sin regresión: re-validación de registros reales dev == validación persistida (igualdad de dicts) — 25/25
+[25] ok    B4 namespace default == histórico (hash de producción dev)
+[26] ok    B4 namespace v3 lleva el hash sellado y NO colisiona con el histórico
+[27] ok    B4 namespace del canal abierto intacto y distinto de ambos
+[28] ok    B5 manifiesto sintético v3 carga (perfil v3, roles v3, hueco null)
+[29] ok    B5 adversarial rechazado: clase mal declarada (rol en vez de clase) — TO 'ayccef': rol_alcance 'Sujeto_rol_alcance_ayccef' ≠ rol del catálog
+[30] ok    B5 adversarial rechazado: ri2_ci con string en vez de lista — TO 'ri2_ci': rol_alcance 'Sujeto_casa_de_cambio' ≠ clase_ids del catál
+[31] ok    B5 adversarial rechazado: hueco (docvig) con rol declarado — TO 'docvig': rol_alcance 'Sujeto_rol_fantasma' declarado pero el catál
+[32] ok    B5 adversarial rechazado: entrada del catálogo silenciada con null — TO 'traval': rol_alcance null pero el catálogo declara 'Sujeto_rol_alc
+[traval:e1] unidades=2 ya_persistidas_ok=0 pendientes=2
+CHECKPOINT [traval:e1 2/2] gasto=USD 0.00 proyección=USD 0.00 (tope 1.0)
+[33] ok    B6 fase E1 (stub, en proceso): TODOS los requests llevan el system v3 (sha recomputado == sello)
+[34] ok    B6 fase E1: validaciones con contadores v3 visibles (vigilancia (5) en 0)
+[35] ok    B6 resumen_e1 del TO v3 con los dos contadores de la resolución 2
+[36] ok    B6 corrida --stub completa (4 TOs, E1→E3→E2) termina bien
+[37] ok    B6 banner declara el perfil y el hash v3
+[38] ok    B6 grafos E2 generados para los 4 TOs
+[39] ok    B6 reanudación idempotente: segunda corrida saltea fases cerradas y no duplica — 2 vs 2
+[40] ok    B6 runner restaurado al manifiesto default (perfil produccion_dev)
+[41] ok    B7 default: prefijo (system+tools) byte-idéntico al histórico y feedback tras el breakpoint
+[42] ok    B7 perfil v3: el reintento usa el MISMO prefijo v3 que la fase E1 de su corrida (system+tools byte-idénticos)
+[43] ok    B8 cadena validador→E2: extracción v3 íntegra aceptada (5 ent, 4 rel, 0 rechazos)
+[44] ok    B8 E2 v3: Potestad y condicion_de ensamblados sin rechazos
+[45] ok    B8 E2 v3: nodos de sujeto con label y nivel REALES del catálogo v3 (cero fallback)
+
+selftest cable v3: 45/45
