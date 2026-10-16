@@ -394,3 +394,72 @@ Decisiones de la autora recibidas a las 19:02:53, 19:27:15 y 19:33:19 (hoja de r
      el formato de las otras.»
   6. «Los cuatro sha nuevos van al «A COMPLETAR» del laudo de la release cuando me lo pases para firmar.» PENDIENTE: va con el laudo.
 - Las secciones anteriores no se editan.
+
+## 12. A2 confirmado, la revisión entre tandas, la tanda final en dos tramos y las horas de la autora (agregado del 15/10/2026)
+
+Decisiones de la autora recibidas a las 21:05:39 y a las 23:23:47 (hoja de ruta de la mesa, §115 y §116).
+
+- **La nota de B′** (21:05:39, tal cual): «La nota de B′ queda como la escribiste: B1 mide la variante en depaho y en snp_tr.» La nota está al
+  pie de `docs/mandatos/UAPLICA_ROL_ALCANCE_derivada_Bprima.md` (`06b01b90`).
+- **La condición 4 y el gate final del laudo** (21:05:39, tal cual): «La condición 4 y el gate final del laudo los hacés vos, sobre copias,
+  sin turno en el repo. Dejá el script del gate, su salida y su sha256 en el paquete: antes de firmar el laudo los reviso.»
+- **Los tres valores de A2** (23:23:47, tal cual): «Los tres valores de A2 quedan confirmados: e06933e7… (el derivado), 6b758517… (el
+  candado) y eeb11b9a… (el mensaje de la fixture).»
+  - Están en `data/experiment/reextraccion_v2/e1_extractor/prompt_r2b.py` desde `42823df0`.
+  - La mesa los reprodujo sobre una copia (hoja §115).
+- **La corrida en seco de la tanda 1** (23:23:47, tal cual): «La corrida en seco de la tanda 1 es T1 de su despacho.»
+  - Cierra el pendiente 6 del pre-registro de la tanda 1.
+  - El manifiesto de la tanda 1 se arma en T1, después de A2, y se carga con su validación antes de la corrida en seco. T2 no arranca sin
+    que la autora revise el FRENO T1.
+- **El costo de A2 en la tanda 1** (23:23:47, tal cual): «El costo de A2 en la tanda 1 (USD 0,19) se declara en el v8, dentro del margen,
+  sin cambiar el tope.»
+  - Son USD 0,190841: 190.841 tokens de entrada de E1, en las 1.029 unidades con línea de alcance
+    (`data/experiment/alcance_e1/a2/freno_a2.md:68-84`).
+- **La revisión entre la tanda 1 y la tanda final** (23:23:47, tal cual): «La revisión entre tandas (11a) va como la propusiste, con un
+  cambio. El health-check controla solo la cobertura y los ids, así que no detecta un error de corte. Si la tanda 1 confirma un error de
+  corte con un rasgo, los documentos de la tanda final se miden con un detector de ese rasgo, escrito como regla general y corrido sobre los
+  98 antes del manifiesto, como el detector de 1.16 o el censo de sub-documentos. Antes de leer la tanda 1, proponeme qué pasa con los que
+  den positivo (salir, declararse como riesgo o confirmarse con una lectura corta), con su costo. Si para un rasgo no se puede escribir y
+  probar un detector antes del despacho, se declara como riesgo.»
+  - La propuesta 11a está en el paquete de la mesa (`decisiones_115_mesa/escalado/escalado_hasta_el_sello_mesa.md`): qué se mide, las
+    muestras de reparto igual por clase con un tercio de sin_raiz, y las tres salidas.
+  - Va al pre-registro de la tanda 1 (v8).
+- **La tanda final en dos tramos** (23:23:47, tal cual): «Los dos tramos de la tanda final (11b) van como los propusiste, con un cambio en
+  los umbrales. El tramo 1 son regímenes informativos y sin_raiz, así que la proporción a la cola y el costo por unidad se comparan con los
+  de las mismas clases en la tanda 1 (sus regímenes informativos y sus unidades sin_raiz), no con la tanda 1 entera. Los multiplicadores
+  (1,3 y 1,5), el 1 % de salidas inválidas y los 0 errores quedan como los propusiste. Si alguna de esas clases tiene en la tanda 1 muy
+  pocas unidades para dar una base estable, proponeme cómo resolverlo antes de leer la tanda 1.»
+  - El tramo 1 tiene 30 documentos y 601 unidades, y el tramo 2, 68 y 4.350 (paquete de la mesa,
+    `decisiones_115_mesa/escalado/tramos_tanda_final_mesa.json`).
+  - Va al pre-registro de la tanda final.
+- **T3 sobre el tramo 1** (23:23:47, tal cual): «T3 sobre el tramo 1 (11d): sí, si la corrida en seco de la tanda final prueba que el
+  ensamblado de un subconjunto funciona. Si no, no se hace.»
+- **Las horas de la autora** (23:23:47, tal cual): «Mis horas (11c): este fin de semana, después de las 20 del gold, empiezo la calibración
+  del juez. Entre sumar horas y achicar el N decido el lunes 19 a la noche, con las tasas de A2.2 y el N que dé la potencia.»
+- Las secciones anteriores no se editan.
+
+## 13. Los positivos del detector, la regla de reemplazo de las preguntas y las bases del control entre tramos (agregado del 15/10/2026)
+
+Decisiones de la autora recibidas a las 23:52:00 (hoja de ruta de la mesa, §117). Responden a las propuestas de la §116 (paquete de la mesa,
+`decisiones_116_mesa/escalado/propuestas_detector_y_bases_antes_de_leer_la_tanda_1_mesa.md`).
+
+- **Los positivos del detector** (tal cual): «Los positivos del detector no van con la lectura asistida (c′). La mesa diseña el detector,
+  así que no lee sus resultados, y ningún modelo aplica el criterio a un corte. Va la (c): leo yo, con la regla de lectura, el tope de 30
+  cortes y la semilla fijados antes de leer la tanda 1. El tope se reparte primero con un corte por documento, en el orden de la semilla, y
+  si sobra, un segundo corte en los documentos con más positivos. Si un corte se confirma, el documento sale, declarado. Los que quedan
+  fuera del tope no salen y se declaran como riesgo, porque sale solo lo confirmado.»
+- **La regla de reemplazo de las preguntas de B6.3** (tal cual): «La regla de reemplazo de las preguntas de B6.3 va como la propusiste,
+  con el documento siguiente de la misma clase en el orden del sorteo. Ponela en el mandato de la generación de preguntas antes de sellar
+  el sorteo.»
+  - Va en el mandato de la generación de preguntas, que todavía no está escrito, antes de sellar el sorteo.
+- **Las bases del control entre tramos** (tal cual): «Las bases del control entre tramos van como las propusiste: una sola base con las
+  548 unidades RI o sin_raiz de la tanda 1, el límite superior de Wilson si tiene menos de 10 en la cola, y el costo ponderado por la
+  composición del tramo 1. La alternativa no va.»
+- **Las fechas de `.git` durante A2** (tal cual): «Lo de .git se cierra como lo propusiste: renovación de fecha de objetos existentes, sin
+  cambio de contenido, mecanismo no identificado.»
+  - La evidencia está en el paquete de la mesa (`decisiones_116_mesa/git/`): `git fsck` y `git verify-pack` limpios.
+- **Los tests finales de A2.1** (tal cual): «Los tests finales de A2.1 sobre una copia nueva, como en A2, de acuerdo. El FRENO lo declara como
+  diferencia con el mandato.»
+  - Es la regla d de CLAUDE.md: el mandato dice «con los tests corridos de nuevo en el repo», y CLAUDE.md §4.l pide que los selftests
+    corran sobre una copia.
+- Las secciones anteriores no se editan.
