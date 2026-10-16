@@ -1,4 +1,4 @@
-BORRADOR v2 — PENDIENTE DEL GATE FINAL Y DE LA FIRMA DE LA AUTORA
+VERSIÓN PARA FIRMAR (mesa, 16/10/2026) — PENDIENTE DE LA FIRMA DE LA AUTORA
 
 # Laudo de la release r2 del pipeline
 
@@ -8,6 +8,8 @@ del laudo de la versión.
   tanda 0. Donde la v1 y la v2 difieren, rige la v2 (§5 lista las diferencias).
 - **Se firma al final:** después del gate final sobre el código final (§3) y antes del pre-registro de la tanda 1. Hasta entonces, los
   sellos marcados «A COMPLETAR» se llenan a medida que cierra cada pieza.
+- **Versión para firmar (16/10/2026):** los sellos del §1 completos y el gate final (§3) corrido por la mesa sobre copias, con el
+  código de HEAD (decisión de la autora del 15/10/2026). El resultado y la condición 4 están en la nota del 16/10/2026.
 
 **Qué es r2.** La release con la que corre la tanda 1 (B6.1; condición 2 de la tanda 1, checklist R1 y R26). Comprende:
 - el ciclo B2.11: prompt nuevo de E1, re-extracción de la tanda 0 como r2b, código del ensamblado y de los validadores (`plan:389-403`);
@@ -25,20 +27,20 @@ gate en T3-bis, `bbc38dc`). El sello final es el que congela esta release.
 
 | pieza | dónde | sello de r2b | sello final | qué falta |
 |---|---|---|---|---|
-| E0 (e0-r2) | `reextraccion_v2/e0_chunking/` | código `9f6361e`; salida de la tanda 0 en `salida_tanda0_r2b/` (57 archivos) | A COMPLETAR | S0-4 de U-SEG-OFICIAL cambia el código una vez; después S1-bis y S2; manifiesto de E0 de la partición de la tanda 1 |
+| E0 (e0-r2) | `reextraccion_v2/e0_chunking/` | código `9f6361e`; salida de la tanda 0 en `salida_tanda0_r2b/` (57 archivos) | código de S0-6b (`2374968`): `e0_lib.py` `d89aab1a…`, `correr_e0.py` `78c54c4c…`, `e0_tablas.py` `ab300a22…`, iguales en HEAD; salida de los 152, manifiesto `80adbd58…` (768 archivos, 10.478 unidades), con la lista de S2 (`96d7d1ab`) y su tanda final (`5b9ce4ed`) | — (el manifiesto de E0 de la tanda 1 lo arma T1 de su despacho con este código) |
 | Prefijo de E1 | `e1_extractor/prompt_r2b.py` | hash `322c5a23e9b7` (sha256 `ccffa4e3…`, `66cde30`; parches P3b y P3c) | igual (no cambia antes de la tanda 1) | — |
 | Tool schema de E1 | `pyd_r2/generados/tool_schema_r2.json` | `0c391f2b…` | igual | — |
-| Mensaje de E1 | candado en `prompt_r2b.py:97-98` | `4d69f7f4…` (casos) y `a9cb702c…` (mensaje) | A COMPLETAR | U-ALCANCE-E1 (registro de alcance en el mensaje; condición 11-bis) |
+| Mensaje de E1 | candado en `prompt_r2b.py:97-98` | `4d69f7f4…` (casos) y `a9cb702c…` (mensaje) | registro de alcance `e06933e7…`, fixture del candado `6b758517…` y mensaje `eeb11b9a…` (`prompt_r2b.py:97-98` y `:477`, desde `42823df0`; confirmados por la autora el 15/10/2026); las 13 de P3c-2 siguen en `a9cb702c…` | — |
 | Modelos, temperatura y plataforma | `corpus_v2/runner_corpus.py:91-96`; manifiesto r2b | E1 `claude-haiku-4-5`, temperatura 0 (reintento por forma, 1); E3 `claude-sonnet-5`; API de Anthropic | igual | — (C3 de U-COMP-E1 cerró en `323cef7`: ningún brazo cumple y el modelo del extractor no cambia antes de la tanda 1; corregido el 08/10/2026, decía «igual, salvo C3» y «C3 decide»; un cambio de modelo posterior va por la enmienda 6 al protocolo entre tandas, FIRMADA el 08/10/2026) |
 | Namespaces de caché | manifiesto r2b | E1 `e1_extraccion\|cv=e1-extractor-v1-p322c5a23e9b7\|think=0` (reintento `-rforma1`); E3 `e3_verificacion\|cv=e3-verificador-v1-p21a836c7de6d\|think=0` | igual | — |
 | Prefijo de E3 | `e3_verificador/prompt_e3.py` | `21a836c7de6d` | igual | — |
-| Mensaje de E3 (NOTA) | candado en `prompt_e3.py` | manifiesto: `e8fa5dc4…` y `da17c22e…`; código desde O2 (`7fe848c`): `079d2489…` y `66bc8656…` | A COMPLETAR | O5 de U-E3-LISTAS (caso resuelto en la NOTA del ítem) |
-| Matriz del validador | `pyd_r2/code/modelos_r2.py` (`AMPLIACION_R2`), `pyd_r2/generados/enums_r2.json` y la política, con candados | la de L-ESQ-R2 con sus enmiendas firmadas | A COMPLETAR | enmienda 8 a L-ESQ-R2 (si se firma tras la lectura de las 41) |
-| Ensamblador y validador r2 | `tanda0/code/ensamblar_tanda0.py`, `pyd_r2/code/validador_r2.py`, `corpus_v2/r1_referencias.py` | código de `dac7d57` | A COMPLETAR | U-OMISIONES-COD (grupos A a D, F a J) |
+| Mensaje de E3 (NOTA) | candado en `prompt_e3.py` | manifiesto: `e8fa5dc4…` y `da17c22e…`; código desde O2 (`7fe848c`): `079d2489…` y `66bc8656…` | fixture `079d2489…` y mensaje `66bc8656…` (`prompt_e3.py:472-473`, sin cambios desde `7fe848c`); U-E3-LISTAS cerró en `56a7a11` con O5 probada y no adoptada | — |
+| Matriz del validador | `pyd_r2/code/modelos_r2.py` (`AMPLIACION_R2`), `pyd_r2/generados/enums_r2.json` y la política, con candados | la de L-ESQ-R2 con sus enmiendas firmadas | L-ESQ-R2 (`4ef7650`) con las enmiendas 2 a 7 firmadas (la 6, en su parte A) y sin la 8 (NO FIRMADA el 09/10/2026: las 48 Excepcion de la causa (ii), límite declarado): `modelos_r2.py` `e67f15ae…`, `enums_r2.json` `abd197ac…`, `politica_campos_r2.json` `82e8752a…`; → Potestad confirma y → Operacion no confirma (C4 de U-CONF-MATRIZ, `d2f24cb`) | — |
+| Ensamblador y validador r2 | `tanda0/code/ensamblar_tanda0.py`, `pyd_r2/code/validador_r2.py`, `corpus_v2/r1_referencias.py` | código de `dac7d57` | código de U-OMISIONES-COD (`ded41d50`): `ensamblar_tanda0.py` `b720df24…`, `validador_r2.py` `f60be782…`, `r1_referencias.py` `3325bb26…`, `r1_e4.py` `6ca4fcb8…`, sin cambios después | — (U3 de U-UNION-ESTRECHA toca `ensamblar_tanda0.py` antes del sello del grafo evaluado: es una versión posterior, declarada, por el principio 9) |
 | Catálogo del request | `catalogo_unico/catalogo_sujetos_r2.json` y `generados_r2/` | `c3ad1581…` | igual (enmienda 4, §1.4 y §6) | — |
-| Fixture de la suite | `scripts/regression_kg_esperado.json` | la del gate de T3-bis (`f72518b3…`) | A COMPLETAR | la entrada del grafo re-sellado |
-| Grafos r2b de la tanda 0 | `data/experiment/neo4j/grafos.py` | diez `a9631a64…`, desarrollo `6e756043…`; sin cola `e22fae1a…` y `2922b72d…` | A COMPLETAR | re-sellado único, después de U-OMISIONES-COD |
-| Tarifa de referencia | protocolo entre tandas, nota del 07/10/2026 (`:497-511`) | USD 0,021115 por unidad (E1 0,010135; E3 0,010980) | igual, ajustada por O5 si su costo real difiere | — |
+| Fixture de la suite | `scripts/regression_kg_esperado.json` | la del gate de T3-bis (`f72518b3…`) | `754396aa…`, con las cuatro entradas rs1 del re-sellado (`4fe6ece1`) | — |
+| Grafos r2b de la tanda 0 | `data/experiment/neo4j/grafos.py` | diez `a9631a64…`, desarrollo `6e756043…`; sin cola `e22fae1a…` y `2922b72d…` | re-sellados (`4fe6ece1` y `45786ec0`, `commit_sellado` `4fe6ece`): diez `fda6c07d…`, desarrollo `acb26dca…`, diez sin cola `61dd1b69…`, desarrollo sin cola `66e745f5…` | — |
+| Tarifa de referencia | protocolo entre tandas, nota del 07/10/2026 (`:497-511`) | USD 0,021115 por unidad (E1 0,010135; E3 0,010980) | igual: la que usa la regla del tope de la tanda 1 (1,45 × U × 0,021115; decisión de la autora del 10/10/2026). La medición que podría ajustarla es O3 de U-E3-LISTAS (protocolo, `:508-510`; C2 del pre-registro); O5 se probó y no se adoptó | — |
 
 **No congela, por diseño:** el catálogo de resolución, que crece por el §1 de la enmienda 4 al cierre de cada tanda, y el registro de
 alcance por tanda, que solo agrega (enmienda 4, §6).
@@ -54,7 +56,7 @@ Cada flecha es «antes de».
 4. **E0:** S0-4 → S1-bis → S2 → E0 de la partición → lista de TOs de la tanda 1 y censo de unidades grandes (condiciones 5, 7 y 12).
 5. **Modelo de E1:** adjudicación de las 19 divergencias de la segunda lectura de C2 → C3 de U-COMP-E1.
 6. **Fuera de las cadenas:**
-   - la lectura de confirmación de la matriz (`condicion_de` → Operacion y → Potestad), requisito de B6.1 (`plan:407`);
+   - la lectura de confirmación de la matriz (`condicion_de` → Operacion y → Potestad), requisito de B6.1 (`plan:409`; decía `plan:407`, corregido el 16/10/2026);
    - el laudo B2.4 (condición 13);
    - el tablero, con la re-medición de la columna r2b después del re-sellado (condición 4);
    - el acta del capítulo 3 (condición 1).
@@ -84,7 +86,7 @@ El tablero de correcciones no es parte del gate: es la condición 4 de la tanda 
 
 El tope se fija en el pre-registro de la tanda 1, con la tarifa de referencia de USD 0,021115 por unidad y la lista real de unidades que
 dé la segmentación oficial. Como orden de magnitud, el ejemplo del §7 del protocolo (3.292 unidades) cuesta cerca de USD 69,5
-(`protocolo_entre_tandas.md:506`). El «~USD 40» del plan quedó corregido (`plan:407` y `:768`).
+(`protocolo_entre_tandas.md:506`). El «~USD 40» del plan quedó corregido (`plan:409` y `:770`; decía `:407` y `:768`, corregido el 16/10/2026).
 
 ## 5. Lo que la v2 cambia de la v1 (anexo A)
 
@@ -158,9 +160,42 @@ dé la segmentación oficial. Como orden de magnitud, el ejemplo del §7 del pro
 - **Cadena 5 (§2), cerrada:** C3 de U-COMP-E1 (`323cef7`).
 - **Fuera de las cadenas:** el laudo B2.4 está FIRMADO (`befe7fd`); la nota del 09/10/2026 lo da todavía «en versión para firmar».
 
+## Notas del 16/10/2026 (mesa; versión para firmar)
+
+Pedido de la autora recibido a las 08:47:38 (hoja de ruta de la mesa, §120). La condición 4 y el gate final los corre la mesa sobre
+copias, sin turno en el repo (decisión de la autora del 15/10/2026, `docs/registro_decisiones_calidad_y_evaluacion_2026-10-15.md`, §12).
+
+- **Los sellos del §1, completos.** Cada valor está en HEAD (`47c9f1b3`) y se controló contra su archivo. Las cadenas 1 a 5 del §2 están
+  cerradas; la 4 cerró con S2 (`2fcc8fb3`, `96d7d1ab` y `5b9ce4ed`).
+- **El gate final (§3), en verde,** sobre una copia nueva del repo en `47c9f1b3`, con los argumentos del re-sellado único
+  (`data/experiment/laudo_release_r2/gate_final/`, con su script, su resumen y su sha256):
+  1. **shapes** (perfil r2, fase r2b), en los cuatro grafos re-sellados: PASA, con todas las bloqueantes en PASS; S7 y S12 en FAIL y S8,
+     S11, S21 y S23 en WARN son informativas, como en el re-sellado;
+  2. **suite,** con la fixture `754396aa…`: 68 ítems y 3 regresiones en cada grafo, las declaradas (RT-C5-3, RT-C6-1 y RT-C6-2):
+     **0 regresiones no declaradas**;
+  3. **métricas intrínsecas,** con el comando del tablero (E0 con las dos partes de `cap::4.2.1.2`, manifiesto `_rs1` y sha256 esperado),
+     en los cuatro: rc 0; M10, 0 de 2.440 (diez) y 0 de 1.769 (desarrollo), y en los sin cola, 69 y 54, que son las unidades de la cola.
+     Un primer intento con la E0 sin las partes frenó por diseño (`metricas_intrinsecas.py:784`) y se repitió con el comando del tablero;
+  4. **reproducibilidad:** las cuatro cadenas r2b dan los grafos re-sellados byte a byte en dos corridas (`fda6c07d…`, `acb26dca…`,
+     `61dd1b69…` y `66e745f5…`), y la r2a da `70d51e42…` (diez) y `fa4c1043…` (desarrollo);
+  5. **selftests:** `selftest_e0` 251/251; `selftest_pyd_r2` 409/409; `selftest_r3` 160/160; el del ensamblado de U-OMISIONES-COD 38/38;
+     el de la métrica I 3/3; `selftest_regression_kg` 184/184 en dos corridas; `selftest_shapes_congelado` 84/84; el de claves, VEREDICTO
+     OK. El del catálogo único lee el texto firmado de L-ESQ-R2 con `git show`, así que en la copia sin `.git` frena por diseño: corrió
+     en un clon de HEAD, 60/60;
+  6. **nunca EV2:** ninguno de los pasos la usa;
+  7. **el repo:** el gate corrió sobre la copia y no escribió en él. Durante el gate cambió solo `data/experiment/banco_mcp/` (50 nuevos y 2
+     modificados), que son escrituras de A2.1, que corrió en paralelo en su sesión; ninguna toca la cadena.
+- **La condición 4,** fuera del gate (§3): la columna r2b del tablero re-medida sobre los grafos re-sellados, con las líneas de base de las
+  vigilancias contables (4), (5), (8) y (9) (`data/experiment/resellado_t0/condicion_4/`; el tablero, en su commit).
+- **C2 y C8 del pre-registro de la tanda 1** (recomendaciones de la mesa aceptadas por la autora el 10/10/2026): la tarifa la ajusta O3,
+  no O5, y las anclas `plan:407` y `:768` pasan a `:409` y `:770` (§2 y §4).
+- **El código de la tanda 1** es el de este gate. El despacho controla que HEAD tenga los mismos sha256 en el código de la cadena y frena
+  si no (recomendación aceptada el 10/10/2026, pendiente 11 del pre-registro).
+
 ## Firma
 
-BORRADOR v2 — PENDIENTE de los sellos «A COMPLETAR», del gate final y de la firma de la autora, antes del pre-registro de la tanda 1.
+VERSIÓN PARA FIRMAR (16/10/2026): los sellos del §1, completos; el gate final (§3), en verde; PENDIENTE de la firma de la autora,
+antes del pre-registro de la tanda 1.
 
 ---
 
