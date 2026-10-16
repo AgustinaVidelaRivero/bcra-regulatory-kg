@@ -463,3 +463,48 @@ Decisiones de la autora recibidas a las 23:52:00 (hoja de ruta de la mesa, §117
   - Es la regla d de CLAUDE.md: el mandato dice «con los tests corridos de nuevo en el repo», y CLAUDE.md §4.l pide que los selftests
     corran sobre una copia.
 - Las secciones anteriores no se editan.
+
+## 14. Sub-documento en la tanda 1, la señal cid y las salidas crudas de la segmentación (agregado del 16/10/2026)
+
+Decisiones de la autora recibidas el 16/10/2026 a las 00:43:53 (hoja de ruta de la mesa, §118). Responden a los pedidos 9, 11 y 12 de la
+§117 (paquete de la mesa, `decisiones_117_mesa/escalado/pedidos_8_a_12_antes_de_leer_la_tanda_1_mesa.md`).
+
+- **Los límites de sub-documento de la tanda 1** (tal cual): «Sub-documento: la (a), como la propusiste. Leo los 14 de la tanda 1, con la
+  regla de lectura de S1-bis, el sábado 17 o el domingo 18, mientras corre T2. Con un error de corte confirmado, el rasgo queda confirmado y
+  los 33 de la tanda final van por la regla de la decisión 1. Preparame las fichas y decime cuándo están.»
+  - Las fichas, la planilla vacía y las páginas están en el paquete de la mesa (`decisiones_118_mesa/lectura_subdocumento_tanda1/`), con
+    su manifiesto. Salen de la E0 corregida y del censo de sub-documentos de la segmentación, sin ninguna marca.
+- **La señal cid** (tal cual): «cid: como lo propusiste. El conteo por script va después de T5. Leo solo las unidades que lleguen al grafo
+  con «(cid:», hasta 15, y después se hace lo mismo con las 3 de la tanda final. El límite que no se mide se declara.»
+  - El límite que no se mide: si la señal hizo perder caracteres sin dejar `(cid:N)` en el texto.
+- **Las salidas crudas de la segmentación** (tal cual): «Las salidas crudas de S2 quedan sin resguardo. Se regeneran cuando hagan falta.»
+- **1.16 en la tanda final: abierto.** La autora decide entre declararlo y una lectura corta escalonada, después de ver la historia de 1.16
+  con su fuente en cada paso (paquete de la mesa, `decisiones_118_mesa/historia_116/`).
+- Las secciones anteriores no se editan.
+
+## 15. La lectura corta de 1.16 en la tanda final, el tope por rasgo y el venv del servidor vectorial (agregado del 16/10/2026)
+
+Decisiones de la autora recibidas el 16/10/2026 a las 08:15:55 (hoja de ruta de la mesa, §119). Responden a la propuesta de la §118
+(paquete de la mesa, `decisiones_118_mesa/historia_116/historia_de_1_16_y_lectura_corta_mesa.md`).
+
+- **1.16 en la tanda final** (tal cual): «1.16: va la lectura corta escalonada, con la regla que propusiste: la población de los 28
+  documentos con candidatos sin leer, el orden y el corte de cada documento por semilla, el primer tramo de 10, la rama 0 y la rama 1, y el
+  criterio de la lectura de cortes de S1. Sellá el orden y los cortes antes de armar las fichas. Armame las fichas de los 30 cortes del
+  orden, no solo de los 10 primeros, para que la rama 1 no tenga que esperar. Leo el sábado 17 o el domingo 18, mientras corre T2.»
+  - El orden y los cortes quedaron sellados el 16/10/2026 a las 08:19:19, antes de armar las fichas
+    (`orden_y_cortes_116_tanda_final.json`, sha256 `3db5328f7fba7f79cd09e29bd468fb58ec25d054599c2530819e42c6f8764287`, en el paquete de
+    la mesa, `decisiones_119_mesa/lectura_116_tanda_final/sello/`). Dan lo mismo con Python 3.10.13 y con 3.12.13.
+  - Lo que la regla aprobada no escribía, fijado por la mesa antes del sello: el segundo corte de un documento sale de
+    `random.Random(f"U-SEG-OFICIAL:1_16:tanda_final:{doc}:2")`, entre sus candidatos sin leer menos el primero.
+  - Las fichas de los 30 cortes salen de la E0 corregida y del PDF, sin ninguna marca.
+- **El tope de cortes** (tal cual): «El tope de 30 de la decisión 1 es por rasgo, no total.»
+  - Para sub-documento en la tanda final, si los 14 de la tanda 1 confirman el rasgo: 30 cortes de sus 33 límites, en 18 documentos. El
+    orden propuesto por la mesa quedó sellado el 16/10/2026 a las 08:20:10 (`orden_subdocumento_tanda_final.json`, sha256
+    `a5aa300852f999679bf7d19dee3a129a7f988edf2c4ca56b0e95bd7afa9752d4`), antes de que exista ninguna salida de la tanda 1. Si la autora
+    prefiere otra semilla, se rehace y se sella antes de que lea la tanda 1.
+- **El venv del servidor vectorial,** que borró el limpiador de `/private/tmp`, se rearma fuera de él:
+  - en `~/INGENIERIA IA/TESIS/venvs/banco_vector_py312`, con Python 3.12.13 de miniforge y exactamente `requirements_vector.txt`;
+  - el modelo se carga desde la caché local, sin conexión;
+  - si el índice viejo no da `12d284d5…`, A2.1 frena sin probar otras versiones;
+  - su FRENO declara el `pip freeze` y el intérprete de cada script, también los del tramo 2.
+- Las secciones anteriores no se editan.
