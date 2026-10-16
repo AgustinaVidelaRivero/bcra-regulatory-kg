@@ -1,0 +1,49 @@
+{
+  "generado": "2026-10-16T08:55:33",
+  "unidad": "A2.1, tramo 1 — prueba del envoltorio",
+  "envoltorio": "data/experiment/banco_mcp/a2_1/con_clave_del_entorno.py",
+  "sha256_envoltorio": "83527b334ca6c6be6ec3ce277bb43f60c6679347a9da237253e9cf6beb06a397",
+  "sha256_esperado": "83527b334ca6c6be6ec3ce277bb43f60c6679347a9da237253e9cf6beb06a397",
+  "archivos_falsos": [
+    "entorno_falso_prueba.txt",
+    "entorno_falso_sin_clave.txt"
+  ],
+  "archivos_falsos_borrados": true,
+  "nota": "el valor falso se genera al azar en cada corrida y no se persiste; se persiste solo si llegó y si su sha256 coincidió",
+  "casos": [
+    {
+      "caso": "1 archivo con la variable (el padre trae otra)",
+      "returncode": 7,
+      "esperado": 7,
+      "llego": true,
+      "sha256_igual_al_falso": true,
+      "ok": true
+    },
+    {
+      "caso": "2 archivo inexistente",
+      "returncode": 3,
+      "esperado": 3,
+      "stderr": "FRENO: no existe el archivo de entorno indicado",
+      "ok": true
+    },
+    {
+      "caso": "3 archivo sin la variable",
+      "returncode": 4,
+      "esperado": 4,
+      "stderr": "FRENO: el archivo de entorno no trae ANTHROPIC_API_KEY",
+      "ok": true
+    },
+    {
+      "caso": "4 uso incorrecto (sin --)",
+      "returncode": 2,
+      "esperado": 2,
+      "stderr": "uso: con_clave_del_entorno.py --entorno <archivo> -- <comando> [args...]",
+      "ok": true
+    },
+    {
+      "caso": "5 el valor no aparece en ninguna salida",
+      "ok": true
+    }
+  ],
+  "PASS": true
+}

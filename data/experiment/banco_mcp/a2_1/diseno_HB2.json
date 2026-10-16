@@ -1,0 +1,23 @@
+{
+  "unidad": "A2.1, tramo 1 — diseño de la caracterización de H-B2, escrito antes de correrla (documento: diseno_HB2.md)",
+  "preguntas_fuente": "smoke/preguntas_smoke.json (SMK-01 a SMK-04; anclas cap:1.3, pro:2.7, ric:1.1 y ext:8.1, territorio verificado el 23/08/2026 con 0 solapes contra EV2). Ninguna pregunta nueva: una pregunta compuesta es la unión de preguntas propias ya verificadas, con sus mismas anclas.",
+  "plantilla_compuesta": "Respondé estas {n} preguntas:\n{preguntas}",
+  "sesiones": [
+    {"id": "HB2-01", "brazo": "fragmentos_bm25", "preguntas": ["SMK-04"], "max_turns": 1,
+     "proposito": "corte con el k más chico sobre una pregunta que en la fase B pidió 2 llamadas en el brazo vectorial"},
+    {"id": "HB2-02", "brazo": "fragmentos_bm25", "preguntas": ["SMK-04"], "max_turns": 2,
+     "proposito": "corte con k = 2, misma pregunta: dónde corta y qué cuenta num_turns al cortar"},
+    {"id": "HB2-03", "brazo": "fragmentos_bm25", "preguntas": ["SMK-01", "SMK-03"], "max_turns": 2,
+     "proposito": "dos temas independientes, para inducir llamadas paralelas en un mismo mensaje: ¿un mensaje con dos tool_use cuenta 1 o 2?"},
+    {"id": "HB2-04", "brazo": "fragmentos_bm25", "preguntas": ["SMK-01", "SMK-03"], "max_turns": 12,
+     "proposito": "control sin corte de HB2-03: num_turns frente a mensajes del asistente y tool_use"},
+    {"id": "HB2-05", "brazo": "fragmentos_bm25", "preguntas": ["SMK-01", "SMK-02", "SMK-03", "SMK-04"], "max_turns": 3,
+     "proposito": "cuatro temas con k = 3: más llamadas que k si hay paralelas"},
+    {"id": "HB2-06", "brazo": "fragmentos_denso", "preguntas": ["SMK-04"], "max_turns": 1,
+     "proposito": "réplica de HB2-01 en el otro brazo"},
+    {"id": "HB2-07", "brazo": "fragmentos_denso", "preguntas": ["SMK-01", "SMK-03"], "max_turns": 2,
+     "proposito": "réplica de HB2-03 en el otro brazo"},
+    {"id": "HB2-08", "brazo": "fragmentos_denso", "preguntas": ["SMK-01", "SMK-02", "SMK-03", "SMK-04"], "max_turns": 12,
+     "proposito": "control sin corte con cuatro temas: el caso más parecido a SMK-04-kg de la fase B (num_turns 14 > 12 sin corte)"}
+  ]
+}

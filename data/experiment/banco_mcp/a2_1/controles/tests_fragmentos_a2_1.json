@@ -1,0 +1,1152 @@
+{
+  "generado": "2026-10-16T08:31:49",
+  "unidad": "A2.1, tramo 1 — tests del servidor de fragmentos",
+  "python": "3.12.13",
+  "platform": "macOS-15.7.1-arm64-arm-64bit",
+  "unicodedata": "15.0.0",
+  "grupos": [
+    "bm25_analizador",
+    "bm25_determinismo",
+    "bm25_transporte",
+    "config_grafo",
+    "regresion_denso",
+    "denso_e0_vieja",
+    "denso_r2b",
+    "denso_r2b_dos"
+  ],
+  "bm25_analizador": {
+    "n": 41,
+    "n_iguales": 41,
+    "filas": [
+      {
+        "entrada": "Capitales",
+        "esperado": [
+          "capital"
+        ],
+        "obtenido_igual": true,
+        "fuente": "LowerCaseFilter; SpanishLightStemmer.stem: termina en s con e en len-2 -> quita 2 (regla 3)"
+      },
+      {
+        "entrada": "mínimo",
+        "esperado": [
+          "minim"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: tabla de acentos (í -> i) y termina en o -> quita 1"
+      },
+      {
+        "entrada": "días",
+        "esperado": [
+          "días"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: menos de 5 caracteres -> sin cambios (ni acentos)"
+      },
+      {
+        "entrada": "años",
+        "esperado": [
+          "años"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: menos de 5 caracteres -> sin cambios; la ñ no está en la tabla"
+      },
+      {
+        "entrada": "entidades",
+        "esperado": [
+          "entidad"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: regla 3 (e en len-2)"
+      },
+      {
+        "entrada": "veces",
+        "esperado": [
+          "vez"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: regla 2 (ces -> z, quita 2)"
+      },
+      {
+        "entrada": "luces",
+        "esperado": [
+          "luz"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: regla 2 (ces -> z, quita 2)"
+      },
+      {
+        "entrada": "intereses",
+        "esperado": [
+          "interes"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: regla 1 (eses -> quita 2)"
+      },
+      {
+        "entrada": "meses",
+        "esperado": [
+          "mes"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: regla 1 (eses -> quita 2)"
+      },
+      {
+        "entrada": "clases",
+        "esperado": [
+          "clas"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: no es regla 1 (len-4 = a) ni 2 (len-3 = s): regla 3"
+      },
+      {
+        "entrada": "interés",
+        "esperado": [
+          "inter"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: tabla de acentos y después regla 3 sobre 'interes'"
+      },
+      {
+        "entrada": "señores",
+        "esperado": [
+          "señor"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: regla 3; la ñ no cambia"
+      },
+      {
+        "entrada": "Pingüino",
+        "esperado": [
+          "pinguin"
+        ],
+        "obtenido_igual": true,
+        "fuente": "LowerCaseFilter; SpanishLightStemmer.stem: tabla de acentos (ü -> u) y o final"
+      },
+      {
+        "entrada": "Ñandú",
+        "esperado": [
+          "ñandu"
+        ],
+        "obtenido_igual": true,
+        "fuente": "LowerCaseFilter; SpanishLightStemmer.stem: tabla (ú -> u); termina en u: sin regla de sufijo"
+      },
+      {
+        "entrada": "créditos",
+        "esperado": [
+          "credit"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: tabla y regla 3 (o en len-2)"
+      },
+      {
+        "entrada": "garantía",
+        "esperado": [
+          "garanti"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: tabla y a final"
+      },
+      {
+        "entrada": "tasa tasas",
+        "esperado": [
+          "tasa",
+          "tas"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: 'tasa' tiene 4 caracteres; 'tasas', regla 3"
+      },
+      {
+        "entrada": "deudor",
+        "esperado": [
+          "deudor"
+        ],
+        "obtenido_igual": true,
+        "fuente": "SpanishLightStemmer.stem: termina en r: sin regla"
+      },
+      {
+        "entrada": "más MÁS mas",
+        "esperado": [
+          "mas"
+        ],
+        "obtenido_igual": true,
+        "fuente": "LowerCaseFilter antes de StopFilter (spanish_stop.txt): 'más' es palabra vacía en las dos grafías; 'mas' sin tilde no"
+      },
+      {
+        "entrada": "también",
+        "esperado": [],
+        "obtenido_igual": true,
+        "fuente": "StopFilter (spanish_stop.txt)"
+      },
+      {
+        "entrada": "si sí",
+        "esperado": [
+          "si"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StopFilter (spanish_stop.txt): solo 'sí' (con tilde) es palabra vacía"
+      },
+      {
+        "entrada": "el a e o y",
+        "esperado": [],
+        "obtenido_igual": true,
+        "fuente": "StopFilter (spanish_stop.txt)"
+      },
+      {
+        "entrada": "u",
+        "esperado": [
+          "u"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StopFilter (spanish_stop.txt): 'u' no está en la lista"
+      },
+      {
+        "entrada": "co-deudores",
+        "esperado": [
+          "co",
+          "deudor"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): el guion corta; SpanishLightStemmer.stem: 'co' tiene 2 caracteres, 'deudores' regla 3"
+      },
+      {
+        "entrada": "1.234,56",
+        "esperado": [
+          "1.234,56"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): dígito (MidNum|MidNumLet) dígito no corta (WB11, WB12)"
+      },
+      {
+        "entrada": "1.4.2.1.",
+        "esperado": [
+          "1.4.2.1"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): el punto final no va seguido de dígito: corta"
+      },
+      {
+        "entrada": "A.1",
+        "esperado": [
+          "1"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): letra . dígito corta (WB6 pide letra a los dos lados); 'a' es palabra vacía"
+      },
+      {
+        "entrada": "S.A.",
+        "esperado": [
+          "s.a"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): letra (MidNumLet) letra no corta (WB6, WB7)"
+      },
+      {
+        "entrada": "art:5",
+        "esperado": [
+          "art",
+          "5"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): letra : dígito corta"
+      },
+      {
+        "entrada": "S:t",
+        "esperado": [
+          "s:t"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): letra (MidLetter) letra no corta (WB6, WB7)"
+      },
+      {
+        "entrada": "l'avion",
+        "esperado": [
+          "l'avion"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): letra ' letra no corta (WB6, WB7); termina en n"
+      },
+      {
+        "entrada": "3er A1",
+        "esperado": [
+          "3er",
+          "a1"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): letras y dígitos no cortan (WB9, WB10)"
+      },
+      {
+        "entrada": "cta_cte",
+        "esperado": [
+          "cta_ct"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): el guion bajo (ExtendNumLet) no corta (WB13a, WB13b); SpanishLightStemmer.stem: e final"
+      },
+      {
+        "entrada": "U$S",
+        "esperado": [
+          "u",
+          "s"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): '$' corta"
+      },
+      {
+        "entrada": "pagos/cobros",
+        "esperado": [
+          "pag",
+          "cobr"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): '/' corta; SpanishLightStemmer.stem: regla 3"
+      },
+      {
+        "entrada": "5%",
+        "esperado": [
+          "5"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): '%' corta"
+      },
+      {
+        "entrada": "Comunicación «A» 6938",
+        "esperado": [
+          "comunicacion",
+          "6938"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): comillas cortan; StopFilter (spanish_stop.txt): 'a'; SpanishLightStemmer.stem: tabla, termina en n"
+      },
+      {
+        "entrada": "(BCRA)",
+        "esperado": [
+          "bcra"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29); LowerCaseFilter"
+      },
+      {
+        "entrada": "İSTANBUL",
+        "esperado": [
+          "istanbul"
+        ],
+        "obtenido_igual": true,
+        "fuente": "LowerCaseFilter: Character.toLowerCase(U+0130) = 'i' (mapeo simple)"
+      },
+      {
+        "entrada": "efectivo mínimo en pesos",
+        "esperado": [
+          "efectiv",
+          "minim",
+          "pes"
+        ],
+        "obtenido_igual": true,
+        "fuente": "cadena completa: StopFilter (spanish_stop.txt) saca 'en'; SpanishLightStemmer.stem regla 3 en 'pesos'"
+      },
+      {
+        "entrada": "'a' x 300",
+        "esperado": [
+          "'a' x 254",
+          "'a' x 44"
+        ],
+        "obtenido_igual": true,
+        "fuente": "StandardTokenizer (UAX #29): un token de más de 255 se parte en trozos de 255 (Javadoc de setMaxTokenLength); SpanishLightStemmer.stem: a final en cada trozo"
+      }
+    ],
+    "stop": {
+      "n_lista": 308,
+      "n_conjunto": 308,
+      "sha256_stop": "653a4f50e15b2016c220161a3f482ca0568ad35f385f8e9aa371bf3e6dac3dc0"
+    },
+    "PASS": true
+  },
+  "bm25_determinismo": {
+    "sha_construccion_1": "6b5da8b0940e6ae46214b93c541b384a710eb35688264c0138df2e7b4773fc25",
+    "sha_construccion_2": "6b5da8b0940e6ae46214b93c541b384a710eb35688264c0138df2e7b4773fc25",
+    "sha_servido": "6b5da8b0940e6ae46214b93c541b384a710eb35688264c0138df2e7b4773fc25",
+    "sha_config": "6b5da8b0940e6ae46214b93c541b384a710eb35688264c0138df2e7b4773fc25",
+    "pasajes_iguales": true,
+    "n_consultas_ranking": 12,
+    "mismos_rankings": true,
+    "sha256_rankings": "54146ece47b5d3073a339b75f95926d91261029c76ca604ba75fac1237e79a1c",
+    "PASS": true
+  },
+  "bm25_transporte": {
+    "config": "data/experiment/banco_mcp/mcp_vector/config_fragmentos_bm25_r2b.json",
+    "config_sha256": "f76a0a51dd993d946a422ca1b382178beb3423d255049137c600b68a7baa1072",
+    "tools_expuestas": [
+      {
+        "name": "buscar_pasajes",
+        "description": "Búsqueda léxica (BM25) de pasajes del texto de las normas. Devuelve los pasajes más similares a la consulta, cada uno con su TO (norma), punto (unidad) y el texto completo del pasaje. Es el punto de entrada habitual.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "consulta": {
+              "type": "string",
+              "description": "Consulta en lenguaje natural."
+            },
+            "limite": {
+              "type": "integer",
+              "description": "Máximo de resultados (def. 5, máx. 5)."
+            }
+          },
+          "required": [
+            "consulta"
+          ]
+        }
+      }
+    ],
+    "definicion_tool_esperada": true,
+    "n": 13,
+    "n_iguales": 13,
+    "todos_citan": true,
+    "max_chars_resultado": 9984,
+    "log_r1": {
+      "ruta": "data/experiment/banco_mcp/a2_1/controles/logs/log_r1_test_bm25_transporte.jsonl",
+      "n_lineas": 15,
+      "consistente": true,
+      "sha256_log": "8d98174f1962fb0eb5f192043744b94d0f8b694b2510738d6d8273febeb01ed2",
+      "fuente_inicio": {
+        "backend": "bm25_local",
+        "afinidad": "bm25",
+        "indice_dir": "data/experiment/banco_mcp/mcp_vector/indice/e0_r2b_desarrollo_bm25",
+        "sha256_indice_bm25": "6b5da8b0940e6ae46214b93c541b384a710eb35688264c0138df2e7b4773fc25",
+        "sha256_manifiesto": "e30cb7c6552345055f29f9f61df81878409c9a4d5c888f083632967d8224ecca",
+        "sha256_pasajes_json": "d8faf4d2e353658e2764a38ad42c7b3533716923d4e2a8474e69677667cfd543",
+        "n_pasajes": 1768,
+        "analizador": "spanish de Lucene 9.11.1 (StandardTokenizer UAX#29 subconjunto + LowerCaseFilter + StopFilter spanish_stop.txt + SpanishLightStemFilter)",
+        "lucene_version": "9.11.1",
+        "sha256_stop": "653a4f50e15b2016c220161a3f482ca0568ad35f385f8e9aa371bf3e6dac3dc0",
+        "unicodedata": "15.0.0",
+        "k1": 1.2,
+        "b": 0.75,
+        "sha256_modulo_bm25": "7e26c29c51ae47e394c5bd42424a3319eb45243840846df5f700aebfd82c414d",
+        "manifiesto_e0": {
+          "id": "e0_tanda0_r2b_desarrollo",
+          "ruta": "data/experiment/banco_mcp/mcp_vector/manifiestos_e0/e0_tanda0_r2b_desarrollo.json",
+          "sha256": "118bf0b2e6a63bb5a9ff7fe1e403ae04366ae38c7df7459407438fccb8bb4f73",
+          "dir": "data/experiment/reextraccion_v2/e0_chunking/salida_tanda0_r2b",
+          "n_pasajes": 1768
+        },
+        "limite_max": 5
+      }
+    },
+    "llamadas": [
+      {
+        "k": 1,
+        "input": {
+          "consulta": "¿qué requisitos debe cumplir una asociación mutual para operar con entidades financieras?"
+        },
+        "chars_mcp": 4579,
+        "n_resultados": 5,
+        "sha256_mcp": "93b42ee32c0f165918474b921604b33eaa1813d3ee0907bda6312f6c67e78ca2",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "pro::1.1.2.5"
+      },
+      {
+        "k": 2,
+        "input": {
+          "consulta": "exigencia de efectivo mínimo en pesos",
+          "limite": 5
+        },
+        "chars_mcp": 8712,
+        "n_resultados": 5,
+        "sha256_mcp": "e8393564d101c9c1a1511e20223fbf9b54a626ac9ecf3b92598c9d1d9617a331",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "ext::4.1.1"
+      },
+      {
+        "k": 3,
+        "input": {
+          "consulta": "capital mínimo básico según la categoría de la entidad"
+        },
+        "chars_mcp": 3970,
+        "n_resultados": 5,
+        "sha256_mcp": "9f0a68aa9b148498b984960bd894c240b974e4831fe8d66ee53c529d86acd13d",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "cap::12.1"
+      },
+      {
+        "k": 4,
+        "input": {
+          "consulta": "cómo se clasifica a un deudor en situación 3",
+          "limite": 3
+        },
+        "chars_mcp": 4062,
+        "n_resultados": 3,
+        "sha256_mcp": "0805d873374cb2a8c8080cea03a10ef6264513c89a6a03c99cf866714e8ecf5c",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "cla::3.3.6"
+      },
+      {
+        "k": 5,
+        "input": {
+          "consulta": "previsiones mínimas por riesgo de incobrabilidad"
+        },
+        "chars_mcp": 5799,
+        "n_resultados": 5,
+        "sha256_mcp": "adb650ebbabe9e8b6095eec2b1c3467aa573126437a6ae11f569385a0edbb86e",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "cap::8.4.1.1"
+      },
+      {
+        "k": 6,
+        "input": {
+          "consulta": "garantías preferidas A y B",
+          "limite": 50
+        },
+        "chars_mcp": 4115,
+        "n_resultados": 5,
+        "sha256_mcp": "0fd7ef0b2f25000c942e08eb80e6faa43836b29868f48d88505e62acd64534af",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "cla::4.4"
+      },
+      {
+        "k": 7,
+        "input": {
+          "consulta": "acceso al mercado de cambios para pago de importaciones",
+          "limite": "7"
+        },
+        "chars_mcp": 4543,
+        "n_resultados": 5,
+        "sha256_mcp": "fa91bcfae8a50789fc356240da8b4451b74678cc6ec86122dc4cb25d1959b878",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "ext::11.1.3::intro"
+      },
+      {
+        "k": 8,
+        "input": {
+          "consulta": "tope a la tasa de interés de financiaciones con tarjeta de crédito",
+          "limite": 0
+        },
+        "chars_mcp": 1656,
+        "n_resultados": 1,
+        "sha256_mcp": "50152cf2b41202b90427fc5242da3e70379afd5c97e79f70d850ab09a78e6e99",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "pro::2.3.3"
+      },
+      {
+        "k": 9,
+        "input": {
+          "consulta": "   "
+        },
+        "chars_mcp": 60,
+        "n_resultados": 0,
+        "sha256_mcp": "27c165c1bd81074e0ea0dd91be639bd50481b5f57aa193bbb4774dcd530b5c4c",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": null
+      },
+      {
+        "k": 10,
+        "input": {
+          "consulta": "plazo para informar incumplimientos de relaciones técnicas"
+        },
+        "chars_mcp": 6515,
+        "n_resultados": 5,
+        "sha256_mcp": "93af27f53a5a4f8d4bc25f53b37193d7f934f4a5cd625649c3070966a7a34387",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "ric::9.1.3"
+      },
+      {
+        "k": 11,
+        "input": {
+          "consulta": "de la que el en y a los del se",
+          "limite": 5
+        },
+        "chars_mcp": 87,
+        "n_resultados": 0,
+        "sha256_mcp": "d5a23d9fdd8e12fe3f07965f8f84590d4b7362333b90cfc8a50934a806a8d9fa",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": null
+      },
+      {
+        "k": 12,
+        "input": {
+          "consulta": "responsabilidad patrimonial computable",
+          "limite": 6
+        },
+        "chars_mcp": 3264,
+        "n_resultados": 5,
+        "sha256_mcp": "6175a5208707464c1a7a0be519e23a47166d25566efe5db44c3e04b3c45058fb",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "ric::6.1::intro"
+      },
+      {
+        "k": 13,
+        "input": {
+          "consulta": "régimen informativo contable mensual",
+          "limite": "abc"
+        },
+        "chars_mcp": 9984,
+        "n_resultados": 5,
+        "sha256_mcp": "d34e18633b5ff1719576246cfebd233cb9aecf539be6eae817fad6c1e6024c33",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "ric::10.1.1"
+      }
+    ],
+    "PASS": true,
+    "limite": {
+      "consulta": "capital mínimo básico según la categoría de la entidad",
+      "filas": [
+        {
+          "limite_pedido": null,
+          "esperado": 5,
+          "devuelto": 5,
+          "ok": true
+        },
+        {
+          "limite_pedido": 3,
+          "esperado": 3,
+          "devuelto": 3,
+          "ok": true
+        },
+        {
+          "limite_pedido": 5,
+          "esperado": 5,
+          "devuelto": 5,
+          "ok": true
+        },
+        {
+          "limite_pedido": 6,
+          "esperado": 5,
+          "devuelto": 5,
+          "ok": true
+        },
+        {
+          "limite_pedido": 10,
+          "esperado": 5,
+          "devuelto": 5,
+          "ok": true
+        },
+        {
+          "limite_pedido": 50,
+          "esperado": 5,
+          "devuelto": 5,
+          "ok": true
+        },
+        {
+          "limite_pedido": "7",
+          "esperado": 5,
+          "devuelto": 5,
+          "ok": true
+        },
+        {
+          "limite_pedido": 0,
+          "esperado": 1,
+          "devuelto": 1,
+          "ok": true
+        },
+        {
+          "limite_pedido": "abc",
+          "esperado": 5,
+          "devuelto": 5,
+          "ok": true
+        }
+      ],
+      "PASS": true
+    },
+    "limite_por_mcp": {
+      "mayores_que_5_devuelven_5": true
+    }
+  },
+  "config_grafo": {
+    "filas": [
+      {
+        "config": "data/experiment/banco_mcp/mcp_kg/config_mcp_kg_a2_desarrollo_r2b.json",
+        "config_sha256": "5581d61d80e49582ce3ceb3df5d6b51ebdc9829b56d63040df58ea3ab61f9244",
+        "grafo": "KG_Tanda0_Desarrollo_r2b",
+        "en_grafos_py": true,
+        "kg_sha256_esperado": "6e7560433148cfe0c476cdd61199c32278187c4196d6f90dc0a38976a6d8e9a2",
+        "sha256_grafos_py": "6e7560433148cfe0c476cdd61199c32278187c4196d6f90dc0a38976a6d8e9a2",
+        "commit_sellado": "bbc38dc",
+        "sha256_kg_json": "6e7560433148cfe0c476cdd61199c32278187c4196d6f90dc0a38976a6d8e9a2",
+        "kg_path": "data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo_r2b/r2/kg.json",
+        "backend_modo": [
+          "neo4j",
+          "fulltext"
+        ],
+        "ok": true
+      },
+      {
+        "config": "data/experiment/banco_mcp/mcp_kg/config_mcp_kg_a2_desarrollo_r2b_rs1.json",
+        "config_sha256": "d80084b62a2e83376eda300ef766dc616c044dcbde81d0bd3a157acdc800b59a",
+        "grafo": "KG_Tanda0_Desarrollo_r2b_rs1",
+        "en_grafos_py": true,
+        "kg_sha256_esperado": "acb26dca0885e9ea83ab02637f15c1dac57885f0cf017c5fb16173ac7dfcac31",
+        "sha256_grafos_py": "acb26dca0885e9ea83ab02637f15c1dac57885f0cf017c5fb16173ac7dfcac31",
+        "commit_sellado": "4fe6ece",
+        "sha256_kg_json": "acb26dca0885e9ea83ab02637f15c1dac57885f0cf017c5fb16173ac7dfcac31",
+        "kg_path": "data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo_r2b_rs1/r2/kg.json",
+        "backend_modo": [
+          "neo4j",
+          "fulltext"
+        ],
+        "ok": true
+      }
+    ],
+    "nota": "sin Neo4j: la carga y el test positivo del brazo del grafo son de A2.2",
+    "PASS": true
+  },
+  "regresion_denso": {
+    "returncode": 0,
+    "stdout": [
+      "(a) asimetría: PASS coseno con/sin = 0.8044",
+      "(c) coincidencia con bake-off: PASS",
+      "(d) transporte: PASS 10/10 iguales, max 81275 chars",
+      "TOTAL: PASS -> data/experiment/banco_mcp/a2_1/controles/regresion_test_mcp_vector.json"
+    ],
+    "salida": "data/experiment/banco_mcp/a2_1/controles/regresion_test_mcp_vector.json",
+    "corrida_sellada": "data/experiment/banco_mcp/mcp_vector/resultados/tests_mcp_vector.json",
+    "d_PASS": true,
+    "a_PASS": true,
+    "c_PASS": true,
+    "n_llamadas": 10,
+    "n_iguales_a_la_sellada": 10,
+    "llamadas": [
+      {
+        "k": 1,
+        "input": {
+          "consulta": "¿qué requisitos debe cumplir una asociación mutual para operar con entidades financieras?"
+        },
+        "sha_sellado": "b69474889c762bab6596a09d8dc1b14d0e01ac2af92da5c96b7645ca2031bd84",
+        "sha_nuevo": "b69474889c762bab6596a09d8dc1b14d0e01ac2af92da5c96b7645ca2031bd84",
+        "igual": true
+      },
+      {
+        "k": 2,
+        "input": {
+          "consulta": "exigencia de efectivo mínimo en pesos",
+          "limite": 5
+        },
+        "sha_sellado": "dcd3ba5bf820618289f85b906234310ac2e2814f95edad065c226990856236cb",
+        "sha_nuevo": "dcd3ba5bf820618289f85b906234310ac2e2814f95edad065c226990856236cb",
+        "igual": true
+      },
+      {
+        "k": 3,
+        "input": {
+          "consulta": "capital mínimo básico según la categoría de la entidad"
+        },
+        "sha_sellado": "f240d9d9fcc578a093e8573772ac858388533b0d3d1d5b104378dfe0a3b42a4a",
+        "sha_nuevo": "f240d9d9fcc578a093e8573772ac858388533b0d3d1d5b104378dfe0a3b42a4a",
+        "igual": true
+      },
+      {
+        "k": 4,
+        "input": {
+          "consulta": "cómo se clasifica a un deudor en situación 3",
+          "limite": 3
+        },
+        "sha_sellado": "5f83206f0b0d440f2104a1842908c6049d7d744a447d49d48d31504aee46a448",
+        "sha_nuevo": "5f83206f0b0d440f2104a1842908c6049d7d744a447d49d48d31504aee46a448",
+        "igual": true
+      },
+      {
+        "k": 5,
+        "input": {
+          "consulta": "previsiones mínimas por riesgo de incobrabilidad"
+        },
+        "sha_sellado": "5adfd443ed9f1a8f820f015451427add7394ae8401516a076fbee7381d1ae531",
+        "sha_nuevo": "5adfd443ed9f1a8f820f015451427add7394ae8401516a076fbee7381d1ae531",
+        "igual": true
+      },
+      {
+        "k": 6,
+        "input": {
+          "consulta": "garantías preferidas A y B",
+          "limite": 50
+        },
+        "sha_sellado": "6d107fa0128747895838af8827d69ebffe9eb00fb9c9c3416b1454cb9c29254b",
+        "sha_nuevo": "6d107fa0128747895838af8827d69ebffe9eb00fb9c9c3416b1454cb9c29254b",
+        "igual": true
+      },
+      {
+        "k": 7,
+        "input": {
+          "consulta": "acceso al mercado de cambios para pago de importaciones",
+          "limite": "7"
+        },
+        "sha_sellado": "9ff4799d847dbe7ad11ca58035109bb9d870b693692c54d2a4f7905b632e750a",
+        "sha_nuevo": "9ff4799d847dbe7ad11ca58035109bb9d870b693692c54d2a4f7905b632e750a",
+        "igual": true
+      },
+      {
+        "k": 8,
+        "input": {
+          "consulta": "tope a la tasa de interés de financiaciones con tarjeta de crédito",
+          "limite": 0
+        },
+        "sha_sellado": "191db98885e7e27accd14c7b3abdc542931f1224e8117eb7475c97e485992019",
+        "sha_nuevo": "191db98885e7e27accd14c7b3abdc542931f1224e8117eb7475c97e485992019",
+        "igual": true
+      },
+      {
+        "k": 9,
+        "input": {
+          "consulta": "   "
+        },
+        "sha_sellado": "824857c730923581c0952ce703b88002ce6944652c4a9b789186bfddbe2ae6b7",
+        "sha_nuevo": "824857c730923581c0952ce703b88002ce6944652c4a9b789186bfddbe2ae6b7",
+        "igual": true
+      },
+      {
+        "k": 10,
+        "input": {
+          "consulta": "plazo para informar incumplimientos de relaciones técnicas"
+        },
+        "sha_sellado": "b8704c35ddd428e2b58a3b46a84e63987df09387aafbce6ad57a42324544987f",
+        "sha_nuevo": "b8704c35ddd428e2b58a3b46a84e63987df09387aafbce6ad57a42324544987f",
+        "igual": true
+      }
+    ],
+    "PASS": true
+  },
+  "denso_e0_vieja": {
+    "returncode": 0,
+    "sha256_matriz": "12d284d5bce0d1d58f1e4437c47f2177b3145813586069ca72f9103309b28b65",
+    "esperado": "12d284d5bce0d1d58f1e4437c47f2177b3145813586069ca72f9103309b28b65",
+    "stdout_tail": "befc1da0e7755cca7794f8dca38f3024b67a44b882\",\n  \"sha256_matriz_esperado\": \"12d284d5bce0d1d58f1e4437c47f2177b3145813586069ca72f9103309b28b65\",\n  \"coincide_con_esperado\": true,\n  \"sha_docs_bakeoff\": \"12d284d5bce0d1d58f1e4437c47f2177b3145813586069ca72f9103309b28b65\",\n  \"coincide_con_bakeoff\": true\n }\n}\n",
+    "stderr_tail": null,
+    "PASS": true
+  },
+  "denso_r2b": {
+    "config": "data/experiment/banco_mcp/mcp_vector/config_fragmentos_denso_r2b.json",
+    "config_sha256": "fe2daf70284ce68796e79763d73a671d8295aa0672f4a48ef082e4225fa08e5e",
+    "tools_expuestas": [
+      {
+        "name": "buscar_pasajes",
+        "description": "Búsqueda semántica (embeddings) de pasajes del texto de las normas. Devuelve los pasajes más similares a la consulta, cada uno con su TO (norma), punto (unidad) y el texto completo del pasaje. Es el punto de entrada habitual.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "consulta": {
+              "type": "string",
+              "description": "Consulta en lenguaje natural."
+            },
+            "limite": {
+              "type": "integer",
+              "description": "Máximo de resultados (def. 5, máx. 5)."
+            }
+          },
+          "required": [
+            "consulta"
+          ]
+        }
+      }
+    ],
+    "definicion_tool_esperada": true,
+    "n": 13,
+    "n_iguales": 13,
+    "todos_citan": true,
+    "max_chars_resultado": 13667,
+    "log_r1": {
+      "ruta": "data/experiment/banco_mcp/a2_1/controles/logs/log_r1_test_denso_r2b_transporte.jsonl",
+      "n_lineas": 15,
+      "consistente": true,
+      "sha256_log": "50aaca711a5fb5e801ee6920411fb895c9c2a475e93cee7e6ed4741ea427a557",
+      "fuente_inicio": {
+        "backend": "vectorial_local",
+        "indice_dir": "data/experiment/banco_mcp/mcp_vector/indice/e0_r2b_desarrollo_denso",
+        "sha256_matriz": "828caeffe528a5cfd584c14fc81de7b168faf83ea731ba7bd4a2d390afc05889",
+        "sha256_manifiesto": "378e26a25111e874ac7b4712b3e86a65cc317964c6ceb023a356c2d4c8c86c8c",
+        "sha256_pasajes_json": "d8faf4d2e353658e2764a38ad42c7b3533716923d4e2a8474e69677667cfd543",
+        "n_pasajes": 1768,
+        "modelo": {
+          "repo": "microsoft/harrier-oss-v1-0.6b",
+          "revision": "f9b9dc8d367d443f2479d27aa5d8d2850c0774ee",
+          "dtype": "float32",
+          "max_seq_length": 32768,
+          "dim": 1024,
+          "prompt_consultas": "web_search_query",
+          "prompt_consultas_texto": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery: ",
+          "prompt_documentos": null,
+          "pooling_y_normalizacion": "del repo del modelo (módulos 1_Pooling / 2_Normalize), normalize_embeddings=True",
+          "device": "mps",
+          "trust_remote_code": false
+        },
+        "sha_docs_bakeoff": null,
+        "coincide_con_bakeoff": null,
+        "prompt_consultas_texto": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery: ",
+        "manifiesto_e0": {
+          "id": "e0_tanda0_r2b_desarrollo",
+          "ruta": "data/experiment/banco_mcp/mcp_vector/manifiestos_e0/e0_tanda0_r2b_desarrollo.json",
+          "sha256": "118bf0b2e6a63bb5a9ff7fe1e403ae04366ae38c7df7459407438fccb8bb4f73",
+          "dir": "data/experiment/reextraccion_v2/e0_chunking/salida_tanda0_r2b",
+          "n_pasajes": 1768
+        },
+        "limite_max": 5
+      }
+    },
+    "llamadas": [
+      {
+        "k": 1,
+        "input": {
+          "consulta": "¿qué requisitos debe cumplir una asociación mutual para operar con entidades financieras?"
+        },
+        "chars_mcp": 3349,
+        "n_resultados": 5,
+        "sha256_mcp": "824eaeab9a61eaa156836a0e413474fa0ef4b9edfce095f223f9f90c3e58a5a5",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "cap::1.2"
+      },
+      {
+        "k": 2,
+        "input": {
+          "consulta": "exigencia de efectivo mínimo en pesos",
+          "limite": 5
+        },
+        "chars_mcp": 4672,
+        "n_resultados": 5,
+        "sha256_mcp": "e4b31ba29064ff21189c88ab338c19446d97babe74ddb251f6def5791b077f0c",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "cap::1.1"
+      },
+      {
+        "k": 3,
+        "input": {
+          "consulta": "capital mínimo básico según la categoría de la entidad"
+        },
+        "chars_mcp": 4380,
+        "n_resultados": 5,
+        "sha256_mcp": "13b0e661f62daf54914ca77627ef0bb9d9f6bad7283462b01a7807e31f30a17d",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "cap::1.2"
+      },
+      {
+        "k": 4,
+        "input": {
+          "consulta": "cómo se clasifica a un deudor en situación 3",
+          "limite": 3
+        },
+        "chars_mcp": 13667,
+        "n_resultados": 3,
+        "sha256_mcp": "33a2fc854a42b8787151591a9b9455770153cdf56b7846ef5ec99a960bd58df8",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "cla::7.2.1"
+      },
+      {
+        "k": 5,
+        "input": {
+          "consulta": "previsiones mínimas por riesgo de incobrabilidad"
+        },
+        "chars_mcp": 3826,
+        "n_resultados": 5,
+        "sha256_mcp": "e9b0064775834ef7702f984876547814e6d83cc4f7731ca92cec65d2acf96f6f",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "cap::8.4.1.12"
+      },
+      {
+        "k": 6,
+        "input": {
+          "consulta": "garantías preferidas A y B",
+          "limite": 50
+        },
+        "chars_mcp": 3830,
+        "n_resultados": 5,
+        "sha256_mcp": "b5a9aa2748f382f2da46fb9760bc6de7770fc2bf445c5a41aed97a20550924c1",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "cla::4.4"
+      },
+      {
+        "k": 7,
+        "input": {
+          "consulta": "acceso al mercado de cambios para pago de importaciones",
+          "limite": "7"
+        },
+        "chars_mcp": 5837,
+        "n_resultados": 5,
+        "sha256_mcp": "633cd128391945eff0ff9d5cdb8ccbbff0d772a96b3eb01f105d7c15406fea53",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "ext::10.3.2.4"
+      },
+      {
+        "k": 8,
+        "input": {
+          "consulta": "tope a la tasa de interés de financiaciones con tarjeta de crédito",
+          "limite": 0
+        },
+        "chars_mcp": 1656,
+        "n_resultados": 1,
+        "sha256_mcp": "c95c6ff61d1fd5cdf2c2564473c742b0de7ec1390ce37aab067d5d04fd86f738",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "pro::2.3.3"
+      },
+      {
+        "k": 9,
+        "input": {
+          "consulta": "   "
+        },
+        "chars_mcp": 60,
+        "n_resultados": 0,
+        "sha256_mcp": "27c165c1bd81074e0ea0dd91be639bd50481b5f57aa193bbb4774dcd530b5c4c",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": null
+      },
+      {
+        "k": 10,
+        "input": {
+          "consulta": "plazo para informar incumplimientos de relaciones técnicas"
+        },
+        "chars_mcp": 5870,
+        "n_resultados": 5,
+        "sha256_mcp": "b80b47968471751d2c02da04d46c2498dd12b4df61fe2cdf0e4379a5f3226640",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "ext::8.4.5"
+      },
+      {
+        "k": 11,
+        "input": {
+          "consulta": "de la que el en y a los del se",
+          "limite": 5
+        },
+        "chars_mcp": 2278,
+        "n_resultados": 5,
+        "sha256_mcp": "31c6259ee7d3fbe89cb15a410899ca06bcaa4be7689f2d8122b0a43fd5ee445c",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "ext::1.5"
+      },
+      {
+        "k": 12,
+        "input": {
+          "consulta": "responsabilidad patrimonial computable",
+          "limite": 6
+        },
+        "chars_mcp": 5477,
+        "n_resultados": 5,
+        "sha256_mcp": "f4d16227fc66794744f458c4bca92cbc6dd71de2db9d07ab3ec9ecc453787401",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "ric::6.1::intro"
+      },
+      {
+        "k": 13,
+        "input": {
+          "consulta": "régimen informativo contable mensual",
+          "limite": "abc"
+        },
+        "chars_mcp": 6592,
+        "n_resultados": 5,
+        "sha256_mcp": "992e32d3f16d808ceb9c5a8f50019c97c43bcf4e9f87662bb86ff9b43c4a2c4e",
+        "igual": true,
+        "todos_citan_to_y_unidad": true,
+        "top1": "ric::10.1.1"
+      }
+    ],
+    "PASS": true,
+    "indice": {
+      "sha256_matriz_manifiesto": "828caeffe528a5cfd584c14fc81de7b168faf83ea731ba7bd4a2d390afc05889",
+      "sha256_matriz_config": "828caeffe528a5cfd584c14fc81de7b168faf83ea731ba7bd4a2d390afc05889",
+      "manifiesto_e0": {
+        "id": "e0_tanda0_r2b_desarrollo",
+        "ruta": "data/experiment/banco_mcp/mcp_vector/manifiestos_e0/e0_tanda0_r2b_desarrollo.json",
+        "sha256": "118bf0b2e6a63bb5a9ff7fe1e403ae04366ae38c7df7459407438fccb8bb4f73",
+        "dir": "data/experiment/reextraccion_v2/e0_chunking/salida_tanda0_r2b",
+        "n_pasajes": 1768
+      },
+      "mismos_pasajes_que_bm25": true,
+      "n_pasajes": 1768
+    },
+    "limite": {
+      "consulta": "capital mínimo básico según la categoría de la entidad",
+      "filas": [
+        {
+          "limite_pedido": null,
+          "esperado": 5,
+          "devuelto": 5,
+          "ok": true
+        },
+        {
+          "limite_pedido": 3,
+          "esperado": 3,
+          "devuelto": 3,
+          "ok": true
+        },
+        {
+          "limite_pedido": 5,
+          "esperado": 5,
+          "devuelto": 5,
+          "ok": true
+        },
+        {
+          "limite_pedido": 6,
+          "esperado": 5,
+          "devuelto": 5,
+          "ok": true
+        },
+        {
+          "limite_pedido": 10,
+          "esperado": 5,
+          "devuelto": 5,
+          "ok": true
+        },
+        {
+          "limite_pedido": 50,
+          "esperado": 5,
+          "devuelto": 5,
+          "ok": true
+        },
+        {
+          "limite_pedido": "7",
+          "esperado": 5,
+          "devuelto": 5,
+          "ok": true
+        },
+        {
+          "limite_pedido": 0,
+          "esperado": 1,
+          "devuelto": 1,
+          "ok": true
+        },
+        {
+          "limite_pedido": "abc",
+          "esperado": 5,
+          "devuelto": 5,
+          "ok": true
+        }
+      ],
+      "PASS": true
+    }
+  },
+  "denso_r2b_dos": {
+    "construccion_1": {
+      "sha256_matriz": "828caeffe528a5cfd584c14fc81de7b168faf83ea731ba7bd4a2d390afc05889",
+      "sha256_archivo_npy": "4f77eb5cc939b1ca6c35237837b6e7c639d85908298f2ae1cc56774c5a0e48dd",
+      "n_truncados": 0,
+      "n_grupos": 95
+    },
+    "construccion_2": {
+      "sha256_matriz": "828caeffe528a5cfd584c14fc81de7b168faf83ea731ba7bd4a2d390afc05889",
+      "sha256_archivo_npy": "4f77eb5cc939b1ca6c35237837b6e7c639d85908298f2ae1cc56774c5a0e48dd",
+      "n_truncados": 0,
+      "n_grupos": 95
+    },
+    "npy_byte_a_byte": true,
+    "sha_servido": "828caeffe528a5cfd584c14fc81de7b168faf83ea731ba7bd4a2d390afc05889",
+    "PASS": true
+  },
+  "PASS": true
+}
