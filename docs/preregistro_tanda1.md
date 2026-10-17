@@ -1143,3 +1143,21 @@ texto de cada una, como historia.
 - **[v8b] El control de las rutas y los sha256 que cita este pre-registro:**
   `python3 -I -B data/experiment/controles_tanda1/control_citas_preregistro_tanda1_mesa.py "<raíz del repo>" <este archivo> <salida.json>`.
   Su salida es `control_citas_preregistro_tanda1_mesa.json`.
+
+## Notas posteriores a la firma
+
+El texto firmado es el de `95b18217` (sha256 `2a64cae8…`) y no cambia; esta nota se lee junto con él.
+
+- **17/10/2026 — el estimado por TO, repartido por caracteres de E0 (desvío declarado del §3; decisión de la autora del 17/10/2026, registro de decisiones, §21).**
+  - **Qué cambia.** El estimado de cada TO (`limites.estimado_usd` del manifiesto de extracción) deja de ser plano por unidad. Antes eran las unidades del TO × 0,010135 más sus líneas de alcance en E1 y × 0,010980 en E3, como lo armó T1; así lo sigue describiendo la `descripcion` del manifiesto, que no cambia. Pasa a ser el total de hoy, USD 69,659193, repartido entre los 20 TOs en proporción a los caracteres de su E0 completa (`chars_completo`, 3.897.346 en la tanda), con el e1 y el e3 de cada TO en la proporción que tenían. Va a seis decimales por fase; el resto del redondeo (USD 0,000001) va al e3 de lingeef, el TO con más caracteres.
+  - **Qué no cambia:** U (3.290), la tarifa (0,021115 por unidad), el total (69,6592; el runner lo lee redondeado, 69,659), el tope (100,7291), el margen por unidad (0,35) y los checkpoints. El runner usa el estimado por TO solo para proyectar el gasto (`data/experiment/reextraccion_v2/corpus_v2/runner_corpus.py:400-451`).
+  - **Por qué.** T2 frenó dos veces por proyección:
+    - al cerrar ri_pgn:e3, con 104,0509 (FRENO T2 parcial 1, sha256 `49e2dca8…`);
+    - al cerrar ri_rml:e1, con 122,7914 (FRENO T2 parcial 2, sha256 `144be679…`).
+    Un costo proporcional a los caracteres de E0, a la tarifa por carácter de la tanda 0 (0,021115 / 1.164,7), explica los cuatro tramos pagados. Lo real sobre ese modelo da 0,8516 en ri_gerc, 0,9721 en ri_pgn, 0,6971 en ceninf y 0,9787 en la E1 de ri_rml.
+    - Con el estimado plano, la proyección pasaría el tope desde el cierre de ri_rml:e3 con costos desde 0,9 veces el modelo; entre 0,9 y 1,0 veces, el pico va de 143,58 a 155,65.
+    - Con el reparto, la proyección del segundo freno habría sido 67,5247. A lo largo de la tanda no pasa el tope hasta 1,4 veces el modelo, y lo pasa desde 1,46: el tope sigue frenando un exceso real.
+    - Las cifras son de la mesa (`decisiones_135_mesa/verificacion/verificar_medicion_mesa.py`, sha256 `d998141f…`, y su repetición con el runner sobre el manifiesto nuevo en `decisiones_136_mesa/`, en el paquete de la mesa).
+  - **Con qué se decidió:** solo con cifras de costo. Ninguna salida de calidad de la tanda entró en la decisión: ni estados de E3, ni reintentos, ni lecturas.
+  - **C2** («la tarifa no se ajusta»): no choca. C2 decidió qué medición fija la tarifa, O3 contra O5 (`:1081-1084`), y la tarifa sigue en 0,021115 por unidad (`:433-434`). El reparto no cambia la tarifa ni el total: cambia cómo se reparte el total entre los TOs. El §3 da la fórmula del total; la del estimado por TO era la de T1.
+  - **Lo que cambia en el mismo commit:** el manifiesto (sha256 `818a62cf…`, antes `4dd02505…`), `MANIFIESTO_SHA256` del lanzador y el primer renglón de `data/experiment/tanda1/t1/sha256_para_T2.txt`. Ni el lanzador ni el manifiesto están entre las 78 rutas del código de la cadena.
