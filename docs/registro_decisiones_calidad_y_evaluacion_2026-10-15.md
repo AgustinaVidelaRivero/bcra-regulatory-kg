@@ -1013,3 +1013,94 @@ lecturas del día (§27) y el material del alcance de la tanda final.
   - Un juez de afirmaciones aparte queda como trabajo futuro, declarado. El control determinístico de cifras no va.
   - Si el lunes 19 a la noche las horas no dan, la columna de las 36 de control es la primera que sale, declarada.
 - Las secciones anteriores no se editan.
+
+## 29. La tanda 1 de T2 a T4, el alcance de la tanda final, U-MED-VERIF, el agente y lo que se guarda (agregado del 18/10/2026)
+
+Decisiones de la autora del 17/10/2026, recibidas de las 20:56:55 a las 22:40:14, y del 18/10/2026, recibidas de las 08:51:05 a las
+11:45:00 (hoja de ruta de la mesa, §148 a §155). Las que ya están en un documento firmado se nombran con su commit.
+
+- **El cableado (A3):** firmado con la opción (a): la última hora de arranque es el martes 20/10 a las 21:15 (`0c927ebb`, con su nota al
+  laudo y a la enmienda 4). La columna de los errores fuera de los criterios va en los pre-registros de A2.2 y de B6.3, como dice la §28.
+- **U-MED-VERIF:**
+  - **el diseño** quedó sellado el 17/10 a las 19:17:36, fuera del repo (sha256 `5296703d…`). Reemplaza al borrador del 15/10;
+  - **el mandato de las fichas,** firmado con (a), (a) y (a) (`c0d3ab17`);
+  - **la lista de exclusión** suma toda unidad de la tanda 1 cuya extracción aparezca en el material de T4, en cualquier versión, la final o
+    la primera (17/10, a las 22:06:54 y a las 22:40:14). Es una precisión del §2 del diseño, fijada antes del sorteo;
+  - **la precisión de los nodos compartidos** (18/10, a las 11:45:00, con la recomendación de la mesa):
+    - un nodo TextoOrdenado no suma unidades, ni un Sujeto cuya procedencia tiene más de una unidad;
+    - suma la extracción propia de cada unidad, en cualquier versión: la unidad de cada ficha, y las unidades de procedencia de todo otro
+      nodo que muestre una ficha, incluido un Sujeto con una sola unidad;
+    - el texto firmado no cambia, porque dice «cuya extracción aparezca». Va al despacho de las fichas;
+    - con ella quedan 30 unidades para la muestra, aun en el peor caso de las muestras de T4 que faltan. La mesa lo midió sin ver el tamaño
+      de la población (hoja §154);
+  - **la lectura de cid** muestra solo el texto de la unidad y la página del PDF. Si su material llegara a mostrar una extracción, esas
+    unidades entran a la lista antes del sorteo.
+- **Las cifras por script:**
+  - en el despacho y en el pre-registro de la tanda final, toda cifra del FRENO sale por script desde sus archivos. El despacho lo pide
+    como requisito, y la revisión de la mesa lo controla (17/10, a las 22:10:33);
+  - las cuentas de E3 siguen en cegamiento hasta que la autora lo pida (17/10, a las 22:40:14).
+- **T3 de la tanda 1, sobre su FRENO parcial** (18/10, a las 08:51:05):
+  1. para S31 rige la E0 con las partes por corte, la que leen el runner, el ensamblado (`ensamblar_tanda0.py:1822-1828`, `_chunks_r2` con
+     `chunks_con_partes`) y las intrínsecas. Se informan las dos corridas. Es una precisión del gate tomada con el resultado a la vista, y
+     vale igual para la tanda final;
+  2. E4-a1 y E4-a4 se declaran como regresiones de la tanda 1, con su entrada de backlog;
+  3. la suite se juzga sobre el acumulado. En el grafo de una tanda sola, el ítem con todas sus anclas en TOs que el grafo no tiene se
+     informa aparte, como «fuera del grafo», no cuenta y lo clasifica un script. Vale también para los tramos de la tanda final;
+  4. los `nombres_remision` de la tanda 0 en el acumulado son los de la regla v2 (`222a0614`);
+  5. las cuatro entradas nuevas de la fixture van al commit de T3;
+  6. las salidas de shapes y de la suite de los dos grafos de la tanda 1 quedan donde están, como en el re-sellado;
+  7. el clon de git con los `.env` y los `NO_ABRIR_` (el error propio 1 de la ejecutora) queda declarado.
+- **E4-a1 y E4-a4, la opción (ii):** se declaran y se difieren (18/10, a las 10:31:44 y a las 11:45:00). La rama de los dos sujetos es la
+  misma: una mención que no verifica y va a cuarentena, fuera de los estratos de U-MED-DESAMB. Es la entrada BKL-0048 (`eb0711a1`).
+- **Los commits de T3** (18/10, a las 11:45:00):
+  - los dos `kg.json` del acumulado de las tandas 0 y 1 quedan fuera de git, porque pasan de 100 MB, con su sha256 en el FRENO T3 final;
+  - cómo se guarda y se publica el grafo evaluado, que va a ser varias veces más grande y es el recurso del cap. 6, lo propone la mesa
+    antes del sábado 24/10/2026, con su costo y lo que cambia en el sello;
+  - los 20 archivos generados que llevan el usuario de la máquina en las rutas del scratchpad van como los 264 de HEAD. **Antes de
+    publicar el recurso,** esas rutas se limpian en la copia publicada, sin tocar lo sellado.
+- **T4 de la tanda 1** (18/10, a las 11:45:00, con las recomendaciones de la mesa, tal como están en el «seguí» de T4):
+  - **la observación (12):** el universo es el de las aristas de extracción de la (10): todas menos `referencia`, menos
+    `rol_fuente = esqueleto`, menos las `establecida_en` derivadas por el ensamblado (`rol_fuente = derivada_de_procedencia`; tablero,
+    `:49` y [c1]) y menos las `remite_a` (el instrumento del sorteo, `scripts/muestra_aristas_obs12.py`, R5.d). En el evaluado son 18.483.
+    La muestra de T3, con A4.1 tal cual (28.062), no se lee y se rehace;
+  - **la nota de equivalencia del §5.2** del pre-registro de la tanda 1 (`95b18217:517-520`) parte de una premisa que no se cumple: el
+    universo de la (12) de la tanda 0 restó todas las `referencia`, también las 518 cruzadas, así que la tanda 0 no leyó remisiones. Con
+    las `remite_a` fuera, la (12) de la tanda 1 queda comparable con la de la tanda 0;
+  - **la vigilancia (2):** la población es la de la extracción final (198 unidades). La del primer intento no se sortea; su cuenta por TO
+    va solo a un `NO_ABRIR_` de T4, por el cegamiento;
+  - **las vigilancias (1) y (3):** las definiciones que propuso la ejecutora en el FRENO T3, §6. En la (1), «no decidible» queda fuera de
+    la tasa, declarado con su cuenta; en la (3), se declara que el grupo por tramo igual no ve las duplicaciones con tramos distintos.
+- **L-02 y L-04:** no se despachan todavía. Son GC y entran en los recortes que la autora decide el lunes 19 a la noche.
+- **El agente y A1.8** (17/10, a las 22:40:14; 18/10, a las 09:09:32 y a las 10:31:44):
+  - A2.2, su diagnóstico y las ablaciones de A1.8 (N6) van antes de N7, con lo pago en secuencia;
+  - lo primero que sale es lo GC; el diagnóstico y N6 no se recortan. Si el total proyectado pasa de USD 341, sale primero GraphRAG y
+    después lo GC;
+  - las reglas no cambian: el ajuste se hace solo con preguntas de desarrollo; lo que mejora la búsqueda se aplica igual a los fragmentos;
+    A2.2 se mide una sola vez;
+  - **el prompt:** el texto de la mesa, el mismo en los dos brazos, entra antes de A2.2, en lo común de su pre-registro. Se declara el
+    cambio del sha256 de la configuración del banco (R10);
+  - **U-NAV-DISENO:** la autora lo firma el lunes 19/10 con las siete decisiones (hoja §153 y §154). La 7 es la (a): si la híbrida pasa,
+    reemplaza a BM25 en el sistema por fragmentos y el denso queda, con dos comparaciones y Holm. Se mide con F1 sobre BM25. El tope de N6
+    entero es USD 85, con freno en 64, y GraphRAG sigue adentro (total central USD 334,18);
+  - **el calendario v8** va. Si se da el escenario lento, la autora decide ese día.
+- **El alcance de la tanda final:** la lectura sellada de la autora y sus dos precisiones están en el registro de alcance (`764768a4`).
+- Las secciones anteriores no se editan.
+
+## 30. Cómo se guardan los grafos grandes, la lectura de cid y las claves del catálogo (agregado del 18/10/2026)
+
+Decisiones de la autora del 18/10/2026, recibidas a las 12:19:47 (hoja de ruta de la mesa, §156), sobre las propuestas de la §155.
+
+- **Los grafos que pasan de 100 MB,** con la recomendación de la mesa:
+  - se guardan en git comprimidos de forma determinista, con `scripts/kg_gz.py` y el sello al lado (`kg.json.gz.sello.json`);
+  - manda el sha256 del `kg.json` sin comprimir, que es el que controlan el cargador y la suite. El del `.gz` va al lado, con el
+    compresor, sus parámetros y la versión de zlib;
+  - el grafo evaluado se publica en un release de GitHub, con la copia limpia de las rutas del scratchpad (§29);
+  - vale también para los dos `kg.json` del acumulado de las tandas 0 y 1 del T3 de la tanda 1, que el commit de T3 dejó fuera.
+- **La lectura de cid** (hasta 15 unidades de la tanda 1) va después del despacho de la tanda final, como propuso la mesa. Las 3 de la
+  tanda final, después de su T5 (§14).
+- **Las claves del catálogo:** la propuesta de la §155 tenía una contradicción. La lectura iba después de la adjudicación de U-MED-VERIF,
+  cuyas dos pasadas van del 24 al 27/10, y la re-aplicación única va antes del sello del sábado 24. Así, el catálogo no crecería en el
+  grafo evaluado. La mesa propone otro camino (§156). Si no lo hay, la autora lo decide el lunes 19 a la noche con los recortes, sabiendo
+  que sin la lectura el catálogo no crece en el grafo evaluado.
+- **El pre-registro de la tanda final:** la autora revisa el borrador y lo firma el lunes 19 temprano.
+- Las secciones anteriores no se editan.
