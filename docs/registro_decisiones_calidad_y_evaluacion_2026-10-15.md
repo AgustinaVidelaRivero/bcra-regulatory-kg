@@ -1290,3 +1290,32 @@ Decisiones de la autora del 18/10/2026, recibidas a las 18:18:43 (hoja de ruta d
     - `data/experiment/segmentacion_oficial_e0r2/s1ter/adjudicacion/metodo_adjudicacion_S1ter.md:8`, `:9` y `:11`;
     - `data/experiment/segmentacion_oficial_e0r2/s1ter/adjudicacion/registro_pasada_1_y_seleccion_S1ter.md:264` y `:266`.
 - Las secciones anteriores no se editan.
+
+## 38. A3: el control de su commit, el cegamiento, el selftest de la caché, las anclas corridas, la fixture y el despacho de la tanda final (agregado del 18/10/2026)
+
+Decisiones de la autora del 18/10/2026, recibidas a las 18:42:24 (hoja de ruta de la mesa, §168 y §169), sobre el FRENO de A3
+(`data/experiment/alcance_e1/a3/FRENO_A3.md`, que entra con el commit de A3).
+
+- **Los tres valores de A3** siguen PROPUESTOS: la autora los confirma después de la revisión de la mesa.
+- **El control del commit de A3** (§36): va la propuesta de la mesa del §168. Para el registro de decisiones, se comparan las líneas que
+  leyó A3 y que el registro de HEAD empiece, byte a byte, con la versión de la base de A3. El mandato de A3 no cuenta (§36).
+- **El cegamiento** (error propio 1 de A3):
+  - la ejecutora vio en la consola de su sesión cuatro cuentas de claves de las bases de la caché, una de E3, que incluyen la tanda 1;
+  - no están en el paquete: van como retiradas;
+  - no tocan U-MED-VERIF mientras no lleguen a la autora ni a la lectora, y se declara. La autora no abre esa consola.
+- **El criterio 6 y el §6 del mandato de A3** (hallazgo 1):
+  - se acepta que A3 haya corrido `selftest_clave_cache`, porque lo pide el mandato firmado, con las cuentas retiradas, y se declara;
+  - T1 de la tanda final también lo corre (pre-registro de la tanda final, §4.1, punto 3). Su despacho usa el mismo retiro de cuentas
+    (`data/experiment/alcance_e1/a3/scripts/clave_cache_sin_cuentas_a3.py`) o manda las cuentas a un `NO_ABRIR_`.
+- **Las anclas corridas** (hallazgo 2): se arreglan en el commit de A3 sin editar texto firmado:
+  - una nota fechada al pie del laudo de la release y otra al pie de la enmienda 4: `:477` pasa a `:478`;
+  - F11b de la tabla de reprocesamiento: `:476-478` pasa a `:477-479`.
+- **`scripts/regression_kg_esperado.json`** (hallazgo 8):
+  - la mesa verificó que difiere del sello de la lista de las 78 rutas (`47c9f1b3`) solo por las cuatro entradas que le sumó el T3 de
+    la tanda 1 (`eb0711a1`): 1.136 claves nuevas bajo `estado_esperado`, ninguna quitada ni cambiada;
+  - la precisión al pre-registro de la tanda final queda PREPARADA para la firma de la autora del lunes 19/10/2026, sin tocar la versión
+    para firmar.
+- **Para el despacho de la tanda final:**
+  - el rsync de `lote_tramo1_S2.sh` (renglón 11) no excluye `tanda1/t4/` ni `tanda1/t5/` (hallazgo 3);
+  - el manifiesto de la tanda final se arma con el perfil de A3, después de su commit (hallazgo 10).
+- Las secciones anteriores no se editan.
