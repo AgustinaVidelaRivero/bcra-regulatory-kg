@@ -1,0 +1,107 @@
+{
+ "_formato": "id del hueco → {tipo, fuente, clave o regex, momento, qué es}. tipo: json (una clave, con «/» entre niveles), regex (el grupo 1 en el archivo) o texto (el archivo entero, sin espacios al borde). La fuente es una ruta del repo leída en un commit (`commit`, o HEAD si no está) o, con «paquete:», una ruta del paquete de la mesa. «PENDIENTE» frena cuando llega su momento: la fija el «seguí» o el mandato que produce el archivo, antes de que el archivo exista. momento: T1 (antes de T1 del despacho), lectura_tramo1 (antes de la primera lectura del tramo 1) o T5 (antes del FRENO T5 de la tanda final). `_cifras_derivadas` es la salida de cifras_preregistro_tanda_final_mesa.py (con --sin, si salió un documento), que la versión derivada trae al final.",
+ "A3.derivado_sha256": {
+  "tipo": "regex",
+  "fuente": "data/experiment/reextraccion_v2/e1_extractor/prompt_r2b.py",
+  "regex": "REGISTRO_ALCANCE_R2B_SHA256_ESPERADO\\s*=\\s*\"([0-9a-f]{64})\"",
+  "commit": "PENDIENTE: el commit de A3, con los valores confirmados por la autora",
+  "que_es": "el sha256 del derivado del registro de alcance con --tandas 1,final",
+  "momento": "T1"
+ },
+ "A3.candado_sha256": {
+  "tipo": "regex",
+  "fuente": "data/experiment/reextraccion_v2/e1_extractor/prompt_r2b.py",
+  "regex": "CANDADO_MENSAJE_JSON_SHA256_ESPERADO\\s*=\\s*\"([0-9a-f]{64})\"",
+  "commit": "PENDIENTE: el commit de A3",
+  "que_es": "el candado del mensaje de E1",
+  "momento": "T1"
+ },
+ "A3.mensaje_sha256": {
+  "tipo": "regex",
+  "fuente": "data/experiment/reextraccion_v2/e1_extractor/prompt_r2b.py",
+  "regex": "MENSAJE_R2B_SHA256_ESPERADO\\s*=\\s*\"([0-9a-f]{64})\"",
+  "commit": "PENDIENTE: el commit de A3",
+  "que_es": "el sha256 del mensaje de la fixture",
+  "momento": "T1"
+ },
+ "A3.costo_lineas_usd": {
+  "tipo": "json",
+  "fuente": "PENDIENTE: la salida de A3 con el costo de las líneas de alcance (mandato de A3, §5, criterio 3)",
+  "clave": "PENDIENTE",
+  "que_es": "el costo, a la tarifa de E1, de las líneas de alcance nuevas de la tanda final",
+  "momento": "T1"
+ },
+ "codigo_cadena.commit_y_sha256": {
+  "tipo": "texto",
+  "fuente": "PENDIENTE: la lista del código de la cadena re-sellada en el commit de A3",
+  "que_es": "el commit de A3 y el sha256 de la lista de 78 rutas",
+  "momento": "T1"
+ },
+ "T4.cola": {
+  "tipo": "json",
+  "fuente": "PENDIENTE: las tasas del segundo tramo de T4 de la tanda 1",
+  "clave": "PENDIENTE",
+  "que_es": "la tasa ponderada de la cola de la tanda 1, con su Wilson de Kish",
+  "momento": "lectura_tramo1"
+ },
+ "T4.aceptadas_items": {
+  "tipo": "json",
+  "fuente": "PENDIENTE: ídem",
+  "clave": "PENDIENTE",
+  "que_es": "la tasa ponderada de error por unidad de las aceptadas ítems, con su intervalo",
+  "momento": "lectura_tramo1"
+ },
+ "T4.aceptadas_no_items": {
+  "tipo": "json",
+  "fuente": "PENDIENTE: ídem",
+  "clave": "PENDIENTE",
+  "que_es": "ídem, no ítems",
+  "momento": "lectura_tramo1"
+ },
+ "T4.ponderada_total": {
+  "tipo": "json",
+  "fuente": "PENDIENTE: ídem",
+  "clave": "PENDIENTE",
+  "que_es": "la tasa ponderada total de las aceptadas, con su intervalo",
+  "momento": "lectura_tramo1"
+ },
+ "T4.atencion_RI": {
+  "tipo": "json",
+  "fuente": "PENDIENTE: ídem",
+  "clave": "PENDIENTE",
+  "que_es": "la tasa ponderada de RI y si saltó su atención",
+  "momento": "lectura_tramo1"
+ },
+ "T4.vigilancias_y_12": {
+  "tipo": "json",
+  "fuente": "PENDIENTE: ídem",
+  "clave": "PENDIENTE",
+  "que_es": "las tasas de las vigilancias (1), (2), (3) y (7) y de la observación (12)",
+  "momento": "lectura_tramo1"
+ },
+ "T5.costo_real_tanda1": {
+  "tipo": "json",
+  "fuente": "PENDIENTE: la salida de T5 de la tanda 1",
+  "clave": "PENDIENTE",
+  "que_es": "el costo real de la tanda 1 por etapa contra el estimado, con la fórmula de caching",
+  "momento": "T5"
+ },
+ "revision.rasgos_confirmados": {
+  "tipo": "texto",
+  "fuente": "PENDIENTE: paquete: la hoja de la revisión entre tandas, completa",
+  "que_es": "los rasgos de corte confirmados por la tanda 1, o «ninguno»",
+  "momento": "T1"
+ },
+ "revision.documentos_que_salen": {
+  "tipo": "texto",
+  "fuente": "PENDIENTE: paquete: ídem",
+  "que_es": "los documentos que salen antes del despacho, con su causa, o «ninguno»",
+  "momento": "T1"
+ },
+ "_cifras_derivadas": {
+  "tipo": "json_entero",
+  "fuente": "PENDIENTE: la salida de cifras_preregistro_tanda_final_mesa.py del despacho, con --sin si la revisión entre tandas saca un documento",
+  "momento": "T1",
+  "que_es": "las cifras con las que corre la tanda: U, el estimado, el tope, los tramos y las bases del control"
+ }
+}
