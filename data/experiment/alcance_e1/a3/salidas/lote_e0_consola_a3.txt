@@ -1,0 +1,29 @@
+inicio 2026-10-18 17:49:48 -0300; HEAD 5289b02f6457aabba5c4d15e50236cde240f2536
+51401 renglones 2026-10-18 17:49:48 a 2026-10-18 17:50:01 | registrados sin abrir (entorno y NO_ABRIR_): 8 | carpetas sin abrir: 4
+control por nombre del clon (.env, .env.*, *.env, NO_ABRIR_*): 0; enlaces: 0
+lote_tramo1_S2.sh (de la copia), 5673420831840a1758b2152c96681533320e0947049678975fc0bc463b4a71d9; renglones 13 a 24, tal cual:
+   | n=$(find "$T/copia" \( -name '.env' -o -name '.env.*' -o -name '*.env' \) | wc -l | tr -d ' ')
+   | [ "$n" = "0" ] || { print -r -- "FRENO: $n .env en la copia"; exit 1; }
+   | zsh "$T/copia/data/experiment/segmentacion_oficial_e0r2/s0_4/scripts/raiz_minima.sh" "$T/copia" "$T/raiz" \
+   |   "$T/copia/data/experiment/reextraccion_v2/e0_chunking"
+   | PY="$R/.venv/bin/python"
+   | export PYTHONDONTWRITEBYTECODE=1
+   | "$PY" -B "$T/copia/data/experiment/segmentacion_oficial_e0r2/s0_1/scripts/correr_152.py" --codigo "$T/raiz" \
+   |   --salida "$T/e0_152" --workers 8
+   | "$PY" -B "$T/copia/$S2/control_e0_contra_manifiesto_S2.py" --e0 "$T/e0_152" \
+   |   --manifiesto "$T/copia/data/experiment/segmentacion_oficial_e0r2/s0_6/b/manifiestos/manifest_salida_e0_152_S0-6b.json" \
+   |   --out "$T/control_e0_S2a.json"
+   | "$PY" -B "$T/copia/$S2/lista_tanda1_S2.py" --e0 "$T/e0_152" --raiz "$T/copia" --out "$T/lista_tanda1_S2.json"
+       0
+listo 152 TOs, 0 con error $W/e0t/e0_152
+{"manifiesto_sha256": "80adbd582509b04f6d765de908124817fcec28082d1231e3f30ffe5019efc9a9", "esperados": 768, "presentes": 768, "iguales": 768, "distintos": [], "faltan": [], "sobran": [], "tos": 152, "unidades": 10478, "unidades_manifiesto": 10478, "unidades_por_to_iguales": true, "veredicto": "OK"}
+  {'orden': 23, 'to': 'ri_esd', 'unidades': 5, 'modo_lectura': 'sin_raiz', 'supera_tope': False}
+  {'orden': 24, 'to': 'verac', 'unidades': 5, 'modo_lectura': 'sin_raiz', 'supera_tope': False}
+  {'orden': 25, 'to': 'ri_ieccm', 'unidades': 4, 'modo_lectura': 'sin_raiz', 'supera_tope': False}
+  {'orden': 26, 'to': 'ri_rcl', 'unidades': 4, 'modo_lectura': 'sin_raiz', 'supera_tope': False}
+  {'orden': 27, 'to': 'ri_bdp', 'unidades': 3, 'modo_lectura': 'sin_raiz', 'supera_tope': False}
+control por nombre al final: copia 0, raíz mínima 0, salida 0
+enlaces simbólicos: copia 0, raíz mínima 0
+51401 renglones 2026-10-18 17:55:20 a 2026-10-18 17:55:32 | registrados sin abrir (entorno y NO_ABRIR_): 8 | carpetas sin abrir: 4
+51401 -> 51401 | nuevos 0 | quitados 0 | cambiados 0: []
+fin 2026-10-18 17:55:33 -0300

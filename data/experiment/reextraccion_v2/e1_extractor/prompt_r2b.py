@@ -473,8 +473,9 @@ def labels_catalogo_r2() -> dict[str, dict]:
 # ri_mmsef); en A1 había salido de ce402aad7c84… (9 entradas). Los dos valores del candado del mensaje cubren la fixture
 # de 17 unidades (los de P3c-2, con 13, eran 4d69f7f4c8a5… y a9cb702c0d24…). Un cambio del registro entre tandas regenera
 # el derivado y su sha (fila F13c de la tabla de reprocesamiento).
+# A3 (18/10/2026): el derivado sale de `--tandas 1,final` sobre el registro con la tanda final (a4b52cd2fdbb…; 43 entradas).
 REGISTRO_ALCANCE_R2B_JSON = _CAT_R2.parent / "registro_alcance_r2b.json"
-REGISTRO_ALCANCE_R2B_SHA256_ESPERADO = "e06933e77a1ae819229d5f2a4b5886f71f6129c809032e1e557932fb8cb69ff4"
+REGISTRO_ALCANCE_R2B_SHA256_ESPERADO = "c8dea08a2ffe2eeb401855f952cc80f26542da8ea2489eac7a6f83530b6857ca"
 REGISTRO_ALCANCE_R2B = json.loads(_leer_con_candado(REGISTRO_ALCANCE_R2B_JSON, REGISTRO_ALCANCE_R2B_SHA256_ESPERADO))
 
 

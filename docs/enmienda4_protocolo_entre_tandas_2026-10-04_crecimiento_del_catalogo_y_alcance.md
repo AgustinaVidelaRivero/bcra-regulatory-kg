@@ -188,3 +188,8 @@ primero que dispara: la fila 11-bis del checklist y la unidad U-ALCANCE-E1 (§7)
   control byte a byte de los mensajes de lo ya extraído. Es lo que previó la decisión 1 del mandato de U-ALCANCE-E1 al firmar
   (`21e55a07`). La release sigue siendo r2. Los valores nuevos los confirma la autora antes de la extracción de la tanda. El texto firmado
   no cambia. Precisa el «No congela» del §6 (`:130-131`).
+- **18/10/2026 — El ancla de la nota del 17/10, corrida por A3** (decisión de la autora del 18/10/2026, recibida a las 18:42:24;
+  hoja de ruta de la mesa, §169). El renglón de comentario que agrega A3 en el bloque del candado del derivado (mandato de
+  U-ALCANCE-E1, A3, `:44-45`) corre en uno los renglones de `reextraccion_v2/e1_extractor/prompt_r2b.py` desde el 476: el sha del
+  derivado, que la nota del 17/10 cita en `:477`, pasa a `:478` con el commit de A3. Los dos valores del candado del mensaje siguen en
+  `:97-98`. El texto firmado y la nota del 17/10 no cambian.

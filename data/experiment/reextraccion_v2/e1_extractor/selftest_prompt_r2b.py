@@ -36,7 +36,10 @@ llamadas a la API.
      protegidos (check_protegido): con el código de HEAD, que no tiene el derivado, dan FAIL sin cortar el selftest
      (control negativo de los FRENOs A1 y A2). Desde A2, el derivado sale del registro final de la tanda 1 (10
      entradas, con ri_mmsef), y el perfil r2b (perfil_e1, la tabla que valida el manifiesto) da a cada documento la
-     entrada de la misma regla que arma el mensaje.
+     entrada de la misma regla que arma el mensaje. Desde A3, el derivado sale de `--tandas 1,final` (43 entradas: las 10
+     de la tanda 1 y 33 de la tabla «## Tanda final» del registro); los casos de la tanda 1 miran sus 10 primeras
+     entradas, y un caso nuevo controla que las filas de la tanda final entran con `--tandas 1,final` y no con
+     `--tandas 1` (con el código de HEAD falla solo ese caso: control negativo del FRENO A3).
 
 Uso (desde la raíz del repo):
   PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B data/experiment/reextraccion_v2/e1_extractor/selftest_prompt_r2b.py
@@ -94,10 +97,20 @@ def check_protegido(nombre: str, fn) -> None:
 # U-ALCANCE-E1: el derivado del registro de alcance por tanda, su generador y las tandas con que se genera.
 DERIVADO_REGISTRO = REPO / "data" / "experiment" / "catalogo_unico" / "registro_alcance_r2b.json"
 GENERADOR_DERIVADO = REPO / "data" / "experiment" / "catalogo_unico" / "code" / "derivar_registro_alcance_r2b.py"
-TANDAS_DEL_DERIVADO = "1"
+TANDAS_DEL_DERIVADO = "1,final"
 CON_ALCANCE_TANDA1 = ("ri_ccna.pdf", "ri_rml.pdf", "ri_gerc.pdf", "ri_pgn.pdf", "ri_dcpc.pdf", "snp_cheq.pdf",
                       "snp_tr.pdf", "manori.pdf", "nmcief.pdf", "ri_mmsef.pdf")
 SIN_ALCANCE_TANDA1 = ("ri_oc.pdf", "ceninf.pdf", "cirmo3.pdf")
+# A3: las filas de la tabla «## Tanda final» del registro, en su orden (lectura de la autora del 18/10/2026).
+CON_ALCANCE_TANDA_FINAL = ("ri_acsf.pdf", "ri_ai.pdf", "ri_bdp.pdf", "ri_esd.pdf", "ri_ii_31_12_19.pdf", "ri_msrl.pdf",
+                           "ri_nge.pdf", "ri_ot.pdf", "ri_rcl.pdf", "ri_secoexpo.pdf", "ri_sef.pdf", "ri_tar.pdf",
+                           "ri_tvf.pdf", "ribspc.pdf", "cateloc.pdf", "horari.pdf", "inspag.pdf", "opecam.pdf",
+                           "reqcac.pdf", "ri_iepsp.pdf", "ri_psp.pdf", "seguef.pdf", "cedin.pdf", "consyr.pdf",
+                           "garant.pdf", "garopt.pdf", "jafip.pdf", "ri_ieccm.pdf", "ri_tsa.pdf", "seggar.pdf",
+                           "snp_dd.pdf", "venliq.pdf", "verac.pdf")
+SIN_ALCANCE_TANDA_FINAL = ("ri_cr.pdf", "ri_dsf.pdf", "ri_transpa.pdf", "regpri.pdf", "ri_pspapt.pdf", "asomut.pdf",
+                           "fimipyme.pdf", "micemp.pdf", "ratio.pdf", "ri_iesinap.pdf", "ri_laft.pdf", "rmgcti.pdf",
+                           "snp_mep.pdf")
 ARCHIVO_RIC = "TO_regimen_informativo_contable_mensual_actual.pdf"
 
 
@@ -390,14 +403,20 @@ def main() -> int:
     check_protegido("el derivado del registro (catalogo_unico/registro_alcance_r2b.json, fuera de generados_r2/): sha256 "
                     "esperado, candado del módulo, y es lo que el módulo cargó", candado_del_derivado)
 
+    def generar(tandas: str):
+        return subprocess.run([sys.executable, "-B", str(GENERADOR_DERIVADO), "--tandas", tandas, "--salida", "-"],
+                              capture_output=True, cwd=REPO, env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"})
+
     def regenera():
-        r = subprocess.run([sys.executable, "-B", str(GENERADOR_DERIVADO), "--tandas", TANDAS_DEL_DERIVADO,
-                            "--salida", "-"], capture_output=True, cwd=REPO,
-                           env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"})
-        return (r.returncode == 0 and r.stdout == P.REGISTRO_ALCANCE_R2B_JSON.read_bytes()), \
+        # Desde A3, la parte de la tanda 1: sus 10 entradas, las primeras del derivado (el de la tanda final, en el caso
+        # de A3, abajo).
+        r = generar("1")
+        t1 = {a: der[a] for a in list(der)[:len(CON_ALCANCE_TANDA1)]}
+        texto_t1 = json.dumps(t1, ensure_ascii=False, indent=1) + "\n"
+        return (r.returncode == 0 and r.stdout == texto_t1.encode("utf-8")), \
             f"rc={r.returncode} {r.stderr.decode('utf-8', 'replace')[-300:]}"
-    check_protegido(f"el derivado se regenera byte a byte desde registro_alcance_por_tanda.md con el lector de R2-2 "
-                    f"(--tandas {TANDAS_DEL_DERIVADO})", regenera)
+    check_protegido("las entradas de la tanda 1, las primeras del derivado, se regeneran byte a byte desde "
+                    "registro_alcance_por_tanda.md con el lector de R2-2 (--tandas 1)", regenera)
 
     def rama_clase():
         e = der["ri_ccna.pdf"]
@@ -461,14 +480,51 @@ def main() -> int:
         formas = {("rol_id", "clase_ids", "label", "miembros_ids", "miembros_labels"),
                   ("rol_id", "label", "miembros_ids", "miembros_labels")}
         reutilizados = [e for e in P.REGISTRO_ALCANCE_R2B.values() if "clase_ids" not in e]
+        t1 = list(P.REGISTRO_ALCANCE_R2B)[:len(CON_ALCANCE_TANDA1)]
         ok = (not set(P.REGISTRO_ALCANCE_R2B) & set(P.ROL_POR_TO_R2)
-              and list(P.REGISTRO_ALCANCE_R2B) == list(CON_ALCANCE_TANDA1)
+              and t1 == list(CON_ALCANCE_TANDA1)
               and all(tuple(e) in formas for e in P.REGISTRO_ALCANCE_R2B.values())
-              and all(roles.get(e["rol_id"]) == e for e in reutilizados) and len(reutilizados) == 5)
+              and all(roles.get(e["rol_id"]) == e for e in reutilizados)
+              and sum("clase_ids" not in P.REGISTRO_ALCANCE_R2B[a] for a in t1) == 5)
         return ok, str(list(P.REGISTRO_ALCANCE_R2B))
-    check_protegido("el derivado solo agrega: ningún documento de la tabla de la release; los 10 de la tanda 1 con "
-                    "alcance, con la forma de rol_por_to_r2 (5 de clase, 5 de rol reutilizado iguales a la entrada del "
-                    "rol en la release)", solo_agrega)
+    check_protegido("el derivado solo agrega: ningún documento de la tabla de la release; empieza por los 10 de la tanda "
+                    "1 con alcance (5 de clase, 5 de rol reutilizado); todas sus entradas con la forma de rol_por_to_r2, "
+                    "y las de rol reutilizado iguales a la entrada del rol en la release", solo_agrega)
+
+    def tanda_final():
+        # A3: el caso nuevo. Las entradas del derivado que siguen a las 10 de la tanda 1 son las filas con alcance de la
+        # tabla «## Tanda final», que entran con --tandas 1,final y no con --tandas 1.
+        r_final, r_t1 = generar(TANDAS_DEL_DERIVADO), generar("1")
+        if r_final.returncode or r_t1.returncode:
+            return False, f"rc={r_final.returncode},{r_t1.returncode} {r_final.stderr.decode('utf-8', 'replace')[-300:]}"
+        d = P.REGISTRO_ALCANCE_R2B
+        roles = {e["rol_id"]: e for e in P.ROL_POR_TO_R2.values() if e.get("rol_id")}
+        nuevas = list(d)[len(CON_ALCANCE_TANDA1):]
+        n_clases = [len(d[a]["clase_ids"]) for a in nuevas if "clase_ids" in d[a]]
+        reutilizados = [d[a] for a in nuevas if "clase_ids" not in d[a]]
+        ramas = (("ri_acsf.pdf", P.ROL_POR_TO_R2[ARCHIVO_RIC], "Sujeto_rol_entidad_comprendida_reginf en `sujeto_id`"),
+                 ("cateloc.pdf", d.get("cateloc.pdf"), "sugerí Sujeto_entidad_financiera en `sujeto_id`"),
+                 ("reqcac.pdf", d.get("reqcac.pdf"),
+                  "sugerí Sujeto_casa_de_cambio o Sujeto_agencia_de_cambio en `sujeto_id`, según corresponda"))
+        ok = (r_final.stdout == P.REGISTRO_ALCANCE_R2B_JSON.read_bytes()
+              and not set(CON_ALCANCE_TANDA_FINAL) & set(json.loads(r_t1.stdout))
+              and nuevas == list(CON_ALCANCE_TANDA_FINAL)
+              and n_clases.count(1) == 17 and n_clases.count(2) == 3 and len(reutilizados) == 13
+              and all(roles.get(e["rol_id"]) == e and e["rol_id"] == "Sujeto_rol_entidad_comprendida_reginf"
+                      for e in reutilizados)
+              and all(a not in d and a not in P.ROL_POR_TO_R2 and P.alcance_del_documento(a) is None
+                      and not lineas_alcance(P.build_user_message_r2b(con_archivo(a))) for a in SIN_ALCANCE_TANDA_FINAL))
+        for archivo, entrada, sugerencia in ramas:
+            linea = P.linea_alcance(entrada)[0] if entrada else ""
+            ok = (ok and sugerencia in linea and lineas_alcance(P.build_user_message_r2b(con_archivo(archivo))) == [linea]
+                  and solo_cambia_la_linea(archivo, linea))
+        return ok, f"{len(d)} entradas; {len(nuevas)} después de las de la tanda 1"
+    check_protegido("A3: las filas de la tabla «## Tanda final» entran con --tandas 1,final y no con --tandas 1: el "
+                    "derivado es byte a byte el de --tandas 1,final; con --tandas 1 no trae ninguna; después de las 10 "
+                    "de la tanda 1 vienen las 33 con alcance, en el orden del registro (17 de una clase, 3 de dos y 13 "
+                    "de rol reutilizado, el de ric, igual a su entrada en la release); las 13 declaradas sin alcance no "
+                    "tienen entrada ni línea; y ri_acsf (rol), cateloc (una clase) y reqcac (dos clases) llevan su línea "
+                    "una vez, y nada más cambia", tanda_final)
 
     def perfil_con_el_derivado():
         import perfil_e1  # noqa: PLC0415 — el perfil que carga el runner (runner_corpus.configurar)
