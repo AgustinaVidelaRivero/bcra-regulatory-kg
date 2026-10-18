@@ -977,3 +977,39 @@ Decisiones de la autora del 17/10/2026, recibidas a las 18:42:59 (hoja de ruta d
   como desacuerdo, con la cifra sin esos pares al lado, y la cifra principal va sobre los 82 pares, con la cifra sin «necesita experto» ni
   «criterio mal planteado» al lado.
 - Las secciones anteriores no se editan.
+
+## 28. El juez sin ajuste, el alcance de la tanda final y los errores fuera de los criterios (agregado del 17/10/2026)
+
+Decisiones de la autora del 17/10/2026, recibidas a las 19:35:58 y a las 20:20:12 (hoja de ruta de la mesa, §146 y §147), sobre las tres
+lecturas del día (§27) y el material del alcance de la tanda final.
+
+- **Sub-documento:** la autora confirma la lectura de la rama sin error. Los 33 límites de la tanda final no se leen y quedan como los
+  segmenta la E0. Se declara con la cifra de la tanda 1: 0 errores en 14 límites.
+- **El juez de EV2 no se ajusta** por los 3 desacuerdos del gold de ajuste: queda el prompt v1 (`fd446f8e…`) tal cual.
+  - Son 3 de 82 pares: 2 en la dirección B (G13-3 y G14-3) y ninguno en la A, más un «dudoso» del juez contado como desacuerdo (G02-3).
+  - Con tan pocos, un ajuste sería acomodarlo a estas 20 respuestas.
+  - Los 3 se declaran como límite conocido, con su dirección.
+- **El alcance de la tanda final:** el material de la lectura se arma ya. Si T2 cierra antes, va primero su FRENO.
+  - Se leen los 46 documentos sin fila en el registro ni rol en la tabla de la release.
+  - Los otros 52 quedan como están, con el criterio del 15/10 para la tanda 1.
+- **El sello de la release, tal cual:** «la opción 1, una nota fechada al laudo y a la enmienda 4. No es una regla nueva: la enmienda 4,
+  §2, punto 3 (53bbd6fa:64-66), ya dice que la lectura de cada tanda "cambia solo el mensaje de sus unidades: el de toda unidad ya
+  extraída sale byte a byte igual, y se controla". La nota deja escrito que el cambio de mecanismo del mensaje de E1 ocurrió una vez, con
+  el cableado de la tanda 1 (42823df0), y que cada tanda suma sus filas por ese punto, con el derivado y el candado nuevos y el control
+  byte a byte de lo ya extraído. La release sigue siendo r2.»
+  - La nota va con el mandato de la etapa A3 de U-ALCANCE-E1, cuando se firme.
+- **Un documento sin fila al despacho:** se espera hasta la última hora de arranque del cableado que todavía llega al despacho del
+  miércoles 21 a las 18:00.
+  - El calendario v6 de la mesa la calcula: el martes 20 a las 21:15 con el escenario lento, y el miércoles 21 a las 11:00 con el central.
+  - La autora la fija al firmar el mandato del cableado.
+  - Si a esa hora falta alguno, sale de la tanda final, declarado, al grafo corregido. Si tiene preguntas de B6.3, rige la regla de
+    reemplazo (`:451-454`).
+- **Los errores fuera de los criterios.** Hoy nada de B6.3 los mide:
+  - el juez v1 juzga solo contra los criterios (`data/experiment/ev2_juez/prompt_juez_v1.md:31-33`);
+  - el veredicto de la respuesta sale solo de ellos (`ev2_juez/mapping.py:40-54`);
+  - las tripletas miden el grafo y la exactitud de cita no mira si lo citado es cierto (`docs/plan_tesis.md:778`).
+  - **Decisión de la autora:** la columna «error fuera de los criterios (sí o no, y cuál)» entra en las 20 de verificación de A2.2 y en
+    las 36 de control de B6.3, a ciegas al brazo, en sus pre-registros.
+  - Un juez de afirmaciones aparte queda como trabajo futuro, declarado. El control determinístico de cifras no va.
+  - Si el lunes 19 a la noche las horas no dan, la columna de las 36 de control es la primera que sale, declarada.
+- Las secciones anteriores no se editan.
