@@ -1244,3 +1244,49 @@ de la tanda final. La autora despachó A3 en una sesión nueva con esta precisi�
 - **La nota al pie del mandato de A3** entra en el mismo commit que esta sección. El mandato no es una entrada de los valores de A3, así que
   el control de su commit no lo cuenta entre los archivos leídos.
 - Las secciones anteriores no se editan.
+
+## 37. U-NAV-DISENO firmado, la causa de la cola, la unión de nodos, la exclusión de las FICHAS y una expresión en lo commiteado (agregado del 18/10/2026)
+
+Decisiones de la autora del 18/10/2026, recibidas a las 18:18:43 (hoja de ruta de la mesa, §166 a §168).
+
+- **U-NAV-DISENO, FIRMADO** sobre la v6 para firmar (sha256 `998ba8fc…`, en el paquete de la mesa, `decisiones_166_mesa/unav/`):
+  - con el mínimo de 3 por subtipo de varios puntos que agregó la mesa a N3;
+  - **la decisión 9,** tal cual: «Ninguna de las tres: la parte de la familia 6 que vale para los dos brazos (descomponer la pregunta y
+    revisar las condiciones y las excepciones antes de responder) va a la plantilla común de los dos brazos desde N6, decidida ahora y sin
+    medirla aparte, como el texto del prompt antes de A2.2 (§5: la plantilla es la misma y solo cambia el bloque de herramientas). F1
+    compara BM25 contra BM25 con la híbrida, las dos con esa parte, así que mide solo la híbrida. La familia 6 del grafo queda con lo
+    propio del grafo: los ejemplos de navegación y las instrucciones de sus herramientas. Se declara que esa parte no se midió en
+    fragmentos. El costo no cambia.»;
+  - **la decisión 10,** tal cual: «La (a): 3 preguntas más en N3, solo de ejemplo, nunca medidas. Si los ejemplos entran a la
+    configuración del grafo en N7, el brazo de fragmentos lleva los mismos 3 ejemplos resueltos con su herramienta, declarado, para que
+    ningún brazo tenga ejemplos que el otro no tiene.»;
+  - el mandato firmado va en `docs/mandatos/UNAV_DISENO_navegacion_agente.md`, en el mismo commit que esta sección, y reemplaza al
+    BORRADOR del 04/10/2026 (último cambio en `97c21e4d`). Las dos decisiones van aplicadas en su texto.
+- **La causa de la cola de la tanda 1** (pre-registro de la tanda 1, `95b18217:634-635`): va la propuesta de la mesa tal cual (hoja de
+  ruta de la mesa, §167), el lunes 19 temprano, antes del despacho de la tanda final:
+  - la mesa mira, por script sobre una copia, la lectura de la autora de las 30 tal cual y los rasgos de E0 y de E1 de cada unidad,
+    contra las muestras de las aceptadas. De las 12 de la cola que no se leyeron, solo su código, su punto, su rol y sus rasgos;
+  - no mira nada de E3 ni de los reintentos, por el cegamiento de U-MED-VERIF;
+  - la autora lee la salida, sin lectura nueva ni marcas, y decide qué se declara en el pre-registro de la tanda final y qué va al
+    backlog. Unos 30 minutos: NO VERIFICADO;
+  - no cambia ningún grafo. Una corrección por código va con su propio mandato.
+- **La unión de nodos** (§32): no entra a la re-aplicación única, y se declara para el grafo corregido, con la contradicción que encontró
+  la mesa:
+  - la vigilancia (3) mide grupos de nodos de una misma unidad con el mismo tramo (`data/experiment/tanda1/t4/FRENO_T4_tramo2.md:223`),
+    así que no contesta la unión entre unidades, con la unidad de origen, que el §32 dejó esperando;
+  - en los 30 grupos leídos, las 9 duplicaciones son pares de tipos distintos, y las 9 tienen un nodo Operacion: ninguna regla por tipos
+    las separa de los 21 distintos (hoja de ruta de la mesa, §167, `cifras_propuestas_167_mesa.py`);
+  - C1 y C2 no cambian.
+- **El cegamiento:** las 3 unidades de la tanda 1 cuyo contenido vio la mesa por error el 18/10/2026 se suman a la lista de exclusión del
+  despacho de las FICHAS, antes del sorteo (mandato firmado de U-MED-VERIF-FICHAS, `c0d3ab17`, §3). Son `depaho::3.12.3.2`,
+  `depaho::3.12.3.3` y `snp_tr::2.2.11` (`decisiones_167_mesa/cegamiento/unidades_a_la_vista_mesa_167.json`, en el paquete de la mesa;
+  sha256 `d1331ceb…`).
+- **Una expresión en lo commiteado:** la que nombra el origen de una revisión, que desde el 18/10/2026 no se escribe en nada persistido.
+  - No se editan las secciones cerradas ni los documentos sellados;
+  - va a la lista de lo que se limpia en la copia publicada del recurso, como las rutas del scratchpad (§29), sin tocar lo sellado;
+  - son 8 líneas de 4 archivos, en `bd60f6c0`:
+    - este registro, líneas 582 y 789;
+    - `data/experiment/med_desamb/diseno_sellado_med_desamb_2026-10-17.md:151`;
+    - `data/experiment/segmentacion_oficial_e0r2/s1ter/adjudicacion/metodo_adjudicacion_S1ter.md:8`, `:9` y `:11`;
+    - `data/experiment/segmentacion_oficial_e0r2/s1ter/adjudicacion/registro_pasada_1_y_seleccion_S1ter.md:264` y `:266`.
+- Las secciones anteriores no se editan.
