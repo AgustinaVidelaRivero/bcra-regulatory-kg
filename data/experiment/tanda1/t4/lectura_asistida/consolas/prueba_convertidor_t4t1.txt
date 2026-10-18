@@ -1,0 +1,50 @@
+$ python3 -I convertir_lectura_T4.py cola exp_sin_nota.csv
+
+1 PROBLEMA(S) — no escribí nada. Corregilos en Numbers, exportá de nuevo y volvé a correr:
+  - fila 2 (ri_ccna::D1F2::3.2): el veredicto cambia la propuesta ('sin error' → 'con error') y falta la razón en nota_autora
+rc=1
+
+$ python3 -I convertir_lectura_T4.py cola exp_invalido.csv
+
+1 PROBLEMA(S) — no escribí nada. Corregilos en Numbers, exportá de nuevo y volvé a correr:
+  - fila 2 (ri_ccna::D1F2::3.2): veredicto_autora 'Con error' no es una de ['con error', 'sin error', 'dudosa']
+rc=1
+
+$ python3 -I convertir_lectura_T4.py cola exp_reordenado.csv
+
+2 PROBLEMA(S) — no escribí nada. Corregilos en Numbers, exportá de nuevo y volvé a correr:
+  - fila 2: id/celda de la exportación ('ri_ccna::D1F2::3.7', 'RI:sin_raiz') no son los de la planilla ('ri_ccna::D1F2::3.2', 'RI:sin_raiz')
+  - fila 3: id/celda de la exportación ('ri_ccna::D1F2::3.2', 'RI:sin_raiz') no son los de la planilla ('ri_ccna::D1F2::3.7', 'RI:sin_raiz')
+rc=1
+
+$ python3 -I convertir_lectura_T4.py cola exp_ok.csv
+
+OK: cola_marcada.csv, 30 filas, separador de la exportación ',', sha256 d042ffdc50475c00ff7b7987354699395aea092857839b01fcae6940d3acde99
+veredictos: {'sin error': 17, 'dudosa': 3, 'con error': 10}
+cambian la propuesta: 0
+arreglos de forma (1):
+  - saqué una fila vacía al final
+rc=0
+
+$ python3 -I convertir_lectura_T4.py cola exp_ok.csv
+FRENO: cola_marcada.csv ya existe: no la piso. Si es de una corrida vieja, renombrala
+rc=1
+
+$ python3 -I convertir_lectura_T4.py observacion_12 exp12.csv
+
+OK: observacion_12_marcada.csv, 30 filas, separador de la exportación ';', sha256 adc62defac8f80e416fde51cfc248c9fc2df5e643c6ad254615badacec994a5d
+veredictos: {'correcta': 27, 'no decidible': 1, 'incorrecta (E1-prompt)': 2}
+cambian la propuesta: 0
+arreglos de forma (1):
+  - saqué una fila vacía al final
+rc=0
+
+$ python3 -I convertir_lectura_T4.py vigilancia_3 exp3.csv
+
+OK: vigilancia_3_marcada.csv, 30 filas, separador de la exportación '\t', sha256 29d0a84362412f09355e38fe9f04e8695331ebfd8453c2541947fdf7d244d1af
+veredictos: {'distintos': 22, 'duplicación': 8}
+cambian la propuesta: 1 (Obligacion_las_entidades_financieras_deberan_informar_la_cantidad_de_cofres_existentes_en_e_1accd5|Operacion_informacion_cantidad_de_cofres__ri_mmsef_2_3_7_1_3_04d203)
+arreglos de forma (1):
+  - saqué una fila vacía al final
+rc=0
+

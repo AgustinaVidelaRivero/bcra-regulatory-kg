@@ -1,0 +1,2719 @@
+{
+ "hora": "2026-10-18T12:28:35-03:00",
+ "lectura": {
+  "modelo": "Claude Opus 5.5",
+  "id": "claude-opus-5-5",
+  "como": "lectura propia de la ejecutora en su sesión de Claude Code, sobre las fichas del material; sin API y USD 0. Es una propuesta: adjudica la autora (D2, lectura asistida con revisión de la autora, como en la tanda 0)"
+ },
+ "criterios_de_la_propuesta": {
+  "unidad": [
+   "tipos cercanos con la descripción fiel, condicion_de o requiere laxos y `tipo` que no corresponde: sin error, como observación (lectura laxa, R2, como en la lectura de las aceptadas de la tanda 0)",
+   "con error: una facultad o un fin leído como deber, un supuesto o una regla invertidos, un sujeto que no es el del texto, una relación que el texto no sostiene o contenido que no está en el texto",
+   "dudosa: el contenido viene de otro punto del documento y no está en el texto de la unidad, o el texto admite las dos lecturas",
+   "los tipos documentales mal asignados (Comunicacion para una ley o un TO) son observación, no error, como en la tanda 0",
+   "las remite_a no entran en el veredicto: se cuentan aparte por cita y destino, como en la tanda 0; si una no sostiene su destino, va como observación"
+  ],
+  "vigilancia_2": [
+   "vaciamiento: el ítem fija un dato, una medida, un concepto o un sujeto del régimen, o el texto fija una regla o una tabla del modelo de información, y la unidad no tiene relaciones",
+   "no vaciamiento: el texto propio solo abre una lista (sus ítems llevan el contenido como heredado), es un título o es un formulario"
+  ],
+  "vigilancia_1": [
+   "sí: el texto formula el deber (debe, deberá, o un futuro prescriptivo como «se aplicará») y la Condicion lo lleva",
+   "el «debe» que pone la descripción del extractor no cuenta: decide el texto"
+  ],
+  "vigilancia_3": [
+   "duplicación: el mismo contenido normativo (deber, facultad, prohibición, regla, definición o supuesto) está en dos nodos del grupo",
+   "distintos: cada nodo dice algo que el otro no; incluye el par deber y acto regulado (Obligacion —regula→ Operacion, prompt_e1.py:67 y :184-189) cuando la descripción del acto no repite el deber"
+  ],
+  "observacion_12": [
+   "establecida_en: correcta si el nodo de origen está en el texto de su unidad y es de ese TO",
+   "las demás: la relación contra el texto; un defecto del nodo de destino que no cambia la relación va como observación"
+  ]
+ },
+ "muestras": {
+  "cola": {
+   "material": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md",
+   "material_jsonl_sha256": "5f348167cd038cf1da99b1ff8344b7bf3951fdf4ab118678b8226c8b7e3cd614",
+   "sorteo": "data/experiment/tanda1/t3/muestras/cola.json",
+   "sorteo_sha256": "89305f3ffa8bc22d60b46fcfecf35c6efe4eb01347277b1f47d5813f1852740b",
+   "pregunta": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+   "respuestas_validas": [
+    "con error",
+    "sin error",
+    "dudosa"
+   ],
+   "elementos": 30,
+   "propuestas": {
+    "sin error": 17,
+    "dudosa": 3,
+    "con error": 10
+   },
+   "con_omisiones": 8,
+   "con_observaciones": 6,
+   "planilla": "data/experiment/tanda1/t4/lectura_autora/cola.csv",
+   "planilla_sha256": "5f1fefe1887fd999a989a7414790018b6dc3390f3f4c256423cb84cd358f799a",
+   "detalle": [
+    {
+     "n": 1,
+     "id": "ri_ccna::D1F2::3.2",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#1",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "El primer intento solo trae el nodo del TO, sin contenido: nada contradice el texto («3.2 Los inhabilitados para ejercer cargos públicos»).",
+     "omisiones": "la inhabilidad del punto («Los inhabilitados para ejercer cargos públicos») no se extrae",
+     "observaciones": ""
+    },
+    {
+     "n": 2,
+     "id": "ri_ccna::D1F2::3.7",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#2",
+     "propuesta": "dudosa",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e1 y e2 enuncian las incompatibilidades del síndico del art. 286 («No pueden desempeñarse como síndicos…»); el texto las usa como inhabilidades que el auditor externo declara no tener («No me alcanza ninguna de las siguientes inhabilidades»).",
+     "omisiones": "",
+     "observaciones": "e3 tipa como Comunicacion la Ley 19.550 (tipo documental, observación)"
+    },
+    {
+     "n": 3,
+     "id": "ri_ccna::D1F2::S1",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#3",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e1 —aplica_a→ Sujeto_rol_alcance_autenf (Autoridades de entidades financieras): quien declara es el auditor externo («Declaro bajo juramento como Auditor Externo de la Caja de Crédito que»), que no es una autoridad de la entidad.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 4,
+     "id": "ri_ccna::D1F2::S5",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#4",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e1 recoge la declaración «No he sido expresamente inhabilitado para ejercer la profesión por ninguno de los Consejos Profesionales».",
+     "omisiones": "e1 sin aplica_a al auditor externo",
+     "observaciones": ""
+    },
+    {
+     "n": 5,
+     "id": "ri_ccna::D1F6::S1",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#5",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e1 y su aplica_a al «Socio Responsable» recogen «No soy socio o accionista, director o administrador de la entidad».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 6,
+     "id": "ri_ccna::D2A2::S1",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#6",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e2 Obligacion «Las Cajas de crédito deberán documentar e informar sobre las tareas de relevamiento y evaluación de los controles»: el texto solo enumera los ciclos («Los ciclos más relevantes … son los siguientes»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 7,
+     "id": "ri_dcpc::3.1.1",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#7",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e2 Condicion «El activo financiero cumple con las condiciones para baja contable» —condicion_de→ e4 invierte el supuesto: el texto dice «Aquellos activos financieros que no cumplen con las condiciones … continuarán registrándose».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 8,
+     "id": "ri_pgn::2.2.2",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#8",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e2 recoge «Se informará esta posición teniendo en cuenta lo establecido en el punto 2.2.2», con el rol del régimen.",
+     "omisiones": "la remisión al punto 2.2.2 de las normas de PGN no va como arista",
+     "observaciones": ""
+    },
+    {
+     "n": 9,
+     "id": "ri_rml::Sbloque10",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#9",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e22 «estructura de plazos residuales de julio para agosto» —condicion_de→ e5, la posición trimestral mayo-julio; el texto la aplica a agosto: «y en agosto, la correspondiente a julio».",
+     "omisiones": "",
+     "observaciones": "e21 tipa como Condicion una regla de cálculo de la posición trimestral: lectura laxa"
+    },
+    {
+     "n": 10,
+     "id": "ri_rml::Sbloque14::parte1",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#10",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "Los nodos recogen las instrucciones de los puntos 11 y 12, por ejemplo e15 «Código 210106/TP ≤ Código 825000/001» y e6 «No se admitirá integrar con bonos los incrementos de exigencia».",
+     "omisiones": "la tabla de exigencia mínima diaria del 11.1.2 y las correlaciones con cuentas de balance no se extraen",
+     "observaciones": ""
+    },
+    {
+     "n": 11,
+     "id": "ri_rml::Sbloque14::parte4",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#11",
+     "propuesta": "dudosa",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e9 Restriccion «Las financiaciones otorgadas a MiPyMES no informadas … están limitadas a una TNA máxima del 24%»: el texto usa la tasa para definir qué financiaciones computan en la partida 712000/001, no limita las financiaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 12,
+     "id": "depaho::1.3.5",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#12",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e1 recoge el dato exigido («como mínimo, se exigirán los siguientes datos: … Estado civil»).",
+     "omisiones": "",
+     "observaciones": "e1 tipa como Definicion un dato exigido, con la descripción fiel: lectura laxa"
+    },
+    {
+     "n": 13,
+     "id": "manori::1.2.10.2",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#13",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "Los deberes e2 a e7 recogen los incisos i) a v) y «El control de calidad debe ser constante y permanente».",
+     "omisiones": "",
+     "observaciones": "e8 tipa como Condicion la regla del tamaño de la muestra («cuya dimensión debe ser función del volumen»): lectura laxa"
+    },
+    {
+     "n": 14,
+     "id": "snp_tr::1.3.1.2",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#14",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "Las Operacion recogen las transacciones y sesiones («Órdenes de transferencia», «La sesión de rechazados»); e5 y e6, «Diariamente operará una única sesión».",
+     "omisiones": "",
+     "observaciones": "e5 y e6 tipan como Obligacion el régimen de sesiones de la CEC: lectura laxa"
+    },
+    {
+     "n": 15,
+     "id": "cirmo3::5.5.3.2",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#15",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e1 recoge el tope de la ampliación estacional («por hasta el menor de los siguientes montos: … $3.000 millones»).",
+     "omisiones": "la potestad del BCRA de ampliar el límite (heredado) no se extrae",
+     "observaciones": ""
+    },
+    {
+     "n": 16,
+     "id": "lingeef::3.5.4.3",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#16",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e3 Obligacion «deberán considerar el efecto probable … sobre el monto de los pagos realizados por cuenta de sus clientes y sobre las líneas de crédito»: no está en el texto, que solo dice «Puede ocasionar que otras entidades financieras difieran sus pagos».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 17,
+     "id": "lingeef::5.4.5.1",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#17",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e1 recoge «perturbación constante paralela, al alza o a la baja, en todas las bandas temporales», y e2 el deber del encabezado («deben emplear los siguientes seis escenarios»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 18,
+     "id": "lingeef::5.4.2.3",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#18",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e34 (depósitos a plazo sin derecho de retiro o con penalidad) —condicion_de→ e28, la cancelación anticipada de préstamos, que el texto no condiciona («Los depósitos a plazo pueden tratarse como pasivos a tasa fija … siempre que»); e15 —limita→ e29 tampoco tiene base.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 19,
+     "id": "depaho::3.8.3.4",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#19",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e1 agrega «dentro de los 60 días corridos siguientes a la fecha de la apertura» y e2 condiciona a «documentación remitida … por medios electrónicos»: el texto solo exige «Copia autenticada del contrato o estatuto social».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 20,
+     "id": "efemin::6.4.3.1",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#20",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e1 —aplica_a→ Sujeto_mipyme: el texto habla de «Clientes no MiPyME»; las MiPyME son las productoras de las maquinarias.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 21,
+     "id": "lingeef::4.1.2.1",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#21",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "El primer intento solo trae el nodo del TO, sin contenido: nada contradice el texto («4.1.2.1. Desarrollo de modelos para la estimación del riesgo;»).",
+     "omisiones": "el proceso «Desarrollo de modelos para la estimación del riesgo» no se extrae",
+     "observaciones": ""
+    },
+    {
+     "n": 22,
+     "id": "snp_cheq::3.1.4.2",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#22",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "Las definiciones y los deberes recogen el texto, por ejemplo e11 «No podrá presentar rechazos de entidad depositaria para los cheques diferidos por feriado local» y e18 «Las entidades podrán presentar los rechazos».",
+     "omisiones": "la información que cada actor considera para conciliar las posiciones no se extrae",
+     "observaciones": ""
+    },
+    {
+     "n": 23,
+     "id": "manori::1.1.6.4",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#23",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "Las Operacion recogen las pautas a) y b), e5 «Se utilizará la metodología que la entidad financiera considere conveniente» y e6 «Si existiese una tasa máxima establecida».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 24,
+     "id": "lingeef::11.1.2",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#24",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e1 Obligacion «Las entidades deben superar las limitaciones de los modelos y datos históricos»: el texto describe un fin de las pruebas de estrés («tienen un rol particularmente importante a fin de: … Superar las limitaciones»), no un deber.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 25,
+     "id": "lingeef::5.3.4.4",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#25",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e1 recoge «deben incluir como mínimo lo siguiente: … Resultados de las pruebas de estrés, incluyendo una evaluación de la sensibilidad».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 26,
+     "id": "cajasc::3.7.3",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#26",
+     "propuesta": "dudosa",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e1 —aplica_a→ Sujeto_cliente: el límite recae sobre «El importe total consolidado que registre cada titular»; quien debe respetarlo es la caja de crédito cooperativa.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 27,
+     "id": "lingeef::6.1.3.7",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#27",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e1 recoge la categoría y sus ejemplos («errores en la introducción de datos, fallas en la administración de garantías»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 28,
+     "id": "lingeef::6.1.3.3",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#28",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e1 recoge la categoría y sus ejemplos («reclamos de indemnizaciones por parte de los empleados»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 29,
+     "id": "depaho::4.19.4",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#29",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "e4 y e5 (abrir la caja y transferir) —condiciona→ e1, el depósito de los fondos: el texto hace al revés, el depósito es el supuesto del deber («En estos casos, las entidades financieras deberán proceder a la apertura»).",
+     "omisiones": "«a solicitud del declarante» no se extrae",
+     "observaciones": ""
+    },
+    {
+     "n": 30,
+     "id": "depaho::2.8.1",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/cola/fichas_cola.md#30",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "Los nodos recogen quién comunica el cierre, «Se hará efectivo luego de transcurridos 180 días corridos» y «durante el plazo de 730 días corridos».",
+     "omisiones": "",
+     "observaciones": "e3 y e4 llevan `tipo` comunicacion_a_cliente para una comunicación a la entidad: lectura laxa"
+    }
+   ]
+  },
+  "aceptadas_items": {
+   "material": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md",
+   "material_jsonl_sha256": "c81f6f8cbc33a6abc5a7d63e8af8931f1c52d63d18a01a8890f4265e2841a10c",
+   "sorteo": "data/experiment/tanda1/t3/muestras/aceptadas_items.json",
+   "sorteo_sha256": "35622d640abb2d3997f2c39b321537a74025713ad1e5605b75d63eae790189d9",
+   "pregunta": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+   "respuestas_validas": [
+    "con error",
+    "sin error",
+    "dudosa"
+   ],
+   "elementos": 30,
+   "propuestas": {
+    "sin error": 21,
+    "con error": 5,
+    "dudosa": 4
+   },
+   "con_omisiones": 6,
+   "con_observaciones": 5,
+   "planilla": "data/experiment/tanda1/t4/lectura_autora/aceptadas_items.csv",
+   "planilla_sha256": "4932f4a80c8ae43d9667d280647e13bbc9f8f174f1d16da356961864d92fe439",
+   "detalle": [
+    {
+     "n": 1,
+     "id": "ri_ccna::D1A3L2::29.3",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#1",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 recoge el supuesto «Por su naturaleza y/o significatividad requiera la realización de un examen detallado» y N2 el examen, a juicio del auditor externo.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 2,
+     "id": "ri_ccna::D1F2::3.5",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#2",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N2 Excepcion «Exceptúa la posibilidad de un auditor externo de certificar que no le alcanzan las inhabilidades»: el texto enumera una inhabilidad que el auditor declara no tener («No me alcanza ninguna de las siguientes inhabilidades»); no exceptúa nada.",
+     "omisiones": "",
+     "observaciones": "N1 tipa como Comunicacion la Ley 21.526 (tipo documental, observación)"
+    },
+    {
+     "n": 3,
+     "id": "ri_mmsef::2.2.8.3.2",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#3",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 recoge el ítem «Tenencia de certificado de aptitud» del tesoro modular.",
+     "omisiones": "el deber de informar el cumplimiento de la medida no se extrae",
+     "observaciones": ""
+    },
+    {
+     "n": 4,
+     "id": "ri_mmsef::2.2.10.2",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#4",
+     "propuesta": "dudosa",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 trae «Se informará el cumplimiento…» y los parámetros «Si / No / Eximida / No Aplicable», que no están en el texto de la unidad (solo «2.2. Cumplimiento de las medidas mínimas de seguridad» y «Seguridad privada»): vienen de otro punto del documento.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 5,
+     "id": "ri_ccna::D1F2::3.6",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#5",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 recoge el supuesto «Quienes por decisión de autoridad competente hubieran sido declarados responsables de irregularidades».",
+     "omisiones": "la inhabilidad no se vincula al auditor externo que declara",
+     "observaciones": ""
+    },
+    {
+     "n": 6,
+     "id": "ri_mmsef::2.3.2.2",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#6",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "La unidad solo tiene el nodo del TO, sin contenido: nada contradice el texto, que es el ítem «2.3.2.2. Número de serie.».",
+     "omisiones": "el dato a informar («Número de serie» del castillete) no se extrae",
+     "observaciones": ""
+    },
+    {
+     "n": 7,
+     "id": "ri_ccna::D1F6::3.1.2",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#7",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 a N3 recogen las tres inhabilidades con sus plazos («hasta diez años después de su rehabilitación», «hasta cinco años») como límites al socio responsable que declara.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 8,
+     "id": "ri_mmsef::2.2.13.1",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#8",
+     "propuesta": "dudosa",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 trae «Se informará el cumplimiento…» y los parámetros «Si / No / Eximida / No Aplicable», que no están en el texto de la unidad (solo «Circuito cerrado de televisión de seguridad» y «UPS o red alternativa de alimentación eléctrica»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 9,
+     "id": "ri_mmsef::2.3.4.2",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#9",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "La unidad solo tiene el nodo del TO, sin contenido: nada contradice el texto, que es el ítem «2.3.4.2. Número de serie.».",
+     "omisiones": "el dato a informar («Número de serie» del tesoro blindado) no se extrae",
+     "observaciones": ""
+    },
+    {
+     "n": 10,
+     "id": "ri_mmsef::2.4.1.1",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#10",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "La unidad solo tiene el nodo del TO, sin contenido: nada contradice el texto, que es el ítem «2.4.1.1. Marca.».",
+     "omisiones": "el dato a informar («Marca» del dispositivo) no se extrae",
+     "observaciones": ""
+    },
+    {
+     "n": 11,
+     "id": "ri_dcpc::3.4.4.1",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#11",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "A13 N8 —prohibe→ N7: la regla «No se deducirán los activos recibidos que hayan sido vendidos por la entidad» no prohíbe la financiación por pase activo, que el texto regula («se registrarán en las cuentas»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 12,
+     "id": "ri_rml::Sbloque5",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#12",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 recoge «Previsiones mínimas exigidas: De acuerdo con la referencia indicada para el cálculo de Ipr/f», con la referencia del heredado.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 13,
+     "id": "ri_dcpc::3.1.3.2",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#13",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "Las imputaciones N4 a N9 y las condiciones N1 («Cuando exista deterioro de valor crediticio») y N2 («saldo de esta cuenta sea deudor») siguen el texto.",
+     "omisiones": "",
+     "observaciones": "N3 tipa como Obligacion la composición del resultado por venta («El resultado por la venta incluye…»): lectura laxa"
+    },
+    {
+     "n": 14,
+     "id": "ri_dcpc::3.2.2.1",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#14",
+     "propuesta": "dudosa",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 trae «se clasificarán y medirán a costo amortizado, con las excepciones previstas por la NIIF 9», que no está en el texto de la unidad; el heredado solo da «las contrapartidas de su medición … se deben registrar en función del tipo de resultados».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 15,
+     "id": "ri_dcpc::3.4.4.2",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#15",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 «cuando el receptor del activo subyacente obtiene el derecho a venderlo o pignorarlo» condiciona la reclasificación N4, y N2, N3 y N5 siguen las registraciones del texto.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 16,
+     "id": "ceninf::5.1.2.4",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#16",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 transcribe la definición «es el cociente entre la sumatoria de la cantidad de días de mora … y la cantidad total de facturas impagas».",
+     "omisiones": "no se vincula a la publicación de datos en la CenFIV (heredado)",
+     "observaciones": ""
+    },
+    {
+     "n": 17,
+     "id": "nmcief::A6::Sbloque12",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#17",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 a N7 (los aspectos a verificar) —condicion_de→ N9 hacen de cada aspecto el supuesto del deber de evaluar; en el texto son lo que se verifica («considerando la verificación de los siguientes aspectos: - Controles automatizados…»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 18,
+     "id": "nmcief::A6::Sbloque13",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#18",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "Los deberes de evaluar y verificar siguen el texto, y N1 delimita el alcance («aquellos servicios … que la auditoría interna determine como de criticidad alta»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 19,
+     "id": "nmcief::A6::Sbloque8",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#19",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 «El plan … debe contemplar al menos uno de los escenarios de más alta criticidad» —condicion_de→ N2 condiciona el deber de evaluar el plan a lo que el texto manda verificar («Verificar que se contemple al menos uno de los escenarios»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 20,
+     "id": "nmcief::A6::Sbloque9",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#20",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 a N9 recogen cada «evaluar» y «verificar» del texto, por ejemplo «Evaluar el proceso de Gestión de cambios».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 21,
+     "id": "expaef::9.6.4",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#21",
+     "propuesta": "dudosa",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 atribuye la prohibición a «La entidad financiera»; el texto exige que el contrato contenga una cláusula de «Prohibición de ceder el contrato o de subcontratar», sin decir a quién obliga.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 22,
+     "id": "cirmo3::8.4.1.2",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#22",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 recoge «La entidad financiera deberá: … Verificar que el CHC sea presentado al cobro por el beneficiario final».",
+     "omisiones": "",
+     "observaciones": "N1 lleva `tipo` presentacion_informativa, que no corresponde"
+    },
+    {
+     "n": 23,
+     "id": "lingeef::3.1.2.2",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#23",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 Obligacion «Las entidades financieras deben realizar el estudio periódico de la estructura de depósitos»: el texto define la gestión del riesgo («Se entiende por gestión del riesgo de liquidez al proceso … que involucra … el estudio periódico»), no impone ese deber.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 24,
+     "id": "lingeef::9.3.2",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#24",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 recoge «Las entidades financieras deben dar a conocer al público -de manera regular-» la descripción del proceso.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 25,
+     "id": "lingeef::4.3.5.2",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#25",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 recoge «El plan de contingencia debe: … Contemplar diferentes horizontes de tiempo, incluso intradiarios».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 26,
+     "id": "lingeef::5.3.2.4",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#26",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 recoge «deben establecer límites apropiados a tales subtipos de riesgos» y N2 el deber del 5.3.2.4.",
+     "omisiones": "",
+     "observaciones": "N2 pierde que son los límites los que deben reflejar las tenencias («los límites deben: … Reflejar»): paráfrasis laxa"
+    },
+    {
+     "n": 27,
+     "id": "lingeef::2.3.6.5",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#27",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 recoge «Se debe evaluar y reportar: … La condición de la cartera crediticia».",
+     "omisiones": "",
+     "observaciones": "N1 lleva `tipo` reporte_al_supervisor; el reporte del texto es al Directorio o a la Alta Gerencia"
+    },
+    {
+     "n": 28,
+     "id": "lingeef::10.3.1",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#28",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 y sus aplica_a recogen «El Directorio y la Alta Gerencia deben: … Considerar la planificación del capital».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 29,
+     "id": "lingeef::1.2.6",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#29",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 transcribe la definición y R1 remite a 1.2.5 con la cita «que no encuadren en el punto 1.2.5».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 30,
+     "id": "cajasc::5.1.3",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_items/fichas_aceptadas_items.md#30",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N2 recoge «deberán ser liquidados los títulos valores públicos nacionales cuyo plazo residual sea superior a 180 días» y N1 el límite de 6 meses del heredado.",
+     "omisiones": "",
+     "observaciones": ""
+    }
+   ]
+  },
+  "aceptadas_no_items": {
+   "material": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md",
+   "material_jsonl_sha256": "30a64bcfa1484b3b7614603652115cd6db5c78d547d32d05f950adb6fd813981",
+   "sorteo": "data/experiment/tanda1/t3/muestras/aceptadas_no_items.json",
+   "sorteo_sha256": "41d2f3ea8a42c82db07cfa47c0b237014579b965ff994ccd462ad3dcbc36e3e1",
+   "pregunta": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+   "respuestas_validas": [
+    "con error",
+    "sin error",
+    "dudosa"
+   ],
+   "elementos": 30,
+   "propuestas": {
+    "sin error": 28,
+    "con error": 2
+   },
+   "con_omisiones": 6,
+   "con_observaciones": 11,
+   "planilla": "data/experiment/tanda1/t4/lectura_autora/aceptadas_no_items.csv",
+   "planilla_sha256": "cc830b718cb13ccb595f95d1b0d0cc229f79802c1600c6f2665255d6ffec1e8a",
+   "detalle": [
+    {
+     "n": 1,
+     "id": "ri_mmsef::2.5.11",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#1",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 recoge el ítem «Blindaje (revestimiento)» del sistema de monitoreo remoto.",
+     "omisiones": "",
+     "observaciones": "N1 tipa como Definicion un ítem a informar, con la descripción fiel: lectura laxa"
+    },
+    {
+     "n": 2,
+     "id": "ri_mmsef::2.1.1",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#2",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "La unidad solo tiene el nodo del TO, sin contenido: nada contradice el texto, que es el ítem «2.1.1. Tipo de unidad de servicio.».",
+     "omisiones": "el dato «Tipo de unidad de servicio» no se extrae",
+     "observaciones": ""
+    },
+    {
+     "n": 3,
+     "id": "ri_ccna::D1A1::S7",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#3",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 recoge «conservará siempre en su poder sus papeles de trabajo … durante 6 (seis) años como mínimo» y N2 y N3 las funciones de la SEFyC («verificará periódicamente», «podrá requerir»).",
+     "omisiones": "",
+     "observaciones": "N2 lleva `tipo` reporte_al_supervisor para una verificación que hace el supervisor"
+    },
+    {
+     "n": 4,
+     "id": "ri_ccna::D1A3L2::S33",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#4",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "A1 N1 —aplica_a→ Cajas de crédito: es un procedimiento de auditoría («B. PRUEBAS SUSTANTIVAS») que recae sobre «la cobertura de seguros de la entidad»; la caja es la auditada, no quien evalúa.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 5,
+     "id": "ri_mmsef::2.4.5",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#5",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "La unidad solo tiene el nodo del TO, sin contenido: nada contradice el texto, que es el ítem «2.4.5. Sistema de entintado de billetes.».",
+     "omisiones": "el ítem «Sistema de entintado de billetes» no se extrae",
+     "observaciones": ""
+    },
+    {
+     "n": 6,
+     "id": "ri_mmsef::2.2.8.2.3",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#6",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "La unidad solo tiene el nodo del TO, sin contenido: nada contradice el texto, que es el ítem «2.2.8.2.3. Puertas (Cerraduras).».",
+     "omisiones": "el ítem «Puertas (Cerraduras)» no se extrae",
+     "observaciones": ""
+    },
+    {
+     "n": 7,
+     "id": "ri_ccna::D1A1::4.1",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#7",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N5 recoge «deberán inscribirse en el Registro de Asociaciones de Profesionales Universitarios» y N3, N4, N6 y N7 los recaudos de la solicitud.",
+     "omisiones": "",
+     "observaciones": "N2 tipa como Definicion la descripción del sujeto obligado, y N5 —condiciona→ N8: lecturas laxas"
+    },
+    {
+     "n": 8,
+     "id": "ri_mmsef::2.2.8.2.6",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#8",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "La unidad solo tiene el nodo del TO, sin contenido: nada contradice el texto, que es el ítem «2.2.8.2.6. Sensorización.».",
+     "omisiones": "el ítem «Sensorización» no se extrae",
+     "observaciones": ""
+    },
+    {
+     "n": 9,
+     "id": "ri_ccna::D1A3L2::S25",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#9",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 y N2 recogen la evaluación «mediante la obtención de confirmaciones directas de los asesores legales», y N3 los «otros procedimientos que, a juicio del auditor externo, se consideren convenientes».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 10,
+     "id": "ri_ccna::D1A3L2::S7",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#10",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N3 y N2 recogen «Revisión de la adecuada valuación de los rubros inversiones y bienes en locación financiera» y «la razonabilidad de las previsiones constituidas y de las amortizaciones acumuladas».",
+     "omisiones": "",
+     "observaciones": "N1 tipa como Condicion el criterio «de acuerdo con las normas respectivas del B.C.R.A.»: lectura laxa"
+    },
+    {
+     "n": 11,
+     "id": "ri_rml::1.4.1",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#11",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "Las definiciones recogen EEMA, EEF, ENI e I, y N1 y N2 los dos casos del defecto trasladable máximo («Si: I (n) ≤ que [EEMA (n) * 0,8]…»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 12,
+     "id": "ri_dcpc::3.7.5",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#12",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "Los deberes siguen los pasos 1 a 8 del procedimiento, por ejemplo N7 «deberá quedar saldada» y N19 «en ningún caso, el importe resultante debe exceder el valor recuperable».",
+     "omisiones": "",
+     "observaciones": "N10 y N13 tipan como Obligacion reglas de no reexpresión: lectura laxa"
+    },
+    {
+     "n": 13,
+     "id": "ri_gerc::2.5.3",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#13",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 y N2 recogen «Se consignará si el origen del exceso es imputable o no imputable a la entidad financiera» con sus dos códigos.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 14,
+     "id": "ri_rml::1.7.1",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#14",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N4 a N7 recogen la nota de débito, el cálculo de cargos, el mayor de los dos cargos y la conversión a pesos; N1 «los cargos no ingresados en tiempo y forma» condiciona N3.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 15,
+     "id": "ri_rml::1.9.1",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#15",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "Los deberes de informar recogen cada código de control, por ejemplo «Código 903200/M Se informará la exigencia del mes sobre los depósitos y obligaciones a plazo», y N1 la excepción de las cuentas de PSPOCP.",
+     "omisiones": "N1 no se vincula a lo que exceptúa",
+     "observaciones": ""
+    },
+    {
+     "n": 16,
+     "id": "nmcief::A2::S3::chapeau_seccion",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#16",
+     "propuesta": "con error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 tipa como Obligacion una facultad: «Tanto el relevamiento como la identificación, evaluación y prueba de los controles podrá ser documentada mediante narrativos, flujogramas…».",
+     "omisiones": "",
+     "observaciones": "N5 lleva `tipo` reporte_al_supervisor para un informe al Comité de Auditoría"
+    },
+    {
+     "n": 17,
+     "id": "ceninf::4.1::intro",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#17",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N3 recoge que la base «quedará a disposición de los siguientes sujetos», con sus aplica_a, y N1 la declaración jurada de «Aquellos que seleccionen esta opción».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 18,
+     "id": "nmcief::A2::3.2::intro",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#18",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 y N2 recogen «Los relevamientos deberán contener claramente el flujo de la transacción» y «se debe cumplir … como mínimo con las siguientes etapas».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 19,
+     "id": "nmcief::A4::S0::chapeau_seccion",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#19",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "El texto es solo el título del anexo («DOCUMENTACIÓN E INFORMES DE AUDITORÍA INTERNA») y la unidad solo tiene el nodo del TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 20,
+     "id": "ceninf::4.1.3",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#20",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 transcribe «La fecha de origen será la primera desde la cual el deudor registre situación 1»; N2 a N4 recogen la difusión y la descarga.",
+     "omisiones": "",
+     "observaciones": "remite_a: las 20 aristas hacia ceninf::2.1 (consulta de cheques) no sostienen su destino; la cita «punto 2.1 del apartado A del T.O.» es de otro texto ordenado"
+    },
+    {
+     "n": 21,
+     "id": "expaef::6.4",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#21",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N4 y sus condiciones recogen «Las solicitudes se considerarán conformadas una vez transcurridos 120 (ciento veinte) días … si la SEFyC no manifestare oposición», y N5 «dicho plazo podrá ser extendido».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 22,
+     "id": "lingeef::4.3.5::intro",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#22",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 recoge «Las entidades financieras deben tener un plan de contingencias que establezca claramente la estrategia».",
+     "omisiones": "",
+     "observaciones": "N2 —requiere→ N1: lectura laxa"
+    },
+    {
+     "n": 23,
+     "id": "cajasc::7.5",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#23",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 recoge «Los excesos a los límites fijados estarán sujetos a las disposiciones … sobre “Incumplimientos de capitales mínimos y relaciones técnicas”».",
+     "omisiones": "",
+     "observaciones": "N1 tipa como Restriccion una remisión: lectura laxa"
+    },
+    {
+     "n": 24,
+     "id": "depaho::3.1.9.4",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#24",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N2 recoge «Se especificará la situación de la cuenta frente al sistema de seguro de garantía de los depósitos».",
+     "omisiones": "",
+     "observaciones": "N1 tipa como Comunicacion un TO (tipo documental, observación)"
+    },
+    {
+     "n": 25,
+     "id": "depaho::3.15::intro",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#25",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N1 recoge «Las entidades financieras del Grupo “A” … deberán abrir estas cuentas»; el aplica_a va al rol del TO y el rótulo conserva el Grupo A.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 26,
+     "id": "cirmo3::5.4.2",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#26",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "Los deberes recogen el pedido, el débito MEP, el control de los tambores y los planes de provisión; N9 «El horario dispuesto para la remisión del débito MEP es de 8:00 a 10:00».",
+     "omisiones": "",
+     "observaciones": "N5 lleva `tipo` comunicacion_a_cliente para un pedido al BCRA"
+    },
+    {
+     "n": 27,
+     "id": "depaho::3.16.7",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#27",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N3 y sus dos condiciones recogen «En cuanto no se encuentre previsto y en la medida en que no se opongan … serán de aplicación las disposiciones establecidas para los depósitos en caja de ahorros».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 28,
+     "id": "depaho::3.4.2::intro",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#28",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "La unidad solo tiene el nodo del TO, sin contenido: nada contradice el texto, que solo abre la lista («Como mínimo se exigirán los siguientes datos:»).",
+     "omisiones": "el deber «Como mínimo se exigirán los siguientes datos» no se extrae",
+     "observaciones": ""
+    },
+    {
+     "n": 29,
+     "id": "depaho::3.10.4::intro",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#29",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "N2 recoge «Se podrán efectuar, a opción del titular», y N1 «de acuerdo con las condiciones previstas en el punto 1.7.».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 30,
+     "id": "lingeef::2.3.1::intro",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/aceptadas_no_items/fichas_aceptadas_no_items.md#30",
+     "propuesta": "sin error",
+     "regla": "unidad con error si al menos un nodo o una relación no lo sostiene el texto de la unidad (propio o heredado); sin error; o dudosa. Las omisiones van aparte (enmienda de la cola humana, :26-28)",
+     "justificacion": "Los deberes N1 a N14 siguen los incisos i) a vii), por ejemplo N14 «no deben soslayar el tiempo y costo que implica ejecutar los mitigadores de riesgo».",
+     "omisiones": "",
+     "observaciones": ""
+    }
+   ]
+  },
+  "vigilancia_2": {
+   "material": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md",
+   "material_jsonl_sha256": "eab2d878b510f4c78f3dc39e7f2675217778150ad8045554b0d8a4547945471f",
+   "sorteo": "data/experiment/tanda1/t3/muestras/vigilancia_2.json",
+   "sorteo_sha256": "68776dd00d4c49d4fee1a04837cafaf1de4312262f05b358121abd4c6f265d73",
+   "pregunta": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+   "respuestas_validas": [
+    "vaciamiento",
+    "no vaciamiento",
+    "no decidible"
+   ],
+   "elementos": 30,
+   "propuestas": {
+    "vaciamiento": 15,
+    "no decidible": 1,
+    "no vaciamiento": 14
+   },
+   "con_omisiones": 0,
+   "con_observaciones": 0,
+   "planilla": "data/experiment/tanda1/t4/lectura_autora/vigilancia_2.csv",
+   "planilla_sha256": "580e4b047d839b5f6a4528544645fe66b87037b5daee2505fbb2e8d311b55045",
+   "detalle": [
+    {
+     "n": 1,
+     "id": "ri_mmsef::2.2.8.2.3",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#1",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El ítem fija un dato o una medida del régimen («Puertas (Cerraduras)», bajo «Caja tesoro móvil») y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 2,
+     "id": "ri_mmsef::2.5.3",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#2",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El ítem fija un dato o una medida del régimen («Denominación», bajo «Sistema de monitoreo remoto») y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 3,
+     "id": "ri_mmsef::2.2.8.1.4",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#3",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El ítem fija un dato o una medida del régimen («Módulo interior», bajo «Tesoro Blindado») y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 4,
+     "id": "ri_mmsef::2.3.4.1",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#4",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El ítem fija un dato o una medida del régimen («Marca», bajo «Identificación de los dispositivos de seguridad · Tesoro Blindado») y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 5,
+     "id": "ri_mmsef::2.2.3.1",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#5",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El ítem fija un dato o una medida del régimen («Identificación», bajo «Recinto de seguridad con CCTV») y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 6,
+     "id": "ri_mmsef::2.3.2.1",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#6",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El ítem fija un dato o una medida del régimen («Marca», bajo «Identificación de los dispositivos de seguridad · Castillete») y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 7,
+     "id": "ri_mmsef::2.5.1",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#7",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El ítem fija un dato o una medida del régimen («Marca», bajo «Sistema de monitoreo remoto») y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 8,
+     "id": "ri_mmsef::2.3.6.1",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#8",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El ítem fija un dato o una medida del régimen («Marca», bajo «Identificación de los dispositivos de seguridad · Tesoro modular») y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 9,
+     "id": "ri_mmsef::2.5.14",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#9",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El ítem fija un dato o una medida del régimen («Doble vínculo», bajo «Sistema de monitoreo remoto») y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 10,
+     "id": "ri_mmsef::2.4.4",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#10",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El ítem fija un dato o una medida del régimen («Elementos que brinden privacidad (mamparas)», bajo «Medidas de seguridad en terminales automáticas») y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 11,
+     "id": "ri_dcpc::4.3",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#11",
+     "propuesta": "no decidible",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto propio es solo «4.3. Estados financieros separados. NIC 27.»: no se puede decidir si remite a la NIC 27 o si es un título sin contenido propio.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 12,
+     "id": "ri_dcpc::4.2::intro",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#12",
+     "propuesta": "no vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto propio solo abre una lista («A continuación, se realizan las siguientes definiciones respecto de la conformación de determinados componentes de patrimonio»); el contenido normativo está en sus ítems, que lo llevan como heredado.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 13,
+     "id": "ri_rml::1.10.1",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#13",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "La tabla del modelo de información fija los códigos y conceptos a informar («101078/M Saldos inmovilizados de depósitos judiciales a la vista», …) y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 14,
+     "id": "ri_pgn::4.1::intro",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#14",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto fija cómo se determina la posición («PGNME = Código 400dd = Código 100dd + Código 200dd + Código 300dd + Código 500dd») y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 15,
+     "id": "ri_pgn::S5",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#15",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "La tabla fija qué partidas del Balance de Saldos corresponden a cada código («10100 | Disponibilidades | 115000 | 116000», …) y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 16,
+     "id": "nmcief::A1::S0",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#16",
+     "propuesta": "no vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto es solo el título del anexo («ANEXO I DISPOSICIONES GENERALES»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 17,
+     "id": "nmcief::A3::S0::chapeau_seccion",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#17",
+     "propuesta": "no vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto es solo el título del anexo («PRUEBAS SUSTANTIVAS Y OTROS PROCEDIMIENTOS»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 18,
+     "id": "nmcief::A4::S0::chapeau_seccion",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#18",
+     "propuesta": "no vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto es solo el título del anexo («DOCUMENTACIÓN E INFORMES DE AUDITORÍA INTERNA»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 19,
+     "id": "nmcief::A6::S0::intersticial",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#19",
+     "propuesta": "no vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto propio solo abre una lista («Procedimientos mínimos de auditoría a aplicar en oportunidad de la revisión del ciclo para cada ejercicio:»); el contenido normativo está en sus ítems, que lo llevan como heredado.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 20,
+     "id": "depaho::1.1.4",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#20",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El ítem fija una de las entidades que pueden ofrecer la caja de ahorros («Sociedades de ahorro y préstamo para la vivienda u otros inmuebles», bajo «Entidades intervinientes»): es alcance, y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 21,
+     "id": "lingeef::12.2.2::intro",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#21",
+     "propuesta": "no vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto propio solo abre una lista («La Alta Gerencia deberá:»); el contenido normativo está en sus ítems, que lo llevan como heredado.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 22,
+     "id": "adrei::4.2.1::intro",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#22",
+     "propuesta": "no vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto propio solo abre una lista («Los informes de gestión de riesgos deben:»); el contenido normativo está en sus ítems, que lo llevan como heredado.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 23,
+     "id": "cajasc::10.1.2",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#23",
+     "propuesta": "vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El ítem fija un concepto incluido en la inmovilización de activos («Saldo a favor del impuesto al valor agregado y anticipos de otros impuestos», bajo «Conceptos incluidos») y la unidad no tiene relaciones.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 24,
+     "id": "efemin::7.1::intro",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#24",
+     "propuesta": "no vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto propio solo abre una lista («En moneda extranjera:»); el contenido normativo está en sus ítems, que lo llevan como heredado.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 25,
+     "id": "depaho::Sbloque1",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#25",
+     "propuesta": "no vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto es un formulario en blanco («Apellido y nombres», «Domicilio:…», «APORTE CORRESPONDIENTE AL MES DE…»), sin contenido normativo.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 26,
+     "id": "lingeef::8.2::intro",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#26",
+     "propuesta": "no vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto propio solo abre una lista («Entre ellas, se encuentran:»); el contenido normativo está en sus ítems, que lo llevan como heredado.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 27,
+     "id": "depaho::3.8.3::intro",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#27",
+     "propuesta": "no vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto propio solo abre una lista («Como mínimo se exigirán los siguientes datos:»); el contenido normativo está en sus ítems, que lo llevan como heredado.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 28,
+     "id": "lingeef::8.4::intro",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#28",
+     "propuesta": "no vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto propio solo abre una lista («Las entidades financieras deben:»); el contenido normativo está en sus ítems, que lo llevan como heredado.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 29,
+     "id": "opefci::2.3.2::intro",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#29",
+     "propuesta": "no vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto propio solo abre una lista («En los siguientes casos:»); el contenido normativo está en sus ítems, que lo llevan como heredado.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 30,
+     "id": "cirmo3::8.4.1::intro",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_2/fichas_vigilancia_2.md#30",
+     "propuesta": "no vaciamiento",
+     "regla": "vaciamiento (el texto porta contenido normativo y la unidad no tiene relaciones), no vaciamiento o no decidible",
+     "justificacion": "El texto propio solo abre una lista («La entidad financiera deberá:»); el contenido normativo está en sus ítems, que lo llevan como heredado.",
+     "omisiones": "",
+     "observaciones": ""
+    }
+   ]
+  },
+  "vigilancia_7": {
+   "material": "data/experiment/tanda1/t3/muestras/material/vigilancia_7/fichas_vigilancia_7.md",
+   "material_jsonl_sha256": "4957839fd5aa97bcd566267706f5cde46cfaa6ad03db538c6af0b5c78b4d731f",
+   "sorteo": "data/experiment/tanda1/t3/muestras/vigilancia_7.json",
+   "sorteo_sha256": "5e30a60b1c8c2fc076ef521217f8ec795921a880aefcf73b62d7681986e2b7d0",
+   "pregunta": "¿la arista ejecuta desde el rol de alcance tiene apoyo textual? con apoyo, sin apoyo o no decidible",
+   "respuestas_validas": [
+    "con apoyo",
+    "sin apoyo",
+    "no decidible"
+   ],
+   "elementos": 4,
+   "propuestas": {
+    "sin apoyo": 2,
+    "con apoyo": 2
+   },
+   "con_omisiones": 0,
+   "con_observaciones": 0,
+   "planilla": "data/experiment/tanda1/t4/lectura_autora/vigilancia_7.csv",
+   "planilla_sha256": "b047d9ed7992ebc315eea8e55fe16a85233e8fa38d47cda5a85419649e17d7a1",
+   "detalle": [
+    {
+     "n": 1,
+     "id": [
+      "Sujeto_rol_alcance_ordcom",
+      "ejecuta",
+      "Operacion_determinacion_del_horario_de_ruedas__cirmo3_5_2_1_8_8df07e"
+     ],
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_7/fichas_vigilancia_7.md#1",
+     "propuesta": "sin apoyo",
+     "regla": "¿la arista ejecuta desde el rol de alcance tiene apoyo textual? con apoyo, sin apoyo o no decidible",
+     "justificacion": "La mención es «la Gerencia de Operaciones de Tesoro», un área del BCRA; el rol «Destinatarios de Comunicaciones» de otro TO no la designa.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 2,
+     "id": [
+      "Sujeto_rol_alcance_autenf",
+      "ejecuta",
+      "Operacion_obtencion_de_elementos_de_juicio_por_auditor_externo__ri_ccna_d1a2_s2_0bbd16"
+     ],
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_7/fichas_vigilancia_7.md#2",
+     "propuesta": "sin apoyo",
+     "regla": "¿la arista ejecuta desde el rol de alcance tiene apoyo textual? con apoyo, sin apoyo o no decidible",
+     "justificacion": "La mención es «el auditor externo», que no es una autoridad de la entidad: el rol «Autoridades de entidades financieras» no lo designa.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 3,
+     "id": [
+      "Sujeto_rol_alcance_depaho",
+      "ejecuta",
+      "Operacion_conversion_de_caja_de_ahorros_para_menores__depaho_3_7_5_5d9f99"
+     ],
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_7/fichas_vigilancia_7.md#3",
+     "propuesta": "con apoyo",
+     "regla": "¿la arista ejecuta desde el rol de alcance tiene apoyo textual? con apoyo, sin apoyo o no decidible",
+     "justificacion": "«la entidad financiera podrá convertir la caja de ahorros para menores de edad»: es la entidad que interviene en el TO, que el rol designa.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 4,
+     "id": [
+      "Sujeto_rol_alcance_depaho",
+      "ejecuta",
+      "Operacion_provision_de_tarjetas_magneticas_cajeros_automaticos__depaho_4_3_1_9121b3"
+     ],
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t3/muestras/material/vigilancia_7/fichas_vigilancia_7.md#4",
+     "propuesta": "con apoyo",
+     "regla": "¿la arista ejecuta desde el rol de alcance tiene apoyo textual? con apoyo, sin apoyo o no decidible",
+     "justificacion": "«Las entidades financieras que proporcionen tarjetas magnéticas»: son entidades que intervienen en el TO, que el rol designa.",
+     "omisiones": "",
+     "observaciones": ""
+    }
+   ]
+  },
+  "vigilancia_1": {
+   "material": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md",
+   "material_jsonl_sha256": "237a2c5b5c586958cf65f49e713e07b897b5df446e3fe5745ce41470d4219599",
+   "sorteo": "data/experiment/tanda1/t4/muestras/vigilancia_1.json",
+   "sorteo_sha256": "484cf14e8bf66bc1013a85b7d35782e44448e3b69cb39514b494c2adc9032360",
+   "pregunta": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+   "respuestas_validas": [
+    "sí",
+    "no",
+    "no decidible"
+   ],
+   "elementos": 30,
+   "propuestas": {
+    "no": 26,
+    "sí": 3,
+    "no decidible": 1
+   },
+   "con_omisiones": 0,
+   "con_observaciones": 0,
+   "planilla": "data/experiment/tanda1/t4/lectura_autora/vigilancia_1.csv",
+   "planilla_sha256": "609577900a2522faf14fe0ba1fc6808ab89e58a352bb49028b2170bbcd52a52b",
+   "detalle": [
+    {
+     "n": 1,
+     "id": "Condicion_condena_con_inhabilitacion_de_cargos_publicos__persona_condenada_con_accesoria_d_7197b7",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#1",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («Los condenados con accesoria de inhabilitación de ejercer cargos públicos»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 2,
+     "id": "Condicion_cuando_corresponda_remision_de_informacion__la_remision_de_informacion_a_la_inst_1df00c",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#2",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («cuando correspondiese»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 3,
+     "id": "Condicion_exposicion_de_causas_de_salvedades_en_notas_a_estados_contables__cuando_las_caus_5e11f9",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#3",
+     "propuesta": "sí",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion lleva el deber «éste deberá indicar clara y expresamente la existencia de la salvedad y remitirse a las respectivas notas», que el texto formula como obligación.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 4,
+     "id": "Condicion_condena_por_delitos_en_constitucion_funcionamiento_y_liquidacion_de_sociedades___c732a3",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#4",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («los condenados por delitos cometidos en la constitución, funcionamiento y liquidación de sociedades»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 5,
+     "id": "Condicion_condena_por_hurto_robo_defraudacion_cohecho_cheques_sin_fondos__persona_condenad_2e9c8c",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#5",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («los condenados por hurto, robo, defraudación, cohecho, emisión de cheques sin fondos»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 6,
+     "id": "Condicion_desempeno_relacionado_con_objeto_de_la_sociedad__la_inhabilidad_aplica_cuando_el_c3e441",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#6",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («cuyo desempeño se relacione con el objeto de la sociedad»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 7,
+     "id": "Condicion_vigencia_a_fecha_de_firma_del_dictamen__la_exclusion_debe_estar_vigente_a_la_fec_6a7bce",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#7",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "El «debe» es de la descripción; el texto da una condición temporal («vigente a la fecha de la firma del dictamen y/o informe especial»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 8,
+     "id": "Condicion_condena_con_inhabilitacion_de_cargos_publicos__haber_sido_condenado_con_accesori_05fe48",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#8",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («Los condenados con accesoria de inhabilitación de ejercer cargos públicos»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 9,
+     "id": "Condicion_confianza_control_interno_procedimientos_auditoria__el_auditor_puede_depositar_c_488410",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#9",
+     "propuesta": "no decidible",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "El texto usa «deberá» dentro de un supuesto («para que el auditor pueda depositar confianza en el control interno, deberá haber efectuado todos los procedimientos»): es a la vez requisito y deber.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 10,
+     "id": "Condicion_vigencia_a_fecha_de_vencimiento_de_plazo_de_sancion__la_exclusion_debe_estar_vig_965e2f",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#10",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "El «debe» es de la descripción; el texto da una condición temporal («a la fecha del vencimiento del plazo para efectivizarla»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 11,
+     "id": "Condicion_disponibilidad_de_datos_del_tercer_mes_anterior__la_informacion_utilizada_debe_c_c7619a",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#11",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "El «debe» es de la descripción; el texto solo fija el período del dato («Código 70200000: tercer mes anterior a la fecha de vencimiento de los aportes»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 12,
+     "id": "Condicion_plazo_fijo_en_moneda_extranjera_aplicar_estructura_del_mes_anterior__cuando_se_t_b008f3",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#12",
+     "propuesta": "sí",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion lleva la regla completa, «Cuando se trate de plazo fijos en moneda extranjera (partida 10140X/M) se aplicará la estructura de plazos residuales del mes anterior»: «se aplicará» es un futuro prescriptivo, y no hay otro nodo que la lleve.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 13,
+     "id": "Condicion_conversion_a_pesos_cuando_corresponda__cuando_corresponda_la_conversion_a_pesos__ed0582",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#13",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («convertidos a su equivalente en pesos, de corresponder»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 14,
+     "id": "Condicion_concurrencia_codigos_10120x_m_11010x_m_110500_m__condicion_que_requiere_la_concu_f70c2a",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#14",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge el supuesto de una facultad («Podrá informarse el código 210200/TP cuando concurrentemente se informe por lo menos uno de los códigos»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 15,
+     "id": "Condicion_condicion_codigo_210100_mayor_que_suma_de_codigos_especificos__se_aplica_la_rest_c60382",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#15",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («Si el Código 210100 > ∑ (Códigos 210104/TP , 210105/TP , 210106/TP y 210109/TP»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 16,
+     "id": "Condicion_informacion_comunicada_o_plazo_de_5_anos__el_cheque_debe_haber_sido_informado_po_a15956",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#16",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "El «debe» es de la descripción; el texto da el supuesto de la baja («en la medida en que hubieren sido informados por la entidad o a los 5 años de la fecha de rechazo»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 17,
+     "id": "Condicion_servicios_delegados_de_criticidad_alta_o_relevantes__servicios_procesos_y_o_acti_332a13",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#17",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («aquellos servicios, procesos y/o actividades delegadas que la auditoría interna determine como de criticidad alta»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 18,
+     "id": "Condicion_informacion_comunicada_por_la_entidad__el_cheque_debe_haber_sido_informado_por_l_460ea7",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#18",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "El «debe» es de la descripción; el texto da el supuesto de la baja («en la medida en que hubieren sido informados por la entidad»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 19,
+     "id": "Condicion_esquemas_de_autorizacion_acordes_a_politica_de_control_de_accesos__que_existan_e_9fce33",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#19",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un aspecto a verificar («Esquemas de autorización acordes a la política de control de accesos»), sin deber explícito propio.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 20,
+     "id": "Condicion_controles_automatizados_definidos_en_normativa_vigente__que_existan_controles_au_1aab0a",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#20",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un aspecto a verificar («Controles automatizados definidos en la normativa vigente»), sin deber explícito propio.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 21,
+     "id": "Condicion_proporcionalidad_a_dimension_e_importancia_economica__el_marco_debe_ser_proporci_287672",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#21",
+     "propuesta": "sí",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion lleva el deber «Dicho marco debe ser proporcional a la dimensión e importancia económica de la entidad financiera», que el texto formula como obligación.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 22,
+     "id": "Condicion_condicion_monedas_extranjeras_distintas_del_usd__cuando_se_trate_de_monedas_extr_72aacd",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#22",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («de tratarse de monedas extranjeras distintas del dólar estadounidense»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 23,
+     "id": "Condicion_regimen_del_punto_1_5_1_1_condicion__las_obligaciones_de_indicacion_aplican_dent_26534d",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#23",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge el marco («En el régimen citado en el punto 1.5.1.1.»); los deberes de indicar van en tres Obligacion aparte.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 24,
+     "id": "Condicion_prestamos_hipotecarios_en_uva__cuando_se_trata_de_prestamos_hipotecarios_expresa_aa26ff",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#24",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («En los casos de préstamos hipotecarios expresados en Unidades de Valor Adquisitivo»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 25,
+     "id": "Condicion_entidad_acreedora_en_todos_los_grados__la_entidad_debe_ser_la_acreedora_en_todos_d2d0eb",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#25",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "El «debe» es de la descripción; el texto da un supuesto («siempre que la entidad sea la acreedora en todos los grados»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 26,
+     "id": "Condicion_pertenencia_al_grupo_a_segun_normas_de_autoridades__la_entidad_debe_pertenecer_a_87fb34",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#26",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "El «debe» es de la descripción; el texto delimita el alcance («Las entidades financieras que pertenezcan al Grupo “A”»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 27,
+     "id": "Condicion_gestion_rtici_inadecuada_o_riesgo_excesivo__la_condicion_se_activa_cuando_la_sef_a5ea13",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#27",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («Cuando la SEFyC concluya que la gestión del RTICI de una entidad financiera es inadecuada»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 28,
+     "id": "Condicion_registraciones_contables_no_reflejan_realidad_economica_y_juridica__condicion_qu_37e7b8",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#28",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («las registraciones contables efectuadas por las entidades no reflejan en forma precisa la realidad económica y jurídica»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 29,
+     "id": "Condicion_cliente_de_riesgo_bajo_con_medidas_de_inclusion_financiera__supuesto_en_que_el_c_ed91d4",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#29",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («para clientes de riesgo bajo alcanzados por medidas que tengan por objetivo promover y/o ampliar la inclusión financiera»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 30,
+     "id": "Condicion_no_se_oponen_disposiciones_precedentes__supuesto_en_el_que_las_disposiciones_gen_4b4fb8",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_1/fichas_vigilancia_1.md#30",
+     "propuesta": "no",
+     "regla": "¿la Condicion expresa un deber explícito (debe, deberá, está obligado a) que el texto de su unidad formula como obligación, y no como condición? sí (migración), no o no decidible; «no decidible» queda fuera de la tasa y se declara con su cuenta (decisión 1.4)",
+     "justificacion": "La Condicion recoge un supuesto («en la medida en que no se opongan a lo detallado en los puntos precedentes»), sin deber explícito.",
+     "omisiones": "",
+     "observaciones": ""
+    }
+   ]
+  },
+  "vigilancia_3": {
+   "material": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md",
+   "material_jsonl_sha256": "b29a93d87506f095bb2f7e2e78433a6d3126a23d89879f88ffaaf3520a5074b8",
+   "sorteo": "data/experiment/tanda1/t4/muestras/vigilancia_3.json",
+   "sorteo_sha256": "0058421f2d2e24b37b8b00af6f380a2e2caf5fbc52a12058c66888a1c9ab9722",
+   "pregunta": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+   "respuestas_validas": [
+    "duplicación",
+    "distintos"
+   ],
+   "elementos": 30,
+   "propuestas": {
+    "distintos": 21,
+    "duplicación": 9
+   },
+   "con_omisiones": 0,
+   "con_observaciones": 0,
+   "planilla": "data/experiment/tanda1/t4/lectura_autora/vigilancia_3.csv",
+   "planilla_sha256": "099ab7e227a93d5ca0075f4e9286ef82139018c9bc74f86edd6e29462e50a3ae",
+   "detalle": [
+    {
+     "n": 1,
+     "id": "Obligacion_deber_de_realizar_la_revision_de_la_razonabilidad_de_los_ajustes_de_resultados_d_de457c|Operacion_revision_razonabilidad_ajustes_resultados_ejercicios_anteriores__ri_ccna_d1a3l2__7d2d64",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#1",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber y N2 el acto que regula («Revisión de la razonabilidad de los ajustes de resultados de ejercicios anteriores»); la descripción de N2 no repite el deber.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 2,
+     "id": "Obligacion_debera_informarse_la_cantidad_de_cofres_existentes_en_el_tesoro_modular__ri_mmse_ef9041|Operacion_informacion_cantidad_de_cofres_tesoro_modular__ri_mmsef_2_3_7_3_3_818301",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#2",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber y N2 el acto que regula (informar «la cantidad de cofres existentes en el tesoro modular»); la descripción de N2 no repite el deber.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 3,
+     "id": "Obligacion_el_auditor_externo_debe_obtener_todos_los_elementos_de_juicio_validos_y_suficien_f966e7|Operacion_obtencion_de_elementos_de_juicio_por_auditor_externo__ri_ccna_d1a2_s2_0bbd16",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#3",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber y N2 el acto que regula («el auditor externo debe obtener todos los elementos de juicio válidos y suficientes»); la descripción de N2 no repite el deber.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 4,
+     "id": "Obligacion_las_entidades_financieras_deberan_informar_la_cantidad_de_cofres_existentes_en_e_1accd5|Operacion_informacion_cantidad_de_cofres__ri_mmsef_2_3_7_1_3_04d203",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#4",
+     "propuesta": "duplicación",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N2, la Operacion, repite el deber de N1: su descripción es «Deber de informar la cantidad de cofres existentes en el tesoro blindado».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 5,
+     "id": "Obligacion_realizar_el_cotejo_con_las_actas_de_las_asambleas_de_asociados_y_o_reuniones_del_493aee|Operacion_cotejo_con_actas_de_asambleas_y_reuniones__ri_ccna_d1a3l2_26_1_165226",
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#5",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber y N2 el acto que regula («Cotejo con las actas de las Asambleas de Asociados y/o reuniones del Consejo de Administración»); la descripción de N2 no repite el deber.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 6,
+     "id": "Obligacion_deber_de_informar_las_financiaciones_otorgadas_mediante_la_participacion_en_pres_6d7e1d|Operacion_financiaciones_mediante_prestamos_sindicados__ri_rml_3_2_817563",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#6",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber de informar y N2 las financiaciones informadas («Se consignarán las financiaciones otorgadas mediante la participación de la entidad en “préstamos sindicados”»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 7,
+     "id": "Obligacion_exponer_el_saldo_acreedor_al_cierre_de_cada_periodo_mensual_en_utilidades_divers_ba3911|Operacion_exposicion_de_saldo_acreedor_en_utilidades_diversas__ri_dcpc_3_6_2_26162f",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#7",
+     "propuesta": "duplicación",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 y N2 llevan el mismo rótulo y la misma regla: N2 dice «se expondrá en “Utilidades Diversas – Beneficios al personal post empleo – Beneficios definidos”», como el deber de N1.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 8,
+     "id": "Obligacion_deber_de_informar_las_financiaciones_a_productores_de_bienes_para_ser_exportados_4ac1a3|Operacion_financiaciones_a_productores_de_bienes_exportables__ri_rml_3_2_8d6590",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#8",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber de informar y N2 las financiaciones informadas («Se consignarán las financiaciones a productores de bienes para ser exportados»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 9,
+     "id": "Condicion_saldo_deudor_adopcion_fin_de_periodo__cuando_a_fin_de_un_periodo_mensual_el_sald_6a350c|Condicion_saldo_deudor_derivados_fin_de_periodo__cuando_a_fin_de_un_periodo_mensual_el_sal_317a3f|Condicion_saldo_deudor_fin_de_periodo_mensual__cuando_a_fin_de_un_periodo_mensual_el_saldo_864b13|Condicion_saldo_deudor_reclasificacion_fin_de_periodo__cuando_a_fin_de_un_periodo_mensual__737251",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#9",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "Cada Condicion es la de una cuenta distinta: el texto repite «Cuando a fin de un periodo mensual, el saldo de esta cuenta sea deudor» para cada cuenta del punto.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 10,
+     "id": "Obligacion_obligacion_de_consignar_la_integracion_total_del_mes_por_cada_especie_de_titulos_7e5c68|Operacion_calculo_integracion_total_titulos_valores_codigo_906000_tp__ri_rml_1_9_1_1b62c3",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#10",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber de consignar y N2 el cálculo, que agrega las fórmulas por especie de la tabla («9132 | 500000/9132 – 210100/9132»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 11,
+     "id": "Definicion_excedente_no_remunerable_cuentas_en_moneda_extranjera__el_importe_depositado_en__4eb5b8|Definicion_excedente_no_remunerable_cuentas_en_pesos__el_importe_depositado_que_supera_a_la_492abe",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#11",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "Son dos definiciones para cuentas distintas: el texto repite la frase en «CUENTAS EN PESOS» y en «CUENTAS EN MONEDA EXTRANJERA».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 12,
+     "id": "Obligacion_opciones_de_compra_tomadas_se_imputaran_a_las_cuentas_de_opciones_de_compra_toma_58706c|Obligacion_opciones_de_venta_tomadas_se_imputaran_a_las_cuentas_de_opciones_de_venta_tomada_f28bf8",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#12",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "Cada nodo cubre un caso: «se imputarán a las cuentas de opciones de compra o venta tomadas, según corresponda».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 13,
+     "id": "Obligacion_deber_de_informar_las_financiaciones_a_proveedores_de_servicios_de_exportacion___f5995c|Operacion_financiaciones_a_proveedores_de_servicios_de_exportacion__ri_rml_3_2_53d758",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#13",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber de informar y N2 las financiaciones informadas («Se informarán las financiaciones a proveedores de servicios directamente utilizados en el proceso de exportación»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 14,
+     "id": "Obligacion_deber_de_informar_los_depositos_a_la_vista_y_a_plazo_en_moneda_extranjera_y_sus__d194d8|Operacion_depositos_a_la_vista_y_plazo_en_moneda_extranjera__ri_rml_3_2_ace650",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#14",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber de informar y N2 los depósitos informados («Se declararán los depósitos a la vista y a plazo en moneda extranjera»), con los códigos de referencia.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 15,
+     "id": "Obligacion_obligacion_de_consignar_la_integracion_total_del_mes_teniendo_en_cuenta_que_para_8fc76b|Operacion_calculo_integracion_total_codigo_904000_m__ri_rml_1_9_1_3fca19",
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#15",
+     "propuesta": "duplicación",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "La regla de la deducción está en los dos nodos: N1 «se deberá deducir la porción informada en las partidas 255035/M, 255040/M, 255050/M» y N2 «se deducirá la porción informada en partidas…».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 16,
+     "id": "Operacion_descarga_de_informacion_en_archivos_comprimidos__ceninf_4_1_3_33bcb4|Potestad_facultad_de_descargar_informacion_en_archivos_comprimidos__facultad_de_descargar_fd0d04",
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#16",
+     "propuesta": "duplicación",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "La facultad está en los dos nodos: N1, la Operacion, dice «La información podrá ser descargada en archivos comprimidos» y N2 es la Potestad de lo mismo.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 17,
+     "id": "Definicion_codificacion_transferencias_entre_clientes_o_terceros__transferencias_entre_clie_07d22d|Definicion_codificacion_transferencias_moneda_extranjera_entre_clientes__transferencias_ent_caab7f",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#17",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "Son las codificaciones de dos transferencias distintas (en pesos, «Campo 10 003», y en moneda extranjera, «Campo 10 013»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 18,
+     "id": "Obligacion_los_bancos_comerciales_de_primer_grado_que_habiliten_a_sus_clientes_a_operar_con_0bfa55|Operacion_apertura_de_cuentas_especiales_de_depositos__depaho_3_17_fff088",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#18",
+     "propuesta": "duplicación",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N2 repite el deber de N1: su descripción es «Apertura obligatoria de cuentas especiales de depósitos», lo que el texto manda («abrirán con carácter obligatorio cuentas especiales»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 19,
+     "id": "Definicion_moneda_conmemorativa_ii_serie_iberoamericana__moneda_conmemorativa_que_forma_par_24cc1b|Operacion_emision_moneda_conmemorativa_ii_serie_iberoamericana__cirmo3_7_3_5372ac",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#19",
+     "propuesta": "duplicación",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 (Definicion) y N2 (emisión) repiten las mismas características de la moneda («Plata 925», «Proof», «40 mm», «27 g», anverso y reverso).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 20,
+     "id": "Condicion_aumento_rapido_de_activos_con_pasivos_volatiles__supuesto_de_identificacion_de_r_ec6997|Operacion_indicador_de_alerta_temprana_aumento_de_activos__lingeef_3_3_4_1_36c9ed",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#20",
+     "propuesta": "duplicación",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 (Condicion) y N2 (Operacion) dicen lo mismo, el indicador «El rápido aumento de los activos, especialmente cuando están fondeados con pasivos potencialmente volátiles».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 21,
+     "id": "Obligacion_las_cajas_de_credito_cooperativas_deberan_efectuar_las_financiaciones_en_pesos___619294|Operacion_financiacion_en_pesos__cajasc_4_2_5bfcc3",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#21",
+     "propuesta": "duplicación",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N2 repite el deber de N1: «Operación de financiación que debe realizarse en moneda de pesos» («Las financiaciones deberán efectuarse en pesos»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 22,
+     "id": "Obligacion_en_sesion_de_presentados_las_entidades_deberan_presentar_rechazos_fuera_de_canje_3fe871|Operacion_presentacion_de_rechazos_fuera_de_canje__snp_cheq_3_1_1_1_e5e856",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#22",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber y N2 el acto que regula (la presentación de «Rechazos fuera de canje» en la sesión de presentados); la descripción de N2 no repite el deber.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 23,
+     "id": "Obligacion_en_sesion_de_presentados_las_entidades_deberan_presentar_reclamos__snp_cheq_3_1__808f2d|Operacion_presentacion_de_reclamos__snp_cheq_3_1_1_1_3303d2",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#23",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber y N2 el acto que regula (la presentación de «Reclamos» en la sesión de presentados); la descripción de N2 no repite el deber.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 24,
+     "id": "Obligacion_los_prestamos_prendarios_deberan_ser_precancelables_tanto_total_como_parcialment_55ca67|Operacion_precancelacion_parcial_de_prestamo_prendario__manori_3_1_9_1_fce759|Operacion_precancelacion_total_de_prestamo_prendario__manori_3_1_9_1_770760",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#24",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber («Los préstamos prendarios serán precancelables total y parcialmente») y N2 y N3 las dos precancelaciones, una por modalidad.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 25,
+     "id": "Obligacion_las_financiaciones_comprendidas_deberan_ser_otorgadas_a_clientes_mipyme_conforme_416778|Operacion_otorgamiento_de_financiaciones_a_clientes_mipyme__efemin_6_3_044a85",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#25",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber y N2 el acto que regula (el «Otorgamiento de financiaciones a clientes Mipyme»); la descripción de N2 no repite el deber.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 26,
+     "id": "Obligacion_la_entidad_depositaria_debera_transmitir_cedip_rechazados_por_el_motivo_r61_rech_66d2e7|Obligacion_la_entidad_girada_debera_transmitir_cedip_rechazados_por_el_motivo_r61_rechazo_d_6559d1",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#26",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "Son deberes de dos sujetos distintos: el motivo R61 está en la lista de la entidad depositaria y en la de la entidad girada («La entidad girada deberá transmitir por los siguientes motivos»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 27,
+     "id": "Operacion_colocacion_de_posturas_bid_por_entidades_demandantes__cirmo3_5_2_1_3_b8e59e|Potestad_facultad_de_colocar_posturas_bid__las_entidades_demandantes_quedan_facultadas_a__916c67",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#27",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N2 es la facultad («las entidades demandantes podrán colocar sus posturas “bid”») y N1 el acto, sin repetir la facultad.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 28,
+     "id": "Operacion_retencion_de_billetes_presuntamente_falsos_sin_valor_o_entintados__cirmo3_4_1_1_35b7bf|Restriccion_prohibicion_de_devolver_al_interesado_los_billetes_retenidos_presuntamente_falso_7b70eb",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#28",
+     "propuesta": "duplicación",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "La prohibición está en los dos nodos: N1 «Retención de billetes … sin devolución al interesado» y N2 «Prohibición de devolver al interesado los billetes retenidos».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 29,
+     "id": "Obligacion_establecer_los_acuerdos_procedimientos_y_elementos_de_seguridad_que_permitan_a_l_7ef35c|Operacion_establecer_acuerdos_procedimientos_y_elementos_de_seguridad__snp_cheq_8_4_4_1_f5ee29",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#29",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber y N2 el acto que regula («Establecer los acuerdos, procedimientos y elementos de seguridad que permitan a sus clientes acceder a los datos de los ECHEQs»); la descripción de N2 no repite el deber.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 30,
+     "id": "Obligacion_deber_de_verificar_la_identidad_del_titular_a_base_de_alguno_de_los_documentos_p_505c25|Operacion_verificacion_de_identidad_del_titular__depaho_3_11_2_93506f",
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/vigilancia_3/fichas_vigilancia_3.md#30",
+     "propuesta": "distintos",
+     "regla": "¿los nodos del grupo repiten el mismo contenido normativo (duplicación), o son contenidos distintos sobre el mismo pasaje? El grupo por tramo igual no ve duplicaciones con tramos distintos (decisión 1.4)",
+     "justificacion": "N1 es el deber y N2 el acto que regula (la «Verificación de identidad del titular» a base de los documentos del TO); la descripción de N2 no repite el deber.",
+     "omisiones": "",
+     "observaciones": ""
+    }
+   ]
+  },
+  "observacion_12": {
+   "material": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md",
+   "material_jsonl_sha256": "8528dce6ab8c5e27ed5560336b38d983cdfc77ceb51831cc939c0588fc8bff64",
+   "sorteo": "data/experiment/tanda1/t4/muestras/observacion_12.json",
+   "sorteo_sha256": "bdce1bdaca85d8ff2c1cb9652fb2f5a13990a3884c1edd670f635925750914c4",
+   "pregunta": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+   "respuestas_validas": [
+    "correcta",
+    "no decidible",
+    "incorrecta (E0)",
+    "incorrecta (E1-prompt)",
+    "incorrecta (E1-validador)",
+    "incorrecta (catálogo)",
+    "incorrecta (E2)",
+    "incorrecta (E3)",
+    "incorrecta (ensamblado)"
+   ],
+   "elementos": 30,
+   "propuestas": {
+    "correcta": 27,
+    "no decidible": 1,
+    "incorrecta (E1-prompt)": 2
+   },
+   "con_omisiones": 0,
+   "con_observaciones": 2,
+   "planilla": "data/experiment/tanda1/t4/lectura_autora/observacion_12.csv",
+   "planilla_sha256": "f4ba30e1831c1221d9f7b40214f01c437590182792ec85e096983853aeaf04a5",
+   "detalle": [
+    {
+     "n": 1,
+     "id": [
+      "Condicion_condicion_vigencia_de_exclusiones_de_auditores__la_exclusion_de_la_asociacion_ri_abe61f",
+      "establecida_en",
+      "TextoOrdenado_ri_ccna_pdf"
+     ],
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#1",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («durante el lapso en que se hallen vigentes tales exclusiones») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 2,
+     "id": [
+      "Condicion_existencia_de_saldos_u_operaciones_significativas__que_existan_saldos_u_operacio_0e54ce",
+      "establecida_en",
+      "TextoOrdenado_ri_ccna_pdf"
+     ],
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#2",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («con las que existan saldos u operaciones significativas») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 3,
+     "id": [
+      "Condicion_significatividad_de_otros_pasivos__la_revision_se_realiza_cuando_la_significativ_ed3b48",
+      "condicion_de",
+      "Operacion_revision_de_adecuada_valuacion_de_otros_pasivos__ri_ccna_d1a3l2_s24_b4b4e1"
+     ],
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#3",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El texto condiciona la revisión a la significatividad: «Revisión de la adecuada valuación de otros pasivos, cuya significatividad así lo justifique».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 4,
+     "id": [
+      "Obligacion_las_autoridades_de_la_entidad_deben_tomar_conocimiento_del_contenido_de_los_info_13980b",
+      "establecida_en",
+      "TextoOrdenado_ri_ccna_pdf"
+     ],
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#4",
+     "propuesta": "no decidible",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El texto queda incompleto: «Para que las autoridades de la entidad tomen conocimiento del contenido de los informes mencionados en los puntos:» sigue con la lista y no dice quién debe qué, así que no se puede decidir si el deber de las autoridades está en el TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 5,
+     "id": [
+      "Obligacion_el_auditor_externo_de_la_caja_de_credito_declara_conocer_y_aceptar_que_por_ejerc_68314b",
+      "establecida_en",
+      "TextoOrdenado_ri_ccna_pdf"
+     ],
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#5",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («Declaro conocer y aceptar que por ejercer la función de Auditor Externo … quedo sujeto a las disposiciones de los artículos 39, 41 y 42») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 6,
+     "id": [
+      "Definicion_numero_de_la_casa__dato_identificatorio_de_las_unidades_de_servicios_de_las_enti_1e2121",
+      "establecida_en",
+      "TextoOrdenado_ri_mmsef_pdf"
+     ],
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#6",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («2.1. Datos identificatorios de las unidades de servicios. … 2.1.2. Número de la casa») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 7,
+     "id": [
+      "Obligacion_debera_emitirse_un_informe_por_cada_ciclo_relevante_evaluado_definido_en_la_etap_bb5114",
+      "establecida_en",
+      "TextoOrdenado_ri_ccna_pdf"
+     ],
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#7",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («Deberá emitirse un informe por cada ciclo relevante evaluado … por lo menos una vez al año») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 8,
+     "id": [
+      "Obligacion_el_socio_responsable_asume_identica_responsabilidad_que_el_auditor_externo_desig_58091a",
+      "establecida_en",
+      "TextoOrdenado_ri_ccna_pdf"
+     ],
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#8",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («Asumo, frente al cumplimiento de las normas establecidas por la SEFyC, idéntica responsabilidad») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 9,
+     "id": [
+      "Obligacion_el_socio_responsable_tiene_identica_responsabilidad_que_el_contador_publico_desi_02adce",
+      "establecida_en",
+      "TextoOrdenado_ri_ccna_pdf"
+     ],
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#9",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («El socio responsable tendrá … idéntica responsabilidad que el Contador Público designado») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 10,
+     "id": [
+      "Potestad_prestacion_de_servicios_de_auditoria_a_nombre_propio_o_a_traves_de_estudios__los_a56ec4",
+      "establecida_en",
+      "TextoOrdenado_ri_ccna_pdf"
+     ],
+     "celda": "RI:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#10",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («Podrán prestar tales servicios a nombre propio o a través de estudios profesionales») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 11,
+     "id": [
+      "Operacion_conversion_participaciones_moneda_funcional_distinta__ri_dcpc_7_1_9f6d13",
+      "establecida_en",
+      "TextoOrdenado_ri_dcpc_pdf"
+     ],
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#11",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («Si la moneda funcional de estas participadas fuera distinta … deberá convertirse utilizando el tipo de cambio de esa fecha») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 12,
+     "id": [
+      "Operacion_prestamos_interfinancieros_recibidos__ri_rml_3_2_6dd78a",
+      "establecida_en",
+      "TextoOrdenado_ri_rml_pdf"
+     ],
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#12",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («Deberán informarse los préstamos interfinancieros recibidos, siempre que la entidad otorgante los haya computado») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 13,
+     "id": [
+      "Restriccion_para_efectuar_el_control_sobre_la_partida_210100_a_partir_de_junio_18_se_detraer_32863e",
+      "limita",
+      "Operacion_deposito_de_bonos_del_tesoro_en_cryl__ri_rml_sbloque11_030bd3"
+     ],
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#13",
+     "propuesta": "incorrecta (E1-prompt)",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El control limita la partida 210100 neta de los bonos («se detraerán de esta última los saldos del código 210105»), no el depósito de los Bonos del Tesoro en la CRyL, que es el destino de la arista.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 14,
+     "id": [
+      "Condicion_exceso_en_posicion_regularizado_al_dia_habil_siguiente__supuesto_en_que_existe_e_2b94aa",
+      "condicion_de",
+      "Obligacion_obligacion_de_declarar_cuando_existe_exceso_en_la_posicion_para_algun_dia_del_pe_6b35ac"
+     ],
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#14",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El texto condiciona la declaración al exceso regularizado: «En caso de existir un exceso … cuyo efecto se haya regularizado al día hábil siguiente, se deberá declarar».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 15,
+     "id": [
+      "Obligacion_en_caso_de_corresponder_se_informara_en_octubre_el_computo_bimestral_del_defecto_39139a",
+      "establecida_en",
+      "TextoOrdenado_ri_rml_pdf"
+     ],
+     "celda": "RI:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#15",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («en caso de corresponder se informará en octubre el computo bimestral del defecto resultante») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 16,
+     "id": [
+      "Condicion_cancelacion_dentro_de_15_dias_corridos__el_cheque_debe_haber_sido_cancelado_dent_d39a2e",
+      "condicion_de",
+      "Obligacion_la_entidad_debe_dar_de_baja_los_cheques_cancelados_dentro_de_los_2_dias_habiles__9ef6c3"
+     ],
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#16",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El texto liga la cancelación en 15 días con la baja: «Los cheques cancelados dentro de los 15 días corridos de la fecha de rechazo serán dados de baja dentro de los 2 días hábiles».",
+     "omisiones": "",
+     "observaciones": "el nodo de destino atribuye la baja a «La entidad»; el texto dice «serán dados de baja … en que la entidad comunicare la cancelación»"
+    },
+    {
+     "n": 17,
+     "id": [
+      "Obligacion_los_directores_o_funcionarios_de_entidades_financieras_extranjeras_en_el_comite__4f1b6c",
+      "establecida_en",
+      "TextoOrdenado_nmcief_pdf"
+     ],
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#17",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («asumen … una responsabilidad primaria frente a eventuales incumplimientos a las normas sobre controles internos») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 18,
+     "id": [
+      "Obligacion_verificar_que_la_estrategia_de_seguridad_de_la_informacion_este_alineada_con_la__0d6ee2",
+      "establecida_en",
+      "TextoOrdenado_nmcief_pdf"
+     ],
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#18",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («Verificar que la estrategia de seguridad de la información se encuentre alineada con la estrategia del negocio») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 19,
+     "id": [
+      "Restriccion_los_auditores_internos_deben_tener_la_capacitacion_y_experiencia_necesarias_para_680674",
+      "aplica_a",
+      "Sujeto_propuesto_los_auditores_internos"
+     ],
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#19",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El texto nombra a los obligados: «Es necesario que los auditores internos tengan la capacitación y experiencia necesarias».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 20,
+     "id": [
+      "Obligacion_la_entidad_debe_verificar_la_razonabilidad_de_la_informacion_contenida_en_el_reg_744cc7",
+      "aplica_a",
+      "Sujeto_entidad_financiera"
+     ],
+     "celda": "NG:sin_raiz",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#20",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "Es un procedimiento que la entidad cumple por su auditoría interna («se deberán cumplimentar los siguientes procedimientos: … Verificación de la razonabilidad de la información contenida en el Régimen Informativo sobre Cheques Rechazados»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 21,
+     "id": [
+      "Operacion_emision_moneda_conmemorativa_2_bicentenario__cirmo3_7_44_2aed77",
+      "establecida_en",
+      "TextoOrdenado_cirmo3_pdf"
+     ],
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#21",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («El BCRA emite la moneda conmemorativa de circulación de $ 2, alusiva al Bicentenario») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 22,
+     "id": [
+      "Obligacion_las_entidades_financieras_o_las_transportadoras_de_valores_que_operen_a_su_servi_e983f3",
+      "regula",
+      "Operacion_procesamiento_y_depuracion_de_efectivo__cirmo3_5_1_1_4edf55"
+     ],
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#22",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El deber regula esa operación: «deberán procesarlo y depurarlo, clasificando los billetes en Buen Uso y Deteriorados».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 23,
+     "id": [
+      "Obligacion_la_transaccion_mep_debe_incluir_el_cuit_cuil_o_cdi_del_comprador_cliente_que_sol_0bea7a",
+      "establecida_en",
+      "TextoOrdenado_cirmo3_pdf"
+     ],
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#23",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («contendrá los siguientes datos: … CUIT, CUIL o CDI del comprador: cliente que solicita el cheque») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 24,
+     "id": [
+      "Obligacion_la_entidad_financiera_debe_integrar_en_la_planilla_los_datos_para_aprobacion_nom_d424a2",
+      "aplica_a",
+      "Sujeto_entidad_financiera"
+     ],
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#24",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "La planilla de aprobación la integra la entidad que otorga el crédito, y la mención «la entidad financiera» está verificada en el texto («III. DATOS PARA LA APROBACIÓN DEL CRÉDITO»).",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 25,
+     "id": [
+      "Obligacion_las_entidades_financieras_deberan_habilitar_la_banca_movil_bm_como_canal_electro_9a48bc",
+      "establecida_en",
+      "TextoOrdenado_snp_tr_pdf"
+     ],
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#25",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («Las entidades financieras habilitarán, como mínimo, los siguientes canales electrónicos … Banca móvil (BM)») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 26,
+     "id": [
+      "Obligacion_examen_y_evaluacion_periodica_del_cumplimiento__adrei_s5_1262fa",
+      "aplica_a",
+      "Sujeto_sefyc"
+     ],
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#26",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El texto nombra a la SEFyC: «La Superintendencia de Entidades Financieras y Cambiarias examinará y evaluará periódicamente el cumplimiento».",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 27,
+     "id": [
+      "Restriccion_el_seguro_puede_ser_emitido_por_subsidiarias_locales_de_companias_aseguradoras_d_51c7b8",
+      "limita",
+      "Operacion_cobertura_de_seguro_de_danos_a_la_propiedad__manori_1_1_10_2_6b1071"
+     ],
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#27",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El emisor admitido acota el seguro exigido: «Que esté emitido por: … c) Subsidiarias locales de compañías aseguradoras del exterior»; es una de tres alternativas.",
+     "omisiones": "",
+     "observaciones": "la descripción del origen dice «puede ser emitido», que es una de las alternativas del requisito"
+    },
+    {
+     "n": 28,
+     "id": [
+      "Condicion_producido_de_comercializacion_destinado_a_cancelacion__el_producido_de_la_comerc_2da3ba",
+      "establecida_en",
+      "TextoOrdenado_cajasc_pdf"
+     ],
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#28",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («El producido de dicha comercialización se destine a la cancelación parcial o total de las obligaciones») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 29,
+     "id": [
+      "Operacion_reproduccion_de_efigies_en_anverso_de_billete_100__cirmo3_1_2_1_5f1c07",
+      "establecida_en",
+      "TextoOrdenado_cirmo3_pdf"
+     ],
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#29",
+     "propuesta": "correcta",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "El nodo de origen está en el texto de su unidad («VALOR $ = 100 | A N V E R S O = Julio A. Roca») y es de ese TO.",
+     "omisiones": "",
+     "observaciones": ""
+    },
+    {
+     "n": 30,
+     "id": [
+      "Restriccion_las_financiaciones_computadas_para_la_deduccion_de_la_exigencia_de_efectivo_mini_4cf062",
+      "prohibe",
+      "Operacion_financiaciones_en_pesos_otorgadas_01_03_24_a_31_12_24__efemin_7_7_7bda17"
+     ],
+     "celda": "NG:resto",
+     "ficha": "data/experiment/tanda1/t4/muestras/material/observacion_12/fichas_observacion_12.md#30",
+     "propuesta": "incorrecta (E1-prompt)",
+     "regla": "correcta, incorrecta o no decidible; en las incorrectas, la regla implicada con el vocabulario capa_pipeline (enmienda de la observación 12, §2.1)",
+     "justificacion": "La Restriccion no prohíbe otorgar las financiaciones, que es el destino de la arista; prohíbe computarlas dos veces: «Las financiaciones computadas para esta deducción no podrán computarse para las deducciones de otros puntos».",
+     "omisiones": "",
+     "observaciones": ""
+    }
+   ]
+  }
+ }
+}
