@@ -640,3 +640,49 @@ Decisiones de la autora recibidas el 16/10/2026 a las 12:59:19 (hoja de ruta de 
   menos 60 días. Da lo mismo que la de la ejecutora (`data/experiment/tanda1/t1/consulta_deprecaciones_t1.txt`, 13:30:08). No hay retiro
   anunciado: no corresponde el freno del §4.2 del pre-registro.
 - Las secciones anteriores no se editan.
+
+## 19. Los `nombres_remision` desde la tanda 1 y la variante con la raya (agregado del 16/10/2026)
+
+Decisiones de la autora recibidas el 16/10/2026 a las 15:48:10 (hoja de ruta de la mesa, §132), sobre la propuesta de la mesa de la
+§131 (`c827ec2b…`). Las condiciones son las de la §18. La medición y el código están en `data/experiment/nombres_remision/`.
+
+- **La regla** (tal cual): «Decido la a». Los `nombres_remision` de cada TO salen solos de su título oficial del inventario, con la regla
+  de `data/experiment/nombres_remision/regla_nombres_remision_v2_mesa.py`. Tiene tres patrones generales:
+  - las abreviaturas expandidas, con una tabla cerrada de las 10 que tiene el inventario;
+  - «de los» y «de las» → «de»;
+  - el corte antes de « por cuenta de ».
+  Nunca recorta la cabeza del título.
+- **La raya** (tal cual): «El grafo evaluado es el ensamblado acumulado (docs/protocolo_dos_grafos.md §2.1; enmienda 8, R3): la raya no
+  queda para «si se arma un acumulado». La decido ahora, antes de que exista cualquier salida de la tanda final. Regla: en cada
+  ensamblado desde la tanda 1, la variante con la raya se suma solo si, con los TOs de ese ensamblado, el contraste contra los 157 títulos
+  da 0 resoluciones distintas de la referencia. Con tus cifras: en la tanda 1 sola (6 distintas), en la final sola (3) y en tandas 0 y 1
+  por la regla de caída (8) no entra; en el acumulado de las tres entra (1.319 contra 1.279, 0 distintas).»
+  - Las fuentes: el grafo evaluado es el ensamblado acumulado de todas las tandas (`docs/protocolo_dos_grafos.md:48-49`); la R3 está en
+    `docs/enmienda8_protocolo_entre_tandas_2026-10-15_calendario_hacia_B6.3.md:50`; la regla de caída, en
+    `docs/regla_de_caida_grafo_evaluado_2026-10-15.md`.
+  - Las cifras son las de la medición del 16/10/2026, sobre la E0 y sin ninguna salida de extracción ni de evaluación
+    (`data/experiment/nombres_remision/medicion/`).
+  - La condición la aplica `data/experiment/nombres_remision/derivar_manifiesto_ensamblado_mesa.py`, con la variante
+    `regla_nombres_remision_v2_con_raya_mesa.py`.
+- **Los nombres en el grafo evaluado** (tal cual): «En el ensamblado acumulado del grafo evaluado, los nombres de los 128 TOs salen de la
+  regla, la tanda 0 incluida: es la configuración que mediste. Los manifiestos sellados de la tanda 0 no se tocan.»
+- **La corrección de la opción b de la propuesta** (tal cual): «con las listas a mano de la tanda 0 adentro, b también da 1.279 en el
+  acumulado; la a se elige porque cumple la condición de la §18 (sin listas a mano en el grafo evaluado), no por las 9 menciones.»
+- **La versión 1 de la regla**, como pidió la autora contarla:
+  - era igual a las listas a mano en la tanda 0;
+  - perdía 7 menciones en el acumulado de las tres tandas: 6 de ri_iepsp a pro y 1 de fabcra a pagjub;
+  - la versión 2 sumó los patrones 2 y 3 después de ver eso. Se midió sobre texto de E0, sin salidas de extracción ni de evaluación;
+  - la versión 1 y sus mediciones quedan en `data/experiment/nombres_remision/reemplazados/`.
+- **La corrección del texto de la propuesta** (tal cual): «Corregí «los tres patrones … que cambian alguna resolución»: en la tanda 0 sola
+  solo cambia el de las abreviaturas; los otros dos cambian en los acumulados.»
+- **Lo que la regla no toma** (tal cual): «"Operaciones a contado" y "Efecti- vo" van al backlog con su capa_pipeline (el corte de fin de
+  renglón es de E0).» Son BKL-0045 (capa ensamblado) y BKL-0046 (capa E0), en `data/backlog/backlog.jsonl`.
+- **Los manifiestos de ensamblado de la tanda 1:** `data/experiment/reextraccion_v2/manifiestos/tanda1_ens_veinte_r2b.json` y su sin
+  cola, `tanda1_ens_veinte_r2b_sincola.json`.
+  - Son copias del de extracción (`tanda1_20tos_r2b.json`, `818a62cf…`, el del reparto del estimado, que el 94 no toca) con `nombre`, `descripcion` y los
+    `nombres_remision` de la regla.
+  - La variante con la raya no entra: su contraste en la tanda 1 da 6 resoluciones distintas de la referencia.
+  - Suman nombres a 6 de los 20 TOs, los regímenes informativos.
+- **El commit** (tal cual): «después del de T2 y antes de T3, con la regla (incluida la condición de la raya), el script, los dos
+  manifiestos de ensamblado de la tanda 1, la medición (con la v1 en reemplazados) y el registro».
+- Las secciones anteriores no se editan.
