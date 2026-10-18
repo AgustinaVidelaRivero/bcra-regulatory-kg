@@ -1171,3 +1171,18 @@ Decisiones de la autora del 18/10/2026, recibidas a las 15:39:16 (hoja de ruta d
   - la clave aparte de la lectura se abre cuando la autora decida los calibradores, el lunes 19 con los recortes;
   - la carpeta de la lectura de los calibradores v2 y su convertidor quedan preparados fuera del repo.
 - Las secciones anteriores no se editan.
+
+## 33. U-PROC-HERENCIA: las dos decisiones del mandato, su ventana y el pre-registro de la tanda final (agregado del 18/10/2026)
+
+Decisiones de la autora del 18/10/2026, recibidas a las 16:11:07 (hoja de ruta de la mesa, §160), sobre la v1 del mandato (§159).
+
+- **Los tipos de C1:** los de G-r (`TIPOS_G_R`, `data/experiment/tanda0/code/ensamblar_tanda0.py:1363`).
+  - En el acumulado de las tandas 0 y 1 son 71 procedencias: 32 de la tanda 0 y 39 de la tanda 1 (medido por la mesa, §158).
+  - Las Comunicacion quedan fuera de C1, y C2 las marca.
+- **Los nombres:** `tramo_fuera_del_texto_de_e3` para la marca, y `punto_declarado_e1` y `rol_declarado_e1` para lo que declaró E1.
+- **El mandato** va en su versión final con esas dos decisiones. La firma de la autora está PENDIENTE.
+- **La ventana:** la ejecutora de U-PROC-HERENCIA corre con la extracción de la tanda final en marcha, sobre una copia y sin escribir en el
+  repo. El código entra después del sello de la tanda final.
+- **El pre-registro de la tanda final** no lleva la línea que la mesa ofreció para su §7. La cuenta del patrón en la tanda final sale de
+  C2 en la re-aplicación única. El borrador queda en v2.
+- Las secciones anteriores no se editan.
