@@ -175,3 +175,16 @@ reprocesamiento).
 
 FIRMADA por la autora el 07/10/2026 (versión para firmar en `1190a8a`). Rige desde esta firma, con las cinco decisiones al firmar. Lo
 primero que dispara: la fila 11-bis del checklist y la unidad U-ALCANCE-E1 (§7), antes de la extracción de la tanda 1.
+
+## Notas posteriores a la firma
+
+- **17/10/2026 — Las filas de alcance de cada tanda y el mensaje de E1** (decisión de la autora del 17/10/2026, recibida a las 20:20:12;
+  hoja de ruta de la mesa, §147; mandato de U-ALCANCE-E1, etapa A3, firmado el 17/10/2026,
+  `docs/mandatos/UALCANCE_E1_A3_filas_de_la_tanda_final.md`, §1). El mecanismo del mensaje de E1 cambió una sola vez, con el cableado de
+  la tanda 1 (A2 de U-ALCANCE-E1, `42823df0`). Después, cada tanda suma sus filas al registro de alcance por la enmienda 4, §2, punto 3
+  (`53bbd6fa:64-66`): la lectura «cambia solo el mensaje de sus unidades: el de toda unidad ya extraída sale byte a byte igual, y se
+  controla». Con cada tanda se regeneran el derivado del registro (`catalogo_unico/registro_alcance_r2b.json`) y su sha en
+  `reextraccion_v2/e1_extractor/prompt_r2b.py` (`:477`), y se recomputan los dos valores del candado del mensaje (`:97-98`), con el
+  control byte a byte de los mensajes de lo ya extraído. Es lo que previó la decisión 1 del mandato de U-ALCANCE-E1 al firmar
+  (`21e55a07`). La release sigue siendo r2. Los valores nuevos los confirma la autora antes de la extracción de la tanda. El texto firmado
+  no cambia. Precisa el «No congela» del §6 (`:130-131`).
