@@ -1,0 +1,74 @@
+--- a/data/experiment/reextraccion_v2/corpus_v2/r1_e4.py
++++ b/data/experiment/reextraccion_v2/corpus_v2/r1_e4.py
+@@ -388,8 +388,27 @@
+ MOTIVOS_PARTE_A = ("colectivo_sin_sujeto_por_defecto", "sin_mencion", "mencion_no_verificada")
+ 
+ 
++# U-MED-DESAMB (mesa, 17/10/2026), reglas candidatas S1 y S2: PROPUESTAS, sin aplicar. Con s1 = s2 = False (el defecto) la
++# decisión es la de L-ESQ-R2 §3.3, punto 5 (data/experiment/esq/enmienda_L-ESQ-R2_2026-09-30.md:580-582).
++# S1: cuando la regla del texto (R2, el calificador o R3) y la sugerencia del modelo dan ids distintos, gana la regla del texto.
++# S2: la sugerencia del modelo sin mención verificada no resuelve: la relación va a cuarentena con la sugerencia guardada, como la
++#     parte A de la enmienda 6.
++REGLAS_TEXTO_S1 = ("R2", "R2_calificador", "R3")
++
++
++def candidata_s1_s2(regla: dict | None, modelo: str | None, nivel: str | None, s1: bool, s2: bool) -> tuple | None:
++    """("S1", id, método) si S1 decide; ("S2", None, None) si S2 manda a cuarentena; None si ninguna toca la relación."""
++    regla = regla or {}
++    if s1 and modelo and regla.get("regla") in REGLAS_TEXTO_S1 and regla.get("id") and regla["id"] != modelo:
++        metodo = "R2_" + "+".join(regla.get("criterios") or []) if regla["regla"] == "R2" else regla["regla"]
++        return ("S1", regla["id"], metodo)
++    if s2 and modelo and nivel not in ("exacta", "tokens"):
++        return ("S2", None, None)
++    return None
++
++
+ def resolver_relaciones_r2(registros: list[dict], idx: dict, rol_por_archivo: dict,
+-                           versiones: dict, parte_a: bool = False) -> dict:
++                           versiones: dict, parte_a: bool = False, s1: bool = False, s2: bool = False) -> dict:
+     """Resolución por relación de las relaciones de sujeto validadas por el
+     perfil r2. Regla de decisión (L-ESQ-R2 §3.3, punto 5): la regla textual
+     gana solo con R1; con R2, el calificador o R3 gana la sugerencia del
+@@ -431,11 +450,13 @@
+                      if mencion and nivel in ("exacta", "tokens") else
+                      {"regla": None, "id": None, "criterios": [], "candidatos": [], "calificador": None,
+                       "motivo": "mencion_no_verificada" if mencion else "sin_mencion"})
+-            final, metodo = None, None
++            final, metodo, cand = None, None, None
+             if regla["regla"] == "R1":
+                 final, metodo = regla["id"], "R1_" + "+".join(c for c in regla["criterios"] if c in CRITERIOS_R1)
+             elif sin_alcance and regla["motivo"] in MOTIVOS_PARTE_A:
+                 pass                    # enmienda 6, parte A: cuarentena con la sugerencia guardada
++            elif (cand := candidata_s1_s2(regla, modelo, nivel, s1, s2)):
++                final, metodo = cand[1], cand[2]   # U-MED-DESAMB, S1 o S2 (con S2, cuarentena)
+             elif modelo:
+                 final, metodo = modelo, "R4_sugerencia_modelo"
+             elif regla["regla"] == "R2":
+@@ -450,7 +471,8 @@
+                     "regla_texto": regla["regla"], "id_regla_texto": regla["id"],
+                     "criterios": regla["criterios"], "calificador": regla["calificador"],
+                     "resuelto_a": final, "metodo_resolucion": metodo or "cuarentena",
+-                    "desacuerdo_regla_modelo": desacuerdo, "catalogo_sha256": versiones["catalogo_sha256"]}
++                    "desacuerdo_regla_modelo": desacuerdo, "catalogo_sha256": versiones["catalogo_sha256"],
++                    **({"regla_candidata": cand[0]} if cand else {})}
+             resolucion.append(fila)
+             r["sujeto_id_resuelto"] = final
+             r["metodo_resolucion"] = metodo or "cuarentena"
+@@ -488,7 +510,7 @@
+ 
+ 
+ def reresolver_registro(filas: list[dict], idx: dict, rol_por_archivo: dict, archivo_por_to: dict,
+-                        catalogo_sha256: str) -> dict:
++                        catalogo_sha256: str, s1: bool = False, s2: bool = False) -> dict:
+     """P-d3: re-resolución por programa de las filas en cuarentena cuando
+     cambia el sha256 del catálogo. Cada fila se decide con la misma regla que
+     `resolver_relaciones_r2` (R2-2 de U-RERESOL-CAT, decisión 2): R1 sobre la
+@@ -517,6 +539,8 @@
+                 final, metodo = r["id"], "R1_" + "+".join(c for c in r["criterios"] if c in CRITERIOS_R1)
+             elif modelo and archivo not in rol_por_archivo and motivo in MOTIVOS_PARTE_A:
+                 pass                    # parte A: sigue en cuarentena mientras el documento no tenga alcance
++            elif (cand := candidata_s1_s2(r, modelo, f.get("mencion_verificada"), s1, s2)):
++                final, metodo = cand[1], cand[2]   # U-MED-DESAMB, S1 o S2 (con S2, sigue en cuarentena)
+             elif modelo:
+                 final, metodo = modelo, "R4_sugerencia_modelo"
+             elif r and r["id"]:

@@ -1,0 +1,21 @@
+--- a/data/experiment/reresolucion_catalogo/reresolver_catalogo.py
++++ b/data/experiment/reresolucion_catalogo/reresolver_catalogo.py
+@@ -403,7 +403,8 @@
+                                           if a.get(k) != b.get(k)})}
+ 
+ 
+-def decidir(f: dict, padre: str | None, idx: dict, prefijos: list, rol: str | None, sin_alcance: bool = False) -> dict:
++def decidir(f: dict, padre: str | None, idx: dict, prefijos: list, rol: str | None, sin_alcance: bool = False,
++            s1: bool = False, s2: bool = False) -> dict:
+     """La regla de decisión de r1_e4.resolver_relaciones_r2 sobre una fila de resolucion_sujetos.jsonl, con los mismos
+     campos que la fila guarda. `sin_alcance`: la parte A de la enmienda 6 rige (fase r2b) y el documento no tiene
+     entrada en rol_por_to. El control `reproduce_la_decision_guardada` la contrasta con la de la cadena."""
+@@ -416,6 +417,8 @@
+         final, metodo = regla["id"], "R1_" + "+".join(c for c in regla["criterios"] if c in E4.CRITERIOS_R1)
+     elif sin_alcance and regla.get("motivo") in E4.MOTIVOS_PARTE_A:
+         pass
++    elif (cand := E4.candidata_s1_s2(regla, modelo, nivel, s1, s2)):
++        final, metodo = cand[1], cand[2]   # U-MED-DESAMB, S1 o S2 (con S2, cuarentena)
+     elif modelo:
+         final, metodo = modelo, "R4_sugerencia_modelo"
+     elif regla["regla"] == "R2":

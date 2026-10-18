@@ -808,3 +808,37 @@ Decisión de la autora del 17/10/2026, recibida a las 10:29:16 (hoja de ruta de 
 - **PENDIENTE de la autora:** las decisiones del informe de la mesa (`decisiones_139_mesa/informe/`, §9), entre ellas el criterio de
   sujetos, las reglas de decisión y los tamaños, que se firman y se sellan antes de leer, y el juez de modelo con su tope.
 - Las secciones anteriores no se editan.
+
+## 23. U-MED-DESAMB: las decisiones de la autora, el diseño sellado y el sorteo (agregado del 17/10/2026)
+
+Decisión de la autora del 17/10/2026, recibida a las 11:31:33 (hoja de ruta de la mesa, §140), sobre el informe de la mesa (§139). Firmó
+el criterio, las reglas de decisión, los tamaños y el juez, con 13 decisiones.
+
+- **El diseño sellado:** `data/experiment/med_desamb/diseno_sellado_med_desamb_2026-10-17.md`, sha256 `05445091…`, sellado a las
+  11:41:19, antes del sorteo y antes de correr nada sobre el grafo (`sello_diseno_med_desamb_2026-10-17.txt`). Lleva:
+  - el criterio de sujetos, con «acierta» solo para «correcta» y la sensibilidad con «correcta o genérica», que se informa y no decide;
+  - S1 y S3 tal cual, y S2 como «aplica si aciertan 7 o menos de 16», con su Wilson informado;
+  - los tamaños, la regla de la semilla, la normalización de C1 y el sha256 del código.
+- **Las decisiones** (resumen; el mensaje está en la sesión de la mesa):
+  - la lectura es de 52 ítems: E4 26, E6 16 y el control fijo (E1 4, E3 3, E5 3), con 12 calibradores mezclados;
+  - S2 es solo cuarentena, y el rol va al grafo corregido;
+  - O1 va al grafo corregido del cap. 6 (salida (c)), con su tamaño como cifra descriptiva;
+  - C1 se decide con el censo de todas sus colisiones, sin piso;
+  - el juez de modelo va con condiciones, y el gasto está autorizado hasta USD 40;
+  - P2 y P3, sí; P1, solo como diagnóstico sobre los grafos sellados;
+  - la lectura cierra el jueves 22/10/2026 a las 12:00. El orden de recorte es el juez, S3, y S1 y S2; C1, al final.
+- **Las cifras descriptivas sobre el grafo sin cola diez rs1** (`61dd1b69…`; `data/experiment/med_desamb/salidas_rs1/`, USD 0):
+  - Operacion: 66 grupos con la misma clave de texto en puntos distintos de un documento, con 148 nodos (el 8,41 %). 20 grupos tienen
+    algún enlace: 18 conectados y 2 en parte;
+  - en las normas, el 1,37 % o menos;
+  - 2.505 aristas `aplica_a`;
+  - C1: 2 colisiones entre documentos, con 6 nodos;
+  - O1: 42 vínculos;
+  - P1: 3 aristas con marcas distintas dentro de un documento y 0 aristas unidas entre documentos, en los cuatro grafos rs1 de la tanda 0.
+- **El sorteo:** sellado a las 11:41:48, con la lista de sha256 `811bd20f…` (`data/experiment/med_desamb/sorteo/sello_muestra.json`).
+  - El control de las normas dio OK: 64 ítems, 0 problemas.
+  - La lista, la planilla y la clave quedan fuera del repo hasta que cierre la lectura, en el paquete de la mesa.
+- **PENDIENTE:**
+  - de la autora: la lectura, el censo de C1 y la firma de la enmienda 2 al pre-registro de tripletas antes del sorteo de T;
+  - de la mesa: el código del juez, con su prueba en seco antes de la ventana.
+- Las secciones anteriores no se editan.
