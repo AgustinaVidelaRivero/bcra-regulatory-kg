@@ -1146,3 +1146,28 @@ Decisiones de la autora del 18/10/2026, recibidas a las 12:55:50 y a las 14:05:0
   - **los calibradores v2** (nota 1 al diseño sellado, §2): la autora los lee solo si le da el tiempo antes del miércoles 21/10/2026 a las
     18:00, y lo decide con los recortes del lunes 19.
 - Las secciones anteriores no se editan.
+
+## 32. C1 y C2 a la re-aplicación única, y la clave y los calibradores de U-MED-DESAMB (agregado del 18/10/2026)
+
+Decisiones de la autora del 18/10/2026, recibidas a las 15:39:16 (hoja de ruta de la mesa, §159), sobre la propuesta de la mesa del §158.
+
+- **Los bloques heredados que ve E1 y no ve E3:** C1 y C2 van a la re-aplicación única, como los propuso la mesa (§31; BKL-0049). Las
+  condiciones, tal cual:
+  - «La regla es una sola y se aplica igual a las tres tandas en la re-aplicación única. Nada se corrige a mano.»
+  - «La medición antes y después, sobre el acumulado de las tandas 0 y 1, trae las remisiones de la (11), la suite, las shapes y los
+    conteos. Si cambia alguna remite_a, si aparece una regresión no declarada o si cambia la cantidad de nodos o de aristas, la ejecutora
+    frena y me muestra los casos antes de seguir.»
+  - «Unir nodos con los de la unidad de origen espera a lo que encuentre la (3). Sacarlos, no.»
+  - el mandato lleva la cláusula v2 de las carpetas vedadas.
+- **El mandato U-PROC-HERENCIA** está PARA FIRMAR (§159):
+  - C1 es G-r extendida a las entidades declaradas con el punto propio, con su misma función y su mismo localizador
+    (`data/experiment/tanda0/code/ensamblar_tanda0.py:1367` y `:1410`);
+  - C1 y C2 van detrás de un parámetro apagado por defecto, así que el grafo de cada tanda se sigue sellando sin la corrección
+    (principio 9);
+  - la fila de la tabla de reprocesamiento entra con el código.
+- **El pre-registro de la tanda final:** C1 y C2 no figuran en él, porque deja fuera la re-aplicación única (borrador v2, §0, en el
+  paquete de la mesa).
+- **U-MED-DESAMB:**
+  - la clave aparte de la lectura se abre cuando la autora decida los calibradores, el lunes 19 con los recortes;
+  - la carpeta de la lectura de los calibradores v2 y su convertidor quedan preparados fuera del repo.
+- Las secciones anteriores no se editan.
