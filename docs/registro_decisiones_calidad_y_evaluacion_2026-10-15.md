@@ -770,3 +770,41 @@ Decisiones de la autora recibidas el 16/10/2026 a las 23:34:55 y el 17/10/2026 a
 - **PENDIENTE para el pre-registro de la tanda final** (17/10/2026, 07:50:35; tal cual): «Anotá como pendiente para el pre-registro de la
   tanda final que su estimado se reparta igual desde el principio: su tramo 1 tiene los regímenes informativos y va primero.»
 - Las secciones anteriores no se editan.
+
+## 22. U-MED-DESAMB: la desambiguación del grafo, abierta sin medir sobre el grafo vigente (agregado del 17/10/2026)
+
+Decisión de la autora del 17/10/2026, recibida a las 10:29:16 (hoja de ruta de la mesa, §139).
+
+- **Qué abre** (tal cual): «Quiero investigar a fondo todo lo que une, separa o asigna entidades en el pipeline, medir dónde se equivoca y
+  arreglar ahora lo que se pueda arreglar bien, con cada decisión justificada y medida, para que el grafo evaluado sea el mejor posible.»
+- **Las condiciones** (del mismo pedido):
+  - USD 0, sin API, fuera del repo;
+  - ninguna medición sobre el grafo vigente y ningún sorteo hasta que la autora lo apruebe: el diseño, el mapa, los scripts y el código
+    preparado se prueban sobre el grafo viejo de desarrollo r2a (`93a7af72…`);
+  - nada de volver a extraer: el prompt, el esquema y los modelos no cambian (enmienda 8, §9);
+  - ninguna cifra de U-MED-UMBRALES;
+  - las reglas candidatas (S1, S2, S3, C1 y O1) se escriben antes de medir, y la lectura de la autora decide S1, S2 y O1;
+  - un juez de modelo, si se aprueba, da solo la cifra descriptiva y no decide ningún cambio del grafo.
+- **Lo que preparó la mesa** (fuera del repo, `decisiones_139_mesa/` del paquete de la mesa): el mapa de los mecanismos, la verificación
+  de las cifras de la mesa de apoyo, el código de los tamaños, de las reglas candidatas, de la planilla y de los estimadores, con sus
+  selftests, y el calendario contra el corte del grupo 2. Nada se aplicó.
+- **Lo que la verificación deja registrado** (script `decisiones_139_mesa/verificacion/verificar_mesa_de_apoyo_mesa.py`, en el paquete de
+  la mesa; cuenta las vías ya guardadas en `resolucion_sujetos.jsonl`, sin leer la corrección de nada):
+  - en el grafo sin cola diez rs1 (`61dd1b69…`), 2.546 relaciones de sujeto: R1 533 (168 con desacuerdo del modelo), R4 1.821, R2 8,
+    calificador 16, R3 20 y cuarentena 148;
+  - dentro de R4: la regla del texto da el mismo id en 1.010, otro id en 277, no hay regla con la mención verificada en 334 y la mención
+    no verifica en 200;
+  - entre `e22fae1a…` y `61dd1b69…`, los dos sin cola, R3 pasa de 1 a 20 y la cuarentena de 164 a 148, por tres causas:
+    - el singular «entidad» como expresión de R3 en los documentos con rol (U-OMISIONES-COD, ítem f′): 412 relaciones reciben la regla
+      R3 y 19 pasan de cuarentena a R3;
+    - las contracciones en la verificación de la mención (U-OMISIONES-COD, ítem f): cambian 48 verificaciones;
+    - R2-3 de U-RERESOL-CAT: 4 relaciones de docvig pasan a cuarentena por la parte A
+      (`data/experiment/reresolucion_catalogo/freno_r2_3.md:14`);
+  - la cuarentena se cuenta en dos unidades: relaciones (`resolucion_sujetos.jsonl`) o filas del registro de no mapeados (LN-5 de la
+    suite). Toda cifra de cuarentena dice cuál es.
+- **Una contradicción, registrada:** la regla O1 es una arista nueva entre operaciones, y un predicado derivado nuevo cambia el esquema
+  (`data/experiment/pyd_r2/code/modelos_r2.py:165`; `scripts/shapes_validator.py:1129-1135`), que la enmienda 8, §9, deja fijo. Sin una
+  decisión de la autora, O1 no entra como arista al grafo evaluado.
+- **PENDIENTE de la autora:** las decisiones del informe de la mesa (`decisiones_139_mesa/informe/`, §9), entre ellas el criterio de
+  sujetos, las reglas de decisión y los tamaños, que se firman y se sellan antes de leer, y el juez de modelo con su tope.
+- Las secciones anteriores no se editan.
