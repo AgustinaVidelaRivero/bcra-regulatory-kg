@@ -1319,3 +1319,23 @@ Decisiones de la autora del 18/10/2026, recibidas a las 18:42:24 (hoja de ruta d
   - el rsync de `lote_tramo1_S2.sh` (renglón 11) no excluye `tanda1/t4/` ni `tanda1/t5/` (hallazgo 3);
   - el manifiesto de la tanda final se arma con el perfil de A3, después de su commit (hallazgo 10).
 - Las secciones anteriores no se editan.
+
+## 39. Los valores de A3, el plan de esta noche, las filas 67 y 68, la exclusión de las FICHAS y la precisión de la firma (agregado del 18/10/2026)
+
+Decisiones de la autora del 18/10/2026, recibidas a las 18:59:38 y a las 19:15:01 (hoja de ruta de la mesa, §169 y §170).
+
+- **Los tres valores de A3, confirmados** (19:15:01): el derivado `c8dea08a2ffe…`, y el candado `6b758517cee0…` y el mensaje
+  `eeb11b9a3bf6…`, iguales a los de HEAD. Entraron con el commit de A3 (`c66c7ecd`).
+- **El plan de esta noche** (18:59:38): la tanda final se despacha esta noche, para que la extracción corra de madrugada. No se saca
+  ningún control, revisión, lectura ni prueba en seco: solo se adelanta lo del lunes 19.
+- **F04b, F22 y F22b** de la tabla de reprocesamiento, que citan «candado `:464-484`»: se corrigen después del despacho de la tanda final,
+  en un commit aparte. No van en ninguno de esta noche.
+- **Las filas 67 y 68 del tablero:** al escribir la columna «Tanda 1», van «no cumple, fuera del residuo declarado», con la lectura de la
+  mesa (hoja de ruta de la mesa, §169).
+- **La exclusión de las FICHAS:** van a la lista de exclusión del despacho de las FICHAS, antes del sorteo, con las 3 de la §37, las 4
+  unidades que la mesa vio por error el 18/10/2026 (`decisiones_169_mesa/cegamiento/unidades_a_la_vista_mesa_169.json`, en el paquete de
+  la mesa; sha256 `de07201b…`): `depaho::4.4.5.1`, `depaho::4.4.5.2`, `efemin::2.4::cierre` y `efemin::3.1.4`.
+  - Desde ahora, ninguna consola de la mesa muestra contenido de nodos de la tanda 1: la mesa trabaja con códigos, conteos y sha256.
+- **La precisión para la firma del pre-registro de la tanda final** (`decisiones_169_mesa/precision_tf/`): la autora acepta los tres
+  puntos, y van con su firma.
+- Las secciones anteriores no se editan.
