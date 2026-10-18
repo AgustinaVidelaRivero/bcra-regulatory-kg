@@ -1339,3 +1339,13 @@ Decisiones de la autora del 18/10/2026, recibidas a las 18:59:38 y a las 19:15:0
 - **La precisión para la firma del pre-registro de la tanda final** (`decisiones_169_mesa/precision_tf/`): la autora acepta los tres
   puntos, y van con su firma.
 - Las secciones anteriores no se editan.
+
+## 40. La firma del pre-registro de la tanda final (agregado del 18/10/2026)
+
+Decisión de la autora del 18/10/2026, recibida a las 19:40:51 (hoja de ruta de la mesa, §171).
+
+- **El pre-registro de la tanda final, FIRMADO** (`docs/preregistro_tanda_final.md`), sobre la v3 para firmar (sha256 `0897d609…`,
+  `5289b02f`), con la precisión de la firma de la §39: los tres puntos sobre la fixture de la suite, en la sección «Precisión de la firma».
+  La cita de la firma, tal cual: «Firmo el pre-registro de la tanda final en la versión para firmar commiteada en 5289b02f (docs/preregistro_tanda_final.md), con mis cuatro decisiones del §9 y los tres puntos de la precisión del §169.»
+- La versión derivada con los huecos de antes de T1 entra en el commit que sigue, con la revisión entre tandas de la autora.
+- Las secciones anteriores no se editan.

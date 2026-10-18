@@ -1,6 +1,10 @@
 # Pre-registro — B6.1 tanda final: la última tanda del escalado con la release r2
 
-**VERSIÓN PARA FIRMAR (v3)** (redactada por la mesa el 18/10/2026, hoja de ruta de la mesa, §155, §156 y §163; para firmar el lunes
+**FIRMADO por la autora el 18/10/2026** (firma por mensaje recibido a las 19:40:51; hoja de ruta de la mesa, §171), sobre la v3
+para firmar (sha256 `0897d609851ae712768f0c1b68c2a485d5d8d91903aca84f3b54df58664d488b`, commiteada en `5289b02f`), con la precisión de la firma que la autora aceptó el 18/10/2026
+a las 19:15:01 (sección «Precisión de la firma», al final). Rige desde esta firma.
+
+La v3 (redactada por la mesa el 18/10/2026, hoja de ruta de la mesa, §155, §156 y §163; para firmar el lunes
 19/10 temprano). Pedido de la autora del 18/10/2026, recibido a las 11:45:00. La v2 cambió la decisión 4 y el guardado del grafo
 (respuesta de la autora recibida a las 12:19:47). La v3 trae los trece cambios y las cuatro decisiones del §9 que la autora pidió al
 revisar la v2 (sha256 `a8870ab1…`; mensaje recibido a las 17:01:45). Va al repo en `docs/preregistro_tanda_final.md` en dos commits que
@@ -325,6 +329,29 @@ Tomadas el 18/10/2026, en el mensaje recibido a las 17:01:45 (hoja de ruta de la
 - **Cada versión derivada** nombra el sha256 del JSON de huecos que usó, y trae al final las cifras de `cifras_preregistro_tanda_final_mesa.py`
   con las que corre (con `--sin`, si salió un documento).
 
+## Precisión de la firma
+
+Aceptada por la autora el 18/10/2026, a las 19:15:01 (registro de decisiones, §39), por el hallazgo 8 de A3. La preparó la mesa
+(`decisiones_169_mesa/precision_tf/`, en su paquete), con su script (`fixture_desde_47c9f1b3_mesa.py`): de las 78 rutas de la lista
+sellada en `47c9f1b3`, en la base de A3 difiere una sola, `scripts/regression_kg_esperado.json`. La tocó un solo commit, el del T3 de la
+tanda 1 (`eb0711a1`), que le sumó las expectativas de los cuatro grafos de la tanda 1: 1.136 claves nuevas bajo `estado_esperado`,
+ninguna quitada ni cambiada.
+
+1. **Al §2, qué cambia en la lista re-sellada.** La lista re-sellada con A3 cambia el sha256 de los dos archivos de la lista que toca A3
+   (`reextraccion_v2/e1_extractor/prompt_r2b.py` y `catalogo_unico/registro_alcance_r2b.json`) y el de `scripts/regression_kg_esperado.json`,
+   por las cuatro entradas del T3 de la tanda 1. Ninguno más.
+2. **Al §2, cuándo se re-sella.** La lista se re-sella sobre el commit de A3, con el mismo script
+   (`data/experiment/controles_tanda1/sellar_codigo_de_la_cadena_mesa.py`), en el commit que sigue, porque un commit no puede nombrarse a
+   sí mismo. El hueco `codigo_cadena.commit_y_sha256` lleva el commit de A3 y el sha256 de esa lista.
+3. **Al §8, la fixture durante la tanda.** «El código de la cadena no cambia entre el paso 0 del despacho y el sello» vale para las 78
+   rutas salvo `scripts/regression_kg_esperado.json`, que es un dato de la suite y no código. El T3 de la tanda final le suma las
+   expectativas de sus grafos, como el T3 de la tanda 1 (§2: la tanda, el tramo 1, el acumulado de las tres tandas y el acumulado con el
+   tramo 1, cada uno con su sin cola). Para ese archivo, el control entre el paso 0 y el sello es:
+   - todo lo que trae la versión re-sellada sigue igual, clave por clave;
+   - lo nuevo son solo entradas de `estado_esperado` con los nombres de los grafos de la tanda final.
+
 ## Firma
 
-PENDIENTE de la autora.
+**FIRMADO por la autora el 18/10/2026,** por mensaje recibido a las 19:40:51 (hoja de ruta de la mesa, §171): «Firmo el pre-registro de la tanda final en la versión para firmar commiteada en 5289b02f (docs/preregistro_tanda_final.md), con mis cuatro decisiones del §9 y los tres puntos de la precisión del §169.» El texto firmado es el
+de la v3 (sha256 `0897d609851ae712768f0c1b68c2a485d5d8d91903aca84f3b54df58664d488b`), con este encabezado, la precisión de la firma y esta sección. En el commit de la firma, la
+última sección del registro de decisiones es la §40.
