@@ -1205,3 +1205,22 @@ Decisión de la autora del 18/10/2026, recibida a las 16:24:10 (hoja de ruta de 
   código, con los primeros 12 caracteres de su sha256.
 - **El mandato** queda en v3, para firmar. La firma de la autora está PENDIENTE.
 - Las secciones anteriores no se editan.
+
+## 35. Las dudosas del T4 de la tanda 1, la firma de U-PROC-HERENCIA y el pre-registro de la tanda final (agregado del 18/10/2026)
+
+Decisiones de la autora del 18/10/2026, recibidas a las 17:01:45 (hoja de ruta de la mesa, §163).
+
+- **Las dudosas en el T4 de la tanda 1** (la opción (a) del «seguí» del segundo tramo, punto 2):
+  - en la cola y en las dos muestras de las aceptadas, una unidad «dudosa» cuenta como error para la tasa, la atención y el freno;
+  - la cuenta con las dudosas fuera, sobre las decididas, va al lado como sensibilidad y no decide nada. Si diera otra decisión de
+    atención o de freno, se declara y rige la primera;
+  - **cuándo se fijó,** tal cual: la autora la fijó «después de cerrar mi lectura y antes de ver las tasas, con los umbrales calculados
+    antes de leer» (`data/experiment/tanda1/t3/muestras/umbrales_t4_reales.json`). El pre-registro de la tanda 1 no lo decía para la cola
+    ni para las aceptadas (§5.4 a y b). Su criterio para la lectura de la segmentación es el mismo (`95b18217:191`);
+  - el segundo tramo de T4 corre con esta regla.
+- **U-PROC-HERENCIA, FIRMADO** sobre la v3 (§34), con la decisión 3 como la puso la mesa: el id del nodo va como código. El mandato
+  firmado entra en este commit, en `docs/mandatos/UPROC_HERENCIA_procedencia_de_tramos_heredados.md`. Su despacho va cuando la extracción
+  de la tanda final ya corre (§33).
+- **El pre-registro de la tanda final:** la autora revisó el borrador v2 y pidió una v3 para firmar el lunes 19 temprano, con trece
+  cambios y sus cuatro decisiones del §9 escritas como suyas (hoja de ruta de la mesa, §163). La firma está PENDIENTE.
+- Las secciones anteriores no se editan.
