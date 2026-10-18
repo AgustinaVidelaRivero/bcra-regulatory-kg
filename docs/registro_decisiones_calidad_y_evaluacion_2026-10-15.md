@@ -705,3 +705,68 @@ Decisiones de la autora recibidas el 16/10/2026 a las 16:05:25 y el 17/10/2026 a
   - Rige sobre lo que dicen hoy `docs/checklist_pre_escalado.md:228`, `docs/insumos_escritura.md` §8 («Dónde va») y
     `docs/plan_tesis.md:787` (fila B6.4), que este agregado no edita.
 - Las secciones anteriores no se editan.
+
+## 21. Los dos frenos de T2 de la tanda 1, el reparto del estimado y lo que dejan para registrar (agregado del 17/10/2026)
+
+Decisiones de la autora recibidas el 16/10/2026 a las 23:34:55 y el 17/10/2026 a las 07:50:35 y a las 08:00:21 (hoja de ruta de la mesa,
+§134 a §136).
+
+- **El primer freno** (FRENO T2 parcial 1, sha256 `49e2dca8…`; copia en el paquete de la ejecutora `revision_tanda1_FRENO_T2/`, manifest
+  `18315f8d…`):
+  - T2 frenó por proyección al cerrar ri_pgn:e3, el 16/10/2026 a las 21:01:43, con USD 1,149063 gastados.
+  - Los dos primeros TOs costaron 1,4987 veces su estimado: ri_gerc 1,1047 y ri_pgn 1,7801.
+  - La proyección dio USD 104,0509 contra el tope de 100,7291 (§5 del FRENO).
+- **El relanzamiento** (16/10/2026, 23:34:55; tal cual): «Decidí relanzar T2 con el mismo tope y el mismo comando, porque con el 1 % de la
+  tanda la proyección no alcanza para decidir el tope. Lo relanzó la ejecutora desde su sesión, a pedido mío, a las 23:34: la decisión 5
+  del §18 preveía mi terminal para un corte, no para un freno con su sesión viva.»
+  - Lo que la §18 preveía, en «Quién lanza T2»: «Si el lanzador se corta, lo relanzo yo desde mi terminal con el mismo comando.»
+- **El segundo freno** (FRENO T2 parcial 2, sha256 `144be679…`; paquete de la ejecutora `revision_tanda1_FRENO_T2_parcial_2/`, manifest
+  `616dffed…`, con el parcial 1 adentro):
+  - T2 frenó por proyección al cerrar ri_rml:e1, el 17/10/2026 a las 00:17:08, con USD 3,664724 gastados.
+  - La proyección dio USD 122,7914 contra 100,7291.
+  - La E1 de ri_rml costó 3,5976 veces su estimado; ceninf, 0,9814 veces (§5 del FRENO).
+- **Las decisiones de la autora sobre el segundo freno** (17/10/2026, 07:50:35; tal cual):
+  - «No aplico la regla del tope.»
+  - «Decido corregir el reparto del estimado, no el tope.»
+  - «El ls de la salida de ri_pgn no cambia U-MED-VERIF: la ejecutora vio solo nombres, no abrió ninguno y yo no vi nada. Queda declarado
+    en la §21.»
+- **Lo que sostiene el reparto,** con las cifras de la verificación de la mesa. La autora confirmó a las 08:00:21 que van al repo estas y
+  no otras. Script: `decisiones_135_mesa/verificacion/verificar_medicion_mesa.py`, en el paquete de la mesa.
+  - **El modelo:** un costo proporcional a los caracteres de la E0 completa, a la tarifa por carácter de la tanda 0 (0,021115 / 1.164,7).
+    Explica los cuatro tramos pagados. Lo real sobre ese modelo es:
+    - 0,8516 en ri_gerc;
+    - 0,9721 en ri_pgn;
+    - 0,6971 en ceninf;
+    - 0,9787 en la E1 de ri_rml.
+  - **Con el estimado plano por unidad:**
+    - la proyección del runner pasa el tope desde el cierre de ri_rml:e3 con cualquier costo desde 0,9 veces el modelo;
+    - entre 0,9 y 1,0 veces, el pico va de 143,58 a 155,65;
+    - la regla del tope que había propuesto la mesa (140,67 con este freno) también frenaría ahí.
+  - **Con el estimado repartido por caracteres y el mismo total,** la proyección no pasa el tope hasta 1,4 veces el modelo y lo pasa desde
+    1,46: el tope sigue frenando un exceso real.
+  - **Con qué se decidió:** solo con cifras de costo, sin ninguna salida de calidad de la tanda.
+- **El cambio** entra antes del commit de T2. Lleva:
+  - el manifiesto de extracción, con `limites.estimado_usd` repartido;
+  - el lanzador, con `MANIFIESTO_SHA256`;
+  - `sha256_para_T2.txt`;
+  - una nota fechada al pie de `docs/preregistro_tanda1.md`, que declara el desvío del §3 y la lectura de C2.
+  No cambian U, la tarifa, el total, el tope ni el margen por unidad.
+- **Lo que los frenos dejan para registrar** (16/10/2026, 23:34:55; tal cual): «la doble cuenta de la fase que cierra en la proyección (al
+  backlog, sin tocar el código sellado), logs/cache_usage.jsonl, que no estaba en la lista de lo nuevo del «seguí», y el ls que mostró
+  nombres reservados por el cegamiento en la salida de ri_pgn, sin abrirlos».
+  1. **La doble cuenta** es BKL-0047, en `data/backlog/backlog.jsonl`.
+     - En el checkpoint de cierre de una fase, la fase que cierra entra dos veces en el estimado corrido
+       (`data/experiment/reextraccion_v2/corpus_v2/runner_corpus.py:404-415`; `cerrar_fase` va antes del checkpoint, `:945-947`).
+     - En el primer freno la proyección dio 104,0509, y sin la doble cuenta habría dado 104,3965.
+     - El runner es código sellado y no se toca durante la tanda (pre-registro de la tanda 1, §7).
+  2. **`logs/cache_usage.jsonl`** es el registro de uso de cada respuesta real. Lo escriben los clientes de E1 y E3 en la raíz del repo
+     (`cliente_e1.py:53` y `cliente_e3.py:52`; decisión 3 de `docs/decisiones_caching_extraccion.md`).
+     - Está ignorado (`.gitignore:48`), así que no entra en ningún commit.
+     - Cambia con cada corrida y no se abre: sus renglones por componente cuentan los reintentos (cegamiento, pre-registro de la tanda 1,
+       §7).
+     - Va en la lista de lo que cambia T2.
+  3. **El `ls`.** La ejecutora listó la carpeta de salida de ri_pgn y el listado mostró los nombres de archivos que el cegamiento reserva.
+     No abrió ninguno (FRENO T2 parcial 1, §8, error 2). Por la decisión de arriba, no cambia U-MED-VERIF.
+- **PENDIENTE para el pre-registro de la tanda final** (17/10/2026, 07:50:35; tal cual): «Anotá como pendiente para el pre-registro de la
+  tanda final que su estimado se reparta igual desde el principio: su tramo 1 tiene los regímenes informativos y va primero.»
+- Las secciones anteriores no se editan.
