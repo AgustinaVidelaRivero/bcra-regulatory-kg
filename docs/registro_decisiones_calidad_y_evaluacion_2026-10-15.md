@@ -1349,3 +1349,34 @@ Decisión de la autora del 18/10/2026, recibida a las 19:40:51 (hoja de ruta de 
   La cita de la firma, tal cual: «Firmo el pre-registro de la tanda final en la versión para firmar commiteada en 5289b02f (docs/preregistro_tanda_final.md), con mis cuatro decisiones del §9 y los tres puntos de la precisión del §169.»
 - La versión derivada con los huecos de antes de T1 entra en el commit que sigue, con la revisión entre tandas de la autora.
 - Las secciones anteriores no se editan.
+
+## 41. La revisión entre tandas firmada, el checkpoint de T1 y lo que sigue a la re-aplicación única (agregado del 18/10/2026)
+
+Decisiones de la autora del 18/10/2026, recibidas a las 19:40:51 (hoja de ruta de la mesa, §171), sobre la hoja de la revisión entre
+tandas v4 (paquete de la mesa, `decisiones_166_mesa/revision_entre_tandas/`).
+
+- **La revisión entre tandas, firmada,** fila por fila:
+  - **dentro:** las shapes, la suite, (4), (5), (12), las aceptadas ítems y no ítems, la atención de RI y el tamaño de la cola;
+  - **se declaran:** (10), (11), (8), (1), (7) y el costo;
+  - **(9), dentro:** las 7 emisiones son de snp_tr («Sistema Nacional de Pagos - Transferencias»), el dominio de esa entidad;
+  - **(2):** se declara y va al grafo corregido, con el análisis de abajo;
+  - **(3):** como en la §37;
+  - **la tasa de error de la cola, fuera,** porque se dispara la regla del 25 %. Por la investigación de la mesa (§170;
+    `decisiones_170_mesa/cola/investigacion_causa_cola_mesa.md`, en su paquete), el error va con las unidades largas y con tabla o
+    fórmula. Va la declaración para el pre-registro de la tanda final («en la tanda 1, el error de la cola va con las unidades más largas
+    y con tabla o fórmula; la tanda final lee su cola con la misma regla, en su T4») y la propuesta al backlog de la hipótesis 1, con
+    `capa_pipeline` E1-prompt. No es un rasgo de corte y no saca ningún documento;
+  - **los rasgos de corte:** ninguno confirmado. **El alcance:** sin cambios. **Los bloques heredados:** como en la §32 y la §33.
+- **Los textos de los huecos** de la revisión, tal cual:
+  - los rasgos confirmados: «ninguno: sub-documento, 0 errores en 14 límites; 1.16, 0 de 10; la investigación de la cola no encontró un
+    rasgo de corte»;
+  - los documentos que salen: «ninguno»; la lista de documentos fuera, vacía.
+- **El checkpoint de T1:** `checkpoint_cada` = 150 en ctavis, depinv y pimf.
+- **La declaración del 126** sobre las fuentes de los huecos de A3, de T4 y de T5, aceptada.
+- **Después del despacho,** en paralelo con la extracción, USD 0 y sin nada de E3, para la re-aplicación única:
+  - las remisiones: cuántas menciones del acumulado quedan sin resolver y por qué clase de causa. Si una clase se corrige por código, la
+    mesa propone su mandato, con su medición, para que entre antes del corte del sábado 24/10/2026 a las 12:00 (R5);
+  - los vaciamientos de la (2): si alguna causa es de código (el validador o la reparación de forma), con cifras agregadas, sin mostrar
+    extracciones. Si es de prompt, va al grafo corregido;
+  - la lectura de las claves del catálogo no se recorta el lunes 19: es la que resuelve los sujetos propuestos de la (8).
+- Las secciones anteriores no se editan.
