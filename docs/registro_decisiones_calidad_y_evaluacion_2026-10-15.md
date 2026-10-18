@@ -1186,3 +1186,22 @@ Decisiones de la autora del 18/10/2026, recibidas a las 16:11:07 (hoja de ruta d
 - **El pre-registro de la tanda final** no lleva la línea que la mesa ofreció para su §7. La cuenta del patrón en la tanda final sale de
   C2 en la re-aplicación única. El borrador queda en v2.
 - Las secciones anteriores no se editan.
+
+## 34. U-PROC-HERENCIA: el cegamiento por U-MED-VERIF (agregado del 18/10/2026)
+
+Decisión de la autora del 18/10/2026, recibida a las 16:24:10 (hoja de ruta de la mesa, §161), antes de firmar el mandato.
+
+- **El motivo,** tal cual: «Su FRENO va a listar nodos de unidades de la tanda 1, y puede llegar después del sorteo de las FICHAS,
+  mientras leo esa muestra. Si veo la extracción de una unidad de la muestra, esa lectura deja de ser a ciegas para ella.»
+- **La cláusula** (mandato, §7 bis):
+  - el FRENO no da ninguna cifra ni lista por estado de E3, ni nada de los reintentos;
+  - cada procedencia va con su unidad, el nodo, el punto y el rol, sin el label, la descripción ni el tramo;
+  - antes de mostrar cualquier contenido de una extracción de la tanda 1, rige la regla de exclusión de las FICHAS (mandato firmado de
+    U-MED-VERIF-FICHAS, `c0d3ab17`, §3). Si la muestra todavía no está sorteada, esas unidades entran a la lista de exclusión antes del
+    sorteo. Si ya está sorteada y la unidad está en la muestra, el caso espera a que cierre la lectura de U-MED-VERIF;
+  - si un caso que espera frena la corrección antes del corte del sábado 24, la ejecutora avisa sin mostrar la extracción, y se resuelve
+    entonces.
+- **Una precisión de la mesa, que la autora decide al firmar:** el id del nodo lleva un trozo de su texto, así que en la v3 va como
+  código, con los primeros 12 caracteres de su sha256.
+- **El mandato** queda en v3, para firmar. La firma de la autora está PENDIENTE.
+- Las secciones anteriores no se editan.
