@@ -127,3 +127,11 @@ Cada uno con su comando y su salida, en `data/experiment/alcance_e1/a3/`:
 
 FIRMADO por la autora el 17/10/2026 (por mensaje, recibido a las 20:56:55; hoja de ruta de la mesa, §148), con la opción (a). Rige desde
 esta firma. A3 empieza cuando se cumplen las condiciones del §4.
+
+---
+
+**18/10/2026 — A3 en paralelo con T4 y T5** (decisión de la autora del 18/10/2026, recibida a las 17:34:23; registro de decisiones, §36).
+La condición 1 del §4 se precisa así: A3 puede arrancar con T4 y T5 de la tanda 1 corriendo, sobre una copia sin enlaces y sin escribir
+nada en el repo. Sus escrituras entran solo por su commit, después del de T5 y entre ejecutoras. El commit controla que cada archivo que A3
+toca y cada archivo que leyó para sus valores siga en HEAD igual que en la base de su copia. Si la revisión entre tandas cambia una fila de
+alcance, A3 se rehace; si saca un documento, no se rehace y se declara. Lo demás del mandato no cambia. El texto firmado no cambia.

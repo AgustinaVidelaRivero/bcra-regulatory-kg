@@ -1224,3 +1224,23 @@ Decisiones de la autora del 18/10/2026, recibidas a las 17:01:45 (hoja de ruta d
 - **El pre-registro de la tanda final:** la autora revisó el borrador v2 y pidió una v3 para firmar el lunes 19 temprano, con trece
   cambios y sus cuatro decisiones del §9 escritas como suyas (hoja de ruta de la mesa, §163). La firma está PENDIENTE.
 - Las secciones anteriores no se editan.
+
+## 36. A3 en paralelo con T4 y T5 (agregado del 18/10/2026)
+
+Decisión de la autora del 18/10/2026, recibida a las 17:34:23 (hoja de ruta de la mesa, §164 y §166), para acortar el camino al despacho
+de la tanda final. La autora despachó A3 en una sesión nueva con esta precisión y con los agregados de la mesa, tal cual.
+
+- **La precisión a la condición 1 del mandato de A3** (firmado en `0c927ebb`, §4, punto 1, «T3 a T5 cerrados: una ejecutora por vez en el
+  repo»):
+  - A3 arranca con T4 y T5 de la tanda 1 corriendo, sobre una copia sin enlaces, y no escribe nada en el repo;
+  - sus escrituras entran solo por su commit, después del de T5 y entre ejecutoras;
+  - el commit controla que cada archivo que A3 toca y cada archivo que leyó para sus valores (incluidas las 78 rutas del código de la
+    cadena) siga en HEAD igual que en la base de su copia. Si alguno cambió, A3 se rehace;
+  - si la revisión entre tandas cambia una fila de alcance, A3 se rehace. Si saca un documento, no se rehace: su costo por documento deja
+    restarlo, y se declara;
+  - lo demás del mandato no cambia: USD 0, sin API, y el FRENO con los tres valores propuestos y la confirmación de la autora.
+- **Los agregados de la mesa,** aprobados por la autora: los archivos leídos en el control, la copia sin `t4/` ni `t5/`, el commit entre
+  ejecutoras, el cegamiento y la regla del documento que sale.
+- **La nota al pie del mandato de A3** entra en el mismo commit que esta sección. El mandato no es una entrada de los valores de A3, así que
+  el control de su commit no lo cuenta entre los archivos leídos.
+- Las secciones anteriores no se editan.
