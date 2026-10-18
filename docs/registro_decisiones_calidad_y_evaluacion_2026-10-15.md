@@ -842,3 +842,31 @@ el criterio, las reglas de decisión, los tamaños y el juez, con 13 decisiones.
   - de la autora: la lectura, el censo de C1 y la firma de la enmienda 2 al pre-registro de tripletas antes del sorteo de T;
   - de la mesa: el código del juez, con su prueba en seco antes de la ventana.
 - Las secciones anteriores no se editan.
+
+## 24. U-MED-DESAMB: los calibradores nuevos, S3 confirmada y los requisitos del juez (agregado del 17/10/2026)
+
+Decisión de la autora del 17/10/2026, recibida a las 12:29:34 (hoja de ruta de la mesa, §141), **antes de leer**. Va como nota 1 al
+diseño sellado (`data/experiment/med_desamb/diseno_sellado_med_desamb_2026-10-17.md`), sellada a las 12:33:46
+(`sello_nota1_diseno_med_desamb_2026-10-17.txt`). El texto sellado a las 11:41:19 no cambia.
+
+- **S3:** la autora confirma tal cual las dos precisiones de la mesa: qué es un error y cómo se normaliza la mención.
+- **Los calibradores cambian.** El motivo, tal cual: «Para que el juez aprenda las fronteras, los calibradores tienen que estar cerca de
+  ellas.»
+  - Los 12 de la planilla de lectura dejan de ser calibradores y se saltean.
+  - La lectura de 52 y la muestra del juez no cambian.
+  - Los nuevos son 5 de E4, 5 de E6 y 2 de E2, sin las filas de la lectura ni las de la muestra del juez, con la regla de la semilla del
+    diseño. Se sortearon a las 12:34:05, con la lista de sha256 `547123b9…`
+    (`data/experiment/med_desamb/sorteo/sello_calibradores_v2.json`).
+  - Ninguno es un calibrador viejo, y el control de normas dio OK.
+  - Van en una planilla aparte, que dice que son calibradores. La autora la lee solo si termina las 52 antes del miércoles 21/10 a las
+    18:00, con una línea de porqué por cada entrada.
+- **El código del juez:**
+  - los calibradores entran al prompt como ejemplos resueltos, con el caso, la clase y el porqué de la autora;
+  - el juez recibe la misma información que la autora, con el anexo de las entradas;
+  - la salida «requiere adjudicación» la adjudica la autora;
+  - el prompt dice que no se ajusta sin su decisión ni mirando sus clasificaciones de las 52;
+  - sin 68 de 78, su cifra no se usa, sin segunda vuelta.
+- **El anexo de las entradas**, agregado después del sello, queda declarado como está.
+- **La enmienda 2 al pre-registro de tripletas:** la autora la firma más adelante, antes del sorteo de T.
+- La lista de los calibradores, su planilla y su clave quedan fuera del repo hasta que cierre la lectura, en el paquete de la mesa.
+- Las secciones anteriores no se editan.

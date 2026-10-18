@@ -205,3 +205,58 @@ Los sha256 son de los archivos que van con este diseño, en `data/experiment/med
   2. el sorteo, con su sello;
   3. el control de las normas;
   4. la planilla y la lista del censo de C1.
+
+## Notas posteriores al sello
+
+### Nota 1 (17/10/2026): los calibradores cambian, S3 confirmada y los requisitos del código del juez
+
+Decisión de la autora del 17/10/2026, recibida a las 12:29:34 (hoja de ruta de la mesa, §141), **antes de leer**. Esta nota se sella
+antes del sorteo nuevo: `sello_nota1_diseno_med_desamb_2026-10-17.txt`. El texto sellado de arriba no cambia: su sha256 sigue siendo
+`054450913434963e83f702e80d32dfeb4cd61854544d327d6a8c3086a666340b`, que el sello de esta nota controla sobre las líneas anteriores a
+«## Notas posteriores al sello».
+
+**El motivo** (tal cual): «El sorteo sobre E1 a E9 los saca en proporción a cada estrato, y el 72 % de esa población son casos fáciles
+(E1, E3 y E5): de los 12, solo uno trae dos entradas. Para que el juez aprenda las fronteras, los calibradores tienen que estar cerca de
+ellas.»
+- La cuenta es de la autora. En la población del sorteo de los calibradores (2.346 filas), E1, E3 y E5 suman 1.699, el 72,4 %:
+  `decisiones_140_mesa/med_desamb/sorteo/consola_sorteo.txt` y los N del §2, en el paquete de la mesa.
+
+**1. S3** (confirmado tal cual): el error es una clase incorrecta o genérica de la entrada que está en el grafo, y la no decidible no es
+error. La mención se normaliza como la lee R1. Deja de ser una precisión de la mesa.
+
+**2. Los calibradores:**
+- **Los 12 de la planilla de lectura dejan de ser calibradores.** La autora saltea sus números (D001, D002, D004, D017, D023, D026, D030,
+  D031, D046, D047, D056 y D064) y deja vacías sus filas en la hoja. Las 52 de la lectura no cambian, y la muestra del juez tampoco.
+- **Los 12 nuevos** (`parte4/calibradores_v2_mesa.py`):
+  - en este orden, E4, E6 y E2, con
+    `random.Random(f"{semilla}:calibracion2:{estrato}").sample(filas, n)` y n = 5, 5 y 2;
+  - las filas del estrato van ordenadas como en el §5 y sin las de la lectura ni las de la muestra del juez, tomadas de la lista sellada
+    (`lista_muestra.json`, `811bd20f…`, controlada contra su sello);
+  - la semilla es la del §5;
+  - la lista y su sello se escriben antes de armar nada.
+- **Las entradas** que muestra cada calibrador siguen la regla del §5 y del §7:
+  - en E4, las dos, en orden sorteado, sin decir cuál es del modelo y cuál de la regla;
+  - en E6, la del modelo;
+  - en E2, la que está en el grafo, la de R1.
+- **La planilla de los calibradores va aparte y sí dice que son calibradores.** No dice el estrato.
+  - Los ítems van numerados K01 a K12, en el orden de `random.Random(f"{semilla}:calibracion2:orden").shuffle`.
+  - La autora la lee solo si termina las 52 antes del miércoles 21/10/2026 a las 18:00. En la columna `nota` de cada entrada escribe en
+    una línea por qué le da esa clase.
+  - Antes de la planilla, el control de normas del §7, con FRENO si alguna no aparece o no es única.
+
+**3. El código del juez** (requisitos de la autora, tal cual en lo sustantivo):
+- «los calibradores entran al prompt como ejemplos resueltos: el caso, mi clase y mi porqué»;
+- «el juez recibe la misma información que yo, con el anexo de las entradas incluido»;
+- «la salida "requiere adjudicación" existe y la adjudico yo»;
+- «el prompt lleva escrito que no se ajusta sin mi decisión, y que ningún ajuste se justifica mirando mis clasificaciones de las 52. Si no
+  llega a 68 de 78, su cifra no se usa, sin segunda vuelta.»
+
+**4. El anexo de las entradas** de la planilla de lectura, agregado después del sello: de acuerdo, declarado como quedó (solo
+presentación; no cambia ítems, lista ni clave).
+
+**El código de esta nota:**
+
+| sha256 | Archivo |
+|---|---|
+| `b8bed02c508a1d1fc74b7a7f8cb709015fd3664a4f345b403a1397a568c9e696` | `parte4/calibradores_v2_mesa.py` (usa el código sellado de la planilla como biblioteca, sin cambiarlo) |
+| `2b463c6e86ced64b0d05589761913e6f71d656d1238ab444b881fd621869a452` | `parte4/selftest_calibradores_v2_mesa.py` |
