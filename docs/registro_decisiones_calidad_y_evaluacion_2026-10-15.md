@@ -870,3 +870,44 @@ diseño sellado (`data/experiment/med_desamb/diseno_sellado_med_desamb_2026-10-1
 - **La enmienda 2 al pre-registro de tripletas:** la autora la firma más adelante, antes del sorteo de T.
 - La lista de los calibradores, su planilla y su clave quedan fuera del repo hasta que cierre la lectura, en el paquete de la mesa.
 - Las secciones anteriores no se editan.
+
+## 25. U-MED-DESAMB: el código del juez de modelo y su prueba en seco (agregado del 17/10/2026)
+
+Pedidos de la autora del 17/10/2026, recibidos a las 12:41:39 y a las 13:11:16 (hoja de ruta de la mesa, §142 y §143): el código del juez,
+con los requisitos de la nota 1 al diseño sellado, USD 0 y sin ninguna llamada a la API.
+
+- **El código:** `data/experiment/med_desamb/juez/juez_desamb_mesa.py`. Su selftest, con un cliente falso y sin red, da 42 controles en
+  verde.
+  - El prompt deja el lugar de los 12 ejemplos resueltos (el caso, la clase y el porqué de la autora), que se completa al cargar su hoja.
+  - El juez recibe la misma información que la autora, con el anexo de las entradas, y no ve ninguna clasificación suya salvo las de los
+    calibradores.
+  - La salida «requiere_adjudicacion» existe y la adjudica la autora.
+  - El prompt dice que el instrumento no se ajusta sin su decisión ni mirando sus clasificaciones de las 52, y que sin 68 de 78 la cifra
+    no se usa, sin segunda vuelta.
+  - En la herramienta, el porqué va antes de la clase: los campos van en el orden letra, porque y clase, y el porqué cita en una línea las
+    palabras del texto que identifican al sujeto (decisión de la autora del §143).
+- **La prueba en seco** (`juez/seco/`): 1.149 pedidos armados y no enviados, 383 ítems por 3 repeticiones (los 344 de la muestra del juez y
+  las 52 de la lectura, con 13 filas en las dos).
+  - Con la regla de caracteres / 3,5, NO VERIFICADA, el costo estimado es de USD 20,69 de los 40 del tope, y la humo tiene una cota de
+    USD 0,47.
+  - El SDK no se importó.
+- **La prueba de humo, preparada y sin correr.** Se corre en la terminal de la autora, solo con su autorización. Frena:
+  - sin los calibradores cargados;
+  - sin la lectura cerrada a más tardar el miércoles 21/10/2026 a las 18:00;
+  - sin el sello de la tanda final;
+  - después del martes 27/10/2026;
+  - con una extracción corriendo;
+  - con la salida dentro del repo.
+  - Hoy frena por cinco de esos controles.
+- **Las ocho decisiones de implementación de la mesa, confirmadas por la autora (§143), con un cambio en la 7:**
+  - una entrada que el juez manda a adjudicación, o sin moda, cuenta como desacuerdo en el acuerdo de validez;
+  - una salida mal formada se reintenta una vez, y si vuelve mal, esa repetición no vota;
+  - las salidas de la humo no entran a la cifra;
+  - una fila que está en la lectura y en la muestra del juez se juzga una vez, con el formato de la planilla de la autora;
+  - el juez no ve el número del ítem;
+  - en la muestra del juez, las dos entradas de E4 van en el orden de `random.Random(f"{semilla}:juez:entradas:{ítem}")`;
+  - **la 7, con el cambio de la autora:** la cifra principal va con la entrada que está hoy en rs1. Si S1 o S2 pasan, se informa además la
+    cifra con las reglas aplicadas, descriptiva y declarada. En E4 sale de la misma corrida, porque el juez clasifica las dos entradas.
+    Con S2, las relaciones de E6 van a cuarentena y salen de esa cifra; se informan aparte, con su N (precisión de la mesa);
+  - el juez corre sin razonamiento extendido, con salida máxima de 1.024 tokens y la herramienta obligada.
+- Las secciones anteriores no se editan.
