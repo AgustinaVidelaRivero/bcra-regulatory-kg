@@ -1104,3 +1104,45 @@ Decisiones de la autora del 18/10/2026, recibidas a las 12:19:47 (hoja de ruta d
   que sin la lectura el catálogo no crece en el grafo evaluado.
 - **El pre-registro de la tanda final:** la autora revisa el borrador y lo firma el lunes 19 temprano.
 - Las secciones anteriores no se editan.
+
+## 31. La vigilancia (3), las carpetas de lectura, los bloques que ve E1 y no E3, y el cierre de la lectura de U-MED-DESAMB (agregado del 18/10/2026)
+
+Decisiones de la autora del 18/10/2026, recibidas a las 12:55:50 y a las 14:05:06 (hoja de ruta de la mesa, §157 y §158).
+
+- **La vigilancia (3), antes de leerla** (14:05:06):
+  - el par Obligacion —`regula`→ Operacion queda en la población, sin sorteo nuevo. El esquema reserva `regula` para ese par
+    (`data/experiment/prompt_r2/diseno_prefijo_r2.md:701` y `:719`), y los dos nodos se anclan en el mismo pasaje;
+  - el criterio de la lectura, tal cual: «un grupo es duplicación solo si un nodo repite el contenido normativo de otro; que el esquema
+    arme el par deber y acto regulado no es, por sí mismo, duplicación.»;
+  - la definición de la (3) del §29 no cambia.
+- **Las carpetas de lectura de la autora** (12:55:50):
+  - `lectura_alcance_tf/`, `lectura_desamb/`, `gold_q12_ajuste/` y `lecturas_1710/`, en `fuera_del_repo/`, quedan entre las carpetas
+    vedadas para toda ejecutora. La cláusula va en todo «seguí» y en todo mandato desde el 18/10;
+  - el motivo: la ejecutora de T4 consultó una de ellas, porque el «seguí» de T4 le daba como modelo un archivo de esa carpeta, sin copia
+    ni ruta. Fue un error de la mesa, con su causa en la hoja de ruta (§157). Desde ahora, un modelo así va como copia en el paquete de la
+    mesa.
+- **Los bloques heredados que ve E1 y no ve E3** (14:05:06):
+  - el mensaje de E1 trae toda la herencia de la unidad (`prompt_r2b.py:395-438`), con la instrucción de no extraer de esos bloques salvo
+    del que abre la lista (`:346` y `:357`). El texto de E3 trae solo los títulos, el bloque de la lista y el texto propio
+    (`comun_e3.py:131-160`);
+  - van a la revisión entre tandas, con una fila nueva en su hoja: lo medido en las tandas 0 y 1 y lo que se espera en la tanda final
+    (hoja de ruta de la mesa, §158). En la tanda 1, 47 de las 1.276 unidades aceptadas cuyo mensaje de E1 trae uno de esos bloques tienen
+    un nodo con un tramo literal que está solo ahí; en la tanda 0, 36 de 1.202. La cuenta ve solo el tramo literal;
+  - la mesa propone una corrección por código para la re-aplicación única, sin tocar el prompt ni E3 (§158). La decisión de la autora
+    está PENDIENTE;
+  - la autora no recibe propuestas de marcas para T4.
+- **Las claves del catálogo** (12:55:50): la autora decide el lunes 19 a la noche, con los recortes, si la lectura va. El despacho y su
+  control quedan preparados, sin despachar (§157).
+- **El segundo tramo de T4** (12:55:50): la autora lee en `data/experiment/tanda1/t4/lectura_autora/`, y lo que deje ahí entra al commit
+  del segundo tramo, salvo lo que la mesa señaló que no va (§157): los documentos de Numbers, los temporales y las exportaciones fallidas.
+- **U-MED-DESAMB, la lectura cerrada** (14:05:06):
+  - la autora cerró y selló su lectura el 18/10/2026 a las 14:04:01, con las 78 entradas clasificadas, las 13 de los 12 ítems que se
+    saltean vacías y las 2 colisiones del censo de C1 decididas;
+  - el control de la mesa da 14 de 14 OK. La lectura, el control y el sello en la forma que pide el juez están en
+    `data/experiment/med_desamb/lectura/` (su acta, `acta_cierre_lectura_desamb.md`);
+  - las exportaciones de la autora pisaron las copias de las plantillas en su carpeta. Las plantillas válidas son las del paquete de la
+    mesa, en `lectura/plantillas/`;
+  - las claves aparte de la lectura y de los calibradores v2 siguen sin abrir y fuera del repo;
+  - **los calibradores v2** (nota 1 al diseño sellado, §2): la autora los lee solo si le da el tiempo antes del miércoles 21/10/2026 a las
+    18:00, y lo decide con los recortes del lunes 19.
+- Las secciones anteriores no se editan.
