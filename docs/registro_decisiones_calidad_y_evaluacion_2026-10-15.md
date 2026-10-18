@@ -943,3 +943,37 @@ Decisiones de la autora del 17/10/2026, recibidas a las 15:40:05 (hoja de ruta d
   `95b18217`, `:139`, `:724-727` y `:893`). La re-aplicación única de la enmienda 8 (R3, firmada en `54902301`, `:50-55`) habla solo de
   las correcciones de código, y no lo mueve.
 - Las secciones anteriores no se editan.
+
+## 27. El N, la caída con lo pago, U-MED-VERIF y las reglas de la lectura de 1.16 (agregado del 17/10/2026)
+
+Decisiones de la autora del 17/10/2026, recibidas a las 18:42:59 (hoja de ruta de la mesa, §145), sobre el calendario v5 (§26).
+
+- **El N:** se decide con las tasas de A2.2, el miércoles 21 en el escenario central, porque la tanda final se despacha primero. La
+  aprobación de las preguntas empieza antes del N, como decidió el 15/10 (§6, `:219-221`).
+- **La caída y lo pago, tal cual:** «si la tanda final no está sellada el viernes 23 a las 18:00 y su extracción sigue, se pausa entre
+  documentos. La ejecutora termina el documento que esté corriendo, no lanza el siguiente hasta que terminen B6.3 y las tripletas T, y
+  después retoma, para la versión corregida. Así nada pago corre en paralelo, y la regla de caída se cumple («corre igual después»).»
+  Va al pre-registro y al despacho de la tanda final.
+- **Los recortes:** por ahora, ninguno. La autora los decide el lunes 19 a la noche, con sus horas reales del fin de semana. Las tres
+  lecturas del 17/10 le llevaron, según su cuenta, unas 1 h 25 min (el gold), unos 30 min (sub-documento) y unos 11 min (1.16).
+- **La generación de las preguntas:** su mandato dice con qué cuenta corre la sesión, la suscripción de la autora o la clave de la API.
+  Si usa la clave, va en la secuencia de lo pago (§26).
+- **U-MED-VERIF, las elecciones de la autora.** El diseño para sellar lo arma la autora, y el sello llega antes del cierre de la tanda 1:
+  - E1: si una unidad de la muestra cae también en L-02, se lee igual, y la superposición se declara con sus ids;
+  - E2: una marca dudosa cuenta en contra de la unidad. Al lado va la cifra de sensibilidad, sin esa regla;
+  - E3: lee una lectora a ciegas, y la autora adjudica en dos pasadas;
+  - las unidades de la muestra que la autora lea en T4 entre las aceptadas de la tanda 1 salen de la muestra y se reemplazan por las
+    siguientes del mismo sorteo, declaradas con sus ids.
+- **Las reglas de la lectura corta de 1.16, fijadas por la autora el 17/10 a las 18:05, antes de leer** (según su mensaje):
+  - una dudosa de corte entre los 10 primeros hace seguir hasta el 30, pero no saca el documento: sale solo lo confirmado, y la dudosa
+    se declara. El «0 de 10» vale con 0 errores y 0 dudosas de corte;
+  - cualquier error de corte confirmado hace seguir hasta el 30, no solo el de 1.16;
+  - la columna `limpieza` sigue la convención de S1-quater
+    (`data/experiment/segmentacion_oficial_e0r2/s1quater/adjudicacion/cifras_lectura_S1quater.py:16-17`, `:95` y `:104-105`). Si hay
+    restos de encabezado y de pie juntos: con un error de corte, `limpieza` = `restos_encabezado` y «también restos de pie» en la nota;
+    sin error de corte, clase `limpieza`, subclase `restos_encabezado` y subclase adicional `restos_pie`.
+  - La lectura de sub-documento de la tanda 1 quedó sellada antes, a las 18:02:05, sin ninguna marca de limpieza.
+- **El gold de Q12:** la autora confirma otra vez, para el cruce, las dos propuestas de cómo se mide el juez: el «dudoso» del juez cuenta
+  como desacuerdo, con la cifra sin esos pares al lado, y la cifra principal va sobre los 82 pares, con la cifra sin «necesita experto» ni
+  «criterio mal planteado» al lado.
+- Las secciones anteriores no se editan.
