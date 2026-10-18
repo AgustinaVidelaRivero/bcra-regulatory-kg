@@ -911,3 +911,35 @@ con los requisitos de la nota 1 al diseño sellado, USD 0 y sin ninguna llamada 
     Con S2, las relaciones de E6 van a cuarentena y salen de esa cifra; se informan aparte, con su N (precisión de la mesa);
   - el juez corre sin razonamiento extendido, con salida máxima de 1.024 tokens y la herramienta obligada.
 - Las secciones anteriores no se editan.
+
+## 26. Lo pago de la evaluación, en secuencia después de la tanda final, y las horas hasta el 31/10 (agregado del 17/10/2026)
+
+Decisiones de la autora del 17/10/2026, recibidas a las 15:40:05 (hoja de ruta de la mesa, §144), al pedir el calendario v5.
+
+- **El orden de lo pago, tal cual:** «la tanda final se despacha apenas estén sus condiciones. Lo pago de la evaluación (A2.2, Q8, las
+  tripletas V, el juez de U-MED-DESAMB y GraphRAG) corre después, en secuencia: nada pago en paralelo con una extracción, ni en el repo
+  ni fuera de él. Mi condición del mandato de A2.1 (:150-151) vale para todo lo pago.» Los pasos pagos de A2.1 van entre T5 de la tanda 1
+  y el despacho de la tanda final, si entran, o después del sello de la tanda final. La propuesta de correr lo pago en un clon, en
+  paralelo, queda descartada.
+- **Sus horas, del 17 al 31/10:** 6 por día entre semana y 10 el fin de semana; el sábado 17, 6.
+- **La escritura de la tesis** entra al calendario como una pieza más, con horas propias (estimaciones NO VERIFICADAS): de 11 a 13,5 h
+  antes del sábado 24 y de 16 a 21 h del martes 27 al sábado 31. El recuento de las cifras sobre el grafo escalado lo corre una unidad
+  de la mesa de escritura sobre una copia, sin turno en el repo.
+- **La generación de las preguntas de B6.3** no espera turno en el repo: corre en una carpeta fuera del repo que tiene solo los
+  documentos fuente, como la de EV2 (`data/experiment/exploracion/ev2_fidelidad/registro_generacion_ev2_fidelidad.md:8-21`). Si se hace
+  como la de EV2, no paga API: el reporte de EV2 la deja fuera del total, «sin costo de API en el repo»
+  (`data/experiment/ev2_reporte/reporte_ev2.md:401-402`). Si pagara, va en la secuencia de lo pago.
+- **El sello del diseño de U-MED-VERIF** (con sus elecciones E2 y E3) vence antes del cierre de la tanda 1. Sin ese sello no se arma el
+  pozo de L-02, que son las detecciones de copia de la tanda, vedadas hasta el sello (respuesta de la mesa sobre U-MED-VERIF, §110,
+  `:99-101`; cláusula de cegamiento, `docs/preregistro_tanda1.md:900-909`).
+- **El presupuesto:** rige el total de USD 341 (enmienda 8, `:98-105`). Sale de la tabla del plan de la mesa del 15/10/2026, que cuenta
+  como «ya gastado en este tramo» a R0, USD 0,157948. Una fecha de inicio explícita no está escrita: NO VERIFICADO.
+- **Un dato de la autora:** en la tesis, el grafo evaluado se presenta en la sección de las tandas (la 4.7 del texto vigente), no en la
+  4.5 que dice `docs/plan_tesis.md:288`.
+- **Una consecuencia, para que la autora la decida:** con A2.2 después del sello de la tanda final, el N no se puede decidir el lunes
+  19 a la noche (§12 de este registro, `:437-438`); en el calendario v5 cae el miércoles 21.
+- **El catálogo de resolución y la re-aplicación única.** Lo que suma el catálogo de resolución desde la cuarentena se decide y se mide
+  al cierre de cada tanda (enmienda 4, firmada en `53bbd6fa`, `:40-42`, `:51-53` y `:156-158`; pre-registro de la tanda 1, firmado en
+  `95b18217`, `:139`, `:724-727` y `:893`). La re-aplicación única de la enmienda 8 (R3, firmada en `54902301`, `:50-55`) habla solo de
+  las correcciones de código, y no lo mueve.
+- Las secciones anteriores no se editan.
