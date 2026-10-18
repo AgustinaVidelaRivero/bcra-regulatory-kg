@@ -686,3 +686,22 @@ Decisiones de la autora recibidas el 16/10/2026 a las 15:48:10 (hoja de ruta de 
 - **El commit** (tal cual): «después del de T2 y antes de T3, con la regla (incluida la condición de la raya), el script, los dos
   manifiestos de ensamblado de la tanda 1, la medición (con la v1 en reemplazados) y el registro».
 - Las secciones anteriores no se editan.
+
+## 20. La prueba del prompt de extracción de GraphRAG y dónde se reporta U-COMP-E1 (agregado del 16/10/2026)
+
+Decisiones de la autora recibidas el 16/10/2026 a las 16:05:25 y el 17/10/2026 a las 08:17:24 (hoja de ruta de la mesa, §132 y §137).
+
+- **La condición de la prueba** (D1 de la autora, del 15/10/2026; tal cual): «la prueba corre solo si aparece una ventana que no compita
+  con las tandas ni con las mediciones; si no, queda como trabajo futuro».
+  - La prueba es U-PRUEBA-GRAPHRAG: el prompt de extracción de GraphRAG con el esquema congelado, sobre unidades de E0 de la tanda 0,
+    contra la salida de E1 r2b de esas mismas unidades. Responde, sobre el propio corpus, por qué no se usó un extractor genérico.
+  - Su diseño ajustado está anotado en el plan, debajo de la fila C0.4 (`docs/plan_tesis.md`). No reabre el descope de GraphRAG-MS de
+    esa fila.
+- **Cuándo se decide la prueba** (17/10/2026, 08:17:24; tal cual): «La decisión de correr U-PRUEBA-GRAPHRAG se toma el miércoles 28/10/2026
+  a las 18:00. Corre el jueves 29 y el viernes 30/10 solo si los resultados de B6.3 están sellados y tengo 2,5 h libres entre esos dos días;
+  la preparación, a USD 0, va el 29 a la mañana. Si no, queda como trabajo futuro.»
+- **Dónde se reporta U-COMP-E1** (tal cual): «la comparación de modelos del extractor (U-COMP-E1) se reporta en un apéndice de la tesis y
+  no en el capítulo 5».
+  - Rige sobre lo que dicen hoy `docs/checklist_pre_escalado.md:228`, `docs/insumos_escritura.md` §8 («Dónde va») y
+    `docs/plan_tesis.md:787` (fila B6.4), que este agregado no edita.
+- Las secciones anteriores no se editan.
