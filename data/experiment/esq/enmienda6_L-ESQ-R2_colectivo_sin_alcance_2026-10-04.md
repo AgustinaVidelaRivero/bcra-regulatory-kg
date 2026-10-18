@@ -276,3 +276,14 @@ Si no llega al piso, la parte B no rige y la parte A no cambia. **No llegó: la 
 FIRMADA por la autora el 06/10/2026, en su parte A, con las dos mediciones a la vista (A.2 y B.2, hechas en R2-1 de U-RERESOL-CAT) y las
 cinco decisiones de la cabecera. La parte B no se adopta; su cifra (18 de 30, Wilson 0,42 a 0,76) se declara como límite. Rige la
 parte A desde esta firma; la implementa R2-2 de U-RERESOL-CAT.
+
+## Notas posteriores a la firma
+
+- **[17/10/2026] Las anclas del código.** Las anclas de `reextraccion_v2/corpus_v2/r1_e4.py` que cita esta enmienda se corrieron con el
+  código posterior. Verificado en HEAD `ca5b39fd`:
+  - §0: la lista de R3 (`:306`) sigue en `:306`, y desde U-OMISIONES-COD (ítem f′) incluye el singular «entidad» solo en un documento con
+    rol (`:307-310`). El motivo `colectivo_sin_sujeto_por_defecto` (`:377`) hoy está en `:382`. La mención que no verifica (`:409-414`)
+    hoy está en `:430-433`, y la rama de la sugerencia del modelo (`:418`), en `:439`.
+  - A.5: `resolver_relaciones_r2` (`:383`) hoy empieza en `:391`, y `elif modelo:` (`:418`) hoy es `:439`. La rama de la parte A está en
+    `:437-438`. El registro guarda `sujeto_id_modelo` (`:451`) hoy en `:472`.
+  - Lo encontró el mapa de la desambiguación (hoja de ruta de la mesa, §139). El texto firmado no cambia.
