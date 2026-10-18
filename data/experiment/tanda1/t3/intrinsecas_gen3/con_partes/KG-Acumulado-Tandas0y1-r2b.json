@@ -1,0 +1,1321 @@
+{
+  "spec": "docs/spec_evaluacion_intrinseca.md",
+  "spec_commit_sellado": "cdf90e6",
+  "spec_sha256": "8bedc6339a741cd754f2c16eeb55e8e27da9b090360dd5039dc19800f8128548",
+  "script_sha256": "644a7beaa21eb1c0a379f5348926546847e58f0ae23b8b3cc09575c5da0a10b1",
+  "rapidfuzz_version": "3.14.5",
+  "umbral_similitud": 75.0,
+  "fecha": "2026-10-17",
+  "custodia": [
+    {
+      "grafo": "KG-Acumulado-Tandas0y1-r2b",
+      "custodia": "OK",
+      "metodo": "sha256",
+      "sha256_medido": "e63536d15bd8f575f1b7680921e3ca0d4956bdc5e38dc3f2fea27bb67bd71769",
+      "sha256_esperado": "e63536d15bd8f575f1b7680921e3ca0d4956bdc5e38dc3f2fea27bb67bd71769",
+      "nodos": 21409,
+      "aristas_triples": 60227
+    }
+  ],
+  "grafo": "KG-Acumulado-Tandas0y1-r2b",
+  "kg_path": "data/experiment/tanda1/t3/acumulado/ens_treinta_r2b/r2/kg.json",
+  "nodos_totales": 21409,
+  "metricas": {
+    "M1_tasa_duplicacion_publicada": {
+      "valor": 0.650848,
+      "numerador": 13934,
+      "denominador": 21409,
+      "convencion": "partial_ratio RapidFuzz sobre label crudo, pares intra-tipo >= 75, componentes conexas, Σ(|C|-1) / nodos totales ([05] §5.1, etapa 1)",
+      "cota": "superior",
+      "notas": {
+        "por_tipo": {
+          "Comunicacion": 189,
+          "Condicion": 1893,
+          "Definicion": 1844,
+          "Excepcion": 347,
+          "Obligacion": 4168,
+          "Operacion": 3786,
+          "Potestad": 392,
+          "Restriccion": 896,
+          "Sujeto": 413,
+          "TextoOrdenado": 6
+        },
+        "labels_vacios": 0,
+        "rol": "descriptiva; DECLARADA INFLADA para este corpus (spec §5.b)"
+      }
+    },
+    "M2_tasa_duplicacion_gate": {
+      "valor": 0.322294,
+      "numerador": 6900,
+      "denominador": 21409,
+      "convencion": "ratio RapidFuzz (Levenshtein normalizado, cadenas completas) sobre label con normalización de superficie (minúsculas, sin tildes, colapso de espacios/puntuación), >= 75, mismo clustering que M1",
+      "cota": "superior",
+      "notas": {
+        "por_tipo": {
+          "Comunicacion": 163,
+          "Condicion": 886,
+          "Definicion": 901,
+          "Excepcion": 146,
+          "Obligacion": 1872,
+          "Operacion": 2065,
+          "Potestad": 221,
+          "Restriccion": 491,
+          "Sujeto": 152,
+          "TextoOrdenado": 3
+        },
+        "labels_vacios_tras_normalizar": 0,
+        "rol": "bloqueante en la pasada 2"
+      }
+    },
+    "M3_tasa_conflacion": {
+      "status": "no_computable",
+      "motivo": "generación 3: el registro por nodo es `provenances`, acumulado con dedup exacto por fuente (e2_lib.py:294-297, add_prov): dos menciones del mismo chunk y rol colapsan en una entrada, así que len(provenances) cuenta fuentes (to, punto, rol) distintas, no menciones fusionadas; el conteo de menciones pre-fusión (entidades_in de E2) no persiste en kg.json ni en la salida de E0. Spec §4 M3 exige Σ(menciones_fusionadas − 1) / menciones extraídas totales: sin insumo verificable, no_computable"
+    },
+    "M4_average_degree": {
+      "valor": 5.626325,
+      "numerador": 120454,
+      "denominador": 21409,
+      "convencion": "aristas deduplicadas por triple exacto (source, target, relation); grado = entrantes + salientes; self-loops aportan 2; average = Σ grados / nodos",
+      "cota": "exacta",
+      "notas": {
+        "aristas_unicas": 60227,
+        "aristas_repetidas_removidas": 0,
+        "self_loops": 0,
+        "aristas_dangling": 0,
+        "ids_de_nodo_duplicados": 0,
+        "rol": "descriptiva; NO se reporta sin M6"
+      }
+    },
+    "M5_avg_shortest_path": {
+      "valor": 4.685947,
+      "numerador": 2143069390,
+      "denominador": 457339610,
+      "convencion": "BFS no ponderado sobre la versión no dirigida del grafo de aristas únicas, solo componente conexa mayor, promedio sobre pares ordenados distintos; nodos fuera de la componente mayor excluidos y reportados vía M9",
+      "cota": "exacta",
+      "notas": {
+        "n_componente_mayor": 21386,
+        "nodos_fuera_de_lcc": 23,
+        "rol": "descriptiva; NO se reporta sin M6 ni M9"
+      }
+    },
+    "M6_concentracion_de_grado": {
+      "valor": {
+        "grado_max": 3088,
+        "participacion_top1pct": 0.308873,
+        "gini_grado": 0.647479
+      },
+      "numerador": 37205,
+      "denominador": 120454,
+      "convencion": "top 1% = techo(0.01·N) nodos de mayor grado; participación = Σ grados top / Σ grados; Gini sobre la distribución de grados de M4",
+      "cota": "exacta",
+      "notas": {
+        "k_top1pct": 215,
+        "rol": "descriptiva de reporte OBLIGATORIO junto a M4 y M5; especie del backlog: hub_contaminado"
+      }
+    },
+    "M7_tasa_ruido_por_rol": {
+      "valor": 0.0,
+      "numerador": 0,
+      "denominador": 21409,
+      "convencion": "nodos cuyo chunk principal (nodes[].provenance.chunk_id) tiene rol documental no normativo (indice, tabla_norma_origen; rol normativo = cuerpo — vocabulario real de chunk_roles.py, aplicado a la página inicial del chunk de E0); nodos sin chunk principal (esqueleto) no cuentan en el numerador",
+      "cota": "inferior (no captura cáscaras nacidas de chunks normativos)",
+      "notas": {
+        "por_rol": {},
+        "nodos": [],
+        "nodos_sin_chunk_principal_excluidos": 36,
+        "nodos_con_alguna_provenance_no_normativa": 0,
+        "rol": "bloqueante en la pasada 2; especie del backlog: cascara"
+      }
+    },
+    "M8_densidad": {
+      "valor": 0.00013141,
+      "numerador": 60227,
+      "denominador": 458323872,
+      "convencion": "densidad de grafo dirigido simple: aristas únicas sin self-loops / N·(N-1)",
+      "cota": "exacta",
+      "notas": {
+        "rol": "descriptiva"
+      }
+    },
+    "M9_nodos_aislados_y_componentes": {
+      "valor": {
+        "nodos_aislados": 23,
+        "componentes_conexas": 24,
+        "fraccion_en_componente_mayor": 0.998926
+      },
+      "numerador": 21386,
+      "denominador": 21409,
+      "convencion": "versión no dirigida del grafo de aristas únicas; aislados = grado 0; fracción = nodos de la componente mayor / nodos totales",
+      "cota": "exacta",
+      "notas": {
+        "rol": "descriptiva; reporte obligatorio junto a M5"
+      }
+    },
+    "M10_chunks_mudos": {
+      "valor": 0.0,
+      "numerador": 0,
+      "denominador": 5734,
+      "convencion": "chunk activo = chunk de chunks_<to>.json de E0 (entrada de E1) de los TOs del manifiesto cuya página inicial es de rol cuerpo (spec §4 M10; mismo clasificador que M7); mudo = ningún nodo del grafo lo rastrea en provenances[].chunk_id ni en provenances[].chunks_emisores; denominador = chunks activos (aguas arriba del ensamblado)",
+      "cota": "exacta",
+      "notas": {
+        "mudos_detalle": [],
+        "universo_por_to": {
+          "adrei": 70,
+          "ayccef": 196,
+          "cajasc": 287,
+          "cap": 463,
+          "ceninf": 39,
+          "cirmo3": 256,
+          "cla": 143,
+          "ctacte": 388,
+          "depaho": 442,
+          "docvig": 31,
+          "efemin": 119,
+          "expaef": 165,
+          "ext": 973,
+          "lingeef": 613,
+          "lingob": 139,
+          "manori": 152,
+          "nmcief": 55,
+          "opefci": 74,
+          "pagjub": 52,
+          "polcre": 61,
+          "pro": 101,
+          "ri_ccna": 169,
+          "ri_dcpc": 75,
+          "ri_gerc": 15,
+          "ri_mmsef": 128,
+          "ri_pgn": 21,
+          "ri_rml": 50,
+          "ric": 89,
+          "snp_cheq": 265,
+          "snp_tr": 103
+        },
+        "chunks_excluidos_del_universo_por_rol": {},
+        "dirección_de_mejora": "cero",
+        "rol": "bloqueante en la pasada 2"
+      }
+    },
+    "M11_cobertura_CQ": {
+      "status": "no_medida_en_esta_unidad",
+      "motivo": "régimen especial de la spec §6: medición única y separada sobre el set quemado; jamás objetivo de optimización"
+    }
+  },
+  "adaptador_gen3": {
+    "descripcion": "Declaración de insumos de generación 3 para M3, M7 y M10 (decisión 2 del mandato del gate 6). Fórmulas de la spec intactas; M1, M2, M4, M5, M6, M8 y M9 con el mismo código que los grafos de generaciones 1 y 2.",
+    "e0_dir": "<SCRATCHPAD>/t3/e0_acumulado_r2b_con_partes",
+    "manifiesto": "data/experiment/tanda1/t3/acumulado/manifiestos/acumulado_ens_treinta_r2b.json",
+    "tos": [
+      "adrei",
+      "ayccef",
+      "cajasc",
+      "cap",
+      "ceninf",
+      "cirmo3",
+      "cla",
+      "ctacte",
+      "depaho",
+      "docvig",
+      "efemin",
+      "expaef",
+      "ext",
+      "lingeef",
+      "lingob",
+      "manori",
+      "nmcief",
+      "opefci",
+      "pagjub",
+      "polcre",
+      "pro",
+      "ri_ccna",
+      "ri_dcpc",
+      "ri_gerc",
+      "ri_mmsef",
+      "ri_pgn",
+      "ri_rml",
+      "ric",
+      "snp_cheq",
+      "snp_tr"
+    ],
+    "pdfs": {
+      "adrei": {
+        "ruta": "data/experiment/escalado_prep/pdfs/adrei.pdf",
+        "sha256": "44a2eea2e1d374d68e379924ede75896333b7957bde43de6dcf918f34faf5315",
+        "sha256_manifiesto": "44a2eea2e1d374d68e379924ede75896333b7957bde43de6dcf918f34faf5315",
+        "coincide": true
+      },
+      "ayccef": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ayccef.pdf",
+        "sha256": "aa5e3e43a920c904d47e81526ea4a61ea6b683418a2d4890b3254a029e6de9c5",
+        "sha256_manifiesto": "aa5e3e43a920c904d47e81526ea4a61ea6b683418a2d4890b3254a029e6de9c5",
+        "coincide": true
+      },
+      "cajasc": {
+        "ruta": "data/experiment/escalado_prep/pdfs/cajasc.pdf",
+        "sha256": "15b0623fd2897cfe7bcd81a5f9bd92ea239c2dfaa04053a9033fbf8c9dfa5d16",
+        "sha256_manifiesto": "15b0623fd2897cfe7bcd81a5f9bd92ea239c2dfaa04053a9033fbf8c9dfa5d16",
+        "coincide": true
+      },
+      "cap": {
+        "ruta": "data/experiment/subset/TO_capitales_minimos_actual.pdf",
+        "sha256": "f6ab71be7783c4192e67c13ee84f1fc585c6ae5e05aa074961c9c59429280bb8",
+        "sha256_manifiesto": "f6ab71be7783c4192e67c13ee84f1fc585c6ae5e05aa074961c9c59429280bb8",
+        "coincide": true
+      },
+      "ceninf": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ceninf.pdf",
+        "sha256": "18a0b119a2261c95b570bc091653691f0109365ca3739273e58a0d0a1d6e4b13",
+        "sha256_manifiesto": "18a0b119a2261c95b570bc091653691f0109365ca3739273e58a0d0a1d6e4b13",
+        "coincide": true
+      },
+      "cirmo3": {
+        "ruta": "data/experiment/escalado_prep/pdfs/cirmo3.pdf",
+        "sha256": "6ffbf997cf218aa1033e2fc77a06779553edc6536f4d9c09f202ebdd6087cba0",
+        "sha256_manifiesto": "6ffbf997cf218aa1033e2fc77a06779553edc6536f4d9c09f202ebdd6087cba0",
+        "coincide": true
+      },
+      "cla": {
+        "ruta": "data/experiment/subset/TO_clasificacion_deudores_actual.pdf",
+        "sha256": "6e7f528d3fea7b756f15e1278eecd828f203f0651fc6f778212033de6a0883e2",
+        "sha256_manifiesto": "6e7f528d3fea7b756f15e1278eecd828f203f0651fc6f778212033de6a0883e2",
+        "coincide": true
+      },
+      "ctacte": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ctacte.pdf",
+        "sha256": "06969a2cafb898a7eee888fb524271947290006bc0824b4d50e62fc4bd465a3f",
+        "sha256_manifiesto": "06969a2cafb898a7eee888fb524271947290006bc0824b4d50e62fc4bd465a3f",
+        "coincide": true
+      },
+      "depaho": {
+        "ruta": "data/experiment/escalado_prep/pdfs/depaho.pdf",
+        "sha256": "d98ef03929e9e6604927a42d029f7d0cab30b30961374520a455ac23960b08fd",
+        "sha256_manifiesto": "d98ef03929e9e6604927a42d029f7d0cab30b30961374520a455ac23960b08fd",
+        "coincide": true
+      },
+      "docvig": {
+        "ruta": "data/experiment/escalado_prep/pdfs/docvig.pdf",
+        "sha256": "d2d8a0d39d69be8f99eac8aab243142fea370108aa15ad0db3879480f83afb61",
+        "sha256_manifiesto": "d2d8a0d39d69be8f99eac8aab243142fea370108aa15ad0db3879480f83afb61",
+        "coincide": true
+      },
+      "efemin": {
+        "ruta": "data/experiment/escalado_prep/pdfs/efemin.pdf",
+        "sha256": "327ab2bb64f67ba4ce6f469798d88ea6c61f61c0dc059ef8e60e624a1a180ea8",
+        "sha256_manifiesto": "327ab2bb64f67ba4ce6f469798d88ea6c61f61c0dc059ef8e60e624a1a180ea8",
+        "coincide": true
+      },
+      "expaef": {
+        "ruta": "data/experiment/escalado_prep/pdfs/expaef.pdf",
+        "sha256": "9cb78ac9e1c73b217275450031a056799bf7a9198e2575866dc3f85e4e705a25",
+        "sha256_manifiesto": "9cb78ac9e1c73b217275450031a056799bf7a9198e2575866dc3f85e4e705a25",
+        "coincide": true
+      },
+      "ext": {
+        "ruta": "data/experiment/subset/TO_exterior_cambios_actual.pdf",
+        "sha256": "baea7264918877da132acca5f7ec6df1a3a33fd5be77109b90360a3d586bc130",
+        "sha256_manifiesto": "baea7264918877da132acca5f7ec6df1a3a33fd5be77109b90360a3d586bc130",
+        "coincide": true
+      },
+      "lingeef": {
+        "ruta": "data/experiment/escalado_prep/pdfs/lingeef.pdf",
+        "sha256": "0ff1dfcc04e73efc8f53dd551ca257dceb32b23c77d3be015cbc011d6bf9f918",
+        "sha256_manifiesto": "0ff1dfcc04e73efc8f53dd551ca257dceb32b23c77d3be015cbc011d6bf9f918",
+        "coincide": true
+      },
+      "lingob": {
+        "ruta": "data/experiment/escalado_prep/pdfs/lingob.pdf",
+        "sha256": "e3c7d7b3e689e8e9ebf67da6e3f29498718f5e4ab7bf5b56f50bc8813a6ab3b0",
+        "sha256_manifiesto": "e3c7d7b3e689e8e9ebf67da6e3f29498718f5e4ab7bf5b56f50bc8813a6ab3b0",
+        "coincide": true
+      },
+      "manori": {
+        "ruta": "data/experiment/escalado_prep/pdfs/manori.pdf",
+        "sha256": "d1758b8f4e9ce6a32d7498f64123b0dab31b3f99229dbcf9590688087b073f09",
+        "sha256_manifiesto": "d1758b8f4e9ce6a32d7498f64123b0dab31b3f99229dbcf9590688087b073f09",
+        "coincide": true
+      },
+      "nmcief": {
+        "ruta": "data/experiment/escalado_prep/pdfs/nmcief.pdf",
+        "sha256": "467d9dc3afa4266c37b750df466925f15f761bcd0528437851aeed1560de6fad",
+        "sha256_manifiesto": "467d9dc3afa4266c37b750df466925f15f761bcd0528437851aeed1560de6fad",
+        "coincide": true
+      },
+      "opefci": {
+        "ruta": "data/experiment/escalado_prep/pdfs/opefci.pdf",
+        "sha256": "1012372fc30d37a948f828b1e57c2e6ce47bf8d2393359d0aef307f6e97bcd89",
+        "sha256_manifiesto": "1012372fc30d37a948f828b1e57c2e6ce47bf8d2393359d0aef307f6e97bcd89",
+        "coincide": true
+      },
+      "pagjub": {
+        "ruta": "data/experiment/escalado_prep/pdfs/pagjub.pdf",
+        "sha256": "908445f273415d29780d19a86e19fddb7d6d75c541b381ef66eb48776474d997",
+        "sha256_manifiesto": "908445f273415d29780d19a86e19fddb7d6d75c541b381ef66eb48776474d997",
+        "coincide": true
+      },
+      "polcre": {
+        "ruta": "data/experiment/escalado_prep/pdfs/polcre.pdf",
+        "sha256": "7b94ea5d8d5f99baacfff7787bf11f94cba23cc0d406261bdcb2764edd409b04",
+        "sha256_manifiesto": "7b94ea5d8d5f99baacfff7787bf11f94cba23cc0d406261bdcb2764edd409b04",
+        "coincide": true
+      },
+      "pro": {
+        "ruta": "data/experiment/subset/TO_proteccion_usuarios_servicios_financieros_actual.pdf",
+        "sha256": "48564cc714daa9a8c8bbd7115dfe006307ca7cb1c3d78b106c52555fe75a12ec",
+        "sha256_manifiesto": "48564cc714daa9a8c8bbd7115dfe006307ca7cb1c3d78b106c52555fe75a12ec",
+        "coincide": true
+      },
+      "ri_ccna": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_ccna.pdf",
+        "sha256": "d2bfb3c0bb64a3ebdc7fba84077479057e8ced9a07ba59507bd5f336830c7738",
+        "sha256_manifiesto": "d2bfb3c0bb64a3ebdc7fba84077479057e8ced9a07ba59507bd5f336830c7738",
+        "coincide": true
+      },
+      "ri_dcpc": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_dcpc.pdf",
+        "sha256": "20621470038326adf4c08a45a35284041235270483fb0aa2527acb4b99a00561",
+        "sha256_manifiesto": "20621470038326adf4c08a45a35284041235270483fb0aa2527acb4b99a00561",
+        "coincide": true
+      },
+      "ri_gerc": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_gerc.pdf",
+        "sha256": "a774cd6053454509b3c133451ba4c8ab604ba0caaaeff8609b633646c3da097e",
+        "sha256_manifiesto": "a774cd6053454509b3c133451ba4c8ab604ba0caaaeff8609b633646c3da097e",
+        "coincide": true
+      },
+      "ri_mmsef": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_mmsef.pdf",
+        "sha256": "6da98633ca26dbc3f9771860a07980ccc02100174373c53143145a1e227bb84f",
+        "sha256_manifiesto": "6da98633ca26dbc3f9771860a07980ccc02100174373c53143145a1e227bb84f",
+        "coincide": true
+      },
+      "ri_pgn": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_pgn.pdf",
+        "sha256": "57ae2dd85117235f734e971f101f70197d47bc5d438829c1a3c89b63ae513a9d",
+        "sha256_manifiesto": "57ae2dd85117235f734e971f101f70197d47bc5d438829c1a3c89b63ae513a9d",
+        "coincide": true
+      },
+      "ri_rml": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_rml.pdf",
+        "sha256": "064499583aac9ee947c5f1c222869ae9959d5acb9e3b038aa5d8699b5b2c1a96",
+        "sha256_manifiesto": "064499583aac9ee947c5f1c222869ae9959d5acb9e3b038aa5d8699b5b2c1a96",
+        "coincide": true
+      },
+      "ric": {
+        "ruta": "data/experiment/subset/TO_regimen_informativo_contable_mensual_actual.pdf",
+        "sha256": "754c888ae6034f63eb04991c5cad441435b6bf6f8e8fb3669fd2bb279c3b35d5",
+        "sha256_manifiesto": "754c888ae6034f63eb04991c5cad441435b6bf6f8e8fb3669fd2bb279c3b35d5",
+        "coincide": true
+      },
+      "snp_cheq": {
+        "ruta": "data/experiment/escalado_prep/pdfs/snp_cheq.pdf",
+        "sha256": "88748cf77d0eb2fe7f81f39b850b3a463a48e8ed3bc13da593be265a1a8d632a",
+        "sha256_manifiesto": "88748cf77d0eb2fe7f81f39b850b3a463a48e8ed3bc13da593be265a1a8d632a",
+        "coincide": true
+      },
+      "snp_tr": {
+        "ruta": "data/experiment/escalado_prep/pdfs/snp_tr.pdf",
+        "sha256": "760521827165f671de3b506acd4df1fdfb2da9abdcf22e15e86cb510b742c9a8",
+        "sha256_manifiesto": "760521827165f671de3b506acd4df1fdfb2da9abdcf22e15e86cb510b742c9a8",
+        "coincide": true
+      }
+    },
+    "chunks_e0": {
+      "total": 5734,
+      "por_to": {
+        "adrei": 70,
+        "ayccef": 196,
+        "cajasc": 287,
+        "cap": 463,
+        "ceninf": 39,
+        "cirmo3": 256,
+        "cla": 143,
+        "ctacte": 388,
+        "depaho": 442,
+        "docvig": 31,
+        "efemin": 119,
+        "expaef": 165,
+        "ext": 973,
+        "lingeef": 613,
+        "lingob": 139,
+        "manori": 152,
+        "nmcief": 55,
+        "opefci": 74,
+        "pagjub": 52,
+        "polcre": 61,
+        "pro": 101,
+        "ri_ccna": 169,
+        "ri_dcpc": 75,
+        "ri_gerc": 15,
+        "ri_mmsef": 128,
+        "ri_pgn": 21,
+        "ri_rml": 50,
+        "ric": 89,
+        "snp_cheq": 265,
+        "snp_tr": 103
+      },
+      "campo_paginas": "chunks_<to>.json[].paginas, 1-based (e0_lib.py:291, :309)",
+      "vocabulario_observado": {
+        "tipo": {
+          "mini_chunk": 846,
+          "punto_terminal": 4708,
+          "seccion_sin_puntos": 180
+        },
+        "rol_bloque": {
+          "<ausente>": 4888,
+          "chapeau_seccion": 54,
+          "cierre": 152,
+          "intersticial": 52,
+          "intro": 588
+        },
+        "flags.contenido_tabular": {
+          "False": 5504,
+          "True": 230
+        }
+      }
+    },
+    "rol_documental": {
+      "metodo": "chunk_roles.roles_de_pagina(pdf) sobre la primera página de cada chunk",
+      "paginas_por_rol_por_to": {
+        "adrei": {
+          "paginas": 19,
+          "por_rol": {
+            "cuerpo": 17,
+            "indice": 1,
+            "tabla_norma_origen": 1
+          }
+        },
+        "ayccef": {
+          "paginas": 47,
+          "por_rol": {
+            "cuerpo": 38,
+            "indice": 2,
+            "tabla_norma_origen": 7
+          }
+        },
+        "cajasc": {
+          "paginas": 68,
+          "por_rol": {
+            "cuerpo": 64,
+            "indice": 2,
+            "tabla_norma_origen": 2
+          }
+        },
+        "cap": {
+          "paginas": 204,
+          "por_rol": {
+            "cuerpo": 193,
+            "indice": 2,
+            "tabla_norma_origen": 9
+          }
+        },
+        "ceninf": {
+          "paginas": 23,
+          "por_rol": {
+            "cuerpo": 23
+          }
+        },
+        "cirmo3": {
+          "paginas": 107,
+          "por_rol": {
+            "cuerpo": 102,
+            "indice": 1,
+            "tabla_norma_origen": 4
+          }
+        },
+        "cla": {
+          "paginas": 60,
+          "por_rol": {
+            "cuerpo": 52,
+            "indice": 2,
+            "tabla_norma_origen": 6
+          }
+        },
+        "ctacte": {
+          "paginas": 86,
+          "por_rol": {
+            "cuerpo": 73,
+            "indice": 3,
+            "tabla_norma_origen": 10
+          }
+        },
+        "depaho": {
+          "paginas": 107,
+          "por_rol": {
+            "cuerpo": 97,
+            "indice": 3,
+            "tabla_norma_origen": 7
+          }
+        },
+        "docvig": {
+          "paginas": 14,
+          "por_rol": {
+            "cuerpo": 12,
+            "indice": 1,
+            "tabla_norma_origen": 1
+          }
+        },
+        "efemin": {
+          "paginas": 53,
+          "por_rol": {
+            "cuerpo": 48,
+            "indice": 1,
+            "tabla_norma_origen": 4
+          }
+        },
+        "expaef": {
+          "paginas": 37,
+          "por_rol": {
+            "cuerpo": 30,
+            "indice": 3,
+            "tabla_norma_origen": 4
+          }
+        },
+        "ext": {
+          "paginas": 201,
+          "por_rol": {
+            "cuerpo": 190,
+            "indice": 4,
+            "tabla_norma_origen": 7
+          }
+        },
+        "lingeef": {
+          "paginas": 172,
+          "por_rol": {
+            "cuerpo": 166,
+            "indice": 3,
+            "tabla_norma_origen": 3
+          }
+        },
+        "lingob": {
+          "paginas": 24,
+          "por_rol": {
+            "cuerpo": 22,
+            "indice": 1,
+            "tabla_norma_origen": 1
+          }
+        },
+        "manori": {
+          "paginas": 99,
+          "por_rol": {
+            "cuerpo": 95,
+            "indice": 1,
+            "tabla_norma_origen": 3
+          }
+        },
+        "nmcief": {
+          "paginas": 36,
+          "por_rol": {
+            "cuerpo": 35,
+            "indice": 1
+          }
+        },
+        "opefci": {
+          "paginas": 33,
+          "por_rol": {
+            "cuerpo": 27,
+            "indice": 2,
+            "tabla_norma_origen": 4
+          }
+        },
+        "pagjub": {
+          "paginas": 16,
+          "por_rol": {
+            "cuerpo": 13,
+            "indice": 1,
+            "tabla_norma_origen": 2
+          }
+        },
+        "polcre": {
+          "paginas": 32,
+          "por_rol": {
+            "cuerpo": 28,
+            "indice": 2,
+            "tabla_norma_origen": 2
+          }
+        },
+        "pro": {
+          "paginas": 40,
+          "por_rol": {
+            "cuerpo": 37,
+            "indice": 1,
+            "tabla_norma_origen": 2
+          }
+        },
+        "ri_ccna": {
+          "paginas": 60,
+          "por_rol": {
+            "cuerpo": 58,
+            "indice": 2
+          }
+        },
+        "ri_dcpc": {
+          "paginas": 44,
+          "por_rol": {
+            "cuerpo": 44
+          }
+        },
+        "ri_gerc": {
+          "paginas": 8,
+          "por_rol": {
+            "cuerpo": 7,
+            "indice": 1
+          }
+        },
+        "ri_mmsef": {
+          "paginas": 9,
+          "por_rol": {
+            "cuerpo": 9
+          }
+        },
+        "ri_pgn": {
+          "paginas": 19,
+          "por_rol": {
+            "cuerpo": 18,
+            "indice": 1
+          }
+        },
+        "ri_rml": {
+          "paginas": 77,
+          "por_rol": {
+            "cuerpo": 76,
+            "indice": 1
+          }
+        },
+        "ric": {
+          "paginas": 59,
+          "por_rol": {
+            "cuerpo": 58,
+            "indice": 1
+          }
+        },
+        "snp_cheq": {
+          "paginas": 159,
+          "por_rol": {
+            "cuerpo": 155,
+            "indice": 2,
+            "tabla_norma_origen": 2
+          }
+        },
+        "snp_tr": {
+          "paginas": 62,
+          "por_rol": {
+            "cuerpo": 59,
+            "indice": 1,
+            "tabla_norma_origen": 2
+          }
+        }
+      },
+      "chunks_por_rol": {
+        "cuerpo": 5734
+      },
+      "chunks_con_paginas_mixtas": [],
+      "nota_e0": "E0 solo parsea páginas de rol cuerpo (e0_lib.py:678-680) con marcadores equivalentes a los de chunk_roles.py (e0_lib.py:196-210, :344-390); el vocabulario de E0 (tipo, rol_bloque, provenance.rol_documental) no contiene indice ni tabla_norma_origen"
+    },
+    "atribucion_nodo_chunk": {
+      "campo": "nodes[].provenances[].chunk_id y chunks_emisores (r1_provenance.py:1-30, :75-88); principal = nodes[].provenance.chunk_id (e2_lib.py:360)",
+      "provenances_totales": 31058,
+      "provenances_con_chunk_id": 30948,
+      "provenances_sin_chunk_id": 110,
+      "nodos_sin_chunk_principal": 36,
+      "chunk_ids_fuera_de_e0": 0,
+      "chunks_con_algun_nodo": 5734,
+      "rol_documental_provenances": {
+        "bloque_chapeau_seccion": 278,
+        "bloque_cierre": 795,
+        "bloque_intersticial": 186,
+        "bloque_intro": 2333,
+        "esqueleto": 110,
+        "herencia_chapeau_seccion": 6,
+        "herencia_cierre": 43,
+        "herencia_encabezado": 163,
+        "herencia_intersticial": 7,
+        "herencia_intro": 204,
+        "punto_propio": 26933
+      }
+    },
+    "M3": {
+      "status": "no_computable",
+      "motivo": "generación 3: el registro por nodo es `provenances`, acumulado con dedup exacto por fuente (e2_lib.py:294-297, add_prov): dos menciones del mismo chunk y rol colapsan en una entrada, así que len(provenances) cuenta fuentes (to, punto, rol) distintas, no menciones fusionadas; el conteo de menciones pre-fusión (entidades_in de E2) no persiste en kg.json ni en la salida de E0. Spec §4 M3 exige Σ(menciones_fusionadas − 1) / menciones extraídas totales: sin insumo verificable, no_computable",
+      "observacion_no_es_la_metrica": {
+        "nodos_con_mas_de_una_provenance": 259,
+        "suma_provenances_menos_uno": 9649,
+        "nota": "cuenta fuentes (to, punto, rol) distintas fusionadas por nodo, no menciones; se registra para el laudo de la autora, no sustituye a M3"
+      }
+    },
+    "M7": {
+      "status": "computable",
+      "insumos": [
+        "nodes[].provenance.chunk_id (chunk principal; e2_lib.py:360 first-write en orden documental; chunk_id agregado por r1_provenance.py:75-88)",
+        "chunks_<to>.json[].paginas (1-based; e0_lib.py:291, :309, :1604, :1646)",
+        "chunk_roles.roles_de_pagina(pdf del manifiesto) (chunk_roles.py:52-68)"
+      ],
+      "convencion_gen3": "rol del chunk = rol de su primera página (espejo de _rol_en_offset sobre el inicio del chunk, chunk_roles.py:71-75, :110); nodos con provenance.rol_documental = esqueleto (chunk_id None; r1_e5_esqueleto.py:69) fuera del numerador, dentro del denominador"
+    },
+    "M10": {
+      "status": "computable",
+      "insumos": [
+        "chunks_<to>.json de E0 de los TOs del manifiesto (universo aguas arriba: E0 es la entrada de E1; e2_lib.py:15-31 guarda de fan-in)",
+        "rol de página como en M7",
+        "nodes[].provenances[].chunk_id y chunks_emisores (r1_provenance.py:1-30, :75-88)"
+      ],
+      "convencion_gen3": "un chunk aporta si aparece como chunk_id o dentro de chunks_emisores de alguna provenance de algún nodo; universo = chunks de rol cuerpo"
+    },
+    "condiciones_sin_regla": {
+      "condicion": 3367,
+      "sin_arista_de_contenido": 550,
+      "sin_condicion_de_saliente": 550,
+      "nodos_sin_arista_de_contenido": [
+        "Condicion_acceso_al_mercado_anterioridad_maxima_3_dias__el_acceso_al_mercado_de_cambios_de_ed69f2",
+        "Condicion_acceso_al_mercado_de_cambios_por_fecha_de_concertacion__las_operaciones_al_conta_b388ef",
+        "Condicion_acceso_al_mercado_de_cambios_sujeto_a_autorizacion_previa__el_acceso_al_mercado__904ffb",
+        "Condicion_acompanamiento_de_informaciones_y_documentacion__la_solicitud_debe_acompanarse_c_4b2092",
+        "Condicion_acreditacion_de_formulacion_de_denuncia_judicial__que_el_cuentacorrentista_acred_c06322",
+        "Condicion_acreditacion_en_fechas_convenidas__los_intereses_se_acreditaran_en_la_cuenta_en__db07d9",
+        "Condicion_acuerdos_con_mayor_asistencia_crediticia_en_capital__alternativa_otorgamiento_ex_ba3906",
+        "Condicion_adecuacion_de_capacidad_a_importancia_riesgo_y_tamano_de_exposiciones__la_capaci_c67196",
+        "Condicion_ajuste_de_aforo_por_periodo_de_mantenimiento_diferente__condicion_para_ajustar_l_dcbfcd",
+        "Condicion_alcance_a_operaciones_de_puntos_5_2_a_5_4__las_disposiciones_de_esta_seccion_alc_955268",
+        "Condicion_alco_debe_reunirse_periodicamente__si_la_delegacion_recae_en_un_comite_de_gestio_5c2253",
+        "Condicion_alineacion_nivel_exposicion_riesgo_con_gestion_de_riesgos__el_nivel_de_exposicio_7a257d",
+        "Condicion_alteraciones_y_escenarios_reflejen_naturaleza_de_carteras__las_alteraciones_o_es_bf6bd7",
+        "Condicion_analisis_de_condiciones_dentro_de_45_dias_previos__el_analisis_de_las_condicione_51eee1",
+        "Condicion_ano_calendario_monto_aplicado__el_monto_aplicado_en_el_ano_calendario_no_debe_su_4c6127",
+        "Condicion_antiguedad_en_matricula_tres_anos_o_mas__el_auditor_externo_debe_contar_con_anti_ceec9f",
+        "Condicion_apertura_a_nombre_de_titulares_informados_por_persona_juridica__cuando_la_solici_cd2984",
+        "Condicion_apertura_a_orden_de_apoderado_o_representante_legal__de_corresponder_la_apertura_345e28",
+        "Condicion_apertura_contemplada_expresamente_en_plan_de_negocios__la_apertura_de_la_sucursa_2be1da",
+        "Condicion_aplicabilidad_a_entidades_a_y_b_sin_prorroga__la_estimacion_del_deterioro_de_act_b4d1a2",
+        "Condicion_aplicabilidad_de_informacion_de_cabecera_a_registros_individuales__la_informacio_4280eb",
+        "Condicion_aplicacion_a_instrumentos_derivados__para_los_instrumentos_derivados_se_aplican__76f07f",
+        "Condicion_aplicacion_de_disposiciones_punto_7_3_reclasificacion_obligatoria__aplicacion_de_e8e908",
+        "Condicion_aplicacion_de_indemnizacion_de_seguro_de_vida_cancelacion_de_saldo__en_caso_de_f_300967",
+        "Condicion_aplicacion_de_indemnizacion_de_siniestro_prioridad_al_saldo_adeudado__en_caso_de_1844fd",
+        "Condicion_aplicacion_de_normas_de_la_seccion_9__la_aplicacion_de_las_normas_de_la_seccion__4ba625",
+        "Condicion_aplicacion_de_parametros_por_sector__la_revision_se_realiza_aplicando_parametros_dcffcc",
+        "Condicion_aplicacion_de_regimen_de_moneda_del_punto_1_5__la_caja_de_ahorros_destinada_a_me_789576",
+        "Condicion_aplicacion_de_requisitos_cuando_obligacion_de_referencia_difiere_de_subyacente___bb024a",
+        "Condicion_aplicacion_disposiciones_posiciones_compensadas__se_aplican_las_disposiciones_so_097757",
+        "Condicion_aplicacion_segun_seccion_6_grandes_exposiciones__se_aplican_los_codigos_de_nivel_182121",
+        "Condicion_aplicacion_simultanea_de_fondos_con_ejercicio_de_excepcion__los_fondos_en_moneda_0ab80e",
+        "Condicion_aporte_de_documentacion_por_exportador__el_exportador_aporta_la_documentacion_re_732e65",
+        "Condicion_aprobacion_asambleas_generales_constitucion_entidad_resultante__que_las_respecti_b71fe7",
+        "Condicion_arreglos_privados_con_opinion_de_auditor_externo__el_cliente_mantiene_arreglos_p_552f9a",
+        "Condicion_asegurar_adecuado_funcionamiento_controles__condicion_de_que_la_documentacion_de_784cb0",
+        "Condicion_atraso_maximo_31_dias__el_cliente_debe_tener_atrasos_que_no_superen_los_31_dias__0397ec",
+        "Condicion_atrasos_de_hasta_90_dias_en_pagos__el_cliente_incurre_en_atrasos_de_hasta_90_dia_5a531c",
+        "Condicion_atrasos_hasta_180_dias__el_cliente_incurre_en_atrasos_de_hasta_180_dias_como_ind_39f3ef",
+        "Condicion_atrasos_superiores_a_180_dias__supuesto_de_que_el_deudor_registre_atrasos_superi_02ada1",
+        "Condicion_auditor_debe_estar_inscripto_en_registro_de_auditores_de_la_superintendencia__la_71037f",
+        "Condicion_auditor_interino_debe_cumplir_todos_los_requisitos_exigidos__el_auditor_interino_57664f",
+        "Condicion_aumento_de_exposicion_a_perdidas_en_facilidades_rotativas__la_clausula_de_amorti_8015d0",
+        "Condicion_aumento_rapido_de_activos_con_pasivos_volatiles__supuesto_de_identificacion_de_r_ec6997",
+        "Condicion_ausencia_de_comunicacion_de_calificacion__cuando_no_se_comunique_calificacion_de_853f6e",
+        "Condicion_ausencia_de_indicacion_contraria_de_entidad_originaria__cuando_la_entidad_origin_6f39f9",
+        "Condicion_ausencia_practica_de_control_interno__practicamente_no_existe_control_interno_en_36018d",
+        "Condicion_aval_de_cheques_sin_aval_previo_de_la_entidad_girada__los_cheques_de_pago_diferi_d73e52",
+        "Condicion_baja_contable_o_prevision_por_desmejora_crediticia__situacion_en_que_se_ha_dado__60d2f1",
+        "Condicion_basarse_en_experiencia_previa_juicio_de_expertos_y_pruebas_de_estres__los_elemen_cca541",
+        "Condicion_beneficiario_es_contraparte_no_residente__el_beneficiario_del_pago_es_la_contrap_7f8a04",
+        "Condicion_beneficiario_es_entidad_financiera_del_exterior__el_beneficiario_es_una_entidad__f373f2",
+        "Condicion_beneficiario_sea_proveedor_exterior__el_beneficiario_del_pago_debe_ser_el_provee_545e13",
+        "Condicion_beneficiario_sea_proveedor_exterior__el_beneficiario_del_pago_debe_ser_el_provee_f00722",
+        "Condicion_bienes_bk_representan_minimo_90_del_valor_fob__condicion_para_que_una_importacio_e70619",
+        "Condicion_bienes_cedidos_libres_de_gravamenes__condicion_que_los_bienes_cedidos_en_fideico_8edaf7",
+        "Condicion_billete_dividido_o_fragmentado_con_evidencia_de_pertenencia__las_partes_del_bill_e8538e",
+        "Condicion_billetes_entintados_remision_a_punto_2_3__para_billetes_entintados_se_aplica_el__e5a010",
+        "Condicion_buena_situacion_financiera_con_flujo_sensible__el_cliente_presenta_buena_situaci_19a165",
+        "Condicion_calculo_limites_con_rpc_noviembre_15__para_el_calculo_de_los_limites_se_computar_b21c32",
+        "Condicion_calculo_por_promedio_simple_de_saldos_diarios__a_efectos_del_computo_del_cupo_mi_65725c",
+        "Condicion_calificacion_1_2_o_3_sefyc__contar_con_calificacion_1_2_o_3_de_la_sefyc_en_tres__9f1be7",
+        "Condicion_calificacion_1_2_o_3_sefyc_control_interno__la_entidad_debe_tener_calificacion_1_1603e5",
+        "Condicion_calificacion_1_2_o_3_sefyc_entidad_en_conjunto__la_entidad_debe_tener_calificaci_8f031b",
+        "Condicion_calificacion_sefyc_sistemas_informaticos__tener_calificacion_1_2_o_3_de_la_sefyc_85e31e",
+        "Condicion_cambio_concretado_en_composicion_accionaria__la_modificacion_significativa_de_la_de88f2",
+        "Condicion_cambio_de_entidad_nominada_responsable__supuesto_en_que_es_necesario_modificar_l_d83c0e",
+        "Condicion_campos_ingresados_correctos_en_consulta__supuesto_en_que_todos_los_campos_ingres_99d568",
+        "Condicion_cancelacion_lineas_importacion_condiciones_puntos_10_7_y_13_6__la_cancelacion_de_e8ee15",
+        "Condicion_capacidad_acreditada_por_resolucion_del_organo_pertinente__la_persona_juridica_d_f0d261",
+        "Condicion_capacidad_para_atender_obligaciones_financieras__debe_existir_capacidad_para_ate_df718b",
+        "Condicion_capitalizacion_de_intereses_prevista_en_contrato__se_cumple_el_requisito_de_ingr_f0d0ab",
+        "Condicion_causales_autorizadas_para_rechazo__el_rechazo_debe_fundarse_en_algunas_de_las_ca_6d8541",
+        "Condicion_certificacion_de_incremento_de_exportaciones__contar_con_una_certificacion_de_in_211bc8",
+        "Condicion_chc_en_dolares_estadounidenses__cuando_el_cheque_cancelatorio_esta_confeccionado_e06018",
+        "Condicion_chc_en_pesos__cuando_el_cheque_cancelatorio_esta_confeccionado_en_pesos__cirmo3__23375a",
+        "Condicion_cheques_emitidos_en_los_30_dias_anteriores_al_cierre__cheques_que_fueron_emitido_f5b70d",
+        "Condicion_ciclo_de_vida_del_incidente_clasificacion_de_gravedad__clasificacion_de_la_grave_f21f76",
+        "Condicion_ciclo_de_vida_del_incidente_planes_de_comunicacion__implementacion_de_planes_de__bed135",
+        "Condicion_ciclo_de_vida_del_incidente_procedimientos_de_respuesta_y_recuperacion__procedim_797d73",
+        "Condicion_clasificacion_grupo_2_y_pertenencia_a_grupos_b_y_c__entidades_financieras_clasif_2827bb",
+        "Condicion_cliente_con_certificacion_aumento_exportaciones__supuesto_en_que_no_se_requiere__31f4fa",
+        "Condicion_cliente_cuenta_con_certificacion_regimenes_acceso_divisas__el_cliente_cuenta_con_5dde60",
+        "Condicion_cliente_cuenta_con_documentacion_del_servicio__el_cliente_debe_contar_con_la_doc_52ec0f",
+        "Condicion_cliente_cuente_con_certificacion_de_incremento_de_exportaciones__el_cliente_debe_40a4bd",
+        "Condicion_cliente_cumple_requisitos_acceso_mercado_cambios__el_cliente_debe_cumplir_con_lo_8f1f47",
+        "Condicion_cliente_cumple_requisitos_complementarios__el_cliente_debe_cumplir_los_requisito_eeaff4",
+        "Condicion_cliente_es_otra_entidad_representada__el_cliente_que_deposita_el_cheque_puede_se_6a07d7",
+        "Condicion_cliente_identificado_y_autenticado_para_transacciones__condicion_para_que_se_rea_4d0de5",
+        "Condicion_cliente_utilizo_mecanismo_punto_7_8_4_totalidad_monto__el_cliente_ha_utilizado_e_58a069",
+        "Condicion_cobertura_durante_todo_plazo_vencimiento__la_exposicion_debe_estar_cubierta_dura_25781f",
+        "Condicion_codigo_tp_corresponda_a_especie_en_dolares_estadounidenses__condicion_que_requie_ffeaea",
+        "Condicion_codigo_tp_corresponda_a_especie_en_pesos__condicion_que_requiere_que_el_codigo_t_02e2be",
+        "Condicion_coincidencia_de_totales_flujos_de_fondos_por_banda__el_total_de_flujos_de_fondos_e14c22",
+        "Condicion_complejidad_del_modelo_de_negocios_y_desempeno_relativo__para_determinar_si_una__697bbf",
+        "Condicion_computo_de_plazo_maximo_de_traslado__para_el_computo_del_plazo_maximo_de_traslad_e79749",
+        "Condicion_comunicacion_fehaciente_de_certificaciones_cedidas__la_entidad_cedente_debe_habe_4ef379",
+        "Condicion_concentracion_depositos_sector_privado__se_evaluara_la_concentracion_de_los_depo_e85701",
+        "Condicion_concentracion_prestamos_sector_privado__se_evaluara_la_concentracion_de_los_pres_13d603",
+        "Condicion_concurrencia_de_todas_las_condiciones_para_modificacion__para_que_sea_valida_la__cdd891",
+        "Condicion_condena_por_delitos_de_lavado_de_activos_o_financiamiento_del_terrorismo__se_ten_e0fa9b",
+        "Condicion_condicion_a_partir_de_primera_licitacion__el_margen_se_aplica_a_partir_de_la_pri_7289e6",
+        "Condicion_condicion_activos_revaluados_al_31_12_16__cuando_los_activos_fueron_medidos_a_su_edddd2",
+        "Condicion_condicion_ccp_o_miembro_puede_impedir_retiro_de_exceso__la_ccp_o_el_miembro_comp_34db8b",
+        "Condicion_condicion_codigo_3_suspension_desde_abril_24__codigo_3_de_consolidacion_trimestr_88a420",
+        "Condicion_condicion_consideracion_de_reserva_por_aplicacion_niif__en_los_movimientos_permu_c1e192",
+        "Condicion_condicion_credito_adicional_no_cancelado__la_permanencia_de_180_dias_aplica_solo_3e7a72",
+        "Condicion_condicion_cumplimiento_de_obligaciones_refinanciadas__el_deudor_debe_haber_cumpl_e0c16f",
+        "Condicion_condicion_de_aplicacion_de_operativizacion__la_operativizacion_de_individualizac_064341",
+        "Condicion_condicion_de_corresponder__cuando_corresponda_las_entidades_informaran_datos_min_0ba7c8",
+        "Condicion_condicion_de_cumplimiento_previo_de_exigencias__las_autorizaciones_para_la_fusio_2b6308",
+        "Condicion_condicion_de_ser_necesario_para_alcanzar_50__la_revision_de_clientes_inferiores__b1de3d",
+        "Condicion_condicion_declaracion_jurada_del_cliente__la_operacion_bajo_esta_modalidad_requi_054b34",
+        "Condicion_condicion_disponibilidad_de_informacion_para_computo_de_capital__debe_estar_disp_d440ee",
+        "Condicion_condicion_entidades_a_y_b_sin_prorroga_de_efecto__la_estimacion_de_deterioro_es__afe8b9",
+        "Condicion_condicion_existencia_resultados_no_asignados_positivos__existencia_de_resultados_e2fc14",
+        "Condicion_condicion_hasta_tanto_se_produzca_resolucion_del_bcra__hasta_tanto_no_se_produzc_795afe",
+        "Condicion_condicion_instrumentos_de_deuda_ca_o_pnc__cuando_se_trate_de_instrumentos_de_deu_4357f8",
+        "Condicion_condicion_integracion_de_nomina_de_familiares__la_declaracion_debe_incluir_conyu_cec054",
+        "Condicion_condicion_o_requisito_en_resolucion_de_autorizacion__cumplimiento_de_cualquier_o_d27175",
+        "Condicion_condicion_octavo_dia_habil_de_presentacion__la_fecha_de_compensacion_del_reclamo_fe6ddd",
+        "Condicion_condicion_otorgamiento_con_carta_de_credito_letras_avaladas_o_credito_en_firme___6e0517",
+        "Condicion_condicion_resto_de_deudas_en_nivel_inmediato_superior__el_resto_de_las_deudas_de_d347cb",
+        "Condicion_condicion_rtici_excesivo_sin_gestion_adecuada__un_rtici_excesivo_que_no_se_gesti_6fae69",
+        "Condicion_condicion_satisfaccion_de_todas_las_condiciones_enumeradas__el_reconocimiento_de_ae8181",
+        "Condicion_condicion_segun_estado_resultante_de_billetes__el_procedimiento_posterior_depend_41aaed",
+        "Condicion_condicion_sucursal_en_zona_de_mayor_categoria__una_o_mas_sucursales_se_instalan__dabb8d",
+        "Condicion_conforme_a_horarios_definidos__la_informacion_a_las_entidades_giradas_debe_reali_d8cc91",
+        "Condicion_conforme_a_normas_e_instrucciones_aplicables__la_entrega_debe_realizarse_conform_fce0ae",
+        "Condicion_conforme_seccion_6_responsabilidad_patrimonial_computable__la_medida_del_capital_11cf25",
+        "Condicion_conformidad_con_punto_6__las_instrucciones_tecnicas_y_operativas_se_establecen_c_93117e",
+        "Condicion_conformidad_decreto_556_22_y_ley_27_701__las_disposiciones_sobre_cecon_ar_se_apl_6a2a97",
+        "Condicion_conformidad_previa_del_bcra__se_requiere_contar_con_la_conformidad_previa_del_bc_540049",
+        "Condicion_conformidad_previa_del_bcra_precancelacion_de_financiaciones__el_acceso_al_merca_452a40",
+        "Condicion_consideracion_de_cambios_en_perfil_y_apetito_de_riesgo__el_proceso_de_revision_y_ed7b56",
+        "Condicion_consideracion_de_cambios_en_umbrales_o_limites_de_riesgo__el_proceso_de_revision_45effb",
+        "Condicion_consideracion_de_controles_y_estrategias_de_mitigacion__el_proceso_de_revision_y_02731a",
+        "Condicion_consideracion_de_correlacion_de_activos__la_correlacion_existente_entre_los_acti_a6b734",
+        "Condicion_consideracion_de_descalces_de_vencimientos__descalces_de_vencimientos_entre_las__6083fe",
+        "Condicion_consideracion_de_desfases_de_flujos_y_severidad_de_estres__considerar_la_magnitu_c92121",
+        "Condicion_consideracion_de_procedimientos_y_metricas_de_evaluacion__el_proceso_de_revision_e27890",
+        "Condicion_consideracion_de_riesgos_inherentes_en_revision_y_aprobacion__el_proceso_de_revi_86f261",
+        "Condicion_consideracion_del_riesgo_residual__el_proceso_de_revision_y_aprobacion_debe_cons_ba9377",
+        "Condicion_consignacion_judicial_de_multa__se_demuestra_la_cancelacion_de_la_multa_mediante_297a10",
+        "Condicion_consistencia_con_curso_normal_de_negocios__facilidades_y_renovaciones_deben_ser__2a44b9",
+        "Condicion_consistencia_con_fortaleza_financiera_global__las_politicas_practicas_procedimie_205543",
+        "Condicion_consistencia_con_objetivos_de_la_entidad__las_politicas_practicas_procedimientos_66a21b",
+        "Condicion_consistencia_informacion_factura_comercial_con_zfe__la_informacion_de_la_factura_782cbe",
+        "Condicion_consistencia_monto_certificacion_con_pactado__el_monto_de_la_certificacion_por_a_2331f1",
+        "Condicion_contraparte_no_residente_no_vinculada__la_contraparte_del_contrato_debe_ser_un_n_07dfdf",
+        "Condicion_contrapartidas_de_deudores_y_acreedores_precio_en_moneda_extranjera__se_consider_505c95",
+        "Condicion_convenios_de_pago_de_concordatos_con_cancelacion_minima__el_cliente_mantiene_con_44645b",
+        "Condicion_convenios_de_pago_homologados_cancelacion_10__condicion_relativa_a_la_situacion__45ee21",
+        "Condicion_convenios_de_pago_situacion_juridica__se_considera_la_situacion_juridica_del_deu_23c0e1",
+        "Condicion_correspondencia_retencion_con_cobro_permiso__que_la_retencion_impositiva_en_el_p_133edc",
+        "Condicion_credito_en_mora_de_mas_de_90_dias__situacion_en_que_el_deudor_posee_un_credito_e_b99854",
+        "Condicion_criterio_de_clasificacion_mora_segun_cartera_consumo_vivienda__la_clasificacion__474f48",
+        "Condicion_criterios_de_atribucion_estables_en_el_tiempo__los_criterios_de_atribucion_de_fl_8edddd",
+        "Condicion_cuando_costo_de_reposicion_es_positivo__supuesto_en_que_el_valor_de_los_activos__fdfee3",
+        "Condicion_cuando_se_utilice_modalidad_de_cheques_de_pago_diferido__la_obligacion_se_activa_0ae3dd",
+        "Condicion_cuando_valor_corriente_de_derivados_es_negativo__supuesto_en_que_el_valor_corrie_d081ed",
+        "Condicion_cuando_valor_de_garantias_en_exceso_supera_valor_de_mercado_neto__supuesto_en_qu_a9667e",
+        "Condicion_cuentacorrentista_usuario_de_servicios_financieros_sin_cheques_ni_saldo_deudor___0f39ba",
+        "Condicion_cuentas_especiales_sujetas_a_condiciones__las_cuentas_especiales_quedan_sujetas__3ff04c",
+        "Condicion_cumplimiento_condiciones_acceso_mercado_cambios__se_cumplen_las_condiciones_prev_e98fad",
+        "Condicion_cumplimiento_condiciones_basicas_punto_1_1_2_3__se_requiere_mantener_el_cumplimi_cfdab0",
+        "Condicion_cumplimiento_de_requisitos_complementarios__el_residente_que_abono_las_utilidade_56354e",
+        "Condicion_cumplimiento_de_requisitos_en_resolucion_de_autorizacion__cumplimiento_de_todo_o_e33c18",
+        "Condicion_cumplimiento_mecanismos_legales_reduccion_capital__se_ha_verificado_el_cumplimie_b0586e",
+        "Condicion_cumplimiento_por_gastos_de_otorgamiento_y_emision__el_requisito_de_ingreso_y_liq_5ae65b",
+        "Condicion_cumplimiento_requisitos_com_a_7873_y_o_7874__el_cliente_debe_cumplir_los_requisi_4c6071",
+        "Condicion_cumplimiento_requisitos_complementarios_3_16_1_a_3_16_4__el_cliente_debe_cumplir_9b16ba",
+        "Condicion_cumplimiento_requisitos_puntos_2_2_2_2_o_7_8_4__se_debe_dar_cumplimiento_a_los_r_b93cc5",
+        "Condicion_cumplimiento_requisitos_puntos_7_9_o_7_10__verificacion_del_cumplimiento_de_los__0a877c",
+        "Condicion_datos_del_cheque_no_coinciden_por_error_en_captura__supuesto_en_que_las_entidade_fabfbe",
+        "Condicion_declaracion_en_relevamiento_de_activos_y_pasivos_externos__el_pasivo_debe_encont_0ad9a0",
+        "Condicion_declaracion_en_relevamiento_de_activos_y_pasivos_externos__la_operacion_debe_enc_e95286",
+        "Condicion_declaracion_jurada_cliente_deuda_comercial__la_entidad_debe_contar_con_una_decla_d59e53",
+        "Condicion_declaracion_jurada_cliente_fondos_no_entregados__el_cliente_ha_presentado_declar_01d6f8",
+        "Condicion_declaracion_jurada_del_cliente_repuestos_y_accesorios__condicion_para_que_una_im_8152a5",
+        "Condicion_declaracion_jurada_del_exportador__el_exportador_debe_presentar_una_declaracion__b44efd",
+        "Condicion_declaracion_jurada_rubricada_cumplimiento_o_no_recepcion_de_fondos__el_cliente_h_978299",
+        "Condicion_declaracion_jurada_rubricada_personas_receptoras_de_fondos__el_cliente_ha_presen_aef320",
+        "Condicion_declaracion_responsable_de_irregularidades_en_gobierno__supuesto_que_inhabilita__04a3ef",
+        "Condicion_declaracion_responsable_de_irregularidades_en_gobierno__supuesto_que_inhabilita__904e01",
+        "Condicion_deduccion_beneficios_decreto_277_22_del_monto_limite__si_el_cliente_es_beneficia_2fc5b9",
+        "Condicion_defectos_de_integracion_en_posicion_promedio__defectos_de_integracion_en_la_posi_fedfda",
+        "Condicion_demora_en_otorgamiento_de_autorizaciones_de_cambios__existe_documentacion_que_pe_ae08e0",
+        "Condicion_demora_en_pago_responsabilidad_del_deudor__cuando_la_demora_en_el_pago_se_debe_a_c3ba28",
+        "Condicion_denuncia_de_extravio_sustraccion_o_adulteracion__el_titular_o_tenedor_desposeido_8b8bd2",
+        "Condicion_denuncia_de_extravio_sustraccion_o_adulteracion_en_filiales__la_entidad_ha_denun_b730ac",
+        "Condicion_depositos_a_plazo_fijo_en_moneda_extranjera_aplicar_procedimiento_conjunto__el_p_bdf736",
+        "Condicion_depositos_de_mipyme_tratables_como_minoristas__los_depositos_de_mipyme_gestionad_4334ca",
+        "Condicion_derecho_residual_sobre_activos_o_utilidades__el_instrumento_representa_un_derech_2976cb",
+        "Condicion_descalce_en_obligacion_para_determinar_evento_de_credito__se_permite_descalce_en_38e667",
+        "Condicion_descalce_entre_obligacion_subyacente_y_de_referencia__el_derivado_de_credito_pue_e8cfb2",
+        "Condicion_desempeno_verificado_7_anos_resto_de_exposiciones__para_exposiciones_distintas_a_31c2ca",
+        "Condicion_desempeno_verificado_minimo_5_anos_exposiciones_minoristas__para_exposiciones_mi_2ec67c",
+        "Condicion_destino_fondos_financiacion_plan_gas__condicion_que_suspende_el_requisito_de_con_6d3b29",
+        "Condicion_destino_prestamos_hipotecarios__las_operaciones_de_financiacion_de_unidades_de_v_4ce408",
+        "Condicion_deteccion_por_entidad_distinta_a_la_originaria__cuando_el_ejemplar_deteriorado_s_ebfedd",
+        "Condicion_determinacion_de_capital_segun_perfil_de_riesgo__el_nivel_de_capital_debe_determ_f7e550",
+        "Condicion_determinacion_de_disponibilidad_por_saldo_disponible_instantaneo__la_disponibili_37e08b",
+        "Condicion_determinacion_encolamiento_al_momento_de_autorizacion__el_encolamiento_de_una_tr_d31fa3",
+        "Condicion_deuda_comercial_previa_declarada_tope_usd_500_000__la_totalidad_de_las_deudas_po_d5526d",
+        "Condicion_deuda_pendiente_de_pago__la_deuda_por_la_cual_el_cliente_solicita_la_suscripcion_eb4af9",
+        "Condicion_deuda_por_importaciones_de_servicios_segun_punto_13_1_2__la_obligacion_debe_cali_9d218a",
+        "Condicion_deudor_en_concurso_preventivo_con_atrasos_mayores_a_540_dias__supuesto_en_que_el_2736ba",
+        "Condicion_diferencia_valor_efectivo_nominal_en_emisiones_bajo_par__el_requisito_de_demostr_29ba2c",
+        "Condicion_diferimiento_indefinido_del_pago_caracteristica_de_accion__el_emisor_puede_difer_7f80e6",
+        "Condicion_dificultades_presumibles_para_cumplir_acuerdos_de_refinanciacion__presuncion_de__f598d1",
+        "Condicion_dimension_de_la_entidad__la_estructura_de_la_unidad_de_riesgo_operacional_debe_a_037631",
+        "Condicion_direccion_calificada_honesta_profesional_y_tecnica__el_cliente_cuenta_con_una_di_ea1a89",
+        "Condicion_direccion_calificada_y_honesta__el_cliente_cuenta_con_una_direccion_calificada_y_f64648",
+        "Condicion_direccion_con_poca_capacidad_y_o_experiencia__el_cliente_cuenta_con_una_direccio_ef4281",
+        "Condicion_direccion_incompetente_y_o_deshonesta__el_cliente_cuenta_con_una_direccion_que_e_3e2288",
+        "Condicion_discrepancia_entre_declaracion_y_pago__se_verifica_cuando_la_cantidad_total_de_c_80569e",
+        "Condicion_disposiciones_generales_mas_favorables__las_disposiciones_de_esta_seccion_result_478a89",
+        "Condicion_divisas_ingresadas_igual_o_mayor_al_monto_de_operacion_mas_accesos_previos__el_i_617b9a",
+        "Condicion_divisas_ingresadas_y_liquidadas_por_empresa_procesadora__que_las_divisas_hayan_s_1ef3ea",
+        "Condicion_documentacion_de_norma_tributaria_aplicable__que_la_entidad_cuente_con_documenta_88c53a",
+        "Condicion_edad_hasta_75_anos_al_31_12_14__personas_de_hasta_75_anos_de_edad_al_31_de_dicie_0494e9",
+        "Condicion_efecto_desde_comunicacion__el_efecto_de_las_modificaciones_se_produce_desde_el_d_2025d7",
+        "Condicion_ejercicio_de_excepcion_dentro_del_plazo_de_liquidacion__el_ejercicio_de_la_excep_387f0e",
+        "Condicion_ejercicio_de_opcion_de_traslado__supuesto_de_que_la_entidad_ejerce_la_opcion_de__3d9e08",
+        "Condicion_ejercicio_no_obligatorio_de_opcion_de_exclusion__el_ejercicio_de_la_opcion_de_ex_5cd915",
+        "Condicion_emision_de_titulos_valores_en_bolsas_reconocidas__la_empresa_con_grado_de_invers_8e213a",
+        "Condicion_endeudamientos_desembolsados_antes_01_09_19__el_requisito_de_demostrar_ingreso_y_71f852",
+        "Condicion_entidad_cedente_sin_certificaciones_pendientes__la_entidad_cedente_no_debe_tener_739553",
+        "Condicion_entidad_opto_por_no_operar_en_comercio_exterior__la_entidad_nominada_por_el_expo_6244cc",
+        "Condicion_entrega_de_declaracion_jurada_sobre_motivos__el_exportador_debe_haber_entregado__307857",
+        "Condicion_escalar_x_4_disminucion_de_perturbacion__se_aplica_un_escalar_donde_x_4_que_dism_aabdb2",
+        "Condicion_escenarios_consideren_dificultad_de_captar_fondos_a_costos_razonables__los_escen_582c2c",
+        "Condicion_especificacion_de_saldos_minimos_para_liquidacion_de_intereses__cuando_correspon_3979d7",
+        "Condicion_especificacion_taxativa_de_condiciones_modificables__las_condiciones_que_pueden__820817",
+        "Condicion_estabilidad_del_flujo_ante_variaciones_de_variables__el_flujo_de_fondos_no_es_su_37a3fc",
+        "Condicion_estado_de_acondicionamiento_de_tambores__los_tambores_se_acondicionan_con_moneda_e48bb3",
+        "Condicion_estar_totalmente_suscriptos_e_integrados__los_instrumentos_incluidos_en_el_ca_de_9d2e4b",
+        "Condicion_estructura_de_plazos_residuales_de_agosto_para_exigencia_bimestral__para_determi_4df9e7",
+        "Condicion_estructura_de_plazos_residuales_de_octubre_para_exigencia_en_noviembre__en_novie_3896e9",
+        "Condicion_etapa_preoperativa_deuda_de_largo_plazo_no_decreciente__la_deuda_de_largo_plazo__947226",
+        "Condicion_etapa_preoperativa_flujo_de_fondos_positivo_insuficiente__el_ente_creado_para_ge_4769db",
+        "Condicion_evaluacion_capacidad_pago_contraparte_individual_con_respaldo_grupo__al_momento__dbc48a",
+        "Condicion_evaluacion_de_capacidad_de_pago_sobre_documentacion_respaldatoria_de_ingresos__c_dd35f9",
+        "Condicion_evaluacion_de_situacion_particular_del_cliente__la_clasificacion_debe_realizarse_6e3b3d",
+        "Condicion_evaluacion_integra_de_ciclos_o_cuentas_para_depositar_confianza__para_poder_depo_b716dd",
+        "Condicion_evaluaciones_internas_de_riesgo_y_capital__en_el_contexto_de_evaluaciones_intern_a846da",
+        "Condicion_exceso_real_mayor_a_0__cuando_el_exceso_real_es_mayor_a_0_la_partida_760000_001__c61865",
+        "Condicion_exceso_real_menor_o_igual_a_0__cuando_el_exceso_real_es_menor_o_igual_a_0_la_par_330394",
+        "Condicion_existencia_de_actividades_de_control__la_mera_identificacion_de_las_actividades__453d9d",
+        "Condicion_existencias_deterioradas_menores_a_un_millar__existencias_de_billetes_deteriorad_9dcce5",
+        "Condicion_experiencia_dos_anos_o_mas_en_auditoria__el_auditor_externo_debe_contar_con_expe_971fb8",
+        "Condicion_exportacion_bajo_regimen_de_concentrados_de_minerales__exportacion_de_minerales__a06e29",
+        "Condicion_exportacion_con_precios_fob_revisables__exportacion_de_mercaderias_con_precios_r_b7327f",
+        "Condicion_exportador_mantiene_acciones_judiciales__el_exportador_mantiene_acciones_judicia_8f0e7e",
+        "Condicion_exportador_registro_exportaciones_ano_t_1__el_exportador_debe_haber_registrado_e_aace6e",
+        "Condicion_exportador_sin_permisos_vencidos_a_emision__el_exportador_no_registra_a_la_fecha_08cb05",
+        "Condicion_exposicion_de_causas_de_salvedades_en_notas_a_estados_contables__cuando_las_caus_5e11f9",
+        "Condicion_exposicion_dentro_del_nivel_de_tolerancia_establecido__la_actual_exposicion_de_l_4fd253",
+        "Condicion_exposiciones_a_empresas_aplicacion_de_disposiciones_especificas__cuando_se_trate_737fc7",
+        "Condicion_exposiciones_a_entidades_financieras_aplicacion_de_disposiciones_especificas__cu_b9e384",
+        "Condicion_exposiciones_a_instrumentos_aplicacion_de_disposiciones_especificas__cuando_se_t_139540",
+        "Condicion_exposiciones_con_garantia_hipotecaria_aplicacion_de_disposiciones_especificas__c_fead10",
+        "Condicion_exposiciones_en_situacion_de_incumplimiento_aplicacion_de_disposiciones_especifi_6fc95c",
+        "Condicion_exposiciones_minoristas_aplicacion_de_disposiciones_especificas__cuando_se_trate_4a369e",
+        "Condicion_exposiciones_relevantes_superiores_al_5__que_se_trate_de_exposiciones_relevantes_0b679f",
+        "Condicion_facilidades_adicionales_consistencia_con_curso_normal_de_negocios__las_facilidad_6ba34d",
+        "Condicion_falta_de_pago_multa_30_dias__falta_de_pago_de_la_multa_dentro_de_los_30_dias_cor_087d8c",
+        "Condicion_falta_de_pago_por_situaciones_de_cambios__la_falta_de_pago_del_importador_extran_bbf04a",
+        "Condicion_faltas_de_ortografia_presentes__supuesto_en_que_se_observan_faltas_de_ortografia_707d31",
+        "Condicion_fecha_de_pago_valida_efectividad_del_cobro__la_fecha_de_pago_valida_es_aquella_e_c9b683",
+        "Condicion_fecha_origen_financiacion_desde_19_05_23__la_fecha_de_origen_de_la_financiacion__819dde",
+        "Condicion_fecha_origen_financiacion_desde_21_09_23__la_fecha_de_origen_de_la_financiacion__25b865",
+        "Condicion_fechas_de_corte_de_datos_alineadas_con_emision_de_informes__las_fechas_de_corte__eedddc",
+        "Condicion_fideicomiso_de_garantia_conforme_ley_24_441__el_fideicomiso_de_garantia_debe_est_549edd",
+        "Condicion_fiduciario_no_sea_prestamista_ni_vinculado__el_fiduciario_del_fideicomiso_de_gar_bb7f70",
+        "Condicion_finalidad_de_alertas_tempranas_evaluacion_prospectiva__la_evaluacion_prospectiva_13f98e",
+        "Condicion_finalidad_de_recabar_datos_de_cuentas_bancarias__los_datos_de_cuentas_bancarias__e0f66f",
+        "Condicion_finalidad_de_recabar_datos_transferencias_de_fondos_remanentes__los_datos_se_rec_bfde83",
+        "Condicion_flujo_de_fondos_proyectado_capacidad_de_pago_total__debe_demostrarse_que_el_fluj_54cabf",
+        "Condicion_fondos_depositados_en_cuenta_especial__los_fondos_deben_mantenerse_depositados_e_bcdae8",
+        "Condicion_fondos_ingresados_y_liquidados_desde_16_11_20__los_fondos_deben_haber_sido_ingre_9a42c7",
+        "Condicion_fondos_permanecidos_acreditados_hasta_ejercicio_excepcion__supuesto_de_que_los_f_e56708",
+        "Condicion_fortalezas_y_debilidades_en_cuenta_corriente__elementos_a_considerar_en_la_evalu_aa73b0",
+        "Condicion_frecuencia_informes_gestion_riesgos__la_prontitud_depende_de_la_frecuencia_con_l_53d80c",
+        "Condicion_gestion_por_equipo_de_negociacion__las_posiciones_son_gestionadas_por_un_equipo__1fa4ed",
+        "Condicion_grado_de_detalle_y_metodologia_segun_necesidades_de_la_entidad__el_grado_de_deta_66dc04",
+        "Condicion_identidad_a_y_d_cuando_unica_diferencia_es_vencimiento__cuando_la_unica_diferenc_e74b45",
+        "Condicion_imagen_asociada_sin_nacha_correspondiente__supuesto_en_que_se_recibe_un_registro_f778ca",
+        "Condicion_imagen_erronea__supuesto_en_que_las_entidades_giradas_rechazan_la_imagen_cuando__283e76",
+        "Condicion_imagen_ilegible__supuesto_en_que_las_entidades_giradas_rechazan_la_imagen_cuando_4894ae",
+        "Condicion_imagen_no_encontrada_en_reservorio_adeudada_como_girado__supuesto_en_que_las_cec_d1f846",
+        "Condicion_imagen_no_encontrada_en_reservorio_pendiente_como_depositario__supuesto_en_que_l_41212b",
+        "Condicion_imagenes_permanecen_a_confirmar_sin_mecanismos_adicionales__las_imagenes_de_cheq_99697a",
+        "Condicion_importador_demuestra_registro_ingreso_aduanero__el_importador_debe_haber_demostr_ac45d3",
+        "Condicion_importancia_en_gestion_de_riesgos_y_toma_de_decisiones__la_frecuencia_de_los_inf_c2a318",
+        "Condicion_importancia_perfil_general_riesgo_entidad__la_prontitud_depende_de_la_importanci_34516e",
+        "Condicion_importantes_alteraciones_en_los_mercados__se_produce_cuando_hay_importantes_alte_9710e2",
+        "Condicion_importe_total_financiaciones_pesos_supera_30_000_millones__el_cliente_mantiene_u_832d56",
+        "Condicion_imposibilidad_de_realizar_calculo_de_precio_a_futuro__cuando_la_entidad_no_puede_2a0bca",
+        "Condicion_imputacion_a_banda_temporal_segun_plazo_residual__cuando_el_plazo_residual_o_el__0a5f08",
+        "Condicion_incertidumbre_sobre_lado_del_subyacente__cuando_no_esta_claro_cual_lado_de_una_o_7707b2",
+        "Condicion_incidencia_de_situacion_de_contrapartes_conectadas__debe_tenerse_en_cuenta_la_ev_5b0779",
+        "Condicion_incidencia_de_situacion_de_contrapartes_conectadas__en_el_analisis_debe_consider_c8dae0",
+        "Condicion_incorporacion_al_seguimiento__una_vez_que_la_operacion_se_incorpora_al_seguimien_e79e85",
+        "Condicion_incurrencia_en_rechazos_de_cheques__haber_incurrido_en_uno_o_varios_rechazos_de__c529a3",
+        "Condicion_indicador_eficiencia_privada_y_social__se_evaluara_un_indicador_que_permita_infe_214824",
+        "Condicion_indicadores_cualitativos_o_cuantitativos__los_indicadores_disenados_pueden_ser_d_1dcc2b",
+        "Condicion_informacion_de_base_de_deudores_en_situacion_irregular__informacion_de_la_base_d_8483d8",
+        "Condicion_informacion_de_central_de_deudores_nivel_inferior__cuando_las_informaciones_de_l_14e939",
+        "Condicion_informacion_disponible_en_la_central__el_plazo_comienza_a_contar_desde_que_la_in_e6093a",
+        "Condicion_informacion_inconsistente_y_desactualizada__la_informacion_no_es_consistente_y_n_0aa68c",
+        "Condicion_informacion_inconsistente_y_desactualizada__la_informacion_no_es_consistente_y_n_7769e4",
+        "Condicion_informacion_no_confiable_sin_documentacion__la_informacion_presentada_no_es_conf_8113cb",
+        "Condicion_informacion_no_confiable_sin_documentacion_respaldatoria__la_informacion_present_5b9d3d",
+        "Condicion_informacion_no_consistente_y_sin_actualizacion_adecuada__la_informacion_del_clie_b24930",
+        "Condicion_informaciones_y_sanciones_de_autoridades_del_exterior__se_tendran_en_consideraci_e321ce",
+        "Condicion_ingreso_por_mercado_de_cambios_en_plazos_establecidos__las_divisas_deben_haber_i_1ff132",
+        "Condicion_ingreso_y_liquidacion_de_divisas_en_mercado_de_cambios__el_deudor_debe_demostrar_ebd75d",
+        "Condicion_inscripcion_ante_autoridad_de_control_forma_societaria__condicion_de_que_se_insc_0b5aad",
+        "Condicion_inscripcion_para_actividades_habituales_sucursal__la_sucursal_debe_estar_inscrip_b70632",
+        "Condicion_insolvencia_posterior_del_importador_extranjero__el_importador_extranjero_ha_cai_bb2bf6",
+        "Condicion_instalacion_en_casas_operativas__el_supuesto_de_que_las_unidades_se_instalaran_e_df904e",
+        "Condicion_integracion_total_del_capital_minimo_condicion_para_iniciar_actividades__la_enti_2a964b",
+        "Condicion_limite_usd_200_mensual_por_cliente__el_cliente_no_debe_superar_en_el_mes_calenda_b2db48",
+        "Condicion_limites_asociados_a_escenarios_de_variaciones_de_tasas__los_limites_pueden_estar_31cbb1",
+        "Condicion_limites_consideran_rol_de_entidad_en_sistema_financiero__los_limites_internos_de_1ce871",
+        "Condicion_liquidacion_en_mercado_de_cambios_de_divisas_de_devolucion__liquidacion_en_el_me_c42c14",
+        "Condicion_liquidacion_simultanea_de_cobros_anticipados__condicion_de_que_la_liquidacion_se_5b57b2",
+        "Condicion_magnitud_de_operaciones__la_estructura_de_la_unidad_de_riesgo_operacional_debe_a_bd271c",
+        "Condicion_mantenimiento_de_convenios_de_concordatos_o_arreglos_privados__el_cliente_mantie_ea2dbe",
+        "Condicion_marco_de_practicas_prudentes_de_valuacion__el_marco_de_practicas_prudentes_de_va_7eebf7",
+        "Condicion_marco_evaluar_efecto_y_permitir_revision_continua__el_marco_debe_ser_utilizado_p_bb5b14",
+        "Condicion_marco_incluir_objetivos_escenarios_y_metodologias__el_marco_debe_incluir_objetiv_d34c66",
+        "Condicion_marco_proporcional_a_naturaleza_tamano_y_complejidad__el_marco_de_pruebas_de_est_21e3a6",
+        "Condicion_maximo_dos_refinanciaciones_en_12_meses__deudores_que_refinanciaron_sin_incurrir_4f432d",
+        "Condicion_maximo_dos_refinanciaciones_en_12_meses__deudores_que_refinanciaron_sin_incurrir_57cd7c",
+        "Condicion_medicion_conservadora_de_plazos_de_vencimiento__los_plazos_de_vencimiento_de_la__94ab6e",
+        "Condicion_mes_calendario_corresponde_a_embarque_o_posterior__el_mes_calendario_que_se_impu_ca7fdb",
+        "Condicion_metodo_elegido_cobertura_con_activos__la_aplicacion_de_la_tecnica_de_cobertura_m_af4900",
+        "Condicion_modalidad_de_pago_descuento_de_haberes_o_debito_en_cuenta__para_permanecer_en_si_d7a9e8",
+        "Condicion_momento_de_la_informacion_en_la_asignacion__la_informacion_debe_proporcionarse_e_fbe618",
+        "Condicion_monto_a_certificar_menor_o_igual_al_saldo_liquidado__el_monto_a_certificar_por_u_8c4087",
+        "Condicion_monto_deuda_importaciones_usd_500_000__condicion_que_el_pago_debe_cumplir_el_mon_891c7a",
+        "Condicion_monto_garantia_no_supera_exportaciones__el_monto_de_la_garantia_otorgada_por_la__1d1932",
+        "Condicion_monto_maximo_usd_2_000_000_mensual__el_agente_local_no_ha_utilizado_el_mecanismo_d3388b",
+        "Condicion_monto_supera_usd_25_000__condicion_el_monto_a_imputar_al_permiso_supera_usd_25_0_57a82d",
+        "Condicion_monto_total_no_supere_distribucion_accionistas__el_monto_total_abonado_a_accioni_a9396e",
+        "Condicion_monto_total_no_supere_distribucion_asamblea__el_monto_total_abonado_a_accionista_7d3b7f",
+        "Condicion_montos_abonados_respetan_limites_punto_10_11_7_3__los_montos_abonados_por_este_m_18e9c6",
+        "Condicion_mpor_doble_por_disputas_pendientes_en_neteo__el_periodo_de_riesgo_de_margen_sera_f9bcb6",
+        "Condicion_mpor_minimo_20_dias_habiles_neteo_con_5_000_operaciones__el_periodo_de_riesgo_de_25682f",
+        "Condicion_multas_previstas_en_contrato_de_compraventa__la_aplicacion_de_las_multas_por_dem_0dec56",
+        "Condicion_naturaleza_cualitativa_y_cuantitativa__los_escenarios_de_estres_deben_ser_de_nat_717ebb",
+        "Condicion_naturaleza_volatilidad_riesgo_medicion__la_prontitud_depende_de_la_naturaleza_y__3a3635",
+        "Condicion_naturaleza_y_complejidad_de_productos_y_procesos__la_estructura_de_la_unidad_de__d71cdc",
+        "Condicion_necesidades_del_directorio_y_alta_gerencia__la_frecuencia_de_los_informes_depend_8666a6",
+        "Condicion_no_acreditacion_de_formulacion_de_denuncia_judicial__que_el_cuentacorrentista_no_905444",
+        "Condicion_no_advertencia_de_riesgos_superiores_a_normales__no_debe_haberse_advertido_media_c954b1",
+        "Condicion_no_alcanzado_por_inhabilidades_art_264_ley_19_550__condicion_de_que_el_socio_res_d8d9b5",
+        "Condicion_no_alcanzado_por_inhabilidades_art_264_ley_19_550__el_auditor_externo_no_esta_al_397083",
+        "Condicion_no_alcanzar_inhabilidades_ley_21_526_art_10__el_declarante_no_debe_ser_deudor_mo_6adc97",
+        "Condicion_no_amortizacion_del_instrumento__el_instrumento_no_puede_amortizarse_los_resulta_9458cc",
+        "Condicion_no_estar_sujeta_a_plan_de_regularizacion_y_saneamiento__la_entidad_financiera_no_b4aac2",
+        "Condicion_no_exclusion_del_registro_de_auditores__condicion_de_que_el_contador_publico_nac_d0180b",
+        "Condicion_no_exclusion_del_registro_de_auditores__el_socio_responsable_no_ha_sido_excluido_d070d6",
+        "Condicion_no_figurar_en_nomina_de_estudios_excluidos__el_contador_publico_nacional_no_debe_98c737",
+        "Condicion_no_ha_utilizado_mecanismo_por_esta_deuda__el_cliente_no_ha_utilizado_ya_este_mec_287c18",
+        "Condicion_no_obligacion_para_el_emisor__el_instrumento_no_representa_obligacion_alguna_par_9fa8c6",
+        "Condicion_no_oposicion_con_normas_de_poderes_publicos__las_disposiciones_sobre_cuentas_a_l_509df3",
+        "Condicion_no_registrar_deuda_por_asistencia_bcra__no_registrar_deuda_por_asistencia_financ_f41ec0",
+        "Condicion_no_registrar_incumplimientos_capital_minimo__no_registrar_incumplimientos_en_la__a21a50",
+        "Condicion_no_vinculacion_directa_o_indirecta_entre_exportador_e_importador__el_exportador__c98cd6",
+        "Condicion_notificacion_de_nueva_entidad_aceptando_designacion__la_entidad_cedente_debe_con_4e540f",
+        "Condicion_nuevo_contrato_compensa_derivado_de_credito__cuando_se_celebra_un_nuevo_contrato_196310",
+        "Condicion_obligacion_significativa_con_intereses_suspendidos_o_provisionados__situacion_en_3a43ba",
+        "Condicion_obligaciones_de_lineas_financieras_formalizadas_hasta_5_2_informar_en_102062_m___6a707b",
+        "Condicion_ocurrencia_en_dos_periodos_consecutivos_o_cuatro_alternados__la_situacion_debe_v_27501a",
+        "Condicion_oficializaciones_desde_01_11_19__alcance_temporal_oficializaciones_de_importacio_148722",
+        "Condicion_opcion_de_cancelacion_mediante_emision_de_acciones_caracteristica_de_accion__el__61ff9c",
+        "Condicion_opcion_de_exclusion_no_estructurada_para_evitar_absorcion_de_perdidas__la_opcion_63c57d",
+        "Condicion_opcion_del_tenedor_de_exigir_pago_con_acciones_caracteristica_de_accion__el_tene_25faff",
+        "Condicion_operacion_con_cuentas_a_la_vista_que_admiten_deposito_de_cheques__la_obligacion__aca5b4",
+        "Condicion_operacion_declarada_en_presentacion_vencida__la_operacion_debe_encontrarse_decla_ba8bc9",
+        "Condicion_operacion_declarada_en_presentacion_vencida_de_relevamiento__la_operacion_debe_e_501d96",
+        "Condicion_operaciones_con_margen_de_variacion__supuesto_en_que_los_conjuntos_de_neteo_esta_4f66ef",
+        "Condicion_operaciones_con_registro_de_ingreso_aduanero__supuesto_que_activa_la_comprension_c4ab45",
+        "Condicion_operaciones_sin_margen_de_variacion__supuesto_en_que_los_conjuntos_de_neteo_no_e_04bbd6",
+        "Condicion_operaciones_sujetas_a_valuacion_diaria_y_reposicion_de_margenes__el_computo_de_l_b984fa",
+        "Condicion_origina_directa_o_indirectamente_exposiciones_subyacentes__la_entidad_origina_di_023b24",
+        "Condicion_otras_formas_de_regularizacion_segun_limites_establecidos__otras_formas_de_regul_7c3382",
+        "Condicion_pagador_es_persona_humana_o_juridica_mipyme__el_pagador_debe_ser_una_persona_hum_75e0d9",
+        "Condicion_pago_anterior_a_vencimiento_de_obligacion__el_pago_no_debe_realizarse_antes_de_l_4ba1a5",
+        "Condicion_pago_cancelacion_deudas_operaciones_financiadas__el_pago_corresponde_a_la_cancel_0b1dd7",
+        "Condicion_pago_cancelacion_deudas_operaciones_financiadas_garantizadas__el_pago_correspond_eda573",
+        "Condicion_pago_cancelacion_deudas_operaciones_financiadas_garantizadas__el_pago_debe_corre_151cb4",
+        "Condicion_pago_cancelacion_deudas_operaciones_financiadas_garantizadas__el_pago_debe_corre_8357d9",
+        "Condicion_pago_concretado_por_persona_humana_o_juridica_mipyme__el_pago_debe_ser_concretad_11bfee",
+        "Condicion_pago_de_capital_titulos_emitidos_08_11_24_a_20_04_25_12_meses_minimo__para_pagos_48b113",
+        "Condicion_pago_de_capital_titulos_emitidos_21_04_25_a_15_05_25_6_meses_minimo__para_pagos__651b70",
+        "Condicion_pago_de_capital_titulos_emitidos_a_partir_16_05_25_18_meses_minimo__para_pagos_d_3be758",
+        "Condicion_pago_de_importaciones_de_servicios_en_mecanismo_7_11__el_pago_corresponde_a_impo_023c6c",
+        "Condicion_pago_de_servicios_comprendidos_en_13_2_1_o_13_2_2__el_pago_corresponde_a_servici_a3c326",
+        "Condicion_pago_enmarcado_en_mecanismo_punto_7_11__el_pago_de_importaciones_de_bienes_debe__cb2a0b",
+        "Condicion_pago_mediante_canje_y_o_arbitraje_con_fondos_bopreal__el_pago_se_concreta_median_708a9d",
+        "Condicion_pago_mediante_canje_y_o_arbitraje_con_fondos_bopreal__el_pago_se_realiza_mediant_1678c1",
+        "Condicion_pago_por_cancelacion_de_deudas_financiadas__el_pago_corresponde_a_la_cancelacion_ea4612",
+        "Condicion_pago_por_cancelacion_de_deudas_operaciones_financiadas_garantizadas__el_pago_cor_978542",
+        "Condicion_pagos_originados_directa_o_indirectamente_por_redes_internacionales__los_pagos_s_f0546d",
+        "Condicion_pais_destino_implemento_restricciones_giros_divisas__el_pais_de_destino_de_la_ex_dece83",
+        "Condicion_participacion_entidades_publicas__se_evaluara_la_participacion_de_las_entidades__911e12",
+        "Condicion_pases_y_o_cauciones_bursatiles_tomadas_en_pesos_ultimos_90_dias__el_cliente_ha_m_f29a4e",
+        "Condicion_pasivo_en_pesos_con_exterior_desde_no_aceptacion_o_reduccion__el_pasivo_en_pesos_68475d",
+        "Condicion_pasivo_generado_desde_no_aceptacion_aporte_o_reduccion_capital__el_pasivo_en_pes_6b2268",
+        "Condicion_pasivos_significativos_respecto_de_efectivo_minimo_o_depositos__factor_de_config_2a7dcf",
+        "Condicion_patrocina_programa_abcp_o_titulizacion__la_entidad_patrocina_un_programa_de_emis_5c73dc",
+        "Condicion_perdidas_significativas_afectar_solidez_o_capacidad_operativa__supuesto_de_conce_39ee66",
+        "Condicion_periodo_01_01_25_al_30_06_25__periodo_comprendido_entre_el_01_01_25_y_el_30_06_2_9b22d1",
+        "Condicion_periodo_01_07_25_al_31_12_25__periodo_comprendido_entre_el_01_07_25_y_el_31_12_2_b57dd3",
+        "Condicion_periodo_de_mantenimiento_minimo_operaciones_de_pase__para_operaciones_de_pase_co_70eb44",
+        "Condicion_periodo_de_mantenimiento_minimo_otras_operaciones_mercado_de_capitales__para_otr_ece406",
+        "Condicion_periodo_de_mantenimiento_minimo_prestamos_garantizados__para_prestamos_garantiza_31ee2d",
+        "Condicion_perspectiva_de_disminucion_de_ingresos_y_beneficios__el_cliente_tiene_una_perspe_22a82a",
+        "Condicion_pertenencia_a_sector_con_tendencia_futura_aceptable__el_cliente_pertenece_a_un_s_253d90",
+        "Condicion_pertenencia_a_sector_en_extincion_o_reestructuracion__el_cliente_pertenece_a_un__229796",
+        "Condicion_plazo_180_dias_corridos_resto_de_bienes__el_ingreso_y_liquidacion_de_divisas_por_493f41",
+        "Condicion_plazo_61_dias_adelantos_transitorios__los_adelantos_transitorios_en_cuenta_corri_7fb4c9",
+        "Condicion_plazo_corto_en_obligaciones_a_termino__factor_de_configuracion_en_las_obligacion_321353",
+        "Condicion_plazo_de_60_dias_para_destruccion__transcurso_de_un_periodo_de_60_dias_desde_la__b9aa10",
+        "Condicion_plazo_de_un_ano_desde_liquidacion_o_ingreso_aduanero__las_inversiones_pueden_ser_597302",
+        "Condicion_plazo_de_vencimiento_con_incentivo_positivo_para_liquidacion_anticipada__cuando__9dc17d",
+        "Condicion_plazo_de_vencimiento_cuando_hay_liquidacion_anticipada__cuando_el_proveedor_de_p_701624",
+        "Condicion_plazo_fijo_en_moneda_extranjera_aplicar_estructura_del_mes_anterior__cuando_se_t_b008f3",
+        "Condicion_plazo_hasta_vencimiento_ley_27_679__las_disposiciones_sobre_cecon_ar_se_aplican__1814dc",
+        "Condicion_plazo_minimo_antes_del_cierre__se_otorga_un_plazo_no_inferior_a_30_dias_corridos_a642b9",
+        "Condicion_plazo_previo_a_habilitacion_30_dias__la_comunicacion_debe_realizarse_con_una_ant_7be69d",
+        "Condicion_plazo_residual_mayor_a_seis_meses__cuando_la_opcion_tiene_un_plazo_residual_de_m_87cb5a",
+        "Condicion_plazo_residual_superior_a_6_meses_inclusion_de_garantias__la_inclusion_de_garant_932ffb",
+        "Condicion_plazo_vigencia_garantia_maximo_180_dias__el_plazo_de_vigencia_de_la_garantia_fin_1c8d9a",
+        "Condicion_porcentaje_elevado_de_pasivos_en_mismo_titular__factor_de_configuracion_un_porce_3e0fcb",
+        "Condicion_posibilidad_de_reduccion_de_demanda_de_productos__existe_la_posibilidad_de_que_s_12fd1a",
+        "Condicion_posiciones_en_moneda_extranjera_riesgo_de_tipo_de_cambio__cuando_la_entidad_mant_5084be",
+        "Condicion_precancelacion_por_clientes_condicion_conformidad_bcra__el_acceso_al_mercado_de__fe1518",
+        "Condicion_presuncion_de_conformidad_con_movimiento_registrado__se_presume_conformidad_con__600347",
+        "Condicion_presuncion_de_residencia_permanencia_un_ano__se_presume_que_una_persona_humana_e_e0347b",
+        "Condicion_producido_de_comercializacion_destinado_a_cancelacion__el_producido_de_la_comerc_2da3ba",
+        "Condicion_productos_complejos_titulizaciones_y_derivados__cuando_se_trate_de_productos_com_1db905",
+        "Condicion_profesional_participa_en_sociedad_de_profesionales_inscripta_en_registro__cuando_2a1f4d",
+        "Condicion_proporcionalidad_a_dimension_e_importancia_economica__el_marco_debe_ser_proporci_6bf799",
+        "Condicion_proposito_de_cada_informe__la_frecuencia_de_los_informes_depende_del_proposito_d_026c29",
+        "Condicion_proyeccion_flujo_fondos_deterioro_progresivo_y_alta_sensibilidad__condicion_que__970828",
+        "Condicion_rapidez_del_cambio_de_riesgo__la_frecuencia_de_los_informes_depende_de_la_rapide_449c4e",
+        "Condicion_razonabilidad_y_validez_de_escenarios__supuesto_que_debe_verificarse_en_el_exame_8375b5",
+        "Condicion_realidad_economica_del_instrumento_grupo_1__para_que_una_exposicion_sea_tratada__24b274",
+        "Condicion_recepcion_fondos_infraestructura_financiera__la_empresa_procesadora_de_pagos_deb_148a88",
+        "Condicion_rechazo_por_entidad_depositaria_y_entidad_girada__cuando_la_entidad_depositaria__655f43",
+        "Condicion_rechazos_entre_presentacion_judicial_de_concurso_preventivo_y_notificacion_de_ap_ce800e",
+        "Condicion_reconocimiento_cobertura_riesgo_de_credito__condicion_para_la_aplicacion_de_lo_d_f33e24",
+        "Condicion_rectificativas_por_cambio_de_situacion_y_o_monto__las_rectificativas_aplican_cua_e18178",
+        "Condicion_recupero_improbable_sin_ejecucion_de_garantias__situacion_en_que_la_entidad_fina_e5fa0a",
+        "Condicion_reestructuracion_de_obligacion_crediticia__situacion_en_que_se_ha_acordado_una_r_b77c69",
+        "Condicion_reexpresion_de_activos_que_generan_intereses__para_los_activos_que_generan_inter_cffca3",
+        "Condicion_reexpresion_de_resultados_desde_mes_de_origen__cuando_los_terminos_se_refieren_a_f0ab29",
+        "Condicion_referencia_a_punto_8_5_para_base_de_datos_de_chc__la_base_de_datos_de_cheques_ca_359f0f",
+        "Condicion_refinanciacion_con_quitas_de_capital__el_cliente_ha_refinanciado_su_deuda_con_ot_8bb55e",
+        "Condicion_refinanciacion_previa_desde_niveles_inferiores__para_que_deudores_que_accedieron_5b8bf4",
+        "Condicion_refinanciacion_previa_recategorizacion__para_que_deudores_previamente_clasificad_d85aad",
+        "Condicion_refinanciaciones_reiteradas_y_sistematicas_del_capital__el_cliente_cuenta_con_re_764ed6",
+        "Condicion_reflejo_de_condiciones_de_mercado__los_montos_de_la_certificacion_deben_reflejar_e37e3b",
+        "Condicion_registracion_de_imputaciones_minimo_85__el_exportador_debe_haber_registrado_impu_712ce5",
+        "Condicion_registro_de_ingreso_aduanero_a_nombre_del_pagador_o_tercero__existencia_del_regi_1c2daa",
+        "Condicion_registro_en_fecha_de_ingreso_aduanero__los_boletos_deben_ser_registrados_en_la_f_070203",
+        "Condicion_registro_ingreso_aduanero_a_partir_13_12_23__el_registro_de_ingreso_aduanero_deb_6b745a",
+        "Condicion_registro_totalidad_deudas_importaciones__el_cliente_debe_haber_registrado_la_tot_5dd64c",
+        "Condicion_regulaciones_base_consolidada_asimilacion_partidas__cuando_se_aplican_regulacion_74fe0b",
+        "Condicion_remision_a_punto_4_1__el_tratamiento_de_estas_operaciones_se_rige_por_lo_estable_aaf548",
+        "Condicion_repatriacion_de_fondos_bienes_personales_ley_27_667__las_disposiciones_sobre_caj_1f80f7",
+        "Condicion_requisito_ausencia_de_clausulas_prohibidas__la_titulizacion_no_contiene_clausula_cd0fda",
+        "Condicion_respeto_de_limites_previstos_para_cada_concepto__deben_considerarse_los_limites__61e532",
+        "Condicion_restricciones_legales_u_operativas_impiden_liquidacion_inmediata__supuesto_en_qu_2ac43b",
+        "Condicion_restricciones_vigentes_mientras_duren__las_restricciones_a_los_giros_de_divisas__ecbc35",
+        "Condicion_revision_periodica_de_informes_rtici__los_informes_deben_revisarse_periodicament_249974",
+        "Condicion_riesgo_de_credito_exposiciones_subyacentes__las_exposiciones_subyacentes_conside_df3b14",
+        "Condicion_riesgo_no_estructurado_con_distinta_prelacion__el_riesgo_de_la_inversion_no_se_e_ea4af7",
+        "Condicion_riesgos_inherentes_a_politicas_de_unidad_negocio__el_proceso_de_vigilancia_geren_78b441",
+        "Condicion_sancion_por_multa_de_la_uif_o_inhabilitacion_del_bcra_cnv_ssn__se_tendra_en_cons_8867af",
+        "Condicion_sanciones_de_inhabilitacion_notificadas_al_sistema__sanciones_de_inhabilitacion__642603",
+        "Condicion_se_cumplen_todas_las_condiciones_siguientes__deben_cumplirse_todas_las_condicion_3e786d",
+        "Condicion_se_verifique_alguna_de_las_siguientes_situaciones__cuando_se_verifique_alguna_de_dbea7d",
+        "Condicion_sector_con_tendencia_cuestionable__el_cliente_pertenece_a_un_sector_de_la_activi_0e5281",
+        "Condicion_sector_con_tendencia_futura_no_firme__el_cliente_pertenece_a_un_sector_de_la_act_2cb0c7",
+        "Condicion_sensibilidad_a_cambios_en_perfil_de_riesgo__las_estimaciones_con_modelos_var_deb_5644f6",
+        "Condicion_sistema_basado_en_confianza_fidelidad_de_datos__el_sistema_se_basa_en_la_confian_44c165",
+        "Condicion_sistema_de_informacion_adecuado__el_cliente_tiene_un_adecuado_sistema_de_informa_2baeca",
+        "Condicion_sistema_de_informacion_inadecuado__el_cliente_tiene_un_sistema_de_informacion_in_0fc1d9",
+        "Condicion_sistema_de_informacion_inadecuado__el_cliente_tiene_un_sistema_de_informacion_in_b6dd83",
+        "Condicion_sistema_de_informacion_no_adecuado__el_cliente_tiene_un_sistema_de_informacion_n_71f1d3",
+        "Condicion_situacion_de_aplicacion_de_pautas_de_refinanciacion__la_situacion_que_surja_de_l_c04ffa",
+        "Condicion_situacion_economica_niveles_de_ingreso__supuesto_de_evaluacion_del_riesgo_pais_l_3b3c15",
+        "Condicion_solicitud_de_apertura_por_personas_humanas__cuando_la_solicitud_de_apertura_prov_cfe3ab",
+        "Condicion_solicitud_de_concurso_preventivo_o_quiebra_por_el_deudor__situacion_en_que_el_de_4520e9",
+        "Condicion_solicitud_de_personas_obligadas_a_realizar_aportes__la_apertura_de_las_cuentas_e_f17020",
+        "Condicion_solicitud_de_quiebra_del_deudor__situacion_en_que_se_ha_solicitado_la_quiebra_de_412a6b",
+        "Condicion_solicitud_del_declarante_para_apertura_de_caja__la_apertura_de_la_caja_de_ahorro_08ebe9",
+        "Condicion_solicitud_no_considerada_hasta_completar_requisitos__las_solicitudes_no_seran_co_383ca2",
+        "Condicion_sometimiento_a_condiciones_de_cuentas_especiales__las_cuentas_especiales_estan_s_4f044b",
+        "Condicion_subordinacion_a_depositantes_y_acreedores_quirografarios__los_instrumentos_inclu_978ab8",
+        "Condicion_subordinacion_adicional_de_participacion_subordinada__la_clausula_de_amortizacio_d0056f",
+        "Condicion_subordinacion_de_participacion_de_la_entidad__la_clausula_de_amortizacion_antici_39996e",
+        "Condicion_supuesto_de_acceso_al_mercado_de_cambios__el_cliente_podra_acceder_al_mercado_de_4b1f8a",
+        "Condicion_supuesto_de_evento_de_seguridad__cuando_se_produzca_un_evento_de_seguridad__ling_ef9e09",
+        "Condicion_supuesto_motivo_rechazo_s__motivo_de_rechazo_cuando_se_reciba_una_imagen_para_la_4d2719",
+        "Condicion_supuesto_operaciones_con_usuarios_de_servicios_financieros__se_trata_de_operacio_635dc0",
+        "Condicion_supuesto_titulares_efectuen_cancelacion_de_compras_decreto_194_23__cuando_los_ti_f5b011",
+        "Condicion_tipo_o_naturaleza_de_los_riesgos_reflejados__la_frecuencia_de_los_informes_depen_c283bd",
+        "Condicion_tramo_de_bi_1_000_millones_equivalente_en_pesos__el_bi_es_igual_o_inferior_al_eq_b9b1ea",
+        "Condicion_tramo_de_bi_30_000_millones_equivalente_en_pesos__el_bi_es_superior_a_30_000_mil_95cb30",
+        "Condicion_tramo_de_bi_entre_1_000_y_30_000_millones_equivalente_en_pesos__el_bi_es_superio_2e9020",
+        "Condicion_traslado_de_vencimiento_a_dia_habil_siguiente__si_la_fecha_de_vencimiento_result_281e82",
+        "Condicion_tratamiento_de_opciones_conforme_punto_6_6__las_opciones_se_trataran_conforme_a__599ed8",
+        "Condicion_uso_de_facultades_de_los_articulos_48_y_49_de_la_ley_de_cheques__la_certificacio_233ab3",
+        "Condicion_uso_propiedad_conforme_a_lo_indicado_en_solicitud__el_uso_que_se_dara_a_la_propi_0c6813",
+        "Condicion_valor_de_mercado_del_subyacente_es_cero__cuando_el_valor_de_mercado_del_subyacen_76771f",
+        "Condicion_valores_fijados_por_gerencia_principal_de_tesoro__el_cumplimiento_debe_realizars_a884ca",
+        "Condicion_variabilidad_segun_cantidad_y_complejidad_de_operaciones__los_procedimientos_y_s_ee930f",
+        "Condicion_variacion_diferenciada_por_plazo__la_variacion_en_la_estructura_temporal_de_las__9a082b",
+        "Condicion_variacion_uniforme_de_tasas_de_interes__la_variacion_en_la_estructura_temporal_d_7d169c",
+        "Condicion_variaciones_significativas_anormales_entre_meses__supuesto_de_que_las_cuentas_pr_593762",
+        "Condicion_vencimiento_final_2_anos_financiaciones_7_11_1_5_a_7_11_1_6__el_vencimiento_fina_6b4d66",
+        "Condicion_vencimiento_final_365_dias_financiaciones_7_11_1_1_a_7_11_1_4__el_vencimiento_fi_9ea1e1",
+        "Condicion_venta_de_credito_con_perdida_significativa__situacion_en_que_se_ha_vendido_un_cr_8bc596",
+        "Condicion_verificacion_de_causales_cierre__se_verifica_cualquiera_de_las_causales_prevista_5598ed",
+        "Condicion_verificacion_de_cumplimiento_hasta_6to_mes__condicion_de_que_en_algun_periodo_ha_2ac858",
+        "Condicion_verificacion_de_habilitacion_de_cuenta_de_destino__la_habilitacion_de_la_cuenta__08ba33",
+        "Condicion_verificacion_previa_de_cumplimiento_de_requisitos__se_verifica_previamente_que_s_df31a0",
+        "Condicion_verificacion_previa_de_requisitos__la_entidad_debe_verificar_previamente_que_se__9bd7a4",
+        "Condicion_verificacion_s70400x_010_menor_que_s10140x_010__se_verificara_que_el_saldo_en_pa_55583e",
+        "Condicion_verificacion_totalidad_condiciones__se_requiere_que_se_verifiquen_la_totalidad_d_e21bf1",
+        "Condicion_vida_promedio_endeudamiento_minimo_2_anos__el_endeudamiento_debe_tener_una_vida__18d01e",
+        "Condicion_vida_residual_al_menos_un_ano__supuesto_en_que_la_posicion_vendida_tenga_la_mism_1e85ec",
+        "Condicion_vigencia_a_fecha_de_firma_del_dictamen__la_exclusion_debe_estar_vigente_a_la_fec_6a7bce",
+        "Condicion_vigencia_a_fecha_de_incumplimiento_de_plan_de_facilidades__la_exclusion_debe_est_0b3164",
+        "Condicion_vigencia_a_fecha_de_vencimiento_de_plazo_de_sancion__la_exclusion_debe_estar_vig_965e2f",
+        "Condicion_vigencia_de_certificacion_90_dias_corridos__la_certificacion_mantiene_vigencia_d_bf6db7",
+        "Condicion_vigencia_desde_01_01_25_hasta_31_12_25__disposicion_transitoria_con_vigencia_des_23207f",
+        "Condicion_vigencia_desde_30_04_24__las_disposiciones_del_punto_3_6_rigen_a_partir_del_30_d_f4dc8f",
+        "Condicion_vinculacion_con_planes_estrategicos_y_financieros__la_definicion_del_apetito_y_l_886db7",
+        "Condicion_vinculacion_por_relacion_de_control__existe_vinculacion_por_relacion_de_control__69dceb",
+        "Condicion_vinculo_familiar_conyuge_o_pariente__un_miembro_del_directorio_no_reune_la_condi_fb74db",
+        "Condicion_vpu_adherido_al_rigi_con_declaracion_de_uso_de_beneficios__supuesto_en_que_el_vp_89f273"
+      ]
+    }
+  }
+}

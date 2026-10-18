@@ -1,0 +1,1267 @@
+{
+  "spec": "docs/spec_evaluacion_intrinseca.md",
+  "spec_commit_sellado": "cdf90e6",
+  "spec_sha256": "8bedc6339a741cd754f2c16eeb55e8e27da9b090360dd5039dc19800f8128548",
+  "script_sha256": "644a7beaa21eb1c0a379f5348926546847e58f0ae23b8b3cc09575c5da0a10b1",
+  "rapidfuzz_version": "3.14.5",
+  "umbral_similitud": 75.0,
+  "fecha": "2026-10-17",
+  "custodia": [
+    {
+      "grafo": "KG-Tanda1-Veinte-r2b-sincola",
+      "custodia": "OK",
+      "metodo": "sha256",
+      "sha256_medido": "384a6d5bc139cd7b74d86840c68e7034b7a9bcb4bc26da7c61567f3f053e624e",
+      "sha256_esperado": "384a6d5bc139cd7b74d86840c68e7034b7a9bcb4bc26da7c61567f3f053e624e",
+      "nodos": 12452,
+      "aristas_triples": 28320
+    }
+  ],
+  "grafo": "KG-Tanda1-Veinte-r2b-sincola",
+  "kg_path": "data/experiment/reextraccion_v2/corpus_tanda1/ens_veinte_r2b_sincola/r2/kg.json",
+  "nodos_totales": 12452,
+  "metricas": {
+    "M1_tasa_duplicacion_publicada": {
+      "valor": 0.584324,
+      "numerador": 7276,
+      "denominador": 12452,
+      "convencion": "partial_ratio RapidFuzz sobre label crudo, pares intra-tipo >= 75, componentes conexas, Σ(|C|-1) / nodos totales ([05] §5.1, etapa 1)",
+      "cota": "superior",
+      "notas": {
+        "por_tipo": {
+          "Comunicacion": 110,
+          "Condicion": 545,
+          "Definicion": 1193,
+          "Excepcion": 48,
+          "Obligacion": 2460,
+          "Operacion": 2021,
+          "Potestad": 158,
+          "Restriccion": 417,
+          "Sujeto": 320,
+          "TextoOrdenado": 4
+        },
+        "labels_vacios": 0,
+        "rol": "descriptiva; DECLARADA INFLADA para este corpus (spec §5.b)"
+      }
+    },
+    "M2_tasa_duplicacion_gate": {
+      "valor": 0.292403,
+      "numerador": 3641,
+      "denominador": 12452,
+      "convencion": "ratio RapidFuzz (Levenshtein normalizado, cadenas completas) sobre label con normalización de superficie (minúsculas, sin tildes, colapso de espacios/puntuación), >= 75, mismo clustering que M1",
+      "cota": "superior",
+      "notas": {
+        "por_tipo": {
+          "Comunicacion": 97,
+          "Condicion": 251,
+          "Definicion": 624,
+          "Excepcion": 23,
+          "Obligacion": 1146,
+          "Operacion": 1063,
+          "Potestad": 93,
+          "Restriccion": 237,
+          "Sujeto": 105,
+          "TextoOrdenado": 2
+        },
+        "labels_vacios_tras_normalizar": 0,
+        "rol": "bloqueante en la pasada 2"
+      }
+    },
+    "M3_tasa_conflacion": {
+      "status": "no_computable",
+      "motivo": "generación 3: el registro por nodo es `provenances`, acumulado con dedup exacto por fuente (e2_lib.py:294-297, add_prov): dos menciones del mismo chunk y rol colapsan en una entrada, así que len(provenances) cuenta fuentes (to, punto, rol) distintas, no menciones fusionadas; el conteo de menciones pre-fusión (entidades_in de E2) no persiste en kg.json ni en la salida de E0. Spec §4 M3 exige Σ(menciones_fusionadas − 1) / menciones extraídas totales: sin insumo verificable, no_computable"
+    },
+    "M4_average_degree": {
+      "valor": 4.548667,
+      "numerador": 56640,
+      "denominador": 12452,
+      "convencion": "aristas deduplicadas por triple exacto (source, target, relation); grado = entrantes + salientes; self-loops aportan 2; average = Σ grados / nodos",
+      "cota": "exacta",
+      "notas": {
+        "aristas_unicas": 28320,
+        "aristas_repetidas_removidas": 0,
+        "self_loops": 0,
+        "aristas_dangling": 0,
+        "ids_de_nodo_duplicados": 0,
+        "rol": "descriptiva; NO se reporta sin M6"
+      }
+    },
+    "M5_avg_shortest_path": {
+      "valor": 4.739745,
+      "numerador": 732962100,
+      "denominador": 154641660,
+      "convencion": "BFS no ponderado sobre la versión no dirigida del grafo de aristas únicas, solo componente conexa mayor, promedio sobre pares ordenados distintos; nodos fuera de la componente mayor excluidos y reportados vía M9",
+      "cota": "exacta",
+      "notas": {
+        "n_componente_mayor": 12436,
+        "nodos_fuera_de_lcc": 16,
+        "rol": "descriptiva; NO se reporta sin M6 ni M9"
+      }
+    },
+    "M6_concentracion_de_grado": {
+      "valor": {
+        "grado_max": 2017,
+        "participacion_top1pct": 0.352436,
+        "gini_grado": 0.629283
+      },
+      "numerador": 19962,
+      "denominador": 56640,
+      "convencion": "top 1% = techo(0.01·N) nodos de mayor grado; participación = Σ grados top / Σ grados; Gini sobre la distribución de grados de M4",
+      "cota": "exacta",
+      "notas": {
+        "k_top1pct": 125,
+        "rol": "descriptiva de reporte OBLIGATORIO junto a M4 y M5; especie del backlog: hub_contaminado"
+      }
+    },
+    "M7_tasa_ruido_por_rol": {
+      "valor": 0.0,
+      "numerador": 0,
+      "denominador": 12452,
+      "convencion": "nodos cuyo chunk principal (nodes[].provenance.chunk_id) tiene rol documental no normativo (indice, tabla_norma_origen; rol normativo = cuerpo — vocabulario real de chunk_roles.py, aplicado a la página inicial del chunk de E0); nodos sin chunk principal (esqueleto) no cuentan en el numerador",
+      "cota": "inferior (no captura cáscaras nacidas de chunks normativos)",
+      "notas": {
+        "por_rol": {},
+        "nodos": [],
+        "nodos_sin_chunk_principal_excluidos": 55,
+        "nodos_con_alguna_provenance_no_normativa": 0,
+        "rol": "bloqueante en la pasada 2; especie del backlog: cascara"
+      }
+    },
+    "M8_densidad": {
+      "valor": 0.00018266,
+      "numerador": 28320,
+      "denominador": 155039852,
+      "convencion": "densidad de grafo dirigido simple: aristas únicas sin self-loops / N·(N-1)",
+      "cota": "exacta",
+      "notas": {
+        "rol": "descriptiva"
+      }
+    },
+    "M9_nodos_aislados_y_componentes": {
+      "valor": {
+        "nodos_aislados": 16,
+        "componentes_conexas": 17,
+        "fraccion_en_componente_mayor": 0.998715
+      },
+      "numerador": 12436,
+      "denominador": 12452,
+      "convencion": "versión no dirigida del grafo de aristas únicas; aislados = grado 0; fracción = nodos de la componente mayor / nodos totales",
+      "cota": "exacta",
+      "notas": {
+        "rol": "descriptiva; reporte obligatorio junto a M5"
+      }
+    },
+    "M10_chunks_mudos": {
+      "valor": 0.01275,
+      "numerador": 42,
+      "denominador": 3294,
+      "convencion": "chunk activo = chunk de chunks_<to>.json de E0 (entrada de E1) de los TOs del manifiesto cuya página inicial es de rol cuerpo (spec §4 M10; mismo clasificador que M7); mudo = ningún nodo del grafo lo rastrea en provenances[].chunk_id ni en provenances[].chunks_emisores; denominador = chunks activos (aguas arriba del ensamblado)",
+      "cota": "exacta",
+      "notas": {
+        "mudos_detalle": [
+          {
+            "chunk_id": "cajasc::3.7.2",
+            "to": "cajasc",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              20
+            ]
+          },
+          {
+            "chunk_id": "cajasc::3.7.3",
+            "to": "cajasc",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              20
+            ]
+          },
+          {
+            "chunk_id": "cajasc::4.3.2.3",
+            "to": "cajasc",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              27,
+              28
+            ]
+          },
+          {
+            "chunk_id": "cirmo3::3.4.1",
+            "to": "cirmo3",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              28,
+              29
+            ]
+          },
+          {
+            "chunk_id": "cirmo3::5.5.3.2",
+            "to": "cirmo3",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              42
+            ]
+          },
+          {
+            "chunk_id": "depaho::1.3.5",
+            "to": "depaho",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              5
+            ]
+          },
+          {
+            "chunk_id": "depaho::2.2.2::cierre",
+            "to": "depaho",
+            "tipo": "mini_chunk",
+            "rol_bloque": "cierre",
+            "paginas": [
+              15
+            ]
+          },
+          {
+            "chunk_id": "depaho::2.8.1",
+            "to": "depaho",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              18
+            ]
+          },
+          {
+            "chunk_id": "depaho::3.8.3.4",
+            "to": "depaho",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              44
+            ]
+          },
+          {
+            "chunk_id": "depaho::4.13.1.1",
+            "to": "depaho",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              71,
+              72
+            ]
+          },
+          {
+            "chunk_id": "depaho::4.19.4",
+            "to": "depaho",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              78,
+              79
+            ]
+          },
+          {
+            "chunk_id": "efemin::1.1.1.1",
+            "to": "efemin",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              3
+            ]
+          },
+          {
+            "chunk_id": "efemin::2.5.2",
+            "to": "efemin",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              19
+            ]
+          },
+          {
+            "chunk_id": "efemin::6.4.3.1",
+            "to": "efemin",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              27
+            ]
+          },
+          {
+            "chunk_id": "lingeef::11.1.2",
+            "to": "lingeef",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              151
+            ]
+          },
+          {
+            "chunk_id": "lingeef::2.3.6.2",
+            "to": "lingeef",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              35
+            ]
+          },
+          {
+            "chunk_id": "lingeef::3.5.4.3",
+            "to": "lingeef",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              68
+            ]
+          },
+          {
+            "chunk_id": "lingeef::4.1.2.1",
+            "to": "lingeef",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              71
+            ]
+          },
+          {
+            "chunk_id": "lingeef::5.3.4.2",
+            "to": "lingeef",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              101
+            ]
+          },
+          {
+            "chunk_id": "lingeef::5.3.4.4",
+            "to": "lingeef",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              101
+            ]
+          },
+          {
+            "chunk_id": "lingeef::5.4.2.3",
+            "to": "lingeef",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              105,
+              106,
+              107,
+              108,
+              109,
+              110,
+              111
+            ]
+          },
+          {
+            "chunk_id": "lingeef::5.4.5.1",
+            "to": "lingeef",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              116
+            ]
+          },
+          {
+            "chunk_id": "lingeef::6.1.3.3",
+            "to": "lingeef",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              120
+            ]
+          },
+          {
+            "chunk_id": "lingeef::6.1.3.7",
+            "to": "lingeef",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              120
+            ]
+          },
+          {
+            "chunk_id": "manori::1.1.6.4",
+            "to": "manori",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              11
+            ]
+          },
+          {
+            "chunk_id": "manori::1.2.10.2",
+            "to": "manori",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              24
+            ]
+          },
+          {
+            "chunk_id": "manori::3.2.9.2",
+            "to": "manori",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              72
+            ]
+          },
+          {
+            "chunk_id": "manori::Sbloque4::parte1",
+            "to": "manori",
+            "tipo": "seccion_sin_puntos",
+            "rol_bloque": null,
+            "paginas": [
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56
+            ]
+          },
+          {
+            "chunk_id": "ri_ccna::D1F2::3.2",
+            "to": "ri_ccna",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              32
+            ]
+          },
+          {
+            "chunk_id": "ri_ccna::D1F2::3.7",
+            "to": "ri_ccna",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              32
+            ]
+          },
+          {
+            "chunk_id": "ri_ccna::D1F2::S1",
+            "to": "ri_ccna",
+            "tipo": "seccion_sin_puntos",
+            "rol_bloque": null,
+            "paginas": [
+              32
+            ]
+          },
+          {
+            "chunk_id": "ri_ccna::D1F2::S5",
+            "to": "ri_ccna",
+            "tipo": "seccion_sin_puntos",
+            "rol_bloque": null,
+            "paginas": [
+              32
+            ]
+          },
+          {
+            "chunk_id": "ri_ccna::D1F6::S1",
+            "to": "ri_ccna",
+            "tipo": "seccion_sin_puntos",
+            "rol_bloque": null,
+            "paginas": [
+              41
+            ]
+          },
+          {
+            "chunk_id": "ri_ccna::D2A2::S1",
+            "to": "ri_ccna",
+            "tipo": "seccion_sin_puntos",
+            "rol_bloque": null,
+            "paginas": [
+              49
+            ]
+          },
+          {
+            "chunk_id": "ri_dcpc::3.1.1",
+            "to": "ri_dcpc",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              9
+            ]
+          },
+          {
+            "chunk_id": "ri_pgn::2.2.2",
+            "to": "ri_pgn",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              4
+            ]
+          },
+          {
+            "chunk_id": "ri_rml::Sbloque10",
+            "to": "ri_rml",
+            "tipo": "seccion_sin_puntos",
+            "rol_bloque": null,
+            "paginas": [
+              40,
+              41
+            ]
+          },
+          {
+            "chunk_id": "ri_rml::Sbloque14::parte1",
+            "to": "ri_rml",
+            "tipo": "seccion_sin_puntos",
+            "rol_bloque": null,
+            "paginas": [
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68
+            ]
+          },
+          {
+            "chunk_id": "ri_rml::Sbloque14::parte4",
+            "to": "ri_rml",
+            "tipo": "seccion_sin_puntos",
+            "rol_bloque": null,
+            "paginas": [
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68
+            ]
+          },
+          {
+            "chunk_id": "snp_cheq::3.1.4.2",
+            "to": "snp_cheq",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              24,
+              25,
+              26
+            ]
+          },
+          {
+            "chunk_id": "snp_tr::1.3.1.2",
+            "to": "snp_tr",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              9
+            ]
+          },
+          {
+            "chunk_id": "snp_tr::2.3.3.1",
+            "to": "snp_tr",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              51
+            ]
+          }
+        ],
+        "universo_por_to": {
+          "adrei": 70,
+          "ayccef": 196,
+          "cajasc": 287,
+          "ceninf": 39,
+          "cirmo3": 256,
+          "depaho": 442,
+          "efemin": 119,
+          "expaef": 165,
+          "lingeef": 613,
+          "manori": 152,
+          "nmcief": 55,
+          "opefci": 74,
+          "ri_ccna": 169,
+          "ri_dcpc": 75,
+          "ri_gerc": 15,
+          "ri_mmsef": 128,
+          "ri_pgn": 21,
+          "ri_rml": 50,
+          "snp_cheq": 265,
+          "snp_tr": 103
+        },
+        "chunks_excluidos_del_universo_por_rol": {},
+        "dirección_de_mejora": "cero",
+        "rol": "bloqueante en la pasada 2"
+      }
+    },
+    "M11_cobertura_CQ": {
+      "status": "no_medida_en_esta_unidad",
+      "motivo": "régimen especial de la spec §6: medición única y separada sobre el set quemado; jamás objetivo de optimización"
+    }
+  },
+  "adaptador_gen3": {
+    "descripcion": "Declaración de insumos de generación 3 para M3, M7 y M10 (decisión 2 del mandato del gate 6). Fórmulas de la spec intactas; M1, M2, M4, M5, M6, M8 y M9 con el mismo código que los grafos de generaciones 1 y 2.",
+    "e0_dir": "<SCRATCHPAD>/t3/e0_tanda1_r2b_con_partes",
+    "manifiesto": "data/experiment/reextraccion_v2/manifiestos/tanda1_ens_veinte_r2b_sincola.json",
+    "tos": [
+      "adrei",
+      "ayccef",
+      "cajasc",
+      "ceninf",
+      "cirmo3",
+      "depaho",
+      "efemin",
+      "expaef",
+      "lingeef",
+      "manori",
+      "nmcief",
+      "opefci",
+      "ri_ccna",
+      "ri_dcpc",
+      "ri_gerc",
+      "ri_mmsef",
+      "ri_pgn",
+      "ri_rml",
+      "snp_cheq",
+      "snp_tr"
+    ],
+    "pdfs": {
+      "adrei": {
+        "ruta": "data/experiment/escalado_prep/pdfs/adrei.pdf",
+        "sha256": "44a2eea2e1d374d68e379924ede75896333b7957bde43de6dcf918f34faf5315",
+        "sha256_manifiesto": "44a2eea2e1d374d68e379924ede75896333b7957bde43de6dcf918f34faf5315",
+        "coincide": true
+      },
+      "ayccef": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ayccef.pdf",
+        "sha256": "aa5e3e43a920c904d47e81526ea4a61ea6b683418a2d4890b3254a029e6de9c5",
+        "sha256_manifiesto": "aa5e3e43a920c904d47e81526ea4a61ea6b683418a2d4890b3254a029e6de9c5",
+        "coincide": true
+      },
+      "cajasc": {
+        "ruta": "data/experiment/escalado_prep/pdfs/cajasc.pdf",
+        "sha256": "15b0623fd2897cfe7bcd81a5f9bd92ea239c2dfaa04053a9033fbf8c9dfa5d16",
+        "sha256_manifiesto": "15b0623fd2897cfe7bcd81a5f9bd92ea239c2dfaa04053a9033fbf8c9dfa5d16",
+        "coincide": true
+      },
+      "ceninf": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ceninf.pdf",
+        "sha256": "18a0b119a2261c95b570bc091653691f0109365ca3739273e58a0d0a1d6e4b13",
+        "sha256_manifiesto": "18a0b119a2261c95b570bc091653691f0109365ca3739273e58a0d0a1d6e4b13",
+        "coincide": true
+      },
+      "cirmo3": {
+        "ruta": "data/experiment/escalado_prep/pdfs/cirmo3.pdf",
+        "sha256": "6ffbf997cf218aa1033e2fc77a06779553edc6536f4d9c09f202ebdd6087cba0",
+        "sha256_manifiesto": "6ffbf997cf218aa1033e2fc77a06779553edc6536f4d9c09f202ebdd6087cba0",
+        "coincide": true
+      },
+      "depaho": {
+        "ruta": "data/experiment/escalado_prep/pdfs/depaho.pdf",
+        "sha256": "d98ef03929e9e6604927a42d029f7d0cab30b30961374520a455ac23960b08fd",
+        "sha256_manifiesto": "d98ef03929e9e6604927a42d029f7d0cab30b30961374520a455ac23960b08fd",
+        "coincide": true
+      },
+      "efemin": {
+        "ruta": "data/experiment/escalado_prep/pdfs/efemin.pdf",
+        "sha256": "327ab2bb64f67ba4ce6f469798d88ea6c61f61c0dc059ef8e60e624a1a180ea8",
+        "sha256_manifiesto": "327ab2bb64f67ba4ce6f469798d88ea6c61f61c0dc059ef8e60e624a1a180ea8",
+        "coincide": true
+      },
+      "expaef": {
+        "ruta": "data/experiment/escalado_prep/pdfs/expaef.pdf",
+        "sha256": "9cb78ac9e1c73b217275450031a056799bf7a9198e2575866dc3f85e4e705a25",
+        "sha256_manifiesto": "9cb78ac9e1c73b217275450031a056799bf7a9198e2575866dc3f85e4e705a25",
+        "coincide": true
+      },
+      "lingeef": {
+        "ruta": "data/experiment/escalado_prep/pdfs/lingeef.pdf",
+        "sha256": "0ff1dfcc04e73efc8f53dd551ca257dceb32b23c77d3be015cbc011d6bf9f918",
+        "sha256_manifiesto": "0ff1dfcc04e73efc8f53dd551ca257dceb32b23c77d3be015cbc011d6bf9f918",
+        "coincide": true
+      },
+      "manori": {
+        "ruta": "data/experiment/escalado_prep/pdfs/manori.pdf",
+        "sha256": "d1758b8f4e9ce6a32d7498f64123b0dab31b3f99229dbcf9590688087b073f09",
+        "sha256_manifiesto": "d1758b8f4e9ce6a32d7498f64123b0dab31b3f99229dbcf9590688087b073f09",
+        "coincide": true
+      },
+      "nmcief": {
+        "ruta": "data/experiment/escalado_prep/pdfs/nmcief.pdf",
+        "sha256": "467d9dc3afa4266c37b750df466925f15f761bcd0528437851aeed1560de6fad",
+        "sha256_manifiesto": "467d9dc3afa4266c37b750df466925f15f761bcd0528437851aeed1560de6fad",
+        "coincide": true
+      },
+      "opefci": {
+        "ruta": "data/experiment/escalado_prep/pdfs/opefci.pdf",
+        "sha256": "1012372fc30d37a948f828b1e57c2e6ce47bf8d2393359d0aef307f6e97bcd89",
+        "sha256_manifiesto": "1012372fc30d37a948f828b1e57c2e6ce47bf8d2393359d0aef307f6e97bcd89",
+        "coincide": true
+      },
+      "ri_ccna": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_ccna.pdf",
+        "sha256": "d2bfb3c0bb64a3ebdc7fba84077479057e8ced9a07ba59507bd5f336830c7738",
+        "sha256_manifiesto": "d2bfb3c0bb64a3ebdc7fba84077479057e8ced9a07ba59507bd5f336830c7738",
+        "coincide": true
+      },
+      "ri_dcpc": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_dcpc.pdf",
+        "sha256": "20621470038326adf4c08a45a35284041235270483fb0aa2527acb4b99a00561",
+        "sha256_manifiesto": "20621470038326adf4c08a45a35284041235270483fb0aa2527acb4b99a00561",
+        "coincide": true
+      },
+      "ri_gerc": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_gerc.pdf",
+        "sha256": "a774cd6053454509b3c133451ba4c8ab604ba0caaaeff8609b633646c3da097e",
+        "sha256_manifiesto": "a774cd6053454509b3c133451ba4c8ab604ba0caaaeff8609b633646c3da097e",
+        "coincide": true
+      },
+      "ri_mmsef": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_mmsef.pdf",
+        "sha256": "6da98633ca26dbc3f9771860a07980ccc02100174373c53143145a1e227bb84f",
+        "sha256_manifiesto": "6da98633ca26dbc3f9771860a07980ccc02100174373c53143145a1e227bb84f",
+        "coincide": true
+      },
+      "ri_pgn": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_pgn.pdf",
+        "sha256": "57ae2dd85117235f734e971f101f70197d47bc5d438829c1a3c89b63ae513a9d",
+        "sha256_manifiesto": "57ae2dd85117235f734e971f101f70197d47bc5d438829c1a3c89b63ae513a9d",
+        "coincide": true
+      },
+      "ri_rml": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_rml.pdf",
+        "sha256": "064499583aac9ee947c5f1c222869ae9959d5acb9e3b038aa5d8699b5b2c1a96",
+        "sha256_manifiesto": "064499583aac9ee947c5f1c222869ae9959d5acb9e3b038aa5d8699b5b2c1a96",
+        "coincide": true
+      },
+      "snp_cheq": {
+        "ruta": "data/experiment/escalado_prep/pdfs/snp_cheq.pdf",
+        "sha256": "88748cf77d0eb2fe7f81f39b850b3a463a48e8ed3bc13da593be265a1a8d632a",
+        "sha256_manifiesto": "88748cf77d0eb2fe7f81f39b850b3a463a48e8ed3bc13da593be265a1a8d632a",
+        "coincide": true
+      },
+      "snp_tr": {
+        "ruta": "data/experiment/escalado_prep/pdfs/snp_tr.pdf",
+        "sha256": "760521827165f671de3b506acd4df1fdfb2da9abdcf22e15e86cb510b742c9a8",
+        "sha256_manifiesto": "760521827165f671de3b506acd4df1fdfb2da9abdcf22e15e86cb510b742c9a8",
+        "coincide": true
+      }
+    },
+    "chunks_e0": {
+      "total": 3294,
+      "por_to": {
+        "adrei": 70,
+        "ayccef": 196,
+        "cajasc": 287,
+        "ceninf": 39,
+        "cirmo3": 256,
+        "depaho": 442,
+        "efemin": 119,
+        "expaef": 165,
+        "lingeef": 613,
+        "manori": 152,
+        "nmcief": 55,
+        "opefci": 74,
+        "ri_ccna": 169,
+        "ri_dcpc": 75,
+        "ri_gerc": 15,
+        "ri_mmsef": 128,
+        "ri_pgn": 21,
+        "ri_rml": 50,
+        "snp_cheq": 265,
+        "snp_tr": 103
+      },
+      "campo_paginas": "chunks_<to>.json[].paginas, 1-based (e0_lib.py:291, :309)",
+      "vocabulario_observado": {
+        "tipo": {
+          "mini_chunk": 469,
+          "punto_terminal": 2651,
+          "seccion_sin_puntos": 174
+        },
+        "rol_bloque": {
+          "<ausente>": 2825,
+          "chapeau_seccion": 44,
+          "cierre": 77,
+          "intersticial": 49,
+          "intro": 299
+        },
+        "flags.contenido_tabular": {
+          "False": 3113,
+          "True": 181
+        }
+      }
+    },
+    "rol_documental": {
+      "metodo": "chunk_roles.roles_de_pagina(pdf) sobre la primera página de cada chunk",
+      "paginas_por_rol_por_to": {
+        "adrei": {
+          "paginas": 19,
+          "por_rol": {
+            "cuerpo": 17,
+            "indice": 1,
+            "tabla_norma_origen": 1
+          }
+        },
+        "ayccef": {
+          "paginas": 47,
+          "por_rol": {
+            "cuerpo": 38,
+            "indice": 2,
+            "tabla_norma_origen": 7
+          }
+        },
+        "cajasc": {
+          "paginas": 68,
+          "por_rol": {
+            "cuerpo": 64,
+            "indice": 2,
+            "tabla_norma_origen": 2
+          }
+        },
+        "ceninf": {
+          "paginas": 23,
+          "por_rol": {
+            "cuerpo": 23
+          }
+        },
+        "cirmo3": {
+          "paginas": 107,
+          "por_rol": {
+            "cuerpo": 102,
+            "indice": 1,
+            "tabla_norma_origen": 4
+          }
+        },
+        "depaho": {
+          "paginas": 107,
+          "por_rol": {
+            "cuerpo": 97,
+            "indice": 3,
+            "tabla_norma_origen": 7
+          }
+        },
+        "efemin": {
+          "paginas": 53,
+          "por_rol": {
+            "cuerpo": 48,
+            "indice": 1,
+            "tabla_norma_origen": 4
+          }
+        },
+        "expaef": {
+          "paginas": 37,
+          "por_rol": {
+            "cuerpo": 30,
+            "indice": 3,
+            "tabla_norma_origen": 4
+          }
+        },
+        "lingeef": {
+          "paginas": 172,
+          "por_rol": {
+            "cuerpo": 166,
+            "indice": 3,
+            "tabla_norma_origen": 3
+          }
+        },
+        "manori": {
+          "paginas": 99,
+          "por_rol": {
+            "cuerpo": 95,
+            "indice": 1,
+            "tabla_norma_origen": 3
+          }
+        },
+        "nmcief": {
+          "paginas": 36,
+          "por_rol": {
+            "cuerpo": 35,
+            "indice": 1
+          }
+        },
+        "opefci": {
+          "paginas": 33,
+          "por_rol": {
+            "cuerpo": 27,
+            "indice": 2,
+            "tabla_norma_origen": 4
+          }
+        },
+        "ri_ccna": {
+          "paginas": 60,
+          "por_rol": {
+            "cuerpo": 58,
+            "indice": 2
+          }
+        },
+        "ri_dcpc": {
+          "paginas": 44,
+          "por_rol": {
+            "cuerpo": 44
+          }
+        },
+        "ri_gerc": {
+          "paginas": 8,
+          "por_rol": {
+            "cuerpo": 7,
+            "indice": 1
+          }
+        },
+        "ri_mmsef": {
+          "paginas": 9,
+          "por_rol": {
+            "cuerpo": 9
+          }
+        },
+        "ri_pgn": {
+          "paginas": 19,
+          "por_rol": {
+            "cuerpo": 18,
+            "indice": 1
+          }
+        },
+        "ri_rml": {
+          "paginas": 77,
+          "por_rol": {
+            "cuerpo": 76,
+            "indice": 1
+          }
+        },
+        "snp_cheq": {
+          "paginas": 159,
+          "por_rol": {
+            "cuerpo": 155,
+            "indice": 2,
+            "tabla_norma_origen": 2
+          }
+        },
+        "snp_tr": {
+          "paginas": 62,
+          "por_rol": {
+            "cuerpo": 59,
+            "indice": 1,
+            "tabla_norma_origen": 2
+          }
+        }
+      },
+      "chunks_por_rol": {
+        "cuerpo": 3294
+      },
+      "chunks_con_paginas_mixtas": [],
+      "nota_e0": "E0 solo parsea páginas de rol cuerpo (e0_lib.py:678-680) con marcadores equivalentes a los de chunk_roles.py (e0_lib.py:196-210, :344-390); el vocabulario de E0 (tipo, rol_bloque, provenance.rol_documental) no contiene indice ni tabla_norma_origen"
+    },
+    "atribucion_nodo_chunk": {
+      "campo": "nodes[].provenances[].chunk_id y chunks_emisores (r1_provenance.py:1-30, :75-88); principal = nodes[].provenance.chunk_id (e2_lib.py:360)",
+      "provenances_totales": 17963,
+      "provenances_con_chunk_id": 17853,
+      "provenances_sin_chunk_id": 110,
+      "nodos_sin_chunk_principal": 55,
+      "chunk_ids_fuera_de_e0": 0,
+      "chunks_con_algun_nodo": 3252,
+      "rol_documental_provenances": {
+        "bloque_chapeau_seccion": 239,
+        "bloque_cierre": 396,
+        "bloque_intersticial": 175,
+        "bloque_intro": 1237,
+        "esqueleto": 110,
+        "herencia_chapeau_seccion": 6,
+        "herencia_cierre": 15,
+        "herencia_encabezado": 61,
+        "herencia_intro": 64,
+        "punto_propio": 15660
+      }
+    },
+    "M3": {
+      "status": "no_computable",
+      "motivo": "generación 3: el registro por nodo es `provenances`, acumulado con dedup exacto por fuente (e2_lib.py:294-297, add_prov): dos menciones del mismo chunk y rol colapsan en una entrada, así que len(provenances) cuenta fuentes (to, punto, rol) distintas, no menciones fusionadas; el conteo de menciones pre-fusión (entidades_in de E2) no persiste en kg.json ni en la salida de E0. Spec §4 M3 exige Σ(menciones_fusionadas − 1) / menciones extraídas totales: sin insumo verificable, no_computable",
+      "observacion_no_es_la_metrica": {
+        "nodos_con_mas_de_una_provenance": 173,
+        "suma_provenances_menos_uno": 5511,
+        "nota": "cuenta fuentes (to, punto, rol) distintas fusionadas por nodo, no menciones; se registra para el laudo de la autora, no sustituye a M3"
+      }
+    },
+    "M7": {
+      "status": "computable",
+      "insumos": [
+        "nodes[].provenance.chunk_id (chunk principal; e2_lib.py:360 first-write en orden documental; chunk_id agregado por r1_provenance.py:75-88)",
+        "chunks_<to>.json[].paginas (1-based; e0_lib.py:291, :309, :1604, :1646)",
+        "chunk_roles.roles_de_pagina(pdf del manifiesto) (chunk_roles.py:52-68)"
+      ],
+      "convencion_gen3": "rol del chunk = rol de su primera página (espejo de _rol_en_offset sobre el inicio del chunk, chunk_roles.py:71-75, :110); nodos con provenance.rol_documental = esqueleto (chunk_id None; r1_e5_esqueleto.py:69) fuera del numerador, dentro del denominador"
+    },
+    "M10": {
+      "status": "computable",
+      "insumos": [
+        "chunks_<to>.json de E0 de los TOs del manifiesto (universo aguas arriba: E0 es la entrada de E1; e2_lib.py:15-31 guarda de fan-in)",
+        "rol de página como en M7",
+        "nodes[].provenances[].chunk_id y chunks_emisores (r1_provenance.py:1-30, :75-88)"
+      ],
+      "convencion_gen3": "un chunk aporta si aparece como chunk_id o dentro de chunks_emisores de alguna provenance de algún nodo; universo = chunks de rol cuerpo"
+    },
+    "condiciones_sin_regla": {
+      "condicion": 1401,
+      "sin_arista_de_contenido": 221,
+      "sin_condicion_de_saliente": 221,
+      "nodos_sin_arista_de_contenido": [
+        "Condicion_acompanamiento_de_informaciones_y_documentacion__la_solicitud_debe_acompanarse_c_4b2092",
+        "Condicion_acreditacion_en_fechas_convenidas__los_intereses_se_acreditaran_en_la_cuenta_en__db07d9",
+        "Condicion_acuerdos_con_mayor_asistencia_crediticia_en_capital__alternativa_otorgamiento_ex_ba3906",
+        "Condicion_adecuacion_de_capacidad_a_importancia_riesgo_y_tamano_de_exposiciones__la_capaci_c67196",
+        "Condicion_alcance_a_operaciones_de_puntos_5_2_a_5_4__las_disposiciones_de_esta_seccion_alc_955268",
+        "Condicion_alco_debe_reunirse_periodicamente__si_la_delegacion_recae_en_un_comite_de_gestio_5c2253",
+        "Condicion_alineacion_nivel_exposicion_riesgo_con_gestion_de_riesgos__el_nivel_de_exposicio_7a257d",
+        "Condicion_alteraciones_y_escenarios_reflejen_naturaleza_de_carteras__las_alteraciones_o_es_bf6bd7",
+        "Condicion_antiguedad_en_matricula_tres_anos_o_mas__el_auditor_externo_debe_contar_con_anti_ceec9f",
+        "Condicion_apertura_a_nombre_de_titulares_informados_por_persona_juridica__cuando_la_solici_cd2984",
+        "Condicion_apertura_a_orden_de_apoderado_o_representante_legal__de_corresponder_la_apertura_345e28",
+        "Condicion_apertura_contemplada_expresamente_en_plan_de_negocios__la_apertura_de_la_sucursa_2be1da",
+        "Condicion_aplicabilidad_a_entidades_a_y_b_sin_prorroga__la_estimacion_del_deterioro_de_act_b4d1a2",
+        "Condicion_aplicabilidad_de_informacion_de_cabecera_a_registros_individuales__la_informacio_4280eb",
+        "Condicion_aplicacion_de_indemnizacion_de_seguro_de_vida_cancelacion_de_saldo__en_caso_de_f_300967",
+        "Condicion_aplicacion_de_indemnizacion_de_siniestro_prioridad_al_saldo_adeudado__en_caso_de_1844fd",
+        "Condicion_aplicacion_de_regimen_de_moneda_del_punto_1_5__la_caja_de_ahorros_destinada_a_me_789576",
+        "Condicion_aplicacion_segun_seccion_6_grandes_exposiciones__se_aplican_los_codigos_de_nivel_182121",
+        "Condicion_aprobacion_asambleas_generales_constitucion_entidad_resultante__que_las_respecti_b71fe7",
+        "Condicion_asegurar_adecuado_funcionamiento_controles__condicion_de_que_la_documentacion_de_784cb0",
+        "Condicion_atrasos_superiores_a_180_dias__supuesto_de_que_el_deudor_registre_atrasos_superi_02ada1",
+        "Condicion_auditor_debe_estar_inscripto_en_registro_de_auditores_de_la_superintendencia__la_71037f",
+        "Condicion_auditor_interino_debe_cumplir_todos_los_requisitos_exigidos__el_auditor_interino_57664f",
+        "Condicion_aumento_rapido_de_activos_con_pasivos_volatiles__supuesto_de_identificacion_de_r_ec6997",
+        "Condicion_ausencia_de_indicacion_contraria_de_entidad_originaria__cuando_la_entidad_origin_6f39f9",
+        "Condicion_basarse_en_experiencia_previa_juicio_de_expertos_y_pruebas_de_estres__los_elemen_cca541",
+        "Condicion_bienes_cedidos_libres_de_gravamenes__condicion_que_los_bienes_cedidos_en_fideico_8edaf7",
+        "Condicion_billete_dividido_o_fragmentado_con_evidencia_de_pertenencia__las_partes_del_bill_e8538e",
+        "Condicion_billetes_entintados_remision_a_punto_2_3__para_billetes_entintados_se_aplica_el__e5a010",
+        "Condicion_calculo_limites_con_rpc_noviembre_15__para_el_calculo_de_los_limites_se_computar_b21c32",
+        "Condicion_calculo_por_promedio_simple_de_saldos_diarios__a_efectos_del_computo_del_cupo_mi_65725c",
+        "Condicion_calificacion_1_2_o_3_sefyc__contar_con_calificacion_1_2_o_3_de_la_sefyc_en_tres__9f1be7",
+        "Condicion_calificacion_1_2_o_3_sefyc_control_interno__la_entidad_debe_tener_calificacion_1_1603e5",
+        "Condicion_calificacion_1_2_o_3_sefyc_entidad_en_conjunto__la_entidad_debe_tener_calificaci_8f031b",
+        "Condicion_calificacion_sefyc_sistemas_informaticos__tener_calificacion_1_2_o_3_de_la_sefyc_85e31e",
+        "Condicion_cambio_concretado_en_composicion_accionaria__la_modificacion_significativa_de_la_de88f2",
+        "Condicion_campos_ingresados_correctos_en_consulta__supuesto_en_que_todos_los_campos_ingres_99d568",
+        "Condicion_capacidad_acreditada_por_resolucion_del_organo_pertinente__la_persona_juridica_d_f0d261",
+        "Condicion_causales_autorizadas_para_rechazo__el_rechazo_debe_fundarse_en_algunas_de_las_ca_6d8541",
+        "Condicion_chc_en_dolares_estadounidenses__cuando_el_cheque_cancelatorio_esta_confeccionado_e06018",
+        "Condicion_chc_en_pesos__cuando_el_cheque_cancelatorio_esta_confeccionado_en_pesos__cirmo3__23375a",
+        "Condicion_ciclo_de_vida_del_incidente_clasificacion_de_gravedad__clasificacion_de_la_grave_f21f76",
+        "Condicion_ciclo_de_vida_del_incidente_planes_de_comunicacion__implementacion_de_planes_de__bed135",
+        "Condicion_ciclo_de_vida_del_incidente_procedimientos_de_respuesta_y_recuperacion__procedim_797d73",
+        "Condicion_cliente_es_otra_entidad_representada__el_cliente_que_deposita_el_cheque_puede_se_6a07d7",
+        "Condicion_cliente_identificado_y_autenticado_para_transacciones__condicion_para_que_se_rea_4d0de5",
+        "Condicion_codigo_tp_corresponda_a_especie_en_dolares_estadounidenses__condicion_que_requie_ffeaea",
+        "Condicion_codigo_tp_corresponda_a_especie_en_pesos__condicion_que_requiere_que_el_codigo_t_02e2be",
+        "Condicion_computo_de_plazo_maximo_de_traslado__para_el_computo_del_plazo_maximo_de_traslad_e79749",
+        "Condicion_concentracion_depositos_sector_privado__se_evaluara_la_concentracion_de_los_depo_e85701",
+        "Condicion_concentracion_prestamos_sector_privado__se_evaluara_la_concentracion_de_los_pres_13d603",
+        "Condicion_condena_por_delitos_de_lavado_de_activos_o_financiamiento_del_terrorismo__se_ten_e0fa9b",
+        "Condicion_condicion_a_partir_de_primera_licitacion__el_margen_se_aplica_a_partir_de_la_pri_7289e6",
+        "Condicion_condicion_activos_revaluados_al_31_12_16__cuando_los_activos_fueron_medidos_a_su_edddd2",
+        "Condicion_condicion_consideracion_de_reserva_por_aplicacion_niif__en_los_movimientos_permu_c1e192",
+        "Condicion_condicion_credito_adicional_no_cancelado__la_permanencia_de_180_dias_aplica_solo_3e7a72",
+        "Condicion_condicion_cumplimiento_de_obligaciones_refinanciadas__el_deudor_debe_haber_cumpl_e0c16f",
+        "Condicion_condicion_de_corresponder__cuando_corresponda_las_entidades_informaran_datos_min_0ba7c8",
+        "Condicion_condicion_de_cumplimiento_previo_de_exigencias__las_autorizaciones_para_la_fusio_2b6308",
+        "Condicion_condicion_entidades_a_y_b_sin_prorroga_de_efecto__la_estimacion_de_deterioro_es__afe8b9",
+        "Condicion_condicion_existencia_resultados_no_asignados_positivos__existencia_de_resultados_e2fc14",
+        "Condicion_condicion_hasta_tanto_se_produzca_resolucion_del_bcra__hasta_tanto_no_se_produzc_795afe",
+        "Condicion_condicion_integracion_de_nomina_de_familiares__la_declaracion_debe_incluir_conyu_cec054",
+        "Condicion_condicion_o_requisito_en_resolucion_de_autorizacion__cumplimiento_de_cualquier_o_d27175",
+        "Condicion_condicion_octavo_dia_habil_de_presentacion__la_fecha_de_compensacion_del_reclamo_fe6ddd",
+        "Condicion_condicion_resto_de_deudas_en_nivel_inmediato_superior__el_resto_de_las_deudas_de_d347cb",
+        "Condicion_condicion_rtici_excesivo_sin_gestion_adecuada__un_rtici_excesivo_que_no_se_gesti_6fae69",
+        "Condicion_condicion_segun_estado_resultante_de_billetes__el_procedimiento_posterior_depend_41aaed",
+        "Condicion_condicion_sucursal_en_zona_de_mayor_categoria__una_o_mas_sucursales_se_instalan__dabb8d",
+        "Condicion_conforme_a_horarios_definidos__la_informacion_a_las_entidades_giradas_debe_reali_d8cc91",
+        "Condicion_conforme_a_normas_e_instrucciones_aplicables__la_entrega_debe_realizarse_conform_fce0ae",
+        "Condicion_conformidad_con_punto_6__las_instrucciones_tecnicas_y_operativas_se_establecen_c_93117e",
+        "Condicion_conformidad_decreto_556_22_y_ley_27_701__las_disposiciones_sobre_cecon_ar_se_apl_6a2a97",
+        "Condicion_consideracion_de_cambios_en_perfil_y_apetito_de_riesgo__el_proceso_de_revision_y_ed7b56",
+        "Condicion_consideracion_de_cambios_en_umbrales_o_limites_de_riesgo__el_proceso_de_revision_45effb",
+        "Condicion_consideracion_de_controles_y_estrategias_de_mitigacion__el_proceso_de_revision_y_02731a",
+        "Condicion_consideracion_de_correlacion_de_activos__la_correlacion_existente_entre_los_acti_a6b734",
+        "Condicion_consideracion_de_descalces_de_vencimientos__descalces_de_vencimientos_entre_las__6083fe",
+        "Condicion_consideracion_de_desfases_de_flujos_y_severidad_de_estres__considerar_la_magnitu_c92121",
+        "Condicion_consideracion_de_procedimientos_y_metricas_de_evaluacion__el_proceso_de_revision_e27890",
+        "Condicion_consideracion_de_riesgos_inherentes_en_revision_y_aprobacion__el_proceso_de_revi_86f261",
+        "Condicion_consideracion_del_riesgo_residual__el_proceso_de_revision_y_aprobacion_debe_cons_ba9377",
+        "Condicion_consistencia_con_fortaleza_financiera_global__las_politicas_practicas_procedimie_205543",
+        "Condicion_consistencia_con_objetivos_de_la_entidad__las_politicas_practicas_procedimientos_66a21b",
+        "Condicion_contrapartidas_de_deudores_y_acreedores_precio_en_moneda_extranjera__se_consider_505c95",
+        "Condicion_criterios_de_atribucion_estables_en_el_tiempo__los_criterios_de_atribucion_de_fl_8edddd",
+        "Condicion_cuentas_especiales_sujetas_a_condiciones__las_cuentas_especiales_quedan_sujetas__3ff04c",
+        "Condicion_cumplimiento_condiciones_basicas_punto_1_1_2_3__se_requiere_mantener_el_cumplimi_cfdab0",
+        "Condicion_cumplimiento_de_requisitos_en_resolucion_de_autorizacion__cumplimiento_de_todo_o_e33c18",
+        "Condicion_cumplimiento_requisitos_com_a_7873_y_o_7874__el_cliente_debe_cumplir_los_requisi_4c6071",
+        "Condicion_datos_del_cheque_no_coinciden_por_error_en_captura__supuesto_en_que_las_entidade_fabfbe",
+        "Condicion_declaracion_responsable_de_irregularidades_en_gobierno__supuesto_que_inhabilita__04a3ef",
+        "Condicion_declaracion_responsable_de_irregularidades_en_gobierno__supuesto_que_inhabilita__904e01",
+        "Condicion_defectos_de_integracion_en_posicion_promedio__defectos_de_integracion_en_la_posi_fedfda",
+        "Condicion_demora_en_pago_responsabilidad_del_deudor__cuando_la_demora_en_el_pago_se_debe_a_c3ba28",
+        "Condicion_depositos_a_plazo_fijo_en_moneda_extranjera_aplicar_procedimiento_conjunto__el_p_bdf736",
+        "Condicion_deteccion_por_entidad_distinta_a_la_originaria__cuando_el_ejemplar_deteriorado_s_ebfedd",
+        "Condicion_determinacion_de_capital_segun_perfil_de_riesgo__el_nivel_de_capital_debe_determ_f7e550",
+        "Condicion_determinacion_de_disponibilidad_por_saldo_disponible_instantaneo__la_disponibili_37e08b",
+        "Condicion_determinacion_encolamiento_al_momento_de_autorizacion__el_encolamiento_de_una_tr_d31fa3",
+        "Condicion_deudor_en_concurso_preventivo_con_atrasos_mayores_a_540_dias__supuesto_en_que_el_2736ba",
+        "Condicion_dimension_de_la_entidad__la_estructura_de_la_unidad_de_riesgo_operacional_debe_a_037631",
+        "Condicion_efecto_desde_comunicacion__el_efecto_de_las_modificaciones_se_produce_desde_el_d_2025d7",
+        "Condicion_ejercicio_de_opcion_de_traslado__supuesto_de_que_la_entidad_ejerce_la_opcion_de__3d9e08",
+        "Condicion_escalar_x_4_disminucion_de_perturbacion__se_aplica_un_escalar_donde_x_4_que_dism_aabdb2",
+        "Condicion_escenarios_consideren_dificultad_de_captar_fondos_a_costos_razonables__los_escen_582c2c",
+        "Condicion_especificacion_de_saldos_minimos_para_liquidacion_de_intereses__cuando_correspon_3979d7",
+        "Condicion_estado_de_acondicionamiento_de_tambores__los_tambores_se_acondicionan_con_moneda_e48bb3",
+        "Condicion_estructura_de_plazos_residuales_de_agosto_para_exigencia_bimestral__para_determi_4df9e7",
+        "Condicion_estructura_de_plazos_residuales_de_octubre_para_exigencia_en_noviembre__en_novie_3896e9",
+        "Condicion_evaluacion_de_capacidad_de_pago_sobre_documentacion_respaldatoria_de_ingresos__c_dd35f9",
+        "Condicion_evaluacion_integra_de_ciclos_o_cuentas_para_depositar_confianza__para_poder_depo_b716dd",
+        "Condicion_evaluaciones_internas_de_riesgo_y_capital__en_el_contexto_de_evaluaciones_intern_a846da",
+        "Condicion_exceso_real_mayor_a_0__cuando_el_exceso_real_es_mayor_a_0_la_partida_760000_001__c61865",
+        "Condicion_exceso_real_menor_o_igual_a_0__cuando_el_exceso_real_es_menor_o_igual_a_0_la_par_330394",
+        "Condicion_existencia_de_actividades_de_control__la_mera_identificacion_de_las_actividades__453d9d",
+        "Condicion_existencias_deterioradas_menores_a_un_millar__existencias_de_billetes_deteriorad_9dcce5",
+        "Condicion_experiencia_dos_anos_o_mas_en_auditoria__el_auditor_externo_debe_contar_con_expe_971fb8",
+        "Condicion_exposicion_de_causas_de_salvedades_en_notas_a_estados_contables__cuando_las_caus_5e11f9",
+        "Condicion_exposicion_dentro_del_nivel_de_tolerancia_establecido__la_actual_exposicion_de_l_4fd253",
+        "Condicion_fecha_de_pago_valida_efectividad_del_cobro__la_fecha_de_pago_valida_es_aquella_e_c9b683",
+        "Condicion_fideicomiso_de_garantia_conforme_ley_24_441__el_fideicomiso_de_garantia_debe_est_549edd",
+        "Condicion_fiduciario_no_sea_prestamista_ni_vinculado__el_fiduciario_del_fideicomiso_de_gar_bb7f70",
+        "Condicion_finalidad_de_alertas_tempranas_evaluacion_prospectiva__la_evaluacion_prospectiva_13f98e",
+        "Condicion_finalidad_de_recabar_datos_de_cuentas_bancarias__los_datos_de_cuentas_bancarias__e0f66f",
+        "Condicion_fortalezas_y_debilidades_en_cuenta_corriente__elementos_a_considerar_en_la_evalu_aa73b0",
+        "Condicion_frecuencia_informes_gestion_riesgos__la_prontitud_depende_de_la_frecuencia_con_l_53d80c",
+        "Condicion_grado_de_detalle_y_metodologia_segun_necesidades_de_la_entidad__el_grado_de_deta_66dc04",
+        "Condicion_imagen_asociada_sin_nacha_correspondiente__supuesto_en_que_se_recibe_un_registro_f778ca",
+        "Condicion_imagen_erronea__supuesto_en_que_las_entidades_giradas_rechazan_la_imagen_cuando__283e76",
+        "Condicion_imagen_ilegible__supuesto_en_que_las_entidades_giradas_rechazan_la_imagen_cuando_4894ae",
+        "Condicion_imagen_no_encontrada_en_reservorio_adeudada_como_girado__supuesto_en_que_las_cec_d1f846",
+        "Condicion_imagen_no_encontrada_en_reservorio_pendiente_como_depositario__supuesto_en_que_l_41212b",
+        "Condicion_imagenes_permanecen_a_confirmar_sin_mecanismos_adicionales__las_imagenes_de_cheq_99697a",
+        "Condicion_importancia_en_gestion_de_riesgos_y_toma_de_decisiones__la_frecuencia_de_los_inf_c2a318",
+        "Condicion_importancia_perfil_general_riesgo_entidad__la_prontitud_depende_de_la_importanci_34516e",
+        "Condicion_importantes_alteraciones_en_los_mercados__se_produce_cuando_hay_importantes_alte_9710e2",
+        "Condicion_indicador_eficiencia_privada_y_social__se_evaluara_un_indicador_que_permita_infe_214824",
+        "Condicion_indicadores_cualitativos_o_cuantitativos__los_indicadores_disenados_pueden_ser_d_1dcc2b",
+        "Condicion_informaciones_y_sanciones_de_autoridades_del_exterior__se_tendran_en_consideraci_e321ce",
+        "Condicion_inscripcion_ante_autoridad_de_control_forma_societaria__condicion_de_que_se_insc_0b5aad",
+        "Condicion_instalacion_en_casas_operativas__el_supuesto_de_que_las_unidades_se_instalaran_e_df904e",
+        "Condicion_integracion_total_del_capital_minimo_condicion_para_iniciar_actividades__la_enti_2a964b",
+        "Condicion_limites_asociados_a_escenarios_de_variaciones_de_tasas__los_limites_pueden_estar_31cbb1",
+        "Condicion_limites_consideran_rol_de_entidad_en_sistema_financiero__los_limites_internos_de_1ce871",
+        "Condicion_magnitud_de_operaciones__la_estructura_de_la_unidad_de_riesgo_operacional_debe_a_bd271c",
+        "Condicion_marco_de_practicas_prudentes_de_valuacion__el_marco_de_practicas_prudentes_de_va_7eebf7",
+        "Condicion_marco_evaluar_efecto_y_permitir_revision_continua__el_marco_debe_ser_utilizado_p_bb5b14",
+        "Condicion_marco_incluir_objetivos_escenarios_y_metodologias__el_marco_debe_incluir_objetiv_d34c66",
+        "Condicion_marco_proporcional_a_naturaleza_tamano_y_complejidad__el_marco_de_pruebas_de_est_21e3a6",
+        "Condicion_maximo_dos_refinanciaciones_en_12_meses__deudores_que_refinanciaron_sin_incurrir_57cd7c",
+        "Condicion_modalidad_de_pago_descuento_de_haberes_o_debito_en_cuenta__para_permanecer_en_si_d7a9e8",
+        "Condicion_naturaleza_cualitativa_y_cuantitativa__los_escenarios_de_estres_deben_ser_de_nat_717ebb",
+        "Condicion_naturaleza_volatilidad_riesgo_medicion__la_prontitud_depende_de_la_naturaleza_y__3a3635",
+        "Condicion_naturaleza_y_complejidad_de_productos_y_procesos__la_estructura_de_la_unidad_de__d71cdc",
+        "Condicion_necesidades_del_directorio_y_alta_gerencia__la_frecuencia_de_los_informes_depend_8666a6",
+        "Condicion_no_advertencia_de_riesgos_superiores_a_normales__no_debe_haberse_advertido_media_c954b1",
+        "Condicion_no_alcanzado_por_inhabilidades_art_264_ley_19_550__condicion_de_que_el_socio_res_d8d9b5",
+        "Condicion_no_alcanzado_por_inhabilidades_art_264_ley_19_550__el_auditor_externo_no_esta_al_397083",
+        "Condicion_no_alcanzar_inhabilidades_ley_21_526_art_10__el_declarante_no_debe_ser_deudor_mo_6adc97",
+        "Condicion_no_estar_sujeta_a_plan_de_regularizacion_y_saneamiento__la_entidad_financiera_no_b4aac2",
+        "Condicion_no_exclusion_del_registro_de_auditores__condicion_de_que_el_contador_publico_nac_d0180b",
+        "Condicion_no_exclusion_del_registro_de_auditores__el_socio_responsable_no_ha_sido_excluido_d070d6",
+        "Condicion_no_figurar_en_nomina_de_estudios_excluidos__el_contador_publico_nacional_no_debe_98c737",
+        "Condicion_no_oposicion_con_normas_de_poderes_publicos__las_disposiciones_sobre_cuentas_a_l_509df3",
+        "Condicion_no_registrar_deuda_por_asistencia_bcra__no_registrar_deuda_por_asistencia_financ_f41ec0",
+        "Condicion_no_registrar_incumplimientos_capital_minimo__no_registrar_incumplimientos_en_la__a21a50",
+        "Condicion_obligaciones_de_lineas_financieras_formalizadas_hasta_5_2_informar_en_102062_m___6a707b",
+        "Condicion_ocurrencia_en_dos_periodos_consecutivos_o_cuatro_alternados__la_situacion_debe_v_27501a",
+        "Condicion_participacion_entidades_publicas__se_evaluara_la_participacion_de_las_entidades__911e12",
+        "Condicion_pasivos_significativos_respecto_de_efectivo_minimo_o_depositos__factor_de_config_2a7dcf",
+        "Condicion_perdidas_significativas_afectar_solidez_o_capacidad_operativa__supuesto_de_conce_39ee66",
+        "Condicion_plazo_corto_en_obligaciones_a_termino__factor_de_configuracion_en_las_obligacion_321353",
+        "Condicion_plazo_de_60_dias_para_destruccion__transcurso_de_un_periodo_de_60_dias_desde_la__b9aa10",
+        "Condicion_plazo_fijo_en_moneda_extranjera_aplicar_estructura_del_mes_anterior__cuando_se_t_b008f3",
+        "Condicion_plazo_hasta_vencimiento_ley_27_679__las_disposiciones_sobre_cecon_ar_se_aplican__1814dc",
+        "Condicion_plazo_minimo_antes_del_cierre__se_otorga_un_plazo_no_inferior_a_30_dias_corridos_a642b9",
+        "Condicion_plazo_previo_a_habilitacion_30_dias__la_comunicacion_debe_realizarse_con_una_ant_7be69d",
+        "Condicion_plazo_residual_superior_a_6_meses_inclusion_de_garantias__la_inclusion_de_garant_932ffb",
+        "Condicion_porcentaje_elevado_de_pasivos_en_mismo_titular__factor_de_configuracion_un_porce_3e0fcb",
+        "Condicion_posiciones_en_moneda_extranjera_riesgo_de_tipo_de_cambio__cuando_la_entidad_mant_5084be",
+        "Condicion_producido_de_comercializacion_destinado_a_cancelacion__el_producido_de_la_comerc_2da3ba",
+        "Condicion_profesional_participa_en_sociedad_de_profesionales_inscripta_en_registro__cuando_2a1f4d",
+        "Condicion_proporcionalidad_a_dimension_e_importancia_economica__el_marco_debe_ser_proporci_6bf799",
+        "Condicion_proposito_de_cada_informe__la_frecuencia_de_los_informes_depende_del_proposito_d_026c29",
+        "Condicion_rapidez_del_cambio_de_riesgo__la_frecuencia_de_los_informes_depende_de_la_rapide_449c4e",
+        "Condicion_razonabilidad_y_validez_de_escenarios__supuesto_que_debe_verificarse_en_el_exame_8375b5",
+        "Condicion_rechazo_por_entidad_depositaria_y_entidad_girada__cuando_la_entidad_depositaria__655f43",
+        "Condicion_rectificativas_por_cambio_de_situacion_y_o_monto__las_rectificativas_aplican_cua_e18178",
+        "Condicion_referencia_a_punto_8_5_para_base_de_datos_de_chc__la_base_de_datos_de_cheques_ca_359f0f",
+        "Condicion_refinanciacion_previa_desde_niveles_inferiores__para_que_deudores_que_accedieron_5b8bf4",
+        "Condicion_repatriacion_de_fondos_bienes_personales_ley_27_667__las_disposiciones_sobre_caj_1f80f7",
+        "Condicion_revision_periodica_de_informes_rtici__los_informes_deben_revisarse_periodicament_249974",
+        "Condicion_riesgos_inherentes_a_politicas_de_unidad_negocio__el_proceso_de_vigilancia_geren_78b441",
+        "Condicion_sancion_por_multa_de_la_uif_o_inhabilitacion_del_bcra_cnv_ssn__se_tendra_en_cons_8867af",
+        "Condicion_sensibilidad_a_cambios_en_perfil_de_riesgo__las_estimaciones_con_modelos_var_deb_5644f6",
+        "Condicion_sistema_basado_en_confianza_fidelidad_de_datos__el_sistema_se_basa_en_la_confian_44c165",
+        "Condicion_situacion_economica_niveles_de_ingreso__supuesto_de_evaluacion_del_riesgo_pais_l_3b3c15",
+        "Condicion_solicitud_de_apertura_por_personas_humanas__cuando_la_solicitud_de_apertura_prov_cfe3ab",
+        "Condicion_solicitud_de_personas_obligadas_a_realizar_aportes__la_apertura_de_las_cuentas_e_f17020",
+        "Condicion_solicitud_del_declarante_para_apertura_de_caja__la_apertura_de_la_caja_de_ahorro_08ebe9",
+        "Condicion_solicitud_no_considerada_hasta_completar_requisitos__las_solicitudes_no_seran_co_383ca2",
+        "Condicion_supuesto_de_evento_de_seguridad__cuando_se_produzca_un_evento_de_seguridad__ling_ef9e09",
+        "Condicion_supuesto_motivo_rechazo_s__motivo_de_rechazo_cuando_se_reciba_una_imagen_para_la_4d2719",
+        "Condicion_supuesto_operaciones_con_usuarios_de_servicios_financieros__se_trata_de_operacio_635dc0",
+        "Condicion_supuesto_titulares_efectuen_cancelacion_de_compras_decreto_194_23__cuando_los_ti_f5b011",
+        "Condicion_tipo_o_naturaleza_de_los_riesgos_reflejados__la_frecuencia_de_los_informes_depen_c283bd",
+        "Condicion_uso_propiedad_conforme_a_lo_indicado_en_solicitud__el_uso_que_se_dara_a_la_propi_0c6813",
+        "Condicion_valores_fijados_por_gerencia_principal_de_tesoro__el_cumplimiento_debe_realizars_a884ca",
+        "Condicion_variabilidad_segun_cantidad_y_complejidad_de_operaciones__los_procedimientos_y_s_ee930f",
+        "Condicion_variacion_diferenciada_por_plazo__la_variacion_en_la_estructura_temporal_de_las__9a082b",
+        "Condicion_variacion_uniforme_de_tasas_de_interes__la_variacion_en_la_estructura_temporal_d_7d169c",
+        "Condicion_variaciones_significativas_anormales_entre_meses__supuesto_de_que_las_cuentas_pr_593762",
+        "Condicion_verificacion_de_cumplimiento_hasta_6to_mes__condicion_de_que_en_algun_periodo_ha_2ac858",
+        "Condicion_verificacion_de_habilitacion_de_cuenta_de_destino__la_habilitacion_de_la_cuenta__08ba33",
+        "Condicion_verificacion_s70400x_010_menor_que_s10140x_010__se_verificara_que_el_saldo_en_pa_55583e",
+        "Condicion_vigencia_a_fecha_de_firma_del_dictamen__la_exclusion_debe_estar_vigente_a_la_fec_6a7bce",
+        "Condicion_vigencia_a_fecha_de_incumplimiento_de_plan_de_facilidades__la_exclusion_debe_est_0b3164",
+        "Condicion_vigencia_a_fecha_de_vencimiento_de_plazo_de_sancion__la_exclusion_debe_estar_vig_965e2f",
+        "Condicion_vigencia_desde_30_04_24__las_disposiciones_del_punto_3_6_rigen_a_partir_del_30_d_f4dc8f",
+        "Condicion_vinculacion_con_planes_estrategicos_y_financieros__la_definicion_del_apetito_y_l_886db7"
+      ]
+    }
+  }
+}
