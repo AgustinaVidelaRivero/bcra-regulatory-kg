@@ -162,3 +162,56 @@ generación es como la de EV2, registro, §7).
 
 FIRMADO por la autora el 19/10/2026 a las 12:13:24 (por mensaje; hoja de ruta de la mesa, §178), con las seis decisiones del §9, y con los
 cambios de su mensaje de las 12:58:40 (§179). Rige desde esta firma.
+
+## Notas al pie
+
+- **19/10/2026 — Los subtipos de varios puntos, el otro punto y la definición de los tipos, con la proporción de la etapa 1** (la
+  clasificación sellada de P1, sha256 `23162803…`, y su regla, `4b55ff66…`; decisiones de la autora recibidas a las 16:28:50; registro de
+  decisiones del 15/10/2026, §50; las cifras, de los scripts de la mesa en su paquete, `decisiones_181_mesa/p1/`):
+  1. **«Excepción en un hijo» sale de la secuencia de tipos.** Las anclas son hojas de la E0 (`punto_terminal` o sección sin puntos), así
+     que ninguna tiene hijos y ninguna la sostiene (0 de 289, por construcción). Se declara como límite. Una excepción ubicada en otro
+     punto que no es hijo cuenta como «condición en otro punto».
+  2. **Sus lugares de cada ola van a remisión.** Los 19 de varios puntos quedan en remisión 9 o 10, condición 5 o 4 y definición 5 o 4,
+     con la rotación del §2.
+  3. **«Al menos 3 por ola» queda como objetivo para condición y definición.** A las tasas de la etapa 1, una ola llena en promedio 0,6 y
+     1,2 (`llenado_condicion_definicion_por_ola_mesa.py`). Un lugar de condición o de definición que su documento no sostiene pasa a
+     remisión del mismo documento, con la regla de rechazo del §4, y se declara por ola con su conteo.
+  4. **Los subtipos se informan como casos** (§5). Las comparaciones, la hipótesis secundaria y el total ponderado usan los dos tipos.
+  5. **P2 lee el PDF y la E0 de los documentos del grafo evaluado que son otro punto, incluidos los de la tanda 0, solo para anclar el
+     otro punto. Sigue sin leer el grafo, las trazas, EV2, N3 ni ningún resultado de la tanda 0.**
+  6. **El otro punto, en el grafo evaluado:** en P2, un lugar de varios puntos exige que el otro punto esté en un documento del grafo
+     evaluado (el mismo manifiesto de E0 del índice de fragmentos). Los pesos del §2 salen de la misma clasificación sellada:
+     - la mesa cruza cada ext:: con los documentos del grafo evaluado, sin releer. Usa solo la columna `otro_punto` y la lista de esos
+       documentos, con una tabla escrita a mano y sellada antes de calcular los pesos. El cruce es a nivel de documento: que el punto exista
+       lo controla P2 al redactar;
+     - se informan tres categorías: dato directo, varios puntos dentro del corpus y varios puntos que dependen de fuera del corpus. Los
+       pesos van sobre las dos primeras.
+  7. **La definición de los tipos,** para P2, la revisión de la autora y el pre-registro de B6.3: la regla sellada de la etapa 1 (§2 y §5
+     de `regla_P1.md`), con estos diez criterios:
+     1. **Varias disposiciones:** alcanza con que una parte de lo que dispone la unidad quede incompleta sin otro punto.
+     2. **La herencia es parte de la unidad.** Una cita en la herencia cuenta si le da a la unidad su sujeto, su alcance, su procedimiento
+        o su vigencia. No cuenta si es solo la sanción del incumplimiento ni una concordancia general de la sección.
+     3. **Las codificaciones y estándares externos** (SWIFT, sistemas informáticos, EMV) no son otro punto. Sí lo es una indicación expresa
+        de ir a otro texto.
+     4. **Un acto particular** (la resolución que otorga una franquicia) no es otro punto.
+     5. **Una remisión implícita** («esa cuenta», «las condiciones establecidas») cuenta como remisión.
+     6. **«Código de la Tabla N»** es remisión a la tabla.
+     7. **Una remisión genérica externa** («las disposiciones vigentes en la materia») cuenta. Las del propio documento («la presente
+        normativa») son el marco y no cuentan.
+     8. **Un punto citado que no existe en la E0 vigente** (renumerado) mantiene la remisión. En P2 se ancla en su PDF; si no se encuentra,
+        el lugar pasa a la unidad siguiente, con la regla de rechazo.
+     9. **«Excepción en un hijo» no se usa** (punto 1 de esta nota). Una excepción en otro punto que no es hijo es condición en otro punto.
+     10. **El otro punto se escribe** `to::punto`, con `to::p1..pN` para un rango y `to::S<n>` para una sección. En B6.3, el `to` es un
+         documento del grafo evaluado (punto 6 de esta nota): un ext:: fuera del grafo evaluado no sostiene un lugar de varios puntos.
+  El texto firmado no cambia.
+- **19/10/2026 — k corridas por pregunta en B6.3** (decisión de la autora recibida a las 17:35:09; registro de decisiones del 15/10/2026,
+  §52; las cifras, de los scripts de la mesa en su paquete, `decisiones_183_mesa/k_corridas/`):
+  1. **k = 3 corridas por pregunta y por brazo** si la variación entre corridas que midan la base de N6 (3 veces) y F1 (BM25, 3 veces) da
+     w mayor que 0,03 en alguno de los dos brazos (w = E[p(1 − p)] por brazo, sobre sus 3 corridas). Si no, k = 1. Se fija antes del
+     pre-registro de B6.3, sin usar B6.3.
+  2. **Con k = 3, la métrica de cada pregunta** es la proporción de sus k corridas juzgadas correctas. Las comparaciones principales usan
+     una prueba pareada por permutación de signos sobre d_q (la diferencia por pregunta entre el grafo y cada brazo de fragmentos), con
+     Holm sobre las dos. La hipótesis secundaria usa la misma d_q en su bootstrap por pregunta, donde el §5 dice «pares discordantes por
+     pregunta».
+  3. **N_Q5 se calcula con w,** con la varianza por pregunta (pd − Δ² − 2w) + 2w / k, y las tasas de A2.2.
+  El texto firmado no cambia.

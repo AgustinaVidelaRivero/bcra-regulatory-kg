@@ -1729,3 +1729,115 @@ Decisiones de la autora del 19/10/2026, recibidas a las 15:04:50, con un agregad
 - **El orden:** la etapa V primero, porque destraba el gold; después P1, la segunda pasada de U-PROC-HERENCIA y R5 con el modelo del punto
   6, antes del miércoles; y N5 antes de N6.
 - Las secciones anteriores no se editan.
+
+## 50. La nota de la etapa 1 al mandato de B6.3, R5, el plazo del pre-registro de B6.3, el tope de N6 y los índices por punto (agregado del 19/10/2026)
+
+Decisiones de la autora del 19/10/2026, recibidas a las 16:28:50 (hoja de ruta de la mesa, §182).
+
+- **Lo que hizo:** corrió el 136 (`7cb770bd`), con push, y pegó la segunda pasada de U-PROC-HERENCIA (desde `fuera_del_repo/proc_herencia/`)
+  y el despacho de U-NAV-DESDE (desde `fuera_del_repo/unav_desde/`), que lleva el `desde` en `buscar_puntos` y en `buscar_pasajes`, con
+  A2.2 sin él. Abre el piloto de la etapa V.
+- **La etapa 1 de B6.3:**
+  1. la nota al mandato de las preguntas de B6.3 que propuso la mesa, tal cual, con un punto más: «P2 lee el PDF y la E0 de los
+     documentos del grafo evaluado que son otro punto, incluidos los de la tanda 0, solo para anclar el otro punto. Sigue sin leer el
+     grafo, las trazas, EV2, N3 ni ningún resultado de la tanda 0.» Así el §4 del mandato no choca con la regla del otro punto. La nota va
+     con este commit, debajo de la firma;
+  2. el cruce de los ext:: lo hace la mesa, como lo propuso: solo la columna `otro_punto` y la lista de documentos del grafo evaluado, con
+     la tabla escrita a mano y sellada antes de calcular los pesos;
+  3. la definición de los tipos, con los diez criterios de la etapa 1, tal cual, para el despacho de P2, la revisión de la autora y el
+     pre-registro de B6.3. Va en la misma nota.
+- **R5 y el pre-registro de B6.3:**
+  4. **R5:** 30 llamadas en el prompt, `--max-turns` 32 y `--max-budget-usd` 1,80, iguales en los dos brazos, en A2.2, N6 y B6.3. Si H-B2
+     caracteriza otra cuenta, `--max-turns` queda en tope + 2 de esa cuenta, declarado antes de la firma de A2.2;
+  5. **la regla de N6, tal cual:** si la configuración elegida llega al tope en más del 10 % de sus sesiones en cualquiera de los dos
+     brazos, N7 sube a 45, 47 y 3,30 en los dos, antes del sello, sin volver a correr N6, y se declara;
+  6. **lo que informa el pre-registro de B6.3** por brazo y por tipo, tal cual:
+     - las sesiones al tope;
+     - las cortadas, con su sensibilidad;
+     - las llamadas por sesión;
+     - el costo por pregunta;
+     - el contexto máximo;
+  7. **el plazo del pre-registro de B6.3:** el lunes 26 a las 12:00, como techo. La regla del miércoles va en su v2, con el techo por
+     tiempo y por dinero;
+  8. **el tope de N6:** USD 100, con freno en 75;
+  9. **el orden de los recortes por dinero,** como lo propuso la mesa:
+     1. U-PRUEBA-GRAPHRAG;
+     2. F1 en N6;
+     3. el N de B6.3, por la regla v2;
+     4. la base de N6 dos veces.
+- **N5:**
+  10. la línea del `.gitignore` local del banco (`data/experiment/banco_mcp/.gitignore`) para los índices por punto, `mcp_kg/indice_puntos/`,
+      con las tres condiciones de la mesa: el manifiesto de cada índice, versionado fuera de la carpeta ignorada; un respaldo fuera del
+      repo; y la misma regla para el índice del grafo evaluado. La línea entra con el commit de N5.
+- **El cegamiento de las cuentas de E3 de la tanda final:** el pre-registro de la tanda final (§4.1) dice «ninguna cifra ni lista por
+  estado de E3», también para la tanda final, y rige hasta que la autora lo levante. Cuando la mesa lee un resumen de T2, filtra los campos
+  de gasto antes de imprimir. La mesa confirmó, por búsqueda, que la cuenta que mostró su consola el 19/10 no está en ningún archivo de su
+  paquete, de su copia permanente ni de su hoja.
+- **Para la ronda siguiente:**
+  - el borrador del mandato de la re-aplicación única, para firmarlo el martes. Lleva D, C1 de U-MED-DESAMB, las claves del catálogo, el
+    orden en que se aplican y cómo se usa la tabla de id viejo a id nuevo de D en el censo de C1 y en los controles del cegamiento, que van
+    por código de id;
+  - el despacho del juez de la etapa V, para cuando la autora selle su pool;
+  - lo que queda de N5: su commit, con el de N5-F y el de U-NAV-DESDE, y el choque previsible en `grafos.py`.
+- Las secciones anteriores no se editan.
+
+## 51. El presupuesto como techo de trabajo, la regla del N sin techo por dinero y el respaldo de los índices (agregado del 19/10/2026)
+
+Decisiones de la autora del 19/10/2026, recibidas a las 17:09:20 (hoja de ruta de la mesa, §183). Cambian lo que dicen la §50 (puntos 7 a 9)
+y la enmienda 8 sobre el presupuesto: rigen desde acá.
+
+1. **El presupuesto de USD 341 deja de ser un techo duro.** El criterio es la mejor evaluación posible. Para los modelos de la mesa y para
+   las guardas del banco, el techo de trabajo pasa a USD 500 en total, que cubre el alto del v10 con N = 160 (472,86).
+2. **La regla del N y los recortes:**
+   - la regla del miércoles v2 va sin techo por dinero. El N de B6.3 lo fijan el tiempo hasta el plazo del lunes 26 a las 12:00 y las
+     horas de revisión de la autora, hasta N_Q5;
+   - no se recorta nada por dinero: U-PRUEBA-GRAPHRAG y F1 quedan, y la base de N6 va tres veces;
+   - el tope de N6 pasa a USD 130, con freno en 100;
+   - el tope de B6.3 lo fija la mesa con el mismo criterio, sobre su alto, y va en su pre-registro.
+3. **El respaldo de los índices del banco** va en `fuera_del_repo/indices_banco/<grafo>/`, con `ditto` y verificado contra su manifiesto:
+   - los índices por punto, con el commit de N5;
+   - el índice de fragmentos de A2.1 (`data/experiment/banco_mcp/mcp_vector/indice/`), antes de A2.2. La mesa lo copió el 19/10/2026 y
+     lo verificó a las 17:13:35: 9 de 9 archivos iguales a la fuente, y los sha256 que declaran sus manifiestos y su config BM25, iguales.
+     Está en `fuera_del_repo/indices_banco/fragmentos_e0_r2b_desarrollo_A2_1/`, con su `manifest_respaldo.txt`.
+- **Lo que la autora pide a la mesa antes de firmar el pre-registro de A2.2:**
+  - qué más mejora la evaluación sin usar B6.3 para ajustar nada, en particular k corridas por pregunta en B6.3 frente a más N;
+  - la confirmación de que la vía de cobertura de la etapa V está en el calendario y en el presupuesto, con su extracción y su orden.
+- **El 137** corre cuando vuelvan los FRENOs de la segunda pasada de U-PROC-HERENCIA y de U-NAV-DESDE. Lleva esta sección.
+- Las secciones anteriores no se editan.
+
+## 52. El piloto de la etapa V, el juez de V, k corridas en B6.3, la cobertura de V y la segunda pasada de U-PROC-HERENCIA (agregado del 19/10/2026)
+
+Decisiones de la autora del 19/10/2026, recibidas a las 17:35:09 (hoja de ruta de la mesa, §184).
+
+- **El FRENO del piloto de V** (pre-registro de tripletas, §3.5):
+  - la autora selló el piloto a las 17:13:32 (`hoja_piloto.csv`, sha256 `637239bea88191d85c3f32968000e1a0d3cfdd5d06b457fdceae5829cea19759`);
+  - **la ficha queda como está.** Las tres fricciones, que no cambiaron ningún veredicto, quedan como notas del piloto:
+    1. la ficha no trae la definición de cada predicado del esquema;
+    2. los nodos Sujeto llegan sin descripción, y en `aplica_a` el alcance se decidió por la etiqueta y por el catálogo;
+    3. en un bloque de cierre, lo heredado no trae la introducción del punto al que pertenece, y una remisión hacia atrás se resolvió en el
+       PDF.
+- **El juez de V,** que ve la misma ficha (§4.1) y no puede ir al PDF:
+  - su prompt lleva la definición de cada predicado del esquema congelado, tal como la recibe la extracción, y la del catálogo para los
+    Sujetos, cada una con su fuente. Así juzga con la misma base que la autora, sin tocar la ficha;
+  - una remisión hacia atrás en un bloque de cierre va a «requiere adjudicación» y llega a la lectura de la autora;
+  - la autora pidió el catálogo v3. La mesa señala que el grafo de V se extrajo con el prefijo r2b, que lleva el bloque del catálogo r2.
+    El despacho lleva el r2, salvo que la autora diga otra cosa antes de pegarlo.
+- **k corridas en B6.3, con la regla de la mesa:**
+  - k = 3 si la variación entre corridas que midan la base de N6 y F1 da w mayor que 0,03; si no, k = 1;
+  - con 3 sesiones en paralelo;
+  - la nota al mandato de las preguntas de B6.3, con la métrica y la prueba, va con este commit;
+  - el tope de B6.3, en USD 295, con freno en 225;
+  - el lanzador en paralelo deja cada sesión aislada como hoy: su propio servidor MCP, su propio registro R1 y nada compartido entre
+    sesiones. El test de aislamiento corre sobre el lanzador en paralelo antes de B6.3.
+- **La cobertura de V se mueve a después de la firma del pre-registro de B6.3,** con su unidad U-TRIP-V-COB, si llegan antes del miércoles
+  28 los resultados de cobertura de V y de T en el central. La mesa lo confirmó con su modelo (§184): con N = 128 y N = 160 entra en el
+  central (márgenes de 6,4 y 3,1 h en el peor caso de las horas estimadas), y no en el lento.
+- **La segunda pasada de U-PROC-HERENCIA:**
+  - la versión de la ejecutora es la buena;
+  - la diferencia con lo que esperaba la mesa sale de un nodo de C1 leído como grupo propio en el detector, como en el prototipo de la
+    mesa: le daría al nodo remisiones que sin la bandera no tiene, y contradice el criterio. La mesa la cruzó: son 13 sin cola y 17 con
+    cola, todas con origen en un nodo de C1;
+  - **D entra así en el mandato de la re-aplicación única:** las remisiones propias de un nodo de C1 quedan como en el sello, y solo
+    cambian las citas que llegan al punto corregido.
+- **El 137** corre cuando vuelvan los FRENOs de la segunda pasada y de U-NAV-DESDE. Lleva esta sección.
+- Las secciones anteriores no se editan.
