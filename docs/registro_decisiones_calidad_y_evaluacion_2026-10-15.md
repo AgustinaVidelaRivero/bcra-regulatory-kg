@@ -1656,3 +1656,76 @@ Decisiones de la autora del 19/10/2026, recibidas a las 13:46:19 (hoja de ruta d
 - **El orden:** los FRENOs de V y de P1 apenas vuelvan; después, U-PROC-HERENCIA; y el modelo del punto 6 antes de los sorteos de B6.3, con
   la lectura de la autora de las 20 de Q8 después de A2.2.
 - Las secciones anteriores no se editan.
+
+## 49. El control del juez por tipo, la segunda pasada de U-PROC-HERENCIA, N5-F, la preparación de la etapa V y lo que vuelve de N5 (agregado del 19/10/2026)
+
+Decisiones de la autora del 19/10/2026, recibidas a las 15:04:50, con un agregado a las 15:15:02 (hoja de ruta de la mesa, §181).
+
+- **La muestra de control del juez de B6.3, por tipo, como la propuso la mesa (§180):**
+  - en varios puntos, el piso de Q12 por criterio: Wilson inferior de al menos 0,85;
+  - el acuerdo por respuesta se informa sin umbral;
+  - 36 respuestas, con 9 de varios puntos y 3 de dato directo por brazo;
+  - si no llega al piso: la cifra de varios puntos va con el acuerdo medido al lado, la hipótesis secundaria se declara como medida con
+    ese juez, y lo dudoso va a la lectura de la autora.
+  - Va en el pre-registro de B6.3.
+- **U-PROC-HERENCIA, la opción D:** C1 sin uniones, y el detector de remisiones lee y resuelve con el punto que declaró E1. La autora
+  autoriza tocar `data/experiment/reextraccion_v2/corpus_v2/r1_referencias.py`, solo detrás de la bandera. Los criterios de la segunda
+  pasada:
+  - con la bandera apagada, los grafos sellados salen byte a byte;
+  - con la bandera, los nodos, `establecida_en` y `aplica_a` quedan iguales al sello, y cada `remite_a` que cambia tiene un extremo en un
+    nodo de C1, con la cuenta;
+  - la suite y las shapes, sin cambios;
+  - las entidades duplicadas que C1 ya no une (7 de la tanda 0 y 5 de cirmo3) se declaran y van al grafo corregido.
+  - El despacho lleva la comparación por id de nodo: C1 cambia el id de los nodos que corrige, porque el punto va en el id.
+  - La segunda pasada va antes de que se mida la re-aplicación única, y D entra en su mandato.
+  - Las anclas de F13 a F16 se recalculan sobre el código final y van con el commit de U-PROC-HERENCIA, después del sello de la tanda
+    final.
+- **N5-F, las cuatro propuestas de la mesa, tal cual:**
+  - la aritmética del desempate se declara en N4;
+  - la diferencia de la salida con N2 va en N4 y en N7;
+  - los pre-registros de A2.2 y de B6.3 fijan la ruta del venv y el sha256 de su `pip freeze` (`24f4c064…`);
+  - N6 cuenta las llamadas largas por brazo, y los pasajes que solos pasan los 10.000 tokens se declaran como límite de los dos brazos.
+- **La preparación de la etapa V de tripletas** (FRENO de U-TRIP-V):
+  1. **Los campos de la ficha quedan:**
+     - el tramo del sujeto en `aplica_a` y `ejecuta`;
+     - los avisos de E0;
+     - la lista de lo que no va.
+     La condición era que la condición de literal de cada tramo saliera del código, y sale: la calcula el validador de E1
+     (`data/experiment/pyd_r2/code/validador_r2.py:1146-1155` y `:1282-1291`). La mesa la recalculó igual en 191 de 191 tramos y 49 de 49
+     menciones. Las fichas no se regeneran. Si el piloto muestra algo que estorba, se ajusta en su FRENO (§3.5).
+  2. «otros» queda sin muestra (su cuota, 0,26, redondea a 0), y p̂_w se informa con las dos cotas de ese estrato.
+  3. **La semilla va como desvío declarado:**
+     - quedó fijada en el despacho que la autora pegó el 19/10/2026 a las 13:45:02, antes del sorteo, sellado a las 14:23:55;
+     - el §3.2 dice «fijada en la firma», y el texto de la semilla lleva la fecha de la firma, el 07/10.
+  4. N = 3.967 y no 3.983, como nota, con su causa en el diff del re-sellado.
+  Las tres van en una nota al pie del pre-registro, con este commit.
+- **Las líneas 582 y 789 de este registro** ya están en la lista de lo que se limpia en la copia publicada del recurso (§37, con 8 líneas
+  de 4 archivos, en `bd60f6c0`). En HEAD la búsqueda da esas mismas 8 líneas y ninguna más. La expresión no se repite en nada que vaya al
+  repo.
+- **La etapa 1 de B6.3 (P1):**
+  - el pre-registro de B6.3 informa el total ponderado también con los pesos en los extremos de su intervalo, y la sensibilidad de la
+    herencia, porque es una sola lectura;
+  - lo que la autora pide decidir con la propuesta de la mesa, antes de los sorteos:
+    - «excepción en un hijo» fuera de B6.3, con sus lugares a remisión;
+    - el otro punto en un documento del grafo evaluado;
+    - los diez criterios de lectura en la definición de los tipos.
+- **R5, ya decidido:** el mismo tope en los dos brazos (U-NAV, §3), justificado solo con datos de desarrollo. La propuesta de la mesa va
+  antes de la firma del pre-registro de A2.2.
+- **N5** (agregado de las 15:15:02):
+  - **la autora acepta del §12 de su FRENO, tal cual:**
+    - la base y «todas menos la 6» toman el prefijo de 3 líneas, y «todas menos una» de las familias 1 a 5 lo resuelve N4/N6;
+    - la familia 1 usa `BANCO_VENV_VECTOR`, y los pre-registros fijan esa ruta y su `pip freeze`, como en N5-F;
+    - los tokens son una estimación por caracteres;
+    - «no verificada» queda como el texto de N2;
+  - **su lectura de la muestra de control de B6.3, o de cualquier respuesta de B6.3, va después de que cierre U-MED-VERIF,** porque las
+    respuestas pueden mostrar unidades de su muestra (7 de los 77 documentos son de la tanda 1);
+  - **lo que pide a la mesa, con su propuesta y su costo, antes de N6:**
+    - los índices por punto fuera del repo, como `mcp_vector/indice/`;
+    - un `desde` en `buscar_puntos` y en `buscar_pasajes`;
+    - el costo de N6 y de B6.3 con el bloque real y el tope de R5;
+    - la decisión 10 en fragmentos;
+    - el cegamiento, si su lectura no entra en el calendario;
+    - el commit de N5.
+- **El orden:** la etapa V primero, porque destraba el gold; después P1, la segunda pasada de U-PROC-HERENCIA y R5 con el modelo del punto
+  6, antes del miércoles; y N5 antes de N6.
+- Las secciones anteriores no se editan.

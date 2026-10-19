@@ -308,3 +308,16 @@ topes de USD 35 (V) y USD 55 (T).
 - **19/10/2026** — Enmienda 2 (el solapamiento con la lectura de la desambiguación y la etapa T sin la tanda 0), FIRMADA por la autora
   el 19/10/2026 a las 12:13:24, tal cual (por mensaje; hoja de ruta de la mesa, §178; el commit de la firma es el que agrega esta nota):
   `docs/enmienda2_preregistro_evaluacion_tripletas_2026-10-17_desambiguacion.md`. El texto firmado no cambia.
+- **19/10/2026 — El sorteo de la etapa V** (la preparación, en `data/experiment/tripletas_v/preparacion/`: el acta `acta_sorteo_V.json`,
+  sha256 `5d6a237e510bcf086db717061dd146eaa9b3181006cb7b1d300164436c720c55`, sellada a las 14:23:55; decisiones de la autora recibidas a
+  las 15:04:50; registro de decisiones del 15/10/2026, §49):
+  - **la semilla, como desvío declarado:** el §3.2 dice «Semilla fijada en la firma» y el texto firmado no la trae. La semilla,
+    `B4-TRIPLETAS-V:sorteo:2026-10-07`, lleva la fecha de la firma (07/10), pero quedó fijada en el despacho de la preparación, pegado el
+    19/10/2026 a las 13:45:02, antes del sorteo (14:23:55);
+  - **N = 3.967 y no 3.983:** el sorteo corrió sobre `66e745f5…`, la versión posterior del re-sellado (nota del 15/10/2026). La diferencia,
+    −16, es del re-sellado: salen 83 aristas de contenido y entran 67, cada una con su fila y su causa en el diff declarado
+    (`data/experiment/resellado_t0/salidas/diff_contra_sellado/diff_declarado_contra_sellado_r2b_sincola_desarrollo.json`). Los W_h del
+    §3.6 usan N = 3.967;
+  - **«otros» sin muestra:** el estrato «otros» (`ejecuta`, 11 aristas) tiene cuota 0,26, que redondea a 0. p̂_w cubre 3.956 de las 3.967
+    aristas y se informa con las dos cotas de ese estrato (todas correctas y todas incorrectas);
+  - El texto firmado no cambia.
