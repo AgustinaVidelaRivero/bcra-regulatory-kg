@@ -1599,3 +1599,38 @@ Decisiones de la autora del 19/10/2026, recibidas a las 12:13:24 (hoja de ruta d
     documentos, y ninguna toca la muestra.
 - **Las horas de la autora:** 7 por día hábil, tal cual.
 - Las secciones anteriores no se editan.
+
+## 47. El mandato de las preguntas de B6.3 con Q4, el censo de C1, los hubs, la primera ola y el N (agregado del 19/10/2026)
+
+Decisiones de la autora del 19/10/2026, recibidas a las 12:58:40 (hoja de ruta de la mesa, §179), sobre lo que la mesa encontró en la
+§178.
+
+- **Q4 y el mandato de las preguntas de B6.3,** tal cual: «La mezcla del mandato reemplaza a Q4 para B6.3, salvo en dos cosas que quedan de
+  Q4: sin preguntas de abstención, declarado como límite. Las olas de 32 van con 19 de varios puntos y 13 de dato directo, y los pesos del
+  total ponderado son esos dos tipos, medidos en la etapa 1, y suman 1; la regla de caída por clase: si los documentos de una clase no
+  tienen unidades que sostengan varios puntos, el lugar va como dato directo de esos mismos documentos, declarado. El resto de mis seis
+  decisiones queda igual.»
+  - El mandato firmado entra con este commit: `docs/mandatos/UPREG_B63_preguntas_por_tipo.md`.
+  - La contradicción la encontró la mesa al pasarlo en limpio: el borrador de la §177 de la mesa no había integrado Q4 (§8 y §9).
+- **El reparto por encima de 64,** tal cual: «Para N > 64, las olas van en más documentos, con 4 preguntas por documento.» Resuelve lo que
+  dejaban abierto la §5 y la §7, punto 4. Va en el mandato.
+- **El censo de C1:** la regla de la mesa (§46) queda confirmada, con un agregado, tal cual: «De un nodo que se muestra, tampoco se
+  muestran las menciones que vienen de unidades de la muestra. Lo que no se une por esto se declara y vuelve para el grafo corregido,
+  cuando cierre U-MED-VERIF.»
+- **Lo que queda decidido hoy,** tal cual:
+  - «en el censo, una colisión mal unida no se une, se declara y el resto de C1 sigue»;
+  - «en la re-aplicación, si la medición frena por algo no declarado, eso queda fuera del grafo evaluado, declarado y al grafo corregido, y
+    el resto entra».
+- **Los hubs:** van las dos propuestas de la mesa (§178):
+  - N7 y el pre-registro de B6.3 declaran que N6 se midió sin C1, cuántos nodos une C1 en el grafo evaluado y cuántos son hub, con la
+    cifra de un script;
+  - la revisión del FRENO de N5 controla que la lista de hubs se calcule al cargar el grafo.
+- **La primera ola de B6.3** empieza el viernes 23/10/2026, después de los casos de la re-aplicación, tal cual: «así las diez decisiones con
+  juicio mío van antes de que lea una pregunta».
+- **El N,** tal cual: «Con N = 64 la potencia es 0,42, y un resultado nulo no diría nada. Quiero llegar a N_Q5.»
+  - La mesa modela la opción de seguir la revisión el sábado después del corte y el domingo, con el grafo ya sellado, y firmar el
+    pre-registro de B6.3 después del corte y antes de correrlo. Con eso se fija la hora límite del pre-registro, y la regla del miércoles
+    calcula N_max hasta esa hora.
+  - Si hace falta recortar para llegar a N_Q5, antes de bajar el N se recorta primero el juez de U-MED-DESAMB y después las claves del
+    catálogo.
+- Las secciones anteriores no se editan.
