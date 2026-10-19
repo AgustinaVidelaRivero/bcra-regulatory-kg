@@ -1888,3 +1888,29 @@ Decisiones de la autora del 19/10/2026, recibidas a las 18:36:53 (hoja de ruta d
   - la mesa propone sacar los tiempos de lo que se hashea; la otra opción es que la config fije el sha256 de los datos. Decide la
     autora.
 - Las secciones anteriores no se editan.
+
+## 55. Los commits de las §53 y §54, la corrección A del manifiesto, los minutos del piloto y del pool, el sello del pool y lo pago siempre en secuencia (agregado del 19/10/2026)
+
+Decisiones y acciones de la autora del 19/10/2026, recibidas a las 19:29:14 (hoja de ruta de la mesa, §187).
+
+- **Los commits de las secciones 53 y 54** corrieron seguidos, con su push: `86541475` y `9950be88`.
+- **El manifiesto del índice por punto va con la opción A:** los tiempos de construcción, fuera de lo que se hashea. El seguí de
+  U-NAV-DESDE, que la lleva, se pegó tal cual en la misma sesión, a eso de las 19:00 (hora de la autora, NO VERIFICADA).
+- **Los minutos de la etapa V:**
+  - el piloto llevó 24 minutos (de 16:45 a 17:09, las 10 fichas);
+  - el pool llevó 83 (de 17:40 a 19:03, las 20 fichas por componentes);
+  - el calendario de los nueve lotes de 10 (§3.5 del pre-registro de tripletas), recalculado por la mesa con esas cifras: 24 minutos por
+    lote a la tasa del piloto (3,6 h los nueve) y 41,5 a la del pool (6,2 h) (`calendario_lotes_V_mesa.py`, en su paquete, §187).
+- **El pool está sellado:**
+  - `hoja_pool.csv`, sha256 `097998e8777608503e0805b9819b9f0c848b4590bd0baae9176c4cbb8653c1f7`, con el sello a las 19:21:53. Los dos
+    datos están en `sello_hoja_pool.txt`;
+  - la hoja y su sello están copiados en `fuera_del_repo/tripletas_v_juez/insumos/`, sin nada más. La mesa controló el sha256 de la copia;
+  - el despacho v3 del juez de precisión se pegó en una sesión nueva desde esa carpeta.
+- **Lo pago va en secuencia, nunca al lado de una extracción:**
+  - los dos pasos pagos del juez corren con T2 terminada;
+  - sus dos comandos, y el humo pago de U-BANCO-PARALELO, controlan al arrancar que no haya una extracción corriendo, y frenan si la hay.
+    El del juez se pide al revisar su FRENO.
+- **El orden que sigue:**
+  - U-BANCO-PARALELO (v3, con ese control) se despacha cuando termine el seguí de U-NAV-DESDE, nunca a la vez;
+  - el mandato de la re-aplicación única (v2) se firma el martes.
+- Las secciones anteriores no se editan.
