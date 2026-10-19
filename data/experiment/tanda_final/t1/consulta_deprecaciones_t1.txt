@@ -1,0 +1,30 @@
+Consulta de la página de deprecaciones — T1 de la tanda final de B6.1 (pre-registro de la tanda final, §2 y §4.2)
+
+fecha y hora: 2026-10-18 19:58:01 -0300 (hora local tomada con `date` justo antes de la lectura; la de después, 19:58:03)
+dirección: https://platform.claude.com/docs/en/about-claude/model-deprecations
+método: WebFetch, sin iniciar sesión; lectura correcta, sin error.
+
+Tabla «Model status» de la página:
+- claude-haiku-4-5-20251001: Current state = Active; Deprecated = N/A (sin fecha de deprecación);
+  Tentative retirement date = «Not sooner than October 15, 2026».
+- claude-sonnet-5: Current state = Active; Deprecated = N/A (sin fecha de deprecación);
+  Tentative retirement date = «Not sooner than June 30, 2027».
+
+Historial de deprecaciones («Deprecation history»): ningún aviso para ninguno de los dos modelos. El aviso más reciente
+de la página es del 2026-09-30 y es de otro modelo (claude-sonnet-4-5-20250929, retiro el 30/11/2026).
+
+Aviso (sección «Notifications»): la página dice que Anthropic avisa a los clientes con despliegues activos con
+«at least 60 days' notice» antes de retirar un modelo publicado.
+
+Contra la consulta del pre-registro (§2, 18/10/2026 entre las 11:45:19 y las 11:52:07): sin cambios. Los dos modelos
+siguen «Active», sin fecha de deprecación, con los mismos retiros tentativos, y el aviso sigue siendo de al menos 60 días.
+
+Lectura: no hay retiro anunciado de ninguno de los dos modelos, así que no corresponde el freno del §4.2 ni el
+procedimiento (c). La fecha tentativa de claude-haiku-4-5-20251001 («no antes del 15/10/2026») ya pasó; sin aviso al
+18/10/2026 y con 60 días de aviso, el retiro no llega antes del 17/12/2026 (lo mismo que dice el §2 del pre-registro).
+
+Sección «API parameter deprecations»: sigue diciendo que el SDK de Python 1.0 o posterior quita temperature, top_p y
+top_k (TypeError), y que la API devuelve 400 con un valor no por defecto en los modelos 4.7 y posteriores. Con el SDK
+fijado en anthropic==0.100.0, el pedido de E1 a claude-haiku-4-5 con temperature sigue valiendo (§2), y E3 no manda
+temperature: en la corrida en seco de este T1, los 4.956 pedidos de E3 van sin temperatura
+(t1/seco/corrida_en_seco_t1.json, pedidos_por_etapa.e3.temperaturas = «sin fijar»).
