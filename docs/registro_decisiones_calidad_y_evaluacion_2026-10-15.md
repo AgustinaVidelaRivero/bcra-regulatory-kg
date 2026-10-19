@@ -1481,3 +1481,37 @@ Decisión de la autora del 19/10/2026, recibida a las 08:43:22 (hoja de ruta de 
     extraerlas después del sello;
   - el alta en el backlog del arreglo del runner (BKL-0050, propuesta): que el reintento por forma escale el max_tokens cuando corta.
 - Las secciones anteriores no se editan.
+
+## 44. Las unidades del reintento por forma que corta, la BKL-0050, N5 y los análisis de la §41 (agregado del 19/10/2026)
+
+Decisiones de la autora del 19/10/2026, recibidas a las 09:33:40 (hoja de ruta de la mesa, §176), sobre las propuestas de la mesa de la
+§175 (`decisiones_175_mesa/propuestas/`, en su paquete).
+
+- **Las unidades que terminen con `salida_mal_formada_tras_reintento` porque el reintento por forma corta,** tal cual: «B. Se declaran como
+  faltantes en el grafo evaluado y se extraen después del sello, con el arreglo, para la versión corregida. Lo decido ahora, con el tramo 2
+  corriendo y sin saber qué unidades van a fallar.»
+  - Entran en «Se declaran» del pre-registro, §8, con su id, sus caracteres y su causa, en T5.
+  - La primera es `ri_transpa::Sbloque1::chapeau_seccion` (§43).
+- **La BKL-0050** entra al backlog como la propuso la mesa, en este commit: el reintento por forma de E1 escala el max_tokens cuando corta.
+- **El error 8 de la parte 1 de U-NAV** (la instancia vio en su consola la cuenta de una marca de E3 del acumulado; no está en ningún
+  archivo y la autora no la vio): no cambia U-MED-VERIF y queda declarado, como en la §21.
+- **El respaldo del tramo 1 no se sella en paralelo con el tramo 2,** tal cual: «con el v9, la tanda final se sella el martes en los tres
+  escenarios, y la prueba del acumulado ya dio verde. Si el tramo 2 se corta o se demora, me lo proponés de nuevo.»
+- **«El punto H»** son los análisis de la §41:
+  - las remisiones sin resolver del acumulado por clase de causa, con su mandato para R5;
+  - los vaciamientos de la (2);
+  - la propuesta al backlog de la cola (E1-prompt);
+  - F04b, F22 y F22b de la tabla de reprocesamiento, en un commit aparte.
+- **N5 de U-NAV,** despachado desde `fuera_del_repo/unav_n5/`, con una línea de la autora al final, tal cual: «La fusión de los dos rankings
+  de la familia 1 es RRF con k = 60, la propuesta de N2, fija antes de medir: no la ajustás.»
+- **El control en memoria del sorteo de las FICHAS** (pedido de la §173), corrido por la mesa con un script que lee el sorteo en memoria y
+  dice solo «sí» o «no» (`decisiones_176_mesa/fichas/`, en su paquete):
+  - la muestra recalculada tiene 30, tantas como las fichas;
+  - `nmcief::A1P2::S4`, la unidad del error 7 de la parte 1 de U-NAV, no está en la muestra. No pasa nada;
+  - ninguna de las cuatro unidades de los ejemplos N3-E2v2 (opefci) y N3-E3v2 (ayccef) está en la muestra: los dos ejemplos se resuelven
+    en N5, y ninguno se rehace.
+- **La forma de fragmentos de la familia 1** (§6 bis del mandato de U-NAV) y un índice de fragmentos sobre los 30 TOs del acumulado: no
+  estaban en el despacho de N5, y los índices del banco cubren solo los 5 TOs de desarrollo. Van en un despacho aparte (N5-F), PREPARADO
+  por la mesa y PENDIENTE de la autora, sobre otra copia y en paralelo con N5, con el mismo analizador, el mismo modelo denso y la misma
+  fusión. Su commit va con el de N5, después del sello de la tanda final y de A2.2.
+- Las secciones anteriores no se editan.
