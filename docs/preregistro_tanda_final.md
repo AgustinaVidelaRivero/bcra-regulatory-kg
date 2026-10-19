@@ -355,3 +355,46 @@ ninguna quitada ni cambiada.
 **FIRMADO por la autora el 18/10/2026,** por mensaje recibido a las 19:40:51 (hoja de ruta de la mesa, §171): «Firmo el pre-registro de la tanda final en la versión para firmar commiteada en 5289b02f (docs/preregistro_tanda_final.md), con mis cuatro decisiones del §9 y los tres puntos de la precisión del §169.» El texto firmado es el
 de la v3 (sha256 `0897d609851ae712768f0c1b68c2a485d5d8d91903aca84f3b54df58664d488b`), con este encabezado, la precisión de la firma y esta sección. En el commit de la firma, la
 última sección del registro de decisiones es la §40.
+
+## Notas posteriores a la firma
+
+El texto firmado es el de `4de7f2a7` (sha256 `b760edf7…`) y no cambia; esta nota se lee junto con él. La versión derivada de T1
+(`data/experiment/tanda_final/preregistro/preregistro_tanda_final_derivada_T1.md`) nombra ese sha256: quien la regenere usa el pre-registro
+de `4de7f2a7`, no el de HEAD (CLAUDE.md, §4.k).
+
+- **18/10/2026: el estimado por TO, repartido por caracteres de E0, y el tope con cuatro decimales** (precisión declarada del §3; decisión de
+  la autora recibida el 18/10/2026 a las 23:06:01; registro de decisiones, §42).
+  - **Qué cambia.** El estimado de cada TO (`limites.estimado_usd` de `data/experiment/reextraccion_v2/manifiestos/tanda_final_98tos_r2b.json`)
+    deja de ser plano por unidad.
+    - Plano, como lo armó T1, era las unidades del TO × 0,010135 más sus líneas de alcance en E1, y × 0,010980 en E3.
+    - Pasa a ser el mismo total, USD 104,749803, repartido entre los 98 TOs en proporción a los caracteres de su E0 completa
+      (`chars_completo`, 4.770.887 en la tanda), con el e1 y el e3 de cada TO en la proporción que tenían.
+    - Va a seis decimales por fase. El resto del redondeo (USD −0,000002) va al e3 de ratio, el TO con más caracteres.
+    - Es el método de la tanda 1 desde el 17/10/2026 (`docs/preregistro_tanda1.md`, notas posteriores a la firma), que reproduce su
+      manifiesto de `ca5b39fd` TO por TO.
+  - **Por tramo:** el tramo 1 pasa de 12,778594 a 19,310012, y el tramo 2, de 91,971209 a 85,439791. El tramo 1 tiene el 18,4 % de los
+    caracteres y el 12,1 % de las unidades.
+  - **Qué no cambia:** U (4.951), la tarifa (0,021115 por unidad), el total (104,7498), el tope, el margen por unidad (0,35), los
+    checkpoints y el control entre tramos, que mide el costo real por unidad contra sus bases y no lee el estimado. El runner usa el
+    estimado por TO solo para proyectar el gasto (`data/experiment/reextraccion_v2/corpus_v2/runner_corpus.py:400-451`).
+  - **Por qué.** El registro de decisiones, §21, lo había dejado para este pre-registro («que su estimado se reparta igual desde el
+    principio: su tramo 1 tiene los regímenes informativos y va primero»), y el texto firmado no lo recogió. La tanda 1 frenó dos veces por
+    proyección con el estimado plano.
+    - **La simulación.** Supongo un costo proporcional a los caracteres de E0, k veces la tarifa por carácter de la tanda 0 (0,021115 /
+      1.164,7). Simulo la proyección del runner con su fórmula, la doble cuenta de la fase que cierra y los checkpoints:
+      - con el estimado plano, pasa el tope desde k = 0,72, al cerrar ri_transpa:e3, en el tramo 1;
+      - con el reparto, no lo pasa hasta k = 1,74, y el gasto real pasa el tope desde k = 1,748: el tope sigue frenando un exceso real;
+      - la tanda 1 costó 1,0047 veces ese modelo.
+    - Las cifras son de la mesa (`decisiones_173_mesa/revision_T1/revisar_T1_mesa.py`, en su paquete).
+  - **Con qué se decidió:** solo con cifras de costo y con los caracteres de la E0, que es la entrada de la tanda. No existía ninguna salida
+    de la extracción.
+  - **El costo real** se sigue comparando como dice el §3: contra U × tarifa más las líneas de alcance, en total y por tramo con las cifras
+    del §3. El estimado repartido se informa al lado, porque es el que usó la proyección.
+  - **El tope, con cuatro decimales:** 151,5835 (1,45 × 4.951 × 0,021115 = 151,58352925), como el de la tanda 1 (100,7291). El §3 lo escribe
+    redondeado a centavos (151,58). El manifiesto y `--autorizado-tope` llevan 151,5835.
+  - **Lo que cambia en el mismo commit:**
+    - el manifiesto (sha256 `e9993b9d…`; antes, `23654ef8…`);
+    - `MANIFIESTO_SHA256` de `data/experiment/tanda_final/t2/lanzar_t2.py`;
+    - el primer renglón de `data/experiment/tanda_final/t1/sha256_para_T2.txt`;
+    - el FRENO T1, con su sección 15.
+    Ni el lanzador ni el manifiesto están entre las 78 rutas del código de la cadena.

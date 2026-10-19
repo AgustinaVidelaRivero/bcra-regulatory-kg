@@ -1,0 +1,32 @@
+# Control del cambio del estimado (T2 de la tanda final, punto 3), 2026-10-18 23:38:39 -0300
+$ git status --porcelain --untracked-files=no
+ M data/experiment/reextraccion_v2/manifiestos/tanda_final_98tos_r2b.json
+ M data/experiment/tanda_final/t1/sha256_para_T2.txt
+ M data/experiment/tanda_final/t2/lanzar_t2.py
+$ git diff --numstat
+197	197	data/experiment/reextraccion_v2/manifiestos/tanda_final_98tos_r2b.json
+1	1	data/experiment/tanda_final/t1/sha256_para_T2.txt
+1	1	data/experiment/tanda_final/t2/lanzar_t2.py
+$ shasum -a 256 <los tres archivos>
+e9993b9dc87e866850a0357572f03c54a3b08dd56f5cb272e42da5d33c81dfeb  data/experiment/reextraccion_v2/manifiestos/tanda_final_98tos_r2b.json
+462dfeabc160eb0d8a15e3062a498c0f3d6d10ff2ccdccff9795f75079b05ba3  data/experiment/tanda_final/t2/lanzar_t2.py
+12f7e21716108deae98fdba4408baaa7ec405632c13c33c353a35df8fd1a35e2  data/experiment/tanda_final/t1/sha256_para_T2.txt
+$ shasum -a 256 -c data/experiment/tanda_final/t1/sha256_para_T2.txt | grep -c ": OK$"
+499
+$ git diff -U0 -- data/experiment/tanda_final/t2/lanzar_t2.py data/experiment/tanda_final/t1/sha256_para_T2.txt
+diff --git a/data/experiment/tanda_final/t1/sha256_para_T2.txt b/data/experiment/tanda_final/t1/sha256_para_T2.txt
+index f8b120a5..8ed6fe20 100644
+--- a/data/experiment/tanda_final/t1/sha256_para_T2.txt
++++ b/data/experiment/tanda_final/t1/sha256_para_T2.txt
+@@ -1 +1 @@
+-23654ef8a43900b2547c2de6dac3e86f2d29c91d6b380ca4439b102468f63740  data/experiment/reextraccion_v2/manifiestos/tanda_final_98tos_r2b.json
++e9993b9dc87e866850a0357572f03c54a3b08dd56f5cb272e42da5d33c81dfeb  data/experiment/reextraccion_v2/manifiestos/tanda_final_98tos_r2b.json
+diff --git a/data/experiment/tanda_final/t2/lanzar_t2.py b/data/experiment/tanda_final/t2/lanzar_t2.py
+index 5e86fdf6..fd246d76 100644
+--- a/data/experiment/tanda_final/t2/lanzar_t2.py
++++ b/data/experiment/tanda_final/t2/lanzar_t2.py
+@@ -90 +90 @@ MANIFIESTO_REL = "data/experiment/reextraccion_v2/manifiestos/tanda_final_98tos_
+-MANIFIESTO_SHA256 = "23654ef8a43900b2547c2de6dac3e86f2d29c91d6b380ca4439b102468f63740"
++MANIFIESTO_SHA256 = "e9993b9dc87e866850a0357572f03c54a3b08dd56f5cb272e42da5d33c81dfeb"
+$ cmp manifiesto alternativa
+iguales

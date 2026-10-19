@@ -3,7 +3,8 @@
 Pre-registro FIRMADO: `docs/preregistro_tanda_final.md` (sha256 en HEAD `b760edf7…`), con su versión derivada de T1
 (`data/experiment/tanda_final/preregistro/preregistro_tanda_final_derivada_T1.md`, `e6ee519a…`, y su `.huecos.json`, `9c86ae1f…`).
 Rigen el §1, el §2, el §3, el §4.1, el §4.2, el §5 y el §8, y lo que del pre-registro de la tanda 1 (firma en `95b18217`) el de la tanda
-final no reemplaza. HEAD `5d8cb917`. T1 corrió de 19:56 a 22:55 (−03). Todo lo que escribí está en `data/experiment/tanda_final/t1/`,
+final no reemplaza. HEAD `5d8cb917`. T1 corrió de 19:56 a 22:47:04 (−03; el ancla es el último archivo que escribí, la verificación de la copia del paquete:
+`t1/entradas_reparto/ancla_hora_fin_T1.txt`; este encabezado decía 22:55, sección 12, error 8). Todo lo que escribí está en `data/experiment/tanda_final/t1/`,
 `data/experiment/tanda_final/t2/`, `data/experiment/reextraccion_v2/e0_chunking/salida_tanda_final_r2b/` y
 `data/experiment/reextraccion_v2/manifiestos/tanda_final_98tos_r2b.json`. Nada commiteado y ningún mensaje de commit preparado: los
 commits son de la autora y quedan PENDIENTES.
@@ -12,7 +13,8 @@ commits son de la autora y quedan PENDIENTES.
 estimado por TO lleva el manifiesto (el plano del despacho, que dejé en el repo, o el repartido por caracteres que el registro de
 decisiones, §21, dejó pendiente para esta tanda, que dejé preparado) y si el ensamblado del tramo 1, que corre con una salida stub que
 suma el `TextoOrdenado`, alcanza para el sello del tramo 1. Hubo un incidente externo (un Neo4j que se apagó y reescribió su volumen,
-ignorado por git) y siete errores propios, todos corregidos antes de este freno. T2 espera la revisión y el «seguí».
+ignorado por git) y siete errores propios, todos corregidos antes de este freno. Dos más los declaré en la parte 1 del «seguí» de T2
+(sección 12, errores 8 y 9): la hora de fin de este encabezado, que corregí, y ocho heredocs sin comillas. T2 espera la revisión y el «seguí».
 
 **Las cifras:** todas salen de `freno_t1_cifras.py` → `freno_t1_cifras.md` (las tablas, numeradas) y `freno_t1_cifras.json`, desde los
 archivos de `t1/`. Cada sección nombra su tabla. Desde la raíz del repo:
@@ -914,6 +916,17 @@ bba224ec0d847c406f7efe5cfd7ea8af529fb4aa6747c1d1853f60d5d09b816b  data/experimen
 7. **`freno_t1_cifras.py` falló en sus dos primeras corridas:** leía las listas de los tramos con una clave que las cifras del
    pre-registro no tienen (`documentos` en lugar de `tos`), y esperaba el código de salida en los logs de las pruebas 2 a 4 (el error 5).
    Los dos, corregidos; las tablas de este FRENO son las de la corrida final.
+8. **La hora de fin del encabezado decía 22:55, y el archivo es de las 22:46:26** (lo marcó la revisión). La escribí antes de terminar, como
+   una previsión, sin su ancla, y no la controlé al cerrar: va contra la regla de que todo dato lleve su ancla (CLAUDE.md, §4.i). El
+   último archivo que escribí en T1 es la verificación de la copia del paquete, de las 22:47:04 (`stat`, en
+   `t1/entradas_reparto/ancla_hora_fin_T1.txt`). Con el mismo error, el checkpoint del paquete dice «Cierre — FRENO T1 (22:40 a 22:58)».
+   Corregido en el encabezado el 18/10/2026, en la parte 1 del «seguí» de T2 (sección 15).
+9. **Ocho heredocs sin comillas** (`<<EOF`), cuando el despacho pide siempre el delimitador entre comillas: los usé para que la consola
+   expandiera la carpeta del scratchpad dentro de un Python de una sola vez, en lugar de pasarla como argumento. Son de las 20:02:09 a
+   las 22:46:25: comparaciones de fotos, inspecciones de la corrida en seco y el resumen de las fotos del paquete; ninguno escribe en el
+   repo, y sus salidas se calculan de los archivos. Los conté en la transcripción de la sesión con
+   `t1/entradas_reparto/heredocs_sin_comillas_t1.py` (`heredocs_sin_comillas_t1.json`). Los encontré al revisar mis comandos en la parte
+   1 del «seguí» de T2; desde ahí, ninguno.
 
 ## 13. Para la autora
 
@@ -953,3 +966,133 @@ verificación de la copia contra el manifiesto va en el mensaje del FRENO. El pa
 health-check.
 
 FRENO T1. Espero la revisión de la autora y el «seguí» de T2.
+
+## 15. El estimado repartido, antes de T2 (parte 1 del «seguí» de T2; 18/10/2026, desde las 23:35:11, la hora del paso 0; la de fin, con su ancla, en el mensaje del FRENO)
+
+USD 0, sin API. Esta parte no lanza T2. Las cifras salen de `t1/entradas_reparto/cifras_reparto_t1.py` → `cifras_reparto_t1.md` (tablas A
+a D) y `cifras_reparto_t1.json`. Las tablas 1 a 13 de `freno_t1_cifras.md` no se rehacen: describen lo que entregó T1, con el manifiesto
+plano.
+
+### 15.1 Lo decidido sobre la sección 13
+
+Según el «seguí» (registro de decisiones, §42, que entra con el commit del cambio: PENDIENTE):
+1. el estimado por TO es el repartido por caracteres (`t1/manifiesto/tanda_final_98tos_r2b_reparto_alternativa.json`), como precisión
+   declarada del pre-registro firmado; el total, el tope, la U y la tarifa no cambian;
+2. el sello del tramo 1 como respaldo queda habilitado con la salida stub que suma el `TextoOrdenado`, declarado;
+3. las 13 unidades de `snp_dd` con el mismo pedido y el tope a cuatro decimales quedan como están, declarados;
+4. `--autorizado-tramo-2` y `--retomar-tras-pausa` se quedan, y se usan solo con una decisión de la autora por escrito;
+5. la interrupción manual del lanzador no se prueba en vivo.
+
+### 15.2 Paso 0 (23:35:11)
+
+```
+$ pwd
+$HOME/INGENIERIA IA/TESIS/bcra-regulatory-kg
+$ git rev-parse --abbrev-ref HEAD
+main
+$ git log -2 --format='%h %s'
+5052364f Tanda final: la corrida en seco, la segmentacion de sus noventa y ocho documentos y el manifiesto de la extraccion
+5d8cb917 Pre-registro de la tanda final: la revision entre tandas y la version derivada con los huecos de antes de la primera etapa
+$ git status --porcelain --untracked-files=no
+$ git status --porcelain -- data/experiment/tanda_final data/experiment/reextraccion_v2/e0_chunking/salida_tanda_final_r2b data/experiment/reextraccion_v2/manifiestos
+$ pgrep -fl "runner_corpus.py|lanzar_t2.py"; echo "pgrep_rc=$?"
+pgrep_rc=1
+$ shasum -a 256 data/experiment/tanda_final/t1/manifiesto/tanda_final_98tos_r2b_reparto_alternativa.json
+e9993b9dc87e866850a0357572f03c54a3b08dd56f5cb272e42da5d33c81dfeb  data/experiment/tanda_final/t1/manifiesto/tanda_final_98tos_r2b_reparto_alternativa.json
+```
+
+Los seis `.log` de T1 (`t1/e0/` y `t1/pruebas_t2/`) siguen en el disco: `.gitignore:47` ignora `*.log`, y están en el paquete.
+
+### 15.3 El cambio y su control (tabla A; la salida completa, en `t1/entradas_reparto/control_cambio_reparto.txt`)
+
+- `cp …/tanda_final_98tos_r2b_reparto_alternativa.json data/experiment/reextraccion_v2/manifiestos/tanda_final_98tos_r2b.json`; la
+  alternativa queda donde está;
+- en `t2/lanzar_t2.py`, solo el renglón 90, `MANIFIESTO_SHA256 = "e9993b9dc87e866850a0357572f03c54a3b08dd56f5cb272e42da5d33c81dfeb"`;
+- en `t1/sha256_para_T2.txt`, solo el sha256 del primer renglón, con el mismo valor.
+
+```
+$ git status --porcelain --untracked-files=no
+ M data/experiment/reextraccion_v2/manifiestos/tanda_final_98tos_r2b.json
+ M data/experiment/tanda_final/t1/sha256_para_T2.txt
+ M data/experiment/tanda_final/t2/lanzar_t2.py
+$ git diff --numstat
+197	197	data/experiment/reextraccion_v2/manifiestos/tanda_final_98tos_r2b.json
+1	1	data/experiment/tanda_final/t1/sha256_para_T2.txt
+1	1	data/experiment/tanda_final/t2/lanzar_t2.py
+$ shasum -a 256 <los tres archivos>
+e9993b9dc87e866850a0357572f03c54a3b08dd56f5cb272e42da5d33c81dfeb  data/experiment/reextraccion_v2/manifiestos/tanda_final_98tos_r2b.json
+462dfeabc160eb0d8a15e3062a498c0f3d6d10ff2ccdccff9795f75079b05ba3  data/experiment/tanda_final/t2/lanzar_t2.py
+12f7e21716108deae98fdba4408baaa7ec405632c13c33c353a35df8fd1a35e2  data/experiment/tanda_final/t1/sha256_para_T2.txt
+$ shasum -a 256 -c data/experiment/tanda_final/t1/sha256_para_T2.txt | grep -c ': OK$'
+499
+```
+
+- Los tres sha256 son los del «seguí». El lanzador y la lista cambian en 1 renglón cada uno; el manifiesto, en sus 197 renglones de
+  `descripcion` y `estimado_usd`. El `git status --porcelain` completo da, además de esos tres, las mismas 13 entradas sin rastrear que
+  el repo traía al empezar la sesión (ninguna mía).
+
+### 15.4 Los controles con el manifiesto nuevo (tabla B; salidas en `t1/entradas_reparto/`)
+
+Sobre una copia hecha con `copia_clausula_tanda_final_t1.sh` (0 archivos por nombre y 0 enlaces), que ya lleva el manifiesto nuevo:
+- **el armado:** `t1_manifiesto_tanda_final.py --estimado reparto --verificar` regenera en la copia el manifiesto del repo: «igual»;
+- **el control de entradas entero** (`t1_control_entradas_tanda_final.py controlar`; los controles l y m no corren solos): **13 de 13 en
+  OK**, veredicto OK, salida 0 (`control_entradas_reparto_t2.json` y su consola):
+  - **l:** el estimado suma 104,749803, exacto contra U × 0,021115 más las líneas de A3 por documento, y a cuatro decimales contra el
+    total de A3 (la misma diferencia de −0,000002 de la sección 3); el tope, 151,5835; los sellos, los del código;
+  - **m:** el manifiesto nuevo carga sin error (98 TOs, perfil r2b, el orden igual); el armado con el perfil anterior a A3 y el estimado
+    repartido (`tanda_final_98tos_r2b_contra_perfil_anterior_a3_reparto.json`, `08ac4ea0…`; en la copia, `prompt_r2b.py` y el derivado
+    `e06933e7…` de `5289b02f`, restaurados y controlados por sha256) difiere solo en `rol_alcance` y frena en ri_bdp, uno de los 33;
+  - **los insumos que reusé de T1**, porque no dependen del estimado: el JSON sin cuentas del selftest de claves y el volcado de los
+    mensajes de la base de A3. El volcado de la copia lo rehice con el manifiesto nuevo, y es byte a byte el de T1 (`75e6b84c…`): el
+    estimado no entra al mensaje.
+
+### 15.5 Las tres pruebas del lanzador con el manifiesto nuevo (tabla C; logs en `t1/entradas_reparto/pruebas_t2/`)
+
+Sobre la misma copia, a la que sumé los scripts de `t1/` y `t2/` que usa el lanzador, con `--stub`, `--solo-tos-tramo-1 ri_bdp,ri_ieccm`,
+`--solo-tos-tramo-2 reqcac`, `--git-repo` y una carpeta de trabajo nueva cada vez, y la `--salida` del runner de la copia vacía antes de
+cada una:
+- **punta a punta** (en segundo plano, con `caffeinate -i`): controles previos en OK, con el sha256 nuevo (`manifiesto_sha256_ok`), 78 de
+  78 y el SDK 0.100.0; el freno OK antes, entre y después; el control entre tramos OK; **salida 0**;
+- **`--autorizado-tramo-2`**, con `umbral_errores` en −1 en la copia de las bases del pre-registro, como la prueba 2 de la §9.2: **el
+  control da FRENO, queda en el registro, el lanzador sigue con el tramo 2 (reqcac) y sale con 0**;
+- **`--retomar-tras-pausa`**, con `--hora-simulada 2026-10-23T18:00:00-03:00`: **no para por la pausa, corre los tres TOs y sale con 0**;
+- **lo restaurado:** las bases del pre-registro de la copia, iguales a las del repo después de la prueba 2; la copia de la base de E1, que
+  ninguna de estas pruebas tocó, igual a la del repo;
+- **las bases de la caché del repo** dan el mismo sha256 antes y después de las pruebas (tabla D);
+- el `NO_ABRIR_` que escribió el lanzador en la copia va solo por su sha256 (`sha256_no_abrir_de_las_pruebas_reparto.txt`). Los logs
+  son `.log`, así que git los ignora: van al paquete.
+
+### 15.6 La hora de fin de T1 (tabla D)
+
+El encabezado decía 22:55. El ancla es el último archivo que escribí en T1: la verificación de la copia del paquete y el `manifest.txt`
+de las dos copias, de las 22:47:04; el `FRENO_T1.md` es de las 22:46:26 (`stat`, en `t1/entradas_reparto/ancla_hora_fin_T1.txt`, tomado
+a las 23:47:56, antes de rehacer el paquete). Lo corregí en el encabezado y lo declaro en la sección 12, error 8.
+
+### 15.7 Lo que cambió en el repo en esta parte
+
+Los tres archivos del cambio, este `FRENO_T1.md` (el encabezado, el error 8 de la sección 12 y esta sección) y lo nuevo en
+`data/experiment/tanda_final/t1/entradas_reparto/` (20 archivos). Nada más: lo demás de `t1/` y `t2/` queda como lo commiteó la autora.
+`git status --porcelain --untracked-files=no` da los tres archivos y este FRENO.
+
+### 15.8 El grep de convenciones de esta sección
+
+Como el de la sección 11, sobre esta sección (126 renglones, antes de escribir este punto) y sobre los 20 archivos de
+`t1/entradas_reparto/`: los tokens del nombre salen de `git config user.name` en la consola y no quedan escritos en ningún archivo, más
+la misma lista de términos, con `grep -c -i -E`. **La sección: 0 renglones con coincidencias y 0 rutas con la carpeta personal. Los 20
+archivos: ninguno con una cuenta distinta de 0, y ninguno con una ruta personal.** El control positivo da 1.
+
+### 15.9 El paquete
+
+`revision_tanda_final_FRENO_T1/` suma el FRENO nuevo, el manifiesto nuevo, el lanzador nuevo, la lista nueva y las salidas de
+`t1/entradas_reparto/`, con nombres que llevan `post_reparto`; lo que ya estaba no se borra ni se pisa (salvo el `manifest.txt`, que se
+rehace). La copia con `ditto` y su verificación van en el mensaje del FRENO.
+
+### 15.10 Errores propios de esta parte
+
+1. **Los ocho heredocs sin comillas de T1** (sección 12, error 9): los encontré al revisar mis comandos contra las reglas del despacho. En
+   esta parte no usé ninguno.
+2. **El primer conteo de los heredocs dio 9:** el docstring del script que los cuenta mencionaba el operador entre comillas invertidas, y
+   el patrón lo contaba. Lo cambié para contar solo el operador precedido por un espacio; da 8, todos de T1. La salida que queda es la de
+   la versión final.
+
+FRENO (parte 1 del «seguí» de T2). Espero la revisión de la mesa, el commit del cambio y la parte 2 del «seguí», la del lanzamiento.

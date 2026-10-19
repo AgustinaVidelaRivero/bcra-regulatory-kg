@@ -87,7 +87,7 @@ import freno_modelo_t2 as FM          # noqa: E402
 
 RUNNER_REL = "data/experiment/reextraccion_v2/corpus_v2/runner_corpus.py"
 MANIFIESTO_REL = "data/experiment/reextraccion_v2/manifiestos/tanda_final_98tos_r2b.json"
-MANIFIESTO_SHA256 = "23654ef8a43900b2547c2de6dac3e86f2d29c91d6b380ca4439b102468f63740"
+MANIFIESTO_SHA256 = "e9993b9dc87e866850a0357572f03c54a3b08dd56f5cb272e42da5d33c81dfeb"
 SALIDA_REL = "data/experiment/reextraccion_v2/corpus_tanda_final/salida_r2b"
 E0_REL = "data/experiment/reextraccion_v2/e0_chunking/salida_tanda_final_r2b"
 PREREG_REL = "data/experiment/tanda_final/preregistro"

@@ -1380,3 +1380,64 @@ tandas v4 (paquete de la mesa, `decisiones_166_mesa/revision_entre_tandas/`).
     extracciones. Si es de prompt, va al grafo corregido;
   - la lectura de las claves del catálogo no se recorta el lunes 19: es la que resuelve los sujetos propuestos de la (8).
 - Las secciones anteriores no se editan.
+
+## 42. El FRENO T1 de la tanda final: las decisiones de la autora antes de la extracción (agregado del 18/10/2026)
+
+Decisiones de la autora del 18/10/2026, recibidas a las 22:57:41, a las 23:06:01 y a las 23:57:41 (hoja de ruta de la mesa, §173 y §174).
+
+- **El FRENO T1** (`data/experiment/tanda_final/t1/FRENO_T1.md`; paquete de la ejecutora `revision_tanda_final_FRENO_T1/`) entró tal como lo
+  entregó la ejecutora en `5052364f`. Lo revisaron la autora, solo leyendo, y la mesa, que reprodujo sus cifras sobre copias
+  (`decisiones_173_mesa/revision_T1/`, en su paquete):
+  - la versión derivada se regenera igual, y las 78 rutas dan 78 de 78;
+  - la E0 de los 98 da 490 de 490, y sus agregados coinciden con los de una E0 independiente;
+  - el manifiesto, con su estimado recalculado TO por TO, y `sha256_para_T2.txt`, con 499 de 499;
+  - el lanzador: su sha256, el tope, el SDK, el piso y la pausa;
+  - la copia con `tanda_final/preregistro/`, que es la línea que la autora agregó al despacho; la mesa la probó sobre un repo de juguete;
+  - la consulta de deprecaciones dio lo mismo a las 19:58 y a las 23:00.
+  - Los seis `.log` de T1 no entraron: los ignora `.gitignore:47`, y están en el paquete de la ejecutora.
+- **El estimado por TO, repartido por caracteres** (23:06:01, tal cual): «Va como precisión declarada del pre-registro firmado, con su causa:
+  el registro de decisiones, §21, lo había fijado, el texto firmado no lo recogió, y la tanda 1 frenó dos veces por proyección con el
+  estimado plano. El total, el tope, la U y la tarifa no cambian.»
+  - La nota va al pie de `docs/preregistro_tanda_final.md` en este commit, como la propuso la mesa (23:57:41), con:
+    - la simulación de la proyección;
+    - la comparación de T5 contra las cifras del §3, con el reparto al lado;
+    - el tope con cuatro decimales.
+  - El cambio lo aplicó la ejecutora de T1 antes de lanzar (FRENO T1, sección 15). Los tres archivos dan, byte a byte, los que la mesa
+    había calculado antes:
+    - el manifiesto, `e9993b9d…`;
+    - el lanzador, `462dfeab…`;
+    - la lista, `12f7e217…`, con 499 `OK`.
+  - Con el manifiesto nuevo:
+    - el control de entradas da 13 de 13;
+    - el armado con el perfil anterior a A3 frena en ri_bdp;
+    - las tres pruebas en seco del lanzador salen con 0: la de punta a punta, `--autorizado-tramo-2` con el control entre tramos en FRENO
+      y `--retomar-tras-pausa` a las 18:00 del 23/10;
+    - las bases de la caché quedan iguales.
+  - La ejecutora corrigió la hora de fin de T1 (22:47:04, con su ancla) y declaró dos errores propios más. Sus salidas están en
+    `data/experiment/tanda_final/t1/entradas_reparto/`.
+- **El sello del tramo 1 como respaldo,** aceptado con la salida stub que suma el `TextoOrdenado`, declarado (23:06:01, tal cual): «El freno
+  en I4 es del stub, y el mismo ensamblado armó la tanda 1 con salidas reales.»
+- **La prueba del acumulado de las tandas 0 y 1 con el tramo 1** (23:57:41): sí, como la propuso la mesa (`revision_FRENO_T1_tanda_final_mesa.md`,
+  §5.2):
+  - corre apenas el control entre tramos dé OK, sobre una copia, a USD 0 y sin frenar T2;
+  - la consola muestra solo códigos de salida, invariantes, totales y sha256;
+  - si falla, T2 sigue, y el sello del tramo 1 como respaldo queda sin habilitar hasta que un mandato lo arregle.
+- **Las 13 unidades de snp_dd con el mismo texto** (6 grupos, 7 pedidos que salen de la caché, en el tramo 2) y el tope con cuatro decimales
+  quedan como están, declarados.
+- **`--autorizado-tramo-2` y `--retomar-tras-pausa`** se quedan, y se usan solo con una decisión de la autora por escrito. La interrupción
+  manual del lanzador no se prueba en vivo.
+- **Quién lanza T2** (23:57:41): la ejecutora, desde su sesión, como en la tanda 1. Si se corta, lo relanza la autora desde su terminal, con
+  los comandos de la mesa (`decisiones_173_mesa/segui_t2/comandos_para_la_autora_T2_mesa.md`, en su paquete). La Mac queda enchufada y con
+  la tapa abierta durante toda la extracción, porque `caffeinate -i` no evita que se duerma con la tapa cerrada.
+- **Los commits durante T2** (23:57:41): sí, solo de documentos y de archivos que T2 no lee ni escribe.
+  - Cada script de esos commits controla antes de commitear que no entra nada de:
+    - las 78 rutas, el manifiesto de la extracción ni la E0 de la tanda final;
+    - `data/experiment/tanda_final/t2/` ni `data/experiment/reextraccion_v2/corpus_tanda_final/`;
+    - las tres bases de la caché ni `logs/cache_usage.jsonl`.
+  - Ese control reemplaza el freno por un lanzador corriendo.
+  - Mientras corre T2, la autora no corre `git checkout`, `pull`, `stash` ni `reset`.
+- **El incidente de Neo4j** del FRENO T1 (§11) cierra con el FRENO de la parte 1 de U-NAV, §3:
+  - la sesión de U-NAV cargó el acumulado de 19:11:26 a 19:12:23 y paró el contenedor y Docker Desktop a las 20:00;
+  - en el volumen, 35 entradas cambian entre la foto de antes y la intermedia, que son los 35 cambios de T1, y ninguna después;
+  - la más nueva es de las 20:00:33.
+- Las secciones anteriores no se editan.
