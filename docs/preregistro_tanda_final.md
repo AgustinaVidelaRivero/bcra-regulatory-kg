@@ -398,3 +398,36 @@ de `4de7f2a7`, no el de HEAD (CLAUDE.md, §4.k).
     - el primer renglón de `data/experiment/tanda_final/t1/sha256_para_T2.txt`;
     - el FRENO T1, con su sección 15.
     Ni el lanzador ni el manifiesto están entre las 78 rutas del código de la cadena.
+
+- **19/10/2026: `r1_referencias.py` entra con U-PROC-HERENCIA, después del sello, como `ensamblar_tanda0.py`** (§8; decisión de la autora
+  recibida el 19/10/2026 a las 18:20:38; registro de decisiones, §53).
+  - **Qué dice el texto firmado.** Las 78 rutas del código de la cadena, re-selladas con A3
+    (`data/experiment/tanda_final/preregistro/codigo_de_la_cadena_c66c7ecd_mesa.json`, sha256 `40de829c…`), no cambian entre el paso 0
+    del despacho y el sello de la tanda final (§2 y §8).
+    - El §8 nombra una sola ruta que entra después del sello: `data/experiment/tanda0/code/ensamblar_tanda0.py`, que toca U-PROC-HERENCIA.
+    - Para cualquier otra, se frena y decide la autora.
+  - **Qué cambia.** La segunda pasada de U-PROC-HERENCIA (registro de decisiones, §49 y §52) toca también
+    `data/experiment/reextraccion_v2/corpus_v2/r1_referencias.py`.
+    - Está en la lista, en el grupo «ensamblado», importado por `ensamblar_tanda0.py`.
+    - El cambio es un parámetro nuevo, `punto_declarado_e1`, apagado por defecto. Sin la bandera de U-PROC-HERENCIA, el código hace lo
+      mismo que el de la lista (revisión de la mesa, §184 de su hoja de ruta).
+    - El registro de decisiones, §49, autoriza ese cambio solo detrás de la bandera.
+    - La autora decide que entra como `ensamblar_tanda0.py`: con el commit de U-PROC-HERENCIA, después del sello.
+  - **Qué no cambia.**
+    - Hasta el sello, las 78 rutas quedan como en la lista, cada una con su sha256 (`r1_referencias.py`, `3325bb26…`;
+      `ensamblar_tanda0.py`, `b720df24…`). El paso 0 del despacho las controla ruta por ruta (§2).
+    - La release r2, el prompt, el esquema, los modelos y la caché no cambian.
+    - La regla del §8 sigue para las otras 76 rutas.
+  - **Por qué no hace falta una release nueva.**
+    - `r1_referencias` está en `MODULOS_SOLO_CODIGO` (`data/experiment/mantenimiento/code/selftest_clave_cache.py:138-141`), que entra en
+      `MODULOS_SOLO_CODIGO_R2` (`:178`).
+    - El control R19 del mismo selftest (`:1249-1268`) comprueba que ninguno de esos módulos se carga al armar los pedidos de E1 ni de E3.
+    - Un cambio en ellos es «solo código»: no mueve ninguna clave de la caché ni pide re-extraer.
+  - **Después del sello.**
+    - El commit de U-PROC-HERENCIA lleva las dos versiones de la segunda pasada: los blobs `58e736db…` de `ensamblar_tanda0.py` y
+      `84e8831f…` de `r1_referencias.py`.
+    - La lista de las 78 rutas se vuelve a sellar con ellas, y con lo demás que cambie para la re-aplicación única, antes de su corrida,
+      con el mismo script (`data/experiment/controles_tanda1/sellar_codigo_de_la_cadena_mesa.py`).
+  - **Con qué se decidió:** con el código de la segunda pasada y sus controles sobre los grafos acumulados de las tandas 0 y 1. No se usó
+    ninguna salida de la tanda final.
+  - **Lo que cambia en el mismo commit:** este documento y el registro de decisiones (§53). Ninguno de los dos está entre las 78 rutas.

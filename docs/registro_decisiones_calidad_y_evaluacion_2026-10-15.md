@@ -1841,3 +1841,24 @@ Decisiones de la autora del 19/10/2026, recibidas a las 17:35:09 (hoja de ruta d
     cambian las citas que llegan al punto corregido.
 - **El 137** corre cuando vuelvan los FRENOs de la segunda pasada y de U-NAV-DESDE. Lleva esta sección.
 - Las secciones anteriores no se editan.
+
+## 53. El catálogo del juez de V, la nota del pre-registro de la tanda final, la cobertura en el escenario lento y el aislamiento de los brazos en paralelo (agregado del 19/10/2026)
+
+Decisiones de la autora del 19/10/2026, recibidas a las 18:20:38 (hoja de ruta de la mesa, §185).
+
+- **El catálogo del juez de V es el r2,** el bloque del prefijo r2b con que se extrajo el grafo de V:
+  - de los 173 Sujetos del grafo de V (`66e745f5…`), 110 están en el bloque r2 y 102 en el v3. Los 102 del v3 están todos en el r2, y 63
+    no están en ninguno (`sujetos_V_contra_r2_y_v3_mesa.py`, en el paquete de la mesa, §185, sobre los dos bloques de HEAD);
+  - los 63 sin definición se juzgan por su etiqueta, y se declara: el código del juez marca en cada ficha los Sujetos sin definición (la
+    marca no entra en el pedido), y el informe de V da cuántas fichas tienen alguno.
+- **La nota al pie del pre-registro de la tanda final por `r1_referencias.py`** va en este commit, el siguiente al de la §52, para no
+  rearmar aquel. `r1_referencias.py` es una de las 78 rutas del código de la cadena y entra como `ensamblar_tanda0.py`: con el commit de
+  U-PROC-HERENCIA, después del sello. No hace falta una release nueva, porque es un módulo «solo código» (R19).
+- **La cobertura de V va después de la firma del pre-registro de B6.3,** como la modeló la mesa (§184): entra en el central y no en el
+  lento. Si se da el lento, la autora decide ese día entre tres alternativas:
+  - la cobertura después del miércoles 28, declarada;
+  - más horas de lectura;
+  - el recorte del pre-registro de tripletas (la presencia de 50 y no de 100), que la mesa no recomienda.
+- **El lanzador en paralelo del banco:** la base Neo4j y los índices quedan compartidos, de solo lectura. El test de aislamiento prueba
+  también que una sesión del brazo de fragmentos no alcanza Neo4j ni el índice del grafo, aunque corra al lado de una sesión del grafo.
+- Las secciones anteriores no se editan.
