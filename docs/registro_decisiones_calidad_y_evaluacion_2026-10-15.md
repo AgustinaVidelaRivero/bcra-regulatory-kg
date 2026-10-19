@@ -1570,3 +1570,32 @@ preparado el 18/10/2026 (§172 y §173) y la autora corrigió.
   - **Para el mandato de las preguntas de B6.3:** la regla del CLAUDE.md de leer `docs/tablero.md` no aplica a la instancia ciega; la
     mezcla de tipos se fija y se justifica por escrito, con el resultado por tipo y el N de cada tipo por potencia.
 - Las secciones anteriores no se editan.
+
+## 46. La enmienda 2 a tripletas firmada, C1 con la re-aplicación única, el censo de C1 y las horas de la autora (agregado del 19/10/2026)
+
+Decisiones de la autora del 19/10/2026, recibidas a las 12:13:24 (hoja de ruta de la mesa, §178).
+
+- **La enmienda 2 al pre-registro de tripletas, firmada tal cual:**
+  `docs/enmienda2_preregistro_evaluacion_tripletas_2026-10-17_desambiguacion.md`. El pre-registro recibe una nota fechada al pie que
+  remite a ella, y su texto firmado no cambia.
+- **El mandato de las preguntas de B6.3,** firmado a las 12:13:24 con sus seis decisiones del §9. Su texto firmado entra con la §47,
+  después de que la autora resuelva la contradicción con Q4 (§8 y §9) que encontró la mesa al pasarlo en limpio.
+- **No hay consulta pendiente,** tal cual: «el diseño es decisión mía y queda sin condición». La condición «salvo que la consulta de hoy
+  diga otra cosa» de la §45 no rige.
+- **C1 de U-MED-DESAMB entra con la re-aplicación única, antes del sello del sábado,** tal cual. La mesa lo controló contra las fuentes:
+  - la enmienda 2, §0: «Si pasan, entran al grafo evaluado con la re-aplicación única del código antes de su sello»;
+  - la enmienda 8 al protocolo, R3 (`54902301`, `:50-56`): las correcciones de código se re-aplican una sola vez al acumulado, antes de
+    sellar el grafo evaluado;
+  - y su R5 (`:66-72`): entra lo del grupo 2 que a las 12:00 del sábado tenga mandato firmado, código listo y su medición hecha.
+  - S1, S2 y S3 no aplican (resultados de la mesa, `decisiones_177_mesa/desamb/`, en su paquete).
+- **La relectura del censo de C1** en el acumulado de las tres tandas la hace la autora después de la extracción y antes de la
+  re-aplicación única. Tal cual: «El censo no me muestra nada de una unidad de la muestra de U-MED-VERIF: lo controlás en memoria, como con
+  nmcief. Si una colisión no se puede decidir sin una de esas unidades, no se une y se declara.»
+  - El script de la mesa arma el censo con el C1 sellado y la muestra en memoria (`decisiones_178_mesa/censo_c1/`, en su paquete).
+  - PENDIENTE de la autora, la precisión de la regla:
+    - un nodo con todas sus procedencias en la muestra no se muestra, no se une y se declara;
+    - una colisión que sin esos nodos queda con menos de 2 nodos o en menos de 2 documentos no se une, y se declara.
+  - En el acumulado de las tandas 0 y 1 sin cola (`0435d41f…`), como cifra descriptiva: 10 colisiones con 37 nodos, de hasta 8
+    documentos, y ninguna toca la muestra.
+- **Las horas de la autora:** 7 por día hábil, tal cual.
+- Las secciones anteriores no se editan.
