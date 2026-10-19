@@ -1862,3 +1862,29 @@ Decisiones de la autora del 19/10/2026, recibidas a las 18:20:38 (hoja de ruta d
 - **El lanzador en paralelo del banco:** la base Neo4j y los índices quedan compartidos, de solo lectura. El test de aislamiento prueba
   también que una sesión del brazo de fragmentos no alcanza Neo4j ni el índice del grafo, aunque corra al lado de una sesión del grafo.
 - Las secciones anteriores no se editan.
+
+## 54. El commit de la §52, y `desde` en las búsquedas del banco: el brazo de fragmentos, el pie de `buscar_puntos`, la regresión con Neo4j y el manifiesto del índice por punto (agregado del 19/10/2026)
+
+Decisiones de la autora del 19/10/2026, recibidas a las 18:36:53 (hoja de ruta de la mesa, §186), sobre el FRENO de U-NAV-DESDE.
+
+- **El commit de las secciones 50 a 52** corrió, con su push (`a92bddb0`).
+- **`desde` en el brazo de fragmentos:**
+  - en F1, como lo dejó U-NAV-DESDE: dentro de la forma de la familia 1, igual que los filtros. Solo la configuración híbrida de F1
+    declara `parametro_desde`;
+  - en N7 y en B6.3, todos los brazos de fragmentos (BM25 o la híbrida, y el denso) llevan `desde`, igual que el grafo;
+  - A2.2 corre sin `desde` en ningún brazo, y se declara.
+- **El pie de `buscar_puntos`:** cuando el tope corta filas, dice desde qué posición seguir (`desde` = la primera fila que no entró),
+  para que el agente no saltee resultados.
+  - Es el único cambio de la salida con `desde=0`, va declarado, y los selftests se actualizan. Va antes de N6.
+  - El texto lo fija el seguí de la unidad (hoja de ruta de la mesa, §186). No es más largo que el de hoy, así que las filas que entran
+    no cambian.
+- **Los bloques de herramientas no cambian:** la descripción de la herramienta ya explica `desde`.
+- **Antes de N6 corren:**
+  - el selftest entero de N5 con Neo4j, en los dos modos, con los mismos casos que en N5 más T11, y las salidas iguales salvo el pie;
+  - los grupos de F1 con el índice del acumulado, con un solo proceso denso por vez.
+- **El manifiesto del índice por punto:**
+  - su sha256 incluye los tiempos de construcción, así que ninguna reconstrucción lo reproduce, aunque los datos salgan iguales;
+  - la corrección va antes del commit de N5;
+  - la mesa propone sacar los tiempos de lo que se hashea; la otra opción es que la config fije el sha256 de los datos. Decide la
+    autora.
+- Las secciones anteriores no se editan.
