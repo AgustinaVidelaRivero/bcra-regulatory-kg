@@ -1515,3 +1515,58 @@ Decisiones de la autora del 19/10/2026, recibidas a las 09:33:40 (hoja de ruta d
   por la mesa y PENDIENTE de la autora, sobre otra copia y en paralelo con N5, con el mismo analizador, el mismo modelo denso y la misma
   fusión. Su commit va con el de N5, después del sello de la tanda final y de A2.2.
 - Las secciones anteriores no se editan.
+
+## 45. Las marcas de E3 de la familia 6, los calibradores de U-MED-DESAMB y las preguntas de B6.3 (agregado del 19/10/2026)
+
+Decisiones de la autora del 19/10/2026, recibidas a las 10:02:22 y a las 10:09:22 (hoja de ruta de la mesa, §177), y lo que la mesa dejó
+preparado el 18/10/2026 (§172 y §173) y la autora corrigió.
+
+- **Las marcas de E3 en los ejemplos de la familia 6 no se omiten,** tal cual: «El bloque de la familia 6 es lo que ve el agente en N6 y en
+  B6.3, y ese texto quedaría en su prompt; además, la instrucción de la familia 6 le pide citar las marcas. El cegamiento ya está cubierto:
+  las cuatro unidades no están en la muestra, y en el FRENO el bloque va solo por su sha256 y sus caracteres. En el pre-registro de N7, el
+  bloque de herramientas va por su archivo y su sha256, y yo no lo abro hasta que cierre la lectura de U-MED-VERIF.»
+  - La autora pegó el «seguí» de N5 sin el agregado de la mesa que las omitía. Pegó N5-F y U-PROC-HERENCIA en sesiones abiertas desde
+    `fuera_del_repo/unav_n5f/` y `fuera_del_repo/proc_herencia/`.
+- **Los calibradores v2 de U-MED-DESAMB,** leídos y sellados por la autora el 19/10/2026 a las 09:55:23
+  (`fuera_del_repo/lectura_calibradores_desamb/sello_calibradores.txt`):
+  - la hoja marcada da `a824fda9121774c6646eda0a941db2a4b8d017a7d86f391b144b426d16d9d4d4`, y la exportación,
+    `615d766c842c0b0ab9d156f9eb19aece1b13f0546c51cabeff4d00f6de89b086`. La mesa controló los dos contra la carpeta y contra el sello;
+  - el convertidor dio 17 de 17 entradas con clase y porqué, de 12 ítems;
+  - con los calibradores sellados, la mesa abrió la clave aparte de la lectura (§32) y computó S1, S2, S3 y C1 con los estimadores
+    sellados y la precisión de la nota 1 del diseño (`decisiones_177_mesa/desamb/`, en su paquete). Los resultados van a la revisión de
+    la autora y no se registran en esta sección;
+  - la hoja marcada y su sello entran en este commit, en `data/experiment/med_desamb/lectura/calibradores/`;
+  - **la carpeta del juez,** preparada por la mesa fuera del repo (`fuera_del_repo/juez_desamb/`):
+    - los ítems y el anexo de la §143 de la mesa, iguales a su sha256;
+    - los calibradores cargados con el subcomando `calibradores` del juez, con la hoja marcada;
+    - sus controles frenan hoy solo por lo que levanta la ventana: la autorización de la autora, el commit del sello de la tanda final y la
+      extracción corriendo;
+    - la cota de la humo, recalculada con la plantilla real, es de unos USD 0,49 (antes, 0,47), con la fórmula del juez y sus supuestos de
+      tokens, NO VERIFICADOS;
+    - la humo corre en la terminal de la autora, con el comando de la mesa, después del sello de la tanda final y sin ninguna extracción
+      corriendo (diseño sellado, §8).
+- **El diseño de las preguntas de B6.3,** tal cual, «salvo que la consulta de hoy diga otra cosa»:
+  - «una muestra estratificada por tipo (dato directo, varios puntos con sus cuatro subtipos, y abstención), con las cuotas de N3, cerca del
+    60 % de varios puntos, fijadas y justificadas por escrito antes de generar»;
+  - «el N de cada tipo por un cálculo de potencia, con su script»;
+  - «el resultado por tipo y un total ponderado por la proporción de cada tipo en la normativa de los TOs de B6.3, medida desde los PDF o la
+    E0 por una instancia que no mira el grafo, antes de generar»;
+  - «una hipótesis secundaria pre-registrada: el grafo mejora más en las de varios puntos»;
+  - las notas de la §172 de la mesa (`decisiones_172_mesa/b63/`, en su paquete) y la cuota de cada tipo justificada desde la normativa, sin
+    mirar el grafo ni resultados del agente (18/10/2026, §173);
+  - el mandato, en BORRADOR de la mesa (`decisiones_177_mesa/b63/`, en su paquete), PENDIENTE de la firma de la autora.
+- **Lo preparado del 18/10/2026, con la corrección de la autora:**
+  - **T1 de la tanda final** se despachó con una línea de la autora al final del bloque, tal cual: «La exclusión de
+    data/experiment/tanda_final/ en las copias no alcanza a data/experiment/tanda_final/preregistro/: esa carpeta sí va a la copia, porque
+    la usan el lanzador y el control entre tramos.»
+  - **U-MED-VERIF-FICHAS** se despachó dos veces:
+    - la primera sesión, abierta en el repo, frenó en el paso 0 sin escribir nada;
+    - la segunda se abrió desde `fuera_del_repo/tesis_escritura/U-MED-VERIF/`, con una línea de la autora al final que lo dice;
+    - **desde ahora, todo despacho dice desde qué carpeta se abre su sesión.**
+  - **Los 3 ejemplos de N3 se rehicieron:** la instancia había tomado «familia 6» como la necesidad 6 del cupo, y la familia 6 es la
+    estrategia de navegación. Van como preguntas de varios puntos, con el mismo generador, sellados aparte y nunca medidos:
+    - M09, que coincide con un ancla de EV2, y M17, que coincide con una de la tanda 0, se declaran y se quedan;
+    - si un ejemplo nuevo coincide con un ancla de EV2 o de la tanda 0, se rehace.
+  - **Para el mandato de las preguntas de B6.3:** la regla del CLAUDE.md de leer `docs/tablero.md` no aplica a la instancia ciega; la
+    mezcla de tipos se fija y se justifica por escrito, con el resultado por tipo y el N de cada tipo por potencia.
+- Las secciones anteriores no se editan.
