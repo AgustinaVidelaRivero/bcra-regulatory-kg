@@ -1634,3 +1634,25 @@ Decisiones de la autora del 19/10/2026, recibidas a las 12:58:40 (hoja de ruta d
   - Si hace falta recortar para llegar a N_Q5, antes de bajar el N se recorta primero el juez de U-MED-DESAMB y después las claves del
     catálogo.
 - Las secciones anteriores no se editan.
+
+## 48. El mandato de Q8 firmado, la precisión del solapamiento en V y los dos FRENOs que volvieron (agregado del 19/10/2026)
+
+Decisiones de la autora del 19/10/2026, recibidas a las 13:46:19 (hoja de ruta de la mesa, §180).
+
+- **Los despachos de V y de P1,** pegados con su semilla tal cual (`B4-TRIPLETAS-V:sorteo:2026-10-07` y `B63-ETAPA1:muestra:2026-10-19`), en
+  sesiones abiertas desde `fuera_del_repo/tripletas_v/` y `fuera_del_repo/b63_etapa1/`.
+- **El solapamiento con U-MED-DESAMB en la etapa V** (enmienda 2 a tripletas, §1): la precisión de la mesa, tal cual, declarada en el acta
+  del sorteo. «La misma norma como extremo de contenido» se cuenta por la misma unidad, el mismo predicado y el mismo sujeto.
+- **El mandato de Q8, firmado** (`docs/mandatos/Q8_juez_de_B63_y_su_verificacion.md`), con las cuatro decisiones de su §5, tal cual:
+  1. «el juez queda como está;»
+  2. «la semilla de la verificación es gold-q12-verificacion-a22-v1;»
+  3. «si la verificación no pasa, B6.3 se juzga con el juez, la cifra se informa con su acuerdo medido y todo lo dudoso va a mi lectura;»
+  4. «el juez se verifica con respuestas de EV2 y de A2.2, que no son de varios puntos, y en B6.3 la mayoría lo son. La muestra de control
+     de B6.3 (36 respuestas, 12 por brazo) se estratifica también por tipo, y el acuerdo del juez se informa por tipo.» El criterio del
+     acuerdo en varios puntos, lo que se declara si no llega y el tamaño los propone la mesa, y van en el pre-registro de B6.3.
+- **El FRENO de U-PROC-HERENCIA:** frenó por dos de los cuatro casos de su §3, punto 4 (cambia la cantidad de nodos y de aristas, y cambian
+  `remite_a`). La decisión es de la autora, con la recomendación de la mesa, y lo que decida entra en el mandato de la re-aplicación única.
+- **El FRENO de N5-F:** la mesa lo revisa después de U-PROC-HERENCIA y antes de N6.
+- **El orden:** los FRENOs de V y de P1 apenas vuelvan; después, U-PROC-HERENCIA; y el modelo del punto 6 antes de los sorteos de B6.3, con
+  la lectura de la autora de las 20 de Q8 después de A2.2.
+- Las secciones anteriores no se editan.
