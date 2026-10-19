@@ -1441,3 +1441,43 @@ Decisiones de la autora del 18/10/2026, recibidas a las 22:57:41, a las 23:06:01
   - en el volumen, 35 entradas cambian entre la foto de antes y la intermedia, que son los 35 cambios de T1, y ninguna después;
   - la más nueva es de las 20:00:33.
 - Las secciones anteriores no se editan.
+
+## 43. El control entre tramos de la tanda final en FRENO, y el tramo 2 autorizado (agregado del 19/10/2026)
+
+Decisión de la autora del 19/10/2026, recibida a las 08:43:22 (hoja de ruta de la mesa, §175).
+
+- **El FRENO** (`data/experiment/tanda_final/t2/FRENO_T2_parcial_1.md`):
+  - la ejecutora lanzó T2 desde su sesión el 19/10/2026 a las 00:08:43;
+  - el lanzador cerró los 30 TOs del tramo 1, todos con salida 0 y con el freno por modelo en OK, y paró a las 02:35:20 con salida 11;
+  - el gasto fue de USD 12,856189, contra un tope de 151,5835.
+- **El control entre tramos dio FRENO en un criterio,** los errores definitivos: 1, con umbral 0. Los otros tres dieron OK:
+  - el costo por unidad, 0,021391 (umbral 0,03423);
+  - las salidas inválidas de E1, 1 de 601 (umbral 1 %);
+  - la proporción a la cola, 13 de 601 (umbral 3,01 %).
+- **La causa,** identificada por la ejecutora a pedido de la autora, sin gastar (`data/experiment/tanda_final/t2/identificacion_error_ri_transpa/`):
+  - es `ri_transpa::Sbloque1::chapeau_seccion`, de 21.712 caracteres;
+  - su primer intento de E1 salió mal formado sin cortar, y los dos reintentos por forma cortaron en 8.192 tokens, porque el reintento
+    por forma no escala el max_tokens (`data/experiment/reextraccion_v2/corpus_v2/runner_corpus.py:683-685`);
+  - la partición y el tercer escalón se disparan solo cuando corta el primer intento (`:741-750`);
+  - en el tramo 2 hay 25 unidades expuestas al mismo camino. La mesa lo reprodujo en el código.
+- **La decisión de la autora,** tal cual: «Decidí seguir con el tramo 2 sin tocar el código», y se lo dejó por escrito a la ejecutora.
+- **Quién relanzó:** la ejecutora, desde su sesión, con `--autorizado-tramo-2`, como el lanzamiento 1. Fue el 19/10/2026 a las 08:42:24,
+  con el pid 70654.
+  - Para este relanzamiento cambia lo de la §42 sobre quién relanza, que allí era la autora desde su terminal.
+  - El lanzador saltó las fases cerradas del tramo 1. El control entre tramos volvió a correr a las 08:43:31 y dio FRENO, que quedó en el
+    registro de avance, y el lanzador siguió con el tramo 2, como lo prevé esa opción.
+- **La prueba del acumulado de las tandas 0 y 1 con el tramo 1** (§42): la autora la pidió aunque el control haya dado FRENO, porque el
+  tramo 1 está completo. La corrió la mesa el 19/10/2026, sobre un clon de HEAD (`27bfaeb5`), a USD 0 y sin frenar T2
+  (`decisiones_175_mesa/acumulado/`, en su paquete):
+  - con el mecanismo del T3 de la tanda 1: la E0 combinada, la entrada de los 60 TOs y los manifiestos de ensamblado del acumulado de la
+    tanda 1 y del tramo 1 de T1, juntos;
+  - el completo y el sin cola salen con 0, con la doble corrida byte a byte igual y 0 nodos y 0 aristas fuera del modelo;
+  - el completo da 23.671 nodos y 67.006 aristas, y el sin cola, 22.930 y 59.354;
+  - la consola mostró solo códigos de salida, invariantes, totales y sha256, y el repo quedó igual;
+  - el sello del tramo 1 como respaldo tiene probado su segundo grafo. Los `nombres_remision` del acumulado con el tramo 1 los fija su
+    T3 (pre-registro, §7).
+- **Lo que queda para decidir,** con las propuestas de la mesa en su paquete (`decisiones_175_mesa/propuestas/`):
+  - cómo se tratan, antes del sello, las unidades que terminen así: extraerlas en una pasada aparte, o declararlas como faltantes y
+    extraerlas después del sello;
+  - el alta en el backlog del arreglo del runner (BKL-0050, propuesta): que el reintento por forma escale el max_tokens cuando corta.
+- Las secciones anteriores no se editan.
