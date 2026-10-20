@@ -2485,3 +2485,239 @@ Hechos de la autora del 20/10/2026, recibidos a las 15:01:10 (hoja de ruta de la
   (nota al pie del pre-registro de tripletas, `:347-351`; §56), y no 35. V entera, con las dos recalibraciones (la de precisión y la de
   presencia), proyecta 32,93 central y 43,36 alto: entra.
 - Las secciones anteriores no se editan.
+
+## 70. La recalibración única del juez de precisión de V, decidida, y los dos momentos de lectura del §6, sin firma (20/10/2026)
+
+Decisiones de la autora del 20/10/2026, recibidas a las 16:27:56 (hoja de ruta de la mesa, §204).
+
+- **La recalibración del juez de precisión de V** (§69; análisis de la mesa en `decisiones_203_mesa/juez_v/`), tal cual: «sí, ahora, antes
+  del gold, como la propusiste […], §3: la modalidad la computa el código, el juez solo cita la marca y su clase, y el código controla que
+  esté literal y la compara con el tipo del nodo con la tabla fija. Es la única recalibración del §4.7.»
+  - **La tabla fija:** Obligacion, deber; Restriccion de tipo prohibición, prohibición; Restriccion de tipo límite (cuantitativo o
+    cualitativo), **prohibición o deber** (decisión de la autora); Potestad, permiso; Condicion, condición.
+  - **Fijado antes de correr:** «si la v1.4 da menos acuerdo de veredicto que la v1.3 en el pool (17 de 20), el gold corre con la v1.3,
+    declarado».
+  - **Límite del instrumento:** P04 (de evidencia) y las cinco de etiqueta (P05, P08, P10, P11 y P16) quedan documentadas como tales.
+  - **Cómo, según el §4.7:** con esta decisión escrita, con los casos resueltos del pool y nunca con las 100, re-corriendo la calibración
+    entera fuera de muestra (60 llamadas, tope 8,5 y freno 6,5). La v1.4 va detrás de una bandera: apagada, es la v1.3 byte a byte, para
+    que la regla pueda mandar el gold a la v1.3. Su «seguí» está en `decisiones_204_mesa/juez_v/`.
+  - **El freno del gold** (tope 16, freno 13) no cambia: el código proyecta con la mediana del costo por llamada (`juez_v.py`,
+    `GuardaGasto`), no con el p90 del alto de la §69 (13,67). Con los tokens reales de la calibración, la mediana proyecta 8,63 con la
+    v1.3 y 9,30 con la salida un 30 % más larga, y el freno se dispararía con una salida mediana de 1.518 tokens (la real es 522)
+    (`decisiones_204_mesa/costo/`). El análisis de la recalibración lo vuelve a proyectar con los tokens de la v1.4.
+  - Va una nota fechada al pie del pre-registro de tripletas que declara la recalibración. El texto firmado no cambia.
+- **Los dos momentos de lectura del §6 del pre-registro de la tanda final, juntos en uno** (§68): no necesitan la firma de la autora.
+  Quedan como desvío declarado, con su origen en el «seguí» de T3 de la mesa (punto 7.3), que la autora pegó con una nota previa. La
+  atención y el freno de T4 se calcularon antes de leer nada, porque T2 siguió de corrido, en lugar de «se calculan después de leer las
+  celdas del tramo 1» (`4de7f2a7:docs/preregistro_tanda_final.md:236-238`). Lo declaran el FRENO T3 (sección 7.7) y el informe de T4.
+- Las secciones anteriores no se editan.
+
+## 71. U-VERPUNTO, sus dos etapas revisadas, y la salida del brazo de fragmentos por encima del tope de MCP (20/10/2026)
+
+Hechos y precisiones de la autora del 20/10/2026, recibidos a las 16:58:57 (hoja de ruta de la mesa, §205).
+
+- **Lo que hizo la autora,** por su confirmación: el push de los tres commits de T3 (`71cb9305`, `5aae4fe0` y `7cbf3525`) y el pegado del
+  «seguí» de la v1.4 del juez de V.
+- **U-VERPUNTO terminó sus dos etapas,** cada una en FRENO (sesión `130328f7`). La etapa b corrió con cuatro precisiones de la autora:
+  - D-5 con la fuente del FRENO de T3 (`fae35662…`);
+  - el cambio del docstring de `familias_nav.py` (línea 12), declarado fuera de la lista;
+  - las llamadas con comillas dobles;
+  - el control de los contenedores de otro proyecto.
+- **La revisión de la mesa** (`decisiones_205_mesa/verpunto/`): las dos etapas cierran.
+  - La a da 72 de 72 (`276b7838…`): el texto propio entero en `ver_punto` con su tope por punto, la regresión contra U-NAV-DESDE y N5 por
+    sha256, y la salida más larga en 53.687 caracteres.
+  - La b da 40 de 40 con el manifiesto `9dd1f32c…`, que no es el `1c1da173…` que dio la autora: la ejecutora rearmó el paquete a las 16:52,
+    después del borrado del archivo del harness, con su error declarado. Sus siete controles pasan.
+  - El código (`familias_nav.py` `c27bc888…`, `selftest_familias_nav.py` `7b7c753c…`) y los dos bloques con los ejemplos de fragmentos
+    (`c08073f1…` y `37ae9130…`) entran con el 142 rearmado, después del sello de la tanda.
+- **La salida del brazo de fragmentos por encima del tope de MCP** (D-6; `decisiones_205_mesa/d6/`):
+  - un resultado de más de 25.000 tokens (el `MAX_MCP_OUTPUT_TOKENS` por defecto, que el banco no fija) no llega cortado: se guarda en disco
+    y el agente recibe una referencia a un archivo (`banco_mcp/README.md:137-141`). Los agentes del banco solo tienen las herramientas MCP,
+    así que lo pierden entero;
+  - con `limite` 5 (el `limite_max` de las dos configs), la cota de `buscar_pasajes` es de 143.463 caracteres (≈ 51.605 tokens con 2,78
+    caracteres por token, una estimación). Ya con `limite` 2 pasa los 25.000. Las salidas medidas en los ejemplos llegan a 8.193;
+  - la de `ver_punto` queda por debajo en su peor caso (53.687 caracteres, ≈ 19.312 tokens), con poco margen si la razón real es menor;
+  - **la propuesta de la mesa,** para decidir antes de los pre-registros de A2.2 y de B6.3 (PENDIENTE de la autora): el mismo
+    `MAX_MCP_OUTPUT_TOKENS` en los dos brazos, 70.000, por encima del peor caso de los dos; un control por código de los resultados que
+    llegan como referencia a un archivo, por brazo, que tiene que dar 0; y una sesión real corta antes de las corridas, paga y con tope de
+    la autora, que muestre que con la variable puesta el resultado llega entero.
+- **El contenido de los ejemplos que mostró la ejecutora** venía de un archivo de la mesa: `decisiones_195_mesa/verpunto/
+  salida_estructura_bloque_familia6_mesa.json` (`11263a03…`) trae las palabras de las consultas de los ejemplos del grafo en sus 14
+  `formas_de_las_llamadas`. La mesa no debía tener ese texto; es un error de la mesa de la §195. La ejecutora borró la copia del harness y lo
+  declaró. La propuesta de la mesa es renombrar ese archivo a `NO_ABRIR_` en las dos copias de su paquete, con los mismos bytes (PENDIENTE
+  de la autora).
+- Las secciones anteriores no se editan.
+
+## 72. La salida del brazo de fragmentos, decidida, el JSON de la §195 cerrado y el gold de V sellado (20/10/2026)
+
+Decisiones y hechos de la autora del 20/10/2026, recibidos a las 17:16:20 (hoja de ruta de la mesa, §206).
+
+- **La D-6, decidida** (§71), tal cual: «MAX_MCP_OUTPUT_TOKENS en 70.000 en los dos, declarado como cambio respecto de la base; el control
+  por código, por brazo, de los resultados que llegan como referencia a un archivo, que tiene que dar 0 en A2.2 y en B6.3; y la sesión real
+  corta, paga, con el tope que me propongas, que muestre que el resultado llega entero.»
+  - **La sesión real corta, como la propone la mesa** (`decisiones_206_mesa/d6/`): tres sesiones de `claude-sonnet-5`, el modelo de los
+    agentes del banco (`a2_1/config_agentes_a2_1.json:9`), cada una con una sola llamada a un servidor de prueba que devuelve un texto
+    fijo, sin contenido de normas:
+    - A, unos 40.000 tokens con la variable en 70.000: tiene que llegar entero;
+    - B, los mismos sin la variable: el control de que se reemplaza por una referencia a un archivo;
+    - C, unos 65.000 tokens con la variable: llega entero cerca del techo.
+    Con los precios sellados del banco da USD 0,25 central y 0,46 alto (NO VERIFICADOS los tokens del sistema). **Tope propuesto, USD 1,0,
+    con freno en 0,6** (PENDIENTE de la autora). Va antes de las corridas de A2.2, en el carril pago, de a uno.
+  - **El control en N6 y en A2.1:** N6 no corrió todavía (va después del 142). El control queda como un paso de su análisis, por código,
+    sobre sus logs: con 0, N6 no cambia; si no da 0, se informa por brazo antes de seguir. De A2.1 corrieron solo las sesiones de las
+    pruebas de aislamiento: en ellas el agente no hizo llamadas, y las salidas registradas llegan a 5.253 caracteres, lejos del tope. **Da
+    0** (`banco_mcp/aislamiento/resultados/`, en HEAD).
+- **El JSON de la §195, cerrado** (§71), por decisión de la autora: `decisiones_195_mesa/verpunto/salida_estructura_bloque_familia6_mesa.json`
+  pasó a `NO_ABRIR_salida_estructura_bloque_familia6_mesa.json`, con los mismos bytes (`11263a03…`), en las dos copias del paquete de la
+  mesa.
+  - El respaldo nocturno copia con `ditto` desde `/private/tmp` a esa misma copia permanente, y no corrió desde que ese archivo existe
+    (su último manifiesto es de las 00:00 del 20/10): no hay otra copia.
+  - Los despachos de U-VERPUNTO de la §195 y la §196 lo nombran por su nombre y su sha256 anteriores.
+- **El gold de V, terminado:** la autora leyó y selló con `sellar_hoja.py` los nueve lotes, del 01 al 09, además del piloto. Los lotes 04
+  a 09 no van el miércoles ni el jueves.
+- **El calendario v12e** (`decisiones_206_mesa/calendario/`): con ese tiempo libre, la lectura de T4 de la autora desde las 18:20 de hoy y
+  la recalibración del juez de V. En el escenario central, el sello de la tanda final queda el miércoles 21, N7 el viernes 23 y la firma del
+  pre-registro de B6.3 el sábado 24, todo a tiempo; en el lento, la firma pasa el plazo.
+- **La comparación del §4.6** (juez contra el gold de la autora), una vez que corra el gold del juez con la versión que dé la regla:
+  - **el script:** `tripletas_v_juez/codigo/analisis_gold_juez_v.py`, por `comandos/analisis_gold_juez_v.sh <carpeta de las hojas>`, que
+    corre la autora;
+  - **sus entradas:**
+    - el agregado del juez, `corridas/NO_ABRIR_agregado_gold_V.json`, que lee el código;
+    - las 10 hojas del gold (`hoja_piloto.csv` y `hoja_lote_01…09.csv`), desde la carpeta de lectura de la autora, cada una con su sello
+      (`sello_hoja_<lote>.txt`). El script controla el sha256 de cada sello, la cabecera y las filas de su lote del acta antes de leer, y no
+      imprime ninguna nota;
+    - el acta (los lotes, el orden y los pesos de los estratos) y las fichas, del repo;
+  - **lo que da:** `corridas/analisis_gold_V.json`, solo con cifras: los tres criterios con las 100 y, aparte, sin las 10 del piloto, el kappa,
+    la importancia y las que van a adjudicación. Si las dos dan otra decisión del §4.6, se declara y rige la de las 100;
+  - **lo `NO_ABRIR_`:** los veredictos, el agregado y las bases del gold no los abre nadie antes del análisis; el análisis los lee por código.
+    Como las 10 hojas ya están selladas, la lectura a ciegas del §4.5 está cumplida: si después hiciera falta mirar una ficha, la abre la
+    autora, después de que el análisis corrió y su salida quedó guardada. La mesa no los abre nunca.
+  - **Lo que falta, en orden:** el FRENO de la v1.4 y su revisión; la recalibración paga y su análisis, que escribe `regla_del_gold.json`;
+    el gold pago (`gold_juez_v.sh 16 13 <versión>`); y el análisis. La revisión de la v1.4 controla que el análisis lea el agregado de la
+    versión que corrió.
+- Las secciones anteriores no se editan.
+
+## 73. El primer tramo de T4 de la tanda final, revisado (agregado del 20/10/2026)
+
+Hechos de la autora del 20/10/2026, recibidos a las 17:19:30 (hoja de ruta de la mesa, §207).
+
+- **El FRENO T4, primer tramo** (`data/experiment/tanda_final/t4/FRENO_T4_tramo1.md`, `c7eab228…`; paquete
+  `revision_tanda_final_FRENO_T4_tramo1/`, `0f2d428e…`). La mesa lo revisó (`decisiones_207_mesa/t4/`), sin abrir ninguna ficha, propuesta
+  ni justificación:
+  - el paquete da 81 de 81;
+  - las 8 planillas dan su sha256 y suman 216 filas, con las dos columnas de la autora vacías;
+  - el LEEME es el de la mesa (`9e224f09…`);
+  - el convertidor es el de la tanda 1 salvo su docstring y los sha256 de las planillas, y su prueba da los 12 casos;
+  - lo nuevo está solo en `tanda_final/t4/`.
+- **Los cinco criterios que la ejecutora fijó por su cuenta** (su sección 8), contra el LEEME:
+  - **dentro de sus reglas:**
+    - U-tipo: un tipo que contradice la modalidad del texto es error, y el tipo cercano sigue siendo lectura laxa;
+    - U-fuera-del-texto: el nodo sin pasaje en el texto que muestra la ficha es dudosa, que cuenta como error;
+    - la (3) de una facultad o un límite y su acto, que sale del criterio general de la §31;
+    - la (12) a «catálogo»;
+    - y el dato a informar como vaciamiento, que fija una frontera de «contenido normativo» que el LEEME deja abierta;
+  - **lo extiende uno:** en la (2), el bloque que abre una lista, sin relaciones, como «no vaciamiento» (10 propuestas). El LEEME define el
+    vaciamiento sin esa excepción. La línea de base de la (2) es la del T4 de la tanda 1, así que se lee con el criterio que la autora usó
+    ahí; si quiere la excepción como regla, es una precisión de la definición, escrita antes de leer y declarada.
+- **La autora lee desde las 18:20, con las reglas del LEEME.** Las propuestas son una ayuda: en cada fila decide ella, y el convertidor le
+  pide la razón cuando cambia la propuesta.
+- Las secciones anteriores no se editan.
+
+## 74. La sesión corta de la D-6, autorizada, la (2) de la vigilancia con el criterio de la tanda 1 y lo que frena a A2.2 y a N6 (20/10/2026)
+
+Decisiones de la autora del 20/10/2026, recibidas a las 17:32:13 (hoja de ruta de la mesa, §208).
+
+- **La sesión corta de la D-6, autorizada** (§72), tal cual: «OK a las tres sesiones (A, B y C) con tope USD 1,0 y freno 0,6, en el
+  carril pago, de a una y antes de A2.2.»
+  - **Sus comandos los arma una unidad USD 0, fuera del repo** (U-D6-TOPE-MCP; su despacho, en `decisiones_208_mesa/d6/` del paquete de la
+    mesa): un servidor MCP de prueba que devuelve un texto fijo, sin contenido de normas, con un código en su última línea; el lanzador
+    con las banderas del banco; los controles por código (si el resultado llega entero o como referencia a un archivo, si la respuesta es
+    el código y el costo desde los tokens, con los precios sellados); el selftest y la corrida en seco.
+  - **El comando pago** empieza con el control de la extracción v2 y con el conteo de los tokens de los dos textos, que no cobra. Corta
+    antes de gastar si los conteos salen de su rango, y antes de cada sesión si el gasto pasaría el freno. Lo corre la autora, después
+    de la revisión del FRENO de la unidad.
+  - **Lo esperado:** A y C llegan enteros, y B, el control sin la variable, como referencia a un archivo. Si A o C no llegan enteros, es
+    un FRENO antes de la firma del pre-registro de A2.2, que declara la variable.
+- **La (2) de la vigilancia, con el criterio de la tanda 1** (§73), tal cual: «El criterio 3a de la ejecutora en la vigilancia (2) no lo
+  adopto como regla: leo esas filas con el mismo criterio que usé en el T4 de la tanda 1, que es la línea de base, sin precisión nueva
+  de la definición.» El vaciamiento sigue definido como en el LEEME de T4, sin la excepción del bloque que abre una lista. Las 10
+  propuestas de esa clase son una ayuda, como las demás.
+- **Lo que frena hoy al 142 rearmado, a A2.2 y a N6** (la autora pide adelantarlos para tener más margen antes de la firma de B6.3;
+  calendario v12f, `decisiones_208_mesa/calendario/`, desde las 18:10 y con duraciones NO VERIFICADAS):
+  - **el 142 rearmado:** su commit va después del sello de la tanda final y de A2.2 (§44 y §57, `:1516` y `:1960` de este registro), en
+    la fila de las ejecutoras del repo (`docs/mandatos/UNAV_DISENO_navegacion_agente.md:173`). La mesa prepara el rearmado antes, sobre el
+    HEAD de hoy, y lo rebasa al HEAD de ese momento. No frena a N6: N6 espera al sello de N4, que va después del diagnóstico de A2.2
+    (`:168`, `:183` y `:187`), y el 142 llega antes que N4 en todos los escenarios del v12f. Adelantarlo antes de A2.2, con una prueba de
+    identidad USD 0, no adelanta N6, y en el escenario lento lleva N7 después del corte;
+  - **el pre-registro de A2.2:** lo arma el tramo 3 de A2.1, después del humo y de H-B2 del tramo 2, que con la variante B van en el
+    repo, después del sello de la tanda final (decisión del 20/10/2026, 10:01:39, punto 7);
+  - **la sesión de la D-6:** solo su unidad y la revisión de su FRENO. Si entra en el carril antes del humo de A2.1, en el escenario
+    central el humo, el pre-registro y la corrida de A2.2 se corren 15 minutos, y N4, el 142, N6, N7 y la firma de B6.3 no se mueven;
+  - **lo pago del juez de V:** la recalibración espera al 147, que trae su nota de pre-registro. Con la variante B, el gold termina antes
+    de que empiece el humo de A2.1 en todos los escenarios: no lo frena;
+  - **las horas de la autora** son el recurso que se agota primero. Con el orden del v12e, el censo de C1, el catálogo y la
+    re-aplicación toman 4,23 de sus 7 horas del miércoles 21, y el humo de A2.1 pasa al jueves 22.
+- **Lo que da el v12f** si las horas de la autora van primero a A2.1, A2.2 y su diagnóstico (el censo, el catálogo y la re-aplicación
+  siguen antes del corte R5):
+  - en el escenario central, N6 termina el jueves 22 a las 16:21, contra el viernes 23 a las 14:39;
+  - de N6 al corte quedan 43,6 horas, contra 21,4;
+  - la firma del pre-registro de B6.3 queda el sábado 24 a las 17:49;
+  - en el escenario lento, todo queda a tiempo. Con el orden del v12e, N7 queda después del corte.
+  - **La variante A** (A2.1 y A2.2 en una copia), con ese mismo orden, adelanta A2.2 2 h 18 min y N6 19 min en el central, y en el
+    lento lleva N7 después del corte.
+  - **PENDIENTE de la autora:** el orden de sus horas; la D-6 antes del humo de A2.1; y el humo y H-B2 con la misma variable que A2.2.
+- Las secciones anteriores no se editan.
+
+## 75. U-UNION-C1 v3, revisada: la regla extendida del TO de la R23, el rc del selftest de claves y la lista de nodos (20/10/2026)
+
+Decisiones y hechos de la autora del 20/10/2026, recibidos a las 18:00:34 (hoja de ruta de la mesa, §209).
+
+- **El FRENO de U-UNION-C1 v3** (paquete `revision_U-UNION-C1/`, sesión `da06600f`, manifiesto `1e530358…`, 50 archivos) dice que
+  cumple 12 de 13 criterios. La mesa lo revisó (`decisiones_209_mesa/c1/`):
+  - **el paquete y las salidas:** el paquete da 50 de 50, y las 90 salidas de la medición que quedan fuera dan su sha256;
+  - **los diffs:**
+    - `r1_invariantes.py` da +43 −1 contra HEAD, y +4 −4 contra el parchado, solo en comentarios, con el mismo árbol de sintaxis;
+    - `ensamblar_tanda0.py` da +351 −16 contra HEAD y +188 −8 contra la segunda pasada;
+    - `selftest_clave_cache.py` da +8 −5: las dos constantes de la R23 y la V23 y la lista de módulos;
+  - **los selftests,** en un clon de HEAD de la mesa con lo entregado y con los cinco PDF del subset copiados (no están en git): el
+    nuevo da 67/67, y el de C1, «FALLAS: 0»;
+  - **el encierro,** recontado con un script propio sobre sus kg.json, da sus cuentas en los ocho pares. De 1 a 3 y de 2 a 4, en los dos
+    grafos, cambian 10 nodos y salen 27, todos Comunicacion, y se re-apuntan 24 `referencia`; fuera de esos ids no cambia nada;
+  - **el TO de la R23,** recontado desde HEAD:
+    - de los 152 TOs con chunks en b584, 29 quedan fuera de las tres tandas;
+    - el primero, dmrd, tiene sus 11 unidades de tipo `seccion_sin_puntos`;
+    - con la regla extendida salen `gerc` y `gerc::1.1`, la primera de 114 unidades, 96 de ellas del tipo;
+    - en las E0 de las tres tandas no hay chunks de `gerc`.
+- **La regla extendida del TO de la R23 y de la V23,** decidida por la autora ante el caso de dmrd, que la regla del despacho no cubría,
+  tal cual: «TO_NUEVO es el primero, en orden alfabético, de los TOs con chunks en b584 que no están en ninguna de las tres tandas y que
+  tienen al menos una unidad punto_terminal con id to::punto; UNIDAD_TO_NUEVO es la primera de ese tipo en el orden de su
+  chunks_<to>.json. Da gerc y gerc::1.1.»
+- **El rc 0 del selftest de claves** (criterio 2):
+  - **la contradicción es de la mesa:** el despacho excluía del rsync las bases de la caché y pedía el rc 0, que sin ellas no puede dar,
+    ni con el código de HEAD;
+  - **dónde se ve:** nunca en el repo, porque los selftests corren sobre una copia (CLAUDE.md, §4.l). Va en el arenero del armador del
+    commit de U-PROC-HERENCIA, de C1 y de las remisiones, antes de ese commit, con el código final y con una copia (no un enlace) de las
+    dos bases que lee, `e1_extraccion.db` y `e3_verificacion.db`;
+  - **cómo:** R19 las abre solo para leer (`mode=ro&immutable=1`, `selftest_clave_cache.py:242` de HEAD), y el armador toma su sha256
+    antes y después. Tiene que dar rc 0, con la R23 y la V23 en miss con `gerc`. Si no, el commit no se arma;
+  - **la re-aplicación lo repite** como su primer control, en su copia con las bases.
+- **El renombre previo de la guarda** (el hallazgo 3 de la unidad) queda donde está, en `preparar_union_c1` de `ensamblar_tanda0.py`:
+  - no toca el parchado de `r1_invariantes.py`, que es el diseño sellado;
+  - aplica antes de unir la regla de la guarda de `merge_grafos_guardado`, y deja el nodo de la lista como con la bandera apagada. De la
+    corrida 1 a la 6, los tres nodos de las dos colisiones de la lista sintética no cambian;
+  - la otra vía (que la unión no tome el id del nodo de la lista) dejaría un nodo de la lista de un TO posterior sin el sufijo de la
+    guarda, distinto de la bandera apagada.
+- **La lista de nodos de la re-aplicación** puede traer un nodo así: uno con todas sus procedencias en la muestra, en una colisión que
+  sin él sigue en dos documentos o más, y que comparte el id con los que se unen.
+  - En el acumulado de las tandas 0 y 1 la lista está vacía: ninguna colisión toca la muestra.
+  - En el de las tres tandas, el censo no corrió.
+  - **La propuesta de la mesa** (PENDIENTE de la autora): el censo de las tres cuenta en memoria esos nodos, sin mostrarlos, y la
+    re-aplicación controla que su resumen dé el renombre previo cuando esa cuenta no es 0.
+- **La regresión sin entrada en la fixture:** la autora controló que la unidad la computó con el método del §5.7 del FRENO de
+  U-PROC-HERENCIA-2 (`computar_regresion`, con la entrada del grafo sellado). Da las 5 declaradas.
+- **El «seguí» de la etapa b de las remisiones,** con sus cinco huecos llenos (`decisiones_209_mesa/remisiones/`). Cambia en tres cosas
+  más:
+  - su paso 0 pide el 147 v5;
+  - el selftest de claves se controla por sus rutas, porque en la copia da rc 1;
+  - la unión conserva el renombre previo.
+- Las secciones anteriores no se editan.

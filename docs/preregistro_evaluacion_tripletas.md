@@ -415,3 +415,19 @@ topes de USD 35 (V) y USD 55 (T).
     grafo (medición de la mesa; hoja de ruta, §201). La vía de cobertura mide y declara sus tamaños en la forma compacta, y el informe de V
     declara la diferencia.
   - El texto firmado no cambia.
+- **20/10/2026 — La recalibración única del juez de precisión de V (§4.7), declarada antes de correrla** (decisión escrita de la autora
+  recibida a las 16:27:56; registro de decisiones del 15/10/2026, §69 y §70):
+  - **qué cambia:** la modalidad (§4.2) la computa el código. Por cada nodo de tipo Obligacion, Restriccion, Potestad o Condicion, el juez
+    cita la marca de la evidencia que lleva su fuerza y le da su clase (deber, prohibición, permiso, condición o sin marca); el código
+    controla que la marca esté literal y compara la clase con el tipo del nodo, con una tabla fija: Obligacion, deber; Restriccion de tipo
+    prohibición, prohibición; Restriccion de tipo límite, prohibición o deber; Potestad, permiso; Condicion, condición. Lo demás del juez
+    no cambia;
+  - **por qué:** en la calibración fuera de muestra (17 de 20 en el veredicto), dos de las tres incorrectas que el juez dejó pasar no
+    confrontaban la marca del texto con el tipo del nodo. El componente ya estaba definido como «deber, prohibición, permiso, condición», y
+    el prefijo del extractor decide los tipos por esas marcas;
+  - **cómo:** con casos resueltos del pool y nunca con las 100, re-corriendo la calibración entera fuera de muestra;
+  - **fijado antes de correr:** si la versión recalibrada da menos acuerdo de veredicto que la anterior en el pool (17 de 20), el gold corre
+    con la anterior, declarado;
+  - **límite del instrumento:** los desacuerdos residuales de la calibración (uno de evidencia y cinco de etiqueta) quedan documentados
+    como tales en el informe de V.
+  - El texto firmado no cambia.
