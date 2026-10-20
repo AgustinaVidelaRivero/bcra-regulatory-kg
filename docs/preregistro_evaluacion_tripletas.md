@@ -381,3 +381,20 @@ topes de USD 35 (V) y USD 55 (T).
     - Las 10 fichas del piloto son 10 de las 100 del gold (el acta, `sorteo.lotes`), y sus marcas quedan como se sellaron.
     - Cómo se declara para el piloto lo decide la autora (PENDIENTE; propuesta de la mesa en su hoja de ruta, §193).
   - El texto firmado no cambia.
+- **20/10/2026 — `requiere` con la definición del prefijo, P04, P11 y P12, el caso resuelto de `prohibe` y el piloto, antes de la primera
+  corrida del juez de V** (decisiones de la autora recibidas a las 09:25:49; registro de decisiones del 15/10/2026, §60). Resuelve lo que
+  la nota anterior dejaba PENDIENTE:
+  - **`requiere`:** el juez y la autora juzgan con la definición del prefijo (sección 1 del prompt del juez, `286b60f2…`, línea 24), la
+    misma vara con que la autora corrigió P16. La convención de la autora no entra al prompt.
+  - **P04, P11 y P12**, los tres `requiere` del pool: la autora revisa sus marcas con esa definición. Si alguna cambia, va en la hoja de la
+    corrección con su motivo, como P16, y el código la aplica en memoria. Los tres siguen en el prompt.
+  - **Los lotes del gold** los lee la autora con la definición del prefijo.
+  - **El piloto:** el informe de V da la precisión y el acuerdo con las 100 y, como sensibilidad fijada antes de cualquier cifra, sin las
+    10 del piloto. Si las dos dan otra decisión del §4.6, se declara y rige la de las 100.
+  - **El caso resuelto de `prohibe`,** porque con P16 afuera el prompt no traía ninguno:
+    - es una arista fuera de la muestra: fuera de las 120 del acta, de R1 a R3 y de toda arista con procedencia en una unidad de las 120;
+    - está cerca de la frontera entre prohibición y deber, por una regla fijada antes de leer ningún texto: un patrón de prohibición de
+      R25 y un marcador de deber en el mismo texto propio, ordenadas con la semilla `B4-TRIPLETAS-V:prohibe:2026-10-20`;
+    - es PR1, con PR2 y PR3 de reserva (`candidatas_prohibe.json`, `807343c5…`). La autora la resuelve en una hoja sellada, y entra como
+      caso 23. El §4.3 admite una arista nueva fuera de la muestra.
+  - El texto firmado no cambia.

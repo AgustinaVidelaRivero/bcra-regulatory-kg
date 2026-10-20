@@ -2066,3 +2066,36 @@ Decisiones de la autora del 20/10/2026, recibidas a las 08:36:59, a las 08:43:12
   - la lectura de R25 es del 20/10/2026, posterior a los sellos del piloto y del pool. Cómo se declara para el piloto lo decide la autora
     (PENDIENTE).
 - Las secciones anteriores no se editan.
+
+## 60. `requiere` con el prefijo, el caso de `prohibe`, el piloto, `ver_punto` sin corte, la familia 6, un incidente y la cobertura que cede (agregado del 20/10/2026)
+
+Decisiones de la autora del 20/10/2026, recibidas a las 09:25:49 (hoja de ruta de la mesa, §194).
+
+- **El commit de la §58 y la §59 y el de T2** corrieron, con su push (`257641e5` y `b17746be`).
+- **Tripletas, antes de la primera corrida del juez de V** (nota al pie del pre-registro de tripletas del 20/10/2026, en este commit):
+  - `requiere` va con la definición del prefijo, la misma vara con que se corrigió P16, y la convención de la autora no entra al prompt;
+  - la autora revisa con esa definición sus marcas de P04, P11 y P12. Si alguna cambia, va en la hoja de la corrección con su motivo, como
+    P16;
+  - los lotes del gold los lee con la definición del prefijo;
+  - el piloto: el informe de V da la precisión y el acuerdo con las 100 y, como sensibilidad fijada antes de cualquier cifra, sin las 10
+    del piloto; si las dos dan otra decisión del §4.6, se declara y rige la de las 100;
+  - un caso resuelto de `prohibe`, con una arista fuera de la muestra, cerca de la frontera entre prohibición y deber, con su hoja.
+- **Las hojas del juez:** la autora selló la de notas y la de la remisión con el sellador v1_1 a las 09:21 (`hoja_notas_pool.csv`,
+  `b1fe25d4…`; `hoja_remision.csv`, `f60553e9…`, los sha256 que informó la autora). Las verifica con el v1_1c, que lee el mismo formato
+  de sello. Si una no pasa, se corrige en una copia con `_v2` en el nombre, que se sella sin pisar el sello anterior.
+- **`ver_punto` no puede cortar el texto propio por debajo de lo que trae la herramienta de fragmentos.** No va como límite: se arregla
+  antes de N6, con un mandato corto que prepara la mesa (BORRADOR) y la misma regresión que U-NAV-DESDE. Entra con la entrega de
+  U-NAV-DESDE.
+- **La familia 6:** los documentos de sus ejemplos no son documentos de B6.3, controlado por código sin abrir ninguna pregunta. ayccef y
+  opefci están entre los 15 excluidos de la evaluación final, ext es de desarrollo, y ninguno está entre los 77 de la etapa 1 ni entre
+  los 78 elegibles de O2. Los ejemplos quedan.
+  - El brazo de fragmentos no tiene hoy ningún ejemplo en su descripción. Si la familia 6 entra en N7, lleva los mismos 3 resueltos con su
+    herramienta (mandato de U-NAV-DISENO, decisión 10).
+- **Un incidente, declarado:** en la §190 la consola de la mesa mostró el gasto por documento de T2 y cuántos documentos de la tanda final
+  tienen archivos de reintentos y de copias de nota de E3. No está en ningún archivo, y no cambia U-MED-VERIF: su diseño está sellado y a
+  la autora no le llegó nada.
+- **El calendario:** si algo no entra, cede la cobertura de V, con la red de seguridad, y nunca el N de B6.3.
+  - Con esa regla, la firma del pre-registro de B6.3 no espera a la cobertura. Se decide si la cobertura entra cuando la mesa empieza a
+    escribir el pre-registro: si para entonces no cerró, va la red.
+  - Las fechas son de la mesa (calendario v11, NO VERIFICADAS).
+- Las secciones anteriores no se editan.
