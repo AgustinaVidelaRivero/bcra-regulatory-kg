@@ -398,3 +398,20 @@ topes de USD 35 (V) y USD 55 (T).
     - es PR1, con PR2 y PR3 de reserva (`candidatas_prohibe.json`, `807343c5…`). La autora la resuelve en una hoja sellada, y entra como
       caso 23. El §4.3 admite una arista nueva fuera de la muestra.
   - El texto firmado no cambia.
+- **20/10/2026** — Enmienda 3 (el intervalo de la precisión ponderada, con Wilson y el n efectivo de Kish), FIRMADA por la autora el
+  20/10/2026 a las 10:01:39, tal cual, con la regla del estrato sin esenciales (por mensaje; hoja de ruta de la mesa, §195; registro de
+  decisiones del 15/10/2026, §61; el commit de la firma es el que agrega esta nota):
+  `docs/enmienda3_preregistro_evaluacion_tripletas_2026-10-20_wilson_kish.md`. Rige desde la firma, antes de cualquier cifra de V. Su
+  script entra con el mismo commit: `data/experiment/tripletas_v/analisis/wilson_kish_tripletas_mesa.py`. El texto firmado no cambia.
+- **20/10/2026 — El subgrafo de la vía de cobertura, acotado a los hijos directos, y el dimensionado del §8** (decisión de la autora
+  recibida a las 14:49:10; registro de decisiones del 15/10/2026, §67):
+  - **P1:** en toda la vía de cobertura (V y T), el subgrafo candidato del §5.6 toma, de los descendientes de la unidad, solo sus hijos
+    directos. Es el acotamiento de la política de descendientes que prevé el §8, decidido antes de ver ninguna salida de un modelo, porque
+    un subgrafo de los 300 de V pasaba el p90 del §8 (68.298 caracteres). Con P1, ninguno de los 300 queda sobre ese umbral, y cambian 10
+    de los 300 (FRENO a2 de U-TRIP-V-COB, punto 4.2).
+  - **El dimensionado del §8 no se reproduce:** el texto no dice con qué serialización se midió el subgrafo de presencia (mediana 21.126,
+    p90 68.298), y su script no está en el repo. Sobre la población elegible de V, la forma compacta (la que ve el juez de presencia) da
+    medianas de 2.407 a 4.636 caracteres, y la forma completa del `kg.json`, de 181.525 a 191.694, según la definición del subgrafo y el
+    grafo (medición de la mesa; hoja de ruta, §201). La vía de cobertura mide y declara sus tamaños en la forma compacta, y el informe de V
+    declara la diferencia.
+  - El texto firmado no cambia.

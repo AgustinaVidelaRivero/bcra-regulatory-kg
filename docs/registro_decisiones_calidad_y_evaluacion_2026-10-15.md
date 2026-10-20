@@ -2099,3 +2099,389 @@ Decisiones de la autora del 20/10/2026, recibidas a las 09:25:49 (hoja de ruta d
     escribir el pre-registro: si para entonces no cerró, va la red.
   - Las fechas son de la mesa (calendario v11, NO VERIFICADAS).
 - Las secciones anteriores no se editan.
+
+## 61. T3 con tres correcciones, la re-aplicación única, la enmienda 3 y `ver_punto` firmados, los ejemplos de fragmentos, el calendario con la variante B y un incidente (agregado del 20/10/2026)
+
+Decisiones de la autora del 20/10/2026, recibidas a las 10:01:39 (hoja de ruta de la mesa, §195).
+
+- **El 145** corrió, con su push (`eb5ad14b`). Sus dos archivos son los que preparó la mesa.
+- **T3 de la tanda final:** la autora pegó el «seguí» de la mesa (`decisiones_190_mesa/t3/`, en su paquete) en la sesión de la
+  ejecutora, con tres correcciones al final que mandan sobre su texto, tal cual:
+  1. «las poblaciones de las vigilancias (1), (2), (3) y (7) y de la (12) se arman sobre ens_98_r2b_sincola (KG-TandaFinal-r2b-sincola)
+     y no sobre ens_98_r2b, como en la tanda 1, que sorteó sobre su grafo evaluado sin cola»;
+  2. «el mecanismo de (1), (3) y la (12) es el del T4 de la tanda 1 (data/experiment/tanda1/t4/scripts/poblaciones_t4t1.py y
+     sorteos_t4t1.py), no el de su T3, cuya (12) se descartó en la §29»;
+  3. «el paso 0 acepta el 145 arriba de los tres commits que nombraba».
+  - **El criterio de la cola,** tal cual: «30, con las 13 del tramo 1 enteras (8 RI y 5 NG sin_raiz) y 17 de NG resto sorteadas entre sus
+    67».
+  - **Los dos momentos de lectura van juntos,** con todos los umbrales calculados antes de leer, declarado en el FRENO.
+  - **Las tres correcciones concuerdan con lo commiteado:** la muestra de la (12) del T3 de la tanda 1 «no se lee y se rehace» en T4 (§29),
+    y las 13 del tramo 1 más las 67 de NG resto son las 80 de la cola (`decisiones_190_mesa/cola/`). La mesa las controla en la revisión
+    del FRENO T3.
+- **La re-aplicación única, firmada** sobre el borrador v2 (`65531aaf…`): `docs/mandatos/UREAPL_reaplicacion_unica.md`, en el commit de
+  esta sección. Lleva las decisiones 1 y 2 del §9 como las recomendó la mesa, la 3 con la precisión 1, y cinco precisiones que mandan
+  sobre su texto (su sección «Firma», tal cual).
+  - **La unidad de código de C1** es U-UNION-C1. Su despacho lo PREPARÓ la mesa (`decisiones_195_mesa/c1_codigo/`), para pegarlo después
+    de los commits de T3 y a más tardar el miércoles 21: su paso 0 pide lo rastreado limpio, y T3 modifica
+    `data/experiment/neo4j/grafos.py`.
+- **La enmienda 3 al pre-registro de tripletas, firmada** tal cual, con la regla del estrato sin esenciales, sobre `2458eb86…`:
+  `docs/enmienda3_preregistro_evaluacion_tripletas_2026-10-20_wilson_kish.md`.
+  - Rige desde las 10:01:39, antes de cualquier cifra de V.
+  - Su commit va después de los de T3, y la calibración del juez puede correr antes de ese commit.
+  - Su script entra con el mismo commit (`data/experiment/tripletas_v/analisis/wilson_kish_tripletas_mesa.py`).
+- **U-VERPUNTO, firmado** sobre `38f6812f…` (`docs/mandatos/UVERPUNTO_texto_propio_ver_punto.md`), con estas decisiones:
+  - D-1: la opción A;
+  - D-2: el texto largo con sus saltos de línea, como el corto, porque los puntos largos son listas y tablas y la herramienta de
+    fragmentos los devuelve con sus saltos. El control T12 sigue igual;
+  - D-3: «su texto entero»;
+  - D-4 a D-6: como las propuso la mesa.
+  - **A2.2 no usa `ver_punto`:** su brazo del grafo es `data/experiment/banco_mcp/mcp_kg/servidor_mcp_kg.py`, que expone solo las tres
+    herramientas del harness congelado (`:63`). Las familias, con `ver_punto`, entran con el 142, después de A2.2 (§57). El arreglo
+    sigue siendo antes de N6.
+  - **Los ejemplos del brazo de fragmentos** se arman ya, a USD 0, en la misma copia, como la etapa b de U-VERPUNTO: los mismos 3 casos
+    de la familia 6, resueltos con la herramienta de fragmentos. Entran solo si la familia 6 entra en N7 (mandato de U-NAV, decisión 10).
+    El 142 espera solo a la etapa a.
+  - **El despacho de U-VERPUNTO** lo PREPARÓ la mesa (`decisiones_195_mesa/verpunto/`). Los pasajes de los ejemplos salen de los 14 TOs
+    excluidos de B6.3 que usa N3: los excluidos de la evaluación final y los de desarrollo
+    (`docs/mandatos/UNAV_DISENO_navegacion_agente.md:315`).
+- **El calendario,** tal cual:
+  - «el viernes 23 pongo 8 horas, para que N7 llegue antes del corte del sábado a las 12:00»;
+  - «la cobertura de V va con la red, y lo doy por decidido hoy: el pre-registro de B6.3 lleva los dos casos y declara el desvío del §9,
+    y la cobertura cierra igual antes de los resultados»;
+  - «A2.1 y A2.2 van con la variante B, en el repo después del sello de la tanda».
+  - **Con el calendario v12** (`decisiones_195_mesa/calendario/`, en el paquete de la mesa; central, variante B, N = 128), N7 vuelve a
+    pasar el corte: el sábado 24 a las 15:49 sin las remisiones y a las 15:54 con ellas. La firma de B6.3 queda el domingo 25 a las 19:20
+    o 19:25, antes del plazo. Lo ata el jueves 22 de la autora: con una hora más ese día, N7 llega a las 09:28 o 09:42 y la firma, el
+    domingo 25 a las 17:01. Lo decide la autora (PENDIENTE).
+- **Un incidente, declarado:** en la §191, la consola de una bifurcación de la mesa mostró un mensaje de commit del 06/10/2026
+  (`be6b074f`) con cuentas de copias de nota de E3 de la tanda 0. No cambia U-MED-VERIF: es texto de la historia del repo, no es de la
+  tanda 1 ni de la tanda final, y a la autora no le llegó nada. No está en ningún archivo.
+- **Los commits de esta ronda van después de los de T3.** Mientras corre T3, la autora no commitea.
+- **Dos pedidos, para decidir a tiempo** (las respuestas, en el paquete de la mesa, §195):
+  - **Las remisiones sin resolver** del acumulado de las tandas 0 y 1 (`decisiones_195_mesa/remisiones/`, por código y sin contenido):
+    - son 906 citas con cola y 889 sin cola, en cinco clases del resolvedor, más 165 y 218 que no se resuelven por diseño;
+    - una sola clase se corrige por código: la cita a un punto padre o a una sección cuyos subpuntos tienen nodos (368 y 366);
+    - su mandato, BORRADOR (U-REMISIONES-SUBPUNTOS), lo firma o lo descarta la autora el miércoles 21;
+    - 251 y 246 citan un TO de la tanda final y se resolverían solas al entrar (NO VERIFICADO hasta el acumulado de las tres tandas).
+  - **Lo que necesita sellado el grafo evaluado:**
+    - lo necesitan solo los índices del grafo evaluado y el pre-registro de B6.3, que fija sus sha256;
+    - A2.2 no lo necesita: su brazo del grafo es el de desarrollo re-sellado (mandato de A2.1, D-A);
+    - el 142 tampoco;
+    - N6 tampoco: corre sobre el acumulado de las tandas 0 y 1 sin cola (`docs/mandatos/UNAV_DISENO_navegacion_agente.md:224`);
+    - N7 lleva la cuenta de C1 del censo (§47);
+    - la primera ola que lee la autora va después de los casos de la re-aplicación (§47).
+  - **Hasta cuándo puede esperar una pieza** (central, variante B; el barrido de la mesa llega hasta el corte del sábado 24 a las 12:00):
+    - con lo decidido hoy, hasta el jueves 22 a las 18:00 sin mover la firma, y esperando hasta el corte la firma tampoco se mueve;
+    - con una hora más el jueves 22, hasta el jueves 22 a las 22:30 sin las remisiones, o hasta el viernes 23 a las 17:30 con ellas.
+      Esperando hasta el corte, la firma se mueve como mucho 54 min o 1 h 13 min, siempre antes del plazo.
+- Las secciones anteriores no se editan.
+
+## 62. U-UNION-C1 con la regla del censo, la cobertura de V después de la firma de B6.3, ri_transpa firmado y los hubs de las remisiones (agregado del 20/10/2026)
+
+Decisiones de la autora del 20/10/2026, recibidas a las 10:49:30 (hoja de ruta de la mesa, §196).
+
+- **U-UNION-C1,** dos cambios antes de pegarlo, tal cual:
+  1. «Falta la regla del censo de la §46 y la §47: un nodo con todas sus procedencias en la muestra de U-MED-VERIF no se une, y una
+     colisión que sin esos nodos queda con menos de 2 nodos o en menos de 2 documentos no se une. La lista de códigos que no se unen no
+     alcanza para la primera parte, porque va por código y no por nodo.» La bandera lleva una segunda entrada: la lista de los nodos que no
+     se unen, la que escribe el censo como `NO_ABRIR_nodos_que_no_se_unen_por_la_muestra.json`, pasada con su sha256. La ejecutora no la
+     abre ni la imprime. Tiene su rama en el selftest, sobre datos armados a mano, y su control en el encierro de la medición;
+  2. el rsync de la copia excluye también `data/experiment/neo4j/volumen/` y las bases de la caché de E1 y de E3, como el de U-TRIP-V.
+  - El despacho v2 lo PREPARÓ la mesa (`decisiones_196_mesa/c1_codigo/`). La autora lo pega después de los commits de T3.
+- **U-VERPUNTO:** la etapa a, de acuerdo. Para la etapa b, la configuración base no filtra por TO, así que sus búsquedas pueden traer
+  pasajes de documentos fuera de la lista de permitidos. La mesa los contó por código, sin mostrar ninguna consulta ni pasaje.
+  - Con la regla del despacho, la configuración base trae 1 pasaje de un documento de B6.3 (en el ejemplo 1) y deja una cita sin
+    sostener (en el ejemplo 3). La híbrida da 0 pasajes no permitidos y sostiene las 9 citas (`decisiones_196_mesa/verpunto_b/`).
+  - La mesa propone la regla A: cada cita da una sola llamada, con `limite` 1, y en la base la consulta es el título del pasaje citado y
+    su unidad. Con ella, las dos configuraciones dan 0 pasajes no permitidos y sostienen las 9 citas, y la híbrida da las mismas
+    salidas que con la regla del despacho. La decide la autora (PENDIENTE). El despacho v2 con la regla A está PREPARADO
+    (`decisiones_196_mesa/verpunto/`).
+- **U-TRIP-V-COB,** tal cual: «la cobertura de V va con la red, después de la firma del pre-registro de B6.3, cierra antes de los
+  resultados y se declara el desvío del §9». Su prioridad es la última. Los seis puntos de la mesa quedan como estaban.
+  - El despacho v2 lo PREPARÓ la mesa (`decisiones_196_mesa/despacho/`): su etapa (a), USD 0, corre al pegarlo. Lo pago y las lecturas de
+    la autora van después de la firma del pre-registro de B6.3.
+  - Con el calendario v12b (`decisiones_196_mesa/calendario/`, central), la cobertura cierra el miércoles 28 a las 12:01.
+- **U-REINTENTO-FORMA, firmado** sobre el borrador de la §190 (`d3d89a8a…`), con D-1 a D-4 como las propuso la mesa:
+  `docs/mandatos/UREINTENTO_FORMA_reintento_por_forma_que_corta.md`, en el commit de esta sección. La extracción de la unidad va sola en
+  el carril pago, después de las corridas de B6.3 (D-4).
+- **Para el pre-registro de B6.3,** tal cual: «la cifra aparte sin las preguntas cuyo gold cae en la cola deja afuera también las que caen
+  en esa unidad, que falta en el grafo evaluado». Esa unidad es `ri_transpa::Sbloque1::chapeau_seccion` (§43 y §44). Se informa cuántas
+  preguntas salen por cada causa (`decisiones_196_mesa/b63/`).
+- **Los hubs de las remisiones,** que la autora pidió antes de decidir el mandato el miércoles 21 (`decisiones_196_mesa/remisiones_hubs/`;
+  solo cuentas, USD 0):
+  - la regla es la de la familia 5 (`familias_nav.py` del 142, `:33-36` y `:62`). Sin la bandera, el grafo sin cola da el umbral 38, 216
+    hubs y el sha256 de sus ids que espera la configuración de N6;
+  - sin cola, con B y con C: umbral 48 y 218 hubs; entran 89 y salen 87. Con E: umbral 68 y 209 hubs; entran 142 y salen 149, y 107 de
+    los que entran lo hacen solo como orígenes de las `remite_a` nuevas;
+  - de las citas que se resuelven, tienen el origen o algún destino entre los hubs 116 con B y 105 con E, sin cola;
+  - con cola, sin la bandera, umbral 42 y 226 hubs; con B y con C, 218 hubs (entran 50, salen 58); con E, 218 (entran 140, salen 148).
+    Con cola no hay valor esperado con qué comparar (NO VERIFICADO).
+- **El calendario v12b,** central:
+  - sin la unidad de las remisiones, N7 llega el sábado 24 a las 09:42, antes del corte, aun sin la hora del jueves, y la firma de B6.3
+    queda el domingo 25 a las 17:01;
+  - con esa unidad, N7 necesita la hora del jueves 22 (09:34); sin ella, queda a las 15:54, después del corte.
+- Las secciones anteriores no se editan.
+
+## 63. Las remisiones firmadas con B, la regla A de U-VERPUNTO, U-TRIP-V-COB pegado, la unión de las dos banderas y el jueves con 8 h (agregado del 20/10/2026)
+
+Decisiones de la autora del 20/10/2026, recibidas a las 12:42:26 (hoja de ruta de la mesa, §197).
+
+- **U-VERPUNTO, etapa b:** la regla A, como la propuso la mesa. La autora pega la v2 del despacho después de la carga en Neo4j de T3.
+- **U-TRIP-V-COB v2:** la autora lo pegó en una sesión nueva, desde `fuera_del_repo/tripletas_v_cob/`.
+- **U-REMISIONES-SUBPUNTOS, firmado** sobre el borrador `09bbcf57…`: `docs/mandatos/UREMISIONES_SUBPUNTOS_remision_a_punto_padre.md`, en el
+  commit de esta sección. Sus decisiones:
+  - D-1: corregir la clase, como quinto paso de la re-aplicación;
+  - D-2: la opción B y no la E, tal cual: «porque ver_remisiones agrupa las remite_a por el punto citado, así que en esa herramienta el
+    agente ve lo mismo con B que con E, y B lo hace con la mitad de las aristas y menos hubs nuevos (89 contra 142 en el sin cola)»;
+  - D-3 a D-5: como las propuso la mesa;
+  - las cuentas de la medición pasan a ser las de B: 368 y 14.049 con cola, 366 y 13.856 sin cola, sin D-3, o la diferencia explicada.
+  - **El motivo de la D-2, contra el código** (`familias_nav.py` del 142):
+    - en la dirección «cita», `ver_remisiones` agrupa por el `destino` de la arista, que es la unidad citada (`:640` y `:647`). Desde el
+      origen, B y E muestran la misma fila, y cambia solo la cuenta de aristas;
+    - en «lo_citan», desde un subpunto (`:606-613`), E suma filas en los subpuntos de las ramas que B deja afuera.
+    - La decisión no cambia.
+  - Su despacho lo PREPARÓ la mesa (`decisiones_197_mesa/remisiones/`): corre sobre una copia y no espera a T3.
+- **La unión de las dos banderas,** tal cual: «U-UNION-C1 y las remisiones parten los dos del ensamblar_tanda0.py de D, y cada uno le
+  suma su bandera. Decime quién junta las dos versiones, con qué prueba y cuándo, antes de la corrida de la re-aplicación del jueves.» La
+  mesa lo resuelve así:
+  - **quién:** la ejecutora de U-REMISIONES-SUBPUNTOS, en una etapa b con su FRENO, después de que la mesa revise los FRENOs de
+    U-UNION-C1 y de la etapa a;
+  - **cómo:** con `git merge-file`, con el `ensamblar_tanda0.py` de D (blob `58e736db`) como base. A mano, solo la plomería de las
+    banderas; cualquier otro conflicto frena;
+  - **con qué prueba,** en los dos grafos del acumulado de las tandas 0 y 1:
+    - todo apagado da los sellos, y solo D, la segunda pasada;
+    - D con C1 da la corrida 4 de U-UNION-C1, y D con las remisiones, la de la etapa a;
+    - D con las dos da, en cada pieza, las cuentas de esa pieza sola contra D, y ninguna arista cambia por las dos. Si cambia, frena y
+      decide la autora (precisión 2 de la re-aplicación);
+  - **cuándo:** con el calendario v12c (central), revisada el miércoles 21 a las 12:34. Va antes de los commits del jueves 22 a las 08:15
+    y de la corrida de las 10:30.
+- **El jueves 22, con 8 h,** tal cual: «Pongo 8 horas el jueves 22, para que N7 llegue antes del corte del sábado con la unidad de las
+  remisiones.» Con el v12c (central, con el juez en su v1.2), N7 llega el sábado 24 a las 08:28, y la firma de B6.3 queda el domingo 25
+  a las 16:44.
+- Las secciones anteriores no se editan.
+
+## 64. El FRENO v1.1 del juez de V y su v1.2: el modal, el §4.6 (i) y el control de la extracción (agregado del 20/10/2026)
+
+Decisiones de la autora del 20/10/2026, recibidas a las 12:45:29 (hoja de ruta de la mesa, §198).
+
+- **El juez de V cerró su FRENO v1.1** (`revision_UTRIP_V_JUEZ_v1_1/`, sesión `539f236b`, manifiesto `5d3c6dd0…`). La autora le pegó un
+  «seguí» v1.2 con tres decisiones, tal cual:
+  1. «En el modal del veredicto, las dos vías de la incorrecta votan juntas, como incorrecta, igual que en el acuerdo de dos clases del
+     §4.6: el modal sale de correcta, incorrecta y adjudicacion, con mayoría de 2 de 3, y la vía se informa aparte («mixta» si son una y
+     una). Rige en la calibración y en el gold.»
+  2. «El §4.6 (i) con un número de decididas distinto de 100 va en proporción, 0,84, con el límite inferior de Wilson al lado. Entre 80 y
+     100 decididas coincide con exigir un límite inferior de Wilson de al menos 0,75, salvo con 98, donde la proporción es más
+     exigente.»
+  3. «El patrón del control de la extracción (§55) no ve un script lanzado con una ruta absoluta con espacios, como «INGENIERIA IA».
+     Arreglalo en el control compartido, con su prueba, antes de la extracción de ri_transpa y de lo pago de la cobertura.»
+- **La revisión de la mesa** (`decisiones_198_mesa/juez_v/`, en su paquete):
+  - lo verificable se reproduce: el paquete (33 de 33), los sellos de las cuatro hojas, las secciones del prefijo, el sha256 del prompt
+    (`4cf2e537…`), los 23 casos y las 23 notas, y el costo (13,01, bajo los topes de la §56);
+  - el selftest, la corrida en seco y el armado del prompt leen `tripletas_v_juez/insumos/`, que es de lectura de la autora. La mesa no
+    los corrió: sus resultados salen de las salidas del paquete (110 de 110, y `ok: true`);
+  - la decisión 1 cabe en el texto firmado: el §4.4 agrega por veredicto modal sobre el veredicto computado, y la nota del 20/10/2026 ya
+    cuenta la vía de `no_consta` como incorrecta en el acuerdo de dos clases;
+  - **la decisión 2, controlada por script:** entre 80 y 100 decididas, las dos reglas coinciden en 17 de los 21 valores de n. Difieren
+    en 82, donde es más exigente Wilson, y en 93, 98 y 99, donde es más exigente la proporción. La regla queda como la decidió la
+    autora;
+  - las otras tres lecturas del §4.6 que declara la ejecutora (la importancia en proporción, la ponderada sobre los estratos con
+    decididas de los dos lados, y la (iii) sobre todas las incorrectas de la autora) quedan como lectura declarada (PENDIENTE de la
+    autora).
+- **El control de la extracción v2** (`decisiones_198_mesa/control_extraccion/`, en el paquete de la mesa):
+  - acepta como primer argumento una ruta absoluta con espacios, mientras no siga una opción ni termine antes otro script;
+  - con las líneas de la v1 da lo mismo que la v1, y su selftest pasa;
+  - con un proceso de prueba en una carpeta con espacio, la v1 no lo ve (sale con 0) y la v2 lo frena (sale con 1).
+  - **Desde ahora lo usa todo comando pago y toda extracción:** la v1.2 del juez, la etapa a2 de U-TRIP-V-COB y la extracción de
+    ri_transpa. El control del juez de V (`control_extraccion_v.py:24`) llevaba el patrón de la v1, y sus comandos lanzan Python con la
+    ruta absoluta de su carpeta, que tiene un espacio.
+- **La calibración paga** corre después de las revisiones del FRENO v1.2, la de la mesa y la de la autora.
+- Las secciones anteriores no se editan.
+
+## 65. El juez de V en sus v1.2 y v1.3, y el §4.6 (i) en proporción (agregado del 20/10/2026)
+
+Decisiones de la autora del 20/10/2026, recibidas a las 13:46:27 (hoja de ruta de la mesa, §199).
+
+- **El juez de V pasó por dos rondas más,** las dos en FRENO, que revisó la autora:
+  - **la v1.2** (`revision_UTRIP_V_JUEZ_v1_2/`, manifiesto `3df1a39d…`), tal cual: «el modal del veredicto con las dos vías de la
+    incorrecta juntas, y la vía aparte («mixta» si son una y una). Para que la vía saliera bien, autoricé un cambio mínimo en
+    correr_juez_v.py: la vía sale del modal de juez_v, incorrectas_por_via cuenta las tres, y sale el conteo «sin consenso con todos los
+    votos incorrectos», que con el modal nuevo no puede darse.» Su selftest da 119 de 119;
+  - **la v1.3** (`revision_UTRIP_V_JUEZ_v1_3/`, manifiesto `3f3b261f…`), tal cual: «el control de la extracción con tu patrón v2, que
+    copié a sus insumos (ahora son 13 archivos); el control de insumos admite solo la fixture de la suite que modifica T3; y las lecturas
+    del §4.6 sobre las fichas que el juez decide, como dice el texto firmado. La (ii), cruda y ponderada, compara las dos precisiones
+    sobre las mismas fichas, las que deciden los dos, y la ponderada va estrato por estrato sobre esas fichas. La (iii) va entre las que
+    el juez decide, con la cuenta sobre todas al lado como información. La importancia va en proporción, 0,60 y 0,90.» Su selftest da
+    129 de 129, y el prompt, los 20 de la calibración y la corrida en seco dan igual que en la v1.1.
+- **La revisión de la mesa** (`decisiones_199_mesa/juez_v/`, en su paquete):
+  - los dos paquetes verifican (15 y 13 archivos);
+  - el código del modal hace lo decidido, y ninguna rama sigue comparando con los cuatro valores viejos;
+  - el patrón del control del juez es, por código, el de la v2 de la mesa, y su copia en `insumos/` lleva el sha256 de la mesa
+    (`e3c41d93…`);
+  - **el control de insumos admite solo la fixture, y T3 también modifica `data/experiment/neo4j/grafos.py`** al cargar Neo4j. No
+    frena lo pago, porque los comandos pagos corren solo el control de la extracción. Si se vuelve a correr a mano después de esa carga,
+    no pasa, y se lee como una modificación de T3 declarada;
+  - T3 no es una extracción ni un paso pago: la calibración puede correr con T3 en marcha, de a un paso pago por vez;
+  - ningún script del juez calcula el intervalo de la enmienda 3, que va en el informe de V, después del commit de esa enmienda.
+- **El §4.6 (i),** tal cual: «tenías razón, la proporción y el Wilson de 0,75 difieren en 4 de los 21 valores entre 80 y 100. La regla
+  queda en la proporción, 0,84, como la decidí.»
+- **Lo pago:** la calibración del juez corre con esta revisión, y después el gold, de a uno. Entre los dos, la mesa propone mirar el
+  análisis de la calibración. El §4.7 admite una sola recalibración, declarada, con casos del pool y nunca con las 100.
+- Las secciones anteriores no se editan.
+
+## 66. El FRENO T3 parcial de la tanda final: la R23, los manifiestos del tramo 1, el derivador de 60, los umbrales de T4 y lo que queda a la vista (agregado del 20/10/2026)
+
+Decisiones de la autora del 20/10/2026, recibidas a las 13:50:10 (hoja de ruta de la mesa, §200).
+
+- **T3 volvió con un FRENO parcial** (`revision_tanda_final_FRENO_T3/`, sesión `afadde2e`, manifiesto `07068d6f…`): el gate no pasó
+  solo por la R23 del selftest de claves, cuyo TO (`snp_psp`) extrajo T2. Para no frenar el camino al sello, la autora le contestó, y T3
+  sigue con los puntos 5 a 7 con cinco decisiones, tal cual:
+  1. «la R23 y la V23, declaradas no aplicables después de T2, con la causa por script de su sección 3.4; el gate se juzga sin ellas»;
+  2. «los manifiestos del tramo 1, con la raya, por la regla de la §19 y la enmienda 9, punto 8 (el kg.json es el mismo)»;
+  3. «el derivador adaptado del acumulado de 60, declarado»;
+  4. «los umbrales de T4, del script de la mesa sin cambios, con su tasa base de la tanda 0, como dice el §6; la tanda 1 al lado, como
+     información»;
+  5. «unidades_a_la_vista_T4.json, con la regla del seguí y la del T4 de la tanda 1 al lado».
+- **La revisión de la mesa** (`decisiones_200_mesa/t3/`, en su paquete):
+  - se reproduce: el paquete (268 de 268), los ocho ensamblados con su doble corrida, los diez sellados, el acumulado con el tramo 1
+    contra la §43, el gate sin la R23 y la fixture (solo las ocho entradas nuevas);
+  - **el punto 3 cierra:** el derivador adaptado hace lo mismo que el de la mesa, con la variante pasada con su fuente y el freno de la
+    §19, y la medición del propio T3 da las mismas 23 distintas;
+  - **el punto 4 cierra, y es la lectura del pre-registro:** los umbrales salen del script sellado (`f4723e5a…`), que mide contra la tasa
+    de la tanda 0, con los pesos reales de la tanda final (`4de7f2a7:docs/preregistro_tanda_final.md:231-235`).
+    - **Con una precisión:** el mismo §6 fija como línea de base de las lecturas la de la tanda 1, de su T4, con la tanda 0 al lado
+      (`:239-244`).
+    - En el informe de T4, cada tasa va contra la de la tanda 1, con la tanda 0 al lado.
+    - Lo que decide la atención y el freno son los umbrales del script sellado. Los umbrales con la base de la tanda 1, si se calculan,
+      van como información;
+  - el punto 5 no pide nada: la regla del «seguí» es la del T3 de la tanda 1.
+- **El cambio del TO de la R23,** tal cual: «El cambio del TO de la R23 en selftest_clave_cache.py (:132-133) ponelo en U-UNION-C1 v2,
+  que ya toca ese archivo, así tiene un solo dueño, con un TO que no esté en ninguna tanda.»
+  - Va en el despacho v3 de U-UNION-C1 (`decisiones_200_mesa/c1_codigo/`), con una regla fija: el primero, en orden alfabético, de los
+    TOs de la partición b584 que no están en ninguna de las tres tandas. La mesa cuenta 29 de 152.
+  - La salida del selftest de claves sin cuentas pasa a ser la referencia nueva, con su sha256.
+- Las secciones anteriores no se editan.
+
+## 67. La etapa a de las remisiones a un punto padre, revisada, y el acotamiento del subgrafo de la cobertura de V (20/10/2026)
+
+Decisiones de la autora del 20/10/2026, recibidas a las 14:49:10 (hoja de ruta de la mesa, §201).
+
+- **El FRENO de la etapa a de U-REMISIONES-SUBPUNTOS** (`revision_UREMISIONES_SUBPUNTOS_a/`, sesión `aab0e5be`, manifiesto `6564afbd…`)
+  llegó sin casos de freno. La mesa lo revisó (`decisiones_201_mesa/remisiones/`, en su paquete):
+  - el paquete da 63 de 63;
+  - las cuentas de B y los hubs se reproducen con los scripts del paquete, sobre una copia, campo por campo: con D-3, 368 citas y 14.047
+    `remite_a` nuevas con cola, y 366 y 13.854 sin cola, con 322 pares que ya eran `remite_a` en cada grafo; sin D-3, las firmadas (368 y
+    14.049; 366 y 13.856); los hubs, de 226 a 218 con cola y de 216 a 218 sin cola, con los sha256 de la mesa;
+  - la foto del repo da igual antes y después de la reproducción.
+- **Lo que controló la autora, y queda así:**
+  - **S30 y S31** se juzgan con la E0 con las partes por corte, la que rige en el gate de T3 de la tanda 1 (`veredicto_gate_t3f.md`,
+    «E0 con las partes (rige)», acumulado `a9ff9b7b…`). Así dan PASS con 0 en las ocho corridas; con la E0 plana, S31 da FAIL igual que en
+    el sello, y no cambia;
+  - **el error propio 6 de la ejecutora** (dos salidas sobrescritas por el script de comparaciones revisado) **alcanza como está**: las
+    salidas son deterministas y la mesa las reproduce; el cambio no movió ninguna cifra, y la salida entregada sigue mostrando S31 en FAIL
+    con la E0 plana. Desde la etapa b, ninguna salida se pisa;
+  - **la regresión sin entrada en la fixture** se computa como el §5.7 del FRENO de U-PROC-HERENCIA-2, con
+    `regression_kg.computar_regresion` y la entrada del grafo sellado, y es lo que hace el script de la ejecutora (`:253-265`). El «seguí»
+    de la etapa b nombra ese FRENO entre lo que puede abrir;
+  - **S21 sube por construcción:** de 419 a 14.466 incoherentes con cola y de 388 a 14.242 sin cola, exactamente en las `remite_a`
+    nuevas. La regla 1.5 deja como destino la unidad citada (el punto padre o la sección), no el subpunto en el que está anclado el nodo.
+    En N7 y en la tesis no se lee como un defecto;
+  - **con D,** las `remite_a` nuevas son 14.133 con cola y 13.940 sin cola (sin D, 14.047 y 13.854); 86 pares aparecen solo con D y 104
+    con otra procedencia, todos con un extremo en un nodo de D, y ninguna arista cambia por las dos piezas;
+  - **la cifra de N7 y del pre-registro de B6.3 (D-5) sale de la corrida 5 de la etapa b** (D, C1 y las remisiones), porque el grafo
+    evaluado lleva las tres piezas.
+- **La etapa b** va con el FRENO de U-UNION-C1 v3, que se pega después de los commits de T3 y del 146 (su foto del repo tiene que dar igual
+  antes y después). Su «seguí» lleva los sha256 de U-UNION-C1 v3, que completa la mesa al revisar ese FRENO. En el escenario central del
+  calendario v12d (`decisiones_202_mesa/calendario/`), las dos entran antes de los commits del jueves 22 a las 08:15; en el lento, no.
+- **El subgrafo de la cobertura de V, acotado (U-TRIP-V-COB, FRENO a2, punto 4.2):** un subgrafo de los 300 (C253, el chapeau de una
+  sección, 248.045 caracteres en la forma compacta) pasaba los 68.298 del §8. La autora decidió **P1, solo los hijos directos, para toda
+  la vía de cobertura (V y T)**, como el acotamiento del §8, declarado antes de ver ninguna salida de un modelo. Con P1 quedan 0 de 300, 0
+  de 330 y 0 de 1.491 sobre el umbral, y cambian 10 de los 300 (cifras del FRENO a2, que la mesa no revisó; NO VERIFICADAS por la mesa).
+- **El dimensionado del §8 no se reproduce, y no se sabe con qué serialización se midió** (`decisiones_201_mesa/tripletas_cob/`):
+  - el §8 da, para el subgrafo de presencia, mediana 21.126, media 30.196 y p90 68.298 caracteres, sobre el grafo `2922b72d…`, la E0 r2b de
+    desarrollo y un sorteo provisorio con otra semilla, con «nodos y aristas de la unidad y sus descendientes». No dice la serialización,
+    y el script que dio esas cifras no está en el repo (el commit que las trae, `865a5b2f`, solo cambia dos documentos);
+  - la ejecutora mide, sobre las 1.491, la forma compacta (la que ve el juez) con mediana 4.879 y p90 11.218, y la completa con 192.080 y
+    274.343 (FRENO a2; NO VERIFICADO por la mesa);
+  - la mesa mide la población entera en ocho variantes (las dos formas, con los ancestros que heredan texto o solo la unidad y sus
+    descendientes, y los dos grafos, el del §8 y el de V): ninguna da las cifras del §8. La compacta da medianas de 2.407 a 4.636, y la
+    completa, de 181.525 a 191.694. El §8 queda entre las dos;
+  - **lo que rige:** la vía de cobertura mide y declara los tamaños en la forma compacta, que es la que ve el juez, y el umbral de 68.298
+    vale como el acotamiento que decidió la autora, con P1. El informe de V declara la diferencia;
+  - **error de la mesa:** el docstring de su script de costo de la §192 decía que la forma completa era «la forma del dimensionado
+    provisorio del §8», sin ancla, y las cifras lo contradicen (la completa es unas nueve veces la mediana del §8). El despacho de
+    U-TRIP-V-COB comparó con ese umbral tamaños en la forma compacta. Queda corregido acá; el docstring, en el paquete de la mesa, no se
+    edita.
+- **Va una nota fechada al pie del pre-registro de tripletas** con P1 y la diferencia del dimensionado. El texto firmado no cambia.
+- Las secciones anteriores no se editan.
+
+## 68. El FRENO T3 final de la tanda final, sus commits y la lectura de T4 (agregado del 20/10/2026)
+
+Decisiones de la autora del 20/10/2026, recibidas a las 14:54:11 (hoja de ruta de la mesa, §202).
+
+- **El FRENO T3 final** (`data/experiment/tanda_final/t3/FRENO_T3.md`, `fae35662…`; paquete `revision_tanda_final_FRENO_T3/`, manifiesto
+  `c9a0bbc6…`; el parcial quedó en `revision_tanda_final_FRENO_T3_parcial/`). La mesa lo revisó (`decisiones_202_mesa/t3/`, en su
+  paquete): el paquete da 375 de 375, y sus controles por script dan:
+  - `grafos.py` solo agrega las dos entradas de la tanda, con el sha256, los nodos y las aristas de su `kg.json`, y las 15 de HEAD siguen
+    iguales;
+  - la fixture conserva las 4.094 claves de HEAD, y las 2.272 nuevas son todas de los ocho grafos nuevos (el control del §9, punto 3, del
+    pre-registro de la tanda final);
+  - los cuatro `.gz` dan el sha256 de su `kg.json`, las ocho muestras dan el suyo y suman 216 fichas, y la versión derivada de T4 no tiene
+    ningún hueco.
+  - Las cinco decisiones de la §66 están aplicadas como se decidieron.
+- **Los commits de T3, en dos, como en la tanda 1** (`eb0711a1` y `050940b0`), PREPARADOS por la mesa y PENDIENTES de la autora:
+  - **el primero:** los archivos nuevos de T3, `grafos.py` y la fixture. Los cuatro `kg.json` de más de 100 MB no entran: van su `.gz` y su
+    sello, como en la tanda 1 (§30);
+  - **el segundo:** el hash corto del primero en el `commit_sellado` de las dos entradas nuevas de `grafos.py`, que T3 dejó en
+    «PENDIENTE». Es lo que pide el §7 del pre-registro de la tanda final («con `commit_sellado` en el commit siguiente»,
+    `4de7f2a7:docs/preregistro_tanda_final.md:257`). La base de Neo4j conserva «PENDIENTE» en `KG_Meta` hasta la próxima carga.
+  - **El orden de la fila:** los dos de T3, el 146 v5, y después U-UNION-C1 v3, el «seguí» de T4 y la etapa b de las remisiones.
+- **Lo que queda a la vista:** `unidades_a_la_vista_T4.json` deja 3.695 de las 4.951 unidades de la tanda final con la regla del «seguí»
+  (la del T3 de la tanda 1), y 224 con la del T4 de la tanda 1. La causa: la regla del «seguí» suma las unidades de procedencia de los
+  nodos TextoOrdenado y de los Sujeto con más de una unidad de procedencia que muestran las fichas, y la del T4 de la tanda 1 no. Las
+  3.695 son de 93 TOs, todos de la tanda final y ninguno de la tanda 1 (lo controlaron la autora y la mesa, por código), así que no tocan
+  la población de U-MED-VERIF-FICHAS (su mandato, §3).
+- **Los dos momentos de lectura del §6, juntos en uno.** La atención y el freno se calcularon antes de leer nada, porque T2 siguió de
+  corrido, en lugar de «se calculan después de leer las celdas del tramo 1» (`4de7f2a7:docs/preregistro_tanda_final.md:236-238`):
+  - lo fijó el «seguí» de T3 de la mesa (punto 7.3), con una nota para la autora antes de pegar, y la ejecutora lo aplicó y lo declaró;
+  - es un **desvío declarado**: no cambia ninguna cifra (los umbrales salen de los pesos de las poblaciones y de la tasa de la tanda 0, no
+    de una lectura) y va del lado ciego;
+  - la mesa propone que no necesita firma; lo decide la autora (PENDIENTE). Si lo firma, va como nota fechada al pie del pre-registro de la
+    tanda final.
+- **El contenedor de Neo4j salió con el código 137** al detenerlo, con la carga ya verificada (gate 5 OK, paridad 147 de 147):
+  `docker compose stop` espera 10 segundos y después mata el proceso. Antes de usar ese volumen, la próxima carga controla que el
+  contenedor arranque sano y que el log no dé errores de recuperación, corre `verificar_carga` de cada grafo que vaya a usar (el
+  `kg_sha256` de `KG_Meta` contra `grafos.py`, y los nodos y las aristas), y se detiene con `docker compose stop -t 120`.
+- **T4, primer tramo:** la lectura asistida de las ocho muestras, las planillas, el LEEME y el convertidor, con el «seguí» de la mesa
+  (`decisiones_202_mesa/t4/`). La lectura de la autora va con ese LEEME. Su horario sale del calendario v12d: con la lectura de T4 la
+  noche del martes 20 y los lotes 04 a 06 de V el miércoles 21, el sello de la tanda queda el miércoles 21 en el escenario central.
+- Las secciones anteriores no se editan.
+
+## 69. La calibración del juez de precisión de V, corrida (agregado del 20/10/2026)
+
+Hechos de la autora del 20/10/2026, recibidos a las 15:01:10 (hoja de ruta de la mesa, §203).
+
+- **La calibración corrió:** 60 de 60 llamadas, 0 errores, 0 reintentos, 0 cruces y USD 4,5227 (`comandos/calibracion_juez_v.sh 8.5 6.5`),
+  con su análisis (`corridas/calibracion/analisis_calibracion_V.json`). El gold no corrió.
+- **Lo que da, fuera de muestra:**
+  - veredicto, 17 de 20, con 19 de 20 unánimes; las tres diferencias van para el mismo lado (P04, P10 y P15: la autora, incorrecta; el
+    juez, correcta);
+  - de las 7 incorrectas de la autora, el juez detecta 4; la precisión del pool da 16 de 20 con el juez y 13 de 20 con la autora;
+  - modalidad, 17 de 20 (P08, P10 y P15, el juez diciendo sostenido); predicado, 18 de 20 (P04 y P16); valores, 19 de 20 (P11); los
+    rasgos y la importancia, en P05 y P11.
+- **La clasificación de la mesa** (`decisiones_203_mesa/juez_v/`, con el texto de cada ficha del pool y las razones del juez, sin las notas
+  de la autora): de las 12 diferencias, que son 7 causas, 2 son de evidencia (P04, que no usa el tramo del requisito previo, y P15, que no
+  confronta el «podrá» con el tipo Obligacion del nodo) y 5 de etiqueta (P05, P08, P10, P11 y P16).
+- **La proyección al gold** (`proyeccion_criterios_46_gold_mesa.py`): con 3 de 7 incorrectas que pasan, el (ii) del §4.6 pasa solo si la
+  autora marca 11 incorrectas o menos en las 100. Con las unas 15 que supone el §4.6 (iii), la diferencia esperada es 0,064 y la
+  probabilidad de pasar, 0,318. El (iii) pasa en lo esperado (0,714 con 15).
+- **La propuesta de la mesa:** usar ahora la única recalibración del §4.7, antes del gold, con la modalidad computada por el código: el
+  juez cita la marca de modalidad de cada nodo normativo y su clase, el código controla que la marca esté en la evidencia y la compara
+  con el tipo del nodo, con una tabla fija antes de correr. P04 y las cinco de etiqueta quedan como límite del instrumento. Si la
+  recalibración da menos acuerdo de veredicto que la v1.3 en el pool, el gold corre con la v1.3, declarado. La decide la autora, por escrito
+  (PENDIENTE). En el escenario central del calendario v12d, la recalibración atrasa el gold y N7, pero N7 sigue antes del corte del
+  sábado 24 y la firma del pre-registro de B6.3, antes del plazo; en el lento, no llegan ni con ella ni sin ella.
+- **El costo** (`decisiones_203_mesa/costo/`): la escritura de caché fue el 67 % de la calibración, porque cada caso lleva su prefijo. El
+  gold, con un prefijo de 51.098 tokens, proyecta 9,11 central y 13,67 alto (tope 16, freno 13). **El tope de V es 50 desde el 19/10/2026**
+  (nota al pie del pre-registro de tripletas, `:347-351`; §56), y no 35. V entera, con las dos recalibraciones (la de precisión y la de
+  presencia), proyecta 32,93 central y 43,36 alto: entra.
+- Las secciones anteriores no se editan.
