@@ -273,6 +273,38 @@ GRAFOS = {
         "vista_runtime": "comun_ev2.cargar_runtime('tanda1_ens_veinte_r2b_sincola') tras importar tanda1/t3/registro_vista_r2b_tanda1 (registro en memoria, patrón comun_tanda0); tanda 1 de B6.1; grafo evaluado de la tanda 1 sin la cola humana; r2b no se evalúa con EV2",
         "indice_fulltext": "nodos_fulltext_kg_tanda1_veinte_r2b_sincola",
     },
+    # Tanda final de B6.1 (pre-registro firmado en 4de7f2a7, §7; T3): los dos grafos de la tanda sola, completo y sin la
+    # cola humana, ensamblados con ensamblar_tanda0.py (cadena r2, --e0-r2) sobre las salidas de E1 y E3 de la tanda final.
+    # Su vista runtime la registra en memoria data/experiment/tanda_final/t3/registro_vista_r2b_tanda_final.py (patrón de
+    # tanda1/t3/registro_vista_r2b_tanda1.py). commit_sellado: "PENDIENTE" hasta el sello de la autora.
+    "KG_TandaFinal_r2b": {
+        "nombre_canonico": "KG-TandaFinal-r2b",
+        "label": "KG_TandaFinal_r2b",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_tanda_final" / "ens_98_r2b" / "r2" / "kg.json",
+        "sha256": "db2df7b7e707ef191d1df6fdb3638fd920cf4486afce13a7e889b9755155bc97",
+        "commit_sellado": "PENDIENTE",
+        "n_nodos": 17025,
+        "n_aristas": 46273,
+        "ev2_key": "tandafinal_ens_98_r2b",
+        "requiere_registro_dir": EXPERIMENT_DIR / "tanda_final" / "t3",
+        "requiere_registro_modulo": "registro_vista_r2b_tanda_final",
+        "vista_runtime": "comun_ev2.cargar_runtime('tandafinal_ens_98_r2b') tras importar tanda_final/t3/registro_vista_r2b_tanda_final (registro en memoria, patrón comun_tanda0); tanda final de B6.1; r2b no se evalúa con EV2",
+        "indice_fulltext": "nodos_fulltext_kg_tandafinal_r2b",
+    },
+    "KG_TandaFinal_r2b_sincola": {
+        "nombre_canonico": "KG-TandaFinal-r2b-sincola",
+        "label": "KG_TandaFinal_r2b_sincola",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_tanda_final" / "ens_98_r2b_sincola" / "r2" / "kg.json",
+        "sha256": "c050f3c90ce5d32be759d2e5d05bbe2e131d9abf7811de097c97f4a1fe410cf7",
+        "commit_sellado": "PENDIENTE",
+        "n_nodos": 16598,
+        "n_aristas": 43392,
+        "ev2_key": "tandafinal_ens_98_r2b_sincola",
+        "requiere_registro_dir": EXPERIMENT_DIR / "tanda_final" / "t3",
+        "requiere_registro_modulo": "registro_vista_r2b_tanda_final",
+        "vista_runtime": "comun_ev2.cargar_runtime('tandafinal_ens_98_r2b_sincola') tras importar tanda_final/t3/registro_vista_r2b_tanda_final (registro en memoria, patrón comun_tanda0); tanda final de B6.1; grafo de la tanda final sin la cola humana; r2b no se evalúa con EV2",
+        "indice_fulltext": "nodos_fulltext_kg_tandafinal_r2b_sincola",
+    },
 }
 CLAVES = list(GRAFOS.keys())
 GRAFO_DEFAULT = "KG_Refinado"   # el grafo vigente (docs/tablero.md); compatibilidad con c26cb9b

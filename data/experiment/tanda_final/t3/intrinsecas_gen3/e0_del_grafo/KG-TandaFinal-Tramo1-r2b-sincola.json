@@ -1,0 +1,928 @@
+{
+  "spec": "docs/spec_evaluacion_intrinseca.md",
+  "spec_commit_sellado": "cdf90e6",
+  "spec_sha256": "8bedc6339a741cd754f2c16eeb55e8e27da9b090360dd5039dc19800f8128548",
+  "script_sha256": "644a7beaa21eb1c0a379f5348926546847e58f0ae23b8b3cc09575c5da0a10b1",
+  "rapidfuzz_version": "3.14.5",
+  "umbral_similitud": 75.0,
+  "fecha": "2026-10-20",
+  "custodia": [
+    {
+      "grafo": "KG-TandaFinal-Tramo1-r2b-sincola",
+      "custodia": "OK",
+      "metodo": "sha256",
+      "sha256_medido": "bbda74cda7e071e27782b41b06d7557e2c153e8afff7ea3f6540bdd520c3615f",
+      "sha256_esperado": "bbda74cda7e071e27782b41b06d7557e2c153e8afff7ea3f6540bdd520c3615f",
+      "nodos": 2207,
+      "aristas_triples": 3822
+    }
+  ],
+  "grafo": "KG-TandaFinal-Tramo1-r2b-sincola",
+  "kg_path": "data/experiment/reextraccion_v2/corpus_tanda_final/ens_tramo1_r2b_sincola/r2/kg.json",
+  "nodos_totales": 2207,
+  "metricas": {
+    "M1_tasa_duplicacion_publicada": {
+      "valor": 0.483009,
+      "numerador": 1066,
+      "denominador": 2207,
+      "convencion": "partial_ratio RapidFuzz sobre label crudo, pares intra-tipo >= 75, componentes conexas, Σ(|C|-1) / nodos totales ([05] §5.1, etapa 1)",
+      "cota": "superior",
+      "notas": {
+        "por_tipo": {
+          "Comunicacion": 31,
+          "Condicion": 27,
+          "Definicion": 289,
+          "Excepcion": 19,
+          "Obligacion": 422,
+          "Operacion": 104,
+          "Potestad": 7,
+          "Restriccion": 17,
+          "Sujeto": 128,
+          "TextoOrdenado": 22
+        },
+        "labels_vacios": 0,
+        "rol": "descriptiva; DECLARADA INFLADA para este corpus (spec §5.b)"
+      }
+    },
+    "M2_tasa_duplicacion_gate": {
+      "valor": 0.244676,
+      "numerador": 540,
+      "denominador": 2207,
+      "convencion": "ratio RapidFuzz (Levenshtein normalizado, cadenas completas) sobre label con normalización de superficie (minúsculas, sin tildes, colapso de espacios/puntuación), >= 75, mismo clustering que M1",
+      "cota": "superior",
+      "notas": {
+        "por_tipo": {
+          "Comunicacion": 19,
+          "Condicion": 22,
+          "Definicion": 170,
+          "Excepcion": 11,
+          "Obligacion": 187,
+          "Operacion": 49,
+          "Potestad": 5,
+          "Restriccion": 11,
+          "Sujeto": 50,
+          "TextoOrdenado": 16
+        },
+        "labels_vacios_tras_normalizar": 0,
+        "rol": "bloqueante en la pasada 2"
+      }
+    },
+    "M3_tasa_conflacion": {
+      "status": "no_computable",
+      "motivo": "generación 3: el registro por nodo es `provenances`, acumulado con dedup exacto por fuente (e2_lib.py:294-297, add_prov): dos menciones del mismo chunk y rol colapsan en una entrada, así que len(provenances) cuenta fuentes (to, punto, rol) distintas, no menciones fusionadas; el conteo de menciones pre-fusión (entidades_in de E2) no persiste en kg.json ni en la salida de E0. Spec §4 M3 exige Σ(menciones_fusionadas − 1) / menciones extraídas totales: sin insumo verificable, no_computable"
+    },
+    "M4_average_degree": {
+      "valor": 3.463525,
+      "numerador": 7644,
+      "denominador": 2207,
+      "convencion": "aristas deduplicadas por triple exacto (source, target, relation); grado = entrantes + salientes; self-loops aportan 2; average = Σ grados / nodos",
+      "cota": "exacta",
+      "notas": {
+        "aristas_unicas": 3822,
+        "aristas_repetidas_removidas": 0,
+        "self_loops": 0,
+        "aristas_dangling": 0,
+        "ids_de_nodo_duplicados": 0,
+        "rol": "descriptiva; NO se reporta sin M6"
+      }
+    },
+    "M5_avg_shortest_path": {
+      "valor": 5.450329,
+      "numerador": 26223940,
+      "denominador": 4811442,
+      "convencion": "BFS no ponderado sobre la versión no dirigida del grafo de aristas únicas, solo componente conexa mayor, promedio sobre pares ordenados distintos; nodos fuera de la componente mayor excluidos y reportados vía M9",
+      "cota": "exacta",
+      "notas": {
+        "n_componente_mayor": 2194,
+        "nodos_fuera_de_lcc": 13,
+        "rol": "descriptiva; NO se reporta sin M6 ni M9"
+      }
+    },
+    "M6_concentracion_de_grado": {
+      "valor": {
+        "grado_max": 249,
+        "participacion_top1pct": 0.291601,
+        "gini_grado": 0.59139
+      },
+      "numerador": 2229,
+      "denominador": 7644,
+      "convencion": "top 1% = techo(0.01·N) nodos de mayor grado; participación = Σ grados top / Σ grados; Gini sobre la distribución de grados de M4",
+      "cota": "exacta",
+      "notas": {
+        "k_top1pct": 23,
+        "rol": "descriptiva de reporte OBLIGATORIO junto a M4 y M5; especie del backlog: hub_contaminado"
+      }
+    },
+    "M7_tasa_ruido_por_rol": {
+      "valor": 0.0,
+      "numerador": 0,
+      "denominador": 2207,
+      "convencion": "nodos cuyo chunk principal (nodes[].provenance.chunk_id) tiene rol documental no normativo (indice, tabla_norma_origen; rol normativo = cuerpo — vocabulario real de chunk_roles.py, aplicado a la página inicial del chunk de E0); nodos sin chunk principal (esqueleto) no cuentan en el numerador",
+      "cota": "inferior (no captura cáscaras nacidas de chunks normativos)",
+      "notas": {
+        "por_rol": {},
+        "nodos": [],
+        "nodos_sin_chunk_principal_excluidos": 83,
+        "nodos_con_alguna_provenance_no_normativa": 0,
+        "rol": "bloqueante en la pasada 2; especie del backlog: cascara"
+      }
+    },
+    "M8_densidad": {
+      "valor": 0.00078502,
+      "numerador": 3822,
+      "denominador": 4868642,
+      "convencion": "densidad de grafo dirigido simple: aristas únicas sin self-loops / N·(N-1)",
+      "cota": "exacta",
+      "notas": {
+        "rol": "descriptiva"
+      }
+    },
+    "M9_nodos_aislados_y_componentes": {
+      "valor": {
+        "nodos_aislados": 13,
+        "componentes_conexas": 14,
+        "fraccion_en_componente_mayor": 0.99411
+      },
+      "numerador": 2194,
+      "denominador": 2207,
+      "convencion": "versión no dirigida del grafo de aristas únicas; aislados = grado 0; fracción = nodos de la componente mayor / nodos totales",
+      "cota": "exacta",
+      "notas": {
+        "rol": "descriptiva; reporte obligatorio junto a M5"
+      }
+    },
+    "M10_chunks_mudos": {
+      "valor": 0.023295,
+      "numerador": 14,
+      "denominador": 601,
+      "convencion": "chunk activo = chunk de chunks_<to>.json de E0 (entrada de E1) de los TOs del manifiesto cuya página inicial es de rol cuerpo (spec §4 M10; mismo clasificador que M7); mudo = ningún nodo del grafo lo rastrea en provenances[].chunk_id ni en provenances[].chunks_emisores; denominador = chunks activos (aguas arriba del ensamblado)",
+      "cota": "exacta",
+      "notas": {
+        "mudos_detalle": [
+          {
+            "chunk_id": "cedin::12.1",
+            "to": "cedin",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              14,
+              15
+            ]
+          },
+          {
+            "chunk_id": "consyr::3.4.1",
+            "to": "consyr",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              8
+            ]
+          },
+          {
+            "chunk_id": "consyr::3.4.4",
+            "to": "consyr",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              8
+            ]
+          },
+          {
+            "chunk_id": "ri_dsf::S1",
+            "to": "ri_dsf",
+            "tipo": "seccion_sin_puntos",
+            "rol_bloque": null,
+            "paginas": [
+              1
+            ]
+          },
+          {
+            "chunk_id": "ri_dsf::S8::chapeau_seccion",
+            "to": "ri_dsf",
+            "tipo": "mini_chunk",
+            "rol_bloque": "chapeau_seccion",
+            "paginas": [
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14
+            ]
+          },
+          {
+            "chunk_id": "ri_iepsp::A::S4",
+            "to": "ri_iepsp",
+            "tipo": "seccion_sin_puntos",
+            "rol_bloque": null,
+            "paginas": [
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ]
+          },
+          {
+            "chunk_id": "ri_ii_31_12_19::2.20",
+            "to": "ri_ii_31_12_19",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              6
+            ]
+          },
+          {
+            "chunk_id": "ri_msrl::6.2",
+            "to": "ri_msrl",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              13,
+              14,
+              15,
+              16
+            ]
+          },
+          {
+            "chunk_id": "ri_msrl::S1",
+            "to": "ri_msrl",
+            "tipo": "seccion_sin_puntos",
+            "rol_bloque": null,
+            "paginas": [
+              2
+            ]
+          },
+          {
+            "chunk_id": "ri_secoexpo::SC::rep2",
+            "to": "ri_secoexpo",
+            "tipo": "seccion_sin_puntos",
+            "rol_bloque": null,
+            "paginas": [
+              1
+            ]
+          },
+          {
+            "chunk_id": "ri_tar::4.1.2",
+            "to": "ri_tar",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              6
+            ]
+          },
+          {
+            "chunk_id": "ri_transpa::Sbloque1::chapeau_seccion",
+            "to": "ri_transpa",
+            "tipo": "mini_chunk",
+            "rol_bloque": "chapeau_seccion",
+            "paginas": [
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14
+            ]
+          },
+          {
+            "chunk_id": "seggar::3.3.2",
+            "to": "seggar",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              4
+            ]
+          },
+          {
+            "chunk_id": "seggar::8.2",
+            "to": "seggar",
+            "tipo": "punto_terminal",
+            "rol_bloque": null,
+            "paginas": [
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16
+            ]
+          }
+        ],
+        "universo_por_to": {
+          "asomut": 8,
+          "cedin": 66,
+          "consyr": 34,
+          "micemp": 8,
+          "ri_acsf": 6,
+          "ri_ai": 15,
+          "ri_bdp": 3,
+          "ri_cr": 6,
+          "ri_dsf": 28,
+          "ri_esd": 5,
+          "ri_ieccm": 4,
+          "ri_iepsp": 13,
+          "ri_iesinap": 12,
+          "ri_ii_31_12_19": 91,
+          "ri_laft": 26,
+          "ri_msrl": 12,
+          "ri_nge": 30,
+          "ri_ot": 32,
+          "ri_psp": 9,
+          "ri_pspapt": 16,
+          "ri_rcl": 4,
+          "ri_secoexpo": 35,
+          "ri_sef": 38,
+          "ri_tar": 18,
+          "ri_transpa": 11,
+          "ri_tsa": 17,
+          "ri_tvf": 6,
+          "ribspc": 7,
+          "seggar": 36,
+          "verac": 5
+        },
+        "chunks_excluidos_del_universo_por_rol": {},
+        "dirección_de_mejora": "cero",
+        "rol": "bloqueante en la pasada 2"
+      }
+    },
+    "M11_cobertura_CQ": {
+      "status": "no_medida_en_esta_unidad",
+      "motivo": "régimen especial de la spec §6: medición única y separada sobre el set quemado; jamás objetivo de optimización"
+    }
+  },
+  "adaptador_gen3": {
+    "descripcion": "Declaración de insumos de generación 3 para M3, M7 y M10 (decisión 2 del mandato del gate 6). Fórmulas de la spec intactas; M1, M2, M4, M5, M6, M8 y M9 con el mismo código que los grafos de generaciones 1 y 2.",
+    "e0_dir": "data/experiment/reextraccion_v2/e0_chunking/salida_tanda_final_r2b",
+    "manifiesto": "data/experiment/tanda_final/t3/prueba_raya_tramo1/manifiestos/tanda_final_ens_tramo1_r2b_raya_sincola.json",
+    "tos": [
+      "asomut",
+      "cedin",
+      "consyr",
+      "micemp",
+      "ri_acsf",
+      "ri_ai",
+      "ri_bdp",
+      "ri_cr",
+      "ri_dsf",
+      "ri_esd",
+      "ri_ieccm",
+      "ri_iepsp",
+      "ri_iesinap",
+      "ri_ii_31_12_19",
+      "ri_laft",
+      "ri_msrl",
+      "ri_nge",
+      "ri_ot",
+      "ri_psp",
+      "ri_pspapt",
+      "ri_rcl",
+      "ri_secoexpo",
+      "ri_sef",
+      "ri_tar",
+      "ri_transpa",
+      "ri_tsa",
+      "ri_tvf",
+      "ribspc",
+      "seggar",
+      "verac"
+    ],
+    "pdfs": {
+      "asomut": {
+        "ruta": "data/experiment/escalado_prep/pdfs/asomut.pdf",
+        "sha256": "2d3a8a01e41366c92d9261cc740f8ed72939f228e31a5bc370e68370903d230a",
+        "sha256_manifiesto": "2d3a8a01e41366c92d9261cc740f8ed72939f228e31a5bc370e68370903d230a",
+        "coincide": true
+      },
+      "cedin": {
+        "ruta": "data/experiment/escalado_prep/pdfs/cedin.pdf",
+        "sha256": "8bceea8fc48dba8650df2226119e3d5f5e8fdc123b7fbb729aa0cf630778063d",
+        "sha256_manifiesto": "8bceea8fc48dba8650df2226119e3d5f5e8fdc123b7fbb729aa0cf630778063d",
+        "coincide": true
+      },
+      "consyr": {
+        "ruta": "data/experiment/escalado_prep/pdfs/consyr.pdf",
+        "sha256": "88943bc138fbb6900a9f5b64c6008da52f9d214554d6064ec35e84282669201c",
+        "sha256_manifiesto": "88943bc138fbb6900a9f5b64c6008da52f9d214554d6064ec35e84282669201c",
+        "coincide": true
+      },
+      "micemp": {
+        "ruta": "data/experiment/escalado_prep/pdfs/micemp.pdf",
+        "sha256": "47093fca8e4535702f1bd476fae74c48fd8748dae32fc995cca6beb607dfd804",
+        "sha256_manifiesto": "47093fca8e4535702f1bd476fae74c48fd8748dae32fc995cca6beb607dfd804",
+        "coincide": true
+      },
+      "ri_acsf": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_acsf.pdf",
+        "sha256": "14c314c5e6e8571ed5186a44fee7a296694a89c7448bbda3a003c1eea9604a3a",
+        "sha256_manifiesto": "14c314c5e6e8571ed5186a44fee7a296694a89c7448bbda3a003c1eea9604a3a",
+        "coincide": true
+      },
+      "ri_ai": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_ai.pdf",
+        "sha256": "51b9b374d3f5043673c5882388234c865da43f10033813f5eba0e8dc8e18f325",
+        "sha256_manifiesto": "51b9b374d3f5043673c5882388234c865da43f10033813f5eba0e8dc8e18f325",
+        "coincide": true
+      },
+      "ri_bdp": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_bdp.pdf",
+        "sha256": "44de137a7f5162860433fb9e0714cbab09edd56a57fef976dab59d7f8b614af3",
+        "sha256_manifiesto": "44de137a7f5162860433fb9e0714cbab09edd56a57fef976dab59d7f8b614af3",
+        "coincide": true
+      },
+      "ri_cr": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_cr.pdf",
+        "sha256": "f5c6ead3a4df75dbd17b889c91a8f20b7c7484a82f3d2d16a6f75de95481b978",
+        "sha256_manifiesto": "f5c6ead3a4df75dbd17b889c91a8f20b7c7484a82f3d2d16a6f75de95481b978",
+        "coincide": true
+      },
+      "ri_dsf": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_dsf.pdf",
+        "sha256": "cb7ce9a104ca66e0a33b94604f2cb35586d881f72590356919a283d76d6103ff",
+        "sha256_manifiesto": "cb7ce9a104ca66e0a33b94604f2cb35586d881f72590356919a283d76d6103ff",
+        "coincide": true
+      },
+      "ri_esd": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_esd.pdf",
+        "sha256": "c6dde3e130363a35beffeb65e395f86d5cfb91a31c078bbb47fa329594dcea74",
+        "sha256_manifiesto": "c6dde3e130363a35beffeb65e395f86d5cfb91a31c078bbb47fa329594dcea74",
+        "coincide": true
+      },
+      "ri_ieccm": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_ieccm.pdf",
+        "sha256": "e42f8562b41433bebb2660e29cc906955aa0df8905cc704bab13979ee4fa1657",
+        "sha256_manifiesto": "e42f8562b41433bebb2660e29cc906955aa0df8905cc704bab13979ee4fa1657",
+        "coincide": true
+      },
+      "ri_iepsp": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_iepsp.pdf",
+        "sha256": "f0bd6c20796e8db327f77f0cda1d0910c84758b9d26c5dfbb278f3e3d99795dc",
+        "sha256_manifiesto": "f0bd6c20796e8db327f77f0cda1d0910c84758b9d26c5dfbb278f3e3d99795dc",
+        "coincide": true
+      },
+      "ri_iesinap": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_iesinap.pdf",
+        "sha256": "4fc49dec690f463ddb7b6c47753ba267bde0b527406b3aab0c0446a469cfb259",
+        "sha256_manifiesto": "4fc49dec690f463ddb7b6c47753ba267bde0b527406b3aab0c0446a469cfb259",
+        "coincide": true
+      },
+      "ri_ii_31_12_19": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_ii_31_12_19.pdf",
+        "sha256": "d6cae105f24cbb0cce48a752860f041c1fd6a870a5fe6beea206847188da251e",
+        "sha256_manifiesto": "d6cae105f24cbb0cce48a752860f041c1fd6a870a5fe6beea206847188da251e",
+        "coincide": true
+      },
+      "ri_laft": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_laft.pdf",
+        "sha256": "0426e9d1102f0ba4fac0a88229155ae1aed5ede048651b33c32aebe652ab821e",
+        "sha256_manifiesto": "0426e9d1102f0ba4fac0a88229155ae1aed5ede048651b33c32aebe652ab821e",
+        "coincide": true
+      },
+      "ri_msrl": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_msrl.pdf",
+        "sha256": "0b464c222a762596c6d095673315ac177a22cf085b5f8c71e80c48355275aa5d",
+        "sha256_manifiesto": "0b464c222a762596c6d095673315ac177a22cf085b5f8c71e80c48355275aa5d",
+        "coincide": true
+      },
+      "ri_nge": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_nge.pdf",
+        "sha256": "e52600be917c525911371e606977d63463a2a78cf0973ed650f9263648fa1b1f",
+        "sha256_manifiesto": "e52600be917c525911371e606977d63463a2a78cf0973ed650f9263648fa1b1f",
+        "coincide": true
+      },
+      "ri_ot": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_ot.pdf",
+        "sha256": "d2aa67afb80da2ede2aec85fa9c1a5b83880c5a1eb80a3fdf6291688a6e77833",
+        "sha256_manifiesto": "d2aa67afb80da2ede2aec85fa9c1a5b83880c5a1eb80a3fdf6291688a6e77833",
+        "coincide": true
+      },
+      "ri_psp": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_psp.pdf",
+        "sha256": "20f07c8ba05c11e8195eb45bfac61141eb86cb273ea04a5b4284cac039213141",
+        "sha256_manifiesto": "20f07c8ba05c11e8195eb45bfac61141eb86cb273ea04a5b4284cac039213141",
+        "coincide": true
+      },
+      "ri_pspapt": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_pspapt.pdf",
+        "sha256": "ee234c1672698d0faaae2211400fb9bbc1a503b62123f65cc3079f7a543292ad",
+        "sha256_manifiesto": "ee234c1672698d0faaae2211400fb9bbc1a503b62123f65cc3079f7a543292ad",
+        "coincide": true
+      },
+      "ri_rcl": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_rcl.pdf",
+        "sha256": "26ed30aaeadc2216e413edf2ee59c4975d200a4d8b4a1e317f7220d1924a19b6",
+        "sha256_manifiesto": "26ed30aaeadc2216e413edf2ee59c4975d200a4d8b4a1e317f7220d1924a19b6",
+        "coincide": true
+      },
+      "ri_secoexpo": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_secoexpo.pdf",
+        "sha256": "1a5b4b600762557cb22f683cd8865bbba540c0297bf8f077a7b7b2e7aa92c404",
+        "sha256_manifiesto": "1a5b4b600762557cb22f683cd8865bbba540c0297bf8f077a7b7b2e7aa92c404",
+        "coincide": true
+      },
+      "ri_sef": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_sef.pdf",
+        "sha256": "2d33fcfa8e3bd0dae92c978e92f143fce1156c350a65ec4727730ea55b570ff7",
+        "sha256_manifiesto": "2d33fcfa8e3bd0dae92c978e92f143fce1156c350a65ec4727730ea55b570ff7",
+        "coincide": true
+      },
+      "ri_tar": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_tar.pdf",
+        "sha256": "88b7f86304aa2b3db834ad51481043820c06ddd953f5fa05a76b0da6e9a648a3",
+        "sha256_manifiesto": "88b7f86304aa2b3db834ad51481043820c06ddd953f5fa05a76b0da6e9a648a3",
+        "coincide": true
+      },
+      "ri_transpa": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_transpa.pdf",
+        "sha256": "ab8186b0ec9ac6825fc316952c670550af3b57f14b1959e0a9a9eff6d94f4700",
+        "sha256_manifiesto": "ab8186b0ec9ac6825fc316952c670550af3b57f14b1959e0a9a9eff6d94f4700",
+        "coincide": true
+      },
+      "ri_tsa": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_tsa.pdf",
+        "sha256": "8c26723e04fd4b749791b9b5bbea483712785e628510c47a5a853ef1148d178b",
+        "sha256_manifiesto": "8c26723e04fd4b749791b9b5bbea483712785e628510c47a5a853ef1148d178b",
+        "coincide": true
+      },
+      "ri_tvf": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ri_tvf.pdf",
+        "sha256": "add3afe48f730f32db27424e11b0b1c076ecffd801883216710e2662924ae460",
+        "sha256_manifiesto": "add3afe48f730f32db27424e11b0b1c076ecffd801883216710e2662924ae460",
+        "coincide": true
+      },
+      "ribspc": {
+        "ruta": "data/experiment/escalado_prep/pdfs/ribspc.pdf",
+        "sha256": "712843557ce22c030b8c49bf3fee523d3634ce7e0cde27be4b2fdf358ef43e52",
+        "sha256_manifiesto": "712843557ce22c030b8c49bf3fee523d3634ce7e0cde27be4b2fdf358ef43e52",
+        "coincide": true
+      },
+      "seggar": {
+        "ruta": "data/experiment/escalado_prep/pdfs/seggar.pdf",
+        "sha256": "120b4554b5e61ca78f2fa4f27840d458990c2d91d3630bb899ea404253c31041",
+        "sha256_manifiesto": "120b4554b5e61ca78f2fa4f27840d458990c2d91d3630bb899ea404253c31041",
+        "coincide": true
+      },
+      "verac": {
+        "ruta": "data/experiment/escalado_prep/pdfs/verac.pdf",
+        "sha256": "f2fb17414900329a426d87193c46734d248c29d7c22c7b5516d0e428ff54851b",
+        "sha256_manifiesto": "f2fb17414900329a426d87193c46734d248c29d7c22c7b5516d0e428ff54851b",
+        "coincide": true
+      }
+    },
+    "chunks_e0": {
+      "total": 601,
+      "por_to": {
+        "asomut": 8,
+        "cedin": 66,
+        "consyr": 34,
+        "micemp": 8,
+        "ri_acsf": 6,
+        "ri_ai": 15,
+        "ri_bdp": 3,
+        "ri_cr": 6,
+        "ri_dsf": 28,
+        "ri_esd": 5,
+        "ri_ieccm": 4,
+        "ri_iepsp": 13,
+        "ri_iesinap": 12,
+        "ri_ii_31_12_19": 91,
+        "ri_laft": 26,
+        "ri_msrl": 12,
+        "ri_nge": 30,
+        "ri_ot": 32,
+        "ri_psp": 9,
+        "ri_pspapt": 16,
+        "ri_rcl": 4,
+        "ri_secoexpo": 35,
+        "ri_sef": 38,
+        "ri_tar": 18,
+        "ri_transpa": 11,
+        "ri_tsa": 17,
+        "ri_tvf": 6,
+        "ribspc": 7,
+        "seggar": 36,
+        "verac": 5
+      },
+      "campo_paginas": "chunks_<to>.json[].paginas, 1-based (e0_lib.py:291, :309)",
+      "vocabulario_observado": {
+        "tipo": {
+          "mini_chunk": 69,
+          "punto_terminal": 311,
+          "seccion_sin_puntos": 221
+        },
+        "rol_bloque": {
+          "<ausente>": 532,
+          "chapeau_seccion": 38,
+          "cierre": 15,
+          "intersticial": 1,
+          "intro": 15
+        },
+        "flags.contenido_tabular": {
+          "False": 545,
+          "True": 56
+        }
+      }
+    },
+    "rol_documental": {
+      "metodo": "chunk_roles.roles_de_pagina(pdf) sobre la primera página de cada chunk",
+      "paginas_por_rol_por_to": {
+        "asomut": {
+          "paginas": 7,
+          "por_rol": {
+            "cuerpo": 5,
+            "indice": 1,
+            "tabla_norma_origen": 1
+          }
+        },
+        "cedin": {
+          "paginas": 22,
+          "por_rol": {
+            "cuerpo": 20,
+            "tabla_norma_origen": 2
+          }
+        },
+        "consyr": {
+          "paginas": 11,
+          "por_rol": {
+            "cuerpo": 10,
+            "tabla_norma_origen": 1
+          }
+        },
+        "micemp": {
+          "paginas": 8,
+          "por_rol": {
+            "cuerpo": 6,
+            "indice": 1,
+            "tabla_norma_origen": 1
+          }
+        },
+        "ri_acsf": {
+          "paginas": 3,
+          "por_rol": {
+            "cuerpo": 3
+          }
+        },
+        "ri_ai": {
+          "paginas": 9,
+          "por_rol": {
+            "cuerpo": 8,
+            "indice": 1
+          }
+        },
+        "ri_bdp": {
+          "paginas": 3,
+          "por_rol": {
+            "cuerpo": 3
+          }
+        },
+        "ri_cr": {
+          "paginas": 5,
+          "por_rol": {
+            "cuerpo": 5
+          }
+        },
+        "ri_dsf": {
+          "paginas": 31,
+          "por_rol": {
+            "cuerpo": 31
+          }
+        },
+        "ri_esd": {
+          "paginas": 3,
+          "por_rol": {
+            "cuerpo": 3
+          }
+        },
+        "ri_ieccm": {
+          "paginas": 1,
+          "por_rol": {
+            "cuerpo": 1
+          }
+        },
+        "ri_iepsp": {
+          "paginas": 9,
+          "por_rol": {
+            "cuerpo": 9
+          }
+        },
+        "ri_iesinap": {
+          "paginas": 6,
+          "por_rol": {
+            "cuerpo": 6
+          }
+        },
+        "ri_ii_31_12_19": {
+          "paginas": 21,
+          "por_rol": {
+            "cuerpo": 21
+          }
+        },
+        "ri_laft": {
+          "paginas": 45,
+          "por_rol": {
+            "cuerpo": 45
+          }
+        },
+        "ri_msrl": {
+          "paginas": 20,
+          "por_rol": {
+            "cuerpo": 20
+          }
+        },
+        "ri_nge": {
+          "paginas": 3,
+          "por_rol": {
+            "cuerpo": 3
+          }
+        },
+        "ri_ot": {
+          "paginas": 6,
+          "por_rol": {
+            "cuerpo": 6
+          }
+        },
+        "ri_psp": {
+          "paginas": 14,
+          "por_rol": {
+            "cuerpo": 14
+          }
+        },
+        "ri_pspapt": {
+          "paginas": 5,
+          "por_rol": {
+            "cuerpo": 5
+          }
+        },
+        "ri_rcl": {
+          "paginas": 2,
+          "por_rol": {
+            "cuerpo": 2
+          }
+        },
+        "ri_secoexpo": {
+          "paginas": 21,
+          "por_rol": {
+            "cuerpo": 21
+          }
+        },
+        "ri_sef": {
+          "paginas": 10,
+          "por_rol": {
+            "cuerpo": 10
+          }
+        },
+        "ri_tar": {
+          "paginas": 7,
+          "por_rol": {
+            "cuerpo": 7
+          }
+        },
+        "ri_transpa": {
+          "paginas": 23,
+          "por_rol": {
+            "cuerpo": 23
+          }
+        },
+        "ri_tsa": {
+          "paginas": 92,
+          "por_rol": {
+            "cuerpo": 92
+          }
+        },
+        "ri_tvf": {
+          "paginas": 5,
+          "por_rol": {
+            "cuerpo": 5
+          }
+        },
+        "ribspc": {
+          "paginas": 2,
+          "por_rol": {
+            "cuerpo": 2
+          }
+        },
+        "seggar": {
+          "paginas": 26,
+          "por_rol": {
+            "cuerpo": 23,
+            "indice": 1,
+            "tabla_norma_origen": 2
+          }
+        },
+        "verac": {
+          "paginas": 5,
+          "por_rol": {
+            "cuerpo": 3,
+            "indice": 1,
+            "tabla_norma_origen": 1
+          }
+        }
+      },
+      "chunks_por_rol": {
+        "cuerpo": 601
+      },
+      "chunks_con_paginas_mixtas": [],
+      "nota_e0": "E0 solo parsea páginas de rol cuerpo (e0_lib.py:678-680) con marcadores equivalentes a los de chunk_roles.py (e0_lib.py:196-210, :344-390); el vocabulario de E0 (tipo, rol_bloque, provenance.rol_documental) no contiene indice ni tabla_norma_origen"
+    },
+    "atribucion_nodo_chunk": {
+      "campo": "nodes[].provenances[].chunk_id y chunks_emisores (r1_provenance.py:1-30, :75-88); principal = nodes[].provenance.chunk_id (e2_lib.py:360)",
+      "provenances_totales": 3048,
+      "provenances_con_chunk_id": 2938,
+      "provenances_sin_chunk_id": 110,
+      "nodos_sin_chunk_principal": 83,
+      "chunk_ids_fuera_de_e0": 0,
+      "chunks_con_algun_nodo": 587,
+      "rol_documental_provenances": {
+        "bloque_chapeau_seccion": 210,
+        "bloque_cierre": 79,
+        "bloque_intersticial": 7,
+        "bloque_intro": 58,
+        "esqueleto": 110,
+        "herencia_chapeau_seccion": 11,
+        "herencia_cierre": 2,
+        "herencia_encabezado": 8,
+        "herencia_intersticial": 2,
+        "herencia_intro": 6,
+        "punto_propio": 2555
+      }
+    },
+    "M3": {
+      "status": "no_computable",
+      "motivo": "generación 3: el registro por nodo es `provenances`, acumulado con dedup exacto por fuente (e2_lib.py:294-297, add_prov): dos menciones del mismo chunk y rol colapsan en una entrada, así que len(provenances) cuenta fuentes (to, punto, rol) distintas, no menciones fusionadas; el conteo de menciones pre-fusión (entidades_in de E2) no persiste en kg.json ni en la salida de E0. Spec §4 M3 exige Σ(menciones_fusionadas − 1) / menciones extraídas totales: sin insumo verificable, no_computable",
+      "observacion_no_es_la_metrica": {
+        "nodos_con_mas_de_una_provenance": 83,
+        "suma_provenances_menos_uno": 841,
+        "nota": "cuenta fuentes (to, punto, rol) distintas fusionadas por nodo, no menciones; se registra para el laudo de la autora, no sustituye a M3"
+      }
+    },
+    "M7": {
+      "status": "computable",
+      "insumos": [
+        "nodes[].provenance.chunk_id (chunk principal; e2_lib.py:360 first-write en orden documental; chunk_id agregado por r1_provenance.py:75-88)",
+        "chunks_<to>.json[].paginas (1-based; e0_lib.py:291, :309, :1604, :1646)",
+        "chunk_roles.roles_de_pagina(pdf del manifiesto) (chunk_roles.py:52-68)"
+      ],
+      "convencion_gen3": "rol del chunk = rol de su primera página (espejo de _rol_en_offset sobre el inicio del chunk, chunk_roles.py:71-75, :110); nodos con provenance.rol_documental = esqueleto (chunk_id None; r1_e5_esqueleto.py:69) fuera del numerador, dentro del denominador"
+    },
+    "M10": {
+      "status": "computable",
+      "insumos": [
+        "chunks_<to>.json de E0 de los TOs del manifiesto (universo aguas arriba: E0 es la entrada de E1; e2_lib.py:15-31 guarda de fan-in)",
+        "rol de página como en M7",
+        "nodes[].provenances[].chunk_id y chunks_emisores (r1_provenance.py:1-30, :75-88)"
+      ],
+      "convencion_gen3": "un chunk aporta si aparece como chunk_id o dentro de chunks_emisores de alguna provenance de algún nodo; universo = chunks de rol cuerpo"
+    },
+    "condiciones_sin_regla": {
+      "condicion": 181,
+      "sin_arista_de_contenido": 31,
+      "sin_condicion_de_saliente": 31,
+      "nodos_sin_arista_de_contenido": [
+        "Condicion_cantidad_clientes_inferior_a_50__cuando_la_cantidad_de_clientes_alcanzados_por_l_027656",
+        "Condicion_cliente_no_residente_excepto_turista__supuesto_que_activa_el_reporte_de_operacio_42a8c3",
+        "Condicion_concepto_de_subsidiaria_significativa_segun_normas_de_ratio_de_cobertura__el_con_88f3c4",
+        "Condicion_condicion_cuando_sea_aplicable__cuando_sea_aplicable_la_presentacion_de_copia_au_b5e357",
+        "Condicion_consideracion_diferente_perimetro_consolidacion_regimenes__la_consistencia_respe_679f24",
+        "Condicion_consistencia_de_valores_contables_con_tolerancia_del_5__los_valores_contables_de_a693a5",
+        "Condicion_control_de_razonabilidad_de_saldos__verificacion_de_que_el_saldo_total_de_fondos_276da5",
+        "Condicion_criterios_de_consideracion_de_productos__condicion_de_aplicacion_de_los_criterio_71b782",
+        "Condicion_despreocupacion_inusual_respecto_de_riesgos__supuesto_que_activa_el_reporte_clie_f2484d",
+        "Condicion_discrepancias_entre_informacion_del_cliente_y_sistemas__supuesto_que_activa_el_r_78efd0",
+        "Condicion_disposicion_respeta_ordenamiento_anexo_ii__las_modificaciones_de_comisiones_y_ca_1ed6d7",
+        "Condicion_fecha_base_ultimo_dia_del_trimestre_informado__la_fecha_base_de_la_informacion_e_20ba1b",
+        "Condicion_incumplimiento_de_normas__supuesto_que_activa_el_reporte_cliente_no_cumple_con_l_e72a20",
+        "Condicion_informacion_consolidada_nivel_2_con_operaciones_holding_no_financiera__la_inform_3499e7",
+        "Condicion_informacion_o_documentacion_alterada__supuesto_que_activa_el_reporte_informacion_47ce43",
+        "Condicion_ingreso_sustancial_de_aportes_de_socios_activos__una_proporcion_sustancial_de_lo_e9c332",
+        "Condicion_intento_de_operaciones_con_dinero_falso__supuesto_que_activa_el_reporte_clientes_32cabf",
+        "Condicion_liquidacion_de_tenencia_afecta_significativamente_cotizacion__sin_exceder_el_mar_a67780",
+        "Condicion_mismo_domicilio_en_distintas_personas_juridicas__supuesto_que_activa_el_reporte__aff9fd",
+        "Condicion_negativa_a_proporcionar_datos_o_documentos__supuesto_que_activa_el_reporte_clien_e75717",
+        "Condicion_numero_de_item_distinto_de_cero__cuando_el_numero_de_item_es_distinto_de_cero_el_0f6115",
+        "Condicion_numero_de_item_igual_a_cero__cuando_el_numero_de_item_es_igual_a_0_la_informacio_39f765",
+        "Condicion_operaciones_con_paraisos_fiscales__supuesto_que_activa_el_reporte_operaciones_in_6e1b8c",
+        "Condicion_operaciones_de_cuentas_asociadas_a_dispositivos__supuesto_que_activa_el_reporte__cd2cdc",
+        "Condicion_operaciones_inconsistentes_con_practicas_habituales__supuesto_que_activa_el_repo_896e05",
+        "Condicion_paquete_mas_representativo__condicion_de_que_el_paquete_informado_sea_el_mas_rep_2c9604",
+        "Condicion_presentacion_previa_de_medios_si_fuera_necesario__la_arbitracion_de_medios_puede_12b5c8",
+        "Condicion_requerimiento_del_presentante__la_obligacion_se_activa_cuando_el_presentante_req_69be3f",
+        "Condicion_saldo_deuda_supera_0_5_rpc_mes_anterior__saldo_de_deuda_en_algun_momento_del_mes_f4e4a9",
+        "Condicion_saldos_pendientes_ventas_con_cobro_diferido__saldos_pendientes_de_acreditacion_e_2064e4",
+        "Condicion_tenencia_de_acciones_cotizables_supera_2_5__la_tenencia_de_acciones_cotizables_s_e2fcf6"
+      ]
+    }
+  }
+}
