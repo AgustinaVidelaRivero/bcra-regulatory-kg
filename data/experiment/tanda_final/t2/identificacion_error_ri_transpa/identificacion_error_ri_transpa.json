@@ -1,0 +1,73 @@
+{
+ "to": "ri_transpa",
+ "unidad": "ri_transpa::Sbloque1::chapeau_seccion",
+ "fase": "E1",
+ "tipo_unidad": "mini_chunk",
+ "error": "salida_mal_formada_tras_reintento",
+ "stop_reason_del_ultimo_intento": "max_tokens",
+ "max_tokens_del_ultimo_intento": 8192,
+ "tokens_de_salida_del_ultimo_intento": 8192,
+ "intentos_de_e1": 3,
+ "intentos": [
+  {
+   "intento": 1,
+   "max_tokens": 8192,
+   "stop_reason": "tool_use",
+   "input_tokens": 8799,
+   "output_tokens": 6132,
+   "salida": "mal formada (entities_o_relations_invalidos)"
+  },
+  {
+   "intento": "reintento por forma 1 (-rforma1, temperatura 1)",
+   "max_tokens": 8192,
+   "stop_reason": "max_tokens",
+   "input_tokens": 8799,
+   "output_tokens": 8192,
+   "motivo_del_segundo": null
+  },
+  {
+   "intento": "reintento por forma 2 (-rforma2, temperatura 1)",
+   "max_tokens": 8192,
+   "stop_reason": "max_tokens",
+   "input_tokens": 8799,
+   "output_tokens": 8192
+  }
+ ],
+ "renglones_de_la_unidad_en_extracciones_e1": 1,
+ "reintento_por_corte": false,
+ "tercer_escalon": false,
+ "el_runner_intento_partirla": {
+  "informe_de_particion_en_el_registro": false,
+  "en_particiones_por_corte_json": false,
+  "particionar_por_corte_hoy": {
+   "se_parte": true,
+   "chars_propio": 21712,
+   "bloques_tabla": 12,
+   "familia_items": "guion",
+   "n_items": 19,
+   "partes": [
+    {
+     "id": "ri_transpa::Sbloque1::chapeau_seccion::parte1",
+     "chars_propio": 13705
+    },
+    {
+     "id": "ri_transpa::Sbloque1::chapeau_seccion::parte2",
+     "chars_propio": 8006
+    }
+   ]
+  },
+  "corresponde_tercer_escalon": false,
+  "lectura": "sí se puede partir: el reintento que corta la parte por corte"
+ },
+ "caracteres": {
+  "chars_propio": 21712,
+  "chars_completo": 21749,
+  "tipo_e0": "mini_chunk"
+ },
+ "tokens_de_salida_por_caracter_propio_minimo_del_ultimo": 0.3773,
+ "el_camino": "el primer intento no corta y sale mal formado; los reintentos por forma van con su mismo max_tokens (runner_corpus.py: kwargs_reintento_forma sobre kwargs, sin techo de corte porque no hubo corte) y, si cortan, la unidad queda con salida_mal_formada_tras_reintento: el reintento por forma no escala el max_tokens ni parte la unidad",
+ "max_tokens_constantes": {
+  "reintento_por_corte": 16384,
+  "tercer_escalon": 40960
+ }
+}
