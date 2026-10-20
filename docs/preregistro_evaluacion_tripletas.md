@@ -321,3 +321,32 @@ topes de USD 35 (V) y USD 55 (T).
   - **«otros» sin muestra:** el estrato «otros» (`ejecuta`, 11 aristas) tiene cuota 0,26, que redondea a 0. p̂_w cubre 3.956 de las 3.967
     aristas y se informa con las dos cotas de ese estrato (todas correctas y todas incorrectas);
   - El texto firmado no cambia.
+- **19/10/2026 — El juez de precisión de V, antes de su primera corrida** (decisiones de la autora recibidas a las 22:28:02 y a las
+  22:53:30, sobre el FRENO de U-TRIP-V-JUEZ, con el prompt v1 `314c62ac…`; registro de decisiones del 15/10/2026, §56). Todo esto se decide antes de cualquier
+  corrida del juez:
+  - **La calibración, fuera de muestra (§4.3 y §4.7).**
+    - Con los casos del pool en el prompt, juzgar esos mismos casos es pedirle al juez que copie la etiqueta que tiene a la vista: así no
+      aparece ningún tipo de error, y la recalibración única del §4.7 no tiene de dónde salir.
+    - Cada ficha del pool se juzga, con N = 3, con un prompt que trae los otros casos, sin el suyo y sin las notas que lo citan.
+    - El prompt del gold lleva todos los casos.
+    - El análisis por componente sale de esa corrida, y se declara así.
+  - **Las notas del pool, en el prompt,** como el porqué de cada caso, salvo el texto sobre el gold.
+    - Cada nota entra tal cual, reescrita o no entra, según una hoja de la autora, sellada (`hoja_notas_pool.csv`).
+    - Las referencias a otros casos del pool se traducen por código al número de caso del prompt.
+    - Las notas solo las lee la autora.
+  - **El hueco de la regla del §4.2:** el texto firmado no cubre una salida sin ningún contradicho, sin marca de adjudicación y con el
+    sujeto o el predicado en `no_consta`.
+    - Esa arista no es correcta.
+    - En el acuerdo del §4.6, que es de dos clases, cuenta como incorrecta, igual que el «no» de la autora del §3.4 cuando el texto no
+      sostiene algo.
+    - El informe da cuántas incorrectas salen por esta vía y cuántas por un contradicho.
+  - **La regla de los Sujetos sin catálogo sale del prompt:** no se aplica a ninguna ficha (0 de 20 en el pool y 0 de 100 en el gold), y
+    el §4.3 no admite una regla sin su caso. Se declara con el conteo.
+  - **La remisión hacia atrás:** la regla queda, con tres casos resueltos por la autora (R1 a R3, fuera de las 120 del acta, en
+    `hoja_remision.csv`, sellada).
+  - **Los topes (§8):**
+    - el de V pasa de USD 35 a 50, declarado. El prompt v1 del juez tiene 40.406 tokens por caracteres, y el §8 suponía un prefijo de
+      3.000. Con la calibración fuera de muestra, los tres casos de la remisión y las notas, el peor caso de la etapa con una recalibración
+      da USD 46,84 (hoja de ruta de la mesa, §188);
+    - el gold corre con tope 16 y freno en 13, y la calibración con tope 8,5 y freno en 6,5.
+  - El texto firmado no cambia.

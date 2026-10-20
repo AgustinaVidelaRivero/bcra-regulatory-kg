@@ -1914,3 +1914,54 @@ Decisiones y acciones de la autora del 19/10/2026, recibidas a las 19:29:14 (hoj
   - U-BANCO-PARALELO (v3, con ese control) se despacha cuando termine el seguí de U-NAV-DESDE, nunca a la vez;
   - el mandato de la re-aplicación única (v2) se firma el martes.
 - Las secciones anteriores no se editan.
+
+## 56. El juez de precisión de V antes de su primera corrida, y los lotes de V (agregado del 19/10/2026)
+
+Decisiones y acciones de la autora del 19/10/2026, recibidas a las 22:28:02 y a las 22:53:30 (hoja de ruta de la mesa, §188 y §189),
+sobre el FRENO de U-TRIP-V-JUEZ (prompt v1 `314c62ac…`).
+
+- **El commit de la §55** corrió, con su push (`729dc565`).
+- **El juez de V, antes de cualquier corrida** (nota al pie del pre-registro de tripletas del 19/10/2026, en este commit):
+  - la calibración va fuera de muestra, con un caso afuera por vez. Cada ficha del pool se juzga, con N = 3, con un prompt que trae los
+    otros casos, sin el suyo y sin las notas que lo citan. El prompt del gold lleva todos, y el análisis por componente sale de esa
+    corrida;
+  - las notas del pool entran al prompt como el porqué de cada caso, según una hoja de la autora, sellada. Las filas 9, 17, 18 y 19, que
+    citan fichas del gold, no pueden entrar tal cual. Las referencias a otros casos del pool se traducen por código. Las notas solo las
+    lee la autora;
+  - el hueco de la regla del §4.2 (sin contradicho, sin marca y con el sujeto o el predicado en `no_consta`): la arista no es correcta, y
+    en el acuerdo del §4.6 cuenta como incorrecta. El informe separa las incorrectas por vía;
+  - la regla de los Sujetos sin catálogo sale del prompt (0 de 20 y 0 de 100), declarada con el conteo;
+  - los tres casos de la remisión (R1 a R3) entran, resueltos por la autora en una hoja con el formato y el sello del pool;
+  - el tope de V pasa de USD 35 a 50, declarado. A las 22:28:02 la autora lo había puesto en 45, y a las 22:53:30 lo subió a 50, porque
+    el peor caso de la mesa con una recalibración da 46,84 (§188);
+  - el gold va con tope 16 y freno en 13: el freno en 11 quedaba por debajo del escenario alto con notas (12,14). La calibración va con
+    lo que recalculó la mesa: tope 8,5 y freno en 6,5 (§188);
+  - los dos comandos pagos llevan el control de la extracción de la §55, con su prueba. El control de insumos compara el registro de
+    decisiones por el sha256 de su §52 y su §53, y no por el archivo entero, para que un commit nuevo no lo haga fallar.
+- **Los nueve lotes de V** van tres por día, del martes al jueves.
+- **Lo pago del juez** corre después de que termine T2 y de que la autora revise el FRENO del juez v1.1. El avance de T2 a las 20:21 (61 de
+  68, todos con rc 0) es el que informó la autora, NO VERIFICADO.
+
+## 57. La segunda etapa de U-NAV-DESDE, los índices de fragmentos, la entrega al repo y el grep con UTF-8 (agregado del 19/10/2026)
+
+Decisiones de la autora del 19/10/2026, recibidas a las 22:53:30 (hoja de ruta de la mesa, §189), sobre el FRENO de la segunda etapa de
+U-NAV-DESDE.
+
+- **Lo que controló la autora:**
+  - el manifiesto del paquete da 84 de 84;
+  - de las 277 llamadas de `buscar_puntos`, 210 dan igual byte a byte y 67 cambian solo en el pie; con el pie de N5 restituido, el
+    sha256 es el de antes;
+  - F1 da 2.885 diferencias contra N5-F, todas clasificadas, y 0 en «otras».
+- **Los manifiestos de los índices de fragmentos** llevan la hora y los tiempos de construcción, como el del índice por punto antes de la
+  corrección A.
+  - El brazo de fragmentos no se toca antes de N6, y queda declarado.
+  - En N6 y en B6.3, la procedencia de los índices de los dos brazos se controla por el sha256 de sus datos (el índice BM25 y la
+    matriz), que ya está en las configs.
+- **La entrega de U-NAV-DESDE al repo,** con N5 y N5-F, en un commit que prepara la mesa, después de la corrida de A2.2 y del sello de la
+  tanda final (§44). U-BANCO-PARALELO no se despacha hasta que la mesa diga si espera ese commit o necesita otra versión.
+- **El grep de convenciones corre con un locale UTF-8** (`LC_ALL=en_US.UTF-8`). Sin él, «reuni[oó]n» y «seg[uú]n» no encuentran las
+  formas con tilde.
+- **El commit de la §55** no cambia; **el de la §56**, que no había corrido, se rearma con el tope de V en USD 50 y el gold con tope 16 y
+  freno en 13.
+- El avance de T2 a las 22:50 (66 de 68, todos con rc 0) es el que informó la autora, NO VERIFICADO.
+- Las secciones anteriores no se editan.
