@@ -1965,3 +1965,104 @@ U-NAV-DESDE.
   freno en 13.
 - El avance de T2 a las 22:50 (66 de 68, todos con rc 0) es el que informó la autora, NO VERIFICADO.
 - Las secciones anteriores no se editan.
+
+## 58. El FRENO T2 de la tanda final, lo pago después de T2 y el bloque de la familia 6 (agregado del 20/10/2026)
+
+Decisiones y acciones de la autora del 20/10/2026, recibidas a las 08:08:06 (hoja de ruta de la mesa, §190).
+
+- **El commit de la §56 y la §57** corrió, con su push (`98edf948`).
+- **T2 de la tanda final terminó** el 20/10/2026 a las 00:11:16 (`data/experiment/tanda_final/t2/FRENO_T2.md`, `8b9e2041…`; paquete de la
+  ejecutora `revision_tanda_final_FRENO_T2/`):
+  - **dos lanzamientos:**
+    - el 1 (19/10, de las 00:08:43 a las 02:35:20, 146,6 minutos) cerró los 30 TOs del tramo 1 y paró con salida 11 por el control
+      entre tramos (§43);
+    - el 2 (del 19/10 a las 08:42:24 al 20/10 a las 00:11:16, 928,9 minutos), con `--autorizado-tramo-2`, volvió a pasar el control,
+      que dio FRENO otra vez con el mismo sha256, y terminó con salida 0;
+  - **los 98 TOs**, con rc 0 y el freno por modelo en OK: `claude-haiku-4-5-20251001` en E1 y `claude-sonnet-5` en E3;
+  - **4.951 unidades:**
+    - 4.870 aceptadas;
+    - 80 en la cola, 13 del tramo 1 y 67 del tramo 2;
+    - 1 error definitivo, `ri_transpa::Sbloque1::chapeau_seccion` (§43 y §44);
+    - 0 sin destino y 0 ids repetidos, con la cobertura completa y exacta de la E0 en los 98;
+  - **el costo:** USD 97,5983, contra un tope de 151,5835;
+  - **los dos `NO_ABRIR_`**, solo por su sha256, iguales a los del FRENO.
+  - **Lo controló la autora:** el manifiesto del paquete (34 de 34), el registro de avance, los `NO_ABRIR_` por su sha256 y el resumen,
+    que no desglosa E3.
+  - **Lo reprodujo la mesa** desde los archivos, sin gasto por documento ni nada de E3 (`decisiones_190_mesa/revision_T2/`, en su
+    paquete).
+- **Lo pago corre de a uno desde que terminó T2,** nunca al lado de otra corrida paga ni de una extracción.
+  - Va primero el juez de V, después de que la autora revise su FRENO v1.1.
+  - El orden del resto lo propone la mesa (PROPUESTA, `decisiones_190_mesa/calendario/`, en su paquete).
+- **La prueba del acumulado de las tandas 0 y 1 con el tramo 1** (§42) es la que corrió la mesa el 19/10/2026 (§43), y sigue valiendo:
+  - de los 516 archivos de las 30 carpetas del tramo 1, el más nuevo es de las 08:43:29 del 19/10, de la pasada del lanzamiento 2;
+  - la prueba los copió después, y ninguno cambió desde entonces.
+- **El bloque de la familia 6** (`data/experiment/banco_mcp/agentes/bloque_tools_kg.txt`, `cccfcefd…`, que entra con la entrega de
+  U-NAV-DESDE), clasificado por código y sin mostrar su texto (`decisiones_190_mesa/bloque_familia6/`, en su paquete):
+  - **las partes fijas** (las tres líneas de antes, las instrucciones de las herramientas y la introducción de los ejemplos) son, byte a
+    byte, las del script que lo armó;
+  - **los tres ejemplos** traen la pregunta, la respuesta y las salidas de las herramientas tal cual:
+    - texto de la norma: el texto, los títulos y los comienzos de los puntos de la E0;
+    - salida de la extracción: los nodos, con su label, su tramo y sus umbrales; las relaciones, con sus marcas; y las remisiones;
+  - **la salida de la extracción toca 15 unidades:**
+    - 8 de la tanda 0, todas de `ext`;
+    - 7 de la tanda 1: `ayccef::2.8.1`, `ayccef::2.8.2`, `ayccef::2.9.3.8`, `ayccef::2.9.4.1`, `opefci::7.1`, `opefci::7.3.1.1` y
+      `opefci::7.3.1.2`;
+  - **ninguna está en la muestra de U-MED-VERIF,** recalculada en memoria con 30 unidades, como en la §44.
+    - Los nodos mostrados tienen además procedencias en otras unidades, y 8 de ellas están en la muestra.
+    - Las 8 vienen de un solo Sujeto compartido, que el bloque muestra en otro punto, sin umbrales y sin relaciones ni remisiones de esas
+      unidades.
+- **La unidad `ri_transpa::Sbloque1::chapeau_seccion`** sigue la §44:
+  - falta en el grafo evaluado y se declara en T5;
+  - se extrae después del sello, con el arreglo de la BKL-0050, para la versión corregida;
+  - su mandato aparte lo prepara la mesa (BORRADOR).
+- Las secciones anteriores no se editan.
+
+## 59. El intervalo de las tripletas, lo que va al pre-registro de B6.3, la cobertura de V antes de su firma y P16 del pool (agregado del 20/10/2026)
+
+Decisiones de la autora del 20/10/2026, recibidas a las 08:36:59, a las 08:43:12 y a las 08:51:12 (hoja de ruta de la mesa, §191, §192 y
+§193).
+
+- **Lo que va a tripletas y al pre-registro de B6.3** (08:36:59):
+  1. **el intervalo de la precisión ponderada** de las tripletas pasa de Wald a Wilson con el n efectivo de Kish, como las tasas ponderadas
+     de la tanda 1, en V y en T, incluida la cifra sobre las esenciales. Va en la enmienda 3 al pre-registro de tripletas (§3.6), que la
+     autora firma antes de que se calcule cualquier cifra de V (PENDIENTE; la versión para firmar está en el paquete de la mesa, §191);
+  2. **la pregunta del préstamo** se corre una sola vez con el agente final sobre el grafo evaluado, después de sellar el pre-registro de
+     B6.3. No entra en ninguna cifra: sirve para mostrar en la tesis su traza, sus criterios y la atribución. Va al pre-registro de B6.3
+     como corrida ilustrativa, y no puede ser una de las preguntas de B6.3;
+  3. **de las fallas de la última clase de la atribución,** la autora lee caso por caso hasta 10, sorteadas con una semilla fijada en el
+     pre-registro de B6.3;
+  4. **el tope de llamadas** es el mismo para los dos sistemas y sale de los datos de desarrollo (N7). Sube si en N7 más del 5 % de las
+     sesiones de cualquiera de los dos sistemas llega al tope, en lugar del 10 % de la §50, punto 5. B6.3 informa, por sistema, cuántas
+     respuestas llegaron al tope;
+  5. **los 600 fragmentos de la cobertura de T** salen solo de documentos del grafo evaluado y de unidades que están en él: ni de documentos
+     que no entraron, ni de unidades en la cola, ni de la unidad con error. Si no, faltan por construcción y bajan la cobertura sin decir
+     nada del grafo. Va al pre-registro de B6.3.
+  - Las preguntas y los pedidos de ese mensaje los contesta la mesa (§191, en su paquete). Lo que pide decisión queda PENDIENTE.
+- **La cobertura de V se hace antes de la firma del pre-registro de B6.3** (08:43:12), para cumplir el §9 del pre-registro de tripletas sin
+  desvío. Reemplaza lo de la §52 sobre la cobertura de V, que la movía a después de esa firma, y el punto 6 del mensaje de las 08:36:59.
+  - Se mide sobre el grafo de V (`66e745f5…`), así que no depende del sello de la tanda final.
+  - Su unidad, U-TRIP-V-COB, no tenía mandato ni código. Se despacha con prioridad sobre todo lo que no esté en el camino del sello.
+  - **El orden:**
+    - primero lo que no gasta: el sorteo de los 300 fragmentos y de los 20 del pool de presencia (§5), sellado antes de leer; los
+      subgrafos de presencia; el código y la corrida en seco;
+    - después, el piloto pago de 10 que pide el §8, para medir los tokens reales y rehacer el costo;
+    - después, la extracción abierta y el puntaje;
+    - al final, la calibración y la corrida del juez de presencia.
+  - **Lo pago** va en secuencia con los pasos pagos del juez de V, nunca al lado de otra corrida paga, con el control de la extracción de
+    la §55.
+  - **La red de seguridad:** si al llegar a la firma la cobertura de V no está cerrada, el pre-registro de B6.3 lleva los dos casos escritos
+    de antemano (el juez de presencia pasa en V o no pasa), y el desvío del §9 se declara.
+- **P16 del pool** (08:51:12; nota al pie del pre-registro de tripletas del 20/10/2026, en este commit):
+  - la hoja del pool sellada no se toca, ni su sha256;
+  - P16 lleva una corrección registrada: su `comp_modalidad` pasa de «sostenido» a «contradicho», porque la unidad impone un deber de
+    reintegro y no veda el cobro, y la tripleta afirma una prohibición que el texto no dice. Con la corrección, su veredicto derivado pasa
+    de correcta a incorrecta, y la importancia no cambia. Se justifica con el texto de la norma y con la regla R25 del prefijo, no con una
+    etiqueta esperada (§4.7). Entra al juez por una hoja sellada de la autora;
+  - P16 no entra como caso resuelto en el prompt del juez, y su nota va «no entra». En la calibración con un caso afuera por vez se juzga
+    igual y se compara contra la marca corregida;
+  - la convención de la autora para `requiere` queda escrita en la nota. Si entra al prompt como definición lo decide la autora
+    (PENDIENTE), con lo que dice el prefijo al lado;
+  - ninguna otra marca del pool cambia;
+  - la lectura de R25 es del 20/10/2026, posterior a los sellos del piloto y del pool. Cómo se declara para el piloto lo decide la autora
+    (PENDIENTE).
+- Las secciones anteriores no se editan.

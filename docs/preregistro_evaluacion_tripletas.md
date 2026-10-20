@@ -350,3 +350,34 @@ topes de USD 35 (V) y USD 55 (T).
       da USD 46,84 (hoja de ruta de la mesa, §188);
     - el gold corre con tope 16 y freno en 13, y la calibración con tope 8,5 y freno en 6,5.
   - El texto firmado no cambia.
+- **20/10/2026 — P16 del pool, la definición de `requiere` y la lectura de R25, antes de la primera corrida del juez de V** (decisiones de
+  la autora recibidas a las 08:51:12; registro de decisiones del 15/10/2026, §59). Todo esto se decide antes de cualquier corrida del
+  juez:
+  - **La hoja del pool sellada no se toca, ni su sha256** (`097998e8…`).
+  - **P16 lleva una corrección registrada:** su `comp_modalidad` pasa de «sostenido» a «contradicho».
+    - El motivo, de la autora: la unidad `pro::2.3.5.1` impone un deber de reintegro y no veda el cobro, y la tripleta afirma una
+      prohibición que el texto no dice.
+    - Se justifica con el texto de la norma y con la definición del prefijo con que se extrajo el grafo de V (`PREFIJO_SISTEMA_R2B`,
+      `ccffa4e3…`), no con una etiqueta esperada (§4.7). Es su regla de `regula`, `prohibe` y `limita` (R25), la sección 2 del prompt del
+      juez (`6dddd215…`), tal cual: «Si `Restriccion.tipo = "prohibicion"` → usá `prohibe`. Patrón: "no podrá", "se prohíbe", "queda
+      prohibido", sin una cuantía que fije hasta dónde.» y «Si dudás entre prohibición y límite, decidí primero el tipo (¿el texto veda el
+      acto o lo acota?) y usá el predicado de ese tipo.»
+    - Con la corrección, el veredicto que computa el código para P16 pasa de correcta a incorrecta. La importancia no cambia (útil).
+    - Entra al juez por una hoja de la autora, sellada (`hoja_correccion_pool.csv`), que el código aplica en memoria. Ninguna otra marca
+      del pool cambia.
+  - **P16 no entra como caso resuelto en el prompt del juez,** y su nota va «no entra».
+    - El §4.3 pide entre 10 y 20 casos del pool: quedan 19. Los tres de la remisión (R1 a R3) son aristas nuevas fuera de la muestra, que
+      el mismo §4.3 admite.
+    - En la calibración con un caso afuera por vez, P16 se juzga como los demás y se compara contra la marca corregida.
+    - Con P16 afuera, el prompt no trae ningún caso resuelto de `prohibe`: R25 entra como sección del prefijo, no como una regla nueva.
+  - **La convención de la autora para `requiere`,** tal cual: «requiere une una operación con la obligación que la norma le asocia, sea un
+    requisito para realizarla o un deber que nace de realizarla.»
+    - El prefijo define `requiere` (sección 1 del prompt del juez, `286b60f2…`, línea 24): «hacer el acto hace nacer el deber; el deber es
+      consecuencia del acto». Al requisito previo lo llama `condiciona` (línea 23).
+    - Si la convención entra al prompt como definición lo decide la autora (PENDIENTE). Si entra, sus casos resueltos salen del pool:
+      P04, P11 y P12 son `requiere` (el acta del sorteo, `5d6a237e…`).
+  - **La lectura de R25 es posterior a los sellos del piloto y del pool.** La autora leyó las definiciones del prefijo el 20/10/2026,
+    después del sello del piloto (19/10/2026, 17:13:32) y del de la hoja del pool (19:21:53).
+    - Las 10 fichas del piloto son 10 de las 100 del gold (el acta, `sorteo.lotes`), y sus marcas quedan como se sellaron.
+    - Cómo se declara para el piloto lo decide la autora (PENDIENTE; propuesta de la mesa en su hoja de ruta, §193).
+  - El texto firmado no cambia.
