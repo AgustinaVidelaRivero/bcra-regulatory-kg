@@ -2909,3 +2909,58 @@ Decisiones y hechos de la autora del 21/10/2026, recibidos a las 07:39:46 (hoja 
     vuelve a quedar antes del corte en el lento. Con 10 h el jueves 22 y otras 10 el viernes 23 entra también la re-aplicación, y la
     cobertura de V pasa del miércoles 28.
 - Las secciones anteriores no se editan.
+
+## 82. La muestra de T, N6 primero, el entorno limpio, la D-6 y la anotación, el harness, los tokens, B6.3 y el costo por etapa (21/10/2026)
+
+Decisiones y hechos de la autora del 21/10/2026, recibidos a las 10:43:18, 10:43:56, 10:47:55, 11:01:44 y 11:05:40 (hoja de ruta de la
+mesa, §216 a §220).
+
+- **La muestra humana de T, si el juez no escala: 100,** cerrado antes del análisis del gold, con la regla de la §81.
+- **N6 primero:** el lanzamiento de N6 toma las horas de la autora antes que el censo y el catálogo. Su comando lo arma la ejecutora de
+  U-NAV en el paso 0 de N6, después del 142 y del sello de N4.
+- **El 150** corrió con su push (`3fd0ab58`). Su archivo da el mismo sha256 que el del paquete de la mesa.
+- **El segundo tramo de T4:** su «seguí» está listo. Espera la lectura de la autora sellada, el control de la mesa y el commit del
+  primer tramo con esa lectura (§73).
+- **La etapa b de U-D6-TOPE-MCP, revisada:**
+  - 94 de 94 archivos;
+  - la mesa reprodujo en un arenero el selftest (149 de 149) y la cota del costo: USD 0,4274, y 0,5272 con el máximo de cada rango;
+  - en el binario sellado, con la anotación la tool no pasa por el tope en tokens, y en `-p` el presupuesto por mensaje no actúa (lo
+    mide C').
+  - Las tres sesiones van desde la Terminal, después del entorno limpio y del gold de V, y antes del humo de A2.1.
+- **U-ANOT-MCP, revisada:** 227 de 227 archivos. En las tres configs, el arreglo de tools de la petición al modelo es igual byte a byte
+  con y sin la anotación: la primera condición de la §79 se cumple. Su commit, el 152, lleva el comentario de la constante corregido por
+  la mesa (el CLI no le aplica a la tool anotada el tope en tokens), sin cambiar el código.
+- **Las corridas pagas con agentes** (decisión de la autora), tal cual: «las corridas pagas con agentes (las tres sesiones de la D-6,
+  A2.1, A2.2, N6 y B6.3) se lanzan desde la Terminal, nunca desde una sesión de Claude, y el lanzador arranca cada agente con el mismo
+  entorno limpio en los dos brazos, sin las variables CLAUDE_*, MCP_* ni ANTHROPIC_* de una sesión de escritorio (salvo la clave), y lo
+  deja registrado».
+  - Hoy el lanzador del banco hereda el entorno entero (`agentes/lanzar_agente.py:112-141`).
+  - El cambio es U-ENTORNO-LIMPIO (USD 0): la regla en `env_sesion`, con el registro de los nombres quitados y heredados. Después va la
+    etapa c de la D-6.
+- **Las banderas remotas del CLI:** en las 16 configuraciones que escribió para U-ANOT-MCP, `tengu_hawthorn_steeple` es falsa y
+  `tengu_velvet_ibis` está vacía. Las trajo con una clave inválida, así que para las sesiones reales queda NO VERIFICADO: A' y C' lo
+  miden, y si dan otra cosa se avisa antes de A2.1.
+- **El harness, confirmado por el mentor del proyecto (21/10/2026):** `claude -p` con todas las herramientas propias deshabilitadas y solo
+  el servidor MCP de cada brazo. La especificación de uso, desde la documentación oficial, la arma U-ESPEC-HARNESS (USD 0).
+- **Los tokens en la tesis** (decisión de la autora): el costo se reporta en tokens, por caso, con el tokenizador de Anthropic sobre los
+  registros, y aproximado desde los caracteres si falta el dato. El lanzador ya guarda el uso por caso (el `modelUsage` del resultado), el
+  de cada llamada (el del stream, parcial), el stream entero y la copia de la sesión; para A2.2, N6 y B6.3 no hay que cambiarlo.
+- **B6.3** (PROPUESTA de la mesa, PENDIENTE de la autora): la generación sigue ciega al grafo, como dice el mandato. Se suman:
+  - la relevancia para un puesto o una decisión, juzgada desde el texto por una instancia ciega;
+  - los nodos y las distancias de cada pregunta, calculados después de las corridas y solo para el análisis;
+  - la validación de 20 preguntas por un experto, declarada.
+  - Los pedazos siguen la estructura de la E0: elegirlos por la del grafo le daría ventaja.
+- **El costo por etapa del pipeline,** para el capítulo 4 (decisión de la autora sobre las fuentes):
+  - el orden: el uso que devolvió la API; si falta, el conteo del texto guardado con el contador de Anthropic; si tampoco está el texto,
+    la estimación desde los caracteres, con la razón medida en esa etapa;
+  - la caché va aparte (escritura y lectura), y cada número declara su nivel;
+  - E3 va agregado por etapa, sin separar los reintentos.
+  - **Hoy:** en las corridas r2b de las tres tandas, el uso de la API está completo en E1 y en E3, y los tiempos de E1 y E3 salen de los
+    checkpoints del runner. E0, el validador y el ensamblado no tienen duraciones registradas y se re-miden en una copia. Las T5 de las
+    tandas 0 y 1 traen solo USD por etapa. El script lo arma U-COSTO-ETAPAS (USD 0), y la T5 de la tanda final lleva su tabla.
+- **El calendario v12h** (`decisiones_216_mesa/calendario/` del paquete de la mesa, desde las 12:00, con duraciones NO VERIFICADAS):
+  - el sello de la tanda final, el 21/10 a las 19:18 en el central (17:29 en el rápido y 23:33 en el lento), con el control y el commit
+    de la lectura de T4 que el v12g no contaba;
+  - en el central, todo a tiempo;
+  - en el lento quedan fuera la re-aplicación, la cobertura de V, la etapa T y la firma de B6.3.
+- Las secciones anteriores no se editan.
