@@ -2991,3 +2991,68 @@ Decisiones y hechos de la autora del 21/10/2026, recibidos a las 11:27:39 y a la
   mesa.
 - **U-ENTORNO-LIMPIO,** pegada: su carpeta se creó a las 11:25:51, después del 152. Mientras corre, su foto del repo no admite commits.
 - Las secciones anteriores no se editan.
+
+## 84. HOME y el aislamiento de las sesiones del banco, el lanzador en el registro, la v1.4c del juez y el borde de (ii) (21/10/2026)
+
+Decisiones y hechos de la autora del 21/10/2026, recibidos a las 15:24:09, a las 15:36:14 y a las 16:04:46 (hoja de ruta de la mesa, §224
+a §226).
+
+- **El 153 y el TF4a** corrieron con su push (`ded98223` y `abdc0998`). Sus archivos dan los mismos sha256 que los del paquete de la
+  mesa. El TF4a trae la lectura de T4 de la autora, sellada (`tanda_final/t4/lectura_autora/sello_lectura_T4.txt`) y controlada por la
+  mesa: 11 de 11 (`tanda_final/t4/control_lectura_mesa/`).
+- **U-ENTORNO-LIMPIO, sus dos etapas revisadas:** 203 y 449 archivos, y el patch de la etapa b da el lanzador `09412fa8…`.
+  - La lista medida es `("PATH",)`: sin `PATH` no se encuentra el CLI, y sin cada una de las demás de la candidata el servidor sigue
+    `connected` con sus tools en los tres caminos.
+  - **`DISABLE_AUTOUPDATER=1`** (agregado de la autora al «seguí» de la etapa b, 12:14:37): valor propio del lanzador, en los dos brazos
+    y en las dos vías, registrado como las demás. Así el CLI no se actualiza en medio de una corrida paga.
+- **`HOME` vuelve a la lista** (decisión de la autora): `ENTORNO_PERMITIDAS = ("PATH", "HOME")`.
+  - El modo real copia la sesión desde `~/.claude/projects/` con el `HOME` del lanzador; sin `HOME` en la sesión, esa copia queda sin
+    verificar en una corrida paga.
+  - `HOME` es igual en los dos brazos, y la petición al modelo no cambia con él: las capturas de U-ANOT-MCP lo tenían y dan el mismo
+    cuerpo.
+  - `TMPDIR`, `USER`, `LOGNAME`, `SHELL`, `LANG` y las `LC_*` siguen afuera.
+  - Lo aplica la etapa b2 (USD 0), pegada por la autora. El commit de la unidad lleva la versión final, la de su etapa c.
+- **Lo demás de la etapa b queda como está** (decisión de la autora):
+  - la vía bedrock, con los siete nombres de `ENTORNO_AWS` declarados como elegidos por la unidad, y sin ejercitar;
+  - el diff de un bloque, con el lazo «limpiar vías» de HEAD que ya no cambia el entorno de la sesión;
+  - las credenciales secretas de AWS, registradas por presencia como la clave.
+- **La etapa c de la D-6** (decisión de la autora):
+  - `MAX_MCP_OUTPUT_TOKENS` pasa del padre, así que el 70.000 sale de la terminal: lo ponen los comandos de las sesiones pagas, y el
+    control de cada sesión mira que `entorno_de_la_sesion` lo traiga;
+  - las sesiones pagas controlan lo que la etapa b no pudo medir: que se copie la transcripción de cada sesión, que en la sesión sin
+    anotación se copien los resultados guardados en disco, y que los acentos de los resultados de las tools lleguen bien;
+  - corre con el lanzador de la etapa c de U-ENTORNO-LIMPIO, así sus sesiones pagas prueban la condición del banco.
+- **Lo que lee una sesión paga bajo `--bare`** (lectura de la mesa en el binario sellado, `decisiones_224_mesa/cli_bare/` del paquete de
+  la mesa):
+  - `--bare` no cambia qué archivos de configuración se leen: sin `CLAUDE_CONFIG_DIR`, el CLI lee `~/.claude/settings.json`, el de
+    `<cwd>/.claude/`, el local de la raíz git del cwd y el administrado;
+  - en `-p` copia a su entorno el bloque `env` de cada uno y el de `~/.claude.json`, y el servidor MCP lo hereda. `entorno_de_la_sesion`
+    registra lo que pasa el lanzador, no lo que termina usando el CLI;
+  - con el cwd dentro de un repo de git, el contexto de sistema trae el estado de git: la rama, `git status --short`, los cinco últimos
+    commits y el nombre de git del usuario. El cwd de la D-6 está fuera de git; los del banco están dentro del repo. Que vaya en la
+    petición al modelo es NO VERIFICADO.
+- **Prevenir** (decisión de la autora). Lo hace una etapa c de U-ENTORNO-LIMPIO (USD 0), después del FRENO de la b2:
+  1. cada sesión del banco corre con una carpeta de configuración nueva y vacía (`CLAUDE_CONFIG_DIR`), fuera del repo. El lanzador copia
+     la transcripción y los resultados guardados en disco desde esa carpeta;
+  2. el cwd de cada sesión va fuera del repo y fuera de cualquier repo de git. Su ruta tiene la misma forma en los dos brazos y no nombra
+     el brazo;
+  3. una captura a USD 0 con el lanzador nuevo, en los tres caminos, muestra que la petición al modelo no trae estado de git ni el nombre
+     del brazo, y que fuera de eso es igual a la de U-ANOT-MCP;
+  4. las sesiones que ya corrieron en el banco con el cwd dentro del repo quedan declaradas así. Son las 24 sesiones pagas de U-A2.0,
+     fase B: 12 en `smoke/resultados/faseB/` y 12 en `smoke/resultados/faseB_corrida2/`, cada corrida con 6 en `smoke/cwd_kg` y 6 en
+     `smoke/cwd_vector`. Que su contexto haya traído el estado de git es NO VERIFICADO;
+  5. B6.3 corre entera con la condición nueva.
+- **Qué lanzador corrió cada sesión** (decisión de la autora): la ruta y el sha256 de cada archivo del lanzador que corrió van en el
+  comando y en la meta de cada sesión, aparte de `sha_identidad_pipeline`, que no cambia. Va en la misma etapa c.
+- **La v1.4c del juez, aceptada** (decisión de la autora), con las dos cifras de importancia al final de la línea «decisión del §4.6».
+  - La mesa revisó su FRENO: 10 de 10 archivos; selftest 198 de 198; `corridas/` sin cambios. Al revisarlo, antes de la v1.4d, el
+    código de la carpeta viva daba los dos sha256 del paquete.
+- **El borde de (ii)** (decisión de la autora): una diferencia de exactamente 0,05 pasa, como dice el texto firmado («difieren en 0,05 o
+  menos»).
+  - Hoy no pasa: `abs(0.875 - 0.925)` da `0.050000000000000044` en punto flotante, y (ii) cruda da «no pasa».
+  - Las dos diferencias, la cruda y la ponderada, se redondean a 10 decimales antes de compararlas con 0,05. (i), (iii) y la importancia
+    quedan como están.
+  - Lo aplica la v1.4d (USD 0), pegada por la autora, antes del análisis del gold.
+- **La importancia, en proporción** (decisión de la autora): se mide sobre los pares con una importancia válida del juez, igual que (i)
+  se mide sobre las fichas que el juez decide.
+- Las secciones anteriores no se editan.
