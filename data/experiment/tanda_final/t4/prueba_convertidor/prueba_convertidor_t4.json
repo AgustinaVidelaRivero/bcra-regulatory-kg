@@ -1,0 +1,176 @@
+{
+ "repo_lectura_autora_antes": {
+  "LEEME_lectura_T4.md": "9e224f09213b0ca821bcbbf0af0c923c09251cb5bfd1f81d5b716697ea627525",
+  "aceptadas_items.csv": "2811a5c78c6a06dfd4e90727e1331ebe9e2b66ce4b90c2dc68eac926d94679f5",
+  "aceptadas_no_items.csv": "3ca4affa48b172dc0ad0dfa91201923184c708c9cfabb2797381515cd0844b69",
+  "cola.csv": "cf9c8d72e0f740eede87427225b318ad1ff636c9f85e18b7adebab42d8ec7954",
+  "convertir_lectura_T4.py": "8be2e02d13f865c72ec8a9b38b297a81f4b81ebf54f74dce7458cb002db3a9c7",
+  "observacion_12.csv": "86186ed69c51fe768fd8881f241c8b5dfeb74598416712f22130e7ef18cd568f",
+  "vigilancia_1.csv": "5884316305ba70f4298cca7aed1ec9be9456e00cd93db5286164a50e9aa029b3",
+  "vigilancia_2.csv": "e41e1db8c64f4802c996d848ea5e827cf271d6fddbeafad91907558e1429d156",
+  "vigilancia_3.csv": "13e70d15a0a0698f24bce68b9f88ef3c0671f202477054fa76a66d9ac5a2b917",
+  "vigilancia_7.csv": "1ecfa46039573186d74a121d8d11399b3e134589257feb16310720e53d4dbd4b"
+ },
+ "repo_lectura_autora_despues": {
+  "LEEME_lectura_T4.md": "9e224f09213b0ca821bcbbf0af0c923c09251cb5bfd1f81d5b716697ea627525",
+  "aceptadas_items.csv": "2811a5c78c6a06dfd4e90727e1331ebe9e2b66ce4b90c2dc68eac926d94679f5",
+  "aceptadas_no_items.csv": "3ca4affa48b172dc0ad0dfa91201923184c708c9cfabb2797381515cd0844b69",
+  "cola.csv": "cf9c8d72e0f740eede87427225b318ad1ff636c9f85e18b7adebab42d8ec7954",
+  "convertir_lectura_T4.py": "8be2e02d13f865c72ec8a9b38b297a81f4b81ebf54f74dce7458cb002db3a9c7",
+  "observacion_12.csv": "86186ed69c51fe768fd8881f241c8b5dfeb74598416712f22130e7ef18cd568f",
+  "vigilancia_1.csv": "5884316305ba70f4298cca7aed1ec9be9456e00cd93db5286164a50e9aa029b3",
+  "vigilancia_2.csv": "e41e1db8c64f4802c996d848ea5e827cf271d6fddbeafad91907558e1429d156",
+  "vigilancia_3.csv": "13e70d15a0a0698f24bce68b9f88ef3c0671f202477054fa76a66d9ac5a2b917",
+  "vigilancia_7.csv": "1ecfa46039573186d74a121d8d11399b3e134589257feb16310720e53d4dbd4b"
+ },
+ "repo_sin_cambios": true,
+ "copia_igual_al_repo_antes_de_probar": true,
+ "enlaces_en_la_copia": [],
+ "casos": [
+  {
+   "caso": "1. válida (cola, BOM, «;», 3 cambios con nota)",
+   "rc": 0,
+   "espera_rc": 0,
+   "espera_texto": "OK: cola_marcada.csv",
+   "salida": [
+    "OK: cola_marcada.csv, 30 filas, separador de la exportación ';', sha256 6b82b7d1441cfb48c51257950c8ef2675766c3ea2b170e05bf925ba966100d19",
+    "veredictos: {'con error': 6, 'dudosa': 5, 'sin error': 19}",
+    "cambian la propuesta: 3 (ri_dsf::S1, ri_dsf::S8::chapeau_seccion, seggar::3.3.2)"
+   ],
+   "ok": true,
+   "marcada_sha256": "6b82b7d1441cfb48c51257950c8ef2675766c3ea2b170e05bf925ba966100d19",
+   "marcada_columnas_1_a_5_iguales_a_la_planilla": true,
+   "marcada_veredictos": [
+    "con error",
+    "dudosa",
+    "sin error"
+   ],
+   "marcada_cambian": 3
+  },
+  {
+   "caso": "2. otra vez la misma: no pisa la marcada",
+   "rc": 1,
+   "espera_rc": 1,
+   "espera_texto": "ya existe: no la piso",
+   "salida": [
+    "FRENO: cola_marcada.csv ya existe: no la piso. Si es de una corrida vieja, renombrala"
+   ],
+   "ok": true,
+   "marcada_sin_cambios": true
+  },
+  {
+   "caso": "3. válida (aceptadas_items, «,», CRLF y fila vacía al final)",
+   "rc": 0,
+   "espera_rc": 0,
+   "espera_texto": "saqué una fila vacía al final",
+   "salida": [
+    "OK: aceptadas_items_marcada.csv, 30 filas, separador de la exportación ',', sha256 cc56482555d9b681a3956d7d26efaf61d6a19199612d108039bfcd6c7c575d12",
+    "veredictos: {'sin error': 26, 'con error': 4}",
+    "cambian la propuesta: 0",
+    "arreglos de forma (1):",
+    "  - saqué una fila vacía al final"
+   ],
+   "ok": true
+  },
+  {
+   "caso": "4. respuesta mal escrita, vacía y cambio sin nota",
+   "rc": 1,
+   "espera_rc": 1,
+   "espera_texto": "3 PROBLEMA(S)",
+   "salida": [
+    "3 PROBLEMA(S) — no escribí nada. Corregilos en Numbers, exportá de nuevo y volvé a correr:",
+    "  - fila 2 (ri_ii_31_12_19::2.18): veredicto_autora 'vaciamento' no es una de ['vaciamiento', 'no vaciamiento', 'no decidible']",
+    "  - fila 3 (ri_iepsp::A::Sbloque1::chapeau_seccion): veredicto_autora vacío",
+    "  - fila 4 (ri_ot::3.10): el veredicto cambia la propuesta ('no vaciamiento' → 'vaciamiento') y falta la razón en nota_autora"
+   ],
+   "ok": true
+  },
+  {
+   "caso": "5. dos filas en otro orden",
+   "rc": 1,
+   "espera_rc": 1,
+   "espera_texto": "no son los de la planilla",
+   "salida": [
+    "2 PROBLEMA(S) — no escribí nada. Corregilos en Numbers, exportá de nuevo y volvé a correr:",
+    "  - fila 2: id/celda de la exportación ('Condicion_operaciones_inconsistentes_con_practicas_habituales__supuesto_que_activa_el_repo_896e05', 'RI:sin_raiz') no son los de la planilla ('Condicion_entidad_cambiaria_posee_sucursales__cuando_la_entidad_cambiaria_posea_sucursales_5763b9', 'RI:sin_raiz')",
+    "  - fila 3: id/celda de la exportación ('Condicion_entidad_cambiaria_posee_sucursales__cuando_la_entidad_cambiaria_posea_sucursales_5763b9', 'RI:sin_raiz') no son los de la planilla ('Condicion_operaciones_inconsistentes_con_practicas_habituales__supuesto_que_activa_el_repo_896e05', 'RI:sin_raiz')"
+   ],
+   "ok": true
+  },
+  {
+   "caso": "6. columna de más con texto",
+   "rc": 1,
+   "espera_rc": 1,
+   "espera_texto": "columnas de más",
+   "salida": [
+    "FRENO: la exportación tiene columnas de más: ['extra']"
+   ],
+   "ok": true
+  },
+  {
+   "caso": "7. una fila de menos",
+   "rc": 1,
+   "espera_rc": 1,
+   "espera_texto": "filas de datos",
+   "salida": [
+    "FRENO: la exportación tiene 5 filas de datos y la planilla 6"
+   ],
+   "ok": true
+  },
+  {
+   "caso": "8a. (12): «incorrecta» sin capa",
+   "rc": 1,
+   "espera_rc": 1,
+   "espera_texto": "no es una de",
+   "salida": [
+    "1 PROBLEMA(S) — no escribí nada. Corregilos en Numbers, exportá de nuevo y volvé a correr:",
+    "  - fila 2 (Definicion_tercera_semana_estadistica__del_16_al_23_inclusive__ri_ot_sbloque1_9b288d | establecida_en | TextoOrdenado_ri_ot_pdf): veredicto_autora 'incorrecta' no es una de ['correcta', 'no decidible', 'incorrecta (E0)', 'incorrecta (E1-prompt)', 'incorrecta (E1-validador)', 'incorrecta (catálogo)', 'incorrecta (E2)', 'incorrecta (E3)', 'incorrecta (ensamblado)']"
+   ],
+   "ok": true
+  },
+  {
+   "caso": "8b. (12): «incorrecta (E1-prompt)» con nota",
+   "rc": 0,
+   "espera_rc": 0,
+   "espera_texto": "OK: observacion_12_marcada.csv",
+   "salida": [
+    "OK: observacion_12_marcada.csv, 30 filas, separador de la exportación ';', sha256 c40438b2338470f97a0ca783006fd4a6849902db71f4402727b56e9e5c7396d8",
+    "veredictos: {'incorrecta (E1-prompt)': 1, 'correcta': 28, 'incorrecta (catálogo)': 1}",
+    "cambian la propuesta: 1 (Definicion_tercera_semana_estadistica__del_16_al_23_inclusive__ri_ot_sbloque1_9b288d | establecida_en | TextoOrdenado_ri_ot_pdf)"
+   ],
+   "ok": true
+  },
+  {
+   "caso": "9. muestra que no existe",
+   "rc": 1,
+   "espera_rc": 1,
+   "espera_texto": "no es una de",
+   "salida": [
+    "FRENO: la muestra 'aceptadas' no es una de ['cola', 'aceptadas_items', 'aceptadas_no_items', 'vigilancia_2', 'vigilancia_7', 'vigilancia_1', 'vigilancia_3', 'observacion_12']"
+   ],
+   "ok": true
+  },
+  {
+   "caso": "10. la exportación es la planilla",
+   "rc": 1,
+   "espera_rc": 1,
+   "espera_texto": "no puede ser la planilla",
+   "salida": [
+    "FRENO: la exportación no puede ser la planilla ni la marcada"
+   ],
+   "ok": true
+  },
+  {
+   "caso": "11. planilla alterada (sha256 distinto)",
+   "rc": 1,
+   "espera_rc": 1,
+   "espera_texto": "sha256 distinto",
+   "salida": [
+    "FRENO: aceptadas_no_items.csv no es la del material de T4 (sha256 distinto): no la uses"
+   ],
+   "ok": true
+  }
+ ],
+ "todos_ok": true,
+ "python3": "Python 3.12.13"
+}

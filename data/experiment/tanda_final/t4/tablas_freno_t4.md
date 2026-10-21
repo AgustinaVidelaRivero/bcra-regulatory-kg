@@ -1,0 +1,62 @@
+#### Tabla 1. Las propuestas, por muestra y por respuesta (`lectura_asistida/lectura_asistida_t4_tramo1.json`; modelo Claude Opus 5.5, `claude-opus-5-5`; de 16:40:09 a 16:59:28 del 2026-10-20)
+
+| muestra | fichas | propuestas por respuesta | suma |
+|---|---:|---|---:|
+| cola | 30 | sin error 20; con error 5; dudosa 5 | 30 |
+| aceptadas_items | 30 | sin error 26; con error 4; dudosa 0 | 30 |
+| aceptadas_no_items | 30 | sin error 25; con error 5; dudosa 0 | 30 |
+| vigilancia_2 | 30 | vaciamiento 5; no vaciamiento 25; no decidible 0 | 30 |
+| vigilancia_7 | 6 | con apoyo 4; sin apoyo 2; no decidible 0 | 6 |
+| vigilancia_1 | 30 | sí 6; no 24; no decidible 0 | 30 |
+| vigilancia_3 | 30 | duplicación 3; distintos 27 | 30 |
+| observacion_12 | 30 | correcta 29; no decidible 0; incorrecta (catálogo) 1 | 30 |
+| total | 216 | — | 216 |
+
+#### Tabla 2. Las reglas de la propuesta usadas, por muestra (`reglas_usadas`; definidas en `criterios_de_la_propuesta`)
+
+| muestra | reglas |
+|---|---|
+| cola | `U-sostenida` 20; `U-tipo` 3; `U-fuera-del-texto` 3; `U-no-sostenida` 2; `U-dudosa` 2 |
+| aceptadas_items | `U-sostenida` 26; `U-no-sostenida` 4 |
+| aceptadas_no_items | `U-sostenida` 25; `U-tipo` 3; `U-no-sostenida` 2 |
+| vigilancia_2 | `V2-sin-contenido` 14; `V2-marco-de-lista` 10; `V2-con-contenido` 3; `V2-dato-a-informar` 2; `V2-cubierto` 1 |
+| vigilancia_7 | `V7-ejecutor-alcanzado` 4; `V7-otro-ejecutor` 2 |
+| vigilancia_1 | `V1-condicion` 24; `V1-deber` 6 |
+| vigilancia_3 | `V3-par-deber-acto` 21; `V3-contenido-distinto` 3; `V3-repite` 3; `V3-par-modalidad-acto` 3 |
+| observacion_12 | `O12-correcta` 29; `O12-sujeto-de-otro-TO` 1 |
+
+#### Tabla 3. Las planillas en blanco de la autora, el LEEME y el convertidor (sha256 recalculado aquí)
+
+| archivo | sha256 | igual al del JSON de la lectura | igual al de SHA_PLANILLAS del convertidor |
+|---|---|---|---|
+| `t4/lectura_autora/cola.csv` | `cf9c8d72e0f740eede87427225b318ad1ff636c9f85e18b7adebab42d8ec7954` | True | True |
+| `t4/lectura_autora/aceptadas_items.csv` | `2811a5c78c6a06dfd4e90727e1331ebe9e2b66ce4b90c2dc68eac926d94679f5` | True | True |
+| `t4/lectura_autora/aceptadas_no_items.csv` | `3ca4affa48b172dc0ad0dfa91201923184c708c9cfabb2797381515cd0844b69` | True | True |
+| `t4/lectura_autora/vigilancia_2.csv` | `e41e1db8c64f4802c996d848ea5e827cf271d6fddbeafad91907558e1429d156` | True | True |
+| `t4/lectura_autora/vigilancia_7.csv` | `1ecfa46039573186d74a121d8d11399b3e134589257feb16310720e53d4dbd4b` | True | True |
+| `t4/lectura_autora/vigilancia_1.csv` | `5884316305ba70f4298cca7aed1ec9be9456e00cd93db5286164a50e9aa029b3` | True | True |
+| `t4/lectura_autora/vigilancia_3.csv` | `13e70d15a0a0698f24bce68b9f88ef3c0671f202477054fa76a66d9ac5a2b917` | True | True |
+| `t4/lectura_autora/observacion_12.csv` | `86186ed69c51fe768fd8881f241c8b5dfeb74598416712f22130e7ef18cd568f` | True | True |
+| `t4/lectura_autora/LEEME_lectura_T4.md` | `9e224f09213b0ca821bcbbf0af0c923c09251cb5bfd1f81d5b716697ea627525` | igual al del «seguí»: True | — |
+| `t4/lectura_autora/convertir_lectura_T4.py` | `8be2e02d13f865c72ec8a9b38b297a81f4b81ebf54f74dce7458cb002db3a9c7` | — | muestras en SHA_PLANILLAS: 8 |
+
+El convertidor de la tanda 1 (`data/experiment/tanda1/t4/lectura_autora/convertir_lectura_T4.py`, `e3e1150a92c5b712…`) y el de la tanda final difieren solo en la primera línea del docstring («tanda 1» → «tanda final») y en los ocho valores de SHA_PLANILLAS (`diff`, sección 4 del FRENO).
+
+#### Tabla 4. La prueba del convertidor (`prueba_convertidor/prueba_convertidor_t4.json`; Python 3.12.13; fuera del repo)
+
+| caso | código de salida (esperado) | lo que controla | ok |
+|---|---|---|---|
+| 1. válida (cola, BOM, «;», 3 cambios con nota) | 0 (0) | «OK: cola_marcada.csv» en la salida | True |
+| 2. otra vez la misma: no pisa la marcada | 1 (1) | «ya existe: no la piso» en la salida | True |
+| 3. válida (aceptadas_items, «,», CRLF y fila vacía al final) | 0 (0) | «saqué una fila vacía al final» en la salida | True |
+| 4. respuesta mal escrita, vacía y cambio sin nota | 1 (1) | «3 PROBLEMA(S)» en la salida | True |
+| 5. dos filas en otro orden | 1 (1) | «no son los de la planilla» en la salida | True |
+| 6. columna de más con texto | 1 (1) | «columnas de más» en la salida | True |
+| 7. una fila de menos | 1 (1) | «filas de datos» en la salida | True |
+| 8a. (12): «incorrecta» sin capa | 1 (1) | «no es una de» en la salida | True |
+| 8b. (12): «incorrecta (E1-prompt)» con nota | 0 (0) | «OK: observacion_12_marcada.csv» en la salida | True |
+| 9. muestra que no existe | 1 (1) | «no es una de» en la salida | True |
+| 10. la exportación es la planilla | 1 (1) | «no puede ser la planilla» en la salida | True |
+| 11. planilla alterada (sha256 distinto) | 1 (1) | «sha256 distinto» en la salida | True |
+
+El repo, antes y después de la prueba: `t4/lectura_autora/` con los mismos sha256 (True); la copia, igual al repo antes de probar (True) y sin enlaces (0); todos los casos como se esperaba: True.
