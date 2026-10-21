@@ -2816,3 +2816,63 @@ Hechos y decisiones de la autora del 20/10/2026, recibidos a las 23:15:05 (hoja 
   `data/experiment/med_desamb/c1_cadena/armar_no_unir_c1.py`, por decisión de la autora. La lista de sus archivos, con el sha256 de cada
   uno y de dónde sale, está en `decisiones_212_mesa/remisiones/archivos_del_commit_UPROC_C1_remisiones_mesa.md`.
 - Las secciones anteriores no se editan.
+
+## 79. La D-6, decidida: la anotación en los dos servidores, con dos condiciones (20/10/2026)
+
+Decisiones de la autora del 20/10/2026, recibidas a las 23:35:17 (hoja de ruta de la mesa, §213).
+
+- **La D-6** (§77), tal cual: «la opción 1. La misma anotación anthropic/maxResultSizeChars en 200.000 en todas las herramientas de los
+  dos servidores, con MAX_MCP_OUTPUT_TOKENS en 70.000. Con dos condiciones: que la petición capturada muestre que las definiciones de
+  herramientas que recibe el modelo son las mismas, byte a byte, con y sin la anotación, en los dos brazos; y que las tres sesiones pagas
+  rehechas (tope USD 1,0 y freno 0,6) corran antes del humo de A2.1. Si esas sesiones muestran que el presupuesto de 200.000 caracteres
+  por mensaje está activo en el modo -p, decímelo antes de A2.1.»
+  - **U-ANOT-MCP** (despacho en `decisiones_213_mesa/anot_mcp/`; USD 0, sobre una copia del repo): la anotación en el `_list_tools` de
+    los dos servidores del banco, no en `harness.TOOLS`. Prueba que la lista de herramientas la trae y que el resto no cambia. Captura la
+    petición que el CLI sellado manda a un servidor local, en las configs BM25, densa y del grafo en memoria, con y sin la anotación, y
+    compara byte a byte el arreglo `tools`. Repite las pruebas de aislamiento. Su entrega va al repo con un commit de la mesa, entre
+    ejecutoras, antes del tramo 2 de A2.1.
+  - **La etapa b de U-D6-TOPE-MCP** («seguí» en `decisiones_213_mesa/d6/`; USD 0), las tres sesiones rehechas, todas con la variable:
+    - A': 140.000 caracteres con la anotación, que tiene que llegar entera;
+    - B': lo mismo sin la anotación, que es el control;
+    - C': dos resultados de 110.000 caracteres en el mismo turno, con la anotación. Muestra si el presupuesto por mensaje está activo en
+      el modo `-p`.
+
+    Las corre la autora después de la revisión de su FRENO, en el carril pago y antes del humo de A2.1.
+  - **El 142 rearmado** lleva la misma anotación en sus servidores y en `ver_punto`, y la mesa vuelve a correr ahí la captura de
+    U-ANOT-MCP.
+- **Lo que hizo la autora,** por su confirmación: corrió el 148 v2, con su push. Está en HEAD como `5304db37`, con el registro igual al
+  del paquete y sin Co-Authored-By.
+- Las secciones anteriores no se editan.
+
+## 80. La recalibración del juez de precisión de V, hecha y descartada por la regla, y qué pasa si la v1.3 no cumple el §4.6 (20/10/2026)
+
+Hechos y decisiones de la autora del 20/10/2026, recibidos a las 23:36:53 (hoja de ruta de la mesa, §214).
+
+- **La recalibración única del §4.7, hecha** (§70), por la autora:
+  - `recalibracion_juez_v1_4.sh 8.5 6.5`: 63 llamadas pagadas, 57 de 60 completas, 3 errores de forma (las tres repeticiones de P12, que
+    quedó sin consenso en todas las dimensiones), 3 reintentos, 0 cruces y USD 4,6561;
+  - su análisis: la v1.3, 17 de 20 en el acuerdo de veredicto; la v1.4, 12 de 20 (13 de 20 aunque P12 contara como acuerdo).
+  - La mesa reprodujo las cifras desde el resumen y los dos análisis (`decisiones_214_mesa/juez_v/`).
+- **Descartada por la regla fijada antes de correrla:** al gold va la v1.3 (`regla_del_gold.json`, `version_al_gold: v1_3`). No hay
+  otra recalibración: el §4.7 admite una sola.
+- **El hallazgo sobre el instrumento,** con la descripción de la autora, tal cual: «La v1.4 no mejoró la modalidad (16 de 20 contra 17
+  de 20: P08 y P15 dejan de diferir, P03 y P16 pasan a diferir y P10 sigue igual) y movió componentes que el cambio no tocaba: el sujeto
+  en P06 y P14 y el predicado en P11 y P19, casi todos unánimes, con tres falsas alarmas nuevas (P06, P11 y P14) donde la v1.3 no tenía
+  ninguna.»
+  - En las cuentas de la mesa, P12, sin consenso, es el cuarto que difiere en la modalidad.
+  - De las cuatro diferencias nuevas en el sujeto y el predicado, tres son unánimes (3 de 3) y una es de 2 a 1.
+  - Va al informe de V como límite del instrumento, junto con los desacuerdos residuales de la v1.3.
+- **El gold, con la v1.3:** `gold_juez_v.sh 16 13 v1_3`. La proyección del gold con los tokens de la v1.4 da USD 8,8366, bajo el freno.
+- **Qué pasa si la v1.3 no cumple el §4.6 en el gold,** escrito antes del gold
+  (`decisiones_214_mesa/juez_v/si_la_v1_3_no_cumple_el_4_6_en_el_gold_mesa.md`). El bloque del §4.6 da el mismo sha256 en el commit de
+  la firma (`4afbe511`) y en HEAD:
+  - **las condiciones:** (i), (ii) y (iii) van a la vez. Si el (ii) falla, en la precisión cruda o en la ponderada, el juez no pasa
+    aunque pasen las otras dos. La enmienda 3 no lo toca: el (ii) compara las estimaciones puntuales;
+  - **si no pasa,** tal cual: «el juez no escala; la precisión de V queda con las 100 de la autora y la de T se mide con muestra humana
+    (§7)». Si más de 15 de las 100 van a adjudicación, se declara esa frontera y las adjudicadas quedan como lectura humana;
+  - **con las 100 o sin el piloto:** si las dos dan otra decisión, rige la de las 100;
+  - **abierto, a decidir antes del análisis del gold** (PENDIENTE de la autora):
+    - si el criterio de importancia es parte del «pasa». La mesa recomienda que sí, por ser la lectura más estricta;
+    - el tamaño de la muestra humana de T si el juez no escala. El §7 fija solo el control a ciegas de 30.
+- **La v1.4b** sirve con la v1.3 como está: sus controles traen los valores de las dos versiones.
+- Las secciones anteriores no se editan.
