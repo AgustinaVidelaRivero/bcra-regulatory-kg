@@ -65,6 +65,13 @@ VERSION_SERVIDOR = "1.0"
 NOMBRE_SERVIDOR = "mcp_vector"
 CONFIG_DEFAULT = AQUI / "config_mcp_vector.json"
 LIMITE_MAX_DEFAULT = 50
+# Tope en caracteres del resultado de cada tool en Claude Code (D-6). Sin
+# `_meta["anthropic/maxResultSizeChars"]`, el CLI sellado (2.1.241) guarda en
+# disco todo resultado de más de 50.000 caracteres; con la anotación, el umbral
+# es el valor anotado (hasta 500.000) y el CLI no le aplica a la tool el tope en
+# tokens (MAX_MCP_OUTPUT_TOKENS). Mismo valor en todas las tools de los dos
+# servidores del banco.
+TOPE_CARACTERES_RESULTADO = 200000
 
 TOOL_BUSCAR_PASAJES = {
     "name": "buscar_pasajes",
@@ -269,7 +276,8 @@ def construir_servidor(config_path: Path):
 
     @server.list_tools()
     async def _list_tools() -> list[types.Tool]:
-        return [types.Tool(name=tool["name"], description=tool["description"], inputSchema=tool["input_schema"])]
+        return [types.Tool(name=tool["name"], description=tool["description"], inputSchema=tool["input_schema"],
+                           _meta={"anthropic/maxResultSizeChars": TOPE_CARACTERES_RESULTADO})]
 
     @server.call_tool(validate_input=False)
     async def _call_tool(name: str, arguments: dict):

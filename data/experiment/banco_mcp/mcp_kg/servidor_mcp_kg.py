@@ -59,6 +59,13 @@ from harness import TOOLS  # noqa: E402  (cuarteto sellado: solo import)
 VERSION_SERVIDOR = "1.0"
 NOMBRE_SERVIDOR = "mcp_kg"
 CONFIG_DEFAULT = AQUI / "config_mcp_kg.json"
+# Tope en caracteres del resultado de cada tool en Claude Code (D-6). Sin
+# `_meta["anthropic/maxResultSizeChars"]`, el CLI sellado (2.1.241) guarda en
+# disco todo resultado de más de 50.000 caracteres; con la anotación, el umbral
+# es el valor anotado (hasta 500.000) y el CLI no le aplica a la tool el tope en
+# tokens (MAX_MCP_OUTPUT_TOKENS). Mismo valor en todas las tools de los dos
+# servidores del banco.
+TOPE_CARACTERES_RESULTADO = 200000
 TOOLS_V1 = {t["name"]: t for t in TOOLS}
 assert set(TOOLS_V1) == {"buscar_nodos", "ver_nodo", "ver_vecinos"}
 
@@ -135,7 +142,8 @@ def construir_servidor(config_path: Path):
     async def _list_tools() -> list[types.Tool]:
         # Definiciones verbatim del harness (nombre, descripción, input_schema).
         return [types.Tool(name=t["name"], description=t["description"],
-                           inputSchema=t["input_schema"]) for t in TOOLS]
+                           inputSchema=t["input_schema"],
+                           _meta={"anthropic/maxResultSizeChars": TOPE_CARACTERES_RESULTADO}) for t in TOOLS]
 
     @server.call_tool(validate_input=False)
     async def _call_tool(name: str, arguments: dict):
