@@ -215,3 +215,38 @@ cambios de su mensaje de las 12:58:40 (§179). Rige desde esta firma.
      pregunta».
   3. **N_Q5 se calcula con w,** con la varianza por pregunta (pd − Δ² − 2w) + 2w / k, y las tasas de A2.2.
   El texto firmado no cambia.
+- **21/10/2026 — La relevancia, los nodos y las distancias, y la validación de una muestra por un experto** (decisiones de la autora
+  recibidas a las 11:27:39; registro de decisiones del 15/10/2026, §83; la propuesta, en el paquete de la mesa,
+  `decisiones_219_mesa/b63/`). La generación sigue ciega al grafo, y nada de lo que sigue elige, ordena ni cambia una pregunta:
+  1. **La relevancia, juzgada desde el texto.** Una instancia ciega aparte (P3) lee la pregunta, su respuesta y el texto de su ancla en
+     el PDF. No lee el grafo, los brazos, las trazas ni ningún resultado. A cada pregunta le da una nota y el puesto o la decisión a la que
+     le sirve, de esta lista: cumplimiento normativo; riesgo de crédito; operaciones y tesorería; auditoría interna; diseño de un producto
+     o decisión del directorio. La rúbrica, tal cual:
+     - 5: sirve para una decisión u obligación central del puesto (un límite, un plazo o un requisito cuyo incumplimiento tiene
+       consecuencias);
+     - 4: sirve para una tarea frecuente del puesto;
+     - 3: sirve, pero para una consulta ocasional;
+     - 2: es un detalle formal o de procedimiento que el puesto rara vez consulta;
+     - 1: no le sirve a ningún puesto de la lista.
+
+     P3 corre después de sellar cada ola y antes de las corridas de B6.3, y su salida se sella con su sha256. Es la misma nota para los
+     dos brazos y entra solo al análisis: los resultados por tercio de relevancia y un total ponderado por relevancia, al lado de las
+     comparaciones principales y fuera de su Holm.
+  2. **Los nodos y las distancias,** calculados después de las corridas de B6.3: los nodos de cada ancla en el grafo evaluado, por su
+     procedencia; la distancia en el grafo (el camino más corto, sin dirección, entre los nodos de dos anclas distintas, o «sin nodo»); y
+     la distancia en la E0 (los pasos en su árbol entre los dos puntos). Es un análisis exploratorio, fuera de Holm.
+  3. **La validación por un experto,** declarada y sin frenar el calendario:
+     - 20 preguntas aprobadas del núcleo de 64: 12 de varios puntos, repartidas en proporción a los subtipos que tenga el núcleo
+       aprobado (al menos una de cada subtipo presente: remisión, condición y definición, por la nota del 19/10, punto 1), y 8 de dato
+       directo;
+     - sorteadas con `random.Random(f"b63:experto:{sha256 del núcleo aprobado sellado}")`;
+     - el experto ve la pregunta, su respuesta y el texto de su ancla, nunca una respuesta de los brazos ni nada del grafo;
+     - responde si se puede responder desde el texto (sí o no), si la respuesta es correcta (sí, parcial o no) y la relevancia con la
+       rúbrica del punto 1;
+     - se informa como proporción con su Wilson y como acuerdo con P3. Una pregunta que marque no respondible se informa, con una
+       sensibilidad sin ella al lado. No cambia la muestra. Si no vuelve a tiempo, se declara. La fecha la fija la autora.
+  4. **Los pedazos siguen la estructura de la E0,** como dice el §4. Elegirlos por la estructura del grafo condicionaría la muestra a lo
+     que el propio grafo extrajo y conectó, y le daría ventaja.
+  5. **El pre-registro de B6.3** lleva los puntos 1 y 2 como análisis exploratorios y el 3 como validación declarada.
+
+  El texto firmado no cambia.

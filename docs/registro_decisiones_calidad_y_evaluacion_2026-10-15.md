@@ -2964,3 +2964,30 @@ mesa, §216 a §220).
   - en el central, todo a tiempo;
   - en el lento quedan fuera la re-aplicación, la cobertura de V, la etapa T y la firma de B6.3.
 - Las secciones anteriores no se editan.
+
+## 83. El entorno de los agentes con una lista de permitidas, B6.3 aceptada, el gold de V corrido y la importancia en el código (21/10/2026)
+
+Decisiones y hechos de la autora del 21/10/2026, recibidos a las 11:27:39 y a las 11:29:23 (hoja de ruta de la mesa, §221 y §222).
+
+- **El entorno de los agentes** (decisión de la autora), tal cual: «El lanzador arranca cada agente desde un entorno vacío, con una lista
+  cerrada de variables permitidas (las básicas del sistema que necesita el CLI, la clave y MAX_MCP_OUTPUT_TOKENS), igual en los dos
+  brazos, y registra el entorno de cada sesión.»
+  - Reemplaza la regla de los tres prefijos de la §82.
+  - La aplica U-ENTORNO-LIMPIO en su etapa b, con cada básica del sistema medida.
+- **B6.3, aceptada** (la propuesta de la mesa de la §82): la relevancia juzgada desde el texto, con la lista de puestos y la rúbrica de la
+  autora, solo para el análisis; los nodos y las distancias después de las corridas, como exploratorio; los pedazos por la estructura de
+  la E0; y 20 preguntas a un experto, con el contacto de la autora y la fecha que ella confirme.
+  - Va como nota fechada al pie del mandato de las preguntas (`docs/mandatos/UPREG_B63_preguntas_por_tipo.md`), con la rúbrica tal cual.
+  - **La corrección de la mesa:** en B6.3 hay tres subtipos de varios puntos, porque la excepción en un hijo salió el 19/10 (nota al pie
+    de ese día, punto 1). Las 12 de varios puntos van en proporción a los subtipos del núcleo aprobado, con al menos una de cada uno.
+- **El gold de V, con la v1.3:** 300 de 300 completas, 0 errores, 0 reintentos, 0 cruces y USD 9,1653 (tope 16, freno 13). La mesa lo
+  controló en los contadores de su resumen, que dice las 08:52:26.
+  - La v1.4b está pegada y la mesa revisó su FRENO: 11 de 11.
+- **La importancia en el «pasa» del §4.6** (decisión de la autora): la computa el código.
+  - El análisis del gold calculaba `decision_46` sin las dos condiciones de importancia, que salían al lado.
+  - La v1.4c las suma con el texto firmado: exacto en al menos 60 de 100 y a un nivel de distancia en al menos 90 de 100.
+  - El análisis del gold espera su FRENO revisado.
+- **El 151 y el 152** corrieron con su push (`1df3b8ef` y `b72bb626`). Sus archivos dan los mismos sha256 que los del paquete de la
+  mesa.
+- **U-ENTORNO-LIMPIO,** pegada: su carpeta se creó a las 11:25:51, después del 152. Mientras corre, su foto del repo no admite commits.
+- Las secciones anteriores no se editan.
