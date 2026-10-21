@@ -2876,3 +2876,36 @@ Hechos y decisiones de la autora del 20/10/2026, recibidos a las 23:36:53 (hoja 
     - el tamaño de la muestra humana de T si el juez no escala. El §7 fija solo el control a ciegas de 30.
 - **La v1.4b** sirve con la v1.3 como está: sus controles traen los valores de las dos versiones.
 - Las secciones anteriores no se editan.
+
+## 81. La importancia en el «pasa» del juez, la muestra humana de T, la etapa T en el calendario y el sello de la tanda final (21/10/2026)
+
+Decisiones y hechos de la autora del 21/10/2026, recibidos a las 07:39:46 (hoja de ruta de la mesa, §215).
+
+- **El criterio de importancia entra en el «pasa» del juez (§4.6):** es la lectura más estricta, la que recomendó la mesa en la §80,
+  decidida antes del análisis del gold. Si el juez no llega al acuerdo de importancia («exacto en al menos 60 de 100 y a un nivel de
+  distancia en al menos 90 de 100»), no escala, tampoco para la precisión.
+- **La muestra humana de T si el juez no escala,** por regla de la autora: «100, si entra en el calendario después de la firma de B6.3
+  sin mover ningún plazo; si no entra, 30, declarado». Las cuentas de la mesa (`decisiones_215_mesa/muestra_t/`):
+  - **las horas:** con 100 fichas, 4,00 h a 2,4 min por ficha y 6,92 h a 4,15; con 30, 1,20 h y 2,08 h. Son las tasas de las fichas
+    de V (§55), NO VERIFICADAS para las de T;
+  - **el ancho:** la mitad del ancho del Wilson con 0,85 es 0,0699 con 100 y 0,1219 con 30;
+  - **con la etapa T antes de la cobertura de V,** que tiene la última prioridad: en el central, todo a tiempo con las dos muestras.
+    En ninguno de los seis factores de escala, de 1,0 a 1,5, la de 100 deja fuera de tiempo algo que la de 30 no deje. Lo que la de 100
+    corre es el cierre de la cobertura de V;
+  - el tamaño lo cierra la autora antes del análisis del gold (PENDIENTE).
+- **La etapa T no estaba en el calendario.** El §7 la pone dentro del pre-registro de B6.3, así que corre después de su firma; los
+  calendarios de la mesa no la contaban desde el v9c. Con ella contada, la cobertura de V no cierra el miércoles 28 desde un factor de
+  1,1, con cualquier tamaño de muestra: rige la red de la cobertura (cede la cobertura y nunca el N).
+- **El 149** corrió con su push (`bb6dc713`). Su archivo da el mismo sha256 que el del paquete de la mesa.
+- **T4:** la autora tiene 2 de las 8 planillas hechas, sin sellar, y lee las 6 que faltan el 21/10 a la mañana.
+- **El calendario v12g** (`decisiones_215_mesa/calendario/`, desde las 08:45 del 21/10; duraciones NO VERIFICADAS):
+  - **el sello de la tanda final:** el miércoles 21 a las 17:15 en el central, a las 14:59 en el rápido y a las 21:46 en el lento. En el
+    v12f era a las 12:29 en el central;
+  - **lo que se corre en el central:** A2.1, 6,0 h; la corrida de A2.2, 14,0 h; N6 y N7, 18,8 h; el sello del grafo evaluado, 23,6 h;
+    la firma de B6.3, 14,2 h. En el central todo queda a tiempo;
+  - **en el lento:** N7 y la re-aplicación quedan después del corte del sábado 24, y la cobertura de V cierra al límite, el
+    miércoles 28 a las 16:24 (sin contar la etapa T);
+  - **N6 primero** (PROPUESTA de la mesa): el lanzamiento de N6 toma las horas de la autora antes que el censo y el catálogo. Con eso, N7
+    vuelve a quedar antes del corte en el lento. Con 10 h el jueves 22 y otras 10 el viernes 23 entra también la re-aplicación, y la
+    cobertura de V pasa del miércoles 28.
+- Las secciones anteriores no se editan.
