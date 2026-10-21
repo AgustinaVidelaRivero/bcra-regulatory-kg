@@ -3056,3 +3056,46 @@ a §226).
 - **La importancia, en proporción** (decisión de la autora): se mide sobre los pares con una importancia válida del juez, igual que (i)
   se mide sobre las fichas que el juez decide.
 - Las secciones anteriores no se editan.
+
+## 85. El cwd compartido también en paralelo, la b2 y la v1.4d revisadas, el segundo tramo de T4 con su ampliación y el calendario v12i (21/10/2026)
+
+Decisiones y hechos de la autora del 21/10/2026, recibidos a las 17:34:16 y a las 17:42:04 (hoja de ruta de la mesa, §227 y §228).
+
+- **La b2 de U-ENTORNO-LIMPIO, revisada:** 205 de 205 archivos; el patch da el lanzador `66684615…` y el selftest `10546a14…`, que en un
+  arenero de la mesa da 25 de 25. El comentario de la constante da la justificación técnica y el ancla, sin nombrar quién decidió
+  (convención 5 del `CLAUDE.md` del repo).
+- **El cwd compartido, también en paralelo** (decisión de la autora), tal cual: «un solo cwd para todas las sesiones de los dos brazos,
+  también en paralelo, siempre que el CLI no escriba nada en él. La etapa c controla que el cwd siga vacío después de cada corrida del
+  modo init y de la captura, y lo informa en su FRENO. U-BANCO-PARALELO usa ese cwd compartido y la carpeta de configuración por sesión
+  de la etapa c, en lugar de su cwd por sesión, y su test de aislamiento en paralelo controla lo mismo con P sesiones a la vez.»
+  - U-BANCO-PARALELO no corrió (no existe su carpeta, `fuera_del_repo/banco_paralelo/`), y su v4 de la §189 tampoco se pegó: su
+    despacho pasa a la v5, que espera además el commit de U-ENTORNO-LIMPIO.
+  - El «seguí» de la etapa c de U-ENTORNO-LIMPIO pasa a su v2, sin la nota de que las sesiones pagas van de a una: B6.3 está planeada con
+    sesiones en paralelo.
+- **La v1.4d del juez, revisada:** 12 de 12 archivos; el código de la carpeta viva es el del paquete; selftest 202 de 202, con las 198 de
+  antes sin cambiar su esperado; `corridas/` sin cambios. El análisis del gold queda listo para que lo corra la autora (USD 0).
+- **El segundo tramo de T4, revisado** (`tanda_final/t4/FRENO_T4_tramo2.md`): 73 de 73 archivos. La mesa corrió de nuevo, sobre una
+  copia, las tasas, su verificación independiente y el sorteo de la ampliación: dan lo mismo.
+  - La atención de las aceptadas no ítems se dispara, y la ampliación suma 30 unidades del estrato, sorteadas con `:ampliacion:`. La de
+    ítems y la de RI no. Ningún freno.
+  - La regla del 25 % de la cola se dispara: es cifra y vigilancia, no freno.
+- **Sobre ese FRENO** (decisiones de la autora):
+  1. para sellar la lectura de la ampliación, un convertidor y un LEEME con el sha256 de la planilla en blanco de la ampliación, sin
+     cambiar lo que hacen con las 8 muestras del primer tramo. La mesa armó uno nuevo,
+     `t4/ampliacion/lectura_autora/convertir_lectura_T4_ampliacion.py`, con `LEEME_lectura_T4_ampliacion.md`, probado en carpetas
+     temporales (10 de 10). Entran con el commit del segundo tramo;
+  2. la exclusión de `data/experiment/neo4j/volumen` en la copia del repo: aceptada, declarada;
+  3. el texto «umbrales_t4_tf,json» de `tasas_t4_tramo2.json` se corrige cuando se rehagan las tasas en el tercer tramo;
+  4. que la unidad haya abierto `tanda1/t3/scripts/celdas_t4_t3f.py` y calculado el sha256 de dos `kg.json` de `tanda1/t3/acumulado/`
+     contra su sello: aceptado, declarado.
+- **El calendario v12i** (`decisiones_227_mesa/calendario/` del paquete de la mesa, desde las 18:30, con duraciones NO VERIFICADAS):
+  - entran el atraso de T4, la ampliación con la lectura de la autora de 30 unidades y su tercer tramo, y la etapa c de U-ENTORNO-LIMPIO
+    antes de la D-6 y de A2.1;
+  - el sello de la tanda final queda el 22/10 a las 10:00 en el central (08:10 en el rápido y 13:39 en el lento);
+  - las corridas de B6.3, el domingo 25 de 13:42 a 21:48 en el central; en el rápido, del sábado 24 a las 18:20 al domingo 25 a las
+    00:24; en el lento, del lunes 26 a las 17:04 al martes 27 a las 05:13;
+  - después del corte del miércoles 28 a las 18:00 quedan:
+    - en el central, el cierre de la cobertura de V (jueves 29, 09:03) y dos pasos sin plazo (U-ESPEC-HARNESS y U-MED-DESAMB);
+    - en el lento, la cobertura de V entera, el final de la etapa T y U-MED-DESAMB;
+    - en el lento, además, N7 pasa el corte del sábado 24 y la firma de B6.3 pasa su plazo.
+- Las secciones anteriores no se editan.
