@@ -2721,3 +2721,98 @@ Decisiones y hechos de la autora del 20/10/2026, recibidos a las 18:00:34 (hoja 
   - el selftest de claves se controla por sus rutas, porque en la copia da rc 1;
   - la unión conserva el renombre previo.
 - Las secciones anteriores no se editan.
+
+## 76. El orden de las horas de la autora, el censo con el renombre previo y la v1.4 del juez de precisión de V, revisada (20/10/2026)
+
+Decisiones y hechos de la autora del 20/10/2026, recibidos a las 18:26:41 (hoja de ruta de la mesa, §210).
+
+- **El orden de las horas de la autora** (§74), tal cual: «el escenario 3b. Primero A2.1, A2.2 y el diagnóstico, con la D-6 antes del
+  humo de A2.1. El humo y H-B2 corren con MAX_MCP_OUTPUT_TOKENS puesto en 70.000.» El censo de C1, las claves del catálogo y la
+  re-aplicación van después, y siguen antes del corte R5. Con la variable también en el humo y en H-B2, A2.1 calibra el corte de A2.2 en
+  las mismas condiciones en que A2.2 corre, y el «seguí» del tramo 2 la lleva, con el control de las referencias a un archivo.
+- **El censo y el renombre previo** (§75), tal cual: «El censo cuenta en memoria los nodos de la lista que quedan dentro de una colisión
+  que igual se une, y la re-aplicación controla su renombre.» La cuenta va con las demás del censo, sin mostrar ninguno. Si no es 0, el
+  resumen de la cadena de la re-aplicación tiene que dar ids con el renombre previo.
+- **Lo que hizo la autora,** por su confirmación:
+  - corrió el 147 v5, con su push: está en HEAD como `7633ba9e`, con los dos archivos del paquete y sin Co-Authored-By;
+  - pegó el «seguí» de la etapa b de las remisiones en su sesión;
+  - pegó el despacho de la D-6 en una sesión nueva, abierta en `fuera_del_repo/d6_tope_mcp/`.
+- **La v1.4 del juez de precisión de V, revisada** (paquete `revision_UTRIP_V_JUEZ_v1_4/`, sesión `539f236b`, manifiesto `b3fe19f8…`;
+  la revisión, en `decisiones_210_mesa/juez_v/`):
+  - el paquete da 35 de 35, la carpeta viva es la del paquete y `corridas/` tiene solo la calibración, con sus 7 sha256;
+  - la tabla, recomputada desde el código, da `8490d5c4…`. Los dos límites admiten deber y prohibición, como se decidió (§70);
+  - la regla del gold es la del §70: la v1.4 si da 17 de 20 o más, y si no, la v1.3;
+  - **el análisis de la recalibración lee el agregado de la v1.4:** controla que cada ficha se haya juzgado con su prompt congelado de
+    la v1.4;
+  - **el análisis del gold lee el de la versión que corrió, pero no lo controla:** las dos versiones escriben el mismo agregado, y el gold
+    solo corre con la versión de la regla. Pero el análisis no controla ni declara la versión.
+  - **La propuesta de la mesa** (PENDIENTE de la autora): un «seguí» corto, USD 0, después del gold y antes de su análisis. El análisis
+    frena si la versión del agregado, la del resumen y la de la regla no coinciden, y la escribe en su salida con sus sha256. Sin él, el
+    control queda a mano, en el resumen del gold.
+- **El orden de lo que corre la autora** (`decisiones_210_mesa/juez_v/ORDEN_DE_TUS_COMANDOS_JUEZ_V_mesa.md`):
+  1. la recalibración paga (8,5 y 6,5);
+  2. su análisis, que la mesa revisa antes del gold;
+  3. el gold pago (16 y 13, con la versión de la regla);
+  4. el «seguí» corto, si se acepta;
+  5. el análisis del gold.
+  Si la proyección del gold con los tokens reales no cabe en el freno, el gold no corre hasta revisarla.
+- Las secciones anteriores no se editan.
+
+## 77. La D-6, de nuevo: el tope en caracteres del CLI sellado, y el análisis del gold de V con su versión (20/10/2026)
+
+Hechos y decisiones de la autora del 20/10/2026, recibidos a las 23:13:58 (hoja de ruta de la mesa, §211).
+
+- **El FRENO de U-D6-TOPE-MCP** (paquete `revision_UD6_TOPE_MCP/`, sesión `2b4a5420`, manifiesto `44fc4a7f…`, 85 archivos). La unidad
+  quedó armada a USD 0, y la autora le pidió que no corra las tres sesiones. Su hallazgo, verificado por la mesa con el script de la
+  unidad (13 anclas, la misma salida byte a byte) y con su propia lectura del binario sellado (`decisiones_211_mesa/d6/`):
+  - el CLI 2.1.241 tiene, además del tope en tokens que fija `MAX_MCP_OUTPUT_TOKENS`, un tope en caracteres por herramienta;
+  - sin la anotación `_meta["anthropic/maxResultSizeChars"]`, el tope es de 50.000 caracteres, y con ella, el valor anotado, hasta
+    500.000. Un valor remoto por nombre de herramienta puede reemplazarlo (NO VERIFICADO desde acá);
+  - y un presupuesto por mensaje: si los resultados de un mismo mensaje suman más de 200.000 caracteres, los más largos se guardan en
+    disco. Este lo encontró la mesa, y el FRENO no lo nombra; si está prendido en el modo `-p`, NO VERIFICADO;
+  - con el contenido del banco, 50.000 caracteres son unos 21.000 a 23.000 tokens, así que la variable en 70.000 sola no cambia qué
+    resultados llegan enteros.
+- **Cuántas salidas pasan los 50.000 caracteres,** medidas por código sobre todos los pasajes y todos los nodos
+  (`salidas_sobre_50000_por_brazo_mesa.py`):
+  - **el brazo de fragmentos:**
+    - en el índice de desarrollo de A2.1 y A2.2, ningún pasaje solo; la cota con `limite` 3, 4 y 5 da 63.104, 75.335 y 87.129;
+    - en el del acumulado de las tandas 0 y 1 (N6), un pasaje solo (51.525) y hasta 144.878 con `limite` 5;
+  - **el brazo del grafo:** ninguna salida de `ver_nodo`, `ver_vecinos` ni `buscar_nodos`, en los dos grafos. Se midió sobre el kg.json,
+    no sobre Neo4j, así que es del orden (NO VERIFICADO que coincida). Con el 142, `ver_punto` tiene entre 1 y 6 salidas de más de
+    50.000 en N6 (la más larga, 53.687);
+  - **en las sesiones reales registradas,** ninguna.
+  - Sin la anotación, el brazo que pierde salidas es el de fragmentos.
+- **Las opciones para la igualdad** (`propuesta_igualdad_de_los_brazos_D6_v2_mesa.md`):
+  - 1, la misma anotación, en 200.000, en todas las herramientas de los dos servidores, con la variable en 70.000;
+  - 2, un tope del lado del servidor por debajo de 50.000, igual en los dos brazos;
+  - 3, dejarlo como está y confiar en el control.
+  - **La propuesta de la mesa,** la 1 (PENDIENTE de la autora). No cambia lo que ve el agente, porque la anotación no va en la
+    definición que el CLI manda al modelo; se verifica con la petición capturada. Pide dos unidades cortas sin pago (la anotación en los
+    servidores y el «seguí» de la sesión corta) y las tres sesiones rehechas, con el mismo tope y el mismo freno, antes del humo de A2.1.
+  - El control por código de las referencias a un archivo, por brazo, que tiene que dar 0, sigue y cubre los tres mecanismos.
+- **Las escrituras del modo init en `~/.claude`** (tres archivos de sesión, `~/.claude.json` y sus respaldos): por decisión de la
+  autora, no se borran y quedan declaradas. La memoria no cambió. Son las escrituras del CLI al arrancar, y el `.claude/` vedado es el del
+  repo. Para las próximas corridas en seco, el modo init puede usar `CLAUDE_CONFIG_DIR` en una carpeta de la unidad.
+- **El «seguí» v1.4b del análisis del gold de V,** aceptado (§76): la autora lo pega después del gold y antes de su análisis.
+- Las secciones anteriores no se editan.
+
+## 78. La etapa b de U-REMISIONES-SUBPUNTOS, revisada: la unión de las dos banderas (20/10/2026)
+
+Hechos y decisiones de la autora del 20/10/2026, recibidos a las 23:15:05 (hoja de ruta de la mesa, §212).
+
+- **El FRENO de la etapa b** (paquete `revision_UREMISIONES_SUBPUNTOS_b/`, sesión `aab0e5be`). La autora dio la versión 1 (62 archivos,
+  manifiesto `5f2cef76…`), con la unión sin casos de freno y un punto abierto: la rama 6 del selftest de U-UNION-C1 corre
+  `armar_no_unir_c1.py`, que el «seguí» de la etapa b no nombraba.
+  - **Decisión de la autora:** autorizó a la ejecutora a abrir solo ese archivo del paquete de U-UNION-C1
+    (`armar_no_unir_c1_entregado_U-UNION-C1.py`, sha256 `08705913…`), a correr las 67 ramas y a rearmar su paquete.
+  - **La versión 2** (67 archivos, manifiesto `13cb195c…`, con la versión 1 adentro, con su nombre) da el selftest de C1 en 67/67, rc 0.
+- **La revisión de la mesa** (`decisiones_212_mesa/remisiones/`):
+  - el paquete da 67 de 67;
+  - la unión, recontada con un script propio sobre sus kg.json, es exacta en los dos grafos: lo que cambia de la corrida 2 a la 5 es lo
+    de 2 a 3 (C1) más lo de 2 a 4 (las remisiones), con 0 objetos tocados por las dos piezas, y la 6 es la 5, byte a byte;
+  - los otros dos selftests dan lo de sus paquetes, y R19 sin cuentas es la referencia de U-UNION-C1 v3.
+  - **La cifra de D-5 para N7 y el pre-registro de B6.3,** de la 3 a la 5: 14.133 remite_a nuevas con cola y 13.940 sin cola.
+- **El commit de U-PROC-HERENCIA, de C1 y de las remisiones** (después del sello de la tanda final y antes de la re-aplicación) suma
+  `data/experiment/med_desamb/c1_cadena/armar_no_unir_c1.py`, por decisión de la autora. La lista de sus archivos, con el sha256 de cada
+  uno y de dónde sale, está en `decisiones_212_mesa/remisiones/archivos_del_commit_UPROC_C1_remisiones_mesa.md`.
+- Las secciones anteriores no se editan.
