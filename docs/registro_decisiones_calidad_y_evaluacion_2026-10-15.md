@@ -3192,3 +3192,96 @@ Decisiones y hechos de la autora del 21/10/2026, recibidos a las 23:39:53 (hoja 
   - después del corte del miércoles 28 a las 18:00 quedan, en el central, el final de la cobertura de V (jueves 29, 11:13), U-MED-DESAMB y
     la prueba de la v2.
 - Las secciones anteriores no se editan.
+
+## 88. NEO4J_URI en la lista, la etapa c2 revisada, el juez v2 con Opus 5.5 y la medición de T, la muestra de T y el freno de T4 (22/10/2026)
+
+Decisiones, preguntas y hechos de la autora del 22/10/2026, recibidos a las 10:44:50, 11:19:29, 11:29:11, 11:32:26 y 11:57:03 (hoja de
+ruta de la mesa, §231 a §235), y lo que revisó la mesa.
+
+- **El 156 y el TF4c**, corridos con su push (`5b1d9082` a las 10:42:19 y `a4911b53` a las 10:42:34, git log). Sus archivos son, byte a
+  byte, los del paquete de la mesa.
+- **`NEO4J_URI` entra en la lista** (la §86 la traía como propuesta; decisión de la autora, la opción a), tal cual: «Es una dirección, no una credencial, y el
+  servidor del grafo aborta si KG_Meta no da el sha256 sellado: un NEO4J_URI equivocado frena en vez de leer otro grafo.»
+  - **La etapa c2 de U-ENTORNO-LIMPIO lo implementó** (FRENO de las 11:44; su llegada, en el mensaje de las 11:57:03; paquete de 387
+    archivos, manifest `55acdcb4…`):
+    - `ENTORNO_PERMITIDAS = ("PATH", "HOME", "NEO4J_URI")`, y ninguna otra `NEO4J_*` pasa;
+    - el selftest del entorno da 37 de 37;
+    - los dos selftests del banco, `selftest_metadata.py` y `selftest_integrador.py`, pasan con una copia del `.venv` del repo y un
+      Neo4j propio en `127.0.0.1:37687`, a USD 0;
+    - `NEO4J_URI` llega al servidor del grafo por el lanzador: en 7687 no escuchaba nada.
+  - **La revisión de la mesa** (`decisiones_231_mesa/entorno_limpio/`, en su paquete):
+    - reprodujo la etapa por código: el paquete, el patch sobre los blobs de HEAD y, contra la etapa c, un solo nodo distinto por AST, la
+      lista;
+    - cambió el ancla de los comentarios, de §86 a §88, sin cambiar el AST;
+    - corrió el selftest en tres areneros: 37, 26 y 6 de 37, como la ejecutora.
+  - **Un error propio de la ejecutora, declarado:** mostró la contraseña de desarrollo del grafo, la de `conexion.py`, en la salida de una
+    herramienta de su sesión, no en un archivo.
+  - **Lo que sigue:** el 157 se rearma con los cuatro archivos de la c2 y va después de este registro. U-BANCO-PARALELO pasa a la v6, que
+    exporta `NEO4J_URI` al puerto de su contenedor. El «seguí» de la etapa c de la D-6 pasa a su v2.
+- **La fecha del CLI y el orden de las corridas de B6.3** (pregunta de la autora, 11:57:03): el CLI escribe la fecha del día en el
+  pedido, y la etapa c2 la enmascaró solo para comparar. Hoy nada fija el orden de las corridas de B6.3 entre brazos: está fijado el k, no
+  el orden. La mesa propone que el pre-registro de B6.3 las fije intercaladas, por pregunta y por repetición, con los brazos de cada
+  pregunta seguidos en un orden sorteado, y que cada sesión registre su fecha; el análisis declara cuántos bloques tienen fechas distintas
+  entre brazos (`decisiones_231_mesa/b63/`). La v6 de U-BANCO-PARALELO registra la fecha de cada sesión. PENDIENTE de la autora.
+- **El juez v2: lo decidido el 22/10 a las 10:44:50** (§231, punto 2), tal cual:
+  - la regla de freno: «como máximo 3 iteraciones, y se frena antes si una no mejora en al menos 2 puntos ni el acuerdo de «correcta» ni
+    el exacto de la importancia, o si no deja ningún ejemplo nuevo»;
+  - «tope USD 60 y freno USD 50»;
+  - «va en una sesión nueva, abierta en tripletas_v_juez»;
+  - «los ejemplos resueltos los propone la ejecutora desde los desacuerdos, con la justificación sacada del texto del TO, y yo los apruebo
+    antes de cada iteración paga»;
+  - las 10 hojas del gold, en la carpeta de lectura de la autora: la ejecutora las lee en su lugar, por nombre, con la función del análisis
+    del gold, que controla cada sha256 contra su sello y devuelve solo «correcta» e importancia. No las copia, no lista la carpeta y no lee
+    otro archivo de ella.
+- **El juez v2: lo decidido a las 11:19:29**, que reemplaza lo anterior sobre la medición de T. Tal cual:
+  - «El modelo de la v2 es claude-opus-5-5, a temperatura 0, en lugar de claude-sonnet-4-6. Lo decido ahora y no se comparan modelos
+    sobre el material.»
+  - «Quiero que la T la mida el juez si la v2 lo demuestra sobre T»:
+    - su lectura de la muestra humana de 100 de T se hace igual, «ciega al juez y sin propuestas de ningún modelo, como el gold de V»;
+    - la v2, congelada, corre sobre esas 100 con el criterio del §4.6 «tal cual»;
+    - «si pasa, la v2 mide la T con el diseño del §7: las 400 aristas del grafo evaluado, con la estratificación de 3.2 y los dos
+      estimadores de 3.6, y esa es la medición de T. Mis 100 quedan como su validación»;
+    - «si no pasa, la T queda con mis 100, como dice la §87»;
+    - «la prueba de la v2 corre apenas selle T, con prioridad, no al final de las colas».
+  - **Lo que encontró la mesa:** Opus 5.5 no acepta `temperature`: la API responde 400 con cualquier valor. Su razonamiento no se apaga, y
+    el esfuerzo es su único control, `medium` por defecto (la referencia de la API, skill claude-api, tabla de razonamiento y esfuerzo por
+    modelo). «A temperatura 0» no se puede cumplir tal cual. PENDIENTE de la autora; la mesa propone sin `temperature` y con el esfuerzo
+    `medium`, fijado antes de iterar.
+  - **Lo que la enmienda 4 declara como desvío** de textos firmados: el §4.1 (el modelo), el §4.3 y el §4.7 (los casos del gold y una
+    segunda recalibración), el §7 (la validación con 100 en lugar de 30) y la letra del laudo D-f, §1 (el instrumento validado sobre el
+    conjunto de desarrollo).
+  - **El costo con Opus 5.5** (NO VERIFICADO; `decisiones_231_mesa/juez_v2/costo_juez_v2_opus55_mesa.py`, en el paquete de la mesa): con
+    las 3 iteraciones, USD 85 a 255, y 146 en el central (las iteraciones 63, la prueba 21 y las 300 restantes de las 400, 62). El tope de
+    USD 60 no cubre en el central las iteraciones y la prueba (84). Los topes por paso que propone la mesa (2, 42, 42 y 125) quedan
+    PENDIENTES de la autora.
+  - **El texto de la enmienda 4,** PREPARADO por la mesa (`decisiones_231_mesa/juez_v2/`); su firma, PENDIENTE. El despacho de la
+    etapa a, escrito.
+- **La muestra de T antes de la firma de B6.3** (pregunta de la autora, 11:29:11): «¿se puede sortear y armar sus fichas apenas se selle
+  el grafo evaluado, sin esperar la firma del pre-registro de B6.3? [...] Si se puede, quiero empezar a leer el sábado.» La respuesta de
+  la mesa:
+  - el sorteo y las fichas, sí, apenas se selle el grafo evaluado: el diseño está en 3.2 y en el §7, y la enmienda 4 fija la semilla y las
+    400 con las 100 adentro;
+  - la lectura antes de la firma de B6.3 se aparta de la letra del laudo D-f, §5 («B6.3 incorpora las tripletas dentro de su pre-registro
+    sellado»), y del §7 de este pre-registro: pide una nota firmada;
+  - la lectura antes de la última ola de B6.3 deja de ser ciega para la revisión de sus preguntas, porque ve aristas del grafo evaluado
+    sobre los documentos de test;
+  - en el calendario v12l, leer desde el sábado pasa la firma de B6.3 de su plazo en el central (lunes 26 a las 16:45, contra las 12:00) y
+    no adelanta las 400. Decisión PENDIENTE.
+- **El freno de T4 de la tanda final** (FRENO del tercer tramo, 11:19:30; mensaje de la autora, 11:32:26): salta el freno por la atención
+  sobre las 60 en las aceptadas no ítems.
+  - Las cifras: 16 de 60, ponderada 0,3733, Wilson [0,2160; 0,5630], contra el umbral de 0,2437 (p 0,0009). El freno por intervalos no
+    salta, y la verificación aparte da 62 de 62.
+  - **La revisión de la mesa** (`decisiones_231_mesa/t4/`):
+    - el paquete da 47 de 47, y la reproducción sobre una copia, 6 de 6;
+    - por celda y por tramo: NG resto, que es el tramo 2, 8 de 20, el 93 % de la ponderada; el tramo 1, 8 de 40;
+    - la diferencia entre tramos no es significativa con estas n (Fisher, p 0,1265), y los errores no se concentran en documentos.
+  - **Lo que fijan las reglas:** los pre-registros de la tanda 1 (§5.4 a) y de la tanda final (§6) fijan cuándo hay freno, no qué sigue.
+    El protocolo entre tandas (§6) y la regla de caída dan el marco. Las opciones y la recomendación de la mesa están en su paquete.
+  - **Decisión PENDIENTE:** la autora no decide hasta leerlo, y ningún commit de T4 corre antes.
+- **El calendario v12l** (`decisiones_231_mesa/calendario/`, desde las 13:30 del 22/10, con duraciones NO VERIFICADAS):
+  - con la v2 después de B6.3 y las tres repeticiones en paralelo, la prueba y las 400 quedan revisadas el martes 27 a las 19:42 en el
+    central (22,3 h antes del miércoles 28 a las 18:00), y no entran en el lento;
+  - la v2 no mueve ningún hito de B6.3;
+  - N7 pasa su corte en el central (sábado 24 a las 13:03, contra las 12:00), con la v2 o sin ella;
+  - en el central, las corridas de B6.3 cruzan la medianoche del domingo 25 al lunes 26.
+- Las secciones anteriores no se editan.
