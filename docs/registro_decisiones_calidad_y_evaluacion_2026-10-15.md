@@ -3285,3 +3285,52 @@ ruta de la mesa, §231 a §235), y lo que revisó la mesa.
   - N7 pasa su corte en el central (sábado 24 a las 13:03, contra las 12:00), con la v2 o sin ella;
   - en el central, las corridas de B6.3 cruzan la medianoche del domingo 25 al lunes 26.
 - Las secciones anteriores no se editan.
+
+## 89. El freno de T4 por la clasificación de la autora, el tramo 1 sellado como respaldo, el orden de B6.3, la lectura de T, la enmienda 4 y N7 (22/10/2026)
+
+Decisiones de la autora del 22/10/2026, recibidas a las 12:24:43 (hoja de ruta de la mesa, §236).
+
+- **El 158 y el 157 v2,** corridos con su push (`368d50a3` a las 12:22:52 y `ca5d192f` a las 12:23:07, git log). Sus archivos son, byte a
+  byte, los del paquete de la mesa. Los comandos de la mesa son scripts de zsh: se corren con `zsh`, no con `bash`.
+- **El freno de T4** (decisión de la autora), tal cual: «la opción 2 y después la 1. Hoy clasifico por tipo las 16 unidades con error
+  [...]. Si no aparece una falla de esquema, acepto el freno y se declara como residuo, con su tasa; si aparece, lo vemos antes de
+  seguir. La opción 3 queda descartada: elegir el grafo por el resultado de su lectura sesga B6.3. El TF4d, cuando cierre la
+  clasificación.»
+  - **El material** (`decisiones_236_mesa/t4/clasificacion/`, en el paquete de la mesa): una planilla con las 16 y cuatro columnas para la
+    autora:
+    - `capa`, con el vocabulario `capa_pipeline` del protocolo entre tandas (§2);
+    - `falla_de_esquema`, con el umbral del procedimiento (c) del protocolo (§6);
+    - `campo` y `se_repite`.
+  - Lo acompañan el preparador, el convertidor y el LEEME, y el sello va como el de las lecturas de T4. La prueba de la mesa da 17 de 17,
+    y la planilla esperada da el sha256 `e45f6e70…`.
+  - Una «no_se» en `falla_de_esquema` cuenta como una «sí»: se ve antes de seguir (propuesta de la mesa, escrita en el LEEME).
+- **El tramo 1 se sella como respaldo antes del viernes 23 a las 18:00** (decisión de la autora). Ya están su E0 y sus ensamblados
+  (`71cb9305`), su suite y sus shapes (T3) y las lecturas de sus celdas (T4). Lo que le falta va en T5, que corre ya, en paralelo con la
+  clasificación: su costo, su columna del tablero y el registro de sus dos grafos en `neo4j/grafos.py`, con su vista. NO VERIFICADO:
+  - el control de las carpetas de salida de sus 30 TOs al cerrar el tramo 1 (enmienda 9, punto 6);
+  - si su columna del tablero sale de lo que contó T3;
+  - y la carga en Neo4j, que no se hace, declarada.
+- **El orden de las corridas de B6.3** (decisión de la autora): «por pregunta y por repetición, con los brazos de cada pregunta seguidos y
+  en un orden sorteado, y la fecha de cada sesión registrada. Va en su pre-registro.»
+- **La lectura de T** (decisión de la autora): «Leo T después de la firma de B6.3, como dice el §7. El sorteo y las fichas, apenas se selle
+  el grafo evaluado.»
+- **La enmienda 4** (decisiones de la autora sobre los seis puntos de la mesa), tal cual:
+  - «el modelo: claude-opus-5-5, sin temperature y con el esfuerzo medium puesto explícito»;
+  - «sin respaldo en otro modelo: el pedido rechazado queda sin voto y se cuenta»;
+  - «la mejora de cada iteración se mide sin las fichas que son casos del prompt»;
+  - «mis 100 de T van dentro de las 400»;
+  - «los topes por paso que propusiste: 2 el humo, 42 cada iteración, 42 la prueba y 125 las 300 restantes»;
+  - «la lectura de T, después de la firma de B6.3».
+  - La firma es el commit que agrega la nota al pie del pre-registro de tripletas, con una nota al pie del laudo D-f por el desvío de su
+    §1 (PENDIENTE de la autora).
+- **N7** (pregunta de la autora, que ve en el calendario v12l N7 a las 13:03 del sábado, contra el corte de las 12:00):
+  - **qué pasa si lo pasa:** el mandato de U-NAV pide N7 sellado antes del corte y antes del pre-registro de B6.3, que lo declara, y no
+    escribe qué sigue si no llega. Lo que depende de N7 es ese pre-registro, que en el central empieza el domingo: pasar las 12:00 rompe la
+    letra del mandato, y se declara, pero no mueve B6.3;
+  - **lo que la mesa no había dicho en la §88:** en el mismo v12l central, la medición de la re-aplicación única también caía después del
+    corte. Por R5 de la enmienda 8 al protocolo, lo del grupo 2 que a las 12:00 del sábado no tenga su medición hecha va al grafo corregido,
+    no al evaluado. Es lo que más cuesta del corte;
+  - **lo que se puede adelantar:** correr T5 ya, en paralelo con la clasificación. En el calendario v12m (desde las 14:30, con duraciones NO
+    VERIFICADAS), en el central N7 cae el sábado a las 09:45 y la re-aplicación se mide el viernes a las 14:28, las dos antes del corte. Con
+    T5 después del TF4d caen el sábado a las 16:18 y a las 13:33. Más horas el viernes no suman en el central. En el lento no alcanza.
+- Las secciones anteriores no se editan.
