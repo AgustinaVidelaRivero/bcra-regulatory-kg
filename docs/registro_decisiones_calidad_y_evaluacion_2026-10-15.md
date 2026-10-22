@@ -3334,3 +3334,86 @@ Decisiones de la autora del 22/10/2026, recibidas a las 12:24:43 (hoja de ruta d
     VERIFICADAS), en el central N7 cae el sábado a las 09:45 y la re-aplicación se mide el viernes a las 14:28, las dos antes del corte. Con
     T5 después del TF4d caen el sábado a las 16:18 y a las 13:33. Más horas el viernes no suman en el central. En el lento no alcanza.
 - Las secciones anteriores no se editan.
+
+## 90. T5 de la tanda final revisada, el freno de T4 aceptado como residuo, los sellos del tramo 1 y de la tanda, y lo que T5 deja abierto (22/10/2026)
+
+Decisiones de la autora del 22/10/2026, recibidas a las 16:16:41 y a las 16:24:48 (hoja de ruta de la mesa, §237 y §238).
+
+- **El 159,** corrido con su push (`fe80d354`, a las 13:31:54, git log). El preparador de la clasificación dio la planilla `e45f6e70…`,
+  la que esperaba la mesa (§89).
+- **T5** (su FRENO llegó a las 14:08, mensaje de la autora). La mesa lo reprodujo sobre una copia del repo, a USD 0:
+  - los diez scripts de `t5/scripts/` que dan sus salidas, corridos de nuevo, dan cada salida y cada consola byte a byte: 32 de 32
+    controles (`t5/control_mesa/reproduccion_T5_mesa.json`);
+  - el costo, con código propio sobre `gasto_usd` de cada fase cerrada, da lo mismo, 6 de 6: real USD 97,598343, del que el tramo 1 es
+    12,856189 y el tramo 2, 84,742154 (`t5/control_mesa/costo_independiente_T5_mesa.json`).
+- **1. La copia de T5 sin `t4/clasificacion_freno/`:** aceptada (decisión de la autora).
+- **El freno de T4, por la regla del §89.** La autora selló su clasificación a las 16:20:27 (`t4/clasificacion_freno/`, la marcada con
+  sha256 `7ab3b335…`, en su sello). El control de la mesa, sin leer las notas ni imprimir ids (`t4/clasificacion_freno_control_mesa/`):
+  - la planilla es la esperada, la marcada da su sello y sus 16 filas traen las siete columnas fijas de la planilla;
+  - el convertidor, corrido de nuevo sobre una copia de la exportación, da la marcada byte a byte;
+  - la cuenta: `falla_de_esquema` «no» en las 16. La capa es E1-prompt en las 16, y una lleva además ensamblado. En 12 de las 16, el mismo
+    patrón aparece en otra de ellas.
+  - **Sin falla de esquema, el freno se acepta y se declara como residuo, con su tasa:** 16 de 60, ponderada 0,3733, Wilson de Kish
+    [0,2160; 0,5630] (`t4/tasas/tasas_t4_tramo3.json`, `aceptadas_no_items_sobre_60`). Entra al backlog como BKL-0056.
+- **2. Los criterios del tablero y de las vigilancias** (PROPUESTA de la mesa, PENDIENTE de la autora;
+  `decisiones_237_mesa/t5/revision_criterios_tablero_T5_mesa.md`, en el paquete de la mesa):
+  - **fila 50:** la meta es de precisión y la lectura de la tanda final no la mide (la (12) va sin `remite_a`, pre-registro de la tanda
+    final, §6). Va como hallazgo, «no medida», como en la tanda 1;
+  - **fila 52:** la cuenta de la meta, cero nodos de contenido sin `establecida_en`, está en el reporte de cada ensamblado y da 0 en los
+    ocho; T5 contó otra cosa. «El resto, declarado por causa» no se hizo: 331 Condicion sin regla y 34 aislados (32 Comunicacion y
+    2 Sujeto) van sin causa, y eso va como hallazgo;
+  - **fila 64:** 85 Comunicacion.tipo sin marca ni original. El residuo que la meta declara es el de dos grafos anteriores, con una
+    corrección antes de escalar que la tanda final no tiene aplicada. En la tanda 1 la misma cuenta fue hallazgo (H17,
+    `tanda1/t5/reporte_tanda1.md:214`): no cumple, hallazgo;
+  - **fila 51:** «no aplica», como en la tanda 1, con la cuenta (0) declarada;
+  - **las vigilancias:** el criterio de T5 no lo fija ningún pre-registro. La mesa propone el test de la atención de las lecturas: exacto,
+    unilateral, al 5 %, contra la tasa de la tanda 1, crudo y ponderado por celda. Si las dos versiones no dan lo mismo, hallazgo
+    (`t5/control_mesa/criterio_vigilancias_mesa.json`).
+    - En la (1), p crudo = 0,0258 y p ponderado = 0,0832: las dos versiones no dan lo mismo, así que va como hallazgo, como la dejó T5.
+    - (2), (3) y (7) no empeoran.
+    - Las contadas sin leer no dan hallazgo: (4) y (5) cumplen su invariante; en (8), p = 0,6824; en (9), 0 emisiones fuera de los TOs de
+      pagos.
+- **3. El sello del tramo 1, con el control por fecha de la autora, reproducido por código** (solo lectura, sin nombres de archivos ni
+  cuentas por carpeta; `t5/sello_tramo1_control_mesa/control_fechas_salida_tramo1_mesa.json`):
+  - en `reextraccion_v2/corpus_tanda_final/salida_r2b/`, el último archivo de los 30 TOs del tramo 1 es del 19/10/2026 a las 08:43:29 y el
+    primero de los 68 del tramo 2, de las 08:47:33. Da lo mismo con la hora de modificación y con la de cambio de estado;
+  - las carpetas mismas del tramo 1, que cambian si se agrega o se borra un archivo, cambiaron por última vez a las 02:35:18;
+  - desde `b17746be`, nada cambió en `salida_r2b/`: el diff y el status, con los sin rastrear, dan vacío, y git no ignora ningún archivo
+    ahí;
+  - **el sha256 de las carpetas del tramo 1 al cerrarlo no se tomó: se declara.** El de hoy es el que da T5 (`t5/salidas/carpetas_tramo1_t5.json`).
+    La carga en Neo4j no se hizo y se declara.
+- **4. La capa de las 6 incorrectas de ítems y de las 12 de la cola:** el protocolo entre tandas (§2) y el pre-registro de la tanda 1
+  (§5.6) piden que lo diferido vaya al backlog con su `capa_pipeline`. El sello (§4) no incluye el backlog, y la tanda 1 se selló con
+  «no dicha por la lectura». **No se pide antes del sello.** Por la decisión de la autora, van al backlog sin capa (BKL-0053 y BKL-0054),
+  y la autora las clasifica después del corte del sábado.
+- **5. La fila 67 y la observación (12):** ninguna tiene una corrección lista; las dos propuestas de T5 dicen «a diagnosticar». El mandato
+  firmado de U-REAPL (§1) solo admite lo que llegue con mandato firmado, código y medición antes del corte.
+  - Para entrar harían falta el diagnóstico, el código y la medición, NO VERIFICADO: unas 3 h de una ejecutora para una y 5,5 h para las
+    dos, más la enmienda del mandato y su firma.
+  - En el calendario v12n central, desde las 17:30, la re-aplicación medida pasa del sábado a las 08:04 a las 08:19, todavía antes del
+    corte pero con un margen que se pierde con una hora de atraso; en el lento ya pasa el corte sin ellas.
+  - **Se difieren, como propone T5** (decisión de la autora): BKL-0051 y BKL-0052.
+- **6. Por qué el repartido del tramo 1 (USD 19,310012) se aparta del §3 (12,690115):** el repartido divide el mismo total por los
+  caracteres de la E0 de cada TO, no por unidades. El tramo 1 tiene el 18,43 % de los caracteres y el 12,14 % de las unidades: son unidades
+  más largas. El gasto real siguió a las unidades: 13,17 % del total (`t5/control_mesa/costo_independiente_T5_mesa.json`).
+- **El backlog:** seis entradas nuevas, BKL-0051 a BKL-0056: las cinco propuestas de T5, con su texto, y las 16 del freno de T4.
+- **El sello de la tanda final** (protocolo entre tandas, §4). Lo que pide:
+  - la E0, en `5052364f`; la extracción, en `b17746be`; los `kg.json` con sus registros, la suite y los shapes, en los dos commits de
+    T3 (`71cb9305` y `5aae4fe0`). La §89 ponía la E0 en `71cb9305`: es la de `5052364f` (git log de su carpeta);
+  - el reporte con su costo real y la columna del tablero, en el commit de T5.
+  - Este commit cierra la serie: va después del de la cuarta etapa (el tercer tramo con la clasificación), el de T5 y el sello de los
+    grafos del tramo 1, y lo controla por sus títulos.
+- **El calendario v12n** (`decisiones_237_mesa/calendario/`, desde las 17:30, el cierre de la ronda, con duraciones NO VERIFICADAS; el
+  modelo es voraz):
+  - en el central, el sello de la tanda queda el jueves 22 a las 18:00;
+  - la re-aplicación medida, el sábado 24 a las 08:04, y N7 a las 10:49: las dos antes del corte de las 12:00;
+  - eso pide correr los commits enseguida: con el cierre a las 18:30 las dos pasan el corte (sábado 13:45 y 16:30);
+  - si las horas de la autora del viernes van primero al censo, al catálogo y a la re-aplicación, antes que a A2.1 y A2.2, la
+    re-aplicación se mide el viernes con cualquier cierre (el 23 a las 14:37 desde las 17:30), y N7 pasa el corte (sábado 18:06).
+- **El orden de los commits:**
+  1. el de la cuarta etapa: el tercer tramo con la clasificación y su control;
+  2. el de T5;
+  3. el sello de los grafos del tramo 1, con el control por fecha;
+  4. este;
+  5. la firma de la enmienda 4 (el 160, PENDIENTE de la autora).
+- Las secciones anteriores no se editan.
