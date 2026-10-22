@@ -3099,3 +3099,96 @@ Decisiones y hechos de la autora del 21/10/2026, recibidos a las 17:34:16 y a la
     - en el lento, la cobertura de V entera, el final de la etapa T y U-MED-DESAMB;
     - en el lento, además, N7 pasa el corte del sábado 24 y la firma de B6.3 pasa su plazo.
 - Las secciones anteriores no se editan.
+
+## 86. La etapa c de U-ENTORNO-LIMPIO revisada, los selftests del banco antes del commit y Neo4j con la lista de permitidas (21/10/2026)
+
+Decisiones y hechos de la autora del 21/10/2026, recibidos a las 23:30:21 (hoja de ruta de la mesa, §229).
+
+- **El TF4b, el 154 v2 y el 155** corrieron con su push (`4cc8f857`, `9c016693` y `46070985`). Sus archivos dan los mismos sha256 que
+  los del paquete de la mesa.
+- **La etapa c de U-ENTORNO-LIMPIO, revisada:**
+  - 234 de 234 archivos;
+  - el patch, sobre los blobs de HEAD, da `lanzar_agente.py` `b5e2e912…`, `lanzar_agente_a2_1.py` `9553c6ef…`,
+    `selftest_entorno_limpio.py` `97e5e8bb…` y `contrato_metadata.md` `891a3138…`;
+  - el selftest da 36 de 36 en un arenero de la mesa (25 contra la b2 y 6 contra HEAD).
+  - Según su FRENO, la captura no trae estado de git ni el nombre del brazo, el control positivo de git lo detecta y el cwd quedó vacío
+    en las 15 tomas. La unidad terminó sus corridas a las 18:32, y el FRENO llegó a las 23:13 por un corte de conexión de esa sesión.
+- **Los selftests del banco, antes del commit** (decisión de la autora), tal cual: «agentes/selftest_metadata.py y
+  smoke/selftest_integrador.py tienen que pasar antes del commit de U-ENTORNO-LIMPIO, a USD 0, con el .venv del repo y Neo4j corriendo.»
+  - Son la única prueba del brazo kg real con el lanzador nuevo antes de las sesiones pagas.
+  - En la etapa c frenaron en el primer paso que lanza el servidor del grafo: la copia no tenía `.venv` y Neo4j no corría.
+  - **Cómo** (PROPUESTA de la mesa, la etapa c2, PENDIENTE de la autora): el `.venv` del repo, clonado en la copia con `cp -c`, y Neo4j
+    en un contenedor propio de la ejecutora, en el 7687, con la base de la copia; sin escribir en el repo ni tocar su contenedor.
+- **El commit de U-ENTORNO-LIMPIO no depende de que HEAD siga siendo el de hoy** (decisión de la autora). Controla la base de cada
+  archivo y que el 155 esté en la historia, así que corre también después del commit de la autora con tres figuras del cap. 4. Ese
+  commit no corre mientras haya una ejecutora con foto del repo.
+- **Neo4j con la lista de permitidas** (lectura de la mesa en el código: `data/experiment/neo4j/conexion.py:22-24` y los JSON de MCP del
+  grafo, que no pasan ningún `NEO4J_*`):
+  - con la lista, ningún `NEO4J_*` del padre llega al servidor del grafo, y este toma los valores por defecto: localhost:7687 y las
+    credenciales de desarrollo;
+  - los despachos de N5 y de U-NAV-DESDE ponen un Neo4j propio en otro puerto con `NEO4J_URI`, y la v5 de U-BANCO-PARALELO también.
+    Con el lanzador nuevo, ese valor no llega al servidor.
+  - **Qué hacer** (PROPUESTA de la mesa, PENDIENTE de la autora): sumar `NEO4J_URI` a la lista, que no es una credencial y es igual en
+    los dos brazos; o que el Neo4j de cada corrida escuche en el 7687.
+- **El calendario v12j** (`decisiones_229_mesa/calendario/` del paquete de la mesa, desde las 00:45 del 22/10, con duraciones NO
+  VERIFICADAS), con la etapa c2 antes del commit de U-ENTORNO-LIMPIO:
+  - el sello de la tanda final queda el 22/10 a las 15:30 en el central (13:40 en el rápido y 19:09 en el lento);
+  - las corridas de B6.3, del domingo 25 a las 17:07 al lunes 26 a las 01:13 en el central; en el rápido, el domingo 25 de 09:43 a
+    15:47; en el lento, el martes 27 de 08:41 a 20:50;
+  - después del corte del miércoles 28 a las 18:00 quedan:
+    - en el central, el final de la cobertura de V (jueves 29, 11:58) y U-MED-DESAMB, sin plazo;
+    - en el lento, la cobertura de V entera y el final de la etapa T;
+    - en el lento, además, N7 y la re-aplicación pasan el corte del sábado 24 y la firma de B6.3 pasa su plazo.
+- Las secciones anteriores no se editan.
+
+## 87. La ampliación de T4 leída, el gold de V que no pasa y el juez v2 como estudio exploratorio (22/10/2026)
+
+Decisiones y hechos de la autora del 21/10/2026, recibidos a las 23:39:53 (hoja de ruta de la mesa, §230).
+
+- **La lectura de la ampliación de T4:** la autora la selló el 21/10/2026 a las 23:38:02
+  (`tanda_final/t4/ampliacion/lectura_autora/sello_lectura_T4_ampliacion.txt`; la marcada da `155e23dc…`), y la planilla original no
+  cambió. La mesa la controló: 11 de 11, con la conversión corrida de nuevo byte a byte (`t4/ampliacion/control_lectura_mesa/`). Entra
+  con el TF4c, y después va el tercer tramo de T4: las aceptadas no ítems sobre las 60 y el freno por la atención sobre las 60.
+- **El análisis del gold** (`tripletas_v_juez/corridas/analisis_gold_V.json`), corrido por la autora con la v1_3 (la regla del gold,
+  `32b03107…`) y el código de la v1.4d, y revisado por la mesa. La decisión del §4.6 es «no pasa» en las dos cifras, y las dos dan la
+  misma; rige la de las 100.
+  - **Con las 100:**
+    - (i) 81 de 99, que no pasa: el Wilson inferior da 0,7308;
+    - (ii) cruda 0,0202 y ponderada 0,0198;
+    - (iii) 14 de 24;
+    - 1 a adjudicación;
+    - la importancia exacta, 57 de 100, no pasa; a un nivel, 94 de 100.
+  - **Sin las 10 del piloto:**
+    - (i) 77 de 90;
+    - (ii) cruda 0,0333 y ponderada 0,0261;
+    - (iii) 14 de 22;
+    - 0 a adjudicación;
+    - la importancia exacta, 51 de 90, no pasa; a un nivel, 84 de 90.
+- **La consecuencia del §4.6** (decisión de la autora): el juez no escala; la precisión de V queda con las 100 de la autora, y la de T se
+  mide con la muestra humana de 100 (§7).
+- **El juez v2** (decisión de la autora), tal cual: «Quiero recalibrar el juez de precisión con una v2, en un estudio aparte y
+  exploratorio que no cambia la decisión del §4.6 ni las cifras de V y de T»:
+  - «el material de calibración son mi gold de V y el pool de 20. Las correcciones van como ejemplos resueltos en las fronteras de la
+    importancia y de «correcta», no como reglas nuevas en el prompt»;
+  - «antes de iterar, se fija cuándo se frena la calibración. Antes de probarla, la v2 se congela y su criterio de prueba queda escrito:
+    el mismo del §4.6»;
+  - «la prueba es fuera de muestra, contra mi lectura de la muestra humana de T, después de que la selle. El juez corre recién entonces,
+    y yo no veo nada suyo antes de leer»;
+  - «la v2 no se vuelve a medir contra el gold de V».
+  - **El diseño** (PROPUESTA de la mesa, PENDIENTE de la autora; `decisiones_230_mesa/juez_v2/` del paquete de la mesa):
+    - como máximo 3 iteraciones, con el freno antes si una no mejora en al menos 2 puntos;
+    - tres pedidos por ficha, como el gold;
+    - unos USD 42 con el máximo (NO VERIFICADO), con tope 60 y freno 50;
+    - la última prioridad en el carril pago y en las otras colas;
+    - una nota fechada al pie del pre-registro de tripletas, antes de la primera iteración, y el commit de la congelación antes de la
+      prueba.
+- **El calendario v12k** (`decisiones_230_mesa/calendario/` del paquete de la mesa, desde la 01:30 del 22/10, con duraciones NO
+  VERIFICADAS):
+  - el sello de la tanda final queda el 22/10 a las 13:54 en el central (12:27 en el rápido y 16:48 en el lento);
+  - las corridas de B6.3, del domingo 25 a las 16:22 al lunes 26 a las 00:28 en el central;
+  - la lectura de la autora de la muestra de T va después de la firma de B6.3: en el central, del domingo 25 a las 16:16 al martes 27 a
+    las 09:23;
+  - con el juez v2 o sin él, los hitos dan lo mismo;
+  - después del corte del miércoles 28 a las 18:00 quedan, en el central, el final de la cobertura de V (jueves 29, 11:13), U-MED-DESAMB y
+    la prueba de la v2.
+- Las secciones anteriores no se editan.
