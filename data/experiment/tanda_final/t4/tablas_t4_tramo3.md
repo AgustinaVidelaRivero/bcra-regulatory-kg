@@ -1,0 +1,162 @@
+Salida: `tasas/tasas_t4_tramo3.json` (2026-10-22T10:47:32-03:00, sha256 `5979134e6339d4cb66c5c7b332ebdd839d57610d790323ed5da6499272f37b7f`), de `scripts/tasas_t4t3_tf.py`. Rutas relativas a `data/experiment/tanda_final/t4/`.
+
+#### Tabla 1. Las cifras para la hoja de la revisión entre tandas (filas que esperan a T4)
+
+| fila | tanda final | línea de base: tanda 1 (versión derivada) | tanda 0 | decisión | script y clave de la salida |
+|---|---|---|---|---|---|
+| aceptadas, ítems | 6 de 30 (6 con error y 0 dudosas); ponderada 0,2862, Wilson [0,1090; 0,5678] (n ef. 11,888); sin las dudosas, 6 de 30, 0,2862 [0,1090; 0,5678] | 9 de 30 con las dudosas como error; ponderada 0,2196, Wilson de Kish [0,0784; 0,4822]; atención: no; freno: no | 6 de 30, Wilson [0,0951; 0,3731] | atención: no (p 0,2710); freno: no | `scripts/tasas_t4t3_tf.py`, `tasas/tasas_t4_tramo3.json`, `aceptadas.items` |
+| aceptadas, no ítems, sobre las 60 | 16 de 60 (16 con error y 0 dudosas); ponderada 0,3733, Wilson [0,2160; 0,5630] (n ef. 26,266); sin las dudosas, 16 de 60, 0,3733 [0,2160; 0,5630]; sobre las 30 del primer tramo, 7 de 30, 0,3674 | 3 de 30 con las dudosas como error; ponderada 0,0968, Wilson de Kish [0,0214; 0,3446]; atención: no; freno: no | 4 de 30, Wilson [0,0531; 0,2968] | atención sobre las 30: sí (p 0,0168); freno por la atención sobre las 60: sí (umbral 0,2437, p 0,0009); freno por intervalos: no | `scripts/tasas_t4t3_tf.py`, `tasas/tasas_t4_tramo3.json`, `aceptadas_no_items_sobre_60` y `aceptadas.no_items` |
+| aceptadas, ponderada total | con las 30 de no ítems, 0,3458, Wilson [0,1819; 0,5570] (n ef. 21,260); sin las dudosas, 0,3458 [0,1819; 0,5570]; con las 60 de no ítems (información), 0,3502, Wilson [0,2185; 0,5097] (n ef. 37,773) | 0,1397, Wilson de Kish [0,0532; 0,3196] | 0,1616, Wilson [0,0888; 0,2760] (mismo método) | sin umbral | `scripts/tasas_t4t3_tf.py`, `tasas/tasas_t4_tramo3.json`, `aceptadas.total` |
+| atención de RI | con las 30 de no ítems, 5 de 30; ponderada de RI 0,1843, Wilson [0,0661; 0,4191] (n ef. 16,967); sin las dudosas, 5 de 30, 0,1843; con las 60 de no ítems (información), 8 de 45, 0,1843, p 0,2339 | 7 de 30; ponderada de RI 0,1747; la atención no salta | bajo H0, 0,1433 (umbral de T3: 0,2918) | atención: no (p 0,2945) | `scripts/tasas_t4t3_tf.py`, `tasas/tasas_t4_tramo3.json`, `atencion_RI` |
+| tasa de error de la cola | 12 de 30 (12 con error y 0 dudosas); ponderada 0,3706, Wilson [0,2057; 0,5723] (n ef. 23,100); sin las dudosas, 12 de 30, 0,3706 [0,2057; 0,5723] | 14 de 30 con las dudosas como error; ponderada 0,4386, Wilson de Kish [0,2751; 0,6166]; la regla del 25 % se dispara | 12 de 30, Wilson [0,246; 0,577] (reext_t0/t4/salida/tasas_t4.json) | regla del 25 %: se dispara (cifra y vigilancia, no freno) | `scripts/tasas_t4t3_tf.py`, `tasas/tasas_t4_tramo3.json`, `cola` |
+| observación (12) | 29 correctas de 30 (0 no decidibles, en el denominador; 1 incorrecta: catálogo 1); Wilson [0,8333; 0,9941]; ponderada por celda 0,9934 [0,7576; 0,9999] | 27 correctas de 30, Wilson [0,7438; 0,9654] | 25 de 30, Wilson [0,664; 0,927], con el perfil anterior (pre-registro de la tanda 1, §5.2, como lo da tanda1/t4/scripts/tasas_t4t2.py) | sin umbral | `scripts/tasas_t4t3_tf.py`, `tasas/tasas_t4_tramo3.json`, `observacion:12` |
+| vigilancia (1) | 7 sí de 30 (0 no decidibles, fuera de la tasa); cruda 0,2333, Wilson [0,1179; 0,4093]; ponderada por celda 0,2010 [0,0627; 0,4858] | 3 sí de 30 | no se midió en la tanda 0 | sin umbral | `scripts/tasas_t4t3_tf.py`, `tasas/tasas_t4_tramo3.json`, `vigilancias.vigilancia:1` |
+| vigilancia (2) | 6 vaciamientos de 30; cruda 0,2000, Wilson [0,0951; 0,3731]; ponderada por celda 0,1483 [0,0516; 0,3579] | 15 vaciamientos de 30 | en la tanda 0 se midió la población, sin leer la muestra | sin umbral | `scripts/tasas_t4t3_tf.py`, `tasas/tasas_t4_tramo3.json`, `vigilancias.vigilancia:2` |
+| vigilancia (3) | 5 duplicaciones de 30; cruda 0,1667, Wilson [0,0734; 0,3356]; ponderada por celda 0,1670 [0,0522; 0,4218] | 9 duplicaciones de 30 | no se midió en la tanda 0 | sin umbral | `scripts/tasas_t4t3_tf.py`, `tasas/tasas_t4_tramo3.json`, `vigilancias.vigilancia:3` |
+| vigilancia (7) | 2 sin apoyo de 6; cruda 0,3333, Wilson [0,0968; 0,7000]; leída entera, sin celdas | 2 sin apoyo de 4 | en la tanda 0 se midió la población, sin leer la muestra | sin umbral | `scripts/tasas_t4t3_tf.py`, `tasas/tasas_t4_tramo3.json`, `vigilancias.vigilancia:7` |
+
+- **La ampliación:** salta la atención de ítems, no; la de no ítems, sí; la de RI, no. Hay ampliación: sí. Con las dudosas fuera: aceptadas:items no, aceptadas:no_items sí, RI no.
+- **Las aceptadas no ítems sobre las 60** (las 30 del primer tramo y las 30 de la ampliación; cada celda con el doble: sí): freno por la atención sobre las 60, sí; freno por intervalos, no. Con las dudosas fuera, la sensibilidad da otra decisión: no. Su fila de la hoja es la de las 60 (tablas 10 y 11).
+- **La ponderada total y la atención de RI con las 60** van como información, sin decisión, al lado de las del segundo tramo (tabla 12).
+- **Las líneas de base:** la tanda 1, los valores T4.* de tanda_final/preregistro/preregistro_tanda_final_derivada_T4.huecos.json (versión derivada para la lectura); la tanda 0, al lado, la de cada fila de `lineas_de_base`.
+- **Los controles de la entrada** (`scripts/tasas_t4t3_tf.py`): 48 de 48 pasan.
+- **Lo del segundo tramo da lo mismo** (`lo_del_segundo_tramo`): 9 de 9 bloques iguales a `tasas/tasas_t4_tramo2.json`; en las líneas de base cambian solo `aceptadas:total.tanda0` y `atencion_RI.tanda0`.
+
+#### Tabla 2. Las aceptadas por celda (`aceptadas.<estrato>.por_celda`; pesos de `t3/muestras/umbrales_t4_tf.json`)
+
+| estrato | celda | N | peso | leídas | con error | sin error | dudosa |
+|---|---|---:|---:|---:|---:|---:|---:|
+| items | RI:sin_raiz | 62 | 0,0480 | 12 | 1 | 11 | 0 |
+| items | RI:resto | 3 | 0,0023 | 3 | 1 | 2 | 0 |
+| items | NG:sin_raiz | 45 | 0,0349 | 5 | 1 | 4 | 0 |
+| items | NG:resto | 1.181 | 0,9148 | 10 | 3 | 7 | 0 |
+| no_items | RI:sin_raiz | 322 | 0,0900 | 10 | 2 | 8 | 0 |
+| no_items | RI:resto | 48 | 0,0134 | 5 | 1 | 4 | 0 |
+| no_items | NG:sin_raiz | 107 | 0,0299 | 5 | 0 | 5 | 0 |
+| no_items | NG:resto | 3.102 | 0,8667 | 10 | 4 | 6 | 0 |
+
+#### Tabla 3. Las tasas de las aceptadas, la regla y la sensibilidad (`aceptadas.<estrato>.regla` y `.sensibilidad_sin_dudosas`)
+
+| estrato | cuenta | errores | leídas | tasa ponderada | n ef. | Wilson | p de la atención | atención | freno por intervalos | atención de T3 desde | freno de T3 desde |
+|---|---|---:|---:|---:|---:|---|---:|---|---|---:|---:|
+| items | regla (dudosa = error) | 6 | 30 | 0,2862 | 11,888 | [0,1090; 0,5678] | 0,2710 | no | no | 0,3899 | 0,6481 |
+| items | sensibilidad (dudosas fuera) | 6 | 30 | 0,2862 | 11,888 | [0,1090; 0,5678] | 0,2710 | no | no | 0,3899 | 0,6481 |
+| no_items | regla (dudosa = error) | 7 | 30 | 0,3674 | 13,133 | [0,1661; 0,6287] | 0,0168 | sí | no | 0,2897 | 0,5440 |
+| no_items | sensibilidad (dudosas fuera) | 7 | 30 | 0,3674 | 13,133 | [0,1661; 0,6287] | 0,0168 | sí | no | 0,2897 | 0,5440 |
+
+items: la sensibilidad da otra decisión de atención, no; de freno, no. La distribución bajo H0: 3.432 valores, suma 1,000000 (`tasas/distribuciones_bajo_H0_t4_tramo3.json`, `aceptadas:items:regla`).
+
+no_items: la sensibilidad da otra decisión de atención, no; de freno, no. La distribución bajo H0: 4.106 valores, suma 1,000000 (`tasas/distribuciones_bajo_H0_t4_tramo3.json`, `aceptadas:no_items:regla`).
+
+#### Tabla 4. La ponderada total y la atención de RI (`aceptadas.total` y `atencion_RI`)
+
+| cifra | cuenta | errores de leídas | tasa | n ef. | Wilson | p de la atención | atención |
+|---|---|---|---:|---:|---|---:|---|
+| ponderada total | regla | — | 0,3458 | 21,260 | [0,1819; 0,5570] | — | sin umbral |
+| ponderada total | sensibilidad | — | 0,3458 | 21,260 | [0,1819; 0,5570] | — | sin umbral |
+| atención de RI | regla | 5 de 30 | 0,1843 | 16,967 | [0,0661; 0,4191] | 0,2945 | no |
+| atención de RI | sensibilidad | 5 de 30 | 0,1843 | 16,967 | [0,0661; 0,4191] | 0,2945 | no |
+
+Atención de RI: 435 unidades RI aceptadas; pesos items:RI:sin_raiz 0,1425, items:RI:resto 0,0069, no_items:RI:sin_raiz 0,7402, no_items:RI:resto 0,1103; por celda, con la regla, items:RI:sin_raiz 1 de 12, items:RI:resto 1 de 3, no_items:RI:sin_raiz 2 de 10, no_items:RI:resto 1 de 5.
+
+#### Tabla 5. NG `sin_raiz`, por celda y sin umbral (`NG_sin_raiz`)
+
+| estrato | N | leídas | con error | sin error | dudosa | tasa con la regla | tasa sin las dudosas |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| items | 45 | 5 | 1 | 4 | 0 | 0,2000 | 0,2000 |
+| no_items | 107 | 5 | 0 | 5 | 0 | 0,0000 | 0,0000 |
+
+#### Tabla 6. La cola por celda y su tasa (`cola`)
+
+| celda | N | peso | leídas | con error | sin error | dudosa |
+|---|---:|---:|---:|---:|---:|---:|
+| RI:sin_raiz | 6 | 0,0750 | 6 | 1 | 5 | 0 |
+| RI:resto | 2 | 0,0250 | 2 | 1 | 1 | 0 |
+| NG:sin_raiz | 5 | 0,0625 | 5 | 4 | 1 | 0 |
+| NG:resto | 67 | 0,8375 | 17 | 6 | 11 | 0 |
+
+| cuenta | errores | leídas | tasa ponderada | n ef. | Wilson | la regla del 25 % se dispara |
+|---|---:|---:|---:|---:|---|---|
+| regla (dudosa = error) | 12 | 30 | 0,3706 | 23,100 | [0,2057; 0,5723] | sí |
+| sensibilidad (dudosas fuera) | 12 | 30 | 0,3706 | 23,100 | [0,2057; 0,5723] | sí |
+
+La sensibilidad da otra decisión de la regla del 25 %: no.
+
+#### Tabla 7. Las vigilancias (1), (2), (3) y (7), por celda (`vigilancias.<muestra>.por_celda`)
+
+| muestra | celda | N | leídas | respuestas |
+|---|---|---:|---:|---|
+| vigilancia:1 | RI:sin_raiz | 105 | 10 | sí 3, no 7, no decidible 0 |
+| vigilancia:1 | RI:resto | 17 | 5 | sí 2, no 3, no decidible 0 |
+| vigilancia:1 | NG:sin_raiz | 59 | 5 | sí 0, no 5, no decidible 0 |
+| vigilancia:1 | NG:resto | 2.011 | 10 | sí 2, no 8, no decidible 0 |
+| vigilancia:2 | RI:sin_raiz | 98 | 13 | vaciamiento 3, no vaciamiento 10, no decidible 0 |
+| vigilancia:2 | RI:resto | 2 | 2 | vaciamiento 1, no vaciamiento 1, no decidible 0 |
+| vigilancia:2 | NG:sin_raiz | 5 | 5 | vaciamiento 1, no vaciamiento 4, no decidible 0 |
+| vigilancia:2 | NG:resto | 187 | 10 | vaciamiento 1, no vaciamiento 9, no decidible 0 |
+| vigilancia:3 | RI:sin_raiz | 12 | 10 | duplicación 2, distintos 8 |
+| vigilancia:3 | RI:resto | 5 | 5 | duplicación 1, distintos 4 |
+| vigilancia:3 | NG:sin_raiz | 3 | 3 | duplicación 0, distintos 3 |
+| vigilancia:3 | NG:resto | 200 | 12 | duplicación 2, distintos 10 |
+| vigilancia:7 | RI:sin_raiz | 1 | 1 | con apoyo 1, sin apoyo 0, no decidible 0 |
+| vigilancia:7 | RI:resto | 0 | 0 | con apoyo 0, sin apoyo 0, no decidible 0 |
+| vigilancia:7 | NG:sin_raiz | 0 | 0 | con apoyo 0, sin apoyo 0, no decidible 0 |
+| vigilancia:7 | NG:resto | 5 | 5 | con apoyo 3, sin apoyo 2, no decidible 0 |
+
+#### Tabla 8. Las tasas de las vigilancias, la cruda y la ponderada por celda (`vigilancias.<muestra>`)
+
+| muestra | se vigila | por respuesta | fuera de la tasa | cruda | Wilson (cruda) | ponderada por celda | n ef. | Wilson (ponderada) |
+|---|---|---|---|---|---|---:|---:|---|
+| vigilancia:1 | sí | sí 7, no 23, no decidible 0 | no decidible 0 | 7 de 30, 0,2333 | [0,1179; 0,4093] | 0,2010 | 11,827 | [0,0627; 0,4858] |
+| vigilancia:2 | vaciamiento | vaciamiento 6, no vaciamiento 24, no decidible 0 | — | 6 de 30, 0,2000 | [0,0951; 0,3731] | 0,1483 | 20,097 | [0,0516; 0,3579] |
+| vigilancia:3 | duplicación | duplicación 5, distintos 25 | — | 5 de 30, 0,1667 | [0,0734; 0,3356] | 0,1670 | 14,423 | [0,0522; 0,4218] |
+| vigilancia:7 | sin apoyo | con apoyo 4, sin apoyo 2, no decidible 0 | — | 2 de 6, 0,3333 | [0,0968; 0,7000] | — | — | leída entera, sin celdas |
+
+Vigilancia (3): el grupo es de nodos con la misma unidad y el mismo tramo, así que no ve las duplicaciones con tramos distintos (registro de decisiones, §29; LEEME de la lectura de T4).
+
+#### Tabla 9. La observación (12), por celda (`observacion:12`; pesos de `t3/muestras/poblaciones_t4t1_tf.json`)
+
+| celda | N | peso | leídas | correcta | no decidible | incorrecta |
+|---|---:|---:|---:|---:|---:|---:|
+| RI:sin_raiz | 1.657 | 0,0664 | 10 | 9 | 0 | 1 |
+| RI:resto | 481 | 0,0193 | 5 | 5 | 0 | 0 |
+| NG:sin_raiz | 766 | 0,0307 | 5 | 5 | 0 | 0 |
+| NG:resto | 22.045 | 0,8836 | 10 | 10 | 0 | 0 |
+
+Cruda: 29 correctas de 30, 0,9667, Wilson [0,8333; 0,9941]. Ponderada por celda: 0,9934, n ef. 12,694, Wilson [0,7576; 0,9999]. Las incorrectas, por `capa_pipeline`: catálogo, 1 (fichas `fichas_observacion_12.md#5`).
+
+#### Tabla 10. Las aceptadas no ítems sobre las 60, por celda (`aceptadas_no_items_sobre_60`; pesos de `t3/muestras/umbrales_t4_tf.json`)
+
+Cada celda: primer tramo + ampliación = las 60.
+
+| celda | N | peso | leídas | con error | sin error | dudosa | el doble |
+|---|---:|---:|---|---|---|---|---|
+| RI:sin_raiz | 322 | 0,0900 | 10 + 10 = 20 | 2 + 2 = 4 | 8 + 8 = 16 | 0 + 0 = 0 | sí |
+| RI:resto | 48 | 0,0134 | 5 + 5 = 10 | 1 + 1 = 2 | 4 + 4 = 8 | 0 + 0 = 0 | sí |
+| NG:sin_raiz | 107 | 0,0299 | 5 + 5 = 10 | 0 + 2 = 2 | 5 + 3 = 8 | 0 + 0 = 0 | sí |
+| NG:resto | 3.102 | 0,8667 | 10 + 10 = 20 | 4 + 4 = 8 | 6 + 6 = 12 | 0 + 0 = 0 | sí |
+| total | 3.579 | 1,0000 | 30 + 30 = 60 | 7 + 9 = 16 | 23 + 21 = 44 | 0 + 0 = 0 | sí |
+
+#### Tabla 11. La tasa sobre las 60 y los dos frenos (`aceptadas_no_items_sobre_60.regla` y `.sensibilidad_sin_dudosas`)
+
+El umbral de `t3/muestras/umbrales_t4_tf.json` (`aceptadas.no_items.umbrales.freno_por_atencion_sobre_60`): 0,2437, p 0,0497. El superior del Wilson de la tanda 0: 0,2968.
+
+| cuenta | errores | leídas | tasa ponderada | n ef. | Wilson | umbral recalculado (igual al del JSON) | p sobre las 60 | freno por la atención sobre las 60 | freno por intervalos | freno |
+|---|---:|---:|---:|---:|---|---|---:|---|---|---|
+| regla (dudosa = error) | 16 | 60 | 0,3733 | 26,266 | [0,2160; 0,5630] | 0,2437 (sí) | 0,0009 | sí | no | sí |
+| sensibilidad (dudosas fuera) | 16 | 60 | 0,3733 | 26,266 | [0,2160; 0,5630] | 0,2437 (sí) | 0,0009 | sí | no | sí |
+
+El umbral y el p-valor dicen lo mismo: sí. La sensibilidad da otra decisión: no. La distribución bajo H0, con las n de la regla: 27.815 valores, suma 1,000000 (`tasas/distribuciones_bajo_H0_t4_tramo3.json`, `aceptadas:no_items:sobre_60:regla`).
+
+#### Tabla 12. La ponderada total y la atención de RI: el segundo tramo y con las 60 de no ítems (`aceptadas.total`, `atencion_RI` e `informacion_con_las_60`)
+
+| cifra | no ítems con | cuenta | errores de leídas | tasa | n ef. | Wilson | p de la atención | decide |
+|---|---|---|---|---:|---:|---|---:|---|
+| ponderada total | 30 | regla | — | 0,3458 | 21,260 | [0,1819; 0,5570] | — | sin umbral |
+| ponderada total | 60 | regla | — | 0,3502 | 37,773 | [0,2185; 0,5097] | — | información |
+| ponderada total | 30 | sensibilidad | — | 0,3458 | 21,260 | [0,1819; 0,5570] | — | sin umbral |
+| ponderada total | 60 | sensibilidad | — | 0,3502 | 37,773 | [0,2185; 0,5097] | — | información |
+| atención de RI | 30 | regla | 5 de 30 | 0,1843 | 16,967 | [0,0661; 0,4191] | 0,2945 | atención: no |
+| atención de RI | 60 | regla | 8 de 45 | 0,1843 | 32,978 | [0,0877; 0,3467] | 0,2339 | información |
+| atención de RI | 30 | sensibilidad | 5 de 30 | 0,1843 | 16,967 | [0,0661; 0,4191] | 0,2945 | atención: no |
+| atención de RI | 60 | sensibilidad | 8 de 45 | 0,1843 | 32,978 | [0,0877; 0,3467] | 0,2339 | información |
