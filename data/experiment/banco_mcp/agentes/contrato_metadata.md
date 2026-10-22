@@ -8,12 +8,16 @@ producirla, y entonces `completitud_R3.completa` es `false`).
 |---|---|---|---|
 | `contrato` | — | `"agentes/contrato_metadata.md v1"` | constante |
 | `pregunta_id`, `brazo`, `modo` | — | id de la corrida; `kg`/`vector`; `real`/`init` | argumentos del lanzador |
-| `sesion` | R1/R7 | `session_id` (fijado con `--session-id`), `copia_jsonl` (índice, no fuente de verdad), `cwd` aislado, `claude_code_version` | `claude --version`, `system/init` |
+| `sesion` | R1/R7 | `session_id` (fijado con `--session-id`), `copia_jsonl` (índice, no fuente de verdad), `cwd` (el compartido de las sesiones del banco, fuera del repo y de git), `claude_code_version` | `claude --version`, `system/init` |
+| `sesion.carpeta_configuracion` | §84 | la carpeta de configuración de la sesión, `config/<session_id>/` bajo la raíz de las sesiones; es el `CLAUDE_CONFIG_DIR` de `env_declarado` en `comando_<id>.json` | lanzador |
+| `sesion.copia_transcripcion` | §84 | `sí`/`no`: si se copió la transcripción desde esa carpeta (`projects/<slug del cwd>/<session_id>.jsonl`; solo en modo real) | lanzador |
+| `sesion.copia_resultados_en_disco` | §84 | `sí`/`no`: si se copiaron los resultados guardados en disco (`projects/<slug del cwd>/<session_id>/tool-results/`; solo en modo real) | lanzador |
 | `modelos_R8` | R8 | `declarado` (`--model`), `inventario_observado` (todos los modelos vistos: init + `modelUsage` + `message.model` de cada mensaje), `uso_por_modelo` | stream-json |
 | `credenciales` | 6 | `via_declarada` (`api`/`bedrock`), `apiKeySource_en_init` | lanzador + `system/init` |
 | `servidores_mcp` | R1 | estado en init, `servidor`, `version_servidor`, `config` íntegra + `config_sha256`, `fuente` (sha del kg.json o de la matriz, backend, n), `entorno_servidor` (versiones) | línea `inicio` del log R1 |
 | `sha_fuentes` | 5 | `kg_sha256` / `sha256_matriz_vectorial` (el que corresponda al brazo) | log R1 |
 | `harness_R10` | R10 | `modo` (`--bare`), `permission_mode`, `claude_code_version` (salida de `claude --version`), `claude_code_version_sellada` (de `config_agentes.json`) y `coincide_con_sellada` (si es `false`, la traza se declara como corrida con CLI no sellado y el smoke se re-valida), `flags_estructurales`, `tools_denegadas`, `tools_builtin`, `config_agentes_sha256`, `sha_identidad_pipeline` | config sellada + init |
+| `harness_R10.lanzador` | §84 | ruta (relativa al repo) y sha256 de cada archivo del lanzador que corrió: `agentes/lanzar_agente.py` y, en A2.1, `a2_1/lanzar_agente_a2_1.py`; va también en `comando_<id>.json`, aparte de `sha_identidad_pipeline` | `__file__` de cada módulo cargado, al arrancar |
 | `inventario_tools_R6` | R6 | `tools_en_init`, `esperadas`, `coincide` | `system/init` |
 | `corte_R5` | R5 | `max_turns`, `tope_tool_calls_prompt`, `max_budget_usd` (declarados) y `num_turns_observado`, `n_tool_calls_observado`, `corte_disparado` (subtype del result si no fue `success`) | config + result |
 | `completitud_R3` | R3 | `completa` (bool) y `motivos_incompleta` | regla abajo |

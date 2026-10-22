@@ -7,7 +7,8 @@ Por sesión produce, en --out:
   comando_<id>.json      argv completo + env relevante (sin credenciales) + sha de identidad
   stream_<id>.jsonl      salida --output-format stream-json íntegra (init, mensajes, result)
   stderr_<id>.txt        stderr del CLI
-  sesion_<id>.jsonl      copia del jsonl de sesión de Claude Code (índice, no fuente de verdad)
+  sesion_<id>.jsonl      copia del jsonl de sesión de Claude Code (índice, no fuente de verdad), desde la
+                         carpeta de configuración de la sesión
   tool_results_<id>/     derrames a disco de resultados grandes (si los hubo)
   log_r1_<id>.jsonl      log R1 del servidor MCP de ESA sesión (fuente de verdad)
   meta_<id>.json         metadata por traza según agentes/contrato_metadata.md
@@ -24,6 +25,9 @@ Vía de credenciales (--via, entregable 6): `api` (ANTHROPIC_API_KEY del entorno
 cambia entre vías: el sha de identidad del pipeline (`sha_identidad`) se
 computa sobre prompt, plantilla, bloques, configs de agentes/MCP/servidores,
 modelo y flags — y excluye el entorno de credenciales.
+
+Cada sesión corre con su carpeta de configuración nueva (CLAUDE_CONFIG_DIR) y con el cwd compartido, los dos
+bajo --sesiones (BANCO_SESIONES), fuera del repo y de cualquier repo de git.
 
 Uso:
   lanzar_agente.py --brazo kg --id Q01 --pregunta "..." --out <dir> --modo init
@@ -109,7 +113,8 @@ def slug_proyecto(cwd: Path) -> str:
     return str(cwd).replace("/", "-").replace(" ", "-").replace("_", "-")
 
 
-def env_sesion(cfg: dict, brazo: str, via: str, log_r1: Path, tag: str, modo: str) -> tuple[dict, dict]:
+def env_sesion(cfg: dict, brazo: str, via: str, log_r1: Path, tag: str, modo: str,
+               config_cli: Path | None = None) -> tuple[dict, dict]:
     """(env completo para el subproceso, env declarado —sin secretos— para persistir)."""
     env = dict(os.environ)
     # limpiar vías para que solo quede la elegida
@@ -136,9 +141,103 @@ def env_sesion(cfg: dict, brazo: str, via: str, log_r1: Path, tag: str, modo: st
         env.setdefault("ANTHROPIC_API_KEY", "sk-ant-invalido-modo-init")
         declarado["ANTHROPIC_BASE_URL"] = env["ANTHROPIC_BASE_URL"]
     env.update({k: v for k, v in declarado.items() if k.isupper()})
+    # Entorno de la sesión (registro de decisiones, §83 y §84): arranca vacío. Del padre pasan solo las de
+    # ENTORNO_PERMITIDAS, MAX_MCP_OUTPUT_TOKENS y las de la vía (la clave en api, ENTORNO_AWS en
+    # bedrock); encima va lo del lanzador, que es lo calculado arriba, DISABLE_AUTOUPDATER=1 y, si se pasa,
+    # CLAUDE_CONFIG_DIR, la carpeta de configuración de la sesión (§84).
+    padre = dict(os.environ)
+    vienen = ENTORNO_PERMITIDAS + ("MAX_MCP_OUTPUT_TOKENS",) + (("ANTHROPIC_API_KEY",) if via == "api" else ENTORNO_AWS)
+    sesion = {k: v for k, v in padre.items() if k in vienen}
+    no_heredadas = sorted(k for k in padre if k not in sesion)
+    declarado["DISABLE_AUTOUPDATER"] = "1"
+    if config_cli is not None:
+        declarado["CLAUDE_CONFIG_DIR"] = str(config_cli)
+    sesion.update({k: v for k, v in declarado.items() if k.isupper()})
+    if modo == "init":   # la clave del modo init: en la vía api, la de arriba; en las otras, la inválida
+        sesion["ANTHROPIC_API_KEY"] = env["ANTHROPIC_API_KEY"] if via == "api" else "sk-ant-invalido-modo-init"
+    # El registro: cada variable de la sesión con su valor (la carpeta personal como $HOME), salvo las
+    # credenciales, que van por presencia; y los nombres del padre que no pasaron, sin valores.
+    casa = str(Path.home())
+    declarado["entorno_de_la_sesion"] = {
+        k: (("presente: sí" if sesion.get(k) else "presente: no") if k in CREDENCIALES_DEL_ENTORNO
+            else sesion[k].replace(casa, "$HOME"))
+        for k in sorted(set(sesion) | {"ANTHROPIC_API_KEY"})}
+    declarado["entorno_no_heredadas"] = no_heredadas
+    env = sesion
     mascara = {"BANCO_REPO": ".", "BANCO_VENV_VECTOR": "<venv_vector fuera del repo>"}
-    return env, {k: (mascara[k] if k in mascara else (rel_repo(v) if k == "BANCO_LOG_R1" else v))
+    return env, {k: (mascara[k] if k in mascara else (rel_repo(v) if k in ("BANCO_LOG_R1", "CLAUDE_CONFIG_DIR") else v))
                  for k, v in declarado.items()}
+
+
+# Lista cerrada del entorno de la sesión (registro de decisiones, §83, §84 y §88), la que usa env_sesion. De la
+# candidata (PATH, HOME, TMPDIR, USER, LOGNAME, SHELL, LANG y las LC_*), medida una por una en modo init en los
+# dos brazos (U-ENTORNO-LIMPIO, etapa b), PATH es la única que hace falta: sin ella no se encuentra el CLI.
+# HOME no la pide la medición; va (§84) para que el CLI use la misma carpeta personal desde la que el lanzador
+# copia la sesión en el modo real. Las demás, medidas sin necesidad, quedan afuera. NEO4J_URI va (§88) porque es
+# el punto de conexión del Neo4j del grafo: una unidad con su propio contenedor la pasa desde la terminal. El
+# usuario y la contraseña del grafo siguen siendo los de conexion.py: ninguna otra NEO4J_* pasa. En la vía
+# bedrock pasan además las de AWS. Las credenciales se registran solo por presencia.
+ENTORNO_PERMITIDAS = ("PATH", "HOME", "NEO4J_URI")
+ENTORNO_AWS = ("AWS_REGION", "AWS_DEFAULT_REGION", "AWS_PROFILE", "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY",
+               "AWS_SESSION_TOKEN", "AWS_BEARER_TOKEN_BEDROCK")
+CREDENCIALES_DEL_ENTORNO = ("ANTHROPIC_API_KEY", "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_SESSION_TOKEN",
+                            "AWS_BEARER_TOKEN_BEDROCK")
+
+# Raíz de las sesiones del banco (registro de decisiones, §84 y §85): cada sesión corre con una carpeta de
+# configuración nueva y vacía, config/<session_id>/ (CLAUDE_CONFIG_DIR), y todas las de los dos brazos, también en
+# paralelo, con el mismo cwd, cwd/, que el CLI deja vacío. Las dos van fuera del repo y de cualquier repo de git:
+# sin CLAUDE_CONFIG_DIR el CLI lee la configuración de la cuenta y copia su `env` a su entorno, y con el cwd en un
+# repo de git arma el contexto de sistema con su estado. El cwd no nombra el brazo. --sesiones la cambia.
+BANCO_SESIONES = Path.home() / "INGENIERIA IA" / "TESIS" / "fuera_del_repo" / "banco_sesiones"
+
+
+def dentro_de_git(p: Path) -> Path | None:
+    """La carpeta de `p` o de más arriba que tiene `.git` (la raíz de su repo de git), o None."""
+    return next((q for q in (p, *p.parents) if (q / ".git").exists()), None)
+
+
+def preparar_sesion(raiz: Path, cwd: Path | None, session_id: str) -> tuple[Path, Path]:
+    """(carpeta de configuración, cwd) de una sesión, antes de lanzarla. El cwd es <raiz>/cwd salvo que se pase
+    otro; frena si está dentro del repo, dentro de un repo de git o no está vacío. La carpeta de configuración es
+    <raiz>/config/<session_id>, nueva: frena si ya existe."""
+    raiz = Path(raiz).resolve()
+    cwd = Path(cwd or raiz / "cwd").resolve()
+    if cwd.is_relative_to(REPO_DIR):
+        raise SystemExit(f"cwd dentro del repo: {rel_repo(cwd)}")
+    git = dentro_de_git(cwd)
+    if git is not None:
+        raise SystemExit(f"cwd dentro de un repo de git ({rel_repo(git)}): {rel_repo(cwd)}")
+    cwd.mkdir(parents=True, exist_ok=True)
+    if any(cwd.iterdir()):
+        raise SystemExit(f"cwd no vacío: {rel_repo(cwd)}")
+    config_cli = raiz / "config" / session_id
+    if config_cli.exists():
+        raise SystemExit(f"la carpeta de configuración ya existe: {rel_repo(config_cli)}")
+    config_cli.mkdir(parents=True)
+    return config_cli, cwd
+
+
+def copiar_sesion(config_cli: Path, cwd: Path, session_id: str, out: Path, pid: str,
+                  copiar: bool) -> tuple[Path | None, dict]:
+    """Copia la transcripción y los resultados guardados en disco de una sesión desde su carpeta de configuración
+    (projects/<slug del cwd>/; ~/.claude no se lee). (copia de la transcripción o None, campos de meta["sesion"])."""
+    src = config_cli / "projects" / slug_proyecto(cwd) / f"{session_id}.jsonl"
+    sesion_copia, resultados = None, False
+    if copiar and src.exists():
+        sesion_copia = out / f"sesion_{pid}.jsonl"
+        shutil.copyfile(src, sesion_copia)
+        derr = src.parent / session_id / "tool-results"
+        if derr.exists():
+            shutil.copytree(derr, out / f"tool_results_{pid}", dirs_exist_ok=True)
+            resultados = True
+    return sesion_copia, {"carpeta_configuracion": rel_repo(config_cli),
+                          "copia_transcripcion": "sí" if sesion_copia else "no",
+                          "copia_resultados_en_disco": "sí" if resultados else "no"}
+
+
+def archivos_lanzador(*rutas) -> list[dict]:
+    """Ruta (relativa al repo) y sha256 de cada archivo del lanzador que corre (registro de decisiones, §84)."""
+    return [{"ruta": rel_repo(r), "sha256": sha256_file(Path(r))} for r in rutas]
 
 
 # --------------------------------------------------------------------------- #
@@ -330,6 +429,7 @@ def armar_meta(cfg: dict, brazo: str, ident: dict, sha_id: str, comando: dict, s
 
 # --------------------------------------------------------------------------- #
 def main() -> int:
+    lanzador = archivos_lanzador(__file__)
     ap = argparse.ArgumentParser()
     ap.add_argument("--brazo", choices=["kg", "vector"], required=True)
     ap.add_argument("--id", required=True, help="id de la pregunta/corrida (sesion_tag)")
@@ -337,23 +437,23 @@ def main() -> int:
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--modo", choices=["real", "init"], default="init")
     ap.add_argument("--via", choices=["api", "bedrock"], default="api")
-    ap.add_argument("--cwd", type=Path, default=None, help="cwd aislado (default: smoke/cwd_<brazo>)")
+    ap.add_argument("--cwd", type=Path, default=None, help="cwd de la sesión (default: <sesiones>/cwd, el compartido)")
+    ap.add_argument("--sesiones", type=Path, default=BANCO_SESIONES, help="raíz de las sesiones del banco")
     ap.add_argument("--timeout-s", type=float, default=900.0)
     a = ap.parse_args()
 
     cfg = cargar(CONFIG_AGENTES)
     precios = cargar(PRECIOS)
     a.out.mkdir(parents=True, exist_ok=True)
-    cwd = (a.cwd or (BANCO_DIR / "smoke" / f"cwd_{a.brazo}")).resolve()
-    cwd.mkdir(parents=True, exist_ok=True)
+    session_id = str(uuid.uuid4())
+    config_cli, cwd = preparar_sesion(a.sesiones, a.cwd, session_id)
     prompt = construir_prompt(cfg, a.brazo, a.pregunta)
     (a.out / f"prompt_{a.id}.txt").write_text(prompt, encoding="utf-8")
     ident = archivos_identidad(cfg, a.brazo)
     flags = flags_estructurales(cfg, a.brazo)
     sha_id = sha_identidad(ident, cfg["modelo"], flags, prompt)
     log_r1 = (a.out / f"log_r1_{a.id}.jsonl").resolve()
-    env, env_decl = env_sesion(cfg, a.brazo, a.via, log_r1, a.id, a.modo)
-    session_id = str(uuid.uuid4())
+    env, env_decl = env_sesion(cfg, a.brazo, a.via, log_r1, a.id, a.modo, config_cli)
     mcp_json = str(BANCO_DIR / cfg["brazos"][a.brazo]["mcp_config"])
     cmd = ["claude", cfg["modo_harness"], "-p", prompt, "--model", cfg["modelo"],
            "--output-format", "stream-json", "--verbose", "--tools", "",
@@ -369,7 +469,7 @@ def main() -> int:
     comando = {"argv": [("<prompt>" if x == prompt else (rel_repo(x) if x == mcp_json else x)) for x in cmd],
                "flags_estructurales": flags, "cwd": rel_repo(cwd), "env_declarado": env_decl,
                "session_id": session_id, "claude_code_version": claude_version,
-               "archivos_identidad": ident, "sha_identidad_pipeline": sha_id,
+               "archivos_identidad": ident, "sha_identidad_pipeline": sha_id, "lanzador": lanzador,
                "lanzado": datetime.now(timezone.utc).isoformat(timespec="seconds")}
     (a.out / f"comando_{a.id}.json").write_text(json.dumps(comando, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -395,20 +495,14 @@ def main() -> int:
                 proc.kill()
     duracion = time.time() - t0
 
-    # copia de la sesión (índice) y de los derrames
-    sesion_copia = None
-    if a.modo == "real":
-        src = Path.home() / ".claude" / "projects" / slug_proyecto(cwd) / f"{session_id}.jsonl"
-        if src.exists():
-            sesion_copia = a.out / f"sesion_{a.id}.jsonl"
-            shutil.copyfile(src, sesion_copia)
-            derr = src.parent / session_id / "tool-results"
-            if derr.exists():
-                shutil.copytree(derr, a.out / f"tool_results_{a.id}", dirs_exist_ok=True)
+    # copia de la sesión (índice) y de los derrames, desde la carpeta de configuración de la sesión
+    sesion_copia, copia = copiar_sesion(config_cli, cwd, session_id, a.out, a.id, a.modo == "real")
     stream = parsear_stream(stream_path.read_text(encoding="utf-8").splitlines())
     log = leer_log_r1(log_r1)
     meta = armar_meta(cfg, a.brazo, ident, sha_id, comando, stream, log, precios, a.via, a.modo, a.id,
                       sesion_copia, claude_version)
+    meta["sesion"] |= copia
+    meta["harness_R10"]["lanzador"] = lanzador
     meta["duracion_s"] = round(duracion, 1)
     (a.out / f"meta_{a.id}.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"id": a.id, "brazo": a.brazo, "modo": a.modo, "tools": meta["inventario_tools_R6"],

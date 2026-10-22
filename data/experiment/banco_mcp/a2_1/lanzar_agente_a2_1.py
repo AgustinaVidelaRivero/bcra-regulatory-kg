@@ -12,7 +12,9 @@ cual. Lo propio de A2.1:
   · los archivos de identidad con la config y el código del servidor de cada brazo;
   · `--max-turns` para las sesiones de H-B2 (si no se pasa, el 12 de la config), que se
     registra en meta["hb2"] junto con los conteos que H-B2 caracteriza;
-  · cwd aislado por brazo en a2_1/cwd/<brazo>/ (vacío; no lleva archivos).
+  · la carpeta de configuración y el cwd de la sesión, los del banco (LA.preparar_sesion): config/<session_id>/
+    y el cwd compartido, bajo --sesiones; la copia de la sesión, desde esa carpeta (LA.copiar_sesion);
+  · en el registro, el lanzador que corrió: este archivo y agentes/lanzar_agente.py.
 El cuerpo de `lanzar` replica `lanzar_agente.main` con esas diferencias.
 
 Uso:
@@ -22,7 +24,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import shutil
 import subprocess
 import sys
 import time
@@ -70,10 +71,11 @@ def archivos_identidad(cfg: dict, brazo: str) -> dict:
     return {k: {"ruta": rel_repo(v), "sha256": sha256_file(v)} for k, v in rutas.items()}
 
 
-def env_sesion(cfg: dict, brazo: str, via: str, log_r1: Path, tag: str, modo: str) -> tuple[dict, dict]:
+def env_sesion(cfg: dict, brazo: str, via: str, log_r1: Path, tag: str, modo: str,
+               config_cli: Path | None = None) -> tuple[dict, dict]:
     """La del lanzador sellado: los brazos de fragmentos piden el venv del servidor vectorial
     igual que el brazo `vector` de la base, que es lo único que esa función mira del brazo."""
-    return LA.env_sesion(cfg, "vector", via, log_r1, tag, modo)
+    return LA.env_sesion(cfg, "vector", via, log_r1, tag, modo, config_cli)
 
 
 def conteos_hb2(lineas: list[str], result: dict | None, log: dict) -> dict:
@@ -108,22 +110,23 @@ def conteos_hb2(lineas: list[str], result: dict | None, log: dict) -> dict:
 
 
 def lanzar(brazo: str, pid: str, pregunta: str, out: Path, modo: str = "init", via: str = "api",
-           max_turns: int | None = None, cwd: Path | None = None, timeout_s: float = 900.0) -> dict:
+           max_turns: int | None = None, cwd: Path | None = None, timeout_s: float = 900.0,
+           sesiones: Path = LA.BANCO_SESIONES) -> dict:
+    lanzador = LA.archivos_lanzador(LA.__file__, __file__)
     cfg = cargar_cfg(max_turns)
     if brazo not in cfg["brazos"]:
         raise SystemExit(f"brazo desconocido: {brazo}")
     precios = LA.cargar(LA.PRECIOS)
     out.mkdir(parents=True, exist_ok=True)
-    cwd = (cwd or (AQUI / "cwd" / brazo)).resolve()
-    cwd.mkdir(parents=True, exist_ok=True)
+    session_id = str(uuid.uuid4())
+    config_cli, cwd = LA.preparar_sesion(sesiones, cwd, session_id)
     prompt = LA.construir_prompt(cfg, brazo, pregunta)
     (out / f"prompt_{pid}.txt").write_text(prompt, encoding="utf-8")
     ident = archivos_identidad(cfg, brazo)
     flags = LA.flags_estructurales(cfg, brazo)
     sha_id = LA.sha_identidad(ident, cfg["modelo"], flags, prompt)
     log_r1 = (out / f"log_r1_{pid}.jsonl").resolve()
-    env, env_decl = env_sesion(cfg, brazo, via, log_r1, pid, modo)
-    session_id = str(uuid.uuid4())
+    env, env_decl = env_sesion(cfg, brazo, via, log_r1, pid, modo, config_cli)
     mcp_json = str(BANCO_DIR / cfg["brazos"][brazo]["mcp_config"])
     cmd = ["claude", cfg["modo_harness"], "-p", prompt, "--model", cfg["modelo"],
            "--output-format", "stream-json", "--verbose", "--tools", "",
@@ -139,7 +142,7 @@ def lanzar(brazo: str, pid: str, pregunta: str, out: Path, modo: str = "init", v
     comando = {"argv": [("<prompt>" if x == prompt else (rel_repo(x) if x == mcp_json else x)) for x in cmd],
                "flags_estructurales": flags, "cwd": rel_repo(cwd), "env_declarado": env_decl,
                "session_id": session_id, "claude_code_version": claude_version,
-               "archivos_identidad": ident, "sha_identidad_pipeline": sha_id,
+               "archivos_identidad": ident, "sha_identidad_pipeline": sha_id, "lanzador": lanzador,
                "lanzado": datetime.now(timezone.utc).isoformat(timespec="seconds")}
     (out / f"comando_{pid}.json").write_text(json.dumps(comando, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -165,21 +168,15 @@ def lanzar(brazo: str, pid: str, pregunta: str, out: Path, modo: str = "init", v
                 proc.kill()
     duracion = time.time() - t0
 
-    sesion_copia = None
-    if modo == "real":
-        src = Path.home() / ".claude" / "projects" / LA.slug_proyecto(cwd) / f"{session_id}.jsonl"
-        if src.exists():
-            sesion_copia = out / f"sesion_{pid}.jsonl"
-            shutil.copyfile(src, sesion_copia)
-            derr = src.parent / session_id / "tool-results"
-            if derr.exists():
-                shutil.copytree(derr, out / f"tool_results_{pid}", dirs_exist_ok=True)
+    sesion_copia, copia = LA.copiar_sesion(config_cli, cwd, session_id, out, pid, modo == "real")
     lineas = stream_path.read_text(encoding="utf-8").splitlines()
     stream = LA.parsear_stream(lineas)
     log = LA.leer_log_r1(log_r1)
     meta = LA.armar_meta(cfg, brazo, ident, sha_id, comando, stream, log, precios, via, modo, pid,
                          sesion_copia, claude_version)
     meta["unidad"] = "A2.1"
+    meta["sesion"] |= copia
+    meta["harness_R10"]["lanzador"] = lanzador
     meta["duracion_s"] = round(duracion, 1)
     meta["hb2"] = {"max_turns_efectivo": cfg["corte_R5"]["max_turns"],
                    "max_turns_de_la_config": LA.cargar(CONFIG_A21)["corte_R5"]["max_turns"]} | conteos_hb2(
@@ -197,10 +194,12 @@ def main() -> int:
     ap.add_argument("--modo", choices=["real", "init"], default="init")
     ap.add_argument("--via", choices=["api", "bedrock"], default="api")
     ap.add_argument("--max-turns", type=int, default=None)
-    ap.add_argument("--cwd", type=Path, default=None)
+    ap.add_argument("--cwd", type=Path, default=None,
+                    help="cwd de la sesión (default: <sesiones>/cwd, el compartido)")
+    ap.add_argument("--sesiones", type=Path, default=LA.BANCO_SESIONES, help="raíz de las sesiones del banco")
     ap.add_argument("--timeout-s", type=float, default=900.0)
     a = ap.parse_args()
-    meta = lanzar(a.brazo, a.id, a.pregunta, a.out, a.modo, a.via, a.max_turns, a.cwd, a.timeout_s)
+    meta = lanzar(a.brazo, a.id, a.pregunta, a.out, a.modo, a.via, a.max_turns, a.cwd, a.timeout_s, a.sesiones)
     print(json.dumps({"id": a.id, "brazo": a.brazo, "modo": a.modo, "tools": meta["inventario_tools_R6"],
                       "mcp": meta["servidores_mcp"]["en_init"], "completa": meta["completitud_R3"],
                       "costo": meta["tokens_R9"]["costo_recomputado"], "hb2": meta["hb2"],
