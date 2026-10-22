@@ -305,6 +305,38 @@ GRAFOS = {
         "vista_runtime": "comun_ev2.cargar_runtime('tandafinal_ens_98_r2b_sincola') tras importar tanda_final/t3/registro_vista_r2b_tanda_final (registro en memoria, patrón comun_tanda0); tanda final de B6.1; grafo de la tanda final sin la cola humana; r2b no se evalúa con EV2",
         "indice_fulltext": "nodos_fulltext_kg_tandafinal_r2b_sincola",
     },
+    # El tramo 1 de la tanda final de B6.1, sellado como respaldo (enmienda 9 al protocolo entre tandas, §1, punto 1; T5): sus
+    # dos grafos, completo y sin la cola humana, ensamblados en T3 con ensamblar_tanda0.py (cadena r2, --e0-r2) y los manifiestos
+    # de la raya. Su vista runtime la registra en memoria data/experiment/tanda_final/t5/registro_vista_r2b_tramo1.py (patrón de
+    # tanda_final/t3/registro_vista_r2b_tanda_final.py). commit_sellado: "PENDIENTE" hasta el commit siguiente al sello.
+    "KG_TandaFinal_Tramo1_r2b": {
+        "nombre_canonico": "KG-TandaFinal-Tramo1-r2b",
+        "label": "KG_TandaFinal_Tramo1_r2b",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_tanda_final" / "ens_tramo1_r2b" / "r2" / "kg.json",
+        "sha256": "f064d4e00b41246525d3c30a88f33b3ba9672c5e02cc10a36a4fa18dc88b940c",
+        "commit_sellado": "PENDIENTE",
+        "n_nodos": 2372,
+        "n_aristas": 4066,
+        "ev2_key": "tandafinal_ens_tramo1_r2b",
+        "requiere_registro_dir": EXPERIMENT_DIR / "tanda_final" / "t5",
+        "requiere_registro_modulo": "registro_vista_r2b_tramo1",
+        "vista_runtime": "comun_ev2.cargar_runtime('tandafinal_ens_tramo1_r2b') tras importar tanda_final/t5/registro_vista_r2b_tramo1 (registro en memoria, patrón comun_tanda0); tramo 1 de la tanda final de B6.1, sellado como respaldo (enmienda 9); r2b no se evalúa con EV2",
+        "indice_fulltext": "nodos_fulltext_kg_tandafinal_tramo1_r2b",
+    },
+    "KG_TandaFinal_Tramo1_r2b_sincola": {
+        "nombre_canonico": "KG-TandaFinal-Tramo1-r2b-sincola",
+        "label": "KG_TandaFinal_Tramo1_r2b_sincola",
+        "path": EXPERIMENT_DIR / "reextraccion_v2" / "corpus_tanda_final" / "ens_tramo1_r2b_sincola" / "r2" / "kg.json",
+        "sha256": "bbda74cda7e071e27782b41b06d7557e2c153e8afff7ea3f6540bdd520c3615f",
+        "commit_sellado": "PENDIENTE",
+        "n_nodos": 2207,
+        "n_aristas": 3822,
+        "ev2_key": "tandafinal_ens_tramo1_r2b_sincola",
+        "requiere_registro_dir": EXPERIMENT_DIR / "tanda_final" / "t5",
+        "requiere_registro_modulo": "registro_vista_r2b_tramo1",
+        "vista_runtime": "comun_ev2.cargar_runtime('tandafinal_ens_tramo1_r2b_sincola') tras importar tanda_final/t5/registro_vista_r2b_tramo1 (registro en memoria, patrón comun_tanda0); tramo 1 de la tanda final de B6.1, sellado como respaldo (enmienda 9); grafo del tramo 1 sin la cola humana; r2b no se evalúa con EV2",
+        "indice_fulltext": "nodos_fulltext_kg_tandafinal_tramo1_r2b_sincola",
+    },
 }
 CLAVES = list(GRAFOS.keys())
 GRAFO_DEFAULT = "KG_Refinado"   # el grafo vigente (docs/tablero.md); compatibilidad con c26cb9b
