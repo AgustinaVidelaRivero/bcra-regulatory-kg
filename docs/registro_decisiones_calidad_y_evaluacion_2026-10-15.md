@@ -3674,3 +3674,57 @@ Hechos de la autora del 23/10/2026, recibidos a las 10:53:26 (hoja de ruta de la
   3. la segunda pasada del catálogo, sellada, y el despacho de la re-aplicación;
   4. el «seguí» del tramo 2 de A2.1, con el control del disco.
 - Las secciones anteriores no se editan.
+
+## 96. El viernes, primera hora de la tarde: el cierre del diagnóstico de la D-6, el valor remoto por tool, el «seguí» del tramo 2 de A2.1 y la etapa a-bis del juez v2 (23/10/2026)
+
+Decisiones y hechos de la autora del 23/10/2026, recibidos a las 11:12:58 y a las 11:14:27 (hoja de ruta de la mesa, §247 y §248).
+
+- **El 166,** corrido con su push (`f619128d`, a las 11:11:48, git log): 5 de 5 contra el paquete de la mesa.
+- **El FRENO c_bis de la D-6** (paquete `revision_UD6_TOPE_MCP_c_bis/`, `deb8a260…`, 25 archivos), revisado por la mesa por código
+  (`decisiones_247_mesa/d6/`, 11 de 11):
+  - el parche cambia los cuatro archivos de `code/` que nombra (los dos patrones de la ruta y la ruta de juguete, más el selftest) y suma
+    `diagnostico_Bp.py`; con él, los controles sobre la sesión guardada dan OK (B', 12 de 12), el selftest 208 de 208 y el diagnóstico
+    19 de 19; el archivo de B' tiene 140.914 bytes y el sha256 `22011bec…`; las huellas de antes y de después son iguales;
+  - el punto 5: en B6.3, un resultado va a disco solo si su texto pasa los 200.000 caracteres (unidades UTF-16);
+    `MAX_MCP_OUTPUT_TOKENS` y el presupuesto por mensaje no actúan; y el mayor resultado medido del banco es de 81.275 (`tope_mcp.json`
+    de HEAD);
+  - el punto 6: ningún `.py` de HEAD tiene «saved to»; lo único que toca la referencia (`gate/code/adaptador_cc.py:276` y `:360-361`)
+    lee `persistedOutputPath` entero.
+- **El valor remoto por tool,** `tengu_velvet_ibis` (la autora autorizó, a las 11:12:58, leer solo esa clave en los `.claude.json` de las
+  tres sesiones de la D-6, por código y en memoria): en las tres, la clave existe y es un objeto vacío. Ninguna tool tiene un umbral
+  propio, así que las cinco de los dos servidores del banco no están afectadas (`decisiones_247_mesa/tengu/`). El valor puede cambiar de
+  una sesión a otra; el control del disco de A2.1 frena en cualquier caso.
+- **El «seguí» del tramo 2 de A2.1** (`decisiones_247_mesa/a21/`), con lo que pidió la autora:
+  - el control del disco en `correr_a2_1.py`, después de cada sesión: si un resultado llega como referencia a disco, la corrida frena sin
+    lanzar otra; y el largo de cada resultado en unidades UTF-16;
+  - en el paso 0, el control del SDK (el 165) y el sha256 del lanzador del banco de HEAD (`2f007420…`);
+  - el commit de su código, armado por la mesa, antes de los pasos pagos;
+  - **la etapa corta de A2.1** (decisión de la autora del 16/10/2026, registro, §16) no corrió: no hay `FRENO_A2_1_a_bis.md` ni su
+    paquete, y su «seguí» de entonces ya no sirve tal cual, porque el entorno limpio (`ca5d192f`) cambió el lanzador de A2.1. El «seguí»
+    la suma a su parte de USD 0; armarla aparte es la otra opción. La decisión es de la autora (PENDIENTE).
+- **El FRENO de la etapa a-bis del juez v2** (paquete `revision_UTRIP_V_JUEZ_v2_a_bis/`, `c9a3b002…`, 44 archivos, sin ningún
+  `NO_ABRIR_`), revisado por la mesa por código (`decisiones_248_mesa/v2/`, 11 de 11):
+  - el paquete y la carpeta de trabajo coinciden; lo que dejó el humo no cambió; los siete diffs contra la etapa a se rehacen igual; no
+    cambian la guarda, el simulado, el costo, el gold, la v1, los comandos, el bloque ni el prompt (`bf484381…`);
+  - la hoja nueva (`38832f9d…`) tiene las 10 filas de los casos y la del texto de introducción, con `aprueba` y `nota` vacías;
+  - en la regla de freno, una ficha que el juez no decide cuenta como desacuerdo en «correcta», y la importancia no cambia;
+  - el convertidor exige «sí» o «no» y pasa las celdas a NFC, que es la misma palabra: la mesa lo acepta;
+  - el selftest da 113 de 113 y la corrida en seco, OK, en sus consolas.
+- **Los dos errores de la etapa a que declara la ejecutora:**
+  - el selftest y el grep abrían sus propios `NO_ABRIR_` (los desacuerdos y el prompt), sin mostrar su contenido. No cambia ningún
+    resultado, y ya no los abren;
+  - para elegir los casos imprimió en su consola la tabla de los 50 desacuerdos, con la marca de la autora y lo de la v1.1. El despacho
+    le pedía elegirlos desde esos desacuerdos, así que no supo nada que no debía saber, y no cambia la medición: las cifras de las
+    iteraciones son internas y no cuentan los casos del prompt, y la precisión de T va contra la lectura de la autora de T. Lo que sí
+    cambia: la transcripción de esa sesión (`176f814c…`) trae marcas del gold, y nadie la lee, como las carpetas de lectura de la autora.
+- **La aprobación de los casos** (decisión de la autora): en paralelo con la revisión, después de su segunda pasada del catálogo, con el
+  convertidor y el sello (PENDIENTE).
+- **El comando de la iteración 1** (`decisiones_248_mesa/v2/`): antes de la clave controla que el código, el comando, los casos, el
+  bloque, la hoja y el convertidor de la v2 sean los revisados (17 archivos, por sha256), que existan la marcada y su sello, y que no corra
+  ningún otro paso pago; después corre la iteración con la clave por el envoltorio del banco, sin otra corrida paga al lado. Probado a
+  USD 0 sobre una copia, en sus cuatro casos.
+- **Lo que sigue:**
+  1. la segunda pasada del catálogo, sellada, y el despacho de la re-aplicación;
+  2. la aprobación de los casos, sellada, y la iteración 1 del juez v2;
+  3. la decisión de la autora sobre la etapa corta, y el «seguí» del tramo 2 de A2.1.
+- Las secciones anteriores no se editan.
