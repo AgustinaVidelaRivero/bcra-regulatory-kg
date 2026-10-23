@@ -3728,3 +3728,49 @@ Decisiones y hechos de la autora del 23/10/2026, recibidos a las 11:12:58 y a la
   2. la aprobación de los casos, sellada, y la iteración 1 del juez v2;
   3. la decisión de la autora sobre la etapa corta, y el «seguí» del tramo 2 de A2.1.
 - Las secciones anteriores no se editan.
+
+## 97. El viernes, al mediodía: la segunda pasada de las claves sellada, el despacho de la re-aplicación y las decisiones sobre A2.1 y el juez v2 (23/10/2026)
+
+Decisiones y hechos de la autora del 23/10/2026, recibidos a las 11:32:19 (hoja de ruta de la mesa, §249).
+
+- **El 167,** corrido con su push (`4ee44c51`, a las 11:32:05, git log), contra el paquete de la mesa (`decisiones_249_mesa/verificacion/`).
+- **La lectura de las claves del catálogo, segunda pasada, la que vale:** sellada a las 11:27:46 (`lectura_claves_catalogo/claves_marcada.csv`,
+  `973654f0…`, en `sello_lectura_claves.txt`). La mesa la controló por código, sin mostrar ninguna clave, código ni nota
+  (`decisiones_249_mesa/catalogo/`, 11 de 11):
+  - la marcada da su sello; sus 105 filas traen la clave, las formas, la propuesta y la justificación de la planilla, en el orden del
+    material; los códigos pasan los controles del convertidor entregado (el catálogo r2, los ids nuevos, los padres y los ciclos);
+  - 12 alias, 35 ids nuevos y 58 que no entran; tres veredictos distintos de la propuesta, cada uno con su nota;
+  - contra la primera pasada (sellada a las 10:22:50, `86194514…`, guardada tal cual en `pasada1/`), cambia una sola clave, de un id nuevo a
+    «no entra».
+  - Se declaran las dos pasadas: según la autora, la primera de 10:05 a 10:22 y la segunda, sobre los 48 alias e ids nuevos, de 10:31 a
+    11:27. Sus dos vistas en Markdown no entran en la marcada ni en el sello.
+- **Los veredictos para la re-aplicación** (`decisiones_249_mesa/catalogo/veredictos_claves_catalogo_segunda_pasada.json`, `e1be9926…`):
+  la clave y su código, sin la nota, la justificación ni la propuesta, con el sha256 de la marcada de la que salen.
+- **El despacho de la re-aplicación única** (`decisiones_249_mesa/reapl/`), con los dos mandatos firmados el 20/10/2026:
+  - los cinco pasos, cada uno con y sin cola: el sello (que tiene que dar el sello byte a byte), + D, + las claves, + C1 y + las remisiones
+    (la opción B);
+  - las claves: el catálogo de resolución, armado por script desde los veredictos, con `componer`. El label de un id nuevo y el alias de
+    un `alias:` son la forma de la clave más frecuente en el material: es una propuesta de la mesa (PENDIENTE de la autora);
+  - C1: la lista del censo, vacía (`aa6aa007…`), y la de los nodos, vacía (`37517e5f…`);
+  - los primeros controles: R19 con las dos bases de la caché, y los tres selftests del 163;
+  - el cegamiento del §7 bis de U-PROC-HERENCIA, con la muestra de las FICHAS en memoria.
+  - USD 0, sin API. Pegarlo es de la autora (PENDIENTE).
+- **Los commits:** antes de que arranque, el de esta sección (el 168). Mientras corre, ninguno.
+- **Las decisiones de la autora sobre A2.1,** tal cual:
+  1. «La etapa corta va como la (b): sus tres tareas, en la parte de USD 0 del «seguí» del tramo 2, tal como viene en el bloque.»
+  2. «Autorizo la misma lectura acotada de tengu_velvet_ibis en el .claude.json de cada sesión paga del banco: A2.1 y después A2.2, N6 y
+     B6.3. Por código y en memoria, registrando por sesión solo si la clave existe y, si existe, los nombres de tool y sus números, sin
+     ningún otro campo ni valor del archivo. El control del disco sigue frenando igual.»
+  3. «A2.1 va después de la re-aplicación, por mi prioridad del viernes. Si estimás que su parte de USD 0 termina antes de que el
+     despacho de la re-aplicación esté listo, decímelo y la pego antes. Si no, espera.»
+  - La parte de USD 0 de A2.1 escribe en el repo y lleva horas: no termina antes de que el despacho esté listo, así que espera. El «seguí»
+    v2 (`decisiones_249_mesa/a21/`) lleva las dos primeras decisiones.
+- **El juez v2:** la autora aprueba los casos y corre la iteración 1 con el comando de la mesa, sin otra corrida paga al lado (PENDIENTE).
+  Puede correr mientras corre la re-aplicación: es de USD 0, no llama a la API, y el control de la extracción de la v2 no la toma por
+  una (busca `runner_corpus`, `lanzar_t*` y `correr_tanda*`).
+- **Lo que sigue:**
+  1. el 168; después, la re-aplicación;
+  2. el sello de la aprobación de los casos y la iteración 1 del juez v2;
+  3. el FRENO de la re-aplicación, con su revisión, y el sello del grafo evaluado;
+  4. el «seguí» del tramo 2 de A2.1.
+- Las secciones anteriores no se editan.
