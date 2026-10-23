@@ -14,6 +14,12 @@ sus funciones.
      freno por acumulado, freno por proyección, tope no autorizado, meta de otro modo,
      corte por --max-turns, llamadas paralelas, salida sin `result` y línea mal formada
      en el stream, y la evaluación de H-B2 sobre esos casos.
+  4. El control del disco y la lectura del valor remoto por tool (decisiones de la autora del
+     23/10/2026), con sesiones de juguete: una transcripción con la referencia a disco (una
+     ruta con un espacio) y otra sin ella; `tool_results_<id>/` vacía y con un archivo; el
+     largo en unidades UTF-16; el código 3 de la corrida y su reanudación; y tres
+     `.claude.json` de juguete (la clave vacía, con un número para una tool del banco y sin
+     la clave), sin que llegue a la meta ningún otro campo.
 
 Uso (en la copia; BANCO_VENV_VECTOR = venv 3.12 del servidor de fragmentos):
   .venv/bin/python -B data/experiment/banco_mcp/a2_1/corrida_en_seco_a2_1.py
@@ -50,14 +56,37 @@ def meta_sintetica(pid: str, brazo: str, modo: str, costo: float, hb2: dict | No
 
 class CorridaSintetica(CR.Corrida):
     """La Corrida del runner con `lanzar` reemplazado: escribe una meta sintética en vez de
-    abrir claude. El resto (guardas, reanudación, registro) es el código real."""
+    abrir claude, con el comando (su session_id) y, si el escenario de la sesión lo pide, la
+    transcripción, `tool_results_<id>/`, el log R1 y el `.claude.json` de su carpeta de
+    configuración, bajo una raíz de sesiones propia de la prueba. El resto (guardas,
+    reanudación, control del disco, valor remoto, registro) es el código real."""
 
-    def __init__(self, a, dirs, costo=0.05, p0_cache=None):
+    def __init__(self, a, dirs, costo=0.05, p0_cache=None, escenarios=None):
         super().__init__(a, dirs)
         self.costo, self.p0_cache, self.lanzadas = costo, p0_cache, []
+        self.escenarios = escenarios or {}
+        self.sesiones = Path(dirs[0]).parent / "sesiones_sinteticas"
 
     def lanzar(self, brazo, pid, pregunta, out, max_turns, timeout_s):
         self.lanzadas.append(pid)
+        sid = f"sintetica-{pid}"
+        (out / f"comando_{pid}.json").write_text(json.dumps({"session_id": sid}), encoding="utf-8")
+        e = self.escenarios.get(pid, {})
+        if "transcripcion" in e:
+            (out / f"sesion_{pid}.jsonl").write_text("\n".join(json.dumps(x, ensure_ascii=False) for x in e["transcripcion"])
+                                                    + "\n", encoding="utf-8")
+        if "tool_results" in e:
+            d = out / f"tool_results_{pid}"
+            d.mkdir(parents=True, exist_ok=True)
+            for nombre, texto in e["tool_results"].items():
+                (d / nombre).write_text(texto, encoding="utf-8")
+        if "log_r1" in e:
+            (out / f"log_r1_{pid}.jsonl").write_text("\n".join(json.dumps(x, ensure_ascii=False) for x in e["log_r1"]) + "\n",
+                                                     encoding="utf-8")
+        if "claude_json" in e:
+            cfg = self.sesiones / "config" / sid
+            cfg.mkdir(parents=True, exist_ok=True)
+            (cfg / ".claude.json").write_text(json.dumps(e["claude_json"]), encoding="utf-8")
         m = meta_sintetica(pid, brazo, self.a.modo, self.costo, p0_cache=self.p0_cache if pid.startswith("P0") else None)
         (out / f"meta_{pid}.json").write_text(json.dumps(m), encoding="utf-8")
         return m
@@ -164,6 +193,132 @@ def ramas() -> list[dict]:
     return out
 
 
+# --------------------------------------------------------------------------- #
+# El control del disco y el valor remoto por tool                              #
+# --------------------------------------------------------------------------- #
+REFERENCIA = ("<persisted-output>\nOutput too large (240.1KB). Full output saved to: "
+              "/ruta de prueba/carpeta con un espacio/tool-results/toolu_juguete_1.txt\n\nPreview (first 2KB):\n"
+              "{\"consulta\": \"...\"}\n</persisted-output>")
+
+
+def linea_tool_result(tid: str, texto: str) -> dict:
+    return {"type": "user", "message": {"role": "user", "content": [
+        {"type": "tool_result", "tool_use_id": tid, "content": [{"type": "text", "text": texto}]}]}}
+
+
+def llamada_log(n: int, texto: str) -> dict:
+    return {"evento": "llamada", "n": n, "tool": "buscar_pasajes", "output_str": texto}
+
+
+SECRETO = "VALOR-QUE-NO-DEBE-SALIR"
+CLAUDE_JSON = {
+    "vacia": {"userID": SECRETO, "cachedGrowthBookFeatures": {"tengu_velvet_ibis": {}, "otra_clave": SECRETO}},
+    "con_numero": {"userID": SECRETO, "oauthAccount": {"emailAddress": SECRETO},
+                   "cachedGrowthBookFeatures": {"tengu_velvet_ibis": {"mcp__fragmentos__buscar_pasajes": 30000,
+                                                                      "Read": 100000, "una_tool": SECRETO}}},
+    "sin_clave": {"userID": SECRETO, "cachedGrowthBookFeatures": {"otra_clave": {"x": 1}}},
+}
+CAMPOS_PERMITIDOS = {"clave", "archivo", "existe", "apariciones", "tools_del_banco_con_numero"}
+
+
+def ramas_disco() -> list[dict]:
+    out = []
+    with tempfile.TemporaryDirectory() as td:
+        d = Path(td) / "sesiones_de_juguete"
+        d.mkdir()
+        # transcripción con la referencia y sin ella
+        texto_ok = '{"consulta": "efectivo mínimo", "resultados": []}'
+        (d / "sesion_A.jsonl").write_text("\n".join(json.dumps(x) for x in [
+            {"type": "system", "subtype": "init"}, linea_tool_result("toolu_1", texto_ok),
+            linea_tool_result("toolu_2", REFERENCIA)]) + "\n", encoding="utf-8")
+        (d / "sesion_B.jsonl").write_text("\n".join(json.dumps(x) for x in [
+            {"type": "system", "subtype": "init"}, linea_tool_result("toolu_1", texto_ok)]) + "\n", encoding="utf-8")
+        ka, kb = CR.control_disco(d, "A"), CR.control_disco(d, "B")
+        out.append({"rama": "disco: transcripción con la referencia (ruta con un espacio)",
+                    "ok": ka["FRENA"] and [x["tool_use_id"] for x in ka["tool_results_con_la_marca"]] == ["toolu_2"]})
+        out.append({"rama": "disco: transcripción sin la referencia",
+                    "ok": not kb["FRENA"] and kb["largo_mayor_utf16_en_la_transcripcion"] == len(texto_ok)})
+        # tool_results_<id>/ vacía y con un archivo
+        (d / "tool_results_C").mkdir()
+        (d / "tool_results_D").mkdir()
+        (d / "tool_results_D" / "toolu_9.txt").write_text("x", encoding="utf-8")
+        kc, kd = CR.control_disco(d, "C"), CR.control_disco(d, "D")
+        out.append({"rama": "disco: tool_results_<id>/ vacía", "ok": not kc["FRENA"] and kc["carpeta_tool_results"] == "vacía"})
+        out.append({"rama": "disco: tool_results_<id>/ con un archivo",
+                    "ok": kd["FRENA"] and kd["archivos_en_tool_results"] == ["toolu_9.txt"]})
+        # el largo en unidades UTF-16 (un carácter fuera del plano básico cuenta 2)
+        (d / "log_r1_E.jsonl").write_text("\n".join(json.dumps(x, ensure_ascii=False) for x in [
+            {"evento": "inicio"}, llamada_log(1, "abc"), llamada_log(2, "a\U0001D400b"), {"evento": "fin"}]) + "\n",
+            encoding="utf-8")
+        ke = CR.control_disco(d, "E")
+        out.append({"rama": "disco: largo en unidades UTF-16 desde el log R1",
+                    "largos": ke["largos_resultados_utf16_log_r1"],
+                    "ok": [x["unidades_utf16"] for x in ke["largos_resultados_utf16_log_r1"]] == [3, 4]
+                          and [x["caracteres"] for x in ke["largos_resultados_utf16_log_r1"]] == [3, 3]
+                          and ke["largo_mayor_utf16"] == 4 and not ke["FRENA"]})
+        # el valor remoto: la clave vacía, con un número para una tool del banco, sin la clave y sin archivo
+        res = {}
+        for nombre, contenido in CLAUDE_JSON.items():
+            cfg = Path(td) / "config" / nombre
+            cfg.mkdir(parents=True)
+            (cfg / ".claude.json").write_text(json.dumps(contenido), encoding="utf-8")
+            res[nombre] = CR.valor_remoto_por_tool(cfg)
+        res["sin_archivo"] = CR.valor_remoto_por_tool(Path(td) / "config" / "no_existe")
+        limpio = all(SECRETO not in json.dumps(v) and set(v) <= CAMPOS_PERMITIDOS for v in res.values())
+        out.append({"rama": "valor remoto: la clave vacía",
+                    "ok": res["vacia"]["existe"] and res["vacia"]["apariciones"] == [{"tools": {}, "tools_sin_numero": []}]
+                          and res["vacia"]["tools_del_banco_con_numero"] == []})
+        out.append({"rama": "valor remoto: un número para una tool del banco",
+                    "ok": res["con_numero"]["apariciones"] == [{"tools": {"Read": 100000, "mcp__fragmentos__buscar_pasajes": 30000},
+                                                                "tools_sin_numero": ["una_tool"]}]
+                          and res["con_numero"]["tools_del_banco_con_numero"] == ["mcp__fragmentos__buscar_pasajes"]})
+        out.append({"rama": "valor remoto: sin la clave y sin archivo",
+                    "ok": res["sin_clave"] == {"clave": "tengu_velvet_ibis", "archivo": "existe", "existe": False}
+                          and res["sin_archivo"] == {"clave": "tengu_velvet_ibis", "archivo": "no existe"}})
+        out.append({"rama": "valor remoto: ningún otro campo ni valor del archivo", "ok": limpio})
+    # la corrida real con sesiones sintéticas: frena con el código 3 en la sesión con la referencia, no lanza la
+    # siguiente, y al reanudar vuelve a frenar sin lanzar nada; el número de una tool del banco va al registro
+    with tempfile.TemporaryDirectory() as td:
+        sm, hb = Path(td) / "smoke", Path(td) / "hb2"
+        escenarios = {
+            "HB2-01": {"transcripcion": [linea_tool_result("toolu_1", "{}")], "log_r1": [llamada_log(1, "{}")],
+                       "claude_json": CLAUDE_JSON["con_numero"]},
+            "HB2-02": {"transcripcion": [linea_tool_result("toolu_1", REFERENCIA)], "tool_results": {"toolu_1.txt": "x"},
+                       "claude_json": CLAUDE_JSON["sin_clave"]},
+        }
+        lanzadas = []
+        original = CR.Corrida
+
+        def fabrica(a, dirs):
+            c = CorridaSintetica(a, dirs, costo=0.0, escenarios=escenarios)
+            c.lanzadas = lanzadas
+            return c
+        argv = ["--fase", "hb2", "--autorizado-tope", "3", "--freno", "2", "--modo", "init",
+                "--out-smoke", str(sm), "--out-hb2", str(hb)]
+        try:
+            CR.Corrida = fabrica
+            rc1 = CR.main(argv)
+            primera = list(lanzadas)
+            reg = json.loads((hb / "registro_HB2.json").read_text(encoding="utf-8"))
+            meta1 = json.loads((hb / "meta_HB2-01.json").read_text(encoding="utf-8"))
+            lanzadas.clear()
+            rc2 = CR.main(argv)
+            segunda = list(lanzadas)
+        finally:
+            CR.Corrida = original
+        out.append({"rama": "corrida: el control del disco frena con el código 3 y no lanza la sesión siguiente",
+                    "rc": rc1, "lanzadas": primera, "freno": reg.get("FRENO_DISCO"),
+                    "ok": rc1 == 3 and primera == ["HB2-01", "HB2-02"] and "HB2-02" in (reg.get("FRENO_DISCO") or "")})
+        out.append({"rama": "corrida: al reanudar, vuelve a frenar sin lanzar nada", "rc": rc2, "lanzadas": segunda,
+                    "ok": rc2 == 3 and segunda == []})
+        out.append({"rama": "corrida: el número de una tool del banco va a la meta y al registro, sin otros campos",
+                    "valor_remoto_HB2-01": meta1["valor_remoto_por_tool"],
+                    "ok": reg.get("valor_remoto_tools_del_banco_con_numero") == {"HB2-01": ["mcp__fragmentos__buscar_pasajes"]}
+                          and SECRETO not in json.dumps(meta1) and set(meta1["valor_remoto_por_tool"]) <= CAMPOS_PERMITIDOS
+                          and not meta1["control_disco"]["FRENA"]})
+    return out
+
+
 def zsh_init(script: str, entorno: Path) -> dict:
     env = dict(os.environ, A21_ENTORNO=str(entorno), A21_MODO="init", A21_PYTHON=sys.executable)
     env.pop("ANTHROPIC_API_KEY", None)
@@ -178,7 +333,7 @@ def main() -> int:
     a = ap.parse_args()
     res = {"generado": datetime.now().isoformat(timespec="seconds"), "unidad": "A2.1, tramo 1 — corrida en seco del tramo 2",
            "copia": "el repo donde corre este archivo (una copia hecha con la cláusula, nunca el repo)"}
-    res["ramas"] = ramas()
+    res["ramas"] = ramas() + ramas_disco()
     if not a.sin_zsh:
         import secrets
         with tempfile.TemporaryDirectory() as td:

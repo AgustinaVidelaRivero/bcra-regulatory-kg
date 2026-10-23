@@ -224,7 +224,8 @@ def limites(idx, consulta: str) -> dict:
 
 
 def t_bm25_transporte(logs: Path) -> dict:
-    r = transporte(CONFIG_BM25, CONSULTAS, logs / "log_r1_test_bm25_transporte.jsonl", "test_a2_1_bm25")
+    r = transporte(CONFIG_BM25, CONSULTAS, logs / f"log_r1_test_bm25_transporte_{datetime.now().strftime('%Y%m%dT%H%M%S')}.jsonl",
+                   "test_a2_1_bm25")
     idx = r.pop("_idx")
     r["limite"] = limites(idx, "capital mínimo básico según la categoría de la entidad")
     r["limite_por_mcp"] = {"mayores_que_5_devuelven_5": all(f["n_resultados"] == 5 for f in r["llamadas"]
@@ -239,7 +240,8 @@ def t_denso_r2b(logs: Path) -> dict:
     cfg_b, _ = cargar_config(CONFIG_BM25)
     dir_b = (AQUI / cfg_b["indice_dir"]).resolve()
     man = json.loads((dir_d / "manifiesto_indice.json").read_text(encoding="utf-8"))
-    r = transporte(CONFIG_DENSO, CONSULTAS, logs / "log_r1_test_denso_r2b_transporte.jsonl", "test_a2_1_denso_r2b")
+    r = transporte(CONFIG_DENSO, CONSULTAS, logs / f"log_r1_test_denso_r2b_transporte_{datetime.now().strftime('%Y%m%dT%H%M%S')}.jsonl",
+                   "test_a2_1_denso_r2b")
     idx = r.pop("_idx")
     r["indice"] = {"sha256_matriz_manifiesto": man["matriz"]["sha256_matriz"],
                    "sha256_matriz_config": config["sha256_matriz_esperado"],
