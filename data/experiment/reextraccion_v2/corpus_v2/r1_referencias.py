@@ -1030,7 +1030,9 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                            predicado: str = PREDICADO_R2, reglas: frozenset = REGLAS_R2,
                            chunks_e0_r2: dict[str, dict] | None = None,
                            chunks_partes: dict[str, dict] | None = None,
-                           procedencia_propia: bool = False, agrupar_sin_rol: bool = False) -> dict:
+                           procedencia_propia: bool = False, agrupar_sin_rol: bool = False,
+                           punto_declarado_e1: bool = False, remisiones_a_subpuntos: bool = False,
+                           unidades_excluidas: list[str] | None = None) -> dict:
     """Remisiones del perfil r2. Por defecto, la regla firmada: detección sobre
     el texto de E0 del punto de origen (por chunk_id), desde cada procedencia
     de los siete tipos de contenido, con atribución D1, `alcance`, `destino` y
@@ -1053,9 +1055,39 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
     del bloque heredado. Sin reglas, el detector es el de la cadena r1.
 
     `chunks_partes` (chunk_id → parte): las partes de las unidades que E1 del
-    perfil r2 partió por corte (R4.b), cuyo texto no está en la E0."""
+    perfil r2 partió por corte (R4.b), cuyo texto no está en la E0.
+
+    `punto_declarado_e1` (U-PROC-HERENCIA, opción D; la cadena r2 lo pasa con
+    --procedencia-heredada; solo con `fuente="e0"`): una procedencia que
+    corrigió C1 (la que trae `punto_declarado_e1`) se agrupa, se lee y se
+    resuelve con el punto y el rol que declaró E1 (`punto_declarado_e1` y
+    `rol_declarado_e1`), como sin la corrección: el bloque del ancestro vuelve
+    a entrar como texto heredado, con la regla (i). La arista lleva la
+    procedencia del nodo, y los destinos de una cita son los nodos anclados en
+    el punto de su procedencia, el de C1. Con False (default), la salida de
+    siempre.
+
+    `remisiones_a_subpuntos` (opción B; la cadena r2 lo pasa con
+    --remisiones-a-subpuntos): una segunda pasada sobre el registro, después
+    de la resolución exacta. La cita que quedó con «punto_sin_nodos» va al
+    primer nivel con nodos del subárbol de la unidad citada: de las unidades
+    de la E0 del TO con nodos anclados cuyo punto empieza con el citado más
+    «.» (de una sección S<n>, con «<n>.»), las de menor profundidad (la
+    cantidad de números del punto). Si la procedencia de la cita es del mismo
+    TO y su punto es una de esas unidades, esa unidad no es destino (como la
+    autorreferencia). La arista tiene la forma de las de la resolución exacta
+    (destino, la unidad citada) y la procedencia de su origen; un par que ya
+    es arista de la resolución exacta no se toca y se cuenta aparte. La cita a
+    una unidad de `unidades_excluidas` (la regla de
+    `irresolubles_en_unidad_excluida` del ensamblado) y la que, sacados sus
+    orígenes, no tiene destino siguen con «punto_sin_nodos». El destino lleva
+    la marca `remision_a_subpuntos` y las unidades que tomó; el resumen, la
+    clave `remisiones_a_subpuntos`. Con False (default), la salida de
+    siempre."""
     if fuente not in ("e0", "parafrasis") or propios not in ("procedencia", "nodo"):
         raise ValueError(f"opción desconocida: fuente={fuente!r} propios={propios!r}")
+    if punto_declarado_e1 and fuente != "e0":
+        raise ValueError("punto_declarado_e1 es de la detección sobre el texto de E0 (fuente='e0')")
     reglas = frozenset(reglas)
     if not reglas <= REGLAS_R2:
         raise ValueError(f"reglas desconocidas: {sorted(reglas - REGLAS_R2)}")
@@ -1106,6 +1138,8 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
     # y la corrección de rol de G-r no debe partir el grupo: la cita se atribuye una vez, con la regla D1, a todo el punto.
     clave_grupo = (("to", "punto", "chunk_id") if agrupar_sin_rol else ("to", "punto", "rol_documental", "chunk_id"))
     prov_del_nodo: dict[tuple[str, str], dict] = {}
+    # la procedencia completa con que se resolvió cada cita del registro (la segunda pasada de la opción B)
+    procedencia_de_cita: dict[int, dict] = {}
 
     def de_su_origen(o: str, procedencia: dict) -> dict:
         if not procedencia_propia:
@@ -1144,6 +1178,7 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                 "to_destino": men["to_destino"], "puntos": men["puntos"],
                 "secciones": men["secciones"], "evidencia": men["evidencia"],
                 "destinos": [], "irresolubles": [], "aristas_nuevas": 0}
+        procedencia_de_cita[id(cita)] = procedencia
         for k in ("forma_anafora", "marca_propio_to", "via_norma", "norma_tras_el_numero"):
             if men.get(k):
                 cita[k] = men[k]
@@ -1223,10 +1258,15 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                 prov_canonica = dict(p)
                 if cid and not p.get("chunk_id"):
                     prov_canonica = {**p, "chunk_id": cid}
-                k = C.prov_key({kk: prov_canonica.get(kk) for kk in clave_grupo})
+                lectura = prov_canonica
+                if punto_declarado_e1 and "punto_declarado_e1" in p:
+                    # U-PROC-HERENCIA, opción D: la procedencia de C1 se lee y se resuelve con lo que declaró E1
+                    lectura = {**prov_canonica, "punto": p["punto_declarado_e1"],
+                               "rol_documental": p["rol_declarado_e1"]}
+                k = C.prov_key({kk: lectura.get(kk) for kk in clave_grupo})
                 prov_del_nodo.setdefault((k, n["id"]), prov_canonica)
                 if k not in por_proc:
-                    por_proc[k] = (prov_canonica, [])
+                    por_proc[k] = (lectura, [])
                 if n["id"] not in por_proc[k][1]:
                     por_proc[k][1].append(n["id"])
         usar_r2 = "b" in reglas and chunks_e0_r2 is not None
@@ -1334,6 +1374,64 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
                     conteo["texto_heredado"]["con_nodos_que_nombran_la_unidad" if alguna
                                              else "sin_nodos_que_nombran_la_unidad"] += 1
 
+    if remisiones_a_subpuntos:
+        # Opción B, en una segunda pasada: las aristas de la resolución exacta quedan como están
+        exactas = set(aristas)
+        excluidas = list(unidades_excluidas or [])
+        de_b: set[tuple[str, str, str]] = set()
+        ya_existian: set[tuple[str, str, str]] = set()
+        citas_b: set[tuple] = set()
+        citas_excluidas: set[tuple] = set()
+
+        def profundidad(u: str) -> int:
+            return len(re.findall(r"\d+", u))
+
+        for cita in registro:
+            procedencia = procedencia_de_cita[id(cita)]
+            quedan = []
+            for x in cita["irresolubles"]:
+                if x["causa"] != "punto_sin_nodos" or not x.get("destino"):
+                    quedan.append(x)
+                    continue
+                destino = x["destino"]
+                k_cita = (cita.get("chunk_id") or C.prov_key(cita["procedencia"]), cita["evidencia"], destino)
+                if any(c == destino or c.startswith(destino + "::") for c in excluidas):
+                    citas_excluidas.add(k_cita)
+                    quedan.append(x)
+                    continue
+                td, d = destino.split("::", 1)
+                seccion = re.fullmatch(r"S(\d+)", d)
+                prefijo = (seccion.group(1) if seccion else d) + "."
+                bajo = [u for u in unidades.get(td, ()) if u.startswith(prefijo) and anclados.get((td, u))]
+                nivel = min((profundidad(u) for u in bajo), default=None)
+                tomadas = sorted(u for u in bajo if profundidad(u) == nivel)
+                if procedencia["to"] == td:
+                    tomadas = [u for u in tomadas if u != procedencia.get("punto")]
+                ids = sorted({i for u in tomadas for i in anclados[(td, u)]})
+                if not any(i != o for o in cita["origenes"] for i in ids):
+                    quedan.append(x)
+                    continue
+                alc = alcance_remision(td, procedencia["to"], False)
+                men = {"evidencia": cita["evidencia"]}
+                n_new = 0
+                for o in cita["origenes"]:
+                    for i in ids:
+                        if i == o:
+                            continue
+                        if (o, predicado, i) in exactas:
+                            ya_existian.add((o, predicado, i))
+                            continue
+                        n_new += agregar(o, i, procedencia, men, destino, alc)
+                        de_b.add((o, predicado, i))
+                cita["destinos"].append({"destino": destino, "alcance": alc, "nodos": ids,
+                                         "remision_a_subpuntos": "B", "unidades": [f"{td}::{u}" for u in tomadas]})
+                cita["aristas_nuevas"] += n_new
+                citas_b.add(k_cita)
+            cita["irresolubles"] = quedan
+        conteo["remisiones_a_subpuntos"] = {"citas_que_resuelve": len(citas_b), "remite_a_nuevas": len(de_b),
+                                            "pares_que_ya_existian": len(ya_existian),
+                                            "citas_a_unidad_excluida": len(citas_excluidas)}
+
     nuevas = [aristas[k] for k in sorted(aristas)]
     tipo = {n["id"]: n["type"] for n in kg["nodes"]}
     triplas = {(e["source"], e["relation"], e["target"]) for e in kg["edges"]}
@@ -1394,6 +1492,8 @@ def detectar_y_resolver_r2(kg: dict, emisores: dict | None = None, fuente: str =
         "citas_texto_heredado": len({k for c in registro if c.get("atribucion") == "texto_heredado"
                                      for k in [(clave_origen(c), c["evidencia"], d["destino"]) for d in c["destinos"]]}),
     }
+    if remisiones_a_subpuntos:
+        resumen["remisiones_a_subpuntos"] = conteo["remisiones_a_subpuntos"]
     comunicaciones = registro_comunicaciones(chunks_por_to)
     if "j" in reglas:
         # (j), patrón 2: la cita a un punto del Anexo de una Comunicación, en el registro de Comunicaciones

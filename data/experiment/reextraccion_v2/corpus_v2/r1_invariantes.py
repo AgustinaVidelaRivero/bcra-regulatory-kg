@@ -110,11 +110,18 @@ def colisiones_cross_to(grafos: dict[str, dict]) -> dict[str, list[str]]:
     return {i: tos for i, tos in visto.items() if len(tos) > 1}
 
 
-def merge_grafos_guardado(grafos: dict[str, dict]) -> dict:
+def merge_grafos_guardado(grafos: dict[str, dict], codigo_comunicacion=None) -> dict:
     """Envuelve EC.merge_grafos: renombra (sufijo __<to>) las colisiones
     cross-TO que NO son Sujeto del catálogo en los TOs posteriores al primero,
     re-apunta sus aristas, y recién entonces corre el merge sellado. Devuelve
     el dict de merge_grafos más `adjudicacion_cross_to` y `renombres`."""
+    # Regla C1, la unión de las Comunicacion (cadena r2, con --union-comunicaciones de ensamblar_tanda0.py): con
+    # `codigo_comunicacion` (una función nodo -> código normalizado o None), las Comunicacion de TOs distintos con el mismo
+    # código se unen en el id de la primera, en el orden de los TOs, y lo registra `uniones_c1`; la colisión no va a la
+    # adjudicación. Con None (el defecto), la guarda de siempre.
+    uniones_c1: list[dict] = []
+    if codigo_comunicacion is not None:
+        grafos, uniones_c1 = _unir_comunicaciones_c1(grafos, codigo_comunicacion)
     colis = colisiones_cross_to(grafos)
     nodo_por_to_id = {to: {n["id"]: n for n in grafos[to]["nodes"]} for to in C.TOS_ORDEN}
     adjudicacion: list[dict] = []
@@ -123,6 +130,8 @@ def merge_grafos_guardado(grafos: dict[str, dict]) -> dict:
         primero = nodo_por_to_id[tos[0]][nid]
         if _es_sujeto_catalogo(primero):
             continue
+        if codigo_comunicacion is not None and primero.get("type") == "Comunicacion" and nid in {u["id"] for u in uniones_c1}:
+            continue                    # C1: la unión la hace el merge sellado, con sus conflictos registrados
         entrada = {"id": nid, "type": primero["type"], "tos": tos, "nodos": []}
         for k, to in enumerate(tos):
             n = nodo_por_to_id[to][nid]
@@ -155,9 +164,42 @@ def merge_grafos_guardado(grafos: dict[str, dict]) -> dict:
         grafos_ren[to] = g
     m = EC.merge_grafos(grafos_ren)
     m["adjudicacion_cross_to"] = adjudicacion
+    if codigo_comunicacion is not None:
+        m["uniones_c1"] = uniones_c1
     m["renombres"] = {to: r for to, r in renombres.items() if r}
     m["grafos_pre_merge"] = grafos_ren
     return m
+
+
+def _unir_comunicaciones_c1(grafos: dict[str, dict], codigo_comunicacion) -> tuple[dict, list]:
+    """C1: en cada código normalizado que aparece en más de un TO, renombra sus Comunicacion al id de la primera (en el orden
+    de C.TOS_ORDEN) y re-apunta sus aristas; dentro de ese código, también se unen las variantes de un mismo TO. Un código de
+    un solo TO, o una Comunicacion sin código normalizado (None), no se toca."""
+    grupos: dict[str, dict] = {}
+    for to in C.TOS_ORDEN:
+        for n in grafos[to]["nodes"]:
+            if n.get("type") == "Comunicacion":
+                c = codigo_comunicacion(n)
+                if c is not None:
+                    g = grupos.setdefault(c, {"id": n["id"], "codigo_normalizado": c, "nodos": []})
+                    g["nodos"].append({"to": to, "id_antes": n["id"], "codigo": (n.get("properties") or {}).get("codigo"),
+                                       "label": n.get("label")})
+    uniones = [g for g in grupos.values() if len({x["to"] for x in g["nodos"]}) > 1]
+    canon = {x["id_antes"]: g["id"] for g in uniones for x in g["nodos"] if x["id_antes"] != g["id"]}
+    salida: dict[str, dict] = {}
+    for to in C.TOS_ORDEN:
+        g = deepcopy(grafos[to])
+        ids_c1 = {n["id"] for n in g["nodes"] if n.get("type") == "Comunicacion" and n["id"] in canon}
+        for n in g["nodes"]:
+            if n["id"] in ids_c1:
+                n["id"] = canon[n["id"]]
+        for e in g["edges"]:
+            if e["source"] in ids_c1:
+                e["source"] = canon[e["source"]]
+            if e["target"] in ids_c1:
+                e["target"] = canon[e["target"]]
+        salida[to] = g
+    return salida, uniones
 
 
 def merges_arista_de(grafos_pre: dict[str, dict], edges_out: list[dict]) -> int:

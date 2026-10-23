@@ -129,8 +129,8 @@ MUESTRA = (
     "docvig::3.3.1",       # TO sin rol de alcance (hueco F1.2)
 )
 TO_ROL_VARIADO = "cla"     # TO cuya línea de alcance se altera (variaciones V11 y V21)
-TO_NUEVO = "snp_psp"       # TO de la partición fuera de la tanda 0 (V23)
-UNIDAD_TO_NUEVO = "snp_psp::1.3.1.1"
+TO_NUEVO = "gerc"          # TO de la partición fuera de las tres tandas, con unidad punto_terminal (V23 y R23)
+UNIDAD_TO_NUEVO = "gerc::1.1"
 RENUMERACION = {"to": "pro", "insertar_antes_de": "2.3"}   # V24
 
 # Módulos que corren DESPUÉS de E3 o que no arman requests: un cambio en ellos
@@ -173,9 +173,12 @@ ARCHIVO_TO_ROL_VARIADO = "TO_clasificacion_deudores_actual.pdf"
 ARCHIVO_SIN_ROL_R34 = "docvig.pdf"
 ENTRADA_DERIVADO_R34 = "ri_ccna.pdf"
 # Además de los de M1: el validador r2 y su política, las reglas de las
-# cuantías y el runner. validador_e1 toma de validador_r2 las correcciones de
-# tipo y predicado al VALIDAR la salida de E1, no al armar los requests.
-MODULOS_SOLO_CODIGO_R2 = MODULOS_SOLO_CODIGO + ("validador_r2", "reglas_comparacion", "runner_corpus")
+# cuantías, el runner y la normalización de la regla C1 (la carga
+# ensamblar_tanda0 con --union-comunicaciones). validador_e1 toma de
+# validador_r2 las correcciones de tipo y predicado al VALIDAR la salida de
+# E1, no al armar los requests.
+MODULOS_SOLO_CODIGO_R2 = MODULOS_SOLO_CODIGO + ("validador_r2", "reglas_comparacion", "runner_corpus",
+                                                "tamanos_desamb_mesa")
 
 
 # ------------------------------------------------------------------------- #

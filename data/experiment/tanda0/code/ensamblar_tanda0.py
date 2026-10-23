@@ -75,6 +75,11 @@ CORPUS_V2 = REX / "corpus_v2"
 GRAFO_V2_CODE = REPO / "data" / "experiment" / "grafo_v2" / "code"
 ESQUEMA_V3 = REPO / "data" / "experiment" / "esq_v3_miembros" / "esquema_v3_clases.json"
 PERFIL_V3 = "v3_b54"
+# --union-comunicaciones (cadena r2): la normalización de la regla C1, que se carga de su archivo, con su candado, solo con
+# la bandera prendida
+NORMALIZACION_C1 = REPO / "data" / "experiment" / "med_desamb" / "parte2" / "tamanos_desamb_mesa.py"
+NORMALIZACION_C1_SHA256 = "428a3cce394111a078a71f06918e90da5bb014a7111426476054a481429ca5d3"
+MODULO_NORMALIZACION_C1 = "tamanos_desamb_mesa"
 
 for _p in (str(REX), str(CORPUS_V2), str(GRAFO_V2_CODE), str(REX / "e2_reduce"),
            str(REX / "e1_extractor"), str(REX / "e3_verificador")):
@@ -1407,12 +1412,22 @@ def ubicar_tramo_g_r(tramo: str | None, ch: dict, V, holgura) -> tuple[str, str 
     return "no_ubicado", None, None
 
 
-def corregir_procedencia_g_r(regs: list[dict], chunks: dict[str, dict], V, holgura) -> dict:
+def corregir_procedencia_g_r(regs: list[dict], chunks: dict[str, dict], V, holgura,
+                             procedencia_heredada: bool = False) -> dict:
     """G-r, sobre los registros de `entrada_r2`, antes de la resolución y de E2 (solo r2b): en una entidad de
     contenido con `punto` en un ancestro de su unidad, el punto pasa a la unidad si su texto propio contiene el tramo
     (o el segmento del ítem del tramo compuesto), o al ancestro cuyo bloque heredado lo contiene, con el
-    `rol_documental` de ese bloque. Si el tramo no se ubica, nada cambia. Muta las entidades y devuelve el detalle."""
+    `rol_documental` de ese bloque. Si el tramo no se ubica, nada cambia. Muta las entidades y devuelve el detalle.
+    `procedencia_heredada` (U-PROC-HERENCIA): después de G-r, C1 y C2 (`procedencia_heredada_c1_c2`), con el punto y
+    el rol que declaró E1 tomados antes de G-r; su detalle va en la clave `procedencia_heredada`. Con False
+    (default), la salida de siempre."""
     import comun_e1  # noqa: PLC0415
+    declarado: dict[int, tuple] = {}
+    if procedencia_heredada:
+        for r in regs:
+            for e in (r.get("validacion") or {}).get("entidades", []):
+                p = e.get("provenance") or {}
+                declarado[id(e)] = (p.get("punto"), p.get("rol_documental"))
     cambios = []
     for r in regs:
         ch = chunks.get(r["chunk_id"])
@@ -1434,10 +1449,118 @@ def corregir_procedencia_g_r(regs: list[dict], chunks: dict[str, dict], V, holgu
                             "rol": p.get("rol_documental"), "rol_g_r": nuevo[1], "lugar": lugar})
             p["punto"], p["rol_documental"] = nuevo
             e["punto"] = nuevo[0]
-    return {"entidades_que_cambian": len(cambios),
-            "cambia_el_punto": sum(1 for c in cambios if c["punto"] != c["punto_g_r"]),
-            "solo_el_rol": sum(1 for c in cambios if c["punto"] == c["punto_g_r"]),
-            "cambios": cambios}
+    res = {"entidades_que_cambian": len(cambios),
+           "cambia_el_punto": sum(1 for c in cambios if c["punto"] != c["punto_g_r"]),
+           "solo_el_rol": sum(1 for c in cambios if c["punto"] == c["punto_g_r"]),
+           "cambios": cambios}
+    if procedencia_heredada:
+        res["procedencia_heredada"] = procedencia_heredada_c1_c2(regs, chunks, V, holgura, declarado)
+    return res
+
+
+def bloque_ubicado_g_r(tramo: str, ch: dict, q: str, V, holgura) -> int | None:
+    """C1 de U-PROC-HERENCIA, condición 3: el índice, en `herencia`, del bloque en el que `ubicar_tramo_g_r` ubica
+    el tramo cuando da «parrafo» en el ancestro `q`. Es el primer bloque de `q` que no es un encabezado y contiene
+    la misma aguja (el tramo; el compuesto, sin «[…]») con la misma verificación (`V.verificar_tramo`, «exacta» o
+    «tokens»)."""
+    aguja = tramo.replace("[…]", " ").replace("[...]", " ") if len(_SEP_TRAMO_G_R.split(tramo)) == 2 else tramo
+    for k, h in enumerate(ch.get("herencia", [])):
+        if (h["unidad_origen"] == q and h["tipo"] != "encabezado"
+                and V.verificar_tramo(aguja, h["texto"] or "", holgura)[0] in ("exacta", "tokens")):
+            return k
+    return None
+
+
+def id_nodo_e2_r2(e: dict, chunk_id: str, punto: str | None = None) -> str:
+    """El id del nodo de una entidad de TIPOS_G_R en E2 (fase r2b): la misma función (`e2_lib.entity_slug_r2`) con
+    los mismos argumentos que `e2_lib.ensamblar_r2`. Con `punto`, el id que tendría con ese punto en la procedencia."""
+    prov = {**e["provenance"], "chunk_id": chunk_id}
+    if punto is not None:
+        prov["punto"] = punto
+    props = dict(e.get("properties") or {})
+    slug = e2_lib.entity_slug_r2({"type": e["type"], "label": e.get("label"), "properties": props}, prov, "r2b")
+    return f"{e['type']}_{slug}"
+
+
+def procedencia_heredada_c1_c2(regs: list[dict], chunks: dict[str, dict], V, holgura,
+                               declarado: dict[int, tuple]) -> dict:
+    """U-PROC-HERENCIA, C1 y C2, después de G-r (solo r2b, con `procedencia_heredada`). El mensaje de E1 trae toda
+    la herencia de la unidad; el texto de E3 (`comun_e3.fuente_integro` con el bloque de la lista) trae solo los
+    títulos, el bloque que abre la lista y el texto propio. Condición 1: el tramo, normalizado con
+    `comun_e3.normalizar_para_cita`, no está en el texto de E3 de la unidad, normalizado igual.
+      - C1, en una entidad de TIPOS_G_R que E1 declaró con el punto propio: con la condición 1, si
+        `ubicar_tramo_g_r` ubica el tramo como «parrafo» en el bloque heredado de un ancestro (2) y ese bloque no es
+        el que abre la lista (3; `comun_e3.indices_bloque_lista`), el punto pasa a ese ancestro y el rol a
+        `herencia_<tipo del bloque>`, como en G-r. Lo que declaró E1 queda en `punto_declarado_e1` y
+        `rol_declarado_e1`. El `chunk_id` no cambia: las páginas y los ancestros los rehace
+        `enriquecer_procedencias_r2`.
+      - C1 sin uniones (opción D): C1 no se aplica si, con el punto nuevo, la entidad pasaría a tener el id de otro
+        nodo del ensamblado (`id_nodo_e2_r2`): el de un nodo que ya existe antes de C1, o el que C1 le dio a otra
+        entidad antes en el orden de E2 (orden de E0 de los chunks). La entidad queda con el punto y el rol que
+        declaró E1, C2 la marca igual y va a `uniones_evitadas`. Cuentan las entidades que E2 lleva al grafo
+        (registros aceptados de un chunk del TO); el id empieza con el tipo y lleva el TO, así que solo puede
+        coincidir con el de un nodo del mismo tipo y del mismo TO.
+      - C2, en toda entidad, de cualquier tipo y punto: `tramo_fuera_del_texto_de_e3` True en la procedencia si el
+        tramo cumple la condición 1 y está, normalizado igual, en un bloque heredado que no es un título ni el que
+        abre la lista.
+    `declarado`: id de la entidad → (punto, rol) de su procedencia antes de G-r. Muta las procedencias y devuelve
+    las filas de C1, las de C2, las de las uniones evitadas y las de las entidades de C1 que cumplen la condición 1 y
+    no las otras dos, con el lugar que da `ubicar_tramo_g_r`."""
+    import comun_e3  # noqa: PLC0415 — e3_verificador, en el sys.path de este módulo
+    norm = comun_e3.normalizar_para_cita
+    orden = {cid: i for i, cid in enumerate(chunks)}
+    regs = sorted(regs, key=lambda r: orden.get(r["chunk_id"], len(orden)))
+    c1, c2, sin_c1, evitadas, candidatas, marcadas = [], [], [], [], [], []
+    for r in regs:
+        ch = chunks.get(r["chunk_id"])
+        if ch is None:
+            continue
+        lista = set(comun_e3.indices_bloque_lista(ch))
+        texto_e3 = norm(comun_e3.fuente_integro(ch, bloque_de_lista=True))
+        solo_e1 = [norm(h["texto"] or "") for k, h in enumerate(ch.get("herencia", []))
+                   if h["tipo"] != "encabezado" and k not in lista]
+        for e in (r.get("validacion") or {}).get("entidades", []):
+            p = e.get("provenance") or {}
+            tramo = p.get("tramo")
+            t = norm(tramo) if tramo else ""
+            if not t or t in texto_e3:
+                continue
+            fila = {"chunk_id": r["chunk_id"], "local_id": e.get("local_id"), "type": e.get("type"),
+                    "label": e.get("label"), "tramo": tramo}
+            punto_e1, rol_e1 = declarado[id(e)]
+            if e.get("type") in TIPOS_G_R and punto_e1 == ch["unidad"]:
+                lugar, q, tipo = ubicar_tramo_g_r(tramo, ch, V, holgura)
+                k = bloque_ubicado_g_r(tramo, ch, q, V, holgura) if lugar == "parrafo" else None
+                if lugar == "parrafo" and q != ch["unidad"] and k is not None and k not in lista:
+                    candidatas.append((r["chunk_id"], e, {**fila, "punto": punto_e1, "punto_c1": q, "rol": rol_e1,
+                                                          "rol_c1": f"herencia_{tipo}"}))
+                else:
+                    sin_c1.append({**fila, "punto": punto_e1, "rol": rol_e1, "lugar": lugar, "ancestro": q,
+                                   "bloque_que_abre_la_lista": None if k is None else k in lista})
+            if any(t in b for b in solo_e1):
+                marcadas.append((e, fila))
+    en_e2 = {r["chunk_id"] for r in regs if r["chunk_id"] in orden and e2_lib._estado_registro(r)[0] == "aceptado"}
+    existentes = {id_nodo_e2_r2(e, r["chunk_id"]) for r in regs if r["chunk_id"] in en_e2
+                  for e in r["validacion"].get("entidades", []) if e.get("type") in TIPOS_G_R}
+    de_c1: set[str] = set()
+    for cid, e, f in candidatas:
+        nuevo = id_nodo_e2_r2(e, cid, f["punto_c1"])
+        if cid in en_e2 and (nuevo in existentes or nuevo in de_c1):
+            evitadas.append({**f, "id": id_nodo_e2_r2(e, cid), "id_c1": nuevo,
+                             "con": "nodo_existente" if nuevo in existentes else "c1_en_otra_entidad"})
+            continue
+        if cid in en_e2:
+            de_c1.add(nuevo)
+        c1.append(f)
+        p = e["provenance"]
+        p["punto"], p["rol_documental"] = f["punto_c1"], f["rol_c1"]
+        p["punto_declarado_e1"], p["rol_declarado_e1"] = f["punto"], f["rol"]
+        e["punto"] = f["punto_c1"]
+    for e, fila in marcadas:
+        p = e["provenance"]
+        p["tramo_fuera_del_texto_de_e3"] = True
+        c2.append({**fila, "punto": p.get("punto"), "rol": p.get("rol_documental")})
+    return {"c1": c1, "c2": c2, "uniones_evitadas": evitadas, "c1_sin_las_otras_dos": sin_c1}
 
 
 # U-OMISIONES-COD, grupo A: marcas del registro de omisiones y de los supuestos dentro de una norma (solo r2b). No
@@ -1593,8 +1716,137 @@ def descartar_cola_r2(regs: list[dict], con_cola: bool) -> tuple[list[dict], lis
             [r["chunk_id"] for r in regs if r.get("cola_humana")])
 
 
+# ------------------------------------------------------------------------- #
+# C1: la unión de las Comunicacion (--union-comunicaciones, cadena r2)       #
+# ------------------------------------------------------------------------- #
+def _leer_con_sha256(p: Path) -> tuple[bytes, str]:
+    datos = Path(p).read_bytes()
+    return datos, hashlib.sha256(datos).hexdigest()
+
+
+def cargar_union_comunicaciones(ruta: Path, sha256: str, ruta_nodos: Path | None = None,
+                                sha256_nodos: str | None = None) -> dict:
+    """La regla C1 (solo en la cadena r2): lee la lista de los códigos que no se unen (`{"no_unir": [<codigo_normalizado>,
+    ...]}`, que puede ir vacía) y, si se pasa, la de los nodos que no se unen (la lista de sus ids en el ensamblado con
+    la guarda), cada una controlada con su sha256, y carga la normalización (`codigo_normalizado` de NORMALIZACION_C1)
+    de su archivo, sin copiarla, con su candado. Frena (RuntimeError) si un sha256 no coincide o si una lista no tiene
+    su forma."""
+    import importlib.util               # noqa: PLC0415 — solo con --union-comunicaciones
+    datos, sha = _leer_con_sha256(ruta)
+    if sha != sha256:
+        raise RuntimeError(f"candado de --union-comunicaciones: {ruta} tiene sha256 {sha}, no {sha256}")
+    lista = json.loads(datos)
+    if (not isinstance(lista, dict) or set(lista) != {"no_unir"} or not isinstance(lista["no_unir"], list)
+            or not all(isinstance(c, str) for c in lista["no_unir"])):
+        raise RuntimeError(f'--union-comunicaciones: {ruta} no es {{"no_unir": [<codigo_normalizado>, ...]}}')
+    nodos, sha_nodos = None, None
+    if ruta_nodos is not None:
+        datos_n, sha_nodos = _leer_con_sha256(ruta_nodos)
+        if sha_nodos != sha256_nodos:
+            raise RuntimeError(f"candado de --union-comunicaciones-nodos: {ruta_nodos} tiene sha256 {sha_nodos}, "
+                               f"no {sha256_nodos}")
+        nodos = json.loads(datos_n)
+        if not isinstance(nodos, list) or not all(isinstance(i, str) for i in nodos):
+            raise RuntimeError(f"--union-comunicaciones-nodos: {ruta_nodos} no es una lista de ids")
+    fuente, sha_norm = _leer_con_sha256(NORMALIZACION_C1)
+    if sha_norm != NORMALIZACION_C1_SHA256:
+        raise RuntimeError(f"candado de la normalización de C1: {_rel(NORMALIZACION_C1)} tiene sha256 {sha_norm}, "
+                           f"no el sellado {NORMALIZACION_C1_SHA256}")
+    spec = importlib.util.spec_from_file_location(MODULO_NORMALIZACION_C1, NORMALIZACION_C1)
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[MODULO_NORMALIZACION_C1] = mod
+    exec(compile(fuente, str(NORMALIZACION_C1), "exec"), mod.__dict__)   # los bytes del candado, sin releer el archivo
+    return {"codigo_normalizado": mod.codigo_normalizado, "no_unir": frozenset(lista["no_unir"]), "no_unir_sha256": sha,
+            "no_unir_nodos": None if nodos is None else frozenset(nodos), "no_unir_nodos_sha256": sha_nodos}
+
+
+def ids_con_la_guarda(grafos: dict[str, dict]) -> dict[tuple[str, str], str]:
+    """(to, id) → el id que la guarda (`INV.merge_grafos_guardado` sin C1) le da al nodo cuando lo renombra: el sufijo
+    __<to> en los TOs posteriores al primero de una colisión de id entre TOs que no es Sujeto del catálogo. Un nodo
+    que no está acá conserva su id."""
+    por_to_id = {to: {n["id"]: n for n in grafos[to]["nodes"]} for to in C.TOS_ORDEN}
+    return {(to, nid): f"{nid}__{to}" for nid, tos in INV.colisiones_cross_to(grafos).items()
+            if not INV._es_sujeto_catalogo(por_to_id[tos[0]][nid]) for to in tos[1:]}
+
+
+def preparar_union_c1(grafos: dict[str, dict], union: dict) -> dict:
+    """La regla C1 con sus dos listas, antes de la guarda. Arma los grupos de las Comunicacion por código normalizado, en
+    el orden de los TOs, y decide el código que recibe la guarda (`codigo_comunicacion`, nodo -> código o None):
+      - un código de la lista de códigos queda con None en todos sus nodos: la guarda de siempre;
+      - un nodo de la lista de nodos (por su id con la guarda) queda con None; si los nodos que quedan de su código son
+        menos de 2 o están en menos de 2 TOs, no se une ninguno de los nodos de ese código (todos con None);
+      - si un nodo de la lista comparte su id con nodos de otros TOs y alguno de ellos se une, los nodos de ese id
+        reciben antes el renombre de la guarda (sufijo __<to>, `colision_cross_to` y sus aristas), como en
+        `INV.merge_grafos_guardado`: así el nodo de la lista queda como con la bandera apagada y la unión no lo absorbe.
+    La unión es la de `INV._unir_comunicaciones_c1`, que no une un código de un solo TO. La función reconoce los nodos
+    por identidad: vale para los nodos de los grafos que devuelve. Devuelve esos grafos (los mismos objetos, o una copia
+    con los renombres), la función, el id con la guarda de cada nodo (para el registro de las uniones) y las cuentas
+    del resumen, sin contenido."""
+    norm, no_unir = union["codigo_normalizado"], union["no_unir"]
+    lista_nodos = union["no_unir_nodos"] or frozenset()
+    ren = ids_con_la_guarda(grafos)
+    guarda = {(to, i): ren.get((to, n["id"]), n["id"]) for to in C.TOS_ORDEN for i, n in enumerate(grafos[to]["nodes"])}
+    grupos: dict[str, list[tuple[str, int]]] = {}
+    for to in C.TOS_ORDEN:
+        for i, n in enumerate(grafos[to]["nodes"]):
+            if n.get("type") == "Comunicacion":
+                c = norm(n)
+                if c is not None:
+                    grupos.setdefault(c, []).append((to, i))
+    codigo: dict[tuple[str, int], str] = {}
+    no_por_lista = no_por_muestra = 0
+    unidos, de_la_lista = set(), []
+    for c, ns in grupos.items():
+        se_uniria = len({to for to, _ in ns}) > 1
+        if c in no_unir:
+            no_por_lista += se_uniria
+            continue
+        quedan = [k for k in ns if guarda[k] not in lista_nodos]
+        if len(quedan) < len(ns) and (len(quedan) < 2 or len({to for to, _ in quedan}) < 2):
+            no_por_muestra += se_uniria
+            continue
+        codigo.update({k: c for k in quedan})
+        if len({to for to, _ in quedan}) > 1:
+            unidos |= set(quedan)
+            de_la_lista += [k for k in ns if k not in quedan]
+    # el renombre de la guarda, antes de C1, para los ids que comparte un nodo de la lista con un nodo que se une
+    id_de = {k: grafos[k[0]]["nodes"][k[1]]["id"] for k in guarda}
+    ids_unidos = {id_de[k] for k in unidos}
+    familias = {id_de[k] for k in de_la_lista if id_de[k] in ids_unidos}
+    salida = grafos
+    if familias:
+        salida = {}
+        for to in C.TOS_ORDEN:
+            g = deepcopy(grafos[to])
+            r = {nid: ren[(to, nid)] for nid in familias if (to, nid) in ren}
+            for n in g["nodes"]:
+                if n["id"] in r:
+                    n["id"] = r[n["id"]]
+                    n.setdefault("properties", {})["colision_cross_to"] = "true"
+            for e in g["edges"]:
+                if e["source"] in r:
+                    e["source"] = r[e["source"]]
+                if e["target"] in r:
+                    e["target"] = r[e["target"]]
+            salida[to] = g
+    por_objeto = {id(salida[to]["nodes"][i]): c for (to, i), c in codigo.items()}
+    guarda_de = {(to, salida[to]["nodes"][i]["id"]): gid for (to, i), gid in guarda.items()}
+    ids_com = {gid for (to, i), gid in guarda.items() if grafos[to]["nodes"][i].get("type") == "Comunicacion"}
+    cuentas = {"no_unir_sha256": union["no_unir_sha256"], "codigos_en_la_lista": len(no_unir),
+               "codigos_que_no_se_unen_por_la_lista": no_por_lista,
+               "nodos_sha256": union["no_unir_nodos_sha256"],
+               "nodos_de_la_lista": None if union["no_unir_nodos"] is None else len(lista_nodos),
+               "nodos_de_la_lista_en_el_grafo": None if union["no_unir_nodos"] is None else len(lista_nodos & ids_com),
+               "codigos_que_no_se_unen_por_la_lista_de_nodos": no_por_muestra,
+               "ids_con_el_renombre_de_la_guarda_antes_de_unir": len(familias)}
+    return {"grafos": salida, "codigo_comunicacion": lambda n: por_objeto.get(id(n)), "guarda_de": guarda_de,
+            "cuentas": cuentas}
+
+
 def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Path | None = None,
-                     fase: str | None = None, con_cola: bool = True, cat_resolucion: dict | None = None) -> dict:
+                     fase: str | None = None, con_cola: bool = True, cat_resolucion: dict | None = None,
+                     procedencia_heredada: bool = False, union_comunicaciones: dict | None = None,
+                     remisiones_a_subpuntos: bool = False) -> dict:
     """Cadena r2. `w(nombre, obj)` y `wl(nombre, filas)` escriben JSON y JSONL
     en <salida>/r2/ (None = no escriben). `fase`: «r2a» o «r2b»; por defecto,
     la del perfil del crudo (r2b con la forma r2). Pasarla explícita sirve a
@@ -1611,7 +1863,27 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
     `cat_resolucion` (R2 de U-RERESOL-CAT, W1): el catálogo de resolución de
     `r1_e4.catalogo_resolucion_r2`; reemplaza al del request en E4, en E2
     (labels y conjunto de ids) y en la normalización de los propuestos, y el
-    resumen lleva sus tres versiones. Con None (default), la salida de siempre."""
+    resumen lleva sus tres versiones. Con None (default), la salida de siempre.
+    `procedencia_heredada` (U-PROC-HERENCIA, solo r2b): C1 y C2 después de G-r
+    (`corregir_procedencia_g_r`), con C1 sin uniones (opción D), y el detector
+    de remisiones lee y resuelve las procedencias de C1 con el punto y el rol
+    que declaró E1 (`punto_declarado_e1` de r1_referencias); su detalle va a
+    procedencia_heredada.json y sus conteos, al resumen. La prende la
+    re-aplicación única; el grafo de cada tanda se arma sin ella. Con False
+    (default), la salida de siempre.
+    `union_comunicaciones` (la regla C1, con --union-comunicaciones; lo que
+    devuelve `cargar_union_comunicaciones`): la guarda une las Comunicacion de
+    TOs distintos con el mismo código normalizado, salvo los códigos y los
+    nodos de sus listas (`preparar_union_c1`); el registro va a uniones_c1.json
+    y sus cuentas y su sha256, al resumen. La prende la re-aplicación única.
+    Con None (default), la salida de siempre.
+    `remisiones_a_subpuntos` (opción B): la cita a un punto padre o a una
+    sección sin nodos anclados va al primer nivel con nodos de su subárbol, en
+    una segunda pasada del detector que no toca las `remite_a` de la
+    resolución exacta (`remisiones_a_subpuntos` de r1_referencias); sin la
+    cola, la cita a una unidad excluida sigue con su causa. Sus conteos van a
+    la clave `remisiones_a_subpuntos` de `remite_a` del resumen. Con False
+    (default), la salida de siempre."""
     import runner_corpus as RC          # noqa: PLC0415 — solo con --perfil-r2
     w = w or (lambda *a, **k: None)
     wl = wl or (lambda *a, **k: None)
@@ -1624,6 +1896,8 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
     if fase not in e2_lib.FASES_R2:
         raise ValueError(f"fase desconocida: {fase!r}")
     r2b = fase == "r2b"
+    if procedencia_heredada and not r2b:
+        raise ValueError("procedencia_heredada es de la fase r2b: va después de G-r")
     versiones = {"catalogo_sha256": cat["catalogo_sha256"], "politica_sha256": pol.sha256,
                  "perfil": "r2", "prefijo_hash": perfil.prefijo_hash}
     resumen: dict = {"perfil_e1_del_crudo": perfil.nombre, **versiones, "etapas": []}
@@ -1639,6 +1913,7 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
     grafos, registro_total, resolucion_total, tramos_e1 = {}, [], [], {}
     conflictos_intra: list[dict] = []
     procedencia_g_r: list[dict] = []
+    heredada: dict[str, list[dict]] = {"c1": [], "c2": [], "uniones_evitadas": [], "c1_sin_las_otras_dos": []}
     supuestos: list[dict] = []
     resumen["e2_por_to"] = {}
     for to in C.TOS_ORDEN:
@@ -1647,8 +1922,10 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
         regs, descartadas = descartar_cola_r2(regs, con_cola)
         resumen["cola_descartada_por_to"][to] = {"n": len(descartadas), "chunks": descartadas}
         if r2b:
-            g_r = corregir_procedencia_g_r(regs, {c["id"]: c for c in chunks}, V, pol.holgura)
+            g_r = corregir_procedencia_g_r(regs, {c["id"]: c for c in chunks}, V, pol.holgura, procedencia_heredada)
             procedencia_g_r += [{**c, "to": to} for c in g_r["cambios"]]
+            for k, filas in g_r.get("procedencia_heredada", {}).items():
+                heredada[k] += [{**c, "to": to} for c in filas]
         res = E4.resolver_relaciones_r2(regs, cat["indice"], cat["rol_por_to"], versiones, parte_a=r2b)
         ens = e2_lib.ensamblar_r2(chunks, regs, cat["labels"], sujetos_de_resolucion(cat, M), M.firma_r2,
                                   M.TIPOS_ENTIDAD, M.PREDICADOS, res["registro"], fase=fase)
@@ -1685,11 +1962,24 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
     print("[e2-r2]", json.dumps({to: (v["nodes"], v["edges"]) for to, v in resumen["e2_por_to"].items()}),
           flush=True)
 
-    m = INV.merge_grafos_guardado(grafos)
+    if union_comunicaciones is None:
+        m = INV.merge_grafos_guardado(grafos)
+    else:
+        c1 = preparar_union_c1(grafos, union_comunicaciones)
+        m = INV.merge_grafos_guardado(c1["grafos"], codigo_comunicacion=c1["codigo_comunicacion"])
     kg = {"nodes": m["nodes"], "edges": m["edges"]}
     inv = INV.verificar_invariantes(kg, m["grafos_pre_merge"], merges_nodo=len(m["merges_cross_to"]),
                                     merges_arista=INV.merges_arista_de(m["grafos_pre_merge"], kg["edges"]))
     assert inv["ok"], inv["fallos"]
+    if union_comunicaciones is not None:
+        # el registro de las uniones de la guarda, con el id que cada nodo tiene con la bandera apagada
+        uniones = [{**u, "nodos": [{**x, "id_con_la_guarda": c1["guarda_de"][(x["to"], x["id_antes"])]}
+                                   for x in u["nodos"]]} for u in m["uniones_c1"]]
+        w("uniones_c1.json", uniones)
+        resumen["union_comunicaciones"] = {
+            **c1["cuentas"], "codigos_que_se_unen": len(uniones),
+            "nodos_que_se_unen": sum(len(u["nodos"]) for u in uniones),
+            "uniones_c1_sha256": sha256_texto(json.dumps(uniones, ensure_ascii=False, indent=1))}
     if r2b:
         r_prop = normalizar_propuestos_r2b(kg, registro_total, m["renombres"], cat)
         resumen["propuestos_r2b"] = r_prop["resumen"]
@@ -1725,12 +2015,16 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
     assert inv["ok"], inv["fallos"]
 
     partes = {c["id"]: c for to in C.TOS_ORDEN for c in _chunks_r2(to) if "sub_chunk" in c}
+    # grupo K: las unidades excluidas sin la cola (también las lee la opción B del detector)
+    excluidas = ([c for x in resumen["cola_descartada_por_to"].values() for c in x["chunks"]]
+                 if r2b and not con_cola else None)
     r_ref = REF.detectar_y_resolver(kg, perfil="r2", chunks_e0_r2=_chunks_e0_r2(tablas_dir),
-                                    chunks_partes=partes or None, procedencia_propia=r2b, agrupar_sin_rol=r2b)
+                                    chunks_partes=partes or None, procedencia_propia=r2b, agrupar_sin_rol=r2b,
+                                    punto_declarado_e1=procedencia_heredada,
+                                    remisiones_a_subpuntos=remisiones_a_subpuntos, unidades_excluidas=excluidas)
     resumen["remite_a"] = r_ref["resumen"]
     if r2b and not con_cola:
         # grupo K: la causa propia de la cita a una unidad excluida, en el registro y en el reporte
-        excluidas = [c for x in resumen["cola_descartada_por_to"].values() for c in x["chunks"]]
         resumen["remite_a"]["irresolubles_por_causa"] = irresolubles_en_unidad_excluida(r_ref["registro"], excluidas)
     tipo_de = {n["id"]: n["type"] for n in kg["nodes"]}
     resumen["referencia_con_origen_distinto_de_texto_ordenado"] = sum(
@@ -1774,6 +2068,18 @@ def correr_cadena_r2(man: MC.Manifiesto, perfil, w=None, wl=None, tablas_dir: Pa
                                       "solo_el_rol": sum(1 for c in procedencia_g_r if c["punto"] == c["punto_g_r"]),
                                       "cambia_el_punto_por_tipo": C.conteo([c for c in procedencia_g_r
                                                                             if c["punto"] != c["punto_g_r"]], "type")}
+        if procedencia_heredada:
+            w("procedencia_heredada.json", heredada)
+            resumen["procedencia_heredada"] = {
+                "c1": len(heredada["c1"]), "c1_por_tipo": C.conteo(heredada["c1"], "type"),
+                "c1_por_to": C.conteo(heredada["c1"], "to"),
+                "c2": len(heredada["c2"]), "c2_por_tipo": C.conteo(heredada["c2"], "type"),
+                "c2_por_to": C.conteo(heredada["c2"], "to"),
+                "uniones_evitadas": len(heredada["uniones_evitadas"]),
+                "uniones_evitadas_por_to": C.conteo(heredada["uniones_evitadas"], "to"),
+                "uniones_evitadas_por_causa": C.conteo(heredada["uniones_evitadas"], "con"),
+                "c1_sin_las_otras_dos": len(heredada["c1_sin_las_otras_dos"]),
+                "c1_sin_las_otras_dos_por_lugar": C.conteo(heredada["c1_sin_las_otras_dos"], "lugar")}
         resumen["paso_por_e3"] = {"por_to": paso_por_e3, "total": sumar_paso_por_e3(list(paso_por_e3.values()))}
 
     r_umb = llenar_umbrales_r2(kg, tramos_e1, _celdas_por_chunk(tablas_dir), M, V, RCMP, pol, fase)
@@ -1891,7 +2197,8 @@ def validar_grafo_r2(kg: dict, M) -> dict:
 
 def ensamblar_manifiesto_r2(man: MC.Manifiesto, entrada: Path, salida: Path,
                             tablas_dir: Path | None = None, con_cola: bool = True,
-                            cat_resolucion: dict | None = None) -> dict:
+                            cat_resolucion: dict | None = None, procedencia_heredada: bool = False,
+                            union_comunicaciones: dict | None = None, remisiones_a_subpuntos: bool = False) -> dict:
     """`con_cola` (U-SINCOLA-T0, enmienda 1 al mandato, 06/10/2026): con False,
     las dos corridas de `correr_cadena_r2` descartan los registros de la cola
     humana (`descartar_cola_r2`); el reporte declara `con_cola` y las unidades
@@ -1899,7 +2206,17 @@ def ensamblar_manifiesto_r2(man: MC.Manifiesto, entrada: Path, salida: Path,
     `cat_resolucion` (R2 de U-RERESOL-CAT, W1): el catálogo de resolución, en
     las redirecciones (esqueleto y conjunto de ids del merge entre TOs) y en las
     dos corridas; el reporte lleva sus tres versiones. Con None (default), el
-    catálogo del request, como siempre."""
+    catálogo del request, como siempre.
+    `procedencia_heredada` (U-PROC-HERENCIA): C1 (sin uniones) y C2, y las
+    remisiones de C1 con el punto que declaró E1, en las dos corridas; el
+    reporte lleva sus conteos. Con False (default), la salida de siempre.
+    `union_comunicaciones` (la regla C1, con --union-comunicaciones): la unión
+    de las Comunicacion con el mismo código normalizado, con sus listas, en las
+    dos corridas; escribe uniones_c1.json y el reporte lleva sus cuentas y su
+    sha256. Con None (default), la salida de siempre.
+    `remisiones_a_subpuntos` (opción B): la remisión a un punto padre o a una
+    sección cuyos subpuntos tienen nodos, en las dos corridas; el reporte lleva
+    sus conteos. Con False (default), la salida de siempre."""
     perfil = perfil_e1.perfil(man.perfil_e1)
     entrada, salida = Path(entrada), Path(salida)
     salida_r2 = salida / "r2"
@@ -1921,9 +2238,13 @@ def ensamblar_manifiesto_r2(man: MC.Manifiesto, entrada: Path, salida: Path,
 
     with redirigido(plan):
         print("=== cadena r2, corrida 1 ===", flush=True)
-        a = correr_cadena_r2(man, perfil, w, wl, tablas_dir, con_cola=con_cola, cat_resolucion=cat_resolucion)
+        a = correr_cadena_r2(man, perfil, w, wl, tablas_dir, con_cola=con_cola, cat_resolucion=cat_resolucion,
+                             procedencia_heredada=procedencia_heredada, union_comunicaciones=union_comunicaciones,
+                             remisiones_a_subpuntos=remisiones_a_subpuntos)
         print("=== cadena r2, corrida 2 (sin escribir) ===", flush=True)
-        b = correr_cadena_r2(man, perfil, None, None, tablas_dir, con_cola=con_cola, cat_resolucion=cat_resolucion)
+        b = correr_cadena_r2(man, perfil, None, None, tablas_dir, con_cola=con_cola, cat_resolucion=cat_resolucion,
+                             procedencia_heredada=procedencia_heredada, union_comunicaciones=union_comunicaciones,
+                             remisiones_a_subpuntos=remisiones_a_subpuntos)
     salida_r2.mkdir(parents=True, exist_ok=True)
     (salida_r2 / "kg.json").write_text(a["kg_json"], encoding="utf-8")
     reporte = {"grafo": f"{man.nombre}/r2", "perfil": "r2",
@@ -2020,7 +2341,33 @@ def main() -> int:
                     help="solo en la cadena r2 (R2 de U-RERESOL-CAT, W1): directorio con los generados del catálogo "
                          "de resolución (r1_e4.catalogo_resolucion_r2, con su candado); sin la opción, el catálogo "
                          "del request, como siempre")
+    ap.add_argument("--procedencia-heredada", dest="procedencia_heredada", action="store_true",
+                    help="solo en la cadena r2, fase r2b (U-PROC-HERENCIA): C1 (sin uniones) y C2 después de G-r, "
+                         "la procedencia de los tramos que solo vio E1, y las remisiones de C1 con el punto que "
+                         "declaró E1; sin la opción, el ensamblado de siempre")
+    ap.add_argument("--union-comunicaciones", dest="union_comunicaciones", type=Path, default=None,
+                    help="solo en la cadena r2 (la regla C1): une las Comunicacion de TOs distintos con el mismo código "
+                         "normalizado, salvo los códigos de esta lista (JSON {\"no_unir\": [...]}, que puede ir vacía); va "
+                         "con --union-comunicaciones-sha256; sin la opción, el ensamblado de siempre")
+    ap.add_argument("--union-comunicaciones-sha256", dest="union_comunicaciones_sha256", default=None,
+                    help="el sha256 de la lista de --union-comunicaciones: si no coincide, frena")
+    ap.add_argument("--union-comunicaciones-nodos", dest="union_comunicaciones_nodos", type=Path, default=None,
+                    help="con --union-comunicaciones: la lista de los nodos que no se unen (JSON con la lista de sus ids "
+                         "en el ensamblado con la guarda); va con --union-comunicaciones-nodos-sha256; sin la opción, no "
+                         "se excluye ningún nodo")
+    ap.add_argument("--union-comunicaciones-nodos-sha256", dest="union_comunicaciones_nodos_sha256", default=None,
+                    help="el sha256 de la lista de --union-comunicaciones-nodos: si no coincide, frena")
+    ap.add_argument("--remisiones-a-subpuntos", dest="remisiones_a_subpuntos", action="store_true",
+                    help="solo en la cadena r2 (opción B): la remisión a un punto padre o a una sección sin nodos "
+                         "anclados va al primer nivel con nodos de su subárbol, sin tocar las remite_a de la "
+                         "resolución exacta; sin la opción, el ensamblado de siempre")
     args = ap.parse_args()
+    if (args.union_comunicaciones is None) != (args.union_comunicaciones_sha256 is None):
+        ap.error("--union-comunicaciones y --union-comunicaciones-sha256 van juntas")
+    if (args.union_comunicaciones_nodos is None) != (args.union_comunicaciones_nodos_sha256 is None):
+        ap.error("--union-comunicaciones-nodos y --union-comunicaciones-nodos-sha256 van juntas")
+    if args.union_comunicaciones_nodos is not None and args.union_comunicaciones is None:
+        ap.error("--union-comunicaciones-nodos va con --union-comunicaciones")
 
     man = MC.cargar(args.manifiesto)
     # U-PROMPT-R2 (decisión 1 del mandato): un manifiesto con un perfil de forma «r2» (r2b) corre la cadena r2,
@@ -2032,8 +2379,12 @@ def main() -> int:
         tablas = args.tablas_e0_r2 if args.tablas_e0_r2 is not None else (man.e0_salida if forma_r2 else None)
         cat_res = (E4.catalogo_resolucion_r2(args.catalogo_resolucion) if args.catalogo_resolucion is not None
                    else None)
+        union_c1 = (cargar_union_comunicaciones(args.union_comunicaciones, args.union_comunicaciones_sha256,
+                                                args.union_comunicaciones_nodos, args.union_comunicaciones_nodos_sha256)
+                    if args.union_comunicaciones is not None else None)
         res = ensamblar_manifiesto_r2(man, args.entrada, args.salida, tablas, con_cola=not args.sin_cola,
-                                      cat_resolucion=cat_res)
+                                      cat_resolucion=cat_res, procedencia_heredada=args.procedencia_heredada,
+                                      union_comunicaciones=union_c1, remisiones_a_subpuntos=args.remisiones_a_subpuntos)
         print(json.dumps(res, ensure_ascii=False, indent=1))
         if args.resumen_json:
             args.resumen_json.parent.mkdir(parents=True, exist_ok=True)
@@ -2041,6 +2392,12 @@ def main() -> int:
         return 0 if res["r2"]["doble_corrida_byte_identica"] else 1
     if args.catalogo_resolucion is not None:
         ap.error("--catalogo-resolucion es solo de la cadena r2")
+    if args.procedencia_heredada:
+        ap.error("--procedencia-heredada es solo de la cadena r2")
+    if args.union_comunicaciones is not None:
+        ap.error("--union-comunicaciones es solo de la cadena r2")
+    if args.remisiones_a_subpuntos:
+        ap.error("--remisiones-a-subpuntos es solo de la cadena r2")
     res = ensamblar_manifiesto(man, args.entrada, args.salida, hasta=args.hasta,
                                con_cola=not args.sin_cola, motor=args.motor)
     if args.selftest_dev:
