@@ -3593,3 +3593,84 @@ Decisiones y hechos de la autora del 23/10/2026, recibidos a las 09:54:35 y a la
   6. el despacho de la re-aplicación, con la lista del censo y el catálogo de resolución de la marcada;
   7. el «seguí» del tramo 2 de A2.1, con el resultado de la D-6 y el control del SDK como primer paso.
 - Las secciones anteriores no se editan.
+
+## 94. El viernes al mediodía: los cuatro commits, la D-6 pagada con B' en FRENO, el N de B6.3 fijado y la primera pasada del catálogo sellada (23/10/2026)
+
+Decisiones y hechos de la autora del 23/10/2026, recibidos a las 10:41:30 (hoja de ruta de la mesa, §245).
+
+- **Los cuatro commits,** corridos con zsh, en orden, con su push (git log): el 163 (`0765be9a`, 10:39:00), el 160 v2 (`90cce828`,
+  10:39:06; la enmienda 4 al pre-registro de tripletas queda FIRMADA hoy), el 164 (`e9481002`, 10:39:13) y el 165 (`896223dd`, 10:39:19).
+  Contra el paquete de la mesa, 27 de 27 (`decisiones_245_mesa/verificacion/`).
+- **Las tres sesiones pagas de la D-6,** con el comando de la sección 6 de su FRENO (`d6_tope_mcp/sesiones_c/registro_tope_mcp.json`, de
+  10:38:43 a 10:39:35): gasto R9, USD 0,324651.
+  - A' llegó entera (140.000 de 140.000) y C', con los dos resultados enteros en el mismo mensaje (`PRESUPUESTO_NO_ACTIVO`): las dos dan
+    OK con la condición del banco;
+  - B' llegó como referencia, como se esperaba, pero la condición del banco falla en tres controles: `tool_results_Bp/` no trae el
+    archivo que nombra la referencia, y por eso fallan el sha256 del texto y la línea de acentos. Los controles dan FRENO. En
+    `controles_tope_mcp.json`, el primero de los tres dice que el stream no nombra un archivo, la meta dice `copia_resultados_en_disco`
+    «sí», y la respuesta de B' no trae su código (`respuesta.estado` «ausente»);
+  - la autora pidió a la ejecutora un diagnóstico a USD 0, sin tocar el repo: dónde guardó el CLI el archivo, si la falla está en
+    `LA.copiar_sesion`, en su control o en la expectativa, y un parche con su prueba si está en el lanzador del banco (PENDIENTE). Nada
+    pago de la D-6 hasta la revisión de ese FRENO;
+  - las sesiones corrieron al mismo tiempo que los cuatro commits (10:39:00 a 10:39:19). Ningún commit toca lo que lee la D-6: los 13
+    archivos de `8bea2edb..896223dd` no son del banco ni de `d6_tope_mcp/`. Se declara.
+- **Lo que cambia para el «seguí» del tramo 2 de A2.1:**
+  - los dos servidores del banco declaran la anotación por herramienta en 200.000 caracteres, como A' (`mcp_kg/servidor_mcp_kg.py:68`
+    y `:146`; `mcp_vector/servidor_mcp_vector.py:74` y `:280`): sus resultados llegan enteros hasta ese largo, y el camino de B', el del
+    disco, solo se abre por encima;
+  - A2.1 copia sus sesiones con la misma función del banco (`LA.copiar_sesion`, `banco_mcp/a2_1/lanzar_agente_a2_1.py:171`);
+  - el «seguí» suma, en cada sesión, el largo de cada resultado y un control que frena si alguno llegó como referencia a disco;
+  - si el diagnóstico pone la falla en el lanzador, su parche cambia el lanzador que usa A2.1: va con su commit antes del humo de A2.1;
+  - cuántos resultados de A2.1 pasan los 200.000 caracteres: NO VERIFICADO.
+- **El N de B6.3** (decisión de la autora, recibida a las 10:41:30), tal cual: «El N de B6.3, por la regla de la §51: el tope por
+  calendario es 96. Si Q5 pide menos, va el de Q5; si pide más, 96, declarado con la potencia que alcanza. Si el domingo a las 20:00 la
+  tercera ola no está revisada, el N es 64, declarado. Lo fijo hoy, antes de A2.2 y de B6.3.»
+  - En el calendario v12p con N = 96 y la mesa desde las 11:00 a las 11:30 (duraciones NO VERIFICADAS), la tercera ola queda revisada el
+    domingo de 17:38 a 18:08 en el central, antes de las 20:00, y el martes en el lento, donde la regla da 64.
+- **La columna `nota` de la hoja de aprobación del juez v2:** sí, como viene en el «seguí» de la etapa a-bis.
+- **Las claves del catálogo:**
+  - la primera pasada, sellada a las 10:22:50 (`claves_marcada.csv`, `86194514…`), queda guardada tal cual, con su sello y su
+    exportación, en `lectura_claves_catalogo/pasada1/`. La mesa controló por nombre su sha256 contra el sello, sin abrirla;
+  - la autora hace una segunda pasada de los 48 alias e ids nuevos (12 y 36 en la planilla) antes de que la mesa use la lectura. Vale la
+    segunda, sellada, y se declaran las dos.
+- **Lo que sigue:**
+  1. el humo de la v2 (el 160 v2 ya está) y, después, el «seguí» de la etapa a-bis;
+  2. el FRENO del diagnóstico de la D-6, con su revisión;
+  3. la segunda pasada del catálogo, sellada, y el despacho de la re-aplicación;
+  4. el «seguí» del tramo 2 de A2.1, con el control del disco, y su humo después de la revisión del diagnóstico.
+- Las secciones anteriores no se editan.
+
+## 95. El viernes, después del mediodía: el diagnóstico de B' y el humo de la v2 (23/10/2026)
+
+Hechos de la autora del 23/10/2026, recibidos a las 10:53:26 (hoja de ruta de la mesa, §246).
+
+- **El diagnóstico de B' de la D-6,** hecho por la ejecutora a USD 0, solo leyendo, y verificado por la autora contra el código del
+  paquete de la etapa c: la falla es del control, no del lanzador del banco.
+  - El patrón de la ruta de la referencia (`d6_tope_mcp/code/controles_tope_mcp.py:281` y `lanzador_prueba.py:65`, con `/\S+?`) corta en
+    el espacio de «INGENIERIA IA»: el control no encontró el nombre del archivo, y fallaron en cadena los tres controles de B';
+  - `LA.copiar_sesion` (`banco_mcp/agentes/lanzar_agente.py:224-232`) copió la carpeta `tool-results` entera, con el archivo de 140.914
+    bytes cuyo texto da el sha256 del log R1. Con el patrón corregido, los controles sobre la sesión guardada dan OK, sin FRENO, y su
+    selftest, 208 de 208;
+  - en B', después de la referencia, el agente intentó leer el archivo con Read y con Bash, que no tiene, y terminó por el límite de
+    turnos: por eso costó USD 0,034 y no 0,012;
+  - la mesa controló las líneas de `LA.copiar_sesion` en HEAD y el tamaño del archivo copiado;
+  - el cierre de la ejecutora, con `FRENO_UD6_TOPE_MCP_c_bis.md` y su paquete, está PENDIENTE: dice cuándo guardaría el CLI un resultado
+    en disco en B6.3, qué recibe el agente en ese caso, y si algún `.py` del banco o del análisis de B6.3 extrae rutas de una referencia
+    con un patrón que no acepte espacios. Nada pago de la D-6 hasta su revisión.
+- **Para el «seguí» del tramo 2 de A2.1:** no hace falta un parche del lanzador. Queda el control del disco: un resultado que llega como
+  referencia frena la sesión, porque el agente no puede leerlo, como en B'.
+- **El humo de la v2,** corrido por la autora con su comando a las 10:41:15, después del 160 v2 (HEAD `896223dd`; prompt `bf484381…`,
+  bloque `5bdf4a42…`):
+  - 6 de 6 completas, sin errores, rechazos, cortes ni reintentos; USD 0,7197, contra el tope de 2;
+  - las medianas por pedido: entrada 1.838 tokens, salida 1.458 (con el razonamiento) y lectura de la caché 84.735, con una sola
+    escritura de la caché; 14,2 segundos. El análisis sobre las respuestas reales, OK;
+  - la cota con el humo (`v2/costo/cota_costo_v2_con_el_humo.json`): la iteración 1, USD 15,94; la 2, 15,40; la 3, 14,80; la prueba
+    sobre T, 20,37; y las 300 restantes, 57,50. Cada una, debajo de su freno (35,70 por paso y 106,20 las 300);
+  - la mesa lo rehízo por código desde el resumen: los 6 pedidos, su gasto, sus tipos y sus finales.
+- **El «seguí» de la etapa a-bis,** pegado por la autora en la misma sesión, después del humo.
+- **Lo que sigue:**
+  1. el FRENO c_bis de la D-6, con su revisión;
+  2. el FRENO a-bis de la v2, con su revisión, y la aprobación de los casos por la autora, con la hoja, el convertidor y el sello;
+  3. la segunda pasada del catálogo, sellada, y el despacho de la re-aplicación;
+  4. el «seguí» del tramo 2 de A2.1, con el control del disco.
+- Las secciones anteriores no se editan.
