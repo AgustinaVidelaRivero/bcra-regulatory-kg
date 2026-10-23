@@ -3904,3 +3904,78 @@ B6.3 y el insumo del pre-registro de A2.2 (§98).
   Va después de ese FRENO, junto con el commit del sello del grafo evaluado y antes de pegar el «seguí» de A2.1 (decisión 3). Mientras corre
   la re-aplicación, ningún commit.
 - Las secciones anteriores no se editan.
+
+## 100. El viernes, a media tarde: el FRENO de la re-aplicación revisado, el sello del grafo evaluado, la etapa a-ter del juez v2 y los expertos de B6.3 (23/10/2026)
+
+Decisiones y hechos de la autora del 23/10/2026, recibidos a las 14:11:25, a las 14:24:16 y a las 14:41:03 (hoja de ruta de la mesa, §254 a
+§256).
+
+- **El 169 v2,** corrido con su push (`c6565aa4`, a las 14:11:09, git log).
+- **El FRENO de la re-aplicación única** (`revision_UREAPL/`, 161 archivos, manifiesto `30d34909…`): las cuatro piezas entran, sin casos de
+  freno, y el grafo evaluado es el del paso 5: sin cola, `kg.json` `576c9725…`; con cola, `1bd5ffcd…`. Los grafos y su entrada quedan en
+  `fuera_del_repo/reaplicacion_unica/copia_repo/`.
+- **Las decisiones de la autora sobre ese FRENO,** tal cual:
+  1. «Lo que declara en su §6.3 (20 relaciones sin cola y 21 con cola de claves sin un veredicto que entre, 3 de ellas de la clave del
+     veredicto 99, «no entra», que se re-resuelven por el calificador o por el slug con los labels nuevos) queda en el grafo evaluado,
+     declarado. Es la regla de E4 aplicada igual a todas las menciones con el catálogo nuevo, y no hago excepciones a mano en el grafo
+     evaluado. Queda como pendiente para el grafo corregido.»
+  2. «El cambio de scripts/regression_kg_esperado.json en las 78 rutas (commit 71cb9305 del T3): aceptado, declarado en el sello.»
+- **La revisión de la mesa, por código** (`decisiones_254_mesa/reapl/`): el paquete da 161 de 161; el paso 1 da el sello de la tanda final
+  byte a byte, en los dos grafos, salvo el reporte del ensamblado, igual con sus rutas normalizadas; el paso 5 y su segunda armada dan los
+  mismos `kg.json` (los tres, 11 de 11); los nodos y las aristas de los cinco pasos son los de la tabla del FRENO; y cada pieza toca solo lo
+  suyo: D, los nodos que salen y los que entran son los mismos en número por tipo (115 con cola y 99 sin cola); las claves, solo Sujetos,
+  con toda arista que cambia en un Sujeto; C1, solo Comunicaciones; las remisiones, solo `remite_a` que entran (27.133 con cola y 24.301 sin
+  cola). En el paso 3, una `aplica_a` pasa, con su misma procedencia, de un Sujeto que no cambia a un alta nueva del catálogo: es la
+  re-resolución del FRENO, §6.2, y cumple la regla del mandato. La mesa rehizo además las ampliaciones con la regla del label (35 altas y 12
+  alias, iguales; 32 de 47 formas con artículo), recompuso el catálogo de resolución con el `componer` de HEAD (10 de 10 archivos iguales,
+  `54147015…`) y las 78 rutas sobre `2db79462` (las mismas, y cambian las 4 que declara el FRENO). R19 y los tres selftests, en las consolas
+  del paquete. **Da el OK.**
+- **El sello del grafo evaluado** (decisión 2): el 170, armado y probado en clones de HEAD (713 archivos, con 7 pruebas en contra). Entran
+  en `data/experiment/reaplicacion_unica/` los dos ensamblados del paso 5 sin su `kg.json`, que pasa de 100 MB, con su `kg.json.gz` y su
+  sello (`scripts/kg_gz.py`: sin cola `8a448e91…`, con cola `7202d58d…`); el paquete de la re-aplicación tal cual, con sus 8 NO_ABRIR_ por
+  sus bytes; y `sello_grafo_evaluado.json`, con los sha256 de los dos grafos, las 78 rutas (`cfed608d…`), el catálogo de resolución y las
+  dos declaraciones de la autora. Tres consolas del paquete que el `.gitignore` ignora por su extensión entran con `git add -f`, sin
+  tocarlo, como en `fb685a79`. El registro en `grafos.py` y la carga en Neo4j van con la unidad de los índices del grafo evaluado.
+- **Lo que sigue al sello,** tal cual (decisión 3): «Apenas se selle el grafo evaluado: los sorteos de B6.3 y el sorteo de la etapa T de
+  tripletas (enmienda 4, punto 6), fuera del repo y sellados antes de que se lea nada.»
+- **Los sorteos de B6.3** (decisión 4), tal cual:
+  1. «las semillas que proponés: B63:sorteo:documentos:v1, B63:sorteo:unidades:v1 y B63:sorteo:tipos:v1;»
+  2. «P-1 a P-4, como los proponés;»
+  3. «la contaminación que no está en el código: armá la lista de candidatos con un criterio mecánico, desde el registro y los registros de
+     cada lectura. Entra cada documento elegible que una decisión nombra y cuya extracción, segmentación, alcance o resolución se corrigió
+     solo para ese documento, como el alcance de los dos de la tanda 1 (§10). Las correcciones que valen para todo el corpus por regla (el
+     catálogo, C1, D, las remisiones) no cuentan. Mostrámela por documento, con la decisión que lo nombra; la apruebo yo antes de la corrida
+     real, y ante la duda el documento sale.»
+- **La lista de candidatos de la mesa** (`decisiones_254_mesa/sorteos/`): 49 de los 77 elegibles (régimen informativo, 23 de 26; normativa
+  general «digerible», 13 de 35; «necesita reglas», 13 de 16), 35 por renglones de las decisiones de `docs/` y 31 por su fila en el registro
+  de alcance que lee la cadena. Si salen todos, no alcanza el núcleo de O2 (quedan 3, 22 y 3); si salen solo los de renglones, alcanza el
+  núcleo y no la tercera ola (quedan 11, 22 y 9), así que el N no pasa de 64. La aprueba la autora antes de la corrida real (PENDIENTE).
+- **D-10,** tal cual (decisión 5): «D-10: tu propuesta. Antes del juez, un script cuenta por brazo las respuestas con marcas de su brazo, la
+  cifra se declara y no se edita ninguna respuesta.» Va al borrador v3 del pre-registro de B6.3.
+- **La etapa a-ter del juez v2** (14:24:16; `revision_UTRIP_V_JUEZ_v2_a_ter/`, 59 archivos, manifiesto `1687f327…`): V005 sale sin
+  reemplazo, y los otros 9 van del 24 al 32; la iteración 1 juzga 91 fichas, una más que en la a-bis (90; las corridas en seco de los dos
+  paquetes). La mesa la revisó (11 de 11) y armó el comando v2 de la iteración 1 con los sha256 nuevos (de 17 archivos cambian 8; sus cuatro
+  pruebas dan lo del anterior). La cota de 10 casos no la lee el comando ni la iteración: el tope y el freno (USD 42 y 35,70) van en el
+  comando, y la a-ter rehizo la cota con 273 pedidos en su corrida en seco. El comando de la §248 queda renombrado a
+  NO_CORRER_REEMPLAZADO__.
+- **Cuándo corre la iteración 1:** hoy, después de lo pago de A2.1 (su humo y H-B2), y no al lado: el comando frena si ve un proceso de
+  A2.1. Si lo pago de A2.1 termina tarde, mañana a las 08:00. Las duraciones son NO VERIFICADAS.
+- **La validación por expertos** (14:41:03), tal cual:
+  1. «Las 20 se sortean de una vez, como dice la nota del 21/10, apenas quede revisado y sellado el núcleo aprobado (las olas 1 y 2), y van
+     en un solo envío.»
+  2. «Las mismas 20 van a cada experto, para medir también el acuerdo entre ellos.»
+  3. «Lo que marquen los expertos no cambia ninguna pregunta ni ninguna cifra confirmatoria. Se informa por experto y en conjunto, con su
+     Wilson, como acuerdo con P3 y como acuerdo entre expertos. Para la sensibilidad, una pregunta cuenta como «no respondible» si la marca
+     la mayoría de los expertos que la respondieron (con dos, los dos).»
+  4. «H-14: el envío sale el domingo 25, después de la ola 2, y la devolución es hasta el martes 27 a las 12:00; lo que no llegue, se
+     declara.»
+  5. «Armá ya el material: la planilla para el experto (la pregunta, su respuesta y el texto de su ancla; si se puede responder desde el
+     texto, sí o no; si la respuesta es correcta, sí, parcial o no; la relevancia con la rúbrica del punto 1; y una columna de comentario) y
+     las instrucciones, para que salga por script en minutos apenas se selle el núcleo aprobado. El mensaje a los expertos lo escribo yo.»
+- **El material,** por script (`decisiones_256_mesa/experto/material_experto_B63_mesa.py`, selftest 14 de 14): las 20, con la semilla de la
+  nota del 21/10; una planilla por experto, igual para todos; las instrucciones, con la rúbrica tal cual; y la clave de los códigos, aparte.
+  Corre apenas se selle el núcleo aprobado. La respuesta de cada pregunta son sus criterios con su cita, porque el molde es el de EV2.
+- **Lo que sigue:** el 170 y el commit de esta sección, antes de pegar el «seguí» v2 de A2.1; lo pago de A2.1 y después la iteración 1 de la
+  v2; la aprobación de la lista de contaminados y los sorteos de B6.3, sellados; el despacho de la generación de las preguntas (P2) y el del
+  sorteo y las fichas de la etapa T de tripletas (PENDIENTES de la mesa).
+- Las secciones anteriores no se editan.
