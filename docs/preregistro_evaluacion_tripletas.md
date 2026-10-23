@@ -431,3 +431,61 @@ topes de USD 35 (V) y USD 55 (T).
   - **límite del instrumento:** los desacuerdos residuales de la calibración (uno de evidencia y cinco de etiqueta) quedan documentados
     como tales en el informe de V.
   - El texto firmado no cambia.
+- **23/10/2026 — Enmienda 4: el juez de precisión v2, su calibración con el gold de V y su prueba sobre la muestra humana de T, que decide
+  si la v2 mide la T.** FIRMADA por la autora el 23/10/2026; el commit de la firma es el que agrega esta nota (decisiones de la autora
+  del 22/10/2026, recibidas a las 10:44:50, a las 11:19:29 y a las 12:24:43; registro de decisiones del 15/10/2026, §88 y §89).
+  Rige desde la firma, antes de la primera iteración paga de la v2. Se fija sin haber visto ninguna salida de la v2 ni ninguna ficha de T.
+  1. **Por qué.** La v1.1 no pasó el §4.6 sobre el gold de V (registro, §87): el juez no escala y la precisión de V queda con las 100 de
+     la autora. La v2 es otra versión del juez, con una sola prueba fuera de muestra.
+  2. **El modelo** (cambia el §4.1, solo para la v2): `claude-opus-5-5`, sin `temperature` (la API no la acepta en ese modelo) y con el
+     razonamiento adaptativo, que en ese modelo no se apaga, con el esfuerzo `medium` puesto explícito y fijado antes de iterar. No se
+     comparan modelos ni esfuerzos sobre el material.
+     - Siguen los tres pedidos por ficha y el veredicto modal del §4.4. Con el muestreo por defecto, los tres vuelven a muestrear.
+     - Sin respaldo en otro modelo: un pedido que la API rechaza deja esa repetición sin voto, y se cuenta.
+  3. **El material** (se aparta del §4.3 y del §4.7, declarado):
+     - el gold de V (las 10 hojas selladas, leídas por código contra su sello, solo `correcta` e `importancia`) y el pool de 20, con las
+       marcas de la autora como verdad;
+     - las correcciones entran como casos resueltos en las fronteras de la importancia y de «correcta», no como reglas. Las instrucciones
+       de la v1.1 no cambian, y sus casos del pool quedan;
+     - cada caso nuevo sale de un desacuerdo, con el porqué tomado del texto del TO, nunca de una nota de la autora. La autora lo aprueba
+       antes de cada iteración paga;
+     - es una segunda recalibración (la única del §4.7 fue la de la v1.4, nota del 20/10/2026), y usa las 100 del gold, que el §4.3 y el
+       §4.7 dejaban fuera. Por eso la v2 no se vuelve a medir contra el gold de V.
+  4. **La regla de freno, fijada antes de iterar:**
+     - como máximo 3 iteraciones;
+     - en cada una, la v2 juzga las fichas del gold que no son casos de su prompt: juzgar un caso con su etiqueta a la vista es copiarla
+       (nota del 19/10/2026);
+     - se frena antes si una iteración no mejora en al menos 2 puntos ni el acuerdo de «correcta» ni el acuerdo exacto de la importancia,
+       contra la anterior y sobre las fichas que no son casos en ninguna de las dos, o si no deja ningún caso nuevo;
+     - la primera no se compara: la v1.1 es otro modelo;
+     - se congela la última que mejoró; si la segunda no mejora, la primera;
+     - las cifras de las iteraciones son internas de la calibración: no se informan como precisión ni como acuerdo del juez.
+  5. **La congelación,** antes de la prueba y con su commit: el sha256 del prompt de la v2 y de su bloque de casos, el registro de las
+     iteraciones, y el código del análisis sobre T con su selftest.
+  6. **La muestra de T** (cambia el §7): el sorteo de T saca del grafo evaluado 400 aristas, con la estratificación de 3.2, y dentro de
+     ellas las 100 de la autora, con la misma estratificación para n = 100.
+     - La semilla es `B4-TRIPLETAS-T:sorteo:2026-10-22`.
+     - El sorteo y las fichas se arman apenas se selle el grafo evaluado. Las dos listas se sellan juntas, con su hora y su sha256, antes de
+       que la autora abra una ficha.
+  7. **La lectura de la autora:** sus 100, después de la firma del pre-registro de B6.3, como dice el §7; ciega al juez y sin propuestas de
+     ningún modelo, como el gold de V (§4.5). Ningún pedido de la v2 sobre fichas de T corre antes de su sello.
+  8. **La prueba,** una sola vez, apenas la autora sella su lectura y con prioridad: la v2 congelada corre sobre esas 100, y se le aplica
+     el §4.6 tal cual. Son las tres condiciones de «correcta» y la importancia, con el borde de (ii) redondeado a 10 decimales y la
+     importancia en proporción sobre los pares válidos (registro, §84).
+  9. **Si pasa,** la v2 mide la T con el diseño del §7:
+     - las 400, con los dos estimadores de 3.6 y el intervalo de la enmienda 3;
+     - en las 100 de la autora cuenta el veredicto de la v2. Las 100 quedan como su validación, en lugar del control de 30 del §7;
+     - lo que la v2 manda a adjudicación lo adjudica la autora (nota del 15/10/2026).
+  10. **Si no pasa,** la precisión de T queda con las 100 de la autora, con los mismos estimadores (§4.6; registro, §87). No hay otra
+      versión del juez en esta tanda.
+  11. **Los topes,** con freno por proyección en el script: el humo, USD 2 (freno 1,70); cada iteración, USD 42 (freno 35,70); la prueba,
+      USD 42 (freno 35,70); las 300 restantes de las 400, USD 125 (freno 106,20). El humo mide los tokens reales; si su proyección pasa un
+      tope, el paso no arranca y decide la autora.
+  12. **Desvíos declarados** (van a la lista del §11):
+      - del §4.1: el modelo;
+      - del §4.3 y del §4.7: los casos del gold y la segunda recalibración;
+      - del §7: la validación con 100 en lugar de 30;
+      - de la letra del laudo D-f, §1, que pide el instrumento validado sobre el conjunto de desarrollo. La v2 se valida sobre T una sola
+        vez, con el criterio escrito antes y con la medición humana de T como respaldo, así que T no se itera (nota al pie del laudo, del
+        23/10/2026).
+  - El texto firmado no cambia.

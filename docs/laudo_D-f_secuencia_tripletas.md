@@ -65,3 +65,9 @@ El texto firmado son las 54 líneas de arriba (`966253e`, sha256 `85f48f148444�
   antes del sorteo, vale el sello vigente al sortear.
 
 - **15/10/2026 — el re-sellado único de los grafos r2b de la tanda 0.** Los grafos sellados que cita este documento tienen una versión posterior, del re-sellado único (`docs/mandatos/URESELLADO_T0_resellado_unico_grafos_r2b.md`, firmado; FRENO en `data/experiment/resellado_t0/FRENO_resellado_T0.md`): `2922b72d…` (KG-Tanda0-Desarrollo-r2b-sincola) → `66e745f5…` (KG-Tanda0-Desarrollo-r2b-sincola-rs1, 6.711 nodos y 21.996 aristas). Cambian por el código de U-OMISIONES-COD (`ded41d50`) y por las salidas de R0 (`1d690df3` y `2d0f5277`). El diff por campo y por causa está en `data/experiment/resellado_t0/salidas/`. Los sellados siguen sellados (principio 9); el commit del sello de los nuevos queda en `commit_sellado` de `data/experiment/neo4j/grafos.py`. Si el sorteo es posterior al sello del re-sellado, el sello vigente al sortear es el de `66e745f5…` (KG-Tanda0-Desarrollo-r2b-sincola-rs1). El texto firmado no cambia.
+
+- **23/10/2026 — la enmienda 4 al pre-registro de tripletas (el juez de precisión v2 y la medición de T).** FIRMADA por la autora con el
+  commit que agrega esta nota (registro de decisiones del 15/10/2026, §88 y §89). La v2 se valida sobre la muestra humana de T, una sola
+  vez y con el criterio escrito antes; si pasa, mide la T sobre las 400, con las 100 de la autora como su validación. Se aparta de la letra
+  del §1 de este laudo, que pide el instrumento validado sobre el conjunto de desarrollo: la medición de T sigue siendo una sola, con la
+  lectura humana como respaldo, y T no se itera. El texto firmado no cambia.
