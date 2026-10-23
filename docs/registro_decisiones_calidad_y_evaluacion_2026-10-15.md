@@ -3774,3 +3774,133 @@ Decisiones y hechos de la autora del 23/10/2026, recibidos a las 11:32:19 (hoja 
   3. el FRENO de la re-aplicación, con su revisión, y el sello del grafo evaluado;
   4. el «seguí» del tramo 2 de A2.1.
 - Las secciones anteriores no se editan.
+
+## 98. El viernes, primera hora de la tarde: la re-aplicación pegada, la regla del label con el artículo inicial, un caso fuera de la iteración 1 del juez v2 y los borradores de los pre-registros de B6.3 y de A2.2 (23/10/2026)
+
+Decisiones y hechos de la autora del 23/10/2026, recibidos a las 11:52:35, a las 12:18:37 y a las 12:26:16 (hoja de ruta de la mesa,
+§250 a §252).
+
+- **El 168,** corrido con su push (`2db79462`, a las 11:51:08, git log).
+- **La re-aplicación única,** pegada tal cual, en una sesión nueva abierta en `fuera_del_repo/reaplicacion_unica/` (según la autora).
+  Mientras corre, ningún commit.
+- **La regla del label y del alias** (decisión de la autora), tal cual: «la forma de la clave más frecuente en el material (la que más
+  relaciones del registro reúne; si empatan, la primera en orden alfabético), con la primera letra en mayúscula.»
+- **La misma regla, con el artículo inicial** (12:26:16). La ejecutora encontró que 32 de las 47 formas elegidas empiezan con artículo, y
+  E4 lee la mención sin su artículo inicial antes de comparar (`data/experiment/reextraccion_v2/corpus_v2/r1_e4.py:343-344`; la
+  sustitución en `:346`, con la expresión de `:319`). Con la regla literal, 16 ampliaciones no re-resuelven ninguna de sus filas y 3 solo
+  algunas.
+  - **La decisión de la autora:** el artículo inicial sale con la misma regla de E4, y la mayúscula va después. Así las 35 altas
+    re-resuelven todas sus filas, y de los 12 alias, 10 todas y 2 algunas; el catálogo de resolución da `54147015…` en lugar de
+    `d24e8283…`.
+  - El FRENO de la re-aplicación lo declara como apartamiento del despacho, con las cuentas de las dos variantes. Es la regla aceptada,
+    corregida para que las aprobaciones de la autora tengan efecto, y no mira ningún resultado de la evaluación.
+  - Las cuentas son las que informó la ejecutora: la mesa las controla al revisar el FRENO (NO VERIFICADAS hasta entonces).
+- **La iteración 1 del juez v2** (12:18:37):
+  - la autora marcó y selló la aprobación de los casos: 10 «sí» y un «no», en el caso V005, con su nota. Los controles del comando dieron
+    OK con `--solo-controles`, y al correrlo frenó antes de lanzar nada (USD 0), con «1 filas de la hoja de la iteración 1 no dicen «sí»
+    en aprueba (V005)». Su exportación, su marcada y su sello quedaron aparte, en `tripletas_v_juez/v2/casos/aprobacion_1_con_un_no/`
+    (según la autora);
+  - **la decisión de la autora:** V005 sale sin reemplazo, y la iteración 1 va con los otros 9. Pidió a la ejecutora la etapa a-ter, a USD
+    0: los casos, el bloque, el prompt y la hoja regenerados sin V005, sin leer su nota, con la hoja y el prompt anteriores renombrados, y
+    nada más cambiado;
+  - cuando llegue su FRENO, la mesa lo revisa y actualiza el comando de la iteración con los sha256 nuevos; la autora aprueba otra vez y
+    la corre (PENDIENTE). La revisión controla también que V005 vuelva a las fichas que la v2 juzga, porque ya no es un caso de su prompt
+    (pre-registro de tripletas, enmienda 4, punto 4).
+- **Los pre-registros de B6.3 y de A2.2,** que la autora pidió avanzar mientras corre la re-aplicación, sin tocar el repo ni leer lo que
+  ella cambia. La mesa los armó fuera del repo (`decisiones_250_mesa/`), desde las fuentes de `2db79462`, con 182 de 182 anclas
+  controladas:
+  - **el borrador v1 del pre-registro de B6.3,** con 17 huecos, cada uno con su fuente y su regla, y 9 decisiones de la autora. La regla
+    del N de la §94 va en un script (`regla_del_N_B63_s94_mesa.py`): selftest 14 de 14, y reproduce sin diferencias las 18 filas de la
+    tabla de k corridas de la mesa;
+  - **el insumo del pre-registro de A2.2,** con 5 huecos del tramo 2 y 4 decisiones. El mandato firmado de A2.1 le da ese borrador a la
+    ejecutora del tramo 3 (§5, `:128-154`, y §6, `:165`): la mesa no lo escribió, y quién lo escribe lo decide la autora (A-D0).
+- **Lo que la mesa encontró al armarlos,** para decidir antes de las firmas:
+  1. la ablación del texto de las omisiones `meta_normativo` (plan, `:778`, decisión del 06/10/2026) no tiene ninguna decisión posterior
+     (0 apariciones en este registro y en el mandato de U-NAV, en `2db79462`);
+  2. la etapa T de los umbrales entra en B6.3 (d) por la enmienda 1 al pre-registro de tripletas (`:311-316`), y ningún calendario de la
+     mesa la contaba;
+  3. el punto de diagnóstico posterior a A2.2 (plan, `:341`) corrige lo corregible antes de sellar el grafo evaluado, y con la prioridad
+     del viernes (§91) el grafo evaluado se sella antes de A2.2;
+  4. el orden de las corridas de B6.3 ya está decidido (§89), y no queda pendiente;
+  5. ninguna fuente escribe la cobertura de T si el juez de presencia no pasa en V, y el pre-registro tiene que traer los dos casos (§61);
+  6. la lectura de la autora de la muestra de control de B6.3 va después del cierre de U-MED-VERIF (§49).
+- **El calendario v12q** de la mesa (duraciones NO VERIFICADAS): el commit del sello del grafo evaluado va antes de pegar el «seguí» de
+  A2.1, porque no puede cruzar la foto del repo de su ejecutora (mandato de A2.1, §7). Con N = 96, en el central:
+  - sin los borradores, la firma del pre-registro de B6.3 cae el lunes 26 a las 14:21, después de su plazo (§50);
+  - con el borrador de B6.3, el lunes a las 11:21;
+  - con las lecturas previas de la autora y el insumo de A2.2, el domingo 25 a las 19:37;
+  - con los sorteos de B6.3 sin esperar al N, el domingo a las 16:37.
+  - En el escenario lento, con todo lo anterior, la regla de la §94 da N = 64, y la firma cae el lunes a las 12:43, 43 minutos
+    después del plazo.
+- **Lo que sigue:**
+  1. el FRENO de la re-aplicación, con su revisión;
+  2. el commit de esta sección y el del sello del grafo evaluado, después de ese FRENO y antes de pegar el «seguí» de A2.1;
+  3. el «seguí» v2 del tramo 2 de A2.1;
+  4. el FRENO de la etapa a-ter del juez v2, con su revisión y el comando actualizado; la aprobación de la autora y la iteración 1.
+- Las secciones anteriores no se editan.
+
+## 99. El viernes, a media tarde: las decisiones de la autora sobre los borradores de los pre-registros de B6.3 y de A2.2 (23/10/2026)
+
+Decisiones de la autora del 23/10/2026, recibidas a las 13:27:46 (hoja de ruta de la mesa, §253), sobre el borrador v1 del pre-registro de
+B6.3 y el insumo del pre-registro de A2.2 (§98).
+
+- **Las decisiones,** tal cual:
+  1. «Los sorteos de B6.3: sí, apenas se selle el grafo evaluado, sin esperar al N, como dice el mandato de las preguntas (etapas 2 y 4). El
+     N toma las olas en el orden sellado.»
+  2. «A-D0: (a). El borrador de A2.2 lo escribe la ejecutora del tramo 3, con tu insumo en su «seguí».»
+  3. «El orden de esta tarde: el 169 y el commit del sello del grafo evaluado, los dos después del FRENO de la re-aplicación y antes de
+     pegar el «seguí» de A2.1.»
+  4. «D-1: (a), el N no baja de 64.»
+  5. «D-2: (a), dimensiona el mayor de los dos N_Q5.»
+  6. «D-3: (a), el brazo del grafo es solo grafo, y la ablación de meta_normativo se declara como desvío del plan.»
+  7. «D-4, D-5 y D-6: las semillas que proponés (B63:orden_corridas:v1; B63:control_juez:v1, por brazo, tipo y veredicto;
+     B63:atribucion:ultima_clase:v1).»
+  8. «D-7: (b). La etapa T de los umbrales queda fuera de esta evaluación, como desvío declarado de la enmienda 1, y va al capítulo 6. Que
+     el borrador v2 diga con qué umbral queda la afirmación de (d) sin esa etapa, con su ancla.»
+  9. «D-8: docs/preregistro_B6_3_evaluacion_final.md.»
+  10. «D-9, ampliada: si el juez de presencia no pasa en V, o si la cobertura de V no cerró el miércoles 28 a las 18:00, la cobertura de T
+      se informa con la presencia que yo decido en el control de 30, con su intervalo de Wilson y sin la cifra del juez, declarada como
+      medición humana sobre 30. Si V cierra después de los resultados, la cifra del juez va al lado, como exploratoria, sin reemplazar la de
+      las 30. La amplío porque tu calendario dice que la cobertura de V no cierra antes del miércoles a las 18:00 en ninguna corrida, y en
+      la §61 del registro yo había dado por hecho que cerraba antes de los resultados.»
+  11. «Al §8.1 le falta la regla de la afirmación principal, del plan (:339): «el grafo supera a los fragmentos» solo si supera a las dos
+      configuraciones, cada comparación con su Holm y a favor del grafo. Si supera a una sola, se informa por configuración, sin la
+      afirmación general. Agregala en el borrador v2.»
+  12. «En el §8, agregá un chequeo de robustez declarado, fuera de Holm: la misma prueba con los signos permutados por documento, con las 4
+      preguntas de cada documento juntas, y el intervalo de la hipótesis secundaria con bootstrap por documento. Si la versión por pregunta
+      y la versión por documento no llegan a la misma conclusión, se informan las dos. La prueba principal no cambia.»
+  13. «En el §7.1, que diga que el juez recibe solo la pregunta, sus criterios y la respuesta, sin el brazo, y controlalo en el código que
+      arma la entrada del juez.»
+  14. «A-D1: el orden de las corridas de B6.3 (registro, §89).»
+  15. «A-D3: tu recomendación, con un agregado: lo que el diagnóstico atribuya al agente o a la búsqueda entra solo si pasa su medición en
+      N6, con N3 (U-NAV, §7, regla 1: el ajuste se hace solo con N3, nunca con EV2), y A2.2 no se vuelve a correr. Lo que atribuya al
+      contenido del grafo o a la segmentación va al grafo corregido o a una release posterior, declarado en los dos pre-registros.»
+  16. «En el insumo de A2.2: si la verificación del juez sobre las 20 no pasa, el borrador cita mi decisión ya tomada, la 3 de Q8 (B6.3 se
+      juzga con el juez, la cifra se informa con su acuerdo medido y lo dudoso va a mi lectura).»
+  17. «A-D2: lo decido con tu propuesta, después del FRENO del tramo 2.»
+  - «El resto del borrador y del insumo, como están.»
+- **Lo que armó la mesa** (`decisiones_253_mesa/`, fuera del repo):
+  - **el borrador v2 del pre-registro de B6.3,** con D-1 a D-9 decididas, la regla de la afirmación principal (§8.1), el chequeo de robustez
+    por documento (§8.3), lo que recibe el juez (§7.1) y la contaminación del sorteo de documentos (§3.1). Queda abierta la D-10: que la
+    respuesta del agente traiga marcas de su brazo, que el control del juez no cubre. La propuesta es contarlas por brazo y declararlas, sin
+    editar ninguna respuesta;
+  - **la afirmación de (d) sin la etapa T de los umbrales** (decisión 8): B6.3 no hace la afirmación de los umbrales, que pide un límite
+    inferior de al menos 0,90 sobre la etapa T (enmienda 1, §8, `:214-216`; D5, `:342`). El umbral sigue siendo 0,90 para cuando la etapa T
+    corra en el capítulo 6. El pre-registro de tripletas no fija un umbral de afirmación para la precisión ni para la cobertura;
+  - **lo que recibe el juez** (decisión 13): un control a USD 0, con un transporte simulado y sobre una copia del juez de HEAD, de que al
+    modelo viajan solo la pregunta, la respuesta y los criterios con su cita textual, y ninguna otra clave de un criterio. Da 10 de 10, y
+    frena en sus dos pruebas en contra;
+  - **el insumo v2 de A2.2,** con A-D0, A-D1 y A-D3 decididas y la decisión 3 de Q8 citada; A-D2 queda para después del FRENO del tramo 2;
+  - **los sorteos de B6.3** (decisión 1): el script, con su selftest (13 de 13) y dos corridas en seco con semillas de prueba que dan los
+    mismos bytes. Aplica al sortear la regla firmada del documento agotado, porque las anclas de cada documento se conocen;
+  - **la contaminación por código** (plan, `:782`, punto 4), con el método de la §102 de la mesa extendido a los 87 .py del pipeline de
+    HEAD: ningún elegible tiene una constante en el código del pipeline, y 23 aparecen solo en código de medir, que la regla deja elegibles
+    con su exposición declarada.
+- **Lo que decide la autora antes de la corrida real de los sorteos:** las tres semillas (propuestas `B63:sorteo:documentos:v1`,
+  `B63:sorteo:unidades:v1` y `B63:sorteo:tipos:v1`); la forma de las olas, la rotación de los subtipos, el orden de los lugares y el
+  documento agotado aplicado al sortear (propuestas P-1 a P-4); y la contaminación que no está en el código, como el laudo de un caso
+  (PENDIENTE de la autora).
+- **Los commits:** el 169 se rearma con esta sección y la §98, antes del FRENO de la re-aplicación, y reemplaza al anterior, que no corrió.
+  Va después de ese FRENO, junto con el commit del sello del grafo evaluado y antes de pegar el «seguí» de A2.1 (decisión 3). Mientras corre
+  la re-aplicación, ningún commit.
+- Las secciones anteriores no se editan.
