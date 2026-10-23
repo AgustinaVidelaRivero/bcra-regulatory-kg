@@ -3467,3 +3467,129 @@ Decisiones y hechos de la autora del 22/10/2026, recibidos a las 18:13:48 (hoja 
   remisiones; la revisión de la D-6 y sus tres sesiones pagas. Mañana: la lectura del catálogo, ese commit, el despacho de la re-aplicación
   y su medición, y después A2.1 y A2.2.
 - Las secciones anteriores no se editan.
+
+## 92. El viernes sin la noche: la D-6 revisada, la fila 67 y la (12) diferidas, el 160 con la fecha de hoy, el commit de U-PROC-HERENCIA, de C1 y de las remisiones, y el censo de C1 sellado (23/10/2026)
+
+Decisiones y hechos de la autora del 23/10/2026, recibidos a las 08:54:36, a las 09:03:32 y a las 09:43:10 (hoja de ruta de la mesa, §240
+a §242).
+
+- **El 162,** corrido con su push (`8bea2edb`, a las 08:50:25, git log): 7 de 7 contra el paquete de la mesa.
+- **El material de las claves del catálogo:** el despacho, pegado en una sesión nueva abierta en `fuera_del_repo/claves_catalogo/`, con
+  una precisión de la autora al paso 0, tal cual: «en el diff contra 2a7fd75d pueden aparecer además docs/preregistro_evaluacion_tripletas.md
+  y docs/laudo_D-f_secuencia_tripletas.md, de la firma de la enmienda 4, y esos dos no frenan».
+- **La etapa a del juez v2:** pegada en una sesión nueva abierta en `fuera_del_repo/tripletas_v_juez/`, tal cual, con las tres propuestas
+  de la mesa aceptadas: hasta 10 casos nuevos por iteración, las tres repeticiones en paralelo y el humo con 2 fichas fuera del material y
+  de T.
+- **El 160 v2:** el 160 no se corrió el 22/10, y su nota decía «FIRMADA el 22/10/2026». El 160 v2 lleva la fecha de hoy en las dos notas
+  al pie (la del pre-registro de tripletas y la del laudo D-f), sin cambiar el texto de la enmienda. La semilla de la muestra de T conserva
+  su texto (`B4-TRIPLETAS-T:sorteo:2026-10-22`), fijado antes de ver nada de T. Correrlo es la firma (PENDIENTE de la autora); el 160 de la
+  §236 no se corre.
+- **La etapa c de la D-6,** en FRENO (paquete `revision_UD6_TOPE_MCP_c/`, `4dcd3d80…`, 109 archivos, bajo la sesión retomada `9516a1f1`),
+  revisada y reproducida por la mesa (`decisiones_240_mesa/d6/`, en su paquete):
+  - 109 de 109 contra su manifest; el lanzador del banco es el de HEAD (`2f007420…`);
+  - el selftest, corrido de nuevo sobre una copia, da 203 de 203; el criterio 3 del comando pago, 17 de 17, y la cota del costo es la
+    misma (la de la guarda, USD 0,4274; con el máximo de cada rango, 0,5272, debajo del freno de 0,6);
+  - **la recomendación:** sus tres sesiones pagas, hoy y primeras en el carril pago, con el comando de la sección 6 de su FRENO (tope 1,0
+    y freno 0,6), antes del humo de A2.1 y del de la v2.
+- **La fila 67 y la (12)** (pregunta de la autora; cuentas de la mesa por código, a USD 0, sobre el acumulado sin cola de las tres tandas,
+  `decisiones_240_mesa/cuentas/`):
+  - **el patrón de la (12):** 416 `aplica_a` van al rol de alcance de otro TO, de las 1.820 que van a un rol (238 de la tanda 0, 113 de la
+    tanda 1 y 65 de la tanda final). 410 se resolvieron por la sugerencia del modelo. Se concentran en documentos emparentados (237 de
+    `cap` al rol de `capmin`), donde el rol del otro documento puede ser el correcto, y hay un solo caso leído;
+  - **el patrón de la fila 67:** 24 nodos con cuantía y sin `umbral` ni `plazo`, de 2.683, la cifra de T3. La única corrección sin lectura
+    es la marca que la meta admite, y no cambia ninguna respuesta posible del agente;
+  - **lo que harían falta:** la (12), una lectura, la regla, la enmienda del mandato de U-REAPL, el código en E4 y su medición, unas 5 h
+    (NO VERIFICADO); la marca, la enmienda, el código y su medición, unas 3 h. En el calendario v12p, con los dos FRENOs de afuera
+    llegados (§93), con 3 h la re-aplicación medida pasa el corte en el lento (sábado 12:20), y con 5,5 h también; en el central queda
+    antes;
+  - **las dos quedan diferidas,** por la regla de la autora («si no entra con margen, queda diferida»): BKL-0051 y BKL-0052 siguen como
+    están, y los 24 de la fila 67 se declaran como residuo, como en la tanda 1.
+- **El calendario v12p** (`decisiones_240_mesa/calendario/`, desde las 09:45, con la prioridad de la autora del viernes; duraciones NO
+  VERIFICADAS): con los ajustes de esta ronda (los commits después de los FRENOs de las ejecutoras de afuera, el censo sellado y los dos
+  FRENOs llegados), sus cifras van en la §93.
+- **Las tres revisiones de la autora** (decisión de la autora, recibida a las 09:03:32): aprueba U-REMISIONES-SUBPUNTOS a (63 de 63, manifest
+  `6564afbd…`), U-UNION-C1 v3 (50 de 50, `1e530358…`) y U-REMISIONES-SUBPUNTOS b, versión 2 (67 de 67, `13cb195c…`). Ninguno tiene casos de
+  freno, y las `remite_a` nuevas de la etapa a dan las de sus salidas (14.047 y 13.854; con D, 14.133 y 13.940). El rc 0 del selftest de
+  claves va como se fijó en la §209 de la hoja de ruta de la mesa.
+- **La relectura del censo de C1 de las tres tandas,** sellada por la autora a las 09:22:53 (`censo_c1_marcado.csv`, `11c56dee…`, en
+  `sello_censo_c1.txt` de `fuera_del_repo/censo_c1_tres_tandas/`; recibida a las 09:43:10): 32 filas, 32 `une_bien` y 0 `une_mal`, así que
+  la regla une las 32 colisiones tal cual. La mesa la controló por código, sin mostrar ninguna nota ni ningún código
+  (`decisiones_242_mesa/censo/`, 13 de 13): el marcado da su sello; la colisión, el código y los nodos de cada fila son los del censo; los
+  archivos que armó la mesa no cambiaron; y el armador del 163 da vacía la lista de los códigos que no se unen (`aa6aa007…`). Esa lista
+  va al despacho de la re-aplicación como argumento de `--union-comunicaciones`, con su sha256.
+- **El 163, el commit de U-PROC-HERENCIA, de C1 y de las remisiones,** armado por la mesa (`decisiones_241_mesa/`, en su paquete):
+  - nueve archivos copiados de sus paquetes por sha256: el ensamblado unido, `r1_referencias.py`, `r1_invariantes.py`, el selftest de
+    claves con la normalización, los tres selftests nuevos y el armador de los códigos que no se unen; más la tabla de reprocesamiento;
+  - **la tabla:** la de HEAD con F15f, F15g y F15h, y las 118 anclas de las filas F13 a F16b y de las tres nuevas leídas del código final.
+    85 cambian; 21 caen en líneas que el unido cambió, y cada una se eligió por el identificador de su fila y se revisó. Los cuatro
+    controles del armador dan bien, y las fichas de texto de F15h, 20 de 20;
+  - **en el arenero,** después del commit real: R19 da rc 0 con una copia de las dos bases de la caché (`e1_extraccion.db` y
+    `e3_verificacion.db`, con el mismo sha256 antes y después), con «contraste con la tabla: OK» y la R23 y la V23 en `gerc`. Los otros
+    tres selftests dan 66 de 66, 67 de 67 y 39 de 39. La re-aplicación repite R19 como su primer control (§209).
+- **El orden de hoy:** en la §93, con los dos FRENOs de afuera llegados. La regla que lo arma: ningún commit cruza la foto del repo de
+  una ejecutora que lee lo que cambia. El 163 cambia `ensamblar_tanda0.py`, que la ejecutora del material del catálogo importa desde su
+  copia del repo (lo importa `r2_1_medicion.py`); el 160 v2 y el commit de esta sección cambian el pre-registro de tripletas y el
+  registro, que la de la etapa a de la v2 lee con `git show HEAD`.
+- Las secciones anteriores no se editan.
+
+## 93. El viernes, más tarde: la etapa a del juez v2 y el material del catálogo, revisados; el control del SDK; y el calendario con los dos FRENOs llegados (23/10/2026)
+
+Decisiones y hechos de la autora del 23/10/2026, recibidos a las 09:54:35 y a las 10:04:43 (hoja de ruta de la mesa, §243 y §244).
+
+- **La etapa a del juez v2, en FRENO** (paquete `revision_UTRIP_V_JUEZ_v2_a/`, `67d3204a…`, 30 archivos), revisada por la mesa por
+  código (`decisiones_243_mesa/v2a/`, 19 de 19):
+  - el paquete y la carpeta de trabajo coinciden; la v1 no cambió; los cuatro diffs contra la v1 se rehacen igual;
+  - la guarda usa los precios oficiales de `claude-opus-5-5`, como afirma la autora: 4, 20, 5 (la escritura de la caché de 5 minutos) y
+    0,20 por millón (documentación de la API de la sesión, skill `claude-api` 2.1.308: `shared/models.md:79` y
+    `shared/prompt-caching.md:144`), con la caché de 5 minutos (`ephemeral`, sin `ttl`). La cota del costo se rehace desde sus entradas
+    (36 cifras, dentro de USD 0,02);
+  - el selftest y la corrida en seco de la ejecutora no se corrieron en la mesa (leen `insumos/` y el material); sus consolas dan 85 de 85
+    y OK;
+  - el 162 cruzó la foto de la ejecutora, que lo declaró; no la afecta (la §88 que lee es la misma).
+- **Las decisiones de la autora sobre lo que deja abierto** (recibidas a las 09:54:35), tal cual:
+  1. «La iteración 1 corre con las tres repeticiones en paralelo, con la guarda que suma las tres bases, aunque el paralelo solo esté
+     probado con el simulado.»
+  2. «En la regla de freno, las fichas que el juez no decide cuentan como desacuerdo en el acuerdo de «correcta», y se informan aparte.
+     Lo fijo antes de ver ninguna iteración.» Se fija acá: ninguna iteración corrió.
+  3. «El humo corre con los casos propuestos, después de la firma de la enmienda 4 y de tu revisión.»
+  4. «El texto de introducción del bloque de casos lo leo con los casos y lo apruebo o no en la misma hoja.»
+  5. La hoja de aprobación pasa por un convertidor, como las otras lecturas: la exportación, la marcada y su sello; la iteración lee la
+     marcada; la hoja suma una fila para el texto de introducción.
+  6. El SDK del `.venv` del repo queda en anthropic 0.100.0 hasta que termine B6.3: con la API 2026-10-21, `temperature` da 400 aun en su
+     valor por defecto, y el SDK 1.0 la quitó (`shared/api-version-migration.md:97` y `python/claude-api/sdk-upgrade.md:176`, de la misma
+     documentación); el juez de B6.3 usa `claude-sonnet-4-6` con temperatura 0 y depende de la versión 2023-06-01.
+- **El «seguí» de la etapa a-bis** (`decisiones_243_mesa/v2a/`): el convertidor, la fila del texto de introducción y la regla de la
+  decisión 2, con sus pruebas. Va después del humo, que corre con el código de la etapa a; pegarlo es de la autora (PENDIENTE). La
+  decisión 1 no cambia código: el comando de la iteración ya lanza las tres repeticiones en paralelo.
+- **El control del SDK y de la versión de la API** (`scripts/control_sdk_anthropic_juez_y_banco.py`, el 165): frena si cambian el
+  intérprete, el SDK, la versión que manda, o el modelo y la temperatura del pedido del juez de B6.3 (mandado a un transporte simulado,
+  sin red); si cambia su cliente real; o si un módulo del juez, del banco o de la caché fija otra versión, cabeceras o betas. Los
+  despachos de los pasos pagos del banco y del juez de B6.3 lo piden como primer control. El agente del banco no usa este SDK: corre con
+  el CLI de Claude Code, cuya versión ya es variable sellada del banco. En un clon del repo con el `.venv` del repo, da 5 de 5, y frena
+  en sus cuatro pruebas en contra.
+- **El material de las claves del catálogo, en FRENO** (paquete `revision_claves_catalogo/`, `b98735b0…`, 22 archivos), revisado por la
+  mesa por código (`decisiones_244_mesa/catalogo/`, 12 de 12), sin abrir la carpeta de lectura: 105 candidatas rehechas desde el sello,
+  que son las 105 claves del material; 595 filas con 1.046 relaciones del registro; la planilla, con 12 alias, 36 ids nuevos y 57 que no
+  entran; la tabla de ids del convertidor es la del catálogo de sujetos r2 del sello. **El material no cambia.** La autora lo lee desde
+  que lo recibió, en paralelo con la revisión, con una vista suya en Markdown que no entra en la marcada ni en el sello.
+- **El calendario v12p** (`decisiones_240_mesa/calendario/`; duraciones NO VERIFICADAS), con tres ajustes, cada uno controlado (con el
+  ajuste apagado, las 17 corridas dan las de antes): los commits después de los FRENOs de afuera, el censo sellado (09:22:53) y los dos
+  FRENOs llegados (la etapa a de la v2 a las 08:59:53 y el catálogo a las 09:16:32, por la hora de su archivo). Con la prioridad de la
+  autora del viernes y la mesa desde las 11:00 a las 11:30:
+  - la re-aplicación medida, hoy de 19:10 a 19:40, antes del corte también en el lento (de 23:13 a 23:43); el sello del grafo evaluado,
+    de 20:25 a 20:55; N7, el sábado de 22:43 a 23:13, después del corte, y se declara;
+  - la firma de B6.3: con N = 128, el lunes de 14:58 a 15:29, después de su plazo; con N = 96, el lunes de 08:18 a 08:49; con N = 64, el
+    domingo de 20:08 a 20:38. La etapa T: con N = 128, el jueves de 09:45 a 10:16; con N = 96, el miércoles de 14:05 a 14:36;
+  - sin la prioridad, la re-aplicación va de 22:48 a 23:18, y en el lento pasa el corte (sábado de 12:36 a 13:06).
+  - Con la prioridad y la regla del N (registro, §51), N = 96 deja en plazo, en el central, todo salvo N7. El N lo fija la autora
+    (PENDIENTE).
+- **El orden de hoy:**
+  1. las tres sesiones pagas de la D-6, sin ningún commit al lado;
+  2. los cuatro commits, en cualquier orden (tocan archivos distintos, y cada uno se probó con otro encima): el 163, el 160 v2 si la
+     autora firma, el 164 (esta sección y la anterior) y el 165;
+  3. el humo de la v2, después del 160 v2;
+  4. el «seguí» de la etapa a-bis, después del humo;
+  5. la lectura del catálogo y su sello;
+  6. el despacho de la re-aplicación, con la lista del censo y el catálogo de resolución de la marcada;
+  7. el «seguí» del tramo 2 de A2.1, con el resultado de la D-6 y el control del SDK como primer paso.
+- Las secciones anteriores no se editan.
