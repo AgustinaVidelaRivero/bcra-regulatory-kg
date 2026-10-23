@@ -4101,3 +4101,76 @@ Decisiones y hechos de la autora del 23/10/2026, recibidos a las 16:25:16 (hoja 
 - **El 172, rearmado otra vez:** lleva la §101 v2, la §102 y esta sección, y corre después del FRENO A2.1-b. El 172 v2 no corrió y queda
   renombrado a NO_CORRER_REEMPLAZADO__.
 - Las secciones anteriores no se editan.
+
+## 104. El viernes, a las 16:54: el 173, U-TRIP-T pegado y U-MED-VERIF cerrada sin medir (23/10/2026)
+
+Decisiones y hechos de la autora del 23/10/2026, recibidos a las 16:54:24 (hoja de ruta de la mesa, §262), sobre las §260 y §261 de la
+mesa.
+
+- **El 173,** corrido con su push (`6c6dcad9`, a las 16:53:24, git log; `origin/main` en `6c6dcad9`): los cinco archivos del tramo 2 de
+  A2.1 que revisó la mesa (§261), con los mismos sha256.
+- **U-TRIP-T:** la autora pegó el despacho v3 «SI SE CIERRA U-MED-VERIF» tal cual, en una sesión nueva abierta en
+  `fuera_del_repo/tripletas_t/`, con el acta, el FRENO y la consola solo por código.
+- **U-MED-VERIF,** tal cual: «la cierro sin medir, como desvío declarado (opción b de tu §260). La decido hoy, sin haber visto nada de
+  ella. Va al capítulo 6 como medición diseñada que no se hizo, con su diseño sellado del 17/10 y sus fichas selladas del 18/10, y no se
+  vuelve a medir a ciegas. Se levantan los cegamientos que dependen de U-MED-VERIF, los que listás en la §260; los demás siguen. Va al
+  registro en el commit siguiente al 172 v3.»
+  - **Lo que se levanta** (respuesta de la mesa, §260, punto 4):
+    1. nada por estado de E3 ni de los reintentos, en las tandas 1 y final (pre-registro de la tanda 1, [v8], `:900-909`; pre-registro de
+       la tanda final, `:142` y `:183`; U-PROC-HERENCIA, §7 bis, punto 1);
+    2. la regla de exclusión antes de mostrar una extracción de la tanda 1 (U-PROC-HERENCIA, §7 bis, punto 3), y sus casos en espera;
+    3. en el censo de C1, los nodos que no se unieron por la muestra, que vuelven para el grafo corregido (§47);
+    4. el bloque de herramientas de N7 (§45);
+    5. la lectura de la autora del control de B6.3 y de cualquier respuesta de B6.3 (§49);
+    6. en T, el lote aparte, que ya no va: el despacho pegado es el que no lo lleva;
+    7. los códigos en lugar del contenido de los nodos que impone U-PROC-HERENCIA (§7 bis, punto 2), en lo que salga de ahora en más.
+  - **Lo que sigue:** la generación y la revisión de las preguntas de B6.3, a ciegas del grafo; la lectura de T de la autora después de la
+    firma de B6.3, ciega al juez; el material del juez v2; U-MED-UMBRALES, las adjudicaciones de S1-ter y S1-quater, las demás carpetas
+    vedadas y todo `NO_ABRIR_` que no sea de U-MED-VERIF; la validación por expertos; y, en T, el acta, el FRENO y la consola por código.
+  - **El diseño, las fichas y la clave de U-MED-VERIF** quedan sellados como están, sin abrir.
+- **Los dos pasos pagos de A2.1:** la autora los corre ahora, de a uno, según su mensaje. Su resultado llega con el FRENO A2.1-b.
+- **El borrador v7 del pre-registro de B6.3** (`decisiones_262_mesa/b63/`): la lectura del control sin esperar a U-MED-VERIF (§7.3), la
+  etapa T sin el lote aparte (§10.1) y U-MED-VERIF en los desvíos declarados (§15).
+- **El orden:** el commit de las §101 a §103, después del FRENO A2.1-b, y el de esta sección, después de ese.
+- Las secciones anteriores no se editan.
+
+## 105. El viernes, a las 17:05: los pasos pagos del tramo 2 de A2.1 y la ola 1 de B6.3, sellada y revisada (23/10/2026)
+
+Hechos de la autora del 23/10/2026, recibidos a las 17:05:00 (hoja de ruta de la mesa, §263), y la revisión de la mesa.
+
+- **Los dos pasos pagos del tramo 2 de A2.1,** corridos por la autora de a uno. Según su mensaje:
+  - el humo: 12 sesiones completas, USD 0,3051;
+  - H-B2: 8 sesiones; las 4 que cortó el tope de turnos son las de tope chico del diseño;
+  - el gasto del tramo 2: USD 0,5158, igual por R9 y por el CLI, sin ningún freno;
+  - el control del disco no frenó en ninguna sesión, y el valor remoto quedó vacío en las 20;
+  - H-B2 da «NO VERIFICADO | CARACTERIZADO: --max-turns acota n_mensajes_asistente» en las dos lecturas.
+
+  La mesa todavía no verificó estas cifras (NO VERIFICADO): van con la revisión del FRENO A2.1-b. La autora le escribió «corridos» a la
+  ejecutora.
+- **La ola 1 de P2:** sellada a las 16:58:50 (`olas/ola_1.json`, `e1aeb116…`, y su registro de generación, `79600966…`), con su FRENO y
+  su paquete (51 archivos, `manifest.txt` `a17aa2ad…`). La autora le pidió a P2 que espere la revisión de la mesa.
+- **La revisión de la mesa** (`decisiones_263_mesa/p2/`), por código y sin leer ninguna pregunta ni ningún criterio: 20 de 20 controles.
+  - «Grandes exposiciones al riesgo de crédito» es `gerc`, que no está entre los 128 documentos del grafo evaluado: los lugares 11 y 12
+    quedan como están.
+  - Los 14 reasignados, frente a lo que se esperaría con las tasas de P1:
+    - dato directo: 5 de 13, contra 5,4;
+    - remisión: 4 de 10, contra 5,9 a 7,9;
+    - condición: 2 de 5, contra 5,0;
+    - definición: 3 de 4, contra 3,9.
+
+    La diferencia en condición y en definición viene de que P2 encuentra esos frentes mucho más seguido que P1. El tipo coincide con P1 en
+    9 de las 11 unidades que juzgaron las dos.
+  - La concentración de los lugares de `ceninf` en su punto 5.1 es la que da la regla de avanzar en el orden sorteado.
+- **Cuatro decisiones para la autora, PENDIENTES** (la revisión, §5). En las cuatro, la mesa recomienda seguir como en la ola 1, y
+  declararlo:
+  - D1, el subtipo: el frente sobre el que se construye la pregunta, o la primera forma de P1;
+  - D2, los frentes (c) y (d), que P2 encuentra mucho más que P1;
+  - D3, una unidad en más de un lugar;
+  - D4, dos criterios de lectura nuevos de P2.
+- **El «seguí» de las olas 2 y 3:** PREPARADO por la mesa con esas recomendaciones (`decisiones_263_mesa/despachos/`). Pegarlo es de la
+  autora.
+- **El 172 y el 174, rearmados:** los títulos de las §101 a §104 llevan la hora de recepción en lugar de una franja del día, que no tenía
+  ancla ni coincidía con esas horas, y la §104 va en el mismo commit que esta sección. Los dos anteriores no corrieron y quedan renombrados
+  a NO_CORRER_REEMPLAZADO__.
+- **El orden:** el commit de las §101 a §103, después del FRENO A2.1-b, y el de la §104 y esta sección, después de ese.
+- Las secciones anteriores no se editan.
