@@ -3979,3 +3979,125 @@ Decisiones y hechos de la autora del 23/10/2026, recibidos a las 14:11:25, a las
   v2; la aprobación de la lista de contaminados y los sorteos de B6.3, sellados; el despacho de la generación de las preguntas (P2) y el del
   sorteo y las fichas de la etapa T de tripletas (PENDIENTES de la mesa).
 - Las secciones anteriores no se editan.
+
+## 101. El viernes, a las 15:12: la regla del 09/10 para los contaminados de B6.3, la lista desde los registros de cada corrección y la exposición (23/10/2026)
+
+Decisiones y hechos de la autora del 23/10/2026, recibidos a las 15:12:46 (hoja de ruta de la mesa, §257).
+
+- **El 170 y el 171,** corridos con su push (`fde70c67`, a las 15:09:01, y `0a6374ba`, a las 15:10:00, git log; `origin/main` en
+  `0a6374ba`). La autora pegó el «seguí» v2 del tramo 2 de A2.1.
+- **La lista de contaminados,** tal cual: «el criterio de mi decisión 4.c de esta tarde estaba mal. Lo reemplaza mi regla del 09/10/2026,
+  tal cual (plan, :782, puntos 4 y 5): salen del sorteo solo los documentos que recibieron una corrección hecha para ellos, es decir, una
+  lista de R5-a (o de R5-a′), un corte a mano o el laudo de un caso que cambió su extracción, su segmentación o su resolución. Los que solo
+  se leyeron para medir quedan elegibles, y su exposición se declara. La fila del registro de alcance no es contaminación: es el confusor
+  del origen del alcance (catálogo o registro) del punto 5, que se declara en el informe. Cuenta solo si esa fila se corrigió después de una
+  lectura que la encontró mal. Mi ejemplo de la §10 también estaba mal: el alcance de depaho y de snp_tr no se corrigió, quedó como estaba,
+  declarado.»
+  1. «Armá la lista de nuevo desde los registros de cada corrección (las listas de S0-5a, los cortes a mano y los laudos), no por
+     palabras: por documento, con la corrección y su ancla. Aparte, los que solo se leyeron para medir, con su exposición.»
+  2. «Si con esa lista no alcanza el núcleo de O2, frená y mostrame cuántos faltan por clase, sin relajar nada.»
+  3. Sobre la frase nueva del §3.1 del borrador v3 del pre-registro de B6.3 («Si los que quedan no alcanzan para la tercera ola, el N no
+     pasa de 64, declarado»): «de acuerdo».
+  4. «Mientras corre el tramo 2 de A2.1, ningún commit: lo que registre esto va entre su FRENO y el «seguí» del tramo 3.»
+- **La lista de la §100 queda reemplazada.** Sus 49 candidatos salían de palabras en las decisiones y de la fila de alcance, con el criterio
+  de la decisión 4.c, que contradecía la regla del plan (`docs/plan_tesis.md:782`, punto 4). El borrador v2 de B6.3 ya citaba esa regla y la
+  mesa no reportó la contradicción: es un error propio de la mesa (hoja, §257).
+- **La lista nueva, desde los registros de cada corrección** (`decisiones_257_mesa/contaminacion/`): 0 de los 77 elegibles.
+  - **Las listas de S0-5a y toda constante por documento del código:** 81 commits del pipeline, sin una constante propia de un elegible en
+    ninguno. Las listas por documento de S0-5a-bis, en el `correr_e0.py` que aplicó S0-5b (`af7ffdd4`), son de 32 documentos (las de R5-a,
+    de 29; la de R5-a′, de 1), y ninguno es elegible: los elegibles de O2 ya los sacaron por su constante en E0
+    (`data/experiment/esq/elegibles_B63_O2_2026-10-15/`).
+  - **Las listas y los registros que lee la cadena,** en cada versión de sus 31 archivos: los elegibles aparecen solo en lo que vale por
+    regla (el catálogo, el esquema, el inventario, las ampliaciones del catálogo de resolución y el registro de alcance). Las listas de C1
+    no traen ningún elegible, y ninguna de las 31 filas de alcance de un elegible cambió después de escrita.
+  - **Los cortes a mano:** el de los dos mixtos (`docs/mandatos/USEG_OFICIAL_S0-5a_reglas_de_corte_E0.md:440`), de ri_spi y ri2_ae, que ya
+    están fuera por la decisión 2.
+  - **El alcance por tanda:** opecam y regpri estaban entre los candidatos a la regla del título no decididos y la lectura del 18/10/2026
+    los decidió; no es una fila corregida.
+- **Un caso para la autora, D-11:** ri_transpa. El laudo de las §43 y §44 declara faltante en el grafo evaluado la unidad
+  `ri_transpa::Sbloque1::chapeau_seccion` y la extrae después del sello, para la versión corregida. La mesa recomienda que quede elegible:
+  el laudo no cambió su extracción en el grafo evaluado, y las preguntas que caen en esa unidad ya salen de la cifra aparte (§62).
+- **El núcleo de O2 alcanza:** quedan 26, 35 y 16 por clase (25, 35 y 16 sin ri_transpa), con seis olas posibles en las dos formas. El
+  sorteo no frenó.
+- **La exposición, aparte:** por documento y por lectura, las unidades que estuvieron a la vista, de las lecturas con registro en el repo
+  (T4 de la tanda 1 y de la tanda final, las lecturas de cortes de S1 y S1-bis, la evidencia de las ampliaciones de las claves y las
+  lecturas del alcance). 76 de los 77 tienen alguna. Las lecturas con registro en carpetas que la mesa no abre (S1-ter, S1-quater, S0-6a,
+  U-MED-UMBRALES, U-COMP-E1 y las lecturas de la autora fuera del repo) van sin cifra.
+- **El borrador v4 del pre-registro de B6.3** (`decisiones_257_mesa/b63/`): la regla del 09/10 en el §3.1, con la lista, la frase de la
+  tercera ola aprobada y el freno del núcleo; la exposición y el confusor del origen del alcance en lo que se declara (§11); y la D-11
+  abierta.
+- **Lo que sigue:** la D-11 y los sorteos de B6.3, sellados fuera del repo antes de que se lea nada; el commit de esta sección y de la
+  siguiente, después del FRENO A2.1-b (§102).
+- Las secciones anteriores no se editan.
+
+## 102. El viernes, a las 15:58: la D-11, la exposición sin cifra, las correcciones de E0 por regla general y los sorteos de B6.3 sellados (23/10/2026)
+
+Decisiones de la autora del 23/10/2026, recibidas a las 15:58:21 (hoja de ruta de la mesa, §258), sobre la §101, tal cual:
+
+1. «D-11: ri_transpa sigue elegible, con su exposición declarada. El laudo no cambió su extracción en el grafo evaluado, y las preguntas que
+   caen en ri_transpa::Sbloque1::chapeau_seccion salen de la cifra aparte (registro, §62).»
+2. «La exposición de las lecturas cuyo registro está en carpetas que no abrís (S1-ter, S1-quater, S0-6a, U-MED-UMBRALES, U-COMP-E1 y mis
+   carpetas de lectura): no autorizo abrirlas ni contarlas por código. Se declaran por nombre, sin cifra, con el motivo: el cegamiento y
+   las carpetas cerradas.»
+3. «Agregá al §11 del borrador: las correcciones de E0 por regla general (S0-6a), diseñadas a partir de errores vistos en S1-ter, valen
+   igual para los dos brazos, porque los dos usan la misma E0 del grafo evaluado; se declaran.»
+4. «Corré los sorteos reales de B6.3 con contaminados_B63_v2_regla.json, fuera del repo, y sellalos antes de que se lea nada. Después, los
+   despachos de P2 y de la etapa T de tripletas.»
+5. «El 172 va después del FRENO A2.1-b, no en «LISTO PARA LOS PASOS PAGOS». Rearmalo con estas decisiones.»
+
+Y: «Mientras corre el tramo 2 de A2.1, ningún commit.»
+
+- **Los sorteos de B6.3, corridos y sellados** por la mesa, fuera del repo (`decisiones_258_mesa/sorteos/`, en su paquete):
+  - `sorteo_B63.json`, sha256 `4e751e2350cd5e0571494383bc7d2cf5897b83313b36df4ee76da6c90abf8adb`, 104.738 bytes, sellado el 23/10/2026 a
+    las 16:03:44 en `sello_sorteo_B63.txt` (`4d0a7c93…`), antes de que nadie leyera la salida; la mesa no la abrió;
+  - sobre HEAD `0a6374ba`, con el script de la §254 (selftest 14 de 14), las semillas de la §100 y ningún contaminado; dos corridas, los
+    mismos bytes;
+  - quedan los 77 documentos (26, 35 y 16 por clase) y 6 olas de 32. Con el N de la §94, a lo sumo 96, se usan las olas 1 a 3.
+- **Los dos despachos,** escritos por la mesa (`decisiones_258_mesa/despachos/`); pegarlos es de la autora (PENDIENTE):
+  - **P2, la ola 1:** desde `fuera_del_repo/b63_p2/`, que la mesa armó con el sorteo sellado, la regla sellada de la etapa 1 y los ocho
+    archivos del generador de N3, cada uno controlado por su sha256. Genera los 32 lugares de la ola 1 con la regla de rechazo aplicada
+    al tipo, la sella y frena; las olas 2 y 3 van con otro «seguí»;
+  - **U-TRIP-T:** desde `fuera_del_repo/tripletas_t/`, con los 64 ítems de U-MED-DESAMB. Sortea las 400 aristas de contenido del grafo
+    evaluado y, dentro de ellas, las 100 de la autora, con la semilla de la enmienda 4; sella las dos listas juntas, arma las 400 fichas y
+    las hojas, y frena. La mesa le agrega el conteo declarado de las aristas que son una de las 120 de V.
+- **El borrador v5 del pre-registro de B6.3** (`decisiones_258_mesa/b63/`): la D-11 decidida, la exposición de las carpetas cerradas por
+  nombre y sin cifra, las correcciones de E0 por regla general en el §11 y el sorteo sellado en el §3.3 (H-10). No queda ninguna decisión
+  abierta.
+- **El 172, rearmado:** lleva esta sección y la §101, que cambia solo en cuándo va su commit. Corre después del FRENO A2.1-b, no en
+  «LISTO PARA LOS PASOS PAGOS». El 172 de la §257 no corrió y queda renombrado a NO_CORRER_REEMPLAZADO__.
+- **Lo que sigue:** pegar los dos despachos; revisar sus FRENOs; y el 172, después del FRENO A2.1-b (PENDIENTE de la autora).
+- Las secciones anteriores no se editan.
+
+## 103. El viernes, a las 16:25: P2 pegado, el cegamiento de U-MED-VERIF en la etapa T y la prueba de la v2 sin los casos de su prompt (23/10/2026)
+
+Decisiones y hechos de la autora del 23/10/2026, recibidos a las 16:25:16 (hoja de ruta de la mesa, §259).
+
+- **P2:** la autora pegó el despacho de la ola 1 tal cual, en una sesión nueva abierta en `fuera_del_repo/b63_p2/`. El de U-TRIP-T
+  todavía no.
+- **Las decisiones,** tal cual:
+  1. «P2: que frene después de la ola 1, como está. Cuando llegue su FRENO y lo revises por código, si está bien, el «seguí» de las olas
+     2 y 3 va enseguida, sin esperar mi revisión de la ola 1. Las preguntas nuevas para las que rechace van en un «seguí» aparte.»
+  2. Sobre U-TRIP-T, antes de pegarlo:
+     a. «Le falta el cegamiento de U-MED-VERIF: no me muestran la extracción de una unidad de su muestra antes de que cierre esa lectura, y
+        las fichas de T son extracciones. La ejecutora marca por código y en memoria, como en U-REAPL (§11 del despacho de la §249),
+        cuáles de las 400 y de mis 100 vienen de una unidad de esa muestra, sin escribir la muestra ni dar su tamaño ni sus ids. Esas
+        fichas van a un lote aparte, que leo recién cuando cierre U-MED-VERIF. El acta, el FRENO y la consola van sin contenido de nodos,
+        solo con códigos.»
+     b. «El agregado del punto 4.e (las coincidencias con V): sí. Y sumá al pre-registro de B6.3: si alguna de mis 100 coincide con un
+        caso del prompt de la v2, la prueba de la v2 sobre T se informa también sin ella, al lado.»
+  3. «Esto va al registro en el 172 v2 rearmado o en el commit siguiente, siempre después del FRENO A2.1-b.»
+- **El despacho de U-TRIP-T, v2** (`decisiones_259_mesa/despachos/`), PREPARADO; pegarlo es de la autora:
+  - la muestra de las FICHAS de U-MED-VERIF se arma en memoria con el procedimiento del censo de la mesa (§178, `:98-115`): el sorteo
+    sellado (`e27796ce…`, el único `NO_ABRIR_` que abre la ejecutora), la lista de exclusión de `0c2befad` (`5ec9753d…`) y las 7 de la
+    mesa. La ejecutora marca las fichas que vienen de una unidad suya solo en un `NO_ABRIR_`, por la referencia de la ficha, y las de las
+    100 van a un lote aparte;
+  - el acta, su sello, el FRENO y la consola llevan cada arista y cada nodo por su código (`sha256(id)[:12]`) y cuentas;
+  - las coincidencias con las 120 de V, en el acta, declaradas y sin excluir.
+- **El borrador v6 del pre-registro de B6.3** (`decisiones_259_mesa/b63/`): el lote aparte de U-MED-VERIF y la prueba de la v2 también sin
+  las de las 100 que coincidan con un caso de su prompt, en el §10.1; y las coincidencias con V, en lo que se declara (§11, punto 14). La
+  coincidencia con los casos la calcula la mesa por la clave de la arista, con el acta de T y los casos de la v2 congelada.
+- **El «seguí» de las olas 2 y 3 de P2,** en BORRADOR (`decisiones_259_mesa/despachos/`): va apenas la mesa revise el FRENO de la ola 1,
+  si la revisión da bien. P2 sella la ola 2, arma su paquete y sigue con la 3 sin frenar.
+- **El 172, rearmado otra vez:** lleva la §101 v2, la §102 y esta sección, y corre después del FRENO A2.1-b. El 172 v2 no corrió y queda
+  renombrado a NO_CORRER_REEMPLAZADO__.
+- Las secciones anteriores no se editan.
