@@ -3417,3 +3417,53 @@ Decisiones de la autora del 22/10/2026, recibidas a las 16:16:41 y a las 16:24:4
   4. este;
   5. la firma de la enmienda 4 (el 160, PENDIENTE de la autora).
 - Las secciones anteriores no se editan.
+
+## 91. La tanda final sellada, los criterios del tablero fijados, la prioridad del viernes, el censo de C1 de las tres tandas y lo que sigue (22/10/2026)
+
+Decisiones y hechos de la autora del 22/10/2026, recibidos a las 18:13:48 (hoja de ruta de la mesa, §239).
+
+- **Los cuatro commits de la §90,** corridos con zsh, en orden, con su push (git log): el TF4d (`4d8adf0d`, 18:11:38), el TF5a (`aeaf0ec1`,
+  18:11:44), el TF5b (`2a95f475`, 18:11:50) y el 161 (`2a7fd75d`, 18:11:56).
+  - La mesa los controló contra su paquete, 19 de 19: sus títulos y su orden sobre el 159, sus archivos, byte a byte o por el sha256 de la
+    lista revisada, sin Co-Authored-By, y `grafos.py` con `aeaf0ec` en los dos sellos del tramo 1
+    (`decisiones_239_mesa/verificacion/verificacion_commits_TF4d_TF5_161_mesa.json`, en el paquete de la mesa).
+  - **La tanda final queda sellada** (protocolo entre tandas, §4), con el tramo 1 como respaldo, antes de la regla de caída del viernes 23
+    a las 18:00.
+- **La etapa c de la D-6:** la autora pegó el «seguí» v2 en su sesión con una precisión suya al paso 0, tal cual: «en el diff contra
+  bb6dc713 pueden aparecer además data/experiment/neo4j/grafos.py y data/backlog/backlog.jsonl, de los commits del sello de la tanda
+  final, y esos dos no frenan». La D-6 trabaja fuera del repo: del repo lee su paso 0 y el lanzador del banco, y un commit del
+  registro y del backlog no cambia nada de eso.
+- **El 160** (la firma de la enmienda 4): PENDIENTE de la autora.
+- **1. Los criterios del tablero y de las vigilancias** (decisión de la autora, sobre la propuesta de la §90): las filas 50, 52 y 64 van
+  como hallazgos y la 51, «no aplica»; las vigilancias, con el test de la atención, crudo y ponderado, y la (1) como hallazgo. **Se
+  declaran como criterios fijados con los resultados a la vista.** Entran al backlog como BKL-0057 (fila 50), BKL-0058 (fila 52) y
+  BKL-0059 (fila 64); la (1) ya está como BKL-0055.
+- **2. La prioridad del viernes** (decisión de la autora), tal cual: «El viernes, mis horas van primero al censo, al catálogo y a la
+  re-aplicación, antes que a A2.1 y A2.2: que la re-aplicación se mida antes del corte pesa más que N7, que si pasa el corte se declara.»
+  Cambia, para el viernes, el orden de la §76 (A2.1, A2.2 y el diagnóstico primero).
+- **3. El calendario v12o** (`decisiones_239_mesa/calendario/`, con el sello a la hora del git log y esa prioridad, desde las 18:45, el
+  cierre de la ronda; duraciones NO VERIFICADAS; el modelo es voraz). En el central, contra el miércoles 28 a las 18:00:
+  - la re-aplicación medida, el viernes 23 a las 14:46, y el sello del grafo evaluado, a las 16:01: antes del corte;
+  - N7, el sábado 24 a las 18:06: pasa el corte de las 12:00 y se declara;
+  - la firma de B6.3, el domingo 25 a las 21:31 (plazo: lunes 26 a las 12:00);
+  - sus corridas, del domingo 25 a las 21:37 al lunes 26 a las 05:43;
+  - la etapa T, cerrada el miércoles 28 a las 12:37, 5 h 23 antes; las 400 de la v2, revisadas el martes 27 a las 18:27;
+  - la cobertura de V, el viernes 30 a las 09:53, después del miércoles 28, como en los calendarios anteriores;
+  - en el lento, la firma de B6.3 pasa su plazo (martes 27 a las 17:15) y la etapa T, el miércoles 28 (viernes 30 a las 15:36). En los
+    dos, la re-aplicación se mide el viernes (en el lento, a las 20:41);
+  - sin la prioridad, en el central, la re-aplicación caería el sábado a las 08:10, N7 a las 13:03 y la firma de B6.3 el domingo a
+    las 17:38: la prioridad corre N7 unas 5 h y la firma unas 4 h, a cambio de una re-aplicación que no depende de la hora.
+- **El censo de C1 de las tres tandas,** armado por la mesa para la relectura de la autora (U-REAPL, §1; registro, §46 y §47), con su
+  script de la §178 sin cambios, sobre el acumulado sin cola (`ens_128_r2b_sincola`, sha256 `398459a8…`) y la muestra de U-MED-VERIF
+  controlada en memoria:
+  - 472 Comunicacion; 32 colisiones con 120 nodos, hasta 25 documentos por colisión; ninguna toca la muestra;
+  - C1 no crea ningún hub al 1 % (umbral 40; el grado de un nodo unido, a lo sumo 21) y crearía uno al 5 % (umbral 16), que se declara;
+  - la carpeta de lectura es `fuera_del_repo/censo_c1_tres_tandas/`, con su `LEEME`, un convertidor (6 de 6 en su prueba) y el sello en
+    zsh. La mesa no la abre.
+- **El material de las claves del catálogo:** el despacho preparado en la §157, con sus huecos llenos (el sello `2a7fd75d`, el sorteo de
+  las FICHAS y su lista de exclusión, el registro de las tres tandas), listo para pegar. No escribe en el repo.
+- **El orden, desde esta noche:** el 162; el despacho del material del catálogo; la v2-a; el censo; las tres revisiones de FRENOs que
+  esperan a la autora (U-REMISIONES-SUBPUNTOS a, U-UNION-C1 v3 y la etapa b), que gatillan el commit de U-PROC-HERENCIA, de C1 y de las
+  remisiones; la revisión de la D-6 y sus tres sesiones pagas. Mañana: la lectura del catálogo, ese commit, el despacho de la re-aplicación
+  y su medición, y después A2.1 y A2.2.
+- Las secciones anteriores no se editan.
