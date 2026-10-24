@@ -4273,3 +4273,25 @@ FRENOs que llegaron.
   - el FRENO A2.1-c y, después, el commit de esta sección con la nota del README;
   - el «seguí» de P2 y el de la etapa b del juez v2 pueden pegarse ya: ninguno escribe en el repo.
 - Las secciones anteriores no se editan.
+
+## 108. El sábado, a las 10:17: la tabla de los 13 lugares, P2 y el juez v2 en marcha y la revisión de las tres olas (24/10/2026)
+
+Decisiones y hechos de la autora del 24/10/2026, recibidos a las 10:17:05 (hoja de ruta de la mesa, §266), sobre la §265 de la mesa.
+
+- **Los 13 lugares, tal cual:** «Los 13 lugares: la tabla del mandato (d62625d6…), con el documento siguiente de su clase que tenga
+  menos de 4 lugares, y se declara que los 5 de la ola 2 caen en documentos de la ola 4 del sorteo.» Con esto se resuelve la elección que
+  la §107 dejaba PENDIENTE. La P-4 tal cual queda descartada, sellada en el paquete de la mesa.
+- **Los dos «seguí»,** pegados tal cual: el de P2, con los reubicados y los dos controles sobre las olas selladas, y el de la etapa b del
+  juez v2. Los dos corren fuera del repo.
+- **La revisión de las tres olas:** la autora la empieza, con su hoja (`fuera_del_repo/revision_b63_olas_1_a_3/`).
+- **El 177:** la autora lo corre después del FRENO A2.1-c.
+- **El FRENO A2.1-c:** ya está en el árbol, sin rastrear, como el borrador del pre-registro de A2.2 (modificados a las 10:16:41 y a las
+  10:13:18). La mesa no los leyó: van en la ronda siguiente, con las decisiones de la §107 para ese borrador (R5, A-D2 y A-D4).
+- **El borrador v8 del pre-registro de B6.3** (`decisiones_266_mesa/b63/`):
+  - D1 a D4 de la ola 1 (§3.2, §11, §14 y §15);
+  - R5 con la señal de H-B2 y las sesiones enmascaradas (§5);
+  - la regla de los 13 lugares y su declaración (§3.3 y §11).
+
+  No queda ninguna decisión abierta.
+- **El orden:** el FRENO A2.1-c, su revisión y su commit; el 177; y el commit de esta sección.
+- Las secciones anteriores no se editan.
