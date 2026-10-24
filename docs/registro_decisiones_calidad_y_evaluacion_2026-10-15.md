@@ -4174,3 +4174,52 @@ Hechos de la autora del 23/10/2026, recibidos a las 17:05:00 (hoja de ruta de la
   a NO_CORRER_REEMPLAZADO__.
 - **El orden:** el commit de las §101 a §103, después del FRENO A2.1-b, y el de la §104 y esta sección, después de ese.
 - Las secciones anteriores no se editan.
+
+## 106. El viernes, a las 20:51: la ola 1 de B6.3 decidida, el FRENO A2.1-b con el cwd enmascarado, R5 y el tope de A2.2, y U-TRIP-T (23/10/2026)
+
+Decisiones y hechos de la autora del 23/10/2026, recibidos a las 20:51:09, con dos agregados a las 20:54:27 y a las 21:01:34 (hoja de ruta
+de la mesa, §264), sobre la §263 de la mesa y los FRENOs que llegaron.
+
+- **La ola 1 de B6.3:** D1 (a), D2 (a), D3 (a) y D4 (a), como lo recomendó la mesa (§105):
+  - D1: el subtipo de un lugar es el frente sobre el que se construye la pregunta, aunque no sea la primera forma de P1. En las olas 2 y 3,
+    P2 anota en cada ancla de condición o de definición si aplica también un frente anterior;
+  - D2: P2 encuentra los frentes (c) y (d) mucho más seguido que P1, y su lectura queda, sin cambios. En el pre-registro de B6.3 se declara
+    como límite: los pesos salen de P1, y el tipo coincide con P1 en 9 de las 11 unidades que juzgaron las dos;
+  - D3: una unidad puede ser ancla u otro punto de más de un lugar, declarado;
+  - D4: los dos criterios de lectura nuevos de P2 rigen también en las olas 2 y 3, y van al pre-registro con sus lugares.
+  - El «seguí» de P2 para las olas 2 y 3, pegado tal cual.
+- **El 172 v4 y el 174 v2,** corridos con su push: `f7d7877d` (20:50:33) y `084499c6` (20:50:40), por git log; `origin/main` en `084499c6`.
+- **El FRENO A2.1-b,** revisado por la mesa (`decisiones_264_mesa/a21b/`): se reproduce desde las salidas crudas, 13 de 13, y el análisis de
+  la ejecutora da su JSON byte a byte. Quedan verificadas las cifras de la §105:
+  - el gasto: USD 0,515819 (0,305127 del humo y 0,210692 de H-B2), igual por R9 y por el CLI;
+  - las 20 sesiones, con los cuatro cortes de H-B2 (HB2-01, HB2-02, HB2-06 y HB2-07);
+  - el control del disco, sin ningún freno, y el valor remoto, vacío en las 20;
+  - `--max-turns` acota los mensajes del asistente: una sesión se corta si y solo si su mensaje número k pide tools.
+- **El cwd de los 40, tal cual** (primer agregado): «En el repo van enmascarados: la carpeta personal reemplazada por $HOME, sin ningún otro
+  cambio de bytes. Los originales quedan fuera del repo, donde propongas, y el commit lleva el sha256 de cada original y de su versión
+  enmascarada, con el script que enmascara.»
+  - **Lo que propone la mesa:** los originales, en `$HOME/INGENIERIA IA/TESIS/fuera_del_repo/banco_mcp_originales_A2_1/`, con las rutas
+    del repo; en el repo, `a2_1/enmascarar_cwd_a2_1.py` y `a2_1/enmascarado_cwd_a2_1.json` (40 archivos, 171 reemplazos). El script saca
+    la carpeta personal de los datos y no la escribe en ningún archivo. Lo aplica el 175.
+  - **Lo que ya está en el repo con el nombre de la cuenta,** sin tocarlo en este commit (`nombre_de_la_cuenta_en_el_repo_mesa.py`, sin
+    las rutas cegadas): 291 archivos rastreados. De ellos, 78 son salidas de sesiones (todas en `data/experiment/banco_mcp/`), 20 son otros
+    archivos de `banco_mcp/` y 193 están fuera de él.
+  - **El README del banco** (`data/experiment/banco_mcp/README.md:215-219`) dice que los streams traen el cwd y no se editan: queda corto
+    para A2.1. Su cambio es PENDIENTE de la autora.
+- **R5 y el tope de A2.2,** para la firma de A2.2 (`decisiones_264_mesa/r5/`):
+  - **la regla del registro** (§50, punto 4) con la señal de H-B2 da `--max-turns` 32, sin cambio: 30 + 2, en mensajes del asistente.
+    `--max-turns` no acota las llamadas, y el tope de 30 queda en el prompt y en el presupuesto de 1,80 por sesión;
+  - **las opciones:** (1) R5 como está, con «al tope» contado en llamadas por el log R1; (2) lo mismo con un tope duro de 30 llamadas en
+    los servidores, que es código nuevo; (3) lo mismo, excluyendo de la métrica las sesiones con más de 30 llamadas. La mesa recomienda la
+    (1). La propuesta del FRENO de `--max-turns` 12 contradice R5;
+  - **A-D2:** A2.2 cuesta (40 + 2P) × 0,2443, 0,3407 o 0,5334 (central, medio o alto), con P las preguntas que van a N = 3 parciales. La
+    mesa recomienda el medio de ese P, redondeado al dólar de arriba, con freno en el 75 %;
+  - las dos decisiones son PENDIENTES de la autora, al firmar A2.2.
+- **U-TRIP-T,** revisado por la mesa (`decisiones_264_mesa/utrip_t/`): el sorteo de T se reproduce con código propio desde el `.gz` de
+  HEAD, 21 de 21, con los mismos sha256 y los mismos solapamientos. En su §12 no hay nada para corregir.
+  - **Su error 1, tal cual** (segundo agregado): «su error 1, que mostró en su consola parte de la clave de T001, del lote 01, sin
+    etiquetas ni textos, lo acepto declarado. La muestra, el orden y las hojas no cambian, y yo no miro esa consola.»
+- **El «seguí» del tramo 3 de A2.1, con el insumo v2:** PREPARADO por la mesa (`decisiones_264_mesa/despachos/`). Pegarlo es de la autora,
+  después del 175 y del commit de esta sección.
+- **El orden:** el 175 (lo del tramo 2 de A2.1, con los 40 enmascarados), el commit de esta sección y, después, el «seguí» del tramo 3.
+- Las secciones anteriores no se editan.
