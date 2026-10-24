@@ -214,8 +214,12 @@ verificado**.
 
 ## Nota de confidencialidad de los artefactos
 
-Los `stream_*.jsonl` son salida literal de `claude -p` y contienen el `cwd` absoluto de la
-máquina (no se editan: son evidencia). Todo campo generado por el código del banco va con rutas
+Los `stream_*.jsonl` y las transcripciones (`sesion_*.jsonl`) son salida literal de `claude -p`
+y traen el `cwd` absoluto de la sesión. Los de las corridas anteriores al tramo 2 de A2.1 están tal
+cual, como evidencia. Desde el tramo 2 de A2.1, van al repo con la carpeta personal reemplazada por
+`$HOME` y ningún otro cambio de bytes; los originales quedan fuera del repo, y el sha256 de cada
+original y de su versión enmascarada va en `a2_1/enmascarado_cwd_a2_1.json`, con el script que
+enmascara (`a2_1/enmascarar_cwd_a2_1.py`). Todo campo generado por el código del banco va con rutas
 relativas al repo o enmascaradas. Ningún dato de terceros.
 
 ## 7. Adaptador sobre MCP y demostración por clase (`adaptador/`)

@@ -4223,3 +4223,53 @@ de la mesa, §264), sobre la §263 de la mesa y los FRENOs que llegaron.
   después del 175 y del commit de esta sección.
 - **El orden:** el 175 (lo del tramo 2 de A2.1, con los 40 enmascarados), el commit de esta sección y, después, el «seguí» del tramo 3.
 - Las secciones anteriores no se editan.
+
+## 107. El sábado, a las 09:46: R5, el tope y las sesiones de A2.2, la iteración 1 del juez v2 y las olas 2 y 3 de B6.3 (24/10/2026)
+
+Decisiones y hechos de la autora del 24/10/2026, recibidos a las 09:46:49 (hoja de ruta de la mesa, §265), sobre la §264 de la mesa y los
+FRENOs que llegaron.
+
+- **El 175 y el 176,** corridos con su push: `7a9fe8ca` (09:46:09) y `af4dab8e` (09:46:16), por git log; `origin/main` en `af4dab8e`. El
+  175 dejó los 40 originales fuera del repo, en `fuera_del_repo/banco_mcp_originales_A2_1/`, con su manifiesto (41 archivos).
+- **El «seguí» del tramo 3 de A2.1,** pegado tal cual. La ejecutora escribe el borrador del pre-registro de A2.2 en el repo: ningún commit
+  corre hasta su FRENO A2.1-c.
+- **Las decisiones sobre la §264, tal cual,** para que el borrador de A2.2 llegue con ellas a la firma:
+  1. «R5: tu opción (1). --max-turns 32 por la regla del §50, igual en los dos brazos, y se informa por brazo cuántas sesiones pasan de 30
+     llamadas en el log R1. No se excluye ninguna sesión por eso.»
+  2. «A-D2: el tope en el costo alto de tu cuenta, con el P que cite la ejecutora, redondeado al dólar de arriba, y el freno en el 75 % de
+     ese tope. A2.2 se mide una sola vez, y un corte a la mitad no se puede repetir; el costo medio queda siempre adentro.»
+  3. «A-D4: sí, las transcripciones y los streams de A2.2 van al repo enmascarados como los del tramo 2, con los originales fuera del repo
+     y su sha256.»
+  4. «La nota del README del banco (README.md:215-219): se actualiza. Desde el tramo 2 de A2.1, los streams y las transcripciones van al
+     repo con la carpeta personal como $HOME, y los originales quedan fuera del repo con su sha256. Va en el commit siguiente, cuando no lo
+     cruce ninguna foto.» Va en el commit de esta sección.
+  5. «Los 291 archivos que ya están en el repo con el nombre de la cuenta: no se tocan ahora. Anotalos como pendiente para cuando se
+     publique el repo, junto con la historia de git, que también los trae.» Queda PENDIENTE para la publicación del repo: los 291
+     archivos rastreados (`nombre_de_la_cuenta_en_el_repo_mesa.py`, §264 de la mesa) y la historia de git.
+- **La iteración 1 del juez v2,** según el mensaje de la autora: 273 de 273 completas, 0 sin voto, 0 rechazos, USD 14,7828 y sin corte. La
+  mesa controló por código la marcada (`3a0734a1…`), el prompt (`cf40964d…`) y, de la regla de freno, solo que dice «frena: false», sin
+  congelar. Lo que sigue es la etapa b: los casos nuevos de la iteración 2 desde los desacuerdos de la 1 (enmienda 4, puntos 3 y 4). Su
+  «seguí» está PREPARADO por la mesa.
+- **Las olas 2 y 3 de B6.3:** selladas a las 21:15:08 (27 preguntas) y a las 21:27:58 (24); los dos paquetes dan sus sha256 (42 de 42 y
+  41 de 41). Las decisiones de la autora, tal cual:
+  1. «Rige la regla: cada uno de esos 13 lugares pasa al documento siguiente de su clase en el orden sorteado, con su ola, su tipo y su
+     subtipo, como la P-4 al sortear, y se declara.»
+     - **La contradicción que reporta la mesa** (CLAUDE.md, §4.d): la P-4 tal cual deja 12 lugares en un documento y 7 en otro. El mandato
+       firmado dice «Para N > 64, las olas van en más documentos, con 4 preguntas por documento».
+     - **Lo que preparó la mesa:** el «seguí» de P2 lleva la versión que cumple las dos cosas, el documento siguiente de su clase con menos
+       de 4 lugares y unidades sin lugar. Así quedan 4, 4, 2 y 3 en cuatro documentos de la ola 4 del sorteo. La P-4 tal cual queda sellada
+       al lado. La elección es PENDIENTE de la autora.
+  2. «Los ocho criterios de lectura nuevos de las olas 2 y 3: rigen en las tres olas, como en D4.» El control por código de la mesa marca
+     dos candidatos en la ola 1, los lugares 6 y 23, frente al criterio 2 de la ola 2. P2 los vuelve a mirar sin cambiar ninguna ola
+     sellada.
+  3. «El criterio 5 de la ola 2 (la búsqueda de la unidad siguiente no vuelve al principio del orden): queda, y lo que deja sin unidad pasa
+     al documento siguiente por el punto 1, como el lugar 28 de la ola 3.»
+  4. **Los textos que P2 no identificó:** cuatro están entre los 128 con otro id (`ratio`, `finsec`, `ri_tsa` y `snp_psp`), y P2 vuelve a
+     mirar los lugares donde los citó.
+- **La hoja de revisión de la autora** de las tres olas (`fuera_del_repo/revision_b63_olas_1_a_3/`, manifiesto `ad6165de…`): 83 preguntas,
+  armadas por script desde las olas selladas, sin que la mesa lea ninguna. Lleva las instrucciones, con las reglas citadas de su fuente, y
+  el convertidor y el sello, probados sobre olas sintéticas (10 de 10).
+- **El orden:**
+  - el FRENO A2.1-c y, después, el commit de esta sección con la nota del README;
+  - el «seguí» de P2 y el de la etapa b del juez v2 pueden pegarse ya: ninguno escribe en el repo.
+- Las secciones anteriores no se editan.
