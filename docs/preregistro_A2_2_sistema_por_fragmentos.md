@@ -1,12 +1,19 @@
-# Pre-registro de A2.2: el grafo contra el sistema por fragmentos, sobre EV2 — BORRADOR v2
+# Pre-registro de A2.2: el grafo contra el sistema por fragmentos, sobre EV2
 
-**BORRADOR, sin firmar.** Lo escribe la ejecutora del tramo 3 de A2.1 (mandato `docs/mandatos/A2_1_sistema_por_fragmentos_preregistro_A2_2.md`,
-texto firmado en `c2b6cb60`, §5, `:128-154`, y §6, `:165`; A-D0, (a): registro, §99, decisión 2, `:3850`). Lo firma la autora y se sella
-con su commit (A2.1, `:130`). Hasta la firma no rige nada de lo que dice, y nada de A2.2 corre.
+**VERSIÓN PARA FIRMAR — PENDIENTE DE FIRMA DE LA AUTORA** (25/10/2026; no sellado; ningún número de este documento es un resultado).
+
+La v1 la escribió la ejecutora del tramo 3 de A2.1 (mandato `docs/mandatos/A2_1_sistema_por_fragmentos_preregistro_A2_2.md`, texto
+firmado en `c2b6cb60`, §5, `:128-154`, y §6, `:165`; A-D0, (a): registro, §99, decisión 2, `:3850`), y entró al repo en `206c3f59`. Lo
+firma la autora y se sella con su commit (A2.1, `:130`): la firma se asienta en la cabecera y al pie, con fecha, y el texto firmado no se
+edita después: recibe notas fechadas al pie. Hasta la firma no rige nada de lo que dice, y nada de A2.2 corre.
 
 **La v2** (mesa, 24/10/2026; hoja de ruta de la mesa, §267) agrega a la v1 de la ejecutora (sha256 `c87b78f2…`) las decisiones de la
 autora del 24/10/2026, cada una tal cual y con su hora de recepción (registro, §107 y §109), lo que EV2 aplicó donde su protocolo no
-dice (§4) y la lista de la cola (§5). Lo que queda para la firma está en el §9.
+dice (§4) y la lista de la cola (§5), y entró al repo en `3b6f63c1`.
+
+**La versión para firmar** (mesa, 25/10/2026; hoja de ruta de la mesa, §268) agrega a la v2 las decisiones de la autora del 25/10/2026
+(registro, §110): A-D2, con la cuenta de lo que mide cada freno (§6); A-D9 y A-D10, confirmadas (§5 y §4); y A-D11, (a) (§5). No queda
+ninguna decisión abierta.
 
 - **Las fuentes,** leídas en HEAD `af4dab8e` (24/10/2026): «A2.1» (el mandato de arriba), «registro»
   (`docs/registro_decisiones_calidad_y_evaluacion_2026-10-15.md`), «U-NAV» (`docs/mandatos/UNAV_DISENO_navegacion_agente.md`), «Q8»
@@ -18,7 +25,7 @@ dice (§4) y la lista de la cola (§5). Lo que queda para la firma está en el �
   sus anclas. La nota de la mesa sobre R5 y el tope (sha256 `01214f04…`, fuera del repo; registro, §106, `:4209-4217`) da las opciones de
   R5 y la cuenta del tope.
 - **Marcas:** [DECIDE LA AUTORA], lo que ninguna fuente fija, con sus opciones; PENDIENTE, lo que falta hacer antes de correr; NO
-  VERIFICADO, lo que no controlé contra una fuente del repo. Lo decidido y lo que queda para la firma están en el §9.
+  VERIFICADO, lo que no controlé contra una fuente del repo. Las decisiones están en el §9; no queda ninguna [DECIDE LA AUTORA].
 
 ## 1. Lo que dio el tramo 2 de A2.1 (los huecos A-1 a A-5)
 
@@ -156,7 +163,8 @@ dice (§4) y la lista de la cola (§5). Lo que queda para la firma está en el �
       y `:189`, por laudo);
     - **con un voto `requiere_adjudicacion`** entre las tres re-corridas, el par queda decidido solo si el resultado no depende de cómo
       se resuelva ese voto; si depende, va a la adjudicación del final (`agregacion_enc.py:12-23`; A-D8);
-    - los dos últimos, con la misma regla que la autora aplicó a la lectura de N = 3: PENDIENTE de su confirmación (A-D10, §9).
+    - los dos últimos, confirmados (A-D10; decisión de la autora del 25/10/2026, recibida a las 11:06:20; registro, §110), tal cual:
+      «A-D10: confirmo: el tamaño de la auditoría y la agregación con un voto requiere_adjudicacion, tal como los aplicó EV2.»
   - **El orden de las corridas** (A-D1, decidida: registro, §99, decisión 14, `:3874`): el de B6.3 (registro, §89, `:3313-3314`), por
     pregunta y por repetición, con los brazos de cada pregunta seguidos en un orden sorteado, y la fecha de cada sesión registrada.
     **La semilla** (A-D7, decidida: (b); registro, §109), con la forma de la de B6.3 (`B63:orden_corridas:v1`; registro, §99,
@@ -208,19 +216,23 @@ dice (§4) y la lista de la cola (§5). Lo que queda para la firma está en el �
   - **La lista:** `data/experiment/controles_a2_2/cola_grafo_desarrollo_r2b_rs1_mesa.json`, con el script que la deriva y la controla al
     lado (`lista_cola_desarrollo_r2b_rs1_mesa.py`). La lista ordenada, un id por renglón, da el sha256
     `85707ea95800bd0c67c207c18cfcc2eec62f58b716f6667b7ef0f229e5db0fa9`.
-  - **[DECIDE LA AUTORA] A-D11:** D5 dice «las preguntas cuyo gold cae en unidades de la cola». Una pregunta con anclas dentro y fuera
-    de la cola sale de la cifra sin la cola (a) si alguna de sus anclas cae en la cola, o (b) solo si caen todas.
+  - **A-D11, decidida: (a)** (decisión de la autora del 25/10/2026, recibida a las 11:06:20; registro, §110), tal cual: «Una pregunta
+    sale de la cifra sin la cola si alguna de sus anclas cae en la cola.» Es la lectura de D5, «las preguntas cuyo gold cae en unidades de
+    la cola», para una pregunta con anclas dentro y fuera de ella. Las anclas son las de cada pregunta en EV2, leídas por código.
 - **Las dos comparaciones:** el grafo contra fragmentos BM25 y el grafo contra fragmentos densos, cada una con Holm (A2.1, `:145`). «El
   grafo supera a los fragmentos» solo si supera a las dos configuraciones (plan, `:339`); si supera a una sola, se informa por
   configuración, sin la afirmación general (la misma regla que la autora pidió para B6.3: registro, §99, decisión 11, `:3866-3868`).
   - **La medida y la prueba** (A-D9, decidida: (a); decisión de la autora del 24/10/2026, recibida a las 10:36:45; registro, §109), tal
     cual: «La medida y la prueba son las del pre-registro de B6.3.» Las de B6.3 salen del mandato firmado de sus preguntas (UPREG, nota
-    del 19/10 sobre k, `:212-215`; el borrador v9 de la mesa del pre-registro de B6.3, fuera del repo, §8.1): la métrica de cada
+    del 19/10 sobre k, `:212-215`; el borrador v10 de la mesa del pre-registro de B6.3, fuera del repo, §8.1): la métrica de cada
     pregunta es la proporción de sus corridas juzgadas correctas; d_q, la diferencia por pregunta entre el grafo y cada configuración;
     y la prueba, pareada, por permutación de signos sobre d_q, con Holm sobre las dos comparaciones.
     - **En A2.2,** cada pregunta tiene un veredicto final por brazo (el de N = 1 o el agregado de sus tres re-corridas, §4), así que la
-      métrica es la de una corrida: 1 si el veredicto final es «correcto» y 0 si no. Es la lectura de la mesa: PENDIENTE de la
-      confirmación de la autora (§9).
+      métrica es la de una corrida: 1 si el veredicto final es «correcto» y 0 si no. Confirmada (decisión de la autora del 25/10/2026,
+      recibida a las 11:06:20; registro, §110), tal cual: «A-D9: confirmo: 1 o 0 sobre el veredicto final de cada pregunta, como en
+      B6.3.»
+    - **De dos colas,** con α = 0,05 y Holm sobre las dos comparaciones, la primera a 0,025, como en el N de B6.3 (el borrador v10, §3.4:
+      «la primera de Holm (α de dos colas 0,025)»). «El grafo supera» pide además que la diferencia favorezca al grafo (§5, arriba).
 - **Las tasas de pares discordantes** de cada comparación, que van a la regla del N de B6.3 (Q5; registro, §5, `:173-179`; el N, §94,
   `:3625-3627`, y §99, decisiones 4 y 5, `:3853-3854`), y `c_agente` (Q6), el costo del agente por pregunta y por brazo que la válvula de
   costo de B6.3 compara con su estimación (plan, `:778`) (A2.1, `:146`). La regla del N las toma con `regla_del_N_B63_s94_mesa.py`, del
@@ -248,10 +260,12 @@ dice (§4) y la lista de la cola (§5). Lo que queda para la firma está en el �
 
 - **El tope:** unos USD 15 en el plan (`:340`); en EV2, la corrida del agente costó 14,88 (A2.1, `:148-149`, que cita
   `ev2_reporte/reporte_ev2.md:388-390` y `:403`; no abrí ese reporte, que trae los resultados de EV2).
-- **A-D2, decidida** (registro, §99, decisión 17, `:3880`; §106, `:4215-4217`; §107, `:4239-4240`; y §109): la decisión de la
-  autora del 24/10/2026, recibida a las 10:36:45 y corregida a las 10:39:11, tal cual: «el freno del banco es un corte duro (FRENO
-  A2.1-c, §7), así que tiene que quedar por encima del peor caso: P = 40 con tres re-corridas nuevas y el costo alto, USD 55. Tope 74
-  y freno 55,50, en lugar de 55 y 41,25.»
+- **A-D2, decidida** (registro, §99, decisión 17, `:3880`; §106, `:4215-4217`; §107, `:4239-4240`; §109; y §110): la regla de la autora
+  del 25/10/2026, recibida a las 11:06:20, tal cual: «A-D2: que cubra el alto del peor caso, con el margen del presupuesto por sesión. El
+  alto es 85,34, y el corte duro deja de lanzar pasado el freno menos 1,80, así que el freno va en 87,75 y el tope en 117. El gasto
+  esperado es mucho menor; el tope solo evita cortar una medición que no se repite. Si el alto y lo que cuenta el freno no miden lo
+  mismo (por ejemplo, si uno incluye al juez y el otro no), aplicá la misma regla con la cuenta correcta y decime el número.»
+  Reemplaza la del 24/10/2026 (tope 74 y freno 55,50; registro, §109).
   - **La cuenta,** la de la nota de la mesa (§3), con tres sesiones nuevas por re-corrida (§4):
     - el costo por sesión de fragmentos es el R9 de las 8 sesiones de pregunta del smoke (FRENO A2.1-b, §3, `:82-89`): BM25, media 0,0340 y
       máximo 0,0399; denso, media 0,0329 y máximo 0,0450;
@@ -269,13 +283,18 @@ dice (§4) y la lista de la cola (§5). Lo que queda para la firma está en el �
   | 20 | 300 | 24,43 | 34,07 | 53,34 |
   | 40 | 480 | 39,09 | 54,51 | 85,34 |
 
-  - **Lo que da la decisión:** el freno, 55,50, queda por encima del medio del peor caso (54,51, con el juez); el alto de ese caso, 85,34,
-    pasa el tope. Los 55 de la cita son el medio redondeado al dólar de arriba, no el alto. Para que el freno quede por encima del alto,
-    el tope es 114 y el freno 85,50 (`tope_A2_2_AD2_mesa.py`). PENDIENTE de la autora (§9).
-  - **El corte duro del banco:** antes de cada sesión, el acumulado R9 más el presupuesto de la sesión no puede pasar el freno, y el
-    acumulado suma solo las metas del agente (`a2_1/correr_a2_1.py:80-87` y `:214-215`). Qué suma el freno de A2.2 (el agente solo o
-    también el juez) y con qué presupuesto por sesión (1,80 con R5) lo fija su runner (§8). Con el freno en 55,50 y 1,80 por sesión, el
-    corte no lanza otra sesión pasados 53,70 de acumulado: con el agente solo, el medio del peor caso (36,36) entra y el alto (67,20) no.
+  - **Lo que mide cada freno:** el corte duro del banco suma solo las metas del agente: antes de cada sesión, el acumulado R9 más el
+    presupuesto de la sesión (1,80 con R5) no puede pasar el freno (`a2_1/correr_a2_1.py:80-87` y `:214-215`). En EV2, el juez tuvo su
+    tope propio, aparte del agente (`ev2_encadenamiento/code/runner_enc.py:28-29` y `juez_enc.py:25-27`). El alto de 85,34 suma los dos,
+    así que la regla va por separado (`tope_A2_2_firma_mesa.py`, en el paquete de la mesa):
+    - **el agente:** el alto del peor caso son las 480 sesiones de EV2 y las 3 de prueba de A-D5, 161 × 0,42 = 67,62; con el margen de
+      1,80, 69,42. **Tope 93 y freno 69,75.** El corte no lanza otra sesión pasados 67,95 de acumulado;
+    - **el juez:** 480 respuestas × 3 llamadas × 0,0126 = 18,14, con el costo por llamada de U-NAV en los tres escenarios (NO
+      VERIFICADO); con el margen de una respuesta (0,0378), 18,18. **Tope 25 y freno 18,75,** con el mismo corte: antes de cada
+      respuesta, el acumulado del juez más el costo mayor de una respuesta ya juzgada (0,0378 mientras no haya ninguna) no puede pasar
+      su freno. Un corte del juez no pierde la medición: las respuestas del agente ya están, y el juez sigue desde su caché sin volver a
+      pagar (`ev2_juez/juez.py:16-18`);
+    - **en total,** 118 de tope y 88,50 de freno, contra los 117 y 87,75 de la cuenta con los dos juntos.
   - **P** no se conoce antes de correr: cuenta las parciales y las auditadas, a lo sumo 40 por brazo, y la cuenta con un solo P vale como
     cota si P es el mayor de los tres brazos.
 - **Cuándo corre:** apenas se selle este pre-registro, en el carril pago, de a uno y nunca al lado de una extracción (registro, §26,
@@ -308,11 +327,11 @@ dice (§4) y la lista de la cola (§5). Lo que queda para la firma está en el �
    declarado, que escribe la unidad que despacha A2.2 (§3; A-D5). Las validan las tres sesiones de prueba, una por brazo, antes de la
    primera de EV2.
 2. El runner de A2.2, con los tres brazos, el orden y las semillas del §4, las re-corridas por la regla de EV2, el control del disco y la
-   lectura del valor remoto en cada sesión, el freno del §6 (qué suma y con qué presupuesto por sesión) y el enmascarado de las sesiones
+   lectura del valor remoto en cada sesión, los dos frenos del §6 (el del agente y el del juez) y el enmascarado de las sesiones
    (§7), y su corrida en seco por el mismo camino de imports que la corrida real.
 3. La carga en Neo4j y el test positivo del brazo del grafo (A2.1, `:80-81`).
 4. El control de los sha256 de los índices al empezar (registro, §16, `:545`) y el del SDK antes del juez (§93, `:3564-3567`).
-5. La lista de la cola sellada con el grafo, con su ruta y su sha256: ya está (§5), con A-D11 abierta.
+5. La lista de la cola sellada con el grafo, con su ruta y su sha256: ya está (§5).
 6. Lo que la autora pidió a la mesa antes de firmar este pre-registro (registro, §51, `:1802-1804`): qué más mejora la evaluación sin usar
    B6.3 para ajustar, y la confirmación de la vía de cobertura de la etapa V. La §52 trata los dos temas (`:1808`); no controlé si cierran
    el pedido.
@@ -325,16 +344,15 @@ dice (§4) y la lista de la cola (§5). Lo que queda para la firma está en el �
   grafo evaluado, con el agregado de la autora (decisión 15, `:3875-3877`; §6); si la verificación del juez no pasa, la decisión 3 de Q8
   (decisión 16, `:3878-3879`; §4);
 - en el registro, §107: R5, (1) (§3), y A-D4, (a) (§7);
-- en el registro, §109: A-D2, tope 74 y freno 55,50 (§6); A-D5, (b) (§3); A-D6, (a) (§3); A-D7, (b) (§4); A-D8, (b) (§4); A-D9, (a)
-  (§5); y la lectura de «re-corrida N = 3», la que aplicó EV2: tres sesiones nuevas (§4).
+- en el registro, §109: A-D5, (b) (§3); A-D6, (a) (§3); A-D7, (b) (§4); A-D8, (b) (§4); A-D9, (a) (§5); y la lectura de «re-corrida
+  N = 3», la que aplicó EV2: tres sesiones nuevas (§4);
+- en el registro, §110: A-D2, la regla del alto con su margen, por freno: el agente con tope 93 y freno 69,75, y el juez con tope 25 y
+  freno 18,75 (§6); A-D9 y A-D10, confirmadas (§5 y §4); y A-D11, (a) (§5).
 
 Las predicciones del §5 y la forma de aplicar la semilla del orden (§4) las propuso la ejecutora; la firma las fija como están.
 
-**Lo que queda para la firma:**
+No queda ninguna decisión abierta.
 
-| punto | qué queda |
-|---|---|
-| A-D2, el alto (§6) | PENDIENTE: con tope 74 y freno 55,50, el freno cubre el medio del peor caso (54,51) y no el alto (85,34); para cubrir el alto, tope 114 y freno 85,50 |
-| A-D9, la métrica (§5) | PENDIENTE de confirmación: la de una corrida, con el veredicto final de cada pregunta, 1 o 0 |
-| A-D10, lo que aplicó EV2 (§4) | PENDIENTE de confirmación: el tamaño de la auditoría, max(ceil(10 % · n), 1), y la agregación con un voto `requiere_adjudicacion` |
-| A-D11, la cola (§5) | [DECIDE LA AUTORA]: una pregunta con anclas dentro y fuera de la cola sale de la cifra sin la cola (a) si alguna cae en la cola o (b) solo si caen todas |
+## Firma
+
+PENDIENTE DE FIRMA de la autora.

@@ -4355,3 +4355,70 @@ Decisiones y hechos de la autora del 24/10/2026, recibidos a las 10:36:45 y a la
   - el commit del FRENO A2.1-c y del borrador, tal como llegaron;
   - después, el de esta sección, con el borrador v2 y la lista de la cola.
 - Las secciones anteriores no se editan.
+
+## 110. El domingo, a las 11:06: la versión para firmar de A2.2, los reubicados y la revisión de las olas de B6.3, y la etapa b del juez v2 (25/10/2026)
+
+Decisiones y hechos de la autora del 25/10/2026, recibidos a las 11:06:20, con tres agregados a las 11:18:27, a las 11:24:47 y a las
+11:28:44 (hoja de ruta de la mesa, §268), sobre la §267 de la mesa y los FRENOs que llegaron.
+
+- **El instalador de la hoja por olas, el 179 y el 180,** corridos con su push: `206c3f59` (11:02:44) y `3b6f63c1` (11:02:49), por git
+  log; `origin/main` en `3b6f63c1`. En la carpeta de revisión de la autora están los dos scripts por olas y su nota, con el sha256 que
+  probó la mesa (`4855e4ba…`, `082111e3…` y `6ee5f631…`).
+- **Las decisiones para la firma de A2.2, tal cual:**
+  1. «A-D2: que cubra el alto del peor caso, con el margen del presupuesto por sesión. El alto es 85,34, y el corte duro deja de lanzar
+     pasado el freno menos 1,80, así que el freno va en 87,75 y el tope en 117. El gasto esperado es mucho menor; el tope solo evita
+     cortar una medición que no se repite. Si el alto y lo que cuenta el freno no miden lo mismo (por ejemplo, si uno incluye al juez y el
+     otro no), aplicá la misma regla con la cuenta correcta y decime el número.»
+     - **No miden lo mismo** (`tope_A2_2_firma_mesa.py`): el alto de 85,34 suma el agente y el juez, y el corte duro del banco suma solo
+       las metas del agente (`banco_mcp/a2_1/correr_a2_1.py:80-87` y `:214-215`); en EV2, el juez tuvo su tope propio
+       (`ev2_encadenamiento/code/runner_enc.py:28-29` y `juez_enc.py:25-27`).
+     - **El agente:** 161 preguntas-corrida (las 480 sesiones de EV2 y las 3 de prueba de A-D5) por 0,42 dan 67,62; más 1,80, 69,42.
+       Tope 93 y freno 69,75.
+     - **El juez:** 480 respuestas por 0,0378 dan 18,14; más una respuesta, 18,18. Tope 25 y freno 18,75.
+     - **En total,** 118 de tope y 88,50 de freno.
+  2. «A-D9: confirmo: 1 o 0 sobre el veredicto final de cada pregunta, como en B6.3.»
+  3. «A-D10: confirmo: el tamaño de la auditoría y la agregación con un voto requiere_adjudicacion, tal como los aplicó EV2.»
+  4. «A-D11: (a). Una pregunta sale de la cifra sin la cola si alguna de sus anclas cae en la cola. Alineá con esto la cifra aparte del
+     borrador de B6.3.»
+  - Y el pedido: «Con esto, armame la versión para firmar del pre-registro de A2.2, el commit de la firma y el despacho de A2.2, para
+    correrlo hoy.»
+- **La versión para firmar del pre-registro de A2.2** (`docs/preregistro_A2_2_sistema_por_fragmentos.md`, `2a75f400…`) entra al repo con
+  esta sección, sin ninguna decisión abierta. Su prueba es de dos colas, con α = 0,05 y Holm sobre las dos comparaciones (la primera a
+  0,025), como en el N de B6.3. La firma, en el commit siguiente, cambia solo la cabecera y el pie, con el commit de esta versión y la
+  fecha: PREPARADA, la corre la autora. El despacho del tramo 1 de A2.2, USD 0, queda PREPARADO; los pasos pagos los corre la autora desde
+  la Terminal (§82).
+- **El FRENO de P2 de los reubicados,** revisado por la mesa por código, y lo que dejó abierto:
+  - **el lugar 28 de la ola 3:** las normas sobre «Régimen disciplinario a cargo del BCRA…» son `rdbcra`, que está en el inventario y
+    fuera de los 128 (va al grafo corregido: §7). El lugar queda en `opecam`, como condición, como lo dejó P2;
+  - **las tres citas del 2.3 de `ri_tsa`:** están en la página del PDF de su unidad y, en la E0, todas sus palabras, con las celdas de la
+    tabla en otro orden (`citas_ri_tsa_pagina_y_e0_mesa.py`, con la normalización del verificador de P2). No cambia nada;
+  - **los cinco criterios de lectura nuevos de los reubicados:** coherentes con los que rigen. Su control contra las olas selladas da un
+    candidato por huella, el lugar 26 de la ola 2, que no cambia: su otro punto es `seggar::8.1`, del mismo documento. Si rigen lo decide
+    la autora; la mesa recomienda que sí;
+  - dos textos que P2 no identificó sí están entre los 128 (`apnf`, con `ri_iepsp`, e `icmecma`); según P2, no deciden ningún lugar.
+- **El agregado de las 11:18:27, tal cual:** «Leí sus dos controles sobre las olas selladas y los uso en mi revisión. Ninguna ola sellada
+  cambia: si algo de tu revisión toca una pregunta de las olas, decímelo y lo decido yo.» Y la regla del N: «La regla del N: «la tercera
+  ola revisada» es la ola 3 de mi hoja de revisión, sellada antes de las 20:00 de hoy. Los 8 reubicados de la ola 3 y las preguntas nuevas
+  de las rechazadas cuentan como cualquier reemplazo: la regla de rechazo ya existía cuando fijé la regla del N. Lo fijo ahora.»
+- **La hoja de revisión de los 13 reubicados** (`fuera_del_repo/revision_b63_reubicados/`, manifiesto `0c0d93b5…`), armada por script
+  desde los reubicados sellados, con su convertidor y su sello por ola de origen, probados sobre reubicados sintéticos (14 de 14).
+- **La etapa b del juez v2,** revisada por la mesa por código (16 de 16):
+  - los 9 casos nuevos (33 a 41) y los 11 que quedaron afuera;
+  - el prompt de la iteración 2, que sin el bloque nuevo es el de la iteración 1 byte a byte;
+  - las 82 fichas de la comparación, la cota de USD 14,79 bajo el freno de 35,70 y los siete puntos de su §10.
+  - Su error 3 no cambia nada: los cuatro asuntos que vio (los de `9826b625` y sus tres anteriores) no traen ninguna cifra ni contenido
+    de T, de B6.3 ni de los brazos, y los nombres de `git status` son rutas de archivos.
+  - El comando de la iteración 2 queda PREPARADO, como el de la 1, con su tope y su freno. No corre al mismo tiempo que los pasos pagos
+    de A2.2.
+- **La revisión de las olas 1 a 3 de B6.3,** sellada por la autora en dos partes: las olas 1 y 2 a las 11:26:32 y la ola 3 a las
+  11:28:34, antes de las 20:00, así que la tercera ola quedó revisada. Las cuentas, por código y sin leer las marcas
+  (`armar_rechazadas_B63_mesa.py`): 70 aprobadas y 13 rechazadas. Por tipo, se declaran 8 de remisión, 2 de condición, 2 de definición y
+  1 de dato directo; en una, el tipo no se sostiene. La lista de las rechazadas, sin los motivos, va a P2 (`insumos/`, `81e67a5b…`), con
+  el «seguí» de sus preguntas nuevas, PREPARADO.
+- **El borrador v10 del pre-registro de B6.3** (paquete de la mesa): la cifra aparte con la regla de A-D11, la regla de «la tercera ola
+  revisada» y lo que dio la revisión. Queda abierta D-12: qué pasa si al correr B6.3 un lugar no tiene su pregunta aprobada.
+- **El orden:**
+  - el commit de esta sección y de la versión para firmar;
+  - la firma;
+  - el despacho del tramo 1 de A2.2.
+- Las secciones anteriores no se editan.
