@@ -1,6 +1,7 @@
 # Pre-registro de B6.3, la evaluación final de la tesis
 
-**VERSIÓN PARA FIRMAR — PENDIENTE DE FIRMA DE LA AUTORA** (25/10/2026; no sellado; ningún número de este documento es un resultado).
+**FIRMADO por la autora el 25/10/2026** (versión para firmar commiteada en `53b4f535`; no sellado como medición: ningún número
+de este documento es un resultado). Desde esta firma es el pre-registro de B6.3.
 
 Lo arma la mesa por la etapa 6 del mandato de las preguntas de B6.3 («el borrador y la firma del pre-registro
 de B6.3», la mesa y la autora: `docs/mandatos/UPREG_B63_preguntas_por_tipo.md:47` y `:128`). Lo firma la autora; se sella con su commit.
@@ -680,4 +681,5 @@ No queda ninguna abierta.
 
 ## Firma
 
-PENDIENTE DE FIRMA de la autora.
+FIRMADO por la autora el 25/10/2026 (versión para firmar en `53b4f535`). Rige desde esta firma. Decisiones al firmar: las
+del §14.
