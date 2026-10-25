@@ -1,0 +1,78 @@
+{
+  "unidad": "A2.2, tramo 1 — configuración de los agentes de los tres brazos (R10), por el pre-registro FIRMADO (a78ead7b), §2 y §3",
+  "base": {
+    "ruta": "a2_1/config_agentes_a2_1.json",
+    "sha256": "2f6b60e2cbd1d257b9be02f53c4f019c4c332bc7cfe2a337c3b0437cd7c20f4d",
+    "que_se_hereda": "modelo, modo del harness, versión sellada del CLI, flags y su doc, cortes, env por sesión y precios sellados: los de A2.1, que heredan los de U-A2.0-banco. Lo que cambia: el brazo del grafo de desarrollo re-sellado, la plantilla sin los cinco TOs (A-D5) y R5 (§3)."
+  },
+  "claude_code_version_sellada": "2.1.241",
+  "modelo": "claude-sonnet-5",
+  "modo_harness": "--bare",
+  "brazos": {
+    "fragmentos_bm25": {
+      "mcp_config": "mcp_vector/mcp_fragmentos_bm25.json",
+      "servidor": "fragmentos",
+      "bloque_tools": "a2_1/bloque_tools_fragmentos_bm25.txt",
+      "allowed_tools": "mcp__fragmentos__*",
+      "tools_esperadas": [
+        "mcp__fragmentos__buscar_pasajes"
+      ],
+      "config_servidor": "mcp_vector/config_fragmentos_bm25_r2b.json",
+      "archivos_servidor": [
+        "mcp_vector/servidor_mcp_vector.py",
+        "mcp_vector/bm25_fragmentos.py"
+      ],
+      "venv": "BANCO_VENV_VECTOR"
+    },
+    "fragmentos_denso": {
+      "mcp_config": "mcp_vector/mcp_fragmentos_denso.json",
+      "servidor": "fragmentos",
+      "bloque_tools": "agentes/bloque_tools_vector.txt",
+      "allowed_tools": "mcp__fragmentos__*",
+      "tools_esperadas": [
+        "mcp__fragmentos__buscar_pasajes"
+      ],
+      "config_servidor": "mcp_vector/config_fragmentos_denso_r2b.json",
+      "archivos_servidor": [
+        "mcp_vector/servidor_mcp_vector.py"
+      ],
+      "venv": "BANCO_VENV_VECTOR"
+    },
+    "kg": {
+      "mcp_config": "a2_2/mcp_kg_rs1.json",
+      "servidor": "kg",
+      "bloque_tools": "agentes/bloque_tools_kg.txt",
+      "allowed_tools": "mcp__kg__*",
+      "tools_esperadas": [
+        "mcp__kg__buscar_nodos",
+        "mcp__kg__ver_nodo",
+        "mcp__kg__ver_vecinos"
+      ],
+      "config_servidor": "mcp_kg/config_mcp_kg_a2_desarrollo_r2b_rs1.json",
+      "archivos_servidor": [
+        "mcp_kg/servidor_mcp_kg.py"
+      ],
+      "venv": "BANCO_PYTHON_KG"
+    }
+  },
+  "prompt": {
+    "plantilla": "a2_2/plantilla_prompt_a2_2.txt",
+    "como_se_pasa": "como en la base: argumento de `claude -p <prompt>`; el prompt de sistema de Claude Code no se toca.",
+    "diferencia_entre_brazos": "exclusivamente el bloque {{BLOQUE_TOOLS}} (U-NAV, :196-198): el del brazo del grafo de la base, el léxico (BM25) y el semántico (embeddings) de A2.1; la plantilla es la de HEAD sin los cinco TOs de desarrollo (A-D5)"
+  },
+  "corte_R5": {
+    "max_turns": 32,
+    "tope_tool_calls_en_prompt": 30,
+    "max_budget_usd_por_sesion": 1.8,
+    "nota": "R5 del pre-registro de A2.2 (§3; registro, §50, punto 4, :1750-1751; decidida (1), registro, §107): 30 llamadas en el prompt, --max-turns 32 (contado en mensajes del asistente: la señal de H-B2) y --max-budget-usd 1,80, iguales en los tres brazos. --max-turns no acota las llamadas: «al tope» se cuenta en llamadas, con el log R1, y se informa por brazo."
+  },
+  "env_por_sesion": {
+    "BANCO_REPO": "raíz del repo (expansión en los JSON de MCP)",
+    "BANCO_VENV_VECTOR": "venv 3.12 del servidor de fragmentos (requirements_vector.txt), en los dos brazos de fragmentos",
+    "BANCO_PYTHON_KG": "intérprete del servidor del grafo: el python del .venv del repo, el mismo que fija agentes/mcp_kg.json con ${BANCO_REPO}/.venv/bin/python. El lanzador lo toma de ahí; solo si el repo no tiene .venv (las pruebas sobre una copia) lo toma del entorno, y lo registra en la meta",
+    "BANCO_LOG_R1": "ruta del log R1 de ESA sesión (un archivo por sesión)",
+    "BANCO_SESION_TAG": "id de la sesión (se copia a cada línea del log)",
+    "MCP_TIMEOUT": "180000 (arranque del servidor; doc mcp: 'Configure MCP server startup timeout using the MCP_TIMEOUT environment variable')",
+    "MAX_MCP_OUTPUT_TOKENS": "NO se fija (A-D6, (a)): el tope de cada resultado es la anotación de 200.000 caracteres de los dos servidores, con la que la variable no actúa (registro, §96, :3688-3690)"
+  }
+}
