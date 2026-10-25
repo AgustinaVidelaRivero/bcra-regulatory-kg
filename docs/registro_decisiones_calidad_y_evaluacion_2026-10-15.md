@@ -4499,3 +4499,45 @@ Decisiones de la autora del 25/10/2026, recibidas a las 12:17:36 (hoja de ruta d
 - **El 183 y el 184 de la §269** quedan reemplazados por el 183 v2 y el 184 v2: PREPARADOS, los corre la autora con las condiciones de la
   §111.
 - Las secciones anteriores no se editan.
+
+## 113. El domingo, a las 12:48: los reubicados sellados, la iteración 2 del juez v2 y el FRENO de P2 de los reemplazos (25/10/2026)
+
+Hechos y pedidos de la autora del 25/10/2026, recibidos a las 12:48:23 (hoja de ruta de la mesa, §271), sobre la §270 de la mesa.
+
+- **El FRENO §270:** da bien. El 183 v2 y la firma de B6.3 (el 184 v2) los corre la autora después del FRENO A2.2-a, que no llegó:
+  PENDIENTES.
+- **La revisión de los 13 reubicados,** sellada por la autora con su hoja (`fuera_del_repo/revision_b63_reubicados/`, sello
+  `sello_hoja_revision_B63_reubicados_olas_2_y_3.txt`, de las 12:42:43): 13 aprobadas, 0 rechazadas, y en ninguna el tipo deja de
+  sostenerse. Las cuentas, por código y sin leer los motivos (§271 de la mesa).
+- **La iteración 2 del juez v2,** corrida por la autora: completas 246 de 246, sin voto 0 y cruces 0, con un gasto de USD 14,7746. La
+  regla de freno frena y congela la iteración 1. La mesa lo controló por código contra la enmienda 4, punto 4, leída en el commit de su
+  firma (`90cce828`): 17 de 17, sin informar ninguna cifra interna.
+- **La congelación de la v2** (enmienda 4, punto 5; H-17 del pre-registro de B6.3): el commit siguiente a esta sección, PREPARADO.
+  - Lleva el sha256 del prompt de la iteración 1 y de su bloque de casos, y el registro de las iteraciones y el código de la v2 por su
+    sha256 (87 archivos).
+  - El código del análisis sobre T con su selftest, la cuarta pieza del punto 5, no está escrito: entra con su propio commit antes de la
+    prueba, declarado como desvío de la letra del punto 5.
+  - Si se corre así o se espera al código lo decide la autora: PENDIENTE.
+- **El FRENO de P2 de los reemplazos** (`fuera_del_repo/b63_p2/FRENO_P2_reemplazos.md`, paquete `c4f12d1a…`), revisado por la mesa por
+  código (31 de 31, y los trayectos contra su registro):
+  - los reemplazos y su registro dan su sello, de las 12:17:06, anterior a la armada del paquete (12:18:06); el plan de tipos se selló
+    antes (12:11:18);
+  - los cuatro que cambiaron de documento siguen el orden de su clase, y cada documento que tomaron tenía menos de 4 lugares. Ningún
+    documento pasa de 4, salvo `ri_pspapt`, con los 5 que le da el sorteo, donde no entra ningún reemplazo;
+  - B63-O3-L01-R1 conserva el subtipo de la lista (remisión); el del sorteo era definición;
+  - las 4 citas que no están en el texto de la E0 están en la página del PDF de su unidad. En una, a la E0 de `ri_pgn` le falta una de
+    las palabras de la cita;
+  - en los paquetes de las olas 2 y 3 y de los reubicados, el `salidas/paquete_*.txt` vacío es lo único que difiere, y sus manifiestos
+    verifican.
+- **Los tres criterios de lectura nuevos de los reemplazos:** los decide la autora (PENDIENTE). Si los aprueba después de la firma de
+  B6.3, tal cual: «van como nota fechada al pie del pre-registro firmado, con su commit también después del 184 v2.»
+- **La hoja de revisión de los 13 reemplazos** (`fuera_del_repo/revision_b63_reemplazos/`, manifiesto `e97dba00…`), armada por script
+  desde los reemplazos sellados, con su convertidor y su sello por ola, probados sobre reemplazos sintéticos (15 de 15).
+- **El núcleo aprobado para el material de los expertos:** el armador de las 64 aprobadas de las olas 1 y 2, con su sello, probado sobre
+  datos sintéticos (14 de 14). Está PREPARADO para correr apenas la autora selle su revisión de los reemplazos del núcleo. El material de
+  los expertos pasa a su v2, que toma la E0 del grafo evaluado: la de la §256 la buscaba donde no están los documentos de la tanda 0.
+- **El orden:**
+  - el 183 v2 y el 184 v2;
+  - el commit de esta sección;
+  - la congelación.
+- Las secciones anteriores no se editan.
