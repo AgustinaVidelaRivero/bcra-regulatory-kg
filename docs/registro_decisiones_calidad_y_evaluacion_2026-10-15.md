@@ -4614,3 +4614,33 @@ Decisiones y hechos de la autora del 25/10/2026, recibidos a las 13:42:24, con t
   - el commit de esta sección y de la nota;
   - los cinco pasos pagos de A2.2, de a uno.
 - Las secciones anteriores no se editan.
+
+## 115. El domingo, a las 17:23: los pasos pagos de A2.2, la prueba exacta y las coincidencias con las citas (25/10/2026)
+
+Decisiones y hechos de la autora del 25/10/2026, recibidos a las 17:23:19 (hoja de ruta de la mesa, §273), sobre la §272 de la mesa.
+
+- **El 187 y el 188,** corridos con su push: `40152be0` (17:19:52) y `36cb1378` (17:20:00), por git log; `origin/main` en `36cb1378`.
+- **Los pasos pagos de A2.2,** lanzados por la autora. Por la hora de sus archivos en
+  `data/experiment/banco_mcp/a2_2/resultados/`: el paso 1, de 17:20:18 a 17:22:20, y el paso 2, desde las 17:24:24.
+- **Pegados por la autora:** el «seguí» de P2 para los reemplazos de las 7 rechazadas (los R2), el despacho de P3 (la tanda 1) y el
+  «seguí» del juez v2 para el código del análisis sobre T, con la lectura de su punto 2.d tal como venía.
+- **Las decisiones, tal cual:**
+  1. «La prueba de A2.2 queda exacta, como la entregó la ejecutora. En el informe se declara que B6.3 usa 100.000 permutaciones y en
+     qué difieren.»
+  2. «Las coincidencias de renglones del repo con citas de criterios (el §3.2 de B6.3 firmado y la §105 del registro) van declaradas
+     en la próxima sección del registro y en la próxima nota de B6.3, sin commit propio.»
+- **La decisión 1** va en el «seguí» del cierre de A2.2, que la mesa arma al revisar los pasos pagos: PENDIENTE. La diferencia ya
+  medida está en la §114: de los resultados posibles con hasta 40 pares discordantes, la versión de Monte Carlo cruzaría α con más de
+  0,1 % de probabilidad en 5.
+- **Las coincidencias, declaradas (decisión 2).** Las cuenta un script de la mesa (`coincidencias_criterios_mesa.py`, §273), sin
+  imprimir ningún texto. Usa tramos de 30 caracteres, la regla con que la mesa tapa lo que lee. Los tramos salen de las preguntas,
+  los criterios y las citas de las olas 1 a 3, de los 13 reubicados y de los 13 reemplazos, todos sellados por P2:
+  - **el pre-registro de B6.3,** en el commit de la firma (`adf20f3b`) y en HEAD (`36cb1378`): los renglones 160, 174 y 185, de su
+    §3.2, coinciden con tramos de citas. Los trajo `53b4f535`, la versión para firmar;
+  - **el registro,** en HEAD: el renglón 4153, de la §105, coincide con tramos que están en citas, en criterios y en preguntas. Lo
+    trajo `084499c6` (23/10/2026, 20:50:40).
+  - En la próxima nota al pie del pre-registro de B6.3 van las mismas: PENDIENTE.
+- **El calendario hasta el miércoles 28 a las 18:00,** pedido en el mismo mensaje, está en la hoja de la mesa (§273). Las palancas
+  que propone son decisiones de la autora: PENDIENTES.
+- **El orden:** el commit de esta sección corre entre dos pasos pagos de A2.2 o después del paso 5, y frena si ve uno corriendo.
+- Las secciones anteriores no se editan.
