@@ -4422,3 +4422,80 @@ Decisiones y hechos de la autora del 25/10/2026, recibidos a las 11:06:20, con t
   - la firma;
   - el despacho del tramo 1 de A2.2.
 - Las secciones anteriores no se editan.
+
+## 111. El domingo, a las 11:53: A2.2 firmado y la versión para firmar del pre-registro de B6.3 (25/10/2026)
+
+Decisiones y hechos de la autora del 25/10/2026, recibidos a las 11:53:56 (hoja de ruta de la mesa, §269), sobre la §268 de la mesa.
+
+- **El 181 y la firma de A2.2 (el 182),** corridos con su push: `562f1c55` (11:53:05) y `a78ead7b` (11:53:13), por git log;
+  `origin/main` en `a78ead7b`. El pre-registro de A2.2 quedó FIRMADO el 25/10/2026.
+- **Los despachos,** pegados: el del tramo 1 de A2.2, en su sesión, y el «seguí» de P2 de los reemplazos, con los cinco criterios y sin
+  los motivos de la autora.
+- **Las decisiones, tal cual:**
+  1. «A-D2: los dos frenos por separado, como quedaron: el agente con tope 93 y freno 69,75, y el juez con tope 25 y freno 18,75.»
+  2. «Los cinco criterios de lectura de los reubicados rigen como los demás criterios de P2, y van al pre-registro de B6.3 con sus
+     lugares.»
+  3. «P2 no ve mis motivos de rechazo: recibe solo la lista. Si un motivo mío es una regla general, lo planteo yo como criterio de lectura
+     para todas las olas.»
+  4. «D-12, ninguna de las tres: B6.3 no arranca sin las 64 aprobadas del núcleo (D-1). Las preguntas de la ola 3 que no estén aprobadas
+     cuando lance la primera sesión paga de B6.3 salen, declaradas por lugar, tipo y clase, y el N queda en 64 más las aprobadas de la ola
+     3, con la potencia que alcanza. Nunca corre una pregunta sin revisar.»
+     - **Lo que reporta la mesa:** la regla para la ola 3 choca con el mandato firmado de las preguntas, que dice «si el N no entra en el
+       calendario, se recorta manteniendo las cuotas» (UPREG, §9, decisión 5, `:151`) y pone las comparaciones principales sobre la
+       muestra entera tal como sale de las cuotas (§5, `:107-108`). Por eso no se escribió: la versión para firmar lleva el resto del
+       punto, y para la ola 3, la regla del mandato. Cómo seguir es PENDIENTE de la autora.
+  5. «La prueba del §8.1: α de 0,05 de dos colas para la familia, con Holm (0,025 la primera comparación y 0,05 la segunda), como en
+     A2.2. El estadístico es la media de d_q. Son 100.000 permutaciones de signos al azar con la semilla B63:permutacion:v1, y p = (1 + las
+     permutaciones con |media| mayor o igual que la observada) / 100.001. Los intervalos de cada brazo, de cada comparación y del total
+     ponderado van por bootstrap percentil por pregunta, con 10.000 remuestreos y la semilla B63:bootstrap:v1. El de la hipótesis
+     secundaria, de una cola, es el percentil 5. El chequeo por documento del §8.3 usa las mismas cantidades con las semillas
+     B63:permutacion:documento:v1 y B63:bootstrap:documento:v1.»
+  6. «Las corridas cortadas de B6.3 (error_max_turns o el presupuesto): en el análisis principal cuentan como no correctas, sin pasar por
+     el juez. La sensibilidad las saca; si una pregunta queda sin corridas en un brazo, sale de esa comparación. A2.2 queda como se
+     firmó.»
+  7. «Las fallas de infraestructura de B6.3 (la sesión termina sin resultado por un error de la API o de la red, no por --max-turns ni por
+     el presupuesto), clasificadas por código desde el tipo de error, sin leer la respuesta: se re-corren en su mismo lugar del orden,
+     hasta 3 intentos en total, y si ninguno termina cuentan como no correctas. Se declaran por brazo.»
+  8. «El §12: el tope se recalcula al sellar N7, con la regla de la §51, sin decisión mía, y no se recorta nada por dinero (§11, punto 8).
+     Sacá «lo decide la autora antes de la firma».»
+  9. «El §13: lo que llegue después de la firma (las tasas de A2.2, Q8, el N, N6, N7 y la relevancia) se llena por su regla, declarado,
+     sin decidir nada nuevo. Si Q8 llega después de la firma, va como desvío declarado de Q8 (:71), con su regla de consecuencias igual.»
+  10. «Los expertos (H-14 y §9.3): el envío sale apenas se selle el núcleo aprobado, y la devolución es hasta el jueves 29 a las 12:00. Se
+      declara como cambio de la fecha de la §100, porque el domingo 25 el núcleo no estaba completo. El mensaje que les voy a mandar les
+      pide que respondan cada uno por su cuenta y que no compartan las preguntas.»
+  11. «El §3.2, el §3.3 y el §11, con los reubicados como quedaron: los documentos finales (ri_tsa y opecam); el lugar 10 de la ola 2,
+      que pasó de definición a remisión del mismo documento (hoy el §3.3 dice que cada lugar conserva su subtipo); los cinco criterios
+      con sus lugares; rdbcra, apnf e icmecma; y los recuentos del punto 19 con los 13.»
+- **La versión para firmar del pre-registro de B6.3** (`docs/preregistro_B6_3_evaluacion_final.md`, la ruta de D-8) entra al repo con
+  esta sección. Sale del borrador v10 de la mesa con 23 reemplazos (17 tramos de diff), cada uno contra su punto (§269 de la mesa).
+  La firma, en el commit siguiente, cambia solo la cabecera y el pie, con el commit de esta versión y la fecha: PREPARADA, la corre la
+  autora.
+- **Cuándo, tal cual:** «La firma la corro antes de ver cualquier cifra de A2.2, en un momento sin nada pago corriendo y sin una ejecutora
+  con una foto del repo abierta. El techo es mañana a las 12:00.»
+- **El orden:**
+  - el commit de esta sección y de la versión para firmar;
+  - la firma.
+
+  Los dos van sin una ejecutora con una foto del repo abierta.
+- Las secciones anteriores no se editan.
+
+## 112. El domingo, a las 12:17: la ola 3 de D-12, el plazo de la firma y el §8.3 del pre-registro de B6.3 (25/10/2026)
+
+Decisiones de la autora del 25/10/2026, recibidas a las 12:17:36 (hoja de ruta de la mesa, §270), sobre la §269 de la mesa y lo que la
+§111 dejaba PENDIENTE.
+
+- **El punto 4 de la §111:** la autora da razón al reporte de la mesa, porque su regla para la ola 3 rompe las cuotas del mandato firmado,
+  y firma con el mandato, sin enmienda.
+- **Las decisiones, tal cual:**
+  1. «La ola 3 en D-12 (§3.4 y §14): «Si al lanzar la primera sesión paga de B6.3 a la ola 3 le falta alguna pregunta aprobada, la ola 3
+     sale entera y el N es 64, declarado. Es el recorte que mantiene las cuotas (UPREG, §9, decisión 5).» Reemplaza la frase que remite al
+     mandato sin decir cómo se recorta.»
+  2. «El plazo de la firma va en el §15 como desvío declarado: el mandato de las preguntas la pone antes del sábado 24/10/2026 a las 12:00
+     (§1, etapa 6, :47), y el registro la movió al lunes 26 a las 12:00 (§50, punto 7, :1760).»
+  3. «En el §8.3, «las 4 preguntas de cada documento cambian de signo juntas» pasa a «las preguntas de cada documento cambian de signo
+     juntas»: con los reubicados hay documentos con menos de 4.»
+- **La versión para firmar del pre-registro de B6.3** queda rearmada sobre la de la §111 (`b58a91b2…`) con estos tres cambios, en 6 tramos
+  de diff (§270 de la mesa). Es la que entra al repo con esta sección y la §111. Sin ninguna decisión abierta.
+- **El 183 y el 184 de la §269** quedan reemplazados por el 183 v2 y el 184 v2: PREPARADOS, los corre la autora con las condiciones de la
+  §111.
+- Las secciones anteriores no se editan.
