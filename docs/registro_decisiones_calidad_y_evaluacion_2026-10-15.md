@@ -4541,3 +4541,76 @@ Hechos y pedidos de la autora del 25/10/2026, recibidos a las 12:48:23 (hoja de 
   - el commit de esta sección;
   - la congelación.
 - Las secciones anteriores no se editan.
+
+## 114. El domingo, a las 13:42: el FRENO A2.2-a, la congelación, el análisis sobre T, los criterios nuevos, la revisión de los reemplazos y P3 (25/10/2026)
+
+Decisiones y hechos de la autora del 25/10/2026, recibidos a las 13:42:24, con tres agregados, a las 13:57:40, a las 14:16:48 y a las
+14:27:00 (hoja de ruta de la mesa, §272), sobre la §271 de la mesa.
+
+- **El 183 v2, la firma de B6.3 (el 184 v2), el 185 y el 186,** corridos con su push: `53b4f535` (13:37:42), `adf20f3b` (13:37:49),
+  `45679a0f` (13:42:02) y `f00bb4c7` (13:42:08), por git log; `origin/main` en `f00bb4c7`. El pre-registro de B6.3 quedó FIRMADO el
+  25/10/2026.
+- **El FRENO A2.2-a** (`data/experiment/banco_mcp/a2_2/FRENO_A2_2_a.md`, `76d1ff9d…`; paquete `a2222b6c…`), revisado por la mesa por
+  código: 23 de 23, y el selftest de la ejecutora en un clon, 34 de 34.
+  - Los cinco comandos llevan los topes del pre-registro firmado (93 y 69,75 el agente, 25 y 18,75 el juez), y la corrida real rechaza
+    otros. Los cortes son los del §6, y las guardas frenan con sus códigos (6, 7 y 8).
+  - Las decisiones de su §2 no cambian lo que mide el pre-registro firmado:
+    - el juez por respuesta es el corte del §6, «antes de cada respuesta»;
+    - con 32 turnos al ritmo más lento de las sesiones de A2.1, una sesión no llega a los 1.800 s (1.386 s);
+    - la prueba exacta de signos es la permutación de signos completa que pide el §5, «por permutación de signos sobre d_q». Las 100.000
+      permutaciones con semilla son de B6.3: las fijó la §111 (decisión 5, recibida a las 11:53:56), después de la firma de A2.2
+      (`a78ead7b`, 11:53:13). De los resultados posibles con hasta 40 pares discordantes, la versión de Monte Carlo cruzaría α con más de
+      0,1 % de probabilidad en 5.
+  - Su error 1 no toca ningún cegamiento: 18 líneas de 15 archivos .md de las carpetas `ev2_*`, sin ningún id de pregunta de EV2 ni un
+    «%», y una sola palabra de veredicto, en el README del juez.
+  - El tramo 1 entra al repo en el commit siguiente (el 187), antes de los pasos pagos: PREPARADO.
+- **Las decisiones, tal cual:**
+  1. «La congelación va como la armaste: el 186 sin el código del análisis sobre T. Ese código va en su propio commit, antes de la
+     prueba, declarado como desvío del punto 5 de la enmienda 4.»
+  2. «El código del análisis sobre T lo escribe la sesión del juez v2 (176f814c), con un despacho tuyo y tu revisión por código. No ve mi
+     lectura de T ni nada de fuera_del_repo/tripletas_t/.»
+  3. «Los criterios nuevos de P2: el 1 rige para los reemplazos y no se aplica a lo sellado; el lugar 28 de la ola 3 queda como está y la
+     diferencia se declara. El 2 rige. El 3 rige desde los reemplazos; el lugar 7 de la ola 2 no cambia, porque ninguna ola sellada
+     cambia, y su candidato se declara.»
+  4. «Una nota fechada al pie del pre-registro firmado de B6.3, con su commit después del 186, que declare: los tres criterios con sus
+     lugares y lo del punto 3; los 13 reubicados aprobados; los cinco lugares de ri_pspapt en el sorteo sellado de la ola 3, más que los
+     4 por documento del mandato; y que la mesa vio el campo «fundamento» del plan de tipos de P2, que cita la norma y puede coincidir
+     con alguna cita de los criterios.»
+- **La lectura del documento entero,** verificada por la mesa para la declaración (8 de 8): B63-O3-L01-R1 queda igual. B63-O2-L21-R1 no se
+  puede afirmar igual: de las 7 unidades libres de `socgar`, que P2 revisó para definición y no para remisión, una tiene la forma de una
+  remisión por la herencia (`socgar::2.7`). Con el criterio 1 llega a `rrci`.
+- **El agregado de las 13:57:40:** la autora revisó y selló los 13 reemplazos con su hoja
+  (`fuera_del_repo/revision_b63_reemplazos/sello_hoja_revision_B63_reemplazos_olas_1_y_2_y_3.txt`, de las 13:56:00): 6 aprobadas y 7
+  rechazadas; en una, el tipo no se sostiene.
+  - Las cuentas, por código y sin leer los motivos: por ola, 1, 2 y 4, así que 3 son del núcleo; 6 de remisión y 1 de definición; 3 de las
+    7 habían cambiado de documento.
+  - La lista de las 7, sin los motivos, va a P2 (`b63_p2/insumos/rechazadas_reemplazos_R1_B63.json`, `d6230ee1…`, con su sello), con el
+    «seguí» de sus reemplazos, los R2: PREPARADO. Lleva la regla de la autora, tal cual: «la búsqueda de cada lugar empieza en la unidad
+    que sigue al ancla del reemplazo rechazado y no reutiliza ninguna unidad que ya ancle un lugar».
+  - La hoja de revisión de los R2, con su convertidor y su sello, probada sobre R2 sintéticos (12 de 12), se arma cuando P2 los selle y la
+    mesa revise su FRENO.
+  - El núcleo aprobado espera los R2 de sus 3 lugares. El armador pasa a su v2, con la ronda R2, probada sobre datos sintéticos (19 de
+    19).
+- **El despacho del código del análisis sobre T,** para la sesión del juez v2: PREPARADO.
+- **El agregado de las 14:16:48:** el despacho de P3, la relevancia de las preguntas (mandato de las preguntas, nota del 21/10, punto 1;
+  pre-registro de B6.3, §9.1 y H-10), para una instancia nueva y ciega, por tandas de lo aprobado y sellado: PREPARADO.
+  - La tanda 1 (`fuera_del_repo/b63_p3/insumos/tanda_1.json`, `d38a5570…`, con su sello), armada por código: 89 preguntas aprobadas, 70 de
+    las olas, 13 reubicados y 6 de los reemplazos, con un código opaco en lugar del id y en un orden mezclado, y los 34 PDF de sus anclas.
+    La clave código ↔ id queda en el paquete de la mesa.
+  - La tanda 2 son los R2 aprobados, cuando la autora selle su revisión.
+- **El agregado de las 14:27:00:** dos criterios de lectura de la autora, tal cual:
+  1. «Si la pregunta pide un conjunto que el texto enumera, los criterios cubren todos sus elementos. Si no entran en los 5 criterios del
+     molde junto con lo demás, se acota la pregunta a los elementos que pide, en lugar de muestrear. Una cita no corta antes de un elemento
+     coordinado que la pregunta pide.»
+  2. «El criterio 1 de la ola 3, leer con la estructura del PDF, vale también para delimitar el texto del ancla: lo que en el PDF es de otra
+     unidad, como un párrafo de cierre que vale para toda una lista, un apartado o una entrada del índice, no se atribuye al ancla.»
+  - Y tal cual: «Rigen para lo que P2 genere y para lo que yo revise desde ahora; lo sellado no cambia. Van a la nota fechada de B6.3, con
+    los otros tres criterios.»
+  - Van en el «seguí» de P2 de los R2, tal cual. La hoja de los R2 lleva, en «Lo que mirás en especial», los ids de los criterios que dicen
+    «entre otros», «entre ellos» o «por ejemplo», por código y sin juicio.
+- **La nota al pie del pre-registro de B6.3** entra con esta sección.
+- **El orden:**
+  - el 187 (el tramo 1 de A2.2);
+  - el commit de esta sección y de la nota;
+  - los cinco pasos pagos de A2.2, de a uno.
+- Las secciones anteriores no se editan.

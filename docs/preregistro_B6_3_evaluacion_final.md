@@ -683,3 +683,46 @@ No queda ninguna abierta.
 
 FIRMADO por la autora el 25/10/2026 (versión para firmar en `53b4f535`). Rige desde esta firma. Decisiones al firmar: las
 del §14.
+
+## Notas al pie
+
+- **25/10/2026 — Los criterios de lectura nuevos de los reemplazos y de la autora, los reubicados aprobados, los lugares de `ri_pspapt` y lo
+  que vio la mesa** (decisiones de la autora del 25/10/2026, recibidas a las 13:42:24 y a las 14:27:00; registro de decisiones del
+  15/10/2026, §114):
+  - **Los tres criterios de lectura nuevos de los reemplazos,** tal cual del FRENO de P2 de los reemplazos, §7 (el texto completo está en el
+    §3 de su registro de generación, sellado, `ffd4925e…`, fuera del repo), cada uno con lo que decidió la autora:
+    1. «Si en el documento no queda una unidad que lo sostenga» cuenta las unidades que quedan desde el punto donde empieza la búsqueda, no
+       todas las del documento (B63-O2-L21-R1, B63-O3-L01-R1).
+       - Rige para los reemplazos y no se aplica a lo sellado. Con la lectura del documento entero, B63-O3-L01-R1 queda igual: las unidades
+         que esa lectura agrega ya anclan otro lugar. B63-O2-L21-R1 no se puede afirmar igual: de las 7 unidades libres de `socgar`, que P2
+         revisó para definición y no para remisión, una tiene la forma de una remisión por la herencia (`socgar::2.7`, registro de la ola 2,
+         B63-O2-L24); si la sostiene, con esa lectura el lugar queda en `socgar` sin un ancla que le dé la búsqueda, que no vuelve al
+         principio. Llega a `rrci` con el criterio 1 (hoja de ruta de la mesa, §272).
+    2. Una categoría citada que el texto del corpus ya no trae mantiene la remisión pero no tiene dónde anclarse (criterio 8, aplicado a un
+       término): «internacionalmente activas» de `ri_rcl::1.1`, que el texto vigente de `ratio` no usa (B63-O3-L03-R1 sigue al documento
+       siguiente).
+       - Rige.
+    3. Un punto que nombra con las mismas palabras el sujeto que la unidad enumera se refiere a ella y, si le difiere la obligación, la
+       condiciona: la Sección 12 de `rmgcti` para el 1.1.3 (B63-O2-L29-R1).
+       - Rige desde los reemplazos.
+  - **Los dos criterios de lectura de la autora,** tal cual (decisión del 25/10/2026, recibida a las 14:27:00):
+    1. «Si la pregunta pide un conjunto que el texto enumera, los criterios cubren todos sus elementos. Si no entran en los 5 criterios del
+       molde junto con lo demás, se acota la pregunta a los elementos que pide, en lugar de muestrear. Una cita no corta antes de un
+       elemento coordinado que la pregunta pide.»
+    2. «El criterio 1 de la ola 3, leer con la estructura del PDF, vale también para delimitar el texto del ancla: lo que en el PDF es de
+       otra unidad, como un párrafo de cierre que vale para toda una lista, un apartado o una entrada del índice, no se atribuye al ancla.»
+    - Rigen para lo que P2 genere y para lo que la autora revise desde ahora; lo sellado no cambia.
+  - **Lo sellado no cambia, y se declara:**
+    - el lugar 28 de la ola 3 se leyó con el documento entero (su porqué: «una unidad del documento sí la sostiene», nota del 19/10, punto
+      3). Con el criterio 1 habría pasado a remisión de `asomut`. Queda como está;
+    - el lugar 7 de la ola 2 (`ri_laft`) es candidato del criterio 3 por huella: su documento tiene un punto con la huella de una
+      disposición transitoria o de un «a partir del» con fecha. No cambia, porque ninguna ola sellada cambia.
+  - **Los 13 reubicados,** aprobados por la autora en su revisión, sellada el 25/10/2026 a las 12:42:43: 13 de 13, y en ninguno el tipo deja
+    de sostenerse (registro, §113).
+  - **Los cinco lugares de `ri_pspapt`** en la ola 3 del sorteo sellado (`insumos/sorteo_B63.json`, `4e751e23…`), uno más que los 4 por
+    documento del mandato (UPREG, `:87` y `:159`). En esa ola, el sorteo le da 3 lugares a `ri_bdp`, que está entre sus documentos con menos
+    de 4 anclas. Ningún reemplazo entra en `ri_pspapt`.
+  - **Lo que vio la mesa:** al revisar el FRENO de P2 de los reemplazos, imprimió el campo «fundamento» del plan de tipos de P2, su lectura
+    del texto de la norma, que cita la norma y puede coincidir con alguna cita de los criterios (hoja de ruta de la mesa, §271). No leyó
+    ninguna pregunta ni ningún criterio.
+  - El texto firmado no cambia.
