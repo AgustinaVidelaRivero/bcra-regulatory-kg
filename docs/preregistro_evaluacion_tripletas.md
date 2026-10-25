@@ -489,3 +489,19 @@ topes de USD 35 (V) y USD 55 (T).
         vez, con el criterio escrito antes y con la medición humana de T como respaldo, así que T no se itera (nota al pie del laudo, del
         23/10/2026).
   - El texto firmado no cambia.
+- **25/10/2026 — La congelación de la v2 del juez de precisión (enmienda 4, punto 5), antes de la prueba sobre T** (hechos de la autora
+  recibidos a las 12:48:23; registro de decisiones del 15/10/2026, §113; H-17 del pre-registro de B6.3):
+  - **La regla de freno (punto 4):** la iteración 2 no mejora en al menos 2 puntos ninguna de las dos cifras, contra la 1 y sobre las 82
+    fichas que no son casos en ninguna de las dos. Se frena, y se congela la primera. Las cifras de las iteraciones son internas de la
+    calibración y no se informan.
+  - **El prompt de la v2 congelada,** el de la iteración 1: sha256 `cf40964da9718181595a85b18485af02fb74c0dd255df9e9de28404acc82dfa5`.
+  - **Su bloque de casos** (`casos/bloque_casos_nuevos_iteracion_1.txt`, con los 9 casos del gold de
+    `casos/casos_iteracion_1.json`): sha256 `bd25f95dc30ca6053635fd111c9bf9c9520e1946a136408ab5b4c21186477ffd`.
+  - **El registro de las iteraciones y el código de la v2:** el sha256 de los 87 archivos que la definen (18 de código
+    y comandos, 42 de las corridas del humo y de las dos iteraciones con la regla de freno, y los de los casos, el costo y los FRENOs),
+    en `data/experiment/tripletas_v/juez_v2/congelacion_juez_v2_sha256.txt`, con sha256
+    `48c5ec6e5ccde53e4d0467e230ef8610ebad3c7dc502ada6b95f342be27cfeb5`. Los archivos siguen fuera del repo, en
+    `fuera_del_repo/tripletas_v_juez/v2/`.
+  - **El código del análisis sobre T con su selftest,** la cuarta pieza del punto 5, todavía no está escrito: entra con su propio commit,
+    también antes de la prueba, y se declara como desvío de la letra del punto 5, que pone las cuatro piezas en un commit.
+  - El texto firmado no cambia.
