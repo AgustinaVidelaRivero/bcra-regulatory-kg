@@ -1,6 +1,7 @@
 # Pre-registro de A2.2: el grafo contra el sistema por fragmentos, sobre EV2
 
-**VERSIÓN PARA FIRMAR — PENDIENTE DE FIRMA DE LA AUTORA** (25/10/2026; no sellado; ningún número de este documento es un resultado).
+**FIRMADO por la autora el 25/10/2026** (versión para firmar commiteada en `562f1c55`; no sellado como medición: ningún número
+de este documento es un resultado). Desde esta firma es el pre-registro de A2.2.
 
 La v1 la escribió la ejecutora del tramo 3 de A2.1 (mandato `docs/mandatos/A2_1_sistema_por_fragmentos_preregistro_A2_2.md`, texto
 firmado en `c2b6cb60`, §5, `:128-154`, y §6, `:165`; A-D0, (a): registro, §99, decisión 2, `:3850`), y entró al repo en `206c3f59`. Lo
@@ -355,4 +356,5 @@ No queda ninguna decisión abierta.
 
 ## Firma
 
-PENDIENTE DE FIRMA de la autora.
+FIRMADO por la autora el 25/10/2026 (versión para firmar en `562f1c55`). Rige desde esta firma. Decisiones al firmar: las
+del §9.
