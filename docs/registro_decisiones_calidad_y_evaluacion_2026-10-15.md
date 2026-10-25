@@ -4644,3 +4644,81 @@ Decisiones y hechos de la autora del 25/10/2026, recibidos a las 17:23:19 (hoja 
   que propone son decisiones de la autora: PENDIENTES.
 - **El orden:** el commit de esta sección corre entre dos pasos pagos de A2.2 o después del paso 5, y frena si ve uno corriendo.
 - Las secciones anteriores no se editan.
+
+## 116. El domingo, a las 18:13: las palancas del calendario, el juez v2, P3 y los R2 (25/10/2026)
+
+Decisiones y hechos de la autora del 25/10/2026, recibidos a las 18:13:42, con dos agregados, a las 18:22:29 y a las 18:24:35 (hoja de
+ruta de la mesa, §274), sobre la §273 de la mesa.
+
+- **El 189,** corrido por la autora entre el paso 2 y el paso 3 de A2.2, con su push: `42e363bf` (18:26:02), por git log;
+  `origin/main` en `42e363bf`.
+- **Las decisiones de las 18:13:42, tal cual:**
+  1. «Las palancas 1 y 2: el cierre de A2.2 en dos commits (las sesiones enmascaradas apenas termine el paso 5, y el análisis después de
+     mis adjudicaciones) y el juez de B6.3 encadenado a las corridas, en el mismo comando pago. El conteo de las marcas del brazo (D-10)
+     se hace igual, antes de juzgar cada respuesta, y no edita ninguna.»
+  2. «Las palancas 3 y 4 las decido cuando el paso 3 de A2.2 dé el P real.»
+- **El calendario de referencia,** con las palancas 1 y 2, está en la hoja de la mesa (§274). Por su despacho v6, el banco en paralelo
+  corre en su copia fuera del repo, después del 142 y del instalador de los índices, sin esperar a N7, y «nunca a la vez que otra unidad
+  que use el denso o Docker». El calendario de la §273 lo ponía después de N7.
+- **La palanca 5** (las ejecutoras del repo a USD 0 en clones, con los commits de a uno en main), evaluada y sin aplicar: PENDIENTE de la
+  autora, con el P real.
+- **NEO4J_URI** ya estaba decidida el 22/10/2026 (§88), y la base compartida de solo lectura del banco en paralelo, el 19/10/2026 (§53).
+  El calendario de la §273 la traía como pendiente, por un error de la mesa.
+- **El juez v2, la etapa c** (`fuera_del_repo/tripletas_v_juez/v2/FRENO_v2_c.md`; paquete `6596d5ea…`), revisada por la mesa por código:
+  - el paquete da 83 de 83; sus cinco archivos nuevos, el sha256 del FRENO; la congelación, 87 de 87;
+  - el selftest, en una copia, 86 de 86.
+- **Las decisiones de las 18:22:29, tal cual:**
+  1. «En mis 100 de T que la v2 mande a adjudicación cuenta la marca de mi hoja sellada, sin una adjudicación nueva.»
+  2. «Las cinco carpetas temporales de las etapas a a b del juez v2, en la carpeta temporal del sistema y con archivos NO_ABRIR_, no se
+     borraron. Inventarialas por nombre, tamaño y sha256, sin abrir ninguna, y traeme qué hacer con ellas.»
+  3. «P3 no se vuelve a correr: su salida ya está sellada. Sus cuatro desvíos van declarados: comparó con preguntas anteriores del mismo
+     régimen, dudó entre dos notas en 15 códigos, asignó «cumplimiento normativo» a los detalles de los regímenes informativos y salió de
+     su carpeta para listar nombres y leer el script del grep.»
+- **La decisión 1, aplicada por la mesa** (`analisis-T-v2.1`): en las de sus 100 que la v2 manda a adjudicación cuenta su hoja sellada,
+  y una adjudicación nueva de una de ellas frena.
+  - El selftest suma 3 casos y da 89 de 89, con los 86 de la sesión iguales. La congelación sigue en 87 de 87.
+  - Las versiones de la sesión quedan en `tripletas_v_juez/v2/etapa_c_original/`.
+  - El commit del código va con una nota al pie del pre-registro de tripletas (el 191): PREPARADO.
+- **Lo que el código del análisis sobre T no tiene, declarado:**
+  - no calcula la cifra por etapa E0–E5 ni por la procedencia de la arista (`chunk_id`, `estado_e3`), que pide el §3.6 del pre-registro
+    de tripletas, porque la entrada no trae esos campos. El despacho de la mesa no la pidió;
+  - la prueba no tiene todavía con qué correr: `correr_juez_v2.py`, congelado, tiene solo los modos `humo` e `iteracion`.
+  - Las dos, PENDIENTES de la autora.
+- **La consola de la sesión del juez v2, declarada.** Al buscar lo del juez en el registro imprimió 28 renglones de su §84 y su §103
+  (19 y 9), con renglones del banco y de B6.3, y 5 asuntos de commits. Por código, en su transcripción, ninguno trae un tramo de
+  preguntas, criterios o citas de B6.3, un id de pregunta de EV2 ni un «%». No imprimió ningún renglón del pre-registro de B6.3, del
+  README del banco ni del mandato de las preguntas.
+- **Las cinco carpetas temporales** (decisión 2), inventariadas por la mesa sin abrir ningún archivo:
+  - suman 923 archivos y 523.576.558 bytes; 367 son iguales, byte a byte, a un archivo de `tripletas_v_juez/`;
+  - 78 llevan `NO_ABRIR_` en el nombre del archivo; las bases de 20 MB son cachés del cliente simulado de las corridas en seco.
+  - Qué hacer con ellas: PENDIENTE de la autora.
+- **P3, la tanda 1** (`fuera_del_repo/b63_p3/FRENO_P3_tanda_1.md`; salida sellada a las 17:37:07, `7652f770…`; paquete `8972eb0d…`),
+  revisada por la mesa por código, 14 de 14: el sello, el paquete, los 89 códigos, las cuentas por nota y por puesto, y `insumos/` y `pdf/`
+  sin cambios.
+  - Fuera de su carpeta tocó solo la de `TESIS` (listar nombres) y el repo (el python y el script del grep), como declara.
+  - Los cuatro desvíos de la decisión 3 van en la próxima nota de B6.3: PENDIENTE.
+- **Los R2 de P2** (`fuera_del_repo/b63_p2/FRENO_P2_reemplazos_R2.md`; paquete `0e8bed19…`; el plan sellado a las 17:31:26 y los R2 a las
+  17:35:55), revisados por la mesa por código, 12 de 13:
+  - **la regla de que ninguna unidad ancle dos lugares** se aplicó en todas las rondas a las anclas, no a los otros puntos. Unidades que
+    son otro punto de dos o más preguntas de la misma ronda, y unidades que son ancla de una y otro punto de otra: en las olas, 5 y 8; en
+    los reubicados, 0 y 0; en los reemplazos, 0 y 0; en los R2, 1 y 1. Las de los R2 son `lingob::1.5` y `ri_transpa::SD`;
+  - **`ri_transpa`** queda con 3 lugares, sus 3 R2. Ninguna ancla, otro punto ni criterio cae en `ri_transpa::Sbloque1::chapeau_seccion`;
+  - **el trayecto de B63-O1-L06-R2** sigue el orden del sorteo de su clase desde `ri_mmsef`, sin volver al principio. Los salteados
+    tenían 4 lugares cuando P2 los recorrió, según su registro.
+    - El control que no da: `ri_acsf` queda con 3. Cuando P2 buscó el lugar de L06-R2, `ri_acsf` contaba el de B63-O3-L03-R1, que después
+      pasó a `ri_transpa` con su R2.
+    - Si eso cambia el lugar de L06-R2: PENDIENTE de la autora;
+  - **la identificación de `ri_ieccm`,** equivocada en los registros sellados de los reubicados y de los reemplazos: no cambia ningún
+    lugar, y ninguna ancla de ninguna versión está en `ri_ieccm`.
+- **Las decisiones de las 18:24:35, tal cual:**
+  1. «El criterio nuevo de P2 en los R2, «una remisión cuyo contenido la unidad ya reproduce no cuenta», rige desde los R2; lo sellado no
+     cambia. Va a la nota de B6.3 con los demás criterios.»
+  2. «La lectura de la introducción del 3.2 de autenf como herencia de sus ítems, que decide B63-O3-L17-R2 y B63-O3-L20-R2, la resuelvo
+     en mi revisión de esas dos contra el PDF, con mi criterio 2 del 25/10.»
+- **La hoja de la autora de los R2** (`fuera_del_repo/revision_b63_reemplazos_R2/`), con el control de «entre otros», «entre ellos» y
+  «por ejemplo» (ninguno) y lo que mira en especial, sin juicio: PREPARADA.
+- **El núcleo, el material de los expertos y la tanda 2 de P3,** con su «seguí»: probados sobre una revisión sintética de los R2. Se
+  arman cuando la autora selle la suya: PENDIENTE.
+- **La próxima nota al pie del pre-registro de B6.3** lleva lo de la §115 (las coincidencias con las citas), el criterio nuevo de los R2 y
+  los cuatro desvíos de P3: PENDIENTE.
+- Las secciones anteriores no se editan.
