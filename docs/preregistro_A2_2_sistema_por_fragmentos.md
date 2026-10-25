@@ -1,8 +1,12 @@
-# Pre-registro de A2.2: el grafo contra el sistema por fragmentos, sobre EV2 — BORRADOR
+# Pre-registro de A2.2: el grafo contra el sistema por fragmentos, sobre EV2 — BORRADOR v2
 
 **BORRADOR, sin firmar.** Lo escribe la ejecutora del tramo 3 de A2.1 (mandato `docs/mandatos/A2_1_sistema_por_fragmentos_preregistro_A2_2.md`,
 texto firmado en `c2b6cb60`, §5, `:128-154`, y §6, `:165`; A-D0, (a): registro, §99, decisión 2, `:3850`). Lo firma la autora y se sella
 con su commit (A2.1, `:130`). Hasta la firma no rige nada de lo que dice, y nada de A2.2 corre.
+
+**La v2** (mesa, 24/10/2026; hoja de ruta de la mesa, §267) agrega a la v1 de la ejecutora (sha256 `c87b78f2…`) las decisiones de la
+autora del 24/10/2026, cada una tal cual y con su hora de recepción (registro, §107 y §109), lo que EV2 aplicó donde su protocolo no
+dice (§4) y la lista de la cola (§5). Lo que queda para la firma está en el §9.
 
 - **Las fuentes,** leídas en HEAD `af4dab8e` (24/10/2026): «A2.1» (el mandato de arriba), «registro»
   (`docs/registro_decisiones_calidad_y_evaluacion_2026-10-15.md`), «U-NAV» (`docs/mandatos/UNAV_DISENO_navegacion_agente.md`), «Q8»
@@ -14,7 +18,7 @@ con su commit (A2.1, `:130`). Hasta la firma no rige nada de lo que dice, y nada
   sus anclas. La nota de la mesa sobre R5 y el tope (sha256 `01214f04…`, fuera del repo; registro, §106, `:4209-4217`) da las opciones de
   R5 y la cuenta del tope.
 - **Marcas:** [DECIDE LA AUTORA], lo que ninguna fuente fija, con sus opciones; PENDIENTE, lo que falta hacer antes de correr; NO
-  VERIFICADO, lo que no controlé contra una fuente del repo. La lista de las [DECIDE LA AUTORA] está en el §9.
+  VERIFICADO, lo que no controlé contra una fuente del repo. Lo decidido y lo que queda para la firma están en el §9.
 
 ## 1. Lo que dio el tramo 2 de A2.1 (los huecos A-1 a A-5)
 
@@ -72,7 +76,12 @@ con su commit (A2.1, `:130`). Hasta la firma no rige nada de lo que dice, y nada
   - **Lo que encontré:** la plantilla de HEAD (`agentes/plantilla_prompt.txt:1`, sin cambios desde `1fa79de3`) todavía nombra los cinco
     TOs, y con ella corrieron las sesiones pagas del tramo 2: los `prompt_*.txt` de `smoke/resultados/a2_1/` y de `a2_1/hb2/` traen el
     paréntesis y «Tope de 10 llamadas». U-NAV decía que el tramo 2 validaba la plantilla nueva (`:210`) y que el cambio del texto iba en
-    su despacho (`:212`). Así que la plantilla de A2.2 no está en el repo ni la validó ninguna sesión. **[DECIDE LA AUTORA] A-D5** (§9).
+    su despacho (`:212`). Así que la plantilla de A2.2 no está en el repo ni la validó ninguna sesión.
+  - **A-D5, decidida: (b)** (decisión de la autora del 24/10/2026, recibida a las 10:36:45; registro, §109), tal cual: «La plantilla
+    nueva es la de HEAD sin los cinco TOs de desarrollo y con el tope de 30 llamadas de R5, igual en los dos brazos salvo el bloque de
+    herramientas; la escribe la unidad que despacha A2.2, con su diff contra la de HEAD. La validan las primeras sesiones de A2.2, una
+    de prueba por brazo sin pregunta de EV2, con freno si fallan R3 o R6.» R3 son las sesiones completas (A2.1, `:121`) y R6, el
+    aislamiento por capacidad (`banco_mcp/README.md:30`).
 - **El contrato R4 y la vía de credenciales:** la vía `api`, con el envoltorio de A2.1, §4 (`:103-114`), y top-k = 5.
 - **R5, el criterio de corte** (registro, §50, punto 4, `:1750-1751`), tal cual: «30 llamadas en el prompt, `--max-turns` 32 y
   `--max-budget-usd` 1,80, iguales en los dos brazos, en A2.2, N6 y B6.3. Si H-B2 caracteriza otra cuenta, `--max-turns` queda en tope + 2
@@ -82,24 +91,25 @@ con su commit (A2.1, `:130`). Hasta la firma no rige nada de lo que dice, y nada
     (hasta 4 en los brazos de fragmentos en A2.1; FRENO A2.1-b, §5, `:148-150`), así que 32 mensajes pueden traer más de 30 llamadas. El
     tope de 30 queda en el prompt y en el presupuesto de 1,80 por sesión. **«Al tope» se cuenta en llamadas, con el log R1** (que coincide
     con los `tool_use`; A-2).
-  - **[DECIDE LA AUTORA] R5** (registro, §106, `:4212-4214`; las opciones de la nota de la mesa, §2):
-    - **(1) R5 como está, con la señal declarada.** Por traza se registran los mensajes del asistente, los `tool_use`, las llamadas del log
-      R1 y `num_turns`. «Al tope» es una sesión con 30 llamadas o más en el log R1; esas sesiones se informan por brazo, con su fracción y
-      su intervalo de Wilson, y entran en la regla de N6 (registro, §50, punto 5, `:1752-1753`). Una traza cortada (`error_max_turns` o
-      el presupuesto) queda incompleta por R3, sale de la métrica y se declara, con la sensibilidad que la cuenta como no cumplida (§50,
-      punto 6, `:1754-1756`).
-      Implica: ningún código nuevo y nada distinto de lo que la autora ya fijó; el tope de 30 llamadas no queda garantizado. Es la que
-      recomienda la mesa.
-    - **(2) Lo de (1), con un tope duro de 30 llamadas en los servidores:** el servidor rechaza la llamada 31 de la sesión, contada por su
-      log, igual en todos los brazos. Implica: el tope queda garantizado, pero es código nuevo en los dos servidores, con su prueba y su
-      revisión antes de A2.2, y cambia lo que ve el agente en la llamada 31.
-    - **(3) Lo de (1), y excluir de la métrica las sesiones con más de 30 llamadas.** Implica: un filtro que recorta distinto a cada brazo,
-      porque el brazo del grafo hace más llamadas (FRENO A2.1-b, §6, `:175-178`). La mesa no la recomienda.
-    - La propuesta (a) del FRENO A2.1-b (§6, `:163-166`), `--max-turns` 12, viene de la configuración de la fase B y contradice R5: solo
-      vale si la autora cambia R5. La (d), un tope sobre `num_turns`, el CLI no la aplica.
+  - **R5, decidida: (1)** (decisión de la autora del 24/10/2026, recibida a las 09:46:49; registro, §107, `:4237-4238`; las opciones de
+    la nota de la mesa, §2), tal cual: «R5: tu opción (1). --max-turns 32 por la regla del §50, igual en los dos brazos, y se informa por
+    brazo cuántas sesiones pasan de 30 llamadas en el log R1. No se excluye ninguna sesión por eso.» Lo que eso fija, la opción (1):
+    - por traza se registran los mensajes del asistente, los `tool_use`, las llamadas del log R1 y `num_turns`;
+    - por brazo se informan las sesiones que pasan de 30 llamadas en el log R1, y las que llegan a 30 o más («al tope»), con su fracción
+      y su intervalo de Wilson; las «al tope» entran en la regla de N6 (registro, §50, punto 5, `:1752-1753`);
+    - una traza cortada (`error_max_turns` o el presupuesto) queda incompleta por R3, sale de la métrica y se declara, con la
+      sensibilidad que la cuenta como no cumplida (§50, punto 6, `:1754-1756`);
+    - ningún código nuevo; el tope de 30 llamadas no queda garantizado: queda en el prompt y en el presupuesto de 1,80 por sesión.
+    - **Lo que quedó fuera:**
+      - **(2) Lo de (1), con un tope duro de 30 llamadas en los servidores:** el servidor rechaza la llamada 31 de la sesión, contada por su
+        log, igual en todos los brazos;
+      - **(3) Lo de (1), y excluir de la métrica las sesiones con más de 30 llamadas,** con un filtro que recorta distinto a cada brazo
+        (FRENO A2.1-b, §6, `:175-178`);
+      - la propuesta (a) del FRENO A2.1-b (§6, `:163-166`), `--max-turns` 12, que contradice R5; y la (d), un tope sobre `num_turns`, que
+        el CLI no aplica.
   - **La configuración de A2.2** lleva los valores de R5 en lugar de los de la base que usó el tramo 2 (10 llamadas en el prompt,
     `--max-turns` 12 y `--max-budget-usd` 0,30: `a2_1/config_agentes_a2_1.json`, `corte_R5`, y `smoke/resultados/a2_1/comando_*.json`).
-    PENDIENTE, con la plantilla (A-D5).
+    PENDIENTE: la escribe la unidad que despacha A2.2, con la plantilla (A-D5).
 - **La salida de las herramientas:**
   - el insumo cita la D-6 de la §72 (`:2555-2557`): `MAX_MCP_OUTPUT_TOKENS` en 70.000 en los dos brazos y el control por código de los
     resultados que llegan como referencia a un archivo, que tiene que dar 0. Lo que vino después: la anotación
@@ -108,7 +118,11 @@ con su commit (A2.1, `:130`). Hasta la firma no rige nada de lo que dice, y nada
     registro, §94, `:3617-3620`); con la anotación, un resultado va a disco solo si pasa los 200.000 caracteres, y ni la variable ni el
     presupuesto por mensaje actúan (registro, §96, `:3688-3690`). El despacho del tramo 2 dijo que la variable no se fija
     (`a2_1/config_agentes_a2_1.json:57`), y ninguna sesión paga del tramo 2 la tuvo en su entorno (`entorno_de_la_sesion` de los
-    `comando_*.json`). **[DECIDE LA AUTORA] A-D6** (§9);
+    `comando_*.json`, dentro de `env_declarado`);
+  - **A-D6, decidida: (a)** (decisión de la autora del 24/10/2026, recibida a las 10:36:45; registro, §109), tal cual: «Sin fijar, como
+    en el tramo 2, con la anotación de 200.000 caracteres como tope, declarado frente a la §72 y la §79.» Se declara: A2.2 no fija
+    `MAX_MCP_OUTPUT_TOKENS`, que la D-6 de la §72 y la §79 ponían en 70.000; el tope de cada resultado es la anotación, y con ella la
+    variable no actúa (§96, `:3688-3690`);
   - el control del disco después de cada sesión: si un resultado llega como referencia a disco, la corrida frena sin lanzar otra, y se
     registra el largo de cada resultado en unidades UTF-16 (registro, §96, `:3697-3699`). En el tramo 2 no frenó (A-5).
 - **El entorno de cada sesión** (A-4): se lanza desde la Terminal (registro, §82, `:2933-2936`), con la lista cerrada de variables
@@ -131,12 +145,22 @@ con su commit (A2.1, `:130`). Hasta la firma no rige nada de lo que dice, y nada
     `:115-122`);
   - las re-corridas se juzgan con el mismo método (método de EV2, `:90-94`).
   - **Lo que eso deja abierto:** cuántas preguntas van a N = 3 (P) no se sabe antes de correr: lo fijan los veredictos de N = 1. Por
-    brazo, son las parciales más las auditadas, a lo sumo 40. El protocolo no fija cómo se redondea el 10 % (`:115-122`), ni si
-    «re-corrida N = 3» son tres sesiones nuevas («las 3 re-corridas», `:106`) o dos más la base. Las dos cosas entran en el tope (§6).
+    brazo, son las parciales más las auditadas, a lo sumo 40 (§6).
+  - **Lo que el protocolo no fija, como lo aplicó EV2:**
+    - **«re-corrida N = 3» son tres sesiones nuevas** por pregunta y por brazo, y la base no vota (la lectura de la autora: la que EV2
+      aplicó en la práctica; registro, §109). En EV2, cada par (pregunta, grafo) re-corrido tiene sus tres trazas, una por repetición
+      (`data/experiment/ev2_encadenamiento/trazas/ev2_enc_<grafo>_r1` a `_r3`), con `reps_agente` 3 en la regla
+      (`ev2_encadenamiento/poblacion/poblacion_disparada.json`) y la base como disparador, sin voto
+      (`ev2_encadenamiento/code/agregacion_enc.py:10`);
+    - **el tamaño de la auditoría** es max(ceil(10 % · n), 1) por brazo, con n sus «correcto» (`ev2_encadenamiento/code/comun_enc.py:180`
+      y `:189`, por laudo);
+    - **con un voto `requiere_adjudicacion`** entre las tres re-corridas, el par queda decidido solo si el resultado no depende de cómo
+      se resuelva ese voto; si depende, va a la adjudicación del final (`agregacion_enc.py:12-23`; A-D8);
+    - los dos últimos, con la misma regla que la autora aplicó a la lectura de N = 3: PENDIENTE de su confirmación (A-D10, §9).
   - **El orden de las corridas** (A-D1, decidida: registro, §99, decisión 14, `:3874`): el de B6.3 (registro, §89, `:3313-3314`), por
     pregunta y por repetición, con los brazos de cada pregunta seguidos en un orden sorteado, y la fecha de cada sesión registrada.
-    **La semilla que propongo,** con la forma de la de B6.3 (`B63:orden_corridas:v1`; registro, §99, decisión 7, `:3856-3857`):
-    `A22:orden_corridas:v1`, aplicada así:
+    **La semilla** (A-D7, decidida: (b); registro, §109), con la forma de la de B6.3 (`B63:orden_corridas:v1`; registro, §99,
+    decisión 7, `:3856-3857`): `A22:orden_corridas:v1`, aplicada así:
     - el orden de las preguntas: `random.Random("A22:orden_corridas:v1").shuffle` sobre los 40 ids ordenados;
     - el orden de los brazos de cada pregunta en la repetición r: `random.Random(f"A22:orden_corridas:v1:{id}:r{r}").shuffle` sobre
       los nombres de los brazos ordenados;
@@ -164,23 +188,43 @@ con su commit (A2.1, `:130`). Hasta la firma no rige nada de lo que dice, y nada
   - **Si no se cumple,** rige la decisión ya tomada por la autora, la 3 de Q8 (`:77`; registro, §99, decisión 16, `:3878-3879`), tal cual:
     «si la verificación no pasa, B6.3 se juzga con el juez, la cifra se informa con su acuerdo medido y todo lo dudoso va a mi lectura».
   - **La columna «error fuera de los criterios (sí o no, y cuál)»** va en esas 20, a ciegas al brazo (registro, §28, `:1011-1012`).
-- **Lo que el protocolo de EV2 no fija para A2.2:** las semillas que nombra para sí (la auditoría, `auditoria-ev2-v1`, `:118-119`; el
-  orden del juez, `juez-ev2-v1`, método de EV2, `:49`) y qué pasa con una pregunta `requiere_adjudicacion` (método de EV2, `:39-41` y
-  `:81`) frente al disparo de N = 3. **[DECIDE LA AUTORA] A-D7 y A-D8** (§9).
+- **Las semillas de la auditoría y del orden del juez** (A-D7, decidida: (b); decisión de la autora del 24/10/2026, recibida a las
+  10:36:45; registro, §109), tal cual: «Semillas propias con la forma de B6.3: A22:orden_corridas:v1, A22:auditoria:v1 y
+  A22:orden_juez:v1.» Van en lugar de las que el protocolo de EV2 nombra para sí (`auditoria-ev2-v1`, `:118-119`; `juez-ev2-v1`, método
+  de EV2, `:49`), y se aplican como esas (`ev2_encadenamiento/code/comun_enc.py:177-190`; método de EV2, `:47-50`).
+- **Una pregunta `requiere_adjudicacion`** (método de EV2, `:39-41` y `:81`; A-D8, decidida: (b); registro, §109), tal cual: «El disparo
+  de N = 3 usa solo el veredicto del código, y las requiere_adjudicacion las adjudico al final, sin re-corrida, declarado.» Es el
+  disparador que aplicó EV2: `veredicto_base == 'parcial'` (`ev2_encadenamiento/poblacion/poblacion_disparada.json`, `regla`).
 
 ## 5. El análisis
 
 - **La cifra principal,** sobre todas las preguntas, y aparte la cifra sin las que caen en unidades de la cola (D5; A2.1, `:142`). La
-  lista de ids de la cola es la sellada con el grafo (plan, `:339`): no la ubiqué en HEAD, y su ruta y su sha256 van acá antes de la firma
-  (PENDIENTE).
+  lista de ids de la cola es la sellada con el grafo (plan, `:339`). No hay un archivo aparte con ella: es la regla del grafo
+  re-sellado, las unidades con estado `cola_humana*` como última versión en `corpus_tanda0/salida_r2b/*/finales.jsonl`
+  (`data/experiment/resellado_t0/registro_vista_r2b_rs1.py:80-87`), sobre los cinco documentos del grafo, en el commit del sello
+  (`4fe6ece`; los cinco `finales.jsonl` son los mismos en HEAD). Son 54: 10 de `cap`, 3 de `cla`, 38 de `ext`, 2 de `pro` y 1 de `ric`.
+  Son las que marca el `kg.json` del grafo (`cola_humana` y `cola_chunks`) y las que descarta el grafo sin la cola
+  (`resellado_t0/salidas/cola_y_poblacion_rs1.json`, `desarrollo_sin_cola`).
+  - **La lista:** `data/experiment/controles_a2_2/cola_grafo_desarrollo_r2b_rs1_mesa.json`, con el script que la deriva y la controla al
+    lado (`lista_cola_desarrollo_r2b_rs1_mesa.py`). La lista ordenada, un id por renglón, da el sha256
+    `85707ea95800bd0c67c207c18cfcc2eec62f58b716f6667b7ef0f229e5db0fa9`.
+  - **[DECIDE LA AUTORA] A-D11:** D5 dice «las preguntas cuyo gold cae en unidades de la cola». Una pregunta con anclas dentro y fuera
+    de la cola sale de la cifra sin la cola (a) si alguna de sus anclas cae en la cola, o (b) solo si caen todas.
 - **Las dos comparaciones:** el grafo contra fragmentos BM25 y el grafo contra fragmentos densos, cada una con Holm (A2.1, `:145`). «El
   grafo supera a los fragmentos» solo si supera a las dos configuraciones (plan, `:339`); si supera a una sola, se informa por
   configuración, sin la afirmación general (la misma regla que la autora pidió para B6.3: registro, §99, decisión 11, `:3866-3868`).
-  - **La medida y la prueba** no las fija ninguna fuente que haya leído. **[DECIDE LA AUTORA] A-D9** (§9).
+  - **La medida y la prueba** (A-D9, decidida: (a); decisión de la autora del 24/10/2026, recibida a las 10:36:45; registro, §109), tal
+    cual: «La medida y la prueba son las del pre-registro de B6.3.» Las de B6.3 salen del mandato firmado de sus preguntas (UPREG, nota
+    del 19/10 sobre k, `:212-215`; el borrador v9 de la mesa del pre-registro de B6.3, fuera del repo, §8.1): la métrica de cada
+    pregunta es la proporción de sus corridas juzgadas correctas; d_q, la diferencia por pregunta entre el grafo y cada configuración;
+    y la prueba, pareada, por permutación de signos sobre d_q, con Holm sobre las dos comparaciones.
+    - **En A2.2,** cada pregunta tiene un veredicto final por brazo (el de N = 1 o el agregado de sus tres re-corridas, §4), así que la
+      métrica es la de una corrida: 1 si el veredicto final es «correcto» y 0 si no. Es la lectura de la mesa: PENDIENTE de la
+      confirmación de la autora (§9).
 - **Las tasas de pares discordantes** de cada comparación, que van a la regla del N de B6.3 (Q5; registro, §5, `:173-179`; el N, §94,
   `:3625-3627`, y §99, decisiones 4 y 5, `:3853-3854`), y `c_agente` (Q6), el costo del agente por pregunta y por brazo que la válvula de
   costo de B6.3 compara con su estimación (plan, `:778`) (A2.1, `:146`). La regla del N las toma con `regla_del_N_B63_s94_mesa.py`, del
-  paquete de la mesa, que no leí (NO VERIFICADO).
+  paquete de la mesa, que no leí (NO VERIFICADO). Con A-D9, salen de la misma d_q de las dos comparaciones.
 - **La no comparabilidad con la tabla de EV2** (principio 8), declarada (A2.1, `:147`; plan, `:339`): A2.2 corre con el agente del banco y
   no con el harness congelado de EV2, con otro grafo y con otro prompt.
 - **Las predicciones** de `:339` (A2.1, `:143-144`), con su sentido esperado, escritas antes de la firma. Son predicciones, no hipótesis
@@ -204,41 +248,36 @@ con su commit (A2.1, `:130`). Hasta la firma no rige nada de lo que dice, y nada
 
 - **El tope:** unos USD 15 en el plan (`:340`); en EV2, la corrida del agente costó 14,88 (A2.1, `:148-149`, que cita
   `ev2_reporte/reporte_ev2.md:388-390` y `:403`; no abrí ese reporte, que trae los resultados de EV2).
-- **[DECIDE LA AUTORA] A-D2 — el tope** (registro, §99, decisión 17, `:3880`, y §106, `:4215-4217`). La cuenta de la mesa (nota, §3):
-  - el costo por sesión de fragmentos es el R9 de las 8 sesiones de pregunta del smoke (FRENO A2.1-b, §3, `:82-89`): BM25, media 0,0340 y
-    máximo 0,0399; denso, media 0,0329 y máximo 0,0450;
-  - el del grafo sale del modelo de costo de la §181 de la mesa, que el tramo 2 no midió y que no está en el repo: 0,0640 central, 0,1424
-    medio y 0,2028 alto (NO VERIFICADO). El alto de fragmentos es el mayor entre su máximo y el alto de la §181, 0,1086 (NO VERIFICADO);
-  - el juez, 3 llamadas de USD 0,0126 por respuesta (U-NAV, `:243`);
-  - una pregunta en una corrida, con los tres brazos y su juez, cuesta 0,2443 central, 0,3407 medio o 0,5334 alto, y A2.2 cuesta
-    (40 + 2P) veces eso, con P las preguntas que van a N = 3.
+- **A-D2, decidida** (registro, §99, decisión 17, `:3880`; §106, `:4215-4217`; §107, `:4239-4240`; y §109): la decisión de la
+  autora del 24/10/2026, recibida a las 10:36:45 y corregida a las 10:39:11, tal cual: «el freno del banco es un corte duro (FRENO
+  A2.1-c, §7), así que tiene que quedar por encima del peor caso: P = 40 con tres re-corridas nuevas y el costo alto, USD 55. Tope 74
+  y freno 55,50, en lugar de 55 y 41,25.»
+  - **La cuenta,** la de la nota de la mesa (§3), con tres sesiones nuevas por re-corrida (§4):
+    - el costo por sesión de fragmentos es el R9 de las 8 sesiones de pregunta del smoke (FRENO A2.1-b, §3, `:82-89`): BM25, media 0,0340 y
+      máximo 0,0399; denso, media 0,0329 y máximo 0,0450;
+    - el del grafo sale del modelo de costo de la §181 de la mesa, que el tramo 2 no midió y que no está en el repo: 0,0640 central, 0,1424
+      medio y 0,2028 alto (NO VERIFICADO). El alto de fragmentos es el mayor entre su máximo y el alto de la §181, 0,1086 (NO VERIFICADO);
+    - el juez, 3 llamadas de USD 0,0126 por respuesta (U-NAV, `:243`);
+    - una pregunta en una corrida, con los tres brazos y su juez, cuesta 0,2443 central, 0,3407 medio o 0,5334 alto, y A2.2 cuesta
+      (40 + 3P) veces eso, con P las preguntas que van a N = 3. La tabla sale de esos valores de cuatro decimales
+      (`tope_A2_2_AD2_mesa.py`, en el paquete de la mesa).
 
   | P | sesiones | central | medio | alto |
   |---:|---:|---:|---:|---:|
-  | 0 | 120 | 9,77 | 13,63 | 21,33 |
-  | 10 | 180 | 14,66 | 20,44 | 32,00 |
-  | 20 | 240 | 19,55 | 27,26 | 42,67 |
-  | 40 | 360 | 29,32 | 40,88 | 64,00 |
+  | 0 | 120 | 9,77 | 13,63 | 21,34 |
+  | 10 | 210 | 17,10 | 23,85 | 37,34 |
+  | 20 | 300 | 24,43 | 34,07 | 53,34 |
+  | 40 | 480 | 39,09 | 54,51 | 85,34 |
 
-  - **La recomendación de la mesa:** el medio del P de este borrador, redondeado al dólar de arriba, con freno en el 75 %, como el tope de
-    N6. Por ejemplo, con P = 10: tope 21 y freno 15,75.
-  - **El freno del banco es un corte duro:** antes de cada sesión, el acumulado R9 más el presupuesto de la sesión no puede pasarlo
-    (`a2_1/correr_a2_1.py:214-215`). Con el freno en el 75 % del medio, si el gasto real se acerca al medio la corrida frena antes de
-    terminar, y decide la autora. Cuánto suma el presupuesto de cada sesión en el runner de A2.2 se fija con él (§8).
-  - **Lo que agrega la regla de EV2** (§4): P no se conoce antes de correr; cuenta las parciales y las auditadas, a lo sumo 40 por brazo;
-    y la cuenta con un solo P vale como cota si P es el mayor de los tres brazos. Con la lectura de tres sesiones nuevas por re-corrida
-    (`:106`), la cuenta pasa a (40 + 3P): con P = 40, 480 sesiones y 39,09, 54,51 o 85,34.
-  - **Las opciones:**
-    - **(a) el tope para P = 40,** la cota de la regla: medio 40,88, tope 41 y freno 30,75; con tres re-corridas, medio 54,51, tope 55 y
-      freno 41,25. Implica: cualquier P real entra en el tope en el escenario medio, aunque el freno puede cortar antes (lo de arriba);
-      es el tope más alto;
-    - **(b) el tope para un P menor que fija la autora** (por ejemplo, P = 10: tope 21 y freno 15,75), con el freno por proyección del
-      protocolo de EV2 (`:143-148`): si con los P reales la proyección pasa el tope, la corrida frena antes de las re-corridas y decide la
-      autora. Implica: las re-corridas pueden quedar sin hacer y A2.2, incompleta;
-    - **(c) dos topes:** al firmar, el de N = 1 (P = 0: medio 13,63, tope 14 y freno 10,50); después de juzgar N = 1, el de las re-corridas,
-      con los P reales y la misma regla, sin leer ninguna respuesta. Implica: el segundo tope se fija con un conteo de A2.2 a la vista
-      (cuántas parciales), declarado; la regla de N = 3 es mecánica y no cambia con él.
-    - Y la lectura de «re-corrida N = 3»: dos sesiones más la base, como la cuenta de la mesa, o tres sesiones nuevas, como dice `:106`.
+  - **Lo que da la decisión:** el freno, 55,50, queda por encima del medio del peor caso (54,51, con el juez); el alto de ese caso, 85,34,
+    pasa el tope. Los 55 de la cita son el medio redondeado al dólar de arriba, no el alto. Para que el freno quede por encima del alto,
+    el tope es 114 y el freno 85,50 (`tope_A2_2_AD2_mesa.py`). PENDIENTE de la autora (§9).
+  - **El corte duro del banco:** antes de cada sesión, el acumulado R9 más el presupuesto de la sesión no puede pasar el freno, y el
+    acumulado suma solo las metas del agente (`a2_1/correr_a2_1.py:80-87` y `:214-215`). Qué suma el freno de A2.2 (el agente solo o
+    también el juez) y con qué presupuesto por sesión (1,80 con R5) lo fija su runner (§8). Con el freno en 55,50 y 1,80 por sesión, el
+    corte no lanza otra sesión pasados 53,70 de acumulado: con el agente solo, el medio del peor caso (36,36) entra y el alto (67,20) no.
+  - **P** no se conoce antes de correr: cuenta las parciales y las auditadas, a lo sumo 40 por brazo, y la cuenta con un solo P vale como
+    cota si P es el mayor de los tres brazos.
 - **Cuándo corre:** apenas se selle este pre-registro, en el carril pago, de a uno y nunca al lado de una extracción (registro, §26,
   `:919-923`). La condición de no correr junto a la tanda 1 (A2.1, `:150-151`) ya no aplica: la tanda 1 se selló (registro, §90, `:3386`).
 - **Lo que no se decide acá:** el diagnóstico posterior a A2.2 (A2.1, `:152`; plan, `:341`).
@@ -255,43 +294,47 @@ con su commit (A2.1, `:130`). Hasta la firma no rige nada de lo que dice, y nada
 - Las transcripciones (`sesion_*.jsonl`) y los streams (`stream_*.jsonl`) son salida literal del CLI y traen el cwd absoluto, bajo la
   carpeta personal (`a2_1/enmascarar_cwd_a2_1.py`, docstring). Las del tramo 2 van enmascaradas en el repo (registro, §106,
   `:4198-4203`); las de las 24 sesiones pagas de la fase B (registro, §84, `:3041-3043`) siguen tal cual, entre los archivos del repo con
-  el nombre de la cuenta (§106, `:4204-4206`). El README del banco dice que los streams no se editan
-  (`banco_mcp/README.md:215-219`; su cambio, PENDIENTE de la autora: registro, §106, `:4207-4208`).
-- **[DECIDE LA AUTORA] A-D4 — las sesiones de A2.2 en el repo:**
-  - **(a) enmascaradas como las del tramo 2:** la carpeta personal reemplazada por `$HOME`, sin ningún otro cambio de bytes; los
-    originales fuera del repo; el sha256 de cada original y de su versión enmascarada, en un JSON del repo. Con `a2_1/enmascarar_cwd_a2_1.py`
-    adaptado a las carpetas de A2.2 (sus `CARPETAS` y su carpeta de originales). Implica: código nuevo chico, con su prueba sobre una copia;
-    el repo no suma archivos con el nombre de la cuenta; los originales quedan fuera del repo y dependen de su respaldo;
-  - **(b) tal cual, declaradas como las de la fase B.** Implica: ningún código nuevo, y el nombre de la cuenta entra al repo en cada
-    transcripción y cada stream de A2.2.
+  el nombre de la cuenta (§106, `:4204-4206`; PENDIENTE para cuando se publique el repo: §107, `:4246-4248`). La nota del README del
+  banco ya dice que, desde el tramo 2 de A2.1, van con la carpeta personal como `$HOME` (`banco_mcp/README.md:215-223`, desde
+  `ecc7a02b`).
+- **A-D4, decidida: (a)** (decisión de la autora del 24/10/2026, recibida a las 09:46:49; registro, §107, `:4241-4242`), tal cual:
+  «A-D4: sí, las transcripciones y los streams de A2.2 van al repo enmascarados como los del tramo 2, con los originales fuera del repo
+  y su sha256.» Con `a2_1/enmascarar_cwd_a2_1.py` adaptado a las carpetas de A2.2 (sus `CARPETAS` y su carpeta de originales), con su
+  prueba sobre una copia (§8).
 
 ## 8. Lo que falta antes de correr (PENDIENTE)
 
-1. La plantilla nueva y la configuración de A2.2 (R10) con los valores de R5, con su sha256 nuevo declarado (§3; A-D5).
-2. El runner de A2.2, con los tres brazos, el orden de §4, las re-corridas por la regla de EV2, el control del disco y la lectura del valor
-   remoto en cada sesión, y su corrida en seco por el mismo camino de imports que la corrida real.
+1. La plantilla nueva, con su diff contra la de HEAD, y la configuración de A2.2 (R10) con los valores de R5 y su sha256 nuevo
+   declarado, que escribe la unidad que despacha A2.2 (§3; A-D5). Las validan las tres sesiones de prueba, una por brazo, antes de la
+   primera de EV2.
+2. El runner de A2.2, con los tres brazos, el orden y las semillas del §4, las re-corridas por la regla de EV2, el control del disco y la
+   lectura del valor remoto en cada sesión, el freno del §6 (qué suma y con qué presupuesto por sesión) y el enmascarado de las sesiones
+   (§7), y su corrida en seco por el mismo camino de imports que la corrida real.
 3. La carga en Neo4j y el test positivo del brazo del grafo (A2.1, `:80-81`).
 4. El control de los sha256 de los índices al empezar (registro, §16, `:545`) y el del SDK antes del juez (§93, `:3564-3567`).
-5. La lista de la cola sellada con el grafo, con su ruta y su sha256 (§5).
+5. La lista de la cola sellada con el grafo, con su ruta y su sha256: ya está (§5), con A-D11 abierta.
 6. Lo que la autora pidió a la mesa antes de firmar este pre-registro (registro, §51, `:1802-1804`): qué más mejora la evaluación sin usar
    B6.3 para ajustar, y la confirmación de la vía de cobertura de la etapa V. La §52 trata los dos temas (`:1808`); no controlé si cierran
    el pedido.
 
 ## 9. Las decisiones de la autora
 
-**Decididas** (registro, §99): A-D0, (a) (decisión 2, `:3850`); A-D1, el orden de B6.3 (decisión 14, `:3874`; §4); A-D3, el diagnóstico
-y el grafo evaluado, con el agregado de la autora (decisión 15, `:3875-3877`; §6); si la verificación del juez no pasa, la decisión 3 de
-Q8 (decisión 16, `:3878-3879`; §4).
+**Decididas:**
 
-**[DECIDE LA AUTORA], al firmar:**
+- en el registro, §99: A-D0, (a) (decisión 2, `:3850`); A-D1, el orden de B6.3 (decisión 14, `:3874`; §4); A-D3, el diagnóstico y el
+  grafo evaluado, con el agregado de la autora (decisión 15, `:3875-3877`; §6); si la verificación del juez no pasa, la decisión 3 de Q8
+  (decisión 16, `:3878-3879`; §4);
+- en el registro, §107: R5, (1) (§3), y A-D4, (a) (§7);
+- en el registro, §109: A-D2, tope 74 y freno 55,50 (§6); A-D5, (b) (§3); A-D6, (a) (§3); A-D7, (b) (§4); A-D8, (b) (§4); A-D9, (a)
+  (§5); y la lectura de «re-corrida N = 3», la que aplicó EV2: tres sesiones nuevas (§4).
 
-| decisión | opciones, en corto |
+Las predicciones del §5 y la forma de aplicar la semilla del orden (§4) las propuso la ejecutora; la firma las fija como están.
+
+**Lo que queda para la firma:**
+
+| punto | qué queda |
 |---|---|
-| R5 (§3) | (1) R5 como está, con «al tope» en llamadas del log R1, informado por brazo (la recomienda la mesa); (2) lo mismo con un tope duro de 30 llamadas en los servidores, código nuevo; (3) lo mismo, excluyendo las sesiones de más de 30 llamadas. `--max-turns` 12 solo si cambia R5 |
-| A-D2, el tope (§6) | (a) para P = 40: 41 con freno 30,75 (55 y 41,25 con tres re-corridas); (b) para un P menor, con freno por proyección antes de las re-corridas; (c) dos topes, el de N = 1 (14 y 10,50) al firmar y el de las re-corridas después de N = 1. Y la lectura de «re-corrida N = 3»: dos más la base o tres nuevas |
-| A-D4, las sesiones en el repo (§7) | (a) enmascaradas como las del tramo 2, con el script adaptado; (b) tal cual, como las de la fase B |
-| A-D5, la plantilla nueva (§3) | (a) una unidad USD 0 antes de A2.2 que la escriba junto con la configuración de R5, más una sesión corta paga por brazo, con tope de la autora, que la valide; (b) que la validen las primeras sesiones de A2.2 (una de prueba por brazo, sin pregunta de EV2), con freno si fallan R3 o R6; (c) A2.2 con la plantilla de HEAD, declarado como desvío de U-NAV, §5 |
-| A-D6, `MAX_MCP_OUTPUT_TOKENS` (§3) | (a) sin fijar, como en el tramo 2, con la anotación de 200.000 caracteres como tope y declarado frente a la §72 y la §79; (b) en 70.000, como dicen la §72 y la §79: según la §96 no actúa con la anotación, y A2.2 corre con una variable que el tramo 2 no tuvo |
-| A-D7, las semillas (§4) | el orden de las corridas: `A22:orden_corridas:v1`, aplicada como en el §4, u otra; la auditoría y el orden del juez: (a) las de EV2 tal cual (`auditoria-ev2-v1` y `juez-ev2-v1`); (b) propias con la forma de B6.3 (`A22:auditoria:v1` y `A22:orden_juez:v1`) |
-| A-D8, `requiere_adjudicacion` y N = 3 (§4) | (a) la autora las adjudica entre N = 1 y las re-corridas, y una adjudicada «parcial» va a N = 3; (b) el disparo usa solo el veredicto del código, y las `requiere_adjudicacion` se adjudican al final, sin re-corrida, declarado |
-| A-D9, la medida y la prueba (§5) | (a) las del pre-registro de B6.3, para que las tasas de Q5 salgan de la misma medida; (b) fijarlas acá: el veredicto por pregunta en dos clases (correcto contra no correcto) y la prueba exacta de McNemar sobre los pares discordantes, unilateral a favor del grafo, con Holm sobre las dos |
+| A-D2, el alto (§6) | PENDIENTE: con tope 74 y freno 55,50, el freno cubre el medio del peor caso (54,51) y no el alto (85,34); para cubrir el alto, tope 114 y freno 85,50 |
+| A-D9, la métrica (§5) | PENDIENTE de confirmación: la de una corrida, con el veredicto final de cada pregunta, 1 o 0 |
+| A-D10, lo que aplicó EV2 (§4) | PENDIENTE de confirmación: el tamaño de la auditoría, max(ceil(10 % · n), 1), y la agregación con un voto `requiere_adjudicacion` |
+| A-D11, la cola (§5) | [DECIDE LA AUTORA]: una pregunta con anclas dentro y fuera de la cola sale de la cifra sin la cola (a) si alguna cae en la cola o (b) solo si caen todas |

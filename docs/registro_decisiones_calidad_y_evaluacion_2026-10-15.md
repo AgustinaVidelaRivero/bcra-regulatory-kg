@@ -4295,3 +4295,63 @@ Decisiones y hechos de la autora del 24/10/2026, recibidos a las 10:17:05 (hoja 
   No queda ninguna decisión abierta.
 - **El orden:** el FRENO A2.1-c, su revisión y su commit; el 177; y el commit de esta sección.
 - Las secciones anteriores no se editan.
+
+## 109. El sábado, a las 10:36: el FRENO A2.1-c revisado, las decisiones de la autora para el borrador de A2.2 y la revisión de B6.3 por olas (24/10/2026)
+
+Decisiones y hechos de la autora del 24/10/2026, recibidos a las 10:36:45 y a las 10:39:11 (hoja de ruta de la mesa, §267), sobre la
+§266 de la mesa y el FRENO A2.1-c.
+
+- **El 177 y el 178,** corridos con su push: `ecc7a02b` (10:36:25) y `9826b625` (10:36:31), por git log; `origin/main` en `9826b625`.
+- **El FRENO A2.1-c y el borrador del pre-registro de A2.2** (`data/experiment/banco_mcp/a2_1/FRENO_A2_1_c.md`, `68b84b97…`, y
+  `docs/preregistro_A2_2_sistema_por_fragmentos.md`, `c87b78f2…`), sin rastrear. La mesa los revisó por código y dan (30 de 30,
+  `revisar_A2_1c_mesa.py`), y van al repo tal como los entregó la ejecutora, en el commit anterior a esta sección. El paquete de la
+  ejecutora, `revision_A2_1_FRENO_c/`, da 31 de 31 por su manifest. `.claude/settings.local.json` lo ignora git (`~/.config/git/ignore`)
+  y no entra; la mesa no lo abrió.
+- **Las decisiones para el borrador de A2.2, tal cual** (además de R5, (1), y A-D4, (a), de la §107):
+  1. «A-D2: el tope para el peor caso, P = 40 con tres re-corridas nuevas: USD 55, con freno en 41,25. La lectura de «re-corrida N = 3»
+     (dos más la base o tres nuevas) es la que EV2 aplicó en la práctica: controlá en sus trazas cuántas sesiones corrió por pregunta
+     parcial y traémelo con su ancla.» Corregida a las 10:39:11: «Corrijo A-D2: el freno del banco es un corte duro (FRENO A2.1-c, §7),
+     así que tiene que quedar por encima del peor caso: P = 40 con tres re-corridas nuevas y el costo alto, USD 55. Tope 74 y freno 55,50,
+     en lugar de 55 y 41,25.»
+     - **La contradicción que reporta la mesa** (CLAUDE.md, §4.d): con la cuenta del borrador, el peor caso cuesta 39,09 central, 54,51
+       medio y 85,34 alto (`tope_A2_2_AD2_mesa.py`). Los 55 son el medio redondeado, no el alto. Con tope 74 y freno 55,50, el freno
+       queda por encima del medio y el alto pasa el tope; para que quede por encima del alto, el tope es 114 y el freno 85,50. La
+       elección es PENDIENTE de la autora.
+  2. «A-D5: (b). La plantilla nueva es la de HEAD sin los cinco TOs de desarrollo y con el tope de 30 llamadas de R5, igual en los dos
+     brazos salvo el bloque de herramientas; la escribe la unidad que despacha A2.2, con su diff contra la de HEAD. La validan las
+     primeras sesiones de A2.2, una de prueba por brazo sin pregunta de EV2, con freno si fallan R3 o R6.»
+  3. «A-D6: (a). Sin fijar, como en el tramo 2, con la anotación de 200.000 caracteres como tope, declarado frente a la §72 y la §79.
+     Alineá con esto el §5 del borrador de B6.3, que dice 70.000.»
+  4. «A-D7: (b). Semillas propias con la forma de B6.3: A22:orden_corridas:v1, A22:auditoria:v1 y A22:orden_juez:v1.»
+  5. «A-D8: (b). El disparo de N = 3 usa solo el veredicto del código, y las requiere_adjudicacion las adjudico al final, sin re-corrida,
+     declarado.»
+  6. «A-D9: (a). La medida y la prueba son las del pre-registro de B6.3.»
+  7. «La lista de ids de la cola del grafo de desarrollo, que el borrador deja PENDIENTE: ubicala vos.»
+- **Lo que aplicó EV2** (`contar_recorridas_ev2_mesa.py`, sobre HEAD): tres sesiones nuevas por cada par (pregunta, grafo) que fue a
+  N = 3, y la base no vota. Son 66 pares, 63 parciales y 3 de auditoría, con 198 sesiones, y cada par tiene sus tres trazas, una por
+  repetición (`data/experiment/ev2_encadenamiento/trazas/ev2_enc_<grafo>_r1` a `_r3`; `poblacion/poblacion_disparada.json`, `n_pares` y
+  `n_corridas_agente`; `code/agregacion_enc.py:10`). El tamaño de la auditoría fue max(ceil(10 % · n), 1) por laudo
+  (`code/comun_enc.py:180` y `:189`), y el disparador, solo `veredicto_base == 'parcial'` (`poblacion_disparada.json`, `regla`).
+- **La lista de la cola:** no hay un archivo aparte. Es la regla del grafo re-sellado (`resellado_t0/registro_vista_r2b_rs1.py:80-87`)
+  sobre los cinco `finales.jsonl` del commit del sello (`4fe6ece`), y da 54 unidades: las que marca el `kg.json` (`acb26dca…`) y las que
+  descarta el grafo sin la cola. Va en `data/experiment/controles_a2_2/cola_grafo_desarrollo_r2b_rs1_mesa.json`, con su script; la lista
+  ordenada da `85707ea9…`.
+- **El borrador v2 del pre-registro de A2.2** (la mesa, con estas decisiones, en el mismo archivo de `docs/`). Lo que queda para la firma
+  está en su §9:
+  - el alto de A-D2 (punto 1);
+  - la métrica de A2.2 con el veredicto final de cada pregunta, 1 o 0, como lectura de A-D9;
+  - el tamaño de la auditoría y la agregación con un voto `requiere_adjudicacion`, como los aplicó EV2 (A-D10);
+  - y, para la cifra sin la cola, una pregunta con anclas dentro y fuera de ella (A-D11).
+- **El borrador v9 del pre-registro de B6.3** (paquete de la mesa): el §5 y el §11, punto 6, con `MAX_MCP_OUTPUT_TOKENS` sin fijar y la
+  anotación de 200.000 caracteres como tope.
+- **La revisión de B6.3 por olas:**
+  - el convertidor y el sello de la §265 piden las 83 filas. La mesa armó la variante por olas (`--olas 1,2` y, después, `--olas 3`),
+    probada sobre olas sintéticas (19 de 19). Frena si una pregunta cuyo tipo no se sostiene está aprobada, y si cambia una fila de una
+    ola ya sellada. Su instalación en la carpeta de la autora queda PREPARADA;
+  - la regla, confirmada por el mandato (UPREG, §4, `:89-91` y `:102-103`): el tipo que no se sostiene es un rechazo, y el lugar pasa a la
+    unidad siguiente que lo sostenga;
+  - las olas 1 y 2 de la hoja son 59 de las 64 del núcleo; las otras 5 son los lugares de la ola 2 que P2 reubica, en una hoja aparte.
+- **El orden:**
+  - el commit del FRENO A2.1-c y del borrador, tal como llegaron;
+  - después, el de esta sección, con el borrador v2 y la lista de la cola.
+- Las secciones anteriores no se editan.
