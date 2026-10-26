@@ -4722,3 +4722,87 @@ ruta de la mesa, §274), sobre la §273 de la mesa.
 - **La próxima nota al pie del pre-registro de B6.3** lleva lo de la §115 (las coincidencias con las citas), el criterio nuevo de los R2 y
   los cuatro desvíos de P3: PENDIENTE.
 - Las secciones anteriores no se editan.
+
+## 117. El domingo, a las 19:13: el corredor de la prueba sobre T, el P real, la lectura de T sellada y el núcleo completo (25/10/2026)
+
+Decisiones y hechos de la autora del 25/10/2026, recibidos a las 19:13:16, con tres agregados, a las 19:17:43, a las 19:26:42 y a las
+19:35:27 (hoja de ruta de la mesa, §275), sobre la §274 de la mesa.
+
+- **El 190,** corrido por la autora después del paso 3 de A2.2, con su push: `20c67f6f` (19:16:01), por git log; `origin/main` en
+  `20c67f6f`. El 191 de la §274 no corrió (decisión 4).
+- **Las decisiones de las 19:13:16, tal cual:**
+  1. «La palanca 5 no se aplica. Las palancas 3 y 4 las decido con el P real del paso 3.»
+  2. «B63-O1-L06-R2 queda en ri_tvf, donde lo dejó P2 con las cuentas de ese momento, y el caso de ri_acsf se declara.»
+  3. «Las cinco carpetas temporales del juez v2 se borran con tu script, después de su prueba en seco. El inventario queda en tu paquete
+     y se declara.»
+  4. «La prueba sobre T corre con un corredor nuevo que importa el código congelado de la v2 sin editarlo (el prompt, el modelo y el
+     armado del pedido, controlados por su sha256) y cambia solo la entrada, las fichas de T. Antes de la prueba, el análisis suma la cifra
+     por etapa E0–E5 y por procedencia del §3.6, con esos campos en el JSON de entrada que armás vos. Los dos los escribe la sesión del
+     juez v2 en una etapa d, con su selftest y tu revisión por código, y el 191 se rearma para sellar todo junto antes de la prueba.»
+  5. «Los expertos son 3.»
+- **El caso de `ri_acsf`, declarado (decisión 2):** cuando P2 buscó el lugar de B63-O1-L06-R2, `ri_acsf` contaba 4 lugares, uno de ellos
+  el de B63-O3-L03-R1, que después pasó a `ri_transpa` con su R2; `ri_acsf` queda con 3 (§116). B63-O1-L06-R2 queda en `ri_tvf`.
+- **Las carpetas temporales (decisión 3):** el inventario de la mesa (923 archivos y 523.576.558 bytes; §116) queda en su paquete
+  (`decisiones_274_mesa/temporales_juez_v2/`).
+  - Al armar el comando del borrado, a las 20:04, las cinco ya no estaban en la carpeta temporal del sistema (por su nombre).
+  - No las borró la mesa: sus corridas del script fueron en seco o sobre copias de prueba, y la última sobre las cinco, en seco, a las
+    18:51, dio el inventario exacto (su transcripción). Tampoco la sesión del juez v2: su transcripción no trae ningún borrado de ellas.
+  - Quién las borró: NO VERIFICADO. PENDIENTE de la autora.
+- **La decisión 4:**
+  - el «seguí» de la etapa d para la sesión del juez v2 (el corredor `codigo/correr_prueba_T_v2.py` y `analisis-T-v2.2`, con `etapa`,
+    `chunk_id` y `estado_e3` en la entrada): PREPARADO;
+  - el 191 de la §274 queda reemplazado, y sus comandos, con el prefijo `NO_CORRER_REEMPLAZADO__`. El 191 v2, que junta las listas de las
+    etapas c y d, se arma cuando la mesa revise el FRENO de la etapa d: su armador, probado sobre una etapa d sintética;
+  - cómo se asigna la etapa E0–E5 de cada arista de T lo propone la mesa antes del análisis, con su ancla en el grafo evaluado: PENDIENTE.
+- **La decisión 5:** el comando del núcleo aprobado y del material, con 3 expertos: PREPARADO.
+- **El paso 3 de A2.2** (el agregado de las 19:17:43, y `juez/n1/resumen_juez_n1.json`): 119 respuestas, una faltante del agente
+  (incompleta por R3), 118 agregadas y 1 incompleta, con USD 4,7957 del juez en 354 llamadas pagadas. La población de N = 3: 36 pares y
+  108 sesiones de re-corrida (`poblacion/poblacion_a2_2.json`).
+- **La decisión de las 19:17:43, tal cual:** «con el P real, las palancas 3 y 4 no se aplican y quedan de reserva.» Con la decisión 1,
+  ninguna de las palancas 3, 4 y 5 se aplica.
+- **La respuesta incompleta del paso 3,** revisada por la mesa por código, sin su veredicto ni su texto:
+  - **es la 81 del orden del juez, no la 60.** La 60 es un acierto de la caché en las tres repeticiones: su pedido al juez es igual, byte
+    a byte, al de la 35 (la misma pregunta y la misma respuesta, de 295 caracteres), y lleva los tres juicios de esa. Por eso, en la
+    consola, el acumulado no sube en la 60;
+  - **la 81 tuvo sus 3 llamadas pagadas** (USD 0,0361 de los 4,7957). En las tres repeticiones, la salida del juez es un JSON mal formado
+    («Expecting ',' delimiter»), en el campo `fragmento` de su criterio 3. Las 354 filas pagadas son las de 117 respuestas juzgadas y las
+    de la 81; la 60 no pagó;
+  - **la regla de EV2:** una salida mal formada se registra en `errores_r{rep}.jsonl` y no se reintenta
+    (`ev2_fidelidad_eval/code/pipeline_fidelidad.py:138`; `a2_2/juez_a2_2.py:22-23`). En A2.2, una respuesta sin juicio no dispara
+    re-corrida (`a2_2/poblacion_a2_2.py:122`), sale de la métrica, se lista, y la sensibilidad la cuenta como no cumplida
+    (`a2_2/analizar_a2_2.py:8-9`; §50, punto 6). No corresponde re-correr nada: se declara;
+  - **que la 35 y la 60 compartan sus juicios** es lo que hace la caché del juez con dos pedidos iguales; se declara. De qué brazo es cada
+    una lo dice la desanonimización, en el análisis.
+- **El 193:** las sesiones enmascaradas de A2.2 (los originales, fuera del repo, con su sha256), los juicios de las dos etapas del juez
+  con su desanonimización aparte, y la población, sin la caché del juez. Probado en areneros: PREPARADO para apenas termine el paso 5.
+- **El calendario v15,** con P = 12 y lo medido hoy (el paso 4, 35,7 s por sesión; el juez de EV2, 7,3 s por llamada), en la hoja de la
+  mesa (§275).
+- **El agregado de las 19:26:42:** la autora terminó y selló su lectura de las 100 de T, en 10 lotes (el último sello, a las 19:25:48),
+  con una copia de las 10 hojas vacías hecha antes de empezar. Controlada por la mesa por código, sin abrir sus marcas
+  (`controlar_lectura_T_mesa.py`):
+  - el acta de T da el sha256 de su sello (`8cb2bd12…`, la que la mesa reprodujo en la §264), y sus 10 lotes son las 100, sin repetir;
+  - 10 de 10: cada sello es el de su hoja; la cabecera, la de su lote y del acta; las filas, las de su lote, en su orden;
+  - 10 de 10 copias vacías: el sha256 de la hoja que entregó U-TRIP-T, sin nada en las columnas de la autora y con las mismas filas;
+  - `sellar_hoja.py` es el que entregó U-TRIP-T;
+  - en 4 lotes (el 03, el 05, el 06 y el 07) el sello es anterior a la hora de fin escrita en su cabecera, por 25,6, 18,7, 12,1 y 8,6 min.
+    Cada hoja da el sha256 de su sello, así que no cambió después. Se declara;
+  - el sello conjunto de la mesa, el sha256 de los 10 sellos y de las 10 hojas (`37793df0…`), es el que recibe el corredor.
+- **Las coincidencias de las 100 con la v2 congelada** (§103, decisión 2.b), por la clave de la arista (`coincidencias_T_casos_v2_mesa.py`):
+  - ninguna de las 100 coincide con un caso de su prompt (los 23 del v1.1 y los 9 de la iteración 1), así que la prueba no se informa
+    también sin ninguna;
+  - dos de las 100 son aristas de V que no son casos (T011, V052; T094, V068), declaradas en el acta de T;
+  - de las 300 restantes, una es un caso de la iteración 1 (el 32, V097). Si la medición de las 400 se informa también sin ella:
+    PENDIENTE de la autora.
+- **El comando de la prueba única** (las refs de las 100, `33c2e4ee…`), con su prueba en seco: PREPARADO para después del 191 v2. Sus
+  parámetros se confirman contra el FRENO de la etapa d.
+- **El agregado de las 19:35:27:** la autora revisó y selló los 7 R2 (a las 19:34:21): 6 aprobados y 1 rechazado; en ninguno deja de
+  sostenerse el tipo. Por código, sin abrir sus marcas:
+  - el rechazado es B63-O3-L03-R2, de la ola 3;
+  - el núcleo tiene sus 64 aprobadas: 50 de las olas, 5 reubicados, 6 reemplazos y 3 R2. Su JSON, armado por la mesa en una carpeta
+    temporal, da `6790a8ed…` en dos corridas;
+  - la tanda 2 de P3, los 6 R2 aprobados (`b63_p3/insumos/tanda_2.json`, `f1c9f8c6…`, con su sello), con su «seguí»: PREPARADO;
+  - la lista del R2 rechazado, sin sus motivos (`b63_p2/insumos/rechazadas_reemplazos_R2_B63.json`, `68b731f2…`, con su sello), con el
+    «seguí» de P2 de su R3: PREPARADO. Las herramientas de la hoja del R3, probadas; la hoja se arma cuando P2 selle el R3.
+- **La próxima nota al pie del pre-registro de B6.3** lleva lo que dice la §116 (las coincidencias de la §115, el criterio nuevo de los R2
+  y los cuatro desvíos de P3), el caso de `ri_acsf` y el R2 rechazado: PENDIENTE.
+- Las secciones anteriores no se editan.
