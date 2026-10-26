@@ -1,0 +1,8 @@
+#!/bin/sh
+# claude (falso) — el CLI falso de la corrida en seco de U-BANCO-PARALELO (claude_falso.py), con el python del .venv del
+# repo (el del cliente falso del banco). Ninguna petición sale a la API. Si lo llaman por un enlace, sigue el enlace hasta
+# este archivo, así encuentra el .venv.
+SELF="$0"
+while [ -L "$SELF" ]; do SELF="$(readlink "$SELF")"; done
+DIR=$(cd "$(dirname "$SELF")" && pwd)
+exec "$DIR/../../../../../.venv/bin/python" -B "$DIR/claude_falso.py" "$@"

@@ -1,0 +1,19 @@
+# docker-compose.banco_paralelo.yml — Override de U-BANCO-PARALELO sobre docker-compose.yml (en la copia del repo):
+# un Neo4j propio para el test de aislamiento en paralelo, la corrida en seco y el humo pago, sin tocar el contenedor
+# del repo (neo4j-bcra-kg-compose, 7474/7687). Proyecto neo4j_banco_paralelo; puertos 37474 y 37687 en localhost;
+# volumen en la copia. La imagen, la memoria, el healthcheck y la autenticación son los del archivo base.
+#
+# Uso (desde este directorio):
+#   docker compose -p neo4j_banco_paralelo -f docker-compose.yml -f docker-compose.banco_paralelo.yml up -d --wait
+#   docker compose -p neo4j_banco_paralelo -f docker-compose.yml -f docker-compose.banco_paralelo.yml down
+# Las sesiones lo alcanzan con NEO4J_URI=bolt://127.0.0.1:37687, exportado en la terminal que las lanza.
+services:
+  neo4j:
+    container_name: neo4j-bcra-kg-banco-paralelo
+    ports: !override
+      - "127.0.0.1:37474:7474"
+      - "127.0.0.1:37687:7687"
+    volumes: !override
+      - ./volumen_banco_paralelo/data:/data
+      - ./volumen_banco_paralelo/logs:/logs
+    restart: "no"
