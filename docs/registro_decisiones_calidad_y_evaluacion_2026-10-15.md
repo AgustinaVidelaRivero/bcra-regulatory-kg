@@ -5256,3 +5256,42 @@ ruta de la mesa, §282), sobre la §281 de la mesa.
 - **Lo que sigue, de a uno:** el humo pago, que corre la autora; U-VERPUNTO; los índices. La prueba de T va después del 191 v4, nunca al
   lado del humo.
 - Las secciones anteriores no se editan.
+
+## 124. El lunes, a las 17:40: los cinco commits, el humo, los índices, N6 y el calendario (26/10/2026)
+
+Hechos y pedido de la autora del 26/10/2026, recibidos a las 17:40:04 (hoja de ruta de la mesa, §283), sobre la §282 de la mesa.
+
+- **Los commits:** la autora corrió, cada uno con su push, el 203 (`303a5084`, 17:12:49), el 204 (`50b373df`, 17:14:20), el 205
+  (`4965b272`, 17:20:30), el 206 (`617f6652`, 17:22:21) y el 191 v4 (`8b45dc7a`, 17:22:42); HEAD y `origin/main`, en `8b45dc7a`, por git
+  log. Cada uno trae, byte a byte, lo que preparó la mesa, y `paralelo/cli_falso/claude` quedó con el modo 100755.
+- **Los despachos:** pegó N5b v3 después del 203, en una sesión nueva en `fuera_del_repo/unav_n5b/`; después del humo, el «seguí» de
+  U-VERPUNTO en su sesión y la etapa a v3 del runner de B6.3 en la de A2.2. La prueba sobre T la corre cuando terminen.
+- **El humo,** tal cual lo informó la autora: «Corrí el humo desde la Terminal, con el archivo de entorno de A2.2. Terminó con código 0: 6
+  de 6 sesiones terminadas con R3, 0 reintentos y 0 errores 429, con P = 3 y tres sesiones superpuestas en la primera tanda; R9
+  acumulado USD 0,505575, sin freno; CLI 2.1.241 en las 6; su Neo4j, levantado con el grafo esperado (0435d41f…) y bajado al terminar.»
+  - Revisado por la mesa por su registro y las metas de sus sesiones, sin leer ninguna respuesta (16 de 16, `revisar_humo_mesa.py`): de
+    17:29:24 a 17:30:41; dos tandas de 3; el peor caso al lanzar cada sesión, a lo sumo USD 5,58, debajo del freno de 6; la versión
+    sellada en los 15 controles del CLI y en el `system/init` de las 6; las 6 del 26/10, sin cambio de fecha; la guarda de otro paso
+    pago antes de cada tanda, sin hallar ninguno; a lo sumo 12 llamadas en un log R1; el lanzador, sus guardas y el lanzador de cada
+    sesión, los del 205; el lote, el del paquete de la vuelta b; las sesiones del grafo, con el grafo `0435d41f…`; ningún valor con forma
+    de clave en las salidas; el Neo4j propio, bajado, y el del repo, levantado.
+  - Lo que N6 y B6.3 necesitaban del humo: con P = 3, la cuenta no dio ningún error 429 ni pidió reintentos.
+- **La tarea,** tal cual: «revisá el humo por su registro y armame lo que sigue: los índices, cuando llegue el FRENO de U-VERPUNTO; N6,
+  cuando estén N5b, U-VERPUNTO y el humo; y el calendario actualizado.»
+  - **Los índices:** el despacho de su etapa a, v2, PREPARADO, para pegar cuando llegue el FRENO de U-VERPUNTO, que usa el denso. Suma
+    a la v1 el override de compose del banco en paralelo de HEAD como patrón de la carga, con otro nombre de contenedor y otros puertos,
+    y las carpetas vedadas que faltaban: las del material de B6.3, la del banco en paralelo (que guarda pedidos capturados), la de sus
+    sesiones y la de U-VERPUNTO. La v1 queda con el prefijo `NO_CORRER_REEMPLAZADO__`, sin haberse pegado.
+  - **N6:** su despacho va después del sello de N4, que el mandato firmado pone después del diagnóstico de A2.2 y de su lectura por la
+    autora (`docs/mandatos/UNAV_DISENO_navegacion_agente.md`, §4: «se sella después del diagnóstico de A2.2, antes de N6» y «Su FRENO y
+    la lectura de la autora van antes del sello de N4»). La mesa arma el sello de N4 y el despacho de N6 con el FRENO de N5b revisado.
+    Del humo, N6 ya tiene lo que necesitaba; U-VERPUNTO no lo cambia (ninguna configuración de N6 nombra sus bloques), pero va antes.
+  - **El calendario v18,** en el paquete de la mesa: en el central con k 3, B6.3 lanza el martes 27 a las 18:06, con 3,8 h de margen;
+    en el alto con k 3, solo con la ventana hasta las 24.
+- **El commit de las salidas del humo (el 208), PREPARADO:** sus 55 archivos, con la carpeta personal como `$HOME` por la regla de A2.1
+  (decisión de la autora del 23/10/2026), en 12 de ellos y 104 veces, y el JSON del enmascarado, con el sha256 de cada original, que
+  queda en `fuera_del_repo/banco_paralelo/salidas/`. Las salidas comparten 88 tramos de 6 palabras con B6.3, de sus citas, criterios y
+  preguntas: los 88 ya están en HEAD, en `data/experiment/banco_mcp/` y en la E0 del acumulado, de la que sale el índice de fragmentos.
+  El commit no suma al repo ningún texto de B6.3 (la mesa, por código, sin imprimir ningún tramo).
+- **Este commit y el 208 no corren mientras la etapa a del runner escribe en `b63/`:** cada uno frena si `b63/` existe sin su FRENO.
+- Las secciones anteriores no se editan.
