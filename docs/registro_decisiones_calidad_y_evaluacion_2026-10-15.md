@@ -5012,3 +5012,80 @@ Decisiones y hechos de la autora del 26/10/2026, recibidos a las 09:31:22, con a
   - el límite: una frase general que describe una pregunta sin nombrarla no se distingue por código de una regla, y un tramo corto puede
     ser redacción común.
 - Las secciones anteriores no se editan.
+
+## 120. El lunes, a las 11:59: la etapa e, la regla B′, N5b, las 300 de T, los bloques de U-VERPUNTO y el aislamiento (26/10/2026)
+
+Decisiones y hechos de la autora del 26/10/2026, recibidos a las 11:59:01, con un agregado a las 12:05:09 (hoja de ruta de la mesa,
+§278), sobre la §277 de la mesa.
+
+- **Lo que corrió la autora** (agregado de las 12:05:09), por git log: el 195 (`47e8b87b`, 11:59:30), el 142 v2 (`17a51a42`, 12:00:32),
+  el 196 (`300cc067`, 12:01:43) y el 197 (`2addcf32`, 12:02:22), cada uno con su push; HEAD y `origin/main`, en `2addcf32`.
+  - Entre el 142 v2 y el 196, el instalador de los índices: según la autora, los cuatro en OK, lo rastreado igual y «todo: INSTALADO Y
+    VERIFICADO».
+  - La mesa lo controló por código (`decisiones_278_mesa/indices/`): los cuatro están, git los ignora y los dos por punto tienen el
+    manifiesto de su copia versionada en HEAD.
+- **Lo que pegó:** el «seguí» de la tanda 3 de P3, el de la etapa e en su versión completa y, en una sesión nueva en
+  `fuera_del_repo/banco_paralelo/`, el despacho del banco en paralelo v7.
+- **Las decisiones de las 11:59:01, tal cual:**
+  1. «La etapa e va en su versión completa.»
+  2. «La etapa E0–E5 de cada arista de T sale con la regla B′.»
+  3. «N5b va sin la cota por herramienta de N1, declarada como límite.»
+  4. «Las 300 restantes de T se rigen por la misma regla de la corrida cortada que la prueba, con su tope de USD 125: una falla de
+     infraestructura se re-corre hasta dos veces, cada vez desde cero, y el gasto de todas las corridas cuenta para el mismo tope; si una
+     repetición corta por el tope o por el freno, no se re-corre nada y las 300 no se completan. Decime qué se informa en ese caso. Si
+     hace falta código para aplicarla, armame un agregado para la sesión del juez v2.»
+  - Los pedidos 5 y 6, tal cual: «Los dos bloques de ejemplos de la familia 6 de U-VERPUNTO, etapa b, que se perdieron: decime para qué
+    se usaban, si su falta cambia N6 o B6.3 y si se pueden rehacer antes de N6. Si cambia algo, proponeme cómo seguir antes de despachar
+    N6.» y «El pre-registro de B6.3 en HEAD trae tramos de los registros de P2, seis de ellos de bloques de preguntas. Confirmame por
+    código que ninguna sesión de N6, del humo ni de B6.3 puede leer archivos del repo ni de fuera_del_repo más allá de su cwd y su
+    configuración, y que el test de aislamiento del runner lo controla con un archivo del repo como testigo.»
+  - La tarea, tal cual: «lo que sigue del calendario v16, con cada despacho en su momento.»
+- **El título del 197:** la autora informó que salió «losdesvios», sin el espacio. En el repo lo tiene: el objeto del commit `2addcf32`
+  trae «los desvios», con el byte 0x20 (`git cat-file`), y «losdesvios» no está en ningún commit. Dónde se vio sin el espacio: NO
+  VERIFICADO. Desde el 198, la prueba de cada commit controla que su título en git sea, byte a byte, el del mensaje.
+- **La decisión 2:** la entrada del análisis de T, armada por la mesa con la regla B′ (`decisiones_278_mesa/T/`). Las 400 fichas dan E1
+  112, E3 123 y E4 165, y las 100 de la autora, 26, 33 y 41, como en la propuesta. `refs_coincidentes` va vacía y
+  `refs_coincidentes_400` con 1, la de la arista de V097. Pasa `validar_entrada` del análisis en la versión que arma la etapa e; se
+  controla otra vez con la final.
+- **La decisión 3:** el despacho de N5b, v2, con la decisión tal cual: PREPARADO. Va después del commit del análisis de A2.2.
+- **La decisión 4:** hace falta código.
+  - El agregado para la sesión del juez v2, PREPARADO: el corredor descuenta las corridas cortadas también en las 300, y el análisis
+    tiene una entrada para las 300 no completadas.
+  - Lo que se informa si las 300 no se completan, la lectura de la mesa. La enmienda 4 no habla de ese caso, y sin las 400 la única
+    cifra de T que fija es la de su punto 10. La mesa propone:
+    - la precisión de T con las 100 de la autora, como en el punto 10;
+    - al lado, la prueba de la v2, que pasó, como su validación (punto 9);
+    - las 300, como no completadas, con sus repeticiones, intentos, motivos y gasto;
+    - ninguna cifra de las fichas de las 300 que se juzgaron.
+  - Su confirmación: PENDIENTE de la autora.
+- **El pedido 5, los dos bloques** (`bloque_tools_fragmentos_bm25_con_ejemplos_f6.txt`, `c08073f1…`, y el de la híbrida, `37ae9130…`):
+  - **para qué:** son los bloques de herramientas del brazo de fragmentos con los mismos 3 ejemplos de la familia 6 del grafo, resueltos
+    con su herramienta. Entran solo si la familia 6 entra en N7 (U-NAV, §4, N7; mandato de U-VERPUNTO, la decisión de la autora del
+    20/10);
+  - **N6 no cambia:** ninguna configuración los nombra, en HEAD ni en el 142 v2, y F1 compara BM25 con la híbrida sin esos ejemplos;
+  - **B6.3 cambia solo si la familia 6 entra en N7:** sin ellos, el brazo de fragmentos no tendría sus 3 ejemplos;
+  - **se pueden rehacer,** a USD 0, con el script de la etapa b de su paquete, sobre HEAD, que ya trae lo que usaron. La anotación de
+    tamaño (`b72bb626`) agrega un `_meta` a la definición de cada herramienta, no a sus resultados. El criterio son los dos sha256 de
+    entonces;
+  - **la propuesta:** rehacerlos antes de N6, después del FRENO del banco y no al lado de los índices, con el «seguí» de su sesión, y
+    llevarlos al repo en un commit chico, sin que ninguna configuración los nombre. PREPARADA; que vaya: PENDIENTE de la autora.
+- **El pedido 6, por código** (`decisiones_278_mesa/aislamiento/`), 12 de 12:
+  - el lanzador sellado, el que usa el lanzador del lote para N6, el humo y B6.3: `--bare`, sin herramientas integradas, solo el JSON de
+    MCP de su brazo, las de archivos, shell y red prohibidas, `dontAsk`, su carpeta de configuración nueva y el cwd fuera del repo,
+    fuera de git y vacío;
+  - las 231 sesiones de A2.2: solo la herramienta de su brazo, un solo servidor, su carpeta de configuración propia, y ningún skill ni
+    comando de las carpetas del disco en su `system/init`;
+  - las herramientas MCP no reciben rutas, y sus servidores leen solo su índice, al cargarlo;
+  - ningún `CLAUDE.md`, `CLAUDE.local.md`, `AGENTS.md` ni `.mcp.json` en el cwd ni en sus carpetas superiores.
+  - Lo que el código no muestra es qué texto pone el CLI en su pedido. Ningún test de aislamiento de HEAD usa un testigo (0 de 3).
+  - El agregado al despacho del banco en paralelo v7 (el testigo, con la captura del pedido a USD 0, y su criterio 13) y el despacho de
+    la etapa a del runner de B6.3, v2, que lo lleva a su etapa b: PREPARADOS.
+- **Lo que sigue del calendario v16, con cada despacho en su momento:**
+  - ahora, el agregado del testigo en la sesión del banco, y el de las 300 en la del juez v2, con la confirmación de la autora;
+  - la etapa a de los índices, después del FRENO del banco: usa el denso, y el banco usa el denso y Docker. El v16 las ponía a la vez, por
+    un error de la mesa;
+  - el «seguí» de U-VERPUNTO, si va, tampoco al lado del banco ni de los índices;
+  - las adjudicaciones de la autora, su conversión y el «seguí» del análisis de A2.2; después de su commit, N5b v2;
+  - con el FRENO de la etapa e, el 191 v3, los comandos de T v4 y la entrada, controlada otra vez;
+  - con el commit del banco, la etapa a del runner, v2.
+- Las secciones anteriores no se editan.
