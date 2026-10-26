@@ -1,0 +1,796 @@
+{
+  "contrato": "agentes/contrato_metadata.md v1",
+  "unidad": "A2.2",
+  "generado": "2026-10-25T21:06:26+00:00",
+  "pregunta_id": "N1-EV2F-021-kg",
+  "brazo": "kg",
+  "modo": "real",
+  "sesion": {
+    "session_id": "8bd20574-c5fd-4ccc-8d41-98d164589923",
+    "copia_jsonl": "data/experiment/banco_mcp/a2_2/resultados/n1/sesion_N1-EV2F-021-kg.jsonl",
+    "cwd": "~/INGENIERIA IA/TESIS/fuera_del_repo/banco_sesiones/cwd",
+    "claude_code_version": "2.1.241 (Claude Code)",
+    "claude_code_version_en_init": "2.1.241",
+    "carpeta_configuracion": "~/INGENIERIA IA/TESIS/fuera_del_repo/banco_sesiones/config/8bd20574-c5fd-4ccc-8d41-98d164589923",
+    "copia_transcripcion": "sí",
+    "copia_resultados_en_disco": "no"
+  },
+  "modelos_R8": {
+    "declarado": "claude-sonnet-5",
+    "inventario_observado": [
+      "claude-haiku-4-5-20251001",
+      "claude-sonnet-5"
+    ],
+    "uso_por_modelo": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 1484,
+        "outputTokens": 19,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.001579,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty"
+      },
+      "claude-sonnet-5": {
+        "inputTokens": 25,
+        "outputTokens": 4578,
+        "cacheReadInputTokens": 156834,
+        "cacheCreationInputTokens": 21802,
+        "webSearchRequests": 0,
+        "costUSD": 0.1317018,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "canonicalModel": "claude-sonnet-5",
+        "provider": "firstParty"
+      }
+    },
+    "nota": "una sesión usa más de un modelo (b08095a, B1): el inventario es la verdad, el declarado es la intención"
+  },
+  "credenciales": {
+    "via_declarada": "api",
+    "apiKeySource_en_init": "ANTHROPIC_API_KEY"
+  },
+  "servidores_mcp": {
+    "en_init": [
+      {
+        "name": "kg",
+        "status": "connected"
+      }
+    ],
+    "servidor_log_r1": "mcp_kg",
+    "version_servidor": "1.0",
+    "config": {
+      "servidor": "mcp_kg",
+      "version": "1.0",
+      "backend": "neo4j",
+      "grafo": "KG_Tanda0_Desarrollo_r2b_rs1",
+      "modo": "fulltext",
+      "kg_sha256_esperado": "acb26dca0885e9ea83ab02637f15c1dac57885f0cf017c5fb16173ac7dfcac31",
+      "firma_tools": "v1 (harness.TOOLS, laudo R2 opcion B)",
+      "nota": "A2.1, tramo 1: brazo del grafo de A2 con el grafo de desarrollo re-sellado (clave KG_Tanda0_Desarrollo_r2b_rs1 de data/experiment/neo4j/grafos.py, commit_sellado 4fe6ece), la version posterior de 6e756043; es el de D-A. Su carga en Neo4j y su test positivo son precondicion de A2.2. modo fulltext = indice Lucene/BM25 de Neo4j (base C10 laudada)."
+    },
+    "config_sha256": "d80084b62a2e83376eda300ef766dc616c044dcbde81d0bd3a157acdc800b59a",
+    "fuente": {
+      "backend": "neo4j",
+      "grafo": "KG_Tanda0_Desarrollo_r2b_rs1",
+      "modo": "fulltext",
+      "indice_fulltext": "nodos_fulltext_kg_tanda0_desarrollo_r2b_rs1",
+      "kg_path": "data/experiment/reextraccion_v2/corpus_tanda0/ens_desarrollo_r2b_rs1/r2/kg.json",
+      "kg_sha256": "acb26dca0885e9ea83ab02637f15c1dac57885f0cf017c5fb16173ac7dfcac31",
+      "kg_meta_sha256": "acb26dca0885e9ea83ab02637f15c1dac57885f0cf017c5fb16173ac7dfcac31",
+      "n_nodos": 6962,
+      "n_aristas": 23311,
+      "neo4j_index_sha256": "5f38db1b915caf8a4cd71e0f7f0d281ba5a9ca6867d327a9e0f4aac67cd2d0c1"
+    },
+    "entorno_servidor": {
+      "python": "3.10.13",
+      "platform": "macOS-15.7.1-arm64-arm-64bit",
+      "mcp": "1.29.0",
+      "neo4j": "6.2.0",
+      "config_path": "data/experiment/banco_mcp/mcp_kg/config_mcp_kg_a2_desarrollo_r2b_rs1.json"
+    }
+  },
+  "sha_fuentes": {
+    "kg_sha256": "acb26dca0885e9ea83ab02637f15c1dac57885f0cf017c5fb16173ac7dfcac31",
+    "sha256_matriz_vectorial": null
+  },
+  "harness_R10": {
+    "modo": "--bare",
+    "permission_mode": "dontAsk",
+    "claude_code_version": "2.1.241 (Claude Code)",
+    "claude_code_version_sellada": "2.1.241",
+    "coincide_con_sellada": true,
+    "flags_estructurales": [
+      "--bare",
+      "-p",
+      "--model",
+      "claude-sonnet-5",
+      "--output-format",
+      "stream-json",
+      "--verbose",
+      "--tools",
+      "",
+      "--strict-mcp-config",
+      "--mcp-config",
+      "a2_2/mcp_kg_rs1.json",
+      "--permission-mode",
+      "dontAsk",
+      "--allowedTools",
+      "mcp__kg__*",
+      "--disallowedTools",
+      "Bash,Read,Edit,Write,Glob,Grep,WebFetch,WebSearch,Agent,NotebookEdit",
+      "--max-turns",
+      "32",
+      "--max-budget-usd",
+      "1.8"
+    ],
+    "tools_denegadas": "Bash,Read,Edit,Write,Glob,Grep,WebFetch,WebSearch,Agent,NotebookEdit",
+    "tools_builtin": "\"\" (ninguna)",
+    "config_agentes_sha256": "fd4ce4e4ce7d4c7cd0550af1ed2ba7d2cbd3d1a2301ee82060ba7d6eba4697c0",
+    "sha_identidad_pipeline": "d1a2522b7582c7e3eca29fbf38dbf84c6c665c9320f9d4ba1a5213d12c56ccef",
+    "lanzador": [
+      {
+        "ruta": "data/experiment/banco_mcp/agentes/lanzar_agente.py",
+        "sha256": "2f00742038324a8e01122d574981f50a4c23a3927f88aad6b1fe7c4cc8e3e0c5"
+      },
+      {
+        "ruta": "data/experiment/banco_mcp/a2_2/lanzar_agente_a2_2.py",
+        "sha256": "c498271e7f2a163f78ab5b789c01773bdd8ef80789807e4c0ccc18b2d927f662"
+      }
+    ]
+  },
+  "inventario_tools_R6": {
+    "tools_en_init": [
+      "mcp__kg__buscar_nodos",
+      "mcp__kg__ver_nodo",
+      "mcp__kg__ver_vecinos"
+    ],
+    "esperadas": [
+      "mcp__kg__buscar_nodos",
+      "mcp__kg__ver_nodo",
+      "mcp__kg__ver_vecinos"
+    ],
+    "coincide": true
+  },
+  "corte_R5": {
+    "max_turns": 32,
+    "tope_tool_calls_prompt": 30,
+    "max_budget_usd": 1.8,
+    "num_turns_observado": 26,
+    "n_tool_calls_observado": 25,
+    "corte_disparado": null
+  },
+  "completitud_R3": {
+    "completa": true,
+    "motivos_incompleta": [],
+    "regla": "sin marca de completitud la traza se excluye de la métrica y se declara; nunca se atribuye"
+  },
+  "mapa_R7": [
+    {
+      "n": 1,
+      "tool_use_id": "toolu_01Fz2RpxJCAra6PtoL44yKE1",
+      "tool": "mcp__kg__buscar_nodos",
+      "input": {
+        "consulta": "aumento de capital aportes"
+      },
+      "call_id_log": "mcp_kg-81543-1",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 2,
+      "tool_use_id": "toolu_01MjGChPoXhwAWxYfMemoqtC",
+      "tool": "mcp__kg__buscar_nodos",
+      "input": {
+        "consulta": "aportes de capital efectivo"
+      },
+      "call_id_log": "mcp_kg-81543-2",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 3,
+      "tool_use_id": "toolu_01XRK71VEmmGKbREdWBUYaxe",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Obligacion_los_aportes_de_capital_deben_ser_efectuados_en_efectivo_a_los_fines_de_todas_las_6e3ef1"
+      },
+      "call_id_log": "mcp_kg-81543-3",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 4,
+      "tool_use_id": "toolu_019V85iMZHdg5A436LcSdQVJ",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Excepcion_quedan_exceptuados_del_regimen_de_aportes_en_efectivo_la_negociacion_de_acciones_33d6a6"
+      },
+      "call_id_log": "mcp_kg-81543-4",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 5,
+      "tool_use_id": "toolu_01WyJzVs8FMmvnp4tuBVSy3E",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Excepcion_excepcionalmente_mediando_autorizacion_previa_de_la_sefyc_podran_admitirse_aport_e91a54"
+      },
+      "call_id_log": "mcp_kg-81543-5",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 6,
+      "tool_use_id": "toolu_01NLrqAPC9SK42jrA5erpLRH",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Operacion_aportes_de_capital_en_efectivo__cap_8_6_df62f3"
+      },
+      "call_id_log": "mcp_kg-81543-6",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 7,
+      "tool_use_id": "toolu_016fyB3qpkh5jZEohH9i1zQb",
+      "tool": "mcp__kg__buscar_nodos",
+      "input": {
+        "consulta": "computo aumento de capital hasta su aprobación"
+      },
+      "call_id_log": "mcp_kg-81543-7",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 8,
+      "tool_use_id": "toolu_01DXmesUhdGpBjY8tGSfxa2v",
+      "tool": "mcp__kg__ver_vecinos",
+      "input": {
+        "id": "Operacion_aportes_de_capital_en_efectivo__cap_8_6_df62f3",
+        "direccion": "ambas"
+      },
+      "call_id_log": "mcp_kg-81543-8",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 9,
+      "tool_use_id": "toolu_01V828QqzfDazZXze95CsguJ",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_b1e95c"
+      },
+      "call_id_log": "mcp_kg-81543-9",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 10,
+      "tool_use_id": "toolu_01W8ZxvHANxNsTiKNBCFMseA",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Obligacion_hasta_tanto_se_le_haya_notificado_la_aprobacion_de_los_aportes_y_en_la_medida_en_21558e"
+      },
+      "call_id_log": "mcp_kg-81543-10",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 11,
+      "tool_use_id": "toolu_01Y2H18dynArWHEt5eojMx16",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Operacion_solicitud_de_autorizacion_de_aportes_de_capital__cap_8_7_28640c"
+      },
+      "call_id_log": "mcp_kg-81543-11",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 12,
+      "tool_use_id": "toolu_01Pu1zRgfD2eMUU2gQqCg3MM",
+      "tool": "mcp__kg__buscar_nodos",
+      "input": {
+        "consulta": "8.6.1 8.6.2 8.6.3 instrumentos aportes capital"
+      },
+      "call_id_log": "mcp_kg-81543-12",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 13,
+      "tool_use_id": "toolu_01FCz9jtqMsXRe7HkEcviK4E",
+      "tool": "mcp__kg__ver_vecinos",
+      "input": {
+        "id": "Excepcion_excepcionalmente_mediando_autorizacion_previa_de_la_sefyc_podran_admitirse_aport_e91a54",
+        "direccion": "ambas"
+      },
+      "call_id_log": "mcp_kg-81543-13",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 14,
+      "tool_use_id": "toolu_01EkacJaAjz1py8xmdSuvvRd",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Operacion_aporte_en_instrumentos_de_regulacion_monetaria_del_bcra__cap_8_6_2_8d753b"
+      },
+      "call_id_log": "mcp_kg-81543-14",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 15,
+      "tool_use_id": "toolu_01TUosW2y5AjCyfZ4C7S1XnJ",
+      "tool": "mcp__kg__buscar_nodos",
+      "input": {
+        "consulta": "aporte en títulos públicos valorización capital"
+      },
+      "call_id_log": "mcp_kg-81543-15",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 16,
+      "tool_use_id": "toolu_01BNPKtmWudhfC7ZiTLdnvVf",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Operacion_aporte_en_titulos_valores_publicos_nacionales__cap_8_6_1_2ece01"
+      },
+      "call_id_log": "mcp_kg-81543-16",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 17,
+      "tool_use_id": "toolu_01Cn8U3FkSjr5ro7aNMp9YNg",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Obligacion_los_aportes_en_titulos_valores_publicos_nacionales_deben_registrarse_a_su_valor__4f16fd"
+      },
+      "call_id_log": "mcp_kg-81543-17",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 18,
+      "tool_use_id": "toolu_01N5cNEH4ppZiAShwQWvhr5o",
+      "tool": "mcp__kg__ver_vecinos",
+      "input": {
+        "id": "Operacion_aporte_en_instrumentos_de_regulacion_monetaria_del_bcra__cap_8_6_2_8d753b",
+        "direccion": "ambas"
+      },
+      "call_id_log": "mcp_kg-81543-18",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 19,
+      "tool_use_id": "toolu_01GXLYQPedg8bwN6SuE8Kb94",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Obligacion_la_decision_de_capitalizacion_de_los_conceptos_indicados_en_los_puntos_8_6_1_a_8_78ce2f"
+      },
+      "call_id_log": "mcp_kg-81543-19",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 20,
+      "tool_use_id": "toolu_01DzTiNTNjDvBRjMoNcPrtkF",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Operacion_registro_de_aportes_a_valor_de_mercado__cap_8_6_b7576a"
+      },
+      "call_id_log": "mcp_kg-81543-20",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 21,
+      "tool_use_id": "toolu_01Nu1gWW6hf3Go39FJaTUvUp",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Obligacion_para_aportes_de_capital_referidos_en_punto_8_6_3_los_instrumentos_de_deuda_deber_30479c"
+      },
+      "call_id_log": "mcp_kg-81543-21",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 22,
+      "tool_use_id": "toolu_01KE6TVfS1tL8MGNPZRWChqD",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Restriccion_no_se_admitiran_los_aportes_de_instrumentos_del_punto_8_6_3_cuando_no_se_verifiq_0ce2c7"
+      },
+      "call_id_log": "mcp_kg-81543-22",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 23,
+      "tool_use_id": "toolu_01REo2iFC3rDT1gERYqZ7wjT",
+      "tool": "mcp__kg__buscar_nodos",
+      "input": {
+        "consulta": "8.6.3 instrumentos de deuda capitalización"
+      },
+      "call_id_log": "mcp_kg-81543-23",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 24,
+      "tool_use_id": "toolu_013vVnoYE2vhf161oDk5RBUU",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Operacion_registro_de_aportes_punto_8_6_3_a_valor_de_mercado_o_precio_de_autoridad__cap_8__bb5f07"
+      },
+      "call_id_log": "mcp_kg-81543-24",
+      "coincide_tool_input": true
+    },
+    {
+      "n": 25,
+      "tool_use_id": "toolu_01SnD7hZGh1UQFkWV27FDb4s",
+      "tool": "mcp__kg__ver_nodo",
+      "input": {
+        "id": "Restriccion_los_aportes_en_titulos_valores_publicos_nacionales_requieren_autorizacion_previa_76887b"
+      },
+      "call_id_log": "mcp_kg-81543-25",
+      "coincide_tool_input": true
+    }
+  ],
+  "tokens_R9": {
+    "por_llamada_api": [
+      {
+        "message_id": "msg_011CgPdp19cf6aSG3UzaByni",
+        "usage_parcial_de_stream": true,
+        "uuid": "2c8430e4-e5c7-4f81-814b-11e39e626cad",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 1,
+        "output_tokens": 2,
+        "cache_creation_input_tokens": 1910,
+        "cache_read_input_tokens": 0
+      },
+      {
+        "message_id": "msg_011CgPdpB98kcS6jsuQb2Kga",
+        "usage_parcial_de_stream": true,
+        "uuid": "1e888b2c-3861-488a-ba53-2ed057f97e8c",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 3,
+        "cache_creation_input_tokens": 3609,
+        "cache_read_input_tokens": 1910
+      },
+      {
+        "message_id": "msg_011CgPdpT5pf8oGc2QtMwCx1",
+        "usage_parcial_de_stream": true,
+        "uuid": "5f0ec44d-9f8c-4918-a201-59c98f075da8",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 3,
+        "cache_creation_input_tokens": 1491,
+        "cache_read_input_tokens": 5519
+      },
+      {
+        "message_id": "msg_011CgPdperFmbm8y1oLfeBno",
+        "usage_parcial_de_stream": true,
+        "uuid": "f700df8f-4983-4b94-a242-eff202493cb6",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 2,
+        "cache_creation_input_tokens": 2246,
+        "cache_read_input_tokens": 7010
+      },
+      {
+        "message_id": "msg_011CgPdpuCCny6Yy9MEc3bLE",
+        "usage_parcial_de_stream": true,
+        "uuid": "cf5291eb-3b7b-40e1-851b-640b926ad5db",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 3,
+        "cache_creation_input_tokens": 1189,
+        "cache_read_input_tokens": 9256
+      },
+      {
+        "message_id": "msg_011CgPdq77Ztza8TD2vT1BWi",
+        "usage_parcial_de_stream": true,
+        "uuid": "bc33d455-c93c-402c-88b7-9b360e035e0e",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 2,
+        "cache_creation_input_tokens": 2461,
+        "cache_read_input_tokens": 10445
+      },
+      {
+        "message_id": "msg_011CgPdqLcAopYKZUmpr6NvW",
+        "usage_parcial_de_stream": true,
+        "uuid": "16b8615e-e4c1-4a1c-87b9-ab6673a5417a",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 2,
+        "cache_creation_input_tokens": 2236,
+        "cache_read_input_tokens": 12906
+      },
+      {
+        "message_id": "msg_011CgPdqXwJVJCDwtegPJzsR",
+        "usage_parcial_de_stream": true,
+        "uuid": "8dcf13b2-cad2-4992-8575-645f66bc8fd5",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 10,
+        "cache_creation_input_tokens": 791,
+        "cache_read_input_tokens": 15142
+      },
+      {
+        "message_id": "msg_011CgPdqgQHhxMBCF8hNV5VR",
+        "usage_parcial_de_stream": true,
+        "uuid": "141783ac-f28e-426b-84ce-475e3af359ac",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 5,
+        "cache_creation_input_tokens": 1316,
+        "cache_read_input_tokens": 15933
+      },
+      {
+        "message_id": "msg_011CgPdr2ggcrg3A9wkAA2N4",
+        "usage_parcial_de_stream": true,
+        "uuid": "860f82ff-c65e-4420-8129-4adb35439161",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 8,
+        "cache_creation_input_tokens": 1770,
+        "cache_read_input_tokens": 17249
+      },
+      {
+        "message_id": "msg_011CgPdrCazfD8rxXyGziNmY",
+        "usage_parcial_de_stream": true,
+        "uuid": "a0edd19c-91b6-466e-a04f-f928a8fd8b8b",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 9,
+        "cache_creation_input_tokens": 1998,
+        "cache_read_input_tokens": 19019
+      },
+      {
+        "message_id": "msg_011CgPdrLjtALnfiiNERxQnT",
+        "usage_parcial_de_stream": true,
+        "uuid": "5eb091c9-3ede-40a8-9486-f952813b02eb",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 4,
+        "cache_creation_input_tokens": 411,
+        "cache_read_input_tokens": 21017
+      },
+      {
+        "message_id": "msg_011CgPdrW2jDb5XCyWevdrVc",
+        "usage_parcial_de_stream": true,
+        "uuid": "a36d2e8d-6528-47a9-809e-108ab7da295b",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 3,
+        "cache_creation_input_tokens": 374,
+        "cache_read_input_tokens": 21428
+      }
+    ],
+    "costo_recomputado": {
+      "total_usd": 0.133281,
+      "por_modelo": {
+        "claude-haiku-4-5-20251001": 0.001579,
+        "claude-sonnet-5": 0.131702
+      },
+      "modelos_sin_precio_sellado": []
+    },
+    "total_cost_usd_cli_solo_para_contraste": 0.1332808,
+    "precios_sellados_sha256": "6f2520ee56755fc2f43e689d0eb194c3305a6dcee257acae37d167f7e549fc2d"
+  },
+  "final_json_R4": {
+    "respuesta": "Según el Texto Ordenado de Capitales Mínimos (Sección 8, puntos 8.6 y 8.7), la regla general es que los aportes de capital deben ser efectuados en efectivo, a los fines de todas las reglamentaciones vinculadas al capital, su integración y aumento (incluso los referidos a planes de regularización y saneamiento).\n\nExcepciones admitidas al régimen de efectivo:\n1) Quedan exceptuadas del régimen la negociación de acciones y los aportes irrevocables para futuros aumentos de capital, que se rigen por los puntos 5.1 a 5.3 de las normas sobre Autorización y composición del capital de entidades financieras.\n2) Mediando autorización previa de la Superintendencia de Entidades Financieras y Cambiarias (SEFyC), excepcionalmente se pueden admitir aportes en especie, mediante los instrumentos previstos en los puntos 8.6.1 a 8.6.3:\n   - 8.6.1: Títulos valores públicos nacionales, con autorización previa de la SEFyC.\n   - 8.6.2: Instrumentos de regulación monetaria del BCRA, también sujetos a autorización previa de la SEFyC.\n   - 8.6.3: Instrumentos de deuda (incluida la capitalización de deuda, p. ej. deuda subordinada), que deben estar registrados en el último estado financiero anual o trimestral inmediato anterior a la fecha de convocatoria de la Asamblea. La capitalización de deuda no puede limitar o suspender el derecho de preferencia del art. 194 de la Ley General de Sociedades. Cuando se trate de instrumentos de deuda computables como Capital Adicional (CA) o Patrimonio Neto Complementario (PNc), debe tenerse en cuenta lo dispuesto en el punto 8.3.4. No se admiten estos aportes si no se verifica el cumplimiento de las condiciones de valorización exigidas.\n\nValuación de los aportes en especie:\n- Los aportes de los puntos 8.6.1 y 8.6.2 (títulos públicos e instrumentos de regulación monetaria) se registran a su valor de mercado, entendido como el que tienen cuando cuentan con cotización habitual en bolsas y mercados regulados del país o del exterior, con transacciones relevantes cuyo monto no distorsione significativamente la cotización.\n- Los aportes del punto 8.6.3 (instrumentos de deuda) se registran a su valor de mercado o, si la entidad financiera realiza oferta pública de sus acciones, al precio que fije la autoridad de contralor competente del mercado correspondiente.\n\nProcedimiento y cómputo hasta la aprobación:\n- La decisión de capitalización de los conceptos de los puntos 8.6.1 a 8.6.3 adoptada por la Asamblea (u órgano equivalente) es ad referéndum de su aprobación por la SEFyC o, en su caso, el BCRA, conforme a los puntos 5.1 a 5.3 de las normas sobre Autorización y composición del capital de entidades financieras.\n- La solicitud de autorización de los aportes debe acompañarse de copia del acta de Asamblea certificada por escribano público.\n- Hasta tanto se le haya notificado la aprobación de los aportes, y en la medida en que éstos hayan sido contabilizados, el importe se deduce del respectivo componente de la Responsabilidad Patrimonial Computable (RPC) de la entidad financiera. Es decir, mientras no exista notificación formal de aprobación, el aporte contabilizado no se computa como RPC sino que se resta de ella.",
+    "citas": [
+      "TO_capitales_minimos_actual.pdf | Punto 8.6",
+      "TO_capitales_minimos_actual.pdf | Punto 8.6.1",
+      "TO_capitales_minimos_actual.pdf | Punto 8.6.2",
+      "TO_capitales_minimos_actual.pdf | Punto 8.6.3",
+      "TO_capitales_minimos_actual.pdf | Punto 8.7"
+    ],
+    "respondible": true
+  },
+  "permission_denials": [],
+  "log_r1": {
+    "existe": true,
+    "ruta": "data/experiment/banco_mcp/a2_2/resultados/n1/log_r1_N1-EV2F-021-kg.jsonl",
+    "sha256": "fb1d1c73ac45dd97c2d1b772702c52a79055bef0f9ec9868192a03e417d94566",
+    "n_llamadas": 25
+  },
+  "duracion_s": 49.0,
+  "hb2": {
+    "max_turns_efectivo": 32,
+    "max_turns_de_la_config": 32,
+    "num_turns": 26,
+    "subtype": "success",
+    "is_error": false,
+    "stop_reason": "end_turn",
+    "n_mensajes_asistente": 13,
+    "n_tool_use": 25,
+    "n_tool_result": 25,
+    "n_eventos_user": 25,
+    "n_mensajes_con_tool_use": 12,
+    "max_tool_use_por_mensaje": 4,
+    "n_llamadas_log_r1": 25,
+    "log_r1_con_fin": true,
+    "corte_disparado": false,
+    "hay_result": true
+  },
+  "control_disco": {
+    "regla": "frena si un tool_result de la transcripción trae <persisted-output> o si tool_results_<id>/ existe y no está vacía",
+    "transcripcion_copiada": true,
+    "tool_results_con_la_marca": [],
+    "carpeta_tool_results": "no existe",
+    "archivos_en_tool_results": [],
+    "largos_resultados_utf16_log_r1": [
+      {
+        "n": 1,
+        "tool": "buscar_nodos",
+        "unidades_utf16": 3793,
+        "caracteres": 3793
+      },
+      {
+        "n": 2,
+        "tool": "buscar_nodos",
+        "unidades_utf16": 3880,
+        "caracteres": 3880
+      },
+      {
+        "n": 3,
+        "tool": "ver_nodo",
+        "unidades_utf16": 528,
+        "caracteres": 528
+      },
+      {
+        "n": 4,
+        "tool": "ver_nodo",
+        "unidades_utf16": 593,
+        "caracteres": 593
+      },
+      {
+        "n": 5,
+        "tool": "ver_nodo",
+        "unidades_utf16": 460,
+        "caracteres": 460
+      },
+      {
+        "n": 6,
+        "tool": "ver_nodo",
+        "unidades_utf16": 500,
+        "caracteres": 500
+      },
+      {
+        "n": 7,
+        "tool": "buscar_nodos",
+        "unidades_utf16": 3997,
+        "caracteres": 3997
+      },
+      {
+        "n": 8,
+        "tool": "ver_vecinos",
+        "unidades_utf16": 486,
+        "caracteres": 486
+      },
+      {
+        "n": 9,
+        "tool": "ver_nodo",
+        "unidades_utf16": 542,
+        "caracteres": 542
+      },
+      {
+        "n": 10,
+        "tool": "ver_nodo",
+        "unidades_utf16": 563,
+        "caracteres": 563
+      },
+      {
+        "n": 11,
+        "tool": "ver_nodo",
+        "unidades_utf16": 516,
+        "caracteres": 516
+      },
+      {
+        "n": 12,
+        "tool": "buscar_nodos",
+        "unidades_utf16": 3557,
+        "caracteres": 3557
+      },
+      {
+        "n": 13,
+        "tool": "ver_vecinos",
+        "unidades_utf16": 843,
+        "caracteres": 843
+      },
+      {
+        "n": 14,
+        "tool": "ver_nodo",
+        "unidades_utf16": 465,
+        "caracteres": 465
+      },
+      {
+        "n": 15,
+        "tool": "buscar_nodos",
+        "unidades_utf16": 3892,
+        "caracteres": 3892
+      },
+      {
+        "n": 16,
+        "tool": "ver_nodo",
+        "unidades_utf16": 435,
+        "caracteres": 435
+      },
+      {
+        "n": 17,
+        "tool": "ver_nodo",
+        "unidades_utf16": 650,
+        "caracteres": 650
+      },
+      {
+        "n": 18,
+        "tool": "ver_vecinos",
+        "unidades_utf16": 2342,
+        "caracteres": 2342
+      },
+      {
+        "n": 19,
+        "tool": "ver_nodo",
+        "unidades_utf16": 680,
+        "caracteres": 680
+      },
+      {
+        "n": 20,
+        "tool": "ver_nodo",
+        "unidades_utf16": 605,
+        "caracteres": 605
+      },
+      {
+        "n": 21,
+        "tool": "ver_nodo",
+        "unidades_utf16": 580,
+        "caracteres": 580
+      },
+      {
+        "n": 22,
+        "tool": "ver_nodo",
+        "unidades_utf16": 539,
+        "caracteres": 539
+      },
+      {
+        "n": 23,
+        "tool": "buscar_nodos",
+        "unidades_utf16": 4108,
+        "caracteres": 4108
+      },
+      {
+        "n": 24,
+        "tool": "ver_nodo",
+        "unidades_utf16": 619,
+        "caracteres": 619
+      },
+      {
+        "n": 25,
+        "tool": "ver_nodo",
+        "unidades_utf16": 450,
+        "caracteres": 450
+      }
+    ],
+    "largo_mayor_utf16": 4108,
+    "largo_mayor_utf16_en_la_transcripcion": 4108,
+    "tope_anotado_caracteres": 200000,
+    "mayor_supera_el_tope": false,
+    "FRENA": false
+  },
+  "valor_remoto_por_tool": {
+    "clave": "tengu_velvet_ibis",
+    "archivo": "existe",
+    "existe": true,
+    "apariciones": [
+      {
+        "tools": {},
+        "tools_sin_numero": []
+      }
+    ],
+    "tools_del_banco_con_numero": []
+  }
+}
