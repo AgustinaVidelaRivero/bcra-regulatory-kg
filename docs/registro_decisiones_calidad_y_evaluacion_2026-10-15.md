@@ -5089,3 +5089,80 @@ Decisiones y hechos de la autora del 26/10/2026, recibidos a las 11:59:01, con u
   - con el FRENO de la etapa e, el 191 v3, los comandos de T v4 y la entrada, controlada otra vez;
   - con el commit del banco, la etapa a del runner, v2.
 - Las secciones anteriores no se editan.
+
+## 121. El lunes, desde las 14:05: las 300, la familia 6, el testigo, la etapa e, P3, el banco y las adjudicaciones (26/10/2026)
+
+Decisiones y hechos de la autora del 26/10/2026, recibidos a las 14:05:07, con agregados a las 14:07:29, a las 14:08:48, a las 14:25:27, a
+las 14:25:38 y a las 14:30:07 (hoja de ruta de la mesa, §279), sobre la §278 de la mesa.
+
+- **El 198:** la autora informó que lo corrió con su push. Por git log, a las 14:57 no está: HEAD y `origin/main` siguen en `2addcf32`, el
+  registro de HEAD no trae la §120 y el reflog termina en `2addcf32`. Que haya corrido: PENDIENTE de la autora. Por qué no entró: NO
+  VERIFICADO. Una causa posible es su guarda: frena si un proceso nombra `correr_prueba_T_v2.py`, y el selftest del corredor del juez v2
+  lo nombra.
+- **Lo que pegó** (según la autora): el agregado del testigo en la sesión del banco y el de las 300 en la del juez v2. Del título del 197,
+  tal cual: «Lo de «losdesvios» fue un error mío al copiar de la terminal: el título del 197 está bien.»
+- **Las decisiones de las 14:05:07, tal cual:**
+  1. «Si las 300 no se completan, se informa como propusiste: la precisión de T con mis 100, como en el punto 10 de la enmienda 4; al
+     lado, la prueba de la v2 sobre mis 100 como su validación; las 300 como no completadas, con sus intentos, sus motivos y el gasto
+     contra los USD 125; y ninguna cifra de las fichas de las 300 que sí se juzgaron.»
+  2. «Los dos bloques de la familia 6 se rehacen con tu «seguí», después del banco y nunca al lado de los índices, y van al repo en un
+     commit chico.»
+  3. «El testigo va con mi ~/.claude/CLAUDE.md incluido.»
+  - Del banco: «a. El humo usa la config de prueba que armó (paralelo/config_agentes_n6_prueba.json), declarada, porque mide los límites de
+    la cuenta y no la calidad. B6.3 usa la de N7, sellada. Decime si algo de la config de prueba no sirve para el humo.», «b. El freno del
+    humo es de USD 6, con un tope de USD 8, para que entren tres sesiones a la vez con la reserva de 1,80 por sesión.», «c. La fecha de cada
+    sesión sale del reloj del lanzador al empezarla, y se declara que el agente no recibe la fecha en su pedido, como en A2.2. Si el testigo
+    no controla que el pedido no trae la fecha, sumalo en el «seguí».», «d. El patrón de la extracción no ve un script con un espacio en la
+    ruta, como la del repo. Corregilo donde se use.» y «e. La ejecutora mostró en su consola la contraseña de desarrollo de Neo4j, que está
+    en el compose del repo. No quedó en ningún archivo del paquete. Proponeme qué hacer con esa contraseña antes de publicar el repo.»
+- **Los agregados, tal cual:**
+  - 14:07:29 (P3): «Si tu revisión da bien, decido: P3 no se vuelve a correr, y sus desvíos (las tandas anteriores en el contexto de la
+    sesión, el PDF que ya había leído para la tanda 2 y el caso de borde) van a la próxima nota de B6.3, como los de las tandas 1 y 2.
+    Después sellá la relevancia de las 96 (H-10).»
+  - 14:25:27 (el testigo): «Lo que decidí, tal cual: rige la opción (a). «Ningún pedido sale de la máquina» se lee como «ningún pedido al
+    modelo». Según la documentación de Claude Code, ese tráfico es el operativo del CLI (las métricas, que no llevan código, prompts ni
+    rutas, y la consulta de los feature flags), el mismo que tuvieron las sesiones de A2.2. No cambio el lanzador sellado antes de B6.3. Va
+    declarado en la próxima nota de B6.3.» Pidió sumar al «seguí» del banco que el testigo controle que `system` y `tools` sean iguales en
+    las sesiones de un mismo brazo y configuración, y la versión integrada del test con la opción (a).
+  - 14:30:07 (las adjudicaciones de A2.2): las selló a las 14:28:58 con el sellador de la mesa: «Las marcas son mías, decididas a ciegas.»
+- **P3, la tanda 3,** por código (`decisiones_279_mesa/p3/`, 19 de 19): rige la decisión de las 14:07:29. **La relevancia de las 96**
+  (H-10), sellada por la mesa a las 14:15:20 (`relevancia_96_B63.json`, `a814b455…`).
+- **La etapa e del juez v2 con las 300,** como una sola entrega (`decisiones_279_mesa/juez_v2/`, 17 de 17): los dos paquetes (`545802ef…`
+  y la primera entrega, `4a759ec2…`), la congelación (87 de 87), los dos selftests en una copia de la mesa (101 de 101 y 149 de 149, los
+  de la etapa d y los de la primera entrega iguales), los dos casos del análisis y los tres del corredor a los que les cambió la condición
+  (el cambio, el mínimo), y el orden nuevo del corredor (las bases previas después de las fichas, las refs y el análisis de la prueba).
+  - **Un caso que la regla de la corrida cortada no prevé,** de la mesa: en un mismo intento, una repetición corta por infraestructura y
+    otra por el tope o el freno. La declaración que acepta el análisis pide la infraestructura con sus 3 intentos (lo escribió la mesa en el
+    «seguí» de la etapa e). El comando de la mesa lo frena. La propuesta, PREPARADA: que el análisis acepte la infraestructura con menos
+    intentos solo si otra repetición trae el tope o el freno. Si va: PENDIENTE de la autora.
+  - **El 191 v3:** la lista de las etapas c, d y e, 30 archivos (`e6ab3637…`), y la nota al pie del pre-registro de tripletas. PREPARADO.
+  - **Los comandos de T, v4,** probados en areneros con el corredor real y el cliente simulado de la v2 (`decisiones_279_mesa/T/`, 25 de
+    25): dos cortes por infraestructura en una repetición, con el tercer intento que descuenta las bases de las dos; el proceso muerto;
+    el tope y el freno; el caso que la regla no prevé; y las 300 con un corte.
+- **El banco con su testigo,** los trece criterios juntos (`decisiones_279_mesa/banco/`, 15 de 15): el paquete en sus tres copias
+  (`2c52d7cc…`); la copia del repo, 2357 archivos de HEAD con su blob y ninguno distinto; los doce criterios en OK; el testigo, con todo lo
+  que pide salvo el tráfico.
+  - **a:** la configuración de prueba sirve para el humo: el modelo, el modo del harness, la versión sellada del CLI y R5 son los de A2.2, y
+    los archivos que nombra, los de HEAD. Su lanzador pasa el entorno del brazo de fragmentos al del grafo (`BANCO_VENV_VECTOR`): para B6.3
+    se resuelve sellado, en la etapa a del runner.
+  - **b:** con USD 6 entran tres sesiones (3 × 1,80 = 5,40).
+  - **c:** el testigo no controla la fecha: va en el «seguí».
+  - **d:** el patrón de la extracción del despacho del banco v7 (de la mesa) era el de la v1. La v2 de la §198, que ya usa el juez v1, ve
+    las rutas con espacios: 12 de 12 casos, contra 9 de 12. Se usa en el lanzador del lote del banco; va en el «seguí».
+  - **e:** la propuesta de la mesa para la contraseña de desarrollo, para la autora: rotarla antes de publicar, porque está en la historia
+    del repo y con la rotación el valor viejo deja de servir; pasarla a una variable de entorno, con el archivo de entorno ignorado y uno de
+    ejemplo sin el valor (tocar el `.gitignore` pide su mandato); y decidir si se publica la historia o una instantánea. La mesa no la
+    imprime ni la escribe.
+  - **La versión del CLI:** las 231 sesiones de A2.2 corrieron con la 2.1.241, la sellada, en `claude --version` y en su `system/init`; el
+    `claude` del PATH apunta a esa versión; las sesiones corren con el autoupdater apagado. El lanzador registra la versión pero no frena si
+    cambia: que no cambie a mitad de B6.3 no está garantizado por el código. El «seguí» del banco suma la guarda.
+- **Las adjudicaciones de A2.2,** por código (`decisiones_279_mesa/adjudicaciones/`, 7 de 7): el sello; el material, byte a byte el que
+  rehace el armador desde HEAD; 8 ids opacos, cada uno una respuesta en `requiere_adjudicacion`. PREPARADOS: el 201, con el material, su
+  planilla sellada, la clave y los veredictos, y el «seguí» del análisis de A2.2.
+- **El calendario v17** (`decisiones_279_mesa/calendario/`): en el escenario central, con k 3 y 6 h por día, B6.3 lanza el martes 27 a
+  las 19:33, con 2,4 h de margen. En el alto no entra (14,4 h tarde). Con la palanca 4, la ventana hasta las 24, lanza el martes a las
+  22:48, con 1,1 h de margen; la 3, el juez de a 3, no alcanza sola, porque el cuello es la cadena de los índices y N6.
+- **Lo que sigue:** el 198, el 199, el 200 y el 201; el «seguí» del banco; con su FRENO, U-VERPUNTO y después los índices, de a uno; el
+  «seguí» del análisis de A2.2 y, con su commit, N5b v2; el 191 (v3, o v4 si va el arreglo del caso) y la prueba sobre T; el N, después
+  de N6.
+- Las secciones anteriores no se editan.
