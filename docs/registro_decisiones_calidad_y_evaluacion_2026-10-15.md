@@ -5295,3 +5295,74 @@ Hechos y pedido de la autora del 26/10/2026, recibidos a las 17:40:04 (hoja de r
   El commit no suma al repo ningún texto de B6.3 (la mesa, por código, sin imprimir ningún tramo).
 - **Este commit y el 208 no corren mientras la etapa a del runner escribe en `b63/`:** cada uno frena si `b63/` existe sin su FRENO.
 - Las secciones anteriores no se editan.
+
+## 125. El lunes, desde las 18:12: U-VERPUNTO con el servidor de HEAD, N5b, los descendientes de un punto y el capítulo 4 (26/10/2026)
+
+Decisiones y hechos de la autora del 26/10/2026, recibidos a las 18:12:40, con agregados a las 18:18:13, a las 18:19:05, a las 18:23:13 y
+a las 18:24:21 (hoja de ruta de la mesa, §284), sobre la §283 de la mesa.
+
+- **El FRENO de U-VERPUNTO** (la etapa b rehecha): frenó en su paso 0 sin escribir nada, porque el servidor de fragmentos de HEAD
+  (`cd68f329…`, del 142 v2) no es el que exige el script de su etapa b (`175baca6…`). Revisado por la mesa por código: el paquete
+  (`a3ee76cd…`) y el FRENO (`9f137f50…`); el servidor de HEAD da `cd68f329…`, antes del 142 v2 daba `82dc0610…`, y ninguna de sus 4
+  versiones en la historia del repo da `175baca6…`, que es el de la entrega del 142 del paquete de la mesa y el que copió la etapa b.
+  Entre los dos, la única diferencia es la anotación de tamaño en la definición de la herramienta (`_meta`); los resultados de
+  `buscar_pasajes` no cambian.
+- **La sesión de U-VERPUNTO,** tal cual (18:24:21): «el «seguí» de la §278 lo pegué por error en una sesión nueva
+  (fc7993d2-6000-483d-b714-6258dabaf486), abierta en fuera_del_repo/unav_verpunto/, y no en la de sus etapas a y b
+  (130328f7-17f4-435f-bbce-c6f4faf3fcea). No es que se retomó. La sesión nueva no tenía el contexto de esas etapas: restauró sus
+  paquetes desde la copia permanente contra su sha256 y copió su paquete nuevo a la carpeta permanente de 130328f7.» Queda declarado: la
+  etapa b rehecha la hizo otra sesión que las etapas a y b, sobre sus paquetes.
+- **Las decisiones, tal cual** (18:12:40):
+  1. «El servidor va por la opción (a): el de HEAD, que es el que va a usar B6.3. Si los dos bloques dan los sha256 de la etapa b
+     (c08073f1… y 37ae9130…), son los mismos; si no, quedan los rehechos con el servidor de HEAD y se declara.»
+  2. «Los controles 4 y 7: pasale vos, en el «seguí», los seis sha256 que necesitan, sacados por código del JSON de la estructura, sin que
+     la sesión lo abra. Si no se puede, proponeme otra opción que mantenga el control independiente.»
+  3. «La copia, con las exclusiones del rsync de la etapa a: sin el volumen de Neo4j ni tanda_final/.»
+  4. «Pegué la etapa a v2 de los índices, porque U-VERPUNTO frenó y no usa el denso. U-VERPUNTO sigue cuando frene la etapa a de los
+     índices, nunca a la vez.»
+- **La decisión 2:** se puede. El script de controles de la etapa b lee de la estructura de la §195 solo sha256 y números. La mesa los
+  sacó por código, sin imprimir nada más, a un JSON con la misma forma (`cc474bcf…`), que trae los seis sha256 de las líneas de la
+  pregunta y de la respuesta de los tres ejemplos; el script cambia solo la ruta. El control queda independiente del bloque del grafo de
+  HEAD.
+- **El «seguí» de U-VERPUNTO, PREPARADO,** para la sesión nueva y autosuficiente: lo que necesita de las etapas a y b, desde sus paquetes.
+  Va cuando frene la etapa a de los índices.
+- **El FRENO de N5b** (18:18:13), revisado por la mesa por código (8 de 8, `revisar_N5b_mesa.py`): el paquete (`fb844b98…`), igual en sus
+  dos copias; las cuentas por clase de los 39 criterios (con la regla, 7, 1, 4, 18, 6 y 3 no decidibles; con la lectura asistida, 8, 2,
+  4, 18, 6 y 1); la 2c, 18, con los 6 criterios de traza al tope de llamadas. Los tres puntos de la autora:
+  1. **la lectura asistida enmascarada** decidió por las claves de cada cita tres casos: EV2F-006, criterio 4, a 2a; EV2F-035, criterio 1,
+     a 1; y EV2F-011, criterio 2, no decidible;
+  2. **la exposición de EV2:** según el FRENO de N5b (§9, error 4), en la consola de su sesión salieron dos fragmentos de citas de EV2,
+     de EV2F-007, criterio 1, y de EV2F-019, criterio 2, al mostrar notas de la lectura asistida de N1. Ningún archivo de N5b los trae: la
+     mesa buscó, por código y sin imprimir ningún texto, las ventanas de 30 caracteres de las 40 preguntas, los 164 criterios y las 164
+     citas de EV2 en los 99 archivos de la sesión (su paquete en las dos copias, su scratchpad y su FRENO), y dio 0. En la transcripción
+     de la sesión hay 49 de las 102 ventanas de la cita de EV2F-007, criterio 1; de EV2F-019, criterio 2, ninguna (su cita tiene 8
+     caracteres: NO VERIFICADO por código); y además ventanas de la pregunta de EV2F-036 (20 de 129), de la cita de su criterio 1 (5 de
+     557) y de la pregunta de EV2F-040 (19 de 84). Todas esas ventanas también están en la E0 del acumulado: son texto de la norma.
+     **Se declaran como exposición de EV2 a la sesión de N5b.** EV2 se usa solo para el diagnóstico, nunca para ajustar (mandato de
+     U-NAV, §4, N1, y regla 1 del §7);
+  3. **HEAD se movió durante la sesión,** de `50b373df` a `8b45dc7a`, por el 205, el 206 y el 191 v4 de la autora (de 17:20:30 a
+     17:22:42): 42 archivos, 0 líneas borradas. Ninguna de las 458 rutas que usó N5b cambia, y sus blobs en `8b45dc7a` son los que
+     registró.
+- **La lectura de la autora, tal cual** (18:19:05): «el portador estaba solo debajo del ancla en 21 de los 39 criterios, y en el punto del
+  ancla en 17; fuera de su subárbol, en ninguno. La 2c da 18, y los 6 criterios con la sesión al tope de llamadas son de la 2c. Decime, con
+  su fuente, si alguna candidata de N6 le muestra al agente el contenido de los descendientes de un punto en una sola llamada, no solo el
+  texto propio. Si ninguna lo hace, proponeme sumar una dentro de F2 o F4, como permite el mandato (§4, N4), con su costo en N6. No saco
+  ninguna candidata.»
+- **La respuesta de la mesa:** ninguna lo hace. `ver_punto` da el texto propio del punto y, de sus hijos, la unidad, el título y la
+  cantidad de nodos; `indice_to`, el árbol con títulos y cuentas; `buscar_puntos` con el filtro `punto`, el fragmento que coincide de hasta
+  10 puntos del ranking (`familias_nav.py`, `17a51a42`, `:393-394`, `:549-576`, `:711-745` y `:87`).
+  - **La propuesta, PREPARADA para la decisión de la autora:** una candidata nueva en F2, `ver_descendientes(punto, niveles=2, desde=0)`,
+    con el texto propio de cada descendiente, en orden de lectura, y un tope de 8.000 caracteres por llamada. La alternativa es una
+    variante de `indice_to` en F4. Las configuraciones siguen siendo 8; la herramienta está en 180 de las 300 sesiones del grafo.
+  - **Su costo en N6,** con el marginal medido en las sesiones del grafo de A2.2 (USD 0,00335 por cada 1.000 caracteres de resultado):
+    de USD 3,02 a 14,49 más. **Su tiempo:** si se decide esta noche, B6.3 lanza casi igual en el central (martes 27, 18:12, contra
+    18:09); si se decide mañana, a las 19:30.
+  - Con la decisión de la autora, la mesa arma el sello de N4, el despacho de la candidata, si va, y el de N6.
+- **El calendario v19,** en el paquete de la mesa: U-VERPUNTO va después de la etapa a de los índices, y la prueba de T, después de
+  U-VERPUNTO y de la etapa a del runner. En el central con k 3, B6.3 lanza el martes 27 a las 18:09, con 3,8 h de margen.
+- **El pedido para el capítulo 4** (18:23:13): las marcas [AL CIERRE] sobre el grafo evaluado y el commit fijo. La mesa responde en su
+  FRENO, cada punto con su fuente o con lo que falta.
+- **Lo que sigue:** el 207, el 208 y este commit, cuando frene la etapa a del runner; el «seguí» de U-VERPUNTO, cuando frene la etapa a de
+  los índices; la prueba de T, cuando terminen U-VERPUNTO y el runner; la decisión de la autora sobre la candidata, y con ella el sello de
+  N4 y el despacho de N6.
+- Las secciones anteriores no se editan.
