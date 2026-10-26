@@ -4806,3 +4806,87 @@ Decisiones y hechos de la autora del 25/10/2026, recibidos a las 19:13:16, con t
 - **La próxima nota al pie del pre-registro de B6.3** lleva lo que dice la §116 (las coincidencias de la §115, el criterio nuevo de los R2
   y los cuatro desvíos de P3), el caso de `ri_acsf` y el R2 rechazado: PENDIENTE.
 - Las secciones anteriores no se editan.
+
+## 118. El domingo, a las 22:39: Q8, la tanda 2 de P3, el R3 y la etapa d del juez v2 (25/10/2026)
+
+Decisiones y hechos de la autora del 25/10/2026, recibidos a las 22:39:18, con tres agregados, a las 22:58:28, a las 23:02:12 y a las
+23:04:08 (hoja de ruta de la mesa, §276), sobre la §275 de la mesa.
+
+- **El 192,** corrido por la autora con su push: `012cb030` (22:37:58), por git log; `origin/main` en `012cb030`. Lanzó el paso 5 de
+  A2.2, corrió el comando del núcleo y del material de los expertos, y pegó los «seguí» de la etapa d del juez v2, de la tanda 2 de P3
+  y del R3 de P2.
+- **El núcleo y el material,** por código: el núcleo da `6790a8ed…`, el que dio la mesa en su prueba, sellado a las 22:38:25; el
+  material de los expertos trae las 3 planillas, sus instrucciones y la clave de los códigos, que no se envía.
+- **Las decisiones de las 22:39:18, tal cual:**
+  1. «Las cinco carpetas temporales del juez v2 las borré yo a las 19:46, con tu script y después de su prueba en seco exacta: 923
+     archivos y 523.576.558 bytes.»
+  2. «La medición de las 400 se informa también sin la arista de V097, como sensibilidad, igual que la prueba sin las coincidentes.»
+  3. «El 193 sella también los juicios de las dos etapas del juez y la población, además de las sesiones. Lo corro apenas termine el
+     paso 5.»
+- **El paso 5 de A2.2,** por código (`juez/recorridas/resumen_juez_recorridas.json`): 107 respuestas y 1 faltante del agente, 107
+  agregadas y 0 incompletas; el acumulado del juez de A2.2, USD 9,3272 en 675 llamadas pagadas. La prueba en seco del 193 con estas
+  salidas, corrida por la mesa en un clon el 26/10/2026: 1.644 archivos en el índice y 462 enmascarados; el repo no cambió.
+- **Q8, la mitad de verificación** (Q8, §4; pre-registro de A2.2, §4): la regla del sorteo y su script, sellados por la mesa a las
+  22:50:21, antes de correr sobre datos reales (`gold_verificacion/sorteo/` del paquete de la mesa):
+  - la población: las 118 respuestas de N = 1 con juicio, sin las `requiere_adjudicacion`, como la muestra simétrica de EV2, que es
+    «del resto» (método de EV2, §6, `:80-84`); esas van todas a la adjudicación de la autora;
+  - los estratos: 7, 7 y 6 por brazo y, dentro de cada uno, «correcto» y «parcial» o «incorrecto», proporcionales y con al menos una de
+    cada clase; 20 preguntas distintas, con la semilla `gold-q12-verificacion-a22-v1`;
+  - el brazo de cada respuesta sale del código congelado del juez de A2.2, que recalcula su id opaco (`a2_2/juez_a2_2.py:113-114`): el
+    sorteo no abre ninguna tabla de desanonimización;
+  - el comando del sorteo y del material, para después del 193: PREPARADO. Fija la clave que dio en el arenero de la mesa, `95151641…`.
+    El material va a `fuera_del_repo/gold_q12_verificacion/`, con el sello de las planillas de la autora; la clave, al paquete de la
+    mesa, hasta ese sello.
+- **Las adjudicaciones (A-D8) y el análisis:** el material de las adjudicaciones se arma después del sello de la lectura de Q8, porque
+  cuáles mandó el juez a adjudicar ya dice algo de sus veredictos. Después de las adjudicaciones, el análisis corre en la sesión de A2.2.
+  Los dos: PENDIENTES.
+- **La tanda 2 de P3** (`b63_p3/FRENO_P3_tanda_2.md`; paquete `c870e6d2…`), revisada por la mesa por código, 13 de 13: el paquete y su
+  copia, el paso 0, la salida (los 6 códigos, la tanda y el sha256 de su insumo) y su sello de las 22:41:50, sin ninguna lectura antes;
+  `insumos/`, `pdf/` y lo de la tanda 1, con el mismo sha256 que tenían después de que la mesa armó la tanda 2. Sus scripts nuevos
+  controlan lo que pide el «seguí», y los copiados cambian solo la tanda. La salida del grep sobre el paquete está solo en el paquete.
+- **La decisión del agregado de las 22:58:28, tal cual,** que rige porque la revisión dio bien: «P3 no se vuelve a correr, porque su
+  salida de la tanda 2 ya está sellada, y sus desvíos van declarados en la próxima nota de B6.3, junto con los de la tanda 1.»
+- **El R3 de P2** (`b63_p2/FRENO_P2_reemplazos_R3.md`; paquete `3654464c…`), revisado por la mesa por código, 16 de 16:
+  - el paquete y su copia (43 archivos), el paso 0 y los 67 archivos sellados de sus 14 sellos;
+  - el ancla, `ri_transpa::SD::rep3`, es la unidad que sigue a `ri_transpa::SD` en el sorteo, no ancla ningún otro lugar y el documento
+    no cambia; el plan de tipos (22:46:57) y la salida y el registro (22:51:33), sellados antes de leerse;
+  - 96 lugares, 32 por ola, el núcleo en 64; 21 rechazadas: 13 de las olas, 7 reemplazos y 1 R2;
+  - los lugares por documento, al empezar los R2 y como quedaron sellados: `ri_acsf` 4 y 3, `ri_bdp` 2 y 1, `ri_esd` 1 y 0, y
+    `ri_transpa` 0 y 3. B63-O1-L06-R2, B63-O2-L13-R2 y B63-O3-L01-R2 pasaron por `ri_acsf` con 4 y lo saltearon; con lo sellado, sus
+    lugares O1-L06, O2-L13 y O3-L01 podrían haber ido a `ri_acsf`, y cambiarían sus ranuras en `ri_esd`, `ri_bdp` y `ri_transpa`. El
+    ancla del R3 sale igual con lo sellado: no cambia de documento;
+  - las 6 palabras seguidas: el registro de generación del R3 repite 8 palabras seguidas de la pregunta del R3. El porqué del FRENO no
+    comparte ningún tramo de 6 palabras con la pregunta, los criterios ni sus citas.
+- **Las decisiones del agregado de las 23:02:12, tal cual,** que rigen porque el R3 sale igual de lo sellado:
+  - a. «B63-O2-L13-R2 y B63-O3-L01-R2 quedan donde los dejó P2, como B63-O1-L06-R2. El caso de ri_acsf se declara con los tres, con los
+    lugares que habrían cambiado.»
+  - b. «Que ri_transpa::SD sea otro punto de dos lugares no cambia nada, porque la regla excluye que una unidad ancle dos lugares, no que
+    sea otro punto de dos. Se declara, junto con los 3 lugares de ri_transpa en sus Apartados B y D.»
+  - c. «Van también en la próxima nota de B6.3 el error de orden de los R2 que declaró P2 (la entrada del generador corrió en el mismo
+    comando que la primera corrida del plan, después de ella) y la coincidencia del punto 5, según lo que encuentres.»
+- **La hoja de la autora del R3** (`fuera_del_repo/revision_b63_reemplazos_R3/`, manifiesto `48d1efcc…`), con las herramientas de la
+  §275 y sus instrucciones: PREPARADA.
+- **La etapa d del juez v2** (`tripletas_v_juez/v2/FRENO_v2_d.md`; paquete `f38e0581…`), revisada por la mesa por código, 10 de 10: el
+  paquete, el paso 0, la congelación (87 de 87), `lista_etapa_d.txt` (12 archivos), los selftests en una copia (69 de 69 y 101 de 101,
+  con los 89 de la v2.1 iguales), el diff del análisis (22 renglones más y 10 menos) y lo que pide el «seguí» en el corredor.
+- **La decisión del agregado de las 23:04:08, tal cual,** que rige porque la revisión dio bien: «sus interpretaciones 1, 3 a 7 y 9 a 12
+  quedan como las tomó, y la 2 y la 8 se resuelven con lo de arriba.»
+  - **La 2, la corrida cortada:** ni el pre-registro de tripletas (en `4afbe511`) ni la enmienda 4 (en `90cce828`) fijan qué pasa si una
+    repetición corta. Fijan que la prueba corre una sola vez (punto 8) y los topes con su freno (punto 11). La regla que propone la mesa:
+    PENDIENTE de la autora, antes de la prueba.
+  - **La guarda de otro paso pago:** los comandos de T de la mesa suman la guarda de las sesiones del banco (el lanzador y los servidores
+    MCP, por los que corren N6 y B6.3); los comandos de N6 y de B6.3 tienen que nombrar `correr_prueba_T_v2.py` en su guarda. PREPARADO
+    en los comandos de T; lo de N6 y B6.3, para sus despachos.
+  - **La 8, las 300:** sus refs, por código del sorteo sellado de T (`f4765d9a…`): T101 a T400, el resto del acta, y con las 100 de la
+    prueba, las 400 del sorteo. El comando de las 300 lo controla otra vez: PREPARADO.
+- **La sensibilidad de las 400 sin V097** (decisión 2 de las 22:39:18): el análisis v2.2 acepta coincidentes solo entre las 100
+  (`analisis_T_v2.py:161-164`), así que no la calcula. Cómo se agrega antes de la prueba: PENDIENTE de la autora.
+- **El 191 v2,** que sella juntas las etapas c y d (21 archivos, lista `648fbf5f…`), con su nota al pie del pre-registro de tripletas:
+  PREPARADO.
+- **Los comandos de T:** la prueba única y las 300, v3, con la línea de comandos real del corredor: PREPARADOS. El de la §275 y la v2 de
+  esta ronda quedan con el prefijo `NO_CORRER_REEMPLAZADO__`: pasaban el modo como argumento suelto y el sello con otros nombres que
+  el corredor; el de la §275, además, con `pipefail`, tenía un `grep -q` sobre una tubería que podía frenar con la lista correcta.
+- **La próxima nota al pie del pre-registro de B6.3** lleva, además de lo de la §117: los desvíos de la tanda 2 de P3; el caso de
+  `ri_acsf` con los tres R2; `ri_transpa::SD` como otro punto de dos lugares y los 3 lugares de `ri_transpa`; el error de orden de los
+  R2; y la coincidencia del registro del R3 con su pregunta: PENDIENTE.
+- Las secciones anteriores no se editan.
