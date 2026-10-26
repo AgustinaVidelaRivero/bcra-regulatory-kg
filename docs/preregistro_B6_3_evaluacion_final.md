@@ -808,3 +808,39 @@ del §14.
     - el criterio de aceptación se cumple: el Wilson inferior es de al menos 0,85, y el acuerdo, de al menos 18 de 20;
     - llegó después de la firma: va como desvío declarado de Q8 (`:71`), con su regla de consecuencias igual (§13, punto 2).
   - El texto firmado no cambia.
+- **26/10/2026, por la tarde — La relevancia de las 96 (H-10), los desvíos de la tanda 3 de P3, el humo, la fecha de cada sesión, la
+  versión del CLI y el tráfico del CLI** (decisiones de la autora del 26/10/2026, recibidas a las 14:05:07, a las 14:07:29 y a las 14:25:27;
+  registro de decisiones del 15/10/2026, §121):
+  - **P3, la tanda 3,** revisada por la mesa por código (19 de 19): su salida y su sello (11:59:03), posterior a que la autora pegó su
+    «seguí» (11:57:06) y anterior a cualquier lectura de la salida; lo de las tandas 1 y 2, sin cambios; sus scripts nuevos y sus copias,
+    que cambian solo el número de la tanda. Lo decidió la autora, tal cual: «Si tu revisión da bien, decido: P3 no se vuelve a correr, y sus
+    desvíos (las tandas anteriores en el contexto de la sesión, el PDF que ya había leído para la tanda 2 y el caso de borde) van a la
+    próxima nota de B6.3, como los de las tandas 1 y 2.» Los seis de su FRENO (§8):
+    - corrió en la misma sesión que las tandas 1 y 2, que siguen en su contexto, sin consultar su trabajo ni abrir sus archivos;
+    - el PDF de esta tanda es uno que ya había leído para la tanda 2;
+    - el caso de borde: dudó entre dos notas en su único código;
+    - su grep recorrió también las salidas de las tandas 1 y 2, sin abrirlas, y no encontró coincidencias;
+    - lo corrió más veces que las pedidas: sobre su paquete y sobre su FRENO;
+    - escribió dos scripts nuevos para la tanda 3 y copió otros dos cambiando solo la tanda, con los de las tandas 1 y 2 sin cambios. Fuera
+      de su carpeta calculó solo el sha256 de los dos manifiestos que pide su paso 0.
+  - **H-10, la relevancia de las 96 preguntas,** sellada por la mesa el 26/10/2026 a las 14:15:20, desde las tres salidas selladas de P3 y
+    las revisiones selladas de la autora (`relevancia_96_B63.json`, `a814b455…`, 20.470 bytes, en el paquete de la mesa, §279): 96
+    preguntas, 89 de la tanda 1, 6 de la 2 y 1 de la 3; por nota, 39 con 2, 29 con 3, 16 con 4 y 12 con 5; por puesto, 48 de
+    cumplimiento normativo, 20 de operaciones y tesorería, 14 de diseño de un producto o decisión del directorio, 9 de riesgo de crédito y
+    5 de auditoría interna.
+  - **El humo del lanzador en paralelo,** tal cual: «El humo usa la config de prueba que armó (paralelo/config_agentes_n6_prueba.json),
+    declarada, porque mide los límites de la cuenta y no la calidad. B6.3 usa la de N7, sellada.» y «El freno del humo es de USD 6, con un
+    tope de USD 8, para que entren tres sesiones a la vez con la reserva de 1,80 por sesión.» La configuración de prueba tiene el modelo, el
+    modo del harness, la versión sellada del CLI y los cortes de R5 de A2.2 (la mesa, por código).
+  - **La fecha de cada sesión,** tal cual: «La fecha de cada sesión sale del reloj del lanzador al empezarla, y se declara que el agente no
+    recibe la fecha en su pedido, como en A2.2.» Que el pedido no traiga la fecha lo controla el testigo, en su versión integrada; hasta su
+    FRENO, NO VERIFICADO. Que tampoco la haya recibido en A2.2: NO VERIFICADO, porque sus pedidos no se guardaron.
+  - **La versión del CLI:** las 231 sesiones de A2.2 corrieron con la 2.1.241, la sellada, en su `claude --version` y en su `system/init`
+    (la mesa, por código, en HEAD). Las sesiones corren con el autoupdater apagado. Que la versión no cambie a mitad de B6.3 lo va a frenar
+    el lanzador del lote, que la controla antes y después de cada sesión: PREPARADO, en el «seguí» del banco.
+  - **El tráfico del CLI** (el testigo, en su prueba: en las tres tandas, conexiones a `160.79.104.10:443` y a `34.149.66.165:443`, que no
+    son el pedido al modelo; qué llevan, NO VERIFICADO). Lo decidió la autora, tal cual: «rige la opción (a). «Ningún pedido sale de la
+    máquina» se lee como «ningún pedido al modelo». Según la documentación de Claude Code, ese tráfico es el operativo del CLI (las
+    métricas, que no llevan código, prompts ni rutas, y la consulta de los feature flags), el mismo que tuvieron las sesiones de A2.2. No
+    cambio el lanzador sellado antes de B6.3. Va declarado en la próxima nota de B6.3.»
+  - El texto firmado no cambia.
