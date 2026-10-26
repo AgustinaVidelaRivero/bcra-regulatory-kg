@@ -5197,3 +5197,62 @@ y §281), sobre la §279 de la mesa.
   análisis de A2.2, porque su sesión escribe en el repo; N5b v2, con el commit del análisis de A2.2; con el FRENO del banco, U-VERPUNTO y
   después los índices, de a uno; con el FRENO de la etapa f, el 191 v4 y los comandos de T v5, antes de la prueba.
 - Las secciones anteriores no se editan.
+
+## 123. El lunes, desde las 16:00: la fecha en el pedido, el análisis de A2.2, la etapa f, el banco en paralelo y el Neo4j (26/10/2026)
+
+Decisiones y hechos de la autora del 26/10/2026, recibidos a las 16:00:18, con dos agregados a las 16:02:05 y a las 16:07:59 (hoja de
+ruta de la mesa, §282), sobre la §281 de la mesa.
+
+- **Los hechos** (16:00:18): la autora revisó la §281 («da bien»), corrió el 202 v2 con su push (`4b94fae8`, 16:00:03; HEAD y
+  `origin/main`, en `4b94fae8`, por git log) y pegó el agregado de la etapa f en la sesión del juez v2. Llegaron el FRENO A2.2-b
+  (16:00:18), el de la etapa f del juez v2 (16:02:05) y el de la vuelta b del banco en paralelo (16:07:59).
+- **La decisión de la fecha** (16:07:59), tal cual: «El agente recibe la fecha del día en su pedido: la pone el CLI. No cambio el
+  lanzador sellado: es el mismo CLI y el mismo lanzador de A2.2. Se declara así, en lugar de "el agente no recibe la fecha", que queda
+  corregido en la próxima nota de B6.3.» Y: «En B6.3 se informa cuántas sesiones de cada brazo corrieron en cada fecha.»
+- **El FRENO A2.2-b,** revisado por la mesa por código, sin imprimir ningún resultado de A2.2 (9 de 9, `revisar_A2_2_b_mesa.py`): el
+  paquete en sus dos copias; el JSON del análisis (`a9092474…`, 17.298 bytes) y el FRENO, sin rastrear, los únicos nuevos en el repo; el
+  código del análisis, el de HEAD (`40152be0`), sin editar. Los cuatro puntos de la autora:
+  1. el voto que queda en `requiere_adjudicacion` en una re-corrida: el pre-registro firmado (`a78ead7b`, `:165-166`) da el par por
+     decidido si su resultado no depende de cómo se resuelva ese voto. Con las tres resoluciones, el final de su par es el mismo: no
+     necesita adjudicación, y es la respuesta que el armador de la mesa dejó sin ficha (de las 9 en ese estado, 8 son las de la clave);
+  2. los 3 pares sin veredicto final: en el análisis principal salen de la métrica (cada comparación excluye las preguntas con un par
+     sin final en uno de sus dos brazos), y la sensibilidad los cuenta como no cumplidos, como dice el texto firmado (`a78ead7b`,
+     `:107-109`);
+  3. las 118 coincidencias del grep de su paquete: 114 en las claves de sus 6 fotos (19 en cada una: rutas de archivos de `.venv/` y de
+     cuatro documentos de `docs/`), 0 en sus valores, y 4 con la ruta de la carpeta temporal (2 en su checkpoint y 2 en el script que la
+     enmascara). Ninguna es un nombre de persona ni el origen de una decisión (la mesa, por código:
+     `contar_coincidencias_en_las_fotos_A2_2_b_mesa.py` y su propio grep sobre el paquete);
+  4. el contenedor de Neo4j del repo (`neo4j-bcra-kg-compose`, levantado desde el tramo 1 de A2.2): no hace falta bajarlo. Los índices no
+     lo usan (su etapa a no usa Docker ni Neo4j, y su carga va en un contenedor propio, sin tocar el del repo), y el humo tampoco (su
+     Neo4j propio, en el 37687). Bajarlo libera memoria y deja comprobar que nada escucha en el 7474 ni en el 7687; su volumen queda. Lo
+     que usa N6, NO VERIFICADO: lo fija el paso 0 de N6.
+- **El FRENO de la etapa f del juez v2,** revisado por la mesa por código (10 de 10, `revisar_v2_f_mesa.py`): el paquete (`299be74a…`,
+  117 archivos); la congelación de HEAD, sus 87 archivos con su sha256; `lista_etapa_f.txt`, con sus 9; los selftests corridos en una
+  copia de la mesa, 168 de 168 el análisis y 101 de 101 el corredor, con los mismos casos que en la sesión; los 149 de la etapa e, en el
+  mismo orden, salvo los dos que la decisión de la autora cambia, que pasan con su nombre nuevo. El análisis (`analisis-T-v2.4`): +12
+  −6; su selftest, +61 −3 (el FRENO dice 58: no cuenta sus 3 renglones nuevos en blanco). `validar_no_completada` acepta la
+  infraestructura con menos de 3 intentos solo si otra repetición trae el tope o el freno.
+- **El FRENO de la vuelta b del banco en paralelo,** revisado por la mesa por código (11 de 11, `revisar_banco_paralelo_b_mesa.py`): el
+  paquete en sus tres copias; la copia del repo, igual a `8c064ad3` en lo del banco (2.381 archivos), con sus 13 archivos nuevos; el
+  test integrado, en PASS, con el testigo, que frenó solo por la fecha (18 renglones); un solo sha256 de `system` y de `tools` por brazo
+  y por tipo de pedido (6 grupos); la corrida en seco, con la guarda de la versión del CLI en sus tres formas, el patrón de las guardas y
+  el humo con tope USD 8 y freno USD 6; los sellos y los contenedores, iguales antes y después.
+- **Un error de la mesa:** el registro ya decía, desde la §88 (`:3221-3222`), que el CLI escribe la fecha del día en el pedido. La mesa
+  no lo marcó al redactar la nota de B6.3 de la tarde, que declaraba que el agente no la recibe; la corrige la nota nueva.
+- **Las preguntas de la autora sobre la fecha** (16:07:59, la mesa por código):
+  1. las 231 sesiones de A2.2 empezaron el 25/10/2026, entre las 17:21:14 y las 20:18:37 (UTC−3), por la hora de su lanzador
+     (`fecha_de_las_sesiones_de_A2_2_mesa.py`);
+  2. el orden firmado de B6.3 (§6) deja juntas las sesiones de los tres brazos de cada pregunta y repetición, en un orden sorteado; con
+     el lote lanzado en ese orden, por cada medianoche que cruce, a lo sumo un bloque tiene brazos en dos fechas, y lo declara el
+     análisis: no hace falta cambiar nada de lo firmado;
+  3. la cuenta por brazo y por fecha la escribe el runner (su despacho, etapa a, v3);
+  4. de las 96 preguntas, 5 usan alguno de los cinco términos de fecha: 1 en la pregunta y 4 en sus criterios
+     (`contar_terminos_de_fecha_en_las_96_mesa.py`, sin imprimir ningún texto).
+- **PREPARADOS,** con sus pruebas en seco, sin correr: el 203 (el análisis de A2.2 y su FRENO); este commit; el 205 (el banco en
+  paralelo: su código, sus dos FRENO y las salidas de su vuelta b); el 206 (la nota de B6.3 con la fecha); el 191 v4 (el sello del
+  código de la prueba sobre T, con las etapas c, d, e y f, y su nota); los comandos de T v5; N5b v3, para pegar después del 203; el
+  despacho del runner de B6.3, etapa a, v3, para después del 205 y del 206. N5b v2 y el despacho v2 del runner quedan con el prefijo
+  `NO_CORRER_REEMPLAZADO__`, sin haberse usado.
+- **Lo que sigue, de a uno:** el humo pago, que corre la autora; U-VERPUNTO; los índices. La prueba de T va después del 191 v4, nunca al
+  lado del humo.
+- Las secciones anteriores no se editan.
