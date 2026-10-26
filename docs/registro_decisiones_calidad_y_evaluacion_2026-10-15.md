@@ -4890,3 +4890,125 @@ Decisiones y hechos de la autora del 25/10/2026, recibidos a las 22:39:18, con t
   `ri_acsf` con los tres R2; `ri_transpa::SD` como otro punto de dos lugares y los 3 lugares de `ri_transpa`; el error de orden de los
   R2; y la coincidencia del registro del R3 con su pregunta: PENDIENTE.
 - Las secciones anteriores no se editan.
+
+## 119. El lunes, desde las 09:31: la corrida cortada sobre T, V097, los registros de P2, Q8, el R3 y lo que sigue (26/10/2026)
+
+Decisiones y hechos de la autora del 26/10/2026, recibidos a las 09:31:22, con agregados a las 09:52:42, a las 10:51:11 y a las
+11:01:54 (hoja de ruta de la mesa, §277), sobre la §276 de la mesa.
+
+- **El 193 y el 194,** corridos por la autora con su push: `192ae1f6` (09:46:37) y `c10b49b1` (09:49:35), por git log; `origin/main` en
+  `c10b49b1`. A las 09:32 todavía no estaban. **El comando de Q8,** corrido a las 09:51: la clave en el paquete de la mesa, con el sha256
+  que dio su arenero (`95151641…`), y el material en `fuera_del_repo/gold_q12_verificacion/`.
+- **Las decisiones de las 09:31:22, tal cual:**
+  1. «La corrida cortada en la prueba sobre T. Rige tu regla, con dos cambios. Una falla de infraestructura se re-corre hasta dos veces,
+     cada vez desde cero, como las fallas de infraestructura de B6.3, y el gasto de todas las corridas cuenta para el mismo tope de USD 42.
+     Si una repetición corta por el tope o por el freno, no se re-corre nada y la prueba no se completa: rige el punto 10 de la enmienda 4,
+     sin otra decisión mía. Los archivos de cada corrida cortada salen por código a una carpeta aparte, con su sha256 y sin abrirse, y se
+     declaran.»
+  2. «La sensibilidad sin V097 va por el camino a: una etapa e corta y el 191 rearmado con las etapas c, d y e juntas, antes de la
+     prueba.»
+  3. «Revisá por código todos los registros de generación de P2 (las olas, los reubicados, los reemplazos, los R2 y el R3) buscando tramos
+     de 6 o más palabras seguidas que repitan su pregunta, sus criterios o sus citas, sin mostrar las palabras: cuántos hay y en qué
+     registros. Decime también si alguna revisión tuya mostró el texto de un registro de generación. Va todo a la próxima nota de B6.3,
+     junto con la coincidencia del R3.»
+  4. «La limpieza de /private/tmp. Desde ahora, en cada «seguí» que armes, el paso 0 controla que la sesión tenga lo que usa de su
+     scratchpad y, si falta algo, lo restaura de su copia permanente contra su sha256 antes de seguir.»
+- **El agregado de las 09:52:42, tal cual:** «terminá primero lo del mensaje anterior, salvo la próxima nota de B6.3, que va después de lo
+  que sigue.» Y la tarea, en este orden: lo que sigue del camino a B6.3 en el calendario v15 (el 142 rebasado y probado en un clon, el
+  despacho de N5b y, después, los de los índices, del banco en paralelo y del runner de B6.3); la propuesta de la etapa E0–E5 de cada arista
+  de T; con el análisis de A2.2, el N de B6.3 por la regla; y el calendario v16.
+- **La decisión 1 y el código congelado de la v2.** La base de la caché de cada repetición está dentro de la corrida, y la guarda del tope
+  (`juez_v2.GuardaGasto`, que arma `correr_juez_v2.correr`) cuenta solo esas tres bases (`tripletas_v_juez/v2/codigo/`):
+  - si la base de la repetición cortada sale aparte con sus demás archivos, la re-corrida empieza desde cero, pero su guarda no ve lo ya
+    gastado; si la base se queda, el gasto cuenta, pero la re-corrida toma de la caché las llamadas que ya se hicieron;
+  - si la prueba no se completa, no hay agregado, y el análisis v2.2 no calcula el punto 10 sin él.
+  - Para aplicarla tal cual, el corredor tiene que descontar del tope y del freno el gasto de las bases que salieron aparte, y el análisis,
+    calcular la precisión con las 100 de la autora sin agregado. Las dos cosas van sin editar el código congelado.
+  - Qué entra en la etapa e: PENDIENTE de la autora.
+- **La decisión 2:** el «seguí» de la etapa e, en dos versiones: la completa (la sensibilidad, la prueba no completada y las bases de las
+  corridas cortadas), que recomienda la mesa, y la de solo la sensibilidad. Las dos, PREPARADAS (`decisiones_277_mesa/despachos/`). El 191
+  con las etapas c, d y e y los comandos de T se arman cuando la mesa revise el FRENO de la etapa e.
+- **La decisión 3,** por código y sin mostrar ninguna palabra (`decisiones_277_mesa/p2_registros/`):
+  - los siete registros de generación de P2, contra las preguntas, los criterios y las citas de su tanda: 273 tramos, de 98 de las 117
+    preguntas. Por registro: la ola 1, 68; la ola 2, 48; la ola 3, 57; los reubicados, 29; los reemplazos, 42; los R2, 28; el R3, 1. El más
+    largo, de 29 palabras. Las notas de trabajo de P2 suman 37;
+  - lo que mostraron las revisiones de la mesa: de las 49 llamadas que nombran un registro de generación de P2 o sus notas, 3 mostraron
+    tramos, todas sin el tapador: el 23/10/2026 a las 17:13 y a las 17:17 (el registro de la ola 1, 9 y 22) y el 25/10/2026 a las 11:19 (57
+    renglones del de los reubicados, 17). Entre las tres, 4 de preguntas, 17 de criterios y 27 de citas. Con el tapador, ninguna de 10;
+  - la nota del 25/10/2026 del pre-registro de B6.3 dice que la mesa «No leyó ninguna pregunta ni ningún criterio»: no es exacto, y la
+    nota del 26/10/2026 lo corrige;
+  - otros registros de generación, de EV2 y de la tanda 0, impresos por la mesa en parte el 15/10, el 17/10 y el 18/10/2026: no se miden,
+    porque la mesa no abre las preguntas de EV2.
+- **La decisión 4:** los «seguí» y los despachos de esta ronda la traen en su paso 0.
+- **Lo que siguió del mensaje anterior:**
+  - el material de las adjudicaciones de A2.2 (A-D8), con el molde de la adjudicación ciega de la tanda 0: 8 fichas y 33 criterios, la
+    marca por criterio y el veredicto por el mapping §2 de EV2, en código. Su comando va después del sello de la lectura de Q8, y el
+    conversor de las marcas a los veredictos por id opaco, después del sello de la autora: PREPARADOS. El «seguí» del análisis de A2.2 se
+    arma con ese conversor: PENDIENTE;
+  - la nota al pie del pre-registro de B6.3 del 26/10/2026 (las coincidencias de la §115, el criterio nuevo de los R2, los desvíos de las
+    dos tandas de P3, los R2 y el R3, el caso de `ri_acsf` con los tres R2, `ri_transpa::SD` y los 3 lugares de `ri_transpa`, el error de
+    orden de los R2, los registros de generación y lo que vio la mesa), en su propio commit, después de lo del agregado: PREPARADA.
+- **Lo del agregado:**
+  - **el 142 v2,** rebasado sobre `c10b49b1`: los 27 archivos del 142, con `familias_nav.py` y su selftest de U-VERPUNTO (el texto propio
+    entero de `ver_punto`), `servidor_mcp_vector.py` mezclado a tres vías con la anotación de tamaño (`b72bb626`) y la misma anotación en el
+    servidor de la navegación. Probado en un clon, con el instalador de los índices y el selftest de las familias sobre la tanda 0, sin
+    Neo4j: PREPARADO;
+  - los dos bloques de ejemplos de la familia 6 de U-VERPUNTO (su etapa b) vivían solo en la copia de su sesión, en /private/tmp, que el
+    limpiador borró; su paquete trae solo su sha256. No entran en el 142 v2;
+  - **los despachos:** N5b (el diagnóstico de A2.2, después del commit de su análisis, fuera del repo y sin Neo4j); la etapa a de los
+    índices del grafo evaluado (la E0 y el plan medido); el banco en paralelo, v7; y la etapa a del runner de B6.3 (las corridas, el juez
+    encadenado y D-10): PREPARADOS;
+  - **la etapa E0–E5 de cada arista de T:** la propuesta, con tres reglas y sus cuentas sobre las 400 y las 100
+    (`decisiones_277_mesa/etapas/`). Qué regla va: PENDIENTE de la autora;
+  - **el N de B6.3:** su regla toma el w y el k de N6 (pre-registro de B6.3, §3.4, H-7 y H-9), así que el N sale después de N6, con las
+    tasas del análisis de A2.2. La calculadora, probada: PREPARADA. El calendario v15 lo ponía antes de N6, por un error de la mesa;
+  - **el calendario v16,** con lo que pasó hasta las 10:40 (`decisiones_277_mesa/calendario/`): en el central, con N = 96, k = 3 y 6 horas
+    de la autora por día, B6.3 lanza el martes 27 a las 17:38, con 4,3 h de margen; en el alto, el miércoles 28 a las 08:03, con −10,1 h,
+    y con la ventana de la autora hasta las 24, el martes 27 a las 20:38, con 3,3 h. Las horas de lo que no se midió son NO VERIFICADAS.
+- **El agregado de las 10:51:11, tal cual:** «terminá primero lo de los mensajes anteriores.» La autora selló sus dos planillas de Q8
+  en `fuera_del_repo/gold_q12_verificacion/` (`sello_gold_q12_verificacion.txt`, 10:48:47) y declaró, tal cual: «Las marcas son mías,
+  decididas a ciegas, sin ninguna salida de un modelo. La planilla de criterios la exporté dos veces, porque la primera vez se exportó la
+  de respuestas encima; el sello es sobre la segunda exportación, y las dos planillas dieron sus columnas.»
+- **Q8, el cruce** (H-11; `decisiones_277_mesa/q8_cruce/`), con el script de la mitad de ajuste, como pide Q8 (§4), sin abrir las notas
+  ni el texto libre de las planillas:
+  - el sello, las columnas, los renglones y los valores de las dos planillas dan bien. Las fichas que leyó la autora son las que arma el
+    código: 28 de 28 archivos con el mismo sha256. Los juicios del juez son los de la clave del sorteo (`e22ee010…`);
+  - por criterio, 82 de 82 (Wilson al 95 %, 0,9552 a 1); sin «necesita experto» ni «criterio mal planteado», 78 de 78. Ninguno en la
+    dirección A ni en la B, y ningún «dudoso» del juez;
+  - por respuesta, 20 de 20; abstención o contenido, 20 de 20;
+  - **el criterio de aceptación se cumple:** Wilson inferior de 0,9552 por criterio (el piso es 0,85) y 20 de 20 por respuesta (el piso
+    es 18);
+  - aparte: «dudosa para mí» en 2 (VG12-1 y VG12-2), «criterio mal planteado» en 4 (VG02-2 a VG02-5) y «necesita experto», en ninguna;
+    errores fuera de los criterios, 2 (VG05 y VG07); los minutos, 224 en las 20;
+  - un control del cálculo: las marcas de la autora contra el juez de otra ficha con los mismos criterios dan 61 de 77.
+  - Llega después de la firma del pre-registro de B6.3: va como desvío declarado de Q8 (`:71`), con su regla (pre-registro de B6.3, §13,
+    punto 2). El material, la lectura sellada, la clave, el cruce y su acta van en su propio commit, el 196: PREPARADO.
+- **Las adjudicaciones de A2.2** (A-D8): la mesa armó el material con su comando a las 11:02:50, después del sello de Q8: 8 fichas y 33
+  criterios en `fuera_del_repo/adjudicaciones_a2_2/`, y la clave (`dbb71452…`) en el paquete de la mesa. La lectura de la autora, su sello
+  y el análisis de A2.2: PENDIENTES.
+- **El agregado de las 11:01:54, tal cual:** «terminá primero lo de los mensajes anteriores.» La autora revisó el R3 contra su PDF y lo
+  aprobó, «B63-O3-L03-R3, con el tipo que se sostiene», y lo selló en `fuera_del_repo/revision_b63_reemplazos_R3/` (1 fila: 1 aprobada y
+  0 rechazadas). La tarea: controlar el sello y que la ola 3 quede con sus 32 aprobadas; el «seguí» de la tanda 3 de P3; y, en la
+  revisión de los registros de P2, los archivos que la mesa armó copiándolos, «como las instrucciones de mis hojas de revisión».
+- **El R3, controlado por código** (`decisiones_277_mesa/r3/`):
+  - el manifiesto de la hoja y sus 5 archivos, el sello y la marcada dan bien. La exportación, convertida de nuevo en una copia, da la
+    marcada byte a byte. El R3 da el sha256 del sello de P2;
+  - **la ola 3 queda con sus 32 lugares aprobados:** 20 de la ola, 8 reubicados, 3 R2 y el R3.
+- **P3, la tanda 3** (`decisiones_277_mesa/p3/`): la armó la mesa a las 11:09:18 en `fuera_del_repo/b63_p3/insumos/`, con el armador v3
+  (la ronda R3), probado en contra (6 de 6). Trae 1 pregunta, P3-3-001, y un PDF que ya estaba. Su «seguí»: PREPARADO.
+- **Los archivos de la mesa que copian los registros de generación de P2** (`decisiones_277_mesa/p2_registros/`), por código, sin
+  mostrar ninguna palabra:
+  - de 2070 archivos de la mesa desde la §258, 67 tienen tramos que están solo en un registro: no en un texto anterior de la mesa, en un
+    despacho, en el mandato ni en la norma;
+  - las 5 instrucciones de las hojas de revisión de la autora (sus §6 a §8) traen texto de una pregunta o de un criterio (de 3 a 6
+    tramos cada una), de una cita (5 o 6) y tramos del bloque de una pregunta en el registro (de 5 a 20), de hasta 70 palabras;
+  - el pre-registro de B6.3, en HEAD y en sus 13 versiones del paquete, no trae texto de una pregunta ni de un criterio. Trae 5 tramos de
+    citas, en sus renglones 160 a 203 (entre ellos, los renglones 160, 174 y 185 que informó la §115), y 35 tramos de los registros en su
+    §3.2 (renglones 158 a 211) y su §15 (renglones 694 a 716), 6 de ellos del bloque de una pregunta, de hasta 40 palabras;
+  - el registro de decisiones trae 1 tramo general de 8 palabras, en la §118. Su tramo de texto de una pregunta o de un criterio es el de
+    la §105, que ya informó la §115;
+  - también: los criterios nuevos para la autora de la §271, 23 armadores y 19 consolas de la mesa, con tramos de hasta 21 palabras;
+  - la norma cuenta como fuente común: un archivo de la mesa del 04/10/2026, anterior a P2, coincidía con un registro en texto de la norma;
+  - el límite: una frase general que describe una pregunta sin nombrarla no se distingue por código de una regla, y un tramo corto puede
+    ser redacción común.
+- Las secciones anteriores no se editan.
