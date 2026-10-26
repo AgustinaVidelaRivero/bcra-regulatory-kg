@@ -5166,3 +5166,34 @@ las 14:25:38 y a las 14:30:07 (hoja de ruta de la mesa, §279), sobre la §278 d
   «seguí» del análisis de A2.2 y, con su commit, N5b v2; el 191 (v3, o v4 si va el arreglo del caso) y la prueba sobre T; el N, después
   de N6.
 - Las secciones anteriores no se editan.
+
+## 122. El lunes, a las 15:21: el caso que la regla de la corrida cortada no prevé y la guarda de la versión del CLI (26/10/2026)
+
+Decisiones y hechos de la autora del 26/10/2026, recibidos a las 15:21:34, con un agregado a las 15:31:16 (hoja de ruta de la mesa, §280
+y §281), sobre la §279 de la mesa.
+
+- **Los commits** (agregado de las 15:31:16): la autora corrió, cada uno con su push, el 198 (`eb18a031`, 15:23:55), el 199 (`89370cc2`,
+  15:25:35), el 201 (`c630204b`, 15:28:13) y el 200 (`8c064ad3`, 15:28:45); HEAD y `origin/main`, en `8c064ad3`, por git log.
+  - El 201 frenó una vez en su prueba en seco, tal cual: «porque tu prueba del 202 tenía en su línea de comandos los nombres del
+    patrón; corrió cuando terminó.» La causa, de la mesa: la prueba del 202 corría en sus clones los comandos entregados con el patrón
+    real, y el `pgrep` de cada guarda lleva el patrón entero en su línea de comandos. La guarda de la autora lo vio, porque dos de sus
+    nombres (`lanzar_t` y `correr_tanda`) coinciden consigo mismos. Desde la §281, las pruebas de la mesa corren solo con patrones
+    propios.
+  - Pegó el «seguí» del análisis de A2.2 en su sesión y el del banco en la suya.
+- **Las decisiones, tal cual:**
+  1. «El caso que la regla no prevé va con el arreglo: «El análisis acepta una repetición cortada por infraestructura con menos de 3
+     intentos solo si otra repetición de la misma corrida cortó por el tope o por el freno. En ese caso la prueba, o las 300, no se
+     completa, como dice mi regla de la corrida cortada, y se declara.» Armame el agregado listo para pegar en la sesión del juez v2 y,
+     cuando su FRENO dé bien, el 191 v4. No corro el 191 v3.»
+  2. «Se queda el punto 4 del «seguí» del banco: la guarda de la versión del CLI.»
+- **La decisión 1:** el agregado para la sesión del juez v2, PREPARADO, como una etapa f corta: la etapa e queda como la revisó la mesa,
+  con su paquete y su lista. Cambian el análisis (`analisis-T-v2.4`) y su selftest; el corredor, no. Dos casos del selftest del análisis
+  pasan de frenar a pasar, porque sus declaraciones son el caso que decidió la autora: lo declara su FRENO, con el diff.
+  - El 191 v3 y los comandos de T v4 quedan con el prefijo `NO_CORRER_REEMPLAZADO__`, sin haberse corrido: los reemplazan el 191 v4 y los
+    comandos de T v5, que la mesa arma cuando revise el FRENO de la etapa f. En los v5, el caso deja de frenar con el código 11 y se
+    declara como una corrida no completada más.
+- **La decisión 2:** el «seguí» del banco va tal como lo entregó la mesa, con la guarda de la versión del CLI.
+- **Lo que sigue, con cada despacho en su momento:** el agregado de la etapa f, que escribe fuera del repo; este commit, con el FRENO del
+  análisis de A2.2, porque su sesión escribe en el repo; N5b v2, con el commit del análisis de A2.2; con el FRENO del banco, U-VERPUNTO y
+  después los índices, de a uno; con el FRENO de la etapa f, el 191 v4 y los comandos de T v5, antes de la prueba.
+- Las secciones anteriores no se editan.
