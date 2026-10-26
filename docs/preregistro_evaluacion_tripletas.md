@@ -505,3 +505,53 @@ topes de USD 35 (V) y USD 55 (T).
   - **El código del análisis sobre T con su selftest,** la cuarta pieza del punto 5, todavía no está escrito: entra con su propio commit,
     también antes de la prueba, y se declara como desvío de la letra del punto 5, que pone las cuatro piezas en un commit.
   - El texto firmado no cambia.
+- **26/10/2026 — El código de la prueba de la v2 sobre T, el corredor y el análisis, con sus selftests (enmienda 4, punto 5), antes de la
+  prueba** (decisiones de la autora recibidas el 25/10/2026 a las 13:42:24, a las 18:22:29, a las 19:13:16 y a las 22:39:18, y el
+  26/10/2026 a las 09:31:22, a las 11:59:01, a las 14:05:07 y a las 15:21:34; registro de decisiones del 15/10/2026, §114 y §116 a §122):
+  - **El desvío de la letra del punto 5,** declarado: la cuarta pieza entra en su propio commit, después del de la congelación. Lo
+    decidió la autora, tal cual: «La congelación va como la armaste: el 186 sin el código del análisis sobre T. Ese código va en su propio
+    commit, antes de la prueba, declarado como desvío del punto 5 de la enmienda 4.»
+  - **El corredor y el análisis,** tal cual los decidió la autora: «La prueba sobre T corre con un corredor nuevo que importa el código
+    congelado de la v2 sin editarlo (el prompt, el modelo y el armado del pedido, controlados por su sha256) y cambia solo la entrada, las
+    fichas de T. Antes de la prueba, el análisis suma la cifra por etapa E0–E5 y por procedencia del §3.6, con esos campos en el JSON de
+    entrada que armás vos.» Los escribió la sesión del juez v2 sin ver T, en sus etapas c, d, e y f, y los revisó la mesa por código. El
+    selftest del corredor (`correr-prueba-T-v2.1`) da 101 casos y el del análisis (`analisis-T-v2.4`), 168, sin ningún dato real.
+  - **En las 100 de la autora que la v2 manda a adjudicación** cuenta su hoja sellada. Lo decidió la autora, tal cual: «En mis 100 de T
+    que la v2 mande a adjudicación cuenta la marca de mi hoja sellada, sin una adjudicación nueva.»
+  - **La corrida cortada,** tal cual la decidió la autora: «La corrida cortada en la prueba sobre T. Rige tu regla, con dos cambios. Una
+    falla de infraestructura se re-corre hasta dos veces, cada vez desde cero, como las fallas de infraestructura de B6.3, y el gasto de
+    todas las corridas cuenta para el mismo tope de USD 42. Si una repetición corta por el tope o por el freno, no se re-corre nada y la
+    prueba no se completa: rige el punto 10 de la enmienda 4, sin otra decisión mía. Los archivos de cada corrida cortada salen por código
+    a una carpeta aparte, con su sha256 y sin abrirse, y se declaran.»
+    - Una falla de infraestructura es una repetición que termina sin juzgar sus fichas por algo que no es el tope ni el freno: el corte
+      por errores de la API, la red, el proceso muerto o la máquina dormida. La clasifica, la mueve y la re-corre el comando de la mesa.
+    - El corredor le pasa a la guarda el tope y el freno decididos menos el gasto de las bases de las corridas cortadas, medido sobre una
+      copia. Si ese gasto llega al freno, no llama.
+  - **Las 300 restantes,** tal cual: «Las 300 restantes de T se rigen por la misma regla de la corrida cortada que la prueba, con su tope
+    de USD 125: una falla de infraestructura se re-corre hasta dos veces, cada vez desde cero, y el gasto de todas las corridas cuenta
+    para el mismo tope; si una repetición corta por el tope o por el freno, no se re-corre nada y las 300 no se completan.» Lo que se
+    informa entonces, tal cual: «Si las 300 no se completan, se informa como propusiste: la precisión de T con mis 100, como en el punto
+    10 de la enmienda 4; al lado, la prueba de la v2 sobre mis 100 como su validación; las 300 como no completadas, con sus intentos, sus
+    motivos y el gasto contra los USD 125; y ninguna cifra de las fichas de las 300 que sí se juzgaron.»
+  - **El caso que la regla no preveía,** que una repetición corte por infraestructura y, en el mismo intento, otra por el tope o el
+    freno, lo decidió la autora, tal cual: «El análisis acepta una repetición cortada por infraestructura con menos de 3 intentos solo
+    si otra repetición de la misma corrida cortó por el tope o por el freno. En ese caso la prueba, o las 300, no se completa, como dice
+    mi regla de la corrida cortada, y se declara.» Lo aplica el análisis desde su etapa f.
+  - **El sha256 de los 37 archivos** (el corredor, el análisis, sus selftests, sus comandos y sus salidas, y las versiones
+    anteriores, en `etapa_c_original/`, `etapa_c_mesa/`, `etapa_d/` y `etapa_e/`), en
+    `data/experiment/tripletas_v/juez_v2/sha256_analisis_T_v2.txt`, con sha256
+    `80667d81485be96ead5df371dafff3b91472630d05a7bba55e03ebe36d484318`.
+    Los archivos siguen fuera del repo, en `fuera_del_repo/tripletas_v_juez/v2/`.
+  - **Lo que la sesión imprimió en su consola,** declarado:
+    - en la etapa c, al buscar lo del juez en el registro de decisiones, 28 renglones de su §84 y su §103 (19 y 9), con renglones del
+      banco y de B6.3, y 5 asuntos de commits. Ninguno trae un tramo de las preguntas, los criterios o las citas de B6.3, un id de
+      pregunta de EV2 ni un «%» (la mesa, por código, en su transcripción);
+    - en la etapa e, el nombre de un archivo de `docs/`, el pre-registro de B6.3, sin abrirlo (su FRENO, §7).
+  - **Las cinco carpetas temporales** que dejaron las etapas a a b en la carpeta temporal del sistema, sin declararlas: 923 archivos y
+    523.576.558 bytes, cachés y salidas del cliente simulado de sus corridas en seco y de sus selftests. La mesa las inventarió por nombre,
+    tamaño y sha256, sin abrir ninguno, y el inventario queda en su paquete. La autora las borró a las 19:46 del 25/10/2026, con el
+    script de la mesa y después de su prueba en seco exacta (registro, §117 y §118).
+  - **Las coincidencias con los casos del prompt de la v2** (registro, §117): ninguna de las 100 de la autora; de las 300 restantes,
+    una arista es un caso de la iteración 1 (V097). Lo decidió la autora, tal cual: «La medición de las 400 se informa también sin la
+    arista de V097, como sensibilidad, igual que la prueba sin las coincidentes.» El análisis la calcula con la misma medición.
+  - El texto firmado no cambia.
