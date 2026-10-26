@@ -726,3 +726,85 @@ del §14.
     del texto de la norma, que cita la norma y puede coincidir con alguna cita de los criterios (hoja de ruta de la mesa, §271). No leyó
     ninguna pregunta ni ningún criterio.
   - El texto firmado no cambia.
+- **26/10/2026 — Las coincidencias con las citas y con las preguntas, el criterio nuevo de los R2, los desvíos de P3, los R2 y el R3,
+  lo que vio la mesa y la verificación del juez (H-11)** (decisiones de la autora del 25/10/2026, recibidas a las 17:23:19, a las 18:22:29,
+  a las 18:24:35, a las 19:13:16, a las 22:58:28 y a las 23:02:12, y del 26/10/2026, recibidas a las 09:31:22, a las 10:51:11 y a las
+  11:01:54; registro de decisiones del 15/10/2026, §115 a §119):
+  - **Las coincidencias de renglones del repo con citas de los criterios** (§115, decisión 2), contadas por un script de la mesa con tramos
+    de 30 caracteres de las preguntas, los criterios y las citas de las olas 1 a 3, de los 13 reubicados y de los 13 reemplazos:
+    - este pre-registro, en el commit de la firma (`adf20f3b`) y en `36cb1378`: los renglones 160, 174 y 185, de su §3.2, coinciden con
+      tramos de citas. Los trajo `53b4f535`, la versión para firmar;
+    - el registro de decisiones, en `36cb1378`: el renglón 4153, de la §105, coincide con tramos que están en citas, en criterios y en
+      preguntas. Lo trajo `084499c6` (23/10/2026, 20:50:40).
+  - **El criterio nuevo de P2 en los R2,** tal cual (decisión de las 18:24:35; §116): «El criterio nuevo de P2 en los R2, «una remisión
+    cuyo contenido la unidad ya reproduce no cuenta», rige desde los R2; lo sellado no cambia.»
+  - **Los desvíos de P3,** que no se vuelve a correr porque sus dos salidas están selladas:
+    - la tanda 1 (decisión de las 18:22:29; §116), tal cual: «comparó con preguntas anteriores del mismo régimen, dudó entre dos notas en
+      15 códigos, asignó «cumplimiento normativo» a los detalles de los regímenes informativos y salió de su carpeta para listar nombres y
+      leer el script del grep.»;
+    - la tanda 2 (decisión de las 22:58:28; §118), los siete de su FRENO: corrió en la misma sesión que la tanda 1, que sigue en su
+      contexto, sin abrir sus archivos; notó dos pares de preguntas que comparten páginas o régimen; dudó entre dos notas en 4 códigos;
+      eligió el puesto de un código porque el tema de su ancla no está en la lista; su grep recorrió también la salida de la tanda 1, sin
+      abrirla; lo corrió más veces que las pedidas; y escribió dos scripts nuevos para la tanda 2 y copió otros dos cambiando solo la
+      tanda, con los de la tanda 1 sin cambios.
+  - **Los R2:** la autora selló su revisión a las 19:34:21 del 25/10/2026, con 6 aprobados y 1 rechazado, B63-O3-L03-R2, de la ola 3
+    (§117). Su R3, B63-O3-L03-R3, tiene su ancla en `ri_transpa::SD::rep3`, en el mismo documento del R2 rechazado.
+  - **El R3 y la ola 3** (H-10; §119): la autora aprobó el R3, «B63-O3-L03-R3, con el tipo que se sostiene», y selló su revisión el
+    26/10/2026 a las 11:00:10 (`revision_b63_reemplazos_R3/`: el sello, `c6940d01…`; la marcada, `e41e00ab…`). La mesa la controló por
+    código. La ola 3 queda con sus 32 lugares aprobados: 20 de la ola, 8 reubicados, 3 R2 y el R3. Su relevancia (P3, la tanda 3, armada
+    con una pregunta): PENDIENTE.
+  - **El caso de `ri_acsf`,** tal cual (decisiones de las 19:13:16 y de las 23:02:12; §117 y §118): «B63-O1-L06-R2 queda en ri_tvf, donde
+    lo dejó P2 con las cuentas de ese momento, y el caso de ri_acsf se declara.» y «B63-O2-L13-R2 y B63-O3-L01-R2 quedan donde los dejó
+    P2, como B63-O1-L06-R2. El caso de ri_acsf se declara con los tres, con los lugares que habrían cambiado.»
+    - Los tres R2 pasaron por `ri_acsf` cuando contaba 4 lugares y lo saltearon. Uno de los 4 era el de B63-O3-L03-R1, que después pasó a
+      `ri_transpa` con su R2; como quedó sellado, `ri_acsf` tiene 3.
+    - Con 3, `ri_acsf` tenía lugar para uno de los tres: B63-O1-L06-R2 en lugar de `ri_tvf`, o B63-O2-L13-R2 o B63-O3-L01-R2 en lugar
+      de `ri_transpa`.
+  - **`ri_transpa::SD`, otro punto de dos lugares,** tal cual (decisión de las 23:02:12; §118): «Que ri_transpa::SD sea otro punto de dos
+    lugares no cambia nada, porque la regla excluye que una unidad ancle dos lugares, no que sea otro punto de dos. Se declara, junto con
+    los 3 lugares de ri_transpa en sus Apartados B y D.»
+    - Los 3 lugares de `ri_transpa`: B63-O2-L13-R2, con su ancla en `ri_transpa::SB` y su otro punto en `ri_transpa::SA`; B63-O3-L01-R2,
+      con su ancla en `ri_transpa::Sbloque3` y su otro punto en `ri_transpa::SD`; y B63-O3-L03-R3, con su ancla en `ri_transpa::SD::rep3`
+      y su otro punto en `ri_transpa::SD`.
+    - La regla se aplicó en todas las rondas a las anclas, no a los otros puntos (§116). Unidades que son otro punto de dos o más
+      preguntas de la misma ronda, y unidades que son ancla de una y otro punto de otra: en las olas, 5 y 8; en los reubicados, 0 y 0; en
+      los reemplazos, 0 y 0; en los R2, 1 y 1 (`lingob::1.5` y `ri_transpa::SD`).
+  - **El error de orden de los R2 que declaró P2,** tal cual (decisión de las 23:02:12; §118): «la entrada del generador corrió en el mismo
+    comando que la primera corrida del plan, después de ella».
+  - **Los registros de generación de P2 y sus preguntas** (decisión de las 09:31:22; §119). La mesa los contó por código, sin mostrar
+    ninguna palabra. Un tramo es un trecho máximo de 6 o más palabras seguidas de una pregunta, un criterio o una cita de la tanda del
+    registro que está también en el registro. Los siete registros dan el sha256 de su sello.
+    - La ola 1 (`79600966…`) tiene 68 tramos, de 28 de sus 32 preguntas: 17 de la pregunta, 28 de un criterio y 23 de una cita. El más
+      largo, de 29 palabras.
+    - La ola 2 (`96d7712c…`), 48, de 19 de 27: 7, 20 y 21; el más largo, 18.
+    - La ola 3 (`57920de6…`), 57, de 21 de 24: 6, 26 y 25; el más largo, 26.
+    - Los reubicados (`665d63d8…`), 29, de 10 de 13: 6, 11 y 12; el más largo, 18.
+    - Los reemplazos (`ffd4925e…`), 42, de 12 de 13: 9, 15 y 18; el más largo, 26.
+    - Los R2 (`8b8d998f…`), 28, de sus 7: 4, 10 y 14; el más largo, 23.
+    - El R3 (`37027ad4…`), 1, de la pregunta, de 8 palabras. El porqué del FRENO del R3 no comparte ningún tramo de 6 palabras con su
+      pregunta, sus criterios ni sus citas.
+    - En total, 273 tramos, de 98 de las 117 preguntas. Las citas son texto de la norma, que el registro también puede citar.
+    - Las notas de trabajo de P2 (`trabajo/registro_notas_*`) tienen 37 tramos más, de 23 preguntas; la del R3, ninguno.
+  - **Los archivos de la mesa que copian los registros de generación** (decisión de las 11:01:54; §119), por código y sin mostrar
+    ninguna palabra: de 2070 archivos de la mesa desde su primer despacho de P2, 67 tienen tramos de 6 o más palabras que están solo en un
+    registro, y no en un texto anterior de la mesa, en un despacho, en el mandato de las preguntas ni en la norma:
+    - las 5 instrucciones de las hojas de revisión de la autora traen texto de una pregunta o de un criterio, de una cita y del bloque de
+      una pregunta en el registro;
+    - este pre-registro no trae texto de una pregunta ni de un criterio. Trae 5 tramos de citas, en sus renglones 160 a 203, y 35 tramos
+      de los registros en su §3.2 (renglones 158 a 211) y su §15 (renglones 694 a 716), 6 de ellos del bloque de una pregunta;
+    - el registro de decisiones, 1 tramo general, en la §118; los demás son materiales de trabajo de la mesa;
+    - una frase que describe una pregunta sin nombrarla no se distingue por código de una regla.
+  - **Lo que vio la mesa, y una corrección de la nota del 25/10/2026.** De las 49 llamadas de la mesa que nombran un registro de
+    generación de P2 o sus notas de trabajo, 3 mostraron tramos, todas sin el tapador:
+    - el 23/10/2026, a las 17:13 y a las 17:17, partes del registro de la ola 1: 9 y 22 tramos;
+    - el 25/10/2026, a las 11:19, 57 renglones del registro de los reubicados: 17 tramos;
+    - entre las tres, 4 tramos de preguntas, 17 de criterios y 27 de citas. Con el tapador, ninguna de las 10 llamadas mostró un tramo.
+    - La nota del 25/10/2026 dice que la mesa «No leyó ninguna pregunta ni ningún criterio». No es exacto: las tres salidas son anteriores
+      a esa nota.
+  - **H-11, la verificación del juez (Q8),** llena por su regla (§7.2), sin decidir nada nuevo: la autora selló su lectura a ciegas de las
+    20 de A2.2 el 26/10/2026 a las 10:48:47, y la mesa la cruzó con los juicios del juez
+    (`data/experiment/ev2_juez/gold_q12_verificacion/acta_gold_q12_verificacion.md`):
+    - por criterio, 82 de 82 (Wilson al 95 %, 0,9552 a 1); por respuesta, 20 de 20;
+    - el criterio de aceptación se cumple: el Wilson inferior es de al menos 0,85, y el acuerdo, de al menos 18 de 20;
+    - llegó después de la firma: va como desvío declarado de Q8 (`:71`), con su regla de consecuencias igual (§13, punto 2).
+  - El texto firmado no cambia.
