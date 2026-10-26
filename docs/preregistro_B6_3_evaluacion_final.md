@@ -844,3 +844,42 @@ del §14.
     métricas, que no llevan código, prompts ni rutas, y la consulta de los feature flags), el mismo que tuvieron las sesiones de A2.2. No
     cambio el lanzador sellado antes de B6.3. Va declarado en la próxima nota de B6.3.»
   - El texto firmado no cambia.
+- **26/10/2026, desde las 16:07 — La fecha que cada sesión recibe en su pedido, las sesiones de A2.2, el orden de los brazos, la cuenta
+  por brazo y por fecha, las preguntas con términos de fecha y la guarda de la versión del CLI** (decisión de la autora del 26/10/2026,
+  recibida a las 16:07:59; registro de decisiones del 15/10/2026, §123):
+  - **La fecha en el pedido** (el testigo integrado del banco en paralelo, en su vuelta b:
+    `data/experiment/banco_mcp/paralelo/FRENO_UBANCO_PARALELO_b.md`, §7, punto 1): en el turno de las 9 sesiones selladas, en los tres
+    brazos, la fecha del día aparece una vez en `system` (`AAAA-MM-DD`) y una vez en `messages`, junto con «Today's date»; el pedido
+    auxiliar no la trae. La pone el CLI sellado (2.1.241, `--bare`), con el lanzador sellado. Lo decidió la autora, tal cual: «El agente
+    recibe la fecha del día en su pedido: la pone el CLI. No cambio el lanzador sellado: es el mismo CLI y el mismo lanzador de A2.2. Se
+    declara así, en lugar de "el agente no recibe la fecha", que queda corregido en la próxima nota de B6.3.»
+  - **Lo que corrige:** la nota anterior (26/10/2026, por la tarde, «La fecha de cada sesión») declaraba que el agente no recibe la fecha
+    en su pedido, con su control NO VERIFICADO hasta el FRENO del testigo. El testigo dio que la recibe, y rige la declaración de arriba.
+    El registro de decisiones ya decía que el CLI escribe la fecha del día en el pedido (§88, `:3221-3222`); la mesa no lo marcó al
+    redactar la nota anterior (registro, §123).
+  - **A2.2:** sus 231 sesiones (120 de N1, 108 de las re-corridas y 3 de prueba) empezaron el 25/10/2026, entre las 17:21:14 y las
+    20:18:37 (UTC−3), por la hora de su lanzador: el campo `lanzado` de cada `comando_*.json` de `a2_2/resultados/`
+    (`a2_2/lanzar_agente_a2_2.py:132`), leído solo por código en HEAD `4b94fae8` (la mesa, `fecha_de_las_sesiones_de_A2_2_mesa.py`, en su
+    paquete, §282). Todas en la misma fecha, también en UTC. Que hayan recibido la fecha en su pedido es probable, por el mismo CLI y el
+    mismo lanzador, y NO VERIFICADO: sus pedidos no se guardaron.
+  - **El orden firmado** (§6, `:365-369` del texto firmado) deja juntas las sesiones de los tres brazos de cada pregunta y repetición: los
+    brazos van seguidos, en un orden sorteado dentro de cada bloque (D-4). El lanzador del lote las lanza en el orden de su lista
+    (`agentes/lanzar_lote_paralelo.py:34`) y la fecha de cada sesión es la de su reloj al empezarla. Un cambio de fecha corta la
+    secuencia en un solo lugar: por cada medianoche que cruce el lote, a lo sumo un bloque tiene brazos en dos fechas, y qué brazos
+    quedan de cada lado lo decide el sorteo del bloque, no el brazo. En la corrida en seco del banco, con P = 3 y con P = 1, el cambio
+    de fecha cayó dentro de un bloque, el S04 (`FRENO_UBANCO_PARALELO_b.md`, §5, punto 2). El análisis declara cuántos bloques tienen
+    fechas distintas entre brazos, como dice el §6.
+  - **Lo que se informa,** tal cual (la misma decisión): «En B6.3 se informa cuántas sesiones de cada brazo corrieron en cada fecha.» Lo
+    cuenta el runner, por brazo y por fecha, con los bloques de fechas distintas (su despacho, etapa a, v3: PREPARADO).
+  - **Las preguntas con términos de fecha** (la mesa, por código, sin imprimir ningún texto: `contar_terminos_de_fecha_en_las_96_mesa.py`,
+    en su paquete, §282): de las 96, 5 usan «vigente», «actualmente», «a la fecha», «hoy» o «en la actualidad»: 1 en la pregunta («hoy»)
+    y 4 en sus criterios, con 4 criterios («vigente» en 3 y «a la fecha» en 1); ninguna en las dos. «Actualmente» y «en la actualidad»
+    no aparecen.
+  - **El sha256 de `system` y de `tools`** (el testigo, `FRENO_UBANCO_PARALELO_b.md`, §5, punto 13): uno solo por brazo y por tipo de
+    pedido en las 9 sesiones, todas del 26/10/2026. Como `system` trae la fecha, en B6.3 se espera uno por brazo, por tipo de pedido y por
+    fecha: NO VERIFICADO hasta la etapa b del runner.
+  - **La guarda de la versión del CLI,** que la nota anterior daba como PREPARADA: el lanzador del lote la trae (código 6: `claude
+    --version`, el destino del enlace y el `system/init` de cada sesión, contra la versión sellada de su configuración), y su corrida en
+    seco la probó en sus tres formas (`FRENO_UBANCO_PARALELO_b.md`, §4, punto 3). Va en el commit del banco en paralelo, que el de esta
+    nota pide en su historia.
+  - El texto firmado no cambia.
