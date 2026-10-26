@@ -24,6 +24,18 @@ de estos grafos). grafos.cargar_vista_runtime ya importa comun_tanda0 por el
 campo requiere_registro_modulo de las entradas KG_Tanda0_*, así que este
 import explícito del cargador queda redundante e inocuo.
 
+U-NAV-DISENO, N5 (mandato firmado en c2ddf5f7, §4, N5; decisión 6):
+  - acepta en --grafo toda clave de grafos.py (`CLAVES_CARGABLES`): antes
+    filtraba las que empiezan con «KG_Tanda0_», y la tanda 1 y el acumulado se
+    cargaban con un envoltorio en memoria (tanda1/t3/scripts/cargar_neo4j_t3f.py).
+    `CLAVES_TANDA0` queda como alias de la misma lista, para esos envoltorios;
+    «todos» son todas las claves del registro;
+  - la carga exporta las propiedades de arista de la decisión 6
+    (cargar_kg.PROPS_ARISTA_N5 y MARCAS_ARISTA_N5) y la salida suma, por grafo:
+    el estado sin esas propiedades (comparable con el `estado` de antes de N5),
+    la paridad loader = Neo4j de esas propiedades y la lista exportada. Las
+    huellas de HEAD (`contenido` y `estado`) se calculan igual que antes.
+
 Uso:
   .venv/bin/python cargar_neo4j_tanda0.py [--grafo CLAVE|todos] [--out-dir reports/tanda0]
                                           [--sin-equivalencia]
@@ -52,7 +64,8 @@ import cargar_kg as CK  # noqa: E402
 import indices as IX  # noqa: E402
 import test_equivalencia as TE  # noqa: E402
 
-CLAVES_TANDA0 = [c for c in G.CLAVES if c.startswith("KG_Tanda0_")]
+CLAVES_CARGABLES = list(G.CLAVES)       # N5: sin el filtro por «KG_Tanda0_» (ver docstring)
+CLAVES_TANDA0 = CLAVES_CARGABLES        # alias para los envoltorios que lo reemplazan en memoria
 
 
 def cargar_y_verificar(driver, clave: str, con_equivalencia: bool, reg) -> dict:
@@ -95,11 +108,19 @@ def cargar_y_verificar(driver, clave: str, con_equivalencia: bool, reg) -> dict:
         "verificar_carga_ok": ok_carga, "kg_meta": meta, "kg_meta_sha_igual_archivo": meta_ok,
         "tests_indices_informativos": {"BKL-0003": IX._fmt(t_a), "BKL-0003/desc": IX._fmt(t_a2),
                                        "BKL-0027": IX._fmt(t_b)},
+        # N5 (decisión 6): el estado sin las propiedades nuevas de arista (comparable con el de antes de N5), la
+        # paridad loader = Neo4j de esas propiedades (también dentro de verificar_carga) y la lista exportada.
+        "huella_estado_sin_props_n5_1": h1["estado_sin_props_n5"],
+        "huella_estado_sin_props_n5_2": h2["estado_sin_props_n5"],
+        "huella_props_aristas_loader": CK.huella_props_aristas_loader(kg, clave),
+        "huella_props_aristas_neo4j": CK.huella_props_aristas_neo4j(driver, clave),
+        "props_aristas_exportadas": (meta or {}).get(CK.CLAVE_META_N5),
     }
     if con_equivalencia:
         res["equivalencia_detalle"] = TE.correr_grafo(driver, clave, reg)
     res["ok"] = (res["idempotente"] and ok_carga and meta_ok
-                 and r1["aristas_colgantes"] == 0 and r2["aristas_colgantes"] == 0)
+                 and r1["aristas_colgantes"] == 0 and r2["aristas_colgantes"] == 0
+                 and res["huella_props_aristas_loader"] == res["huella_props_aristas_neo4j"])
     return res
 
 
@@ -119,15 +140,16 @@ def resumen_equivalencia(reg) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("--grafo", choices=CLAVES_TANDA0 + ["todos"], default="todos")
+    ap.add_argument("--grafo", choices=CLAVES_CARGABLES + ["todos"], default="todos")
     ap.add_argument("--out-dir", type=Path, default=REPO_DIR / "reports" / "tanda0")
     ap.add_argument("--sin-equivalencia", action="store_true")
     args = ap.parse_args()
-    claves = CLAVES_TANDA0 if args.grafo == "todos" else [args.grafo]
+    claves = CLAVES_CARGABLES if args.grafo == "todos" else [args.grafo]
 
     driver = CK.abrir_driver()
     reg = TE.Registro()
-    salida = {"unidad": "U-TANDA0-2A E3.c", "claves": claves,
+    salida = {"unidad": "U-TANDA0-2A E3.c", "revision_cargador": "U-NAV-DISENO N5 (decisión 6; sin el filtro «KG_Tanda0_»)",
+              "claves": claves,
               "campos_fulltext": IX.CAMPOS_FULLTEXT, "analyzer": IX.ANALYZER, "grafos": {}}
     ok = True
     try:

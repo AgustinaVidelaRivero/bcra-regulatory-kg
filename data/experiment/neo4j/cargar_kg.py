@@ -45,6 +45,23 @@ Modelo de datos en Neo4j (por nodo)
 - Aristas: relationship type = `relation` (16 tipos en KG-Refinado, 11 en
   KG-Reextraído), con `orden` (posición en kg.edges: reproduce el orden de
   inserción del in-memory en ver_vecinos) y `provenances_json`.
+- Propiedades de las aristas (U-NAV-DISENO, N5; decisión 6 del mandato firmado
+  en c2ddf5f7): además, las que muestran las herramientas de navegación
+  (banco_mcp/mcp_kg/familias_nav.py), con su nombre original y solo si la arista
+  las trae:
+    · de `properties`: `alcance`, `destino` y `evidencia` (remite_a) y las marcas
+      de la cola humana (`cola_humana`, `cola_chunks`, `estado_e3`);
+    · de fuera de `properties`, que la vista runtime no lleva: `no_verificada_e3`
+      y `rol_fuente` (la marca del sujeto derivado, si la parte B de la enmienda 6
+      a L-ESQ-R2 llega a regir). Se leen del kg.json crudo, por posición, solo si
+      las aristas de la vista están alineadas con las del crudo (misma cantidad y
+      la misma tripla en cada posición); si no, no se exportan y se informa.
+  Las tres tools de hoy no las leen: sus salidas no cambian. `huella_neo4j`
+  conserva sus dos huellas de HEAD (`contenido` no mira estas propiedades;
+  `estado`, que mira todas, cambia) y suma `estado_sin_props_n5`, el estado sin
+  ellas, comparable con el `estado` de antes de N5. La paridad de estas
+  propiedades se verifica aparte (`huella_props_aristas_*`). KG_Meta suma
+  `props_aristas` (la lista exportada): el servidor de navegación exige esa clave.
 
 Uso
 ---
@@ -85,6 +102,12 @@ SEED_MUESTREO = 20260806  # se conserva el de la unidad original (muestreo repro
 PROPS_RESERVADAS = {"id", "type", "label", "grafo", "tokens", "id_texto",
                     "props_json", "provenances_json"}
 
+# U-NAV-DISENO, N5 (decisión 6): propiedades de arista exportadas (ver docstring).
+PROPS_ARISTA_N5 = ("alcance", "destino", "evidencia", "cola_humana", "cola_chunks", "estado_e3")
+MARCAS_ARISTA_N5 = ("no_verificada_e3", "rol_fuente")
+EXPORTADAS_ARISTA_N5 = PROPS_ARISTA_N5 + MARCAS_ARISTA_N5
+CLAVE_META_N5 = "props_aristas"
+
 
 def cargar_kg(clave: str = GRAFO_DEFAULT):
     return cargar_vista_runtime(clave)
@@ -112,6 +135,38 @@ def _fila_nodo(n, clave: str) -> dict:
         # Neo4j: quedan solo en props_json (fuente canónica). No ocurre en
         # los dos grafos del registro (verificado), se deja como defensa.
     return fila
+
+
+def _valor_arista(v):
+    """Valor de una propiedad exportada de arista como tipo nativo de Neo4j: str, bool, int, float o lista de str tal
+    cual; cualquier otro (dict, lista mixta), como su json (ensure_ascii=False)."""
+    if isinstance(v, (str, bool, int, float)) or (isinstance(v, list) and v and all(isinstance(x, str) for x in v)):
+        return v
+    return json.dumps(v, ensure_ascii=False)
+
+
+def props_aristas_n5(kg, clave: str) -> dict:
+    """Las propiedades de arista de N5 (decisión 6), una por arista de kg.edges en su orden: {"filas": [dict],
+    "alineadas": bool}. Las de `properties` salen de la vista; las marcas de fuera de `properties`, del kg.json crudo
+    por posición, solo si la vista está alineada con el crudo. Un valor None no se exporta (Neo4j no guarda nulos)."""
+    crudo = json.loads(GRAFOS[clave]["path"].read_text(encoding="utf-8")).get("edges", [])
+    alineadas = len(crudo) == len(kg.edges) and all(
+        (c.get("source"), c.get("relation"), c.get("target")) == (e.source, e.relation, e.target)
+        for c, e in zip(crudo, kg.edges))
+    filas = []
+    for i, e in enumerate(kg.edges):
+        p = {}
+        for k in PROPS_ARISTA_N5:
+            v = (e.properties or {}).get(k)
+            if v is not None:
+                p[k] = _valor_arista(v)
+        if alineadas:
+            for k in MARCAS_ARISTA_N5:
+                v = crudo[i].get(k)
+                if v is not None:
+                    p[k] = _valor_arista(v)
+        filas.append(p)
+    return {"filas": filas, "alineadas": alineadas}
 
 
 def cargar_en_neo4j(driver, kg, clave: str = GRAFO_DEFAULT) -> dict:
@@ -150,7 +205,9 @@ def cargar_en_neo4j(driver, kg, clave: str = GRAFO_DEFAULT) -> dict:
                     filas=filas[i:i + BATCH],
                 ).consume()
 
-        # Aristas, agrupadas por relation; `orden` = posición en kg.edges.
+        # Aristas, agrupadas por relation; `orden` = posición en kg.edges. N5: más las
+        # propiedades de la decisión 6 (`props`, vacío si la arista no trae ninguna).
+        n5 = props_aristas_n5(kg, clave)
         por_rel = {}
         for idx, e in enumerate(kg.edges):
             por_rel.setdefault(e.relation, []).append({
@@ -158,6 +215,7 @@ def cargar_en_neo4j(driver, kg, clave: str = GRAFO_DEFAULT) -> dict:
                 "target": e.target,
                 "orden": idx,
                 "provenances_json": json.dumps(e.provenances, ensure_ascii=False),
+                "props": n5["filas"][idx],
             })
         creadas = 0
         for rel, filas in por_rel.items():
@@ -167,7 +225,8 @@ def cargar_en_neo4j(driver, kg, clave: str = GRAFO_DEFAULT) -> dict:
                     f"MATCH (s:`{label}` {{id: fila.source}}), (t:`{label}` {{id: fila.target}}) "
                     f"CREATE (s)-[r:`{rel}`]->(t) "
                     "SET r.orden = fila.orden, "
-                    "    r.provenances_json = fila.provenances_json "
+                    "    r.provenances_json = fila.provenances_json, "
+                    "    r += fila.props "
                     "RETURN count(r) AS c",
                     filas=filas[i:i + BATCH],
                 ).single()
@@ -188,6 +247,9 @@ def cargar_en_neo4j(driver, kg, clave: str = GRAFO_DEFAULT) -> dict:
                 "n_aristas": len(kg.edges),
                 "vista_runtime": g["vista_runtime"],
                 "version_carga": VERSION_CARGA,
+                # N5: las propiedades de arista que esta carga exporta (sin las marcas de fuera de
+                # `properties` si la vista no está alineada con el crudo).
+                CLAVE_META_N5: list(EXPORTADAS_ARISTA_N5 if n5["alineadas"] else PROPS_ARISTA_N5),
             },
         ).consume()
     return {"nodos": len(kg.nodes), "aristas_creadas": creadas,
@@ -223,22 +285,52 @@ def huella_neo4j(driver, clave: str) -> dict:
     meta = leer_meta(driver, clave)
     estado = hashlib.sha256()
     contenido = hashlib.sha256()
+    # N5: el estado sin las propiedades de arista de la decisión 6 ni la clave `props_aristas` de KG_Meta, con la
+    # misma serialización que `estado`: es el `estado` de una carga de antes de N5 del mismo grafo.
+    estado_sin_n5 = hashlib.sha256()
     for r in nodos:
         p = r["p"]
-        estado.update(json.dumps({"p": p, "ls": sorted(r["ls"])},
-                                 ensure_ascii=False, sort_keys=True).encode())
+        b = json.dumps({"p": p, "ls": sorted(r["ls"])}, ensure_ascii=False, sort_keys=True).encode()
+        estado.update(b)
+        estado_sin_n5.update(b)
         contenido.update(json.dumps(
             [p["id"], p["type"], p["label"], p["props_json"],
              p["provenances_json"], list(p["tokens"]), p["id_texto"]],
             ensure_ascii=False).encode())
     for r in aristas:
         estado.update(json.dumps(r, ensure_ascii=False, sort_keys=True).encode())
+        sin = dict(r, p={k: v for k, v in r["p"].items() if k not in EXPORTADAS_ARISTA_N5})
+        estado_sin_n5.update(json.dumps(sin, ensure_ascii=False, sort_keys=True).encode())
         contenido.update(json.dumps(
             [r["s"], r["rel"], r["t"], r["p"]["orden"], r["p"]["provenances_json"]],
             ensure_ascii=False).encode())
     estado.update(json.dumps(meta, ensure_ascii=False, sort_keys=True).encode())
+    meta_sin = None if meta is None else {k: v for k, v in meta.items() if k != CLAVE_META_N5}
+    estado_sin_n5.update(json.dumps(meta_sin, ensure_ascii=False, sort_keys=True).encode())
     return {"estado": estado.hexdigest(), "contenido": contenido.hexdigest(),
+            "estado_sin_props_n5": estado_sin_n5.hexdigest(),
             "n_nodos": len(nodos), "n_aristas": len(aristas)}
+
+
+def _huella_props(filas) -> str:
+    """sha256 de las propiedades de arista de N5, una entrada por arista en el orden de kg.edges: [orden, {clave:
+    valor}] con las claves ordenadas. Misma serialización para el loader y para Neo4j."""
+    h = hashlib.sha256()
+    for orden, p in filas:
+        h.update(json.dumps([orden, p], ensure_ascii=False, sort_keys=True).encode())
+    return h.hexdigest()
+
+
+def huella_props_aristas_loader(kg, clave: str) -> str:
+    return _huella_props(enumerate(props_aristas_n5(kg, clave)["filas"]))
+
+
+def huella_props_aristas_neo4j(driver, clave: str) -> str:
+    label = GRAFOS[clave]["label"]
+    with driver.session() as session:
+        filas = session.run(
+            f"MATCH (:`{label}`)-[r]->(:`{label}`) RETURN r.orden AS o, properties(r) AS p ORDER BY r.orden").data()
+    return _huella_props((f["o"], {k: v for k, v in f["p"].items() if k in EXPORTADAS_ARISTA_N5}) for f in filas)
 
 
 def huella_loader(kg, clave: str) -> str:
@@ -354,6 +446,12 @@ def verificar_carga(driver, kg, clave: str = GRAFO_DEFAULT, n_muestra: int = 20)
           f"{'✓ idéntica' if hn['contenido'] == hl else '✗ DIFIERE'}")
     print(f"[{clave}] huella estado neo4j    ={hn['estado']}")
     ok = ok and hn["contenido"] == hl
+    # N5 (decisión 6): paridad loader = Neo4j de las propiedades de arista exportadas.
+    pl = huella_props_aristas_loader(kg, clave)
+    pn = huella_props_aristas_neo4j(driver, clave)
+    print(f"[{clave}] huella props aristas loader={pl}")
+    print(f"[{clave}] huella props aristas neo4j ={pn} {'✓ idéntica' if pl == pn else '✗ DIFIERE'}")
+    ok = ok and pl == pn
     return ok
 
 
