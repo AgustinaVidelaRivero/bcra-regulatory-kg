@@ -5366,3 +5366,160 @@ a las 18:24:21 (hoja de ruta de la mesa, §284), sobre la §283 de la mesa.
   los índices; la prueba de T, cuando terminen U-VERPUNTO y el runner; la decisión de la autora sobre la candidata, y con ella el sello de
   N4 y el despacho de N6.
 - Las secciones anteriores no se editan.
+
+## 126. El lunes, desde las 19:00: la etapa a del runner, la de los índices, la memoria y la r3 de la prueba de T (26/10/2026)
+
+Decisiones y hechos de la autora del 26/10/2026, recibidos a las 19:00:06, con agregados a las 19:17:12 y a las 19:36:53 (hoja de
+ruta de la mesa, §285), sobre la §284 de la mesa.
+
+- **El 207 y el 208,** confirmados por la autora (19:00:06): el 207 es `6737993c07bd16e9c086331b51b7c5b28ba8aa01` (1 archivo) y el 208,
+  `b9bd2ce5857a74dfea7d25f3fa0de8ac5d1aab5b` (56 archivos); HEAD y origin/main, en `b9bd2ce5`. Cada uno trae, byte a byte, lo que
+  preparó la mesa.
+- **El 209,** confirmado por la autora (19:36:53): `05d52554ea8e677a53dc68436d9309886e381c0b` (1 archivo), con su push. Es, byte a byte,
+  el registro de la copia permanente del paquete de la mesa (`244f87c7…`), el que listaba su manifiesto y el que esperaba el comando.
+  **Error de la mesa, con su causa:** al cerrar la §284, después del 207 y el 208, la mesa rehízo el 209 en su scratchpad (19:00:47),
+  con la §125 al día. No regeneró el manifiesto ni copió el paquete a la carpeta permanente, y el FRENO daba los comandos desde esa
+  carpeta: se commiteó la versión de las 18:33. Difieren solo en el final de la §125. La commiteada dice que el 207, el 208 y el 209
+  van cuando frene la etapa a del runner; la de las 19:00 decía que el 207 y el 208 ya estaban en HEAD, byte a byte. Lo dice esta
+  sección; la §125 no se edita. La versión que no se corrió queda aparte en el paquete de la mesa, marcada.
+- **El FRENO de la etapa a del runner de B6.3** (`data/experiment/banco_mcp/b63/FRENO_B63_a.md`, `ded2163b…`), revisado por la mesa por
+  código:
+  - el paquete (`bf66679d…`, 60 archivos) y los 25 archivos de `b63/`, sin rastrear: 9 de 9;
+  - sobre una copia, con el repo igual antes y después: el selftest, 19 de 19, y la corrida en seco, 27 de 27;
+  - la entrada del juez (el control del §253), 10 de 10, y el camino de B6.3 al juez, 7 de 7.
+  Su commit, el 210, queda PREPARADO.
+- **Las decisiones de la autora sobre su §10, tal cual** (19:00:06):
+  1. «El testigo de aislamiento corre en la etapa b con la configuración sellada de B6.3 (la del grafo de N7, la principal de fragmentos
+     y el denso) y no con la de prueba de N6. Pedí que controle las sesiones de B6.3, y hoy el denso y la configuración de N7 quedan
+     afuera.» Va como un parámetro de su configuración, en una versión nueva, a USD 0, con su selftest y sus controles positivo y negativo.
+  2. «Se prepara ahora, a USD 0, la versión del lanzador del lote que toma R5 de la entrada sellada y admite solo los dos valores del
+     pre-registro: 32, 30 y 1,80, o 45, 47 y 3,30 si N7 lo sube por la regla del 5 % (H-6). Así N7 decide sin demorar el lanzamiento.»
+  3. «La etapa b provoca un error real del CLI a USD 0, sin la clave real y sin que ningún pedido llegue al modelo, y registra su forma.
+     El clasificador del runner se controla contra esa forma. Antes de lanzar B6.3 queda fijado por escrito qué hace el runner con una
+     forma de error que no conoce.»
+  4. «correr_b63.py entra en el patrón de otro paso pago de todo comando que pueda correr mientras corre B6.3, y en el de pgrep para
+     esperar. Las guardas de hoy ven las sesiones de B6.3, pero no las horas del juez encadenado.»
+  5. Los bloques de a uno: cada bloque dura lo que la más lenta de sus tres sesiones, y el calendario v18 contó las tres ranuras como si
+     se llenaran sin esperar.
+  6. «La entrada sellada suma el sha256 del pip freeze del venv del banco que nombra el §5 del pre-registro, y el runner lo controla.»
+  Quedan declarados, sin cambios, la lectura de `tengu_velvet_ibis` y el control del disco que sumó el lanzador de B6.3 con las funciones
+  de A2.1 sin editarlas, y el docstring del lanzador del lote sobre la fecha, que va en la próxima nota de B6.3.
+- **La decisión 5, medida** con las duraciones de las 40 preguntas de A2.2 con sus tres brazos, sin leer ninguna respuesta: de a uno,
+  1,648 veces lo que dura sin esperas (31,3 min contra 19,0); con una ventana corrida de 3 sesiones en el orden firmado, 1,004. **La
+  propuesta, PREPARADA para la decisión de la autora:** la ventana corrida, con P = 3 en el orden firmado y cada reintento en el primer
+  lugar libre.
+- **La decisión 3: las opciones para una forma de error que el runner no conoce,** PREPARADAS para la decisión de la autora:
+  - (a) la sesión queda incompleta: no cuenta como correcta en el análisis principal, sale del de sensibilidad y se declara;
+  - (b) se trata como falla de infraestructura y se reintenta;
+  - (c) la corrida se corta;
+  - (d) la recomendada: (a), y el lote frena cuando junta 3 formas desconocidas.
+  El cómo, propuesto para la etapa b, a USD 0:
+  - una clave inválida contra la API, que contesta sin llegar al modelo;
+  - un puerto local cerrado como URL base;
+  - un servidor local que contesta 429, 500 y 529 y cuenta los pedidos que recibe, que es lo que mide si el CLI reintenta solo.
+- **El punto 9** (la corrida real deja en el repo texto de las preguntas), PREPARADO para la decisión de la autora, como en A2.2:
+  - se commitean las salidas sin texto (metas, cuentas, sha256);
+  - los pedidos, los streams, las transcripciones y la caché del juez quedan fuera del repo, con un manifiesto de sha256 commiteado,
+    hasta que cierren el análisis y el control de la autora.
+- **La decisión 6:** el §5 del pre-registro nombra `24f4c064…`. La mesa lo midió sobre el venv `venvs/banco_vector_py312`: es el
+  `pip freeze --all` (63 líneas). El testigo del banco toma el `pip freeze` sin `--all`
+  (`banco_mcp/aislamiento/test_aislamiento_paralelo.py:96`), que da `e363fdf2…` (62 líneas), el de su FRENO: el mismo venv, otra forma.
+  La etapa b controla la forma con `--all`.
+- **El FRENO de la etapa a de los índices** (19:17:12; `fuera_del_repo/indices_eval/FRENO_UINDICES_EVAL_a.md`, `45b0416f…`; paquete
+  `6acf02de…`, 77 archivos más su manifiesto), revisado por la mesa por código. Las decisiones de la autora, tal cual:
+  1. «No saco ningún TO. El índice por punto se construye con una versión nueva de indice_puntos.py, sin editar la de HEAD, cuya clave
+     distingue las secciones repetidas de ri_secoexpo, ri_transpa y ri_tsa del mismo modo en que el servidor del grafo identifica esos
+     puntos.» Si el servidor tampoco las distingue, la mesa frena y propone antes de cambiar nada.
+  2. «Va la candidata en F2, ver_descendientes, como la propusiste (opción a), y se implementa esta noche. Hago mi lectura de N5b esta
+     noche o mañana temprano, antes del sello de N4. Si la lectura me hace cambiar de idea, la candidata no entra y se declara.»
+  3. «Antes de construir los denso de la etapa b se libera memoria.»
+  4. «La igualdad byte a byte se controla sobre una muestra, las mismas 200 unidades y los mismos 200 puntos codificados dos veces, y no
+     con una segunda construcción entera. Se declara.»
+  5. «La consola de la §195 que tiene los mismos bytes que el JSON NO_ABRIR_ lleva el prefijo NO_ABRIR_, en las dos copias.»
+- **La decisión 1: el servidor no las distingue.** `ver_punto`, `indice_to` y `buscar_puntos` resuelven todo punto a `to::unidad`
+  (`familias_nav.py:360-373`). Los nodos cuelgan del `punto` de su procedencia (`indice_puntos.py:175`), que es la misma unidad para todas
+  las apariciones.
+  - En el grafo evaluado, 11 claves aparecen 28 veces en la estructura de la E0, con 208 procedencias de nodos.
+  - Asignar cada procedencia a una aparición se puede por sus ancestros en 79 y por la página de su bloque en 79. Quedan ambiguas 50.
+  La mesa no cambió nada. **Las opciones, PREPARADAS para la decisión de la autora:**
+  - (a) la recomendada: unir por clave, como hoy las identifican el servidor y el grafo, cortando los 4 hijos que cerrarían un ciclo;
+    reproduce N5 byte a byte;
+  - (b) distinguir por aparición, con claves nuevas;
+  - (c) sin punto propio para esas 11 claves.
+  La etapa b de los índices espera esa decisión.
+- **La decisión 3: la memoria, medida.**
+  - Las dos VMs son la de Docker (4,01 GB) y la de la app de escritorio (3,64 GB).
+  - Un proceso con el codificador de consultas del denso ocupa unos 4,0 GB.
+  - Con P = 3 y el codificador en cada sesión, B6.3 no entra en 16 GB sin paginar: 12,0 GB de codificadores y hasta 4,0 de la VM de
+    Docker, sin contar lo demás.
+  - Las sesiones de Claude Code son hijas de la app de escritorio: cerrarla cierra también la ejecutora.
+  **La propuesta, PREPARADA para la decisión de la autora:**
+  - para los denso de la etapa b de los índices, cerrar Chrome, VS Code, Docker y las apps de mensajes y oficina (22,0 GB de huella),
+    sin cerrar la app;
+  - para B6.3, medir el pico real en el testigo con la configuración sellada antes de fijar P, con P = 2 y un tope menor para la VM de
+    Docker como salida si no entra.
+- **La decisión 5, hecha:** la consola de la §195 lleva el prefijo `NO_ABRIR_` en las dos copias del paquete de la mesa, con el mismo
+  sha256 que el JSON (`11263a03…`).
+  - **Se declara:** en la búsqueda de solo lectura del capítulo 4 de la §284, un `git grep` sobre
+    `data/experiment/segmentacion_oficial_e0r2/s1quater/adjudicacion/cierre/` imprimió en su consola renglones de la planilla adjudicada
+    de S1-quater. No llegaron a la mesa ni a ningún archivo. La causa: el despacho no vedaba esa carpeta del repo por su ruta.
+  - **Desde ahora, todo despacho veda por su ruta** `data/experiment/segmentacion_oficial_e0r2/s1ter/adjudicacion/` y
+    `data/experiment/segmentacion_oficial_e0r2/s1quater/adjudicacion/`. El «seguí» de U-VERPUNTO, v2, ya las excluye.
+- **La prueba única de T** (comando v5, a las 19:00, sobre `b9bd2ce5`), según su consola (19:36:53):
+  - la r1 y la r2, 100 llamadas cada una, todas pagadas y completas, sin reintentos, errores, rechazos ni corte;
+  - la r3 frenó antes de empezar, por la guarda de otro paso pago (`pid 37062`, «un paso pago de las guardas de A2.2»), sin ninguna
+    llamada;
+  - el comando terminó con el código 1, como «sin clasificar».
+  **La decisión de la autora, tal cual:** «La r3 frenó antes de empezar, por la guarda de otro paso pago, sin ninguna llamada. La trato
+  como una falla de infraestructura: se re-corre sola, desde cero, como su intento 2, con el mismo prompt congelado, el mismo modelo y el
+  mismo esfuerzo, y su gasto dentro del mismo tope y del mismo freno. La r1 y la r2 quedan como están. Se declara.»
+- **Lo que controló la mesa, por código:**
+  1. **El proceso 37062.** Ningún comando de Bash con un nombre del patrón seguía corriendo cuando frenó la r3 (19:01:21).
+     - Entre las 15:00 y las 19:25 hay 71, en 8 sesiones y subagentes; 54 son de 6 sesiones ejecutoras.
+     - El último antes de esa hora devolvió su resultado a las 18:51:19.
+     - El único en segundo plano, de la mesa, terminó a las 15:27.
+     La causa más probable es la guarda misma:
+     - cada repetición corre `pgrep -f` con el patrón de las guardas de A2.2, y dos alternativas sin escapes (`lanzar_t` y
+       `correr_tanda`) coinciden con el texto del patrón;
+     - así, el `pgrep` de una repetición hermana, vivo en ese momento, coincide;
+     - la guarda excluye a sus ancestros y a las repeticiones hermanas, no a los `pgrep` de ellas.
+     La mesa lo reprodujo con un patrón propio: con tres guardas a la vez, 4 de 90 vieron el `pgrep` de una hermana (30 ensayos). Que
+     37062 fuera ese `pgrep` es NO VERIFICADO: la consola guarda solo su pid. **Error de la mesa, con su causa:** en la §281 la mesa ya
+     sabía que un `pgrep` con el patrón real lleva esos nombres en su línea de comandos, y el v5 lanzó las tres repeticiones a la vez.
+     La r3 sola no tiene hermanas: la guarda sellada no cambia para correrla. Para las 300, la propuesta, PREPARADA para la decisión de la
+     autora: el comando de la mesa lanza cada repetición cuando la anterior pasó su guarda, sin tocar el corredor sellado. Eso cubre
+     también otra carrera que la prueba de la mesa encontró en el corredor sellado: una hermana que lee la entrada mientras la primera
+     la escribe (`registrar_entrada`). Mientras corre un paso pago, ni la mesa ni una ejecutora corren comandos con esos nombres.
+  2. **El análisis sellado acepta la r1 y la r2 del intento 1 con la r3 del intento 2.**
+     - `analisis_T_v2.py` lee solo el agregado o la declaración.
+     - El agregado (`correr_juez_v2.agregar`) pide los tres resúmenes sin corte, con el mismo prompt, y 0 cruces entre las tres bases.
+       Ninguno lleva el intento.
+     - La guarda de gasto recibe las bases de las tres repeticiones aunque corra una sola (`correr_juez_v2.py:238-240`): el gasto de la
+       r1 y la r2 cuenta para el mismo tope y el mismo freno.
+     - La entrada de la prueba tiene que ser la misma, y el comando nuevo pasa los mismos argumentos.
+  3. **El 1 y no el 3:** el orquestador del v5 sale con `sys.exit` y un texto, y Python sale con 1 en ese caso; la cabecera prometía 3.
+     Error de la mesa (§282), corregido en el comando nuevo.
+  4. **El gasto, desde sus bases** (sobre copias, borradas): la r1, USD 5,1496 (100 pagadas); la r2, USD 5,1513 (100 pagadas); juntas,
+     USD 10,3009, la cifra de la consola. La r3 no tiene base: es la suma de la r1 y la r2.
+  5. **El comando de la r3 sola, PREPARADO,** con su prueba en seco aparte.
+     - Exige el estado del intento 1, por los sha256 de sus diez archivos, y los controla otra vez al terminar.
+     - Corre la r3 con `--rep 3 --paralelo 3` y la misma entrada. Si corta por infraestructura, va una vez más, como intento 3.
+     - Agrega si se completa y declara si no; sale con 3 si no la puede clasificar.
+     - Su patrón del paso pago suma `correr_b63.py` y el lanzador del lote.
+     La autora lo corre después de revisarlo.
+- **El «seguí» de U-VERPUNTO:** la autora no lo pegó porque lo encontró reemplazado. La v2, con el veto por ruta, va con el FRENO de la
+  §285.
+- **El calendario v21,** en el paquete de la mesa: U-VERPUNTO y la candidata esta noche, la versión nueva del índice por punto y los
+  denso con la memoria liberada. En el central, con 7,5 h tuyas hoy y la ventana de 8 a 22, B6.3 lanza el martes 27 a las 19:18,
+  con 2,6 h de margen, si tu decisión sobre las secciones repetidas y el cierre de las apps van antes de tu lectura de N5b.
+- **Lo que sigue:**
+  - el 210 y este commit;
+  - la r3 de la prueba de T, cuando la autora revise su comando, y el análisis;
+  - tres despachos, PREPARADOS, que pueden ir a la vez:
+    - el «seguí» de U-VERPUNTO, v2;
+    - el despacho de la candidata, sobre una copia fuera del repo y sin el denso, con la prueba sobre los tres TOs en una etapa b;
+    - el «seguí» del banco para la versión del lanzador del lote con R5 de la entrada sellada y el patrón con `correr_b63.py`, también
+      sobre una copia;
+  - la decisión de la autora sobre las secciones repetidas, la memoria, la forma de error desconocida, los bloques y el punto 9;
+  - con esas decisiones, los «seguí» de la etapa b de los índices, del testigo y de la etapa b del runner.
+- Las secciones anteriores no se editan.
