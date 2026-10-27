@@ -5734,3 +5734,84 @@ Decisiones y hechos de la autora del 26/10/2026, recibidos a las 22:45:52 (hoja 
   - los FRENO de la etapa b de los índices y de U-CITA-BANCO;
   - con ellos, la etapa b de la candidata, el commit de la adaptación y el despacho de N6, con el servidor nuevo.
 - Las secciones anteriores no se editan.
+
+## 130. El martes, a las 09:30: los índices del grafo evaluado, el Neo4j de cada paso y el juez v3 de T (27/10/2026)
+
+Decisiones y hechos de la autora del 27/10/2026, recibidos a las 09:30:04 (hoja de ruta de la mesa, §290), sobre la §289 de la mesa.
+
+- **Los commits:** la autora corrió el 215 (`146493a93e8965fdc4b81a8e737de753757e1bdd`), el 216
+  (`d98ed32b86319a8cb156300e4665a98b1718761f`) y el 217 (`02f61cb050e43d752d89578574a6a1298d081e13`), cada uno sobre el anterior y con
+  su push. HEAD y origin/main, en `02f61cb0`. Cada uno trae, byte a byte, lo que preparó la mesa (1, 11 y 1 archivos), con su mensaje.
+- **U-CITA-BANCO, vuelta b:** la autora pegó la versión B del «seguí» de la mesa en la sesión `ae7baef4…` (a las 09:07:17, por la
+  transcripción de esa sesión) y, a las 09:08:24, este agregado, tal cual: «Agrego tres precisiones al punto 3 bis. 1. Lo mismo vale
+  para la forma «Sección n». «Sección A» o «Sección bloque2» se normalizan igual que «SA» o «Sbloque2». 2. Un número de sección de
+  cifras se acepta como hoy. Uno que no es solo cifras se acepta solo si es una sección de ese mismo TO en la E0; si no lo es, la cita
+  sigue siendo no parseable. Así ninguna palabra que empiece con S se lee como sección. El FRENO trae casos de las dos cosas en el
+  selftest. 3. La E0 del grafo evaluado está rastreada en HEAD y no está en tu copia. La traés a la copia desde HEAD verificando cada
+  blob, como los 261 de la vuelta a, sin escribir en el repo.»
+- **El FRENO de la etapa b de los índices** (sesión `797b1659…`; `fuera_del_repo/indices_eval/FRENO_UINDICES_EVAL_b.md`, `086cc795…`;
+  paquete `8cab5cda…`, 93 archivos), revisado por la mesa por código, 23 de 23:
+  - el paquete, 93 de 93. De los 15 archivos de la entrega, los 7 borradores sin cambios y el manifiesto de la E0 son, byte a byte, los
+    de la etapa a; las 4 configs cambian solo los campos declarados y la última oración de su nota; `grafos.py` solo agrega la entrada
+    del grafo evaluado (19 líneas);
+  - `indice_puntos_union.py` cambia en el módulo de HEAD solo `cargar_e0` y `orden_canonico`, y la base que declara su manifiesto es el
+    `indice_puntos.py` de HEAD (`2474ce5e…`);
+  - los tres respaldos dan su `manifest_respaldo.txt` y los sha256 de las configs. El índice por punto: 11.814 documentos, uno por clave,
+    con los mismos ids en el BM25 y en el mismo orden; el denso, 11.814 × 1.024; el manifiesto, con las claves del de N5 más
+    `version_indice_puntos`;
+  - en una copia propia, la mesa corrió el selftest (C1 a C5 en ok, con el resultado del paquete) y el `--verificar` del índice
+    respaldado: los cuatro archivos, los insumos y el denso, re-derivados desde el kg.json y la E0, con 11 claves unidas, 28 apariciones
+    y 4 hijos cortados;
+  - los hubs, recalculados desde el kg.json, sin Neo4j, con la regla de `familias_nav`: umbral 51, 376 hubs, `bbfa2ccc…`, los de la
+    config.
+- **Lo que la autora pide sobre el FRENO, tal cual:**
+  1. «El servidor del grafo lanza el codificador de consultas del denso al arrancar, y nadie probó su arranque con el modelo listo (§4).
+     Su memoria cuenta para N6 y para el testigo con P = 3 de la etapa b del runner, así que el testigo lo tiene que ejercitar con el
+     modelo cargado.»
+  2. «Docker Desktop sigue abierto, con el Neo4j del repo (neo4j-bcra-kg-compose) arriba desde que lo abrí. No lo cierro hasta que me
+     digas qué Neo4j usan la candidata, N6 y B6.3.»
+  3. «Los errores 1 y 4 de su §7 se declaran en el registro: la primera foto, que recorrió las dos carpetas de adjudicación sin imprimir
+     nada, y el listado de todo Docker en su consola.»
+- **Los dos errores de la etapa b de los índices, declarados** (su FRENO, §7):
+  - el error 1: la primera foto del repo del tramo b1 recorrió con `find`, `stat` y `git` las dos carpetas de adjudicación vedadas, sin
+    imprimir nombres ni leer contenido. Reusó la foto de la etapa a sin adaptarla a la regla de esas carpetas; la foto nueva las poda y da
+    el mismo sha256 de los no versionados (`0b7b67bc…`). La copia de la etapa a también las traía, copiadas antes de la regla, y salieron
+    por su ruta, sin listarlas;
+  - el error 4: la primera versión de los controles previos del tramo b3 listó todos los contenedores y los proyectos compose de la
+    máquina, con sus rutas, los de otros proyectos incluidos. Salió solo en la consola de la sesión; no filtró `docker ps -a` ni
+    `docker compose ls -a`. El archivo que queda es el filtrado.
+- **El Neo4j de cada paso,** por código en HEAD (`02f61cb0`):
+  - la etapa b de la candidata: ninguno. Usa el doble sin Neo4j de `selftest_familias_nav.py`;
+  - N6: su grafo es el acumulado de las tandas 0 y 1 sin cola (N4, §1). Está cargado en el Neo4j propio del banco (proyecto
+    `neo4j_banco_paralelo`, `127.0.0.1:37687`, con su volumen en la copia del banco), y `paralelo/control_neo4j_propio.py` lo controla
+    contra `config_mcp_kg_nav_acumulado.json`. Lo fija el paso 0 de N6;
+  - B6.3: el grafo evaluado está cargado solo en el Neo4j propio de los índices (proyecto `neo4j_indices_eval`, `127.0.0.1:47687`),
+    bajado al terminar, con su volumen en `indices_eval/copia_b/`. Cuál usa B6.3 es de la autora (PENDIENTE);
+  - el contenedor del repo (`neo4j-bcra-kg-compose`, 7474 y 7687) no lo usa ninguno de los tres. Docker Desktop queda abierto para N6 y
+    B6.3, que usan contenedores propios.
+- **Un hueco de las guardas,** por código: el patrón de otro paso pago no ve `lanzar_lote_paralelo_r5.py`. El de los comandos de la mesa
+  trae `lanzar_lote_paralelo\.py`, que no lo encuentra, y el de `paralelo/guardas_lote.py` y `guardas_lote_r5.py`, ninguno de los dos.
+  Desde el 218, los comandos de la mesa lo suman, con el script de N6, y el despacho de N6 pide que toda guarda los vea.
+- **T, el juez v3,** la decisión de la autora, tal cual: «Sobre T decidí hacer un juez nuevo, la v3, y probarlo. Lo decido hoy, 27/10,
+  después de ver que la v2 no pasó, y así se declara. Con este mensaje quedan fijadas estas cosas, antes de sortear nada:
+  1. El 78 de 100 se sigue informando tal cual, como resultado del protocolo firmado (punto 10 de la enmienda 4).
+  2. La v3 juzga solo «correcta». La importancia de T queda con mi lectura.
+  3. La v3 se calibra con mis 100 de T. Cada caso nuevo sale de un desacuerdo con la v2, con el porqué tomado del texto del TO y nunca de
+     mi marca, y lo apruebo antes de cada iteración paga. En cada iteración, la v3 juzga solo las fichas de mis 100 que no son casos de
+     su prompt. Usa el mismo modelo y el mismo esfuerzo que la v2 (claude-opus-5-5, medium), y cambian solo los casos. Hace como máximo
+     3 iteraciones, con la regla de freno del punto 4 de la enmienda 4.
+  4. La v3 se valida una sola vez, contra 100 fichas nuevas sorteadas por código de las 300 restantes, con la estratificación de 3.2
+     para n = 100 y sin la arista de V097. Las leo yo a ciegas, como mis 100, y la lista y mi hoja se sellan antes de que la v3 vea
+     ninguna. Se aplican tal cual las tres condiciones de «correcta» del §4.6.
+  5. Si no pasa, no hay otra versión y rige el 78 de 100. Si pasa, la v3 mide la precisión de las 400.»
+  - Lo que pide, en este orden y después de lo que lleva a N6: (a) a USD 0, el sorteo de las 100 y su hoja, en una carpeta nueva fuera
+    del repo; (b) a USD 0 y antes de la enmienda 5, el diagnóstico de los desacuerdos de la v2 en sus 100; (c) después de lanzar B6.3,
+    la enmienda 5 para firmar. Tal cual: «Ningún paso pago de la v3 corre antes de mi firma ni al lado de B6.3.»
+  - **Lo que encontró la mesa antes de sortear,** por código, con solo cuentas: la asignación de 3.2 para n = 100 (la del acta sellada
+    de T) no se puede repetir con las 300 restantes. Quedan 2 en `prohibe`, 2 en `exceptua_obligacion` y 1 en `exceptua`, contra 3 en
+    cada uno: faltan 4. La arista de V097 está en `condicion_de`, entre las 300: sin ella quedan 69, y ese estrato pide 20.
+    La regla para los tres estratos cortos es de la autora, antes del sorteo (PENDIENTE).
+- **Lo PREPARADO por la mesa:** el 218 (la entrega de la etapa b de los índices, 15 archivos), su instalador de los tres índices y del
+  kg.json del grafo evaluado, probado en un clon, y este commit; el «seguí» de la etapa b de la candidata, con sus dos sha256; el
+  despacho de N6, con el servidor nuevo; el «seguí» de la primera parte de la etapa b del runner; y el calendario v22.
+- Las secciones anteriores no se editan.
