@@ -1,0 +1,136 @@
+{
+  "unidad": "N6 de U-NAV-DISENO — configuración de agentes DE JUGUETE de la corrida en seco del corredor (no es la de N6)",
+  "por_que": "Tres configuraciones, con la forma de n6/config_agentes_n6.json: B y BM25 de F1 tal cual, y T con su servidor sin el denso (la corrida en seco lanza muchos servidores y el codificador ocupa unos 4 GB).",
+  "base": {
+    "ruta": "a2_2/config_agentes_a2_2.json",
+    "sha256": "fd4ce4e4ce7d4c7cd0550af1ed2ba7d2cbd3d1a2301ee82060ba7d6eba4697c0",
+    "que_se_hereda": "modelo, modo del harness, versión sellada del CLI, flags y R5 (30, 32 y 1,80): los de A2.2 (N4, §1). Lo que cambia: los brazos (las 8 configuraciones del grafo con el servidor nuevo y las 2 de F1 sobre el acumulado) y la plantilla (la de A2.2 con la parte común de la decisión 9)."
+  },
+  "claude_code_version_sellada": "2.1.241",
+  "modelo": "claude-sonnet-5",
+  "modo_harness": "--bare",
+  "brazos": {
+    "kg_B": {
+      "configuracion_n6": "B",
+      "familias": [],
+      "mcp_config": "n6/mcp_kg_n6_B.json",
+      "servidor": "kg",
+      "bloque_tools": "n6/bloque_tools_kg_n6_B.txt",
+      "allowed_tools": "mcp__kg__*",
+      "tools_esperadas": [
+        "mcp__kg__buscar_nodos",
+        "mcp__kg__ver_nodo",
+        "mcp__kg__ver_vecinos"
+      ],
+      "tools_esperadas_nota": "en el orden en que las lista el CLI en system/init (alfabético), porque armar_meta compara las listas",
+      "config_servidor": "n6/config_mcp_kg_n6_B.json",
+      "archivos_servidor": [
+        "mcp_kg/servidor_mcp_kg_nav_cand.py",
+        "mcp_kg/servidor_mcp_kg_nav.py",
+        "mcp_kg/servidor_mcp_kg.py",
+        "mcp_kg/familias_nav.py",
+        "mcp_kg/familias_nav_cand.py",
+        "mcp_kg/indice_puntos.py",
+        "mcp_kg/codificador_consultas.py"
+      ],
+      "venv": "el .venv del repo para el servidor (lo fija el JSON de MCP) y BANCO_VENV_VECTOR para su codificador de consultas"
+    },
+    "kg_T": {
+      "configuracion_n6": "T",
+      "familias": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "mcp_config": "n6/seco/mcp_kg_seco_T.json",
+      "servidor": "kg",
+      "bloque_tools": "n6/bloque_tools_kg_n6_T.txt",
+      "allowed_tools": "mcp__kg__*",
+      "tools_esperadas": [
+        "mcp__kg__buscar_nodos",
+        "mcp__kg__buscar_puntos",
+        "mcp__kg__indice_to",
+        "mcp__kg__tipos_de_relacion",
+        "mcp__kg__vecinos_por_relacion",
+        "mcp__kg__ver_descendientes",
+        "mcp__kg__ver_nodo",
+        "mcp__kg__ver_punto",
+        "mcp__kg__ver_remisiones",
+        "mcp__kg__ver_vecinos"
+      ],
+      "tools_esperadas_nota": "en el orden en que las lista el CLI en system/init (alfabético), porque armar_meta compara las listas",
+      "config_servidor": "n6/seco/config_mcp_kg_seco_T.json",
+      "archivos_servidor": [
+        "mcp_kg/servidor_mcp_kg_nav_cand.py",
+        "mcp_kg/servidor_mcp_kg_nav.py",
+        "mcp_kg/servidor_mcp_kg.py",
+        "mcp_kg/familias_nav.py",
+        "mcp_kg/familias_nav_cand.py",
+        "mcp_kg/indice_puntos.py",
+        "mcp_kg/codificador_consultas.py"
+      ],
+      "venv": "el .venv del repo para el servidor (lo fija el JSON de MCP) y BANCO_VENV_VECTOR para su codificador de consultas"
+    },
+    "fragmentos_bm25": {
+      "configuracion_n6": "F1_bm25",
+      "mcp_config": "mcp_vector/mcp_fragmentos_bm25_acumulado.json",
+      "servidor": "fragmentos",
+      "bloque_tools": "a2_1/bloque_tools_fragmentos_bm25.txt",
+      "allowed_tools": "mcp__fragmentos__*",
+      "tools_esperadas": [
+        "mcp__fragmentos__buscar_pasajes"
+      ],
+      "config_servidor": "mcp_vector/config_fragmentos_bm25_acumulado_r2b.json",
+      "archivos_servidor": [
+        "mcp_vector/servidor_mcp_vector.py",
+        "mcp_vector/bm25_fragmentos.py"
+      ],
+      "venv": "BANCO_VENV_VECTOR"
+    }
+  },
+  "prompt": {
+    "plantilla": "n6/plantilla_prompt_n6.txt",
+    "sha256": "822aa4e72517bee7a3bd0ed4c80776548622930e54159c16562b874745e771b9",
+    "como_se_pasa": "como en la base: argumento de `claude -p <prompt>`; el prompt de sistema de Claude Code no se toca.",
+    "diferencia_entre_brazos": "exclusivamente el bloque {{BLOQUE_TOOLS}}: la plantilla es la misma en las 10"
+  },
+  "corte_R5": {
+    "max_turns": 32,
+    "tope_tool_calls_en_prompt": 30,
+    "max_budget_usd_por_sesion": 1.8,
+    "nota": "R5 de A2.2 (N4, §1 y §8, punto 1), igual en todas las sesiones de N6."
+  },
+  "R5": {
+    "tope_tool_calls_prompt": 30,
+    "max_turns": 32,
+    "max_budget_usd": 1.8
+  },
+  "configuraciones_n6": {
+    "B": {
+      "brazo": "kg_B",
+      "repeticiones": 2,
+      "carga_codificador": false
+    },
+    "T": {
+      "brazo": "kg_T",
+      "repeticiones": 1,
+      "carga_codificador": true
+    },
+    "F1_bm25": {
+      "brazo": "fragmentos_bm25",
+      "repeticiones": 1,
+      "carga_codificador": false
+    }
+  },
+  "env_por_sesion": {
+    "BANCO_REPO": "raíz del repo (expansión en los JSON de MCP)",
+    "BANCO_VENV_VECTOR": "venv 3.12 del servidor de fragmentos; en todos los brazos (el del grafo lo usa para su codificador de consultas)",
+    "BANCO_LOG_R1": "ruta del log R1 de ESA sesión (un archivo por sesión)",
+    "BANCO_SESION_TAG": "id de la sesión (se copia a cada línea del log)",
+    "NEO4J_URI": "pasa por la lista (§88) desde la terminal que lanza el lote: el Neo4j propio de N6 (bolt://127.0.0.1:57687)",
+    "MCP_TIMEOUT": "180000"
+  },
+  "carga_codificador_nota": "los dos lotes del corredor (sin y con el codificador de consultas): B y BM25 de F1 van al lote sin codificador, como en N6; T va al lote con codificador para que la corrida en seco recorra los dos lotes, aunque su servidor de juguete no carga el denso (config_mcp_kg_seco_T.json)"
+}

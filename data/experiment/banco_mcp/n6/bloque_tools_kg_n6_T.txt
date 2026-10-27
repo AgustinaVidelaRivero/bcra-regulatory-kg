@@ -1,0 +1,205 @@
+- buscar_nodos(consulta, limite): búsqueda léxica de nodos del grafo de conocimiento regulatorio por palabras de su label o id. Devuelve id, type, label y un resumen de propiedades. Punto de entrada habitual.
+- ver_nodo(id): devuelve el nodo completo por su id exacto: type, label, properties y provenances (documento fuente + punto).
+- ver_vecinos(id, direccion): devuelve las relaciones del nodo con sus vecinos (relation, vecino, provenances del edge). direccion: "ambas", "salientes" o "entrantes".
+
+Herramientas del grafo, y cuándo usar cada una:
+- `buscar_puntos(consulta, to, punto, termino)`: para entrar. Devuelve puntos del Texto Ordenado con su título, el fragmento que
+  coincide y sus nodos. Si la pregunta nombra la norma, usá `to`. Si nombra un término definido, usá `termino`.
+- `ver_punto(punto)`: para leer un punto entero en una sola llamada: su texto, sus nodos con sus umbrales, las relaciones entre ellos,
+  sus hijos y los títulos de sus ancestros. Leé el punto antes de abrir sus nodos uno por uno.
+- `ver_descendientes(punto, niveles)`: para leer de una vez el texto entero de los subpuntos de un punto, en orden de lectura,
+  hasta 3 niveles. Si la respuesta puede estar en los hijos de un punto, leelos así antes que abrirlos uno por uno con `ver_punto`.
+- `indice_to(to, desde, niveles)`: para ubicar un punto en el Texto Ordenado y bajar a sus hijos. Si un punto anuncia una lista o no
+  tiene nodos propios, mirá sus hijos.
+- `ver_remisiones(punto)`: para seguir lo que un punto cita y lo que lo cita, agrupado por punto. Si la respuesta depende de otro punto
+  («conforme al punto…», «salvo lo previsto en…»), abrilo.
+- `tipos_de_relacion(id)` y `vecinos_por_relacion(id, relacion, direccion)`: primero mirá qué relaciones tiene un nodo y después pedí
+  los vecinos de una sola. En un nodo muy conectado, filtrá por TO o por punto.
+- `buscar_nodos`, `ver_nodo` y `ver_vecinos` siguen disponibles.
+- Si un nodo o una relación tiene una marca (no verificado, o sujeto derivado del alcance del documento), citalo con esa salvedad.
+
+Ejemplos de navegación. Son preguntas de ejemplo, distintas de la que vas a responder: muestran cómo usar las herramientas, no qué responder. Cada uno trae las llamadas, su resultado tal cual y la respuesta final.
+
+Ejemplo 1. Pregunta: «Según las normas de Exterior y cambios, ¿con qué contrapartes puede una entidad concretar operaciones de cambio que impliquen la exportación de billetes de pesos argentinos?»
+Llamada 1: buscar_puntos(consulta="contrapartes de operaciones de cambio con exportación de billetes de pesos argentinos", to="ext", limite=3)
+Resultado:
+buscar_puntos «contrapartes de operaciones de cambio con exportación de billetes de pesos arge…» to=ext · candidatos: 963 · con coincidencia léxica: 907 · fusión RRF (k=60) de BM25 y denso
+# | punto | título | fragmento | nodos
+1 | ext::5.13 | Operaciones que impliquen importación y/o exportación de moneda nacio… | …importación y/o exportación de moneda nacional. Las entidades podrán concretar operaciones de cambio que impliquen la importación y/o exportación de monedas y billetes de pesos argentinos… | Operacion · Operacion_importacion_y_o_exportacion_de_moneda_nacional__ext_5_13_36d5b2; Restriccion · Restriccion_las_operaciones_que_impliquen_la_importacion_de_billetes_de_pesos_argentinos_que_1f9e1c; Condicion · Condicion_plazo_exportacion_no_mayor_a_30_dias_corridos__la_exportacion_debe_realizarse_en_e1c1a4; +4 más
+2 | ext::4.2.1 | Anticipos y cobros de exportaciones argentinas de bienes y servicios… | 4.2.1. Anticipos y cobros de exportaciones argentinas de bienes y servicios conexos a los países indicados que se documenten en pesos argentinos… | Operacion · Operacion_anticipos_de_exportaciones_argentinas_en_pesos__ext_4_2_1_f4f531; Operacion · Operacion_cobros_de_exportaciones_argentinas_en_pesos__ext_4_2_1_7170bf
+3 | ext::15.1 | Artículos 1° y 2° del Decreto 260/02. | …billetes extranjeros, oro amonedado o en barra de buena entrega y cheques de viajero, giros, transferencias u operaciones análogas en moneda extranjera. ARTÍCULO 2°.- Las operaciones de cambio… | Operacion · Operacion_operaciones_de_cambio_en_mercado_libre__ext_15_1_91e9a0; Obligacion · Obligacion_las_operaciones_de_cambio_en_divisas_extranjeras_deberan_sujetarse_a_los_requisi_7467d4; Potestad · Potestad_libertad_de_pacto_del_tipo_de_cambio__las_operaciones_de_cambio_en_divisas_extra_c6a4aa; +1 más
+Llamada 2: ver_punto(punto="ext::5.13", max_nodos=4)
+Resultado:
+ver_punto ext::5.13 — TO_exterior_cambios_actual.pdf · páginas 74
+Ancestros: S5 Pautas operativas.
+Título: Operaciones que impliquen importación y/o exportación de moneda nacional.
+Texto (971 caracteres):
+5.13. Operaciones que impliquen importación y/o exportación de moneda nacional.
+Las entidades podrán concretar operaciones de cambio que impliquen la importación y/o
+exportación de monedas y billetes de pesos argentinos siempre que la contraparte sea alguna
+de las previstas en el punto 5.12. Las operaciones que impliquen la importación de billetes de
+pesos argentinos quedarán también sujetas a las disposiciones establecidas para la compra
+de moneda extranjera por parte de no residentes.
+La liquidación de las divisas remitidas a la entidad local por la contraparte para la adquisición
+de billetes en moneda local estará exceptuada de lo dispuesto en el primer párrafo del punto
+2.9. en la medida que exista un compromiso de la contraparte respecto a que dichos fondos
+serán comercializados con el objeto de atender la demanda de turismo y viajes y la
+exportación se realice en un plazo no mayor a los 30 (treinta) días corridos de la fecha de
+concertación de cambio.
+Nodos (4 de 7; # | tipo | id | label | tramo literal | umbrales):
+n1 | Condicion | Condicion_compromiso_contraparte_fondos_para_turismo_y_viajes__debe_existir_un_compromiso__268c14 | Compromiso contraparte — fondos para turismo y viajes | en la medida que exista un compromiso de la contraparte respecto a que dichos fondos serán comercializados con el objeto de atender la dema… | —
+n2 | Condicion | Condicion_contraparte_prevista_en_punto_5_12__la_contraparte_debe_ser_alguna_de_las_previs_ef220f | Contraparte prevista en punto 5.12 | siempre que la contraparte sea alguna de las previstas en el punto 5.12 | —
+n3 | Condicion | Condicion_plazo_exportacion_no_mayor_a_30_dias_corridos__la_exportacion_debe_realizarse_en_e1c1a4 | Plazo exportación — no mayor a 30 días corridos | la exportación se realice en un plazo no mayor a los 30 (treinta) días corridos de la fecha de concertación de cambio | 30 dias (maximo_inclusivo): «no mayor a los 30 (treinta) días corridos»
+n4 | Excepcion | Excepcion_la_liquidacion_de_las_divisas_remitidas_a_la_entidad_local_por_la_contraparte_pa_ed793b | Liquidación divisas remitidas — exceptuada punto 2.9 primer… | La liquidación de las divisas remitidas a la entidad local por la contraparte para la adquisición de billetes en moneda local estará except… | —
+Relaciones entre los nodos listados (2 de 2):
+n1 —condicion_de→ n4
+n3 —condicion_de→ n4
+Hijos: —
+Llamada 3: ver_remisiones(punto="ext::5.13", direccion="cita")
+Resultado:
+ver_remisiones ext::5.13 · saltos 1
+cita: 2 puntos a 1 salto (9 aristas remite_a)
+dir | punto | título | comienzo del texto | n nodos | alcance | salto
+cita | ext::5.12 | Operaciones de arbitrajes y canjes en el exterior… | Dichas entidades podrán realizar operaciones de arbitrajes y canjes en el exterior siempre que la contraparte sea: | 6 | interna | 1
+cita | ext::2.9 | Operaciones comprendidas en el artículo 3° del De… | 2.9. Operaciones comprendidas en el artículo 3° del Decreto 616/05. El resultado de la liquidación de cambios deberá acreditarse en una cue… | 6 | interna | 1
+Llamada 4: buscar_puntos(consulta="contraparte sucursal entidad financiera compañía del exterior casa matriz", punto="ext::5.12", limite=5)
+Resultado:
+buscar_puntos «contraparte sucursal entidad financiera compañía del exterior casa matriz» punto=ext::5.12 · candidatos: 5 · con coincidencia léxica: 5 · fusión RRF (k=60) de BM25 y denso
+# | punto | título | fragmento | nodos
+1 | ext::5.12.4 | una compañía del exterior que se dedique a la compraventa de billetes… | …compañía del exterior que se dedique a la compraventa de billetes de distintos países y/o metales preciosos amonedados o en barras de buena entrega y cuya casa… | Condicion · Condicion_contraparte_compania_exterior_cambista__la_contraparte_debe_ser_una_compania_del_4b9eb2
+2 | ext::5.12.1 | sucursal o agencia en el exterior de bancos oficiales locales; o | 5.12.1. sucursal o agencia en el exterior de bancos oficiales locales; o | Potestad · Potestad_realizar_arbitrajes_y_canjes_en_el_exterior__las_entidades_autorizadas_podran_re_275efa; Condicion · Condicion_contraparte_sucursal_o_agencia_de_banco_oficial_local__la_contraparte_debe_ser_u_c5fc62
+3 | ext::5.12 | Operaciones de arbitrajes y canjes en el exterior de las entidades. | Dichas entidades podrán realizar operaciones de arbitrajes y canjes en el exterior siempre que la contraparte sea… | Potestad · Potestad_facultad_realizar_arbitrajes_y_canjes_en_exterior__las_entidades_financieras_y_c_b6910a; Condicion · Condicion_contraparte_en_operaciones_de_arbitraje_y_canje__la_operacion_de_arbitraje_o_can_71c78d; Operacion · Operacion_operaciones_de_arbitrajes_y_canjes_en_el_exterior__ext_5_12_0a6a36; +3 más
+4 | ext::5.12.2 | una entidad financiera del exterior de propiedad total o mayoritaria… | 5.12.2. una entidad financiera del exterior de propiedad total o mayoritaria de estados extranjeros; o | Condicion · Condicion_contraparte_entidad_financiera_del_exterior_estatal__la_contraparte_debe_ser_una_7a09ba
+5 | ext::5.12.3 | una entidad financiera o cambiaria del exterior que no esté constitui… | 5.12.3. una entidad financiera o cambiaria del exterior que no esté constituida en países o territorios donde no se aplican, o no se aplican suficientemente, las… | Condicion · Condicion_contraparte_no_constituida_en_paises_sin_gafi__la_contraparte_debe_ser_una_entid_5a48ca; Obligacion · Obligacion_las_entidades_podran_realizar_operaciones_de_arbitrajes_y_canjes_en_el_exterior__fe7298; Sujeto · Sujeto_rol_entidad_autorizada_exterior
+Llamada 5: ver_punto(punto="ext::5.12.3", max_nodos=2)
+Resultado:
+ver_punto ext::5.12.3 — TO_exterior_cambios_actual.pdf · páginas 73
+Ancestros: S5 Pautas operativas. › 5.12 Operaciones de arbitrajes y canjes en el exterior de las entidades.
+Título: una entidad financiera o cambiaria del exterior que no esté constituida en países o
+Texto (225 caracteres):
+5.12.3. una entidad financiera o cambiaria del exterior que no esté constituida en países o
+territorios donde no se aplican, o no se aplican suficientemente, las
+Recomendaciones del Grupo de Acción Financiera Internacional; o
+Nodos (2 de 3; # | tipo | id | label | tramo literal | umbrales):
+n1 | Condicion | Condicion_contraparte_no_constituida_en_paises_sin_gafi__la_contraparte_debe_ser_una_entid_5a48ca | Contraparte no constituida en países sin GAFI | una entidad financiera o cambiaria del exterior que no esté constituida en países o territorios donde no se aplican, o no se aplican sufici… | —
+n2 | Obligacion | Obligacion_las_entidades_podran_realizar_operaciones_de_arbitrajes_y_canjes_en_el_exterior__fe7298 | Realizar arbitrajes y canjes en exterior con contraparte ca… | Dichas entidades podrán realizar operaciones de arbitrajes y canjes en el exterior siempre que la contraparte sea: […] una entidad financie… | —
+Relaciones entre los nodos listados (1 de 1):
+n1 —condicion_de→ n2
+Hijos: —
+Llamada 6: ver_punto(punto="ext::5.12.4", max_nodos=2)
+Resultado:
+ver_punto ext::5.12.4 — TO_exterior_cambios_actual.pdf · páginas 73
+Ancestros: S5 Pautas operativas. › 5.12 Operaciones de arbitrajes y canjes en el exterior de las entidades.
+Título: una compañía del exterior que se dedique a la compraventa de billetes de distintos
+Texto (258 caracteres):
+5.12.4. una compañía del exterior que se dedique a la compraventa de billetes de distintos
+países y/o metales preciosos amonedados o en barras de buena entrega y cuya casa
+matriz esté radicada en un país miembro del Comité de Supervisión Bancaria de
+Basilea.
+Nodos (1 de 1; # | tipo | id | label | tramo literal | umbrales):
+n1 | Condicion | Condicion_contraparte_compania_exterior_cambista__la_contraparte_debe_ser_una_compania_del_4b9eb2 | Contraparte compañía exterior cambista | una compañía del exterior que se dedique a la compraventa de billetes de distintos países y/o metales preciosos amonedados o en barras de b… | —
+Hijos: —
+Respuesta: {"respuesta": "Solo con una contraparte que sea alguna de las previstas en el punto 5.12 (5.13): una sucursal o agencia en el exterior de bancos oficiales locales (5.12.1); una entidad financiera del exterior de propiedad total o mayoritaria de estados extranjeros (5.12.2); una entidad financiera o cambiaria del exterior que no esté constituida en países o territorios donde no se aplican, o no se aplican suficientemente, las Recomendaciones del Grupo de Acción Financiera Internacional (5.12.3); o una compañía del exterior que se dedique a la compraventa de billetes de distintos países y/o metales preciosos y cuya casa matriz esté radicada en un país miembro del Comité de Supervisión Bancaria de Basilea (5.12.4).", "citas": ["TO_exterior_cambios_actual.pdf | 5.13", "TO_exterior_cambios_actual.pdf | 5.12.1", "TO_exterior_cambios_actual.pdf | 5.12.2", "TO_exterior_cambios_actual.pdf | 5.12.3", "TO_exterior_cambios_actual.pdf | 5.12.4"], "respondible": true}
+
+Ejemplo 2. Pregunta: «Una entidad financiera actúa como colocadora de un fondo común de inversión cuyos recursos están colocados en inversiones a plazo que, de acuerdo con la normativa vigente, contemplan la posibilidad de asegurar el mantenimiento del valor del capital. ¿Sigue alcanzada por la prohibición de asumir compromisos que garanticen el mantenimiento del valor del capital invertido?»
+Llamada 1: buscar_puntos(consulta="colocadora de fondos comunes de inversión garantizar el mantenimiento del valor del capital", to="opefci", limite=3)
+Resultado:
+buscar_puntos «colocadora de fondos comunes de inversión garantizar el mantenimiento del valor…» to=opefci · candidatos: 101 · con coincidencia léxica: 47 · fusión RRF (k=60) de BM25 y denso
+# | punto | título | fragmento | nodos
+1 | opefci::7.3.1.1 | Carácter obligatorio. | …que, directa o indirectamente, actúen como gerentes, depositarias, colocadoras o promotoras de fondos comunes de inversión, debe- rán informar a los interesados que las cuotapartes de los fondos… | Condicion · Condicion_condicion_actuar_como_gerente_depositaria_colocadora_o_promotora__la_entidad_fin_7042dc; Obligacion · Obligacion_las_entidades_financieras_que_actuen_como_gerentes_depositarias_colocadoras_o_pr_8ecf38; Restriccion · Restriccion_la_entidad_financiera_interviniente_se_encuentra_impedida_de_asumir_compromiso_a_08d417; +4 más
+2 | opefci::7.3.1.2 | Excepción. | …fondo se encuentren colocados en in- versiones a plazo de acuerdo con la normativa vigente que contemplen la posibi- lidad de asegurar el mantenimiento del valor del capital… | Excepcion · Excepcion_no_aplica_la_prohibicion_de_informacion_a_inversores_cuando_los_recursos_del_fon_a2a2f2
+3 | opefci::7.1 | Denominación. | 7.1. Denominación. La denominación de los fondos comunes de inversión respecto de los que las entidades finan- cieras actúen, directa o indirectamente, como gerentes, depositarias, colocadoras o… | Operacion · Operacion_denominacion_de_fondos_comunes_de_inversion__opefci_7_1_06b655; Obligacion · Obligacion_debera_recurrirse_a_otras_denominaciones_que_no_dejen_lugar_a_dudas_en_el_public_6daad1; Restriccion · Restriccion_la_denominacion_de_los_fondos_comunes_de_inversion_debe_permitir_distinguir_clar_1873fc; +2 más
+Llamada 2: ver_punto(punto="opefci::7.3.1.1", max_nodos=4)
+Resultado:
+ver_punto opefci::7.3.1.1 — opefci.pdf · páginas 19
+Ancestros: S7 Operaciones con fondos comunes de inversión. › 7.3 Transparencia. › 7.3.1 Información a los inversores.
+Título: Carácter obligatorio.
+Texto (566 caracteres):
+7.3.1.1. Carácter obligatorio.
+Las entidades financieras que, directa o indirectamente, actúen como gerentes,
+depositarias, colocadoras o promotoras de fondos comunes de inversión, debe-
+rán informar a los interesados que las cuotapartes de los fondos no constituyen
+depósitos en la entidad financiera interviniente, la que, además, se encuentra
+impedida de asumir compromiso alguno que implique garantizar, en cualquier
+momento, el mantenimiento del valor del capital invertido, su rendimiento, el va-
+lor de rescate de las cuotapartes u otorgar liquidez a ese fin.
+Nodos (4 de 7; # | tipo | id | label | tramo literal | umbrales):
+n1 | Condicion | Condicion_condicion_actuar_como_gerente_depositaria_colocadora_o_promotora__la_entidad_fin_7042dc | Condición: actuar como gerente, depositaria, colocadora o p… | Las entidades financieras que, directa o indirectamente, actúen como gerentes, depositarias, colocadoras o promotoras de fondos comunes de… | —
+n2 | Obligacion | Obligacion_las_entidades_financieras_que_actuen_como_gerentes_depositarias_colocadoras_o_pr_8ecf38 | Informar a interesados — no depósito | deberán informar a los interesados que las cuotapartes de los fondos no constituyen depósitos en la entidad financiera interviniente | —
+n3 | Restriccion | Restriccion_la_entidad_financiera_interviniente_se_encuentra_impedida_de_asumir_compromiso_a_08d417 | Prohibición de garantizar valor del capital | se encuentra impedida de asumir compromiso alguno que implique garantizar, en cualquier momento, el mantenimiento del valor del capital inv… | —
+n4 | Restriccion | Restriccion_la_entidad_financiera_interviniente_se_encuentra_impedida_de_asumir_compromiso_a_1143e8 | Prohibición de garantizar rendimiento | se encuentra impedida de asumir compromiso alguno que implique garantizar, en cualquier momento, su rendimiento | —
+Relaciones entre los nodos listados (3 de 3):
+n1 —condicion_de→ n2
+n1 —condicion_de→ n3
+n1 —condicion_de→ n4
+Hijos: —
+Llamada 3: indice_to(to="opefci", desde="7.3.1", niveles=1)
+Resultado:
+indice_to opefci desde 7.3.1 · 1 nivel · 2 puntos
+7.3.1.1 Carácter obligatorio. [7 nodos]
+7.3.1.2 Excepción. [1 nodo]
+Llamada 4: ver_punto(punto="opefci::7.3.1.2", max_nodos=4)
+Resultado:
+ver_punto opefci::7.3.1.2 — opefci.pdf · páginas 19
+Ancestros: S7 Operaciones con fondos comunes de inversión. › 7.3 Transparencia. › 7.3.1 Información a los inversores.
+Título: Excepción.
+Texto (431 caracteres):
+7.3.1.2. Excepción.
+En los casos en que los recursos de un fondo se encuentren colocados en in-
+versiones a plazo de acuerdo con la normativa vigente que contemplen la posibi-
+lidad de asegurar el mantenimiento del valor del capital, o que directamente se
+hayan vendido al fondo opciones con el mismo efecto, cualquiera sea la entidad
+interviniente, no será aplicable la prohibición en la materia a que se refiere el
+punto 7.3.1.1.
+Nodos (1 de 1; # | tipo | id | label | tramo literal | umbrales):
+n1 | Excepcion | Excepcion_no_aplica_la_prohibicion_de_informacion_a_inversores_cuando_los_recursos_del_fon_a2a2f2 | Excepción — prohibición de información a inversores | En los casos en que los recursos de un fondo se encuentren colocados en inversiones a plazo de acuerdo con la normativa vigente que contemp… | —
+Hijos: —
+Respuesta: {"respuesta": "No. Como regla, la entidad que actúa como colocadora de un fondo común de inversión está impedida de asumir compromisos que garanticen el mantenimiento del valor del capital invertido, su rendimiento o el valor de rescate, u otorgar liquidez a ese fin (7.3.1.1). Pero cuando los recursos del fondo están colocados en inversiones a plazo que, de acuerdo con la normativa vigente, contemplan la posibilidad de asegurar el mantenimiento del valor del capital, esa prohibición no es aplicable, cualquiera sea la entidad interviniente (7.3.1.2).", "citas": ["opefci.pdf | 7.3.1.1", "opefci.pdf | 7.3.1.2"], "respondible": true}
+
+Ejemplo 3. Pregunta: «Una nueva entidad financiera fue autorizada hace once meses. Tiene una oficina administrativa donde trabaja su personal, pero todavía no presta servicios al público. Según las normas sobre Autorización y composición del capital de entidades financieras, ¿ya inició sus actividades? ¿Qué ocurre si se cumple el año sin que se haya producido la habilitación?»
+Llamada 1: buscar_puntos(consulta="iniciación de actividades de una nueva entidad: plazo de un año desde la autorización", to="ayccef", limite=3)
+Resultado:
+buscar_puntos «iniciación de actividades de una nueva entidad: plazo de un año desde la autori…» to=ayccef · candidatos: 218 · con coincidencia léxica: 198 · fusión RRF (k=60) de BM25 y denso
+# | punto | título | fragmento | nodos
+1 | ayccef::2.8.2 | Plazo. | …8.2. Plazo. La iniciación de actividades de la entidad deberá tener lugar dentro del plazo de un año, contado a partir de la fecha de la autorización… | Obligacion · Obligacion_la_entidad_debe_iniciar_sus_actividades_dentro_del_plazo_de_un_ano_contado_desde_0d95ea; Restriccion · Restriccion_si_vencido_el_plazo_de_un_ano_la_entidad_no_ha_iniciado_sus_actividades_la_autor_5ab4db; Operacion · Operacion_iniciacion_de_actividades_de_entidad_financiera__ayccef_2_8_2_a19bcf; +2 más
+2 | ayccef::2.9.3.8 | Obligatoriedad de contar con Sindicatura u órgano equivalente. | Las nuevas entidades financieras deberán contar con Sindicatura u órgano equivalente, dentro del plazo fijado para el inicio de sus actividades, con una antelación no inferior a 30… | Obligacion · Obligacion_las_nuevas_entidades_financieras_deberan_contar_con_sindicatura_u_organo_equival_04d7ef; Sujeto · Sujeto_entidad_financiera
+3 | ayccef::2.9.4.1 | Desarrollar gestiones vinculadas a la organización de la entidad. | 2.9.4.1. Desarrollar gestiones vinculadas a la organización de la entidad… | Condicion · Condicion_plazo_hasta_iniciacion_de_actividades__la_operacion_solo_puede_realizarse_hasta__8fd617; Operacion · Operacion_gestiones_de_organizacion_de_la_entidad__ayccef_2_9_4_1_79159e; Potestad · Potestad_facultad_de_desarrollar_gestiones_de_organizacion__se_autoriza_a_la_entidad_a_de_d89ecb; +1 más
+Llamada 2: ver_punto(punto="ayccef::2.8.2", max_nodos=5)
+Resultado:
+ver_punto ayccef::2.8.2 — ayccef.pdf · páginas 11
+Ancestros: S2 Nuevas entidades financieras. › 2.8 Iniciación de actividades.
+Título: Plazo.
+Texto (327 caracteres):
+2.8.2. Plazo.
+La iniciación de actividades de la entidad deberá tener lugar dentro del plazo de un año,
+contado a partir de la fecha de la autorización otorgada.
+Vencido ese plazo sin haberse producido la habilitación, la autorización para establecer
+la entidad quedará sin efecto, archivándose las actuaciones sin más trámite.
+Nodos (5 de 5; # | tipo | id | label | tramo literal | umbrales):
+n1 | Obligacion | Obligacion_la_entidad_debe_iniciar_sus_actividades_dentro_del_plazo_de_un_ano_contado_desde_0d95ea | Plazo de un año para iniciación de actividades | La iniciación de actividades de la entidad deberá tener lugar dentro del plazo de un año, contado a partir de la fecha de la autorización o… | 1 anios (no_determinada): «dentro del plazo de un año»
+n2 | Operacion | Operacion_archivo_de_actuaciones_sin_mas_tramite__ayccef_2_8_2_161ef9 | Archivo de actuaciones sin más trámite | archivándose las actuaciones sin más trámite | —
+n3 | Operacion | Operacion_iniciacion_de_actividades_de_entidad_financiera__ayccef_2_8_2_a19bcf | Iniciación de actividades de entidad financiera | La iniciación de actividades de la entidad | —
+n4 | Restriccion | Restriccion_si_vencido_el_plazo_de_un_ano_la_entidad_no_ha_iniciado_sus_actividades_la_autor_5ab4db | Pérdida de autorización por vencimiento de plazo | Vencido ese plazo sin haberse producido la habilitación, la autorización para establecer la entidad quedará sin efecto | 1 anios (no_determinada): «un año»
+n5 | Sujeto | Sujeto_entidad_financiera | Entidades financieras | — | —
+Relaciones entre los nodos listados (2 de 2):
+n1 —aplica_a→ n5
+n1 —condiciona→ n3
+Hijos: —
+Llamada 3: indice_to(to="ayccef", desde="2.8", niveles=1)
+Resultado:
+indice_to ayccef desde 2.8 · 1 nivel · 2 puntos
+2.8.1 Concepto. [1 nodo]
+2.8.2 Plazo. [5 nodos]
+Llamada 4: ver_punto(punto="ayccef::2.8.1", max_nodos=5)
+Resultado:
+ver_punto ayccef::2.8.1 — ayccef.pdf · páginas 11
+Ancestros: S2 Nuevas entidades financieras. › 2.8 Iniciación de actividades.
+Título: Concepto.
+Texto (174 caracteres):
+2.8.1. Concepto.
+Se considera que una entidad financiera comienza a funcionar el día en que inicia la
+prestación de sus servicios al público en el local habilitado a tal fin.
+Nodos (1 de 1; # | tipo | id | label | tramo literal | umbrales):
+n1 | Definicion | Definicion_inicio_de_actividades_de_entidad_financiera__una_entidad_financiera_comienza_a_f_81aa18 | Inicio de actividades de entidad financiera | Se considera que una entidad financiera comienza a funcionar el día en que inicia la prestación de sus servicios al público en el local hab… | —
+Hijos: —
+Respuesta: {"respuesta": "No: una entidad comienza a funcionar el día en que inicia la prestación de sus servicios al público en el local habilitado, y esta todavía no presta servicios al público (2.8.1). La iniciación de actividades debe tener lugar dentro del plazo de un año contado a partir de la fecha de la autorización; vencido ese plazo sin haberse producido la habilitación, la autorización queda sin efecto y las actuaciones se archivan sin más trámite (2.8.2).", "citas": ["ayccef.pdf | 2.8.1", "ayccef.pdf | 2.8.2"], "respondible": true}

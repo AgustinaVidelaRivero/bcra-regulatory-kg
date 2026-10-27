@@ -6002,3 +6002,294 @@ Decisiones y hechos de la autora del 27/10/2026, recibidos a las 10:49:03 (hoja 
   líneas, ninguna de esas carpetas: 13 de `data/experiment/escalado_prep/`, 4 avisos de cachés binarias de `comp_e1/` sin contenido y 3
   de código. La causa: no controlé que la lista no estuviera vacía.
 - Las secciones anteriores no se editan.
+
+## 134. El martes, a las 11:15: el criterio de la 1a de T y la regla de la atribución con la navegación (27/10/2026)
+
+Decisiones de la autora del 27/10/2026, recibidas a las 11:15:38 (hoja de ruta de la mesa, §293), sobre la §292 de la mesa.
+
+- **El criterio de la 1a del diagnóstico de la v2,** tal cual: «una aplica_a cuyo sujeto no nombran la unidad ni su contexto heredado,
+  pero que es el sujeto del alcance del TO, es correcta. Es como leí mis 100 de T, y rige igual para mis 100 nuevas. La ficha trae el
+  PDF del TO (§3.3 del pre-registro de tripletas), y su alcance sostiene al sujeto. La enmienda 5 lo declara, junto con que el esquema no
+  permite emitir esa relación: la precisión mide si la relación es verdadera según el TO, no si la extracción cumplió su regla de
+  emisión. Con eso, T020 puede ser el caso de la v3, con su porqué tomado del alcance del TO. Las 2 de la 1b quedan como límite de la v3,
+  declaradas.»
+- **La atribución con las herramientas de navegación,** tal cual: «la opción (a) de tu propuesta. Va como enmienda de
+  regla_atribucion.md, y el despacho de la unidad sale apenas lance B6.3.» La opción (a): cuenta como consultada, además de `ver_nodo` y
+  `ver_vecinos`, `ver_punto` del punto del ancla cuando muestra su texto y `ver_descendientes` cuando muestra el texto del punto del
+  ancla; y como vista, el punto del ancla o un nodo que la porta en cualquier salida fuera de su cabecera.
+- **Los casos de la v3,** tal cual: «Los casos de la v3, con su porqué, los apruebo con la enmienda 5, después de lanzar B6.3.»
+- Las secciones anteriores no se editan.
+
+## 135. El martes, a las 11:31: la P de N6 y de B6.3, el juez de a tres y Docker topeado (27/10/2026)
+
+Decisiones de la autora del 27/10/2026, recibidas a las 11:31:49 (hoja de ruta de la mesa, §295), sobre la §294 de la mesa.
+
+- **La memoria medida por N6 a** (`fuera_del_repo/unav_n6/salidas/memoria_N6.json`, 11:09): lo fijo, 11,17 GB en uso; cada sesión con
+  su codificador, 4,565 GB (4,178 del codificador); con la regla de la autora (el pico más lo fijo, hasta 14,5 GB, sin que crezca el swap)
+  no entraba ninguna.
+- **Las decisiones de la autora, tal cual:**
+  1. «N6 en dos lotes: las sesiones sin codificador con P = 3 y las que lo cargan con P = 1, confirmado con las configuraciones de N6 a.
+     Se declara como cambio del orden, no de lo que mide cada sesión.»
+  2. «B6.3 con P = 1 y el juez de B6.3 con sus tres repeticiones a la vez, cada una con su base. Se declara igual.»
+  3. «No va el codificador compartido. No quiero cambiar la infraestructura de B6.3 antes de la evaluación final. Si la memoria medida
+     en el testigo no da ni para P = 1, lo hablamos.»
+  4. «La VM de Docker topeada en 2,5 GB para N6 y para B6.3, como estaba previsto. Incluí en los comandos cuándo se topea y cómo se
+     controla.»
+  5. «Con B6.3 el miércoles a la mañana, mi lectura de las 100 nuevas de T va hoy a la noche o mientras corre B6.3, y la extracción de
+     la cobertura, en el primer hueco sin otro paso pago después de N6.»
+- **El calendario v23b** (mesa, `decisiones_295_mesa/calendario/`; horas del simulador, NO VERIFICADAS): B6.3 lanza el miércoles 28 por
+  la mañana y termina a la noche; contra el miércoles a las 18:00 el margen es negativo (de −8,7 a −10,7 h en el central), y contra el
+  jueves 29 a las 18:00, positivo (de +13,3 a +15,3 h en el central).
+- Las secciones anteriores no se editan.
+
+## 136. El martes, a las 11:35: el reinicio antes del paso pago de N6 y la P = 2 si entra (27/10/2026)
+
+Propuestas y hechos de la autora del 27/10/2026, recibidos a las 11:35:20 (hoja de ruta de la mesa, §296), sobre la §295 de la mesa.
+
+- **La memoria, medida por la autora con top a las 11:32,** con N6 a corriendo (NO VERIFICADO por la mesa): 15 GB usados, 7 GB
+  comprimidos, 116 MB libres y 8,2 de 9,2 GB de swap. Lo que más pesaba: la VM de la app de Claude (4,26 GB), la VM de Docker (4,09 GB),
+  Chrome (unos 5,3 GB) y la app de Claude (unos 2,8 GB). La autora cerró dos aplicaciones que no usaba y dejó Chrome con 4 pestañas y el
+  ahorro de memoria; lo cierra entero mientras corre B6.3, y para el paso pago de N6 si hace falta para llegar a P = 2.
+- **Las propuestas de la autora, tal cual:**
+  1. «Reiniciar la Mac cuando frene N6 a y antes de N6 pago, sin ningún paso corriendo, para vaciar el swap y la memoria comprimida.
+     Después abro solo la app de Claude, la Terminal, Chrome con sus 4 pestañas y Docker, con la VM topeada en 2,5 GB.»
+  2. «Que el comando de N6 mida lo fijo después del reinicio y antes de lanzar. Con esa cifra decidimos P para las sesiones que cargan el
+     codificador: 1, o 2 si lo fijo queda en 5,4 GB o menos con tu cuenta. Lo mismo para B6.3 en el testigo.»
+  3. «Que la secuencia diga cómo se vuelve a levantar el Neo4j propio de N6 después del reinicio, cómo se controla su carga y qué
+     sesiones de Claude Code tengo que retomar.»
+  4. «Si con esto entra P = 2, sumá esa opción al calendario v23. Sigue sin ir el codificador compartido.»
+- **La cuenta de la regla no es la de top.** Lo fijo es la memoria en uso de `memoria_n6.memoria_maquina()` (páginas activas, fijas y del
+  compresor, por `vm_stat`), la misma de las 11:09. Con ella, P = 2 pide lo fijo en 14,5 − 2 × 4,565 = 5,37 GB o menos, y P = 1, en
+  9,935 o menos, sin el CLI de cada sesión (NO VERIFICADO). A las 11:57, con N6 a trabajando, la mesa midió 12,25 GB en uso y 5,8 GB de
+  swap, solo leyendo `vm_stat` y `sysctl`.
+- **La secuencia del reinicio, armada por la mesa:**
+  - tres comandos: antes, después y solo la memoria, sobre `reinicio_n6_mesa.py`, cuyo selftest con un docker falso da 25 de 25. No
+    escriben en el repo;
+  - antes de reiniciar: el respaldo de los scratchpads corrido en ese momento, porque el reinicio puede vaciar `/private/tmp` (NO
+    VERIFICADO), y el Neo4j de N6 parado;
+  - después: el Neo4j de N6 levantado desde la copia de N6, donde está su volumen; su carga controlada con `control_neo4j_n6.py`,
+    contra la salida de antes; y lo fijo medido;
+  - las sesiones que se retoman: la de la mesa y la del runner.
+- **El grep de convenciones de la mesa** vivía solo en su scratchpad. Desde la §296 está en el paquete de la mesa, sin ningún nombre en
+  claro: los nombres van por su sha256. Cuenta lo mismo que el anterior: 96 y 96 líneas sobre 19 rutas del paquete (17 carpetas y 2
+  hojas), y 119 de 154 líneas de prueba.
+- **El calendario v23c:** ninguna opción llega al miércoles a las 18:00, y todas llegan al jueves a las 18:00. P = 2 en N6 adelanta 49
+  minutos el lanzamiento de B6.3 en el central. P = 2 en B6.3 no lo mueve: adelanta el fin del control solo con 7,5 h de la autora el
+  miércoles y P = 2 en N6.
+- **Un error de la mesa:** el calendario v23b no contaba el «seguí» de N6 a ni su revisión (de 1,5 a 2,25 h antes del commit de N6 a).
+  El v23c los suma. La causa: el material de ese «seguí» se escribió en la misma ronda que el v23b, y no lo pasé al simulador.
+- Las secciones anteriores no se editan.
+
+## 137. El martes, a las 12:09: el FRENO de N6 a, revisado, y lo que va a su paso pago (27/10/2026)
+
+Decisiones y hechos de la autora del 27/10/2026, recibidos a las 12:09:14 (hoja de ruta de la mesa, §297), sobre el FRENO de N6 a.
+
+- **El FRENO de N6, etapa a** (sesión `2b5a8931…`; `fuera_del_repo/unav_n6/FRENO_UNAV_N6_a.md`, `41518931…`; paquete `b91a2b40…`, 98
+  archivos, 98 de 98 en el control de la autora y en el de la mesa), revisado por la mesa por código:
+  - 21 de 22 controles dan. El que no, la versión del intérprete del instrumento de citas en la entrada sellada, lo pide la decisión 6;
+  - los selftests, corridos por la mesa en una copia: 25 de 25, 14 de 14 y 20 de 20;
+  - hoy hay 180 sesiones sin codificador (B y F1_bm25) y 240 con él; con T−F1 sin él, 210 y 210.
+- **Las decisiones de la autora, tal cual:**
+  1. «Apruebo el renglón de ver_descendientes tal cual lo propuso (sha256 del renglón 132e0f05…).»
+  2. «El Neo4j de N6 es neo4j_n6, en 127.0.0.1:57687. Su volumen, en unav_n6/copia/, no se toca hasta que termine el análisis de N6.»
+  3. «La P de las sesiones que cargan el codificador se decide con lo fijo medido después del reinicio: P = 1, o P = 2 si lo fijo queda
+     en 5,37 GB o menos.»
+  4. «T−F1 sin codificador, si comprobás por código que sus herramientas no lo usan y que sus salidas dan iguales byte a byte sin él.
+     Entonces sus 30 sesiones van al lote sin codificador, con P = 3. Se declara.»
+  5. «Los ejemplos de la familia 6 comparten texto con N3-M18, N3-M21, N3-M05 y N3-C4 (su §11, punto 5). Lo fijo ahora, antes del paso
+     pago: toda comparación entre una configuración que lleva esos ejemplos y una que no (B y T−F6) se analiza sin esas cuatro
+     preguntas, y la versión con las 30 va al lado como sensibilidad. Las demás comparaciones, con las 30. Se declara como desvío de N4.
+     B6.3 no cambia, porque los documentos de esos ejemplos no son de B6.3.»
+  6. «Acepto sus interpretaciones a (B en el servidor nuevo), f (el juez con los precios de A2.2) y g (el instrumento de citas con
+     Python 3.12, con la versión del intérprete en la entrada sellada), y lo que propone en su §11, punto 4, si tu revisión da bien.» La
+     revisión da bien en todo eso.
+- **Los tres controles que pidió la autora,** hechos por la mesa leyendo `unav_parte1/` solo por código, sin imprimir una línea:
+  - las funciones de R-CITA de D2 que usa la lista de la familia 5 son las de `n1_trazas_unav.py`. `texto_nodo` difiere solo en qué
+    `_vals` llama, y los dos tienen el mismo árbol y dan lo mismo en los 20.833 nodos del acumulado;
+  - la parte común de la plantilla es el texto del diseño de N2 (`a1936444…`), con un renglón que el markdown corta en dos;
+  - la lista corre el procedimiento de m234: sus 17 sentencias, con el sha256 de la salida sellada.
+- **Las cuatro clases de N1** no entran en la regla de decisión de N4 (§5). Se completan después del paso pago, con la regla `db2cc290…`,
+  en una unidad a USD 0 como N5b, fuera del camino de B6.3.
+- **Incidentes de la sesión de N6 a** (su §12, errores 1 a 5 y 11), que la autora pide registrar. Ninguno dejó texto en un archivo:
+  1. un `git ls-files | grep` listó en su consola el nombre de un archivo `*_SOLO_MESA*`, sin abrirlo;
+  2. la contraseña de desarrollo del Neo4j salió tres veces en su consola, al leer archivos de configuración enteros. No está en
+     ningún archivo;
+  3. un `du -sh` sobre la raíz del repo recorrió las carpetas vedadas, e imprimió solo el total;
+  4. el primer `git status --porcelain` del repo recorrió el árbol, con las carpetas de adjudicación, sin imprimir sus nombres;
+  5. al leer la cola de la consola de la carga salieron dos ids de nodos, uno de la tanda 1. Las salidas de la carga quedaron cegadas;
+  6. un `git grep` mostró renglones de los prompts y las sesiones del humo del banco, que no son de N3, EV2 ni B6.3. Y al revisar el
+     bloque de HEAD leyó el comienzo de sus ejemplos (las 3 preguntas de ejemplo de N3, que nunca se miden y están en HEAD).
+- Las secciones anteriores no se editan.
+
+## 138. El martes, a las 14:25: el 221 y el 222 corridos, y lo que se adelanta hacia B6.3 mientras corre N6 (27/10/2026)
+
+Decisiones y hechos de la autora del 27/10/2026, recibidos a las 14:25:04 (hoja de ruta de la mesa, §298), sobre la §297 de la mesa.
+
+- **Los commits:** la autora corrió el 221 v2 y el 222 v2, con su push: `012398ef` y `56143bad`, sobre `3dcbf051` (git log). Sus
+  archivos dan iguales a los de `numstat_medido`: 2 y 1.
+- **Los despachos:** pegó el «seguí» de N6, etapa a bis, en la sesión `2b5a8931…`, y el despacho de la cobertura de T, v2, en una sesión
+  nueva en `fuera_del_repo/tripletas_t_cob/` (la carpeta existe desde las 14:19:34).
+- **Lo que pide adelantar mientras corren N6 a bis, la cobertura y después N6 pago,** tal cual: «Va en este orden, y cualquier FRENO que
+  llegue va primero:
+  1. N7: dejá armado y probado con datos de juguete lo que aplica la regla de N4, §5, a las salidas de N6 y arma la configuración
+     sellada de cada brazo de B6.3, para que N7 sea correrlo, revisarlo y leerlo.
+  2. La etapa b2 del runner, el testigo: su «seguí», listo para pegar apenas se selle N7, con el Neo4j de los índices, la regla de la
+     memoria con lo fijo y la P de B6.3.
+  3. El despacho de la atribución con la opción (a). Si no choca con N6 ni con el runner, sale esta noche y no después de lanzar B6.3.
+     Decime si choca.
+  4. La enmienda 5 de T, con los casos de la v3 y su porqué, para que la firme esta noche. Ningún paso pago de la v3 corre antes de que
+     termine B6.3.
+  5. Las instrucciones de P2 para el apéndice E, si te queda tiempo.»
+- **Sobre lo que la mesa dejó abierto,** tal cual: «no hace falta volver a correr la lista de la familia 5 leyendo N3. La adaptación
+  (a′) de N5b para las clases de N1 la decido cuando se calculen, después de N6.»
+- **Lo preparado por la mesa** (`decisiones_298_mesa/`):
+  - N7: el armador de la configuración sellada de los dos brazos de B6.3 desde el análisis de N6, que vuelve a aplicar la regla sobre sus
+    agregados y controla el requisito de la jerarquía, F1 y R5, con su selftest (18 de 18), y el que escribe su pre-registro;
+  - el «seguí» de la etapa b2 del runner, el testigo con la configuración sellada, lo fijo y la P de B6.3;
+  - el despacho de la atribución: no choca si trabaja en una copia fuera del repo, sin Neo4j ni el codificador, y sin commit mientras
+    corre N6 pago. Lo único compartido es la memoria;
+  - la enmienda 5 del pre-registro de tripletas, con los seis casos de la v3 y su porqué, para firmar.
+- Las secciones anteriores no se editan.
+
+## 139. El martes, a las 15:04: la enmienda 5 ajustada, las instrucciones del juez y los ejemplos de fragmentos de N7 (27/10/2026)
+
+Decisiones de la autora del 27/10/2026, recibidas a las 15:04:04 (hoja de ruta de la mesa, §299), sobre la §298 de la mesa.
+
+- **Sobre la enmienda 5, antes de firmarla,** tal cual:
+  1. «La cifra principal de la precisión de T es el 78 de 100 del protocolo firmado. Si la v3 pasa, la de las 400 va al lado, como
+     extensión declarada. Escribilo en los puntos 2 y 10.»
+  2. «En mis 100, que fueron la calibración de la v3, cuenta mi lectura en todas, no el veredicto de la última iteración, porque la v3
+     se ajustó sobre ellas. En las 100 de la validación cuenta el veredicto de la v3, como en el punto 9 de la enmienda 4.»
+  3. «La precisión con mi lectura en las 200 que leí va al lado en los dos casos, pase o no pase la v3.»
+  4. «Saco T099: si requiere también le cabe, no es un caso limpio. Quedan cinco casos.»
+  5. «La (ii) ponderada con mi importancia y los topes, como los escribiste.»
+  6. «Versioná en el repo las instrucciones del juez de tripletas sin ejemplos (decisiones_287_mesa/juez_v2/, f29de17b…), con una nota
+     de que valen para la v2 y la v3, que se distinguen solo en sus casos. Van con el commit de la enmienda o con el de N6.»
+- **Sobre N7,** tal cual:
+  7. «Si la elegida lleva los ejemplos de la familia 6, el brazo de fragmentos lleva las mismas 3 preguntas de ejemplo, resueltas con las
+     salidas reales de su herramienta sobre el grafo evaluado y con la misma forma que los del grafo. Las arma una unidad a USD 0 y las
+     apruebo antes de sellar N7. Dejá su despacho listo.»
+  8. «Confirmo la regla del 5 % de R5, leída sobre las sesiones de N6 de lo elegido en cada brazo.»
+- **Lo demás,** tal cual: «El b2 y la atribución los pego cuando me digas. Si te queda tiempo antes del FRENO de N6 a bis, seguí con las
+  instrucciones de P2.»
+- **Lo hecho por la mesa** (`decisiones_299_mesa/`):
+  - la enmienda 5, v2, para firmar, con las decisiones 1 a 5. Los topes, recalculados por script con 95 fichas por iteración, no cambian;
+  - los archivos del commit de la firma: el pre-registro de tripletas con la nota, y las instrucciones sin ejemplos (`f29de17b…`) con su
+    nota, armados desde HEAD por un script con sus controles. El commit va después del de N6;
+  - N7 con la regla de R5 confirmada: su selftest, otra vez 18 de 18;
+  - el despacho de la unidad de los ejemplos de fragmentos. Controla que ningún pasaje devuelto sea de los 77 documentos de B6.3, porque
+    sobre el grafo evaluado una búsqueda sin filtro puede traerlos;
+  - las instrucciones de P2 para el apéndice E: las seis piezas, recortadas. Se controlaron por código contra las preguntas, los
+    criterios y las citas de las olas de P2 y contra los motivos de rechazo de las seis hojas marcadas, leídos solo en memoria y sin
+    imprimir texto. Salieron 3 renglones de las piezas, uno de la §263 y dos de la §265, y las seis recortadas dan 0 ventanas.
+- Las secciones anteriores no se editan.
+
+## 140. El martes, a las 15:12: el FRENO de la cobertura de T, revisado, y su paso pago (27/10/2026)
+
+Decisiones de la autora del 27/10/2026, recibidas a las 15:12:12 (hoja de ruta de la mesa, §300), sobre el FRENO de la cobertura de T.
+
+- **El FRENO COB-T-a** (sesión `3c558248…`; `fuera_del_repo/tripletas_t_cob/FRENO_COB_T_a.md`; paquete `dca8bc8e…`, 42 archivos, 42 de
+  42 en el control de la autora y en el de la mesa), revisado por la mesa por código:
+  - los 42 del paquete son iguales a los de su carpeta de trabajo;
+  - el acta del sorteo (`73a6fab3…`) da su sello. Con su población (2.783, `51c44c7c…`, en 76 de los 77 TOs) y su semilla, el sorteo
+    otra vez da la misma muestra (`d814dd9f…`);
+  - el código da los sha256 de su FRENO.
+- **Las decisiones de la autora, tal cual:**
+  1. «Acepto sus interpretaciones: «terminal» es toda unidad de la E0, como en V y en el recuento del 5.1; «decididas» son las filas sin
+     «no decidible»; y no hay otro modelo si el extractor se niega.»
+  2. «Los precios del comando no los pongo a mano: sacalos de la fuente sellada con la que se contó el juez v2, que usa claude-opus-5-5,
+     y armame el comando con ellos.»
+  3. «El freno de 0,60 puede cortar si el thinking pasa de unos 770 tokens por llamada. Estimá el gasto por llamada con los registros de
+     la extracción de V, que usó el mismo modelo, el mismo prompt y los mismos parámetros. Si las 30 no entran con margen, armame una nota
+     fechada al pie de docs/cobertura_T_control_de_30_D9.md que suba el tope y el freno, para firmarla antes de correr.»
+  4. «Mientras corre la extracción, no arranca nada pago: lo cuido yo. Son unos minutos, en el hueco entre N6 y B6.3.»
+- **Los precios:** `juez_v2.PRECIOS_DECIDIDOS`, de la congelación de la v2 (`juez_v2.py`, `2c798a6d…`, en
+  `congelacion_juez_v2_sha256.txt`): 4, 20, 5 y 0,20 USD por millón.
+- **La extracción de V no corrió:** su carpeta no tiene corridas ni registro de gasto. La mesa estimó el gasto con las 825 llamadas del
+  juez v2, con el mismo modelo y los mismos parámetros y otro prompt: 1.231 tokens de salida por llamada. Con eso las 30 cuestan unos USD
+  0,88, y 0,99 con sus reintentos, y el freno de 0,60 corta después de la tercera.
+- **Incidentes de la sesión de la cobertura** (su §11, errores 1 a 4), que la autora pide registrar. Ninguno dejó texto en un archivo:
+  1. un `git status --short` sin poda recorrió el árbol del repo, con las carpetas vedadas, y mostró 19 nombres sin rastrear, ninguno de
+     ellas;
+  2. un `grep -E` llevó en su línea de comandos, por un instante, los nombres reales de tres scripts del patrón de otro paso pago;
+  3. dos listados por nombre de más: uno pasó por la tubería los nombres de la carpeta de los pares, sin mostrar ninguno, y otro mostró
+     21 nombres de las salidas de las corridas de EV2 y del juez de A2.2, sin abrirlos;
+  4. el primer selftest de sus guardas se colgó unos 5 minutos, y la sesión terminó sus dos procesos de prueba por su pid.
+- **Lo preparado por la mesa,** antes del cambio de las 15:19:08: la nota al pie que sube el tope a USD 3 y el freno a USD 2, el «seguí»
+  de la etapa a bis y el comando con los precios sellados, con su prueba en seco.
+- Las secciones anteriores no se editan.
+
+## 141. El martes, a las 15:19: la cobertura de T vuelve al diseño completo del §5 (27/10/2026)
+
+Decisiones de la autora del 27/10/2026, recibidas a las 15:19:08 (hoja de ruta de la mesa, §301), que reemplazan las del control de 30
+para el paso pago de la cobertura de T.
+
+- **El cambio, tal cual:** «Cambio de decisión sobre la cobertura de T: quiero correr el diseño completo del §5 del pre-registro de
+  tripletas, el que armé con los mentores, en lugar de la versión mínima de 30. Es volver a lo pre-registrado, decidido antes de cualquier
+  extracción.»
+  1. «Los pasos: 600 pasajes de la misma población de los 77 documentos (2.783), con semilla nueva; la extracción del 5.3; el puntaje y
+     el orden del 5.4; mi marca de importancia de las 100 primeras y de 30 de control, del 5.5; mi decisión de presencia de las 100
+     primeras con su subgrafo, del 5.6, sin el juez de presencia, que no está validado en V; el recall@10, @50 y @100 con su Wilson, del
+     5.7; y la revisión de las ausentes del 5.8. Mis tres lecturas van en una sola hoja, una pasada por renglón.»
+  2. «Escribime la nota fechada al pie de docs/cobertura_T_control_de_30_D9.md que fija esto, para firmarla antes del sorteo de los 600,
+     con los topes de cada paso pago.»
+  3. «Proponeme qué pasa con las 30 ya sorteadas (su acta, 73a6fab3…) y qué se informa si el completo no termina a tiempo.»
+  4. «Armá la vuelta b para la sesión de la cobertura (3c558248-ca82-46ad-bba3-8fb27090ee7b), que ya tiene la población, los subgrafos y la
+     hoja.»
+  5. «Rehacé el calendario con esto. Estoy dispuesta a quedarme esta noche: si entra, los dos pasos pagos de la cobertura van esta noche,
+     en el hueco entre el fin de N6 y el testigo de B6.3, y mi lectura de unas 130 filas mañana, mientras corre B6.3. Si no entra, decime
+     cuándo. Si mi tiempo no alcanza para esto y para la lectura de las 100 nuevas de T, la cobertura va primero.»
+- **Lo preparado por la mesa** (`decisiones_301_mesa/`):
+  - la nota al pie, para firmar antes del sorteo, con su archivo del commit (`28f4711b…`). Topes: la extracción, USD 40 (freno 34); el
+    puntaje, USD 12 (freno 10,20), con lo estimado por script: de 18,40 a 28,09 y de 3,62 a 7,78;
+  - las 30 de D-9 como la red (opción A de la mesa): se extraen con los 600, su presencia va al principio de la hoja y, si el completo no
+    se cierra antes del jueves 29 a las 18:00, se informa D-9 sobre ellas;
+  - la vuelta b para la sesión de la cobertura;
+  - el calendario v23d.
+- **Lo de la §300 para las 30** (la nota del tope y el freno, el «seguí» de la etapa a bis y el comando con los precios) queda sin pegar,
+  con el prefijo `NO_CORRER_REEMPLAZADO__`.
+- Las secciones anteriores no se editan.
+
+## 142. El martes, a las 15:30: los huecos de la enmienda 5 y de la nota de la cobertura, y la precisión de T por subgrupo (27/10/2026)
+
+Decisiones de la autora del 27/10/2026, recibidas a las 15:30:25 (hoja de ruta de la mesa, §302), después de la revisión de la mesa de
+escritura de las §130 a §133, antes de firmar la enmienda 5 y la nota de la cobertura.
+
+- **Lo que pide cerrar, tal cual:**
+  1. «De la v3, escrito explícito: tres pedidos por ficha con el veredicto modal del §4.4, como la v2; que devuelve los rasgos de
+     importancia porque sus instrucciones son las de la v2, y el análisis no los usa; que lo que manda a adjudicación lo adjudico yo; la
+     regla de la corrida cortada, la misma que decidí para la prueba de la v2 (las fallas de infraestructura se re-corren hasta dos veces,
+     y si corta por el tope o el freno no se re-corre nada); y el borde de (ii) redondeado a 10 decimales, como en el punto 8 de la
+     enmienda 4.»
+  2. «Si la v3 pasa: la precisión de las 400 con los dos estimadores del 3.6 y el intervalo de la enmienda 3. En mis 100 cuenta mi
+     lectura en todas, como decidí; en las 100 de la validación, el veredicto de la v3.»
+  3. «Las instrucciones del apéndice son las mismas para la v2 y la v3, que se distinguen solo en sus casos. Decime en qué ruta del repo
+     las versionás y con qué sha256.»
+  4. «La enmienda 5 cita literal las dos frases que contradice y las declara como desvío: «No hay otra versión del juez en esta tanda»
+     (punto 10 de la enmienda 4) y que T no se itera (punto 12 de la enmienda 4 y la nota al pie del laudo D-f).»
+  5. «Sacá por código, del análisis de la prueba de la v2, las ponderadas y los intervalos de la enmienda 3 de mis 100 por subgrupo (las
+     esenciales, sin la tanda 0 y aplica_a), y ponelos en el registro con su fuente.»
+  6. «La nota de la cobertura dice la semilla de los 600 pasajes, la de los 30 de control y que la presencia de los 100 primeros la
+     decido yo, sin el juez de presencia.»
+- **La precisión de T con la lectura de la autora, por subgrupo,** sacada por código (`cifras_v2_por_subgrupo_mesa.py`, del paquete de la
+  mesa, §302). Fuente: el análisis de la prueba de la v2,
+  `fuera_del_repo/tripletas_v_juez/v2/corridas/T/analisis_prueba_T/analisis_T_v2.json`, sha256
+  `908010309e062897b403ce91c03f6b1ea37481a1e9f1b21833bcbdebe7a9f362` (§127). El intervalo de la enmienda 3 es Wilson con el n
+  efectivo de Kish (`data/experiment/tripletas_v/analisis/wilson_kish_tripletas_mesa.py`, sha256 `8b0440bc…`, el que trae el análisis):
+
+  | subgrupo | correctas | cruda (Wilson) | ponderada | n efectivo | intervalo de la enmienda 3 |
+  |---|---|---|---|---|---|
+  | las 100 | 78 de 100 | 0,7800 [0,6893; 0,8500] | 0,7768 | 95,3 | [0,6835; 0,8488] |
+  | esenciales | 76 de 98 | 0,7755 [0,6834; 0,8468] | 0,7724 | 94,7 | [0,6783; 0,8452] |
+  | sin la tanda 0 | 56 de 71 | 0,7887 [0,6803; 0,8676] | 0,7868 | 67,3 | [0,6749; 0,8677] |
+  | esenciales sin la tanda 0 | 54 de 69 | 0,7826 [0,6718; 0,8636] | 0,7810 | 65,2 | [0,6665; 0,8642] |
+  | `aplica_a` | 43 de 51 | 0,8431 [0,7199; 0,9183] | la cruda (un estrato) | 51 | [0,7199; 0,9183] |
+
+  `aplica_a` sale de su estrato en la ponderada de las 100, con el Wilson del mismo script: el análisis no lo trae como subgrupo.
+- **Las instrucciones del juez sin ejemplos, en el repo:**
+  `data/experiment/tripletas_v/juez_v2/instrucciones_juez_tripletas_sin_ejemplos_v2_y_v3.txt`, sha256
+  `f29de17b2dcf4b11eacf615b65e025fc85874c76ff24a29393e2f959c2a01517`, y su nota, `NOTA_instrucciones_sin_ejemplos_v2_y_v3.md`
+  (`e993987e…`), en el commit de la firma de la enmienda 5.
+- **Lo preparado por la mesa** (`decisiones_302_mesa/`): la enmienda 5, v3, y los archivos de su commit; la nota de la cobertura, v2, con su
+  archivo del commit (`e082d48a…`); y la vuelta b, v2, con ese sha256.
+- Las secciones anteriores no se editan.

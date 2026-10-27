@@ -1,0 +1,23 @@
+# docker-compose.n6.yml — Override de N6 de U-NAV-DISENO sobre docker-compose.yml (en la copia del repo): un Neo4j propio
+# con el grafo de N6, el acumulado de las tandas 0 y 1 sin cola (KG_Acumulado_Tandas0y1_r2b_sincola), para el selftest
+# del servidor nuevo del grafo, la lista de la familia 5, el caso de la jerarquía, la medición de la memoria y el paso
+# pago, sin tocar el contenedor del repo (neo4j-bcra-kg-compose, 7474/7687), el del banco en paralelo
+# (neo4j-bcra-kg-banco-paralelo, 37474/37687) ni el de los índices (neo4j-bcra-kg-indices-eval, 47474/47687). Proyecto
+# neo4j_n6; puertos 57474 y 57687 en localhost; volumen en la copia. La imagen, la memoria, el healthcheck y la
+# autenticación son los del archivo base. Patrón: docker-compose.indices_eval.yml.
+#
+# Uso (desde este directorio):
+#   docker compose -p neo4j_n6 -f docker-compose.yml -f docker-compose.n6.yml up -d --wait
+#   docker compose -p neo4j_n6 -f docker-compose.yml -f docker-compose.n6.yml down
+# El cargador, los servidores y el paso pago lo alcanzan con NEO4J_URI=bolt://127.0.0.1:57687, exportado en la terminal
+# que los lanza.
+services:
+  neo4j:
+    container_name: neo4j-bcra-kg-n6
+    ports: !override
+      - "127.0.0.1:57474:7474"
+      - "127.0.0.1:57687:7687"
+    volumes: !override
+      - ./volumen_n6/data:/data
+      - ./volumen_n6/logs:/logs
+    restart: "no"
