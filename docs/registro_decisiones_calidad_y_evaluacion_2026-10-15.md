@@ -5684,3 +5684,53 @@ Decisiones y hechos de la autora del 26/10/2026, recibidos a las 22:34:47 (hoja 
   - los FRENO de la etapa b de los índices y del banco;
   - con ellos, la etapa b de la candidata, el commit de la adaptación y el despacho de N6.
 - Las secciones anteriores no se editan.
+
+## 129. El lunes, a las 22:45: R5 en el lanzador del lote, la unión del índice por punto y el servidor del grafo (26/10/2026)
+
+Decisiones y hechos de la autora del 26/10/2026, recibidos a las 22:45:52 (hoja de ruta de la mesa, §288), sobre la §287 de la mesa.
+
+- **El FRENO del banco, R5 y el patrón** (sesión `95486f81…`; `fuera_del_repo/banco_paralelo/r5_y_patron/FRENO_UBANCO_R5_a.md`;
+  paquete `51c5786b…`, 47 archivos), revisado por la mesa por código:
+  - 47 de 47 archivos con su sha256, y el FRENO, el del paquete;
+  - el selftest y la corrida en seco, 11 de 11 cada uno;
+  - la foto del repo cambió durante la sesión solo por los commits 212, 213 y 214 de la autora: 3 archivos nuevos y el registro;
+  - **la guarda** (`paralelo/guardas_lote_r5.py`) suma `correr_b63.py` al patrón del paso pago de HEAD y mantiene su filtro por el
+    nombre del script de Python. Así el `pgrep` de otra guarda no cuenta, que es la carrera de la prueba de T. Excluye a los ancestros
+    y a los descendientes del proceso que la corre;
+  - **el lanzador** (`agentes/lanzar_lote_paralelo_r5.py`) toma R5 del campo `R5` de la entrada sellada y admite solo los dos del
+    pre-registro (30, 32 y 1,80; 45, 47 y 3,30). Con otro, frena con el 5 sin lanzar ninguna sesión, y el presupuesto por sesión sale de
+    ese R5. Cambia por un momento el R5 esperado del módulo de HEAD al controlar cada sesión: es seguro, porque ese control corre en el
+    bucle de un solo hilo del lanzador (`agentes/lanzar_lote_paralelo.py:417-472`).
+- **Las decisiones de la autora, tal cual:**
+  1. «La clave de R5 es el campo "R5" de la entrada sellada, el que lee comun_b63.cargar_entrada.»
+  2. «La etapa b del runner aplica lo que dice NOTA_lanzar_lote_paralelo_r5.md (los imports y el Namespace de correr_b63.py, y
+     cargar_entrada, que hoy frena con el R5 alto) en versiones nuevas, sin editar lo que está en HEAD.»
+  3. «Se declaran: que el main de lanzar_lote_paralelo.py de HEAD sale con 1 y no con 3 ante un lote inválido, y los errores de la sesión
+     (el grep que listó nombres de b63/ y los git status que recorrieron las carpetas de adjudicación sin abrirlas).»
+  4. Si N7 sube R5, su configuración de agentes lleva el `corte_R5` de 45, 47 y 3,30.
+- **El 216, PREPARADO:** los 8 archivos nuevos del banco (el lanzador, su selftest y la nota en `agentes/`; la guarda y la corrida en
+  seco en `paralelo/`; tres de juguete en `paralelo/seco_r5/`), con su FRENO y las salidas del selftest y de la corrida en seco.
+- **La etapa b de los índices,** su pregunta y la respuesta de la autora, tal cual: preguntó qué hacer con los 28 documentos repetidos
+  que deja la unión por clave (5 puntos quedan bajo dos padres). La autora respondió: «Deduplicar el orden: la unión queda tal cual (los 4
+  cortes por ciclo y los hijos en dos padres), y la versión nueva también cambia orden_canonico, en el archivo nuevo y sin editar el de
+  HEAD: cada punto entra una vez, en su primera posición del preorden. El selftest suma dos controles: 0 ids repetidos en el índice por
+  punto, en el BM25 y en el denso (11.814 documentos, uno por clave), y N5 sigue igual byte a byte. El FRENO declara que cambian dos
+  funciones, no solo cargar_e0.»
+- **El servidor del grafo y la versión nueva del índice,** controlado por la mesa por código sobre HEAD (`43b4df8f`):
+  - el servidor de la navegación (`mcp_kg/servidor_mcp_kg_nav.py`) no construye el índice. Abre el navegador sobre la carpeta de
+    `indice_puntos` de su config, con el sha256 de su manifiesto, y controla los cuatro archivos de `indice_puntos.ARCHIVOS` (`puntos`,
+    `nodos`, `documentos` e `indice_bm25`) y la matriz del denso;
+  - de `indice_puntos.py` de HEAD, el navegador usa solo `ARCHIVOS`, `sha256_file`, `rel_repo`, `base_punto` y `ancestros`, que no
+    abortan. `cargar_e0`, `orden_canonico` y `derivar` son de la construcción y no corren al servir;
+  - así, el servidor sirve el índice que construye la versión nueva, si su config apunta a él con su sha256, y si la versión nueva deja
+    los mismos cuatro archivos y su manifiesto con esas claves. Lo controla la revisión de la etapa b de los índices;
+  - **un hueco:** el servidor de HEAD sirve las seis herramientas de `familias_nav` (`FN.Navegador`, `FN.despachar` y `FN.TOOLS_NAV`),
+    no `ver_descendientes`. Para N6, N7 y B6.3 hace falta una versión nueva del servidor que use `familias_nav_cand` (`NavegadorCand`,
+    `despachar_cand` y `TOOLS_NAV_CAND`), sin editar el de HEAD. Va con el despacho de N6.
+- **U-CITA-BANCO:** la autora pega su despacho en una sesión nueva. El 215 lo corre mañana, cuando frenen la etapa b de los índices y
+  U-CITA-BANCO, para no mover el repo mientras trabajan.
+- **Lo que sigue:**
+  - el 215, el 216 y este commit, mañana;
+  - los FRENO de la etapa b de los índices y de U-CITA-BANCO;
+  - con ellos, la etapa b de la candidata, el commit de la adaptación y el despacho de N6, con el servidor nuevo.
+- Las secciones anteriores no se editan.
