@@ -5523,3 +5523,126 @@ ruta de la mesa, §285), sobre la §284 de la mesa.
   - la decisión de la autora sobre las secciones repetidas, la memoria, la forma de error desconocida, los bloques y el punto 9;
   - con esas decisiones, los «seguí» de la etapa b de los índices, del testigo y de la etapa b del runner.
 - Las secciones anteriores no se editan.
+
+## 127. El lunes, desde las 21:58: la prueba de T, el sello de N4, la exactitud de cita, U-VERPUNTO y la candidata (26/10/2026)
+
+Decisiones y hechos de la autora del 26/10/2026, recibidos a las 21:58:48, con agregados a las 22:04:09, a las 22:13:16 y a las 22:17:58
+(hoja de ruta de la mesa, §286), sobre la §285 de la mesa.
+
+- **Los commits:** la autora corrió el 210 (`05999ad6e8a91fdcfa183d39c9ad897c84c661b2`, 25 archivos) y el 211
+  (`a9636f37b73dc5c9fafc6a37372b6236e83b37fc`, 1 archivo), cada uno con su push; el push subió también su commit de figuras del capítulo 4
+  (`3a0e65b6`). HEAD y origin/main, en `a9636f37`. Cada uno trae, byte a byte, lo que preparó la mesa, con su mensaje.
+- **La r3 de la prueba de T,** corrida por la autora sobre `3a0e65b6`, según su consola:
+  - terminó con 0;
+  - la r3, en su intento 2, 100 llamadas pagadas y completas, sin hits, reintentos, errores, rechazos ni corte;
+  - los archivos del intento 1 de la r1, la r2 y sus consolas, iguales después;
+  - el agregado, 300 de 300 completas, 0 sin voto y 0 cruces; el gasto de las tres bases, USD 15,4601 contra 42.
+- **El análisis de la prueba** (USD 0), corrido por la mesa con su entrada de la §278 (`d764a18b…`, que pasa `validar_entrada` de la
+  v2.4), el agregado y las hojas selladas de la autora (su sello, `37793df0…`, controlado). Salida:
+  `fuera_del_repo/tripletas_v_juez/v2/corridas/T/analisis_prueba_T/analisis_T_v2.json`, sha256 `908010309e06…`.
+  **La prueba no pasa:**
+  - (i) el acuerdo, 86 de 96 (0,8958 contra 0,84), pasa;
+  - (ii) la precisión: el juez da 0,6875 y la autora 0,7708, una diferencia de 0,0833 (la ponderada, 0,0796) contra 0,05. No pasa;
+  - (iii) las incorrectas, 21 de 22, pasa;
+  - la importancia: exacta en 48 de 100, contra 0,60, no pasa; a un nivel, 95 de 100, pasa;
+  - a adjudicación, 4 (0,04), y sin las fichas coincidentes la decisión es la misma.
+  **Rige el punto 10 de la enmienda 4: la precisión de T con las 100 de la autora:**
+  - 78 de 100, Wilson [0,689; 0,850]; ponderada 0,777, Wilson [0,683; 0,849], n efectivo 95,3;
+  - las esenciales, 76 de 98; sin la tanda 0, 56 de 71; `aplica_a`, 43 de 51.
+  Las 300 restantes no corren, y el comando de las 300 no se arma.
+- **Las decisiones de la autora sobre la §285, tal cual** (21:58:48):
+  1. «Opción (a): unir por clave, en una versión nueva de indice_puntos.py, como la propusiste, con los tres controles de su selftest: el
+     sintético, N5 byte a byte con 0 uniones, y en los tres TOs 11 puntos unidos, 28 apariciones y 4 hijos cortados.»
+  2. «Para los denso de la etapa b cierro Chrome, Visual Studio Code, Teams, Loom, las dos apps de mensajería, Numbers y Word, y Docker
+     Desktop entero cuando el «seguí» de la etapa b lo pida, no antes, porque el paso 0 de U-VERPUNTO usa docker ps. La app de escritorio
+     queda abierta. Para B6.3, el pico se mide en el testigo de la etapa b, con la configuración sellada, P = 3 y lo demás cerrado. Si el
+     pico más lo fijo pasa de 14,5 GB o el swap crece durante la corrida, B6.3 va con P = 2 y el tope de la VM de Docker en 2,5 GB, como
+     desvío declarado del §5.»
+  3. «Opción (d): la sesión queda incompleta, no cuenta como correcta en el análisis principal, sale del de sensibilidad y se declara, y
+     el lote frena cuando junta 3 formas desconocidas.» La etapa b mide las formas reales a USD 0: una clave inválida, un puerto local
+     cerrado y un servidor local que contesta 429, 500 y 529.
+  4. «La ventana corrida: P sesiones a la vez en el orden firmado, y cada reintento en el primer lugar libre.» La nota de B6.3 declara cómo
+     se leen con la ventana «con los brazos de cada pregunta seguidos» y «en su mismo lugar del orden».
+  5. «Se commitean solo las salidas sin texto: metas, cuentas y sha256. Los pedidos, los streams, las transcripciones y la caché del juez
+     quedan fuera del repo, con su manifiesto de sha256 commiteado, hasta que cierren el análisis y mi control.»
+  6. «Cada repetición se lanza cuando la anterior pasó su guarda, sin tocar el corredor sellado.» Con la prueba sin pasar, las 300 no
+     corren; la regla queda para todo corredor de T que lance repeticiones en paralelo.
+- **La corrida ilustrativa,** ampliada por la autora, tal cual: «Después del corte del 28/10 a las 18:00, la corrida ilustrativa va con la
+  pregunta del préstamo de la tabla de criterios del capítulo 2, una sola corrida por brazo con la configuración sellada de B6.3,
+  juzgada por el juez de las respuestas, y con la tripleta y el pasaje del 5.1.1.1 juzgados por los jueces del contenido. No entra en
+  ninguna cifra. Se muestra lo que salga y se re-corre solo por una falla de infraestructura.» La unidad que la prepara va después de
+  lanzar B6.3, y antes controla por código, sin imprimir nada, que la pregunta no esté en ningún conjunto.
+- **La exactitud de cita** (lo que encontró la unidad de verificación del capítulo 5), revisada por la mesa por código, sin abrir
+  preguntas, criterios ni respuestas:
+  - el instrumento de HEAD (`scripts/ucita2_indicadores.py`) lee citas con `source_doc` y `location`, aborta con más de un ancla
+    (`:304-305`) y pide `seen_provenances`, que el adaptador del banco no arma;
+  - (a) **lo que guarda cada sesión alcanza** para los tres indicadores en los tres brazos: la meta trae las citas («documento | punto»,
+    1.124 de 1.124 en A2.2) y el log R1, la salida de cada llamada que vio el agente. Antes de lanzar B6.3 hace falta asegurar que el log
+    R1 y la meta de cada sesión se guarden, con su sha256;
+  - (b) **la adaptación, PREPARADA:** un script nuevo que importa el de HEAD y cambia solo la entrada: la cita partida en documento y
+    punto, y lo visto, leído del log R1 por formato. Se sella antes de N6, que mide la precisión de citas con el mismo instrumento;
+  - **las dos anclas, PREPARADAS para la decisión de la autora:** (a) alguna cita a alguna de las anclas; (b) cada ancla con su cita;
+    (c), la recomendada, (a) como principal y (b) como columna informativa; (d) la fracción de anclas citadas, que cambia lo que se mide.
+- **La plantilla del agente:** `agentes/plantilla_prompt.txt` nombra los cinco TOs de desarrollo en su renglón 1 (`dd99bfd3…`) y la
+  configuración de prueba de N6 la usa. La de A2.2, `a2_2/plantilla_prompt_a2_2.txt` (`ff6c3d0a…`), no los nombra en ningún renglón. Las
+  configuraciones de N6, N7 y B6.3 todavía no están en HEAD: el sello de N4 fija que el paso 0 de N6 controle, por código, que su
+  plantilla no nombre ninguno, y N7 y B6.3 la heredan.
+- **Los tokens,** controlados por código sin leer ninguna respuesta. Los guardan todos, por llamada:
+  - el agente de B6.3, en la meta de cada sesión (`tokens_R9.por_llamada_api`, con los de entrada, salida y caché);
+  - el juez de B6.3, en su caché (`b63/juez/cache/`, con `input_tokens` y `output_tokens` por fila);
+  - los jueces de V y de T, en sus bases, con los cuatro campos de la caché sellada. En la prueba de T, las 300 llamadas con los cuatro
+    llenos;
+  - los de la cobertura (U-TRIP-V-COB), por el mismo `CachingClient`.
+  No falta ninguno antes de la etapa b del runner.
+- **Para la tesis, del calendario v21** (central, de 8 a 22, 7,5 h de la autora hoy; horas del simulador, NO VERIFICADAS):
+  - N7 queda fijada el martes 27 a las 15:36;
+  - la entrada de B6.3 queda sellada con el commit de la etapa b del runner, a las 19:18, cuando lanza;
+  - en el alto: a las 17:51, y el miércoles 28 a las 08:06.
+- **El sello de N4,** tal cual (22:04:09): «La candidata va en F2, ver_descendientes, como la propusiste (opción a), y se implementa esta
+  noche, como ya está despachada.» La autora hizo su lectura de N5b (su FRENO entero y la guía de la §284). El protocolo sellado,
+  PREPARADO con el 212 (`docs/protocolo_N4_UNAV_medicion_N6.md`), lleva:
+  - el borrador del 18/10;
+  - lo que cambia al sellar: R5, la plantilla, la familia 2 con su candidata, el tope de N6 y la precisión de citas con el instrumento
+    adaptado;
+  - el diagnóstico de N5b y sus siete límites;
+  - la lista de la familia 5, que se calcula y se sella en el paso 0 de N6, antes de la primera llamada.
+- **El FRENO de U-VERPUNTO** (22:13:16; `revision_UVERPUNTO_b_rehecho_2/`, manifiesto `fbc95edc…`, 41 archivos; FRENO `cd86cc83…`),
+  revisado por la mesa por código:
+  - 41 de 41 archivos con su sha256;
+  - los dos bloques, `c08073f1…` (19.209 bytes) y `37ae9130…` (17.737), los de la etapa b, con su manifiesto en `bloques_f6/`.
+  Las decisiones de la autora, tal cual:
+  1. «Las 44 carpetas vacías que la caché de MPSGraph creó en la carpeta temporal del sistema no se borran: están vacías y son del sistema.
+     Se declaran, junto con los tres temporales de los here-documents.»
+  2. «Las fotos del repo de los paquetes a, b y b rehecha de U-VERPUNTO, que listan rutas, sha256 y blobs de las carpetas de adjudicación
+     de S1-ter y S1-quater, no se tocan: no traen contenido. Se declaran, y de ahora en más rige el veto por ruta.»
+  3. «Los índices de fragmentos de la copia, que trajo el rsync desde mcp_vector/indice/ y que se controlaron contra el
+     manifest_respaldo.txt de indices_banco/, quedan como están. Se declara.»
+  Los dos bloques van al repo en un commit chico cuando N7 diga si entra la familia 6.
+- **El FRENO de la etapa a de la candidata** (22:17:58; sesión `764a1896…`; `unav_cand_desc/FRENO_UCAND_DESC_a.md`, `e48447fe…`;
+  paquete `3fd8c935…`, 16 archivos), revisado por la mesa por código:
+  - 16 de 16 archivos con su sha256, y los dos nuevos, iguales a los de su copia;
+  - el código: `despachar_cand` le pasa a `familias_nav.despachar`, tal cual, toda herramienta que no sea `ver_descendientes`, y
+    `NavegadorCand` hereda las seis de HEAD sin redefinirlas. El recorrido termina y no repite nada con claves repetidas o ciclos; la
+    salida no pasa el tope de 8.000 caracteres;
+  - el selftest, 12 de 12 en sus dos corridas, que difieren solo en los segundos. Las 212 comparaciones contra `familias_nav.despachar`
+    dan iguales, con 54 excepciones de los dos lados;
+  - la medida, con niveles 2: 1.111 de 1.355 puntos con hijos entran en una llamada; el peor caso, 16 llamadas.
+  Las decisiones de la autora, tal cual:
+  1. «Las cuatro elecciones que la instancia dejó a revisión quedan como están, salvo que tu revisión encuentre un problema: cada
+     descendiente numerado #k, el pie que termina en "o leelos con ver_punto", todo junto si lo que falta entra, y con hijos malformado
+     cada clave en el nivel de su distancia al punto.» La revisión no encontró ninguno.
+  2. «En el punto 3.7, 54 de las 212 comparaciones dan la misma excepción de los dos lados, porque el doble sin Neo4j no responde esas
+     consultas. Lo cubre tu revisión del código: despachar_cand tiene que pasarle a familias_nav.despachar, sin tocarlas, las seis
+     herramientas de HEAD.» Se las pasa.
+  3. «El git status del paso 0, sin excluir las dos carpetas de adjudicación, se declara como en U-VERPUNTO.»
+  **El 214, PREPARADO:** los dos archivos nuevos en `data/experiment/banco_mcp/mcp_kg/`, para que entren antes del paso 0 de N6. **Su
+  etapa b, PREPARADA:** la prueba sobre los tres TOs del grafo evaluado, para cuando exista el índice por punto nuevo.
+- **El «seguí» de la etapa b de los índices, PREPARADO:** la versión nueva del índice por punto con sus tres controles, la muestra de 200
+  y 200, y las dos pausas de la memoria.
+- **Lo que sigue:**
+  - el 212, este commit y el 214;
+  - el «seguí» de la etapa b de los índices;
+  - la decisión de la autora sobre las dos anclas, y con ella el despacho de la adaptación;
+  - el FRENO del banco y, con el índice por punto nuevo, la etapa b de la candidata;
+  - el despacho de N6, después del 212.
+- Las secciones anteriores no se editan.
