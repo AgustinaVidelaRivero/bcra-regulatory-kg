@@ -555,3 +555,106 @@ topes de USD 35 (V) y USD 55 (T).
     una arista es un caso de la iteración 1 (V097). Lo decidió la autora, tal cual: «La medición de las 400 se informa también sin la
     arista de V097, como sensibilidad, igual que la prueba sin las coincidentes.» El análisis la calcula con la misma medición.
   - El texto firmado no cambia.
+- **27/10/2026 — Enmienda 5: el juez de precisión v3, con casos nuevos sacados de T, el criterio del sujeto del alcance del TO y una
+  validación sobre 100 fichas nuevas.** FIRMADA por la autora; el commit de la firma es el que agrega esta nota. Son decisiones de la
+  autora del 27/10/2026, recibidas a las 09:30:04, 10:24:11, 11:15:38, 14:25:04, 15:04:04 y 15:30:25 (registro de decisiones del
+  15/10/2026, §130, §132, §134, §138, §139 y §142). Rige desde la firma. Se fija antes de cualquier salida de la v3 y antes de que la
+  autora lea ninguna de las 100 nuevas.
+  1. **Por qué.** La v2 no pasó la prueba sobre T (registro, §127): la (ii) y la importancia exacta quedaron fuera. Rige el punto 10 de
+     la enmienda 4, y la precisión de T es 78 de 100 con la lectura de la autora (§128). La autora decidió probar otra versión, la v3,
+     después de ver que la v2 no pasó, y así se declara.
+  2. **Lo que no cambia:** la cifra principal de la precisión de T es el 78 de 100 de la lectura de la autora, el resultado del protocolo
+     firmado (punto 10 de la enmienda 4). Si la v3 pasa, la precisión de las 400 va al lado, como extensión declarada (punto 10); si no
+     pasa, no hay otra versión.
+  3. **Lo que juzga la v3:** solo «correcta». Lo demás, como la v2:
+     - tres pedidos por ficha, y el veredicto modal del §4.4;
+     - clasifica los cinco componentes, y el código computa «correcta» con la misma regla fija;
+     - devuelve los rasgos de importancia, porque sus instrucciones son las de la v2, y el análisis no los usa: la importancia de T queda
+       con la lectura de la autora;
+     - lo que manda a adjudicación lo adjudica la autora.
+  4. **El modelo:** el de la v2, `claude-opus-5-5`, con el esfuerzo `medium`. Cambian solo los casos: su ficha y sus instrucciones son las
+     de la v2. Las instrucciones sin sus ejemplos, las mismas para la v2 y la v3, quedan en el repo con el commit de esta nota:
+     `data/experiment/tripletas_v/juez_v2/instrucciones_juez_tripletas_sin_ejemplos_v2_y_v3.txt`, sha256
+     `f29de17b2dcf4b11eacf615b65e025fc85874c76ff24a29393e2f959c2a01517`, con su nota al lado.
+  5. **El criterio del sujeto del alcance del TO,** decisión de la autora, tal cual: «una aplica_a cuyo sujeto no nombran la unidad ni su
+     contexto heredado, pero que es el sujeto del alcance del TO, es correcta. Es como leí mis 100 de T, y rige igual para mis 100
+     nuevas. La ficha trae el PDF del TO (§3.3 del pre-registro de tripletas), y su alcance sostiene al sujeto. La enmienda 5 lo declara,
+     junto con que el esquema no permite emitir esa relación: la precisión mide si la relación es verdadera según el TO, no si la
+     extracción cumplió su regla de emisión.»
+     - El esquema de la extracción no emite esa relación (sus instrucciones: «Si ni la unidad ni el contexto heredado nombran al sujeto,
+       no emitas la relación»). Se declara: la precisión no mide esa regla.
+     - El juez juzga con la ficha, que no trae el alcance del TO: el caso muestra el razonamiento, y si la v3 lo generaliza lo dice la
+       calibración.
+  6. **Los casos nuevos,** aprobados con esta enmienda. Cada uno sale de un desacuerdo de la v2 con la autora en sus 100. El bloque de
+     casos de la v3 es el de la v2 más estos cinco. Cada caso trae su ficha como la recibe el juez y la clasificación de los cinco
+     componentes: el del desacuerdo, como dice su porqué; los demás, como el modal de la v2 cuando ninguna de sus repeticiones los
+     contradice. Los porqués:
+     - **T020** (`aplica_a`, `cajasc::4.4`, sujeto). La unidad, «De corresponder, deberán observarse los recaudos…», no nombra al
+       sujeto. El TO es «Cajas de crédito cooperativas (Ley 26.173)» (su portada), y su 1.2.1 dice que, «para poder actuar como cajas de
+       crédito cooperativas», las interesadas deben contar con autorización del BCRA «para funcionar con ajuste a las previsiones
+       contenidas en el presente ordenamiento». El sujeto de todo el ordenamiento es la caja de crédito cooperativa: el sujeto, sostenido.
+     - **T030** (`requiere`, `pro::3.2.3.4`, predicado). El 3.2.3 manda que, en la sede del responsable de atención, «deberán encontrarse a
+       disposición del BCRA» los reportes que ese responsable elabora (3.1.1.8). El esquema: `requiere` es «hacer el acto hace nacer el
+       deber». Elaborar los reportes hace nacer el deber de tenerlos a disposición: el predicado, sostenido.
+     - **T064** (`condiciona`, `snp_cheq::3.5.3`, predicado). Las entidades «deberán adoptar los mecanismos… que resulten necesarios para
+       que sus clientes puedan transmitir, ceder, avalar, negociar y/o cobrar las FCEM». El esquema: `condiciona` es «el acto solo puede
+       hacerse si antes se cumplió el deber». Sin esos mecanismos los clientes no pueden operar las FCEM: el predicado, sostenido.
+     - **T052** (`condiciona`, `depinv::3.7.2`, modalidad). «Se admitirá la aplicación de comisiones sobre los saldos inmovilizados,
+       únicamente en la medida que las entidades lo comuniquen previamente a los titulares.» El permiso es de la operación (aplicar
+       comisiones); la comunicación previa es un deber que la condiciona, que es lo que el esquema modela con `condiciona` desde una
+       Obligacion. La modalidad del origen, deber, sostenida.
+     - **T085** (`aplica_a`, `ext::8.5.10`, modalidad). Bajo «La entidad podrá considerar cumplimentado… el seguimiento… cuando cuente con
+       los elementos…» (8.5), el 8.5.10 admite imputar el valor de los bienes siniestrados «en la medida que la entidad interviniente
+       cuente con» la documentación de transporte, entre otras. La facultad es la del 8.5; contar con la documentación es el requisito
+       que la entidad debe cumplir para usarla, que el esquema tipifica como Obligacion. La modalidad del origen, deber, sostenida.
+     - **Lo que un caso no arregla, declarado como límite de la v3:** T007 y T095, en las que el texto nombra al sujeto con una expresión
+       genérica y la ficha no trae el rol del alcance del TO.
+     - **Lo que no entra como caso:** T099 (`regula`), porque `requiere` también le cabe: no es un caso limpio. Queda como desacuerdo de
+       etiqueta, declarado.
+  7. **La calibración,** con las 100 de la autora:
+     - en cada iteración, la v3 juzga solo las de sus 100 que no son casos de su prompt (95 con estos cinco);
+     - como máximo 3 iteraciones, con la regla de freno del punto 4 de la enmienda 4. Como la v3 no juzga la importancia, se frena por el
+       acuerdo de «correcta» solo;
+     - cada caso nuevo de una iteración siguiente sale de un desacuerdo, con su porqué tomado del texto del TO y nunca de la marca de la
+       autora, y la autora lo aprueba antes de esa iteración paga;
+     - las cifras de las iteraciones son internas de la calibración: no se informan como precisión ni como acuerdo del juez.
+  8. **La congelación,** antes de la validación y con su commit: el sha256 del prompt de la v3 y de su bloque de casos, el registro de las
+     iteraciones y el código del análisis con su selftest.
+  9. **La validación,** una sola vez:
+     - sobre las 100 fichas nuevas, sorteadas por código de las 300 restantes, sin la de la arista de V097 (T287), con la estratificación
+       de 3.2 para n = 100 y la regla (a) para los estratos cortos, decidida por la autora antes del sorteo: «la opción (a), con n = 100 y
+       la semilla que propusiste, B4-TRIPLETAS-T:v3_validacion:2026-10-27, con :empate y :orden»;
+     - el acta del sorteo: `acta_sorteo_T_v3.json`, `f5ce6589315a167f7e532e9709ec49e2ed89f6c8089ce6627b37e5ef51ed6ac3`, sellada el
+       27/10/2026 a las 10:29:41 con el script `sortear_100_T_v3_mesa.py` (`ee0f3ce9…`). Asignación: `aplica_a` 53, `condicion_de` 22,
+       `regula` 6, `limita` 5, `requiere` 3, `condiciona` 3, `ejecuta` 3, `prohibe` 2, `exceptua_obligacion` 2 y `exceptua` 1;
+     - la autora las lee a ciegas, como sus 100, y la lista y su hoja se sellan antes de que la v3 vea ninguna;
+     - se aplican tal cual las tres condiciones de «correcta» del §4.6, con el borde de (ii) redondeado a 10 decimales, como en el punto
+       8 de la enmienda 4. La (ii) ponderada usa la importancia de la autora.
+  10. **Si pasa,** la v3 mide la precisión de las 400, con los dos estimadores del 3.6 y el intervalo de la enmienda 3, que va al lado
+      del 78 de 100 como extensión declarada:
+      - en las 100 de la autora, que fueron la calibración de la v3, cuenta la lectura de la autora en todas, porque la v3 se ajustó sobre
+        ellas;
+      - en las 100 de la validación cuenta el veredicto de la v3, como el de la v2 en el punto 9 de la enmienda 4;
+      - las 200 que faltan las juzga la v3 congelada;
+      - al lado, la precisión con la lectura de la autora en las 200 que leyó, y la de las 400 sin la arista de V097;
+      - lo que la v3 manda a adjudicación lo adjudica la autora.
+  11. **Si no pasa,** queda el 78 de 100 (punto 2), con la prueba de la v3 declarada con sus cifras, y al lado la precisión con la lectura
+      de la autora en las 200 que leyó.
+  12. **Cuándo,** tal cual: «Ningún paso pago de la v3 corre antes de mi firma ni al lado de B6.3» (09:30:04), y «Ningún paso pago de
+      la v3 corre antes de que termine B6.3» (14:25:04).
+  13. **La corrida cortada:** en cada paso pago de la v3 rige la regla de la prueba de la v2 (nota al pie del 26/10/2026). Una falla de
+      infraestructura se re-corre hasta dos veces, cada vez desde cero, y el gasto de todas las corridas cuenta para el mismo tope. Si
+      una repetición corta por el tope o por el freno, no se re-corre nada y ese paso no se completa.
+  14. **Los topes,** con freno por proyección en el script, con el costo por ficha del punto 11 de la enmienda 4: el humo, USD 2 (freno
+      1,70); cada iteración, USD 42 (freno 35,70); la validación, USD 42 (freno 35,70); las 200 que faltan de las 400, USD 83,33 (freno
+      70,83).
+  15. **Desvíos declarados** (van a la lista del §11):
+      - del punto 10 de la enmienda 4, que dice «No hay otra versión del juez en esta tanda.»: la v3 es otra versión;
+      - del punto 12 de la enmienda 4, que dice «así que T no se itera», y de la nota al pie del laudo D-f del 23/10/2026, que dice «y T no
+        se itera»: la v3 se calibra con las 100 de la autora en T;
+      - del §4.1: el modelo, como en la enmienda 4;
+      - del §4.3 y del §4.7: una tercera recalibración, con las 100 de la autora en T, que fueron la prueba de la v2;
+      - del §7: la validación con 100 fichas nuevas de las 300;
+      - el criterio del sujeto del alcance del TO (punto 5), que juzga la verdad de la relación según el TO y no la regla de emisión;
+      - el límite de la 1b (punto 6).
+  - El texto firmado no cambia.
