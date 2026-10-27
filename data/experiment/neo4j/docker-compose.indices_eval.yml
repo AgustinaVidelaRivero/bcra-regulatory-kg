@@ -1,0 +1,20 @@
+# docker-compose.indices_eval.yml — Override de U-INDICES-EVAL sobre docker-compose.yml (en la copia del repo): un Neo4j
+# propio para cargar el grafo evaluado de B6.3 y calcular sus hubs (etapa b), sin tocar el contenedor del repo
+# (neo4j-bcra-kg-compose, 7474/7687) ni el del banco en paralelo (neo4j-bcra-kg-banco-paralelo, 37474/37687). Proyecto
+# neo4j_indices_eval; puertos 47474 y 47687 en localhost; volumen en la copia. La imagen, la memoria, el healthcheck y la
+# autenticación son los del archivo base. Patrón: docker-compose.banco_paralelo.yml.
+#
+# Uso (desde este directorio):
+#   docker compose -p neo4j_indices_eval -f docker-compose.yml -f docker-compose.indices_eval.yml up -d --wait
+#   docker compose -p neo4j_indices_eval -f docker-compose.yml -f docker-compose.indices_eval.yml down
+# El cargador y el servidor lo alcanzan con NEO4J_URI=bolt://127.0.0.1:47687, exportado en la terminal que los lanza.
+services:
+  neo4j:
+    container_name: neo4j-bcra-kg-indices-eval
+    ports: !override
+      - "127.0.0.1:47474:7474"
+      - "127.0.0.1:47687:7687"
+    volumes: !override
+      - ./volumen_indices_eval/data:/data
+      - ./volumen_indices_eval/logs:/logs
+    restart: "no"

@@ -356,6 +356,25 @@ GRAFOS = {
         "vista_runtime": "comun_ev2.cargar_runtime('acumulado_tandas0y1_r2b_sincola') tras importar banco_mcp/mcp_kg/registro_vista_acumulado (registro en memoria, patrón comun_tanda0); grafo de N6 de U-NAV-DISENO (decisión 5): acumulado de las tandas 0 y 1 sin la cola humana; r2b no se evalúa con EV2",
         "indice_fulltext": "nodos_fulltext_kg_acumulado_tandas0y1_r2b_sincola",
     },
+    # El grafo evaluado de B6.3 (pre-registro firmado en adf20f3b, H-1): el acumulado de las tandas 0, 1 y final sin la
+    # cola humana, con la re-aplicación única (U-REAPL, paso 5; reaplicacion_unica/acumulado/ens_128_r2b_sincola). Su
+    # kg.json no está en el repo: se restaura del kg.json.gz, sellado en fde70c67 (sello_grafo_evaluado.json y
+    # kg.json.gz.sello.json, que fijan el sha256 del kg.json). Su vista runtime la registra en memoria
+    # data/experiment/banco_mcp/mcp_kg/registro_vista_evaluado.py (patrón de registro_vista_acumulado.py).
+    "KG_Acumulado_Tandas0y1yFinal_r2b_sincola": {
+        "nombre_canonico": "KG-Acumulado-Tandas0y1yFinal-r2b-sincola",
+        "label": "KG_Acumulado_Tandas0y1yFinal_r2b_sincola",
+        "path": EXPERIMENT_DIR / "reaplicacion_unica" / "acumulado" / "ens_128_r2b_sincola" / "r2" / "kg.json",
+        "sha256": "576c97256185a0d5741cb2c35a2a85e91412f3e1119ad7a85d960b7d60c35ad3",
+        "commit_sellado": "fde70c67",
+        "n_nodos": 37168,
+        "n_aristas": 128552,
+        "ev2_key": "acumulado_tandas0y1yfinal_r2b_sincola",
+        "requiere_registro_dir": EXPERIMENT_DIR / "banco_mcp" / "mcp_kg",
+        "requiere_registro_modulo": "registro_vista_evaluado",
+        "vista_runtime": "comun_ev2.cargar_runtime('acumulado_tandas0y1yfinal_r2b_sincola') tras importar banco_mcp/mcp_kg/registro_vista_evaluado (registro en memoria, patrón comun_tanda0); el grafo evaluado de B6.3 (H-1): acumulado de las tandas 0, 1 y final sin la cola humana, con la re-aplicación única; r2b no se evalúa con EV2",
+        "indice_fulltext": "nodos_fulltext_kg_acumulado_tandas0y1yfinal_r2b_sincola",
+    },
 }
 CLAVES = list(GRAFOS.keys())
 GRAFO_DEFAULT = "KG_Refinado"   # el grafo vigente (docs/tablero.md); compatibilidad con c26cb9b
