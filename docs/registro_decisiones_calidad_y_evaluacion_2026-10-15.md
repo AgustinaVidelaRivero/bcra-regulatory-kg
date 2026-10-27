@@ -5910,3 +5910,95 @@ ruta de la mesa, §290), y las dos decisiones de las 08:38:40 que van con el com
 - **Este commit** lleva el instrumento, `scripts/ucita2_indicadores_banco.py` (`3a58e5be…`), el de la vuelta b, para que entre en HEAD
   antes del paso 0 de N6, y esta sección.
 - Las secciones anteriores no se editan.
+
+## 132. El martes, a las 10:24: el Neo4j de B6.3, el sorteo de las 100 nuevas de T y la cobertura de T (27/10/2026)
+
+Decisiones y hechos de la autora del 27/10/2026, recibidos a las 10:24:11 (hoja de ruta de la mesa, §291), sobre la §290 de la mesa.
+
+- **Los commits:** la autora corrió el 218 (`6b3dd5abe80673a6e39e257cfbe8f2c443d45674`), el instalador, el 219
+  (`2432938d328d83f324145f874d09c357bb0c3184`) y el 220 (`3dcbf051b137a11687a2edb0d1de71ee61f5b8ab`), sobre `dbf2eef4`, con su push.
+  HEAD y origin/main, en `3dcbf051`. Por código, 7 de 7: cada commit trae, byte a byte, lo que preparó la mesa (15, 1 y 2 archivos), con
+  su numstat y su mensaje; los tres índices del grafo evaluado están en sus carpetas ignoradas con los archivos de su respaldo (7, 3 y
+  3); y el `kg.json` del grafo evaluado está restaurado con su sha256 (`576c9725…`), sin rastrear.
+- **El Neo4j del repo:** la autora paró `neo4j-bcra-kg-compose`. A las 10:36:34, nada escuchaba en 7474 ni en 7687 (`lsof`, solo esos
+  dos puertos).
+- **Los despachos:** la autora pegó la etapa b de la candidata y N6 a.
+- **Las decisiones de la autora, tal cual:**
+  1. «B6.3 usa el Neo4j propio de los índices (proyecto neo4j_indices_eval, puertos 47474 y 47687), que ya tiene el grafo evaluado
+     cargado y verificado: huella de contenido 2645da6d01795d520f3c4ab5e237050c530238061f849cd7d1e0170be9223463 y paridad 147 de 147. Su
+     volumen, en fuera_del_repo/indices_eval/copia_b/, no se toca hasta después de la corrida ilustrativa. La etapa b del runner fija
+     cómo se levanta, que el servidor del grafo apunte a 47687 y que el testigo controle esa huella antes de lanzar.»
+  2. «T, los estratos cortos: la opción (a), con n = 100 y la semilla que propusiste, B4-TRIPLETAS-T:v3_validacion:2026-10-27, con
+     :empate y :orden.»
+  3. «La cobertura de T: la opción (a), la mínima que cumple D-9. Escribí para que firme, antes del sorteo, la población, la semilla y
+     cómo leo la presencia. La extracción va en un hueco sin otro paso pago, después de N6 y antes de B6.3, y mi presencia de las 30, el
+     miércoles antes de las 18:00.»
+  4. «El calendario: el mejor caso del v22. Mi ventana de hoy va hasta las 24, la candidata va a la vez que N6 a, y mi lectura de las 100
+     nuevas de T va después del análisis de B6.3 y antes de la prueba de la v3.»
+- **El sorteo de las 100 nuevas de T,** hecho por la mesa a USD 0 con la decisión 2:
+  - el script (`sortear_100_T_v3_mesa.py`, `ee0f3ce9…`), sellado a las 10:29:29, antes de correr sobre los datos, con su prueba sobre
+    datos sintéticos (8 de 8);
+  - el marco: las 300 del resto del acta de T, sin la de la arista de V097 (T287), 299. La asignación (a): `aplica_a` 53,
+    `condicion_de` 22, `regula` 6, `limita` 5, `requiere` 3, `condiciona` 3, `ejecuta` 3, `prohibe` 2, `exceptua_obligacion` 2 y
+    `exceptua` 1, que suman 100 y son las de la propuesta de la mesa;
+  - el acta (`acta_sorteo_T_v3.json`, `f5ce6589315a167f7e532e9709ec49e2ed89f6c8089ce6627b37e5ef51ed6ac3`), sellada a las 10:29:41;
+  - la carpeta de la lectura, `fuera_del_repo/tripletas_t_v3/` (manifiesto `0515ccff…`, 34 archivos): las fichas en diez lotes de 10,
+    iguales a las de `fichas_T.jsonl` salvo su lote y su posición; las diez hojas vacías, con las columnas de las de la autora y su
+    respaldo; y su sellador, `sellar_hoja_v3.py` (`df82a318…`), el de U-TRIP-T con los mismos controles, adaptado al acta nueva, que
+    la mesa probó sobre copias llenadas por código.
+  - La lista y las hojas quedan selladas antes de que la v3 vea ninguna. La autora las lee después del análisis de B6.3 (decisión 4).
+- **Lo PREPARADO por la mesa:**
+  - el documento de la cobertura de T, para firmar con el 221 (`docs/cobertura_T_control_de_30_D9.md`): la población, la semilla
+    `B4-TRIPLETAS-T:cobertura:2026-10-27`, la extracción, el subgrafo con P1, cómo lee la autora la presencia y lo que se informa;
+  - su despacho, para una sesión nueva, después de la firma;
+  - el «seguí» de la etapa b1 del runner, v2, con la decisión 1 como código, sin levantar ningún Neo4j durante N6;
+  - este commit.
+- **Lo que sigue:** los FRENO de la candidata b y de N6 a; el diagnóstico de los desacuerdos de la v2 en las 100 de T; y la propuesta de
+  la atribución con las herramientas de navegación.
+- Las secciones anteriores no se editan.
+
+## 133. El martes, a las 10:49: la candidata probada sobre el grafo evaluado y la población de la cobertura de T (27/10/2026)
+
+Decisiones y hechos de la autora del 27/10/2026, recibidos a las 10:49:03 (hoja de ruta de la mesa, §292), sobre la §291 de la mesa.
+
+- **El FRENO de la etapa b de la candidata `ver_descendientes`** (sesión `764a1896…`; `fuera_del_repo/unav_cand_desc/FRENO_UCAND_DESC_b.md`,
+  `31bc1b1c…`; paquete `7b26e5bf…`, 18 archivos), revisado por la mesa por código, 8 de 8:
+  - el paquete, 18 de 18; las dos corridas de la prueba, con sus salidas y sus resúmenes iguales byte a byte;
+  - en la copia de la sesión, los módulos de la candidata y del índice son los de HEAD;
+  - la mesa corrió una tercera vez la prueba del paquete en esa copia: rc 0, el mismo resumen salvo los segundos, y ningún archivo de la
+    copia quedó más nuevo que la marca de antes de correrla;
+  - las cuentas de P1 cierran (53.474 descendientes enteros y 171 cortados suman 53.645, la suma de las distancias), y los 4 hijos
+    cortados y las 11 claves unidas son los de la etapa b de los índices.
+  Con eso, la candidata queda probada sobre el grafo evaluado, como pide N4 (§9), antes de las decisiones de la autora del FRENO de N6 a.
+- **La decisión de la autora sobre el §5bis, punto 1, de ese FRENO,** tal cual: «decidí que no hace falta el control de las 28
+  apariciones contra la E0 del grafo evaluado: ya lo dio el selftest de la etapa b de los índices (C3: 11 claves, 28 apariciones y 4 hijos
+  cortados), y vos lo volviste a sacar en la §290 con el --verificar del índice respaldado. Se declara así.»
+- **La población de la cobertura de T,** la decisión de la autora, tal cual: «la población usa los mismos documentos que el §3.1 del
+  pre-registro de B6.3, los 77 elegibles, sin los 14 TOs de N3 ni los contaminados. La cobertura mide la extracción del grafo, y en un
+  documento que recibió una corrección hecha para él sale mejor por construcción. Así la tesis tiene un solo conjunto de test. Es más
+  estricto que la letra del §7 de tripletas, lo decido antes del sorteo y se declara en el documento.»
+  - **Los 77, por código** (`decisiones_292_mesa/cobertura_T/`): el conjunto de los documentos del sorteo de documentos de B6.3, sellado
+    el 23/10/2026 (`sorteo_B63.json`, `4e751e23…`, §102), sin su orden ni sus olas: 26, 35 y 16 por clase. Son los 78 de
+    `elegibles_O2.json` (el archivo de elegibles que nombra el sorteo, con su sha256 en HEAD) sin `rdbcra`, con 0 contaminados. Ninguno
+    es de los cinco de desarrollo ni de los 15 de `documentos_excluidos_evaluacion_final.json`.
+  - La lista va en `data/experiment/esq/cobertura_T_tos_poblacion_2026-10-27.json`, en el commit de la firma, y el §2 del documento la
+    nombra. El documento declara la decisión en su §1.
+- **El 221 y el 222, rearmados:** el 221 trae el documento con el §2 nuevo y la lista de los 77; el 222, las §132 y §133. Los de la §291
+  llevan el prefijo `NO_CORRER_REEMPLAZADO__` en el paquete de la mesa, sin haberse corrido.
+- **Lo que sigue,** tal cual: «Mientras corre N6 a, seguí con el diagnóstico de los desacuerdos de la v2 y la propuesta de la atribución.
+  Si llega el FRENO de N6 a, va primero.»
+- **El agregado de las 10:58:01,** para el capítulo 5, «sin apuro, después de lo que lleva a B6.3»:
+  1. las instrucciones de P2 para el apéndice E (el despacho de la ola 1 y sus «seguí»), controladas por código para que no traigan
+     ninguna pregunta, criterio ni motivo de rechazo de B6.3, y extraídas recortadas con su sha256. PENDIENTE de la mesa;
+  2. la decisión de la autora sobre los tercios de la relevancia, tomada antes de cualquier resultado, tal cual: «baja son las notas 1 y
+     2 de P3, media la 3 y alta la 4 y la 5. El análisis informa cuántas preguntas cae en cada una.»
+- **El diagnóstico de los desacuerdos de la v2 en las 100 de T,** hecho por la mesa a USD 0 (`decisiones_292_mesa/diagnostico_v2/`):
+  de los 14 desacuerdos, 8 son del sujeto de `aplica_a` que sale del alcance del TO (6 de etiqueta, por la regla del esquema que no
+  emite una relación sin el sujeto en el texto, y 2 de evidencia, porque la ficha no trae el rol de alcance); 3 son del predicado y 3 de
+  la modalidad, de etiqueta. Antes de los casos de la v3, la autora decide si una `aplica_a` con el sujeto del alcance del TO es
+  correcta.
+- **Un incidente de la mesa:** buscando el código del juez v2, un `git grep` sobre HEAD con una lista de archivos vacía recorrió todo lo
+  rastreado del repo, incluidas las carpetas de adjudicación de S1-ter y S1-quater, `b63/` y los conjuntos de evaluación. Mostró 20
+  líneas, ninguna de esas carpetas: 13 de `data/experiment/escalado_prep/`, 4 avisos de cachés binarias de `comp_e1/` sin contenido y 3
+  de código. La causa: no controlé que la lista no estuviera vacía.
+- Las secciones anteriores no se editan.
