@@ -5646,3 +5646,41 @@ Decisiones y hechos de la autora del 26/10/2026, recibidos a las 21:58:48, con a
   - el FRENO del banco y, con el índice por punto nuevo, la etapa b de la candidata;
   - el despacho de N6, después del 212.
 - Las secciones anteriores no se editan.
+
+## 128. El lunes, a las 22:34: N4 firmado, la exactitud de cita, T cerrada y las instrucciones del juez de tripletas (26/10/2026)
+
+Decisiones y hechos de la autora del 26/10/2026, recibidos a las 22:34:47 (hoja de ruta de la mesa, §287), sobre la §286 de la mesa.
+
+- **Los commits:** la autora corrió el 212 (`f69e95ea9753d0e40e0ec39383df0662194c67dc`), el 213
+  (`f22b5ca8abd139cea23edfea94ddbdb29c6baa05`) y el 214 (`43b4df8fee060e6366c5248f066a2505a54b1114`), cada uno con su push. HEAD y
+  origin/main, en `43b4df8f`. Cada uno trae, byte a byte, lo que preparó la mesa, con su mensaje.
+- **N4, firmado:** con el 212 la autora firma el protocolo de N4 como lo selló la mesa (`docs/protocolo_N4_UNAV_medicion_N6.md`), con el
+  cambio respecto del borrador, tal cual: «La lista de la familia 5 se calcula y se sella en el paso 0 de N6, antes de la primera llamada,
+  con la regla que queda fija en este sello.»
+- **La etapa b de los índices:** la autora pegó su «seguí» en la sesión `797b1659`.
+- **Las decisiones de la autora, tal cual:**
+  1. **La exactitud de cita:** «Opción (c): como principal, alguna cita va a alguna de las anclas; como columna informativa, cada ancla
+     tiene su cita, sin entrar en ninguna comparación.» Su unidad va a USD 0, sobre una copia, sin el denso ni Docker, al lado de la etapa
+     b de los índices, y su commit, antes del paso 0 de N6.
+  2. **La prueba de T:** «Rige el punto 10 de la enmienda 4: la precisión de T se informa con mis 100, 78 de 100 con su intervalo, la
+     prueba que no pasó se declara con sus cifras y las 300 no corren.» Las cifras, en la §127.
+  3. **Las instrucciones del juez de tripletas,** para el apéndice del capítulo 5: «Ahora que T cerró, extraé por código las
+     instrucciones del juez de tripletas v2, sin ninguno de sus ejemplos, con el sha256 del prompt congelado.»
+- **El despacho de U-CITA-BANCO, PREPARADO:** el script nuevo `scripts/ucita2_indicadores_banco.py`. Importa el instrumento de HEAD y el
+  harness congelado, cambia solo la entrada (la cita partida en documento y punto, lo visto leído del log R1 de cada sesión y las anclas
+  por parámetro) y aplica la regla (c). Su selftest controla que, con un ancla y en el formato del harness, dé lo mismo que el de HEAD.
+  No abre preguntas, criterios ni respuestas. Su commit lo arma la mesa con su FRENO.
+- **Las instrucciones del juez de tripletas v2,** extraídas por la mesa, por código:
+  - el prompt de la iteración 1, armado con `prompt_juez_v2.armar` sin cambiarlo, da el sha256 congelado,
+    `cf40964da9718181595a85b18485af02fb74c0dd255df9e9de28404acc82dfa5`, el del corredor y el del archivo `NO_ABRIR_` (este, solo por
+    su sha256);
+  - las instrucciones son el bloque fijo del sistema (28.056 caracteres) y el formato de salida (1.167). Sin los casos resueltos (157.068
+    caracteres, los del v1.1 y los 9 nuevos);
+  - ninguna ventana de 40 ni de 80 caracteres del bloque de ejemplos queda en lo escrito, fuera de las que ya son de las instrucciones.
+  - El archivo va en el paquete de la mesa, para la mesa de escritura (`decisiones_287_mesa/juez_v2/`).
+- **Lo que sigue:**
+  - este commit;
+  - el despacho de U-CITA-BANCO;
+  - los FRENO de la etapa b de los índices y del banco;
+  - con ellos, la etapa b de la candidata, el commit de la adaptación y el despacho de N6.
+- Las secciones anteriores no se editan.
