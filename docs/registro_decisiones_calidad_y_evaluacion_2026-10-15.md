@@ -5815,3 +5815,98 @@ Decisiones y hechos de la autora del 27/10/2026, recibidos a las 09:30:04 (hoja 
   kg.json del grafo evaluado, probado en un clon, y este commit; el «seguí» de la etapa b de la candidata, con sus dos sha256; el
   despacho de N6, con el servidor nuevo; el «seguí» de la primera parte de la etapa b del runner; y el calendario v22.
 - Las secciones anteriores no se editan.
+
+## 131. El martes, de 09:43 a 09:57: la exactitud de cita del banco aprobada, el Neo4j y la figura, y los agregados (27/10/2026)
+
+Decisiones y hechos de la autora del 27/10/2026, en cuatro agregados recibidos a las 09:43:37, 09:52:08, 09:53:15 y 09:57:47 (hoja de
+ruta de la mesa, §290), y las dos decisiones de las 08:38:40 que van con el commit del instrumento.
+
+- **U-CITA-BANCO, la vuelta a** (sesión `ae7baef4…`; `fuera_del_repo/ucita_banco/FRENO_UCITA_BANCO_a.md`, `526102b4…`; paquete
+  `606703ce…`, 16 archivos), revisada por la mesa por código (§289). Las decisiones de la autora de las 08:38:40, tal cual:
+  1. «Acepto las interpretaciones a, b, c, d, f, g, h e i de su §3, y se declaran en el registro de decisiones junto con la DV-01. La d no
+     saca nada de lo prometido, porque la §9 del pre-registro de B6.3 (punto 4) nombra solo la cita existente, la fundada y la del punto
+     de referencia.»
+  3. «El error 3 del §8 (los dos `grep -r` que recorrieron `b63/`, `a2_2/adjudicacion/` y los conjuntos de evaluación) se declara en el
+     registro como incidente. Para la declaración, la sesión pega los dos comandos literales y cuántas líneas mostró cada uno.»
+  - **Las interpretaciones aceptadas** (su §3): (a) el indicador 1 sobre toda cita, como en HEAD; (b) dos claves por cita y por par
+    visto, el punto normalizado y la ubicación tal cual; (c) el punto del ancla se normaliza con la regla de la cita; (d) sin la lectura
+    byte a byte del indicador 1 ni la columna del ancestro del ancla; (f) un documento que no va a ningún TO es no parseable; (g) la
+    sesión va a su pregunta por su id, y una sesión sin anclas aborta; (h) las rutas fuera del repo salen como `~/…` y la salida no tiene
+    lugar por defecto en el repo; (i) el control 5, sobre la E0 del grafo de A2.2. La (e) la cambió la decisión 2 de las 08:38:40 (§289).
+  - **La DV-01,** declarada: por la (b), una cita «Punto 1» con la vista «Sección 1» del mismo TO da «sí» en el indicador 1, y en HEAD
+    da «no», porque las dos normalizan al punto 1, que la E0 numera igual para la sección.
+  - **El incidente de la vuelta a** (el FRENO de la vuelta b, §6, con los dos comandos literales en su paquete):
+    - el primer `grep -r` leyó los `*.md` de `docs/`, de `banco_mcp/a2_2/` (con `a2_2/adjudicacion/`) y de `banco_mcp/mcp_kg/`, y
+      mostró 1 línea, de `docs/registro_decisiones_calidad_y_evaluacion_2026-10-15.md:1962`;
+    - el segundo leyó los `*.md` de `docs/`, de `reports/` y de todo `data/experiment/` (con `b63/`, `a2_2/adjudicacion/` y los
+      conjuntos de evaluación), y mostró 3 líneas: dos nombres de archivo, uno de ellos en `posthoc_run/`, y una línea sin ruta, que
+      por cómo está armado su patrón es un comando `grep` y no un tramo de una pregunta.
+- **U-CITA-BANCO, la vuelta b** (la misma sesión; `FRENO_UCITA_BANCO_b.md`, `aad34159…`; paquete `4cc3b8ba…`, 20 archivos), revisada
+  por la mesa por código, 10 de 10:
+  - el paquete, 20 de 20; el script del paquete, el de la copia (`3a58e5be…`), y el diff del paquete lleva el de la vuelta a
+    (`be07e483…`) al de la b, byte a byte;
+  - el selftest: 138 chequeos y 0 fallas, con las dos corridas iguales (`fb4e5a68…`). La mesa lo corrió una tercera vez, en la copia de
+    la sesión, y dio lo mismo byte a byte, sin escribir ningún archivo en ella;
+  - un caso de cabecera por cada una de las siete herramientas que repiten la entrada, y las 211 secciones de la E0 del grafo evaluado
+    que no son solo cifras, que ahora normalizan, 211 de 211;
+  - la foto del repo de la sesión cambió solo por el commit de la figura del capítulo 5 (`dbf2eef4`).
+  Las decisiones de la autora, tal cual (09:57:47):
+  1. «Apruebo la vuelta b. Las interpretaciones e1 a e7 de su §3 quedan como están y se declaran en el registro. La e2 (un punto sin texto
+     propio pero con nodos no cuenta; 10 de 6.234 en el índice de N5) y la e4 (una fila de «(punto fuera del grafo)» cuenta) son bordes
+     que no justifican otra vuelta.»
+  2. «Va al registro como incidente todo el §6 de su FRENO: la corrección del §8.3 de la vuelta a, que se había escrito de memoria; las
+     dos búsquedas que no declaró (líneas 309 y 125 de su sesión); y las fotos que recorrieron b63/ y los conjuntos de evaluación sin
+     mostrar contenido. La línea sin ruta del comando 2 es, por cómo está armado su patrón, un comando grep y no un tramo de una
+     pregunta. También el punto 3 de su §10: el nombre de un NO_ABRIR_ que listó git ls-tree, sin abrirlo.»
+  3. «Armá el commit del script con su prueba en seco, para correr antes del paso 0 de N6, junto con las decisiones 1 y 3 de las 08:38:40
+     y la DV-01, como dijiste.»
+  - **Las interpretaciones e1 a e7, declaradas** (su §3): (e1) la cabecera es la primera línea entera de la salida; (e2) el texto del
+    punto pedido de `ver_punto` es su texto propio; (e3) la línea del nodo en `tipos_de_relacion` cuenta; (e4) en `ver_remisiones`, una
+    fila de «(punto fuera del grafo)» cuenta; (e5) en el lector de fragmentos, una unidad que no es sección de su TO queda tal cual, y en
+    el de las vistas se descarta; (e6) el ancla es «S» seguida del número; (e7) la clave del descendiente y la del punto pedido salen
+    del formato y se normalizan al comparar.
+  - **El incidente de la vuelta b, declarado** (su §6 y su §10, punto 3):
+    - el §8.3 del FRENO de la vuelta a decía mal lo que habían mostrado los dos `grep -r`: se escribió de memoria, sin releer las
+      salidas. Lo corrige el §6 de la vuelta b;
+    - dos búsquedas de la vuelta a sin declarar: la de la línea 309 de su sesión, un `grep -rn` sobre todo `data/experiment` que abrió
+      solo los archivos de nombre `comun_ev2.py` y mostró 13 líneas de código; y la de la línea 125, un `find` que listó 19 nombres de
+      carpeta de `banco_mcp/a2_2/`, 5 con «adjudicacion» en la ruta;
+    - las fotos y los controles de la vuelta a recorrieron toda la copia o todo el repo sin podar `b63/` ni los conjuntos de
+      evaluación: calcularon sha256 y dejaron rutas en sus listados, sin mostrar contenido. La foto de la vuelta b los poda;
+    - en el paso 0 de la vuelta b, `git ls-tree` listó el nombre de un archivo `NO_ABRIR_*` de `tanda_final/t3/`, que no se abrió.
+- **El agregado de las 09:43:37:** la autora pide ver si la etapa b del runner se parte en dos: la primera, sin N7 ni nada pago (las
+  formas reales del error a USD 0, la ventana corrida y el sha256 del `pip freeze` para la entrada sellada), en la sesión `94968c98…`
+  apenas se lance N6; el testigo, después de N7; solo si no choca con las guardas de N6 ni con su memoria. Lo que dio la mesa, por
+  código en HEAD:
+  - la guarda del lanzador del lote mira otro paso pago antes de cada tanda (`agentes/lanzar_lote_paralelo.py:428-439`), con el patrón
+    de `paralelo/guardas_lote_r5.py`, que trae `correr_b63\.py`;
+  - la corrida en seco del runner lanza `correr_b63.py` y `agentes/lanzar_lote_paralelo.py` como subprocesos
+    (`b63/corrida_en_seco_b63.py:328` y `:361`). Si coincide con el comienzo de una tanda de N6, N6 frena;
+  - las formas del error (§127: una clave inválida, un puerto local cerrado y un servidor local que contesta 429, 500 y 529), la
+    ventana corrida, su selftest y el `pip freeze` no lanzan ningún script del patrón, y no usan el denso ni Neo4j.
+  - La mesa la parte así: la primera parte corre durante N6 sin su corrida en seco, que va cuando N6 termina y antes del testigo;
+    el testigo, después de N7.
+- **El agregado de las 09:52:08,** tal cual en lo que decide:
+  - **HEAD:** «HEAD está en dbf2eef4, mi commit de la figura del capítulo 5 (tres archivos en docs/tesis/figuras/), sobre el 217.»
+    Por git log: `dbf2eef44510153a76181d010ebeb8c6a6b92aea`, a las 09:39:50, con 3 archivos agregados en `docs/tesis/figuras/`.
+  - **La atribución (c) de B6.3,** un hueco que la autora controló en HEAD y la mesa también: `banco_mcp/adaptador/adaptador_banco.py:149`
+    rechaza toda herramienta del servidor del grafo que no esté en `TOOLS_VALIDAS` (`banco_mcp/gate/code/adaptador_cc.py:62`:
+    `buscar_nodos`, `ver_nodo` y `ver_vecinos`). Con las herramientas de navegación, la traza del grafo queda no atribuible. La autora
+    pide: (a) que la etapa b del runner confirme que cada sesión de B6.3 guarda el stream de la sesión y el log R1 del servidor; (b) una
+    propuesta para adaptar la atribución a las herramientas de navegación, como U-CITA-BANCO y con sus lectores, a USD 0, para correr
+    después de lanzar B6.3 y commitear antes de ver un resultado, con la regla que ella decida. Si no llega a tiempo, se declara.
+  - **La cobertura de T,** otro hueco: con D-9 sale de la presencia que lee la autora en el control de 30, y ni el §7 del pre-registro de
+    tripletas ni el §10.1 del de B6.3 fijan de dónde salen las 30, con qué semilla ni cómo se leen, ni la semilla de los 600
+    fragmentos. No corrió nada de la vía de cobertura de T. La autora pide dos opciones para decidir hoy: (a) la mínima que cumpla D-9;
+    (b) declararla fuera de esta evaluación, al capítulo 6, como la etapa T de los umbrales (D-7).
+  - **La corrida ilustrativa,** tal cual: «Decidí que en la corrida ilustrativa la tripleta del 5.1.1.1 la juzgue la v2 congelada del
+    juez de tripletas, que es la que está sellada al lanzar B6.3, y que se declare así. La corrida no entra en ninguna cifra.»
+  - Tal cual: «Nada de esto pasa antes que N6.»
+- **El agregado de las 09:53:15,** tal cual: «Para el registro: P1, P2 y P3 corrieron con claude-opus-5-5. Lo vi en sus sesiones de
+  Claude Code (carpetas b63_etapa1, b63_p2 y b63_p3): 172, 1.562 y 383 mensajes del modelo, todos de ese modelo. El repo hoy los llama
+  solo «instancia ciega».» La mesa lo controló por código, leyendo de cada línea de sus transcripciones solo el nombre del modelo: una
+  sesión por carpeta, sin subagentes; el campo del modelo aparece 172, 1.562 y 383 veces, siempre `claude-opus-5-5`, que son las cifras
+  de la autora; son 172, 1.092 y 293 líneas del modelo, y 81, 462 y 89 mensajes distintos por su id. Ningún otro modelo.
+- **Este commit** lleva el instrumento, `scripts/ucita2_indicadores_banco.py` (`3a58e5be…`), el de la vuelta b, para que entre en HEAD
+  antes del paso 0 de N6, y esta sección.
+- Las secciones anteriores no se editan.
