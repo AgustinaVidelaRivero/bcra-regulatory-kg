@@ -1,0 +1,233 @@
+{
+ "unidad": "U-BANCO-R5-a — selftest del lanzador del lote r5 (USD 0, sin procesos)",
+ "modulos": {
+  "lanzar_lote_paralelo_r5": {
+   "ruta": "data/experiment/banco_mcp/agentes/lanzar_lote_paralelo_r5.py",
+   "sha256": "73b21753e826b91fb878b8ebc6f5fd34262e27be6a974fdb17051e825934e2e2"
+  },
+  "lanzar_lote_paralelo": {
+   "ruta": "data/experiment/banco_mcp/agentes/lanzar_lote_paralelo.py",
+   "sha256": "1bcadb445ef4b3716d6977950e83c08075e7da58324d124e3f6490e9fa3df448"
+  },
+  "guardas_lote_r5": {
+   "ruta": "data/experiment/banco_mcp/paralelo/guardas_lote_r5.py",
+   "sha256": "04f81fe3bc522fb76166fe2190761b66de68e65e72191302b87c4461b532fae2"
+  },
+  "guardas_lote": {
+   "ruta": "data/experiment/banco_mcp/paralelo/guardas_lote.py",
+   "sha256": "73c317682951e2b01314db606f1a8682256f23330e1b88a735ae4e915c0528a2"
+  },
+  "lanzar_agente": {
+   "ruta": "data/experiment/banco_mcp/agentes/lanzar_agente.py",
+   "sha256": "2f00742038324a8e01122d574981f50a4c23a3927f88aad6b1fe7c4cc8e3e0c5"
+  }
+ },
+ "T1": {
+  "admitidos": [
+   {
+    "tope_tool_calls_prompt": 30,
+    "max_turns": 32,
+    "max_budget_usd": 1.8
+   },
+   {
+    "tope_tool_calls_prompt": 45,
+    "max_turns": 47,
+    "max_budget_usd": 3.3
+   }
+  ],
+  "R5_ESPERADO_de_HEAD": {
+   "max_turns": 32,
+   "tope_tool_calls_prompt": 30,
+   "max_budget_usd": 1.8
+  },
+  "OK": true
+ },
+ "T2": {
+  "cargar_entrada_lee": [
+   "R5"
+  ],
+  "cargar_entrada_lo_exige_entre_los_campos": true,
+  "constantes_con_nombre": [],
+  "clave_del_lanzador": "R5",
+  "OK": true
+ },
+ "T3": {
+  "admitidos": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "no_admitidos": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "OK": true
+ },
+ "T4": {
+  "A": {
+   "tope_tool_calls_prompt": 30,
+   "max_turns": 32,
+   "max_budget_usd": 1.8
+  },
+  "B": {
+   "tope_tool_calls_prompt": 45,
+   "max_turns": 47,
+   "max_budget_usd": 3.3
+  },
+  "otro_sha256": "LOTE INVÁLIDO: la entrada sellada da 73da5f6b77a9…, no el sha256 fa50e558204f…",
+  "no_existe": "LOTE INVÁLIDO: no existe la entrada sellada ~/INGENIERIA IA/TESIS/fuera_del_repo/banco_paralelo/r5_y_patron/pruebas/no_existe.json",
+  "sin_R5": "LOTE INVÁLIDO: la entrada sellada no trae R5",
+  "OK": true
+ },
+ "T5": {
+  "A": {
+   "presupuesto_sesion": 1.8,
+   "presupuesto_de_la_guarda": 1.8
+  },
+  "B": {
+   "presupuesto_sesion": 3.3,
+   "presupuesto_de_la_guarda": 3.3
+  },
+  "B_init": {
+   "presupuesto_sesion": 3.3,
+   "presupuesto_de_la_guarda": 0.0
+  },
+  "B_explicito_igual": 3.3,
+  "B_explicito_1_8": "LOTE INVÁLIDO: --presupuesto-sesion 1.8 no es el max_budget_usd del R5 de la entrada (3.3)",
+  "A_explicito_3_3": "LOTE INVÁLIDO: --presupuesto-sesion 3.3 no es el max_budget_usd del R5 de la entrada (1.8)",
+  "OK": true
+ },
+ "T6": {
+  "A_con_A": [],
+  "A_con_B": [
+   "T6: R5 {'tope_tool_calls_prompt': 45, 'max_turns': 47, 'max_budget_usd': 3.3} distinto de {'tope_tool_calls_prompt': 30, 'max_turns': 32, 'max_budget_usd': 1.8}",
+   "T6: su --max-budget-usd 3.3 pasa el presupuesto de la guarda"
+  ],
+  "B_con_B": [],
+  "B_con_A": [
+   "T6: R5 {'tope_tool_calls_prompt': 30, 'max_turns': 32, 'max_budget_usd': 1.8} distinto de {'tope_tool_calls_prompt': 45, 'max_turns': 47, 'max_budget_usd': 3.3}"
+  ],
+  "R5_ESPERADO_igual_despues": true,
+  "falla_adentro": true,
+  "R5_ESPERADO_igual_despues_de_la_falla": true,
+  "OK": true
+ },
+ "T7": {
+  "BASE_G_es_guardas_lote_r5": true,
+  "G_archivo": "data/experiment/banco_mcp/paralelo/guardas_lote_r5.py",
+  "patron_es_el_de_guardas_lote_mas_correr_b63": true,
+  "patron_vigente_es_el_real": true,
+  "guardas_lote_trae_el_renglon_16_mas_T": true,
+  "mismo_filtro_que_BASE": true,
+  "cuentan": [
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "no_cuentan": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "extraccion_es_la_de_BASE": true,
+  "observado_python_c_que_lo_nombra_cuenta": true,
+  "OK": true
+ },
+ "T8": {
+  "patron": "rcinco_prueba_paso\\.py|rcinco_prueba_paso_b63\\.py",
+  "forma": true,
+  "ve_los_dos": true,
+  "no_ve_el_real": true,
+  "el_real_no_lo_ve": true,
+  "patron_vigente_sin_tocar": true,
+  "OK": true
+ },
+ "T9": {
+  "otro_sha256": {
+   "rc": 3,
+   "dice_lote_invalido": true
+  },
+  "no_existe": {
+   "rc": 3,
+   "dice_lote_invalido": true
+  },
+  "sin_R5": {
+   "rc": 3,
+   "dice_lote_invalido": true
+  },
+  "presupuesto_distinto": {
+   "rc": 3,
+   "dice_lote_invalido": true
+  },
+  "sin_entrada": 2,
+  "registro_escrito": false,
+  "OK": true
+ },
+ "T10": {
+  "r5_rc": 3,
+  "r5_dice_lote_invalido": true,
+  "HEAD_SystemExit": "texto",
+  "OK": true
+ },
+ "T11": {
+  "pgrep_de_juguete_devuelve": [
+   900001,
+   900002,
+   900003,
+   900004,
+   900005,
+   900006,
+   900007
+  ],
+  "sin_raiz": [
+   {
+    "pid": 900004,
+    "script": "correr_b63.py"
+   },
+   {
+    "pid": 900007,
+    "script": "correr_a2_2.py"
+   }
+  ],
+  "raiz_propia": [
+   {
+    "pid": 900004,
+    "script": "correr_b63.py"
+   },
+   {
+    "pid": 900007,
+    "script": "correr_a2_2.py"
+   }
+  ],
+  "raiz_del_otro_lote": [
+   {
+    "pid": 900004,
+    "script": "correr_b63.py"
+   }
+  ],
+  "restaurado": true,
+  "OK": true
+ },
+ "resumen": {
+  "OK": 11,
+  "FALLA": [],
+  "total": 11
+ }
+}
