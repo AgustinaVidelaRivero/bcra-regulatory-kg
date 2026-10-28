@@ -1,0 +1,152 @@
+{
+ "unidad": "B6.3 — la configuración de agentes de los tres brazos de B6.3, armada desde la configuración sellada de N7 (b63/v2/b2/armar_config_agentes_b63.py)",
+ "por_que": "El testigo de aislamiento corre con la configuración sellada de B6.3 (la del grafo de N7, la principal de fragmentos y el denso) y no con la de prueba de N6 (decisión de la autora del 26/10/2026, 19:00:06). Tiene la forma de paralelo/config_agentes_n6_prueba.json y los archivos que nombra el registro de N7, controlados por su sha256.",
+ "base": {
+  "ruta": "a2_2/config_agentes_a2_2.json",
+  "sha256": "fd4ce4e4ce7d4c7cd0550af1ed2ba7d2cbd3d1a2301ee82060ba7d6eba4697c0",
+  "que_se_hereda": "modelo, modo del harness, versión sellada del CLI, flags y R5 (30, 32 y 1,80): los de A2.2 (N4, §1), como en N6. Lo que cambia: los brazos (los de B6.3) y la plantilla (la de N7)."
+ },
+ "fuentes": {
+  "n7": {
+   "ruta": "n7/n7_configuracion_sellada.json",
+   "sha256": "dd425094a287491e628d839161a12a1b140eaeeea5843d68b573c8895df0a571"
+  },
+  "n6_config_agentes": {
+   "ruta": "n6/config_agentes_n6.json",
+   "sha256": "9f8d6caaef1624904e7febb2f84c5cc906388b7f68e08181bab50a95230b39f3"
+  },
+  "a2_1_config_agentes": {
+   "ruta": "a2_1/config_agentes_a2_1.json",
+   "sha256": "2f6b60e2cbd1d257b9be02f53c4f019c4c332bc7cfe2a337c3b0437cd7c20f4d"
+  },
+  "forma": {
+   "ruta": "paralelo/config_agentes_n6_prueba.json",
+   "sha256": "479d83a12dba0525ae66b69ef70d21f7051617f39426c1fa1a1ccbaea412a03e"
+  }
+ },
+ "claude_code_version_sellada": "2.1.241",
+ "modelo": "claude-sonnet-5",
+ "modo_harness": "--bare",
+ "brazos": {
+  "kg": {
+   "rol": "grafo",
+   "configuracion_n7": "T-F6",
+   "familias": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "carga_codificador": true,
+   "mcp_config": "n7/mcp_kg_n7_evaluado.json",
+   "servidor": "kg",
+   "bloque_tools": "n7/bloque_tools_kg_n7.txt",
+   "allowed_tools": "mcp__kg__*",
+   "tools_esperadas": [
+    "mcp__kg__buscar_nodos",
+    "mcp__kg__buscar_puntos",
+    "mcp__kg__indice_to",
+    "mcp__kg__tipos_de_relacion",
+    "mcp__kg__vecinos_por_relacion",
+    "mcp__kg__ver_descendientes",
+    "mcp__kg__ver_nodo",
+    "mcp__kg__ver_punto",
+    "mcp__kg__ver_remisiones",
+    "mcp__kg__ver_vecinos"
+   ],
+   "tools_esperadas_nota": "en el orden en que las lista el CLI en system/init (alfabético), porque armar_meta compara las listas",
+   "config_servidor": "n7/config_mcp_kg_n7_evaluado.json",
+   "archivos_servidor": [
+    "mcp_kg/servidor_mcp_kg_nav_cand.py",
+    "mcp_kg/servidor_mcp_kg_nav.py",
+    "mcp_kg/servidor_mcp_kg.py",
+    "mcp_kg/familias_nav.py",
+    "mcp_kg/familias_nav_cand.py",
+    "mcp_kg/indice_puntos.py",
+    "mcp_kg/codificador_consultas.py"
+   ],
+   "venv": "el .venv del repo para el servidor (lo fija el JSON de MCP) y BANCO_VENV_VECTOR para su codificador de consultas",
+   "grafo": "KG_Acumulado_Tandas0y1yFinal_r2b_sincola",
+   "kg_sha256": "576c97256185a0d5741cb2c35a2a85e91412f3e1119ad7a85d960b7d60c35ad3"
+  },
+  "fragmentos_hibrida": {
+   "rol": "fragmentos_principal",
+   "afinidad": "hibrida",
+   "configuracion_n6": "F1_hibrida",
+   "carga_codificador": true,
+   "mcp_config": "mcp_vector/mcp_fragmentos_hibrida_evaluado.json",
+   "servidor": "fragmentos",
+   "bloque_tools": "n7/bloque_tools_fragmentos_n7.txt",
+   "allowed_tools": "mcp__fragmentos__*",
+   "tools_esperadas": [
+    "mcp__fragmentos__buscar_pasajes"
+   ],
+   "config_servidor": "mcp_vector/config_fragmentos_hibrida_evaluado_r2b.json",
+   "archivos_servidor": [
+    "mcp_vector/servidor_mcp_vector.py",
+    "mcp_vector/bm25_fragmentos.py"
+   ],
+   "venv": "BANCO_VENV_VECTOR"
+  },
+  "fragmentos_denso": {
+   "rol": "fragmentos_denso",
+   "afinidad": "denso",
+   "carga_codificador": true,
+   "mcp_config": "mcp_vector/mcp_fragmentos_denso_evaluado.json",
+   "servidor": "fragmentos",
+   "bloque_tools": "agentes/bloque_tools_vector.txt",
+   "bloque_tools_nota": "el registro de N7 no nombra el bloque del denso: es el del brazo denso de A2.1 (a2_1/config_agentes_a2_1.json), por el pre-registro de B6.3, §4 («el de A2.1»)",
+   "allowed_tools": "mcp__fragmentos__*",
+   "tools_esperadas": [
+    "mcp__fragmentos__buscar_pasajes"
+   ],
+   "config_servidor": "mcp_vector/config_fragmentos_denso_evaluado_r2b.json",
+   "archivos_servidor": [
+    "mcp_vector/servidor_mcp_vector.py"
+   ],
+   "venv": "BANCO_VENV_VECTOR"
+  }
+ },
+ "prompt": {
+  "plantilla": "n7/plantilla_prompt_n7.txt",
+  "sha256": "822aa4e72517bee7a3bd0ed4c80776548622930e54159c16562b874745e771b9",
+  "como_se_pasa": "como en la base: argumento de `claude -p <prompt>`; el prompt de sistema de Claude Code no se toca.",
+  "diferencia_entre_brazos": "exclusivamente el bloque {{BLOQUE_TOOLS}}: la plantilla es la misma en los tres"
+ },
+ "corte_R5": {
+  "max_turns": 32,
+  "tope_tool_calls_en_prompt": 30,
+  "max_budget_usd_por_sesion": 1.8,
+  "nota": "el R5 del registro de N7 (R5.valores; no sube): 30, 32 y 1,80, igual en todas las sesiones de B6.3."
+ },
+ "env_por_sesion": {
+  "BANCO_REPO": "raíz del repo (expansión en los JSON de MCP)",
+  "BANCO_VENV_VECTOR": "venv 3.12 del servidor de fragmentos; en los tres brazos: el del grafo lo usa para su codificador de consultas (n7/config_mcp_kg_n7_evaluado.json, denso.python_env)",
+  "BANCO_LOG_R1": "ruta del log R1 de ESA sesión (un archivo por sesión)",
+  "BANCO_SESION_TAG": "id de la sesión (se copia a cada línea del log)",
+  "NEO4J_URI": "bolt://127.0.0.1:47687: el Neo4j propio de los índices (decisión de la autora del 27/10/2026, 10:24:11); pasa por la lista cerrada (agentes/lanzar_agente.py, ENTORNO_PERMITIDAS) desde el runner, que la compara con la de la entrada",
+  "MCP_TIMEOUT": "180000"
+ },
+ "sha256_de_cada_archivo": {
+  "agentes/bloque_tools_vector.txt": "d2f853b47caa4cba3bbc6395f1a0546cc562e440b19ea025ed52909943734ba2",
+  "mcp_kg/codificador_consultas.py": "5473c49fd4737a4134728f02a86a5a823cd673da035bb3b4a3b4fb94e64ecfb8",
+  "mcp_kg/familias_nav.py": "c27bc888224051de2d2959227479e31e5190027078d5fe405ccb1bd5582da22d",
+  "mcp_kg/familias_nav_cand.py": "b8a2e828314a54f62928a6351eacedc1cfdd8178f654ba632d6374ac0bb66d0e",
+  "mcp_kg/indice_puntos.py": "2474ce5eb43974529d85ca96f3317c81e9565c0af2f6debb95cd383002ce58fe",
+  "mcp_kg/servidor_mcp_kg.py": "f8b8de7a587c0f3910b7f1b7e008cdf2030b2e9024850e9815629c03201c29b3",
+  "mcp_kg/servidor_mcp_kg_nav.py": "78a2dfaf02c4494232d576a54ec377f58dd01366fbe34fb1681c6272e5b7bb9b",
+  "mcp_kg/servidor_mcp_kg_nav_cand.py": "1eaacadb6485c7722b7bacc3e63f68ff34865b870675f9a108e3ac85587ff92a",
+  "mcp_vector/bm25_fragmentos.py": "7e26c29c51ae47e394c5bd42424a3319eb45243840846df5f700aebfd82c414d",
+  "mcp_vector/config_fragmentos_denso_evaluado_r2b.json": "09b2233d9016dcfb9ad2ca76e8814a0fd73db13dc4f226554de08f486722cfd1",
+  "mcp_vector/config_fragmentos_hibrida_evaluado_r2b.json": "a4acb5cff735baf34a849d6dae8327ddfdb209e7647b7ace1454134039949455",
+  "mcp_vector/mcp_fragmentos_denso_evaluado.json": "9385cdf2d7d67fb6fd049147b1ff2bf2056d86991e691ca90ed207dc3489540a",
+  "mcp_vector/mcp_fragmentos_hibrida_evaluado.json": "7eea9175be78c00c038c3e39a9ee2f77b4fd99fa1df3eb4060faba928a0c331e",
+  "mcp_vector/servidor_mcp_vector.py": "cd68f32948bb05fff7357fa6f3f572d3c1db53a5f5ebfbd41c83596e2c081b8b",
+  "n7/bloque_tools_fragmentos_n7.txt": "0c42964fbb565ca35b70cae2b7a27ddeb701a2e7f9345871acdf095eeed8b0e6",
+  "n7/bloque_tools_kg_n7.txt": "7ced741bffce79c339c741546df10393271e79a40a26341a92c5f47232a1f38c",
+  "n7/config_mcp_kg_n7_evaluado.json": "9e9f0ee5b9be4ff41bb2c8cc0c3528892d346197097c6de8b9c5007cb308d8c5",
+  "n7/mcp_kg_n7_evaluado.json": "4e3b9ccb062d8eea26049bb8814d62a5807cd683211539394bedb87632c43777",
+  "n7/plantilla_prompt_n7.txt": "822aa4e72517bee7a3bd0ed4c80776548622930e54159c16562b874745e771b9"
+ }
+}

@@ -1,0 +1,115 @@
+{
+ "que": "las formas reales del error del CLI sellado (2.1.241), medidas a USD 0 con b63/v2/formas_error_b63.py (etapa b1); etapa b1 bis: la clave inválida con su clase propia",
+ "regla_de_la_clase": "falla_infra: 429, 500 y 529 de un servidor local y el puerto local cerrado, un error de la API o de la red; clave_invalida: el api_error_status 401 del result (la clave inválida contra la API), un error de configuración: el lote frena a la primera con el 16, la sesión no cuenta y se corre al retomar",
+ "firma_que_compara_el_runner": "hay_result, subtype, is_error y el conjunto de los error_status de los system/api_retry",
+ "http_429_en_las_tres_corridas": "la misma forma (hay_result, subtype, is_error, api_retry, error_status, rc)",
+ "corridas_sha256": {
+  "corrida1": "d9fabf5e0308679564545e6915f9e2dde5f9b2db876277c1976c3312ca76c7ed",
+  "corrida2": "340a221f7d03c6158811be2d4e1b49d8dad6b027e380ff6aea11aa59509da0a7",
+  "corrida3": "373e663d11c0dbb407a8e98d06e003c7bf4c8914290bfc40bc5de30733e004e7"
+ },
+ "formas": [
+  {
+   "caso": "http_429",
+   "hay_result": true,
+   "subtype": "success",
+   "is_error": true,
+   "api_error_status": "no medido en la corrida 1",
+   "terminal_reason": "no medido en la corrida 1",
+   "api_retry": 10,
+   "api_retry_error_status": [
+    "429"
+   ],
+   "api_retry_error": [
+    "rate_limit"
+   ],
+   "rc": 1,
+   "duracion_s": 181.6,
+   "url_base": "servidor local /c429",
+   "corrida": 1,
+   "clase": "falla_infra"
+  },
+  {
+   "caso": "http_500",
+   "hay_result": true,
+   "subtype": "success",
+   "is_error": true,
+   "api_error_status": "no medido en la corrida 1",
+   "terminal_reason": "no medido en la corrida 1",
+   "api_retry": 10,
+   "api_retry_error_status": [
+    "500"
+   ],
+   "api_retry_error": [
+    "server_error"
+   ],
+   "rc": 1,
+   "duracion_s": 189.2,
+   "url_base": "servidor local /c500",
+   "corrida": 1,
+   "clase": "falla_infra"
+  },
+  {
+   "caso": "http_529",
+   "hay_result": true,
+   "subtype": "success",
+   "is_error": true,
+   "api_error_status": "no medido en la corrida 1",
+   "terminal_reason": "no medido en la corrida 1",
+   "api_retry": 10,
+   "api_retry_error_status": [
+    "529"
+   ],
+   "api_retry_error": [
+    "overloaded"
+   ],
+   "rc": 1,
+   "duracion_s": 184.4,
+   "url_base": "servidor local /c529",
+   "corrida": 1,
+   "clase": "falla_infra"
+  },
+  {
+   "caso": "puerto_cerrado",
+   "hay_result": true,
+   "subtype": "success",
+   "is_error": true,
+   "api_error_status": "no medido en la corrida 1",
+   "terminal_reason": "no medido en la corrida 1",
+   "api_retry": 10,
+   "api_retry_error_status": [
+    "None"
+   ],
+   "api_retry_error": [
+    "unknown"
+   ],
+   "rc": 1,
+   "duracion_s": 179.3,
+   "url_base": "127.0.0.1:9",
+   "corrida": 1,
+   "clase": "falla_infra"
+  },
+  {
+   "caso": "clave_invalida",
+   "hay_result": true,
+   "subtype": "success",
+   "is_error": true,
+   "api_error_status": 401,
+   "terminal_reason": "api_error",
+   "api_retry": 0,
+   "api_retry_error_status": [],
+   "api_retry_error": [],
+   "rc": 1,
+   "duracion_s": 2.4,
+   "url_base": "la API",
+   "corrida": 3,
+   "clase": "clave_invalida"
+  }
+ ],
+ "firma_de_la_clave_invalida": "el api_error_status 401 del result del stream (se mira antes que la firma de las demás)",
+ "derivado_de": {
+  "ruta": "data/experiment/banco_mcp/b63/v2/formas_reales_b63.json",
+  "sha256": "80c7d001b7293ad3eb0de4ee8bce001491d014d575359c31560abc33567fbcff",
+  "cambia": "solo la clase de clave_invalida (desconocida → clave_invalida); ningún valor medido"
+ }
+}

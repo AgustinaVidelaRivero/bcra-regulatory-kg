@@ -1,0 +1,70 @@
+{
+  "unidad": "B6.3-b1, selftest: la configuración DE JUGUETE de los tres brazos con el R5 B del pre-registro (47, 45 y 3,30)",
+  "base": {
+    "ruta": "a2_2/config_agentes_a2_2.json",
+    "sha256": "fd4ce4e4ce7d4c7cd0550af1ed2ba7d2cbd3d1a2301ee82060ba7d6eba4697c0",
+    "que_se_hereda": "la forma de paralelo/config_agentes_n6_prueba.json: versión sellada del CLI, modelo, modo y R5"
+  },
+  "claude_code_version_sellada": "2.1.241",
+  "modelo": "claude-sonnet-5",
+  "modo_harness": "--bare",
+  "brazos": {
+    "kg": {
+      "mcp_config": "b63/seco/mcp_juguete_kg.json",
+      "servidor": "kg",
+      "bloque_tools": "b63/seco/bloque_tools_juguete_kg.txt",
+      "allowed_tools": "mcp__kg__*",
+      "tools_esperadas": [
+        "mcp__kg__buscar_nodos",
+        "mcp__kg__buscar_puntos",
+        "mcp__kg__ver_nodo"
+      ],
+      "config_servidor": "b63/seco/config_servidor_juguete_kg.json",
+      "archivos_servidor": [
+        "b63/seco/servidor_mcp_juguete.py"
+      ],
+      "venv": "BANCO_VENV_VECTOR"
+    },
+    "fragmentos_bm25": {
+      "mcp_config": "b63/seco/mcp_juguete_fragmentos_bm25.json",
+      "servidor": "fragmentos",
+      "bloque_tools": "b63/seco/bloque_tools_juguete_fragmentos.txt",
+      "allowed_tools": "mcp__fragmentos__*",
+      "tools_esperadas": [
+        "mcp__fragmentos__buscar_pasajes"
+      ],
+      "config_servidor": "b63/seco/config_servidor_juguete_fragmentos_bm25.json",
+      "archivos_servidor": [
+        "b63/seco/servidor_mcp_juguete.py"
+      ],
+      "venv": "BANCO_VENV_VECTOR"
+    },
+    "fragmentos_denso": {
+      "mcp_config": "b63/seco/mcp_juguete_fragmentos_denso.json",
+      "servidor": "fragmentos",
+      "bloque_tools": "b63/seco/bloque_tools_juguete_fragmentos.txt",
+      "allowed_tools": "mcp__fragmentos__*",
+      "tools_esperadas": [
+        "mcp__fragmentos__buscar_pasajes"
+      ],
+      "config_servidor": "b63/seco/config_servidor_juguete_fragmentos_denso.json",
+      "archivos_servidor": [
+        "b63/seco/servidor_mcp_juguete.py"
+      ],
+      "venv": "BANCO_VENV_VECTOR"
+    }
+  },
+  "prompt": {
+    "plantilla": "b63/seco/plantilla_juguete.txt",
+    "como_se_pasa": "como en la base",
+    "diferencia_entre_brazos": "exclusivamente el bloque {{BLOQUE_TOOLS}}"
+  },
+  "corte_R5": {
+    "max_turns": 47,
+    "tope_tool_calls_en_prompt": 45,
+    "max_budget_usd_por_sesion": 3.3
+  },
+  "env_por_sesion": {
+    "MCP_TIMEOUT": "180000 (como en la base)"
+  }
+}
