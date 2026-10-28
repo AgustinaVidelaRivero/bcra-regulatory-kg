@@ -151,3 +151,25 @@ pie.
       Suman 77 y pasan en 22 los USD 55 del §8 para T: se declara como desvío del §8. La recalibración del 4.7, si la autora la decide,
       lleva su tope aparte, que firma al decidirla.
   - El texto firmado no cambia.
+
+- **27/10/2026 — La lectura de la autora en dos hojas: la importancia, a ciegas de la posición, antes que la presencia.** FIRMADA por
+  la autora; el commit de la firma es el que agrega esta nota (decisión de la autora del 27/10/2026, recibida a las 21:49:00; registro
+  de decisiones del 15/10/2026, §147). Cambia el punto 8 de la nota anterior. Rige desde la firma, antes de armar las hojas y de
+  cualquier extracción.
+  1. **Por qué:** la hoja única del punto 8 pedía la presencia solo en las 100 primeras, así que sus columnas decían qué renglón era de
+     las 100 y cuál de control, y el 5.5 pide la importancia «mezcladas y sin ver la posición». La autora, tal cual: «El ciego del 5.5:
+     la importancia se lee antes, en una hoja aparte.»
+  2. **La hoja de importancia:** las 130 (las 100 primeras y las 30 de control), mezcladas con la semilla de la hoja,
+     `B4-TRIPLETAS-T:cobertura_600:hoja:2026-10-27`, con `random.Random(semilla).sample(sorted(las 130), 130)`. Todas con las mismas
+     columnas: el pasaje con su herencia y la tripleta con su tramo, y la importancia en la escala de 3.4. Sin el subgrafo, sin la
+     posición, sin el puntaje y sin ninguna propuesta de un modelo. La autora la sella antes de abrir la hoja de presencia.
+  3. **La hoja de presencia:** primero las 30 de D-9 y después las 100 primeras, en el orden de la hoja de importancia restringido a
+     ellas. Un pasaje de los dos grupos va una sola vez, entre las 30, con todas sus columnas. Cada renglón trae el pasaje con su
+     herencia, la tripleta con su tramo y el subgrafo en la forma compacta, con la presencia componente por componente. La revisión del
+     5.8 (si la tripleta es correcta según el pasaje: sí, no o no decidible) va en las 30 de D-9, siempre, y en las 100 primeras solo
+     cuando su presencia queda ausente; en las demás no va, y el sellador frena si trae un valor. Sin la importancia, sin la posición y
+     sin ninguna propuesta de un modelo ni del juez.
+  4. **El recall depurado (5.8):** saca del denominador solo las ausentes de las 100 primeras que la autora marca «no» según el pasaje.
+     Las «no decidible» quedan y se cuentan.
+  5. **Lo demás** de la nota anterior queda igual.
+  - El texto firmado no cambia.
