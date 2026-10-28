@@ -883,3 +883,32 @@ del §14.
     seco la probó en sus tres formas (`FRENO_UBANCO_PARALELO_b.md`, §4, punto 3). Va en el commit del banco en paralelo, que el de esta
     nota pide en su historia.
   - El texto firmado no cambia.
+- **27/10/2026, por la noche — La lectura tolerante de una salida del juez que no se lee como JSON** (decisión de la autora del
+  27/10/2026, recibida a las 23:26:23; registro de decisiones del 15/10/2026, §151):
+  - **Lo que pasó en N6,** con el mismo juez y el mismo prompt (§7.1): 52 de sus 1.254 salidas no se leyeron como JSON. Todas
+    terminaron con `end_turn` y se rompieron dentro de «fragmento», que el prompt pide copiar textual de la respuesta
+    (`ev2_juez/prompt_juez_v1.md:34-37`). Fallan sobre todo las que copian un pasaje con comillas dobles rectas: 37 de 204 salidas, y
+    15 de 1.050 sin ellas. El juez de EV2 registra una salida así y no la reintenta
+    (`ev2_fidelidad_eval/code/pipeline_fidelidad.py:30-33`), así que la respuesta queda sin sus 3 juicios. Sacarla o contarla como no
+    correcta no es neutral entre brazos: fallan las que copian un pasaje.
+  - **Lo que este pre-registro decía hasta esta nota:** el juez de EV2, tal cual (§7.1), sin ninguna regla para una salida del juez que
+    no se lee ni para una corrida sin sus 3 juicios. Las reglas del §6 son las de las corridas cortadas y las fallas de infraestructura
+    del agente.
+  - **La regla, desde esta nota:**
+    1. Una salida del juez que terminó con `end_turn` y cuyo objeto JSON no se lee como JSON se lee con la lectura tolerante
+       (`data/experiment/banco_mcp/lectura_tolerante_juez.py`, sha256 `191e65bb…`), importada sin editarla y sin volver a llamar al
+       modelo: la clasificación de la respuesta y, por criterio, su índice y su veredicto.
+    2. El código que la aplica a B6.3 y su prueba se sellan con su sha256 antes de calcular ninguna cifra de B6.3. La prueba es la de N6
+       (`data/experiment/banco_mcp/n6/aplicar_lectura_tolerante_n6.py`, P1 a P8):
+       - la correspondencia de cada salida guardada con su respuesta, controlada contra lo que el juez registró;
+       - en todas las salidas que la lectura estricta lee, la tolerante da lo mismo;
+       - los agregados de las respuestas con sus 3 lecturas estrictas se reproducen byte a byte;
+       - cada salida que la estricta rechaza por JSON da un veredicto por criterio, con los índices en orden y una clasificación.
+    3. Si la prueba no da, o si la lectura tolerante no cubre una salida, la corrida queda sin veredicto. No la cubre una salida
+       cortada por `max_tokens`, con otra cantidad de criterios, con un veredicto fuera del dominio, o que la tolerante rechaza. La
+       corrida sin veredicto sale del análisis principal y se lista por brazo; si una pregunta queda sin corridas juzgadas en un brazo,
+       sale de esa comparación, como en las cortadas del §6. En la sensibilidad, cuenta como no correcta.
+    4. Se informa por brazo cuántas salidas se leyeron con la lectura tolerante y cuántas corridas quedaron sin veredicto.
+  - **En N6** (registro, §151): la prueba dio en P1 a P8: 1.202 de 1.202 lecturas iguales, los 394 agregados byte a byte y las 52 con
+    un veredicto por criterio. La configuración elegida fue la misma con la lectura tolerante y con la sellada.
+  - El texto firmado no cambia.
