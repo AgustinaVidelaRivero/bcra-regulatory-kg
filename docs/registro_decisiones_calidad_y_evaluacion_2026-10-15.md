@@ -6293,3 +6293,349 @@ escritura de las §130 a §133, antes de firmar la enmienda 5 y la nota de la co
 - **Lo preparado por la mesa** (`decisiones_302_mesa/`): la enmienda 5, v3, y los archivos de su commit; la nota de la cobertura, v2, con su
   archivo del commit (`e082d48a…`); y la vuelta b, v2, con ese sha256.
 - Las secciones anteriores no se editan.
+
+## 143. El martes, a las 16:08 y a las 16:15: N6 a bis revisado, sus commits, el reinicio, la memoria y el juez de la cobertura (27/10/2026)
+
+Decisiones y hechos de la autora del 27/10/2026, recibidos a las 16:08:17 y a las 16:15:16 (hoja de ruta de la mesa, §303).
+- **El FRENO de N6, etapa a bis** (sesión `2b5a8931…`; `fuera_del_repo/unav_n6/FRENO_UNAV_N6_a_bis.md`, `4712dfa4…`, el de las 15:42;
+  paquete `5d4888ce…`, 98 archivos), revisado por la mesa por código: 31 de 31 controles (`decisiones_303_mesa/revision/`):
+  - lo que va al repo: los 52 archivos de la lista y `sha256_n6.txt` (`76a05b7e…`), iguales en la copia y en el paquete, ninguno en
+    HEAD; frente a la etapa a, 12 cambian, 3 son nuevos y 37 quedan iguales;
+  - la entrada `d6a5a0a3…`, la del comando: 420 sesiones en dos lotes de 210, disjuntos, cada uno en el orden sellado restringido a
+    sus sesiones; el primero, sin el codificador (B 90, BM25 de F1 90 y T−F1 30);
+  - T−F1 sin el codificador: el denso se usa solo en tres métodos de `familias_nav.py` (`__init__`, `descripcion_fuente` y
+    `buscar_puntos`); la prueba de la ejecutora da 1.939 de 1.939 salidas iguales con y sin él;
+  - la corrida en seco (42 de 42), la prueba del comando y el selftest del análisis (25 de 25) de la ejecutora empezaron después del
+    último cambio de los 53 archivos;
+  - los selftests, corridos por la mesa en una copia: 25 de 25, 14 de 14 y 25 de 25.
+- **El renglón de `ver_descendientes`,** tal cual lo aprobó la autora (12:09:14, §137; sha256 `132e0f05…`), va en el 223 dentro de los
+  bloques de T, T−F1, T−F3, T−F4 y T−F5, byte a byte; no lo llevan los de B ni de T−F2, y T−F6 usa el de B:
+  > - `ver_descendientes(punto, niveles)`: para leer de una vez el texto entero de los subpuntos de un punto, en orden de lectura,
+  >   hasta 3 niveles. Si la respuesta puede estar en los hijos de un punto, leelos así antes que abrirlos uno por uno con `ver_punto`.
+- **Los commits, PREPARADOS** (los corre la autora): el 223 (N6 a bis y las §134 a §142) y el 224 (la enmienda 5 de T, que la autora
+  firma con ese commit). Probados en clones de HEAD, cada uno con su prueba en seco y 8 pruebas en contra.
+- **Las decisiones de la autora, tal cual:**
+  1. (16:08:17) «Firmo la enmienda 5, v3, tal cual está en decisiones_302_mesa/T/. No abrí ninguna de las 100 fichas nuevas de la
+     validación.» Su commit, el 224, PREPARADO.
+  2. (16:08:17) «La vuelta b v2 de la cobertura y el "seguí" b1 v4 del runner los pego cuando lance N6 pago. Me quedo hasta las 02:00,
+     como el escenario central del v23d.»
+  3. (16:15:16) «La nota de la cobertura de T, v2, no la firmo todavía. Quiero la cobertura tal cual el §7 y el §5 del pre-registro de
+     tripletas, con el juez de presencia del §5.6: el sorteo reserva 20 pasajes más, disjuntos de los 600, para el pool de
+     calibración; yo resuelvo la presencia de esos 20 con su subgrafo a la vista, y son los calibradores; el juez (claude-sonnet-4-6,
+     temperatura 0, por la API con caché, N = 3, veredicto modal, el código controla que lo nombrado exista, con el candado del §4.7)
+     juzga la presencia de las 100 primeras a ciegas de mi lectura, y yo leo sin ver sus veredictos; se informa su acuerdo con mi
+     lectura y el kappa de Cohen, y escala si acuerda en al menos 84 de 100. El recall@10, @50 y @100 sale de mi lectura. Si pasa, en
+     esta tesis no mide nada más: queda validado para medir la presencia sin mí. Lo demás de la v2 queda igual: las 30 como red
+     (opción A), y "a tiempo" es el jueves 29/10/2026 a las 18:00.» Reemplaza a la firma de la nota v2 de las 16:08:17.
+  4. (16:15:16) «La firma de la enmienda 5 y lo demás quedan como te dije.»
+- **La instrucción única de qué queda abierto durante N6:** la de la secuencia del reinicio v2 de la mesa (`decisiones_303_mesa/
+  reinicio/`): la Terminal, Docker Desktop con la VM en 2,5 GB y solo el contenedor de N6, y la app de Claude solo si lo fijo medido
+  con ella entra en la P elegida. El renglón 4 de la cabecera de `comando_paso_pago_N6.zsh` no se sigue; el comando no cambia.
+- **El comando 1 del reinicio,** ajustado a N6 a bis: controla en HEAD el sha256 de `sha256_n6.txt` y el del pre-registro con la
+  enmienda 5; el 2 frena con cualquier otro contenedor arriba (hay cuatro con `restart: unless-stopped`, parados); los dos informan lo
+  que pesa cada aplicación. Su selftest, 29 de 29.
+- **La memoria, preparado** (`decisiones_303_mesa/memoria/`): a las 16:47, lo fijo era 12,54 GB, con 7,29 de swap; la app de Claude y
+  su VM pesaban 7,60 GB, Chrome 6,71 y la VM de Docker 4,10. Las tres sesiones se pueden seguir desde la Terminal con el CLI que trae la
+  app (la 2.1.308, la de las sesiones), comprobado por código sin abrir ninguna; el CLI de la Terminal es el de N6 (2.1.241) y no se usa
+  para eso. NO VERIFICADO: que retomarlas no pierda nada. Recomendación: la app cerrada mientras corre N6 si lo fijo no entra.
+- **La cobertura con el juez, preparado:** la nota v3 (el documento con la nota da `e2059dc3…`), para la firma de la autora; la vuelta
+  b v3; el tope del juez, USD 25 con freno en 21,25, que con la extracción y el puntaje suma 77 y pasa en 22 los USD 55 del §8 del
+  pre-registro para T, declarado; y el calendario v23e: con la nota firmada antes del reinicio, el juez entra sin mover B6.3.
+- **Incidentes de la sesión de N6 a bis** (su §11, errores 5 y 6), que la autora pide registrar:
+  5. tres renglones de la ejecutora traían una frase que coincide con una cadena de un nodo de la tanda 1. Los encontró el control de
+     cegamiento del armador del paquete; los ubicó por su número, sin imprimir la cadena, los reescribió y repitió las pruebas sobre los
+     archivos finales. No quedó en ningún archivo;
+  6. un `find` sobre `banco_mcp/` de la copia excluyó `b63/` y `a2_2/adjudicacion/` con `-not -path`, que filtra la salida pero no poda,
+     en lugar de `-prune`. No imprimió nada. Esas dos carpetas no están en la copia de N6 (control de la mesa por existencia): el error
+     es de método.
+- Las secciones anteriores no se editan.
+
+## 144. El martes, a las 17:05: el 223 y el 224 corridos, la firma de la nota v3 de la cobertura y la regla del alto (27/10/2026)
+
+Decisiones y hechos de la autora del 27/10/2026, recibidos a las 17:05:01 (hoja de ruta de la mesa, §304).
+- **Los commits corridos por la autora,** con su push: el 223 (`2474d123…`, N6 a bis y las §134 a §142) y el 224 (`6d9fbf10…`, la
+  enmienda 5 de T). Lo confirma `git log` (`origin/main` en `6d9fbf10…`).
+- **Las decisiones de la autora, tal cual:**
+  1. «Firmo la nota v3 de la cobertura de T tal cual está en decisiones_303_mesa/cobertura/ (el documento con la nota da
+     e2059dc3e7f9cdeb587ec0bdc55e610f79b094855350d0024cb092341454cf43), con sus cinco puntos y el desvío del §8: los topes suman USD
+     77.» Su commit, el 225, PREPARADO: rearmado contra el 224 (igual byte a byte) y probado en clones, con su prueba en seco y 8
+     pruebas en contra.
+  2. «si al revisar el testigo el escenario es el alto, mi lectura de los 20 y el piloto del juez van después de las 18:00 del jueves,
+     para que el juez nunca corra el análisis.» En el calendario v23e: en el alto, el análisis de B6.3 vuelve al jueves a las 17:00 y
+     el acuerdo del juez llega el viernes, después del corte del jueves a las 18:00, que no lo espera (punto 12 de la nota v3). En el
+     central no cambia nada.
+- **La sesión de la mesa** es la `3a9b5cfd…`: su archivo crece con cada paso de la mesa y el de `d0348a29…`, la sesión de la mesa en
+  cuyo scratchpad está el paquete, no cambia desde el 18/10. Las opciones de memoria traen ahora los tres comandos completos para
+  seguir las sesiones desde la Terminal.
+- Las secciones anteriores no se editan.
+
+## 145. El martes, a las 17:41: el comando 1 del reinicio cortó por el idioma de la Terminal (27/10/2026)
+
+Hechos de la autora del 27/10/2026, recibidos a las 17:41:45 (hoja de ruta de la mesa, §305), y lo que controló la mesa.
+- **El 225,** la firma de la nota v3 de la cobertura, corrido por la autora (`800f3d14…`, con su push; lo confirma `git log`).
+- **El incidente:** el comando 1 del reinicio v2, corrido desde la Terminal de la autora, dio bien sus cinco controles (el repo en
+  `800f3d14`, HEAD, los procesos, el respaldo y el Neo4j de N6 parado) y cortó al medir la memoria, sin dejar `antes.json`
+  (`reinicio_n6_mesa_v2.py`, `memoria_maquina`, `AttributeError`). La causa: la Terminal corre con `LANG=es_AR.UTF-8`, y ahí
+  `sysctl -n vm.swapusage` da la coma decimal («3252,94M»), que la expresión del script no lee. Con `LC_ALL=en_US.UTF-8` delante dio
+  todo bien (11,329 GB en uso, 1,775 de swap) y dejó `antes.json`. No se reinició.
+- **Lo que controló la mesa, a USD 0** (`decisiones_305_mesa/idioma/`), con las funciones selladas de N6 en una copia, iguales a HEAD
+  por su blob:
+  - con `LANG=es_AR.UTF-8`, `memoria_n6.memoria_maquina()` y `control_memoria_n6.control_al_lanzar()` cortan con el mismo error; con
+    `LC_ALL=en_US.UTF-8`, dan bien;
+  - `vm_stat` da las mismas 22 claves, sin separadores, en los dos idiomas, y `footprint` da los mismos renglones (también en procesos
+    de más de 1 GB): el conteo de páginas y la huella de cada sesión no cambian sin dar error;
+  - `ps -o lstart` sí cambia con el idioma. Solo lo usaba el informe de pesos del comando 3 de la mesa, que daba 0 sin error. La mesa
+    lo cambió para que no dependa del idioma y reconozca cada VM por sus archivos abiertos (el selftest, 29 de 29);
+  - el paso pago de N6 no corta: corre todo su Python con `env -i` y una lista cerrada (`PATH`, `HOME`, `BANCO_VENV_VECTOR`, dos de
+    modo sin red y `NEO4J_URI`), sin `LANG` ni `LC_*`, y lanzado desde la Terminal da bien; con `LC_ALL=en_US.UTF-8` delante, lo
+    mismo, porque el prefijo no pasa el `env -i`. Las sesiones reciben su propia lista cerrada, sin `LANG` ni `LC_*`
+    (`agentes/lanzar_agente.py`, `ENTORNO_PERMITIDAS`);
+  - el código de `b63/` en HEAD y el de la cobertura no llaman a `sysctl`, `vm_stat`, `footprint` ni `ps`.
+- **Dónde va el prefijo:** en los comandos 2 y 3 del reinicio. No en el paso pago de N6, en los commits ni en los pasos pagos de la
+  cobertura. Los comandos del testigo y de B6.3, que todavía no existen, van con `env -i` y una lista cerrada, como el de N6. En los
+  comandos para seguir las sesiones desde la Terminal, `env -u` saca las variables de idioma.
+- **El error de la mesa:** los comandos del reinicio heredan el entorno de la Terminal, y la mesa los escribió y los probó en el suyo,
+  que no tiene variables de idioma; el `sysctl` falso del selftest imprimía el punto decimal.
+- Las secciones anteriores no se editan.
+
+## 146. El martes, de 18:00 a 20:44: el paso pago de N6, su FRENO al lanzar y el purge de la memoria (27/10/2026)
+
+Hechos de la autora del 27/10/2026, recibidos a las 20:53:32 (hoja de ruta de la mesa, §307). La mesa no leyó los registros de N6: no
+se tocan mientras corre su juez. Las cifras de esta sección son las que informó la autora, hasta que el análisis de N6 las controle.
+- **Antes de lanzar:** el comando 3 dio 10,264 GB con Chrome cerrado. Con Loom y la ventana de Docker Desktop cerrados, 8,703.
+- **Incidente 1, el FRENO 13 al lanzar.** El primer lanzamiento de N6 frenó con 13 antes de lanzar nada:
+  - el control de antes de cargar la clave midió 8,705 GB y el de «al lanzar», dentro del corredor, 10,076, por encima de 9,935;
+  - mientras tanto corría el paso 0 de la mesa, que restauró su paquete (10.631 archivos) desde su copia permanente;
+  - el comando 3 siguiente dio 10,056 GB.
+  - NO VERIFICADO: que la suba la haya causado ese paso 0. La cuenta de la regla (páginas activas, fijas y del compresor) cuenta las
+    páginas de archivos en uso, y la restauración leyó y escribió todo el paquete.
+  - El freno funcionó como estaba previsto: el corredor no lanzó ninguna sesión, no cambió la P y el comando se pudo relanzar.
+- **Incidente 2, el purge.** La autora corrió `sudo purge`, que vacía la caché de archivos del sistema, y lo fijo bajó a 7,114 GB. Es
+  una acción sobre la máquina fuera de los comandos sellados. Lo fijo medido después de un purge es más bajo que el de régimen, porque
+  la caché se vuelve a llenar; lo cubre la guarda de cada tanda, que vuelve a medir antes de cada una.
+- **El relanzamiento,** con `LC_ALL=en_US.UTF-8 N6_P_SIN_CODIFICADOR=3 N6_P_CON_CODIFICADOR=1`:
+  - al lanzar midió 9,655 GB;
+  - lote 1, sin codificador (210 sesiones, P = 3): código 0, USD 20,5010;
+  - lote 2 (3 reintentos): código 0, USD 0,2921;
+  - antes del lote con codificador: 8,516 GB;
+  - lote 3, con codificador (210 sesiones, P = 1): código 0, USD 17,2810;
+  - lote 4 (4 reintentos): código 0, USD 0,3485;
+  - el agente: las 420 sesiones terminadas, 418 completas y 2 mal formadas; R9, USD 38,4227;
+  - el juez, corriendo: a las 20:44, 40 de 418, con USD 40,0358 en total.
+- **Los despachos,** pegados por la autora: el «seguí» b1 v4 al runner y la vuelta b v3 a la cobertura.
+- **Las cifras para el capítulo 5** que pidió la autora, sacadas por la mesa por código, sin ninguna fila (`decisiones_307_mesa/
+  capitulo5/`):
+  1. de sus 22 incorrectas de las 100 de T, cuántas lo son solo porque el texto no nombra al sujeto o no establece la relación: su hoja
+     no tiene un campo que lo distinga. El gold trae `correcta` (sí, no o no decidible), `importancia`, `nota` y `observacion_umbral`,
+     las dos últimas libres. No se infirió de las notas ni del juez: lo resuelve la autora;
+  2. de sus 2 que no son esenciales, las 2 son útiles; ninguna es accesoria;
+  3. la tabla de la §142 con 6 decimales, del mismo análisis (`908010309e06…`) y con el mismo script, en una v2 que sin la opción da la
+     consola de la §302 byte a byte.
+- Las secciones anteriores no se editan.
+
+## 147. El martes, a las 21:49 y a las 21:52: la vuelta b de la cobertura, la b1 del runner y la segunda nota (27/10/2026)
+
+Decisiones y hechos de la autora del 27/10/2026, recibidos a las 21:49:00 y a las 21:52:30 (hoja de ruta de la mesa, §308).
+- **El FRENO de la cobertura, vuelta b** (sesión `3c558248…`; `tripletas_t_cob/FRENO_COB_T_b.md`, `5c910460…`; paquete `6431dc5a…`, 45
+  de 45), revisado por la mesa por código:
+  - el código y los comandos de `tripletas_t_cob/` son los del paquete, 22 de 22;
+  - las semillas, los topes (40 y 34, 12 y 10,20, 25 y 21,25) y los sellos (el documento `e2059dc3…`, la población, su lista y el acta de
+    las 30) son los de la nota v3;
+  - el juez controla en cada pedido `claude-sonnet-4-6`, la temperatura 0 y que no haya thinking; el candado del 4.7 está tal cual en
+    el bloque fijo de V (`prompts_cob_v.py`);
+  - la guarda de otro paso pago de los tres comandos ve a B6.3, a N6, al lote y a los drivers pagos de V; las de los demás no los ven a
+    ellos: lo cubren el patrón nuevo del runner, que pide la b1 bis, y el loop de espera de la autora;
+  - **los precios,** contra la página vigente leída el 27/10/2026: los de `claude-opus-5-5` y `claude-sonnet-4-6` dan iguales, y con eso
+    quedan verificadas las cifras de caché de `claude-sonnet-4-6` del §8 del pre-registro. La lectura de caché de `claude-sonnet-5-5` es
+    hoy 0,10, la mitad de la fuente sellada (0,20); el comando usa la sellada, que proyecta de más;
+  - **el juez:** su estimación (USD 5,4) y la de la mesa (de 10,52 a 20,98, §143) difieren porque la de la mesa suponía en cada
+    calibrador el pasaje y el subgrafo enteros, y `armar_casos` lleva la tripleta y un subgrafo reducido a lo nombrado. Con el prompt de
+    juguete medido, de 6,40 a 9,59 la corrida: el tope de 25 alcanza.
+- **Las decisiones de la autora, tal cual** (21:49:00):
+  1. «El ciego del 5.5: la importancia se lee antes, en una hoja aparte. La hoja de importancia trae las 130 (las 100 primeras y las 30
+     de control) mezcladas con la semilla de la hoja, todas con las mismas columnas: el pasaje con su herencia y la tripleta con su
+     tramo, sin el subgrafo. La sello antes de abrir la de presencia. La hoja de presencia trae primero las 30 de D-9 y después las 100
+     primeras, con la presencia componente por componente y la revisión del 5.8. Escribime la nota al pie para firmar que lo declara:
+     cambia «una sola hoja, una pasada por renglón» (nota v3, punto 8) para cumplir el «mezcladas y sin ver la posición» del 5.5.»
+  2. «El recall depurado sigue la nota: saca del denominador solo las ausentes de las 100 que marco «no» según el pasaje. La columna de
+     la 5.8 va solo en las ausentes de las 100 y en las 30 de D-9, como el §5 del documento. No es opcional en las demás.»
+  3. «Lo demás de su §8, si tu revisión no encuentra problema: el calentamiento de la caché, el desempate por el orden del sorteo, el
+     orden de la extracción, el voto de adjudicación y los calibradores con tramo verificado.» La revisión no encuentra problema.
+- **La segunda nota al pie, PREPARADA para la firma** (`decisiones_308_mesa/cobertura/`): el documento con las dos notas da `4023e153…`.
+  El orden: el sorteo real primero, porque controla `e2059dc3…`; el commit de la nota, cuando termina N6 y antes de la extracción.
+- **El FRENO del runner, etapa b1** (sesión `94968c98…`; `b63/FRENO_B63_b1.md`, `b89300ad…`; paquete `e824d227…`, 68 de 68), revisado
+  por la mesa por código: los 19 de `b63/v2/` dan su lista; ningún archivo de HEAD cambió; la meta de HEAD trae texto en
+  `mapa_R7[].input`, `final_json_R4` y `permission_denials`, y los motivos de `completitud_R3` son plantillas fijas.
+- **Las decisiones de la autora, tal cual** (21:52:30):
+  1. «La clave inválida (401) frena el lote a la primera, con un código propio, y esa sesión no se cuenta: queda para correr al
+     retomar. Es un error de configuración, no de la sesión, y no puede dejar sesiones incompletas que cuenten como no correctas.»
+  2. «El stream va en la meta, con su ruta y su sha256, en versiones nuevas, sin editar lo de HEAD.»
+  3. «La meta del lanzador trae texto (la respuesta y el input de cada llamada), así que no se commitea: queda fuera del repo, como los
+     streams, con su sha256 en el manifiesto commiteado (decisión del 26/10, 21:58:48). El runner v2 escribe al lado una meta sin texto,
+     que es la que se commitea.»
+- **Incidentes:**
+  1. del runner (su §13): para su sha256, leyó 24 archivos `*_SOLO_MESA*` en la foto de antes y 2 en la lista del intento 1, sin
+     imprimir nada. La autora controló que en el paquete los únicos sha256 en renglones con `SOLO_MESA` son los del manifest, sobre
+     archivos del propio paquete; la mesa contó lo mismo: 4 sha256 en esos renglones, los 4 de archivos del paquete;
+  2. de la mesa: el paquete del runner trae un archivo con la marca en su nombre (`foto_antes_B63b1_sin_sha_SOLO_MESA.json`, la foto
+     con esos 24 sha256 reemplazados por «omitido»). La mesa lo leyó dos veces: para su sha256, al verificar el paquete, y en el conteo de
+     arriba, imprimiendo solo cuentas. La causa: recorrió el paquete entero sin podar por nombre. La autora, al verificar el mismo
+     paquete, también lo leyó para su sha256 y contó sus renglones, sin mostrar ninguno (lo informó a las 22:16:37);
+  3. de la mesa: al mirar las claves de `analisis_T_v2.json` (§146) imprimió en su consola los ids de TO y de punto de las 100 de T, sin
+     texto ni etiquetas, que no quedaron en ningún archivo.
+- Las secciones anteriores no se editan.
+
+## 148. El martes, a las 22:16: la firma de la segunda nota de la cobertura y el orden de esta noche (27/10/2026)
+
+Decisiones y hechos de la autora del 27/10/2026, recibidos a las 22:16:37 (hoja de ruta de la mesa, §309).
+- **La decisión de la autora, tal cual:** «Firmo la segunda nota al pie de la cobertura de T tal cual está en decisiones_308_mesa/
+  cobertura/ (el documento con las dos notas da 4023e1536d73d018f4caac143ca1750f95c44c1120f4f0927701379df30cdbc8), con los tres puntos
+  que fijaste. Armá su commit, con su prueba en seco, para correrlo cuando termine N6 y después del sorteo real de la vuelta c.»
+- **Su commit, el 226, PREPARADO:** probado en clones de HEAD, con su prueba en seco y 13 pruebas en contra. Además de las guardas de
+  siempre, frena:
+  - si no está el acta del sorteo real de la vuelta c con su sello, o si el acta no es la real con la nota v3;
+  - si la extracción ya empezó (algo en `tripletas_t_cob/corridas/`);
+  - si el runner escribe en `b63/` o cambió algo de su b1: congela, por su nombre, lo que la b1 dejó sin rastrear (21 archivos) y su
+    lista de sha256. Por eso va antes de pegar la b1 bis;
+  - si corre otro paso pago, con el patrón de los commits más los cuatro comandos de la cobertura y los dos drivers pagos de V.
+- **Lo informado por la autora:** pegó la vuelta c en la sesión de la cobertura; la b1 bis del runner la pega cuando termine N6. Al
+  verificar el paquete del runner, también leyó el archivo con la marca para su sha256 y contó sus renglones, sin mostrar ninguno: va
+  al incidente 2 de la §147.
+- **El orden de esta noche, PREPARADO** (`decisiones_309_mesa/calendario/`), con N6 terminando a las 23:05: su análisis; el commit de la
+  segunda nota; la b1 bis; la revisión de N6 por la mesa y su commit; N7; la revisión de la vuelta c; la extracción y los 20; el puntaje,
+  a la mañana. Las duraciones son NO VERIFICADAS.
+- Las secciones anteriores no se editan.
+
+## 149. El martes, a las 22:44 y a las 22:46: el sello de dos renglones, el sorteo real de la cobertura y su vuelta c (27/10/2026)
+
+Hechos de la autora del 27/10/2026, recibidos a las 22:44:28 y a las 22:46:26 (hoja de ruta de la mesa, §310), y lo que controló la mesa.
+- **Un incidente del 226:** frenó en su renglón 15, en la prueba en seco y en el real, con «el acta del sorteo real no da su sello», y no
+  escribió nada (HEAD siguió en `800f3d14`). El acta estaba bien; el sello del sorteo real tiene dos renglones (el sha256 con el nombre,
+  y la hora), y el comando comparaba el primer campo de los dos. La mesa lo corrigió: lee solo el primer renglón y controla también el
+  nombre. La prueba ahora usa un sello de dos renglones, como el real, y suma una en contra con otro nombre en el primer renglón: la
+  secuencia buena y 14 en contra dan. El bloque del sorteo del comando nuevo, corrido solo, pasa con el acta y el sello reales. Ningún
+  otro comando de la mesa lee un sello así: las lecturas en Python toman el primer elemento del texto entero o filtran por el nombre.
+  La causa: el probador armaba un sello de un solo renglón, con otra forma que el real.
+- **Lo informado por la autora:** pegó la b1 bis antes de tiempo y la cortó con Esc; `b63/` sigue con los 21 archivos de la b1 (la
+  mesa lo controló: su lista por nombre da `e34314cb…` y los 19 dan su sha256).
+- **El FRENO de la cobertura, vuelta c** (`tripletas_t_cob/FRENO_COB_T_c.md`, `5d3c18f7…`; paquete `e8727d2b…`, 39 de 39), revisado por
+  la mesa por código:
+  - el sorteo real corrió una vez, a las 22:17:55, con HEAD en la nota v3: el acta `a14fb90c…` y los subgrafos `b65793db…` (649 filas)
+    dan el primer renglón de su sello, y los subgrafos de las 30 dan, 30 de 30, el sha256 de los de la vuelta a;
+  - el código de la carpeta es el del paquete, 10 de 10; los tres comandos `.zsh` son los de la vuelta b, y los tres scripts pagos cambian
+    solo en los sha256 de `CODIGO_SHA256`;
+  - la hoja de importancia no se arma si HEAD no trae la segunda nota (`4023e153…`); la de presencia, solo con la de importancia sellada.
+- **El cruce de las 30 con los 600, como dato, tal cual lo controló la autora** (22:46:26): «La muestra de 600, el pool de 20 y las 30 de
+  D-9 se reproducen iguales y en el mismo orden con sus semillas, sobre la población de 2.783. El piloto son los 10 primeros, y el pool no
+  cruza ni con los 600 ni con las 30. Entre los 600 cae una sola de las 30, cuando lo esperable es 6,47; la probabilidad de 1 o menos es
+  del 0,6 %. Como las semillas estaban fijadas antes y el sorteo se reproduce, lo tomo como azar.» La mesa, con la hipergeométrica (2.783,
+  30 y 600): la esperanza 6,47 y P(X ≤ 1) = 0,0061. No cambia nada.
+- **Los pasos pagos,** en su orden después del 226, PREPARADOS (`decisiones_310_mesa/cobertura/`).
+- Las secciones anteriores no se editan.
+
+## 150. El martes, a las 23:06: N6 terminó, y las 24 respuestas sin sus 3 juicios antes de ver ninguna cifra (27/10/2026)
+
+Hechos de la autora del 27/10/2026, recibidos a las 23:06:12 (hoja de ruta de la mesa, §311), y lo que controló la mesa.
+- **Lo informado por la autora:** N6 terminó con código 0:
+  - el agente, 420 sesiones: 418 completas y 2 mal formadas, R9 USD 38,4227;
+  - el juez, 418 respuestas: 394 agregadas, 24 incompletas y 52 errores nuevos, USD 16,7399;
+  - el repo, igual;
+  - el análisis, `analisis_n6.json` (`a2f22b14…`), y el registro, `registro_n6.json` (`b7c19507…`).
+
+  Después corrió el 226 (`23559e51`), con su push, y le escribió al runner que siga con la b1 bis. La mesa controló por código los dos
+  sha256, el commit en `git log` y `origin/main`.
+- **El pedido de la autora:** decidir qué se hace con las 24 incompletas antes de ver cualquier cifra de fidelidad, para que la decisión
+  no dependa del resultado.
+- **El diagnóstico de la mesa,** por código, en solo lectura y sin ninguna cifra de fidelidad
+  (`decisiones_311_mesa/n6/diagnostico_incompletas_n6_mesa.py` y su consola):
+  - los 52 errores son salidas del juez que no se leen como JSON, todas rotas dentro del campo `fragmento`, que el prompt pide copiar
+    textual de la respuesta;
+  - ningún error es de la API, y las 1.254 llamadas terminaron con `end_turn`;
+  - por repetición del juez: 14, 16 y 22;
+  - por configuración: B 5, F1_bm25 2, F1_hibrida 1, T 3, T−F1 2, T−F2 3, T−F3 1, T−F4 1, T−F5 4 y T−F6 2;
+  - una pregunta concentra 12 de las 24;
+  - las 52 están pagadas en la caché y fallan igual al releerlas.
+- **Lo que dicen N4 y el comando:**
+  - N4 no trae ninguna regla sobre esto;
+  - el análisis sellado (`2474d123`, commiteado antes de N6) saca del principal lo que no tiene veredicto, lo lista y, en la
+    sensibilidad, lo cuenta como no cumplido;
+  - el juez, como en EV2 y en A2.2, no reintenta una salida mal formada;
+  - las 2 mal formadas del agente terminaron sin ningún bloque JSON.
+- **El mismo comando no completa las 24:** da por hecha una repetición con error y, si no, la caché devolvería la misma salida. Costaría
+  USD 0, sin llamadas, pero cambiaría el sha256 del registro y frenaría la extracción de la cobertura mientras corre.
+- **La recomendación de la mesa, PREPARADA para que decida la autora:**
+  - leer el índice y el veredicto de las 52 salidas ya pagadas, con USD 0: la misma lectura da 1.202 de 1.202 iguales a la estricta en
+    las que sí se leen;
+  - aplicar la regla de N4 sobre las 418, con lo sellado al lado;
+  - las 2 mal formadas, como dice lo sellado;
+  - si la prueba no reproduce lo sellado, rige lo sellado.
+
+  El documento: `decisiones_311_mesa/n6/LAS_24_INCOMPLETAS_DE_N6_PARA_DECIDIR_ANTES_DE_LAS_CIFRAS_mesa.md`.
+- **Lo que vio la mesa, declarado:** durante el diagnóstico, la b1 bis del runner escribió 5 archivos nuevos en
+  `data/experiment/banco_mcp/b63/v2/b1bis/`, por la foto del repo antes y después. La mesa no tocó el repo.
+- Las secciones anteriores no se editan.
+
+## 151. El martes, a las 23:26: la lectura tolerante del juez, decidida antes de ver ninguna cifra, y el resultado de N6 (27/10/2026)
+
+Decisiones de la autora del 27/10/2026, recibidas a las 23:26:23 (hoja de ruta de la mesa, §312), y lo que hizo la mesa.
+- **La decisión de la autora, tal cual:** «Decido la opción B, antes de ver ninguna cifra de fidelidad:
+  1. La regla de N4 se aplica sobre las 418 respuestas, con los veredictos de las 52 salidas mal formadas leídos con la lectura tolerante,
+     sin llamar al modelo. Lo sellado (las 394 agregadas, con las 24 fuera del principal y como no cumplidas en la sensibilidad) va al
+     lado. Si la elección difiere entre las dos lecturas, se declara.
+  2. Antes de calcular ninguna cifra, sellá el código de la lectura tolerante con su sha256 y su prueba: que reproduce los 394 agregados
+     y las 1.202 lecturas, y que cada una de las 52 da un veredicto por criterio. Si la prueba no da, rige lo sellado.
+  3. Las 2 mal formadas del agente quedan como dice lo sellado, en las dos lecturas.
+  4. Se declara como desvío del análisis sellado, decidido antes de ver resultados, con su motivo: las salidas que fallan son las que
+     copian un pasaje con comillas, así que sacarlas o contarlas como no cumplidas no es neutral entre configuraciones.»
+
+  El punto 5 pide la regla que tiene hoy el pre-registro de B6.3 para una salida mal formada del juez, y una nota al pie que adopte la
+  misma lectura con la misma prueba, para firmar antes de la entrada sellada de B6.3.
+- **El sello de la lectura tolerante, antes de cualquier cifra** (`decisiones_312_mesa/n6/`), a las 23:35:18
+  (`sello_lectura_tolerante_N6.txt`, `5c40d7bd…`):
+  - la lectura, `lectura_tolerante_juez.py` (`191e65bb…`). Lee la clasificación y, por criterio, el índice y el veredicto; aplica solo a
+    una salida que terminó con `end_turn` y cuyo JSON no se lee;
+  - su aplicación a N6, `aplicar_lectura_tolerante_n6.py` (`3d259a71…`);
+  - su prueba (`informe_prueba_lectura_tolerante_n6.json`, `83fc927c…`). Da en P1 a P8:
+    - cada salida de la caché corresponde a su respuesta, en el orden ciego del juez, en 1.254 de 1.254 contra lo registrado;
+    - la lectura tolerante da lo mismo que la estricta en 1.202 de 1.202;
+    - los 394 agregados se reproducen byte a byte;
+    - las 52 dan un veredicto por criterio, sin ningún criterio con dos;
+    - en contra, rechaza 6 salidas armadas a mano y lee bien 2.
+- **El análisis con las 418, sin abrir las preguntas de N3:** `analizar_n6_con_lectura_tolerante.py` (`21dab67f…`).
+  - Llama a las funciones del análisis sellado sin editarlas. Toma la cantidad de criterios de los agregados y los conjuntos, del
+    análisis sellado.
+  - Con los agregados sellados reproduce `analisis_n6.json` en sus 11 claves.
+  - Quedó sellado a las 23:36:51 (`sello_analisis_con_lectura_tolerante_N6.txt`, `ec44f66a…`), antes de calcular nada con las 52.
+  - Su salida: `analisis_n6_con_lectura_tolerante.json` (`49cee14c…`).
+- **El resultado de N6, con la lectura tolerante,** sobre las 26 sin FUERA_D9 (decisión 9):
+  - la elegida es T−F6;
+  - quedan dentro de V(26) = 0,0637 T, T−F1, T−F3, T−F4, T−F5 y T−F6, ninguna al tope;
+  - el desempate por el R9 medio por pregunta da T−F6 primero (USD 0,0549 sobre las 26);
+  - T−F6 tiene una fidelidad por criterio de 0,8889 sobre las 26, y la mayor es la de T−F5, con 0,9091;
+  - pasa el requisito de la jerarquía: tiene `ver_punto`.
+
+  La elegida es la misma en sus dos versiones:
+  - con las 30, T−F6;
+  - en la sensibilidad, T−F6.
+
+  Con la lectura sellada, la elegida también es T−F6, con las 26 y con las 30, en el principal y en la sensibilidad. Las dos lecturas no
+  difieren. En la sellada, T−F1 no llegaba a ser candidata: a su única pregunta de la familia 1 le faltaba el juicio de T.
+- **F1:** la híbrida entra al brazo de fragmentos: 0,9043 contra 0,8696 de BM25, con Vfrag(30) = 0,0261. Entra igual en las cuatro
+  lecturas.
+- **R5, con la regla del 5 %:** T−F6 llegó al tope en 0 de 30 sesiones, y la híbrida en 0 de 30. El tope queda en 30, 32 y 1,80.
+- **El costo de N6:** USD 55,1626 de los 130 del tope (el agente, 38,4227 con R9; el juez, 16,7399).
+- **Las cuatro clases de N1:** PENDIENTES. Las clasifica su regla sellada, que vive en una carpeta vedada, y no entran en la regla de N4.
+- **N7, PREPARADO** (`decisiones_312_mesa/n7/`):
+  - el armador, v3: vuelve a aplicar la elección sobre las 26 de la decisión 9, y su prueba da 22 de 22;
+  - la configuración sellada de cada brazo (`n7_configuracion_sellada.json`, `dd425094…`): T−F6 con las familias 1 a 5, el codificador y
+    la híbrida, con los mismos archivos que con la lectura sellada;
+  - el pre-registro para firmar (`fac07416…`).
+
+  T−F6 no lleva la familia 6, así que la unidad de los 3 ejemplos de fragmentos no corre.
+- **B6.3:**
+  - **su pre-registro no trae hoy ninguna regla para una salida del juez que no se lee.** Fija el juez de EV2 «tal cual» (§7.1), y las
+    reglas del §6 son las de las corridas cortadas y las fallas de infraestructura del agente;
+  - **la nota al pie que adopta la lectura tolerante con la misma prueba, PREPARADA para firmar:** el documento con la nota da
+    `13440ecf…`.
+- **El commit de N6, el 227, PREPARADO:** el código, las salidas, los sellos y estas secciones del registro.
+- Las secciones anteriores no se editan.
