@@ -173,3 +173,50 @@ pie.
      Las «no decidible» quedan y se cuentan.
   5. **Lo demás** de la nota anterior queda igual.
   - El texto firmado no cambia.
+
+- **28/10/2026 — El juez de presencia con `claude-opus-5-5`, como el juez de precisión v2 y v3.** FIRMADA por la autora; el commit de
+  la firma es el que agrega esta nota (decisión de la autora del 28/10/2026, recibida a las 07:58:57; registro de decisiones del
+  15/10/2026, §153). Cambia los puntos 7 y 13 de la primera nota. Rige desde la firma, antes de que el juez juzgue nada y antes de la
+  lectura de las 100.
+  1. **La decisión, tal cual:** «El juez de presencia de la cobertura pasa a claude-opus-5-5, como el juez de precisión v2 y v3. Lo
+     decido antes de que juzgue nada y antes de leer las 100.» Cuando se decidió, el juez no había corrido: no había ninguna corrida
+     suya en `fuera_del_repo/tripletas_t_cob/corridas/`.
+  2. **El modelo y sus parámetros,** los del juez de precisión v2 y v3 (enmienda 4, punto 2, y enmienda 5, punto 4, del pre-registro
+     de tripletas):
+     - `claude-opus-5-5`, sin `temperature`, porque la API no la acepta en ese modelo;
+     - el razonamiento adaptativo, que en ese modelo no se apaga, con el esfuerzo `medium` puesto explícito;
+     - `max_tokens` 16.000, que deja lugar al razonamiento sin pasar a streaming, como el juez v2
+       (`fuera_del_repo/tripletas_v_juez/v2/codigo/juez_v2.py`, congelado en
+       `data/experiment/tripletas_v/juez_v2/congelacion_juez_v2_sha256.txt`);
+     - sin respaldo en otro modelo: un pedido que la API rechaza deja esa repetición sin voto, y se cuenta;
+     - el veredicto sale solo de los bloques de texto de la respuesta. El razonamiento queda en la caché y no se lee;
+     - una versión de código nueva, así la caché no mezcla un modelo con otro.
+
+     Lo demás del punto 7 queda igual:
+     - el prompt congelado por su sha256 antes de la corrida, con el bloque fijo del juez de V y los 20 calibradores de la hoja que
+       selló la autora;
+     - N = 3, con un cliente, una base y un espacio de nombres por repetición, y 0 cruces antes de agregar;
+     - el control de lo nombrado, con su reintento y la adjudicación;
+     - el veredicto modal y la regla del 5.6;
+     - el piloto de las 10 primeras, ×3, con su proyección.
+  3. **El costo y el tope, recalculados** (la mesa, `estimar_juez_presencia_T_opus_mesa.py` y su consola, en su paquete, §314):
+     - **la cuenta:** la de la nota anterior, con los precios de `claude-opus-5-5` (4 / 20, escritura 5 y lectura 0,2 por millón) y
+       2,26 caracteres por token, los medidos con ese modelo en el humo del juez v2;
+     - **la salida, con el razonamiento:** 1.458 tokens en la mediana, la medida en ese mismo humo, y 4.000 en el alto. Los dos son del
+       juez de precisión, NO VERIFICADOS para este juez: los mide su piloto, que proyecta con los tokens reales antes de seguir;
+     - **una corrida sobre las 100, ×3:** de USD 16,55 (la mediana) a 36,60 (el alto);
+     - **el tope:** USD 45, con freno en 38,25. Es el criterio de la nota anterior: el alto por 1,2, redondeado hacia arriba a 5, y el
+       freno, el 85 %;
+     - **lo ya gastado:** la extracción, USD 3,7044, y el puntaje, 2,8423 (sus registros del gasto). Con el alto del juez, T suma
+       43,15, dentro de los USD 55 del §8. Los topes suman 97 (40, 12 y 45) y pasan en 42 esos 55: se declara como desvío del §8,
+       como en la primera nota, con lo gastado al lado.
+  4. **El desvío, declarado.** El juez cambia de modelo respecto del 5.6 del pre-registro de tripletas (`claude-sonnet-4-6` a
+     temperatura 0) y del punto 7 de la primera nota. La decisión se tomó antes de que el juez juzgue nada y antes de la lectura de las
+     100, así que no depende de ningún resultado del juez ni de esa lectura.
+  5. **El límite:** la extracción abierta (5.3) también es `claude-opus-5-5`, así que el juez de presencia y el extractor del recall
+     son el mismo modelo y pueden compartir sesgos sobre lo que una tripleta dice.
+     - El acuerdo con la lectura de la autora sobre las 100 lo mide, con su umbral de la primera nota.
+     - El juez no es el extractor del grafo medido: E1 es `claude-haiku-4-5` (5.3).
+  6. **Cuándo:** el juez corre después de B6.3 (decisión de la autora del 28/10/2026, recibida a las 07:53:55). El cambio y su prueba
+     van antes, a USD 0.
+  - El texto firmado no cambia.
