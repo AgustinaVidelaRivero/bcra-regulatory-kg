@@ -1,0 +1,160 @@
+PASS censo: ancla presente resuelve a 1 nodo
+PASS censo: ancla inexistente resuelve a 0
+PASS censo: ancla portada SOLO por contenedor (>10 anclas) resuelve a 0
+PASS clase ausencia_kg
+PASS clase ausencia_kg (portador único = contenedor excluido)
+PASS clase alcanzabilidad (ni vista ni consultada)
+PASS clase alcanzabilidad (ver_nodo con error no cuenta como consulta)
+PASS borde: ver_vecinos sobre el propio nodo ancla (sin buscar ni ver_nodo) -> alcanzabilidad
+PASS clase vista_no_consultada
+PASS vista_en_step = 1
+PASS borde: vista + ver_vecinos del propio ancla (sin ver_nodo) -> vista_no_consultada
+PASS límite: ancla fuera del top-k -> no vista (alcanzabilidad)
+PASS límite: con top-2 el ancla entra -> vista_no_consultada
+PASS clase generacion (ver_nodo del ancla)
+PASS consultada_en_step = 2
+PASS clase generacion (ancla como vecino_id, nunca vista) — consultada prima sobre no-vista
+PASS ver_vecinos en dirección opuesta no consulta el ancla -> alcanzabilidad
+PASS correcto -> clase None (denominador)
+PASS veredicto no atribuible levanta error
+PASS multi-ancla: una ausente + una consultada -> generacion
+PASS replay estándar detecta divergencia
+PASS replay fuerte detecta divergencia
+PASS determinismo: salida idéntica en dos corridas
+PASS tabla de verdad de precedencia (6 filas)
+selftest atribución: 24/24 PASS
+PASS censo: ancla presente resuelve a 1 nodo
+PASS censo: ancla inexistente resuelve a 0
+PASS censo: ancla portada SOLO por contenedor (>10 anclas) resuelve a 0
+PASS clase ausencia_kg
+PASS clase ausencia_kg (portador único = contenedor excluido)
+PASS clase alcanzabilidad (ni vista ni consultada)
+PASS clase alcanzabilidad (ver_nodo con error no cuenta como consulta)
+PASS borde: ver_vecinos sobre el propio nodo ancla (sin buscar ni ver_nodo) -> alcanzabilidad
+PASS clase vista_no_consultada
+PASS vista_en_step = 1
+PASS borde: vista + ver_vecinos del propio ancla (sin ver_nodo) -> vista_no_consultada
+PASS límite: ancla fuera del top-k -> no vista (alcanzabilidad)
+PASS límite: con top-2 el ancla entra -> vista_no_consultada
+PASS clase generacion (ver_nodo del ancla)
+PASS consultada_en_step = 2
+PASS clase generacion (ancla como vecino_id, nunca vista) — consultada prima sobre no-vista
+PASS ver_vecinos en dirección opuesta no consulta el ancla -> alcanzabilidad
+PASS correcto -> clase None (denominador)
+PASS veredicto no atribuible levanta error
+PASS multi-ancla: una ausente + una consultada -> generacion
+PASS replay estándar detecta divergencia
+PASS replay fuerte detecta divergencia
+PASS determinismo: salida idéntica en dos corridas
+PASS tabla de verdad de precedencia (6 filas)
+selftest atribución: 24/24 PASS
+regresión selftest: {"selftest_head_rc": 0, "selftest_con_la_nueva_rc": 0, "checks_head": "24 de 24", "checks_con_la_nueva": "24 de 24", "llamadas_comparadas": 17, "llamadas_iguales_byte_a_byte": 17, "selftest_json_igual_salvo_generado": true}
+  run_3: 97 trazas
+  v3: 109 trazas
+  v2: 112 trazas
+regresión EV2: {"por_grafo": {"run_3": 97, "v3": 109, "v2": 112}, "n_trazas": 318, "n_comparaciones": 64970, "n_iguales": 64970, "trazas_con_alguna_diferencia": [], "clases_cubiertas_HEAD": {"alcanzabilidad": 51109, "ausencia_kg": 1898, "generacion": 1619, "vista_no_consultada": 9708}, "replay_ok": 318, "replay_fuerte_ok": 318, "sha256_salidas_HEAD": "1ea323610c6bcfb679d5e17bcfa259924ba898476991a1940f47391910e8b9c6", "sha256_salidas_nueva": "1ea323610c6bcfb679d5e17bcfa259924ba898476991a1940f47391910e8b9c6", "nota": "anclas derivadas por código de cada traza (no el gold sellado); veredicto fijo «parcial» (y uno «correcto» por traza); las clases son de esas anclas, no resultados de EV2"}
+equivalencia EV2: {"por_grafo": {"run_3": 97, "v3": 109, "v2": 112}, "n_trazas": 318, "n_comparaciones": 64970, "n_iguales": 64970, "trazas_con_alguna_diferencia": [], "controles_del_log_que_fallan": 0, "sha256_salidas_HEAD": "1ea323610c6bcfb679d5e17bcfa259924ba898476991a1940f47391910e8b9c6", "sha256_salidas_v1_del_log": "1ea323610c6bcfb679d5e17bcfa259924ba898476991a1940f47391910e8b9c6", "nota": "las mismas anclas y llamadas que la regresión de EV2; el log de cada traza, armado con la re-ejecución de HEAD"}
+  mismos nodos que el índice, en todas las claves: no (6330 de 11814); misma presencia: 11812 de 11814
+  igual al índice sin los contenedores del §2: 11814 de 11814; contenedores que el índice lista: {"n": 84, "por_tipo": {"Comunicacion": 3, "Sujeto": 81}, "todos_de_mas_de_10_claves": true, "claves_del_indice_que_llevan_alguno": 5484}
+  contenedores del lector: {"n": 212, "por_mas_de_10_claves": 196, "TextoOrdenado_de_10_o_menos": 16}; claves del lector que el índice no tiene: 1; procedencias sin to o punto: 145
+  logs del brazo kg: 288 · salidas v1: 1250 · del servidor mcp_kg: sí
+  todas se leen como JSON: sí · con los campos de la regla v1: sí · dan su output_sha256: sí
+PASS las diez: harness.TOOLS + TOOLS_NAV del lector = tools_esperadas del brazo kg de B6.3
+PASS las siete de navegación = TOOLS_NAV_CAND de familias_nav_cand
+PASS buscar_nodos: v1: el ancla en los resultados -> vista, no consultada
+PASS buscar_nodos: el mismo caso solo v1, igual byte a byte a HEAD
+PASS buscar_nodos: v1: búsqueda que no devuelve el ancla -> alcanzabilidad
+PASS buscar_nodos: el mismo caso solo v1, igual byte a byte a HEAD
+PASS ver_nodo: v1: ver_nodo del nodo del ancla -> consultada
+PASS ver_nodo: el mismo caso solo v1, igual byte a byte a HEAD
+PASS ver_nodo: v1: ver_nodo de un id que no existe (error) -> no cuenta
+PASS ver_nodo: el mismo caso solo v1, igual byte a byte a HEAD
+PASS ver_vecinos: v1: el ancla como vecino_id -> consultada
+PASS ver_vecinos: el mismo caso solo v1, igual byte a byte a HEAD
+PASS ver_vecinos: v1: ver_vecinos del propio nodo del ancla -> no cuenta (borde heredado)
+PASS ver_vecinos: el mismo caso solo v1, igual byte a byte a HEAD
+PASS buscar_puntos: fila con la clave del ancla y su nodo (tipo · id) -> vista, no consultada
+PASS buscar_puntos: cabecera: el filtro punto=<ancla> sin el ancla en las filas -> no cuenta
+PASS ver_punto: el punto del ancla con su texto -> consultada (y vista por su lista de nodos)
+PASS ver_punto: punto del ancla sin texto propio: su lista de nodos -> vista, no consultada
+PASS ver_punto: cabecera y ancestros: ver_punto de un hijo del ancla -> no cuenta
+PASS ver_punto: salida de error (punto que no existe) -> no cuenta
+PASS ver_remisiones: fila de remisión al punto del ancla -> vista, no consultada
+PASS ver_remisiones: cabecera: las remisiones del propio ancla -> no cuenta
+PASS indice_to: el árbol del TO lista unidades sin el TO (no son claves to::unidad) -> no cuenta
+PASS indice_to: cabecera: indice_to desde el ancla -> no cuenta
+PASS tipos_de_relacion: del nodo del ancla: su punto en la segunda línea -> vista, no consultada
+PASS tipos_de_relacion: de otro nodo (el vecino): ni el id del ancla ni su punto -> no cuenta
+PASS vecinos_por_relacion: fila de vecino con el id y el punto del ancla -> vista, no consultada
+PASS vecinos_por_relacion: cabecera: los vecinos del propio nodo del ancla -> no cuenta
+PASS ver_descendientes: el bloque del ancla con su texto -> consultada
+PASS ver_descendientes: bloque del ancla sin texto propio -> vista, no consultada
+PASS ver_descendientes: cabecera: los descendientes del propio ancla -> no cuenta
+PASS mezcla: vista por navegación en el step 1 y consulta v1 en el 2 -> generacion, vista_en_step 1
+PASS mezcla: v1 vista en el step 2 y navegación en el 1 -> vista_en_step es el menor
+PASS mezcla: ancla con el formato de EV2 (to:punto) y salida de navegación -> la misma clave
+PASS ver_descendientes: el bloque del ancla con su texto cortado por el tope -> consultada
+PASS cabecera de buscar_puntos: la clave del ancla en la primera línea no cuenta
+PASS cabecera de ver_punto: la clave del ancla en la primera línea no cuenta
+PASS cabecera de ver_remisiones: la clave del ancla en la primera línea no cuenta
+PASS cabecera de indice_to: la clave del ancla en la primera línea no cuenta
+PASS cabecera de tipos_de_relacion: el id del ancla en la primera línea no cuenta
+PASS cabecera de vecinos_por_relacion: el id del ancla en la primera línea no cuenta
+PASS cabecera de ver_descendientes: la clave del ancla en la primera línea no cuenta
+PASS mcp__kg (adaptador nuevo): 2 steps, el pedido contado aparte, R7 alineado, atribuible
+PASS mcp__kg (atribución): el pedido no hace vista ni consultada; se cuenta aparte; la clase sale de los otros
+PASS mcp__kg (adaptador de HEAD, contraste): el pedido corre la reconciliación y la traza no es atribuible
+PASS mcp__kg solo: 0 steps, 1 pedido, alcanzabilidad
+PASS pedido sin herramienta cuyo tool_result no es un error -> no atribuible (R3)
+PASS step con un nombre que no es herramienta (p. ej. «kg») en la traza: no cuenta y se cuenta aparte
+PASS R7: output_sha256 del log que no es el de su output_str -> rechazo
+PASS R7: n del log distinto del orden de la llamada -> rechazo
+PASS R7: texto de la sesión del mismo largo y distinto del log -> rechazo
+PASS R7: texto de la sesión truncado por el transporte -> la salida sale del log, atribuible
+PASS R7: herramienta o entrada distintas de las del log -> rechazo
+PASS v1 y navegación en una sesión: la v1 en steps_full como JSON, la otra como texto; atribuible y re-ejecutable
+PASS presencia: el punto exacto (6.11 no trae a su hijo 6.11.1)
+PASS presencia: base_punto lleva «ext::6.11::intro» a «ext::6.11», en la procedencia y en el ancla
+PASS presencia: el strip del punto («provenance» sola, « 6.12 ») y del ancla
+PASS presencia: un contenedor de más de 10 claves queda fuera (y vuelve con incluir_contenedores)
+PASS presencia: un nodo de 10 claves no es contenedor
+PASS presencia: un TextoOrdenado de 10 claves o menos (2) es contenedor y queda fuera
+PASS presencia: las dos formas del ancla, «ext:6.11» y «ext::6.11», resuelven igual
+PASS presencia: un ancla ausente (punto que no está, TO que no está) resuelve a nada
+PASS presencia: la sección «S7» por su clave, y la procedencia sin punto no se lee
+PASS presencia: censo con la forma de resolucion.AnclaIndex.censo
+PASS presencia: atribuir_payload recibe el índice del banco sin cambiar (generacion; un ancla ausente, ausencia_kg)
+PASS v1 del log: buscar_nodos: el ancla en los resultados del log -> vista
+PASS v1 del log: ver_nodo sin error -> consultada
+PASS v1 del log: ver_nodo con error -> no cuenta
+PASS v1 del log: ver_vecinos: el ancla como vecino_id -> consultada
+PASS v1 del log: una traza que mezcla v1 y navegación
+PASS v1 del log: con los controles en verde, la corrida es válida
+PASS v1 del log: el sha256 que no da -> el control falla y la corrida entera es inválida
+PASS v1 del log: una salida que no es JSON -> el control falla y la corrida entera es inválida
+PASS v1 del log: un R7 que no reconcilia (otra entrada en el log) -> el control falla y la corrida entera es inválida
+PASS v1 del log: un step que el adaptador rechazó -> el control falla (R7) y la corrida es inválida
+PASS v1 del log: con log_r1, pasar además un índice que re-ejecuta es un error
+== 76 de 76 PASS
+PASS humo HUMO-SMK-01-kg: adaptador nuevo, todas las llamadas reconciliadas con el log R1
+PASS humo HUMO-SMK-01-kg: la atribución corre sobre la traza entera, con las v1 del log y la presencia del grafo
+   {"sesion": "HUMO-SMK-01-kg", "n_steps": 8, "por_herramienta": {"buscar_puntos": 1, "indice_to": 1, "ver_punto": 6}, "lectores": {"buscar_puntos": {"llamadas": 1, "claves": 8, "ids": 22, "nodos_de_claves": 29, "textos": 0, "errores": 0}, "indice_to": {"llamadas": 1, "claves": 0, "ids": 0, "nodos_de_claves": 0, "textos": 0, "errores": 0}, "ver_punto": {"llamadas": 6, "claves": 6, "ids": 23, "nodos_de_claves": 23, "textos": 6, "errores": 0}}, "adaptador_HEAD": {"atribuible": false, "rechazos": 8}, "atribucion_anclas_derivadas": {"n_anclas": 9, "clases": {"ausencia_kg": 1, "generacion": 6, "vista_no_consultada": 2}, "consistencia_steps_full_ok": true, "steps_v1_del_log": 0, "corrida_valida": true}}
+PASS humo HUMO-SMK-02-kg: adaptador nuevo, todas las llamadas reconciliadas con el log R1
+PASS humo HUMO-SMK-02-kg: la atribución corre sobre la traza entera, con las v1 del log y la presencia del grafo
+   {"sesion": "HUMO-SMK-02-kg", "n_steps": 12, "por_herramienta": {"buscar_puntos": 4, "ver_punto": 6, "indice_to": 1, "buscar_nodos": 1}, "lectores": {"buscar_puntos": {"llamadas": 4, "claves": 27, "ids": 75, "nodos_de_claves": 178, "textos": 0, "errores": 0}, "indice_to": {"llamadas": 1, "claves": 0, "ids": 0, "nodos_de_claves": 0, "textos": 0, "errores": 0}, "ver_punto": {"llamadas": 6, "claves": 6, "ids": 35, "nodos_de_claves": 57, "textos": 6, "errores": 0}}, "adaptador_HEAD": {"atribuible": false, "rechazos": 11}, "atribucion_anclas_derivadas": {"n_anclas": 12, "clases": {"ausencia_kg": 1, "generacion": 6, "vista_no_consultada": 5}, "consistencia_steps_full_ok": true, "steps_v1_del_log": 1, "corrida_valida": true}}
+PASS humo HUMO-SMK-03-kg: adaptador nuevo, todas las llamadas reconciliadas con el log R1
+PASS humo HUMO-SMK-03-kg: la atribución corre sobre la traza entera, con las v1 del log y la presencia del grafo
+   {"sesion": "HUMO-SMK-03-kg", "n_steps": 4, "por_herramienta": {"buscar_puntos": 1, "ver_punto": 3}, "lectores": {"buscar_puntos": {"llamadas": 1, "claves": 8, "ids": 18, "nodos_de_claves": 37, "textos": 0, "errores": 0}, "ver_punto": {"llamadas": 3, "claves": 3, "ids": 25, "nodos_de_claves": 25, "textos": 3, "errores": 0}}, "adaptador_HEAD": {"atribuible": false, "rechazos": 4}, "atribucion_anclas_derivadas": {"n_anclas": 9, "clases": {"ausencia_kg": 3, "generacion": 3, "vista_no_consultada": 3}, "consistencia_steps_full_ok": true, "steps_v1_del_log": 0, "corrida_valida": true}}
+== 6 de 6 PASS
+  mcp__kg                      una de las diez: no  adaptador: sin_herramienta  con call_id del log: no
+  mcp__kg__buscar_nodos        una de las diez: sí  adaptador: herramienta      con call_id del log: sí
+  mcp__kg__buscar_puntos       una de las diez: sí  adaptador: herramienta      con call_id del log: sí
+  mcp__kg__indice_to           una de las diez: sí  adaptador: herramienta      con call_id del log: sí
+  mcp__kg__ver_descendientes   una de las diez: sí  adaptador: herramienta      con call_id del log: sí
+  mcp__kg__ver_nodo            una de las diez: sí  adaptador: herramienta      con call_id del log: sí
+  mcp__kg__ver_punto           una de las diez: sí  adaptador: herramienta      con call_id del log: sí
+  mcp__kg__ver_remisiones      una de las diez: sí  adaptador: herramienta      con call_id del log: sí
+  mcp__kg__ver_vecinos         una de las diez: sí  adaptador: herramienta      con call_id del log: sí
+  metas leídas: 288 · cada nombre es una de las diez o mcp__kg: True
+lector de claves sobre el índice de B6.3: {"n_claves": 11814, "por_forma": {"S+cifras": 762, "S+letras": 174, "cifras": 10573, "subdocumento::unidad": 305}, "no_leidas_por_forma": {}, "n_no_leidas": 0}
+archivos de la copia abiertos para leer: 827 · rc de las pruebas: 0
