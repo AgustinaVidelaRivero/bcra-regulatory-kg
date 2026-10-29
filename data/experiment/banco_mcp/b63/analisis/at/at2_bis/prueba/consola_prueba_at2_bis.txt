@@ -1,0 +1,118 @@
+PASS humo HUMO-SMK-01-kg: atribuir_sesion con los tres archivos controlados, las v1 del log y el índice del humo
+PASS humo HUMO-SMK-01-kg: el registro de la salida no trae ninguna ancla
+PASS humo HUMO-SMK-02-kg: atribuir_sesion con los tres archivos controlados, las v1 del log y el índice del humo
+PASS humo HUMO-SMK-02-kg: el registro de la salida no trae ninguna ancla
+PASS humo HUMO-SMK-03-kg: atribuir_sesion con los tres archivos controlados, las v1 del log y el índice del humo
+PASS humo HUMO-SMK-03-kg: el registro de la salida no trae ninguna ancla
+PASS las diez: harness.TOOLS + TOOLS_NAV del lector = tools_esperadas del brazo kg de B6.3
+PASS las siete de navegación = TOOLS_NAV_CAND de familias_nav_cand
+PASS buscar_nodos: v1: el ancla en los resultados -> vista, no consultada
+PASS buscar_nodos: el mismo caso solo v1, igual byte a byte a HEAD
+PASS buscar_nodos: v1: búsqueda que no devuelve el ancla -> alcanzabilidad
+PASS buscar_nodos: el mismo caso solo v1, igual byte a byte a HEAD
+PASS ver_nodo: v1: ver_nodo del nodo del ancla -> consultada
+PASS ver_nodo: el mismo caso solo v1, igual byte a byte a HEAD
+PASS ver_nodo: v1: ver_nodo de un id que no existe (error) -> no cuenta
+PASS ver_nodo: el mismo caso solo v1, igual byte a byte a HEAD
+PASS ver_vecinos: v1: el ancla como vecino_id -> consultada
+PASS ver_vecinos: el mismo caso solo v1, igual byte a byte a HEAD
+PASS ver_vecinos: v1: ver_vecinos del propio nodo del ancla -> no cuenta (borde heredado)
+PASS ver_vecinos: el mismo caso solo v1, igual byte a byte a HEAD
+PASS buscar_puntos: fila con la clave del ancla y su nodo (tipo · id) -> vista, no consultada
+PASS buscar_puntos: cabecera: el filtro punto=<ancla> sin el ancla en las filas -> no cuenta
+PASS ver_punto: el punto del ancla con su texto -> consultada (y vista por su lista de nodos)
+PASS ver_punto: punto del ancla sin texto propio: su lista de nodos -> vista, no consultada
+PASS ver_punto: cabecera y ancestros: ver_punto de un hijo del ancla -> no cuenta
+PASS ver_punto: salida de error (punto que no existe) -> no cuenta
+PASS ver_remisiones: fila de remisión al punto del ancla -> vista, no consultada
+PASS ver_remisiones: cabecera: las remisiones del propio ancla -> no cuenta
+PASS indice_to: el árbol del TO lista unidades sin el TO (no son claves to::unidad) -> no cuenta
+PASS indice_to: cabecera: indice_to desde el ancla -> no cuenta
+PASS tipos_de_relacion: del nodo del ancla: su punto en la segunda línea -> vista, no consultada
+PASS tipos_de_relacion: de otro nodo (el vecino): ni el id del ancla ni su punto -> no cuenta
+PASS vecinos_por_relacion: fila de vecino con el id y el punto del ancla -> vista, no consultada
+PASS vecinos_por_relacion: cabecera: los vecinos del propio nodo del ancla -> no cuenta
+PASS ver_descendientes: el bloque del ancla con su texto -> consultada
+PASS ver_descendientes: bloque del ancla sin texto propio -> vista, no consultada
+PASS ver_descendientes: cabecera: los descendientes del propio ancla -> no cuenta
+PASS mezcla: vista por navegación en el step 1 y consulta v1 en el 2 -> generacion, vista_en_step 1
+PASS mezcla: v1 vista en el step 2 y navegación en el 1 -> vista_en_step es el menor
+PASS mezcla: ancla con el formato de EV2 (to:punto) y salida de navegación -> la misma clave
+PASS ver_descendientes: el bloque del ancla con su texto cortado por el tope -> consultada
+PASS cabecera de buscar_puntos: la clave del ancla en la primera línea no cuenta
+PASS cabecera de ver_punto: la clave del ancla en la primera línea no cuenta
+PASS cabecera de ver_remisiones: la clave del ancla en la primera línea no cuenta
+PASS cabecera de indice_to: la clave del ancla en la primera línea no cuenta
+PASS cabecera de tipos_de_relacion: el id del ancla en la primera línea no cuenta
+PASS cabecera de vecinos_por_relacion: el id del ancla en la primera línea no cuenta
+PASS cabecera de ver_descendientes: la clave del ancla en la primera línea no cuenta
+PASS mcp__kg (adaptador nuevo): 2 steps, el pedido contado aparte, R7 alineado, atribuible
+PASS mcp__kg (atribución): el pedido no hace vista ni consultada; se cuenta aparte; la clase sale de los otros
+PASS mcp__kg (adaptador de HEAD, contraste): el pedido corre la reconciliación y la traza no es atribuible
+PASS mcp__kg solo: 0 steps, 1 pedido, alcanzabilidad
+PASS pedido sin herramienta cuyo tool_result no es un error -> no atribuible (R3)
+PASS step con un nombre que no es herramienta (p. ej. «kg») en la traza: no cuenta y se cuenta aparte
+PASS R7: output_sha256 del log que no es el de su output_str -> rechazo
+PASS R7: n del log distinto del orden de la llamada -> rechazo
+PASS R7: texto de la sesión del mismo largo y distinto del log -> rechazo
+PASS R7: texto de la sesión truncado por el transporte -> la salida sale del log, atribuible
+PASS R7: herramienta o entrada distintas de las del log -> rechazo
+PASS v1 y navegación en una sesión: la v1 en steps_full como JSON, la otra como texto; atribuible y re-ejecutable
+PASS presencia: el punto exacto (6.11 no trae a su hijo 6.11.1)
+PASS presencia: base_punto lleva «ext::6.11::intro» a «ext::6.11», en la procedencia y en el ancla
+PASS presencia: el strip del punto («provenance» sola, « 6.12 ») y del ancla
+PASS presencia: un contenedor de más de 10 claves queda fuera (y vuelve con incluir_contenedores)
+PASS presencia: un nodo de 10 claves no es contenedor
+PASS presencia: un TextoOrdenado de 10 claves o menos (2) es contenedor y queda fuera
+PASS presencia: las dos formas del ancla, «ext:6.11» y «ext::6.11», resuelven igual
+PASS presencia: un ancla ausente (punto que no está, TO que no está) resuelve a nada
+PASS presencia: la sección «S7» por su clave, y la procedencia sin punto no se lee
+PASS presencia: censo con la forma de resolucion.AnclaIndex.censo
+PASS presencia: atribuir_payload recibe el índice del banco sin cambiar (generacion; un ancla ausente, ausencia_kg)
+PASS v1 del log: buscar_nodos: el ancla en los resultados del log -> vista
+PASS v1 del log: ver_nodo sin error -> consultada
+PASS v1 del log: ver_nodo con error -> no cuenta
+PASS v1 del log: ver_vecinos: el ancla como vecino_id -> consultada
+PASS v1 del log: una traza que mezcla v1 y navegación
+PASS v1 del log: con los controles en verde, la corrida es válida
+PASS v1 del log: el sha256 que no da -> el control falla y la corrida entera es inválida
+PASS v1 del log: una salida que no es JSON -> el control falla y la corrida entera es inválida
+PASS v1 del log: un R7 que no reconcilia (otra entrada en el log) -> el control falla y la corrida entera es inválida
+PASS v1 del log: un step que el adaptador rechazó -> el control falla (R7) y la corrida es inválida
+PASS v1 del log: con log_r1, pasar además un índice que re-ejecuta es un error
+== 76 de 76 PASS
+PASS población de juguete: correr termina sin frenar
+PASS población de juguete: las cuatro clases, una correcta sin clase, por sesión
+PASS población de juguete: solo el brazo kg, con su veredicto final (la adjudicación de Q2 da parcial)
+PASS población de juguete: las que no tienen veredicto, por estado y la incompleta_otra por motivo
+PASS población de juguete: las cuentas por clase y por tipo
+PASS población de juguete: las anclas por forma, tal cual y con la lectura de los rangos
+PASS población de juguete: la salida no trae ninguna ancla, ningún id de pregunta ni ninguna sesión
+PASS población de juguete: la última clase, con 2 casos, entran las dos (F01 y F02, en el orden de sus ids)
+PASS población de juguete: la corrida es válida y lo controlado del banco, contado
+PASS rango: las unidades del ancla, por expandir sobre arbol_e0 (unidades_de_las_anclas)
+PASS rango: tal cual no resuelve; con la lectura de los rangos, los nodos de sus dos unidades
+PASS rango: el ancla sin rango queda igual
+PASS rango: las formas
+PASS sorteo con 25: 10, con random.Random(«B63:atribucion:ultima_clase:v1»).sample sobre los ids ordenados
+PASS sorteo con 25: el mismo, sea cual sea el orden en que llegan los ids
+PASS sorteo con 10: entran todas, ordenadas
+PASS sorteo con 3: entran todas, ordenadas
+PASS freno (sha_del_log): la corrida frena y no escribe --salida, --material ni --clave
+PASS freno (salida_v1_no_json): la corrida frena y no escribe --salida, --material ni --clave
+PASS freno (manifiesto_distinto): la corrida frena y no escribe --salida, --material ni --clave
+PASS fichas: F01 y F02, con la pregunta, los criterios con su marca, la respuesta, el ancla y los pasos
+PASS fichas: ninguna trae el id opaco ni la sesión
+PASS planilla: vacía, con sus columnas y sus renglones
+PASS sellador: sella con el renglón «sha256  bytes  hora  nombre», y planilla_sellada del análisis la lee
+PASS sellador: otra vez -> frena
+PASS sellador: un valor que no está -> frena
+PASS sellador: un renglón de más -> frena
+== rama 1_humo: 6 de 6
+== rama 2_sinteticos_vueltas_a_y_b: 1 de 1
+== rama 3_poblacion_de_juguete: 9 de 9
+== rama 4_ancla_con_rango: 4 de 4
+== rama 5_sorteo: 4 de 4
+== rama 6_frenos: 3 de 3
+== rama 7_fichas_y_sellador: 7 de 7
+== total: 34 de 34 PASS
