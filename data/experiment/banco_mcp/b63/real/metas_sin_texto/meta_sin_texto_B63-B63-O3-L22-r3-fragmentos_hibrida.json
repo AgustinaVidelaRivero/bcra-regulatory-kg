@@ -1,0 +1,523 @@
+{
+  "pregunta_id": "B63-B63-O3-L22-r3-fragmentos_hibrida",
+  "brazo": "fragmentos_hibrida",
+  "modo": "real",
+  "contrato": "agentes/contrato_metadata.md v1",
+  "unidad": "B6.3 (b63/v2/b2/lanzar_agente_b63.py sobre paralelo/lanzar_agente_n6_prueba.py)",
+  "generado": "2026-10-29T02:46:58+00:00",
+  "sesion": {
+    "session_id": "d92d7da1-ea58-4014-b8ab-99ac2d977584",
+    "copia_jsonl": "~/INGENIERIA IA/TESIS/fuera_del_repo/banco_b63/resultados/real/pasada1/B63-B63-O3-L22-r3-fragmentos_hibrida/sesion_B63-B63-O3-L22-r3-fragmentos_hibrida.jsonl",
+    "cwd": "~/INGENIERIA IA/TESIS/fuera_del_repo/banco_b63/sesiones/cwd",
+    "claude_code_version": "2.1.241 (Claude Code)",
+    "claude_code_version_en_init": "2.1.241",
+    "carpeta_configuracion": "~/INGENIERIA IA/TESIS/fuera_del_repo/banco_b63/sesiones/config/d92d7da1-ea58-4014-b8ab-99ac2d977584",
+    "copia_transcripcion": "sí",
+    "copia_resultados_en_disco": "no"
+  },
+  "modelos_R8": {
+    "declarado": "claude-sonnet-5",
+    "inventario_observado": [
+      "claude-haiku-4-5-20251001",
+      "claude-sonnet-5"
+    ],
+    "uso_por_modelo": {
+      "claude-haiku-4-5-20251001": {
+        "inputTokens": 1656,
+        "outputTokens": 23,
+        "cacheReadInputTokens": 0,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.001771,
+        "contextWindow": 200000,
+        "maxOutputTokens": 32000,
+        "canonicalModel": "claude-haiku-4-5",
+        "provider": "firstParty"
+      },
+      "claude-sonnet-5": {
+        "inputTokens": 9,
+        "outputTokens": 3903,
+        "cacheReadInputTokens": 64044,
+        "cacheCreationInputTokens": 28171,
+        "webSearchRequests": 0,
+        "costUSD": 0.12228429999999998,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 64000,
+        "canonicalModel": "claude-sonnet-5",
+        "provider": "firstParty"
+      }
+    },
+    "nota": "una sesión usa más de un modelo (b08095a, B1): el inventario es la verdad, el declarado es la intención"
+  },
+  "credenciales": {
+    "via_declarada": "api",
+    "apiKeySource_en_init": "ANTHROPIC_API_KEY"
+  },
+  "servidores_mcp": {
+    "en_init": [
+      {
+        "name": "fragmentos",
+        "status": "connected"
+      }
+    ],
+    "servidor_log_r1": "mcp_vector",
+    "version_servidor": "1.0",
+    "config": {
+      "servidor": "mcp_vector",
+      "version": "1.0",
+      "afinidad": "hibrida",
+      "indice_dir_bm25": "indice/e0_evaluado_128tos_bm25",
+      "sha256_indice_esperado": "8f57949d931ad74f0d34c169cd53f9392451e1f977a612740e5f01757df55a66",
+      "indice_dir_denso": "indice/e0_evaluado_128tos_denso",
+      "sha256_matriz_esperado": "0dd40904d5eef51aca0e47e9044240f40bedfa9dc15416128669f655b3030b5d",
+      "limite_max": 5,
+      "fusion": "RRF (Cormack, Clarke y Buttcher, SIGIR 2009): puntaje = suma de 1/(k + rango) sobre el ranking BM25 y el denso, rango desde 1; suma exacta (fracciones); desempate score desc, id asc",
+      "rrf_k": 60,
+      "profundidad_rrf": null,
+      "profundidad_nota": "cada ranking entero: en BM25, todos los pasajes con puntaje mayor que 0; en el denso, todos. El diseno de N2 no la fija: la declara N5-F, y la mesa la iguala con la de N5",
+      "filtros": "to y punto, opcionales, solo en esta configuracion: to, el TO del pasaje (igual, sin distinguir mayusculas); punto, el punto y sus subpuntos (unidad igual, o que empieza con el punto seguido de '.' o de '::'). Se aplican a cada ranking antes de fusionar",
+      "parametro_desde": true,
+      "parametro_desde_nota": "U-NAV-DESDE, familia 1: desde, opcional, es la posicion del ranking desde la que se listan los resultados (0 = los primeros), con el mismo limite; con desde=0 o sin pasarlo, la salida es la de antes. La base de F1 y las configuraciones de A2.1 y A2.2 no lo declaran: su tool no cambia",
+      "analizador": "spanish de Lucene 9.11.1 replicado en bm25_fragmentos.py: StandardTokenizer (subconjunto de UAX #29), LowerCaseFilter, StopFilter con spanish_stop.txt (308 palabras), SpanishLightStemFilter",
+      "similitud_bm25": "BM25 de Lucene 9.11.1 (BM25Similarity sin argumentos: k1 1,2 y b 0,75; norma de largo SmallFloat de un byte); desempate score desc, id asc",
+      "modelo": "microsoft/harrier-oss-v1-0.6b",
+      "revision": "f9b9dc8d367d443f2479d27aa5d8d2850c0774ee",
+      "dtype": "float32",
+      "max_seq_length": 32768,
+      "prompt_consultas": "web_search_query",
+      "prompt_documentos": null,
+      "similitud_denso": "coseno (embeddings L2-normalizados => producto interno); desempate score desc, id asc",
+      "device": "mps",
+      "corpus": "10680 pasajes de la E0 r2b del grafo evaluado de B6.3, el acumulado de las tandas 0, 1 y final, 128 TOs, tambien los de la cola (manifiestos_e0/e0_evaluado_128tos_r2b.json) en composicion propio+herencia = sha256_completo",
+      "nota": "B6.3 (pre-registro firmado en adf20f3b, §4, H-4 y H-5): la configuracion hibrida del sistema por fragmentos sobre el manifiesto de E0 del grafo evaluado, la de N5-F y U-NAV-DESDE (config_fragmentos_hibrida_acumulado_r2b.json): BM25 mas el denso, con la misma fusion, los mismos filtros por TO y por punto y el parametro desde. El mismo servidor, la misma tool, el mismo tope de limite (5) y el mismo desempate. El modelo se carga en la primera llamada. Si un indice no coincide, o los dos no sirven los mismos pasajes, el servidor aborta al arrancar. U-INDICES-EVAL: borrador de la etapa a, completado en la etapa b con el sha256_indice_esperado y el sha256_matriz_esperado de los dos indices construidos."
+    },
+    "config_sha256": "a4acb5cff735baf34a849d6dae8327ddfdb209e7647b7ace1454134039949455",
+    "fuente": {
+      "backend": "hibrido_local",
+      "afinidad": "hibrida",
+      "fusion": {
+        "metodo": "rrf",
+        "k": 60,
+        "profundidad": null,
+        "desempate": "score desc, id asc",
+        "filtros": [
+          "punto",
+          "to"
+        ]
+      },
+      "bm25": {
+        "indice_dir": "data/experiment/banco_mcp/mcp_vector/indice/e0_evaluado_128tos_bm25",
+        "sha256_indice_bm25": "8f57949d931ad74f0d34c169cd53f9392451e1f977a612740e5f01757df55a66",
+        "sha256_manifiesto": "280d1faed099e48e5a71755cc72a22489981e34803e718d344f73f332f98aadd",
+        "analizador": "spanish de Lucene 9.11.1 (StandardTokenizer UAX#29 subconjunto + LowerCaseFilter + StopFilter spanish_stop.txt + SpanishLightStemFilter)",
+        "lucene_version": "9.11.1",
+        "sha256_stop": "653a4f50e15b2016c220161a3f482ca0568ad35f385f8e9aa371bf3e6dac3dc0",
+        "unicodedata": "15.0.0",
+        "k1": 1.2,
+        "b": 0.75,
+        "sha256_modulo_bm25": "7e26c29c51ae47e394c5bd42424a3319eb45243840846df5f700aebfd82c414d"
+      },
+      "denso": {
+        "indice_dir": "data/experiment/banco_mcp/mcp_vector/indice/e0_evaluado_128tos_denso",
+        "sha256_matriz": "0dd40904d5eef51aca0e47e9044240f40bedfa9dc15416128669f655b3030b5d",
+        "sha256_manifiesto": "8fcbe5cf4965f573a4fe9418365ffdee026659a2922eef77faf28d7303c8f182",
+        "modelo": {
+          "repo": "microsoft/harrier-oss-v1-0.6b",
+          "revision": "f9b9dc8d367d443f2479d27aa5d8d2850c0774ee",
+          "dtype": "float32",
+          "max_seq_length": 32768,
+          "dim": 1024,
+          "prompt_consultas": "web_search_query",
+          "prompt_consultas_texto": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery: ",
+          "prompt_documentos": null,
+          "pooling_y_normalizacion": "del repo del modelo (módulos 1_Pooling / 2_Normalize), normalize_embeddings=True",
+          "device": "mps",
+          "trust_remote_code": false
+        },
+        "prompt_consultas_texto": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery: "
+      },
+      "sha256_pasajes_json": "54ee790d5a0792dbec2f4c54a8633c19012b7f18f0738610954edb7afa78ff75",
+      "n_pasajes": 10680,
+      "manifiesto_e0": {
+        "id": "e0_evaluado_128tos_r2b",
+        "ruta": "data/experiment/banco_mcp/mcp_vector/manifiestos_e0/e0_evaluado_128tos_r2b.json",
+        "sha256": "2e0ddf8ca6949054d0f8ba06c71e2ffba118ab015d030817361ad6fb8437db08",
+        "dir": "data/experiment/tanda_final/t3/acumulado/e0_acumulado_128_r2b",
+        "n_pasajes": 10680
+      },
+      "limite_max": 5,
+      "parametro_desde": true
+    },
+    "entorno_servidor": {
+      "python": "3.12.13",
+      "platform": "macOS-15.7.1-arm64-arm-64bit",
+      "mcp": "1.29.0",
+      "torch": "2.13.0",
+      "transformers": "5.15.1",
+      "sentence-transformers": "6.0.0",
+      "tokenizers": "0.22.2",
+      "numpy": "2.5.2",
+      "config_path": "data/experiment/banco_mcp/mcp_vector/config_fragmentos_hibrida_evaluado_r2b.json"
+    }
+  },
+  "sha_fuentes": {
+    "kg_sha256": null,
+    "sha256_matriz_vectorial": null
+  },
+  "harness_R10": {
+    "modo": "--bare",
+    "permission_mode": "dontAsk",
+    "claude_code_version": "2.1.241 (Claude Code)",
+    "claude_code_version_sellada": "2.1.241",
+    "coincide_con_sellada": true,
+    "flags_estructurales": [
+      "--bare",
+      "-p",
+      "--model",
+      "claude-sonnet-5",
+      "--output-format",
+      "stream-json",
+      "--verbose",
+      "--tools",
+      "",
+      "--strict-mcp-config",
+      "--mcp-config",
+      "mcp_vector/mcp_fragmentos_hibrida_evaluado.json",
+      "--permission-mode",
+      "dontAsk",
+      "--allowedTools",
+      "mcp__fragmentos__*",
+      "--disallowedTools",
+      "Bash,Read,Edit,Write,Glob,Grep,WebFetch,WebSearch,Agent,NotebookEdit",
+      "--max-turns",
+      "32",
+      "--max-budget-usd",
+      "1.8"
+    ],
+    "tools_denegadas": "Bash,Read,Edit,Write,Glob,Grep,WebFetch,WebSearch,Agent,NotebookEdit",
+    "tools_builtin": "\"\" (ninguna)",
+    "config_agentes_sha256": "eaff32bbad93cb9bc1f9d66ea2c4887cba8268f71007be6bb7158cc97bf0d0c4",
+    "sha_identidad_pipeline": "e2383718546ccb582f1405ff184414780e20c6945c9cd0763b34369f2b34d9a6",
+    "lanzador": [
+      {
+        "ruta": "data/experiment/banco_mcp/b63/v2/b2/correr_b63.py",
+        "sha256": "0b6253be159ce21ab7e4a0c77be76cbd1c8c06c698790f7bb46b3bfdff9aaf27"
+      },
+      {
+        "ruta": "data/experiment/banco_mcp/b63/v2/b2/comun_b63.py",
+        "sha256": "0100be8f85c425749574adad9cf7c922a0030f4ac5ebdb12f4c83e5b7bcc9b4b"
+      },
+      {
+        "ruta": "data/experiment/banco_mcp/b63/v2/b2/juez_b63.py",
+        "sha256": "266dd6f0c3a4c6c0146a5d37657ff14826e93a4c5f2585711dd22f420ce094d2"
+      },
+      {
+        "ruta": "data/experiment/banco_mcp/b63/v2/b2/ventana_b63.py",
+        "sha256": "f003811dd7a3b9869c1cd2dbed4c123f67e644aec06b264146f0b14637de312b"
+      },
+      {
+        "ruta": "data/experiment/banco_mcp/b63/v2/b2/memoria_b63.py",
+        "sha256": "f6cdbe280999052c4d884d06b4964a5727e431b00e0416bdb35cc4d2a2fb41a2"
+      },
+      {
+        "ruta": "data/experiment/banco_mcp/b63/v2/b2/docker_b63.py",
+        "sha256": "5f4de690e7d77bb45aaf735846069cc88934b9cb3be472ffc23406f397547d8e"
+      },
+      {
+        "ruta": "data/experiment/banco_mcp/b63/v2/b2/control_neo4j_b63.py",
+        "sha256": "4f4cdac858428098c92e68082d6479d46c7e7eda9a79a0ca71a579662bed89e5"
+      },
+      {
+        "ruta": "data/experiment/banco_mcp/agentes/lanzar_lote_paralelo_r5.py",
+        "sha256": "73b21753e826b91fb878b8ebc6f5fd34262e27be6a974fdb17051e825934e2e2"
+      },
+      {
+        "ruta": "data/experiment/banco_mcp/agentes/lanzar_lote_paralelo.py",
+        "sha256": "1bcadb445ef4b3716d6977950e83c08075e7da58324d124e3f6490e9fa3df448"
+      },
+      {
+        "ruta": "data/experiment/banco_mcp/paralelo/guardas_lote_r5.py",
+        "sha256": "04f81fe3bc522fb76166fe2190761b66de68e65e72191302b87c4461b532fae2"
+      },
+      {
+        "ruta": "data/experiment/banco_mcp/paralelo/guardas_lote.py",
+        "sha256": "73c317682951e2b01314db606f1a8682256f23330e1b88a735ae4e915c0528a2"
+      },
+      {
+        "ruta": "data/experiment/banco_mcp/b63/v2/b2/lanzar_agente_b63.py",
+        "sha256": "07f80d78b31a43961ceeb3e08586364fbc7cb00ad444718fb04a7abb983bb14f"
+      },
+      {
+        "ruta": "data/experiment/banco_mcp/paralelo/lanzar_agente_n6_prueba.py",
+        "sha256": "86f88984e1aab64d24b9d2d0d0fff4ed1c7b9ce63eae01e50f66b68640777ae4"
+      },
+      {
+        "ruta": "data/experiment/banco_mcp/agentes/lanzar_agente.py",
+        "sha256": "2f00742038324a8e01122d574981f50a4c23a3927f88aad6b1fe7c4cc8e3e0c5"
+      }
+    ]
+  },
+  "inventario_tools_R6": {
+    "tools_en_init": [
+      "mcp__fragmentos__buscar_pasajes"
+    ],
+    "esperadas": [
+      "mcp__fragmentos__buscar_pasajes"
+    ],
+    "coincide": true
+  },
+  "corte_R5": {
+    "max_turns": 32,
+    "tope_tool_calls_prompt": 30,
+    "max_budget_usd": 1.8,
+    "num_turns_observado": 8,
+    "n_tool_calls_observado": 7,
+    "corte_disparado": null
+  },
+  "completitud_R3": {
+    "completa": true,
+    "motivos_incompleta": [],
+    "regla": "sin marca de completitud la traza se excluye de la métrica y se declara; nunca se atribuye"
+  },
+  "tokens_R9": {
+    "por_llamada_api": [
+      {
+        "message_id": "msg_011CgVmD26PXCzV6brdHQvXb",
+        "usage_parcial_de_stream": true,
+        "uuid": "36b94e05-5b94-49c7-be62-07872968d88f",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 1,
+        "output_tokens": 2,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2078
+      },
+      {
+        "message_id": "msg_011CgVmDQ21RfE55kSUoDf45",
+        "usage_parcial_de_stream": true,
+        "uuid": "a532ecf6-5993-4750-8e1a-64f32071bef6",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 2,
+        "cache_creation_input_tokens": 9121,
+        "cache_read_input_tokens": 2078
+      },
+      {
+        "message_id": "msg_011CgVmECNJunPNV7MLm27Qa",
+        "usage_parcial_de_stream": true,
+        "uuid": "b002c9a1-69ba-475e-adbc-7ca87a0e4f02",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 2,
+        "cache_creation_input_tokens": 9220,
+        "cache_read_input_tokens": 11199
+      },
+      {
+        "message_id": "msg_011CgVmFMUm9A3ynfSSvSUar",
+        "usage_parcial_de_stream": true,
+        "uuid": "dd6aa6a1-ce2b-4efd-a64d-75457216cbc7",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 2,
+        "cache_creation_input_tokens": 7851,
+        "cache_read_input_tokens": 20419
+      },
+      {
+        "message_id": "msg_011CgVmFi8yikKLg7Zep9SM6",
+        "usage_parcial_de_stream": true,
+        "uuid": "66099ef0-02a1-40bb-be38-5e3b73f67aef",
+        "modelo": "claude-sonnet-5",
+        "stop_reason": null,
+        "input_tokens": 2,
+        "output_tokens": 5,
+        "cache_creation_input_tokens": 1979,
+        "cache_read_input_tokens": 28270
+      }
+    ],
+    "costo_recomputado": {
+      "total_usd": 0.124055,
+      "por_modelo": {
+        "claude-haiku-4-5-20251001": 0.001771,
+        "claude-sonnet-5": 0.122284
+      },
+      "modelos_sin_precio_sellado": []
+    },
+    "total_cost_usd_cli_solo_para_contraste": 0.1240553,
+    "precios_sellados_sha256": "6f2520ee56755fc2f43e689d0eb194c3305a6dcee257acae37d167f7e549fc2d"
+  },
+  "log_r1": {
+    "existe": true,
+    "ruta": "~/INGENIERIA IA/TESIS/fuera_del_repo/banco_b63/resultados/real/pasada1/B63-B63-O3-L22-r3-fragmentos_hibrida/log_r1_B63-B63-O3-L22-r3-fragmentos_hibrida.jsonl",
+    "sha256": "bad4888405f326f2674add88cbe5af1229ca3bcc05af43e74f40711b4eb70a9a",
+    "n_llamadas": 7
+  },
+  "duracion_s": 51.5,
+  "hb2": {
+    "max_turns_efectivo": 32,
+    "max_turns_de_la_config": 32,
+    "num_turns": 8,
+    "subtype": "success",
+    "is_error": false,
+    "stop_reason": "end_turn",
+    "n_mensajes_asistente": 5,
+    "n_tool_use": 7,
+    "n_tool_result": 7,
+    "n_eventos_user": 7,
+    "n_mensajes_con_tool_use": 4,
+    "max_tool_use_por_mensaje": 2,
+    "n_llamadas_log_r1": 7,
+    "log_r1_con_fin": true,
+    "corte_disparado": false,
+    "hay_result": true
+  },
+  "unidad_del_lanzador_importado": "U-BANCO-PARALELO (configuración de prueba de N6)",
+  "banco_venv_vector": {
+    "ruta": "$HOME/INGENIERIA IA/TESIS/venvs/banco_vector_py312",
+    "python_declarado": "3.12.13",
+    "python_observado": "3.12.13"
+  },
+  "control_disco": {
+    "regla": "frena si un tool_result de la transcripción trae <persisted-output> o si tool_results_<id>/ existe y no está vacía",
+    "transcripcion_copiada": true,
+    "tool_results_con_la_marca": [],
+    "carpeta_tool_results": "no existe",
+    "archivos_en_tool_results": [],
+    "largos_resultados_utf16_log_r1": [
+      {
+        "n": 1,
+        "tool": "buscar_pasajes",
+        "unidades_utf16": 11122,
+        "caracteres": 11122
+      },
+      {
+        "n": 2,
+        "tool": "buscar_pasajes",
+        "unidades_utf16": 11193,
+        "caracteres": 11193
+      },
+      {
+        "n": 3,
+        "tool": "buscar_pasajes",
+        "unidades_utf16": 14931,
+        "caracteres": 14931
+      },
+      {
+        "n": 4,
+        "tool": "buscar_pasajes",
+        "unidades_utf16": 3781,
+        "caracteres": 3781
+      },
+      {
+        "n": 5,
+        "tool": "buscar_pasajes",
+        "unidades_utf16": 4406,
+        "caracteres": 4406
+      },
+      {
+        "n": 6,
+        "tool": "buscar_pasajes",
+        "unidades_utf16": 10637,
+        "caracteres": 10637
+      },
+      {
+        "n": 7,
+        "tool": "buscar_pasajes",
+        "unidades_utf16": 3442,
+        "caracteres": 3442
+      }
+    ],
+    "largo_mayor_utf16": 14931,
+    "largo_mayor_utf16_en_la_transcripcion": 14931,
+    "tope_anotado_caracteres": 200000,
+    "mayor_supera_el_tope": false,
+    "FRENA": false
+  },
+  "valor_remoto_por_tool": {
+    "clave": "tengu_velvet_ibis",
+    "archivo": "existe",
+    "existe": true,
+    "apariciones": [
+      {
+        "tools": {},
+        "tools_sin_numero": []
+      }
+    ],
+    "tools_del_banco_con_numero": []
+  },
+  "mapa_R7": [
+    {
+      "n": 1,
+      "tool_use_id": "toolu_01ENsZ35dwEeU197euRqoRaa",
+      "tool": "mcp__fragmentos__buscar_pasajes",
+      "call_id_log": "mcp_vector-70240-1",
+      "coincide_tool_input": true,
+      "input_sha256": "4a44fec4fc391f28e7affce55450826cf6a89e044c3eefde88b24160f378288f"
+    },
+    {
+      "n": 2,
+      "tool_use_id": "toolu_01Tzrv2Ky5h32hQTGDJVsATy",
+      "tool": "mcp__fragmentos__buscar_pasajes",
+      "call_id_log": "mcp_vector-70240-2",
+      "coincide_tool_input": true,
+      "input_sha256": "1e457bb39d3fc67e55751d663fafe0b0070e870c1ee8042a4d557cd3403d5c71"
+    },
+    {
+      "n": 3,
+      "tool_use_id": "toolu_018uSooLLWAbKa6Hz5AXLEz2",
+      "tool": "mcp__fragmentos__buscar_pasajes",
+      "call_id_log": "mcp_vector-70240-3",
+      "coincide_tool_input": true,
+      "input_sha256": "fb1b9d48ed67d752e208f0dcf382f9f712b8d1434745cb09db570451d6c5b29f"
+    },
+    {
+      "n": 4,
+      "tool_use_id": "toolu_01XRghfBb5pFc38Y7pRS3JpG",
+      "tool": "mcp__fragmentos__buscar_pasajes",
+      "call_id_log": "mcp_vector-70240-4",
+      "coincide_tool_input": true,
+      "input_sha256": "c14c889443a45bf10d88bba867e9c85f0c8a4e8792f0d3141323c2541e6403cb"
+    },
+    {
+      "n": 5,
+      "tool_use_id": "toolu_019A8d4xtEqG6eJqZLe1ys21",
+      "tool": "mcp__fragmentos__buscar_pasajes",
+      "call_id_log": "mcp_vector-70240-5",
+      "coincide_tool_input": true,
+      "input_sha256": "a6346bad032e322e14b6e9d6d2ebba7f72bf4d5a2ff68204694ce2e0062a7deb"
+    },
+    {
+      "n": 6,
+      "tool_use_id": "toolu_01Ltdiwavtjfg9vEF8RQtubs",
+      "tool": "mcp__fragmentos__buscar_pasajes",
+      "call_id_log": "mcp_vector-70240-6",
+      "coincide_tool_input": true,
+      "input_sha256": "d57a70d611a18f75433b998d896c3cfd9a7436c0407e62a801fe76cadf5c96db"
+    },
+    {
+      "n": 7,
+      "tool_use_id": "toolu_017ao3GFHF9u9k4yjZrZ2boJ",
+      "tool": "mcp__fragmentos__buscar_pasajes",
+      "call_id_log": "mcp_vector-70240-7",
+      "coincide_tool_input": true,
+      "input_sha256": "84aec39b7554a36766dd3d80cd608eebaf75513402eead5b11817243c60dd3c4"
+    }
+  ],
+  "final_json_R4": {
+    "sha256": "1c7ee00502e9b932248fdb0f9da2abd45efc199ee31379c526b765efa57a8b2e",
+    "n_citas": 6
+  },
+  "permission_denials": 0,
+  "stream": {
+    "existe": true,
+    "ruta": "~/INGENIERIA IA/TESIS/fuera_del_repo/banco_b63/resultados/real/pasada1/B63-B63-O3-L22-r3-fragmentos_hibrida/stream_B63-B63-O3-L22-r3-fragmentos_hibrida.jsonl",
+    "sha256": "5552751809b625a6fa96d7887c44bdf46925cd77bc1481c5f34bf3da315b14f1"
+  },
+  "meta_completa": {
+    "existe": true,
+    "ruta": "~/INGENIERIA IA/TESIS/fuera_del_repo/banco_b63/resultados/real/pasada1/B63-B63-O3-L22-r3-fragmentos_hibrida/meta_B63-B63-O3-L22-r3-fragmentos_hibrida.json",
+    "sha256": "df543fba7097db969dc977a7d2f03e39918d011c670b95f39110c3746e1a6adc"
+  }
+}
