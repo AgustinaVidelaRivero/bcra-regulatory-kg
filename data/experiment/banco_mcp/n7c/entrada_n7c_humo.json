@@ -1,0 +1,149 @@
+{
+ "unidad": "U-NAV-DISENO, N6 — la entrada sellada del corredor (correr_n6.py)",
+ "modo": "real",
+ "preguntas": {
+  "ruta": "~/INGENIERIA IA/TESIS/fuera_del_repo/unav_n7c_c2bis/humo/preguntas_humo_N7c.json",
+  "sha256": "a5eea29c5d0318827e572c07be4af5fb8a9a2a7079b6e244fc3cee9adefdf4e2",
+  "n": 1,
+  "sello_N3": {
+   "ruta": "~/INGENIERIA IA/TESIS/fuera_del_repo/unav_n3/sello_N3.txt",
+   "sha256": "dfb660fc82e15444c8cfc3cf74f6c5b5c44451bf1f4d89a53a363c72bf0d653a"
+  }
+ },
+ "config_agentes": {
+  "ruta": "n7c/config_agentes_n7c_humo.json",
+  "sha256": "3e0b4383a66be2763b773066c6c3604f6090d0f8a401f74ff0b964dad6060994"
+ },
+ "lanzador": {
+  "ruta": "n7c/lanzar_agente_n7c.py",
+  "sha256": "3ce01b7388a777ca2eada2972407b9b612108ebbe9b935f4b0aa0e804a07c17b"
+ },
+ "guarda": {
+  "ruta": "data/experiment/banco_mcp/paralelo/guardas_lote_n6.py",
+  "sha256": "6287d60f9724548fa309add9eb8af4777f84cded7e4c21189a89fe0b868976cf",
+  "patron": "correr_juez_v2\\.py|run_posthoc\\.py|runner_corpus\\.py|lanzar_t|correr_tanda|ensamblar_tanda0\\.py|correr_a2_1\\.py|correr_smoke\\.py|correr_a2_2\\.py|juez_a2_2\\.py|correr_prueba_T_v2\\.py|correr_b63\\.py|lanzar_lote_paralelo_r5\\.py|correr_n6\\.py|correr_n7c\\.py|correr_juez_v3\\.py|corrida_cortada_v3\\.py"
+ },
+ "R5": {
+  "tope_tool_calls_prompt": 30,
+  "max_turns": 32,
+  "max_budget_usd": 1.8
+ },
+ "tope_usd": 45.0,
+ "freno_usd": 38.0,
+ "presupuesto_por_sesion_usd": 1.8,
+ "modelo": "claude-sonnet-5",
+ "claude_code_version_sellada": "2.1.241",
+ "juez": {
+  "ruta": "data/experiment/ev2_juez/juez.py",
+  "prompt_version": "v1",
+  "prompt_sha256": "fd446f8e61f46033d7de9b862121c698b2c52dcc2696b7f10993f44e509f5455",
+  "modelo": "claude-sonnet-4-6",
+  "temperatura": 0.0,
+  "repeticiones": 3,
+  "precios_usd_por_millon": {
+   "entrada": 3.0,
+   "salida": 15.0
+  },
+  "semilla_orden": "N6:orden_juez:v1",
+  "sal_id_opaco": "N6:id_opaco_juez:v1",
+  "reserva_por_respuesta_usd": 0.0378
+ },
+ "reintentos": {
+  "max_intentos": 2,
+  "max_formas_desconocidas": 3
+ },
+ "citas": {
+  "instrumento": "scripts/ucita2_indicadores_banco.py",
+  "python": {
+   "ruta": "~/INGENIERIA IA/TESIS/venvs/banco_vector_py312/bin/python",
+   "version": "3.12.13 | packaged by conda-forge | (main, Mar  5 2026, 17:06:14) [Clang 19.1.7 ]"
+  }
+ },
+ "memoria": {
+  "limite_gb": 14.5,
+  "huella_sesion_sin_codificador_gb_inicial": 0.381,
+  "huella_servidor_con_codificador_gb": 4.565,
+  "P_con_codificador_umbrales_gb": {
+   "2": 5.37,
+   "1": 9.935
+  },
+  "intervalo_huellas_s": 5.0
+ },
+ "docker": {
+  "mem_total_max_bytes": 2684354560,
+  "contenedor": "neo4j-bcra-kg-indices-eval"
+ },
+ "lotes": [
+  {
+   "nombre": "sin_codificador",
+   "carga_codificador": false,
+   "variable_P": "N6_P_SIN_CODIFICADOR",
+   "configuraciones": [],
+   "n_sesiones": 0,
+   "por_configuracion": {},
+   "ids": []
+  },
+  {
+   "nombre": "con_codificador",
+   "carga_codificador": true,
+   "variable_P": "N6_P_CON_CODIFICADOR",
+   "configuraciones": [
+    "N7",
+    "N7c",
+    "N7c_amp"
+   ],
+   "n_sesiones": 3,
+   "por_configuracion": {
+    "N7": 1,
+    "N7c": 1,
+    "N7c_amp": 1
+   },
+   "ids": [
+    "N6-N3-C2-N7-r1",
+    "N6-N3-C2-N7c-r1",
+    "N6-N3-C2-N7c_amp-r1"
+   ]
+  }
+ ],
+ "orden": {
+  "semilla": "N7C:orden:v1",
+  "regla_preguntas": "random.Random('N7C:orden:v1').shuffle sobre los ids ordenados",
+  "regla_corridas": "random.Random(f'N7C:orden:v1:{id}').shuffle sobre las corridas ordenadas por (configuración, repetición)",
+  "preguntas_en_orden": [
+   "N3-C2"
+  ],
+  "n_sesiones": 3,
+  "sesiones": [
+   {
+    "id": "N6-N3-C2-N7-r1",
+    "qid": "N3-C2",
+    "configuracion": "N7",
+    "brazo": "kg_N7",
+    "rep": 1
+   },
+   {
+    "id": "N6-N3-C2-N7c-r1",
+    "qid": "N3-C2",
+    "configuracion": "N7c",
+    "brazo": "kg_N7c",
+    "rep": 1
+   },
+   {
+    "id": "N6-N3-C2-N7c_amp-r1",
+    "qid": "N3-C2",
+    "configuracion": "N7c_amp",
+    "brazo": "kg_N7c_amp",
+    "rep": 1
+   }
+  ],
+  "sha256_ids_ordenados": "0cb147572fd5930dea878b1ee8d2e14e720f2e57eba2c2aa507196452ec389f6"
+ },
+ "lista_familia5": {
+  "ruta": "data/experiment/banco_mcp/n6/lista_familia5_N6.json",
+  "sha256": "fd0e336c258fce74de9f4b788bbe9f0df7d75704e2a0e8b83d66ab215bd2665d",
+  "sello": {
+   "ruta": "data/experiment/banco_mcp/n6/sello_lista_familia5_N6.txt",
+   "sha256": "89ff1e0740754f5838055cb87af6c37f7402d494d6ae1b957a4e99f8c5294491"
+  }
+ }
+}

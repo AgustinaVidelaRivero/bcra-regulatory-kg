@@ -1,0 +1,233 @@
+{
+ "unidad": "N7c, B2: la configuración de agentes de N7, N7c y N7c+ (n7c/armar_config_agentes_n7c.py)",
+ "por_que": "La corrección del brazo del grafo (N7c) se compara en B2 en tres configuraciones del mismo brazo sobre el grafo evaluado de B6.3: N7 (la elegida en N6, T-F6), N7c (ver_punto con la sección de puntos relacionados) y N7c+ (además, la familia y la línea de la cita). Las instrucciones del agente, el modelo, el CLI y R5 son los de B6.3; cambia solo el servidor del grafo.",
+ "fuentes": {
+  "config_agentes_b63": {
+   "ruta": "b63/v2/b2/config_agentes_b63.json",
+   "sha256": "eaff32bbad93cb9bc1f9d66ea2c4887cba8268f71007be6bb7158cc97bf0d0c4"
+  }
+ },
+ "fuentes_de_los_campos": {
+  "prompt": "config_agentes_b63.json, tal cual",
+  "corte_R5": "config_agentes_b63.json, tal cual",
+  "modelo": "config_agentes_b63.json, tal cual",
+  "claude_code_version_sellada": "config_agentes_b63.json, tal cual",
+  "modo_harness": "config_agentes_b63.json, tal cual",
+  "env_por_sesion": "config_agentes_b63.json, tal cual",
+  "base": "config_agentes_b63.json, tal cual",
+  "R5": "sale del corte_R5 de config_agentes_b63.json (30, 32 y 1,80: el R5 de N6)",
+  "brazos.kg_N7": "el brazo kg de config_agentes_b63.json, campo por campo",
+  "brazos.kg_N7c": "el brazo kg de config_agentes_b63.json con mcp_config, config_servidor y archivos_servidor de N7c",
+  "brazos.kg_N7c_amp": "el brazo kg de config_agentes_b63.json con mcp_config, config_servidor y archivos_servidor de N7c+",
+  "configuraciones_n6": "N7, N7c y N7c+ (clave N7c_amp), con carga_codificador true y sus repeticiones: 3 en B2 y 1 en el humo",
+  "sha256_de_cada_archivo": "los archivos que nombran los brazos, medidos al armar"
+ },
+ "prompt": {
+  "plantilla": "n7/plantilla_prompt_n7.txt",
+  "sha256": "822aa4e72517bee7a3bd0ed4c80776548622930e54159c16562b874745e771b9",
+  "como_se_pasa": "como en la base: argumento de `claude -p <prompt>`; el prompt de sistema de Claude Code no se toca.",
+  "diferencia_entre_brazos": "exclusivamente el bloque {{BLOQUE_TOOLS}}: la plantilla es la misma en los tres"
+ },
+ "corte_R5": {
+  "max_turns": 32,
+  "tope_tool_calls_en_prompt": 30,
+  "max_budget_usd_por_sesion": 1.8,
+  "nota": "el R5 del registro de N7 (R5.valores; no sube): 30, 32 y 1,80, igual en todas las sesiones de B6.3."
+ },
+ "modelo": "claude-sonnet-5",
+ "claude_code_version_sellada": "2.1.241",
+ "modo_harness": "--bare",
+ "env_por_sesion": {
+  "BANCO_REPO": "raíz del repo (expansión en los JSON de MCP)",
+  "BANCO_VENV_VECTOR": "venv 3.12 del servidor de fragmentos; en los tres brazos: el del grafo lo usa para su codificador de consultas (n7/config_mcp_kg_n7_evaluado.json, denso.python_env)",
+  "BANCO_LOG_R1": "ruta del log R1 de ESA sesión (un archivo por sesión)",
+  "BANCO_SESION_TAG": "id de la sesión (se copia a cada línea del log)",
+  "NEO4J_URI": "bolt://127.0.0.1:47687: el Neo4j propio de los índices (decisión de la autora del 27/10/2026, 10:24:11); pasa por la lista cerrada (agentes/lanzar_agente.py, ENTORNO_PERMITIDAS) desde el runner, que la compara con la de la entrada",
+  "MCP_TIMEOUT": "180000"
+ },
+ "base": {
+  "ruta": "a2_2/config_agentes_a2_2.json",
+  "sha256": "fd4ce4e4ce7d4c7cd0550af1ed2ba7d2cbd3d1a2301ee82060ba7d6eba4697c0",
+  "que_se_hereda": "modelo, modo del harness, versión sellada del CLI, flags y R5 (30, 32 y 1,80): los de A2.2 (N4, §1), como en N6. Lo que cambia: los brazos (los de B6.3) y la plantilla (la de N7)."
+ },
+ "R5": {
+  "tope_tool_calls_prompt": 30,
+  "max_turns": 32,
+  "max_budget_usd": 1.8
+ },
+ "brazos": {
+  "kg_N7": {
+   "rol": "grafo",
+   "configuracion_n7": "T-F6",
+   "familias": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "carga_codificador": true,
+   "mcp_config": "n7/mcp_kg_n7_evaluado.json",
+   "servidor": "kg",
+   "bloque_tools": "n7/bloque_tools_kg_n7.txt",
+   "allowed_tools": "mcp__kg__*",
+   "tools_esperadas": [
+    "mcp__kg__buscar_nodos",
+    "mcp__kg__buscar_puntos",
+    "mcp__kg__indice_to",
+    "mcp__kg__tipos_de_relacion",
+    "mcp__kg__vecinos_por_relacion",
+    "mcp__kg__ver_descendientes",
+    "mcp__kg__ver_nodo",
+    "mcp__kg__ver_punto",
+    "mcp__kg__ver_remisiones",
+    "mcp__kg__ver_vecinos"
+   ],
+   "tools_esperadas_nota": "en el orden en que las lista el CLI en system/init (alfabético), porque armar_meta compara las listas",
+   "config_servidor": "n7/config_mcp_kg_n7_evaluado.json",
+   "archivos_servidor": [
+    "mcp_kg/servidor_mcp_kg_nav_cand.py",
+    "mcp_kg/servidor_mcp_kg_nav.py",
+    "mcp_kg/servidor_mcp_kg.py",
+    "mcp_kg/familias_nav.py",
+    "mcp_kg/familias_nav_cand.py",
+    "mcp_kg/indice_puntos.py",
+    "mcp_kg/codificador_consultas.py"
+   ],
+   "venv": "el .venv del repo para el servidor (lo fija el JSON de MCP) y BANCO_VENV_VECTOR para su codificador de consultas",
+   "grafo": "KG_Acumulado_Tandas0y1yFinal_r2b_sincola",
+   "kg_sha256": "576c97256185a0d5741cb2c35a2a85e91412f3e1119ad7a85d960b7d60c35ad3"
+  },
+  "kg_N7c": {
+   "rol": "grafo",
+   "configuracion_n7": "T-F6",
+   "familias": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "carga_codificador": true,
+   "mcp_config": "n7c/mcp_kg_n7c_evaluado.json",
+   "servidor": "kg",
+   "bloque_tools": "n7/bloque_tools_kg_n7.txt",
+   "allowed_tools": "mcp__kg__*",
+   "tools_esperadas": [
+    "mcp__kg__buscar_nodos",
+    "mcp__kg__buscar_puntos",
+    "mcp__kg__indice_to",
+    "mcp__kg__tipos_de_relacion",
+    "mcp__kg__vecinos_por_relacion",
+    "mcp__kg__ver_descendientes",
+    "mcp__kg__ver_nodo",
+    "mcp__kg__ver_punto",
+    "mcp__kg__ver_remisiones",
+    "mcp__kg__ver_vecinos"
+   ],
+   "tools_esperadas_nota": "en el orden en que las lista el CLI en system/init (alfabético), porque armar_meta compara las listas",
+   "config_servidor": "n7c/config_mcp_kg_n7c_evaluado.json",
+   "archivos_servidor": [
+    "mcp_kg/servidor_mcp_kg_nav_rel.py",
+    "mcp_kg/servidor_mcp_kg_nav_cand.py",
+    "mcp_kg/servidor_mcp_kg_nav.py",
+    "mcp_kg/servidor_mcp_kg.py",
+    "mcp_kg/familias_nav.py",
+    "mcp_kg/familias_nav_cand.py",
+    "mcp_kg/indice_puntos.py",
+    "mcp_kg/codificador_consultas.py",
+    "mcp_kg/familias_nav_rel.py"
+   ],
+   "venv": "el .venv del repo para el servidor (lo fija el JSON de MCP) y BANCO_VENV_VECTOR para su codificador de consultas",
+   "grafo": "KG_Acumulado_Tandas0y1yFinal_r2b_sincola",
+   "kg_sha256": "576c97256185a0d5741cb2c35a2a85e91412f3e1119ad7a85d960b7d60c35ad3"
+  },
+  "kg_N7c_amp": {
+   "rol": "grafo",
+   "configuracion_n7": "T-F6",
+   "familias": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "carga_codificador": true,
+   "mcp_config": "n7c/mcp_kg_n7c_amp_evaluado.json",
+   "servidor": "kg",
+   "bloque_tools": "n7/bloque_tools_kg_n7.txt",
+   "allowed_tools": "mcp__kg__*",
+   "tools_esperadas": [
+    "mcp__kg__buscar_nodos",
+    "mcp__kg__buscar_puntos",
+    "mcp__kg__indice_to",
+    "mcp__kg__tipos_de_relacion",
+    "mcp__kg__vecinos_por_relacion",
+    "mcp__kg__ver_descendientes",
+    "mcp__kg__ver_nodo",
+    "mcp__kg__ver_punto",
+    "mcp__kg__ver_remisiones",
+    "mcp__kg__ver_vecinos"
+   ],
+   "tools_esperadas_nota": "en el orden en que las lista el CLI en system/init (alfabético), porque armar_meta compara las listas",
+   "config_servidor": "n7c/config_mcp_kg_n7c_amp_evaluado.json",
+   "archivos_servidor": [
+    "mcp_kg/servidor_mcp_kg_nav_rel_amp.py",
+    "mcp_kg/servidor_mcp_kg_nav_rel.py",
+    "mcp_kg/servidor_mcp_kg_nav_cand.py",
+    "mcp_kg/servidor_mcp_kg_nav.py",
+    "mcp_kg/servidor_mcp_kg.py",
+    "mcp_kg/familias_nav.py",
+    "mcp_kg/familias_nav_cand.py",
+    "mcp_kg/indice_puntos.py",
+    "mcp_kg/codificador_consultas.py",
+    "mcp_kg/familias_nav_rel.py",
+    "mcp_kg/familias_nav_rel_amp.py"
+   ],
+   "venv": "el .venv del repo para el servidor (lo fija el JSON de MCP) y BANCO_VENV_VECTOR para su codificador de consultas",
+   "grafo": "KG_Acumulado_Tandas0y1yFinal_r2b_sincola",
+   "kg_sha256": "576c97256185a0d5741cb2c35a2a85e91412f3e1119ad7a85d960b7d60c35ad3"
+  }
+ },
+ "configuraciones_n6": {
+  "N7": {
+   "brazo": "kg_N7",
+   "repeticiones": 3,
+   "carga_codificador": true
+  },
+  "N7c": {
+   "brazo": "kg_N7c",
+   "repeticiones": 3,
+   "carga_codificador": true
+  },
+  "N7c_amp": {
+   "brazo": "kg_N7c_amp",
+   "repeticiones": 3,
+   "carga_codificador": true
+  }
+ },
+ "nombres": {
+  "N7": "N7",
+  "N7c": "N7c",
+  "N7c_amp": "N7c+"
+ },
+ "sha256_de_cada_archivo": {
+  "mcp_kg/codificador_consultas.py": "5473c49fd4737a4134728f02a86a5a823cd673da035bb3b4a3b4fb94e64ecfb8",
+  "mcp_kg/familias_nav.py": "c27bc888224051de2d2959227479e31e5190027078d5fe405ccb1bd5582da22d",
+  "mcp_kg/familias_nav_cand.py": "b8a2e828314a54f62928a6351eacedc1cfdd8178f654ba632d6374ac0bb66d0e",
+  "mcp_kg/familias_nav_rel.py": "1b368333838b3d090b923e7d4b3db31751b7e06946ccc31038b4d41a30f125a7",
+  "mcp_kg/familias_nav_rel_amp.py": "d5e9aff19bd7d26143b0a9b7a7074844d90bac6405a2dd1a30bd119ff46f9022",
+  "mcp_kg/indice_puntos.py": "2474ce5eb43974529d85ca96f3317c81e9565c0af2f6debb95cd383002ce58fe",
+  "mcp_kg/servidor_mcp_kg.py": "f8b8de7a587c0f3910b7f1b7e008cdf2030b2e9024850e9815629c03201c29b3",
+  "mcp_kg/servidor_mcp_kg_nav.py": "78a2dfaf02c4494232d576a54ec377f58dd01366fbe34fb1681c6272e5b7bb9b",
+  "mcp_kg/servidor_mcp_kg_nav_cand.py": "1eaacadb6485c7722b7bacc3e63f68ff34865b870675f9a108e3ac85587ff92a",
+  "mcp_kg/servidor_mcp_kg_nav_rel.py": "ab799426a53484a70dd4adc2709acee70c973e6431f32fff3d1f5d69fa944079",
+  "mcp_kg/servidor_mcp_kg_nav_rel_amp.py": "caf496311442469eafbf54b11320772b1950ff6fadbec6f23a79af23fb4de956",
+  "n7/config_mcp_kg_n7_evaluado.json": "9e9f0ee5b9be4ff41bb2c8cc0c3528892d346197097c6de8b9c5007cb308d8c5",
+  "n7/mcp_kg_n7_evaluado.json": "4e3b9ccb062d8eea26049bb8814d62a5807cd683211539394bedb87632c43777",
+  "n7c/config_mcp_kg_n7c_amp_evaluado.json": "31b39342c736720e5b002423b66453ff219b40daec8e9b73a461e8f8648ad666",
+  "n7c/config_mcp_kg_n7c_evaluado.json": "41b0a6db1950877a23743d100f0ebc3e41e05430c472ad4484f09752e1220d81",
+  "n7c/mcp_kg_n7c_amp_evaluado.json": "ef76623881b82478950319e07d4a790879b89390ce3fb99bc59b6a221d91a109",
+  "n7c/mcp_kg_n7c_evaluado.json": "13a3ae62a542478f2c4bb9261a979de5801ce90fc8fc441b0a695ddd35bb729c"
+ }
+}
