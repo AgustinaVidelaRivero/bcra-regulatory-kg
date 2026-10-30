@@ -688,3 +688,33 @@ topes de USD 35 (V) y USD 55 (T).
     §4.6 y como se hizo con la v2, con las esenciales al lado como descriptivas. La frase de la enmienda 5 sobre la importancia queda
     corregida en una nota fechada del pre-registro. Lo decido antes de que corra la validación y sin haber visto ningún resultado.»
   - El texto firmado no cambia.
+- **30/10/2026 — La validación de la v3: no pasa (ii). Desvío del pre-registro: la v3 juzga igual las 200 que faltan** (decisiones de la
+  autora recibidas antes de las 17:45:11 y, la 3 en su versión final, la 5 y la 6, antes de las 17:57:54; todas antes de correr las
+  200 y sin ningún veredicto de la v3 sobre ellas; registro, §202 y §203):
+  - **La validación, tal cual salió** (enmienda 5, punto 9): 300 de 300 llamadas completas, sin rechazos, por USD 15,4589, de las
+    17:08:22 a las 17:27:40 (`juez_v3/validacion/resumen.json`). De las 100 del acta, 98 las deciden los dos y 2 van a adjudicación
+    (`juez_v3/validacion/analisis_validacion_v3.json`):
+    - (i) pasa: acuerdo en 86 de 98 (0,8776; Wilson inferior 0,7981);
+    - **(ii) no pasa**, cruda ni ponderada. La precisión del juez menos la de la autora da −0,0816 cruda (0,7959 contra 0,8776) y
+      −0,0748 ponderada por estrato de predicado (0,8054 contra 0,8802). El borde es 0,05;
+    - (iii) pasa: el juez marca incorrectas 10 de las 12 que la autora marca incorrectas;
+    - el kappa de «correcta», 0,5572, se informa.
+  - **Las decisiones, tal cual:**
+    1. «La validación queda registrada tal cual salió. No hay recalibración ni otra validación.»
+    2. «Decido usar igual la v3 como juez de las tripletas, como desvío declarado del pre-registro. Mi razón: considero que la
+       coincidencia ficha por ficha es la medida relevante de la calidad del juez.»
+    3. «La v3 juzga las 200 tripletas. Donde aparezca la precisión que da el juez, va con la nota del desvío: qué exigía el
+       pre-registro, que (ii) no pasó, la diferencia medida con su signo y mi precisión sobre las mismas fichas de la validación, 86 de
+       98.»
+    4. «Esta decisión queda registrada con fecha y hora antes de correr las 200, sin haber visto ningún veredicto de la v3 sobre
+       ellas.»
+    5. «La precisión de las 400 se arma con mi lectura en mis 100 de calibración y en las 100 de la validación, y con la v3 solo en las
+       200 (opción B).»
+    6. «La corrección de la cifra de la v3 por el sesgo medido, por doble muestreo (Tenenbein, 1970), con intervalo por bootstrap, se
+       informa solo como análisis de sensibilidad, no como cifra principal.»
+  - **El desvío del pre-registro:** el §4.6 dice «Si no pasa: el juez no escala», y la enmienda 5 da la medición de las 400 con la v3
+    solo si pasa (punto 10). Si no pasa, deja el 78 de 100 (punto 11). La v3 no pasa (ii) y juzga igual las 200. La decisión 5 se
+    aparta también del punto 10, que en las 100 de la validación cuenta el veredicto de la v3. Va a la lista del §11.
+  - **La diferencia medida, con su signo** (decisión 3): −0,0816 cruda y −0,0748 ponderada. El juez da una precisión más baja que la
+    de la autora.
+  - El texto firmado no cambia: la enmienda 1 y la enmienda 5 quedan como están.
