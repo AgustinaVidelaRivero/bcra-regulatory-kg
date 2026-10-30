@@ -385,3 +385,46 @@ FIRMADO por la autora el 30/10/2026 (recibida a las 00:25:13), tal cual: «Firmo
       marca así la mayoría de los que la respondieron (con dos, los dos).
   - **B6.3:** su revisión de expertos queda declarada como no realizada, con una nota al pie en su pre-registro.
   - El texto firmado no cambia.
+- **30/10/2026 — La corrección del sistema del grafo, fijada con B2, y la regla de los lugares sin reserva, decididas antes de ver
+  ninguna pregunta de B6.4** (decisiones de la autora recibidas antes de las 16:17:42; registro de decisiones, §199 y §200):
+  - **Las decisiones, tal cual:**
+    - «Fijo N7c+ como está, sin otra vuelta: de las 17 anclas que faltaron en N7c+, 13 nunca aparecieron en lo que vio el agente, y
+      los arreglos posibles suben el techo de 8 a 10 de 17 como mucho. Se declara que (i) sube por una sola sesión, con tu texto, y
+      que lo que cambia de verdad es la cita fundada.» El texto es el de la declaración de (i), abajo.
+    - «Para los lugares sin reserva, y también para las preguntas que yo rechace: (a) reqcac y, si no alcanza, (c) la reserva de
+      NG_digerible, en su orden, como regla general y declarada. Mantiene N = 96 y 32 por tipo. Lo decido antes de ver ninguna
+      pregunta de B6.4.»
+  - **B2 y la regla de adopción (D-B2-9):** 270 sesiones del agente, todas completas, y sus 270 respuestas juzgadas
+    (`data/experiment/banco_mcp/n7c/b2/`). Con la lectura de la regla, N7c+ cumple las cuatro condiciones frente a N7
+    (`n7c/b2/analisis/analisis_b2_n7c.json`, `para_la_regla` y `regla_de_adopcion`):
+    - (i) consultó todas las anclas en 36 de las 51 sesiones de varios puntos, contra 35 de N7 (N7c, 38);
+    - (ii) su fidelidad queda en 0,9014, contra 0,9091 de N7, y en dato directo en 113 de 114, contra 112;
+    - (iii) ninguna sesión llegó al tope de llamadas;
+    - (iv) la cita fundada sube a 83 de 90, contra 48 de 90 de N7 (y de N7c).
+
+    La regla adopta N7c+, y el agente de B6.4 usa N7c+ como está, con su código del commit de la corrección.
+  - **La declaración de (i):**
+
+    > N7c+ consultó todas las anclas en 36 de las 51 sesiones de varios puntos, y N7 en 35: (i) se cumple por una sesión, la
+    > diferencia mínima que admite la regla fijada antes de B2. Esa diferencia es menor que la variación entre repeticiones: en N7,
+    > las tres repeticiones de una misma pregunta no coinciden en 4 de las 17 preguntas, y en N7c+ en 3. Por eso no se afirma que
+    > N7c+ navegue mejor que N7: en la navegación quedan iguales dentro del ruido. La adopción la decide la regla, y lo que N7c+
+    > cambia de verdad es la cita fundada, 83 de 90 contra 48 de 90. Si (i) no se hubiera cumplido, la regla habría adoptado N7c
+    > (38 de 51), que tampoco mueve la cita fundada (48 de 90).
+  - **Por qué no hay otra vuelta** (el diagnóstico de la navegación, con lo de B2, USD 0: `n7c/b2/diagnostico/`):
+    - de las 17 anclas que les faltaron a las 15 sesiones de N7c+ sin todas las anclas, 13 no aparecieron en nada de lo que vio el
+      agente, 2 estaban en «Puntos relacionados» y 2 en la familia. Ninguna de esas sesiones llegó a 30 llamadas;
+    - los arreglos que no tocan las instrucciones del agente, las descripciones de las herramientas, los sistemas por fragmentos ni
+      el grafo evaluado suben el techo en N3 de 8 a 9 (listas con tope 20) o a 10 de 17 (sin tope);
+    - una vuelta más sería la tercera sobre las mismas 17 preguntas de varios puntos de N3, y correría B6.4.
+  - **La regla de los lugares sin reserva** (complementa la del §3.3, «Si la unidad de un lugar no sostiene su tipo»):
+    - si la reserva de la clase de un lugar se agota, el lugar pasa, con su tipo:
+      - (a) primero a los documentos de su clase que el sorteo saltó por tener menos de 4 unidades candidatas, en el orden del
+        sorteo: hoy solo `reqcac`, de NG_necesita_reglas, con 3;
+      - (c) si no alcanza, al documento siguiente de la reserva de NG_digerible, en su orden;
+    - como en el resto, ningún documento ancla más de 4 lugares, y el tipo del lugar no cambia;
+    - vale para los dos lugares que la generación dejó sin pregunta (B64-O6-L15 y L16, de remisión y de NG_necesita_reglas: su
+      reserva era un solo documento, que ya anclaba 4 lugares) y para las preguntas que la autora rechace en su revisión;
+    - se declara por clase: cuántos lugares cambian de documento y cuántos de clase. N queda en 96, con 32 por tipo, y D-3 no
+      cambia.
+  - El texto firmado no cambia.
