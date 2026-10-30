@@ -1,9 +1,10 @@
 # Pre-registro de B6.4, la segunda evaluación confirmatoria: preguntas que juntan varios puntos
 
-**BORRADOR v5 PARA FIRMAR**, de la mesa (30/10/2026, §350): la v4 (§349) con las decisiones que la autora anunció para la firma
-(30/10/2026, recibidas a las 00:12:41): D-1 (b), D-6 (b) y las demás como las recomendó la mesa. Con ellas, ningún punto queda por
-decidir (§14). Trae también las decisiones de B2 de la misma hora, D-B2-6 a D-B2-9. La v4 era la v3 (§344) con el alcance de la
-corrección ampliado (N7c+); la v3, la v2 (§343) con C-1 a C-3 y D-10; la v2, la v1 (§340) con la corrección de las 19:04:03.
+**FIRMADO por la autora el 30/10/2026** (recibida a las 00:25:13): el borrador v5 de la mesa (§350, `e4c2c42b…`), commiteado tal
+cual en el commit anterior, con las decisiones de su §14. No sellado como medición: ningún número de este documento es un resultado.
+Desde esta firma es el pre-registro de B6.4. La v5 era la v4 (§349) con D-1 (b), D-6 (b) y las demás decisiones; la v4, la v3 (§344)
+con el alcance de la corrección ampliado (N7c+); la v3, la v2 (§343) con C-1 a C-3 y D-10; la v2, la v1 (§340) con la corrección de
+las 19:04:03.
 De la mesa (29/10/2026, §340 y §343). Ningún número de este documento es un resultado de B6.4. Lo firma la autora y
 se sella con su commit; la ruta propuesta en el repo es `docs/preregistro_B6_4_evaluacion_confirmatoria_varios_puntos.md` (D-9).
 
@@ -348,4 +349,5 @@ tercera configuración de B2; tope USD 45 y freno 38; y la regla de adopción de
 
 ## Firma
 
-PENDIENTE.
+FIRMADO por la autora el 30/10/2026 (recibida a las 00:25:13), tal cual: «Firmo el pre-registro de B6.4, el borrador v5 de la §350
+(BORRADOR_preregistro_B6_4_v5_PARA_FIRMAR_mesa.md, e4c2c42b…), tal cual, con las decisiones de su §14.» Rige desde esta firma.
