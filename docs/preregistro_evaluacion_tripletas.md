@@ -658,3 +658,33 @@ topes de USD 35 (V) y USD 55 (T).
       - el criterio del sujeto del alcance del TO (punto 5), que juzga la verdad de la relación según el TO y no la regla de emisión;
       - el límite de la 1b (punto 6).
   - El texto firmado no cambia.
+- **30/10/2026 — La congelación de la v3 del juez de precisión (enmienda 5, punto 8), antes de la validación** (decisión de la
+  autora recibida a las 09:50:13; registro de decisiones, §191):
+  - **La regla de freno (punto 7; punto 4 de la enmienda 4):** la iteración 1 no deja ningún caso nuevo. De sus desacuerdos salió un
+    caso limpio, T048, y la autora no lo aprobó: «No apruebo T048 y se congela la iteración 1. El "no" no juzga el caso.» Se frena,
+    y se congela la iteración 1. Las cifras de la iteración son internas de la calibración y no se informan.
+  - **El prompt de la v3 congelada,** el de la iteración 1: sha256 `1743db388eb2ffee9c93f0326062a24a4421d086dd750001edeba7ad456aaf18`.
+  - **Su bloque de casos nuevos** (`casos/bloque_casos_nuevos_iteracion_1.txt`, los cinco casos de la enmienda 5): sha256
+    `5e9052750b17e4f1cb3c4ccab2550920e45d3b3453ad23ae23114c0c9686f1e4`.
+  - **El registro de la congelación, el código y su validación:** el sha256 y los bytes de los 59 archivos que definen
+    esta versión: el prompt y los casos, la hoja de aprobación y su sello, las corridas de la iteración 1 con su regla, el
+    registro de la congelación, y el código y los comandos de las etapas a, b y c, con el corredor y el análisis de la validación
+    y sus pruebas. Por carpeta:
+    5 de `casos/`, 25 de `codigo/`, 12 de `comandos/`, 1 de `congelacion/`, 5 de `corridas/`, 3 de la raíz, 8 de `pruebas_c/`.
+    Van en `data/experiment/tripletas_v/juez_v3/congelacion_juez_v3_sha256.txt`,
+    con sha256 `4e7a7238eba6edfc73b2257450a894a7b5c0eccf3df4bb6d21890795b47d618f`. Los archivos siguen fuera del repo, en
+    `fuera_del_repo/tripletas_v_juez/v3/`.
+  - El texto firmado no cambia.
+- **30/10/2026 — La condición (ii) de la validación de la v3: la ponderada por estrato de predicado, antes de la validación**
+  (decisión de la autora recibida a las 10:45:46; registro de decisiones, §194):
+  - **La corrección:** la frase del punto 9 de la enmienda 5, «La (ii) ponderada usa la importancia de la autora.», es un error de
+    redacción de la mesa. La (ii) del §4.6 se aplica tal cual: la precisión según el juez y según la autora difieren en 0,05 o menos,
+    cruda y ponderada por el tamaño de cada estrato de predicado (§3.6), como en la prueba de la v2 (`criterios()` de
+    `analisis_gold_juez_v.py`, `0952806a…`).
+  - **La importancia de la autora,** porque la v3 no la juzga, entra en la precisión sobre las esenciales del §3.6:
+    - en la validación, al lado y como descriptiva, sin decidir el pase;
+    - en la medición de las 400 (punto 10), en sus estimadores.
+  - **La decisión, tal cual:** «Confirmo la (ii) de la validación de la v3 ponderada por estrato de predicado, como fijan el §3.6 y el
+    §4.6 y como se hizo con la v2, con las esenciales al lado como descriptivas. La frase de la enmienda 5 sobre la importancia queda
+    corregida en una nota fechada del pre-registro. Lo decido antes de que corra la validación y sin haber visto ningún resultado.»
+  - El texto firmado no cambia.
