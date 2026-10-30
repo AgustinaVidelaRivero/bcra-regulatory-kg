@@ -351,3 +351,37 @@ tercera configuración de B2; tope USD 45 y freno 38; y la regla de adopción de
 
 FIRMADO por la autora el 30/10/2026 (recibida a las 00:25:13), tal cual: «Firmo el pre-registro de B6.4, el borrador v5 de la §350
 (BORRADOR_preregistro_B6_4_v5_PARA_FIRMAR_mesa.md, e4c2c42b…), tal cual, con las decisiones de su §14.» Rige desde esta firma.
+
+## Notas al pie
+
+- **30/10/2026 — La revisión de expertos de B6.4, decidida antes de ver ninguna pregunta ni ningún resultado de B6.4** (decisiones de la
+  autora recibidas a las 14:51:57 y a las 15:01:23; registro de decisiones, §197 y §198):
+  - **La decisión, tal cual** (con un nombre propio omitido): «Una muestra de 20 de las 96 preguntas aprobadas de B6.4, sorteada con
+    semilla y estratificada por tipo (7, 7 y 6), va a la revisión de expertos [nombre propio omitido], con el material y las
+    instrucciones de la de B6.3. Se manda el sábado, después de sellar lo aprobado, con devolución pedida para el martes 3/11 al
+    mediodía. Si vuelve, se informa como control de calidad de las preguntas, fuera del análisis principal, con una sensibilidad que
+    excluye las que los expertos marquen como incorrectas. La revisión de expertos de B6.3 queda declarada como no realizada.»
+  - **Lo que fija la autora sobre la lectura de la mesa** (15:01:23): el orden 7, 7 y 6 por los tipos del §3.2; la semilla con el
+    sha256 de lo aprobado sellado; «incorrecta» solo con «no», por mayoría de los que respondieron; y las cifras en «n de 20», sin
+    intervalo.
+  - **La muestra:** 20 de las 96 aprobadas, 7 de agregación, 7 de remisión y 6 de condición o excepción, sorteadas con
+    `random.Random(f"b64:experto:{sha256 de lo aprobado sellado}")`, en un orden sorteado con la misma semilla.
+  - **El material:**
+    - el de B6.3 (su pre-registro, §9.3, «El material»): la planilla, con la pregunta, su respuesta de referencia (sus criterios con
+      su cita) y las columnas de B6.3, y las instrucciones de B6.3;
+    - una sola planilla, igual para todos los expertos: se reenvía a cada uno, y cada uno devuelve su copia;
+    - el texto que acompaña cada fila es el de todos los puntos de la pregunta, el ancla primero, desde la E0 del grafo evaluado;
+    - la planilla y las instrucciones las arma un script de la mesa, con su prueba (`material_experto_B64_mesa.py`). El PDF y la
+      planilla para enviar los arma la autora, como en B6.3, y también el mensaje a los expertos.
+  - **Las fechas:** el envío, el sábado 31/10, después de sellar lo aprobado; la devolución, pedida para el martes 3/11 a las 12:00. Lo
+    que no llegue se declara, y nada espera a la devolución.
+  - **Cómo se informa:**
+    - como control de calidad de las preguntas, fuera del análisis confirmatorio (§8) y de lo exploratorio (§9), y sin cambiar
+      ninguna pregunta ni ninguna cifra;
+    - por experto y en conjunto, en fracción cruda «n de 20»: si se puede responder desde el texto, si la respuesta es correcta (sí,
+      parcial, no) y la relevancia;
+    - **la sensibilidad:** las comparaciones del §8.1, repetidas sin las preguntas que los expertos marquen como incorrectas, fuera de
+      Holm y como descriptiva. Una pregunta es incorrecta si tiene «no» en si la respuesta es correcta; con más de un experto, si la
+      marca así la mayoría de los que la respondieron (con dos, los dos).
+  - **B6.3:** su revisión de expertos queda declarada como no realizada, con una nota al pie en su pre-registro.
+  - El texto firmado no cambia.

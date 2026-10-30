@@ -912,3 +912,9 @@ del §14.
   - **En N6** (registro, §151): la prueba dio en P1 a P8: 1.202 de 1.202 lecturas iguales, los 394 agregados byte a byte y las 52 con
     un veredicto por criterio. La configuración elegida fue la misma con la lectura tolerante y con la sellada.
   - El texto firmado no cambia.
+- **30/10/2026 — La validación por expertos (§9.3), declarada como no realizada** (decisiones de la autora recibidas a las 14:51:57 y a
+  las 15:01:23; registro de decisiones, §197 y §198):
+  - La decisión, tal cual: «La revisión de expertos de B6.3 queda declarada como no realizada.» Es parte de la decisión sobre la
+    revisión de expertos de B6.4, que está en una nota al pie del pre-registro de B6.4.
+  - No se informa ninguna cifra de la validación por expertos de B6.3 ni su sensibilidad.
+  - El texto firmado no cambia.
