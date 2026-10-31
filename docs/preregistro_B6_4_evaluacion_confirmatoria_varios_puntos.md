@@ -544,3 +544,21 @@ FIRMADO por la autora el 30/10/2026 (recibida a las 00:25:13), tal cual: «Firmo
       aprobado con la forma del armador; el sorteo, la planilla y las instrucciones son los de la v2.
     - **Lo que salió:** la clave `aeaab1f7…` y la planilla `53283fc2…`, una sola, que se reenvía a cada experto.
   - El texto firmado no cambia.
+- **31/10/2026 — El freno del gasto de B6.4, de 115 a 144, antes de retomar la corrida** (decisión de la autora del 31/10/2026;
+  registro de decisiones, §218):
+  - **El freno:** la corrida frenó con el código 2 a las 19:39:09 (`estado_b63.json`, su último evento). La guarda del gasto del
+    agente y el juez juntos daba USD 113,2544, más 1,8 de la sesión siguiente, y pasaba el freno de 115.
+    - Quedaron 246 bloques con sus cuatro brazos lanzados.
+    - En el bloque 247 del orden quedó `kg_n7` sin lanzar.
+    - Los 41 últimos bloques del orden quedaron sin lanzar.
+    - Del juez no quedó nada pendiente.
+  - **La decisión, tal cual:** «Completo B6.4. Subo el freno de 115 a 144 y dejo el tope en 144, el del pre-registro, sin pasarlo. Lo
+    decido sin haber visto ningún resultado, solo con el gasto: 113,25 en unos 247 bloques, unos 0,46 por bloque, así que los que
+    faltan costarían unos USD 19 (NO VERIFICADO).»
+  - **La entrada:** `data/experiment/banco_mcp/b64/entrada_B64_freno144.json` (`0eeaec05…`).
+    - Es igual a `entrada_B64.json` (`9064066b…`) salvo el freno, renglón 157.
+    - Su sha256 sin el tope ni el freno es el de la corrida (`b64/v1/comun_b63.py:242-247`), así que el runner retoma con ella.
+    - Lanza solo las 165 sesiones sin lanzar: ninguna terminada se repite (`b64/v1/correr_b63.py:317-326`).
+  - **El tope del §12, 144, no cambia.** Las 4 sesiones `incompleta_otra` no se repiten (la misma regla del runner) y se declaran
+    en el análisis.
+  - El texto firmado no cambia.

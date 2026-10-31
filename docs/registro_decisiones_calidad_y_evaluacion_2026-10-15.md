@@ -9279,3 +9279,125 @@ mesa, §377), y lo que hizo la mesa.
   - revisar la fila 14 de la presentación de los expertos;
   - el commit 2, el humo y el lanzamiento de B6.4.
 - Las secciones anteriores no se editan.
+
+## 216. El 250 commiteado, la presentación de los expertos y el humo preparado (31/10/2026)
+
+Mensaje de la autora del 31/10/2026, recibido antes de las 09:04:44, la hora del paso 0 de la mesa (el mensaje no trae hora; hoja de
+ruta de la mesa, §378), y lo que hizo la mesa.
+- **Las decisiones, tal cual:**
+  1. «Acepto lo nuevo de la nota v2: mis dos decisiones del agregado, el renglón de adjudicadas_por_brazo, el renglón del código de H-6
+     y la frase de la entrada.»
+  2. «Las pruebas de H-6 van en el commit.»
+  3. «Las dos listas de rechazadas van como están: no tienen texto, aunque traen más que ids.»
+  4. Sobre la presentación de los expertos:
+     - «Lo que encontró tu control en la fila 14 son las marcas internas que la presentación saca a propósito, no texto de la norma.»
+     - Según la autora, otra sesión de apoyo lo controló palabra por palabra en las 20 filas: las 371 palabras que no aparecen son
+       marcas internas, entre ellas:
+       - las de la herencia y del ancla;
+       - los códigos de los documentos;
+       - las de los bloques;
+       - las de las celdas combinadas de la tabla de la fila 14.
+     - «La presentación no va en esta nota: queda en tu registro y en una nota posterior.»
+- **Lo que informa la autora:** commiteó y subió el 250, `588aee60e7946a7f0e1a9a90288d6716ccb3dce0`.
+  - La prueba en seco y el real dieron lo esperado, y los dos salieron con 0.
+  - Después del commit:
+    - el padre es el 249;
+    - ningún rastreado quedó modificado;
+    - el stat da 50 archivos, con 8.895 renglones agregados;
+    - `aprobadas_B64.json` no entró.
+  - El push dio HEAD y origin/main en `588aee60`.
+- **Lo que hizo la mesa:**
+  - **el commit:** lo controló contra la carga del paquete de la §377, en solo lectura (`decisiones_378_mesa/commit_250/`). Pasan
+    los 19 controles:
+    - el padre, uno solo, el título, el cuerpo y que no trae co-authored;
+    - los 50 archivos con su estado, y nada fuera de la carga y las dos entradas;
+    - los 48 de la carga, iguales byte a byte;
+    - las dos entradas, con su sha256;
+    - los seis fijos sin cambiar, y el registro y el pre-registro del 249 como su base;
+    - `aprobadas_B64.json` fuera;
+    - el stat;
+    - HEAD y origin/main;
+  - **las marcas:** controló por código las 40 apariciones de su diagnóstico de la §377 contra las marcas que nombra la decisión 4.
+    - 38 están entre esas marcas, y la palabra de 32 apariciones de la fila 14 es una de las de las celdas combinadas.
+    - 2, de la fila 14 (dos palabras, una vez cada una), no están entre las marcas que nombra la decisión.
+    - La cuenta de 371 es de la otra sesión: NO VERIFICADA por la mesa, que cuenta distinto.
+  - **el humo:** preparó sus comandos y lo que se cierra y se mide antes (`decisiones_378_mesa/COMANDOS_HUMO_B64_378_mesa.md`).
+- **Lo que queda, PENDIENTE de la autora:**
+  - el humo;
+  - el lanzamiento de B6.4, después de que la mesa revise el humo;
+  - la nota posterior de la presentación de los expertos.
+- Las secciones anteriores no se editan.
+
+## 217. El humo de B6.4, con la CLI de la copia fija, y el lanzamiento preparado (31/10/2026)
+
+Mensaje de la autora del 31/10/2026, recibido antes de las 09:21:50, la hora del primer comando de la mesa en la ronda (el mensaje no
+trae hora; hoja de ruta de la mesa, §379), y lo que hizo la mesa.
+- **Lo que informa la autora:**
+  - el primer intento del humo frenó antes de lanzar, con el código 6 y 0 sesiones lanzadas: la CLI de la Terminal se había actualizado
+    sola, de la 2.1.241 sellada a la 2.1.314;
+  - lo resolvió como en B2, con la copia fija de la CLI adelante en el PATH;
+  - el segundo intento salió con 0: 4 completas, `"pasadas": 2`, `"codigo": 0` y sin freno.
+- **Lo que hizo la mesa:**
+  - **el humo:** lo controló por código (`decisiones_379_mesa/humo/`), 11 de 11:
+    - la pasada 1 frenó con el 6 sin lanzar ninguna sesión, sin gastar, y en su carpeta solo dejó su registro del lote;
+    - la pasada 2 empezó con 0 gastado y corrió con la copia fija, 2.1.241;
+    - las 4 sesiones del estado son de la pasada 2, completas y sin fallas de infraestructura;
+    - el juez escribió 4 renglones en cada repetición.
+
+    `"pasadas": 2` viene del primer intento y no cambia nada.
+  - **el gasto:** USD 0,92 en el único bloque, 0,73 del agente y 0,19 del juez, contra los unos 0,25 que estimaba el §11 para el humo.
+    - Las sesiones del grafo hicieron 21 y 22 llamadas, contra una media de 7,3 a 7,9 en B2.
+    - Al gasto del humo, las 288 darían unos USD 265; al de B2, unos 100 a 120. Las dos cifras son NO VERIFICADO.
+    - El runner cuenta el agente y el juez contra el freno de 115.
+    - La mesa recomienda lanzar con el tope y el freno de la entrada, y decidir en el freno con datos de la corrida.
+  - **el lanzamiento:** preparó su comando, con la copia fija adelante en el PATH, lo que se cierra y se mide, qué hacer con cada
+    código de freno y un seguimiento que solo lee el estado del runner (`decisiones_379_mesa/lanzamiento/`).
+- **Lo que queda, PENDIENTE de la autora:**
+  - decidir si lanza con el tope y el freno de la entrada;
+  - el lanzamiento de B6.4.
+- Las secciones anteriores no se editan.
+
+## 218. B6.4 frenó por el gasto; el freno sube a 144 y se retoma; las decisiones de la tesis y del repositorio (31/10/2026)
+
+Dos mensajes de la autora del 31/10/2026, recibidos antes de las 19:49:20, la hora del paso 0 de la mesa (los mensajes no traen hora;
+hoja de ruta de la mesa, §380), y lo que hizo la mesa.
+- **Lo que informa la autora:** B6.4 frenó con el código 2, por la guarda del gasto, con 987 sesiones lanzadas. No miró ningún
+  resultado: solo la consola y el seguimiento de la mesa.
+- **Las decisiones sobre B6.4, tal cual:**
+  1. «Completo B6.4. Subo el freno de 115 a 144 y dejo el tope en 144, el del pre-registro, sin pasarlo. Lo decido sin haber visto
+     ningún resultado, solo con el gasto: 113,25 en unos 247 bloques, unos 0,46 por bloque, así que los que faltan costarían unos USD
+     19 (NO VERIFICADO).»
+  2. «El freno nuevo y esta decisión van en una nota fechada del pre-registro de B6.4, commiteada antes de retomar.»
+- **Las decisiones del segundo mensaje, para después de la reanudación, tal cual:**
+  1. «Cambio la decisión 2 de la §206: el capítulo 6 va con la opción 2 sin consultarlo antes con los mentores; lo declaro cuando les
+     mande el informe.»
+  2. «El depósito con identificador, ahora no: va con el repositorio de publicación, antes de la defensa.»
+  3. «La discusión va como una sección corta, con los resultados de B6.4.»
+  4. «Los resultados de desarrollo anteriores (EV2, la ablación, el escalón 1) no entran, salvo donde justifican una decisión del
+     método.»
+  5. «El repositorio de publicación: licencia MIT para el código y CC BY 4.0 para el grafo; los PDF del BCRA solo con su enlace y su
+     huella; los pre-registros sí; los gold no.»
+  6. Sobre el material de los expertos:
+     - lo mandado es una presentación legible de `planilla_experto_1.csv` (`53283fc2…`), que según la autora no cambia ningún
+       contenido;
+     - la armó `presentacion/armar_presentacion_expertos.py`;
+     - el PDF da `5c8d69cf…` y el Excel `d5dec453…`;
+     - la devolución está pedida para el martes 3/11 a las 12:00.
+
+     Es lo mismo que se registró en la §215 y en la §216, con lo que controló la mesa.
+- **Lo que hizo la mesa:**
+  - **el estado de la corrida:** lo controló por código, sin abrir ninguna salida con texto (`decisiones_380_mesa/estado/`):
+    - 246 bloques tienen sus cuatro brazos lanzados;
+    - el bloque 247 del orden quedó partido: `kg_n7` sin lanzar, porque la guarda frenó antes de esa sesión;
+    - los 41 últimos bloques quedaron sin lanzar;
+    - de las 4 `incompleta_otra`, ninguna es error: todas terminaron con result, y les falta R3;
+    - el gasto es USD 68,31 del agente y 44,94 del juez;
+    - al retomar, el runner lanza solo las 165 sesiones sin lanzar;
+  - **la entrada nueva:** `entrada_B64_freno144.json` (`0eeaec05…`), que cambia solo el freno;
+  - **el commit:** armó el de la entrada con la nota fechada del pre-registro, y lo probó en areneros;
+  - **el seguimiento:** lo corrigió para que cuente el gasto del agente mientras corre.
+- **Lo que queda PENDIENTE:**
+  - de la autora: el commit y la reanudación;
+  - de la mesa, después de la reanudación: la estimación de la demostración del job sobre los tres documentos que cambiaron y la del
+    repositorio de publicación mínimo.
+- Las secciones anteriores no se editan.
