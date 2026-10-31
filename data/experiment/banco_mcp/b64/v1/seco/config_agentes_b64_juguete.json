@@ -1,0 +1,86 @@
+{
+  "unidad": "B6.4, corrida en seco: la configuración DE JUGUETE de los cuatro brazos (no es la de B6.4; sus servidores son de juguete): la de juguete de B6.3 (b63/seco/config_agentes_b63_juguete.json) con un cuarto brazo, kg_n7, otro servidor de juguete del tipo del grafo",
+  "base": {
+    "ruta": "a2_2/config_agentes_a2_2.json",
+    "sha256": "fd4ce4e4ce7d4c7cd0550af1ed2ba7d2cbd3d1a2301ee82060ba7d6eba4697c0",
+    "que_se_hereda": "la forma de paralelo/config_agentes_n6_prueba.json: versión sellada del CLI, modelo, modo y R5"
+  },
+  "claude_code_version_sellada": "2.1.241",
+  "modelo": "claude-sonnet-5",
+  "modo_harness": "--bare",
+  "brazos": {
+    "kg": {
+      "mcp_config": "b63/seco/mcp_juguete_kg.json",
+      "servidor": "kg",
+      "bloque_tools": "b63/seco/bloque_tools_juguete_kg.txt",
+      "allowed_tools": "mcp__kg__*",
+      "tools_esperadas": [
+        "mcp__kg__buscar_nodos",
+        "mcp__kg__buscar_puntos",
+        "mcp__kg__ver_nodo"
+      ],
+      "config_servidor": "b63/seco/config_servidor_juguete_kg.json",
+      "archivos_servidor": [
+        "b63/seco/servidor_mcp_juguete.py"
+      ],
+      "venv": "BANCO_VENV_VECTOR"
+    },
+    "kg_n7": {
+      "mcp_config": "b64/v1/seco/mcp_juguete_kg_n7.json",
+      "servidor": "kg",
+      "bloque_tools": "b63/seco/bloque_tools_juguete_kg.txt",
+      "allowed_tools": "mcp__kg__*",
+      "tools_esperadas": [
+        "mcp__kg__buscar_nodos",
+        "mcp__kg__buscar_puntos",
+        "mcp__kg__ver_nodo"
+      ],
+      "config_servidor": "b64/v1/seco/config_servidor_juguete_kg_n7.json",
+      "archivos_servidor": [
+        "b63/seco/servidor_mcp_juguete.py"
+      ],
+      "venv": "BANCO_VENV_VECTOR"
+    },
+    "fragmentos_bm25": {
+      "mcp_config": "b63/seco/mcp_juguete_fragmentos_bm25.json",
+      "servidor": "fragmentos",
+      "bloque_tools": "b63/seco/bloque_tools_juguete_fragmentos.txt",
+      "allowed_tools": "mcp__fragmentos__*",
+      "tools_esperadas": [
+        "mcp__fragmentos__buscar_pasajes"
+      ],
+      "config_servidor": "b63/seco/config_servidor_juguete_fragmentos_bm25.json",
+      "archivos_servidor": [
+        "b63/seco/servidor_mcp_juguete.py"
+      ],
+      "venv": "BANCO_VENV_VECTOR"
+    },
+    "fragmentos_denso": {
+      "mcp_config": "b63/seco/mcp_juguete_fragmentos_denso.json",
+      "servidor": "fragmentos",
+      "bloque_tools": "b63/seco/bloque_tools_juguete_fragmentos.txt",
+      "allowed_tools": "mcp__fragmentos__*",
+      "tools_esperadas": [
+        "mcp__fragmentos__buscar_pasajes"
+      ],
+      "config_servidor": "b63/seco/config_servidor_juguete_fragmentos_denso.json",
+      "archivos_servidor": [
+        "b63/seco/servidor_mcp_juguete.py"
+      ],
+      "venv": "BANCO_VENV_VECTOR"
+    }
+  },
+  "prompt": {
+    "plantilla": "b63/seco/plantilla_juguete.txt",
+    "como_se_pasa": "como en la base",
+    "diferencia_entre_brazos": "exclusivamente el bloque {{BLOQUE_TOOLS}}"
+  },
+  "corte_R5": {
+    "max_turns": 32,
+    "tope_tool_calls_en_prompt": 30,
+    "max_budget_usd_por_sesion": 1.8
+  },
+  "env_por_sesion": {
+    "MCP_TIMEOUT": "180000 (como en la base)"
+  }
+}
