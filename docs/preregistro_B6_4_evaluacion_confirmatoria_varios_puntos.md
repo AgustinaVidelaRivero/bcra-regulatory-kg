@@ -428,3 +428,119 @@ FIRMADO por la autora el 30/10/2026 (recibida a las 00:25:13), tal cual: «Firmo
     - se declara por clase: cuántos lugares cambian de documento y cuántos de clase. N queda en 96, con 32 por tipo, y D-3 no
       cambia.
   - El texto firmado no cambia.
+- **31/10/2026 — Las 96 preguntas, la entrada y las decisiones del análisis y del runner, tomadas antes de la corrida** (decisiones de la
+  autora del 30/10/2026 y del 31/10/2026; registro de decisiones, §201 y §204 a §215):
+  - **Las 96 aprobadas** salen de mis cuatro revisiones contra el PDF, cada una sellada:
+    - las seis olas: 94 preguntas, 78 aprobadas y 16 rechazadas (§205);
+    - los dos lugares que la generación dejó sin pregunta, reubicados por la regla de la nota del 30/10: los 2 aprobados (§207);
+    - los reemplazos de las 16 rechazadas (R1): 12 aprobados y 4 rechazados (§209);
+    - los reemplazos de esos 4 (R2): los 4 aprobados (§213).
+
+    Son 32 por tipo, en `aprobadas_B64.json` (`2ce2ac81…`). Las arma `armar_aprobadas_B64_mesa.py`, que frena si no son 32 por tipo:
+    el armador de la entrada no lo controla (decisión del 31/10, §211).
+
+    `aprobadas_B64.json` no entra en este commit, como en B6.3 (decisión del 31/10, §215). En `data/experiment/banco_mcp/b64/preguntas/`
+    entran su sello, su sha256 y los sellos de mis cuatro revisiones, con el armador y su prueba. El archivo entra al repo después de
+    que termine B6.4.
+  - **Las rechazadas:** en la misma carpeta van las dos de las rechazadas, sin ningún texto (decisión del 31/10, §215):
+    - `rechazadas_B64_R1.json`: las 16 rechazadas de las olas;
+    - `rechazadas_B64_R2.json`: los 4 reemplazos rechazados de la R1.
+
+    De cada una traen su id, su ola, su tipo y su clase. Las de la R1 traen además su lugar, su documento, la unidad sorteada y la del
+    ancla, si el tipo se sostiene y que no se aprobó.
+  - **La entrada:** `data/experiment/banco_mcp/b64/entrada_B64.json` (`9064066b…`), armada desde las 96 aprobadas. Las cita por su ruta
+    fuera del repo y su sha256, como la de B6.3, sin ningún texto. La del humo de D-5,
+    `entrada_B64_humo.json` (`9cd19011…`), con la primera pregunta del orden y k = 1, cuatro sesiones, en `banco_b64_humo/`.
+  - **La regla de los reemplazos** (decisión del 30/10, §206, tal cual): «Los reemplazos de B6.4 siguen la regla de B6.3 para el arranque
+    de la búsqueda: empieza en la unidad que sigue al ancla rechazada, en el orden de su documento, y ninguna ancla rechazada se
+    reutiliza. Como en B6.3, un tipo que no se sostiene es un rechazo.» La R2 suma la regla de que cada cita esté en el texto de la E0
+    de su unidad o en su herencia (decisión del 30/10, §210).
+  - **Los lugares que cambian de clase** (§10, punto 4): 5, todos a NG_digerible:
+    - B64-O6-L16, reubicado, de NG_necesita_reglas;
+    - B64-O1-L02-R1, de RI, y B64-O6-L14-R1, de NG_necesita_reglas;
+    - B64-O4-L14-R2, de NG_necesita_reglas, y B64-O5-L01-R2, de RI.
+
+    Por la clase del documento usado, las 96 quedan en RI 22, NG_digerible 53 y NG_necesita_reglas 21, contra 24, 48 y 24 por lugar.
+  - **Las lecturas de la generación.** Cada generación declaró las suyas en su registro y en su FRENO, y se aplicaron a las 96:
+    - siete en el bloque 1;
+    - N1 a N5 en el bloque 2;
+    - N6 y N7 en los reubicados;
+    - N8 a N11 en la R1;
+    - N12 en la R2.
+
+    La N2 la confirmé en mi revisión de las olas, en 2 de 2 (§205). Las decisiones, tal cual:
+    - «Acepto hoy, 31/10, las siete lecturas del bloque 1 y N1 a N5, que la generación aplicó antes de esta aceptación; cada pregunta
+      que salió de ellas pasó por mi revisión contra el PDF.» (§215);
+    - «Acepto la lectura N6: una unidad que remite a materias cuyo nombre coincide, según el índice del PDF, con los títulos de puntos
+      del mismo texto, remite a esos puntos.» (§204);
+    - «Acepto la lectura N7: una referencia a «las secciones siguientes», que abarca todo el resto del texto, no sostiene una
+      remisión.» (§204);
+    - «Acepto las lecturas N8, N9, N10 y N11 para los R1, declaradas como N6 y N7. Lo aprobado de las olas no se toca, aunque N11
+      cuente distinto que el registro de la ola 3 en B64-O3-L04.» (§209);
+    - «Acepto la lectura N12 para la R2, declarada como las anteriores.» (§211).
+  - **Las citas que no aparecen tal cual en la E0 de su unidad** (decisión del 31/10, §211: las anclas no se tocan, y la cuenta
+    informativa va después de la corrida).
+    - **Cuántas:** de las 96, 21 citas de 17 preguntas no aparecen en el texto propio de su unidad, ni con los espacios y las tablas
+      normalizados: 16 de 13 aprobadas de las olas y 5 de 4 R1 aprobados. Las de la R2 aparecen todas.
+    - **Dónde está su contenido:** todas están en lo que muestran los cuatro brazos:
+      - 5, en la herencia de su unidad;
+      - 3, en su unidad, salvo mayúsculas y puntuación;
+      - 7, en su unidad, en otro orden;
+      - 4, en su unidad, salvo 1 o 2 caracteres;
+      - 2, con una parte en otra unidad del mismo documento: B64-O3-L07, criterio 1 (`ccbcra::3.2.1.2`, con `ccbcra::3.2.1.1`, que no es
+        ancla), y B64-O5-L15, criterio 3 (`garopt::1.7.2`, con `garopt::1.7.1`, que es ancla).
+    - **Lo que se informa al lado de la cita al ancla del §9,** por brazo y en fracción cruda:
+      - las sesiones de B64-O3-L07 que citan `ccbcra::3.2.1.1` sin citar `ccbcra::3.2.1.2`, y cuántas de ellas no dan en ningún ancla;
+      - las de B64-O5-L15 que citan `garopt::1.7.1` sin citar `garopt::1.7.2`.
+
+      Es informativo.
+  - **La exactitud de cita: qué cuenta como visto** (decisión del 30/10, §209, tal cual): «En la exactitud de cita, un punto cuenta como
+    visto solo si la herramienta mostró su texto. Un punto que aparece solo listado en «Puntos relacionados» o en «Puntos de la misma
+    familia», sin su texto, no cuenta como visto. Así la cita fundada de B6.4 mide lo mismo que en B6.3. La otra cuenta, con los puntos
+    listados como vistos, va al lado como informativa.»
+  - **B2 sin los puntos solo listados** (decisión del 30/10, §210, tal cual: «Lo de B2 sin los puntos listados (N7c+ 81 de 90, N7 48 de
+    90) se declara en la nota posterior del pre-registro de B6.4, en el commit de B6.4.»):
+    - en B2, el instrumento contó como vistos los puntos solo listados;
+    - sin ellos, la cita fundada de N7c+ baja de 83 a 81 de 90 y la de N7c de 48 a 47, y la de N7 queda en 48;
+    - la cita existente y la cita al ancla no cambian;
+    - el criterio (iv) de la regla de B2 sigue cumpliéndose, 81 contra 48, y los criterios (i) a (iii) no usan ese conteo. La adopción
+      de N7c+ no cambia.
+  - **La salida del juez que no se lee:**
+    - **Las decisiones, tal cual:**
+      - «Una salida del juez que no leen ni la lectura estricta ni la tolerante no puede dejar el análisis sin escribir: va al destino
+        que fija el §5 del pre-registro, con un envoltorio declarado.» (30/10, §209);
+      - «Acepto la forma de la corrección de H-6: si a una respuesta le falta una lectura, va entera a mi adjudicación, con todos sus
+        criterios.» (31/10, §212);
+      - «Acepto, declarada, la marca sin_consenso en los criterios de una respuesta sin lectura, como mecanismo para llevarla entera
+        a mi adjudicación sin editar el código sellado. No es un veredicto del juez.» (31/10, §215).
+    - **Lo que fija el §5:** «Lo que la lectura no resuelve va a la adjudicación de la autora, como en B6.3» (texto firmado, renglones
+      197 a 199).
+    - **En qué difiere de B6.3:** la regla 3 de la nota de B6.3 dejaba esa corrida sin veredicto
+      (`docs/preregistro_B6_3_evaluacion_final.md:907-910`). En B6.3 no hubo ninguna.
+    - **Cómo se cuentan:** aparte y por brazo, como respuestas sin lectura (`sin_lectura_a_la_adjudicacion`, en lo declarado del
+      análisis). `adjudicadas_por_brazo`, que viene del análisis de B6.3, cuenta todas las que van a mi adjudicación, las sin lectura
+      incluidas: las que van por el juez son la resta.
+  - **La lectura tolerante, por brazo:** se informa por brazo cuántas salidas leyó la lectura tolerante, como en la regla 4 de B6.3
+    (decisión del 30/10, §201). En B2, en total: 44 salidas leídas por la tolerante y 1 que no lee ninguna lectura
+    (`data/experiment/banco_mcp/n7c/b2/analisis/analisis_b2_n7c.json`, `juez`).
+  - **El código del análisis (H-6),** con su corrección, en `data/experiment/banco_mcp/b64/analisis/`: el código, los comandos de las
+    corridas y sus pruebas, con su lista (`ae500560…`) y su sello (`aef211c1…`). Las decisiones, tal cual:
+    - «Acepto, declaradas, las cuatro elecciones que hizo el H-6 y que el pre-registro no fija: la semilla B64:adjudicacion:v1, el
+      intervalo de d en el bootstrap por documento, la semilla de la corrección para los intervalos del cuarto brazo y la forma de
+      clases_documentos y de lugares.» (30/10, §209);
+    - «Acepto que los comandos de las corridas controlen además el sha256 del juez de la corrida.» (31/10, §215).
+  - **El runner de cuatro brazos (H-3 y H-4),** commiteado antes de armar la entrada (`91f2fa0d`). Las decisiones del 31/10, tal cual
+    (§211):
+    - «Acepto los cambios mínimos al runner en cuatro archivos, declarados, incluido el control nuevo de las salidas, que cierra tres
+      huecos de HEAD.»
+    - «b64/v1/ queda a la profundidad que tiene, declarada.»
+    - «El humo va con k = 1, cuatro sesiones, en banco_b64_humo/.»
+    - «El armador de la entrada no se cambia: las 32 por tipo las controla, y frena si no dan, tu armador de lo aprobado antes de
+      sellarlo.»
+  - **La muestra de los expertos** (la nota del 30/10):
+    - **El sorteo:** con la semilla `b64:experto:` y el sha256 de lo aprobado (`2ce2ac81…`), 7 de agregación, 7 de remisión y 6 de
+      condición o excepción. De las 20, 17 son de las olas o de los reubicados, 1 de la R1 y 2 de la R2.
+    - **El script:** el material lo arma `data/experiment/banco_mcp/b64/expertos/material_experto_B64_v3_mesa.py`. Es la v3: lee lo
+      aprobado con la forma del armador; el sorteo, la planilla y las instrucciones son los de la v2.
+    - **Lo que salió:** la clave `aeaab1f7…` y la planilla `53283fc2…`, una sola, que se reenvía a cada experto.
+  - El texto firmado no cambia.
