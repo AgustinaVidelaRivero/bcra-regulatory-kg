@@ -9754,3 +9754,77 @@ ruta de la mesa, §387), y lo que hizo la mesa.
     - las 200, el lunes;
   - de la mesa: la hoja de adjudicación de las 200, y la revisión del tramo 2.
 - Las secciones anteriores no se editan.
+
+## 226. El 253 commiteado y los datos que faltan para escribir el método de B6.4 (01/11/2026)
+
+Mensaje de la autora del 01/11/2026, recibido antes de las 12:35:25, la hora del paso 0 de la mesa (el mensaje no trae hora; hoja de
+ruta de la mesa, §389), y lo que hizo la mesa.
+- **Lo que informa la autora:** corrió el commit de B6.4, que es `c190505c`. Salió con 0, sobre el padre `7d0ef16b`, con 0 rastreados
+  modificados y «95 files changed, 148845 insertions(+), 4 deletions(-)». Lo subió, y `origin/main` da el mismo hash.
+- **Lo que pide:** los datos que faltan para escribir el método de B6.4, por código sobre `c190505c`, cada cifra con su ancla.
+- **Lo que hizo la mesa** (`decisiones_389_mesa/DATOS_PARA_EL_METODO_B64_389_mesa.md`, con sus scripts y consolas):
+  - **los 58 lugares que cambian** tienen su causa en un registro de la generación, y ninguno queda NO ENCONTRADO:
+    - 40, en la ola, porque la unidad sorteada no sostenía el tipo;
+    - 12, reemplazos de la R1;
+    - 4, reemplazos de la R2;
+    - 2, reubicados.
+  - **los 58 siguen el orden del sorteo sellado:** cada unidad o documento salteado está ocupado, o nombrado en el registro de su
+    generación. Que el registro diga que no sostiene el tipo es NO VERIFICADO;
+  - **los 5 que cambian de clase** van a NG_digerible por el paso (c) de la regla de los lugares sin reserva. La regla está en el
+    pre-registro desde `73929213` (30/10), y los 5, uno por uno, desde `588aee60` (31/10 a las 09:02:25). Los dos son anteriores al
+    comienzo de la corrida real, el 31/10 a las 09:45:58;
+  - **de los dos criterios que coinciden con descripciones de nodos:**
+    - el de B6.4 tiene uno de sus 2 nodos en el mismo punto que su cita, y el otro en otro documento;
+    - el de EV2, el suyo en el mismo punto que su cita;
+    - el grafo de esos documentos es el evaluado, con `kg.json` `576c9725…`;
+  - **la potencia para una medición futura,** con el desvío observado de B6.4: 343 preguntas con α de 0,05 y 416 con α de 0,025;
+  - **las sesiones que redactaron las 96:** son cinco, todas de `claude-opus-5-5` con la CLI 2.1.309. Las olas fueron dos sesiones, una por
+    bloque.
+- **Lo que queda PENDIENTE:**
+  - de la autora:
+    - la declaración de los dos criterios;
+    - el tramo 2 y la creación del repositorio;
+    - las 200, el lunes;
+  - de la mesa: la hoja de adjudicación de las 200, y la revisión del tramo 2.
+- Las secciones anteriores no se editan.
+
+## 227. La §389 aprobada y la cifra de precisión de T en la tesis, decidida antes de las 200 (01/11/2026)
+
+Mensaje de la autora del 01/11/2026, recibido antes de las 17:25:24, la hora del paso 0 de la mesa (el mensaje no trae hora; hoja de
+ruta de la mesa, §390), y lo que hizo la mesa.
+- **Lo que aprueba la autora:** los cuatro puntos de la §389 (§226). Agrega una regla para la mesa: un id que se arma con texto también
+  es texto, así que no se imprime.
+- **Lo que decide, tal cual:** «La cifra de precisión de T en la tesis sigue siendo la de mis 100, con los dos estimadores del §3.6 y su
+  intervalo, como fija el pre-registro. La precisión de las 400 con la opción B (decisión 5 del 30/10) va al lado, como extensión
+  declarada, con la nota del desvío de la decisión 3. Al lado va también la de mi lectura sola en mis 200. La corrección por doble
+  muestreo sigue como análisis de sensibilidad (decisión 6). Todo lo demás del punto 10 de la enmienda 5 que la nota del desvío no
+  cambia sigue como está. En el análisis de las 400, "cifra principal" es el nombre de la cifra de las 400 dentro de ese análisis, no
+  la cifra de la tesis. Lo decido antes de correr las 200 y sin ningún veredicto de la v3 sobre ellas.»
+- **Por qué la registra:** la nota del desvío del pre-registro de tripletas (`docs/preregistro_evaluacion_tripletas.md:691-720`, en
+  `c190505c`) no dice cuál es la cifra de la tesis, y la nota del 248 llama «cifra principal» a la de las 400 (`:734` y `:744`). El punto
+  2 de la enmienda 5, firmado, ya decía que la cifra principal de la precisión de T es el 78 de 100 (`:566-568`); la decisión lo fija
+  también para este caso, en el que la v3 no pasó y juzga igual las 200.
+- **Antes de las 200, por su ancla:** a las 17:38:26, `fuera_del_repo/tripletas_v_juez/v3/corridas/` no tenía `doscientas/`, su
+  declaración de no completada ni `analisis_400/`, y no corría ningún proceso de las 200 (`decisiones_390_mesa/guarda/`).
+- **Lo que hizo la mesa** (`decisiones_390_mesa/`):
+  - **la guarda de las 200** (`v3/comandos/doscientas_juez_v3.sh:74-100`, `3699ea1c…`, en la lista de la etapa d): del repo controla
+    solo HEAD. Pide main sin rastreados modificados y la lista de la congelación de HEAD igual a la local. Pide también que el
+    pre-registro de tripletas traiga cada una de las dos marcas de la nota del desvío en un solo renglón. El corredor lee además, en
+    HEAD, las instrucciones del juez, `fichas_V.jsonl` y el renglón 16 de `guardas_a2_2.zsh`. Ninguno de esos es el registro (`guarda/`);
+  - **la vía:** esta sección entra en su propio commit, el 254, antes de las 200, y no toca el pre-registro. La nota fechada del
+    pre-registro va después de las 200, citando el 254 por su hash, sin repetir ninguna de las dos marcas que cuenta la guarda;
+  - **las cifras de la decisión en el análisis sellado de las 400**, por código sobre una copia (`cifras/`). El análisis es
+    `analisis_400_v3.py` (`224736b8…`), de la lista de la etapa d (`5762ce24…`):
+    - produce la de las 400 con la opción B, con su nota del desvío (`cifra_principal`);
+    - al lado (`al_lado`), produce la de la lectura sola de la autora en sus 200 y la de las 400 sin la arista de V097. Cada una lleva la
+      cruda con su Wilson, la ponderada con el Wilson del n efectivo de Kish y las esenciales;
+    - produce también la sensibilidad, marcada y con su bootstrap (`sensibilidad`);
+    - no produce la de las 100 de la autora, que ya está calculada en el análisis de la prueba de la v2 (`analisis_T_v2.json`,
+      `90801030…`, clave `precision_con_las_100_de_la_autora`; §127 y §142): 78 de 100, Wilson [0,6893; 0,8500]; ponderada 0,7768, con
+      n efectivo 95,3 y [0,6835; 0,8488]; las esenciales, 76 de 98. No hace falta ningún script nuevo;
+  - **el 254, PREPARADO** y probado en areneros: agrega al registro la §226 y esta sección, y nada más.
+- **Lo que queda PENDIENTE:**
+  - de la autora: el 254, y después las 200; la declaración de los dos criterios; el tramo 2 y la creación del repositorio;
+  - de la mesa: la nota fechada del pre-registro, después de las 200; la hoja de adjudicación de las 200, con su vía para el comando
+    del análisis (`guarda/`, punto 4); la revisión del tramo 2.
+- Las secciones anteriores no se editan.
