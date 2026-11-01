@@ -9828,3 +9828,44 @@ ruta de la mesa, §390), y lo que hizo la mesa.
   - de la mesa: la nota fechada del pre-registro, después de las 200; la hoja de adjudicación de las 200, con su vía para el comando
     del análisis (`guarda/`, punto 4); la revisión del tramo 2.
 - Las secciones anteriores no se editan.
+
+## 228. El 254 commiteado y cómo recibe el análisis de las 400 el sello de la hoja de adjudicación, antes de las 200 (01/11/2026)
+
+Mensaje de la autora del 01/11/2026, recibido antes de las 18:05:55, la hora del paso 0 de la mesa (el mensaje no trae hora; hoja de
+ruta de la mesa, §391), y lo que hizo la mesa.
+- **Lo que informa la autora:** corrió el 254, sus cinco pasos dieron lo esperado y el push dio el mismo hash en HEAD y en origin/main.
+  La mesa lo leyó del repo: `1f3c1cc1ac8d9fe8594bc87523c71f5a58b23a81`, de las 18:03:29, sobre el 253, con el registro que preparó la
+  mesa, byte a byte (`e94643fa…`). Aprueba la §390 (§227).
+- **Lo que pide:** decidir antes de las 200 cómo recibe el análisis de las 400 el sello de su hoja de adjudicación, para no cambiar nada
+  sellado después de que exista un veredicto de la v3. Llenar `SELLO_ADJ` y `SELLO_ADJ_SHA` en `analisis_400_juez_v3.sh` (:56-57)
+  cambia su sha256, y su control de la lista de la etapa d (:76) frena.
+- **Las vías** (`decisiones_391_mesa/VIAS_DEL_SELLO_DE_LA_ADJUDICACION_391_mesa.md`):
+  - (a) sin tocar nada sellado, a mano. El análisis ya acepta el sello por argumento (`analisis_400_v3.py:387-388`). El comando no: sus
+    variables de prueba solo corren en un arenero (:58-59). Primero el comando sellado, que frena con 2 sin leer ninguna hoja, y
+    después el análisis directo, con los argumentos del :87-90 y los dos del sello. No hay código nuevo, pero los argumentos se tipean
+    y el análisis corre sin los controles del comando en la misma corrida;
+  - (a′) la recomendada, sin tocar nada sellado: un lanzador que corre el texto del comando sellado, controlado por el sha256 de la
+    lista de la etapa d de HEAD, con sus dos renglones de `PENDIENTE` llenos desde sus argumentos y nada más cambiado. El archivo
+    sellado no cambia, así que el :76 pasa; el comando hace todos sus controles, y el análisis, los suyos sobre el sello y la hoja;
+  - (b) con un cambio mínimo: una versión nueva del comando que tome el sello por argumento. Cambia el comando sellado y la lista local
+    de la etapa d, que la guarda de las 200 controla (:80). Cambia también la lista del repo (`5762ce24…`), que cita la nota del 01/11
+    del pre-registro, y pide una nota nueva del pre-registro;
+  - (c) descartadas: las variables de prueba del comando con un `$HOME` falso, que son solo de la corrida en seco; y una copia del
+    comando con las variables llenas en otro archivo, que sería un archivo nuevo, sin sellar, escrito después de los veredictos.
+- **La prueba de (a′),** de punta a punta en areneros, con el mundo de juguete de las pruebas del análisis (`mundo_400`), sin tocar
+  `fuera_del_repo` ni el repo (`decisiones_391_mesa/prueba/`):
+  - sin la hoja, el comando sellado frena con 2 y da las pendientes;
+  - con la hoja y su sello, el lanzador escribe el análisis, que guarda el sha256 del sello y las dos adjudicadas;
+  - frena si el sello no da su sha256, si la hoja cambió después del sello, si sobra la hoja, si cambió el comando o la lista, o si el
+    sha256 o la ruta no tienen su forma;
+  - la guarda de las 200 pasa después.
+- **El 255, PREPARADO** y probado en areneros: agrega el lanzador
+  (`data/experiment/tripletas_v/juez_v3/adjudicacion_200/lanzar_analisis_400_con_la_hoja_v3.sh`, sha256
+  `dfa9fb7497f7dea6044820573ef28bcb6bdac9bf7e1d0fc5ce90857872fa0380`) y esta sección. No toca `fuera_del_repo`, la lista de la etapa
+  d, la congelación ni el pre-registro. La nota fechada del pre-registro, después de las 200, lo nombra con el 254.
+- **El orden del lunes:** el 255; las 200; el comando sellado del análisis, que escribe si no hay pendientes y, si las hay, frena con 2
+  y las da; la hoja de adjudicación, que arma la mesa y sella la autora; el lanzador, con el sello y su sha256; la nota del pre-registro.
+- **Lo que queda PENDIENTE:**
+  - de la autora: el 255, y después las 200; la declaración de los dos criterios; el tramo 2 y la creación del repositorio;
+  - de la mesa: la hoja de adjudicación de las 200, si la v3 manda alguna; la nota fechada del pre-registro; la revisión del tramo 2.
+- Las secciones anteriores no se editan.
