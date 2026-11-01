@@ -596,3 +596,30 @@ FIRMADO por la autora el 30/10/2026 (recibida a las 00:25:13), tal cual: «Firmo
       250), que lleva a la adjudicación, entera, la respuesta a la que ninguna lectura lee alguna de sus tres salidas (las decisiones
       del 30/10 y del 31/10, en la nota del 31/10).
   - El texto firmado no cambia.
+- **01/11/2026 — La muestra de control de 36: tres decisiones de la autora, tomadas antes de armar las fichas y de leer; y el sello de su
+  adjudicación** (registro de decisiones, §222):
+  - **La adjudicación de la autora está sellada.**
+    - El sello (`sello_adjudicacion_b64.txt`, `ecfd86bb…`) es de las 09:18:00 del 01/11/2026, y cubre la planilla (`7b66f315…`, 109
+      renglones de 89 fichas).
+    - La mesa lo controló por código contra la planilla y su estructura, sin abrir su contenido: 8 de 8 controles
+      (`decisiones_384_mesa/adjudicacion/`, en el paquete de la mesa).
+  - **Las decisiones, tal cual:**
+    1. «La columna «error fuera de los criterios» es obligatoria, como la trae el §5. No agrego la cláusula de B6.3.»
+    2. «El piso y las cifras principales, sobre las 36 juntas; por tipo, al lado, sin piso. Agrego el acuerdo por brazo, al lado,
+       informativo, sin piso ni prueba.»
+    3. «El material entra en el commit del cruce, como en B6.3.»
+  - **Lo que fijan en el material de la muestra** (`data/experiment/banco_mcp/b64/control_36/`):
+    - el sellador de las planillas no sella con la columna vacía;
+    - el cruce (`cruce_control_36_B64.py`):
+      - da la cifra principal y el piso sobre los 135 pares de las 36 juntas;
+      - al lado da las cifras por tipo, sin piso, y por brazo, informativas, sin piso ni prueba;
+      - cuenta el error fuera de los criterios por brazo y por tipo;
+  - **El material con que se armaron las fichas** es el de la mesa del 01/11/2026 a la mañana (la v1). La autora armó la carpeta de
+    lectura a las 09:29:39, la hora que anota la lista de su armado. Fue después de tomar las tres decisiones y antes de que la mesa
+    tuviera la v2 (registro, §223).
+    - La v1 y la v2 difieren solo en la medida y en un renglón de la regla. El armado, el sellador, el LEEME, las fichas y las planillas
+      son los mismos.
+    - La medida de la v1 no trae el acuerdo por brazo: lo fijan esta nota y la decisión 2, y lo calcula el cruce.
+    - El cruce controla los archivos de la carpeta de lectura contra la lista que escribió su armado, y da la misma salida, byte a
+      byte, sobre una carpeta armada con la v1 que sobre una armada con la v2 (su prueba de juguete, en el paquete de la mesa).
+  - El texto firmado no cambia.

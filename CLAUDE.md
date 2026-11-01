@@ -6,10 +6,16 @@ Tesis de Ingeniería en IA (UdeSA): ¿organizar los textos regulatorios del BCRA
 como Knowledge Graph mejora la fidelidad de un sistema RAG frente a retrieval
 tradicional? Hallazgo rector: **grounded ≠ correct** — una respuesta anclada en
 el grafo puede seguir siendo incorrecta contra la norma.
-Pipeline: un agente Haiku navega el grafo con tres tools (`buscar_nodos` /
-`ver_nodo` / `ver_vecinos`); un juez evalúa contra clave; un verificador
-diagnóstico atribuye causas con capa determinística encima.
-Corpus: 5 Textos Ordenados del BCRA (`data/experiment/subset/`, read-only).
+Pipeline de las evaluaciones confirmatorias (B6.3 y B6.4): un agente de Claude
+Code (`claude-sonnet-5`, el `modelo` de la configuración sellada de cada corrida;
+la CLI registra además un uso menor de `claude-haiku-4-5`, que no escribe
+mensajes ni llama herramientas) navega el grafo por su servidor MCP, o los
+fragmentos en los brazos de recuperación; el juez de EV2 (`claude-sonnet-4-6`)
+evalúa contra la clave; un verificador diagnóstico atribuye causas con capa
+determinística encima. En la evaluación congelada de la Fase 2.3, el agente del
+harness era `claude-haiku-4-5-20251001` con tres tools (`buscar_nodos` /
+`ver_nodo` / `ver_vecinos`) sobre 5 Textos Ordenados (`data/experiment/subset/`,
+read-only); el grafo evaluado en B6.3 y B6.4 cubre 128 TOs.
 
 ## 2. Mapa de lectura
 

@@ -9606,3 +9606,151 @@ ruta de la mesa, §385), y lo que hizo la mesa.
     - el commit de B6.4;
     - la revisión del tramo 1 del repositorio.
 - Las secciones anteriores no se editan.
+
+## 224. El 248 commiteado, el modelo del agente para la tesis, el tramo 1 del repositorio y la copia de la §371 (01/11/2026)
+
+Mensaje de la autora del 01/11/2026, recibido antes de las 10:30:15, la hora del paso 0 de la mesa (el mensaje no trae hora; hoja de
+ruta de la mesa, §386), y lo que hizo la mesa.
+- **Lo que informa la autora:**
+  - aprueba la revisión de la d-bis, el 248 y lo de la muestra con la v1;
+  - commiteó y subió el 248. La prueba en seco y el real dieron lo esperado, y los controles dieron el padre `684d9817`, `0` y ` 4 files
+    changed, 4686 insertions(+)`;
+  - el mensaje dice «HEAD = origin/main = <hash>», sin el hash. La mesa lo leyó de git: `7d0ef16b`;
+  - terminó el tramo 1 del repositorio de publicación.
+- **Las decisiones, tal cual:**
+  1. «El CLAUDE.md se corrige en el commit de B6.4, con tu propuesta de modelo/MODELO_DEL_AGENTE_Y_CLAUDE_MD_385_mesa.md.»
+  2. «Para la tesis, el modelo del agente va así, sin afirmar para qué usa la CLI a Haiku: «Todos los mensajes y las llamadas a
+     herramientas del agente son de claude-sonnet-5. La CLI registra además un uso menor de claude-haiku-4-5, un 2,6 % del costo del
+     agente, que no escribe mensajes ni llama herramientas.»»
+  3. «La copia de reproducción de la §371 con 22 NO_ABRIR_ se declara en la próxima sección del registro: qué eran, que no se abrieron
+     ni se imprimieron, y dónde está esa copia.»
+- **La copia de reproducción de la §371,** por la decisión 3:
+  - **qué eran los 22 `NO_ABRIR_`,** por su nombre:
+    - 5 prompts de las versiones v1, v2 y v3 del juez de tripletas;
+    - una propuesta de casos de la v3;
+    - 16 salidas de las corridas de la v3: agregados, veredictos, cachés y desacuerdos;
+  - **qué se hizo con ellos:** la mesa no los abrió a mano ni imprimió nada de ellos. Las pruebas y el seco de la etapa d, que corrieron
+    sobre esa copia, pudieron leer algunos por código. Cuáles es NO VERIFICADO;
+  - **dónde está la copia:** en el scratchpad de la sesión de la mesa, en `s371/etapa_d/copia/`, del 30/10/2026 a las 20:46. No se copió
+    a ningún paquete ni a la copia permanente. El limpiador de `/private/tmp` la borra a los tres días.
+- **Lo que hizo la mesa** (`decisiones_386_mesa/`):
+  - **el 248:** el control del commit contra la carga del paquete da 18 de 18. Lo controla:
+    - el padre, el mensaje y los cuatro archivos;
+    - la nota al final de su base;
+    - los fijos y el stat;
+    - HEAD y origin/main;
+  - **los tokens por modelo,** solo en total:
+    - los 1.882.810 de entrada del agente de la §384 eran 10.150 de `claude-sonnet-5` y 1.872.660 de `claude-haiku-4-5`;
+    - la ficha de la escritura pasa a su v2, con los dos por separado y la redacción de la decisión 2;
+  - **la revisión del tramo 1:** pasa.
+    - El inventario, las cuentas, los vedados, la extracción, la fuga y el paquete se reproducen por código.
+    - El FRENO tiene dos cuentas mal escritas: el desglose de la fuga y los archivos del paquete.
+  - **los 3 criterios del gold en el grafo,** por código y sin texto:
+    - 1 es una frase de la norma, y también es cita;
+    - 2 coinciden con descripciones de nodos y no son texto de la norma: 1 de B6.4 (1 de 346) y 1 del gold de EV2. Por qué coinciden
+      es NO VERIFICADO;
+  - **la lista corta de decisiones del repositorio:** doce puntos, con sus cuentas y la recomendación de la mesa.
+- **Lo que queda PENDIENTE:**
+  - de la autora:
+    - las doce decisiones del repositorio;
+    - la lectura de las 36 y lo que sigue;
+    - las 200, el lunes;
+  - de la mesa:
+    - el «seguí» del tramo 2, después de las decisiones;
+    - el commit de B6.4, con la corrección del `CLAUDE.md`;
+    - la hoja de adjudicación de las 200.
+- Las secciones anteriores no se editan.
+
+## 225. Los resultados de B6.4, su control y su reproducción, los dos criterios en el grafo y el repositorio de publicación (01/11/2026)
+
+Mensaje de la autora del 01/11/2026, recibido antes de las 10:46:25, la hora del paso 0 de la mesa (el mensaje no trae hora; hoja de
+ruta de la mesa, §387), y lo que hizo la mesa.
+- **Lo que informa la autora:**
+  - aprueba lo de la §386, de (a) a (d). El 248 es `7d0ef16b`;
+  - selló su lectura de la muestra de 36 a las 10:32:18, y el control del material de la §384 dio 26 de 26;
+  - corrió el cruce, el llenado de los esperados, el análisis y la exactitud de cita. Todos salen con 0;
+  - **el análisis salió con 0 al tercer intento:**
+    - el primero salió con 20, porque el sha256 del esperado que le pasó al comando no era el del archivo. El comando ya había armado
+      el clon de HEAD;
+    - el segundo salió con 21, porque el clon ya existía y el comando no lo pisa;
+    - antes del tercero movió ese clon con `mv` a `fuera_del_repo/banco_b64_sp_382/clon_head_analisis_B64_intento1_reemplazado`. La
+      mesa lo encontró ahí, con hora 10:32:55;
+  - el análisis da la afirmación principal en `false`: el grafo supera a `fragmentos_denso`, con Holm, y no a `fragmentos_hibrida`.
+- **Las decisiones, tal cual:**
+  1. «Acepto tus recomendaciones en la fuga, con tu agregado, en los otros grafos, el código, los resultados, la documentación interna,
+     los índices, los PDF que no son del BCRA, los pre-registros, las rutas y el aviso sobre el texto de la norma.»
+  2. «El titular de la licencia y la autoría los escribo yo a mano, después del tramo 2. El tramo 2 deja el hueco marcado y no escribe
+     ningún nombre.»
+  3. «Se arma desde el commit de B6.4, en un repo privado de mi cuenta. Si el tramo 2 y tu revisión llegan a tiempo, lo hago público
+     antes de la entrega del 4/11; si no, antes de la defensa. El nombre del repositorio lo decido al crearlo: el tramo 2 no lo
+     necesita.»
+  4. «Los 2 criterios que coinciden enteros con descripciones de nodos del grafo se declaran: el de B6.4 en el análisis de B6.4, y el
+     de EV2 donde corresponda.» Antes, pide por código y sin texto sus palabras, quién los redactó y si esa sesión podía leer el grafo.
+- **El tiempo de su lectura de la 36,** por su decisión: el que dan la hora del armado (09:29:39) y la del sello (10:32:18), 62 min 39 s.
+  La columna de minutos se declara tal cual: 36 de 36 con un número. Su suma no se usa.
+- **Lo que hizo la mesa** (`decisiones_387_mesa/`):
+  - **el control de las salidas:** 12 de 12, por código. El esperado, las dos salidas y el sello de la 36 contra sus planillas;
+  - **la reproducción, sobre una copia y con las mismas semillas:**
+    - el análisis sale idéntico byte a byte;
+    - la exactitud de cita difiere solo en los dos sha256 de la salida del instrumento de citas, que guarda la ruta de cada sesión que
+      lee. Lo demás es igual: 13 de 13 controles;
+    - el repo y las carpetas de entrada, iguales antes y después;
+  - **los dos criterios:**
+    - el de B6.4, de 14 palabras, lo redactó la sesión de los reemplazos R1. Su despacho no le daba el grafo, y su transcripción no
+      muestra ninguna lectura del grafo;
+    - el de EV2, de 20 palabras, lo redactó el 16/08/2026 la instancia ciega de U6. Según su registro, trabajó desde las preguntas y los
+      PDF. El grafo publicado no existía todavía;
+    - NO VERIFICADO: por qué coinciden;
+  - **el resumen de los resultados para la escritura:** solo cifras, cada una con su archivo y su clave en el commit de B6.4;
+  - **el commit de B6.4, PREPARADO y probado en areneros:**
+    - lleva `aprobadas_B64.json`, el material v1 de la muestra con la nota v2, el cruce, la adjudicación, el análisis y la exactitud
+      de cita, y los dos manifiestos de lo que queda fuera;
+    - corrige el `CLAUDE.md` con la propuesta de la §385, con dos cambios:
+      - la frase de Haiku dice que la CLI registra un uso menor de `claude-haiku-4-5`, que no escribe mensajes ni llama
+        herramientas, y no dice para qué lo usa, como pide la decisión 2 de la §224;
+      - el grafo evaluado «cubre 128 TOs», y no «cubre 128»;
+  - **el «seguí» del tramo 2 del repositorio de publicación,** solo el texto.
+- **Después, el mismo día** (hoja de ruta de la mesa, §388):
+  - la autora aprueba el control y la reproducción, el tiempo de su lectura, el resumen de los resultados y el «seguí» del
+    tramo 2. No corre todavía el commit de B6.4;
+  - **sus decisiones, tal cual:**
+    1. «La frase de Haiku del CLAUDE.md es la tuya: «la CLI registra además un uso menor de claude-haiku-4-5, que no escribe
+       mensajes ni llama herramientas».»
+    2. «En el «seguí» del tramo 2 acepto las dos cosas del punto 11 como las recomendaste: CITATION.cff de tipo software, y
+       CC BY 4.0 para la documentación y el manifiesto del corpus.»
+  - **lo que pide antes del commit:** el `CLAUDE.md` le atribuye el uso de Haiku a B6.3 y a B6.4, y en la §385 la mesa no había
+    controlado las sesiones de B6.3. No entra al repo sin verificar;
+  - **lo que dio el control,** por código y con el método de la §385, sobre las 864 sesiones de la corrida real de B6.3, leyendo
+    solo los campos de modelo, de versión y de uso por modelo (`decisiones_388_mesa/modelo/`, en el paquete de la mesa):
+    - Haiku está en el uso por modelo de la CLI de las 864 sesiones, como en las 1.152 de B6.4, y no escribe ningún mensaje del
+      agente ni hace ninguna llamada a una herramienta o a la API del stream;
+    - la versión de la CLI es 2.1.241 en las 864;
+    - Haiku es un 3,6 % del costo del agente según la CLI;
+    - su consola:
+
+      ```text
+      pasadas: ['pasada1']; sesiones: 864; sin stream: 0; sin meta: 0; streams sin system/init: 0
+      el modelo del system/init: {'claude-sonnet-5': 864}; la versión de la CLI: {'2.1.241': 864}
+      el declarado en la configuración (modelos_R8.declarado): {'claude-sonnet-5': 864}
+      el inventario observado por sesión: {'claude-haiku-4-5-20251001 + claude-sonnet-5': 864}
+      los mensajes del agente en el stream, por modelo: {'claude-sonnet-5': 7630}; los que traen un tool_use: {'claude-sonnet-5': 4299}
+      las llamadas a la API que registra el stream (tokens_R9.por_llamada_api), por modelo: {'claude-sonnet-5': 3375}
+        claude-sonnet-5: entrada 5.886, salida 18.276, lectura de caché 26.707.120, escritura de caché 9.562.458
+      sesiones con cada modelo en el uso por modelo de la CLI: {'claude-haiku-4-5-20251001': 864, 'claude-sonnet-5': 864}
+      Haiku en el uso por modelo de la CLI: {'claude-haiku-4-5-20251001': 864}; por sesión, entrada mínimo 1532, mediana 1629.5, máximo 1690; salida mínimo 16, mediana 22.0, máximo 35
+      Haiku en total: entrada 1.395.927, salida 19.834, lectura de caché 0, escritura de caché 0
+      el costo del agente según la CLI (costUSD del uso por modelo), por modelo: {'claude-haiku-4-5-20251001': 1.4951, 'claude-sonnet-5': 40.3183}; total 41.8134; Haiku, 1.4951, un 3.6 %
+      Haiku en los mensajes del agente: 0; en los que traen un tool_use: 0; en las llamadas a la API del stream: 0
+      ```
+
+  - **lo que cambia:** el paréntesis de Haiku sigue valiendo para B6.3 y B6.4, y el grafo evaluado «cubre 128 TOs». El commit
+    de B6.4 se rearma y se vuelve a probar en areneros. Sus 92 archivos nuevos no cambian: cambian solo el `CLAUDE.md` y esta
+    sección del registro. El título del commit no cambia.
+- **Lo que queda PENDIENTE:**
+  - de la autora:
+    - el commit de B6.4;
+    - la declaración de los dos criterios;
+    - el tramo 2 y la creación del repositorio;
+    - las 200, el lunes;
+  - de la mesa: la hoja de adjudicación de las 200, y la revisión del tramo 2.
+- Las secciones anteriores no se editan.
