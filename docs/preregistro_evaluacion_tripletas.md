@@ -718,3 +718,40 @@ topes de USD 35 (V) y USD 55 (T).
   - **La diferencia medida, con su signo** (decisión 3): −0,0816 cruda y −0,0748 ponderada. El juez da una precisión más baja que la
     de la autora.
   - El texto firmado no cambia: la enmienda 1 y la enmienda 5 quedan como están.
+- **01/11/2026 — El código de las 200 que faltan y de su análisis, sellado antes de correrlas: la hoja de adjudicación leída por su
+  sello y el bootstrap por estrato** (registro de decisiones, §209, §210 y §223):
+  - **El código** vive fuera del repo, en `fuera_del_repo/tripletas_v_juez/v3/`.
+    - Lo sella su lista de la etapa d, con los dos cambios de abajo: `data/experiment/tripletas_v/juez_v3/etapa_d_juez_v3_sha256.txt`,
+      `5762ce24…`, 19 archivos. Son el corredor de las 200 y su comando, el análisis de las 400 y su comando, la entrada sellada de las
+      200, las pruebas y sus salidas.
+    - La congelación del juez no cambia (`congelacion_juez_v3_sha256.txt`, `4e7a7238…`, 59 archivos).
+  - **Los dos cambios,** que la autora aceptó el 30/10/2026, tal cual: «Acepto los dos cambios de la etapa d antes del 248: mi hoja de
+    adjudicación con ref y veredicto, leída por su sello, y el bootstrap de la sensibilidad remuestreando las 400 dentro de cada estrato, y
+    por separado los 98 pares.»
+    - **La hoja de adjudicación de las 200:**
+      - el análisis la lee solo después de controlar su sello;
+      - sus refs tienen que ser exactamente las que la v3 manda a adjudicación, cada una `correcta` o `incorrecta`;
+      - en la cifra principal, esas fichas cuentan con el veredicto de la autora. La cifra de al lado, la de la lectura de la autora
+        sola, sigue sobre sus 200 de calibración y validación;
+      - en la sensibilidad, la corrección toca solo las fichas que decidió la v3.
+    - **Lo que queda abierto, tal cual** (decisión de la autora del 01/11/2026): «Deja abierto que la hoja de adjudicación de las 200
+      frena si trae BOM o un renglón vacío en el medio: el convertidor que armes para esa hoja no tiene que dejar ninguno de los dos.»
+    - **El bootstrap de la sensibilidad:**
+      - en cada réplica, dentro de cada estrato, se remuestrean con reposición todas sus fichas de las 400, cada una con su fuente;
+      - por separado, se remuestrean los 98 pares de π₁ y π₀;
+      - son 10.000 réplicas, con la semilla 20261030 y los percentiles 2,5 y 97,5.
+
+      La cifra principal sigue con el intervalo analítico (Wilson con el n efectivo de Kish).
+  - **La entrada de las 400:** las 400 fichas de T con sus estratos, la que validó la v2, copiada byte a byte en
+    `data/experiment/tripletas_v/juez_v3/entrada_analisis_400_T.json` (`d764a18b…`). El análisis controla su sha256.
+  - **Lo que se declara:**
+    - **Las lecturas fuera del despacho.** La sesión que escribió la etapa d listó carpetas de `tripletas_t/` y de la v2, y leyó por
+      código solo nombres de claves, tipos, tamaños, cuentas y sha256. Ninguna lectura mostró el texto de una ficha, un veredicto ni una
+      lectura de la autora. Es un desvío del despacho, menor, que encontró la revisión de la mesa del 30/10.
+    - **La reproducción de la mesa,** sobre una copia sin ningún `NO_ABRIR_`:
+      - las pruebas de la etapa d dan 36 de 36, dos veces, y salen iguales byte a byte a las de la sesión;
+      - el seco de las 200 (13 de 13 en la sesión, dos veces igual) no se reprodujo en la copia: lee un prompt `NO_ABRIR_` y el acta
+        de la validación, que está en una carpeta vedada para la mesa. Queda verificado por la sesión.
+    - **El orden de los commits.** Este commit entra después de los de B6.4 del 31/10 y del 01/11, que no tocan nada de tripletas
+      (`git log` desde el de la validación de la v3, sobre este pre-registro y sobre `data/experiment/tripletas_v/`, sale vacío).
+  - El texto firmado no cambia.

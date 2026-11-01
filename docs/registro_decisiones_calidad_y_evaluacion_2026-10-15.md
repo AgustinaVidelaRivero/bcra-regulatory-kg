@@ -9466,3 +9466,143 @@ ruta de la mesa, §382), y lo que hizo la mesa.
   - de la mesa: las fichas de las 36, la regla de su lectura y el sellador de las planillas, después del sorteo; el mandato del
     repositorio de publicación, después del 252.
 - Las secciones anteriores no se editan.
+
+## 221. Las fichas de la muestra de 36, el repositorio de publicación, la etapa d de la v3 y el 248 (01/11/2026)
+
+Dos mensajes de la autora del 01/11/2026, y lo que hizo la mesa (los mensajes no traen hora; hoja de ruta de la mesa, §383):
+- el primero, recibido antes de las 08:29:04, la hora del paso 0 de la mesa;
+- el segundo, un agregado con los puntos (c) y (d), recibido durante la ronda.
+- **Lo que informa la autora:**
+  - **el 252:** está commiteado y con push, en `684d9817`, con padre `d989a44d`, 13 archivos y 1.105 renglones agregados (la mesa lo
+    controló con `git log` y `git show --stat`, y `origin/main` da el mismo hash);
+  - **los cuatro pasos de antes del material ciego,** en orden y con las salidas esperadas, según sus consolas:
+    - el manifiesto de lo que queda fuera, `c08a3909…` (la mesa lo controló con `shasum`);
+    - la lectura tolerante, con la prueba P1 a P8 en PASS (NO VERIFICADO por la mesa: no abre sus salidas);
+    - el armado de su adjudicación: 89 respuestas y 109 criterios (NO VERIFICADO por la mesa, por lo mismo);
+    - el sorteo de la muestra de 36: 36 fichas de 36 preguntas distintas, 12 por brazo, 4 de cada tipo en cada brazo y 135 criterios
+      (la mesa controló las 36 fichas y los 135 criterios con el armado en memoria);
+  - **la adjudicación:** ya empezó.
+- **Lo que pide:**
+  - las fichas de las 36, la regla de lectura y el sellador de sus planillas, sobre la clave del sorteo, leída solo por código;
+  - el mandato de una sesión ejecutora aparte para el repositorio de publicación mínimo, sin lanzarlo, con lo no decidido listado
+    aparte;
+  - el «seguí» de la etapa d de la v3, con los dos cambios que aceptó el 30/10 (§210, decisión 3), sin lanzarlo;
+  - si la entrada del 251 y del 252 cambia algo del 248.
+- **Lo que hizo la mesa:**
+  - **la muestra de 36:** el armado de las fichas, la regla de lectura, cómo se mide el juez, el LEEME y el sellador, adaptados de B6.3
+    y sellados (`decisiones_383_mesa/control_36/`):
+    - la prueba con datos de juguete da 30 de 30, dos veces igual;
+    - el armado sobre los datos reales, en memoria y sin escribir, da sus controles:
+      - la clave es la que da el sorteo sellado al rehacerlo;
+      - las 36 respuestas dan su sha256 y su id opaco;
+      - fuera de las respuestas no queda ningún id, brazo ni TO;
+    - el sellador no sella con la columna «error fuera de los criterios» vacía, porque el §5 del pre-registro de B6.4 no trae la cláusula
+      de B6.3 que la dejaba salir;
+  - **el repositorio de publicación:** el despacho del tramo 1 (el inventario, la clasificación y los controles, sin armar nada) y la
+    lista de lo que no está decidido, con once puntos (`decisiones_383_mesa/publicacion/`);
+  - **la etapa d de la v3:** el «seguí» de la d-bis, con el comando para retomar la sesión sin la clave en el entorno
+    (`decisiones_383_mesa/etapa_d/`);
+  - **el 248:** el 251 y el 252 no tocan nada de tripletas, así que su contenido no cambia. Cambian su padre, el lugar de sus secciones
+    del registro y su nota (`decisiones_383_mesa/etapa_d/EL_248_DESPUES_DEL_251_Y_DEL_252_mesa.md`).
+- **Lo que queda PENDIENTE:**
+  - de la autora:
+    - el armado de las fichas y, después de su adjudicación, la lectura de las 36 y su sello;
+    - los tres puntos de la muestra que quedan para decidir;
+    - el despacho del tramo 1 del repositorio y el «seguí» de la d-bis;
+  - de la mesa: el cruce de la muestra, la revisión de los dos FRENOs y el 248.
+- Las secciones anteriores no se editan.
+
+## 222. La adjudicación sellada, tres decisiones sobre la muestra de 36, el cruce y los comandos del análisis (01/11/2026)
+
+Mensaje de la autora del 01/11/2026, recibido antes de las 09:31:53, la hora del paso 0 de la mesa (el mensaje no trae hora; hoja de
+ruta de la mesa, §384), y lo que hizo la mesa.
+- **Lo que informa la autora:** selló su adjudicación de B6.4. El sellador dio «SELLADA», sale con 0, y el sello es de las 09:18:00,
+  sobre `planilla_adjudicacion_b64.csv` (`7b66f315…`).
+- **Las decisiones sobre la muestra de 36,** tomadas antes de armar las fichas y de leer, tal cual:
+  1. «La columna «error fuera de los criterios» es obligatoria, como la trae el §5. No agrego la cláusula de B6.3.»
+  2. «El piso y las cifras principales, sobre las 36 juntas; por tipo, al lado, sin piso. Agrego el acuerdo por brazo, al lado,
+     informativo, sin piso ni prueba.»
+  3. «El material entra en el commit del cruce, como en B6.3.»
+- **Lo que deja para después:** «Las 11 del repositorio de publicación las decido cuando revises el tramo 1.»
+- **Lo que hizo la mesa** (`decisiones_384_mesa/`):
+  - **el sello de la adjudicación:** lo controló por código, sin abrir su contenido. Da 8 de 8: la planilla da el sha256 y los bytes del
+    sello, con 109 renglones de 89 fichas; la estructura es la del armado; cada renglón trae un veredicto válido. El sello da
+    `ecfd86bb…`;
+  - **la nota fechada** del pre-registro de B6.4, con las tres decisiones y el sello de la adjudicación. Va en el commit del cruce;
+  - **la v2 del material de la muestra:** la medida suma el acuerdo por brazo, y la regla, la decisión 1. Sus pruebas dan 30 de 30, y
+    el armado real en memoria sale igual;
+  - **el cruce de la muestra,** armado y probado con datos de juguete antes de que nadie abra la clave. Da 25 de 25, dos veces igual;
+  - **las dos entradas del análisis que faltaban:**
+    - las clases de los documentos del §3.1: 46 elegibles, y 37, 14, 15 y 5 en las cuatro clases;
+    - los 96 lugares, con lo sorteado y lo final;
+
+    Las armó por código desde fuentes selladas, dos veces igual;
+  - **el llenado de los esperados,** que corre la autora porque calcula el sha256 de la clave de su adjudicación. Su prueba da 10 de 10,
+    y su seco sobre las rutas reales no escribe nada;
+  - **los comandos del análisis y de la exactitud de cita,** llenos: copias de los sellados que cambian solo los renglones que se
+    llenan;
+  - **para la escritura,** los tokens y las horas de la corrida, solo en total;
+  - **el lugar del 248:** corrige lo que dijo en la §383. El 248 y los commits de B6.4 no dependen entre sí, y entra primero el que esté
+    listo primero.
+- **Lo que queda PENDIENTE:**
+  - de la autora: el armado de las fichas, la lectura de las 36, su sello, el cruce, el llenado, el análisis y la exactitud de cita;
+  - de la mesa: el commit de `aprobadas_B64.json` con los resultados y el material de la muestra, después de esas consolas; la revisión
+    del tramo 1 del repositorio y de la d-bis, cuando vuelvan; el 248.
+- Las secciones anteriores no se editan.
+
+## 223. La etapa d-bis de la v3, el 248, el modelo del agente y la muestra de 36 armada con la v1 (01/11/2026)
+
+Mensaje de la autora del 01/11/2026, recibido antes de las 10:04:25, la hora del paso 0 de la mesa (el mensaje no trae hora; hoja de
+ruta de la mesa, §385), y lo que hizo la mesa.
+- **Lo que informa la autora:**
+  - aprueba lo de la §222;
+  - la sesión del juez de tripletas terminó la d-bis y frenó;
+  - lanzó el tramo 1 del repositorio de publicación;
+  - antes de recibir la §222 ya había armado las fichas de la muestra de 36 con el material de la mañana (la v1), y va por la mitad de
+    la lectura.
+- **Lo que decide, tal cual:**
+  1. «Deja abierto que la hoja de adjudicación de las 200 frena si trae BOM o un renglón vacío en el medio: el convertidor que armes
+     para esa hoja no tiene que dejar ninguno de los dos.»
+  2. «Si pasa, armá el 248 sobre el HEAD de ese momento, con sus comandos. Va antes de las 200 del lunes.»
+  3. «No rearmo nada: las fichas, las planillas, el armado y el sellador son los mismos en la v1 y en la v2.»
+  4. «El acuerdo por brazo lo fija la nota fechada y lo calcula el cruce.»
+- **Lo que hizo la mesa:**
+  - **la revisión de la d-bis:** pasa (`decisiones_385_mesa/etapa_d_bis/`).
+    - Sobre una copia sin ningún `NO_ABRIR_`, las pruebas dan 36 de 36, dos veces, iguales byte a byte a las de la sesión.
+    - El seco de las 200 no se reprodujo en la copia, porque lee un prompt `NO_ABRIR_` y el acta de la validación, en una carpeta
+      vedada para la mesa. Lo verifica la sesión: 13 de 13, dos veces igual.
+    - La lista nueva de la etapa d da `5762ce24…`, con 19 archivos. La congelación no cambia.
+  - **el 248,** armado sobre `684d9817` y probado en areneros, con sus comandos. Lleva:
+    - la lista de la etapa d;
+    - la copia de la entrada de las 400;
+    - una nota fechada del pre-registro de tripletas;
+    - las secciones del registro desde la §221.
+
+    La nota declara también las lecturas fuera del despacho que encontró la revisión de la etapa d del 30/10, que no habían llegado
+    al registro;
+  - **el modelo del agente de B6.4,** por código, en las 1.152 sesiones y solo en total:
+    - el `system/init`, el modelo declarado y los 13.775 mensajes del agente en el stream son de `claude-sonnet-5`;
+    - Haiku no aparece en ningún mensaje ni en ninguna llamada registrada. Está solo en el uso por modelo de la CLI, en todas las
+      sesiones, con 1.533 a 1.717 tokens de entrada y 16 a 32 de salida por sesión;
+    - el ancla de que es trabajo interno de la CLI es el hallazgo B1 de `data/experiment/banco_mcp/gate/faseB_resultados.md`
+      (`b08095a0`);
+    - la mesa propone corregir `CLAUDE.md:9-12`;
+  - **la muestra de 36 armada con la v1:**
+    - el cruce de la §384, sin cambios, da la misma salida sobre una carpeta armada con la v1 que sobre una armada con la v2. Su
+      prueba de juguete da 6 de 6, dos veces igual;
+    - la nota fechada de la §222 pasa a su v2, que dice con qué material se armaron las fichas;
+    - los comandos del paso 4 en adelante no cambian.
+- **Error de la mesa, con su causa:** la copia de reproducción de la §371 llevaba 22 `NO_ABRIR_`. Las pruebas pudieron leer algunos
+  por código, y nunca se imprimieron. La causa: la copia se armó con `ditto` y con `rsync` sin excluirlos por nombre. La de esta ronda
+  los excluye.
+- **Lo que queda PENDIENTE:**
+  - de la autora:
+    - la prueba en seco, el commit y el push del 248;
+    - las 200, el lunes;
+    - la decisión sobre `CLAUDE.md`;
+    - la lectura de las 36, su sello y lo que sigue;
+  - de la mesa:
+    - la hoja de adjudicación de las 200, después de su corrida;
+    - el commit de B6.4;
+    - la revisión del tramo 1 del repositorio.
+- Las secciones anteriores no se editan.
