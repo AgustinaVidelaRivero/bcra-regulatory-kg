@@ -9401,3 +9401,68 @@ hoja de ruta de la mesa, §380), y lo que hizo la mesa.
   - de la mesa, después de la reanudación: la estimación de la demostración del job sobre los tres documentos que cambiaron y la del
     repositorio de publicación mínimo.
 - Las secciones anteriores no se editan.
+
+## 219. B6.4 terminó: el cierre de la corrida, sin resultados por brazo (01/11/2026)
+
+Mensaje de la autora del 01/11/2026, recibido antes de las 01:35:06, la hora del paso 0 de la mesa (el mensaje no trae hora; hoja de
+ruta de la mesa, §381), y lo que hizo la mesa.
+- **Lo que informa la autora:** B6.4 terminó. La retomó con `entrada_B64_freno144.json`, y la consola final dio 1.152 sesiones lanzadas,
+  `"codigo": 0` y sin freno.
+- **Las decisiones, tal cual:**
+  1. «No veo ningún resultado por brazo hasta terminar lo que el pre-registro me pide hacer a ciegas. Vos tampoco me lo muestres.»
+  2. «En esta ronda no se corre nada pago, ni el análisis de H-6, ni se arma material para mí.»
+- **Lo que hizo la mesa:**
+  - **el cierre de la corrida:** lo controló por código, solo desde el estado del runner y con conteos, y pasa los 13 controles
+    (`decisiones_381_mesa/cierre_corrida/`):
+    - 1.152 sesiones, con ids únicos, y ninguna `no_lanzada`;
+    - 6 `incompleta_otra`: 4 de la pasada 1 y 2 de la reanudación;
+    - 3.438 filas del juez, 1.146 × 3: 3.251 veredictos y 187 salidas que la lectura estricta no lee;
+    - ningún bloque con el juez pendiente;
+    - 0 respuestas con algún criterio sin consenso, y 76 con algún criterio dudoso, en total, en la lectura estricta;
+    - el gasto: USD 77,44 del agente y 52,91 del juez, 130,35 en total, contra el freno y el tope de 144;
+  - **el commit 251:** lo controló contra la carga del paquete de la §380, y pasa sus 20 controles (`decisiones_381_mesa/commit_251/`);
+  - **las incompleta_otra:** respondió qué dice el pre-registro (`decisiones_381_mesa/LO_QUE_SIGUE_B64_381_mesa.md`). B6.4 las trae por
+    su §4, desde el §6 de B6.3 y la decisión del 29/10 (§162), y las aplica el código sellado del análisis;
+  - **lo que sigue:** el orden del §13, punto 6, con lo que va a ciegas;
+  - **las estimaciones:** la de la demostración del job sobre los tres documentos y la del repositorio de publicación mínimo
+    (`decisiones_381_mesa/ESTIMACIONES_SUBGRAFO_Y_REPOSITORIO_381_mesa.md`).
+- **Lo que queda PENDIENTE:**
+  - de la autora: decidir las dos estimaciones, si declara las incompleta_otra en una nota y si el análisis espera a los expertos;
+  - de la autora, a ciegas: la adjudicación y la lectura de la muestra de 36;
+  - de la mesa, cuando se pida: los comandos de los pasos 0 a 2 y el circuito de la muestra de 36.
+- Las secciones anteriores no se editan.
+
+## 220. Lo que va antes de lo ciego: las incompleta_otra, los expertos, la muestra de 36 y el commit 252 (01/11/2026)
+
+Mensaje de la autora del 01/11/2026, recibido antes de las 01:51:28, la hora del paso 0 de la mesa (el mensaje no trae hora; hoja de
+ruta de la mesa, §382), y lo que hizo la mesa.
+- **Lo que aprueba la autora:** el cierre de la corrida y el orden del §13, punto 6, de la §381.
+- **Las decisiones, tal cual:**
+  1. «La decisión del 29/10 sobre las incompleta_otra rige también en B6.4: cuentan como no correctas en el análisis principal, sin
+     pasar por el juez; la sensibilidad las saca; se declaran por brazo y por motivo. Va en una nota fechada, antes de que se arme
+     cualquier material ciego.»
+  2. «El análisis de H-6 no espera la devolución de los expertos, como dice la nota del 31/10. La devolución entra después, en la
+     sensibilidad.»
+  3. «El repositorio de publicación lo quiero antes del 4/11 si se puede, sin frenar lo de B6.4. En esta ronda no lo armes. En la
+     próxima, después del 252, dame el mandato para una sesión ejecutora aparte que lo arme en paralelo sobre un repo nuevo, con la
+     limpieza de las rutas a mi carpeta personal, para que no consuma tus horas.»
+  4. «La demostración sobre los tres documentos la decido más tarde. En esta ronda no la toques.»
+- **Lo que hizo la mesa:**
+  - **la lectura tolerante:** ubicó dónde está fijada, toda commiteada:
+    - el §5 del pre-registro;
+    - el código sellado de B6.3 (`5f608a58…`, 34a90823) y su lector (`191e65bb…`, 83b45bfc);
+    - el envoltorio de B6.4 (`53bdbdd3…`, el 250), que implementa la decisión del 30/10 y la forma del 31/10, sin decidir nada más
+      (`decisiones_382_mesa/LECTURA_TOLERANTE_Y_COMANDOS_382_mesa.md`);
+  - **la muestra de 36:** adaptó la regla, el sorteo y la prueba de B6.3, y los selló antes del sorteo.
+    - La prueba con datos de juguete da 18 de 18, dos veces igual.
+    - La lectura de los datos reales, sin sortear, da sus controles: 1.146 ids recalculados en los cuatro brazos y D-10 en los cuatro;
+  - **los tres comandos de antes del material ciego,** llenos con la entrada sellada;
+  - **el commit 252,** con la nota, la muestra, los comandos llenos y las secciones §219 y §220, probado en areneros;
+  - **el límite del ciego:** de las 1.146 respuestas completas, 5 (0,4 %) traen alguna de las palabras que pidió la autora (grafo, nodo,
+    fragmento, chunk y los nombres de las herramientas), en total y sin abrir por brazo. La D-10 del runner, con sus propias marcas,
+    da 9 de 1.146 (0,8 %), sumada en los cuatro brazos.
+- **Lo que queda PENDIENTE:**
+  - de la autora: el commit 252; después, el manifiesto, la lectura tolerante, el armado y el sorteo; su adjudicación, a ciegas;
+  - de la mesa: las fichas de las 36, la regla de su lectura y el sellador de las planillas, después del sorteo; el mandato del
+    repositorio de publicación, después del 252.
+- Las secciones anteriores no se editan.

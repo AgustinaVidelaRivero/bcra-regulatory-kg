@@ -562,3 +562,37 @@ FIRMADO por la autora el 30/10/2026 (recibida a las 00:25:13), tal cual: «Firmo
   - **El tope del §12, 144, no cambia.** Las 4 sesiones `incompleta_otra` no se repiten (la misma regla del runner) y se declaran
     en el análisis.
   - El texto firmado no cambia.
+- **01/11/2026 — Las incompleta_otra, la regla de la muestra de 36 y lo que corre antes del material ciego, decididos antes de ver
+  ningún resultado por brazo** (decisiones de la autora del 01/11/2026; registro de decisiones, §219 y §220):
+  - **La corrida terminó** con 1.152 sesiones lanzadas: 1.146 completas y 6 `incompleta_otra`, 4 de la pasada 1 y 2 de la reanudación
+    (registro, §219).
+  - **Las incompleta_otra** (la decisión, tal cual): «La decisión del 29/10 sobre las incompleta_otra rige también en B6.4: cuentan como
+    no correctas en el análisis principal, sin pasar por el juez; la sensibilidad las saca; se declaran por brazo y por motivo. Va en una
+    nota fechada, antes de que se arme cualquier material ciego.»
+    - Es la de B6.3 (registro, §162), que este pre-registro traía por su §4 y que ya aplica el código sellado del análisis
+      (`data/experiment/banco_mcp/b64/analisis/codigo/analizar_b64.py:127-130`).
+    - Ninguna pregunta queda sin corridas en un brazo por la sensibilidad: las 6 caen en pares (pregunta, brazo) distintos.
+  - **Los expertos** (la decisión, tal cual): «El análisis de H-6 no espera la devolución de los expertos, como dice la nota del 31/10.
+    La devolución entra después, en la sensibilidad.»
+  - **La muestra de control de 36 (§5),** con su regla sellada antes del sorteo, en `data/experiment/banco_mcp/b64/control_36/sorteo/`:
+    - `regla_sorteo_control_36_B64.md`, `sortear_control_36_B64.py` y sus dos pruebas, con su sello (`sello_sorteo_control_36_B64.txt`);
+    - la regla es la de B6.3 con lo que cambia B6.4:
+      - la semilla `B64:control_juez:v1`, un generador por paso;
+      - 12 respuestas por brazo de los tres de las comparaciones principales, sin `kg_n7`, y 4 de cada tipo en cada brazo;
+      - dentro de cada celda (brazo, tipo), dos clases por el veredicto del juez («correcto» y «parcial o incorrecto»), con cuotas
+        proporcionales por restos mayores y al menos 1 por clase presente;
+      - 36 preguntas distintas;
+      - fuera de la población: las `incompleta_otra`, las que no tienen sus 3 lecturas en la lectura estricta y las
+        `requiere_adjudicacion`;
+    - la prueba con datos de juguete da 18 de 18, dos veces igual. La lectura de los datos reales, sin sortear, da sus controles.
+  - **Lo que corre antes del material ciego,** con su entrada llena por la mesa (`entrada_B64.json`, `9064066b…`):
+    - las copias de tres comandos del análisis sellado en el commit 250, que cambian solo los renglones de la entrada, en
+      `data/experiment/banco_mcp/b64/analisis/comandos_llenos/`;
+    - son el manifiesto de lo que queda fuera, la lectura tolerante y el armado de la adjudicación de la autora.
+  - **La lectura tolerante** es la que fija el §5, sin cambios:
+    - el código sellado de la etapa A de B6.3 (`data/experiment/banco_mcp/b63/analisis/codigo/aplicar_lectura_tolerante_b63.py`,
+      `5f608a58…`, commit 34a90823), con su lector (`data/experiment/banco_mcp/lectura_tolerante_juez.py`, `191e65bb…`, 83b45bfc);
+    - su envoltorio de B6.4 (`data/experiment/banco_mcp/b64/analisis/codigo/aplicar_lectura_tolerante_b64.py`, `53bdbdd3…`, el commit
+      250), que lleva a la adjudicación, entera, la respuesta a la que ninguna lectura lee alguna de sus tres salidas (las decisiones
+      del 30/10 y del 31/10, en la nota del 31/10).
+  - El texto firmado no cambia.
