@@ -9869,3 +9869,119 @@ ruta de la mesa, §391), y lo que hizo la mesa.
   - de la autora: el 255, y después las 200; la declaración de los dos criterios; el tramo 2 y la creación del repositorio;
   - de la mesa: la hoja de adjudicación de las 200, si la v3 manda alguna; la nota fechada del pre-registro; la revisión del tramo 2.
 - Las secciones anteriores no se editan.
+
+## 229. El 255 commiteado, la revisión del tramo 2 del repositorio de publicación y 15 criterios en el grafo, no 2 (01/11/2026)
+
+Mensaje de la autora del 01/11/2026, recibido antes de las 18:37:26, la hora del paso 0 de la mesa (el mensaje no trae hora; hoja de
+ruta de la mesa, §392), y lo que hizo la mesa.
+- **Lo que informa la autora:** corrió el 255, y sus cinco pasos dieron lo esperado. La mesa lo leyó del repo: es
+  `95f2ff1423c098806bf9d9bc86997f7f24363f7e`, de las 18:36:17, sobre el 254, con el lanzador (`dfa9fb74…`) y el registro preparados,
+  byte a byte, y está en HEAD y en origin/main. Aprueba la §391 (§228).
+- **Lo que decide:**
+  - **sobre el disco:** la mesa le lista los areneros de las rondas 387 a 391, con su tamaño, y le da un solo comando para borrarlos, que
+    corre ella. Desde ahora, los areneros de cada ronda van en una sola carpeta, y al cerrar la mesa da su tamaño y el comando;
+  - **sobre lo que el tramo 2 dejó «a decidir»:**
+    1. el código que va importa completo, con los módulos del repo que importa, hasta cerrar, si pasan los controles; los requisitos
+       llevan los paquetes que faltan; las pruebas que necesitan el gold, la API o datos que no se publican se declaran en el README;
+    2. las rutas armadas desde la carpeta personal se limpian como las demás;
+    3. las 2 adendas retenidas van con cada nombre reemplazado por «[nombre omitido]», y `FIRMAS.md` lo declara con el sha256 del
+       original;
+    4. los resultados de B6.3 y B6.4 quedan para después de la revisión de la mesa.
+- **Lo que pide:** la revisión por código del tramo 2 (sesión `f1576f1c`), las tres cuentas de su resumen que no cierran, las cadenas
+  `sk-ant-` y el «seguí» del tramo 3.
+- **Lo que hizo la mesa** (`decisiones_392_mesa/`, con sus scripts y consolas en `revision/`):
+  - **los areneros:** 12 carpetas, 106,5 GiB por `du`, que cuenta entero cada clon de APFS. Lo real es sobre todo una plantilla de unos
+    500.000 KB por carpeta: NO VERIFICADO hasta el `df` de después del borrado;
+  - **los controles del tramo 2:** pasan todos, salvo tres:
+    - el renglón de la suma de su resumen («no va» son 24.063, no 26.063);
+    - los tokens del nombre de la cuenta, que dan 1 renglón del grafo: una palabra del texto del BCRA, que está en la E0;
+    - la fuga en el grafo;
+  - **15 criterios de evaluación en el grafo, no 2.** Buscando palabra por palabra, sin mayúsculas ni puntuación, hay 15 criterios
+    enteros en textos del grafo evaluado: 3 de B6.3, 10 de B6.4 y 2 de EV2. Solo los 2 que ya se conocían están iguales por el texto
+    normalizado con espacios; los otros difieren en la puntuación o las mayúsculas. Lo que dicen la §225 y la §226 de «dos
+    criterios» es incompleto, porque la búsqueda era exacta. Los 15 van, por sus ids, en el documento de la revisión;
+  - **los 5 resultados propuestos:**
+    - ninguno trae texto del gold;
+    - ninguno comparte 8 palabras seguidas con la norma;
+    - sus claves de respuestas traen solo números;
+    - sus textos largos son notas de reglas, decisiones e implementación que escribe el análisis;
+  - **los `sk-ant-`:** son 5 señuelos de 33 caracteres, y ninguno tiene una forma publicada de clave de Anthropic. La de GitHub no es
+    pública: NO VERIFICADO;
+  - **el «seguí» del tramo 3,** preparado, sin lanzar.
+- **Lo que queda PENDIENTE:**
+  - **de la autora:**
+    - el comando de los areneros;
+    - lanzar el tramo 3;
+    - las 200, con el lanzador de la §228;
+    - la declaración de las coincidencias, ahora 15;
+    - la decisión sobre los resultados de B6.3 y B6.4;
+  - **de la mesa:** la revisión del tramo 3, la hoja de adjudicación de las 200 y la nota fechada del pre-registro.
+- Las secciones anteriores no se editan.
+
+## 230. El peso de las coincidencias del grafo con criterios de evaluación (01/11/2026)
+
+Mensaje de la autora del 01/11/2026, recibido antes de las 19:34:34, la hora del paso 0 de la mesa (el mensaje no trae hora; hoja de
+ruta de la mesa, §393), con un agregado durante la ronda; lo que hizo la mesa, con las cifras finales de la §395; y las decisiones de
+la autora de sus dos mensajes siguientes, del mismo día, recibidos antes de las 21:48:23 y de las 22:34:19 (hoja de ruta de la mesa,
+§394 y §395).
+- **Lo que informa la autora:** aprueba la §392 (§229). Acepta como están las propuestas que quedaron fuera del bloque del tramo 3: lo «a
+  decidir», los señuelos y lo que no es pregunta ni criterio.
+- **Lo que pide:** medir el peso de las coincidencias del grafo con criterios de evaluación (§229) antes de que la tesis cierre los
+  resultados de B6.3 y B6.4. Todo por código, sin mostrar ningún texto:
+  - de cada una, el campo del grafo, cuánto de ella está en la E0 y su clase;
+  - por pregunta y por brazo, las correctas y d;
+  - la sensibilidad, con el código y las semillas de cada análisis, rotulada como análisis posterior, no pre-registrado. Lleva la media
+    de d, la fidelidad de cada brazo con su intervalo y el p de la misma permutación de signos (el agregado), sin ninguna afirmación
+    principal nueva. Va (i) sin las preguntas con alguna coincidencia y (ii) «sin las preguntas que tienen una coincidencia que no es
+    literal»;
+  - cuáles de esas preguntas están en las muestras de control de 36 del juez;
+  - si alguna sesión de la generación tuvo el grafo;
+  - una propuesta de declaración.
+- **Lo que hizo la mesa** (`decisiones_393_mesa/` y, con las cifras finales, `decisiones_395_mesa/`). Leyó de `C` (`c190505c`) y corrió
+  los análisis sobre copias. De la §395, la búsqueda completa y las clases de los 19 se escribieron antes de que empezaran las 200
+  (22:36:13 y 22:39:07, con las 200 desde las 22:39:37), y lo demás, después, desde las 22:39:59 (hoja de ruta de la mesa, §396).
+  Los scripts, las consolas y las listas que sostienen las cifras van en `data/experiment/banco_mcp/coincidencias_con_el_grafo/`:
+  - **cuántas:** la §393 midió los 15 de la §229. En la §395, con todos los criterios y sin el piso de largo de la §392 (40 caracteres
+    y 6 palabras), son 19: 4 de B6.3, 13 de B6.4 y 2 de EV2, en 4, 11 y 2 preguntas. Los 4 nuevos tienen de 4 a 6 palabras. Según
+    informa la autora, el tramo 3 había encontrado 16: los 15 y el criterio 3 de `B64-O1-L02-R1`, que también es una cita del gold.
+    La mesa lo confirma por código: es uno de los 4 nuevos, con 4 palabras y 43 caracteres. De los 19, 6 son también citas del gold;
+  - **las clases:** 7 son texto de la norma (enteros en una unidad de la E0), 6 casi texto de la norma y 6 redactados. «Casi» es una
+    secuencia de al menos el 80 % de las palabras del criterio, seguidas, en una sola unidad, con el umbral fijado en la §393. Con los
+    19, el hueco en los datos va de 0,789 a 0,800: uno de los nuevos cubre justo el 80 % (4 de sus 5 palabras);
+  - **por campo:** 16 están en la descripción de un nodo, 9 en un tramo de procedencia y 1 en un label. De ellos, 6 están en una
+    descripción y en un tramo, y el del label también está en un tramo;
+  - **la sensibilidad:** se reproduce el principal commiteado, valor por valor, en los dos análisis. Sin las preguntas con alguna
+    coincidencia (4 en B6.3 y 11 en B6.4), ninguna media de d cambia de signo, ningún intervalo cambia de lado del cero y ningún p
+    cruza 0,05. La que más se mueve es la de kg − denso de B6.4, de 0,1319 a 0,1098. Sin las que tienen una coincidencia que no es
+    literal, da lo mismo que con los 15, porque los 4 nuevos son texto de la norma o están en una pregunta que ya salía;
+  - **en las muestras de control de 36:** 1 de las 4 preguntas de B6.3 y 4 de las 11 de B6.4. De las 5 respuestas sorteadas, 4 son
+    correctas y 1 es parcial o incorrecta;
+  - **las sesiones de la generación:** la P2 de B6.3 y las cinco de B6.4, que redactaron las preguntas y los criterios, no tuvieron el
+    grafo. Sus despachos lo excluían y ninguna de sus llamadas a herramientas lo abrió ni lo consultó. En las otras seis carpetas de
+    sesiones que nombran a B6.3 o a B6.4 (P1 y P3 de B6.3, los dos análisis de B6.4, el control de 36 de B6.3 y el corredor de B6.4),
+    ninguna sesión escribió archivos con nombre de preguntas o de criterios. Que la E0 explique las coincidencias es una
+    interpretación, NO VERIFICADA;
+  - **los criterios de EV2:** se redactaron el 16/08/2026 (`2ac2fab4`). La primera descripción del repo con sus palabras es del
+    05/10/2026 (`3d793aae`), y el grafo evaluado, del 23/10/2026 (`fde70c67`);
+  - **la propuesta de declaración,** con esas cifras, para que la autora la ajuste.
+- **Lo que decide la autora sobre la declaración:**
+  1. «ninguna conclusión cambia» se reemplaza por lo que se midió: ninguna diferencia cambia de signo, ningún intervalo que excluía el
+     cero pasa a incluirlo ni al revés, y ningún p cruza 0,05;
+  2. el umbral del 80 % queda, declarado con el hueco entre 0,789 y 0,846 y con que la segunda sensibilidad saca juntas las casi
+     literales y las redactadas, así que el umbral no la cambia;
+  3. los dos criterios que están enteros en un tramo pero no en la E0 se declaran en una oración;
+  4. la paráfrasis de un mismo texto de la norma va como explicación posible, no verificada, no como la más probable;
+  5. cuentan todos los criterios de evaluación que aparecen en el grafo, sean o no también una cita del gold.
+- **Lo que decide sobre el repositorio de publicación:** el punto 4 de lo que el tramo 2 dejó «a decidir» (§229). Los 5 archivos de
+  resultados de B6.3 y B6.4 van al árbol, con los mismos controles que el resto, y el tramo 3 ya los incluyó.
+- **Lo que informa después:** el tramo 3 ya corrió y está en freno. Su revisión va en la ronda siguiente de la mesa.
+- **Lo que pide después:** dejar en el repo, antes de las 200, lo que la tesis necesita citar de las coincidencias: este registro y,
+  en la carpeta de arriba, los scripts, las consolas y las listas de las §392 a §395 que sostienen las cifras. No llegó antes: la
+  autora lanzó las 200 a las 22:39, durante la §395, y todo esto va en el repo cuando terminen.
+- **Lo que queda PENDIENTE:**
+  - **de la autora:**
+    - el comando de los areneros de la §395 y el de la §396;
+    - que terminen las 200, que la autora lanzó a las 22:39; después, el análisis, con el lanzador de la §228 si hace falta;
+  - **de la escritura:** la declaración de las coincidencias en la tesis, con esas cinco decisiones;
+  - **de la mesa:** la revisión del tramo 3, la hoja de adjudicación de las 200 y la nota fechada del pre-registro.
+- Las secciones anteriores no se editan.
