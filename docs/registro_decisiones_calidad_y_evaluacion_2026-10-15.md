@@ -9985,3 +9985,254 @@ la autora de sus dos mensajes siguientes, del mismo día, recibidos antes de las
   - **de la escritura:** la declaración de las coincidencias en la tesis, con esas cinco decisiones;
   - **de la mesa:** la revisión del tramo 3, la hoja de adjudicación de las 200 y la nota fechada del pre-registro.
 - Las secciones anteriores no se editan.
+
+## 231. El 256: lo que la tesis cita de las coincidencias, armado, rearmado y fechado (01/11/2026)
+
+Tres mensajes de la autora del 01/11/2026, recibidos antes de las 21:48:23, de las 22:34:19 y de las 23:04:42, las horas del paso 0 de
+la mesa (los mensajes no traen hora; hoja de ruta de la mesa, §394 a §396), y lo que hizo la mesa.
+- **Lo que informa la autora:**
+  - en el primero, aprueba la §393 y decide las cuatro primeras decisiones de la declaración (§230);
+  - en el segundo, no corre el 256 todavía, porque hay que rearmarlo con las cifras finales. El tramo 3 ya corrió y está en freno, y
+    según informa encontró 16 criterios en el grafo, no 15;
+  - en el tercero, lanzó las 200 a las 22:39 con el comando sellado, y pasaron todos los controles de antes de llamar. Mientras
+    corran, no commitea nada. La mesa ve sus 4 procesos, que empezaron a las 22:39:37 (`ps`, hoja de ruta de la mesa, §396).
+- **Lo que decide:**
+  - en el segundo, la decisión 5 de la declaración y la de los resultados en el repositorio de publicación (§230);
+  - en el tercero, confirma que son 19, sin piso de largo. No agrega un piso ahora, porque elegirlo después de ver cómo mueve las
+    cifras sería elegir el número;
+  - **un cambio respecto de su decisión 2:** la declaración dice la regla del 80 %, que un criterio queda justo en el 80 % y que
+    ninguna cifra depende del umbral, porque la segunda sensibilidad saca juntas las casi literales y las redactadas. El hueco entre
+    0,789 y 0,800 puede ir, pero no es el argumento.
+- **Lo que pide:**
+  - en el primero, el 256, con el registro y los scripts y consolas de las §392 y §393; su prueba en areneros; un resumen para la mesa
+    de escritura; la fecha del criterio 3 de `U6-002` y el alcance de la búsqueda de las sesiones;
+  - en el segundo, rearmar el 256 con las cifras finales: confirmar el 16.º y buscar otros, rehacer las cifras con ellos, extender la
+    búsqueda de las sesiones a las 6 carpetas que nombran a B6.3 o a B6.4, y mover los comandos de la §394 a `NO_CORRER_REEMPLAZADO__`;
+  - en el tercero, dejar el 256 sin ninguna afirmación que ya no sea cierta, porque su título decía «medido antes de las 200» y parte
+    de la §395 se hizo con las 200 corriendo. Pide rearmarlo y probarlo como el v2, para correrlo después de que terminen.
+- **Lo que hizo la mesa** (`decisiones_394_mesa/` a `decisiones_396_mesa/`):
+  - **el 256 de la §394 y el v2 de la §395** quedaron reemplazados, y sus comandos tienen el prefijo `NO_CORRER_REEMPLAZADO__`;
+  - **la búsqueda completa:** sin el piso de largo de la §392, aparecen 19 criterios enteros en el grafo. Son los 15, el criterio 3
+    de `B64-O1-L02-R1` (el 16.º del tramo 3, de 4 palabras y también cita del gold) y otros tres, de 4 a 6 palabras, que quedaban
+    debajo del piso. Con los 19 rehízo las clases, los campos, las cifras por pregunta, las dos sensibilidades y las muestras de control,
+    y extendió la búsqueda a las seis carpetas de sesiones: ninguna escribió archivos con nombre de preguntas o de criterios;
+  - **las horas de la §395:** la búsqueda completa y las clases de los 19 se escribieron antes de que empezaran las 200 (22:36:13 y
+    22:39:07). Lo demás, desde las 22:39:59: las sensibilidades, el cruce entre unidades, el control de 36, las seis carpetas y el 256 v2;
+  - **el 256 v3:**
+    - el título del commit, sin «medido antes de las 200»;
+    - el encabezado y el nombre del comando real, que dicen que corre después de las 200;
+    - la §230 v4, con esas horas y lo que queda por hacer al día;
+    - la §229 y los 33 archivos de la carpeta del commit, los mismos del v2. Son 34 archivos y 3014 renglones agregados;
+    - las mismas pruebas del v2, en areneros. Además, sin la variable de prueba y con las 200 corriendo, su prueba en seco frena
+      por el paso pago, sin tocar nada. El control de textos y de la cuenta da LIMPIO;
+  - **lo que las 200 leen de HEAD mientras corren, y lo que lee el análisis,** son 5 rutas, y las 5 son fijos del 256. Las 200 escriben
+    fuera del repo;
+  - **una precisión sobre «ninguna cifra»:** el reparto entre casi texto de la norma y redactados sí depende del umbral. Con uno de
+    más del 80 %, el criterio 2 de `B64-O4-L12` pasa a redactado. Ninguna cifra de la sensibilidad depende de él;
+  - **el resumen para la mesa de escritura v3,** con la declaración v4, controlado por código contra los archivos del 256 v3.
+- **Lo que queda PENDIENTE:**
+  - **de la autora:**
+    - que terminen las 200;
+    - el 256 v3, después de las 200 y antes de la nota fechada del pre-registro, que cambia uno de sus fijos;
+    - el análisis y, si hace falta, la hoja y el lanzador de la §228;
+    - el comando de los areneros de la §395 y el de la §396;
+  - **de la escritura:** la declaración de las coincidencias en la tesis;
+  - **de la mesa:** la revisión del tramo 3, la hoja de adjudicación de las 200 si hace falta, y la nota fechada del pre-registro.
+- Las secciones anteriores no se editan.
+
+## 232. Las 200 corridas, el análisis que manda 11 a adjudicación y cómo las adjudica la autora (01/11/2026 y 02/11/2026)
+
+Dos mensajes de la autora, del 01/11/2026 y del 02/11/2026, recibidos antes de las 23:38:32 y de las 08:13:54, las horas del paso 0
+de la mesa (los mensajes no traen hora; hoja de ruta de la mesa, §397 y §398), y lo que hizo la mesa.
+- **Lo que informa la autora:**
+  - **en el primero,** aprueba la §396. Corrió el 256 v3, con los pasos que dieron lo esperado, y el push dio el mismo hash en HEAD y
+    en origin/main. En el repo, los dos son `eb1572d9`, de las 23:36:30;
+  - las 200 terminaron. Las corrió con el comando sellado, desde las 22:39, y su consola dio:
+    - los controles de antes de llamar, OK en las tres repeticiones;
+    - 600 de 600 completas, con 0 errores, 0 reintentos y 0 rechazos; 0 sin voto y 0 cruces;
+    - USD 30,9172 contra el tope de 83,33;
+    - «FIN: doscientas corrió una sola vez y se completó», y sale con 0;
+  - corrió el comando sellado del análisis, tal cual, con `entrada_analisis_400_T.json`. Sale con 2 y manda 11 de las 200 a
+    adjudicación, que adjudica ella;
+  - **en el segundo,** aprueba la §397, y borró los areneros de la §397 con el comando de la mesa.
+- **Lo que decide, en el segundo:** dos cambios en la nota del 257, antes de correrlo:
+  - **la fecha:** la nota va fechada el 02/11/2026, el día en que se escribe y se commitea. Lo que registra del 01/11, las 200 y el
+    análisis que frena con 2, queda adentro con su fecha y su hora;
+  - **lo «no decidible»:** no hay regla nueva. Se aplica la de sus lecturas de T (§3.4 del pre-registro, `:77-78` y `:340-341`): si el
+    texto no alcanza para sostener la tripleta, va incorrecta. La nota lo dice explícito, para que quede fijado antes de su lectura.
+- **Lo que pide:**
+  - **en el primero,** una sola tarea: armar su adjudicación de esas 11 para hacerla a ciegas al día siguiente:
+    - la hoja que fija la nota del pre-registro del 01/11 (`:731-738`);
+    - el material de lectura, con la regla escrita y sin nada de la v3;
+    - el sellador;
+    - los comandos en orden;
+    - la nota fechada del pre-registro que cita el 254, el 255 y el 256, con su orden respecto del lanzador;
+  - **en el segundo,** rearmar el 257 con esos dos cambios y probarlo como en la §397, y mover los comandos de la §397 a
+    `NO_CORRER_REEMPLAZADO__`. El armado, la lectura, el sello y el lanzador no tendrían que cambiar, y si alguno cambia, que la mesa
+    lo diga.
+- **Lo que hizo la mesa** (`decisiones_397_mesa/` y `decisiones_398_mesa/`):
+  - **el armado:** `armar_adjudicacion_200_v3.py` escribe fuera del repo, en `fuera_del_repo/adjudicacion_200_v3/`:
+    - el material: la regla del §3.4 escrita y las 11 fichas de `fichas_T.jsonl`, con el código de los lotes de lectura de T;
+    - la hoja `ref,veredicto`, con las 11 refs;
+    - el sellador, que convierte lo que exporta Numbers sin BOM ni renglones vacíos, controla las 11 refs y no pisa un sello;
+  - **el control del material:** no trae nada de la v3. Lo rehace aparte y da los mismos bytes; las fichas son del 23/10, antes de la
+    v3; y la regla, el LEEME, las hojas y el armador no nombran nada de la v3, del juez ni de la corrida;
+  - **la prueba de punta a punta,** con una hoja de juguete y el código sellado de verdad, en areneros: 23 de 23, dos veces;
+  - **el 257 v2,** la nota fechada del pre-registro:
+    - va fechada el 02/11/2026, con lo del 01/11 adentro con su fecha y su hora;
+    - dice la regla de lo «no decidible», tal como la decidió la autora;
+    - no repite ninguna de las dos marcas;
+    - se probó con `controlar_nota` y en areneros, como el de la §397, y después del commit cada marca sigue en un solo renglón;
+    - los comandos del 257 de la §397 quedaron con el prefijo `NO_CORRER_REEMPLAZADO__`;
+  - **la hora del análisis del 01/11:** la mesa tiene solo su cota, porque la consola le llegó antes de las 23:38:32. La nota la da así
+    y deja la hora exacta como NO VERIFICADA;
+  - **lo que no cambia:** el armado, la lectura, el sello y el lanzador, con el mismo sha256. El material ya dice la regla en su
+    definición de incorrecta;
+  - **un caso que la decisión no cubre,** informado a la autora. El §3.4 tiene un tercer valor, «no decidible por la autora». El §6.3
+    lo reserva para lo que necesita un experto del dominio (`:207-209`), y en las lecturas de T esas fichas se reportan aparte, con
+    las dos cotas (`:95`). La hoja de adjudicación no lo admite (`:733`);
+  - **el orden:** la nota, antes de la lectura y del lanzador, para que el procedimiento quede fijado antes de que exista un veredicto
+    de la autora. Ni el lanzador ni el análisis leen el pre-registro
+    (`decisiones_397_mesa/cierre/consola_quien_lee_el_preregistro_mesa.txt`).
+- **Lo que queda PENDIENTE:**
+  - **de la autora:**
+    - el armado, el 257 v2, la lectura, el sello y pasarle a la mesa el sha256 del sello;
+    - decidir si la nota tiene que decir algo del caso de una ficha que necesite un experto;
+  - **de la mesa:** el comando del lanzador con ese sha256 literal;
+  - **el commit que lleve al registro la §231 v3 y esta sección:** lo prepara la mesa y lo corre la autora.
+- Las secciones anteriores no se editan.
+
+## 233. El desvío declarado para las 11 de la adjudicación, el conteo y las dos cotas de las 11 (02/11/2026)
+
+Tres mensajes de la autora del 02/11/2026, recibidos antes de las 08:35:57, de las 08:53:15 y de las 09:10:29, las horas del paso 0 de
+la mesa (los mensajes no traen hora; hoja de ruta de la mesa, §399 a §401), y lo que hizo la mesa. Todo se decidió antes de la lectura
+de la autora, después de las 200 y sin ninguna cifra de las 400 a la vista.
+- **Lo que informa la autora:**
+  - **en el primero,** aprueba la §398. Corrió el armado: el comando dio `c6e9cf57…`, el armado escribió
+    `fuera_del_repo/adjudicacion_200_v3/` con los mismos siete sha256 de la prueba de la mesa, y salió con 0. Todavía no abrió el
+    material;
+  - **en el segundo y en el tercero,** verificó en HEAD las contradicciones que mostró la mesa y aceptó sus recomendaciones.
+- **Lo que decide:**
+  - **la ficha que necesite un experto del dominio también va incorrecta,** porque la hoja solo admite dos valores (`:733`). Va como
+    desvío declarado del pre-registro, solo para las 11 de la adjudicación;
+  - **la clasificación por experticia de las 11** entra en el mismo desvío: la hace ella sola, después de su veredicto, sin la propuesta
+    del asistente ni el motivo;
+  - **su razón,** para que la nota la cite tal cual: «El material de la adjudicación se armó con el mismo código que mis lotes de lectura
+    de T y no trae ninguna propuesta ni veredicto de un modelo. Una propuesta del asistente sería un paso nuevo, con un modelo que lee
+    mi material, antes del lanzador. La clasificación no cambia ninguna cifra, porque la hoja es de dos valores y las dos cotas de las
+    11 cubren cualquier efecto. El conteo es solo descriptivo.»;
+  - **el conteo que pide `:213`:** al leer, da primero el veredicto de cada ficha y después se pregunta si necesita un experto, como
+    en el §6.3 en el orden de la pregunta (`:208`: después de etiquetarla). Anota aparte cuántas de las 11 marcaría «necesita un
+    experto del dominio», solo el número, y se lo pasa a la mesa con el sha256 del sello, antes del lanzador. Cómo queda registrado se
+    propone con los resultados;
+  - **«las dos cotas de las 11»:** la cifra de las 400 de `:734` con las 11 todas correctas y todas incorrectas, para la cruda y la
+    ponderada. No se llaman «sensibilidad», y son de la extensión de las 400, no de la cifra de la tesis (§227). Se calculan después del
+    lanzador, con USD 0, sin cambiar el lanzador ni el análisis del 255
+    (`fuera_del_repo/tripletas_v_juez/v3/codigo/analisis_400_v3.py`, sha256
+    `224736b8a8ba08cdc4265f1438b6aea2e07a69a77fe55cdf879870d35e22491a`, el de la lista de la etapa d);
+  - **la hora del análisis del 01/11** queda como en la v2: la cota, NO VERIFICADA;
+  - **una regla para la mesa:** si al armar aparece otra contradicción dentro del mismo desvío, se suma con su ruta:línea y se lista.
+    Se frena solo si algo contradice fuera del desvío, o si cambia el armado, la lectura, el sello o el lanzador.
+- **Lo que mostró la mesa antes de armar,** las dos veces frenando (`decisiones_399_mesa/` y `decisiones_400_mesa/`):
+  - en la §399, que la ficha que necesite un experto, si va incorrecta, se aparta de `:207-209`, `:213`, `:304` y `:95` con `:86`;
+  - en la §400, que la clasificación sin el asistente se aparta de `:198-200`, `:202-203`, `:207-208` y `:271-272`.
+- **Lo que hizo la mesa al armar** (`decisiones_401_mesa/`):
+  - **sumó dos anclas al desvío,** por la regla de arriba:
+    - `:77`, que da el tercer valor de «correcta»;
+    - el §8 del registro (`:263`), que `:304` cita en `:301`;
+  - **fuera del desvío, no encontró contradicciones.** Las decisiones tomadas después de ver algo se declaran con su momento (`:565`), y
+    la nota lo hace;
+  - **la nota v3 y el 257 v3,** probado como el v2. Agrega 59 renglones; los comandos del 257 v2 quedaron con el prefijo
+    `NO_CORRER_REEMPLAZADO__`;
+  - **lo que no cambia:** el armado, la lectura, el sello y el lanzador, con el mismo sha256.
+- **Lo que queda PENDIENTE:**
+  - **de la autora:** el 257 v3, la lectura con el conteo, el sello, y pasarle a la mesa el sha256 del sello con el conteo;
+  - **de la mesa:**
+    - el comando del lanzador con ese sha256 literal;
+    - en la ronda de los resultados, cómo se calculan las dos cotas y cómo queda registrado el conteo;
+  - **el commit que lleve al registro la §231 v3, la §232 v2 y esta sección:** lo prepara la mesa y lo corre la autora.
+- Las secciones anteriores no se editan.
+
+## 234. Los resultados de las 400 de tripletas: el sello, el conteo, las dos cotas de las 11 y el commit 258 (02/11/2026)
+
+Cuatro mensajes de la autora del 02/11/2026, recibidos antes de las 10:23:40, de las 10:34:54, de las 10:57:43 y de las 11:15:36, las
+horas del paso 0 de la mesa (los mensajes no traen hora; hoja de ruta de la mesa, §403 a §406), y lo que hizo la mesa.
+Los renglones que se citan con dos puntos (`:208`, `:213` y `:695-696`) son del pre-registro,
+`docs/preregistro_evaluacion_tripletas.md`, en su versión del 257 (`65cd328a`, sha256 `addf56c2…`), que el 258 no cambia.
+- **Lo que informa la autora:**
+  - **el sello de su adjudicación de las 11,** tal cual su consola: `adjudicacion_200.csv` sha256
+    `d1c468373a4d55181bed89958da1bd0d3ef4698554254d0b4337ef5b605e206d`, y el sello `sello_adjudicacion_200.txt`, sha256
+    `bd31a9b76c664bc1bc1e98457521dc197c2fee902d93a8de15d8e8c9d63061f1`;
+  - **el conteo que pide `:213`: 0 de 11.** Después de cada veredicto se preguntó si la ficha necesitaba un experto del dominio, y
+    ninguna lo necesitaba. Llegó antes de las 10:23:40, antes del lanzador;
+  - **el lanzador del 255,** con ese sello: escribió `analisis_400_v3.json` y salió con 0;
+  - **el comando de las cotas** (`data/experiment/tripletas_v/juez_v3/adjudicacion_200/comando_COTAS_DE_LAS_11_v3_mesa.sh`, sha256
+    `eb65333721c3777477aabf91836902f9b2eb936164c4aebd7cf80aecade957de`): escribió las dos salidas y salió con 0, con
+    `analisis_400_v3.json` igual.
+- **Lo que decide, para el 258:**
+  1. la cifra de T de la tesis sigue en sus 100, con los dos estimadores del §3.6 (§227). La de las 400 con la opción B va al lado, como
+     extensión declarada, con la nota del desvío: la v3 no pasó la condición (ii) de su validación, y ningún texto la presenta como
+     validada. Al lado van su lectura sola en sus 200 y la corrección por doble muestreo, como sensibilidad;
+  2. las dos cotas de las 11 salen de las dos salidas de `analisis_400_cotas/`, y la mesa controla que la de las 400 quede entre las dos;
+  3. se informan el conteo y la proporción que va a adjudicación: 11 de 200 (5,5 %), contra 2 de 100 en la validación (`:695-696`);
+  4. su hoja y su sello van por su sha256, sin su contenido. El precedente: `analisis_validacion_v3.json:113-132` (commit `80085175`)
+     lleva el sha256 de sus hojas de lectura de la validación, sin su contenido, y en las carpetas de tripletas ninguna hoja de lectura
+     está en el repo;
+  5. los JSON de las salidas entran solo si traen cifras agregadas, sin texto de fichas ni veredictos ficha por ficha;
+  6. su lectura se informa también por mitad, como descripción y sin ninguna prueba nueva;
+  7. se declara que el análisis no da el mismo sha256 de salida si se corre dos veces;
+  8. la §233 lleva la ruta y el sha256 del análisis, y el orden de la pregunta por el experto (`:208`).
+- **Las cifras,** cada una cruda y ponderada, con su intervalo (Wilson; en la ponderada, con el n efectivo de Kish), leídas por código
+  (`data/experiment/tripletas_v/juez_v3/resultados_400/consola_las_cifras_y_las_cotas_mesa.txt`):
+  - **la de la tesis, sus 100:** 78 de 100 = 0,7800 (0,6893 a 0,8500); ponderada 0,7768 (0,6835 a 0,8488). Fuente:
+    `fuera_del_repo/tripletas_v_juez/v2/corridas/T/analisis_prueba_T/analisis_T_v2.json` (sha256
+    `908010309e062897b403ce91c03f6b1ea37481a1e9f1b21833bcbdebe7a9f362`), `precision_con_las_100_de_la_autora.todo`;
+  - **las 400 con la opción B, extensión declarada:** 327 de 400 = 0,8175 (0,7767 a 0,8523); ponderada 0,8174 (0,7766 a 0,8522). Fuente:
+    `fuera_del_repo/tripletas_v_juez/v3/corridas/analisis_400/analisis_400_v3.json` (sha256
+    `2b16f8acee3c2b5854da62ae68a633e0bf9ac09be2377eaf1a99766349a8dad3`), `cifra_principal.todo`. Composición: sus 100 de calibración y
+    sus 100 de la validación, 189 juzgadas por la v3 y 11 adjudicadas por ella;
+  - **las dos cotas de las 11:**
+    - todas correctas: 330 de 400 = 0,8250 (0,7847 a 0,8591); ponderada 0,8249 (0,7846 a 0,8590). Fuente:
+      `fuera_del_repo/tripletas_v_juez/v3/corridas/analisis_400_cotas/todas_correctas/analisis_400_v3.json` (sha256
+      `9c5d567caf70a7f9b799cf6a754c6882f9dad5bc2de1ec90d57771cb00f07421`), `cifra_principal.todo`;
+    - todas incorrectas: 319 de 400 = 0,7975 (0,7554 a 0,8340); ponderada 0,7974 (0,7553 a 0,8339). Fuente:
+      `fuera_del_repo/tripletas_v_juez/v3/corridas/analisis_400_cotas/todas_incorrectas/analisis_400_v3.json` (sha256
+      `375d32d70990a96645da6e9943c2b3486cd728813caec557330112a78fbf3acf`), `cifra_principal.todo`;
+    - la de las 400 queda entre las dos, en la cruda y en la ponderada, y las dos difieren en exactamente 11 en la cruda;
+  - **su lectura sola, sus 200:** 166 de 200 = 0,8300 (0,7718 a 0,8757); ponderada 0,8343 (0,7755 a 0,8801). Fuente:
+    `analisis_400_v3.json`, `al_lado.lectura_de_la_autora_en_sus_200.todo`;
+  - **su lectura por mitad, como descripción** (`data/experiment/tripletas_v/juez_v3/resultados_400/la_lectura_por_mitad_mesa.py`):
+    - sus 100 de calibración: las mismas cifras que la de la tesis;
+    - las 100 de la validación: 88 de 100 = 0,8800 (0,8019 a 0,9300); ponderada 0,8814 (0,8027 a 0,9314). Las calcula la mesa con
+      `cruda()` y `ponderada()` de `analisis_T_v2.py` tal cual, con los conteos por estrato de las dos salidas: las 200 menos las 100 de
+      calibración, estrato por estrato. Antes, las mismas funciones reproducen las dos cifras guardadas, a menos de 3e-14;
+  - **la sensibilidad, las 400 con la parte de la v3 corregida por doble muestreo:** 0,8527 (bootstrap 0,8131 a 0,8891); ponderada
+    0,8525 (0,8129 a 0,8890), con 10.000 réplicas y la semilla 20261030. Fuente: `analisis_400_v3.json`, `sensibilidad`;
+  - **la nota del desvío:**
+    - la v3 no pasó la (ii) de su validación, cruda ni ponderada;
+    - la v3 menos la autora da −0,0816 cruda y −0,0748 ponderada;
+    - la precisión de la autora en la validación fue 86 de 98;
+  - **la proporción que va a adjudicación:** 11 de 200 (5,5 %); en la validación, 2 de 100;
+  - **el conteo de `:213`:** 0 de 11.
+- **Lo que no se reproduce byte a byte:** el análisis no da el mismo sha256 de salida si se corre dos veces. Las cifras son iguales, y
+  solo cambia el último bit de la coma flotante, por el orden de las sumas: a lo sumo 2,22e-16, en la ponderada de la sensibilidad
+  (hoja de ruta de la mesa, §405).
+- **Lo que entra al 258:**
+  - esta sección, con la §231 v3, la §232 v2 y la §233 v2;
+  - el comando de las cotas;
+  - en `data/experiment/tripletas_v/juez_v3/resultados_400/`, los tres scripts de la mesa de esta ronda, con sus consolas:
+    - las cifras y las cotas;
+    - la lectura por mitad;
+    - qué trae cada JSON.
+- **Lo que queda fuera del repo, y por qué:**
+  - **`analisis_T_v2.json`, `analisis_400_v3.json` y las dos salidas de las cotas,** que se citan con su ruta y su sha256. No traen texto
+    de fichas ni veredictos como valor, pero traen agregados de una sola ficha (por TO y por chunk): 128 en `analisis_T_v2.json` y 993
+    en cada una de las otras tres. Con la entrada de las 400 que está en el repo, que lista las fichas con su ref, esos agregados dan el
+    veredicto de una ficha. El precedente, `analisis_validacion_v3.json`, no trae ninguno
+    (`resultados_400/consola_que_trae_cada_json_mesa.txt`);
+  - **la hoja de adjudicación de la autora y su sello,** por su sha256;
+  - **las dos hojas sintéticas de las cotas y sus sellos,** que guardan las salidas de las cotas por su sha256.
+- **Lo que queda PENDIENTE:**
+  - de la escritura: las cifras en la tesis, con la de la tesis en las 100 y la de las 400 como extensión declarada;
+  - de la publicación: el tramo 4, sobre este commit.
+- Las secciones anteriores no se editan.
