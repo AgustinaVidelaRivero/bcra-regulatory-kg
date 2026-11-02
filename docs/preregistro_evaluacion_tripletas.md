@@ -755,3 +755,62 @@ topes de USD 35 (V) y USD 55 (T).
     - **El orden de los commits.** Este commit entra después de los de B6.4 del 31/10 y del 01/11, que no tocan nada de tripletas
       (`git log` desde el de la validación de la v3, sobre este pre-registro y sobre `data/experiment/tripletas_v/`, sale vacío).
   - El texto firmado no cambia.
+- **02/11/2026 — Las 200 corridas, el análisis que manda 11 a adjudicación y cómo las adjudica la autora** (registro de decisiones,
+  §227 y §228):
+  - **Lo decidido antes de correr las 200,** por su commit:
+    - el 254 (`1f3c1cc1ac8d9fe8594bc87523c71f5a58b23a81`): la cifra de precisión de T de la tesis (registro, §227);
+    - el 255 (`95f2ff1423c098806bf9d9bc86997f7f24363f7e`): el lanzador del análisis de las 400 con la hoja de adjudicación,
+      `data/experiment/tripletas_v/juez_v3/adjudicacion_200/lanzar_analisis_400_con_la_hoja_v3.sh` (`dfa9fb74…`; registro, §228).
+  - **El 256** (`eb1572d947dbefa924c8eadb9dc0b9c7f8c4f0ec`, de las 23:36:30 del 01/11/2026) entra después de las 200 y no toca nada
+    de tripletas. Lleva lo que la tesis cita de las coincidencias del grafo con criterios de B6.3, B6.4 y EV2, y las secciones 229 y
+    230 del registro. Ninguno de sus 34 archivos es de `data/experiment/tripletas_v/` ni es este pre-registro.
+  - **Las 200,** con el comando sellado, desde las 22:39 del 01/11/2026; sus procesos empezaron a las 22:39:37. Según la consola que
+    informa la autora:
+    - los controles de antes de llamar, OK en las tres repeticiones;
+    - 600 de 600 completas, con 0 errores, 0 reintentos y 0 rechazos; 0 sin voto y 0 cruces;
+    - USD 30,9172 contra el tope de 83,33;
+    - «FIN: doscientas corrió una sola vez y se completó», y sale con 0.
+  - **El análisis,** con el comando sellado tal cual y la entrada `entrada_analisis_400_T.json`, el 01/11/2026: según informa la
+    autora, lo corrió después de las 200, y su consola llegó a la mesa antes de las 23:38:32. La hora exacta de la corrida queda NO
+    VERIFICADA. Frena con 2, sin leer ninguna hoja, y manda 11 de las 200 a adjudicación: T105, T109, T150, T152, T195, T196, T203,
+    T208, T250, T261 y T273.
+  - **La adjudicación de esas 11,** como la fija la nota del 01/11 (`:731-738`):
+    - la hace la autora, a ciegas. El material trae las 11 fichas de `fichas_T.jsonl` (`299fb76b…`), armadas con el mismo código que
+      las de sus lotes de lectura de T, y la regla del §3.4 escrita. No trae ningún veredicto, voto ni razón de la v3, ni por qué cada
+      una va a adjudicación;
+    - la arma `armar_adjudicacion_200_v3.py` (`c4efc985…`), fuera del repo, en `fuera_del_repo/adjudicacion_200_v3/`. El material
+      da `54565a94…`;
+    - la hoja es `ref,veredicto`, con cada una de las 11 `correcta` o `incorrecta`;
+    - **lo «no decidible» por falta de texto,** como lo decidió la autora el 02/11/2026: no hay regla nueva. Se aplica la de sus
+      lecturas de T, la del §3.4 (`:77-78` y `:340-341`): si el texto no alcanza para sostener la tripleta, va `incorrecta`. Queda
+      fijado antes de su lectura;
+    - **el desvío declarado del pre-registro, solo para las 11 de la adjudicación** (decisiones de la autora del 02/11/2026, antes de
+      su lectura):
+      - la ficha que necesite un experto del dominio también va `incorrecta`, porque la hoja solo admite `correcta` o `incorrecta`
+        (`:733`). Se aparta de `:207-209`, `:213`, `:304` y `:95` con `:86`; además, de `:77`, que da el tercer valor de «correcta»,
+        y del §8 del registro de decisiones (`docs/registro_decisiones_calidad_y_evaluacion_2026-10-15.md:263`), que `:304` cita en `:301`;
+      - la clasificación por experticia de las 11 la hace la autora sola, después de su veredicto, sin la propuesta del asistente
+        ni el motivo. Se aparta de `:198-200`, `:202-203`, `:207-208` y `:271-272`;
+      - su razón, tal cual: «El material de la adjudicación se armó con el mismo código que mis lotes de lectura de T y no trae
+        ninguna propuesta ni veredicto de un modelo. Una propuesta del asistente sería un paso nuevo, con un modelo que lee mi
+        material, antes del lanzador. La clasificación no cambia ninguna cifra, porque la hoja es de dos valores y las dos cotas de
+        las 11 cubren cualquier efecto. El conteo es solo descriptivo.»;
+      - el conteo que pide `:213`: al leer, la autora da primero el veredicto de cada ficha y después, como en el §6.3, se pregunta
+        si necesita un experto. Anota aparte cuántas de las 11 marcaría «necesita un experto del dominio», solo el número, y se lo
+        pasa a la mesa junto con el sha256 del sello, antes del lanzador. No toca la hoja, el sello ni el lanzador. Cómo queda
+        registrado se propone con los resultados;
+      - lo cubren las dos cotas de las 11, como pide `:95`;
+    - **las dos cotas de las 11** (decisión de la autora del 02/11/2026, antes de su lectura): la cifra de las 400 de `:734` con las
+      11 todas `correcta` y con las 11 todas `incorrecta`, para la cruda y para la ponderada (`:85`):
+      - no se llaman «sensibilidad», porque ese nombre es de la corrección por doble muestreo (`:713-714` y `:736`);
+      - son de la extensión de las 400, no de la cifra de T de la tesis, que sigue en las 100 de la autora (registro de decisiones,
+        §227, `docs/registro_decisiones_calidad_y_evaluacion_2026-10-15.md:9797-9802`);
+      - se calculan después del lanzador, con USD 0, sin cambiar el lanzador ni el análisis del 255. Cómo, se propone con los
+        resultados;
+      - se deciden después de las 200 y sin ninguna cifra de las 400 a la vista: el análisis que frena con 2 no da ninguna por la
+        consola (`analisis_400_v3.py`, renglón 48);
+    - la sella `sellar_adjudicacion_200_v3.py` (`8a123c18…`). Convierte lo que exporta Numbers sin BOM ni renglones vacíos, controla
+      las 11 refs y no pisa un sello que ya exista;
+    - el lanzador del 255 le pasa el sello y su sha256 al análisis, que lee la hoja después de controlarlos.
+  - **Lo que no cambia:** ni el lanzador ni el análisis leen este pre-registro, así que esta nota no los toca.
+  - El texto firmado no cambia.
