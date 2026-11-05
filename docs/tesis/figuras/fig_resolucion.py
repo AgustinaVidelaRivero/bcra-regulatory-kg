@@ -42,7 +42,7 @@ grabada) y .pdf (rsvg-convert con SOURCE_DATE_EPOCH=0).
 Uso (desde la raíz del repo):
     PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B <ruta del script> \\
         --commit <commit> --grafo <ruta del kg.json o kg.json.gz en el commit> [--sha256-grafo <sha256>] \\
-        [--extraccion <jsonl>] [--salida <dir>]
+        [--extraccion <jsonl>] [--salida <dir>] [--proceso <ruta de generar_figura_proceso.py>]
 """
 
 from __future__ import annotations
@@ -138,7 +138,7 @@ MUESTRA_W, MUESTRA_H, FILA_LEY = 24, 16, 22
 MARCADOR_A = 'viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" '
 MARCADOR_B = 'markerHeight="6" orient="auto"><path d="M0,0L10,5L0,10z"'
 MARCADOR = MARCADOR_A + MARCADOR_B
-LEYENDA_CODIGO, LEYENDA_DATOS = "Pieza de código", "Datos"
+LEYENDA_CODIGO, LEYENDA_DATOS = "Reglas fijas", "Datos"
 GRUPO_LEYENDA = 10
 HUECO_PUNTA = 2.0
 LEJOS_ESQUINA = RX + 4
@@ -178,7 +178,7 @@ ESTILO = {
                    (MARCADOR_A,)),
     "MARCADOR_B": (PROC, """MARCADOR_B = 'markerHeight="6" orient="auto"><path d="M0,0L10,5L0,10z"'""",
                    (MARCADOR_B,)),
-    "LEYENDA_CODIGO": (PROC, '("codigo", "Pieza de código"),', (LEYENDA_CODIGO,)),
+    "LEYENDA_CODIGO": (PROC, '("codigo", "Reglas fijas"),', (LEYENDA_CODIGO,)),
     "LEYENDA_DATOS": (PROC, '("datos", "Datos"))', (LEYENDA_DATOS,)),
     "GRUPO_LEYENDA": (PROC, "GRUPO_LEYENDA = 10", (GRUPO_LEYENDA,)),
     "HUECO_PUNTA": (PROC, "HUECO_PUNTA = 2.0", (HUECO_PUNTA,)),
@@ -207,14 +207,19 @@ def coincide(linea: str, decl: str) -> bool:
     return s == d or (s.startswith(d + " ") and s[len(d):].strip().startswith("#"))
 
 
-def leer_estilo(commit: str) -> dict:
+def leer_estilo(commit: str, proceso: str | None = None) -> dict:
     """Comprueba cada valor de ESTILO contra su línea y lee de
     figura_esquema_final.svg el estilo de las pastillas y la tipografía de los
     tipos. Devuelve el número de línea de cada valor y el estilo leído."""
     textos, lugares = {}, {}
     for nombre, (ruta, decl, usados) in ESTILO.items():
         if ruta not in textos:
-            textos[ruta] = git_show(commit, ruta).decode("utf-8").splitlines()
+            if ruta == PROC and proceso:
+                # generar_figura_proceso.py, de un archivo en lugar del commit (--proceso)
+                with open(proceso, "rb") as fh:
+                    textos[ruta] = fh.read().decode("utf-8").splitlines()
+            else:
+                textos[ruta] = git_show(commit, ruta).decode("utf-8").splitlines()
         hallados = [i + 1 for i, l in enumerate(textos[ruta]) if coincide(l, decl)]
         if len(hallados) != 1:
             fallar("estilo", f"{nombre}: {len(hallados)} líneas «{decl}» en {ruta}, se esperaba una")
@@ -255,7 +260,7 @@ def leer_estilo(commit: str) -> dict:
 # sus cortes de renglón (el control comprueba que unidos den TEXTO_GENERAL).
 TEXTO_GENERAL = {
     "E1": "Entidad que devolvió el extractor: tipo, etiqueta, descripción y punto",
-    "E2": "Validador y ensamblado: el tipo tiene que estar entre los 9 del esquema; si no, la entidad queda fuera",
+    "E2": "Validador y ensamblado: el tipo tiene que estar entre los 9 que se extraen del texto; si no, la entidad queda fuera",
     "E3": ("Ensamblado: un identificador con el tipo y lo que identifica a la entidad; en una de contenido, "
            "también el documento y el punto"),
     "E4": ("¿Ya hay un nodo con ese identificador? Sí: se une a él y suma su procedencia. "
@@ -985,12 +990,14 @@ def main() -> int:
     ap.add_argument("--unidad-entidad", default=UNIDAD_ENTIDAD)
     ap.add_argument("--unidad-sujeto", default=UNIDAD_SUJETO)
     ap.add_argument("--salida", default=AQUI, help="directorio del SVG, el PNG y el PDF (por omisión, el del script)")
+    ap.add_argument("--proceso", default=None,
+                    help="generar_figura_proceso.py del que se coteja el estilo, leído de esta ruta y no del commit")
     args = ap.parse_args()
     if args.sha256_grafo is None and args.grafo == GRAFO_POR_OMISION[0]:
         args.sha256_grafo = GRAFO_POR_OMISION[1]
     try:
         commit = resolver_commit(args.commit)
-        estilo = leer_estilo(commit)
+        estilo = leer_estilo(commit, args.proceso)
         E = leer_ejemplo(commit, args)
         M = armar_modelo(E, estilo)
         rep = controlar(M, E)

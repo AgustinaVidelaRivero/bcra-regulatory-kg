@@ -10,8 +10,8 @@ Qué dibuja, en dos filas a 15 cm de ancho:
   Extractor y al Validador, y el catálogo de sujetos, que entra al Extractor,
   al Validador y al Ensamblado;
 - el ciclo del Verificador: una flecha de vuelta al Extractor, rotulada
-  «re-extracción, 1 vez», y una flecha a la revisión humana, rotulada «si no
-  se resuelve» (lo que pasa después con la revisión humana no se dibuja);
+  «nueva extracción, 1 vez», y una flecha a la revisión humana, rotulada «si no
+  se acepta» (lo que pasa después con la revisión humana no se dibuja);
 - como datos registrados que salen: los elementos rechazados, del Validador,
   y los sujetos sin asignar, en cuarentena, del Ensamblado.
 El Validador es un solo bloque. La figura no lleva identificadores internos,
@@ -264,7 +264,7 @@ TEXTO = {
     "catalogo": (("Catálogo de sujetos", "titulo"),),
     "rechazados": (("Elementos rechazados", "titulo"),),
     "cuarentena": (("Sujetos sin asignar,", "titulo"), ("en cuarentena", "titulo")),
-    "revision": (("Revisión", "titulo"), ("humana", "titulo")),
+    "revision": (("Unidades", "titulo"), ("apartadas", "titulo")),
 }
 # Qué es cada caja: pieza que ejecuta un modelo de lenguaje, pieza de código,
 # datos o la revisión humana (que no es ninguna de las tres).
@@ -276,10 +276,10 @@ CLASE = {
 }
 PALETA = {"modelo": MODELO, "codigo": DETERMINISTICA, "datos": NEUTRO, "humana": DISCONTINUA}
 LEYENDA = (("modelo", "Pieza que ejecuta un modelo de lenguaje"),
-           ("codigo", "Pieza de código"),
+           ("codigo", "Reglas fijas"),
            ("datos", "Datos"))
-ROTULO_REEXTRACCION = "re-extracción, {n} vez"
-ROTULO_NO_RESUELVE = "si no se resuelve"
+ROTULO_REEXTRACCION = "nueva extracción, {n} vez"
+ROTULO_NO_RESUELVE = "si no se acepta"
 LINEA_PRINCIPAL = ("texto_ordenado", "segmentacion", "unidades", "extractor", "validador",
                    "verificador", "ensamblado", "grafo")
 # Las flechas: (desde, hasta, estilo, rótulo). «flujo» es la línea principal;
@@ -1277,7 +1277,7 @@ def _mut_cruce_entre_flechas(M):
 # mutación → (función, control que tiene que frenar, textos que el freno tiene que nombrar)
 MUTACIONES = {
     "rotulo_sobre_caja": (_mut_rotulo_sobre_caja, "textos",
-                          ("«re-extracción, 1 vez» se superpone con la caja «validador»",)),
+                          ("«nueva extracción, 1 vez» se superpone con la caja «validador»",)),
     "tramo_diagonal": (_mut_tramo_diagonal, "trazado", ("tramo diagonal en «Validador → Verificador»",)),
     "cruce_entre_flechas": (_mut_cruce_entre_flechas, "cruces",
                             ("1 cruce(s) entre flechas", "«Verificador → Extractor» × "

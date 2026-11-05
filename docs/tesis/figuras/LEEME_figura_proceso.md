@@ -1,5 +1,15 @@
 # figura_proceso — registro de generación
 
+## Versión del 29/10/2026
+
+Esta sección reemplaza lo que el resto del LEEME diga distinto (textos, tamaño, sha256).
+
+Cambios en lo dibujado: la leyenda de «codigo» pasa de «Pieza de código» a «Reglas fijas» (`:279`); el rótulo de la vuelta al extractor pasa de «re-extracción, 1 vez» a «nueva extracción, 1 vez» (`:281`) y el de la flecha a las unidades apartadas, de «si no se resuelve» a «si no se acepta» (`:282`). Fuera de lo dibujado: el docstring y el texto que espera la prueba negativa `rotulo_sobre_caja` (`:1280`).
+
+Comando sin cambios. Los candados de las tres hermanas pasan en `552e61fb` y no en el commit `5e4515e`: la corrida es sobre un espejo con esas tres de `552e61fb` y `ratchet_e3.py` de `5e4515e`.
+
+Resultado: PNG 1772 × 1133 px, sha256 `5c2aa914d1fc125989b6904f937f05e3bd548baf846f45eedf99647fb042fb38`; SVG `c65c6c0586c6b89a7ef77eaa0c83c35334a3f723b70a55efebf8e067c0e683b4`; PDF `996c3461eda81101baf36e5b11183fab4ff9d2508baf5dcf9eb3542de806125a`; dos corridas iguales. Script: sha256 `b691eaf84be1ec840d09bad53dc71e4b9d57804d24e7909d4eb2ab24b4be6e62`.
+
 Figura del proceso de construcción del grafo, para la introducción del
 capítulo 4. Muestra de un vistazo las cinco piezas en el orden en que se
 ejecutan, en dos filas a 15 cm de ancho. Arriba están el Texto Ordenado (PDF),
@@ -8,7 +18,7 @@ Validador, el Verificador, el Ensamblado y el grafo. Entre las dos filas entran,
 como datos, el esquema final (al Extractor y al Validador) y el catálogo de
 sujetos (al Extractor, al Validador y al Ensamblado). Debajo está el ciclo del
 Verificador: una flecha de vuelta al Extractor, rotulada «re-extracción, 1 vez»,
-y una flecha discontinua a la revisión humana, rotulada «si no se resuelve».
+y una flecha discontinua a las unidades apartadas, rotulada «si no se resuelve».
 Salen dos registros: los elementos rechazados (del Validador) y los sujetos
 sin asignar, en cuarentena (del Ensamblado). La figura no lleva identificadores
 internos, nombres de archivo, nombres de modelos ni cifras, salvo el «1» del
@@ -138,7 +148,7 @@ como va a escalar, no el código de HEAD (§9, observación 1).
 | vuelta al Extractor | `rex/e3_verificador/ratchet_e3.py:408-412` (re-extrae con el modelo de E1), `:217` (el chunk completo, desde cero) | :177, :183 |
 | «1 vez» | `rex/e3_verificador/ratchet_e3.py:70` (`TOPE_REINTENTOS = 1`), `:396` (el ciclo hasta el tope) | :182 |
 | la re-extracción vuelve a pasar por el Validador y el Verificador (lo dibuja la línea principal) | `rex/e3_verificador/ratchet_e3.py:279-281` (valida con `validador_e1`), `:424-426` (re-verifica) | :28, :177 |
-| revisión humana, «si no se resuelve» | `rex/e3_verificador/ratchet_e3.py:397-404` (veredicto sin cita verificable, sin re-extraer), `:414-420` (re-extracción inválida), `:433-437` (tope agotado); el registro con el pendiente de revisión humana, `:313-330` | :176-179, :280-281, :290-294 |
+| unidades apartadas, «si no se resuelve» | `rex/e3_verificador/ratchet_e3.py:397-404` (veredicto sin cita verificable, sin re-extraer), `:414-420` (re-extracción inválida), `:433-437` (tope agotado); el registro con el pendiente de revisión humana, `:313-330` | :176-179, :280-281, :290-294 |
 
 Lo que la figura no dibuja (decisión 3), con su fuente: la cola humana entra
 al grafo marcada (`rex/corpus_v2/runner_corpus.py:906-907`, `:937-938`;
@@ -213,9 +223,9 @@ Valores de la consola del generador (comando de §1):
 ## 5. Convenciones de dibujo
 
 - Línea principal en flechas de `FLECHA` de 1,8. Entradas, salidas y la
-  vuelta al Extractor en `FLECHA` de 1,6. La flecha a la revisión humana,
+  vuelta al Extractor en `FLECHA` de 1,6. La flecha a las unidades apartadas,
   discontinua en `GRIS_ARISTA`, como la de la revisión de la figura hermana.
-- La revisión humana es la caja blanca de borde discontinuo de la figura
+- «Unidades apartadas» es la caja blanca de borde discontinuo de la figura
   hermana (`generar_figura_experimento_estrategias.py:207`, `:676`). No es una
   pieza de modelo ni de código, ni un dato, así que no entra en la leyenda de
   tres entradas. La tiene que explicar el epígrafe.
@@ -251,10 +261,10 @@ Lienzo de 760 × 486 unidades, impreso a 15,00 × 9,59 cm. El PNG mide
 
 | Archivo | sha256 |
 |---|---|
-| `generar_figura_proceso.py` | `8667c219fe5586466e3cad04bc81843a8b39025d59b443edbacf79740349cbbf` |
-| `figura_proceso.svg` | `dac1d7bccce47b2cc6de928b6e1d374c89fbb73bebf66202f9ba90157648cd82` |
-| `figura_proceso.png` | `f4e878b9e1ee407f68c3f13934032bc51d6828f182ad0a1c68b5285df7f96422` |
-| `figura_proceso.pdf` | `edb11765a629b9d34bd1cd519f652146e09410b2d36f56cf226782eb17b01e45` |
+| `generar_figura_proceso.py` | `a03032bce64a7809666e7608f874791449d543765e5e40a1556567e192194e29` |
+| `figura_proceso.svg` | `c4490c16fb3de4abecc091e4e04fa1b4851be47bc4f641e0c0f66e68968be9c3` |
+| `figura_proceso.png` | `396d1ad8ac7dfeef0d30b0b8b68f2239f15d0ba8a00a306a226627bf93491222` |
+| `figura_proceso.pdf` | `ec8114bcbdc7d5b432a7747f22ba58ad90437c41640e445927bf98d4420546a0` |
 
 Determinismo: corrí el generador tres veces con `--salida` en el scratchpad,
 con `PYTHONHASHSEED` 0, 1 y 4242. Los tres SVG, PNG y PDF son idénticos entre
@@ -279,7 +289,7 @@ este registro.
 3. Resuelta en la versión 2: la caja dice «Elementos rechazados» y cubre las
    unidades enteras, las entidades y las relaciones que el Validador rechaza y
    registra (§3.5).
-4. La caja de revisión humana no tiene salida. El código ingresa la cola al
+4. La caja de unidades apartadas no tiene salida. El código ingresa la cola al
    grafo con una marca, y el sujeto en cuarentena también entra al grafo como
    sujeto propuesto (§3.4, §3.5).
 5. La paleta de la figura hermana llama «gris azulado» al color del código

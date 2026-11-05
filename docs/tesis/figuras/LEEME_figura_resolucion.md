@@ -1,5 +1,21 @@
 # Figura de la resolución de entidades y sujetos en el ensamblado
 
+## Versión del 29/10/2026
+
+Esta sección reemplaza lo que el resto del LEEME diga distinto (textos, tamaño, sha256).
+
+Cambios en lo dibujado: en la caja del validador y el ensamblado, «el tipo tiene que estar entre los 9 del esquema» pasa a «el tipo tiene que estar entre los 9 que se extraen del texto» (`TEXTO_GENERAL["E2"]`); la leyenda de «codigo» pasa a «Reglas fijas» (`LEYENDA_CODIGO`, `:141`), y la línea con la que se coteja en `generar_figura_proceso.py`, a `("codigo", "Reglas fijas"),` (`ESTILO`, `:181`).
+
+Cambio en el script, que no dibuja: la opción `--proceso <ruta>` lee `generar_figura_proceso.py` de un archivo y no del commit `--commit` (`leer_estilo`), porque ningún commit tiene todavía el nuevo.
+
+Comando:
+
+    PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B docs/tesis/figuras/fig_resolucion.py --commit 3b6f63c1d6523e97ec9efac9b36b2d7ade064265 --grafo data/experiment/reaplicacion_unica/acumulado/ens_128_r2b_sincola/r2/kg.json.gz --sha256-grafo 576c97256185a0d5741cb2c35a2a85e91412f3e1119ad7a85d960b7d60c35ad3 --proceso docs/tesis/figuras/generar_figura_proceso.py
+
+Con un commit que tenga el `generar_figura_proceso.py` nuevo, sin `--proceso`, la figura tendría que salir igual: NO VERIFICADO.
+
+Resultado: lienzo 850 × 638 (sin cambios), PNG 1772 × 1331 px, sha256 `367211d8488459b7a11d29e8c49e7f28922c16a4704e34caceeea78fb0c1faa2`; SVG `64acdd783876413c0b2f300cfac8364204ce21fdb62cc8d4ad85e4e6e6ec2aa0`; PDF `d9cbd6afe3bfd8e781c0634774d487ce8973dd8bb416966360694441031418be`; dos corridas iguales. Script: sha256 `fb4f0b8018afaa34a2da12eafd5b37b7287e730c958d90bf61632f88193b1ea9`.
+
 Generador: `fig_resolucion.py`. Salidas: `figura_resolucion.svg`,
 `figura_resolucion.png` (300 dpi) y `figura_resolucion.pdf`.
 

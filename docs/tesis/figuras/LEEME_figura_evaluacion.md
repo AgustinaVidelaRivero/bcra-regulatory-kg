@@ -1,5 +1,40 @@
 # figura_evaluacion — registro de generación
 
+## Versión del 05/11/2026
+
+Esta sección reemplaza lo que el resto del LEEME diga distinto, incluida la versión del 29/10/2026 (textos, números de sección y sha256). Parte de esa versión: script `6145b00c2e89df45f6f109d6723047bc002a10c81002864347810e48269660d6`, PNG `c1654e0b405fd5655947012e0322cb32a27d64f9ac006b2f0c925cffb685b61b`.
+
+Cambio en lo dibujado: las cajas ya no llevan el número de sección. En `CAJAS`, el segundo elemento de las 17 cajas que lo tenían pasa a `None` (renglones 100, 101, 103 a 108, 110, 112 a 114 y 116 a 120), la forma que el script ya usaba para las cajas sin número. El resto del texto no cambia. El script conserva el mecanismo del número, y su docstring y sus comentarios lo siguen describiendo; ninguna caja lo usa.
+
+Sin la sangría del número, cada título arranca en el borde del texto de su caja, y 6 se parten distinto, con la misma cantidad de renglones: «Juez de las tripletas», «Precisión e importancia», «Comprueba que su tramo esté en el pasaje», «Servidor de los fragmentos», «Atribución de las fallas» y «Comparación con los fragmentos». Ninguna caja ni flecha cambia de tamaño ni de lugar. El SVG tiene 72 textos en vez de 89.
+
+Comando sin cambios, con el `generar_figura_proceso.py` que dice «Reglas fijas» junto al script. Con el del commit `73f4bc4e`, que dice «Pieza de código» en su renglón 279, se detiene con `ALTO [formato]` y no escribe nada.
+
+Resultado: lienzo 760 × 821 (sin cambios), PNG 1772 × 1914 px, sha256 `e797415ac99c405d38cbd2b53cf9253858d8136dfb0ff10e457502f68a510de7`; SVG, sha256 `28da5eb8da40de6e6c8af526ab2a5ba4a2b369b3b630cb7f6e6c09dc4a27a15d`; dos corridas iguales. Script: sha256 `20c1622d88d46ba4712446abf2ae67faa9af807665352b5429e750adbab0e923`.
+
+## Versión del 29/10/2026
+
+Esta sección reemplaza lo que el resto del LEEME diga distinto (textos, tamaño, sha256).
+
+Cambios en lo dibujado:
+
+- Leyenda: «Pieza de código» pasa a «Reglas fijas», con la misma muestra; se suman «Lectura de la autora» y «Resultado», con las muestras de `figura_preguntas.png`. La leyenda de «codigo» dice «Reglas fijas» en `generar_figura_proceso.py:279`; la figura la coteja con esa línea.
+- «5.2.1 Juez de las tripletas» queda con una sola pregunta, «¿Es correcta?».
+- Cobertura: «5.2.2 Extrae el hecho más importante de cada pasaje», «5.2.2 Ordena los hechos por importancia» y, en el juez de presencia, «¿Está el hecho en el grafo?».
+- Caja nueva, clase «lectura» (fondo blanco, borde del color del texto, 1,5 veces el de las demás: 2,4 unidades): «5.2 Lectura de la autora / Corrección e importancia de 100 tripletas, y presencia de los 100 primeros hechos». Va arriba de la fila de arriba de la banda intrínseca, a todo su ancho. Le llegan flechas de «Muestra de tripletas del grafo» y de «5.2.2 Ordena los hechos por importancia» (esta sube entre el juez de presencia y la cobertura); salen de ella flechas a «5.2.1 Precisión e importancia» y a «5.2.2 Cobertura». Todas son verticales.
+- Los dos jueces del contenido ya no tienen flecha a los resultados: cada uno sube a la lectura con una flecha discontinua (el trazo de la flecha a la revisión humana de la figura del proceso: gris `GRIS_ARISTA`, grosor de rama, guiones `GUIONES`) con el rótulo «se valida contra», al costado de su tramo.
+- «5.2.1 Precisión e importancia», «5.2.2 Cobertura», «5.5 Fidelidad» y «5.7 Comparación con los fragmentos»: clase «resultado» de `figura_preguntas.png` (gris, borde de 2,4).
+- «5.4 Reglas de las citas» pasa a «5.4 Indicadores de las citas» (el texto ocupa ahora dos renglones de su caja).
+- Cajas: 23 → 24. Flechas: 26 → 30 (salen 2, entran 6).
+
+Cambios en el script que no dibujan: `DISCONTINUAS` (flechas discontinuas y su rótulo), `GROSOR` por clase (cajas, muestras, controles y registro), el control de los rótulos (el de la figura de las preguntas: `JUNTO`, `AJENA`), el registro del trazo discontinuo, `A_LA_IZQUIERDA` con las 3 flechas verticales cuyo destino queda a la izquierda, y en `FORMATO` `GRIS_ARISTA` (:169), `GUIONES` (:179), `JUNTO`, `AJENA` y `ROTULO_AIRE` (:321-323) de `generar_figura_proceso.py`. El tope de alto pasa de 13,0 a 17,0 cm: la figura crece en alto, sin achicar la letra.
+
+Comando, sin cambios, con el `generar_figura_proceso.py` nuevo junto al script:
+
+    PYTHONDONTWRITEBYTECODE=1 python3 -B docs/tesis/figuras/fig_evaluacion.py
+
+Resultado: lienzo 760 × 821, 15,00 × 16,20 cm, PNG 1772 × 1914 px, sha256 `c1654e0b405fd5655947012e0322cb32a27d64f9ac006b2f0c925cffb685b61b`; dos corridas iguales. Script: sha256 `6145b00c2e89df45f6f109d6723047bc002a10c81002864347810e48269660d6`.
+
 Figura del método de evaluación, para la entrada del capítulo 5. Es un mapa de
 cajas y flechas: a la izquierda, los datos (los documentos, el grafo evaluado
 y los fragmentos de los documentos); arriba, la banda de la evaluación
@@ -149,7 +184,7 @@ de cada caja, que decide en cuántos renglones se parte; `X_TRONCO = 128`
 Cada caja es una línea de la tabla `CAJAS`, al principio del script:
 
 ```python
-"juez_tripletas":      ("modelo",    "5.2.1", "Juez de las tripletas / ¿Es correcta? ¿Cuánto importa?"),
+"juez_tripletas":      ("modelo",    None,    "Juez de las tripletas / ¿Es correcta?"),
 ```
 
 - La clase es el primer valor: `"modelo"` (naranja), `"codigo"` (azul),
@@ -240,9 +275,8 @@ valores de `FORMATO` coinciden, cada uno en la línea citada.
 
 | Archivo | sha256 |
 |---|---|
-| `fig_evaluacion.py` | `34b18970e3f282d0ba17e211e5bf0098c18d2c48b95dd5d60f694d14a63894cd` |
-| `figura_evaluacion.png` (1772 × 1530 px) | `1b85be9d381358b7e45e7144db2b45a0d54433d928e05f5260bd599e3389c80d` |
+| `fig_evaluacion.py` | `20c1622d88d46ba4712446abf2ae67faa9af807665352b5429e750adbab0e923` |
+| `figura_evaluacion.png` (1772 × 1914 px) | `e797415ac99c405d38cbd2b53cf9253858d8136dfb0ff10e457502f68a510de7` |
+| `figura_evaluacion.svg` | `28da5eb8da40de6e6c8af526ab2a5ba4a2b369b3b630cb7f6e6c09dc4a27a15d` |
 
-Reproducibilidad: corrido dos veces con el comando de §1, el PNG dio el mismo
-sha256 y la consola fue la misma (`cmp`). Con `--formato` y con `--svg`, el
-PNG es el mismo byte a byte.
+Reproducibilidad: corrido dos veces con `--salida` y `--svg`, el PNG y el SVG dieron el mismo sha256. Con `--formato`, contra una copia de `generar_figura_proceso.py` con «Reglas fijas», el PNG es el mismo byte a byte.

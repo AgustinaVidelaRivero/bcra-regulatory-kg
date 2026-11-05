@@ -6,17 +6,20 @@ evaluación. Qué dibuja, a 15 cm de ancho:
 - a la izquierda, los datos: los documentos, el grafo evaluado y los
   fragmentos de los documentos;
 - arriba, la banda de la evaluación intrínseca: la precisión (una muestra de
-  tripletas del grafo y su juez) y la cobertura (una muestra de pasajes, la
-  tripleta más importante de cada uno, su comprobación, su orden y el juez de
-  presencia);
+  tripletas del grafo y su juez) y la cobertura (una muestra de pasajes, el
+  hecho más importante de cada uno, su comprobación, su orden y el juez de
+  presencia); encima, la lectura de la autora, de la que salen la precisión y
+  la cobertura y contra la que se valida cada juez (flecha discontinua);
 - abajo, la banda de la evaluación extrínseca: las preguntas, el agente con sus
-  dos servidores, la respuesta, su juez, las reglas de las citas, la fidelidad,
-  la atribución de las fallas y la comparación con los fragmentos.
+  dos servidores, la respuesta, su juez, los indicadores de las citas, la
+  fidelidad, la atribución de las fallas y la comparación con los fragmentos.
 Cada caja lleva, si la tiene, el número de la sección que la trata, en negrita
-y arriba a la izquierda. Ninguna caja nombra un modelo ni lleva una cantidad.
+y arriba a la izquierda. Ninguna caja nombra un modelo; solo la de la lectura
+lleva cantidades.
 
-Contenido: la tabla CAJAS (una línea por caja: clase, sección y texto) y la
-tabla FLECHAS (una línea por flecha). Cambiar una etiqueta, una sección o la
+Contenido: la tabla CAJAS (una línea por caja: clase, sección y texto), la
+tabla FLECHAS (una línea por flecha) y DISCONTINUAS (las flechas discontinuas,
+con su rótulo). Cambiar una etiqueta, una sección o la
 clase de una caja es cambiar su línea en CAJAS; el texto se parte solo en
 renglones al ancho de su caja (ANCHO_TEXTO).
 
@@ -34,7 +37,7 @@ cada valor se coteja con la línea que lo declara.
 Controles (verificar(); si uno falla, no se escribe nada):
   1. contenido: las cajas dibujadas son las de CAJAS, cada una con su clase, y
      el texto dibujado de cada caja, unido, es el de CAJAS letra por letra;
-     ningún texto nombra un modelo;
+     los rótulos son los de DISCONTINUAS; ningún texto nombra un modelo;
   2. trazado: las flechas son exactamente las de FLECHAS; ningún tramo es
      diagonal ni nulo ni va hacia la izquierda; cada caja de destino tiene el
      centro a la derecha del de su origen, salvo las de A_LA_IZQUIERDA; cada
@@ -49,8 +52,10 @@ Controles (verificar(); si uno falla, no se escribe nada):
      a otro texto ni tocado por un trazo o una punta;
   6. margen y tamaño: nada a menos de 2 mm del borde; el alto no pasa de
      ALTO_MAX_CM;
-  7. registro: el SVG se relee y cada caja, muestra y flecha tiene el color de
-     su clase.
+  7. registro: el SVG se relee y cada caja, muestra y flecha tiene el color y
+     el grosor de su clase o su estilo;
+  8. rótulos: cada uno junto a un tramo recto de su flecha, a JUNTO o menos, y
+     más lejos de cualquier otra flecha que de la suya.
 
 Salida: figura_evaluacion.png (1772 px de ancho, 300 dpi grabados en el PNG),
 byte a byte reproducible con el mismo rsvg-convert.
@@ -83,45 +88,53 @@ NOMBRE = "figura_evaluacion"
 # Contenido: una línea por caja                                              #
 # ========================================================================== #
 # clave: (clase, sección, texto). Clases: «modelo» (naranja), «codigo» (azul),
-# «datos» (gris) y «resultado» (gris, con el texto en negrita). La barra « / »
-# separa la primera línea (negrita) de la segunda (normal, más chica).
+# «datos» (gris), «resultado» (gris, con el borde más grueso) y «lectura»
+# (blanca, con el borde más grueso y del color del texto), las dos últimas
+# como en la figura de las preguntas. La barra « / » separa la primera línea
+# (negrita) de la segunda (normal, más chica).
 CAJAS = {
     "documentos":          ("datos",     None,    "Los documentos"),
     "grafo":               ("datos",     None,    "El grafo evaluado"),
     "fragmentos":          ("datos",     None,    "Los fragmentos de los documentos"),
     "muestra_tripletas":   ("datos",     None,    "Muestra de tripletas del grafo"),
-    "juez_tripletas":      ("modelo",    "5.2.1", "Juez de las tripletas / ¿Es correcta? ¿Cuánto importa?"),
-    "res_precision":       ("resultado", "5.2.1", "Precisión e importancia"),
+    "juez_tripletas":      ("modelo",    None,    "Juez de las tripletas / ¿Es correcta?"),
+    "res_precision":       ("resultado", None,    "Precisión e importancia"),
     "muestra_pasajes":     ("datos",     None,    "Muestra de pasajes"),
-    "extrae":              ("modelo",    "5.2.2", "Extrae la tripleta más importante de cada pasaje"),
-    "tramo":               ("codigo",    "5.2.2", "Comprueba que su tramo esté en el pasaje"),
-    "ordena":              ("modelo",    "5.2.2", "Ordena las tripletas por importancia"),
-    "juez_presencia":      ("modelo",    "5.2.2", "Juez de presencia / ¿Está la tripleta en el grafo?"),
-    "res_cobertura":       ("resultado", "5.2.2", "Cobertura"),
-    "redacta":             ("modelo",    "5.4",   "Redacta las preguntas"),
+    "extrae":              ("modelo",    None,    "Extrae el hecho más importante de cada pasaje"),
+    "tramo":               ("codigo",    None,    "Comprueba que su tramo esté en el pasaje"),
+    "ordena":              ("modelo",    None,    "Ordena los hechos por importancia"),
+    "juez_presencia":      ("modelo",    None,    "Juez de presencia / ¿Está el hecho en el grafo?"),
+    "res_cobertura":       ("resultado", None,    "Cobertura"),
+    "lectura":             ("lectura",   None,    "Lectura de la autora / Corrección e importancia de 100 "
+                                                  "tripletas, y presencia de los 100 primeros hechos"),
+    "redacta":             ("modelo",    None,    "Redacta las preguntas"),
     "preguntas":           ("datos",     None,    "Preguntas con sus criterios"),
-    "agente":              ("modelo",    "5.3",   "Agente / Consulta uno de los 2 servidores"),
-    "servidor_grafo":      ("codigo",    "5.3",   "Servidor del grafo"),
-    "servidor_fragmentos": ("codigo",    "5.3",   "Servidor de los fragmentos"),
+    "agente":              ("modelo",    None,    "Agente / Consulta uno de los 2 servidores"),
+    "servidor_grafo":      ("codigo",    None,    "Servidor del grafo"),
+    "servidor_fragmentos": ("codigo",    None,    "Servidor de los fragmentos"),
     "respuesta":           ("datos",     None,    "Respuesta, citas y traza"),
-    "juez_respuestas":     ("modelo",    "5.4",   "Juez de las respuestas / ¿Cumple cada criterio?"),
-    "reglas_citas":        ("codigo",    "5.4",   "Reglas de las citas"),
-    "res_fidelidad":       ("resultado", "5.5",   "Fidelidad"),
-    "atribucion":          ("codigo",    "5.6",   "Atribución de las fallas"),
-    "res_comparacion":     ("resultado", "5.7",   "Comparación con los fragmentos"),
+    "juez_respuestas":     ("modelo",    None,    "Juez de las respuestas / ¿Cumple cada criterio?"),
+    "reglas_citas":        ("codigo",    None,    "Indicadores de las citas"),
+    "res_fidelidad":       ("resultado", None,    "Fidelidad"),
+    "atribucion":          ("codigo",    None,    "Atribución de las fallas"),
+    "res_comparacion":     ("resultado", None,    "Comparación con los fragmentos"),
 }
 # (origen, destino, punta en los dos extremos)
 FLECHAS = (
     ("grafo", "muestra_tripletas", False),
     ("muestra_tripletas", "juez_tripletas", False),
-    ("juez_tripletas", "res_precision", False),
+    ("muestra_tripletas", "lectura", False),
+    ("juez_tripletas", "lectura", False),
+    ("lectura", "res_precision", False),
     ("documentos", "muestra_pasajes", False),
     ("muestra_pasajes", "extrae", False),
     ("extrae", "tramo", False),
     ("tramo", "ordena", False),
     ("ordena", "juez_presencia", False),
     ("grafo", "juez_presencia", False),
-    ("juez_presencia", "res_cobertura", False),
+    ("ordena", "lectura", False),
+    ("juez_presencia", "lectura", False),
+    ("lectura", "res_cobertura", False),
     ("documentos", "redacta", False),
     ("redacta", "preguntas", False),
     ("preguntas", "agente", False),
@@ -139,6 +152,13 @@ FLECHAS = (
     ("respuesta", "atribucion", False),
     ("juez_respuestas", "res_comparacion", False),
 )
+# Flechas discontinuas (el trazo de la flecha a la revisión humana de la figura
+# del proceso), con su rótulo: cada juez del contenido se valida contra la
+# lectura de la autora.
+DISCONTINUAS = {
+    ("juez_tripletas", "lectura"): "se valida contra",
+    ("juez_presencia", "lectura"): "se valida contra",
+}
 BANDAS = {
     "intrinseca": "Evaluación intrínseca, el contenido del grafo",
     "extrinseca": "Evaluación extrínseca, las respuestas del agente",
@@ -152,8 +172,10 @@ CRUCES = {
 }
 # Flechas cuya caja de destino tiene el centro a la izquierda del de su origen:
 # la cadena de la cobertura no entra en una fila y sube, con una flecha
-# vertical, de la fila de abajo a la de arriba.
-A_LA_IZQUIERDA = {("ordena", "juez_presencia")}
+# vertical, de la fila de abajo a la de arriba; y la lectura, que ocupa el
+# ancho de la banda, se une en vertical con las cajas que tiene debajo.
+A_LA_IZQUIERDA = {("ordena", "juez_presencia"), ("lectura", "res_precision"),
+                  ("juez_presencia", "lectura"), ("ordena", "lectura")}
 
 
 class Falla(Exception):
@@ -176,6 +198,7 @@ DETERMINISTICA = {"relleno": "#e1e7ee", "borde": "#4a5a6a"}  # :166
 NEUTRO = {"relleno": "#fafafa", "borde": "#999999"}      # :167
 TINTA, TINTA_SUB = "#1f1f1f", "#444444"                  # :168
 FLECHA = "#555555"                                       # :169
+GRIS_ARISTA = "#8a8a8a"                                  # :169
 FS_TITULO, FS_TEXTO = 14, 13                             # :171
 IL = {FS_TITULO: 18, FS_TEXTO: 17}                       # :172
 SEP_TITULO = 5                                           # :173
@@ -184,20 +207,26 @@ GROSOR_CAJA = 1.6                                        # :175
 GROSOR_FLUJO, GROSOR_RAMA = 1.8, 1.6                     # :176
 RADIO = 9                                                # :177
 RX = 8                                                   # :178
+GUIONES = "5,4"                                          # :179
 MARGEN = 12                                              # :180
 LEYENDA_MARCO = 'fill="white" stroke="#e2e2e2" stroke-width="1" rx="5"'  # :181
 MUESTRA_W, MUESTRA_H, FILA_LEY = 24, 16, 22              # :182
 MARCADOR_A = 'viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" '   # :183
 MARCADOR_B = 'markerHeight="6" orient="auto"><path d="M0,0L10,5L0,10z"'  # :184
 LEYENDA = (("modelo", "Pieza que ejecuta un modelo de lenguaje"),        # :278
-           ("codigo", "Pieza de código"),                                # :279
-           ("datos", "Datos"))                                           # :280
+           ("codigo", "Reglas fijas"),                                   # :279
+           ("datos", "Datos"),                                           # :280
+           ("lectura", "Lectura de la autora"),                          # figura de las preguntas
+           ("resultado", "Resultado"))                                   # figura de las preguntas
 ANCHO_CM = 15.0                                          # :311
 DPI = 300                                                # :313
 PT_MINIMO = 7.0                                          # :315
 MARGEN_MM = 2.0                                          # :316
 DISTANCIA_MIN = 3.0                                      # :319
 SEP_CAJAS = 8.0                                          # :320
+JUNTO = 8.0                                              # :321; de un rótulo a su tramo, como máximo
+AJENA = 5.0                                              # :322; tanto más lejos de otra flecha que de la suya
+ROTULO_AIRE = 4.0                                        # :323; del trazo al rótulo
 HOLGURA_TEXTO = 1.5                                      # :318
 HUECO_PUNTA = 2.0                                        # :324
 ASC, DESC = 0.78, 0.22                                   # :350
@@ -209,12 +238,22 @@ MARCADOR = MARCADOR_A + MARCADOR_B
 # triángulo dado vuelta y la referencia en el otro extremo.
 MARCADOR_INICIO = MARCADOR_A.replace('refX="9"', 'refX="1"') + MARCADOR_B.replace(
     "M0,0L10,5L0,10z", "M10,0L0,5L10,10z")
-PALETA = {"modelo": MODELO, "codigo": DETERMINISTICA, "datos": NEUTRO, "resultado": NEUTRO}
-ESTILO_TRAZO = {"flujo": GROSOR_FLUJO, "rama": GROSOR_RAMA}
+# Las clases «lectura» y «resultado» de la figura de las preguntas: la lectura,
+# fondo blanco y borde del color del texto; las dos, con el borde 1,5 veces el
+# de las demás (2,4 unidades).
+LECTURA = {"relleno": "white", "borde": TINTA}
+GROSOR_DESTACADO = round(1.5 * GROSOR_CAJA, 2)
+PALETA = {"modelo": MODELO, "codigo": DETERMINISTICA, "datos": NEUTRO, "resultado": NEUTRO,
+          "lectura": LECTURA}
+GROSOR = {"modelo": GROSOR_CAJA, "codigo": GROSOR_CAJA, "datos": GROSOR_CAJA,
+          "resultado": GROSOR_DESTACADO, "lectura": GROSOR_DESTACADO}
+# La flecha discontinua, con el trazo de la flecha a la revisión humana de la
+# figura del proceso (P:300): gris, del grosor de las ramas y con guiones.
+ESTILO_TRAZO = {"flujo": GROSOR_FLUJO, "rama": GROSOR_RAMA, "discontinua": GROSOR_RAMA}
 PT_POR_CM = 72.0 / 2.54
 ANCHO_PNG_PX = round(ANCHO_CM / 2.54 * DPI)              # 1772
 MARGEN_MIN = MARGEN_MM * W / (ANCHO_CM * 10)             # 10,1 unidades
-ALTO_MAX_CM = 13.0
+ALTO_MAX_CM = 17.0               # 13,0 antes de la lectura de la autora: la figura crece en alto
 
 # nombre → (valor que usa la figura, línea citada, patrón de la línea en
 # generar_figura_proceso.py, grupo que se compara con el valor)
@@ -226,6 +265,8 @@ FORMATO = {
     "NEUTRO": (NEUTRO, 167, r"^NEUTRO = (\{[^}]*\})$", "lit"),
     "TINTA, TINTA_SUB": ((TINTA, TINTA_SUB), 168, r'^TINTA, TINTA_SUB = ("#[0-9a-f]{6}", "#[0-9a-f]{6}")$', "lit"),
     "FLECHA": (FLECHA, 169, r'^FLECHA, GRIS_ARISTA = "(#[0-9a-f]{6})", "#[0-9a-f]{6}"$', str),
+    "GRIS_ARISTA": (GRIS_ARISTA, 169, r'^FLECHA, GRIS_ARISTA = "#[0-9a-f]{6}", "(#[0-9a-f]{6})"$', str),
+    "GUIONES": (GUIONES, 179, r'^GUIONES = "(\d+,\d+)"$', str),
     "FS_TITULO, FS_TEXTO": ((FS_TITULO, FS_TEXTO), 171, r"^FS_TITULO, FS_TEXTO = (\d+, \d+)$", "lit"),
     "IL": ((IL[FS_TITULO], IL[FS_TEXTO]), 172, r"^IL = \{FS_TITULO: (\d+), FS_TEXTO: (\d+)\}$", int),
     "SEP_TITULO": (SEP_TITULO, 173, r"^SEP_TITULO = (\d+)$", int),
@@ -251,6 +292,9 @@ FORMATO = {
     "HOLGURA_TEXTO": (HOLGURA_TEXTO, 318, r"^HOLGURA_TEXTO = ([\d.]+) ", float),
     "DISTANCIA_MIN": (DISTANCIA_MIN, 319, r"^DISTANCIA_MIN = ([\d.]+) ", float),
     "SEP_CAJAS": (SEP_CAJAS, 320, r"^SEP_CAJAS = ([\d.]+) ", float),
+    "JUNTO": (JUNTO, 321, r"^JUNTO = ([\d.]+) ", float),
+    "AJENA": (AJENA, 322, r"^AJENA = ([\d.]+) ", float),
+    "ROTULO_AIRE": (ROTULO_AIRE, 323, r"^ROTULO_AIRE = ([\d.]+) ", float),
     "HUECO_PUNTA": (HUECO_PUNTA, 324, r"^HUECO_PUNTA = ([\d.]+) ", float),
     "LEJOS_ESQUINA": ("RX + 4", 325, r"^LEJOS_ESQUINA = (RX \+ 4) ", str),
     "ASC, DESC": ((ASC, DESC), 350, r"^ASC, DESC = ([\d.]+, [\d.]+) ", "lit"),
@@ -337,6 +381,7 @@ ANCHO_TEXTO = {
     "servidor_grafo": 80, "servidor_fragmentos": 80, "respuesta": 81,
     "juez_respuestas": 120, "reglas_citas": 148, "res_fidelidad": 84,
     "atribucion": 94, "res_comparacion": 130,
+    "lectura": 582,              # el ancho de la banda: 760 - 12 - 2 × 4 - 138 - 2 × 9 - 2
 }
 FS_SECCION = FS_TEXTO                    # el número de sección, en negrita
 SEP_SECCION = ancho(" ", FS_TITULO, True)  # del número al título
@@ -412,11 +457,13 @@ SEP_VERTICAL = 20                # entre dos cajas unidas por una flecha vertica
 CARRIL = 10                      # de las cajas al carril del grafo, arriba y abajo
 SEP_FILA_B = 22                  # de la respuesta a las reglas de las citas
 SOBRE_LEYENDA = 10               # de la banda de abajo a la leyenda
+SEP_LECTURA = 44                 # de la lectura a la fila de arriba: los tramos llevan su rótulo al
+#                                  costado (la medida de la revisión a la medición, figura de las preguntas)
 FILA_U = ("muestra_tripletas", "juez_tripletas", "res_precision", "juez_presencia", "res_cobertura")
 SEP_SIN_FLECHA = math.ceil(SEP_CAJAS + GROSOR_CAJA)  # entre dos cajas vecinas sin flecha
 SEP_U = (SEP_FLECHA, SEP_FLECHA, SEP_SIN_FLECHA, SEP_FLECHA)
 FILA_L = ("muestra_pasajes", "extrae", "tramo", "ordena")
-BANDA_DE = {k: "intrinseca" for k in FILA_U + FILA_L}
+BANDA_DE = {k: "intrinseca" for k in FILA_U + FILA_L + ("lectura",)}
 BANDA_DE.update({k: "extrinseca" for k in (
     "redacta", "preguntas", "agente", "servidor_grafo", "servidor_fragmentos", "respuesta",
     "juez_respuestas", "reglas_citas", "res_fidelidad", "atribucion", "res_comparacion")})
@@ -461,9 +508,10 @@ def armar() -> dict:
     x1 = W - MARGEN - PAD_BANDA
     B = {}
 
-    # ---- banda de arriba: dos filas ------------------------------------- #
+    # ---- banda de arriba: la lectura, a todo el ancho, y dos filas ------- #
     yb = float(MARGEN)
-    tc = yb + ALTO_ROTULO
+    lc = C["lectura"] = caja("lectura", x0, yb + ALTO_ROTULO)
+    tc = aba(lc) + SEP_LECTURA
     h_u = max(alto_caja(k) for k in FILA_U)
     h_l = max(alto_caja(k) for k in FILA_L)
     cy_u = tc + h_u / 2.0
@@ -528,22 +576,21 @@ def armar() -> dict:
             falla("composicion", f"«{a} → {b}» en y={y:.1f} fuera de su tramo común")
         flecha(a, b, [(der(A), y), (Bx["x"] - hp, y)], estilo)
 
-    def vertical(a, b, x):
+    def vertical(a, b, x, estilo="flujo"):
         A, Bx = C[a], C[b]
         lo, hi = comun(A, Bx, "x")
         if not lo <= x <= hi:
             falla("composicion", f"«{a} → {b}» en x={x:.1f} fuera de su tramo común")
         if Bx["y"] > A["y"]:
-            flecha(a, b, [(x, aba(A)), (x, Bx["y"] - hp)])
+            flecha(a, b, [(x, aba(A)), (x, Bx["y"] - hp)], estilo)
         else:
-            flecha(a, b, [(x, A["y"]), (x, aba(Bx) + hp)])
+            flecha(a, b, [(x, A["y"]), (x, aba(Bx) + hp)], estilo)
 
     mt, jt, rp, jp, rc = (C[k] for k in FILA_U)
     mp, ex, tr, od = (C[k] for k in FILA_L)
     # banda de arriba
     horizontal("grafo", "muestra_tripletas", cy_u, "rama")
     horizontal("muestra_tripletas", "juez_tripletas", cy_u)
-    horizontal("juez_tripletas", "res_precision", cy_u)
     horizontal("documentos", "muestra_pasajes", cy_l, "rama")
     horizontal("muestra_pasajes", "extrae", cy_l)
     horizontal("extrae", "tramo", cy_l)
@@ -558,7 +605,15 @@ def armar() -> dict:
            "rama")
     flecha("grafo", "juez_presencia", [(X_TRONCO, y_carril), (x_gj, y_carril), (x_gj, aba(jp) + hp)], "rama",
            madre="grafo → servidor_grafo")
-    horizontal("juez_presencia", "res_cobertura", cy_u)
+    # la lectura: suben a ella las dos muestras y, discontinuas, los dos jueces;
+    # bajan de ella los dos resultados. La de la lista ordenada sube entre el
+    # juez de presencia y la cobertura.
+    vertical("muestra_tripletas", "lectura", cx(mt))
+    vertical("juez_tripletas", "lectura", jt["x"] + LEJOS_ESQUINA + 2, "discontinua")
+    vertical("lectura", "res_precision", cx(rp))
+    vertical("juez_presencia", "lectura", der(jp) - LEJOS_ESQUINA - 2, "discontinua")
+    vertical("ordena", "lectura", (der(jp) + rc["x"]) / 2.0)
+    vertical("lectura", "res_cobertura", cx(rc))
     # banda de abajo
     flecha("documentos", "redacta", [(cx(do), aba(do)), (cx(do), cy(rd)), (rd["x"] - hp, cy(rd))], "rama")
     horizontal("redacta", "preguntas", cy(rd))
@@ -581,13 +636,34 @@ def armar() -> dict:
     horizontal("respuesta", "atribucion", cy(rs))
     horizontal("juez_respuestas", "res_comparacion", cy(co))
 
+    # ---- rótulos de las discontinuas, al costado de su tramo vertical (los
+    # de la figura de las preguntas): el del juez de las tripletas, a la
+    # derecha; el del juez de presencia, a la izquierda, porque a su derecha
+    # sube la flecha de la lista ordenada ------------------------------- #
+    lado = {("juez_tripletas", "lectura"): "derecha", ("juez_presencia", "lectura"): "izquierda"}
+    R = []
+    for t in T:
+        par = (t["desde"], t["hasta"])
+        if par not in DISCONTINUAS:
+            continue
+        (ax, ay), (bx, by) = t["puntos"][0], t["puntos"][1]
+        g = ESTILO_TRAZO[t["estilo"]] / 2.0
+        texto = DISCONTINUAS[par]
+        if lado[par] == "derecha":
+            x = ax + g + ROTULO_AIRE
+        else:
+            x = ax - g - ROTULO_AIRE - ancho(texto, FS_TEXTO, False)
+        y = (ay + by) / 2.0 + (ASC - DESC) / 2.0 * FS_TEXTO
+        R.append({"flecha": t["nombre"], "par": par, "texto": texto, "tramo": 0,
+                  "x": float(f(x)), "y": float(f(y))})
+
     # ---- leyenda, abajo a la izquierda (la de la figura del proceso) ---- #
     y_ley = max(fin_b, aba(fr)) + SOBRE_LEYENDA
     w_ley = 12 + MUESTRA_W + 9 + max(ancho(s, FS_TEXTO, False) for _, s in LEYENDA) + 12
     h_ley = GRUPO_LEYENDA + len(LEYENDA) * FILA_LEY + 6
     L = {"x": float(MARGEN), "y": float(f(y_ley)), "w": float(f(w_ley)), "h": float(h_ley)}
     alto = math.ceil(L["y"] + L["h"] + MARGEN)
-    return {"cajas": C, "bandas": B, "trazos": T, "leyenda": L, "alto": alto,
+    return {"cajas": C, "bandas": B, "trazos": T, "rotulos": R, "leyenda": L, "alto": alto,
             "geo": {"x0": x0, "x1": x1, "a0": a0, "y_carril": y_carril}}
 
 
@@ -617,6 +693,10 @@ def textos_de(M: dict) -> list[dict]:
         out.append({"s": BANDAS[k], "fs": FS_TITULO, "negrita": True, "color": TINTA,
                     "x": float(f(M["geo"]["x0"])), "y": float(f(base)), "dentro": f"banda {k}",
                     "tipo": "rotulo", "linea": 0})
+    for r in M["rotulos"]:
+        out.append({"s": r["texto"], "fs": FS_TEXTO, "negrita": False, "color": TINTA_SUB,
+                    "x": r["x"], "y": r["y"], "dentro": "banda intrinseca", "tipo": "rotulo_flecha",
+                    "linea": 0, "flecha": r["par"]})
     L = M["leyenda"]
     for k, (_, s) in enumerate(LEYENDA):
         yc = L["y"] + GRUPO_LEYENDA + k * FILA_LEY + FILA_LEY / 2.0
@@ -813,14 +893,17 @@ def controlar_contenido(M: dict) -> dict:
         if seccion and not any(t["tipo"] == "seccion" and t["linea"] == 0 and
                                t["x"] == float(f(M["cajas"][clave]["x"] + PAD_X)) for t in ts):
             falla("contenido", f"«{clave}»: el número de sección no está arriba a la izquierda")
+    rotulos = sorted((t["flecha"], t["s"]) for t in textos if t["tipo"] == "rotulo_flecha")
+    if rotulos != sorted(DISCONTINUAS.items()):
+        falla("contenido", f"rótulos dibujados {rotulos} ≠ los de DISCONTINUAS")
     for k, s in BANDAS.items():
-        if [t["s"] for t in por_caja.pop(f"banda {k}", [])] != [s]:
+        if [t["s"] for t in por_caja.pop(f"banda {k}", []) if t["tipo"] == "rotulo"] != [s]:
             falla("contenido", f"el rótulo de la banda «{k}» no es «{s}»")
     if [t["s"] for t in por_caja.pop("leyenda", [])] != [s for _, s in LEYENDA]:
         falla("contenido", "la leyenda no es la de la figura del proceso")
     if por_caja:
         falla("contenido", f"textos sin caja: {sorted(por_caja)}")
-    return {"textos": len(textos), "cajas": len(M["cajas"])}
+    return {"textos": len(textos), "cajas": len(M["cajas"]), "rotulos": len(rotulos)}
 
 
 def controlar_trazado(M: dict) -> dict:
@@ -872,7 +955,7 @@ def controlar_trazado(M: dict) -> dict:
 def controlar_cajas(M: dict) -> dict:
     C, BD = M["cajas"], M["bandas"]
     L = M["leyenda"]
-    todas = [(k, bb(c), GROSOR_CAJA) for k, c in C.items()]
+    todas = [(k, bb(c), GROSOR[c["clase"]]) for k, c in C.items()]
     todas.append(("leyenda", (L["x"], L["y"], L["x"] + L["w"], L["y"] + L["h"]), 1.0))
     minimo = math.inf
     for i in range(len(todas)):
@@ -889,7 +972,7 @@ def controlar_cajas(M: dict) -> dict:
         falla("cajas", "las dos bandas se superponen")
     for k, c in C.items():
         banda = BANDA_DE.get(k)
-        r = ampliar(bb(c), GROSOR_CAJA / 2.0)
+        r = ampliar(bb(c), GROSOR[c["clase"]] / 2.0)
         for kb, rb in bandas.items():
             if kb == banda and not contiene(rb, r, 1.0):
                 falla("cajas", f"«{k}» no está dentro de su banda «{kb}»")
@@ -955,7 +1038,7 @@ def controlar_textos(M: dict) -> dict:
     C = M["cajas"]
     textos = [(t, caja_texto(t)) for t in textos_de(M)]
     L = M["leyenda"]
-    contenedores = {k: (bb(c), GROSOR_CAJA) for k, c in C.items()}
+    contenedores = {k: (bb(c), GROSOR[c["clase"]]) for k, c in C.items()}
     contenedores["leyenda"] = ((L["x"], L["y"], L["x"] + L["w"], L["y"] + L["h"]), 1.0)
     for k, b in M["bandas"].items():
         contenedores[f"banda {k}"] = ((b["x"], b["y"], b["x"] + b["w"], b["y"] + b["h"]), 1.0)
@@ -1002,7 +1085,7 @@ def controlar_textos(M: dict) -> dict:
 
 def controlar_margen(M: dict, textos) -> dict:
     todas = [(f"texto «{t['s']}»", r) for t, r in textos]
-    todas += [(f"caja «{k}»", ampliar(bb(c), GROSOR_CAJA / 2.0)) for k, c in M["cajas"].items()]
+    todas += [(f"caja «{k}»", ampliar(bb(c), GROSOR[c["clase"]] / 2.0)) for k, c in M["cajas"].items()]
     for k, b in M["bandas"].items():
         todas.append((f"banda «{k}»", ampliar((b["x"], b["y"], b["x"] + b["w"], b["y"] + b["h"]), 0.5)))
     L = M["leyenda"]
@@ -1026,11 +1109,45 @@ def controlar_margen(M: dict, textos) -> dict:
     return {"elementos": len(todas), "minimos": minimos, "alto_cm": alto_cm}
 
 
+def controlar_rotulos(M: dict) -> dict:
+    """Cada rótulo, junto a un tramo recto de su flecha, a JUNTO o menos, y más
+    lejos de cualquier otra flecha que de la suya (el control de la figura de
+    las preguntas)."""
+    por_nombre = {t["nombre"]: t for t in M["trazos"]}
+    out = {}
+    for r in M["rotulos"]:
+        t = por_nombre[r["flecha"]]
+        rb = caja_texto({"s": r["texto"], "fs": FS_TEXTO, "negrita": False, "x": r["x"], "y": r["y"]})
+        a, b = t["puntos"][r["tramo"]], t["puntos"][r["tramo"] + 1]
+        g = ESTILO_TRAZO[t["estilo"]] / 2.0
+        if a[1] == b[1]:
+            lo, hi = sorted((a[0], b[0]))
+            dentro = lo + RADIO <= rb[0] and rb[2] <= hi - RADIO
+            gap = max(rb[1] - a[1], a[1] - rb[3]) - g
+        else:
+            lo, hi = sorted((a[1], b[1]))
+            dentro = lo + RADIO <= rb[1] and rb[3] <= hi - RADIO
+            gap = max(rb[0] - a[0], a[0] - rb[2]) - g
+        if not dentro:
+            falla("rotulos", f"«{r['texto']}» se sale del tramo recto de «{t['nombre']}»")
+        if not (HOLGURA_TEXTO <= gap <= JUNTO):
+            falla("rotulos", f"«{r['texto']}» a {gap:.1f} de su tramo (entre {HOLGURA_TEXTO} y {JUNTO})")
+        ajena = min((min(dist_segmento_caja(p, q, rb) for p, q in tramos(o))
+                     - ESTILO_TRAZO[o["estilo"]] / 2.0, o["nombre"])
+                    for o in M["trazos"] if o is not t)
+        if ajena[0] < gap + AJENA:
+            falla("rotulos", f"«{r['texto']}» queda a {ajena[0]:.1f} de «{ajena[1]}», "
+                             f"más cerca que {gap:.1f} + {AJENA}")
+        out[r["flecha"]] = (gap, ajena)
+    return out
+
+
 def verificar(M: dict) -> dict:
     rep = {"contenido": controlar_contenido(M), "trazado": controlar_trazado(M),
            "cajas": controlar_cajas(M), "cruces": controlar_cruces(M)}
     rep["textos"] = controlar_textos(M)
     rep["margen"] = controlar_margen(M, rep["textos"]["cajas_texto"])
+    rep["rotulos"] = controlar_rotulos(M)
     rep["svg"] = dibujar(M)
     rep["registro"] = controlar_registro(rep["svg"], M)
     return rep
@@ -1068,7 +1185,8 @@ def dibujar(M: dict) -> str:
         f'viewBox="0 0 {W} {alto}" font-family="{TIPOGRAFIA}">',
         f'<rect width="{W}" height="{alto}" fill="white"/>',
         f'<defs><marker id="arN" {MARCADOR} fill="{FLECHA}"/></marker>'
-        f'<marker id="arNi" {MARCADOR_INICIO} fill="{FLECHA}"/></marker></defs>',
+        f'<marker id="arNi" {MARCADOR_INICIO} fill="{FLECHA}"/></marker>'
+        f'<marker id="arG" {MARCADOR} fill="{GRIS_ARISTA}"/></marker></defs>',
     ]
     for k, b in M["bandas"].items():
         partes.append(f'<rect data-banda="{k}" x="{f(b["x"])}" y="{f(b["y"])}" width="{f(b["w"])}" '
@@ -1077,12 +1195,15 @@ def dibujar(M: dict) -> str:
         pal = PALETA[c["clase"]]
         partes.append(f'<rect data-caja="{clave}" x="{f(c["x"])}" y="{f(c["y"])}" width="{f(c["w"])}" '
                       f'height="{f(c["h"])}" fill="{pal["relleno"]}" stroke="{pal["borde"]}" '
-                      f'stroke-width="{GROSOR_CAJA}" rx="{RX}"/>')
+                      f'stroke-width="{GROSOR[c["clase"]]}" rx="{RX}"/>')
     for t in M["trazos"]:
         inicio = ' marker-start="url(#arNi)"' if t["doble"] else ""
+        color, punta, dash = FLECHA, "arN", ""
+        if t["estilo"] == "discontinua":
+            color, punta, dash = GRIS_ARISTA, "arG", f' stroke-dasharray="{GUIONES}"'
         partes.append(f'<path data-flecha="{esc(t["nombre"])}" d="{path_redondeado(t["puntos"])}" fill="none" '
-                      f'stroke="{FLECHA}" stroke-width="{ESTILO_TRAZO[t["estilo"]]}"{inicio} '
-                      f'marker-end="url(#arN)"/>')
+                      f'stroke="{color}" stroke-width="{ESTILO_TRAZO[t["estilo"]]}"{dash}{inicio} '
+                      f'marker-end="url(#{punta})"/>')
     L = M["leyenda"]
     partes.append(f'<rect x="{f(L["x"])}" y="{f(L["y"])}" width="{f(L["w"])}" height="{f(L["h"])}" '
                   f'{LEYENDA_MARCO}/>')
@@ -1090,7 +1211,7 @@ def dibujar(M: dict) -> str:
         pal = PALETA[m["clase"]]
         partes.append(f'<rect data-caja="{m["clave"]}" x="{f(m["x"])}" y="{f(m["y"])}" width="{f(m["w"])}" '
                       f'height="{f(m["h"])}" fill="{pal["relleno"]}" stroke="{pal["borde"]}" '
-                      f'stroke-width="{GROSOR_CAJA}" rx="{RX_MUESTRA}"/>')
+                      f'stroke-width="{GROSOR[m["clase"]]}" rx="{RX_MUESTRA}"/>')
     for t in textos_de(M):
         peso = "bold" if t["negrita"] else "normal"
         partes.append(f'<text x="{f(t["x"])}" y="{f(t["y"])}" font-size="{t["fs"]}" font-weight="{peso}" '
@@ -1099,8 +1220,8 @@ def dibujar(M: dict) -> str:
 
 
 def controlar_registro(svg: str, M: dict) -> dict:
-    """El SVG se relee: cada caja, muestra de la leyenda y flecha tiene el color
-    y el trazo de su clase o su estilo."""
+    """El SVG se relee: cada caja, muestra de la leyenda y flecha tiene el color,
+    el grosor y el trazo de su clase o su estilo."""
     raiz = ET.fromstring(svg)
     clase_de = {k: c["clase"] for k, c in M["cajas"].items()}
     clase_de.update({f"leyenda_{c}": c for c, _ in LEYENDA})
@@ -1109,16 +1230,22 @@ def controlar_registro(svg: str, M: dict) -> dict:
     for el in raiz.iter():
         clave = el.get("data-caja")
         if clave is not None:
-            pal = PALETA[clase_de[clave]]
-            if (el.get("fill"), el.get("stroke")) != (pal["relleno"], pal["borde"]):
-                falla("registro", f"«{clave}» con relleno {el.get('fill')} y borde {el.get('stroke')}")
+            clase = clase_de[clave]
+            pal = PALETA[clase]
+            if (el.get("fill"), el.get("stroke"), el.get("stroke-width")) != (
+                    pal["relleno"], pal["borde"], str(GROSOR[clase])):
+                falla("registro", f"«{clave}» con relleno {el.get('fill')}, borde {el.get('stroke')} "
+                                  f"y grosor {el.get('stroke-width')}")
             n["muestras" if clave.startswith("leyenda_") else "cajas"] += 1
         nombre = el.get("data-flecha")
         if nombre is not None:
             t = por_nombre[nombre]
-            esperado = (FLECHA, str(ESTILO_TRAZO[t["estilo"]]), "url(#arN)",
-                        "url(#arNi)" if t["doble"] else None)
-            if (el.get("stroke"), el.get("stroke-width"), el.get("marker-end"), el.get("marker-start")) != esperado:
+            discontinua = t["estilo"] == "discontinua"
+            esperado = (GRIS_ARISTA if discontinua else FLECHA, str(ESTILO_TRAZO[t["estilo"]]),
+                        "url(#arG)" if discontinua else "url(#arN)", "url(#arNi)" if t["doble"] else None,
+                        GUIONES if discontinua else None)
+            if (el.get("stroke"), el.get("stroke-width"), el.get("marker-end"), el.get("marker-start"),
+                    el.get("stroke-dasharray")) != esperado:
                 falla("registro", f"la flecha «{nombre}» no tiene el trazo de su estilo")
             n["flechas"] += 1
         if el.tag.endswith("text"):
@@ -1192,7 +1319,7 @@ def main() -> int:
             print(f"  {linea}")
     c = rep["contenido"]
     print(f"CONTENIDO: {c['cajas']} cajas, las de CAJAS, con su clase y su texto letra por letra; "
-          f"{c['textos']} textos en total; ninguno nombra un modelo")
+          f"{c['rotulos']} rótulos, los de DISCONTINUAS; {c['textos']} textos en total; ninguno nombra un modelo")
     t = rep["trazado"]
     print(f"TRAZADO: {t['flechas']} flechas ({t['dobles']} con punta en los dos extremos), {t['tramos']} tramos, "
           f"0 diagonales; extremos en el borde de su caja; flechas = las de FLECHAS")
@@ -1215,8 +1342,11 @@ def main() -> int:
     print(f"MARGEN ({mg['elementos']} elementos): mínimo a cada borde "
           + ", ".join(f"{b} {v:.1f} u = {v * mm:.2f} mm" for b, v in mg["minimos"].items())
           + f"; exigido {MARGEN_MM:.1f} mm")
+    for nombre, (gap, ajena) in rep["rotulos"].items():
+        print(f"RÓTULO de «{nombre}»: a {gap:.1f} de su tramo (máximo {JUNTO}); la otra flecha más "
+              f"cercana, «{ajena[1]}», a {ajena[0]:.1f}")
     rg = rep["registro"]
-    print(f"REGISTRO: colores controlados en {rg['cajas']} cajas, {rg['muestras']} muestras y "
+    print(f"REGISTRO: color y grosor controlados en {rg['cajas']} cajas, {rg['muestras']} muestras y "
           f"{rg['flechas']} flechas; {rg['textos']} textos en el SVG")
 
     os.makedirs(args.salida, exist_ok=True)
